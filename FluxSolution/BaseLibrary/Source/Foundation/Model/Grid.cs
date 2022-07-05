@@ -30,6 +30,11 @@
       set => m_values[RowColumnToKey(row, column)] = value;
     }
 
+    /// <summary>Creates a new <see cref="System.ValueTuple{TValue}"/> and performs all necessary boundary checks.</summary>
+    /// <param name="row"></param>
+    /// <param name="column"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public (int row, int column) RowColumnToKey(int row, int column)
       => row < 0 || row >= m_rows ? throw new System.ArgumentOutOfRangeException(nameof(row))
       : column < 0 || column >= m_columns ? throw new System.ArgumentOutOfRangeException(nameof(column))
