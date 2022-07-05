@@ -19,10 +19,19 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var g = new Flux.Model.Grid<int>(10, 10);
-      g[2, 7] = 'A';
-      g[5, 4] = 'X';
-      System.Console.WriteLine(g.ToConsoleBlock(v => v == default ? "\u00B7" : ((System.Text.Rune)v).ToString()));
+      var grid = new Flux.Model.Grid<System.Text.Rune>(11, 11);
+
+      grid[3, 8] = (System.Text.Rune)'X';
+      grid[4, 1] = (System.Text.Rune)'Y';
+      grid[7, 6] = (System.Text.Rune)'Z';
+
+      foreach (var kvp in grid)
+        System.Console.WriteLine(kvp);
+
+      System.Console.WriteLine(grid.ToConsoleBlock(v => v == default ? (System.Text.Rune)'\u00B7' : v));
+
+      for (var i = 0; i <= 1000000; i++)
+        System.Console.WriteLine($"{i} = {Flux.Model.BattleShip.Fleet.ProximityProbability(i):N9}%");
     }
 
     private static void Main(string[] args)

@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.Model.Maze
 {
   public abstract class AMaze
-      : IMazeBraidable, IMazeCarvable
+    : IMazeBraidable, IMazeCarvable
   {
     public System.Random RandomNumberGenerator { get; init; } = new System.Random();
 

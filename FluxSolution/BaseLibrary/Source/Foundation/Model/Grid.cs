@@ -2,19 +2,26 @@
 {
   public class Grid<TValue>
     : IConsoleWritable, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<(int row, int column), TValue>>
+    where TValue : notnull
   {
-    private readonly System.Collections.Generic.IDictionary<(int row, int column), TValue> m_values;
-
     private readonly int m_rows;
     private readonly int m_columns;
 
+    private readonly System.Collections.Generic.IDictionary<(int row, int column), TValue> m_values;
+
     public Grid(int rows, int columns)
     {
-      m_values = new System.Collections.Generic.SortedDictionary<(int row, int column), TValue>();
-
       m_rows = rows;
       m_columns = columns;
+
+      m_values = new System.Collections.Generic.SortedDictionary<(int row, int column), TValue>();
     }
+
+    public int Rows => m_rows;
+    public int Columns => m_columns;
+
+    public System.Collections.Generic.IReadOnlyDictionary<(int row, int column), TValue> Values
+      => (System.Collections.Generic.IReadOnlyDictionary<(int row, int column), TValue>)m_values;
 
     /// <summary>The preferred way to access the grid values.</summary>
     public TValue this[int row, int column]
@@ -24,7 +31,9 @@
     }
 
     public (int row, int column) RowColumnToKey(int row, int column)
-      => row >= 0 && row < m_rows ? column >= 0 && column < m_columns ? (row, column) : throw new System.ArgumentOutOfRangeException(nameof(column)) : throw new System.ArgumentOutOfRangeException(nameof(row));
+      => row < 0 || row >= m_rows ? throw new System.ArgumentOutOfRangeException(nameof(row))
+      : column < 0 || column >= m_columns ? throw new System.ArgumentOutOfRangeException(nameof(column))
+      : (row, column);
 
     public (int row, int column) IndexToKey(int index)
       => (index / m_columns, index % m_columns);
@@ -45,11 +54,15 @@
     public void SetValue(int row, int column, TValue value)
       => m_values[RowColumnToKey(row, column)] = value;
 
-    public object[,] ToArray(System.Func<TValue, object> resultSelector, bool includeHeaderAxes = false)
+    /// <summary></summary>
+    /// <param name="resultSelector"></param>
+    /// <param name="includeArrayFrameSlots">Whether the two-dimensional array is surrounded by empty slots.</param>
+    /// <returns>A two-dimensional array.</returns>
+    public object[,] ToArray(System.Func<TValue, object> resultSelector, bool includeArrayFrameSlots = true)
     {
-      var extra = (includeHeaderAxes ? 1 : 0);
+      var extra = includeArrayFrameSlots ? 1 : 0;
 
-      var array = new object[m_rows + extra, m_columns + extra];
+      var array = new object[extra + m_rows + extra, extra + m_columns + extra];
 
       for (var row = 0; row < m_rows; row++)
         for (var column = 0; column < m_columns; column++)
@@ -61,6 +74,6 @@
     public string ToConsoleBlock(System.Func<TValue, object> resultSelector)
       => string.Join(System.Environment.NewLine, ToArray(resultSelector).ToConsoleStrings('\0', '\0', true, true));
     public string ToConsoleBlock()
-      => ToConsoleBlock(v => default(TValue)?.Equals(v) ?? false ? "\u00B7" : "V");
+      => ToConsoleBlock(v => v.Equals(default(TValue)) ? "\u00B7" : "V");
   }
 }

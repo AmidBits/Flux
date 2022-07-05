@@ -58,6 +58,6 @@
     }
 
     public static double ProximityProbability(int distance) // Max length of 9, could leave wide open.
-      => distance >= 0 && distance <= 9 ? 1.0 / (distance + 1) : throw new System.ArgumentOutOfRangeException(nameof(distance));
+      => distance >= 0 /*&& distance <= 9*/ ? 1.0 / (distance + 1) : throw new System.ArgumentOutOfRangeException(nameof(distance));
   }
 }
