@@ -1,8 +1,9 @@
+using BaseLibrary.Source.Foundation.Text;
 using System.Linq;
 
 namespace Flux
 {
-	public static partial class Convert
+  public static partial class Convert
 	{
 		/// <summary>Returns a string with the numeric superscript.</summary>
 		public static string ToSuperscriptString(System.Numerics.BigInteger number, int radix)

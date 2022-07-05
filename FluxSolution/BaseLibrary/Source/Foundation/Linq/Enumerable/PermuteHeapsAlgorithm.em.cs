@@ -4,17 +4,17 @@ namespace Flux
   {
     /// <summary>Heap's algorithm generates all possible permutations of n objects.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Heap%27s_algorithm"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> PermuteHeapsAlgorithm<T>(this System.Collections.Generic.IEnumerable<T> source)
+    public static System.Collections.Generic.IEnumerable<T[]> PermuteHeapsAlgorithm<T>(this System.Collections.Generic.IEnumerable<T> source)
     {
       return Permute(source.ToArray());
 
-      static System.Collections.Generic.IEnumerable<System.Collections.Generic.IReadOnlyList<T>> Permute(T[] array)
+      static System.Collections.Generic.IEnumerable<T[]> Permute(T[] array)
       {
         var stackState = new int[array.Length];
 
         System.Array.Fill(stackState, default);
 
-        yield return (System.Collections.Generic.IReadOnlyList<T>)array;
+        yield return array.ToArray();
 
         for (var stackIndex = 0; stackIndex < stackState.Length;)
         {
@@ -25,7 +25,7 @@ namespace Flux
             else
               array.AsSpan().Swap(stackState[stackIndex], stackIndex);
 
-            yield return (System.Collections.Generic.IReadOnlyList<T>)array;
+            yield return array.ToArray();
 
             stackState[stackIndex]++;
             stackIndex = 0;

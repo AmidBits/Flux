@@ -1,9 +1,9 @@
 ﻿namespace Flux
 {
   /// <summary>Represents a value range of two components, for various range operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable and IEquatable to operate.</summary>
-  public struct ValueRange<T>
+  public readonly struct ValueRange<T>
     : System.IEquatable<ValueRange<T>>
-    where T : System.IComparable<T>, System.IEquatable<T>
+    where T : notnull, System.IComparable<T>, System.IEquatable<T>
   {
     public readonly static ValueRange<T> Empty;
 

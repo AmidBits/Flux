@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using BaseLibrary.Source.Foundation.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Flux;
 
 namespace Collections.Generic
 {
@@ -18,12 +20,12 @@ namespace Collections.Generic
     private readonly string m_text4b = "aaaaaaaaa";
 
 
-    readonly Flux.StringComparerEx m_comparisonOrdinal = Flux.StringComparerEx.Ordinal;
-    readonly Flux.StringComparerEx m_comparisonOrdinalIgnoreCase = Flux.StringComparerEx.OrdinalIgnoreCase;
+    readonly StringComparerEx m_comparisonOrdinal = StringComparerEx.Ordinal;
+    readonly StringComparerEx m_comparisonOrdinalIgnoreCase = StringComparerEx.OrdinalIgnoreCase;
 
-    readonly Flux.StringComparerEx m_comparableIgnoreNonSpace = new(System.Globalization.CultureInfo.CurrentCulture, System.Globalization.CompareOptions.IgnoreNonSpace);
+    readonly StringComparerEx m_comparableIgnoreNonSpace = new(System.Globalization.CultureInfo.CurrentCulture, System.Globalization.CompareOptions.IgnoreNonSpace);
 
-    readonly Flux.StringComparerEx m_comparerDoNotIgnoreCase = Flux.StringComparerEx.CurrentCulture;
+    readonly StringComparerEx m_comparerDoNotIgnoreCase = StringComparerEx.CurrentCulture;
 
     [TestMethod]
     public void DamerauLevenshteinDistance()

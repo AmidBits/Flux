@@ -3,7 +3,7 @@ namespace Flux
   public static partial class SpanEm
   {
     /// <summary>In-place swap of two elements by the specified indices.</summary>
-    public static void Swap<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)
+    public static void Swap<T>(this System.Collections.Generic.List<T> source, int indexA, int indexB)
     {
       if (source is null) throw new System.ArgumentOutOfRangeException(nameof(source));
       if (source.Count == 0) throw new System.ArgumentException(@"The sequence is empty.");

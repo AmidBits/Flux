@@ -1,5 +1,7 @@
+using BaseLibrary.Source.Foundation.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Flux;
 
 namespace Text
 {
@@ -9,9 +11,9 @@ namespace Text
     readonly string source = "Senor Hugo";
     readonly string target = "señor hugo";
 
-    readonly Flux.StringComparerEx comparerIgnoreCase = Flux.StringComparerEx.CurrentCultureIgnoreCase;
-    readonly Flux.StringComparerEx comparerIgnoreNonSpace = Flux.StringComparerEx.CurrentCultureIgnoreNonSpace;
-    readonly Flux.StringComparerEx comparerNone = Flux.StringComparerEx.Ordinal;
+    readonly StringComparerEx comparerIgnoreCase = StringComparerEx.CurrentCultureIgnoreCase;
+    readonly StringComparerEx comparerIgnoreNonSpace = StringComparerEx.CurrentCultureIgnoreNonSpace;
+    readonly StringComparerEx comparerNone = StringComparerEx.Ordinal;
 
     [TestMethod]
     public void DamerauLevenstein_Default()
