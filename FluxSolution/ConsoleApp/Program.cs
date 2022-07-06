@@ -19,7 +19,22 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var oldValues = new char[] { 'A', 'B','C'};// new System.ValueTuple<System.Globalization.CompareOptions, string>[] { (System.Globalization.CompareOptions.IgnoreCase, "Case"), (System.Globalization.CompareOptions.IgnoreNonSpace, "NonSpace"), (System.Globalization.CompareOptions.IgnoreSymbols, "Symbols"), (System.Globalization.CompareOptions.IgnoreWidth, "Width") };
+      var x = new double[] { 19, 23, 28, 34, 36, 39, 41, 47, 48, 52, 58, 59, 61, 65, 68 };
+      //var y = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelExc);
+      //var z = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelInc);
+      var y = Percentiles.PercentileValue(x, .49, Percentiles.LerpVariant.ExcelExc);
+      var ze = Percentiles.PercentRank(1.0, x.Length, Percentiles.LerpVariant.ExcelExc);
+      var w = Percentiles.PercentNearestOrdinalRank(1, 40);
+
+      var eq = Quantiles.EmpiricalDistributionFunction(x, 50);
+
+      x.Average();
+      //args = null;
+      var e = args.SubstituteIfEmpty(new string[] { "Hello", "World" });
+
+      var a = e.ToArray();
+
+      var oldValues = new char[] { 'A', 'B', 'C' };// new System.ValueTuple<System.Globalization.CompareOptions, string>[] { (System.Globalization.CompareOptions.IgnoreCase, "Case"), (System.Globalization.CompareOptions.IgnoreNonSpace, "NonSpace"), (System.Globalization.CompareOptions.IgnoreSymbols, "Symbols"), (System.Globalization.CompareOptions.IgnoreWidth, "Width") };
       var newValues = oldValues.PermuteHeapsAlgorithm().ToArray();
 
       var grid = new Flux.Model.Grid<System.Text.Rune>(11, 11);

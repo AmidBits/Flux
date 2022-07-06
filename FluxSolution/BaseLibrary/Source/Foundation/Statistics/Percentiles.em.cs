@@ -8,38 +8,33 @@ namespace Flux
       ExcelInc,
     }
 
+    /// <summary>The percentage refers to the unit of measurement indicating rate, number or amount, for every hundred.</summary>
+    /// <param name="countEqual">E.g. your marks (score) on a test.</param>
+    /// <param name="countTotal">E.g. the total marks (score) possible on a test.</param>
+    /// <returns>The amount of marks (score) per 100 marks in decimal form.</returns>
+    public static double Percent(double countEqual, double countTotal)
+      => countEqual / countTotal;
+
     /// <summary>Compute the ordinal index (rank) of the P-th percentile by means of nearest rank.</summary>
-    public static int PercentNearestOrdinalRank(double percentile, int count)
-      => percentile < 0 || percentile > 1
-      ? throw new System.ArgumentOutOfRangeException(nameof(percentile))
+    public static int PercentNearestOrdinalRank(double percent, int count)
+      => percent < 0 || percent > 1
+      ? throw new System.ArgumentOutOfRangeException(nameof(percent))
       : count < 0
       ? throw new System.ArgumentOutOfRangeException(nameof(count))
-      : System.Convert.ToInt32(System.Math.Ceiling(percentile * count));
-    /// <summary>Compute the ordinal index (rank) of the P-th percentile by means of nearest rank.</summary>
-    public static int PercentNearestOrdinalRank(int percentile, int count)
-      => PercentNearestOrdinalRank(percentile / 100.0, count);
+      : System.Convert.ToInt32(System.Math.Ceiling(percent * count));
 
-    public static double PercentRank(double percentile, int count, LerpVariant variant)
+    public static double PercentRank(double percent, int count, LerpVariant variant)
       => variant switch
       {
-        LerpVariant.ExcelExc => PercentRankExcelExc(percentile, count),
-        LerpVariant.ExcelInc => PercentRankExcelInc(percentile, count),
+        LerpVariant.ExcelExc => PercentRankExcelExc(percent, count),
+        LerpVariant.ExcelInc => PercentRankExcelInc(percent, count),
         _ => throw new System.ArgumentOutOfRangeException(nameof(variant))
       };
-    public static double PercentRank(int percentile, int count, LerpVariant variant)
+    public static double PercentRank(int percent, int count, LerpVariant variant)
       => variant switch
       {
-        LerpVariant.ExcelExc => PercentRankExcelExc(percentile, count),
-        LerpVariant.ExcelInc => PercentRankExcelInc(percentile, count),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(variant))
-      };
-
-    /// <summary>Computes the percentile value of the percentile within the source sequence.</summary>
-    public static double PercentileValue(this System.Collections.Generic.IEnumerable<double> source, double percentile, LerpVariant variant)
-      => variant switch
-      {
-        LerpVariant.ExcelExc => PercentileValueExcelExc(source, percentile),
-        LerpVariant.ExcelInc => PercentileValueExcelInc(source, percentile),
+        LerpVariant.ExcelExc => PercentRankExcelExc(percent, count),
+        LerpVariant.ExcelInc => PercentRankExcelInc(percent, count),
         _ => throw new System.ArgumentOutOfRangeException(nameof(variant))
       };
 
@@ -64,6 +59,22 @@ namespace Flux
     /// <summary>Excel '.INC' percent rank. Noted as an alternative by NIST.</summary>
     public static double PercentRankExcelInc(int percentile, int count)
       => PercentRankExcelInc(percentile / 100.0, count);
+
+    /// <summary>Percentile implies a value, a rank, at or below which a specific proportion of the observations lies.</summary>
+    /// <param name="countLessThan">E.g. how many got less marks (score) on a test than you.</param>
+    /// <param name="countTotal">E.g. how many participated in a test.</param>
+    /// <returns>The percentile, or percent that scored less mark than you.</returns>
+    public static double Percentile(double countLessThan, double countTotal)
+      => countLessThan / countTotal;
+
+    /// <summary>Computes the percentile value of the percentile within the source sequence.</summary>
+    public static double PercentileValue(this System.Collections.Generic.IEnumerable<double> source, double percentile, LerpVariant variant)
+      => variant switch
+      {
+        LerpVariant.ExcelExc => PercentileValueExcelExc(source, percentile),
+        LerpVariant.ExcelInc => PercentileValueExcelInc(source, percentile),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(variant))
+      };
 
     /// <summary>Excel percentile value (exc). The primary variant recommended by NIST.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile#Third_variant,_C_=_0"/>

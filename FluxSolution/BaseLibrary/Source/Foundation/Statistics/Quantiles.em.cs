@@ -28,7 +28,7 @@ namespace Flux
 
     /// <summary>Estimating quantiles from a sample.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
-    public static double Quantile(this System.Collections.Generic.List<double> source, double p, QuantileType type)
+    public static double Quantile(this System.Collections.Generic.IList<double> source, double p, QuantileType type)
       => type switch
       {
         QuantileType.R1 => QuantileR1(source, p),
@@ -44,25 +44,29 @@ namespace Flux
       };
     /// <summary>Estimating quantiles from a sample.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
-    public static double Quantile(this System.Collections.Generic.List<int> source, double p, QuantileType type)
+    public static double Quantile(this System.Collections.Generic.IList<int> source, double p, QuantileType type)
       => Quantile(System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(source, int32 => (double)int32)), p, type);
 
-    public static double EmpiricalDistributionFunction(System.Collections.Generic.List<double> source, double h)
+    /// <summary>Finds the interpolated value from the specified index. The integer part signifies the low index in the sequence and the fractional portion is the interpolation percentage between the low and high (low + 1) index.</summary>
+    /// <param name="source">The sequence of values.</param>
+    /// <param name="h">The index with fractions for interpolated values.</param>
+    /// <returns>The value corresponding to the fractional index (the value is interpolated between the integer index, using the fractional part, and the next index).</returns>
+    public static double EmpiricalDistributionFunction(System.Collections.Generic.IList<double> source, double h)
     {
       var lo = System.Convert.ToInt32(System.Math.Floor(h));
       var hi = System.Convert.ToInt32(System.Math.Ceiling(h));
 
       var sourceCountM1 = source.Count - 1;
 
-      var lov = source[System.Math.Clamp(lo - 1, 0, sourceCountM1)];
-      var hiv = source[System.Math.Clamp(hi - 1, 0, sourceCountM1)];
+      var lov = source[System.Math.Clamp(lo , 0, sourceCountM1)];
+      var hiv = source[System.Math.Clamp(hi , 0, sourceCountM1)];
 
       return lov + (h - lo) * (hiv - lov);
     }
 
     /// <summary>Inverse of empirical distribution function.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static double QuantileR1(this System.Collections.Generic.List<double> source, double p)
+    public static double QuantileR1(this System.Collections.Generic.IList<double> source, double p)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
@@ -77,7 +81,7 @@ namespace Flux
 
     /// <summary>The same as R-1, but with averaging at discontinuities.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static double QuantileR2(this System.Collections.Generic.List<double> source, double p)
+    public static double QuantileR2(this System.Collections.Generic.IList<double> source, double p)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
@@ -95,7 +99,7 @@ namespace Flux
 
     /// <summary>The observation numbered closest to Np. Here, h indicates rounding to the nearest integer, choosing the even integer in the case of a tie.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static double QuantileR3(this System.Collections.Generic.List<double> source, double p)
+    public static double QuantileR3(this System.Collections.Generic.IList<double> source, double p)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
@@ -110,7 +114,7 @@ namespace Flux
 
     /// <summary>Linear interpolation of the empirical distribution function.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static double QuantileR4(this System.Collections.Generic.List<double> source, double p)
+    public static double QuantileR4(this System.Collections.Generic.IList<double> source, double p)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
@@ -120,7 +124,7 @@ namespace Flux
 
     /// <summary>Piecewise linear function where the knots are the values midway through the steps of the empirical distribution function.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static double QuantileR5(this System.Collections.Generic.List<double> source, double p)
+    public static double QuantileR5(this System.Collections.Generic.IList<double> source, double p)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
@@ -130,7 +134,7 @@ namespace Flux
 
     /// <summary>Linear interpolation of the expectations for the order statistics for the uniform distribution on [0,1]. That is, it is the linear interpolation between points (ph, xh), where ph = h/(N+1) is the probability that the last of (N+1) randomly drawn values will not exceed the h-th smallest of the first N randomly drawn values.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static double QuantileR6(this System.Collections.Generic.List<double> source, double p)
+    public static double QuantileR6(this System.Collections.Generic.IList<double> source, double p)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
@@ -140,7 +144,7 @@ namespace Flux
 
     /// <summary>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static double QuantileR7(this System.Collections.Generic.List<double> source, double p)
+    public static double QuantileR7(this System.Collections.Generic.IList<double> source, double p)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
@@ -150,7 +154,7 @@ namespace Flux
 
     /// <summary>Linear interpolation of the approximate medians for order statistics.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static double QuantileR8(this System.Collections.Generic.List<double> source, double p)
+    public static double QuantileR8(this System.Collections.Generic.IList<double> source, double p)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
@@ -160,7 +164,7 @@ namespace Flux
 
     /// <summary>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static double QuantileR9(this System.Collections.Generic.List<double> source, double p)
+    public static double QuantileR9(this System.Collections.Generic.IList<double> source, double p)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
