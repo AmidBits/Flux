@@ -5,14 +5,14 @@ namespace Flux
     /// <summary>Generates all possible permutations of the elements in the sequence.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Permutation"/>
     /// <see cref="https://stackoverflow.com/a/4319074"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> PermuteAlgorithmL<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IComparer<T> comparer)
+    public static System.Collections.Generic.IEnumerable<T[]> PermuteAlgorithmL<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IComparer<T> comparer)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
 
       return Permute(source.ToList());
 
-      System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> Permute(System.Collections.Generic.IList<T> list)
+      System.Collections.Generic.IEnumerable<T[]> Permute(System.Collections.Generic.IList<T> list)
       {
         var length = list.Count;
 
@@ -70,7 +70,7 @@ namespace Flux
         }
       }
     }
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> PermuteAlgorithmL<T>(this System.Collections.Generic.IEnumerable<T> source)
+    public static System.Collections.Generic.IEnumerable<T[]> PermuteAlgorithmL<T>(this System.Collections.Generic.IEnumerable<T> source)
       => PermuteAlgorithmL(source, System.Collections.Generic.Comparer<T>.Default);
   }
 }
