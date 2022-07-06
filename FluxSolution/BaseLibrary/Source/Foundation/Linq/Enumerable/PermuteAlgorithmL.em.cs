@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Generates all possible permutations of the elements in the sequence.</summary>
+    /// <summary>Generates all possible permutations of the elements in the sequence. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Permutation"/>
     /// <see cref="https://stackoverflow.com/a/4319074"/>
     public static System.Collections.Generic.IEnumerable<T[]> PermuteAlgorithmL<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IComparer<T> comparer)
@@ -16,29 +16,19 @@ namespace Flux
       {
         var length = list.Count;
 
-        var transform = new System.ValueTuple<int, int>[length];
-
-        //if (comparer is null) // No comparer. Start with an identity transform.
-        //{
-        //  for (var i = 0; i < sourceCount; i++)
-        //    transform[i] = new System.ValueTuple<int, int>(i, i);
-        //}
-        //else
-        //{
         var initialOrder = new int[length]; // Figure out where we are in the sequence of all permutations
-
         for (var i = 0; i < length; i++)
           initialOrder[i] = i;
 
         System.Array.Sort(initialOrder, (x, y) => comparer.Compare(list[x], list[y]));
 
+        var transform = new System.ValueTuple<int, int>[length];
         for (var i = 0; i < length; i++)
           transform[i] = (initialOrder[i], i);
 
         for (var i = 1; i < length; i++) // Handle duplicates
           if (comparer.Compare(list[transform[i - 1].Item2], list[transform[i].Item2]) == 0)
             transform[i].Item1 = transform[i - 1].Item1;
-        //}
 
         while (true)
         {
@@ -70,6 +60,7 @@ namespace Flux
         }
       }
     }
+    /// <summary>Generates all possible permutations of the elements in the sequence. Uses the default comparer.</summary>
     public static System.Collections.Generic.IEnumerable<T[]> PermuteAlgorithmL<T>(this System.Collections.Generic.IEnumerable<T> source)
       => PermuteAlgorithmL(source, System.Collections.Generic.Comparer<T>.Default);
   }
