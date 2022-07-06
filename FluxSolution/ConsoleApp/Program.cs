@@ -35,7 +35,8 @@ namespace ConsoleApp
       var a = e.ToArray();
 
       var oldValues = new char[] { 'A', 'B', 'C' };// new System.ValueTuple<System.Globalization.CompareOptions, string>[] { (System.Globalization.CompareOptions.IgnoreCase, "Case"), (System.Globalization.CompareOptions.IgnoreNonSpace, "NonSpace"), (System.Globalization.CompareOptions.IgnoreSymbols, "Symbols"), (System.Globalization.CompareOptions.IgnoreWidth, "Width") };
-      var newValues = oldValues.PermuteHeapsAlgorithm().ToArray();
+      var newValues1 = oldValues.PermuteAlgorithmL().ToArray();
+      var newValues2 = oldValues.PermuteHeapsAlgorithm().ToArray();
 
       var grid = new Flux.Model.Grid<System.Text.Rune>(11, 11);
 
