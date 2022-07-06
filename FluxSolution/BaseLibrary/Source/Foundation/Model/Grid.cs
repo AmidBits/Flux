@@ -17,17 +17,31 @@
       m_values = new System.Collections.Generic.SortedDictionary<(int row, int column), TValue>();
     }
 
+    public int Count
+      => m_values.Count;
+
     public int Rows => m_rows;
     public int Columns => m_columns;
 
-    public System.Collections.Generic.IReadOnlyDictionary<(int row, int column), TValue> Values
-      => (System.Collections.Generic.IReadOnlyDictionary<(int row, int column), TValue>)m_values;
+    public Size2 Size
+      => new(m_columns, m_rows);
+
+    //public System.Collections.Generic.IReadOnlyDictionary<(int row, int column), TValue> Values
+    //  => (System.Collections.Generic.IReadOnlyDictionary<(int row, int column), TValue>)m_values;
+
+    public System.Collections.Generic.IEnumerable<TValue> GetValues()
+      => m_values.Values;
 
     /// <summary>The preferred way to access the grid values.</summary>
     public TValue this[int row, int column]
     {
-      get => m_values[RowColumnToKey(row, column)];
-      set => m_values[RowColumnToKey(row, column)] = value;
+      get => m_values[KeyFrom(row, column)];
+      set => m_values[KeyFrom(row, column)] = value;
+    }
+    public TValue this[int uniqueIndex]
+    {
+      get => m_values[KeyFrom(uniqueIndex)];
+      set => m_values[KeyFrom(uniqueIndex)] = value;
     }
 
     /// <summary>Creates a new <see cref="System.ValueTuple{TValue}"/> and performs all necessary boundary checks.</summary>
@@ -35,29 +49,34 @@
     /// <param name="column"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public (int row, int column) RowColumnToKey(int row, int column)
+    private (int row, int column) KeyFrom(int row, int column)
       => row < 0 || row >= m_rows ? throw new System.ArgumentOutOfRangeException(nameof(row))
       : column < 0 || column >= m_columns ? throw new System.ArgumentOutOfRangeException(nameof(column))
       : (row, column);
+    private (int row, int column) KeyFrom(int uniqueIndex)
+      => uniqueIndex < 0 || uniqueIndex >= (m_rows * m_columns)
+      ? throw new System.ArgumentOutOfRangeException(nameof(uniqueIndex))
+      : (uniqueIndex / m_columns, uniqueIndex % m_columns);
 
-    public (int row, int column) IndexToKey(int index)
-      => (index / m_columns, index % m_columns);
-    public int KeyToIndex((int row, int column) key)
-      => key.column + (key.row * m_columns);
+    public bool ContainsKey(int row, int column)
+      => m_values.ContainsKey(KeyFrom(row, column));
+    public bool ContainsKey(int uniqueIndex)
+      => m_values.ContainsKey(KeyFrom(uniqueIndex));
+
+    public void SetValue(int row, int column, TValue value)
+      => m_values[KeyFrom(row, column)] = value;
+    public void SetValue(int uniqueIndex, TValue value)
+      => m_values[KeyFrom(uniqueIndex)] = value;
+
+    public bool TryGetValue(int row, int column, out TValue value)
+      => m_values.TryGetValue(KeyFrom(row, column), out value!);
+    public bool TryGetValue(int uniqueIndex, out TValue value)
+      => m_values.TryGetValue(KeyFrom(uniqueIndex), out value!);
 
     public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<(int row, int column), TValue>> GetEnumerator()
       => m_values.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
-
-    public bool ContainsKey(int row, int column)
-      => m_values.ContainsKey(RowColumnToKey(row, column));
-
-    public bool TryGetValue(int row, int column, out TValue value)
-      => m_values.TryGetValue(RowColumnToKey(row, column), out value!);
-
-    public void SetValue(int row, int column, TValue value)
-      => m_values[RowColumnToKey(row, column)] = value;
 
     /// <summary></summary>
     /// <param name="resultSelector"></param>
