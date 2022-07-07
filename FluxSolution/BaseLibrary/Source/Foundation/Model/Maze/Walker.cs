@@ -5,7 +5,7 @@ namespace Flux.Model.Maze
   {
     public int RemovalCount = 2;
 
-    public override void CarveMaze(Grid grid)
+    public override void CarveMaze(MazeGrid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 

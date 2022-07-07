@@ -22,7 +22,7 @@ namespace Flux
 
     /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="CartesianCoordinate2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2 ToCartesianCoordinateR2()
+    public CartesianCoordinate2 ToCartesianCoordinate2()
       => new(m_radius * System.Math.Cos(m_radAzimuth), m_radius * System.Math.Sin(m_radAzimuth));
     /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="System.Numerics.Complex"/>.</summary>
     [System.Diagnostics.Contracts.Pure]

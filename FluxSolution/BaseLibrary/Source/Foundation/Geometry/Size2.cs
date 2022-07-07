@@ -18,19 +18,19 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int Width { get => m_width; init => m_width = value; }
     [System.Diagnostics.Contracts.Pure] public int Height { get => m_height; init => m_height = value; }
 
-    public CartesianCoordinate2I Center()
+    public GridCoordinate2 Center()
       => new(m_width / 2, m_height / 2);
 
     /// <summary>Convert the <see cref="Size2"/> to a <see cref="CartesianCoordinate2"/>.</summary>
     public CartesianCoordinate2 ToCartesianCoordinate2()
       => new(m_width, m_height);
 
-    /// <summary>Convert the <see cref="Size2"/> to a <see cref="CartesianCoordinate2I"/>.</summary>
-    public CartesianCoordinate2I ToCartesianCoordinate2I()
+    /// <summary>Convert the <see cref="Size2"/> to a <see cref="GridCoordinate2"/>.</summary>
+    public GridCoordinate2 ToCartesianCoordinate2I()
       => new(m_width, m_height);
 
     /// <summary>Convert a mapped index to a 2D point. This index is uniquely mapped using the size</summary>
-    public CartesianCoordinate2I UniqueIndexToPoint(long index)
+    public GridCoordinate2 UniqueIndexToPoint(long index)
       => new((int)(index % m_width), (int)(index / m_width));
 
     /// <summary>Converts the 2D point to a mapped index. This index is uniquely mapped using the size</summary>
@@ -38,7 +38,7 @@ namespace Flux
       => x + (y * m_width);
 
     /// <summary>Converts the 2D point to a mapped index. This index is uniquely mapped using the size</summary>
-    public long PointToUniqueIndex(CartesianCoordinate2I point)
+    public long PointToUniqueIndex(GridCoordinate2 point)
       => PointToUniqueIndex(point.X, point.Y);
 
     #region Static methods
@@ -69,8 +69,8 @@ namespace Flux
     /// <summary>Subtracts a <see cref='int'/> by a <see cref='Size2'/>.</summary>
     public static Size2 Subtract(int a, Size2 b)
       => new(unchecked(a - b.m_width), unchecked(a - b.m_height));
-    /// <summary>Creates a <see cref='CartesianCoordinate2I'/> from a <see cref='Size2'/>.</summary>
-    public static CartesianCoordinate2I ToPoint2(Size2 size)
+    /// <summary>Creates a <see cref='GridCoordinate2'/> from a <see cref='Size2'/>.</summary>
+    public static GridCoordinate2 ToPoint2(Size2 size)
       => new(size.m_width, size.m_height);
     #endregion Static methods
 

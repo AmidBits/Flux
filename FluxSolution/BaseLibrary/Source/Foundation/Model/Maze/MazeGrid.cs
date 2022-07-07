@@ -1,11 +1,9 @@
-using System.Linq;
-
 namespace Flux.Model.Maze
 {
-  public sealed class Grid
-    : AGrid<Cell>, System.ICloneable
+  public sealed class MazeGrid
+    : Grid<Cell>, System.ICloneable
   {
-    public Grid(Size2 size)
+    public MazeGrid(Size2 size)
       : base(size.Height, size.Width)
     {
       for (var h = size.Height - 1; h >= 0; h--)
@@ -69,7 +67,7 @@ namespace Flux.Model.Maze
     // System.ICloneable
     public object Clone()
     {
-      var grid = new Grid(Size);
+      var grid = new MazeGrid(Size);
 
       for (var index = 0; index < grid.Count; index++)
         grid.SetValue(index, GetValue(index));

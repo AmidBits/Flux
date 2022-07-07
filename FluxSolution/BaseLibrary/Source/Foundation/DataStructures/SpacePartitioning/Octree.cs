@@ -4,15 +4,15 @@ namespace Flux.DataStructures
 {
   public interface IOctree
   {
-    CartesianCoordinate3I Position { get; set; }
+    GridCoordinate3 Position { get; set; }
   }
 
   /// <summary></summary>
   public sealed class Octree<T> 
     where T : IOctree
   {
-    public CartesianCoordinate3I BoundaryHigh { get; private set; }
-    public CartesianCoordinate3I BoundaryLow { get; private set; }
+    public GridCoordinate3 BoundaryHigh { get; private set; }
+    public GridCoordinate3 BoundaryLow { get; private set; }
 
     private readonly System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
     public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
@@ -22,7 +22,7 @@ namespace Flux.DataStructures
     private readonly System.Collections.Generic.IList<Octree<T>> m_subNodes = new System.Collections.Generic.List<Octree<T>>();
     public System.Collections.Generic.IReadOnlyList<Octree<T>> SubNodes => (System.Collections.Generic.IReadOnlyList<Octree<T>>)m_subNodes;
 
-    public Octree(CartesianCoordinate3I boundaryLow, CartesianCoordinate3I boundaryHigh)
+    public Octree(GridCoordinate3 boundaryLow, GridCoordinate3 boundaryHigh)
     {
       BoundaryLow = boundaryLow;
       BoundaryHigh = boundaryHigh;
@@ -30,7 +30,7 @@ namespace Flux.DataStructures
       MaximumItems = 1;
     }
 
-    public bool InScope(CartesianCoordinate3I position)
+    public bool InScope(GridCoordinate3 position)
       => position.X >= BoundaryLow.X && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y && position.Z >= BoundaryLow.Z && position.Z <= BoundaryHigh.Z;
 
     public bool InsertItem(T item)
@@ -90,16 +90,16 @@ namespace Flux.DataStructures
     {
       if (m_subNodes.Count == 0)
       {
-        var midPoint = new CartesianCoordinate3I((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2, (BoundaryLow.Z + BoundaryHigh.Z) / 2);
+        var midPoint = new GridCoordinate3((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2, (BoundaryLow.Z + BoundaryHigh.Z) / 2);
 
-        m_subNodes.Add(new Octree<T>(new CartesianCoordinate3I(midPoint.X, midPoint.Y, midPoint.Z), new CartesianCoordinate3I(BoundaryHigh.X, BoundaryHigh.Y, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new CartesianCoordinate3I(BoundaryLow.X, midPoint.Y, midPoint.Z), new CartesianCoordinate3I(midPoint.X - 1, BoundaryHigh.Y, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new CartesianCoordinate3I(BoundaryLow.X, BoundaryLow.Y, midPoint.Z), new CartesianCoordinate3I(midPoint.X - 1, midPoint.Y - 1, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new CartesianCoordinate3I(midPoint.X, BoundaryLow.Y, midPoint.Z), new CartesianCoordinate3I(BoundaryHigh.X, midPoint.Y - 1, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new CartesianCoordinate3I(midPoint.X, midPoint.Y, BoundaryLow.Z), new CartesianCoordinate3I(BoundaryHigh.X, BoundaryHigh.Y, midPoint.Z - 1)));
-        m_subNodes.Add(new Octree<T>(new CartesianCoordinate3I(BoundaryLow.X, midPoint.Y, BoundaryLow.Z), new CartesianCoordinate3I(midPoint.X - 1, BoundaryHigh.Y, midPoint.Z - 1)));
-        m_subNodes.Add(new Octree<T>(new CartesianCoordinate3I(BoundaryLow.X, BoundaryLow.Y, BoundaryLow.Z), new CartesianCoordinate3I(midPoint.X - 1, midPoint.Y - 1, midPoint.Z - 1)));
-        m_subNodes.Add(new Octree<T>(new CartesianCoordinate3I(midPoint.X, BoundaryLow.Y, BoundaryLow.Z), new CartesianCoordinate3I(BoundaryHigh.X, midPoint.Y - 1, midPoint.Z - 1)));
+        m_subNodes.Add(new Octree<T>(new GridCoordinate3(midPoint.X, midPoint.Y, midPoint.Z), new GridCoordinate3(BoundaryHigh.X, BoundaryHigh.Y, BoundaryHigh.Z)));
+        m_subNodes.Add(new Octree<T>(new GridCoordinate3(BoundaryLow.X, midPoint.Y, midPoint.Z), new GridCoordinate3(midPoint.X - 1, BoundaryHigh.Y, BoundaryHigh.Z)));
+        m_subNodes.Add(new Octree<T>(new GridCoordinate3(BoundaryLow.X, BoundaryLow.Y, midPoint.Z), new GridCoordinate3(midPoint.X - 1, midPoint.Y - 1, BoundaryHigh.Z)));
+        m_subNodes.Add(new Octree<T>(new GridCoordinate3(midPoint.X, BoundaryLow.Y, midPoint.Z), new GridCoordinate3(BoundaryHigh.X, midPoint.Y - 1, BoundaryHigh.Z)));
+        m_subNodes.Add(new Octree<T>(new GridCoordinate3(midPoint.X, midPoint.Y, BoundaryLow.Z), new GridCoordinate3(BoundaryHigh.X, BoundaryHigh.Y, midPoint.Z - 1)));
+        m_subNodes.Add(new Octree<T>(new GridCoordinate3(BoundaryLow.X, midPoint.Y, BoundaryLow.Z), new GridCoordinate3(midPoint.X - 1, BoundaryHigh.Y, midPoint.Z - 1)));
+        m_subNodes.Add(new Octree<T>(new GridCoordinate3(BoundaryLow.X, BoundaryLow.Y, BoundaryLow.Z), new GridCoordinate3(midPoint.X - 1, midPoint.Y - 1, midPoint.Z - 1)));
+        m_subNodes.Add(new Octree<T>(new GridCoordinate3(midPoint.X, BoundaryLow.Y, BoundaryLow.Z), new GridCoordinate3(BoundaryHigh.X, midPoint.Y - 1, midPoint.Z - 1)));
       }
 
       if (m_items.Count > 0)

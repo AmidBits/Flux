@@ -26,7 +26,7 @@ namespace Flux.Geometry
     [System.Diagnostics.Contracts.Pure] public double R { get => m_r; init => m_r = value; }
     [System.Diagnostics.Contracts.Pure] public double S { get => m_s; init => m_s = value; }
 
-    public Hex ToRoundedHex()
+    public HexCoordinate ToRoundedHex()
       => RoundToNearest(m_q, m_r, m_s);
 
     //static public List<Hex> HexLinedraw(Hex a, Hex b)
@@ -48,7 +48,7 @@ namespace Flux.Geometry
       => System.Math.Round(q + r + s) == 0;
     public static HexF Lerp(HexF source, HexF target, double mu)
       => new(source.m_q * (1 - mu) + target.m_q * mu, source.m_r * (1 - mu) + target.m_r * mu, source.m_s * (1 - mu) + target.m_s * mu);
-    public static Hex RoundToNearest(double q, double r, double s)
+    public static HexCoordinate RoundToNearest(double q, double r, double s)
     {
       var rq = (int)System.Math.Round(q);
       var rr = (int)System.Math.Round(r);

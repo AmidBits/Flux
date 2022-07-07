@@ -3,14 +3,14 @@ namespace Flux.Model.Maze
   public sealed class RecursiveDivisionMaze
     : AMaze
   {
-    public override void CarveMaze(Grid grid)
+    public override void CarveMaze(MazeGrid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
       Divide(grid, 0, 0, grid.Size.Height, grid.Size.Width);
     }
 
-    private void Divide(Grid grid, int row, int column, int height, int width)
+    private void Divide(MazeGrid grid, int row, int column, int height, int width)
     {
       //if (height < 5 && width < 5 && _random.Next(4) == 0)
       if (height <= 1 || width <= 1)
@@ -21,7 +21,7 @@ namespace Flux.Model.Maze
       else
         DivideVertically(grid, row, column, height, width);
     }
-    private void DivideHorizontally(Grid grid, int row, int column, int height, int width)
+    private void DivideHorizontally(MazeGrid grid, int row, int column, int height, int width)
     {
       var divideSouthOf = RandomNumberGenerator.Next(height - 1);
       var passageAt = RandomNumberGenerator.Next(width);
@@ -39,7 +39,7 @@ namespace Flux.Model.Maze
       Divide(grid, row, column, divideSouthOf + 1, width);
       Divide(grid, row + divideSouthOf + 1, column, height - divideSouthOf - 1, width);
     }
-    private void DivideVertically(Grid grid, int row, int column, int height, int width)
+    private void DivideVertically(MazeGrid grid, int row, int column, int height, int width)
     {
       var divideEastOf = RandomNumberGenerator.Next(width - 1);
       var passageAt = RandomNumberGenerator.Next(height);

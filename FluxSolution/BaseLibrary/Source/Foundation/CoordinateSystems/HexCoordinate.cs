@@ -1,29 +1,27 @@
-using System.Linq;
-
-namespace Flux.Geometry
+namespace Flux
 {
   /// <summary>The Hex coordinate system used is the Cube coordinate, and can be specified using </summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct Hex
-    : System.IEquatable<Hex>
+  public readonly struct HexCoordinate
+    : System.IEquatable<HexCoordinate>
   {
-    public static Hex[] Directions
-      => new Hex[] {
-        new Hex(1, 0, -1),
+    public static HexCoordinate[] Directions
+      => new HexCoordinate[] {
+        new HexCoordinate(1, 0, -1),
         new(1, -1, 0),
-        new Hex(0, -1, 1),
-        new Hex(-1, 0, 1),
-        new Hex(-1, 1, 0),
-        new Hex(0, 1, -1),
+        new HexCoordinate(0, -1, 1),
+        new HexCoordinate(-1, 0, 1),
+        new HexCoordinate(-1, 1, 0),
+        new HexCoordinate(0, 1, -1),
       };
 
-    public static readonly Hex Zero;
+    public static readonly HexCoordinate Zero;
 
     public readonly int m_q;
     public readonly int m_r;
     public readonly int m_s;
 
-    public Hex(int q, int r, int s)
+    public HexCoordinate(int q, int r, int s)
     {
       if (!IsCubeCoordinate(q, r, s)) throw new System.ArgumentException($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {(q + r + s)}).");
 
@@ -31,7 +29,7 @@ namespace Flux.Geometry
       m_r = r;
       m_s = s;
     }
-    public Hex(int q, int r)
+    public HexCoordinate(int q, int r)
       : this(q, r, -q - r)
     { }
 
@@ -41,7 +39,7 @@ namespace Flux.Geometry
 
     #region Static methods
     /// <summary>Returns a new hex representing the sum of the two specified hex vectors.</summary>
-    public static Hex Add(Hex a, Hex b)
+    public static HexCoordinate Add(HexCoordinate a, HexCoordinate b)
       => new(a.m_q + b.m_q, a.m_r + b.m_r, a.m_s + b.m_s);
     /// <summary>Returns the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
     public static int ComputeRangeCount(int radius)
@@ -50,18 +48,18 @@ namespace Flux.Geometry
     public static int ComputeRingCount(int radius)
       => radius * 6;
     /// <summary>Returns the unit hex of the specified direction range [0, 5].</summary>
-    public static Hex Direction(int direction /* [-5, 5] */)
+    public static HexCoordinate Direction(int direction /* [-5, 5] */)
       => (direction >= -5 && direction < 0)
       ? Directions[direction + 6]
       : (direction >= 0 && direction <= 5)
       ? Directions[direction]
       : throw new System.ArgumentOutOfRangeException(nameof(direction));
     /// <summary>The distance between two hex locations is computer like a vector is computed, i.e. the length of the difference.</summary>
-    public static int Distance(Hex a, Hex b)
+    public static int Distance(HexCoordinate a, HexCoordinate b)
       => Magnitude(Subtract(a, b));
     /// <summary>Creates a new sequence of the surrounding neighbors of the specified center hex (excluded in the sequence).</summary>
     /// <param name="center">The center reference hex.</param>
-    public static System.Collections.Generic.IEnumerable<Hex> GetNeighbors(Hex center)
+    public static System.Collections.Generic.IEnumerable<HexCoordinate> GetNeighbors(HexCoordinate center)
     {
       foreach (var hex in Directions)
         yield return center + hex;
@@ -69,18 +67,18 @@ namespace Flux.Geometry
     /// <summary>Creates a new sequence of all (including the specified center) hex cubes within the specified radius (inclusive).</summary>
     /// <param name="center">The center reference hex.</param>
     /// <param name="radius">The radius from the center reference hex.</param>
-    public static System.Collections.Generic.IEnumerable<Hex> GetRange(Hex center, int radius)
+    public static System.Collections.Generic.IEnumerable<HexCoordinate> GetRange(HexCoordinate center, int radius)
     {
       for (var q = -radius; q <= radius; q++)
         for (int r = System.Math.Max(-radius, -q - radius), rei = System.Math.Min(radius, -q + radius); r <= rei; r++)
-          yield return new Hex(center.m_q + q, center.m_r + r);
+          yield return new HexCoordinate(center.m_q + q, center.m_r + r);
     }
     /// <summary>Create a new sequence of the hex cubes making up the ring at the radius from the center hex, starting at the specified (directional) cornerIndex.</summary>
     /// <param name="center">The center reference hex.</param>
     /// <param name="radius">[0,]</param>
     /// <param name="startDirection">In the range [0, 6]. The default is 0.</param>
     /// <param name="isCounterClockWise">Determines whether to enumerate counter-clockwise or not. The default is clockwise.</param>
-    public static System.Collections.Generic.IEnumerable<Hex> GetRing(Hex center, int radius, int startDirection = 0, bool isCounterClockWise = false)
+    public static System.Collections.Generic.IEnumerable<HexCoordinate> GetRing(HexCoordinate center, int radius, int startDirection = 0, bool isCounterClockWise = false)
     {
       if (radius < 0) throw new System.ArgumentOutOfRangeException(nameof(radius));
       else if (startDirection < 0 || startDirection >= 6) throw new System.ArgumentOutOfRangeException(nameof(startDirection));
@@ -108,51 +106,51 @@ namespace Flux.Geometry
     public static bool IsCubeCoordinate(int q, int r, int s)
       => q + r + s == 0;
     /// <summary>The magnitude (length) of a hex vector is half of a hex grid Manhattan distance.</summary>
-    public static int Magnitude(Hex hex)
+    public static int Magnitude(HexCoordinate hex)
       => (System.Math.Abs(hex.m_q) + System.Math.Abs(hex.m_r) + System.Math.Abs(hex.m_s)) / 2;
     /// <summary>Returns a new hex representing the product of the specified hex vector and the scalar value.</summary>
-    public static Hex Multiply(Hex h, int scalar)
+    public static HexCoordinate Multiply(HexCoordinate h, int scalar)
       => new(h.m_q * scalar, h.m_r * scalar, h.m_s * scalar);
     /// <summary>Returns the neighbor of the specified hex and direction.</summary>
     /// <param name="hex">The reference hex.</param>
     /// <param name="direction">The hexagon direction [0, 5].</param>
     /// <returns>The neighbor of the reference hex.</returns>
-    public static Hex Neighbor(Hex hex, int direction)
+    public static HexCoordinate Neighbor(HexCoordinate hex, int direction)
       => Add(hex, Direction(direction));
     /// <summary>Returns the next corner hex in a clockwise direction on the same ring as the specified 'corner' hex. This can also be use for other any 'non-corner' hex for various 'circular' (symmetrical) pattern traverals.</summary>
-    public static Hex NextCornerCw(Hex hex)
+    public static HexCoordinate NextCornerCw(HexCoordinate hex)
       => new(-hex.m_s, -hex.m_q, -hex.m_r);
     /// <summary>Returns the next corner hex in a counter-clockwise direction on the same ring as the specified 'corner' hex. This can also be use for any 'non-corner' hex for various 'circular' (symmetrical) pattern traverals.</summary>
-    public static Hex NextCornerCcw(Hex hex)
+    public static HexCoordinate NextCornerCcw(HexCoordinate hex)
       => new(-hex.m_r, -hex.m_s, -hex.m_q);
     /// <summary>Returns a new hex representing the difference of the two specified hex vectors.</summary>
-    public static Hex Subtract(Hex a, Hex b)
+    public static HexCoordinate Subtract(HexCoordinate a, HexCoordinate b)
       => new(a.m_q - b.m_q, a.m_r - b.m_r, a.m_s - b.m_s);
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(Hex h1, Hex h2)
+    public static bool operator ==(HexCoordinate h1, HexCoordinate h2)
       => h1.Equals(h2);
-    public static bool operator !=(Hex h1, Hex h2)
+    public static bool operator !=(HexCoordinate h1, HexCoordinate h2)
       => !h1.Equals(h2);
 
-    public static Hex operator +(Hex h1, Hex h2)
+    public static HexCoordinate operator +(HexCoordinate h1, HexCoordinate h2)
       => Add(h1, h2);
-    public static Hex operator *(Hex h, int scalar)
+    public static HexCoordinate operator *(HexCoordinate h, int scalar)
       => Multiply(h, scalar);
-    public static Hex operator -(Hex h1, Hex h2)
+    public static HexCoordinate operator -(HexCoordinate h1, HexCoordinate h2)
       => Subtract(h1, h2);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(Hex other)
+    public bool Equals(HexCoordinate other)
       => m_q == other.m_q && m_r == other.m_r && m_s == other.m_s;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Hex o && Equals(o);
+      => obj is HexCoordinate o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_q, m_r, m_s);
     public override string ToString()

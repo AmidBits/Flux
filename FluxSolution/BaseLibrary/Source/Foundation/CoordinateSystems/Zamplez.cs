@@ -27,7 +27,7 @@ namespace Flux
         var cc = sc.ToCylindricalCoordinate(); // CylindricalCoordinate
         System.Console.WriteLine(cc);
 
-        var cc3 = cc.ToCartesianCoordinateR3(); // CartesianCoordinate3
+        var cc3 = cc.ToCartesianCoordinate3(); // CartesianCoordinate3
         System.Console.WriteLine(cc3);
 
         // Show 2D coordinate systems also.
@@ -38,7 +38,7 @@ namespace Flux
           var pc = cc2.ToPolarCoordinate(); // PolarCoordinate (2D)
           System.Console.WriteLine($" ({pc})");
 
-          var cc2r = pc.ToCartesianCoordinateR2(); // CartesianCoordinate2 (2D)
+          var cc2r = pc.ToCartesianCoordinate2(); // CartesianCoordinate2 (2D)
           System.Console.WriteLine($" ({cc2r})");
         }
 

@@ -1,11 +1,9 @@
-using System.Linq;
-
 namespace Flux.Model.Maze
 {
   public sealed class AldusBroderMaze
     : AMaze
   {
-    public override void CarveMaze(Grid grid)
+    public override void CarveMaze(MazeGrid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 

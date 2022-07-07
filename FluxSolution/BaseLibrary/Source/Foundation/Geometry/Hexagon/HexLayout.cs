@@ -5,17 +5,17 @@ namespace Flux.Geometry
     : System.IEquatable<HexLayout>
   {
     public readonly Size2 Size { get; init; }
-    public readonly CartesianCoordinate2I Origin { get; init; }
+    public readonly GridCoordinate2 Origin { get; init; }
     public readonly HexOrientation Orientation { get; init; }
 
-    public HexLayout(HexOrientation orientation, Size2 size, CartesianCoordinate2I origin)
+    public HexLayout(HexOrientation orientation, Size2 size, GridCoordinate2 origin)
     {
       Orientation = orientation;
       Size = size;
       Origin = origin;
     }
 
-    public void HexToPixel(Hex h, out double x, out double y)
+    public void HexToPixel(HexCoordinate h, out double x, out double y)
     {
       x = (Orientation.F0 * h.Q + Orientation.F1 * h.R) * Size.Width;
       y = (Orientation.F2 * h.Q + Orientation.F3 * h.R) * Size.Height;
@@ -43,7 +43,7 @@ namespace Flux.Geometry
       y = Size.Height * (float)System.Math.Sin(angle);
     }
 
-    public System.Collections.Generic.List<(double x, double y)> PolygonCorners(Hex h)
+    public System.Collections.Generic.List<(double x, double y)> PolygonCorners(HexCoordinate h)
     {
       var corners = new System.Collections.Generic.List<(double x, double y)>();
 

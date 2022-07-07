@@ -27,10 +27,10 @@ namespace WpfApp
 
       var size = new Flux.Size2(60, 60);
 
-      m_grid = new Flux.Model.Maze.Grid(size);
+      m_grid = new Flux.Model.Maze.MazeGrid(size);
     }
 
-    Flux.Model.Maze.Grid m_grid;
+    Flux.Model.Maze.MazeGrid m_grid;
 
     Flux.Model.Maze.AMaze m_maze;
 

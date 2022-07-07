@@ -7,7 +7,7 @@ namespace Flux.Model.Maze
   {
     public InterCardinalDirection Diagonal { get; set; } = InterCardinalDirection.NE;
 
-    public override void CarveMaze(Grid grid)
+    public override void CarveMaze(MazeGrid grid)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 

@@ -25,7 +25,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Height { get => m_height; init => m_height = value; }
 
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToCartesianCoordinateR3()
+    public CartesianCoordinate3 ToCartesianCoordinate3()
       => new(m_radius * System.Math.Cos(m_radAzimuth), m_radius * System.Math.Sin(m_radAzimuth), m_height);
     [System.Diagnostics.Contracts.Pure]
     public PolarCoordinate ToPolarCoordinate()

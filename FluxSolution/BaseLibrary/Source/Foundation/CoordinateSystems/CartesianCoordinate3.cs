@@ -203,13 +203,13 @@ namespace Flux
       }
     }
 
-    public static CartesianCoordinate3 ToCartesianCoordinate3(this CartesianCoordinate3I source)
+    public static CartesianCoordinate3 ToCartesianCoordinate3(this GridCoordinate3 source)
       => new(source.X, source.Y, source.Z);
     public static CartesianCoordinate3 ToCartesianCoordinate3(this System.Numerics.Vector3 source)
       => new(source.X, source.Y, source.Z);
-    public static CartesianCoordinate3I ToPoint3(this CartesianCoordinate3 source, System.Func<double, double> transformSelector)
+    public static GridCoordinate3 ToPoint3(this CartesianCoordinate3 source, System.Func<double, double> transformSelector)
       => new(System.Convert.ToInt32(transformSelector(source.X)), System.Convert.ToInt32(transformSelector(source.Y)), System.Convert.ToInt32(transformSelector(source.Z)));
-    public static CartesianCoordinate3I ToPoint3(this CartesianCoordinate3 source, HalfRounding behavior)
+    public static GridCoordinate3 ToPoint3(this CartesianCoordinate3 source, HalfRounding behavior)
       => new(System.Convert.ToInt32(Maths.Round(source.X, behavior)), System.Convert.ToInt32(Maths.Round(source.Y, behavior)), System.Convert.ToInt32(Maths.Round(source.Z, behavior)));
     public static System.Numerics.Vector3 ToVector3(this CartesianCoordinate3 source)
       => new((float)source.X, (float)source.Y, (float)source.Z);
@@ -269,17 +269,17 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
-    /// <summary>Converts the <see cref="CartesianCoordinate3"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate3"/> to a <see cref="GridCoordinate3"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3I ToCartesianCoordinateI3(System.MidpointRounding rounding)
+    public GridCoordinate3  ToGridCoordinate3(System.MidpointRounding rounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)), System.Convert.ToInt32(System.Math.Round(m_z, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinate3"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="Flux.FullRounding"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate3"/> to a <see cref="GridCoordinate3"/> using the specified <see cref="Flux.FullRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3I ToCartesianCoordinateI3(Flux.FullRounding rounding)
+    public GridCoordinate3  ToGridCoordinate3(Flux.FullRounding rounding)
       => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinate3"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="Flux.HalfRounding"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate3"/> to a <see cref="GridCoordinate3"/> using the specified <see cref="Flux.HalfRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3I ToCartesianCoordinateI3(Flux.HalfRounding rounding)
+    public GridCoordinate3  ToGridCoordinate3(Flux.HalfRounding rounding)
       => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
     /// <summary>Returns a quaternion from two vectors.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>

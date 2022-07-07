@@ -26,11 +26,13 @@
     public Size2 Size
       => new(m_columns, m_rows);
 
-    //public System.Collections.Generic.IReadOnlyDictionary<(int row, int column), TValue> Values
-    //  => (System.Collections.Generic.IReadOnlyDictionary<(int row, int column), TValue>)m_values;
+    public System.Collections.Generic.IReadOnlyCollection<(int row, int column)> Keys
+      => (System.Collections.Generic.IReadOnlyCollection<(int row, int column)>)m_values.Keys;
+    public System.Collections.Generic.IReadOnlyCollection<TValue> Values
+      => (System.Collections.Generic.IReadOnlyCollection<TValue>)m_values.Values;
 
     public System.Collections.Generic.IEnumerable<TValue> GetValues()
-      => m_values.Values;
+      => Values;
 
     /// <summary>The preferred way to access the grid values.</summary>
     public TValue this[int row, int column]
@@ -62,6 +64,11 @@
       => m_values.ContainsKey(KeyFrom(row, column));
     public bool ContainsKey(int uniqueIndex)
       => m_values.ContainsKey(KeyFrom(uniqueIndex));
+
+    public TValue GetValue(int row, int column)
+      => m_values.TryGetValue(KeyFrom(row, column), out var value) ? value : throw new System.ArgumentException("The row/column values cannot be found.");
+    public TValue GetValue(int uniqueIndex)
+      => m_values.TryGetValue(KeyFrom(uniqueIndex), out var value) ? value : throw new System.ArgumentOutOfRangeException(nameof(uniqueIndex));
 
     public void SetValue(int row, int column, TValue value)
       => m_values[KeyFrom(row, column)] = value;

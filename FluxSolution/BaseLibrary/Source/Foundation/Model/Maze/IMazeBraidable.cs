@@ -2,6 +2,6 @@ namespace Flux.Model.Maze
 {
   public interface IMazeBraidable
   {
-    void BraidMaze(Grid grid, double threshold);
+    void BraidMaze(MazeGrid grid, double threshold);
   }
 }

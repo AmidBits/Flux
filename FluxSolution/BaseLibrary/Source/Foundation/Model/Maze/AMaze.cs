@@ -7,7 +7,7 @@ namespace Flux.Model.Maze
   {
     public System.Random RandomNumberGenerator { get; init; } = new System.Random();
 
-    public virtual void BraidMaze(Grid grid, double threshold = 0.5)
+    public virtual void BraidMaze(MazeGrid grid, double threshold = 0.5)
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
@@ -29,6 +29,6 @@ namespace Flux.Model.Maze
       }
     }
 
-    public abstract void CarveMaze(Grid grid);
+    public abstract void CarveMaze(MazeGrid grid);
   }
 }

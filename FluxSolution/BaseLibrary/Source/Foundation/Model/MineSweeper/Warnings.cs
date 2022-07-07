@@ -4,36 +4,36 @@
 namespace Flux.Model.MineSweeper
 {
   public sealed class Warnings
-    : System.Collections.Generic.IReadOnlyDictionary<CartesianCoordinate2I, int>
+    : System.Collections.Generic.IReadOnlyDictionary<GridCoordinate2, int>
   {
-    private readonly System.Collections.Generic.IDictionary<CartesianCoordinate2I, int> m_warnings;
+    private readonly System.Collections.Generic.IDictionary<GridCoordinate2, int> m_warnings;
 
-    public bool HasWarningAt(CartesianCoordinate2I point)
+    public bool HasWarningAt(GridCoordinate2 point)
       => m_warnings.ContainsKey(point);
-    public int WarningsAt(CartesianCoordinate2I point)
+    public int WarningsAt(GridCoordinate2 point)
       => m_warnings.TryGetValue(point, out var result) ? result : 0;
 
-    private Warnings(System.Collections.Generic.IDictionary<CartesianCoordinate2I, int> warnings)
+    private Warnings(System.Collections.Generic.IDictionary<GridCoordinate2, int> warnings)
       => m_warnings = warnings;
 
     #region IReadOnlyDictionary implementation
     public int Count
       => m_warnings.Count;
-    public System.Collections.Generic.IEnumerable<CartesianCoordinate2I> Keys
+    public System.Collections.Generic.IEnumerable<GridCoordinate2> Keys
       => m_warnings.Keys;
     public System.Collections.Generic.IEnumerable<int> Values
       => m_warnings.Values;
 
-    public int this[CartesianCoordinate2I key]
+    public int this[GridCoordinate2 key]
       => m_warnings[key];
 
-    public bool ContainsKey(CartesianCoordinate2I key)
+    public bool ContainsKey(GridCoordinate2 key)
       => m_warnings.ContainsKey(key);
-    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<CartesianCoordinate2I, int>> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<GridCoordinate2, int>> GetEnumerator()
       => m_warnings.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
-    public bool TryGetValue(CartesianCoordinate2I key, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out int value)
+    public bool TryGetValue(GridCoordinate2 key, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out int value)
       => m_warnings.TryGetValue(key, out value);
     #endregion IReadOnlyDictionary implementation
 
