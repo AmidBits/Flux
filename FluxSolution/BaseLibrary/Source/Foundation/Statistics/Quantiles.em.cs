@@ -8,7 +8,7 @@ namespace Flux
     {
       /// <summary>Inverse of empirical distribution function.</summary>
       R1,
-      /// <summary>The same as R-1, but with averaging at discontinuities.</summary>
+      /// <summary>The same as R1, but with averaging at discontinuities.</summary>
       R2,
       /// <summary>The observation numbered closest to Np. Rounding to the nearest integer, choosing the even integer in the case of a tie.</summary>
       R3,
@@ -58,8 +58,8 @@ namespace Flux
 
       var sourceCountM1 = source.Count - 1;
 
-      var lov = source[System.Math.Clamp(lo , 0, sourceCountM1)];
-      var hiv = source[System.Math.Clamp(hi , 0, sourceCountM1)];
+      var lov = source[System.Math.Clamp(lo, 0, sourceCountM1)];
+      var hiv = source[System.Math.Clamp(hi, 0, sourceCountM1)];
 
       return lov + (h - lo) * (hiv - lov);
     }
@@ -79,7 +79,7 @@ namespace Flux
       return source[System.Math.Clamp(index, 0, sourceCountM1)];
     }
 
-    /// <summary>The same as R-1, but with averaging at discontinuities.</summary>
+    /// <summary>The same as R1, but with averaging at discontinuities.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
     public static double QuantileR2(this System.Collections.Generic.IList<double> source, double p)
     {

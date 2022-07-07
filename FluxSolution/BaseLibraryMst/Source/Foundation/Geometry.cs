@@ -11,7 +11,7 @@ namespace Foundation
     [TestMethod]
     public void Hex()
     {
-      var geometry = new Flux.Geometry.HexCoordinate(2, 1, -3);
+      var geometry = new Flux.HexCoordinate(2, 1, -3);
 
       Assert.AreEqual(2, geometry.Q);
       Assert.AreEqual(1, geometry.R);

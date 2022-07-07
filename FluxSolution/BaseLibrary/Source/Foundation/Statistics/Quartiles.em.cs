@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Quartiles
   {
-    public enum DiscreteDistributionMethod
+    public enum DistributionMethod
     {
       /// <summary>This rule is employed by the TI-83 calculator boxplot and "1-Var Stats" functions.</summary>
       Method1,
@@ -84,16 +84,16 @@ namespace Flux
     //public static (double q1, double q2, double q3) Quartiles(this System.Collections.Generic.IEnumerable<double> source)
     //  => Quartiles(System.Linq.Enumerable.ToList(System.Linq.Enumerable.OrderBy(source, k => k)));
 
-    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<double> source, DiscreteDistributionMethod method)
+    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<double> source, DistributionMethod method)
       => method switch
       {
-        DiscreteDistributionMethod.Method1 => GetQuartilesMethod1(source),
-        DiscreteDistributionMethod.Method2 => GetQuartilesMethod2(source),
-        DiscreteDistributionMethod.Method3 => GetQuartilesMethod3(source),
-        DiscreteDistributionMethod.Method4 => GetQuartilesMethod4(source),
+        DistributionMethod.Method1 => GetQuartilesMethod1(source),
+        DistributionMethod.Method2 => GetQuartilesMethod2(source),
+        DistributionMethod.Method3 => GetQuartilesMethod3(source),
+        DistributionMethod.Method4 => GetQuartilesMethod4(source),
         _ => throw new System.ArgumentOutOfRangeException(nameof(method)),
       };
-    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<int> source, DiscreteDistributionMethod method)
+    public static (double q1, double q2, double q3) GetQuartiles(this System.Collections.Generic.IList<int> source, DistributionMethod method)
       => GetQuartiles(System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(source, int32 => (double)int32)), method);
 
     /// <summary></summary>
