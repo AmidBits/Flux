@@ -32,35 +32,35 @@
       => IsOverlapping(a, b) ? new ValueRange<T>(MaxLo(a, b), MinHi(a, b)) : Empty;
     /// <summary>The relative complement of B in A (also called the set-theoretic difference of A and B), denoted by A \ B (or A − B), is the set of all elements that are members of A, but not members of B.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static System.Collections.Generic.List<ValueRange<T>> LeftDifference(ValueRange<T> a, ValueRange<T> b)
+    public static System.Collections.Generic.List<ValueRange<T>> LeftDifference(ValueRange<T> left, ValueRange<T> right)
     {
       var list = new System.Collections.Generic.List<ValueRange<T>>();
 
-      if (IsOverlapping(a, b))
+      if (IsOverlapping(left, right))
       {
-        if (a.m_lo.CompareTo(b.m_lo) < 0)
-          list.Add(new ValueRange<T>(a.m_lo, b.m_lo));
-        if (b.m_hi.CompareTo(a.m_hi) < 0)
-          list.Add(new ValueRange<T>(b.m_hi, a.m_hi));
+        if (left.m_lo.CompareTo(right.m_lo) < 0)
+          list.Add(new ValueRange<T>(left.m_lo, right.m_lo));
+        if (right.m_hi.CompareTo(left.m_hi) < 0)
+          list.Add(new ValueRange<T>(right.m_hi, left.m_hi));
       }
-      else list.Add(a);
+      else list.Add(left);
 
       return list;
     }
     /// <summary>Right different is the set of all elements that are members of B, but not members of A.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static System.Collections.Generic.List<ValueRange<T>> RightDifference(ValueRange<T> a, ValueRange<T> b)
+    public static System.Collections.Generic.List<ValueRange<T>> RightDifference(ValueRange<T> left, ValueRange<T> right)
     {
       var list = new System.Collections.Generic.List<ValueRange<T>>();
 
-      if (IsOverlapping(a, b))
+      if (IsOverlapping(left, right))
       {
-        if (b.m_lo.CompareTo(a.m_lo) < 0)
-          list.Add(new ValueRange<T>(b.m_lo, a.m_lo));
-        if (a.m_hi.CompareTo(b.m_hi) < 0)
-          list.Add(new ValueRange<T>(a.m_hi, b.m_hi));
+        if (right.m_lo.CompareTo(left.m_lo) < 0)
+          list.Add(new ValueRange<T>(right.m_lo, left.m_lo));
+        if (left.m_hi.CompareTo(right.m_hi) < 0)
+          list.Add(new ValueRange<T>(left.m_hi, right.m_hi));
       }
-      else list.Add(b);
+      else list.Add(right);
 
       return list;
     }
