@@ -1,7 +1,47 @@
-namespace Flux.Geometry
+namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    /// <summary></summary>
+    /// <param name="source"></param>
+    /// <param name="apothem"></param>
+    /// <returns></returns>
+    public static double GetRegularPolygonAreaByApothem(this PolygonType source, double apothem)
+      => (int)source * (apothem * apothem) * System.Math.Tan(System.Math.PI / (int)source);
+    /// <summary></summary>
+    /// <param name="source"></param>
+    /// <param name="sideLength"></param>
+    /// <returns></returns>
+    public static double GetRegularPolygonAreaBySideLength(this PolygonType source, double sideLength)
+      => 0.25 * (int)source * (sideLength * sideLength) * Angle.Cot(System.Math.PI / (int)source);
+
+    /// <summary></summary>
+    /// <param name="source"></param>
+    /// <param name="apothem"></param>
+    /// <returns></returns>
+    public static double GetRegularPolygonCircumradiusByApothem(this PolygonType source, double apothem)
+      => apothem / System.Math.Cos(System.Math.PI / (int)source);
+    /// <summary></summary>
+    /// <param name="source"></param>
+    /// <param name="sideLength"></param>
+    /// <returns></returns>
+    public static double GetRegularPolygonCircumradiusBySideLength(this PolygonType source, double sideLength)
+      => sideLength / (2 * System.Math.Sin(System.Math.PI / (int)source));
+
+    /// <summary></summary>
+    /// <see href="https://en.wikipedia.org/wiki/Regular_polygon#Angles"/>
+    /// <returns></returns>
+    public static Angle GetRegularPolygonInteriorAngle(this PolygonType source)
+      => new(((int)source - 2) * System.Math.PI / ((int)source));
+
+    /// <summary>An n-sided convex regular polygon is denoted by its Schläfli symbol {n}. For n < 3, we have two degenerate cases (Monogon and Digon).</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Schl%C3%A4fli_symbol"/>
+    public static int GetSchläfliSymbol(this PolygonType source)
+      => (int)source;
+  }
+
   public enum PolygonType
-    : byte
+      : byte
   {
     #region Enumeration of polygon types named from the number of edges or vertices it consists of.
     Monogon = 1,
