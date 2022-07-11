@@ -6,6 +6,7 @@
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public sealed class AdjacencyMatrix
+    : IGraph
   {
     /// <summary>This is the adjacency matrix (of a directed simple graph) which consists of its edges.</summary>
     private int[,] m_matrix;
@@ -50,12 +51,12 @@
       return count;
     }
     /// <summary>Lists all vertices y such that there is an edge from the vertex x to the vertex y. Loops are not considered neighbors.</summary>
-    public System.Collections.Generic.IEnumerable<int> GetNeighbors(int v)
+    public System.Collections.Generic.IEnumerable<int> GetNeighbors(int value)
     {
       var count = Count;
 
       for (var i = 0; i < count; i++)
-        if (m_matrix[v, i] is var m && m == 1)
+        if (m_matrix[value, i] is var m && m == 1)
           yield return i;
     }
     /// <summary>Tests whether there is an edge from the vertex x to the vertex y.</summary>
@@ -81,11 +82,11 @@
       return false;
     }
     /// <summary>Adds the vertex x with the value vv, if it is not there.</summary>
-    public bool AddVertex(int x, object v)
+    public bool AddVertex(int x, object value)
     {
       if (AddVertex(x))
       {
-        SetVertexValue(x, v);
+        SetVertexValue(x, value);
 
         return true;
       }
@@ -112,14 +113,14 @@
     }
 
     /// <summary>Returns the value associated with the vertex x. A vertex can exists without a value.</summary>
-    public bool TryGetVertexValue(int x, out object v)
-      => m_vertexValues.TryGetValue(x, out v!);
+    public bool TryGetVertexValue(int x, out object value)
+      => m_vertexValues.TryGetValue(x, out value!);
     /// <summary>Removes the value for the edge and whether the removal was successful.</summary>
     public bool RemoveVertexValue(int x)
       => m_vertexValues.Remove(x);
     /// <summary>Sets the value associated with the vertex x to v.</summary>
-    public void SetVertexValue(int x, object v)
-      => m_vertexValues[x] = v;
+    public void SetVertexValue(int x, object value)
+      => m_vertexValues[x] = value;
 
     /// <summary>Adds the edge from the vertex x to the vertex y, if it is not there.</summary>
     public bool AddEdge(int x, int y)
@@ -134,11 +135,11 @@
       return false;
     }
     /// <summary>Adds the edge from the vertex x to the vertex y with the value ev, if it is not there.</summary>
-    public bool AddEdge(int x, int y, object v)
+    public bool AddEdge(int x, int y, object value)
     {
       if (AddEdge(x, y))
       {
-        SetEdgeValue(x, y, v);
+        SetEdgeValue(x, y, value);
 
         return true;
       }
@@ -164,14 +165,14 @@
     }
 
     /// <summary>Returns whether the edge value was found and outputs the value associated if found. An edge can exists without a value.</summary>
-    public bool TryGetEdgeValue(int x, int y, out object v)
-      => m_edgeValues.TryGetValue((x, y), out v!);
+    public bool TryGetEdgeValue(int x, int y, out object value)
+      => m_edgeValues.TryGetValue((x, y), out value!);
     /// <summary>Removes the value for the edge and returns whether the removal was successful.</summary>
     public bool RemoveEdgeValue(int x, int y)
       => m_edgeValues.Remove((x, y));
     /// <summary>Sets the value associated with the edge (x, y) to v.</summary>
-    public void SetEdgeValue(int x, int y, object v)
-      => m_edgeValues[(x, y)] = v;
+    public void SetEdgeValue(int x, int y, object value)
+      => m_edgeValues[(x, y)] = value;
 
     /// <summary>Returns the maximum flow/minimum cost using the Bellman-Ford algorithm.</summary>
     /// <param name="x"></param>
@@ -320,7 +321,7 @@
       }
     }
 
-    public System.Collections.Generic.IEnumerable<(int x, int y, object v)> GetEdges()
+    public System.Collections.Generic.IEnumerable<(int x, int y, object value)> GetEdges()
     {
       var count = Count;
 
@@ -337,14 +338,14 @@
       for (var i = 0; i < count; i++)
         yield return i;
     }
-    public System.Collections.Generic.IEnumerable<(int x, object v)> GetVerticesWithValue()
+    public System.Collections.Generic.IEnumerable<(int x, object value)> GetVerticesWithValue()
     {
       var count = Count;
 
       for (var i = 0; i < count; i++)
         yield return (i, TryGetVertexValue(i, out var vv) ? vv : default!);
     }
-    public System.Collections.Generic.IEnumerable<(int x, object v, int d)> GetVerticesWithValueAndDegree()
+    public System.Collections.Generic.IEnumerable<(int x, object value, int degree)> GetVerticesWithValueAndDegree()
     {
       var count = Count;
 

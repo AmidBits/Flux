@@ -6,6 +6,7 @@
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public sealed class AdjacencyList
+    : IGraph
   {
     /// <summary>This is the adjacency list (of a directed multigraph) which consists of edges and the values of the edges.</summary>
     private readonly System.Collections.Generic.Dictionary<int, System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<object>>> m_list;
@@ -55,11 +56,11 @@
       return false;
     }
     /// <summary>Adds the vertex x with the value vv, if it is not there.</summary>
-    public bool AddVertex(int x, object v)
+    public bool AddVertex(int x, object value)
     {
       if (AddVertex(x))
       {
-        SetVertexValue(x, v);
+        SetVertexValue(x, value);
 
         return true;
       }
@@ -89,24 +90,24 @@
     }
 
     /// <summary>Returns the value associated with the vertex x. A vertex can exists without a value.</summary>
-    public bool TryGetVertexValue(int x, out object v)
-      => m_vertexValues.TryGetValue(x, out v!);
+    public bool TryGetVertexValue(int x, out object value)
+      => m_vertexValues.TryGetValue(x, out value!);
     /// <summary>Removes the value for the edge and whether the removal was successful.</summary>
     public bool RemoveVertexValue(int x)
       => m_vertexValues.Remove(x);
     /// <summary>Sets the value associated with the vertex x to v.</summary>
-    public void SetVertexValue(int x, object v)
-      => m_vertexValues[x] = v;
+    public void SetVertexValue(int x, object value)
+      => m_vertexValues[x] = value;
 
     /// <summary>Adds the edge from the vertex x to the vertex y with the value ev, if it is not there.</summary>
-    public bool AddEdge(int x, int y, object v)
+    public bool AddEdge(int x, int y, object value)
     {
       if (m_list.ContainsKey(x) && m_list.ContainsKey(y))
       {
         if (!m_list[x].ContainsKey(y)) // No matching endpoint exists, so we add it.
           m_list[x].Add(y, new System.Collections.Generic.List<object>());
 
-        m_list[x][y].Add(v);
+        m_list[x][y].Add(value);
 
         return true;
       }
@@ -117,14 +118,14 @@
     public bool EdgesExists(int x, int y)
       => m_list.ContainsKey(x) && m_list[x].ContainsKey(y);
     /// <summary>Tests whether there is an existing edge (x, y) with the value.</summary>
-    public bool EdgeExists(int x, int y, object v)
-      => EdgesExists(x, y) && m_list[x][y].Contains(v);
+    public bool EdgeExists(int x, int y, object value)
+      => EdgesExists(x, y) && m_list[x][y].Contains(value);
     /// <summary>Removes the edge from the vertex x to the vertex y with the value, if it is there. If the value is the only edge, the direction is removed.</summary>
-    public bool RemoveEdge(int x, int y, object v)
+    public bool RemoveEdge(int x, int y, object value)
     {
-      if (EdgeExists(x, y, v))
+      if (EdgeExists(x, y, value))
       {
-        var rv = m_list[x][y].Remove(v);
+        var rv = m_list[x][y].Remove(value);
 
         if (m_list[x][y].Count == 0)
           m_list[x].Remove(y);
@@ -175,7 +176,7 @@
       }
     }
 
-    public System.Collections.Generic.IEnumerable<(int x, int y, object v)> GetEdges()
+    public System.Collections.Generic.IEnumerable<(int x, int y, object value)> GetEdges()
     {
       foreach (var x in m_list.Keys)
         foreach (var y in m_list[x].Keys)
@@ -185,9 +186,9 @@
 
     public System.Collections.Generic.IEnumerable<int> GetVertices()
       => m_list.Keys;
-    public System.Collections.Generic.IEnumerable<(int x, object v)> GetVerticesWithValue()
+    public System.Collections.Generic.IEnumerable<(int x, object value)> GetVerticesWithValue()
       => System.Linq.Enumerable.Select(GetVertices(), x => (x, TryGetVertexValue(x, out var v) ? v : default!));
-    public System.Collections.Generic.IEnumerable<(int x, object v, int d)> GetVerticesWithValueAndDegree()
+    public System.Collections.Generic.IEnumerable<(int x, object value, int degree)> GetVerticesWithValueAndDegree()
       => System.Linq.Enumerable.Select(GetVertices(), x => (x, TryGetVertexValue(x, out var v) ? v : default!, GetDegree(x)));
 
     public string ToConsoleString()

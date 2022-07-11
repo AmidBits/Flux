@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Histogram
   {
     public static Histogram<TKey> CreateDegenerate<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector)
-      where TKey : notnull
+    where TKey : notnull
     {
       var h = new Histogram<TKey>();
 
@@ -76,7 +76,6 @@ namespace Flux
     //    return keySelector(intervals[intervals.Count - 1], double.PositiveInfinity);
     //  }
     //}
-
   }
 
   public class Histogram<TKey>
@@ -96,7 +95,7 @@ namespace Flux
     bool Contains(double value);
   }
 
-  public class BucketValue
+    public class BucketValue
     : IBucket
   {
     private int m_frequency;
@@ -109,13 +108,10 @@ namespace Flux
     }
 
     public int Frequency => m_frequency;
-
     public string Label => $"{Value} = {Frequency}";
-
     public double Value => m_value;
 
     public void Add(int frequency) => m_frequency += frequency;
-
     public bool Contains(double value) => value == m_value;
 
     public override string ToString() => $"{Label} = {Frequency}";
@@ -136,16 +132,12 @@ namespace Flux
     }
 
     public int Frequency => m_frequency;
-
     public string Label => $"[{m_valueLeftClosed}, {m_valueRightOpen})";
-
     public double ValueLeftClosed => m_valueLeftClosed;
     public double ValueRightOpen => m_valueRightOpen;
-
     public double Width => m_valueRightOpen - m_valueLeftClosed;
 
     public void Add(int frequency) => m_frequency += frequency;
-
     public bool Contains(double value) => value >= m_valueLeftClosed && value < m_valueRightOpen;
 
     public override string ToString() => $"{Label} = {Frequency}";
@@ -177,7 +169,6 @@ namespace Flux
       if (GetBucket(value) is var bucket)
         bucket.Add(1);
     }
-
     public void AddValues(System.Collections.Generic.IEnumerable<double> values)
     {
       foreach (var value in values)
@@ -191,15 +182,12 @@ namespace Flux
 
     public IBucket GetBucket(double value)
     {
-      var buckets = GetBuckets();
-
-      for (var i = 0; i < buckets.Length; i++)
-        if (buckets[i].Contains(value))
-          return buckets[i];
+      for (var i = 0; i < m_buckets.Count; i++)
+        if (m_buckets[i].Contains(value))
+          return m_buckets[i];
 
       throw new System.ArgumentOutOfRangeException(nameof(value));
     }
-
     public System.ReadOnlySpan<IBucket> GetBuckets()
       => m_buckets.ToArray();
 
@@ -258,6 +246,5 @@ namespace Flux
 
       return sb.ToString();
     }
-    //      => string.Join(System.Environment.NewLine, GetBuckets().Select(e => $"[{e.ClosedLowerBound}, {e.OpenUpperBound}) = {e.Frequency}"));
   }
 }
