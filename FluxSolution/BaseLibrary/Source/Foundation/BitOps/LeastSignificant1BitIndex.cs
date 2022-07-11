@@ -25,6 +25,8 @@ namespace Flux
       => m_deBruijnTableLeastSignificant1BitIndex[(LeastSignificant1Bit(number) * 0x077CB531U) >> 27];
     [System.CLSCompliant(false)]
     public static int LeastSignificant1BitIndex(ulong number)
-      => number > uint.MaxValue ? 32 + LeastSignificant1BitIndex((uint)(number >> 32)) : LeastSignificant1BitIndex((uint)number);
+      => number > uint.MaxValue
+      ? 32 + LeastSignificant1BitIndex((uint)(number >> 32))
+      : LeastSignificant1BitIndex((uint)number);
   }
 }

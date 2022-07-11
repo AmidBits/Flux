@@ -25,6 +25,7 @@ namespace Flux
       : value == 0
       ? 0
       : unchecked((long)(1UL << (System.Numerics.BitOperations.LeadingZeroCount((ulong)value) ^ 63)));
+
     /// <summary>Extracts the most significant 1 bit (highest numbered element of a bit set).</summary>
     [System.CLSCompliant(false)]
     public static uint MostSignificant1Bit(uint value)
