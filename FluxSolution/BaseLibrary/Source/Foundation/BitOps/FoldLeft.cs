@@ -20,6 +20,7 @@ namespace Flux
     /// <returns>Returns all ones from the LSB up.</returns>
     public static int FoldLeft(int value)
       => unchecked((int)FoldLeft((uint)value));
+
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
     public static long FoldLeft(long value)
@@ -30,7 +31,7 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static uint FoldLeft(uint value)
     {
-      if (value > 0)
+      if (value != 0)
       {
         value |= value << 1;
         value |= value << 2;
@@ -47,7 +48,7 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static ulong FoldLeft(ulong value)
     {
-      if (value > 0)
+      if (value != 0)
       {
         value |= value << 1;
         value |= value << 2;

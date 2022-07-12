@@ -27,7 +27,7 @@ namespace Flux
     /// <summary>Converts a power-of-2 value (only a single bit set to 1).</summary>
     [System.CLSCompliant(false)]
     public static int PowerOf2BitToIndex(ulong number)
-      => number >= ((ulong)uint.MaxValue + 1)
+      => number > uint.MaxValue
       ? 32 + PowerOf2BitToIndex((uint)(number >> 32))
       : PowerOf2BitToIndex((uint)number);
 
