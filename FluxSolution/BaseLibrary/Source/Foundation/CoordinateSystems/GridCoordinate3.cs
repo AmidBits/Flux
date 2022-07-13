@@ -182,16 +182,16 @@ namespace Flux
     //public static Point3 Nlerp(Point3 source, Point3 target, double mu)
     //  => Lerp(source, target, mu).Normalized();
 
+    /// <summary>Returns the orthant (octant) of the 3D vector using binary numbering: X = 1, Y = 2 and Z = 4, which are then added up, based on the sign of the respective component.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    public static int OrthantBinaryNumber(GridCoordinate3 p, GridCoordinate3 center)
+      => (p.m_x >= center.m_x ? 0 : 1) + (p.m_y >= center.m_y ? 0 : 2) + (p.m_z >= center.m_z ? 0 : 4);
+
     /// <summary>Returns the octant of the 3D vector based on the specified axis vector. This is the more traditional octant.</summary>
     /// <returns>The octant identifer in the range 0-7, i.e. one of the eight octants.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Octant_(solid_geometry)"/>
     public static int OctantNumber(GridCoordinate3 p, GridCoordinate3 center)
       => p.m_z >= center.m_z ? (p.m_y >= center.m_y ? (p.m_x >= center.m_x ? 0 : 1) : (p.m_x >= center.m_x ? 3 : 2)) : (p.m_y >= center.m_y ? (p.m_x >= center.m_x ? 7 : 6) : (p.m_x >= center.m_x ? 4 : 5));
-
-    /// <summary>Returns the orthant (octant) of the 3D vector using binary numbering: X = 1, Y = 2 and Z = 4, which are then added up, based on the sign of the respective component.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public static int OrthantNumber(GridCoordinate3 p, GridCoordinate3 center)
-      => (p.m_x >= center.m_x ? 0 : 1) + (p.m_y >= center.m_y ? 0 : 2) + (p.m_z >= center.m_z ? 0 : 4);
 
     private static readonly System.Text.RegularExpressions.Regex m_regexParse = new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]+(?<Z>\d+)[^\d]*$");
     public static GridCoordinate3 Parse(string pointAsString)
