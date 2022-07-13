@@ -167,7 +167,7 @@ namespace Flux
     public static int OrthantBinaryNumber(GridCoordinate2 p, GridCoordinate2 center)
       => (p.m_x >= center.m_x ? 0 : 1) + (p.m_y >= center.m_y ? 0 : 2);
 
-    /// <summary>Returns the quadrant of the 2D vector based on some specified center vector. This is the more traditional quadrant.</summary>
+    /// <summary>Returns the quadrant of the 2D vector based on some specified center vector. Enumerated according to the mathematical custom, where the numbering goes counter-clockwise starting from the upper right ("northeast") quadrant.</summary>
     /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
     public static int QuadrantNumber(GridCoordinate2 p, GridCoordinate2 center)
