@@ -1,8 +1,6 @@
 namespace Flux.Model
 {
-  /// <summary>
-  /// 
-  /// </summary>
+  /// <summary>Given a set of items, each with a weight and a value, determine the number of each item to include in a collection so that the total weight is less than or equal to a given limit and the total value is as large as possible.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Knapsack_problem"/>
   public sealed class Knapsack
   {
@@ -31,7 +29,7 @@ namespace Flux.Model
       Values = values;
     }
 
-    public int[,] ComputeRecursiveGrid(out int maxValue)
+    public int[,] ComputeRecursiveGrid(out int maxValue, bool zeroInitialValues = false)
     {
       var grid = new int[NumberOfDistinctItems + 1, WeightCapacity + 1];
 
@@ -40,6 +38,12 @@ namespace Flux.Model
           grid[i, j] = -1;
 
       maxValue = Recurse(NumberOfDistinctItems, WeightCapacity);
+
+      if (zeroInitialValues)
+        for (int i = 0; i <= NumberOfDistinctItems; i++)
+          for (int j = 0; j <= WeightCapacity; j++)
+            if (grid[i, j] == -1)
+              grid[i, j] = 0;
 
       return grid;
 

@@ -19,6 +19,23 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var weights = new int[] { 23, 26, 20, 18, 32, 27, 29, 26, 30, 27 };
+      var values = new int[] { 505, 352, 458, 220, 354, 414, 498, 545, 473, 543 };
+
+      var ks = new Flux.Model.Knapsack(67, 10, weights, values);
+
+      var dg = ks.ComputeDynamicGrid(out var maxValue);
+      //dg.FlipInPlace(0);
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, dg.ToConsoleStrings()));
+      System.Console.WriteLine();
+
+      var rg = ks.ComputeRecursiveGrid(out maxValue);
+      //rg.FlipInPlace(0);
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, rg.ToConsoleStrings()));
+      System.Console.WriteLine();
+
+      return;
+
       var x = new double[] { 19, 23, 28, 34, 36, 39, 41, 47, 48, 52, 58, 59, 61, 65, 68 };
       //var y = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelExc);
       //var z = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelInc);
