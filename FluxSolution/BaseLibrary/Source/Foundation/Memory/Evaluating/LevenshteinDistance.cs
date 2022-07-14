@@ -4,7 +4,7 @@ namespace Flux.Metrical
   /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class LevenshteinDistance<T>
-    : IEditDistanceBacktrackable<T>, IEditDistanceEquatable<T>, IEditDistanceOptimizable<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : IEditDistanceDynamicProgrammable<T>, IEditDistanceEquatable<T>, IEditDistanceOptimizable<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public LevenshteinDistance(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
@@ -15,7 +15,7 @@ namespace Flux.Metrical
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
       var targetLength = target.Length;

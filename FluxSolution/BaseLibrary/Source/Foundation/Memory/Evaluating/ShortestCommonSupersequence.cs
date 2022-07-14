@@ -7,7 +7,7 @@ namespace Flux.Metrical
   /// <seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/>
   /// <see cref="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/>
   public sealed class ShortestCommonSupersequence<T>
-    : IEditDistanceBacktrackable<T>, IEditDistanceEquatable<T>
+    : IEditDistanceDynamicProgrammable<T>, IEditDistanceEquatable<T>
   {
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
@@ -19,7 +19,7 @@ namespace Flux.Metrical
 
     /// <summary>This is the same routine as longest common subsequence (LCS). The spice of SCS happens in the GetList().</summary>
     [System.Diagnostics.Contracts.Pure]
-    public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
       var targetLength = target.Length;
@@ -41,7 +41,7 @@ namespace Flux.Metrical
     [System.Diagnostics.Contracts.Pure]
     public System.Collections.Generic.IList<T> GetSupersequence(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
-      matrix = GetMatrix(source, target);
+      matrix = GetDpMatrix(source, target);
 
       return GetSupersequence(matrix, source, target, source.Length, target.Length);
 
@@ -86,7 +86,7 @@ namespace Flux.Metrical
 
     [System.Diagnostics.Contracts.Pure]
     public int GetLengthMetric(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-      => GetMatrix(source, target)[source.Length, target.Length];
+      => GetDpMatrix(source, target)[source.Length, target.Length];
 
     [System.Diagnostics.Contracts.Pure]
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)

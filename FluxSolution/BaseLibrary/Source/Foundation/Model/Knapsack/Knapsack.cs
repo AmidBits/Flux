@@ -1,6 +1,10 @@
 namespace Flux.Model
 {
-  /// <summary>Given a set of items, each with a weight and a value, determine the number of each item to include in a collection so that the total weight is less than or equal to a given limit and the total value is as large as possible.</summary>
+  /// <summary>
+  /// Given a set of items, each with a weight and a value, determine the number of 
+  /// each item to include in a collection so that the total weight is less than or 
+  /// equal to a given limit and the total value is as large as possible.
+  /// </summary>
   /// <see cref="https://en.wikipedia.org/wiki/Knapsack_problem"/>
   public sealed class Knapsack
   {
@@ -33,15 +37,15 @@ namespace Flux.Model
     {
       var grid = new int[NumberOfDistinctItems + 1, WeightCapacity + 1];
 
-      for (int i = 0; i <= NumberOfDistinctItems; i++)
-        for (int j = 0; j <= WeightCapacity; j++)
+      for (var i = 0; i <= NumberOfDistinctItems; i++)
+        for (var j = 0; j <= WeightCapacity; j++)
           grid[i, j] = -1;
 
       maxValue = Recurse(NumberOfDistinctItems, WeightCapacity);
 
-      if (zeroInitialValues)
-        for (int i = 0; i <= NumberOfDistinctItems; i++)
-          for (int j = 0; j <= WeightCapacity; j++)
+      if (zeroInitialValues) // Optionally zero out values that are still -1 after the recursive process.
+        for (var i = 0; i <= NumberOfDistinctItems; i++)
+          for (var j = 0; j <= WeightCapacity; j++)
             if (grid[i, j] == -1)
               grid[i, j] = 0;
 
@@ -52,7 +56,7 @@ namespace Flux.Model
         if (i == 0 || j <= 0)
           return 0;
 
-        if (grid[i - 1, j] < 0) // m[i-1, j] has not been calculated, so we do so now.
+        if (grid[i - 1, j] < 0) // m[i-1,j] has not been calculated, so we do so now.
           grid[i - 1, j] = Recurse(i - 1, j);
 
         if (Weights[i - 1] > j) // Weight cannot fit in the bag.
@@ -77,9 +81,12 @@ namespace Flux.Model
       {
         for (int j = 0; j <= WeightCapacity; j++)
         {
-          if (i == 0 || j == 0) grid[i, j] = 0;
-          else if (Weights[i - 1] <= j) grid[i, j] = System.Math.Max(Values[i - 1] + grid[i - 1, j - Weights[i - 1]], grid[i - 1, j]);
-          else grid[i, j] = grid[i - 1, j];
+          if (i == 0 || j == 0)
+            grid[i, j] = 0;
+          else if (Weights[i - 1] <= j)
+            grid[i, j] = System.Math.Max(Values[i - 1] + grid[i - 1, j - Weights[i - 1]], grid[i - 1, j]);
+          else
+            grid[i, j] = grid[i - 1, j];
         }
       }
 

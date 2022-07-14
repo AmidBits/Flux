@@ -3,13 +3,13 @@ namespace Flux
   /// <summary>The edit distance is a way of quantifying how dissimilar two sets (e.g., words) are to one another by counting the minimum number of operations required to transform one set into the other.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Edit_distance"/>
   /// <remarks>Can be derived from (a.Length + b.Length - 2 * IMetricLength).</remarks>
-  public interface IEditDistanceBacktrackable<T>
+  public interface IEditDistanceDynamicProgrammable<T>
   {
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     /// <param name="source">The source set.</param>
     /// <param name="target">The target set.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Edit_distance"/>
-    int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
+    int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
 
     /// <summary>This can be used to backtrack a dynamically programmed matrix.</summary>
     System.Collections.Generic.List<T> Backtrack(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int sourceIndex, int targetIndex, T placeholder, System.Collections.Generic.IEqualityComparer<T> equalityComparer)

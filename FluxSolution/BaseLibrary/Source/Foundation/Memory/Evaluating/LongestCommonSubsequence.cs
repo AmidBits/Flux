@@ -7,7 +7,7 @@ namespace Flux.Metrical
   /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
   /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
   public sealed class LongestCommonSubsequence<T>
-    : IEditDistanceBacktrackable<T>, IEditDistanceEquatable<T>, IEditDistanceOptimizable<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
+    : IEditDistanceDynamicProgrammable<T>, IEditDistanceEquatable<T>, IEditDistanceOptimizable<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
   {
     public LongestCommonSubsequence(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
@@ -18,7 +18,7 @@ namespace Flux.Metrical
 
     /// <summary></summary>
     [System.Diagnostics.Contracts.Pure]
-    public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+    public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var lcsg = new int[source.Length + 1, target.Length + 1];
 
@@ -38,7 +38,7 @@ namespace Flux.Metrical
     [System.Diagnostics.Contracts.Pure]
     public System.Collections.Generic.IList<T> GetSubsequence(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
-      matrix = GetMatrix(source, target);
+      matrix = GetDpMatrix(source, target);
 
       var lcs = new System.Collections.Generic.List<T>();
 
