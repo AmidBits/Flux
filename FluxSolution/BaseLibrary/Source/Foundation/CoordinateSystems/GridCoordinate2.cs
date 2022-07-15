@@ -1,5 +1,6 @@
 namespace Flux
 {
+  /// <summary>A cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct GridCoordinate2
     : System.IComparable<GridCoordinate2>, System.IEquatable<GridCoordinate2>
