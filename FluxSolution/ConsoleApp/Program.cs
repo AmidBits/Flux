@@ -19,8 +19,41 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      Zamplez.RunRulesEngine();
+      var weights = new int[] { 23, 26, 20, 18, 32, 27, 29, 26, 30, 27 };
+      var values = new int[] { 505, 352, 458, 220, 354, 414, 498, 545, 473, 543 };
+
+      var ks = new Flux.Model.Knapsack(67, 10, weights, values);
+
+      var dg = ks.ComputeDynamicGrid(out var maxValue);
+      //dg = dg.Remove(0, 0);
+      //dg = dg.Remove(1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17);
+      //dg.FlipInPlace(0);
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, dg.ToConsoleStrings()));
+      System.Console.WriteLine();
+
+      var rg = ks.ComputeRecursiveGrid(out maxValue, true);
+      //rg = rg.Remove(0, 0);
+      //rg = rg.Remove(1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+      //rg.FlipInPlace(0);
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, rg.ToConsoleStrings()));
+      System.Console.WriteLine();
+
       return;
+
+      var x = new double[] { 19, 23, 28, 34, 36, 39, 41, 47, 48, 52, 58, 59, 61, 65, 68 };
+      //var y = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelExc);
+      //var z = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelInc);
+      var y = Percentiles.PercentileValue(x, .49, Percentiles.LerpVariant.ExcelExc);
+      var ze = Percentiles.PercentRank(1.0, x.Length, Percentiles.LerpVariant.ExcelExc);
+      var w = Percentiles.PercentNearestOrdinalRank(1, 40);
+
+      var eq = Quantiles.EmpiricalDistributionFunction(x, 50);
+
+      x.Average();
+      //args = null;
+      var e = args.SubstituteIfEmpty(new string[] { "Hello", "World" });
+
+      var a = e.ToArray();
 
       var oldValues = new char[] { 'A', 'B', 'C' };// new System.ValueTuple<System.Globalization.CompareOptions, string>[] { (System.Globalization.CompareOptions.IgnoreCase, "Case"), (System.Globalization.CompareOptions.IgnoreNonSpace, "NonSpace"), (System.Globalization.CompareOptions.IgnoreSymbols, "Symbols"), (System.Globalization.CompareOptions.IgnoreWidth, "Width") };
       var newValues1 = oldValues.PermuteAlgorithmL().ToArray();
@@ -36,6 +69,9 @@ namespace ConsoleApp
         System.Console.WriteLine(kvp);
 
       System.Console.WriteLine(grid.ToConsoleBlock(v => v == default ? (System.Text.Rune)'\u00B7' : v));
+
+      for (var i = 0; i <= 1000000; i++)
+        System.Console.WriteLine($"{i} = {Flux.Model.BattleShip.Fleet.ProximityProbability(i):N9}%");
     }
 
     private static void Main(string[] args)
