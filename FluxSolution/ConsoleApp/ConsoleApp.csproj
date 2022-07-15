@@ -29,6 +29,7 @@
 
 	<ItemGroup>
     <ProjectReference Include="..\BaseLibrary\BaseLibrary.csproj" />
+    <ProjectReference Include="..\Modeling\Modeling.csproj" />
   </ItemGroup>
 
 </Project>

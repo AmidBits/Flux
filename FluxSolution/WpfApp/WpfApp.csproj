@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Modeling\Modeling.csproj" />
     <ProjectReference Include="..\WindowsLibrary\WindowsLibrary.csproj" />
   </ItemGroup>
 

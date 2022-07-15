@@ -9,8 +9,8 @@ namespace Flux
 			where TKey : notnull
 			=> source.Select(kvp => $"{kvp.Key}{horizontalSeparator}{kvp.Value}");
 
-		public static string ToConsoleString<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> source, char horizontalSeparator = '\u003D')
+		public static string ToConsoleString<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> source, char horizontalSeparator = '\u003D', string verticalSeparator = "\u000d\u000a")
 			where TKey : notnull
-			=> string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator));
+			=> string.Join(verticalSeparator, ToConsoleStrings(source, horizontalSeparator));
 	}
 }
