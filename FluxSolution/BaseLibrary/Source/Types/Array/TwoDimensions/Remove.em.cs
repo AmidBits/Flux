@@ -9,7 +9,7 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
-      var indices = new System.Collections.Generic.HashSet<int>(System.Linq.Enumerable.Distinct(index));
+      var indices = new System.Collections.Generic.HashSet<int>(index);
 
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
@@ -19,7 +19,7 @@ namespace Flux
       switch (dimension)
       {
         case 0:
-          indices.RemoveWhere(i => i < 0 && i < sourceLength0);
+          //indices.RemoveWhere(i => i < 0 && i < sourceLength0);
           target = new T[sourceLength0 - indices.Count, sourceLength1];
           for (int s0 = 0, t0 = 0; s0 < sourceLength0; s0++)
             if (!indices.Contains(s0))
@@ -31,7 +31,7 @@ namespace Flux
             }
           break;
         case 1:
-          indices.RemoveWhere(i => i < 0 && i < sourceLength1);
+          //indices.RemoveWhere(i => i < 0 && i < sourceLength1);
           target = new T[sourceLength0, sourceLength1 - indices.Count];
           for (var s0 = 0; s0 < sourceLength0; s0++) // All dimension 0 elements are always copied.
             for (int s1 = 0, t1 = 0; s1 < sourceLength1; s1++)

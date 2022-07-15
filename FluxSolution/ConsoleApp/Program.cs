@@ -25,11 +25,15 @@ namespace ConsoleApp
       var ks = new Flux.Model.Knapsack(67, 10, weights, values);
 
       var dg = ks.ComputeDynamicGrid(out var maxValue);
+      //dg = dg.Remove(0, 0);
+      //dg = dg.Remove(1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17);
       //dg.FlipInPlace(0);
       System.Console.WriteLine(string.Join(System.Environment.NewLine, dg.ToConsoleStrings()));
       System.Console.WriteLine();
 
-      var rg = ks.ComputeRecursiveGrid(out maxValue);
+      var rg = ks.ComputeRecursiveGrid(out maxValue, true);
+      //rg = rg.Remove(0, 0);
+      //rg = rg.Remove(1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
       //rg.FlipInPlace(0);
       System.Console.WriteLine(string.Join(System.Environment.NewLine, rg.ToConsoleStrings()));
       System.Console.WriteLine();
