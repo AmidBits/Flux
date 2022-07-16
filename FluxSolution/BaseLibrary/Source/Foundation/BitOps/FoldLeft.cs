@@ -9,7 +9,7 @@ namespace Flux
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
-    public static System.Numerics.BigInteger FoldLeft(System.Numerics.BigInteger value)
+    public static System.Numerics.BigInteger FoldLeft(this System.Numerics.BigInteger value)
     {
       var tzc = TrailingZeroCount(value);
 
@@ -18,18 +18,18 @@ namespace Flux
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
-    public static int FoldLeft(int value)
+    public static int FoldLeft(this int value)
       => unchecked((int)FoldLeft((uint)value));
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
-    public static long FoldLeft(long value)
+    public static long FoldLeft(this long value)
       => unchecked((long)FoldLeft((ulong)value));
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
     [System.CLSCompliant(false)]
-    public static uint FoldLeft(uint value)
+    public static uint FoldLeft(this uint value)
     {
       if (value != 0)
       {
@@ -46,7 +46,7 @@ namespace Flux
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
     [System.CLSCompliant(false)]
-    public static ulong FoldLeft(ulong value)
+    public static ulong FoldLeft(this ulong value)
     {
       if (value != 0)
       {

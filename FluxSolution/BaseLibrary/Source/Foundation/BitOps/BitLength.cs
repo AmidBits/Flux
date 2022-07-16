@@ -8,18 +8,18 @@ namespace Flux
 
     /// <summary>Returns the count of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>
-    public static int BitLength(System.Numerics.BigInteger value)
+    public static int BitLength(this System.Numerics.BigInteger value)
       => value > 0
       ? Log2(value) + 1
       : 0;
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
-    public static int BitLength(int value)
+    public static int BitLength(this int value)
       => value > 0
       ? System.Numerics.BitOperations.Log2(unchecked((uint)value)) + 1
       : 0;
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
-    public static int BitLength(long value)
+    public static int BitLength(this long value)
       => value > 0
       ? System.Numerics.BitOperations.Log2(unchecked((ulong)value)) + 1
       : 0;
