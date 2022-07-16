@@ -20,6 +20,12 @@ namespace Flux
     public static double Expit(double x)
       => 1 / (System.Math.Exp(-x) + 1);
 
+    /// <summary>Create a random probability from the specified <see cref="System.Random"/>.</summary>
+    /// <param name="rng"></param>
+    /// <returns></returns>
+    public static Probability FromRandom(System.Random rng)
+      => new((double)rng.Next() / (double)int.MaxValue);
+
     /// <summary>A logistic function or logistic curve is a common "S" shape (sigmoid curve).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logistic_function"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Sigmoid_function"/>
