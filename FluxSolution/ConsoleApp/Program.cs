@@ -19,6 +19,14 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var xx = new Flux.Resources.FxSequence(TimeZoneInfo.GetSystemTimeZones());
+
+      var tz = TimeZoneInfo.GetSystemTimeZones();
+
+      var t = tz.GetType();
+
+      return;
+
       var weights = new int[] { 23, 26, 20, 18, 32, 27, 29, 26, 30, 27 };
       var values = new int[] { 505, 352, 458, 220, 354, 414, 498, 545, 473, 543 };
 

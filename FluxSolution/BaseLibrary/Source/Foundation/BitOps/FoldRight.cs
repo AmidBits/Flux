@@ -15,16 +15,12 @@ namespace Flux
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>
     public static int FoldRight(this int value)
-      => value < 0
-      ? unchecked((int)uint.MaxValue)
-      : unchecked((int)FoldRight((uint)value));
-    
+      => unchecked((int)(value < 0 ? uint.MaxValue : FoldRight((uint)value)));
+
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>
     public static long FoldRight(this long value)
-      => value < 0
-      ? unchecked((long)ulong.MaxValue)
-      : unchecked((long)FoldRight((ulong)value));
+      => unchecked((long)(value < 0 ? ulong.MaxValue : FoldRight((ulong)value)));
 
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>

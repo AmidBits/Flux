@@ -15,13 +15,13 @@ namespace Flux
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     public static int BitLength(this int value)
-      => value > 0
-      ? System.Numerics.BitOperations.Log2(unchecked((uint)value)) + 1
+      => value > 0 ? System.Numerics.BitOperations.Log2(unchecked((uint)value)) + 1
+      : value < 0 ? 32
       : 0;
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     public static int BitLength(this long value)
-      => value > 0
-      ? System.Numerics.BitOperations.Log2(unchecked((ulong)value)) + 1
+      => value > 0 ? System.Numerics.BitOperations.Log2(unchecked((ulong)value)) + 1
+      : value < 0 ? 64
       : 0;
 
     ///// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>

@@ -3,41 +3,21 @@ namespace Flux
   public static partial class BitOps
   {
     [System.CLSCompliant(false)]
-    public static bool ShiftLeft(ref uint value)
+    public static uint ShiftLeft(ref this uint value, int count)
     {
-      var carryFlag = (value & 0x80000000U) != 0;
-      value <<= 1;
-      return carryFlag;
-    }
-
-    /// <summary>Shifts the bits one position to the left.</summary>
-    /// <returns>Whether the MSB (most significant BIT), or overflow bit, was set.</returns>
-    [System.CLSCompliant(false)]
-    public static bool ShiftLeft(ref ulong value)
-    {
-      var carryFlag = (value & 0x8000000000000000UL) != 0;
-      value <<= 1;
-      return carryFlag;
-    }
-
-    /// <summary>Shifts the bits one position to the left.</summary>
-    /// <returns>Whether the MSB (most significant BIT), or overflow bit, was set.</returns>
-    [System.CLSCompliant(false)]
-    public static bool ShiftLeft(ref uint value, int count)
-    {
-      var carryFlag = (value & 0x80000000U) != 0;
+      var carry = value >> (32 - count);
       value <<= count;
-      return carryFlag;
+      return carry;
     }
 
-    /// <summary>Shifts the bits one position to the left.</summary>
-    /// <returns>Whether the MSB (most significant BIT), or overflow bit, was set.</returns>
+    /// <summary>Shifts the bits count positions to the left, and returns the carry bits.</summary>
+    /// <returns>The carry bits, or the overflowing bits.</returns>
     [System.CLSCompliant(false)]
-    public static bool ShiftLeft(ref ulong value, int count)
+    public static ulong ShiftLeft(ref this ulong value, int count)
     {
-      var carryFlag = (value & 0x8000000000000000UL) != 0;
+      var carry = value >> (64 - count);
       value <<= count;
-      return carryFlag;
+      return carry;
     }
   }
 }
