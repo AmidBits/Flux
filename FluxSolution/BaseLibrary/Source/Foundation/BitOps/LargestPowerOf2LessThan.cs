@@ -5,13 +5,19 @@ namespace Flux
     /// <summary>Computes the greater power of 2 for the specified number.</summary>
     public static System.Numerics.BigInteger LargestPowerOf2LessThan(this System.Numerics.BigInteger value)
       => FoldRight(value - 1) + 1 >> 1;
+    public static System.Numerics.BigInteger LargestPowerOf2LessThanOrEqualTo(this System.Numerics.BigInteger value)
+      => FoldRight(value - 1) + 1 is var p && p <= value ? p : p >> 1;
 
     /// <summary>Computes the greater power of 2 for the specified number.</summary>
     public static int LargestPowerOf2LessThan(this int value)
       => FoldRight(value - 1) + 1 >> 1;
+    public static int LargestPowerOf2LessThanOrEqualTo(this int value)
+      => FoldRight(value - 1) + 1 is var p && p <= value ? p : p >> 1;
     /// <summary>Computes the greater power of 2 for the specified number.</summary>
     public static long LargestPowerOf2LessThan(this long value)
       => FoldRight(value - 1) + 1 >> 1;
+    public static long LargestPowerOf2LessThanOrEqualTo(this long value)
+      => FoldRight(value - 1) + 1 is var p && p <= value ? p : p >> 1;
 
     /// <summary>Computes the greater power of 2 for the specified number.</summary>
     [System.CLSCompliant(false)]

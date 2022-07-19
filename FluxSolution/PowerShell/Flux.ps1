@@ -44,7 +44,7 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 # Sample use from Flux BaseLibrary:
 
 # "Locale-Properties:"
-# [Flux.Locale]::GetProperties()
+ [Flux.Locale]::GetProperties()
 # [Flux.Locale]::SpecialFolders
 # return;
 
