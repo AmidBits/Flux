@@ -1,15 +1,15 @@
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct Size2
-    : System.IEquatable<Size2>
+  public readonly struct Size2I
+    : System.IEquatable<Size2I>
   {
-    public static readonly Size2 Zero;
+    public static readonly Size2I Zero;
 
     private readonly int m_width;
     private readonly int m_height;
 
-    public Size2(int width, int height)
+    public Size2I(int width, int height)
     {
       m_width = width;
       m_height = height;
@@ -21,11 +21,11 @@ namespace Flux
     public CartesianCoordinate2I Center()
       => new(m_width / 2, m_height / 2);
 
-    /// <summary>Convert the <see cref="Size2"/> to a <see cref="CartesianCoordinate2"/>.</summary>
+    /// <summary>Convert the <see cref="Size2I"/> to a <see cref="CartesianCoordinate2"/>.</summary>
     public CartesianCoordinate2 ToCartesianCoordinate2()
       => new(m_width, m_height);
 
-    /// <summary>Convert the <see cref="Size2"/> to a <see cref="CartesianCoordinate2I"/>.</summary>
+    /// <summary>Convert the <see cref="Size2I"/> to a <see cref="CartesianCoordinate2I"/>.</summary>
     public CartesianCoordinate2I ToCartesianCoordinate2I()
       => new(m_width, m_height);
 
@@ -42,75 +42,75 @@ namespace Flux
       => PointToUniqueIndex(point.X, point.Y);
 
     #region Static methods
-    /// <summary>Adds a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
-    public static Size2 Add(Size2 a, Size2 b)
+    /// <summary>Adds a <see cref='Size2I'/> by another <see cref='Size2I'/>.</summary>
+    public static Size2I Add(Size2I a, Size2I b)
       => new(unchecked(a.m_width + b.m_width), unchecked(a.m_height + b.m_height));
-    /// <summary>Adds a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
-    public static Size2 Add(Size2 a, int b)
+    /// <summary>Adds a <see cref='Size2I'/> by another <see cref='Size2I'/>.</summary>
+    public static Size2I Add(Size2I a, int b)
       => new(unchecked(a.m_width + b), unchecked(a.m_height + b));
-    /// <summary>Divides the components of the <see cref="Size2"/> by the corresponding components of another <see cref="Size2"/> producing two quotients as a new <see cref="Size2"/>.</summary>
-    public static Size2 Divide(Size2 dividend, Size2 divisor)
+    /// <summary>Divides the components of the <see cref="Size2I"/> by the corresponding components of another <see cref="Size2I"/> producing two quotients as a new <see cref="Size2I"/>.</summary>
+    public static Size2I Divide(Size2I dividend, Size2I divisor)
       => new(unchecked(dividend.m_width / divisor.m_width), unchecked(dividend.m_height / divisor.m_height));
-    /// <summary>Divides the components of the <see cref="Size2"/> by a <see cref="int"/> producing two quotients as a new <see cref="Size2"/>.</summary>
-    public static Size2 Divide(Size2 dividend, int divisor)
+    /// <summary>Divides the components of the <see cref="Size2I"/> by a <see cref="int"/> producing two quotients as a new <see cref="Size2I"/>.</summary>
+    public static Size2I Divide(Size2I dividend, int divisor)
       => new(unchecked(dividend.m_width / divisor), unchecked(dividend.m_height / divisor));
-    /// <summary>Divides a <see cref="int"/> by the components of a <see cref="Size2"/> producing two quotients as a new <see cref="Size2"/>.</summary>
-    public static Size2 Divide(int dividend, Size2 divisors)
+    /// <summary>Divides a <see cref="int"/> by the components of a <see cref="Size2I"/> producing two quotients as a new <see cref="Size2I"/>.</summary>
+    public static Size2I Divide(int dividend, Size2I divisors)
       => new(unchecked(dividend / divisors.m_width), unchecked(dividend / divisors.m_height));
-    /// <summary>Multiplies <see cref="Size2"/> by an <see cref="int"/> producing <see cref="Size2"/>.</summary>
-    public static Size2 Multiply(Size2 size, int multiplier)
+    /// <summary>Multiplies <see cref="Size2I"/> by an <see cref="int"/> producing <see cref="Size2I"/>.</summary>
+    public static Size2I Multiply(Size2I size, int multiplier)
       => new(unchecked(size.m_width * multiplier), unchecked(size.m_height * multiplier));
-    /// <summary>Subtracts a <see cref='Size2'/> by another <see cref='Size2'/>.</summary>
-    public static Size2 Subtract(Size2 a, Size2 b)
+    /// <summary>Subtracts a <see cref='Size2I'/> by another <see cref='Size2I'/>.</summary>
+    public static Size2I Subtract(Size2I a, Size2I b)
       => new(unchecked(a.m_width - b.m_width), unchecked(a.m_height - b.m_height));
-    /// <summary>Subtracts a <see cref='Size2'/> by a <see cref='in'/>.</summary>
-    public static Size2 Subtract(Size2 a, int b)
+    /// <summary>Subtracts a <see cref='Size2I'/> by a <see cref='in'/>.</summary>
+    public static Size2I Subtract(Size2I a, int b)
       => new(unchecked(a.m_width - b), unchecked(a.m_height - b));
-    /// <summary>Subtracts a <see cref='int'/> by a <see cref='Size2'/>.</summary>
-    public static Size2 Subtract(int a, Size2 b)
+    /// <summary>Subtracts a <see cref='int'/> by a <see cref='Size2I'/>.</summary>
+    public static Size2I Subtract(int a, Size2I b)
       => new(unchecked(a - b.m_width), unchecked(a - b.m_height));
-    /// <summary>Creates a <see cref='CartesianCoordinate2I'/> from a <see cref='Size2'/>.</summary>
-    public static CartesianCoordinate2I ToPoint2(Size2 size)
+    /// <summary>Creates a <see cref='CartesianCoordinate2I'/> from a <see cref='Size2I'/>.</summary>
+    public static CartesianCoordinate2I ToPoint2(Size2I size)
       => new(size.m_width, size.m_height);
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(Size2 a, Size2 b)
+    public static bool operator ==(Size2I a, Size2I b)
       => a.Equals(b);
-    public static bool operator !=(Size2 a, Size2 b)
+    public static bool operator !=(Size2I a, Size2I b)
       => !a.Equals(b);
 
-    public static Size2 operator +(Size2 a, Size2 b)
+    public static Size2I operator +(Size2I a, Size2I b)
       => Add(a, b);
-    public static Size2 operator +(Size2 a, int b)
+    public static Size2I operator +(Size2I a, int b)
       => Add(a, b);
-    public static Size2 operator +(int a, Size2 b)
+    public static Size2I operator +(int a, Size2I b)
       => Add(b, a);
-    public static Size2 operator -(Size2 a, Size2 b)
+    public static Size2I operator -(Size2I a, Size2I b)
       => Subtract(a, b);
-    public static Size2 operator -(Size2 a, int b)
+    public static Size2I operator -(Size2I a, int b)
       => Subtract(a, b);
-    public static Size2 operator -(int a, Size2 b)
+    public static Size2I operator -(int a, Size2I b)
       => Subtract(a, b);
-    public static Size2 operator *(Size2 a, int b)
+    public static Size2I operator *(Size2I a, int b)
       => Multiply(a, b);
-    public static Size2 operator *(int a, Size2 b)
+    public static Size2I operator *(int a, Size2I b)
       => Multiply(b, a);
-    public static Size2 operator /(Size2 a, int b)
+    public static Size2I operator /(Size2I a, int b)
       => Divide(a, b);
-    public static Size2 operator /(int a, Size2 b)
+    public static Size2I operator /(int a, Size2I b)
       => Divide(a, b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(Size2 other)
+    public bool Equals(Size2I other)
       => m_width == other.m_width && m_height == other.m_height;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is Size2 o && Equals(o);
+      => obj is Size2I o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_width, m_height);
     public override string? ToString()

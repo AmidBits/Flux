@@ -249,13 +249,13 @@ namespace Flux
       }
     }
 
-    public static CartesianCoordinate2 ToCartesianCoordinate2(this GridCoordinate2 source)
+    public static CartesianCoordinate2 ToCartesianCoordinate2(this CartesianCoordinate2I source)
       => new(source.X, source.Y);
     public static CartesianCoordinate2 ToCartesianCoordinate2(this System.Numerics.Vector2 source)
       => new(source.X, source.Y);
-    public static GridCoordinate2 ToPoint2(this CartesianCoordinate2 source, System.Func<double, double> transformSelector)
+    public static CartesianCoordinate2I ToPoint2(this CartesianCoordinate2 source, System.Func<double, double> transformSelector)
       => new(System.Convert.ToInt32(transformSelector(source.X)), System.Convert.ToInt32(transformSelector(source.Y)));
-    public static GridCoordinate2 ToPoint2(this CartesianCoordinate2 source, HalfRounding behavior)
+    public static CartesianCoordinate2I ToPoint2(this CartesianCoordinate2 source, HalfRounding behavior)
       => new(System.Convert.ToInt32(Maths.Round(source.X, behavior)), System.Convert.ToInt32(Maths.Round(source.Y, behavior)));
     public static System.Numerics.Vector2 ToVector2(this CartesianCoordinate2 source)
       => new((float)source.X, (float)source.Y);
@@ -304,17 +304,17 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public EllipseGeometry ToEllipseGeometry()
       => new(m_x, m_y);
-    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="GridCoordinate2"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public GridCoordinate2  ToGridCoordinate2(System.MidpointRounding rounding)
+    public CartesianCoordinate2I  ToGridCoordinate2(System.MidpointRounding rounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="GridCoordinate2"/> using the specified <see cref="Flux.FullRounding"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="Flux.FullRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public GridCoordinate2  ToGridCoordinate2(Flux.FullRounding rounding)
+    public CartesianCoordinate2I  ToGridCoordinate2(Flux.FullRounding rounding)
       => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="GridCoordinate2"/> using the specified <see cref="Flux.HalfRounding"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="Flux.HalfRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public GridCoordinate2  ToGridCoordinate2(Flux.HalfRounding rounding)
+    public CartesianCoordinate2I  ToGridCoordinate2(Flux.HalfRounding rounding)
       => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
     /// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="PolarCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]

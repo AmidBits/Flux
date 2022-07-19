@@ -5,37 +5,37 @@ using System.Linq;
 namespace Flux.Model.MineSweeper
 {
   public sealed class Mines
-    : System.Collections.Generic.IReadOnlySet<GridCoordinate2>
+    : System.Collections.Generic.IReadOnlySet<CartesianCoordinate2I>
   {
-    private readonly System.Collections.Generic.IReadOnlySet<GridCoordinate2> m_mines;
+    private readonly System.Collections.Generic.IReadOnlySet<CartesianCoordinate2I> m_mines;
 
-    private Mines(System.Collections.Generic.IReadOnlySet<GridCoordinate2> mines)
+    private Mines(System.Collections.Generic.IReadOnlySet<CartesianCoordinate2I> mines)
       => m_mines = mines;
 
-    public bool HasMineAt(GridCoordinate2 point)
+    public bool HasMineAt(CartesianCoordinate2I point)
       => m_mines.Contains(point);
 
     public static Mines Create(Field field, int count)
-      => new(System.Linq.Enumerable.Repeat(Random.NumberGenerators.Crypto, count * 2).Select(r => new GridCoordinate2(r.Next(field.Size.Width), r.Next(field.Size.Height))).Distinct().Take(count).ToHashSet());
+      => new(System.Linq.Enumerable.Repeat(Random.NumberGenerators.Crypto, count * 2).Select(r => new CartesianCoordinate2I(r.Next(field.Size.Width), r.Next(field.Size.Height))).Distinct().Take(count).ToHashSet());
 
     #region IReadOnlySet implementation
     public int Count
       => m_mines.Count;
-    public bool Contains(GridCoordinate2 item)
+    public bool Contains(CartesianCoordinate2I item)
       => m_mines.Contains(item);
-    public bool IsProperSubsetOf(IEnumerable<GridCoordinate2> other)
+    public bool IsProperSubsetOf(IEnumerable<CartesianCoordinate2I> other)
       => m_mines.IsProperSubsetOf(other);
-    public bool IsProperSupersetOf(IEnumerable<GridCoordinate2> other)
+    public bool IsProperSupersetOf(IEnumerable<CartesianCoordinate2I> other)
       => m_mines.IsProperSupersetOf(other);
-    public bool IsSubsetOf(IEnumerable<GridCoordinate2> other)
+    public bool IsSubsetOf(IEnumerable<CartesianCoordinate2I> other)
       => m_mines.IsSubsetOf(other);
-    public bool IsSupersetOf(IEnumerable<GridCoordinate2> other)
+    public bool IsSupersetOf(IEnumerable<CartesianCoordinate2I> other)
       => m_mines.IsSupersetOf(other);
-    public bool Overlaps(IEnumerable<GridCoordinate2> other)
+    public bool Overlaps(IEnumerable<CartesianCoordinate2I> other)
       => m_mines.Overlaps(other);
-    public bool SetEquals(IEnumerable<GridCoordinate2> other)
+    public bool SetEquals(IEnumerable<CartesianCoordinate2I> other)
       => m_mines.SetEquals(other);
-    public System.Collections.Generic.IEnumerator<GridCoordinate2> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<CartesianCoordinate2I> GetEnumerator()
       => m_mines.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();

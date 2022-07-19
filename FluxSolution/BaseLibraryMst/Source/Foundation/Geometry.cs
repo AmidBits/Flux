@@ -51,7 +51,7 @@ namespace Foundation
     [TestMethod]
     public void Point2()
     {
-      var geometry = new Flux.GridCoordinate2(5, 7);
+      var geometry = new Flux.CartesianCoordinate2I(5, 7);
 
       Assert.AreEqual(5, geometry.X);
       Assert.AreEqual(7, geometry.Y);
@@ -60,7 +60,7 @@ namespace Foundation
     [TestMethod]
     public void Point3()
     {
-      var geometry = new Flux.GridCoordinate3(5, 7, 11);
+      var geometry = new Flux.CartesianCoordinate3I(5, 7, 11);
 
       Assert.AreEqual(5, geometry.X);
       Assert.AreEqual(7, geometry.Y);

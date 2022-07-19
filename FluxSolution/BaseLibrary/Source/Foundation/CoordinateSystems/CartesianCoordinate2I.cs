@@ -2,24 +2,24 @@ namespace Flux
 {
   /// <summary>A cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct GridCoordinate2
-    : System.IComparable<GridCoordinate2>, System.IEquatable<GridCoordinate2>
+  public readonly struct CartesianCoordinate2I
+    : System.IComparable<CartesianCoordinate2I>, System.IEquatable<CartesianCoordinate2I>
   {
     /// <summary>Returns the vector (0,0).</summary>
-    public static readonly GridCoordinate2 Zero;
+    public static readonly CartesianCoordinate2I Zero;
 
     private readonly int m_x;
     private readonly int m_y;
 
-    public GridCoordinate2(int x, int y)
+    public CartesianCoordinate2I(int x, int y)
     {
       m_x = x;
       m_y = y;
     }
-    public GridCoordinate2(int value)
+    public CartesianCoordinate2I(int value)
       : this(value, value)
     { }
-    public GridCoordinate2(int[] array, int startIndex)
+    public CartesianCoordinate2I(int[] array, int startIndex)
     {
       if (array is null) throw new System.ArgumentNullException(nameof(array));
 
@@ -33,19 +33,19 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public int Y { get => m_y; init => m_y = value; }
 
-    /// <summary>Converts the <see cref="GridCoordinate2"/> to a <see cref="CartesianCoordinate3"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a <see cref="CartesianCoordinate3"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinate2 ToCartesianCoordinate2()
       => new(m_x, m_y);
-    /// <summary>Converts the <see cref="GridCoordinate2"/> to a <see cref="Size2"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a <see cref="Size2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public Size2 ToSize2()
       => new(m_x, m_y);
-    /// <summary>Converts the <see cref="GridCoordinate2"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public long ToUniqueIndex(int gridWidth)
       => ToUniqueIndex(m_x, m_y, gridWidth);
-    /// <summary>Converts the <see cref="GridCoordinate2"/> to a <see cref="System.Numerics.Vector2"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a <see cref="System.Numerics.Vector2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public System.Numerics.Vector2 ToVector2()
       => new(m_x, m_y);
@@ -53,64 +53,64 @@ namespace Flux
     #region Static methods
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistance(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static double ChebyshevDistance(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => ChebyshevLength(p2 - p1);
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevLength(GridCoordinate2 source)
+    public static double ChebyshevLength(CartesianCoordinate2I source)
       => System.Math.Max(System.Math.Abs(source.m_x), System.Math.Abs(source.m_y));
 
     /// <summary>Computes the closest cartesian coordinate point at the specified angle and distance.</summary>
-    public static GridCoordinate2 ComputePoint(double angle, double distance)
+    public static CartesianCoordinate2I ComputePoint(double angle, double distance)
       => new(System.Convert.ToInt32(distance * System.Math.Sin(angle)), System.Convert.ToInt32(distance * System.Math.Cos(angle)));
 
     /// <summary>Returns the cross product of the two vectors.</summary>
     /// <remarks>This is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</remarks>
-    public static int CrossProduct(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static int CrossProduct(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => p1.m_x * p2.m_y - p1.m_y * p2.m_x;
 
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static GridCoordinate2 DivideCeiling(GridCoordinate2 p, double value)
+    public static CartesianCoordinate2I DivideCeiling(CartesianCoordinate2I p, double value)
       => new(System.Convert.ToInt32(System.Math.Ceiling(p.m_x / value)), System.Convert.ToInt32(System.Math.Ceiling(p.m_y / value)));
     /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static GridCoordinate2 DivideFloor(GridCoordinate2 p, double value)
+    public static CartesianCoordinate2I DivideFloor(CartesianCoordinate2I p, double value)
       => new(System.Convert.ToInt32(System.Math.Floor(p.m_x / value)), System.Convert.ToInt32(System.Math.Floor(p.m_y / value)));
 
     /// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
-    public static int DotProduct(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static int DotProduct(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => p1.m_x * p2.m_x + p1.m_y * p2.m_y;
 
     /// <summary>Compute the euclidean distance of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistance(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static double EuclideanDistance(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => EuclideanLength(p2 - p1);
     /// <summary>Compute the euclidean distance squared of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistanceSquare(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static double EuclideanDistanceSquare(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => EuclideanLengthSquared(p2 - p1);
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanLength(GridCoordinate2 p)
+    public static double EuclideanLength(CartesianCoordinate2I p)
       => System.Math.Sqrt(EuclideanLengthSquared(p));
     /// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanLengthSquared(GridCoordinate2 p)
+    public static double EuclideanLengthSquared(CartesianCoordinate2I p)
       => System.Math.Pow(p.m_x, 2) + System.Math.Pow(p.m_y, 2);
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
-    public static GridCoordinate2 FromRandomAbsolute(int toExclusiveX, int toExclusiveY)
+    public static CartesianCoordinate2I FromRandomAbsolute(int toExclusiveX, int toExclusiveY)
       => new(Random.NumberGenerators.Crypto.Next(toExclusiveX), Random.NumberGenerators.Crypto.Next(toExclusiveY));
     /// <summary>Create a new random vector in the range [(-toExlusiveX, -toExclusiveY), (toExlusiveX, toExclusiveY)] using the crypto-grade rng.</summary>
-    public static GridCoordinate2 FromRandomCenterZero(int toExclusiveX, int toExclusiveY)
+    public static CartesianCoordinate2I FromRandomCenterZero(int toExclusiveX, int toExclusiveY)
       => new(Random.NumberGenerators.Crypto.Next(toExclusiveX * 2 - 1) - (toExclusiveX - 1), Random.NumberGenerators.Crypto.Next(toExclusiveY * 2 - 1) - (toExclusiveY - 1));
 
-    /// <summary>Convert a 'mapped' unique index to a <see cref="GridCoordinate2"/>. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
-    public static GridCoordinate2 FromUniqueIndex(long index, int gridWidth)
+    /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2I"/>. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
+    public static CartesianCoordinate2I FromUniqueIndex(long index, int gridWidth)
       => new((int)(index % gridWidth), (int)(index / gridWidth));
 
     /// <summary>Returns the average rate of change, or simply the slope between two points.</summary>
-    public static Geometry.LineSlope GetLineSlope(GridCoordinate2 source, GridCoordinate2 target)
+    public static Geometry.LineSlope GetLineSlope(CartesianCoordinate2I source, CartesianCoordinate2I target)
       => new(source.X, source.Y, target.X, target.Y);
 
     ///// <summary>Creates four vectors, each of which represents the center axis for each of the quadrants for the vector and the specified sizes of X and Y.</summary>
@@ -124,40 +124,40 @@ namespace Flux
     //}
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static GridCoordinate2 InterpolateCosine(GridCoordinate2 p1, GridCoordinate2 p2, double mu)
+    public static CartesianCoordinate2I InterpolateCosine(CartesianCoordinate2I p1, CartesianCoordinate2I p2, double mu)
       => new(System.Convert.ToInt32(CosineInterpolation.Interpolate(p1.X, p2.X, mu)), System.Convert.ToInt32(CosineInterpolation.Interpolate(p1.Y, p2.Y, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static GridCoordinate2 InterpolateCubic(GridCoordinate2 p0, GridCoordinate2 p1, GridCoordinate2 p2, GridCoordinate2 p3, double mu)
+    public static CartesianCoordinate2I InterpolateCubic(CartesianCoordinate2I p0, CartesianCoordinate2I p1, CartesianCoordinate2I p2, CartesianCoordinate2I p3, double mu)
       => new(System.Convert.ToInt32(CubicInterpolation.Interpolate(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(CubicInterpolation.Interpolate(p0.Y, p1.Y, p2.Y, p3.Y, mu)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static GridCoordinate2 InterpolateHermite2(GridCoordinate2 p0, GridCoordinate2 p1, GridCoordinate2 p2, GridCoordinate2 p3, double mu, double tension, double bias)
+    public static CartesianCoordinate2I InterpolateHermite2(CartesianCoordinate2I p0, CartesianCoordinate2I p1, CartesianCoordinate2I p2, CartesianCoordinate2I p3, double mu, double tension, double bias)
       => new(System.Convert.ToInt32(HermiteInterpolation.Interpolate(p0.X, p1.X, p2.X, p3.X, mu, tension, bias)), System.Convert.ToInt32(HermiteInterpolation.Interpolate(p0.Y, p1.Y, p2.Y, p3.Y, mu, tension, bias)));
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static GridCoordinate2 InterpolateLinear(GridCoordinate2 p1, GridCoordinate2 p2, double mu)
+    public static CartesianCoordinate2I InterpolateLinear(CartesianCoordinate2I p1, CartesianCoordinate2I p2, double mu)
       => new(System.Convert.ToInt32(LinearInterpolation.Interpolate(p1.X, p2.X, mu)), System.Convert.ToInt32(LinearInterpolation.Interpolate(p1.Y, p2.Y, mu)));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
-    public static GridCoordinate2 Lerp(GridCoordinate2 source, GridCoordinate2 target, double mu)
+    public static CartesianCoordinate2I Lerp(CartesianCoordinate2I source, CartesianCoordinate2I target, double mu)
     {
       var imu = 1 - mu;
 
-      return new GridCoordinate2(System.Convert.ToInt32(source.X * imu + target.X * mu), System.Convert.ToInt32(source.Y * imu + target.Y * mu));
+      return new CartesianCoordinate2I(System.Convert.ToInt32(source.X * imu + target.X * mu), System.Convert.ToInt32(source.Y * imu + target.Y * mu));
     }
 
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static int ManhattanDistance(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static int ManhattanDistance(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => ManhattanLength(p2 - p1);
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static int ManhattanLength(GridCoordinate2 p)
+    public static int ManhattanLength(CartesianCoordinate2I p)
       => System.Math.Abs(p.m_x) + System.Math.Abs(p.m_y);
 
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-    public static GridCoordinate2 MultiplyCeiling(GridCoordinate2 p, double value)
+    public static CartesianCoordinate2I MultiplyCeiling(CartesianCoordinate2I p, double value)
       => new(System.Convert.ToInt32(System.Math.Ceiling(p.m_x * value)), System.Convert.ToInt32(System.Math.Ceiling(p.m_y * value)));
     /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-    public static GridCoordinate2 MultiplyFloor(GridCoordinate2 p, double value)
+    public static CartesianCoordinate2I MultiplyFloor(CartesianCoordinate2I p, double value)
       => new(System.Convert.ToInt32(System.Math.Floor(p.m_x * value)), System.Convert.ToInt32(System.Math.Floor(p.m_y * value)));
 
     //public static Point2 Nlerp(Point2 source, Point2 target, double mu)
@@ -165,21 +165,21 @@ namespace Flux
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using binary numbering: X = 0 or 1, Y = 0 or 2, which are then added up, based on the sign of the respective component.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public static int OrthantBinaryNumber(GridCoordinate2 p, GridCoordinate2 center)
+    public static int OrthantBinaryNumber(CartesianCoordinate2I p, CartesianCoordinate2I center)
       => (p.m_x >= center.m_x ? 0 : 1) + (p.m_y >= center.m_y ? 0 : 2);
 
     /// <summary>Returns the quadrant of the 2D vector based on some specified center vector. Enumerated according to the mathematical custom, where the numbering goes counter-clockwise starting from the upper right ("northeast") quadrant.</summary>
     /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
-    public static int QuadrantNumber(GridCoordinate2 p, GridCoordinate2 center)
+    public static int QuadrantNumber(CartesianCoordinate2I p, CartesianCoordinate2I center)
       => p.m_y >= center.m_y ? (p.m_x >= center.m_x ? 0 : 1) : (p.m_x >= center.m_x ? 3 : 2);
 
     private static readonly System.Text.RegularExpressions.Regex m_regexParse = new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
-    public static GridCoordinate2 Parse(string pointAsString)
+    public static CartesianCoordinate2I Parse(string pointAsString)
       => m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && int.TryParse(gX.Value, out var x) && m.Groups["Y"] is var gY && gY.Success && int.TryParse(gY.Value, out var y)
-      ? new GridCoordinate2(x, y)
+      ? new CartesianCoordinate2I(x, y)
       : throw new System.ArgumentOutOfRangeException(nameof(pointAsString));
-    public static bool TryParse(string pointAsString, out GridCoordinate2 point)
+    public static bool TryParse(string pointAsString, out CartesianCoordinate2I point)
     {
       try
       {
@@ -194,21 +194,21 @@ namespace Flux
     }
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    public static GridCoordinate2 PerpendicularCcw(GridCoordinate2 p)
+    public static CartesianCoordinate2I PerpendicularCcw(CartesianCoordinate2I p)
       => new(-p.m_y, p.m_x);
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    public static GridCoordinate2 PerpendicularCw(GridCoordinate2 p)
+    public static CartesianCoordinate2I PerpendicularCw(CartesianCoordinate2I p)
       => new(p.m_y, -p.m_x);
 
     /// <summary>Slerp is a sherical linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0). Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
-    public static GridCoordinate2 Slerp(GridCoordinate2 source, GridCoordinate2 target, double mu)
+    public static CartesianCoordinate2I Slerp(CartesianCoordinate2I source, CartesianCoordinate2I target, double mu)
     {
       var dp = System.Math.Clamp(DotProduct(source, target), -1.0, 1.0); // Ensure precision doesn't exceed acos limits.
       var theta = System.Math.Acos(dp) * mu; // Angle between start and desired.
       var cos = System.Math.Cos(theta);
       var sin = System.Math.Sin(theta);
 
-      return new GridCoordinate2(System.Convert.ToInt32(source.m_x * cos + (target.m_x - source.m_x) * dp * sin), System.Convert.ToInt32(source.m_y * cos + (target.m_y - source.m_y) * dp * sin));
+      return new CartesianCoordinate2I(System.Convert.ToInt32(source.m_x * cos + (target.m_x - source.m_x) * dp * sin), System.Convert.ToInt32(source.m_y * cos + (target.m_y - source.m_y) * dp * sin));
     }
 
     /// <summary>Converts the (x, y) point to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
@@ -217,109 +217,109 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static explicit operator GridCoordinate2(System.ValueTuple<int, int> xy)
+    public static explicit operator CartesianCoordinate2I(System.ValueTuple<int, int> xy)
       => new(xy.Item1, xy.Item2);
 
-    public static bool operator ==(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static bool operator ==(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => p1.Equals(p2);
-    public static bool operator !=(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static bool operator !=(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => !p1.Equals(p2);
 
-    public static GridCoordinate2 operator -(GridCoordinate2 v)
+    public static CartesianCoordinate2I operator -(CartesianCoordinate2I v)
       => new(-v.m_x, -v.m_y);
 
-    public static GridCoordinate2 operator ~(GridCoordinate2 v)
+    public static CartesianCoordinate2I operator ~(CartesianCoordinate2I v)
       => new(~v.m_x, ~v.m_y);
 
-    public static GridCoordinate2 operator --(GridCoordinate2 p)
+    public static CartesianCoordinate2I operator --(CartesianCoordinate2I p)
       => new(p.m_x - 1, p.m_y - 1);
-    public static GridCoordinate2 operator ++(GridCoordinate2 p)
+    public static CartesianCoordinate2I operator ++(CartesianCoordinate2I p)
       => new(p.m_x + 1, p.m_y + 1);
 
-    public static GridCoordinate2 operator +(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static CartesianCoordinate2I operator +(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => new(p1.m_x + p2.m_x, p1.m_y + p2.m_y);
-    public static GridCoordinate2 operator +(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator +(CartesianCoordinate2I p, int v)
       => new(p.m_x + v, p.m_y + v);
-    public static GridCoordinate2 operator +(int v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator +(int v, CartesianCoordinate2I p)
       => new(v + p.m_x, v + p.m_y);
 
-    public static GridCoordinate2 operator -(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static CartesianCoordinate2I operator -(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => new(p1.m_x - p2.m_x, p1.m_y - p2.m_y);
-    public static GridCoordinate2 operator -(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator -(CartesianCoordinate2I p, int v)
       => new(p.m_x - v, p.m_y - v);
-    public static GridCoordinate2 operator -(int v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator -(int v, CartesianCoordinate2I p)
       => new(v - p.m_x, v - p.m_y);
 
-    public static GridCoordinate2 operator *(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static CartesianCoordinate2I operator *(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => new(p1.m_x * p2.m_x, p1.m_y * p2.m_y);
-    public static GridCoordinate2 operator *(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator *(CartesianCoordinate2I p, int v)
       => new(p.m_x * v, p.m_y * v);
-    public static GridCoordinate2 operator *(GridCoordinate2 p, double v)
+    public static CartesianCoordinate2I operator *(CartesianCoordinate2I p, double v)
       => new((int)(p.m_x * v), (int)(p.m_y * v));
-    public static GridCoordinate2 operator *(int v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator *(int v, CartesianCoordinate2I p)
       => new(v * p.m_x, v * p.m_y);
-    public static GridCoordinate2 operator *(double v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator *(double v, CartesianCoordinate2I p)
       => new((int)(v * p.m_x), (int)(v * p.m_y));
 
-    public static GridCoordinate2 operator /(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static CartesianCoordinate2I operator /(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => new(p1.m_x / p2.m_x, p1.m_y / p2.m_y);
-    public static GridCoordinate2 operator /(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator /(CartesianCoordinate2I p, int v)
       => new(p.m_x / v, p.m_y / v);
-    public static GridCoordinate2 operator /(GridCoordinate2 p, double v)
+    public static CartesianCoordinate2I operator /(CartesianCoordinate2I p, double v)
       => new((int)(p.m_x / v), (int)(p.m_y / v));
-    public static GridCoordinate2 operator /(int v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator /(int v, CartesianCoordinate2I p)
       => new(v / p.m_x, v / p.m_y);
-    public static GridCoordinate2 operator /(double v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator /(double v, CartesianCoordinate2I p)
       => new((int)(v / p.m_x), (int)(v / p.m_y));
 
-    public static GridCoordinate2 operator %(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static CartesianCoordinate2I operator %(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => new(p1.m_x % p2.m_x, p1.m_y % p2.m_y);
-    public static GridCoordinate2 operator %(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator %(CartesianCoordinate2I p, int v)
       => new(p.m_x % v, p.m_y % v);
-    public static GridCoordinate2 operator %(GridCoordinate2 p, double v)
+    public static CartesianCoordinate2I operator %(CartesianCoordinate2I p, double v)
       => new((int)(p.m_x % v), (int)(p.m_y % v));
-    public static GridCoordinate2 operator %(int v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator %(int v, CartesianCoordinate2I p)
       => new(v % p.m_x, v % p.m_y);
-    public static GridCoordinate2 operator %(double v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator %(double v, CartesianCoordinate2I p)
       => new((int)(v % p.m_x), (int)(v % p.m_y));
 
-    public static GridCoordinate2 operator &(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static CartesianCoordinate2I operator &(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => new(p1.m_x & p2.m_x, p1.m_y & p2.m_y);
-    public static GridCoordinate2 operator &(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator &(CartesianCoordinate2I p, int v)
       => new(p.m_x & v, p.m_y & v);
-    public static GridCoordinate2 operator &(int v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator &(int v, CartesianCoordinate2I p)
       => new(v & p.m_x, v & p.m_y);
 
-    public static GridCoordinate2 operator |(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static CartesianCoordinate2I operator |(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => new(p1.m_x | p2.m_x, p1.m_y | p2.m_y);
-    public static GridCoordinate2 operator |(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator |(CartesianCoordinate2I p, int v)
       => new(p.m_x | v, p.m_y | v);
-    public static GridCoordinate2 operator |(int v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator |(int v, CartesianCoordinate2I p)
       => new(v | p.m_x, v | p.m_y);
 
-    public static GridCoordinate2 operator ^(GridCoordinate2 p1, GridCoordinate2 p2)
+    public static CartesianCoordinate2I operator ^(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => new(p1.m_x ^ p2.m_x, p1.m_y ^ p2.m_y);
-    public static GridCoordinate2 operator ^(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator ^(CartesianCoordinate2I p, int v)
       => new(p.m_x ^ v, p.m_y ^ v);
-    public static GridCoordinate2 operator ^(int v, GridCoordinate2 p)
+    public static CartesianCoordinate2I operator ^(int v, CartesianCoordinate2I p)
       => new(v ^ p.m_x, v ^ p.m_y);
 
-    public static GridCoordinate2 operator <<(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator <<(CartesianCoordinate2I p, int v)
       => new(p.m_x << v, p.m_y << v);
-    public static GridCoordinate2 operator >>(GridCoordinate2 p, int v)
+    public static CartesianCoordinate2I operator >>(CartesianCoordinate2I p, int v)
       => new(p.m_x >> v, p.m_y >> v);
     #endregion Overloaded operators
 
     #region Implemented interfaces
-    public int CompareTo(GridCoordinate2 other)
+    public int CompareTo(CartesianCoordinate2I other)
       => m_x > other.m_x ? 1 : m_x < other.m_x ? -1 : m_y > other.m_y ? 1 : m_y < other.m_y ? -1 : 0;
-    public bool Equals(GridCoordinate2 other)
+    public bool Equals(CartesianCoordinate2I other)
       => m_x == other.m_x && m_y == other.m_y;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-       => obj is GridCoordinate2 o && Equals(o);
+       => obj is CartesianCoordinate2I o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y);
     public override string ToString()
