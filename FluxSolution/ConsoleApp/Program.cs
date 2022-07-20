@@ -51,8 +51,8 @@ namespace ConsoleApp
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldRight(index)} (FoldRight)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.IsPowerOf2(index)} (IsPowerOf2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index)} (RoundToNearestPowerOf2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargestPowerOf2LessThan(index)} (LargestPowerOf2LessThan)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargestPowerOf2LessThanOrEqualTo(index)} (LargestPowerOf2LessThanOrEqual)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, true)} (SmallerPowerOf2)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, false)} (SmallerPowerOf2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeadingZeroCount(index)} (LeadingZeroCount)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1Bit(index)} (LeastSignificant1Bit)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1BitIndex(index)} (LeastSignificant1BitIndex)");
@@ -60,8 +60,8 @@ namespace ConsoleApp
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1Bit(index)} (MostSignificant1Bit)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1BitIndex(index)} (MostSignificant1BitIndex)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallestPowerOf2GreaterThan(index)} (SmallestPowerOf2GreaterThan)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallestPowerOf2GreaterThanOrEqualTo(index)} (SmallestPowerOf2GreaterThanOrEqualTo)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargerPowerOf2(index, true)} (LargerPowerOf2, Proper)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargerPowerOf2(index, false)} (LargerPowerOf2)");
         System.Console.WriteLine();
       }
 
