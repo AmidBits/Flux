@@ -43,7 +43,6 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-
       for (var index = System.Numerics.BigInteger.One; index < 20; index++)
       {
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.BitLength(index)} (BitLength)");
@@ -55,10 +54,10 @@ namespace ConsoleApp
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargestPowerOf2LessThanOrEqualTo(index)} (LargestPowerOf2LessThanOrEqual)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeadingZeroCount(index)} (LeadingZeroCount)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1Bit(index)} (LeastSignificant1Bit)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1BitIndex(index)} (LeastSignificant1BitIndex)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.LeastSignificant1Bit(index))} (LeastSignificant1-BitIndex)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.Log2(index)} (Log2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1Bit(index)} (MostSignificant1Bit)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1BitIndex(index)} (MostSignificant1BitIndex)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.MostSignificant1Bit(index))} (MostSignificant1-BitIndex)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallestPowerOf2GreaterThan(index)} (SmallestPowerOf2GreaterThan)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallestPowerOf2GreaterThanOrEqualTo(index)} (SmallestPowerOf2GreaterThanOrEqualTo)");
