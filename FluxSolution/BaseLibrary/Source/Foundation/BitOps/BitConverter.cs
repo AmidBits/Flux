@@ -1,11 +1,5 @@
 namespace Flux
 {
-  public enum Endianess
-  {
-    BigEndian,
-    LittleEndian
-  }
-
   public sealed class BitConverter
   {
     public static BitConverter BigEndian
