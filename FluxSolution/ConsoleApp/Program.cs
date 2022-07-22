@@ -43,39 +43,42 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      for (var index = -10.ToBigInteger(); index < 5; index++)
+      for (var index = 253.ToBigInteger(); index < 258; index++)
       //for (var index = -10; index < 2; index++)
       {
-        var i2 = index.FoldLeft();
-        var i2h = i2.ToString("X2");
-        var array = index.ToByteArrayEx(out var byteIndex, out var byteValue);
+        //var i2 = index.FoldLeft();
+        //var i2h = i2.ToString("X2");
+        //var array = index.ToByteArrayEx(out var byteIndex, out var byteValue);
 
-        var arrayTarget = new byte[array.Length + 1];
-        System.Array.Copy(array, 0, arrayTarget, 1, array.Length);
+        //var arrayTarget = new byte[array.Length + 1];
+        //System.Array.Copy(array, 0, arrayTarget, 1, array.Length);
 
-        var bi = new System.Numerics.BigInteger(arrayTarget);
-        var bi2 = bi.FoldLeft();
-        var bi2h = bi2.ToString("X2");
-        var bih = bi.ToString("X2");
-        var bia = bi.ToByteArrayEx(out var biaIndex, out var biaValue);
+        //var bi = new System.Numerics.BigInteger(arrayTarget);
+        //var bi2 = bi.FoldLeft();
+        //var bi2h = bi2.ToString("X2");
+        //var bih = bi.ToString("X2");
+        //var bia = bi.ToByteArrayEx(out var biaIndex, out var biaValue);
+
+        System.Console.WriteLine($"{index:D2} : {index.ToString("X4")}");
 
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.BitLength(index)} (BitLength)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldLeft(index)} (FoldLeft)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldRight(index)} (FoldRight)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.IsPowerOf2(index)} (IsPowerOf2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, true, out var gtp, out var ltp)} (GT:{gtp}, LT:{ltp}) (RoundToNearestPowerOf2-Proper)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, false, out var gt, out var lt)} (GT:{gt}, LT:{lt}) (RoundToNearestPowerOf2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, true)} (SmallerPowerOf2-Proper)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, false)} (SmallerPowerOf2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeadingZeroCount(index)} (LeadingZeroCount)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1Bit(index)} (LeastSignificant1Bit)");
         //System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.LeastSignificant1Bit(index))} (LeastSignificant1-BitIndex)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.Log2(index)} (Log2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1Bit(index)} (MostSignificant1Bit)");
         //System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.MostSignificant1Bit(index))} (MostSignificant1-BitIndex)");
-        //System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargerPowerOf2(index, true)} (LargerPowerOf2-Proper)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargerPowerOf2(index, false)} (LargerPowerOf2)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundDownToPowerOf2(index, true)} (SmallerPowerOf2-Proper)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundDownToPowerOf2(index, false)} (SmallerPowerOf2)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, true, out var gtp, out var ltp)} (GT:{gtp}, LT:{ltp}) (RoundToNearestPowerOf2-Proper)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, false, out var gt, out var lt)} (GT:{gt}, LT:{lt}) (RoundToNearestPowerOf2)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundUpToPowerOf2(index, true)} (LargerPowerOf2-Proper)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundUpToPowerOf2(index, false)} (LargerPowerOf2)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.TrailingZeroCount(index)} (TrailingZeroCount)");
         System.Console.WriteLine();
       }
 

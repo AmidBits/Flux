@@ -12,10 +12,21 @@ namespace Flux
     public static System.Numerics.BigInteger FoldLeft(this System.Numerics.BigInteger value)
     {
       if (value < 0) return -1;
+      var values = value.ToString("X4");
 
+      var lzc = LeadingZeroCount(value);
       var tzc = TrailingZeroCount(value);
 
-      return FoldRight(value) >> tzc << tzc;
+      return FoldRight(value << lzc) >> tzc << tzc;
+
+      //var fr = FoldRight(value << lzc) >> tzc << tzc;
+      //var frs = fr.ToString("X4");
+
+      //var i = (uint)fr;
+
+      //      return fr;
+
+      //return FoldRight(value) >> tzc << tzc; // Original code.
     }
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
