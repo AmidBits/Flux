@@ -50,7 +50,7 @@ namespace ConsoleApp
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldRight(index)} (FoldRight)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.IsPowerOf2(index)} (IsPowerOf2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index)} (RoundToNearestPowerOf2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, true)} (SmallerPowerOf2)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, true)} (SmallerPowerOf2-Proper)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, false)} (SmallerPowerOf2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeadingZeroCount(index)} (LeadingZeroCount)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1Bit(index)} (LeastSignificant1Bit)");
@@ -59,14 +59,10 @@ namespace ConsoleApp
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1Bit(index)} (MostSignificant1Bit)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.MostSignificant1Bit(index))} (MostSignificant1-BitIndex)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargerPowerOf2(index, true)} (LargerPowerOf2, Proper)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargerPowerOf2(index, true)} (LargerPowerOf2-Proper)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargerPowerOf2(index, false)} (LargerPowerOf2)");
         System.Console.WriteLine();
       }
-
-
-
-
 
       var xx = new Flux.Resources.FxSequence(TimeZoneInfo.GetSystemTimeZones());
 
