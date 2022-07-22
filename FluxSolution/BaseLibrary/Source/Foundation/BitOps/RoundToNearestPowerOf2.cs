@@ -4,10 +4,10 @@ namespace Flux
   {
     /// <summary>Computes the smaller and larger power of 2, as well as the nearest of the two power of 2 values computed.</summary>
     /// <param name="value"></param>
-    /// <param name="proper"></param>
+    /// <param name="proper">When true, the nearest power of 2 is truly greater or less than, when false, it's greater or less than OR EQUAL.</param>
     /// <param name="greaterThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
     /// <param name="lessThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
-    /// <returns></returns>
+    /// <returns>The nearest power of 2, and both greater than and less than powers of 2.</returns>
     public static System.Numerics.BigInteger RoundToNearestPowerOf2(this System.Numerics.BigInteger value, bool proper, out System.Numerics.BigInteger greaterThan, out System.Numerics.BigInteger lessThan)
     {
       if (IsPowerOf2(value))
@@ -24,7 +24,12 @@ namespace Flux
       return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
     }
 
-    /// <summary>Computes the greater power of 2 for the specified number.</summary>
+    /// <summary>Computes the smaller and larger power of 2, as well as the nearest of the two power of 2 values computed.</summary>
+    /// <param name="value"></param>
+    /// <param name="proper">When true, the nearest power of 2 is truly greater or less than, when false, it's greater or less than OR EQUAL.</param>
+    /// <param name="greaterThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <param name="lessThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <returns>The nearest power of 2, and both greater than and less than powers of 2.</returns>
     public static int RoundToNearestPowerOf2(this int value, bool proper, out int greaterThan, out int lessThan)
     {
       if (IsPowerOf2(value))
@@ -41,7 +46,12 @@ namespace Flux
       return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
     }
 
-    /// <summary>Computes the greater power of 2 for the specified number.</summary>
+    /// <summary>Computes the smaller and larger power of 2, as well as the nearest of the two power of 2 values computed.</summary>
+    /// <param name="value"></param>
+    /// <param name="proper">When true, the nearest power of 2 is truly greater or less than, when false, it's greater or less than OR EQUAL.</param>
+    /// <param name="greaterThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <param name="lessThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <returns>The nearest power of 2, and both greater than and less than powers of 2.</returns>
     public static long RoundToNearestPowerOf2(this long value, bool proper, out long greaterThan, out long lessThan)
     {
       if (IsPowerOf2(value))
@@ -58,7 +68,12 @@ namespace Flux
       return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
     }
 
-    /// <summary>Computes the greater power of 2 for the specified number.</summary>
+    /// <summary>Computes the smaller and larger power of 2, as well as the nearest of the two power of 2 values computed.</summary>
+    /// <param name="value"></param>
+    /// <param name="proper">When true, the nearest power of 2 is truly greater or less than, when false, it's greater or less than OR EQUAL.</param>
+    /// <param name="greaterThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <param name="lessThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <returns>The nearest power of 2, and both greater than and less than powers of 2.</returns>
     [System.CLSCompliant(false)]
     public static uint RoundToNearestPowerOf2(this uint value, bool proper, out uint greaterThan, out uint lessThan)
     {
@@ -76,7 +91,12 @@ namespace Flux
       return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
     }
 
-    /// <summary>Computes the greater power of 2 for the specified number.</summary>
+    /// <summary>Computes the smaller and larger power of 2, as well as the nearest of the two power of 2 values computed.</summary>
+    /// <param name="value"></param>
+    /// <param name="proper">When true, the nearest power of 2 is truly greater or less than, when false, it's greater or less than OR EQUAL.</param>
+    /// <param name="greaterThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <param name="lessThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <returns>The nearest power of 2, and both greater than and less than powers of 2.</returns>
     [System.CLSCompliant(false)]
     public static ulong RoundToNearestPowerOf2(this ulong value, bool proper, out ulong greaterThan, out ulong lessThan)
     {
