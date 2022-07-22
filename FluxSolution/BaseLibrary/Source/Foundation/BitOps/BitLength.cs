@@ -7,10 +7,10 @@ namespace Flux
     // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan
 
     /// <summary>Returns the count of bits in the minimal two's-complement representation of the number.</summary>
-    /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>
+    /// <remarks>The number of bits needed to represent the number, if value is positive. If value is negative then -1. A value of zero needs 0 bits.</remarks>
     public static int BitLength(this System.Numerics.BigInteger value)
-      => value > 0
-      ? Log2(value) + 1
+      => value > 0 ? Log2(value) + 1
+      : value < 0 ? -1
       : 0;
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>

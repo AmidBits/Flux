@@ -43,7 +43,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      for (var index = -10.ToBigInteger(); index < 2; index++)
+      for (var index = -10.ToBigInteger(); index < 5; index++)
       //for (var index = -10; index < 2; index++)
       {
         var i2 = index.FoldLeft();
@@ -63,7 +63,8 @@ namespace ConsoleApp
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldLeft(index)} (FoldLeft)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldRight(index)} (FoldRight)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.IsPowerOf2(index)} (IsPowerOf2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index)} (RoundToNearestPowerOf2)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, true, out var gtp, out var ltp)} (GT:{gtp}, LT:{ltp}) (RoundToNearestPowerOf2-Proper)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, false, out var gt, out var lt)} (GT:{gt}, LT:{lt}) (RoundToNearestPowerOf2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, true)} (SmallerPowerOf2-Proper)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, false)} (SmallerPowerOf2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeadingZeroCount(index)} (LeadingZeroCount)");

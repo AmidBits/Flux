@@ -2,49 +2,94 @@ namespace Flux
 {
   public static partial class BitOps
   {
-    /// <summary>Computes the greater power of 2 for the specified number.</summary>
-    public static System.Numerics.BigInteger RoundToNearestPowerOf2(this System.Numerics.BigInteger value, out System.Numerics.BigInteger greaterThan, out System.Numerics.BigInteger lessThan)
+    /// <summary>Computes the smaller and larger power of 2, as well as the nearest of the two power of 2 values computed.</summary>
+    /// <param name="value"></param>
+    /// <param name="proper"></param>
+    /// <param name="greaterThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <param name="lessThan">Depending on the bool <paramref name="proper"/>, outputs the greater than (and/or equal to) power of 2.</param>
+    /// <returns></returns>
+    public static System.Numerics.BigInteger RoundToNearestPowerOf2(this System.Numerics.BigInteger value, bool proper, out System.Numerics.BigInteger greaterThan, out System.Numerics.BigInteger lessThan)
     {
-      greaterThan = FoldRight(value - 1) + 1;
-      lessThan = greaterThan >> 1;
+      if (IsPowerOf2(value))
+      {
+        greaterThan = (proper ? value << 1 : value);
+        lessThan = (proper ? value >> 1 : value);
+      }
+      else
+      {
+        greaterThan = FoldRight(value - 1) + 1;
+        lessThan = greaterThan >> 1;
+      }
 
       return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
     }
 
     /// <summary>Computes the greater power of 2 for the specified number.</summary>
-    public static int RoundToNearestPowerOf2(this int value, out int greaterThan, out int lessThan)
+    public static int RoundToNearestPowerOf2(this int value, bool proper, out int greaterThan, out int lessThan)
     {
-      greaterThan = FoldRight(value - 1) + 1;
-      lessThan = greaterThan >> 1;
+      if (IsPowerOf2(value))
+      {
+        greaterThan = (proper ? value << 1 : value);
+        lessThan = (proper ? value >> 1 : value);
+      }
+      else
+      {
+        greaterThan = FoldRight(value - 1) + 1;
+        lessThan = greaterThan >> 1;
+      }
 
       return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
     }
 
     /// <summary>Computes the greater power of 2 for the specified number.</summary>
-    public static long RoundToNearestPowerOf2(this long value, out long greaterThan, out long lessThan)
+    public static long RoundToNearestPowerOf2(this long value, bool proper, out long greaterThan, out long lessThan)
     {
-      greaterThan = FoldRight(value - 1) + 1;
-      lessThan = greaterThan >> 1;
+      if (IsPowerOf2(value))
+      {
+        greaterThan = (proper ? value << 1 : value);
+        lessThan = (proper ? value >> 1 : value);
+      }
+      else
+      {
+        greaterThan = FoldRight(value - 1) + 1;
+        lessThan = greaterThan >> 1;
+      }
 
       return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
     }
 
     /// <summary>Computes the greater power of 2 for the specified number.</summary>
     [System.CLSCompliant(false)]
-    public static uint RoundToNearestPowerOf2(this uint value, out uint greaterThan, out uint lessThan)
+    public static uint RoundToNearestPowerOf2(this uint value, bool proper, out uint greaterThan, out uint lessThan)
     {
-      greaterThan = FoldRight(value - 1) + 1;
-      lessThan = greaterThan >> 1;
+      if (IsPowerOf2(value))
+      {
+        greaterThan = (proper ? value << 1 : value);
+        lessThan = (proper ? value >> 1 : value);
+      }
+      else
+      {
+        greaterThan = FoldRight(value - 1) + 1;
+        lessThan = greaterThan >> 1;
+      }
 
       return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
     }
 
     /// <summary>Computes the greater power of 2 for the specified number.</summary>
     [System.CLSCompliant(false)]
-    public static ulong RoundToNearestPowerOf2(this ulong value, out ulong greaterThan, out ulong lessThan)
+    public static ulong RoundToNearestPowerOf2(this ulong value, bool proper, out ulong greaterThan, out ulong lessThan)
     {
-      greaterThan = FoldRight(value - 1) + 1;
-      lessThan = greaterThan >> 1;
+      if (IsPowerOf2(value))
+      {
+        greaterThan = (proper ? value << 1 : value);
+        lessThan = (proper ? value >> 1 : value);
+      }
+      else
+      {
+        greaterThan = FoldRight(value - 1) + 1;
+        lessThan = greaterThan >> 1;
+      }
 
       return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
     }

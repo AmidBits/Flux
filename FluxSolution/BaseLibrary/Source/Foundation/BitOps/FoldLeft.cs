@@ -8,9 +8,11 @@ namespace Flux
     // The fold 'left' (or up towards MSB) function, is the opposite of (<see cref="FoldRight"/>), sets all bits from LS1B and 'up' (or 'left'), to 1.
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
-    /// <returns>Returns all ones from the LSB up.</returns>
+    /// <returns>All bits set from LSB up, or -1 if the value is less than zero.</returns>
     public static System.Numerics.BigInteger FoldLeft(this System.Numerics.BigInteger value)
     {
+      if (value < 0) return -1;
+
       var tzc = TrailingZeroCount(value);
 
       return FoldRight(value) >> tzc << tzc;

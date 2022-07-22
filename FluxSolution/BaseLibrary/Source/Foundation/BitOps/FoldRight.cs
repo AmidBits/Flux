@@ -8,9 +8,11 @@ namespace Flux
     // The fold 'right' (or down towards LSB) function, is the opposite (<see cref="FoldLeft"/>), sets all bits from the MS1B bit 'down' (or 'right'), to 1.
 
     /// <summary>"Folds" the upper bits into the lower bits, by taking the most significant 1 bit (MS1B) and OR it with (MS1B - 1). The process yields a bit vector with the same most significant 1 as the value, but all 1's below it.</summary>
-    /// <returns>Returns all ones from the MSB down.</returns>
+    /// <returns>All bits set from MSB down, or -1 if the value is less than zero.</returns>
     public static System.Numerics.BigInteger FoldRight(this System.Numerics.BigInteger value)
-      => (System.Numerics.BigInteger.One << BitLength(value)) - 1;
+      => value < 0 ? -1
+      : value > 0 ? (System.Numerics.BigInteger.One << BitLength(value)) - 1
+      : 0;
 
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>
