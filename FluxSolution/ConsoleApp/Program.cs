@@ -43,8 +43,22 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      for (var index = System.Numerics.BigInteger.One; index < 20; index++)
+      for (var index = -10.ToBigInteger(); index < 2; index++)
+      //for (var index = -10; index < 2; index++)
       {
+        var i2 = index.FoldLeft();
+        var i2h = i2.ToString("X2");
+        var array = index.ToByteArrayEx(out var byteIndex, out var byteValue);
+
+        var arrayTarget = new byte[array.Length + 1];
+        System.Array.Copy(array, 0, arrayTarget, 1, array.Length);
+
+        var bi = new System.Numerics.BigInteger(arrayTarget);
+        var bi2 = bi.FoldLeft();
+        var bi2h = bi2.ToString("X2");
+        var bih = bi.ToString("X2");
+        var bia = bi.ToByteArrayEx(out var biaIndex, out var biaValue);
+
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.BitLength(index)} (BitLength)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldLeft(index)} (FoldLeft)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldRight(index)} (FoldRight)");
@@ -54,15 +68,19 @@ namespace ConsoleApp
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.SmallerPowerOf2(index, false)} (SmallerPowerOf2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeadingZeroCount(index)} (LeadingZeroCount)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1Bit(index)} (LeastSignificant1Bit)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.LeastSignificant1Bit(index))} (LeastSignificant1-BitIndex)");
+        //System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.LeastSignificant1Bit(index))} (LeastSignificant1-BitIndex)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.Log2(index)} (Log2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1Bit(index)} (MostSignificant1Bit)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.MostSignificant1Bit(index))} (MostSignificant1-BitIndex)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
+        //System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.MostSignificant1Bit(index))} (MostSignificant1-BitIndex)");
+        //System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargerPowerOf2(index, true)} (LargerPowerOf2-Proper)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LargerPowerOf2(index, false)} (LargerPowerOf2)");
         System.Console.WriteLine();
       }
+
+
+
+
 
       var xx = new Flux.Resources.FxSequence(TimeZoneInfo.GetSystemTimeZones());
 

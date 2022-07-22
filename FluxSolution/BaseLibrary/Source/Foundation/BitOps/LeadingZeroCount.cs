@@ -21,7 +21,7 @@ namespace Flux
     {
       var bitLength = BitLength(value);
 
-      return (1 << BitLength(bitLength)) - bitLength;
+      return bitLength > 0 ? (1 << BitLength(bitLength)) - bitLength : 0;
     }
 
     /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
