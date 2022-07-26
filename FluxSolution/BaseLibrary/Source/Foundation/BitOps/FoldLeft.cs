@@ -12,10 +12,23 @@ namespace Flux
     public static System.Numerics.BigInteger FoldLeft(this System.Numerics.BigInteger value)
     {
       if (value < 0) return -1;
-      var values = value.ToString("X4");
+      //var values = value.ToString("X4");
 
       var lzc = LeadingZeroCount(value);
       var tzc = TrailingZeroCount(value);
+
+      //var v = (long)value;
+      //var vo = v.ToRadixString(2);
+      //var s0 = v << lzc;
+      //var v0 = s0.ToRadixString(2);
+      //var s1 = FoldRight(s0);
+      //var v1 = s1.ToRadixString(2);
+      //var s2 = s1 >> tzc;
+      //var v2 = s2.ToRadixString(2);
+      //var s3 = s2 << tzc;
+      //var v3 = s3.ToRadixString(2);
+
+      //var l3 = (long)s3;
 
       return FoldRight(value << lzc) >> tzc << tzc;
 
