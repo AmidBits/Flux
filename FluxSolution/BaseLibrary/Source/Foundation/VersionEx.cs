@@ -43,7 +43,7 @@ namespace Flux
         2 => new System.Version(m_parts[0], m_parts[1]),
         3 => new System.Version(m_parts[0], m_parts[1], m_parts[2]),
         4 => new System.Version(m_parts[0], m_parts[1], m_parts[2], m_parts[3]),
-        _ => throw new System.NotSupportedException()
+        _ => throw new System.NotSupportedException($"The .NET version does not support {m_parts.Length} parts.")
       };
 
     #region Static methods

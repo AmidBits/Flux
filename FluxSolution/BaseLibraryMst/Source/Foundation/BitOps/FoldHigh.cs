@@ -16,12 +16,12 @@ namespace Foundation.BitOps
 
     [TestMethod]
     public void FoldHigh_BigInteger()
-      => Assert.AreEqual(30.ToBigInteger(), Flux.BitOps.FoldLeft(18.ToBigInteger()));
+      => Assert.AreEqual(254.ToBigInteger(), Flux.BitOps.FoldLeft(18.ToBigInteger()));
     [TestMethod]
     public void FoldHigh_BigInteger_Speed()
     {
       var value = System.Numerics.BigInteger.Parse("670530"); // 0x000a3b42
-      var expected = System.Numerics.BigInteger.Parse("1048574"); // 0x000ffffe
+      var expected = System.Numerics.BigInteger.Parse("4294967294"); // 0x000ffffe
       Flux.Services.Performance.Measure(() => Flux.BitOps.FoldLeft(value), 1000000).Assert(expected, 4);
     }
     [TestMethod]

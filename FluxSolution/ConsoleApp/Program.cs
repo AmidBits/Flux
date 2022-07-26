@@ -62,15 +62,15 @@ namespace ConsoleApp
         System.Console.WriteLine($"{index:D2} : {index.ToString("X4")}");
 
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.BitLength(index)} (BitLength)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldLeft(index)} (FoldLeft)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldRight(index)} (FoldRight)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldLeft(index)} (FoldLeft) {Flux.BitOps.FoldLeft(index).ToRadixString(2)}");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldRight(index)} (FoldRight) {Flux.BitOps.FoldRight(index).ToRadixString(2)}");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.IsPowerOf2(index)} (IsPowerOf2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeadingZeroCount(index)} (LeadingZeroCount)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1Bit(index)} (LeastSignificant1Bit)");
-        //System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.LeastSignificant1Bit(index))} (LeastSignificant1-BitIndex)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.LeastSignificant1Bit(index))} (LeastSignificant1-BitIndex)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.Log2(index)} (Log2)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1Bit(index)} (MostSignificant1Bit)");
-        //System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.MostSignificant1Bit(index))} (MostSignificant1-BitIndex)");
+        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.MostSignificant1Bit(index))} (MostSignificant1-BitIndex)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundDownToPowerOf2(index, true)} (SmallerPowerOf2-Proper)");
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundDownToPowerOf2(index, false)} (SmallerPowerOf2)");
