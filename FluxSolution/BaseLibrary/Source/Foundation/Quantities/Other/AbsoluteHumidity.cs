@@ -6,6 +6,7 @@ namespace Flux
       => unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
+        AbsoluteHumidityUnit.KilogramsPerCubicMeter => "kg/m³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -13,6 +14,7 @@ namespace Flux
   public enum AbsoluteHumidityUnit
   {
     GramsPerCubicMeter,
+    KilogramsPerCubicMeter,
   }
 
   /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
@@ -28,6 +30,7 @@ namespace Flux
       => m_value = unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => value,
+        AbsoluteHumidityUnit.KilogramsPerCubicMeter => value / 1000.0,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -106,6 +109,7 @@ namespace Flux
       => unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => m_value,
+        AbsoluteHumidityUnit.KilogramsPerCubicMeter => m_value * 1000.0,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     #endregion Implemented interfaces

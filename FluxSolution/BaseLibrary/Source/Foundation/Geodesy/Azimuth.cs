@@ -32,6 +32,46 @@ namespace Flux
     public static double DeltaBearing(double degAzimuth1, double degAzimuth2)
       => Flux.Maths.Wrap(degAzimuth2 - degAzimuth1, MinValue, MaxValue);
 
+    public static Azimuth FromAbbreviation(string compassPointAbbreviated)
+      => System.Enum.TryParse<ThirtytwoWindCompassRose>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
+
+    private static string[] Words
+      => new string[] { "North", "East", "South", "West", "By" };
+
+    public static Azimuth FromWords(string compassPointInWords)
+    {
+      var words = new System.Collections.Generic.List<string>();
+
+      var sb = compassPointInWords.ToSpanBuilder();
+
+      sb.RemoveAll(char.IsWhiteSpace);
+
+      while (sb.Length > 0)
+      {
+        var index = 0;
+
+        for (; index < Words.Length; index++)
+        {
+          var word = Words[index];
+
+          if (sb.AsReadOnlySpan().StartsWith(word, System.StringComparison.InvariantCultureIgnoreCase))
+          {
+            words.Add(word);
+
+            sb.Remove(0, word.Length);
+
+            break;
+          }
+        }
+
+        if (index == Words.Length)
+          sb.Remove(0, 1);
+        //throw new System.ArgumentOutOfRangeException(nameof(compassPointInWords));
+      }
+
+      return FromAbbreviation(string.Concat(words.Select(s => s[0])));
+    }
+
     /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static int LatchNeedle(double radAzimuth, int positions)

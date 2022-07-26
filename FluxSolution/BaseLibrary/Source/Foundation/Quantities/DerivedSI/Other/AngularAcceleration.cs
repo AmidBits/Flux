@@ -5,14 +5,14 @@ namespace Flux
     public static string GetUnitString(this AngularAccelerationUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        AngularAccelerationUnit.RadianPerSecondSquare => preferUnicode ? "\u33AF" : "rad/s²",
+        AngularAccelerationUnit.RadianPerSecondSquared => preferUnicode ? "\u33AF" : "rad/s²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
   public enum AngularAccelerationUnit
   {
-    RadianPerSecondSquare,
+    RadianPerSecondSquared,
   }
 
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
@@ -20,14 +20,14 @@ namespace Flux
   public readonly struct AngularAcceleration
     : System.IComparable, System.IComparable<AngularAcceleration>, System.IConvertible, System.IEquatable<AngularAcceleration>, System.IFormattable, IUnitQuantifiable<double, AngularAccelerationUnit>
   {
-    public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquare;
+    public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquared;
 
     private readonly double m_value;
 
     public AngularAcceleration(double value, AngularAccelerationUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        AngularAccelerationUnit.RadianPerSecondSquare => value,
+        AngularAccelerationUnit.RadianPerSecondSquared => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -98,7 +98,7 @@ namespace Flux
     public double ToUnitValue(AngularAccelerationUnit unit = DefaultUnit)
       => unit switch
       {
-        AngularAccelerationUnit.RadianPerSecondSquare => m_value,
+        AngularAccelerationUnit.RadianPerSecondSquared => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     #endregion Implemented interfaces

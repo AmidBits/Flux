@@ -43,6 +43,8 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var azimuth = Flux.Azimuth.FromWords("North  -eastBynorth");
+
       for (var index = 253.ToBigInteger(); index < 258; index++)
       //for (var index = -10; index < 2; index++)
       {

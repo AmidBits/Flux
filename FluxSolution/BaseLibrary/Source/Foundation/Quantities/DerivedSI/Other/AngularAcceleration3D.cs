@@ -5,14 +5,14 @@ namespace Flux
   public readonly struct AngularAcceleration3D
       : System.IEquatable<AngularAcceleration3D>, IUnitQuantifiable<CartesianCoordinate3, AngularAccelerationUnit>
   {
-    public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquare;
+    public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquared;
 
     private readonly CartesianCoordinate3 m_value;
 
     public AngularAcceleration3D(CartesianCoordinate3 value, AngularAccelerationUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        AngularAccelerationUnit.RadianPerSecondSquare => value,
+        AngularAccelerationUnit.RadianPerSecondSquared => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -61,7 +61,7 @@ namespace Flux
     public CartesianCoordinate3 ToUnitValue(AngularAccelerationUnit unit = DefaultUnit)
       => unit switch
       {
-        AngularAccelerationUnit.RadianPerSecondSquare => m_value,
+        AngularAccelerationUnit.RadianPerSecondSquared => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     #endregion Implemented interfaces

@@ -5,14 +5,14 @@ namespace Flux
   public readonly struct Acceleration2D
     : System.IEquatable<Acceleration2D>, IUnitQuantifiable<CartesianCoordinate2, AccelerationUnit>
   {
-    public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquare;
+    public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquared;
 
     private readonly CartesianCoordinate2 m_value;
 
     public Acceleration2D(CartesianCoordinate2 value, AccelerationUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        AccelerationUnit.MeterPerSecondSquare => value,
+        AccelerationUnit.MeterPerSecondSquared => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -61,7 +61,7 @@ namespace Flux
     public CartesianCoordinate2 ToUnitValue(AccelerationUnit unit = DefaultUnit)
       => unit switch
       {
-        AccelerationUnit.MeterPerSecondSquare => m_value,
+        AccelerationUnit.MeterPerSecondSquared => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     #endregion Implemented interfaces
