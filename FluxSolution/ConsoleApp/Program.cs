@@ -44,6 +44,8 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       var azimuth = Flux.Azimuth.FromWords("North  -eastBynorth");
+      var azimuth2 = new Flux.Azimuth(39.75);
+      var cr32 = (Flux.ThirtytwoWindCompassRose)Flux.Azimuth.LatchNeedle(azimuth2.Radian, 32);
 
       for (var index = 253.ToBigInteger(); index < 258; index++)
       //for (var index = -10; index < 2; index++)
