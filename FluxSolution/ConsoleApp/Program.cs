@@ -44,9 +44,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var azimuth = Flux.Azimuth.FromWords("North  -eastBynorth");
-      var azimuth2 = new Flux.Azimuth(32.75);
-      var cr = (Flux.SixteenWindCompassRose)Azimuth.LatchNeedle(azimuth2.Value, 16);
+      Flux.Azimuth.TryParse("North  -eastBynorth", out var azimuth);
+      var azimuth2 = new Flux.Azimuth(38.75);
+      var cr = (Flux.ThirtytwoWindCompassRose)Azimuth.LatchNeedle(azimuth2.Value, 32);
       var crs = cr.ToString();
       var words = cr.ToStringOfWords();
       

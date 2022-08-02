@@ -70,7 +70,6 @@ namespace Flux
 
         if (index == Words.Length)
           sb.Remove(0, 1);
-        //throw new System.ArgumentOutOfRangeException(nameof(compassPointInWords));
       }
 
       return FromAbbreviation(string.Concat(words.Select(s => s[0])));
@@ -94,7 +93,14 @@ namespace Flux
     {
       try
       {
-        result = Parse(compassPointInWordsOrAbbreviation);
+        result = FromAbbreviation(compassPointInWordsOrAbbreviation);
+        return true;
+      }
+      catch { }
+
+      try
+      {
+        result = FromWords(compassPointInWordsOrAbbreviation);
         return true;
       }
       catch { }

@@ -3,8 +3,10 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 45, 90, 135, 180, 225, 270, 315] (every 45° notch, starting at 0), from an eight value compass point [0, 1, 2, 3, 4, 5, 6, 7].</summary>
-    public static Azimuth GetAzimuth(this EightWindCompassRose eightWindCompassRose)
-      => ((ThirtytwoWindCompassRose)(int)eightWindCompassRose).GetAzimuth();
+    public static Azimuth GetAzimuth(this EightWindCompassRose source)
+      => ((ThirtytwoWindCompassRose)(int)source).GetAzimuth();
+    public static string ToStringOfWords(this EightWindCompassRose source)
+      => ((ThirtytwoWindCompassRose)source).ToStringOfWords();
   }
 
   /// <summary>The eight principal winds (or main winds) are the four cardinals and four intercardinals considered together, that is: N, NE, E, SE, S, SW, W, NW. Each principal wind is 45° from its two neighbours.</summary>

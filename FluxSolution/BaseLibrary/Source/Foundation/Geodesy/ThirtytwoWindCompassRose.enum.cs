@@ -3,39 +3,26 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 359] (every 11.25°, starting at 0), from a thirty-two value compass point [0, 31]. Each principal wind is 11.25° from its two neighbours.</summary>
-    public static Azimuth GetAzimuth(this ThirtytwoWindCompassRose thirtyTwoWindCompassRose)
-      => new Azimuth(11.25 * (int)thirtyTwoWindCompassRose);
-    public static string ToStringOfWords(this ThirtytwoWindCompassRose thirtyTwoWindCompassRose)
+    public static Azimuth GetAzimuth(this ThirtytwoWindCompassRose source)
+      => new Azimuth(11.25 * (int)source);
+    public static string ToStringOfWords(this ThirtytwoWindCompassRose source)
     {
       var sb = new Flux.SpanBuilder<char>();
 
-      var s = thirtyTwoWindCompassRose.ToString().AsSpan();
+      var s = source.ToString();
+
+      var words = System.Enum.GetNames<WordsOfTheCompassPoints>();
 
       for (var index = 0; index < s.Length; index++)
       {
         if (index > 0)
           sb.Append(' ');
 
-        switch (s[index])
-        {
-          case 'N':
-            sb.Append("north");
-            break;
-          case 'E':
-            sb.Append("east");
-            break;
-          case 'S':
-            sb.Append("south");
-            break;
-          case 'W':
-            sb.Append("west");
-            break;
-          case 'b':
-            sb.Append("by");
-            break;
-          default:
-            throw new System.ArgumentOutOfRangeException(nameof(thirtyTwoWindCompassRose));
-        }
+        var c = s[index];
+
+        foreach (var word in words)
+          if (word.StartsWith(c.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            sb.Append(word);
       }
 
       return sb.ToString(0);
