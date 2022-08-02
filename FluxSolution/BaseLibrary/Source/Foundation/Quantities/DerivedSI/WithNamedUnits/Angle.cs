@@ -104,14 +104,25 @@
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    [System.Diagnostics.Contracts.Pure] public double InDegrees => ConvertRadianToDegree(m_radAngle);
+    [System.Diagnostics.Contracts.Pure]
+    public double InDegrees
+      => ConvertRadianToDegree(m_radAngle);
+
+    [System.Diagnostics.Contracts.Pure]
+    public Azimuth ToAzimuth()
+      => new(ToUnitValue(AngleUnit.Degree));
 
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2 ToCartesian2() => (CartesianCoordinate2)ConvertRotationAngleToCartesian2(m_radAngle);
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2 ToCartesian2()
+      => (CartesianCoordinate2)ConvertRotationAngleToCartesian2(m_radAngle);
+
     /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2 ToCartesian2Ex() => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_radAngle);
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2 ToCartesian2Ex()
+      => (CartesianCoordinate2)ConvertRotationAngleToCartesian2Ex(m_radAngle);
 
     [System.Diagnostics.Contracts.Pure]
     public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format, SexagesimalDegreeDirection direction, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)

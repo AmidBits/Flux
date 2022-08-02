@@ -12,6 +12,7 @@ using Flux;
 
 namespace ConsoleApp
 {
+  /*
   public class HorseGame
   {
     public enum LegType
@@ -35,7 +36,7 @@ namespace ConsoleApp
     System.Collections.Generic.Dictionary<Attributes, double> m_trainingStats = new System.Collections.Generic.Dictionary<Attributes, double>();
 
   }
-
+  */
   public class Program
   {
     private static void TimedMain(string[] args)
@@ -44,9 +45,11 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       var azimuth = Flux.Azimuth.FromWords("North  -eastBynorth");
-      var azimuth2 = new Flux.Azimuth(39.75);
-      var cr32 = (Flux.ThirtytwoWindCompassRose)Flux.Azimuth.LatchNeedle(azimuth2.Radian, 32);
-
+      var azimuth2 = new Flux.Azimuth(32.75);
+      var cr = (Flux.SixteenWindCompassRose)Azimuth.LatchNeedle(azimuth2.Value, 16);
+      var crs = cr.ToString();
+      var words = cr.ToStringOfWords();
+      
       for (var index = 253.ToBigInteger(); index < 258; index++)
       //for (var index = -10; index < 2; index++)
       {
