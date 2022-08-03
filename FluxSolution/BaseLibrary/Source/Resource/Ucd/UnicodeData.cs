@@ -60,8 +60,13 @@ namespace Flux.Resources.Ucd
 
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
-      foreach (var strings in Uri.GetStream().ReadCsv(new CsvOptions() { FieldSeparator = ';' }))
-        yield return strings;
+      using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+
+      foreach (var array in sr.ReadLines(false).Select(line => line.Split(';')))
+        yield return array;
+
+      //foreach (var strings in Uri.GetStream().ReadCsv(new CsvOptions() { FieldSeparator = ';' }))
+      //  yield return strings;
     }
   }
 }

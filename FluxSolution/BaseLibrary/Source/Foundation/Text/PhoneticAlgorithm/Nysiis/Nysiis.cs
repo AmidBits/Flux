@@ -46,7 +46,7 @@ namespace Flux.Text.PhoneticAlgorithm
     /// <summary>Ensure valid characters for nysiis code generation.</summary>
     public static string GetValidCharacters(string text)
     {
-      return string.Concat(text.RemoveDiacriticalMarks(c => (char)((System.Text.Rune)c).ReplaceDiacriticalLatinStroke().Value).Where(c => GlobalizationEnUs.IsEnglishLetter((System.Text.Rune)c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
+      return string.Concat(text.RemoveDiacriticalMarks(c => (char)((System.Text.Rune)c).ReplaceDiacriticalLatinStroke().Value).Where(c => ExtensionMethods.IsEnglishLetter((System.Text.Rune)c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
     }
   }
 }

@@ -1,4 +1,4 @@
-namespace Flux.Cultural.EnUs
+namespace Flux.English.UnitedStates
 {
   public static partial class Language
   {
@@ -34,6 +34,7 @@ namespace Flux.Cultural.EnUs
     //		new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'z', 0.24),
     //		new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'x', 0.05),
     //	};
+
     ///// <summary></summary>
     //// https://en.wikipedia.org/wiki/Letter_frequency#Relative_frequencies_of_letters_in_the_English_language
     //public static System.Collections.Generic.IList<System.Collections.Generic.KeyValuePair<System.Text.Rune, double>> RelativeFrequencyOfFirstLettersInPlainTexts
@@ -99,69 +100,10 @@ namespace Flux.Cultural.EnUs
     //		new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'j', 0.21),
     //		new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'q', 0.19),
     //	};
-    /// <summary></summary>
+
+    /// <summary>The relative frequency of each letter in the alphabet (ordinally indexed).</summary>
     // https://en.wikipedia.org/wiki/Letter_frequency
-    public static System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<System.Text.Rune, double>> RelativeFrequencyOfLetters
-      => new()
-      {
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'e', 0.12702),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'t', 0.09056),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'a', 0.08167),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'o', 0.07507),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'i', 0.06966),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'n', 0.06749),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'s', 0.06327),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'h', 0.06094),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'r', 0.05987),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'d', 0.04253),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'l', 0.04025),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'c', 0.02782),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'u', 0.02758),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'m', 0.02406),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'w', 0.02360),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'f', 0.02228),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'g', 0.02015),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'y', 0.01974),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'p', 0.01929),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'b', 0.01492),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'v', 0.00978),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'k', 0.00772),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'j', 0.00153),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'x', 0.00150),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'q', 0.00095),
-        new System.Collections.Generic.KeyValuePair<System.Text.Rune, double>((System.Text.Rune)'z', 0.00074),
-      };
-    public static Probability[] AlphabetLetterProbability
-      => new Probability[]
-      {
-        (Probability)0.08167,
-        (Probability)0.01492,
-        (Probability)0.02782,
-        (Probability)0.04253,
-        (Probability)0.12702,
-        (Probability)0.02228,
-        (Probability)0.02015,
-        (Probability)0.06094,
-        (Probability)0.06966,
-        (Probability)0.00153,
-        (Probability)0.00772,
-        (Probability)0.04025,
-        (Probability)0.02406,
-        (Probability)0.06749,
-        (Probability)0.07507,
-        (Probability)0.01929,
-        (Probability)0.00095,
-        (Probability)0.05987,
-        (Probability)0.06327,
-        (Probability)0.09056,
-        (Probability)0.02758,
-        (Probability)0.00978,
-        (Probability)0.02360,
-        (Probability)0.00150,
-        (Probability)0.01974,
-        (Probability)0.00074,
-      };
-    public static double[] AlphabetLetterProbability2
+    public static double[] AlphabetRelativeFrequencyOfLetters
       => new double[]
       {
         0.08167,

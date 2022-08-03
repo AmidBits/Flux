@@ -1,33 +1,27 @@
 namespace Flux
 {
-  public static partial class GlobalizationEnUs
+  public static partial class ExtensionMethods
   {
     /// <summary>Indicates whether the rune is an English consonant, where y|Y is optional.</summary>
     public static bool IsEnglishConsonant(this System.Text.Rune source, bool includeY)
       => IsEnglishConsonantLower(source, includeY) || IsEnglishConsonantUpper(source, includeY);
+
     /// <summary>Indicates whether the rune is an English consonant, where y|Y is optional.</summary>
     public static bool IsEnglishConsonantLower(this System.Text.Rune source, bool includeY)
-      => source.Value switch
-      {
-        'b' or 'c' or 'd' or 'f' or 'g' or 'h' or 'j' or 'k' or 'l' or 'm' or 'n' or 'p' or 'q' or 'r' or 's' or 't' or 'v' or 'w' or 'x' or 'z' => true,
-        'y' => includeY,
-        _ => false,
-      };
+      => IsEnglishLetterLower(source) && !IsEnglishVowelLower(source, !includeY);
+
     /// <summary>Indicates whether the rune is an English consonant, where y|Y is optional.</summary>
     public static bool IsEnglishConsonantUpper(this System.Text.Rune source, bool includeY)
-      => source.Value switch
-      {
-        'B' or 'C' or 'D' or 'F' or 'G' or 'H' or 'J' or 'K' or 'L' or 'M' or 'N' or 'P' or 'Q' or 'R' or 'S' or 'T' or 'V' or 'W' or 'X' or 'Z' => true,
-        'Y' => includeY,
-        _ => false,
-      };
+      => IsEnglishLetterUpper(source) && !IsEnglishVowelUpper(source, !includeY);
 
     /// <summary>Indicates whether the rune is an English letter.</summary>
     public static bool IsEnglishLetter(this System.Text.Rune source)
       => IsEnglishLetterLower(source) || IsEnglishLetterUpper(source);
+
     /// <summary>Indicates whether the rune is an English lower case letter.</summary>
     public static bool IsEnglishLetterLower(this System.Text.Rune source)
       => source.Value >= 'a' && source.Value <= 'z';
+
     /// <summary>Indicates whether the rune is an English upper case letter.</summary>
     public static bool IsEnglishLetterUpper(this System.Text.Rune source)
       => source.Value >= 'A' && source.Value <= 'Z';
@@ -35,6 +29,7 @@ namespace Flux
     /// <summary>Indicates whether the rune is an English vowel, where y|Y is optional.</summary>
     public static bool IsEnglishVowel(this System.Text.Rune source, bool includeY)
       => IsEnglishVowelLower(source, includeY) || IsEnglishVowelUpper(source, includeY);
+
     /// <summary>Indicates whether the rune is an English lower case vowel, where y is optional.</summary>
     public static bool IsEnglishVowelLower(this System.Text.Rune source, bool includeY)
       => source.Value switch
@@ -43,6 +38,7 @@ namespace Flux
         'y' => includeY,
         _ => false,
       };
+
     /// <summary>Indicates whether the rune is an English upper case vowel, where Y is optional.</summary>
     public static bool IsEnglishVowelUpper(this System.Text.Rune source, bool includeY)
       => source.Value switch

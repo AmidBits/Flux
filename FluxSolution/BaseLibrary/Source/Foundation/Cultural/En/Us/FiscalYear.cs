@@ -1,4 +1,4 @@
-namespace Flux.Cultural.EnUs
+namespace Flux.English.UnitedStates
 {
   public static partial class FiscalYear
   {

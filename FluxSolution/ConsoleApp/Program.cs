@@ -44,28 +44,29 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
+      var ud = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile));
+      var uddt = ud.AcquireDataTable();
+      System.Console.WriteLine(uddt.ToConsoleBlock());
+      //foreach (var ud1 in ud.GetStrings())
+      //System.Console.WriteLine(string.Join('|',ud1));
+
       Flux.Azimuth.TryParse("North  -eastBynorth", out var azimuth);
       var azimuth2 = new Flux.Azimuth(38.75);
       var cr = (Flux.ThirtytwoWindCompassRose)Azimuth.LatchNeedle(azimuth2.Value, 32);
       var crs = cr.ToString();
       var words = cr.ToStringOfWords();
-      
+
+
+
+      var sb = new Flux.SpanBuilder<char>();
+      foreach(var word in words.EnumerateSplits(' ').GetEnumerator())
+        sb.Append(word);
+      var s2 = sb.ToString(0);
+
       for (var index = 253.ToBigInteger(); index < 258; index++)
       //for (var index = -10; index < 2; index++)
       {
-        //var i2 = index.FoldLeft();
-        //var i2h = i2.ToString("X2");
-        //var array = index.ToByteArrayEx(out var byteIndex, out var byteValue);
-
-        //var arrayTarget = new byte[array.Length + 1];
-        //System.Array.Copy(array, 0, arrayTarget, 1, array.Length);
-
-        //var bi = new System.Numerics.BigInteger(arrayTarget);
-        //var bi2 = bi.FoldLeft();
-        //var bi2h = bi2.ToString("X2");
-        //var bih = bi.ToString("X2");
-        //var bia = bi.ToByteArrayEx(out var biaIndex, out var biaValue);
-
         System.Console.WriteLine($"{index:D2} : {index.ToString("X4")}");
 
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.BitLength(index)} (BitLength)");
@@ -88,8 +89,6 @@ namespace ConsoleApp
         System.Console.WriteLine($"{index:D2} : {Flux.BitOps.TrailingZeroCount(index)} (TrailingZeroCount)");
         System.Console.WriteLine();
       }
-
-
 
 
 

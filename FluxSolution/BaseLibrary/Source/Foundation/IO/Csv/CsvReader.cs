@@ -122,13 +122,14 @@ namespace Flux
         case CsvTokenType.EndField:
           var lastField = (string)m_fieldValues[m_fieldValues.Count - 1];
 
-          if (lastField == "\n")
-          {
-            m_fieldValues.RemoveAt(m_fieldValues.Count - 1);
-            m_tokenType = CsvTokenType.EndLine;
-            break;
-          }
-          else if (lastField.EndsWith('\n'))
+          //if (lastField == "\n")
+          //{
+          //  m_fieldValues.RemoveAt(m_fieldValues.Count - 1);
+          //  m_tokenType = CsvTokenType.EndLine;
+          //  break;
+          //}
+          //else
+          if (lastField.EndsWith('\n'))
           {
             m_fieldValues[m_fieldValues.Count - 1] = lastField.Substring(0, lastField.Length - 1);
             m_tokenType = CsvTokenType.EndLine;

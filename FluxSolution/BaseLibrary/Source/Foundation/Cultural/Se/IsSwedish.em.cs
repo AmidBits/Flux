@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GlobalizationSe
+  public static partial class ExtensionMethods
   {
     /// <summary>Indicates whether the rune is a Swedish consonant.</summary>
     public static bool IsSwedishConsonant(this System.Text.Rune source)

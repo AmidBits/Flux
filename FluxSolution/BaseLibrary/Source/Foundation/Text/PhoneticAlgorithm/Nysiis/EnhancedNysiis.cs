@@ -18,7 +18,7 @@ namespace Flux.Text.PhoneticAlgorithm
       {
         // Modified NYSIIS implementation as follows:
 
-        var firstCharVowel = GlobalizationEnUs.IsEnglishVowel((System.Text.Rune)code[0], false) ? code[0] : '\0'; // 1, if the first character of the name is a vowel, remember it.
+        var firstCharVowel = ExtensionMethods.IsEnglishVowel((System.Text.Rune)code[0], false) ? code[0] : '\0'; // 1, if the first character of the name is a vowel, remember it.
 
         code = System.Text.RegularExpressions.Regex.Replace(code, @"[SZ]+$", string.Empty); // 2, remove all 'S' and 'Z' chars from the end of the name.
 
@@ -72,7 +72,7 @@ namespace Flux.Text.PhoneticAlgorithm
         code = System.Text.RegularExpressions.Regex.Replace(code, @"([A-Z])\1+", @"$1"); // 24. collapse all strings of repeated characters.
 
         // 25. if first character of original name is a vowel, prepend to code(or replace first transcoded 'A')
-        if (GlobalizationEnUs.IsEnglishVowel((System.Text.Rune)firstCharVowel, false))
+        if (ExtensionMethods.IsEnglishVowel((System.Text.Rune)firstCharVowel, false))
           code = firstCharVowel + code;
 
         if (MaxCodeLength < code.Length)
@@ -84,6 +84,6 @@ namespace Flux.Text.PhoneticAlgorithm
 
     /// <summary>Ensure valid characters for nysiis code generation.</summary>
     public static string GetValidCharacters(string text)
-      => string.Concat(text.RemoveDiacriticalMarks(c => (char)((System.Text.Rune)c).ReplaceDiacriticalLatinStroke().Value).Where(c => GlobalizationEnUs.IsEnglishLetter((System.Text.Rune)c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
+      => string.Concat(text.RemoveDiacriticalMarks(c => (char)((System.Text.Rune)c).ReplaceDiacriticalLatinStroke().Value).Where(c => ExtensionMethods.IsEnglishLetter((System.Text.Rune)c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
   }
 }

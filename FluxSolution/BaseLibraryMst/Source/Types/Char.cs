@@ -19,40 +19,40 @@ namespace Types
     [TestMethod]
     public void IsEnglishConsonant()
     {
-      Assert.AreEqual(false, GlobalizationEnUs.IsEnglishConsonant((System.Text.Rune)'ñ', true));
-      Assert.AreEqual(true, GlobalizationEnUs.IsEnglishConsonant((System.Text.Rune)'t', true));
-      Assert.AreEqual(false, GlobalizationEnUs.IsEnglishConsonant((System.Text.Rune)'A', true));
+      Assert.AreEqual(false, ExtensionMethods.IsEnglishConsonant((System.Text.Rune)'ñ', true));
+      Assert.AreEqual(true, ExtensionMethods.IsEnglishConsonant((System.Text.Rune)'t', true));
+      Assert.AreEqual(false, ExtensionMethods.IsEnglishConsonant((System.Text.Rune)'A', true));
     }
 
     [TestMethod]
     public void IsEnglishLetter()
     {
-      Assert.AreEqual(false, GlobalizationEnUs.IsEnglishLetter((System.Text.Rune)'ñ'));
-      Assert.AreEqual(true, GlobalizationEnUs.IsEnglishLetter((System.Text.Rune)'t'));
-      Assert.AreEqual(true, GlobalizationEnUs.IsEnglishLetter((System.Text.Rune)'A'));
+      Assert.AreEqual(false, ExtensionMethods.IsEnglishLetter((System.Text.Rune)'ñ'));
+      Assert.AreEqual(true, ExtensionMethods.IsEnglishLetter((System.Text.Rune)'t'));
+      Assert.AreEqual(true, ExtensionMethods.IsEnglishLetter((System.Text.Rune)'A'));
     }
 
     [TestMethod]
     public void IsEnglishLetterLower()
     {
-      Assert.AreEqual(true, GlobalizationEnUs.IsEnglishLetterLower((System.Text.Rune)'t'));
-      Assert.AreEqual(false, GlobalizationEnUs.IsEnglishLetterLower((System.Text.Rune)'A'));
+      Assert.AreEqual(true, ExtensionMethods.IsEnglishLetterLower((System.Text.Rune)'t'));
+      Assert.AreEqual(false, ExtensionMethods.IsEnglishLetterLower((System.Text.Rune)'A'));
     }
 
     [TestMethod]
     public void IsEnglishLetterUpper()
     {
-      Assert.AreEqual(false, GlobalizationEnUs.IsEnglishLetterUpper((System.Text.Rune)'t'));
-      Assert.AreEqual(true, GlobalizationEnUs.IsEnglishLetterUpper((System.Text.Rune)'A'));
+      Assert.AreEqual(false, ExtensionMethods.IsEnglishLetterUpper((System.Text.Rune)'t'));
+      Assert.AreEqual(true, ExtensionMethods.IsEnglishLetterUpper((System.Text.Rune)'A'));
     }
 
     [TestMethod]
     public void IsEnglishVowel()
     {
-      Assert.AreEqual(false, GlobalizationEnUs.IsEnglishVowel((System.Text.Rune)'ñ', true));
-      Assert.AreEqual(false, GlobalizationEnUs.IsEnglishVowel((System.Text.Rune)'y', false));
-      Assert.AreEqual(true, GlobalizationEnUs.IsEnglishVowel((System.Text.Rune)'y', true));
-      Assert.AreEqual(true, GlobalizationEnUs.IsEnglishVowel((System.Text.Rune)'A', false));
+      Assert.AreEqual(false, ExtensionMethods.IsEnglishVowel((System.Text.Rune)'ñ', true));
+      Assert.AreEqual(false, ExtensionMethods.IsEnglishVowel((System.Text.Rune)'y', false));
+      Assert.AreEqual(true, ExtensionMethods.IsEnglishVowel((System.Text.Rune)'y', true));
+      Assert.AreEqual(true, ExtensionMethods.IsEnglishVowel((System.Text.Rune)'A', false));
     }
   }
 }

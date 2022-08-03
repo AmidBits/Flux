@@ -9,24 +9,24 @@ namespace Flux
 
       double accumulatedValues = 0.0, probabilityThreshold = source.NextDouble();
 
-      for (var index = 0; index < Cultural.EnUs.Language.RelativeFrequencyOfLetters.Count; index++)
+      for (var index = 0; index < English.UnitedStates.Language.AlphabetRelativeFrequencyOfLetters.Length; index++)
       {
-        var kvp = Cultural.EnUs.Language.RelativeFrequencyOfLetters[index];
+        var relativeFrequency = English.UnitedStates.Language.AlphabetRelativeFrequencyOfLetters[index];
 
-        accumulatedValues += kvp.Value;
+        accumulatedValues += relativeFrequency;
 
         if (probabilityThreshold <= accumulatedValues)
-          return kvp.Key;
+          return (System.Text.Rune)(char)('A' + index);
       }
 
-      return Cultural.EnUs.Language.RelativeFrequencyOfLetters[0].Key;
+      return (System.Text.Rune)'A';
     }
 
     /// <summary>Returns the next probable consonant based on <paramref name="source"/> and whether Y will be considered.</summary>
     public static System.Text.Rune NextProbabilityRuneEnUsConsonant(this System.Random source, bool includeY)
     {
       var rune = NextProbabilityRuneEnUs(source);
-      while (!GlobalizationEnUs.IsEnglishConsonant(rune, includeY))
+      while (!ExtensionMethods.IsEnglishConsonant(rune, includeY))
         rune = NextProbabilityRuneEnUs(source);
       return rune;
     }
@@ -34,7 +34,7 @@ namespace Flux
     public static System.Text.Rune NextProbabilityRuneEnUsVowel(this System.Random source, bool includeY)
     {
       var rune = NextProbabilityRuneEnUs(source);
-      while (!GlobalizationEnUs.IsEnglishVowel(rune, includeY))
+      while (!ExtensionMethods.IsEnglishVowel(rune, includeY))
         rune = NextProbabilityRuneEnUs(source);
       return rune;
     }
