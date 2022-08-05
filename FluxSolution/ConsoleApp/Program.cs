@@ -44,6 +44,8 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      //      var unicodeData = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile));
+      //      var csv = new Flux.CsvReader(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile).GetStream(), new CsvOptions() { FieldSeparator = ';' });
 
       var ud = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile));
       var uddt = ud.AcquireDataTable();
@@ -60,7 +62,7 @@ namespace ConsoleApp
 
 
       var sb = new Flux.SpanBuilder<char>();
-      foreach(var word in words.EnumerateSplits(' ').GetEnumerator())
+      foreach (var word in words.EnumerateSplits(' ').GetEnumerator())
         sb.Append(word);
       var s2 = sb.ToString(0);
 
@@ -92,7 +94,7 @@ namespace ConsoleApp
 
 
 
-      var xx = new Flux.Resources.FxSequence(TimeZoneInfo.GetSystemTimeZones());
+      var xx = new Flux.Resources.DotNet.FxSequence(TimeZoneInfo.GetSystemTimeZones());
 
       var tz = TimeZoneInfo.GetSystemTimeZones();
 

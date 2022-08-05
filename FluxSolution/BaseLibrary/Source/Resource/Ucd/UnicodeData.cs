@@ -6,7 +6,7 @@ namespace Flux.Resources.Ucd
   /// <seealso cref="https://unicode.org/Public/"/>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt
   public sealed class UnicodeData
-    : ATabularDataAcquirer
+    : ATabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\Ucd\UnicodeData.txt";
@@ -58,15 +58,13 @@ namespace Flux.Resources.Ucd
       }
     }
 
+    /// <summary>Returns Unicode data. No field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
       using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
 
       foreach (var array in sr.ReadLines(false).Select(line => line.Split(';')))
         yield return array;
-
-      //foreach (var strings in Uri.GetStream().ReadCsv(new CsvOptions() { FieldSeparator = ';' }))
-      //  yield return strings;
     }
   }
 }

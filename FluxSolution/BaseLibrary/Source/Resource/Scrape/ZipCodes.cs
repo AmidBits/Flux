@@ -4,7 +4,7 @@ namespace Flux.Resources.Scrape
   /// <see cref="http://federalgovernmentzipcodes.us/"/>
   // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
   public sealed class ZipCodes
-    : ATabularDataAcquirer
+    : ATabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\Scrape\free-zipcode-database.csv";
@@ -36,42 +36,38 @@ namespace Flux.Resources.Scrape
     {
       using var e = GetStrings().Skip(1).GetEnumerator();
 
-      if (e.MoveNext())
+      while (e.MoveNext())
       {
-        yield return e.Current; // This is the field names (column headers).
+        var objects = new object[e.Current.Length];
 
-        while (e.MoveNext())
+        for (var index = objects.Length - 1; index >= 0; index--)
         {
-          var objects = new object[e.Current.Length];
-
-          for (var index = objects.Length - 1; index >= 0; index--)
+          switch (index)
           {
-            switch (index)
-            {
-              case 0:
-              case 16:
-              case 17:
-              case 18:
-                objects[index] = int.TryParse(e.Current[index], System.Globalization.NumberStyles.Integer, null, out var intValue) ? intValue : System.DBNull.Value;
-                break;
-              case 6:
-              case 7:
-              case 8:
-              case 9:
-              case 10:
-                objects[index] = double.TryParse(e.Current[index], System.Globalization.NumberStyles.Float, null, out var doubleValue) ? doubleValue : System.DBNull.Value;
-                break;
-              default:
-                objects[index] = e.Current[index];
-                break;
-            }
+            case 0:
+            case 16:
+            case 17:
+            case 18:
+              objects[index] = int.TryParse(e.Current[index], System.Globalization.NumberStyles.Integer, null, out var intValue) ? intValue : System.DBNull.Value;
+              break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+              objects[index] = double.TryParse(e.Current[index], System.Globalization.NumberStyles.Float, null, out var doubleValue) ? doubleValue : System.DBNull.Value;
+              break;
+            default:
+              objects[index] = e.Current[index];
+              break;
           }
-
-          yield return objects;
         }
+
+        yield return objects;
       }
     }
 
+    /// <summary>Returns zip codes with the first line being field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
       => Uri.GetStream().ReadCsv(new CsvOptions());
   }

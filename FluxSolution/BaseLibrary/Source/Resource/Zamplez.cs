@@ -22,7 +22,7 @@ namespace Flux
         new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile)),
         new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(new System.Uri(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.LocalFile)),
         new Flux.Resources.W3c.NamedCharacterReferences(new System.Uri(Flux.Resources.W3c.NamedCharacterReferences.LocalFile)),
-        new Flux.Resources.DotNet.TimeZones(),
+        new Flux.Resources.DotNet.FxSequence(TimeZoneInfo.GetSystemTimeZones()),
       };
 
       foreach (var tda in tdas)

@@ -4,7 +4,7 @@ namespace Flux.Resources.Census
   /// <see cref="https://www.census.gov/content/census/en/data/tables/time-series/demo/popest/2010s-counties-detail.html"/>
   // Download URL: https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv
   public sealed class CountiesAllData
-    : ATabularDataAcquirer
+    : ATabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\Census\cc-est2019-alldata-04.csv";
@@ -35,29 +35,25 @@ namespace Flux.Resources.Census
     {
       using var e = GetStrings().Skip(1).GetEnumerator();
 
-      if (e.MoveNext())
+      while (e.MoveNext())
       {
-        yield return e.Current;
+        var objectArray = new object[e.Current.Length];
 
-        while (e.MoveNext())
+        for (var i = objectArray.Length - 1; i >= 0; i--)
         {
-          var objectArray = new object[e.Current.Length];
-
-          for (var i = objectArray.Length - 1; i >= 0; i--)
+          objectArray[i] = i switch
           {
-            objectArray[i] = i switch
-            {
-              var ic when ic >= 5 => System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null),
-              _ => e.Current[i],
-            };
-            ;
-          }
-
-          yield return objectArray;
+            var ic when ic >= 5 => System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null),
+            _ => e.Current[i],
+          };
+          ;
         }
+
+        yield return objectArray;
       }
     }
 
+    /// <summary>Returns counties all data with the first line being field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
       foreach (var record in Uri.GetStream().ReadCsv(new CsvOptions()))

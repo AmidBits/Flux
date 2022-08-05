@@ -5,7 +5,7 @@ namespace Flux.Resources.ProjectGutenberg
   /// <see cref="http://www.gutenberg.org/ebooks/29765"/>
   // Download URL: http://www.gutenberg.org/ebooks/29765.txt.utf-8
   public sealed class WebstersUnabridgedDictionary
-    : ATabularDataAcquirer
+    : ATabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\pg29765.txt";
@@ -26,6 +26,7 @@ namespace Flux.Resources.ProjectGutenberg
     public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
       => GetStrings();
 
+    /// <summary>Returns project Gutenberg's Websters unabridged dictionary data. No field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
       var m_reSplitWords = new System.Text.RegularExpressions.Regex(@"\s*;\s*", System.Text.RegularExpressions.RegexOptions.Compiled);

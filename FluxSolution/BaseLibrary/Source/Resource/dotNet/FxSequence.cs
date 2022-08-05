@@ -1,8 +1,8 @@
-namespace Flux.Resources
+namespace Flux.Resources.DotNet
 {
   /// <summary>.NET time zones.</summary>
   public sealed class FxSequence
-    : ATabularDataAcquirer
+    : ATabularDataAcquirable
   {
     private System.Collections.IEnumerable m_sequence;
     public FxSequence(System.Collections.IEnumerable sequence)

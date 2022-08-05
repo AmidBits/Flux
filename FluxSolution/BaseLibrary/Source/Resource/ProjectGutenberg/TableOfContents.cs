@@ -2,7 +2,7 @@ namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</summary>
   public sealed class TableOfContents
-    : ATabularDataAcquirer
+    : ATabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\GUTINDEX.ALL";
@@ -22,6 +22,7 @@ namespace Flux.Resources.ProjectGutenberg
     public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
       => GetStrings();
 
+    /// <summary>Returns project Gutenberg's table of contents data. No field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
       var reMatch = new System.Text.RegularExpressions.Regex(@"^[\p{L}\p{N}\p{Zs}\p{P}]+\s{2,}\d+$", System.Text.RegularExpressions.RegexOptions.Compiled);

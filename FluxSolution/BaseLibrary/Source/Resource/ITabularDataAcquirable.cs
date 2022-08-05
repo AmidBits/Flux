@@ -10,7 +10,7 @@
     //System.Collections.Generic.IEnumerable<object[]> AcquireTabularData();
   }
 
-  public abstract class ATabularDataAcquirer
+  public abstract class ATabularDataAcquirable
     : ITabularDataAcquirable
   {
     public abstract string[] FieldNames { get; }

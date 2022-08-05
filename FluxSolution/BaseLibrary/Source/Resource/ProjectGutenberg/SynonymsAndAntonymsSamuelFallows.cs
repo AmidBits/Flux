@@ -4,7 +4,7 @@ namespace Flux.Resources.ProjectGutenberg
   /// <remarks>Returns keywords, synonyms and antonyms.</summary>
   /// <see cref="http://www.gutenberg.org/ebooks/51155"/>
   public sealed class SynonymsAndAntonymsSamuelFallows
-    : ATabularDataAcquirer
+    : ATabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\51155-0.txt";
@@ -24,6 +24,7 @@ namespace Flux.Resources.ProjectGutenberg
     public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
       => GetStrings();
 
+    /// <summary>Returns project Gutenberg's Synonyms and antonyms by Samuel Fallows data. No field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
       var reSection = new System.Text.RegularExpressions.Regex(@"(?<=(KEY:|SYN:|ANT:))\s", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);

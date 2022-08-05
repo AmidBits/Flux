@@ -6,7 +6,7 @@ namespace Flux.Resources.Ucd
   /// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt
   public sealed class Blocks
-    : ATabularDataAcquirer
+    : ATabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\Ucd\Blocks.txt";
@@ -49,6 +49,7 @@ namespace Flux.Resources.Ucd
       }
     }
 
+    /// <summary>Returns Unicode blocks data. No field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
       var m_reSplit = new System.Text.RegularExpressions.Regex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture);

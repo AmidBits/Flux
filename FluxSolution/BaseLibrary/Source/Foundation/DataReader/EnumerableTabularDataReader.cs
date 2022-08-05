@@ -20,12 +20,12 @@ namespace Flux.Data
     {
       m_fieldNames.Clear();
 
-      if (fieldCount > 0)
+      if (fieldCount > 0) // If fieldCount is one or more, generate column names "Column_n..".
       {
         for (var index = 1; index <= fieldCount; index++)
           m_fieldNames.Add($"Column_{index}");
       }
-      else
+      else // Otherwise, try to move to the first element and use the field values for field names.
       {
         IsClosed = !m_enumerator.MoveNext();
 
@@ -40,7 +40,7 @@ namespace Flux.Data
     public EnumerableTabularDataReader(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<object>> source, System.Collections.Generic.IEnumerable<string> fieldNames)
       : this(source)
     {
-      m_fieldNames.AddRange(fieldNames);
+      m_fieldNames.AddRange(fieldNames); // Override the field names 
 
       FieldCount = m_fieldNames.Count;
     }

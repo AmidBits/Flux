@@ -1,7 +1,7 @@
 namespace Flux.Resources.ProjectGutenberg
 {
   public sealed class TenThousandWonderfulThings
-    : ATabularDataAcquirer
+    : ATabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\pg45849.txt";
@@ -21,6 +21,7 @@ namespace Flux.Resources.ProjectGutenberg
     public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
       => GetStrings();
 
+    /// <summary>Returns project Gutenberg's Ten thousand wonderful things data. No field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
       var reTitle = new System.Text.RegularExpressions.Regex(@"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$", System.Text.RegularExpressions.RegexOptions.Compiled);

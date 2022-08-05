@@ -6,7 +6,7 @@ namespace Flux.Resources.Scowl
 	/// <seealso cref="http://wordlist.aspell.net/"/>
 	/// <seealso cref="https://github.com/en-wl/wordlist/blob/master/"/>
 	public sealed class TwoOfTwelveFull
-		: ATabularDataAcquirer
+		: ATabularDataAcquirable
 	{
 		public static string LocalFile
 			=> @"file://\Resources\Scowl\2of12full.txt";
@@ -26,6 +26,7 @@ namespace Flux.Resources.Scowl
 		public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
 			=> GetStrings();
 
+		/// <summary>Returns two of twelve full data. No field names.</summary>
 		public System.Collections.Generic.IEnumerable<string[]> GetStrings()
 		{
 			var reSplit = new System.Text.RegularExpressions.Regex(@"(?<=[\-0-9]+[:#&=]?)\s+", System.Text.RegularExpressions.RegexOptions.Compiled);
