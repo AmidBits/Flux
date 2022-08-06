@@ -2,31 +2,6 @@
 //using System.Collections.Generic;
 //using System.Linq;
 
-//namespace Flux.Model.Structer
-//{
-//	public class Link
-//	{
-//		public System.Collections.Generic.Dictionary<string, object> Properties = new System.Collections.Generic.Dictionary<string, object>();
-//	}
-
-//	public class Node
-//	{
-//		public System.Collections.Generic.Dictionary<string, object> Properties = new System.Collections.Generic.Dictionary<string, object>();
-//	}
-
-//	public class Mesh
-//	{
-//		public System.Collections.Generic.Dictionary<string, Node[]> Links = new System.Collections.Generic.Dictionary<string, Node[]>();
-
-//		public System.Collections.Generic.Dictionary<string, Node> Nodes = new System.Collections.Generic.Dictionary<string, Node>();
-
-//		public Mesh()
-//		{
-//			//Links["B2"][0].Properties[""];
-//		}
-//	}
-//}
-
 //namespace Flux.Model
 //{
 //	public static class Board

@@ -4,11 +4,11 @@ namespace Flux.Resources.Scrape
   /// <see cref="http://federalgovernmentzipcodes.us/"/>
   // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
   public sealed class ZipCodes
-    : ATabularDataAcquirable
+    : ITabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\Scrape\free-zipcode-database.csv";
-    public static System.Uri UriSource
+    public static System.Uri SourceUri
       => new(@"http://federalgovernmentzipcodes.us/free-zipcode-database.csv");
 
     public System.Uri Uri { get; private set; }
@@ -17,11 +17,11 @@ namespace Flux.Resources.Scrape
       => Uri = uri ?? throw new System.ArgumentNullException(nameof(uri));
 
     private string[]? m_fieldNames = null;
-    public override string[] FieldNames
+    public string[] FieldNames
       => m_fieldNames ??= GetStrings().First().ToArray();
 
     private System.Type[]? m_fieldTypes = null;
-    public override System.Type[] FieldTypes
+    public System.Type[] FieldTypes
       => m_fieldTypes ??= FieldNames.Select((e, i) =>
       {
         return i switch
@@ -32,7 +32,7 @@ namespace Flux.Resources.Scrape
         };
       }).ToArray();
 
-    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
       using var e = GetStrings().Skip(1).GetEnumerator();
 

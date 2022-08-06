@@ -5,11 +5,11 @@ namespace Flux.Resources.ProjectGutenberg
   /// <see cref="http://www.gutenberg.org/ebooks/29765"/>
   // Download URL: http://www.gutenberg.org/ebooks/29765.txt.utf-8
   public sealed class WebstersUnabridgedDictionary
-    : ATabularDataAcquirable
+    : ITabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\pg29765.txt";
-    public static System.Uri UriSource
+    public static System.Uri SourceUri
       => new(@"http://www.gutenberg.org/ebooks/29765.txt.utf-8");
 
     public System.Uri Uri { get; private set; }
@@ -18,12 +18,12 @@ namespace Flux.Resources.ProjectGutenberg
       => Uri = uri;
 
 
-    public override string[] FieldNames
+    public string[] FieldNames
       => new string[] { @"Title", @"Text" };
-    public override Type[] FieldTypes
+    public Type[] FieldTypes
       => FieldNames.Select(s => typeof(string)).ToArray();
 
-    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
       => GetStrings();
 
     /// <summary>Returns project Gutenberg's Websters unabridged dictionary data. No field names.</summary>
@@ -63,13 +63,13 @@ namespace Flux.Resources.ProjectGutenberg
         {
           if (line.Length > 0)
           {
-            if(line.StartsWith("End of Project Gutenberg"))
+            if (line.StartsWith("End of Project Gutenberg"))
             {
               yield return ReturnStrings();
 
               yield break;
             }
-            
+
             if (definition.Length > 0 && !definition.ToString().EndsWith(System.Environment.NewLine, System.StringComparison.Ordinal)) definition.Append(' ');
             definition.Append(line.Trim());
           }

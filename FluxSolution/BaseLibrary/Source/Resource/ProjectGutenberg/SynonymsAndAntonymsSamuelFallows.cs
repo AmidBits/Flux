@@ -4,11 +4,11 @@ namespace Flux.Resources.ProjectGutenberg
   /// <remarks>Returns keywords, synonyms and antonyms.</summary>
   /// <see cref="http://www.gutenberg.org/ebooks/51155"/>
   public sealed class SynonymsAndAntonymsSamuelFallows
-    : ATabularDataAcquirable
+    : ITabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\51155-0.txt";
-    public static System.Uri UriSource
+    public static System.Uri SourceUri
       => new(@"http://www.gutenberg.org/files/51155/51155-0.txt");
 
     public System.Uri Uri { get; private set; }
@@ -16,12 +16,12 @@ namespace Flux.Resources.ProjectGutenberg
     public SynonymsAndAntonymsSamuelFallows(System.Uri uri)
       => Uri = uri;
 
-    public override string[] FieldNames
+    public string[] FieldNames
       => new string[] { "Keywords", "Synonyms", "Antonyms" };
-    public override Type[] FieldTypes
+    public Type[] FieldTypes
       => FieldNames.Select(s => typeof(string)).ToArray();
 
-    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
       => GetStrings();
 
     /// <summary>Returns project Gutenberg's Synonyms and antonyms by Samuel Fallows data. No field names.</summary>

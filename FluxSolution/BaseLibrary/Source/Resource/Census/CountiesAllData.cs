@@ -4,11 +4,11 @@ namespace Flux.Resources.Census
   /// <see cref="https://www.census.gov/content/census/en/data/tables/time-series/demo/popest/2010s-counties-detail.html"/>
   // Download URL: https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv
   public sealed class CountiesAllData
-    : ATabularDataAcquirable
+    : ITabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\Census\cc-est2019-alldata-04.csv";
-    public static System.Uri UriSource
+    public static System.Uri SourceUri
       => new(@"https://www2.census.gov/programs-surveys/popest/datasets/2010-2019/counties/asrh/cc-est2019-alldata-04.csv");
 
     public System.Uri Uri { get; private set; }
@@ -17,11 +17,11 @@ namespace Flux.Resources.Census
       => Uri = uri;
 
     private string[]? m_fieldNames = null;
-    public override string[] FieldNames
+    public string[] FieldNames
       => m_fieldNames ??= GetStrings().First().ToArray();
 
     private System.Type[]? m_fieldTypes = null;
-    public override System.Type[] FieldTypes
+    public System.Type[] FieldTypes
       => m_fieldTypes ??= FieldNames.Select((e, i) =>
       {
         return i switch
@@ -31,7 +31,7 @@ namespace Flux.Resources.Census
         };
       }).ToArray();
 
-    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
       using var e = GetStrings().Skip(1).GetEnumerator();
 

@@ -2,11 +2,11 @@ namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</summary>
   public sealed class TableOfContents
-    : ATabularDataAcquirable
+    : ITabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\GUTINDEX.ALL";
-    public static System.Uri UriSource
+    public static System.Uri SourceUri
       => new(@"http://www.gutenberg.org/dirs/GUTINDEX.ALL");
 
     public System.Uri Uri { get; private set; }
@@ -14,12 +14,12 @@ namespace Flux.Resources.ProjectGutenberg
     public TableOfContents(System.Uri uri)
       => Uri = uri;
 
-    public override string[] FieldNames
+    public string[] FieldNames
       => new string[] { @"Ebook", @"Number" };
-    public override Type[] FieldTypes
+    public Type[] FieldTypes
       => FieldNames.Select(s => typeof(string)).ToArray();
 
-    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
       => GetStrings();
 
     /// <summary>Returns project Gutenberg's table of contents data. No field names.</summary>

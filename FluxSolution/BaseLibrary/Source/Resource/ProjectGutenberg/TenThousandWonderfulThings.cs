@@ -1,11 +1,11 @@
 namespace Flux.Resources.ProjectGutenberg
 {
   public sealed class TenThousandWonderfulThings
-    : ATabularDataAcquirable
+    : ITabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\ProjectGutenberg\pg45849.txt";
-    public static System.Uri UriSource
+    public static System.Uri SourceUri
       => new(@"http://www.gutenberg.org/ebooks/45849.txt.utf-8");
 
     public System.Uri Uri { get; private set; }
@@ -13,12 +13,12 @@ namespace Flux.Resources.ProjectGutenberg
     public TenThousandWonderfulThings(System.Uri uri)
       => Uri = uri;
 
-    public override string[] FieldNames
+    public string[] FieldNames
       => new string[] { @"Title", @"Text" };
-    public override Type[] FieldTypes
+    public Type[] FieldTypes
       => FieldNames.Select(s => typeof(string)).ToArray();
 
-    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
       => GetStrings();
 
     /// <summary>Returns project Gutenberg's Ten thousand wonderful things data. No field names.</summary>

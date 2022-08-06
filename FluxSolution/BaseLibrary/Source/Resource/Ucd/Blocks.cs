@@ -6,11 +6,11 @@ namespace Flux.Resources.Ucd
   /// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt
   public sealed class Blocks
-    : ATabularDataAcquirable
+    : ITabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\Ucd\Blocks.txt";
-    public static System.Uri UriSource
+    public static System.Uri SourceUri
       => new(@"https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt");
 
     public System.Uri Uri { get; private set; }
@@ -18,12 +18,12 @@ namespace Flux.Resources.Ucd
     public Blocks(System.Uri uri)
       => Uri = uri;
 
-    public override string[] FieldNames
+    public string[] FieldNames
       => new string[] { "StartCode", "EndCode", "BlockName" };
-    public override System.Type[] FieldTypes
+    public System.Type[] FieldTypes
       => new System.Type[] { typeof(int), typeof(int), typeof(string) };
 
-    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
       using var e = GetStrings().GetEnumerator();
 

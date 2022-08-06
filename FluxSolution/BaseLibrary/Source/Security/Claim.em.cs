@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Safety
+  public static partial class ExtensionMethods
   {
     public static System.Xml.Linq.XElement ClaimXml(this System.Security.Claims.Claim source)
     {

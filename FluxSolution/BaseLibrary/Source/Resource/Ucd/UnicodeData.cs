@@ -6,11 +6,11 @@ namespace Flux.Resources.Ucd
   /// <seealso cref="https://unicode.org/Public/"/>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt
   public sealed class UnicodeData
-    : ATabularDataAcquirable
+    : ITabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\Ucd\UnicodeData.txt";
-    public static System.Uri UriSource
+    public static System.Uri SourceUri
       => new(@"https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt");
 
     public System.Uri Uri { get; private set; }
@@ -18,9 +18,9 @@ namespace Flux.Resources.Ucd
     public UnicodeData(System.Uri uri)
       => Uri = uri;
 
-    public override string[] FieldNames
+    public string[] FieldNames
       => new string[] { "CodePoint", "Name", "GeneralCategory", "CanonicalCombiningClass", "BidiClass", "DecompositionTypeMapping", "NumericType6", "NumericType7", "NumericType8", "BidiMirrored", "Unicode1Name", "IsoComment", "SimpleUppercaseMapping", "SimpleLowercaseMapping", "SimpleTitlecaseMapping" };
-    public override Type[] FieldTypes
+    public Type[] FieldTypes
       => FieldNames.Select((e, i) =>
       {
         return i switch
@@ -31,7 +31,7 @@ namespace Flux.Resources.Ucd
         };
       }).ToArray();
 
-    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
       using var e = GetStrings().GetEnumerator();
 

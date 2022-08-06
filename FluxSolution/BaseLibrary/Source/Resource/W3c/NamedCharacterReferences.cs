@@ -2,23 +2,23 @@ namespace Flux.Resources.W3c
 {
   /// <summary>The character reference names that are supported by HTML, and the code points to which they refer.</summary>
   public sealed class NamedCharacterReferences
-    : ATabularDataAcquirable
+    : ITabularDataAcquirable
   {
     public static string LocalFile
       => @"file://\Resources\W3c\NamedCharacterReferences.json";
-    public static System.Uri UriSource
+    public static System.Uri SourceUri
       => new(@"https://html.spec.whatwg.org/entities.json");
     public System.Uri Uri { get; private set; }
 
     public NamedCharacterReferences(System.Uri uri)
       => Uri = uri;
 
-    public override string[] FieldNames
+    public string[] FieldNames
       => new string[] { "Name", "CodePoints", "Characters", "CharactersAsString" };
-    public override Type[] FieldTypes
+    public Type[] FieldTypes
       => FieldNames.Select(s => typeof(string)).ToArray();
 
-    public override System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
       => GetStrings();
 
     /// <summary>Returns W3c named character reference data. No field names.</summary>
