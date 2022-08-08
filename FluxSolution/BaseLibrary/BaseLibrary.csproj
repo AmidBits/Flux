@@ -16,6 +16,7 @@
 		<Version>1.0.0.0</Version>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+		<EnablePreviewFeatures>True</EnablePreviewFeatures>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

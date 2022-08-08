@@ -44,28 +44,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      //var unicodeData = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile));
-      //var csv = new Flux.CsvReader(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile).GetStream(), new CsvOptions() { FieldSeparator = ';' });
 
-      var ud = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile));
-      var etdr = ud.AcquireDataReader();
-      var uddt = ud.AcquireDataTable(nameof(Flux.Resources.Ucd.UnicodeData));
-      System.Console.WriteLine(uddt.ToConsoleBlock());
-      //foreach (var ud1 in ud.GetStrings())
-      //System.Console.WriteLine(string.Join('|',ud1));
-
-      Flux.Azimuth.TryParse("North  -eastBynorth", out var azimuth);
-      var azimuth2 = new Flux.Azimuth(38.75);
-      var cr = (Flux.ThirtytwoWindCompassRose)Azimuth.LatchNeedle(azimuth2.Value, 32);
-      var crs = cr.ToString();
-      var words = cr.ToStringOfWords();
-
-
-
-      var sb = new Flux.SpanBuilder<char>();
-      foreach (var word in words.EnumerateSplits(' ').GetEnumerator())
-        sb.Append(word);
-      var s2 = sb.ToString(0);
 
       for (var index = 253.ToBigInteger(); index < 258; index++)
       //for (var index = -10; index < 2; index++)
