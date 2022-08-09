@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class ExtensionMethods
@@ -75,3 +76,4 @@ namespace Flux
       => TSelf.Log((x + TSelf.One) / (x - TSelf.One)) / x.Two();
   }
 }
+#endif

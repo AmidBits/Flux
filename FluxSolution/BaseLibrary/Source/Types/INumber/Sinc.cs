@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class ExtensionMethods
@@ -15,3 +16,4 @@ namespace Flux
       => x != TSelf.Zero ? TSelf.Sin(x) / x : TSelf.One;
   }
 }
+#endif
