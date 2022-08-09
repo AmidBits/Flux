@@ -38,6 +38,12 @@
 
       #region Implemented interfaces
       // IOrderedSet<>
+      public T this[int index]
+      {
+        get => m_values[index];
+        set => m_values[index] = value;
+      }
+
       public int GetIndex(T value)
         => m_dictionary[value];
 
@@ -62,13 +68,12 @@
         return count;
       }
 
-      public T this[int index]
+      public void RemoveAt(int index)
       {
-        get => m_values[index];
-        set
-        {
-          m_values[index] = value;
-        }
+        if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+        m_dictionary.Remove(m_values[index]);
+        m_values.RemoveAt(index);
       }
 
       // ISet<>

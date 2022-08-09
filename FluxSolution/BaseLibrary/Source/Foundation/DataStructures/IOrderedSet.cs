@@ -4,10 +4,12 @@ namespace Flux.DataStructures
     : System.Collections.Generic.ISet<T>
       where T : notnull
   {
+    T this[int index] { get; set; }
+
     int GetIndex(T value);
 
     void Insert(int index, T value);
 
-    T this[int index] { get; set; }
+    void RemoveAt(int index);
   }
 }
