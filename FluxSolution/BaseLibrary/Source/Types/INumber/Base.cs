@@ -70,11 +70,13 @@ namespace Flux
     public static TSelf Acsc<TSelf>(this TSelf y)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
       => TSelf.Asin(TSelf.One / y);
+
     /// <summary>Returns the inverse secant of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
     public static TSelf Asec<TSelf>(this TSelf y)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
       => TSelf.Acos(TSelf.One / y);
+
     /// <summary>Returns the inverse cotangent of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
     public static TSelf Acot<TSelf>(this TSelf y)
