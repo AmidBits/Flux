@@ -206,9 +206,9 @@ namespace Foundation.Units
     }
 
     [TestMethod]
-    public void Radioactivity()
+    public void Activity()
     {
-      var u = new Flux.Radioactivity(1);
+      var u = new Flux.Activity(1);
 
       Assert.AreEqual(1, u.Value);
     }
