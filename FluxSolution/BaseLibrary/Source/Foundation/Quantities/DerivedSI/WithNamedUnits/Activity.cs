@@ -2,66 +2,66 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this RadioactivityUnit unit, bool preferUnicode, bool useFullName = false)
+    public static string GetUnitString(this ActivityUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        RadioactivityUnit.Becquerel => preferUnicode ? "\u33C3" : "Bq",
+        ActivityUnit.Becquerel => preferUnicode ? "\u33C3" : "Bq",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  public enum RadioactivityUnit
+  public enum ActivityUnit
   {
     /// <summary>Becquerel.</summary>
     Becquerel,
   }
 
-  /// <summary>Radioactivity unit of becquerel.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Radioactivity"/>
-  public readonly struct Radioactivity
-    : System.IComparable, System.IComparable<Radioactivity>, System.IConvertible, System.IEquatable<Radioactivity>, System.IFormattable, IUnitQuantifiable<double, RadioactivityUnit>
+  /// <summary>Activity, unit of becquerel.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Specific_activity"/>
+  public readonly struct Activity
+    : System.IComparable, System.IComparable<Activity>, System.IConvertible, System.IEquatable<Activity>, System.IFormattable, IUnitQuantifiable<double, ActivityUnit>
   {
-    public const RadioactivityUnit DefaultUnit = RadioactivityUnit.Becquerel;
+    public const ActivityUnit DefaultUnit = ActivityUnit.Becquerel;
 
     private readonly double m_value;
 
-    public Radioactivity(double value, RadioactivityUnit unit = DefaultUnit)
+    public Activity(double value, ActivityUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        RadioactivityUnit.Becquerel => value,
+        ActivityUnit.Becquerel => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Radioactivity v) => v.m_value;
-    [System.Diagnostics.Contracts.Pure] public static explicit operator Radioactivity(double v) => new(v);
+    [System.Diagnostics.Contracts.Pure] public static explicit operator double(Activity v) => v.m_value;
+    [System.Diagnostics.Contracts.Pure] public static explicit operator Activity(double v) => new(v);
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator <(Radioactivity a, Radioactivity b) => a.CompareTo(b) < 0;
-    [System.Diagnostics.Contracts.Pure] public static bool operator <=(Radioactivity a, Radioactivity b) => a.CompareTo(b) <= 0;
-    [System.Diagnostics.Contracts.Pure] public static bool operator >(Radioactivity a, Radioactivity b) => a.CompareTo(b) > 0;
-    [System.Diagnostics.Contracts.Pure] public static bool operator >=(Radioactivity a, Radioactivity b) => a.CompareTo(b) >= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <(Activity a, Activity b) => a.CompareTo(b) < 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator <=(Activity a, Activity b) => a.CompareTo(b) <= 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >(Activity a, Activity b) => a.CompareTo(b) > 0;
+    [System.Diagnostics.Contracts.Pure] public static bool operator >=(Activity a, Activity b) => a.CompareTo(b) >= 0;
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Radioactivity a, Radioactivity b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Radioactivity a, Radioactivity b) => !a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Activity a, Activity b) => a.Equals(b);
+    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Activity a, Activity b) => !a.Equals(b);
 
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator -(Radioactivity v) => new(-v.m_value);
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator +(Radioactivity a, double b) => new(a.m_value + b);
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator +(Radioactivity a, Radioactivity b) => a + b.m_value;
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator /(Radioactivity a, double b) => new(a.m_value / b);
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator /(Radioactivity a, Radioactivity b) => a / b.m_value;
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator *(Radioactivity a, double b) => new(a.m_value * b);
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator *(Radioactivity a, Radioactivity b) => a * b.m_value;
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator %(Radioactivity a, double b) => new(a.m_value % b);
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator %(Radioactivity a, Radioactivity b) => a % b.m_value;
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator -(Radioactivity a, double b) => new(a.m_value - b);
-    [System.Diagnostics.Contracts.Pure] public static Radioactivity operator -(Radioactivity a, Radioactivity b) => a - b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Activity operator -(Activity v) => new(-v.m_value);
+    [System.Diagnostics.Contracts.Pure] public static Activity operator +(Activity a, double b) => new(a.m_value + b);
+    [System.Diagnostics.Contracts.Pure] public static Activity operator +(Activity a, Activity b) => a + b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Activity operator /(Activity a, double b) => new(a.m_value / b);
+    [System.Diagnostics.Contracts.Pure] public static Activity operator /(Activity a, Activity b) => a / b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Activity operator *(Activity a, double b) => new(a.m_value * b);
+    [System.Diagnostics.Contracts.Pure] public static Activity operator *(Activity a, Activity b) => a * b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Activity operator %(Activity a, double b) => new(a.m_value % b);
+    [System.Diagnostics.Contracts.Pure] public static Activity operator %(Activity a, Activity b) => a % b.m_value;
+    [System.Diagnostics.Contracts.Pure] public static Activity operator -(Activity a, double b) => new(a.m_value - b);
+    [System.Diagnostics.Contracts.Pure] public static Activity operator -(Activity a, Activity b) => a - b.m_value;
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable<>
-    [System.Diagnostics.Contracts.Pure] public int CompareTo(Radioactivity other) => m_value.CompareTo(other.m_value);
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(Activity other) => m_value.CompareTo(other.m_value);
     // IComparable
-    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Radioactivity o ? CompareTo(o) : -1;
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Activity o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -84,7 +84,7 @@ namespace Flux
     #endregion IConvertible
 
     // IEquatable<>
-    [System.Diagnostics.Contracts.Pure] public bool Equals(Radioactivity other) => m_value == other.m_value;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(Activity other) => m_value == other.m_value;
 
     // IFormattable
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
@@ -93,19 +93,19 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_value; init => m_value = value; }
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(RadioactivityUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+    public string ToUnitString(ActivityUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
     [System.Diagnostics.Contracts.Pure]
-    public double ToUnitValue(RadioactivityUnit unit = DefaultUnit)
+    public double ToUnitValue(ActivityUnit unit = DefaultUnit)
       => unit switch
       {
-        RadioactivityUnit.Becquerel => m_value,
+        ActivityUnit.Becquerel => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     #endregion Implemented interfaces
 
     #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Radioactivity o && Equals(o);
+    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Activity o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_value.GetHashCode();
     [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
     #endregion Object overrides
