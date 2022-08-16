@@ -35,12 +35,18 @@ namespace Flux
       {
         sb.Append('0');
       }
-      else while (number != 0)
-        {
-          number = System.Numerics.BigInteger.DivRem(number, Symbols.Length, out var remainder);
+      else if (number < 0) // Needs a REAL solution for negative numbers.
+      {
+        for (var bit = number.BitLength().GetSmallestPowerOf2StorageSize(32) - 1; bit >= 0; bit--)
+          sb.Append(((System.Numerics.BigInteger.One << (int)bit) & number) != 0 ? '1' : '0');
+      }
+      
+      while (number > 0)
+      {
+        number = System.Numerics.BigInteger.DivRem(number, Symbols.Length, out var remainder);
 
-          sb.Insert(0, Symbols[(int)System.Numerics.BigInteger.Abs(remainder)]);
-        }
+        sb.Insert(0, Symbols[(int)System.Numerics.BigInteger.Abs(remainder)]);
+      }
 
       return sb;
     }

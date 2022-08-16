@@ -19,20 +19,17 @@ namespace Flux
       }
 
       var byteArray = value.ToByteArray();
-      var byteArrayLength = byteArray.Length;
 
       var count = 0;
-
       var index = 0;
 
-      while (byteArrayLength - index >= 4)
+      while (byteArray.Length - index >= 4)
       {
         count += System.Numerics.BitOperations.PopCount(System.BitConverter.ToUInt32(byteArray, index));
-
         index += 4;
       }
 
-      while (index < byteArrayLength)
+      while (index < byteArray.Length)
         count += System.Numerics.BitOperations.PopCount((uint)byteArray[index++]);
 
       return count;

@@ -7,7 +7,7 @@ namespace Flux
 
     /// <summary>Extracts the lowest numbered element of a bit set. Given a 2's complement binary integer value, (value & -value) is the least significant 1 bit. Very fast.</summary>
     public static System.Numerics.BigInteger LeastSignificant1Bit(this System.Numerics.BigInteger value)
-      => unchecked(value & -value);
+      => value & -value;
 
     /// <summary>Extracts the lowest numbered element of a bit set. Given a 2's complement binary integer value, (value & -value) is the least significant 1 bit. Very fast.</summary>
     public static int LeastSignificant1Bit(this int value)
