@@ -44,6 +44,29 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var p2s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(2, i))).ToArray();
+      var p8s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(8, i))).ToArray();
+      var p10s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(10, i))).ToArray();
+      var p16s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(16, i))).ToArray();
+
+     // var nx = 99.0;
+
+     // var nxbil = System.Numerics.BigInteger.Log(nx, 10);
+
+      //      var nxl = System.Math.Log(nx, 10);
+
+      var nxl = (999.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+      var nxe = (1000.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+      var nxh = (1001.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+
+      //var nxd = nx.RoundDownToPowerOf(16);
+      //var nxu = nx.RoundUpToPowerOf(16);
+
+      //var p2 = nx.RoundToNearestPowerOf(2, MidpointRounding.AwayFromZero);
+      //var p8 = nx.RoundToNearestPowerOf(8, MidpointRounding.AwayFromZero);
+      //var p10 = nx.RoundToNearestPowerOf(10, MidpointRounding.AwayFromZero);
+      //var p16 = nx.RoundToNearestPowerOf(16, MidpointRounding.AwayFromZero);
+
       //var v = 0x670530;
       var bitSize = 32;
       var byteSize = bitSize / 4;

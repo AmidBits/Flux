@@ -31,12 +31,12 @@ namespace Flux
     public static decimal Round(decimal value, HalfRounding mode)
       => mode switch
       {
-        HalfRounding.ToEven => System.Math.Floor(value + 0.5M) is var even && even % 2 != 0 && value - System.Math.Floor(value) == 0.5M ? even - 1 : even,
+        HalfRounding.ToEven => System.Math.Floor(value + 0.5M) is var pi && pi % 2 != 0 && value - System.Math.Floor(value) == 0.5M ? pi - 1 : pi,
         HalfRounding.AwayFromZero => System.Math.Truncate(value + 0.5M * System.Math.Sign(value)),
         HalfRounding.TowardZero => value < 0 ? System.Math.Floor(value + 0.5M) : System.Math.Ceiling(value - 0.5M),
         HalfRounding.ToNegativeInfinity => System.Math.Ceiling(value - 0.5M),
         HalfRounding.ToPositiveInfinity => System.Math.Floor(value + 0.5M),
-        HalfRounding.ToOdd => System.Math.Floor(value + 0.5M) is var odd && odd % 2 == 0 && value - System.Math.Floor(value) == 0.5M ? odd - 1 : odd,
+        HalfRounding.ToOdd => System.Math.Floor(value + 0.5M) is var pi && pi % 2 == 0 && value - System.Math.Floor(value) == 0.5M ? pi - 1 : pi,
         _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
       };
 
@@ -44,12 +44,12 @@ namespace Flux
     public static double Round(double value, HalfRounding mode)
       => mode switch
       {
-        HalfRounding.ToEven => System.Math.Floor(value + 0.5) is var even && even % 2 != 0 && value - System.Math.Floor(value) == 0.5 ? even - 1 : even,
+        HalfRounding.ToEven => System.Math.Floor(value + 0.5) is var pi && pi % 2 != 0 && value - System.Math.Floor(value) == 0.5 ? pi - 1 : pi,
         HalfRounding.AwayFromZero => System.Math.Truncate(value + 0.5 * System.Math.Sign(value)),
         HalfRounding.TowardZero => value < 0 ? System.Math.Floor(value + 0.5) : System.Math.Ceiling(value - 0.5),
         HalfRounding.ToNegativeInfinity => System.Math.Ceiling(value - 0.5),
         HalfRounding.ToPositiveInfinity => System.Math.Floor(value + 0.5),
-        HalfRounding.ToOdd => System.Math.Floor(value + 0.5) is var odd && odd % 2 == 0 && value - System.Math.Floor(value) == 0.5 ? odd - 1 : odd,
+        HalfRounding.ToOdd => System.Math.Floor(value + 0.5) is var pi && pi % 2 == 0 && value - System.Math.Floor(value) == 0.5 ? pi - 1 : pi,
         _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
       };
   }
