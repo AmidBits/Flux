@@ -49,15 +49,22 @@ namespace ConsoleApp
       var p10s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(10, i))).ToArray();
       var p16s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(16, i))).ToArray();
 
-     // var nx = 99.0;
+      // var nx = 99.0;
 
-     // var nxbil = System.Numerics.BigInteger.Log(nx, 10);
+      // var nxbil = System.Numerics.BigInteger.Log(nx, 10);
 
       //      var nxl = System.Math.Log(nx, 10);
 
       var nxl = (999.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
       var nxe = (1000.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
       var nxh = (1001.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+
+      for (var d = -3.8; d <= 3; d += .3)
+      {
+        var d1 = double.Round(d, 1);
+        System.Console.WriteLine($"{d1:N3} = {d1.Round(HalfRounding.TowardZero)} = {double.Round(d1,MidpointRounding.ToZero)}");
+      }
+
 
       //var nxd = nx.RoundDownToPowerOf(16);
       //var nxu = nx.RoundUpToPowerOf(16);

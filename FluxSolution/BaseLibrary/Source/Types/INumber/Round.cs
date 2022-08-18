@@ -1,11 +1,38 @@
 #if NET7_0_OR_GREATER
-using Flux.AmbOps;
-using Flux.Hashing;
-
 namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    /// <summary>Symmetric rounding: round down, bias: towards zero.</summary>
+    public static TSelf RoundFloorZero<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => TSelf.Floor(TSelf.Abs(value)) is var result && value < TSelf.Zero ? -result : result;
+
+    /// <summary>Symmetric rounding: round up, bias: away from zero.</summary>
+    public static TSelf RoundCeilingZero<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => TSelf.Ceiling(TSelf.Abs(value)) is var result && value < TSelf.Zero ? -result : result;
+
+    /// <summary>Common rounding: round half down, bias: negative infinity.</summary>
+    public static TSelf RoundHalfDown<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => TSelf.Ceiling(value - (TSelf.One / (TSelf.One + TSelf.One)));
+
+    /// <summary>Symmetric rounding: round half down, bias: towards zero.</summary>
+    public static TSelf RoundHalfDownZero<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => RoundHalfDown(TSelf.Abs(value)) is var result && value < TSelf.Zero ? -result : result;
+
+    /// <summary>Common rounding: round half up, bias: positive infinity.</summary>
+    public static TSelf RoundHalfUp<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => TSelf.Floor(value + (TSelf.One / (TSelf.One + TSelf.One)));
+
+    /// <summary>Symmetric rounding: round half up, bias: away from zero.</summary>
+    public static TSelf RoundHalfUpZero<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => RoundHalfUp(TSelf.Abs(value)) is var result && value < TSelf.Zero ? -result : result;
+
     /// <summary>Rounds the <paramref name="value"/> to the nearest integer. The <paramref name="mode"/> specifies how to round if it is midway between two numbers.</summary>
     public static TSelf Round<TSelf>(this TSelf value, HalfRounding mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IModulusOperators<TSelf, TSelf, TSelf>
@@ -16,8 +43,8 @@ namespace Flux
       return mode switch
       {
         HalfRounding.ToEven => TSelf.Floor(value + halfOne) is var pi && pi % two != TSelf.Zero && value - TSelf.Floor(value) == halfOne ? pi - TSelf.One : pi,
-        //HalfRounding.AwayFromZero => TSelf.Truncate(value + halfOne * value.Sign()),
-        HalfRounding.AwayFromZero => value < TSelf.Zero ? TSelf.Ceiling(value - halfOne) : TSelf.Floor(value + halfOne),
+        HalfRounding.AwayFromZero => TSelf.Truncate(value + halfOne * value.Sign()),
+        //HalfRounding.AwayFromZero => value < TSelf.Zero ? TSelf.Ceiling(value - halfOne) : TSelf.Floor(value + halfOne),
         HalfRounding.TowardZero => value < TSelf.Zero ? TSelf.Floor(value + halfOne) : TSelf.Ceiling(value - halfOne),
         HalfRounding.ToNegativeInfinity => TSelf.Ceiling(value - halfOne),
         HalfRounding.ToPositiveInfinity => TSelf.Floor(value + halfOne),
