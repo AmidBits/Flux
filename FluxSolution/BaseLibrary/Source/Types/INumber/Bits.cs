@@ -11,17 +11,6 @@ namespace Flux
 
   public static partial class ExtensionMethods
   {
-    //public static TSelf Sign2<TSelf>(this TSelf value)
-    //  where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ISignedNumber<TSelf>
-    //  => value < TSelf.Zero ? TSelf.NegativeOne : TSelf.One;
-    public static TSelf Sign<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ISignedNumber<TSelf>
-      => value < TSelf.Zero ? TSelf.NegativeOne : value > TSelf.Zero ? TSelf.One : TSelf.Zero;
-
-    public static TSelf CopySign<TSelf>(this TSelf value, TSelf sign)
-      where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ISignedNumber<TSelf>
-      => TSelf.Abs(value) * sign.Sign();
-    
     /// <summary>PREVIEW! Finds the bit index of a power-of-2 value (i.e. only a single bit can be set to 1).</summary>
     public static int BitIndex<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

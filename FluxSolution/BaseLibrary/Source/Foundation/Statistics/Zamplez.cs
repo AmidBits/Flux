@@ -42,15 +42,15 @@ namespace Flux
       {
         var values = new double[]
         {
-          Quantiles.Quantile(x, p, Quantiles.QuantileType.R1),
-          Quantiles.Quantile(x, p, Quantiles.QuantileType.R2),
-          Quantiles.Quantile(x, p, Quantiles.QuantileType.R3),
-          Quantiles.Quantile(x, p, Quantiles.QuantileType.R4),
-          Quantiles.Quantile(x, p, Quantiles.QuantileType.R5),
-          Quantiles.Quantile(x, p, Quantiles.QuantileType.R6),
-          Quantiles.Quantile(x, p, Quantiles.QuantileType.R7),
-          Quantiles.Quantile(x, p, Quantiles.QuantileType.R8),
-          Quantiles.Quantile(x, p, Quantiles.QuantileType.R9),
+          Quantiles.Quantile(x, p, Quantiles.EstimationType.R1),
+          Quantiles.Quantile(x, p, Quantiles.EstimationType.R2),
+          Quantiles.Quantile(x, p, Quantiles.EstimationType.R3),
+          Quantiles.Quantile(x, p, Quantiles.EstimationType.R4),
+          Quantiles.Quantile(x, p, Quantiles.EstimationType.R5),
+          Quantiles.Quantile(x, p, Quantiles.EstimationType.R6),
+          Quantiles.Quantile(x, p, Quantiles.EstimationType.R7),
+          Quantiles.Quantile(x, p, Quantiles.EstimationType.R8),
+          Quantiles.Quantile(x, p, Quantiles.EstimationType.R9),
         };
 
         System.Console.WriteLine($"The estimated quantiles of {p:N2} for {{{string.Join(", ", x)}}} are:");

@@ -7,16 +7,18 @@ namespace Flux.Model
     public RickerModel(double population, double growthRate, double carryingCapacity)
     {
       Population = population;
+
       GrowthRate = growthRate;
       CarryingCapacity = carryingCapacity;
     }
 
     /// <summary>The number of individuals in the previous generation (Nt).</summary>
-    public double Population { get; set; }
+    public double Population { get; init; }
+
     /// <summary>The intrinsic growth rate (r).</summary>
-    public double GrowthRate { get; set; }
+    public double GrowthRate { get; init; }
     /// <summary>The carrying capacity of the environment (k).</summary>
-    public double CarryingCapacity { get; set; }
+    public double CarryingCapacity { get; init; }
 
     /// <returns>The expected number (or density) of individuals in (the next) generation (Nt + 1).</returns>
     public IPopulationModel NextGeneration()

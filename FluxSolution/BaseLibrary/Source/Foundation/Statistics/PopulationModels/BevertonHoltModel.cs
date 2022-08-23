@@ -7,16 +7,18 @@ namespace Flux.Model
     public BevertonHoltModel(double population, double growthRate, double carryingCapacity)
     {
       Population = population;
+
       GrowthRate = growthRate;
       CarryingCapacity = carryingCapacity;
     }
 
     /// <summary>The number of individuals at time t (Nt).</summary>
-    public double Population { get; set; }
+    public double Population { get; init; }
+
     /// <summary>The proliferation rate per generation (R0).</summary>
-    public double GrowthRate { get; set; }
+    public double GrowthRate { get; init; }
     /// <summary>The carrying capacity in the environment (M).</summary>
-    public double CarryingCapacity { get; set; }
+    public double CarryingCapacity { get; init; }
 
     /// <returns>The number of individuals at time Nt+1.</returns>
     public IPopulationModel NextGeneration()

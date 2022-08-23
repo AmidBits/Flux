@@ -48,7 +48,7 @@ namespace ConsoleApp
       var p8s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(8, i))).ToArray();
       var p10s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(10, i))).ToArray();
       var p16s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(16, i))).ToArray();
-
+      
       // var nx = 99.0;
 
       // var nxbil = System.Numerics.BigInteger.Log(nx, 10);
@@ -59,12 +59,16 @@ namespace ConsoleApp
       var nxe = (1000.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
       var nxh = (1001.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
 
-      for (var d = -3.8; d <= 3; d += .3)
+      for (var d = -7.3; d <= 7.3; d += .3)
       {
         var d1 = double.Round(d, 1);
-        System.Console.WriteLine($"{d1:N3} = {d1.Round(HalfRounding.TowardZero)} = {double.Round(d1,MidpointRounding.ToZero)}");
+        System.Console.WriteLine($"{d1} = {d1.Round(HalfRounding.TowardZero)} = {double.Round(d1, MidpointRounding.ToZero)}");
       }
 
+      for (var f = 1.ToBigInteger(); f <= long.MaxValue.ToBigInteger(); f *= byte.MaxValue*3)
+      {
+        System.Console.WriteLine($"{f} : {f.GetByteCount()} : {f.GetBitLength()}");
+      }
 
       //var nxd = nx.RoundDownToPowerOf(16);
       //var nxu = nx.RoundUpToPowerOf(16);
@@ -211,8 +215,8 @@ namespace ConsoleApp
       var x = new double[] { 19, 23, 28, 34, 36, 39, 41, 47, 48, 52, 58, 59, 61, 65, 68 };
       //var y = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelExc);
       //var z = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelInc);
-      var y = Percentiles.PercentileValue(x, .49, Percentiles.LerpVariant.ExcelExc);
-      var ze = Percentiles.PercentRank(1.0, x.Length, Percentiles.LerpVariant.ExcelExc);
+      var y = Percentiles.PercentileValue(x, .49, Percentiles.InterpolationMethod.ExcelExc);
+      var ze = Percentiles.PercentRank(1.0, x.Length, Percentiles.InterpolationMethod.ExcelExc);
       var w = Percentiles.PercentNearestOrdinalRank(1, 40);
 
       var eq = Quantiles.EmpiricalDistributionFunction(x, 50);

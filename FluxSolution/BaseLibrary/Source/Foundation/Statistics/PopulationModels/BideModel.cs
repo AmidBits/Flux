@@ -7,6 +7,7 @@ namespace Flux.Model
     public BideModel(double population, double births, double immigrated, double deaths, double emigrated)
     {
       Population = population;
+
       Births = births;
       Immigrated = immigrated;
       Deaths = deaths;
@@ -14,15 +15,16 @@ namespace Flux.Model
     }
 
     /// <summary>The number of individuals at time t (Nt).</summary>
-    public double Population { get; set; }
+    public double Population { get; init; }
+
     /// <summary>The number of births within the population between Nt and Nt+1 (B).</summary>
-    public double Births { get; set; }
+    public double Births { get; init; }
     /// <summary>The number of individuals immigrating into the population between Nt and Nt+1 (I).</summary>
-    public double Immigrated { get; set; }
+    public double Immigrated { get; init; }
     /// <summary>The number of deaths within the population between Nt and Nt+1 (D).</summary>
-    public double Deaths { get; set; }
+    public double Deaths { get; init; }
     /// <summary>The number of individuals emigrating into the population between Nt and Nt+1 (E).</summary>
-    public double Emigrated { get; set; }
+    public double Emigrated { get; init; }
 
     /// <returns>The number of individuals at time Nt+1.</returns>
     public IPopulationModel NextGeneration()

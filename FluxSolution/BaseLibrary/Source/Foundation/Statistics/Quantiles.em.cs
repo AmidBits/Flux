@@ -1,10 +1,11 @@
 namespace Flux
 {
+  /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
   public static partial class Quantiles
   {
     /// <summary>Nine algorithms (estimate types and interpolation schemes(.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public enum QuantileType
+    public enum EstimationType
     {
       /// <summary>Inverse of empirical distribution function.</summary>
       R1,
@@ -26,27 +27,6 @@ namespace Flux
       R9,
     }
 
-    /// <summary>Estimating quantiles from a sample.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
-    public static double Quantile(this System.Collections.Generic.IList<double> source, double p, QuantileType type)
-      => type switch
-      {
-        QuantileType.R1 => QuantileR1(source, p),
-        QuantileType.R2 => QuantileR2(source, p),
-        QuantileType.R3 => QuantileR3(source, p),
-        QuantileType.R4 => QuantileR4(source, p),
-        QuantileType.R5 => QuantileR5(source, p),
-        QuantileType.R6 => QuantileR6(source, p),
-        QuantileType.R7 => QuantileR7(source, p),
-        QuantileType.R8 => QuantileR8(source, p),
-        QuantileType.R9 => QuantileR9(source, p),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(type)),
-      };
-    /// <summary>Estimating quantiles from a sample.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
-    public static double Quantile(this System.Collections.Generic.IList<int> source, double p, QuantileType type)
-      => Quantile(System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(source, int32 => (double)int32)), p, type);
-
     /// <summary>Finds the interpolated value from the specified index. The integer part signifies the low index in the sequence and the fractional portion is the interpolation percentage between the low and high (low + 1) index.</summary>
     /// <param name="source">The sequence of values.</param>
     /// <param name="h">The index with fractions for interpolated values.</param>
@@ -63,6 +43,27 @@ namespace Flux
 
       return lov + (h - lo) * (hiv - lov);
     }
+
+    /// <summary>Estimating quantiles from a sample.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
+    public static double Quantile(this System.Collections.Generic.IList<double> source, double p, EstimationType type)
+      => type switch
+      {
+        EstimationType.R1 => QuantileR1(source, p),
+        EstimationType.R2 => QuantileR2(source, p),
+        EstimationType.R3 => QuantileR3(source, p),
+        EstimationType.R4 => QuantileR4(source, p),
+        EstimationType.R5 => QuantileR5(source, p),
+        EstimationType.R6 => QuantileR6(source, p),
+        EstimationType.R7 => QuantileR7(source, p),
+        EstimationType.R8 => QuantileR8(source, p),
+        EstimationType.R9 => QuantileR9(source, p),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(type)),
+      };
+    /// <summary>Estimating quantiles from a sample.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
+    public static double Quantile(this System.Collections.Generic.IList<int> source, double p, EstimationType type)
+      => Quantile(System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(source, int32 => (double)int32)), p, type);
 
     /// <summary>Inverse of empirical distribution function.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>

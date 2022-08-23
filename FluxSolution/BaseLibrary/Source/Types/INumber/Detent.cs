@@ -5,21 +5,21 @@ namespace Flux
   {
     /// <summary>PREVIEW! Snaps the value to the nearest interval if it's within the specified distance of an interval.</summary>
     public static TSelf DetentInterval<TSelf>(this TSelf value, TSelf interval, TSelf distance)
-      where TSelf : System.Numerics.IBinaryNumber<TSelf>
+      where TSelf : System.Numerics.INumber<TSelf>
       => (value / interval) * interval is var nearestInterval && TSelf.Abs(nearestInterval - value) < distance
       ? nearestInterval
       : value;
 
     /// <summary>PREVIEW! Snaps the value to the position if it's within the specified distance of the position.</summary>
     public static TSelf DetentPosition<TSelf>(this TSelf value, TSelf position, TSelf distance)
-      where TSelf : System.Numerics.IBinaryNumber<TSelf>
+      where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.Abs(position - value) > TSelf.Abs(distance)
       ? value
       : position;
 
     /// <summary>PREVIEW! Snaps the value to zero if it's within the specified distance of zero.</summary>
     public static TSelf DetentZero<TSelf>(this TSelf value, TSelf distance)
-      where TSelf : System.Numerics.IBinaryNumber<TSelf>
+      where TSelf : System.Numerics.INumber<TSelf>
       => value < -distance || value > distance
       ? value
       : TSelf.Zero;

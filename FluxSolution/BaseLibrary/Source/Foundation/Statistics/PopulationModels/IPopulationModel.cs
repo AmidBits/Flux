@@ -5,7 +5,7 @@ namespace Flux.Model
   public interface IPopulationModel
   {
     /// <summary>The number of individuals at time t (Nt).</summary>
-    public double Population { get; set; }
+    public double Population { get; init; }
 
     /// <returns>The number of individuals at time t+1 (Nt+1).</returns>
     public IPopulationModel NextGeneration();

@@ -11,56 +11,59 @@ namespace Flux
     //  where TSelf : System.Numerics.INumber<TSelf>
     //  => value * (TSelf.One + TSelf.One);
 
-    /// <summary>Symmetric rounding: round down, bias: towards zero.</summary>
+    /// <summary>PREVIEW! Symmetric rounding: round down, bias: towards zero.</summary>
     public static TSelf RoundFloorZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Floor(TSelf.Abs(value)).CopySign(value);
 
-    /// <summary>Symmetric rounding: round up, bias: away from zero.</summary>
+    /// <summary>PREVIEW! Symmetric rounding: round up, bias: away from zero.</summary>
     public static TSelf RoundCeilingZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Ceiling(TSelf.Abs(value)).CopySign(value);
 
-    /// <summary>Common rounding: round half down, bias: negative infinity.</summary>
+    /// <summary>PREVIEW! Common rounding: round half down, bias: negative infinity.</summary>
     public static TSelf RoundHalfDown<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Ceiling(value - TSelf.One.DivideByTwo());
 
-    /// <summary>Symmetric rounding: round half down, bias: towards zero.</summary>
+    /// <summary>PREVIEW! Symmetric rounding: round half down, bias: towards zero.</summary>
     public static TSelf RoundHalfDownZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => RoundHalfDown(TSelf.Abs(value)).CopySign(value);
 
-    /// <summary>Common rounding: round half up, bias: positive infinity.</summary>
+    /// <summary>PREVIEW! Common rounding: round half up, bias: positive infinity.</summary>
     public static TSelf RoundHalfUp<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Floor(value + TSelf.One.DivideByTwo());
 
-    /// <summary>Symmetric rounding: round half up, bias: away from zero.</summary>
+    /// <summary>PREVIEW! Symmetric rounding: round half up, bias: away from zero.</summary>
     public static TSelf RoundHalfUpZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => RoundHalfUp(TSelf.Abs(value)).CopySign(value);
 
-    /// <summary>Rounds the <paramref name="value"/> to the nearest integer. The <paramref name="mode"/> specifies how to round if it is midway between two numbers.</summary>
+    /// <summary>PREVIEW! Rounds the <paramref name="value"/> to the nearest integer. The <paramref name="mode"/> specifies how to round if it is midway between two numbers.</summary>
     public static TSelf Round<TSelf>(this TSelf value, HalfRounding mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IModulusOperators<TSelf, TSelf, TSelf>
     {
       var two = TSelf.One + TSelf.One;
       var halfOne = TSelf.One / two;
 
+      var p = value + halfOne;
+      var n = value - halfOne;
+
       return mode switch
       {
         HalfRounding.ToEven => TSelf.Floor(value + halfOne) is var pi && pi % two != TSelf.Zero && value - TSelf.Floor(value) == halfOne ? pi - TSelf.One : pi,
-        HalfRounding.AwayFromZero => value < TSelf.Zero ? TSelf.Floor(value + halfOne) : TSelf.Ceiling(value - halfOne),
-        HalfRounding.TowardZero => value < TSelf.Zero ? TSelf.Ceiling(value + halfOne) : TSelf.Floor(value - halfOne),
-        HalfRounding.ToNegativeInfinity => TSelf.Ceiling(value - halfOne),
-        HalfRounding.ToPositiveInfinity => TSelf.Floor(value + halfOne),
+        HalfRounding.AwayFromZero => RoundHalfUpZero(value),
+        HalfRounding.TowardZero => RoundHalfDownZero(value),
+        HalfRounding.ToNegativeInfinity => RoundHalfDown(value),
+        HalfRounding.ToPositiveInfinity => RoundHalfUp(value),
         HalfRounding.ToOdd => TSelf.Floor(value + halfOne) is var pi && pi % two == TSelf.Zero && value - TSelf.Floor(value) == halfOne ? pi - TSelf.One : pi,
         _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
       };
     }
 
-    /// <summary>Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
+    /// <summary>PREVIEW! Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
     public static TSelf RoundToMultiple<TSelf>(TSelf number, TSelf interval, System.MidpointRounding mode)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IModulusOperators<TSelf, TSelf, TSelf>
     {

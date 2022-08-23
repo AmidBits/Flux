@@ -5,7 +5,7 @@ namespace Flux
   /// <see href="https://en.wikipedia.org/wiki/Percent"/>
   public static partial class Percentiles
   {
-    public enum LerpVariant
+    public enum InterpolationMethod
     {
       ExcelExc,
       ExcelInc,
@@ -33,12 +33,12 @@ namespace Flux
       ? throw new System.ArgumentOutOfRangeException(nameof(count))
       : System.Convert.ToInt32(System.Math.Ceiling(percent * count));
 
-    public static double PercentRank(double percent, int count, LerpVariant variant)
-      => variant switch
+    public static double PercentRank(double percent, int count, InterpolationMethod method)
+      => method switch
       {
-        LerpVariant.ExcelExc => PercentRankExcelExc(percent, count),
-        LerpVariant.ExcelInc => PercentRankExcelInc(percent, count),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(variant))
+        InterpolationMethod.ExcelExc => PercentRankExcelExc(percent, count),
+        InterpolationMethod.ExcelInc => PercentRankExcelInc(percent, count),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(method))
       };
 
     /// <summary>Excel '.EXC' percent rank. Primary variant recommended by NIST.</summary>
@@ -58,12 +58,12 @@ namespace Flux
       : percent * (count - 1) + 1;
 
     /// <summary>Computes the percentile value of the percentile within the source sequence.</summary>
-    public static double PercentileValue(this System.Collections.Generic.IEnumerable<double> source, double percentile, LerpVariant variant)
-      => variant switch
+    public static double PercentileValue(this System.Collections.Generic.IEnumerable<double> source, double percentile, InterpolationMethod method)
+      => method switch
       {
-        LerpVariant.ExcelExc => PercentileValueExcelExc(source, percentile),
-        LerpVariant.ExcelInc => PercentileValueExcelInc(source, percentile),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(variant))
+        InterpolationMethod.ExcelExc => PercentileValueExcelExc(source, percentile),
+        InterpolationMethod.ExcelInc => PercentileValueExcelInc(source, percentile),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(method))
       };
 
     /// <summary>Excel percentile value (exc). The primary variant recommended by NIST.</summary>
