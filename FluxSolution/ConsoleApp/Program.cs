@@ -44,6 +44,13 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var fv = new Flux.Fraction(13,5);
+
+      var ips = fv.ToImproperString();
+      var ps = fv.ToProperString();
+      var vs = fv.Value.ToString();
+      var s = fv.ToString();
+
       var p2s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(2, i))).ToArray();
       var p8s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(8, i))).ToArray();
       var p10s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(10, i))).ToArray();

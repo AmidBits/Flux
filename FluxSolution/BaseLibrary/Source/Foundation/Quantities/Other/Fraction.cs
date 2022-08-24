@@ -6,25 +6,31 @@ namespace Flux
     : System.IComparable, System.IComparable<Fraction>, System.IConvertible, System.IEquatable<Fraction>, IQuantifiable<double>
   {
     public static readonly Fraction EpsilonLikeSingle = new(1, 1000000);
+
     public static readonly Fraction EpsilonLikeDouble = new(1, 1000000000000000);
 
     /// <summary>Represents a BigFraction value of the Golden Ratio.</summary>
     public static readonly Fraction GoldenRatio = new(7540113804746346429L, 4660046610375530309L, true);
+
     /// <summary>Represents a BigFraction value of PI.</summary>
     public static readonly Fraction PI = new(2646693125139304345L, 842468587426513207L, true);
 
     /// <summary>Represents a SimpleFraction value of -1.</summary>
     public static Fraction MinusOne
       => new(System.Numerics.BigInteger.MinusOne, System.Numerics.BigInteger.One, false);
+
     /// <summary>Represents a SimpleFraction value of -2.</summary>
     public static Fraction MinusTwo
       => new(-2, System.Numerics.BigInteger.One, false);
+
     /// <summary>Represents a SimpleFraction value of 1.</summary>
     public static Fraction One
       => new(System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, false);
+
     /// <summary>Represents a SimpleFraction value of 2.</summary>
     public static Fraction Two
       => new(2, System.Numerics.BigInteger.One, false);
+
     /// <summary>Represents a SimpleFraction value of 0.</summary>
     public static Fraction Zero
       => new(System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One, false);
@@ -75,9 +81,6 @@ namespace Flux
     public System.Numerics.BigInteger Denominator
       => m_denominator;
 
-    public bool IsImproper
-      => m_numerator >= m_denominator;
-
     /// <summary>Indicates whether the number is a whole integer, i.e. no fractional residue.</summary>
     public bool IsInteger
       => m_denominator.IsOne;
@@ -106,20 +109,24 @@ namespace Flux
     public int Sign
       => m_numerator.Sign is var ns && ns == 0
       ? 0
-      : m_denominator.Sign is var ds && (ns < 0 && ds >= 0) || (ds < 0 && ns >= 0)
+      : m_denominator.Sign is var ds && (ns < 0 && ds > 0) || (ds < 0 && ns >= 0)
       ? -1
       : 1;
 
-    public System.Numerics.BigInteger ToIntegerQuotient(out System.Numerics.BigInteger remainder)
+    /// <summary>Returns the integer quotient and an out variable containing the remainder.</summary>
+    public System.Numerics.BigInteger ToDivRem(out System.Numerics.BigInteger remainder)
       => System.Numerics.BigInteger.DivRem(m_numerator, m_denominator, out remainder);
+
     /// <summary>Yields a string with the fraction in improper (if applicable) fractional notation.</summary>
     public string ToImproperString()
     {
       var sb = new System.Text.StringBuilder();
 
-      if (IsImproper)
+      if (IsProper)
+        return ToProperString();
+      else
       {
-        sb.Append(ToIntegerQuotient(out var remainder));
+        sb.Append(ToDivRem(out var remainder));
 
         if (remainder > 0)
         {
@@ -129,13 +136,15 @@ namespace Flux
           sb.Append(m_denominator);
         }
       }
-      else return ToProperString();
 
       return sb.ToString();
     }
+
     /// <summary>Yields a string with the fraction in proper fractional notation.</summary>
     public string ToProperString()
       => $"{m_numerator}\u2044{m_denominator}";
+
+    /// <summary>Returns the quotient result from division of numerator / denominator.</summary>
     public double ToQuotient()
       => (double)m_numerator / (double)m_denominator;
 
@@ -414,7 +423,7 @@ namespace Flux
       ? m_numerator.CompareTo(other.m_numerator)
       : (m_numerator * other.m_denominator).CompareTo(m_denominator * other.m_numerator);
     // IComparable
-    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is not null && other is Fraction o ? CompareTo(o) : -1;
+    [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is Fraction o ? CompareTo(o) : -1;
 
     #region IConvertible
     [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
