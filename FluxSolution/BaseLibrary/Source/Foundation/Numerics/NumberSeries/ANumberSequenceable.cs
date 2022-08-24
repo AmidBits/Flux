@@ -2,7 +2,7 @@ namespace Flux.Numerics
 {
   public abstract record class ANumberSequenceable<T>
     : INumberSequenceable<T>
-    where T : System.Numerics.INumber<T>
+    //where T : System.Numerics.INumber<T>
   {
     #region Implemented interfaces
     [System.Diagnostics.Contracts.Pure]

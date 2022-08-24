@@ -55,15 +55,15 @@ namespace ConsoleApp
 
       //      var nxl = System.Math.Log(nx, 10);
 
-      var nxl = (999.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
-      var nxe = (1000.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
-      var nxh = (1001.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+      //var nxl = (999.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+      //var nxe = (1000.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+      //var nxh = (1001.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
 
-      for (var d = -7.3; d <= 7.3; d += .3)
-      {
-        var d1 = double.Round(d, 1);
-        System.Console.WriteLine($"{d1} = {d1.Round(HalfRounding.TowardZero)} = {double.Round(d1, MidpointRounding.ToZero)}");
-      }
+      //for (var d = -7.3; d <= 7.3; d += .3)
+      //{
+      //  var d1 = double.Round(d, 1);
+      //  System.Console.WriteLine($"{d1} = {d1.Round(HalfRounding.TowardZero)} = {double.Round(d1, MidpointRounding.ToZero)}");
+      //}
 
       for (var f = 1.ToBigInteger(); f <= long.MaxValue.ToBigInteger(); f *= byte.MaxValue*3)
       {
@@ -87,31 +87,31 @@ namespace ConsoleApp
 
         System.Console.WriteLine($" Value = {rn.ToRadixString(16)} ({rn})");
         System.Console.WriteLine($"   Bin = {rn.ToRadixString(2).PadLeft(bitSize, '0').PadLeft(bitSize, '0')}");
-        System.Console.WriteLine($"    BL = {Flux.ExtensionMethods.BitLength(rn)}");
-        System.Console.WriteLine($"    FL = {Flux.ExtensionMethods.FoldLeft(rn)} = {Flux.ExtensionMethods.FoldLeft(rn).ToRadixString(2).PadLeft(bitSize, '0')}");
-        System.Console.WriteLine($"    FR = {Flux.ExtensionMethods.FoldRight(rn)} = {Flux.ExtensionMethods.FoldRight(rn).ToRadixString(2).PadLeft(bitSize, '0')}");
-        System.Console.WriteLine($"ILog2C = {Flux.ExtensionMethods.ILog2(rn, true)}");
-        System.Console.WriteLine($" ILog2 = {Flux.ExtensionMethods.ILog2(rn)}");
-        System.Console.WriteLine($"  ISP2 = {Flux.ExtensionMethods.IsPowerOf2(rn)}");
-        System.Console.WriteLine($"  LS1B = {Flux.ExtensionMethods.LeastSignificant1Bit(rn).ToRadixString(2).PadLeft(bitSize, '0')} ({Flux.ExtensionMethods.BitIndex(Flux.ExtensionMethods.LeastSignificant1Bit(rn))})");
-        System.Console.WriteLine($"   TZC = {Flux.ExtensionMethods.TrailingZeroCount(rn)}");
-        System.Console.WriteLine($"  MS1B = {Flux.ExtensionMethods.MostSignificant1Bit(rn).ToRadixString(2).PadLeft(bitSize, '0')} ({Flux.ExtensionMethods.BitIndex(Flux.ExtensionMethods.MostSignificant1Bit(rn))})");
-        System.Console.WriteLine($"   LZC = {Flux.ExtensionMethods.LeadingZeroCount(rn)}");
-        System.Console.WriteLine($"    RD = {Flux.ExtensionMethods.RoundDownToPowerOf2(rn, false)} = {Flux.ExtensionMethods.RoundDownToPowerOf2(rn, false).ToRadixString(2).PadLeft(bitSize, '0')}");
-        System.Console.WriteLine($"    RU = {Flux.ExtensionMethods.RoundUpToPowerOf2(rn, false)} = {Flux.ExtensionMethods.RoundUpToPowerOf2(rn, false).ToRadixString(2).PadLeft(bitSize, '0')}");
-        System.Console.WriteLine($" SBSBS = {Flux.ExtensionMethods.GetSmallestPowerOf2StorageSize(rn, 1)}");
+        //System.Console.WriteLine($"    BL = {Flux.ExtensionMethods.BitLength(rn)}");
+        //System.Console.WriteLine($"    FL = {Flux.ExtensionMethods.FoldLeft(rn)} = {Flux.ExtensionMethods.FoldLeft(rn).ToRadixString(2).PadLeft(bitSize, '0')}");
+        //System.Console.WriteLine($"    FR = {Flux.ExtensionMethods.FoldRight(rn)} = {Flux.ExtensionMethods.FoldRight(rn).ToRadixString(2).PadLeft(bitSize, '0')}");
+        //System.Console.WriteLine($"ILog2C = {Flux.ExtensionMethods.ILog2(rn, true)}");
+        //System.Console.WriteLine($" ILog2 = {Flux.ExtensionMethods.ILog2(rn)}");
+        //System.Console.WriteLine($"  ISP2 = {Flux.ExtensionMethods.IsPowerOf2(rn)}");
+        //System.Console.WriteLine($"  LS1B = {Flux.ExtensionMethods.LeastSignificant1Bit(rn).ToRadixString(2).PadLeft(bitSize, '0')} ({Flux.ExtensionMethods.BitIndex(Flux.ExtensionMethods.LeastSignificant1Bit(rn))})");
+        //System.Console.WriteLine($"   TZC = {Flux.ExtensionMethods.TrailingZeroCount(rn)}");
+        //System.Console.WriteLine($"  MS1B = {Flux.ExtensionMethods.MostSignificant1Bit(rn).ToRadixString(2).PadLeft(bitSize, '0')} ({Flux.ExtensionMethods.BitIndex(Flux.ExtensionMethods.MostSignificant1Bit(rn))})");
+        //System.Console.WriteLine($"   LZC = {Flux.ExtensionMethods.LeadingZeroCount(rn)}");
+        //System.Console.WriteLine($"    RD = {Flux.ExtensionMethods.RoundDownToPowerOf2(rn, false)} = {Flux.ExtensionMethods.RoundDownToPowerOf2(rn, false).ToRadixString(2).PadLeft(bitSize, '0')}");
+        //System.Console.WriteLine($"    RU = {Flux.ExtensionMethods.RoundUpToPowerOf2(rn, false)} = {Flux.ExtensionMethods.RoundUpToPowerOf2(rn, false).ToRadixString(2).PadLeft(bitSize, '0')}");
+        //System.Console.WriteLine($" SBSBS = {Flux.ExtensionMethods.GetSmallestPowerOf2StorageSize(rn, 1)}");
         System.Console.WriteLine();
       }
 
       return;
 
-      if (1 == 1)
-      {
-        var x1 = 3600530UL;
-        var x1l2 = x1.ILog2();
-        var x1fr = x1.FoldRight();
-        var y1 = (x1 & ((~x1) + 1));
-      }
+      //if (1 == 1)
+      //{
+      //  var x1 = 3600530UL;
+      //  var x1l2 = x1.ILog2();
+      //  var x1fr = x1.FoldRight();
+      //  var y1 = (x1 & ((~x1) + 1));
+      //}
 
       var v = 670530000.ToBigInteger();
 

@@ -8,8 +8,8 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Cubic_function"/>
     public static TSelf CubicPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => (a * x * x * x) + QuadraticPolynomial(x, b, c, d);
-    //=> (a* x * x * x) + (b* x * x) + (c* x) + d;
+        => (a * x * x * x) + (b * x * x) + (c * x) + d;
+    //=> (a * x * x * x) + QuadraticPolynomial(x, b, c, d);
 
     /// <summary>PREVIEW! A degree one polynomial.</summary>
     /// <param name="a">a != 0</param>
@@ -23,8 +23,8 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
     public static TSelf QuadraticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => (a * x * x) + LinearPolynomial(x, b, c);
-    //=> (a* x * x) + (b* x) + c;
+      => (a * x * x) + (b * x) + c;
+    //=> (a * x * x) + LinearPolynomial(x, b, c);
 
     /// <summary>PREVIEW! A univariate quadratic function (factored form), or second-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
@@ -66,32 +66,32 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Quartic_function"/>
     public static TSelf QuarticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => (a * x * x * x * x) + CubicPolynomial(x, b, c, d, e);
-    //=> (a * x * x * x * x) + (b * x * x * x) + (c * x * x) + (d * x) + e;
+      => (a * x * x * x * x) + (b * x * x * x) + (c * x * x) + (d * x) + e;
+    //=> (a * x * x * x * x) + CubicPolynomial(x, b, c, d, e);
 
     /// <summary>PREVIEW! A univariate quintic function, or fifth-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Sextic_function"/>
     public static TSelf QuinticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => (a * x * x * x * x * x) + QuarticPolynomial(x, b, c, d, e, f);
-    //=> (a* x * x * x* x * x) + (b* x * x * x* x) + (c* x * x * x) + (d* x * x) + (e* x) + f;
+      => (a * x * x * x * x * x) + (b * x * x * x * x) + (c * x * x * x) + (d * x * x) + (e * x) + f;
+    //=> (a * x * x * x * x * x) + QuarticPolynomial(x, b, c, d, e, f);
 
     /// <summary>PREVIEW! A univariate septic function, or seventh-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Septic_function"/>
     public static TSelf SepticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g, TSelf h)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => (a * x * x * x * x * x * x * x) + SexticPolynomial(x, b, c, d, e, f, g, h);
-    //=> (a* x * x * x* x * x* x * x) + (b* x * x * x* x * x* x) + (c* x * x * x* x * x) + (d* x * x * x* x) + (e* x * x * x) + (f* x * x) + (g* x) + h;
+      => (a * x * x * x * x * x * x * x) + (b * x * x * x * x * x * x) + (c * x * x * x * x * x) + (d * x * x * x * x) + (e * x * x * x) + (f * x * x) + (g * x) + h;
+    //=> (a * x * x * x * x * x * x * x) + SexticPolynomial(x, b, c, d, e, f, g, h);
 
     /// <summary>PREVIEW! A univariate sextic function, or sixth-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quintic_function"/>
     public static TSelf SexticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => (a * x * x * x * x * x * x) + QuinticPolynomial(x, b, c, d, e, f, g);
-    //=> (a* x * x * x* x * x* x) + (b* x * x * x* x * x) + (c* x * x * x* x) + (d* x * x * x) + (e* x * x) + (f* x) + g;
+      => (a * x * x * x * x * x * x) + (b * x * x * x * x * x) + (c * x * x * x * x) + (d * x * x * x) + (e * x * x) + (f * x) + g;
+    //=> (a * x * x * x * x * x * x) + QuinticPolynomial(x, b, c, d, e, f, g);
 
     /// <summary>PREVIEW! A polynomial in one indeterminate.</summary>
     /// <param name="x"></param>

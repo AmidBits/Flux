@@ -1,5 +1,4 @@
 using BaseLibrary.Source.Foundation.Text;
-using System;
 
 namespace Flux
 {
@@ -37,7 +36,7 @@ namespace Flux
       }
       else if (number < 0) // Needs a REAL solution for negative numbers.
       {
-        for (var bit = number.BitLength().GetSmallestPowerOf2StorageSize(32) - 1; bit >= 0; bit--)
+        for (var bit = number.BitLength().MostSignificant1Bit() - 1; bit >= 0; bit--)
           sb.Append(((System.Numerics.BigInteger.One << (int)bit) & number) != 0 ? '1' : '0');
       }
       

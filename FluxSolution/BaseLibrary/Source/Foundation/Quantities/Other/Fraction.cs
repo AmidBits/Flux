@@ -15,19 +15,19 @@ namespace Flux
 
     /// <summary>Represents a SimpleFraction value of -1.</summary>
     public static Fraction MinusOne
-      => new(-1, 1, false);
-    /// <summary>Represents a SimpleFraction value of -1.</summary>
+      => new(System.Numerics.BigInteger.MinusOne, System.Numerics.BigInteger.One, false);
+    /// <summary>Represents a SimpleFraction value of -2.</summary>
     public static Fraction MinusTwo
-      => new(-2, 1, false);
+      => new(-2, System.Numerics.BigInteger.One, false);
     /// <summary>Represents a SimpleFraction value of 1.</summary>
     public static Fraction One
-      => new(1, 1, false);
+      => new(System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, false);
     /// <summary>Represents a SimpleFraction value of 2.</summary>
     public static Fraction Two
-      => new(2, 1, false);
+      => new(2, System.Numerics.BigInteger.One, false);
     /// <summary>Represents a SimpleFraction value of 0.</summary>
     public static Fraction Zero
-      => new(0, 1, false);
+      => new(System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One, false);
 
     private readonly System.Numerics.BigInteger m_numerator;
     private readonly System.Numerics.BigInteger m_denominator;
@@ -38,6 +38,14 @@ namespace Flux
     /// <param name="reduceIfPossible">If true, reduce if possible, and if false, do not attempt to reduce.</param>
     public Fraction(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, bool reduceIfPossible)
     {
+      if (denominator.IsZero) throw new System.DivideByZeroException();
+
+      if (denominator.Sign < 0)
+      {
+        numerator = -numerator;
+        denominator = -denominator;
+      }
+
       if (reduceIfPossible && IsReducible(numerator, denominator, out var gcd))
       {
         m_numerator = numerator / gcd;
@@ -48,8 +56,6 @@ namespace Flux
         m_numerator = numerator;
         m_denominator = denominator;
       }
-
-      if (m_denominator == 0) throw new System.ArithmeticException(@"The denominator cannot be zero.");
     }
     public Fraction(System.Numerics.BigInteger whole, System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator)
       : this(whole * denominator + numerator, denominator, true)
@@ -61,22 +67,40 @@ namespace Flux
       : this(numerator, denominator, true)
     { }
     public Fraction(System.Numerics.BigInteger value)
-      : this(value, 1, false)
+      : this(value, System.Numerics.BigInteger.One, false)
     { }
-
-    public bool IsImproper
-      => m_numerator >= m_denominator;
-    /// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
-    public bool IsProper
-      => m_numerator < m_denominator;
-    /// <summary>A fraction is a unit fraction if its numerator is equal to 1.</summary>
-    public bool IsUnitFraction
-      => m_numerator == 1;
 
     public System.Numerics.BigInteger Numerator
       => m_numerator;
     public System.Numerics.BigInteger Denominator
       => m_denominator;
+
+    public bool IsImproper
+      => m_numerator >= m_denominator;
+
+    /// <summary>Indicates whether the number is a whole integer, i.e. no fractional residue.</summary>
+    public bool IsInteger
+      => m_denominator.IsOne;
+
+    /// <summary>Indicates whether the number is -1.</summary>
+    public bool IsMinusOne
+      => m_numerator == System.Numerics.BigInteger.MinusOne && m_denominator.IsOne;
+
+    /// <summary>Indicates whether the number is 1.</summary>
+    public bool IsOne
+      => m_numerator.IsOne && m_denominator.IsOne;
+
+    /// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
+    public bool IsProper
+      => m_numerator < m_denominator;
+
+    /// <summary>A fraction is a unit fraction if its numerator is equal to 1.</summary>
+    public bool IsUnitFraction
+      => m_numerator.IsOne;
+
+    /// <summary>Indicates whether the number is 0.</summary>
+    public bool IsZero
+      => m_numerator.IsZero && m_denominator.IsOne;
 
     /// <summary>Indicates the sign of the number, i.e. 1, 0 or -1.</summary>
     public int Sign
@@ -116,52 +140,61 @@ namespace Flux
       => (double)m_numerator / (double)m_denominator;
 
     #region Static methods
+
     /// <summary>Returns the absolute value a value.</summary>
     public static Fraction Abs(Fraction value)
       => CopySign(value, One);
+
     /// <summary>Returns the value with the sign of the second argument.</summary>
     public static Fraction CopySign(Fraction value, Fraction sign)
-      => (sign.Sign == 0 || value == Zero)
+      => (sign.Sign == 0 || value.IsZero)
       ? Zero
       : (value.m_numerator.Sign < 0 && sign.Sign > 0) || (value.m_numerator.Sign > 0 && sign.Sign < 0)
       ? new(-value.m_numerator, value.m_denominator, true)
       : value;
+
     /// <summary>Returns the greatest common divisor (GCD) of two values.</summary>
     /// <remarks>The result is guaranteed to be a reduced fraction. If you try to further simplify this to: (gcd(a,c) * gcd(b,d)) / (|b*d|), then the result will not be reduced, and the operation actually takes about 60% longer.</remarks>
     /// <example>gcd((a/b),(c/d)) = gcd(a,c) / lcm(b,d) = gcd(a,c) / (|b*d|/gcd(b,d))</example>
     public static Fraction GreatestCommonDivisor(Fraction a, Fraction b)
-      => (a == Zero)
+      => a.IsZero
       ? Abs(b)
-      : (b == Zero)
+      : b.IsZero
       ? Abs(a)
       : new(
           System.Numerics.BigInteger.GreatestCommonDivisor(a.m_numerator, b.m_numerator),
           System.Numerics.BigInteger.Abs(a.m_denominator * b.m_denominator) / System.Numerics.BigInteger.GreatestCommonDivisor(a.m_denominator, b.m_denominator),
           true
         );
+
     /// <summary>Returns whether the specified numerator and denominator (fraction) is reducible.</summary>
     public static bool IsReducible(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger gcd)
       => (gcd = System.Numerics.BigInteger.GreatestCommonDivisor(numerator, denominator)) > 1;
+
     /// <summary>Returns the least common multiple (LCM) of two values.</summary>
     /// <remarks>The result is guaranteed to be a reduced fraction. If you try to further simplify this to: |a*c| / (gcd(a,c) * gcd(b,d)), then the result will not be reduced, and the operation actually takes about 60% longer.</remarks>
     /// <example>lcm((a/b),(c/d)) = lcm(a,c) / gcd(b,d) = (|a*c| / gcd(a,c)) / gcd(b,d)</example>
     public static Fraction LeastCommonMultiple(Fraction a, Fraction b)
-      => (a == Zero || b == Zero)
+      => (a.IsZero || b.IsZero)
       ? Zero
       : new(
           System.Numerics.BigInteger.Abs(a.m_numerator * b.m_numerator) / System.Numerics.BigInteger.GreatestCommonDivisor(a.m_numerator, b.m_numerator),
           System.Numerics.BigInteger.GreatestCommonDivisor(a.m_denominator, b.m_denominator),
           true
         );
+
     /// <summary>Returns the greater of two values.</summary>
     public static Fraction Max(Fraction a, Fraction b)
       => a.CompareTo(b) >= 0 ? a : b;
+
     /// <summary>Returns the mediant of two values.</summary>
     public static Fraction Mediant(Fraction a, Fraction b)
       => new(a.m_numerator + b.m_numerator, a.m_denominator + b.m_denominator, false);
+
     /// <summary>Returns the lesser of two values.</summary>
     public static Fraction Min(Fraction a, Fraction b)
       => a.CompareTo(b) <= 0 ? a : b;
+
     /// <summary>Returns the nth root of the value.</summary>
     private static Fraction NthRoot(Fraction value, int n, Fraction maxError)
     {
@@ -276,29 +309,33 @@ namespace Flux
         return (a - lowerPow).CompareTo(upperPow - a) < 0 ? (lowerX, false) : (upperX, false);
       }
     }
+
     /// <summary>Returns this^exponent. Note: 0^0 will return 1/1.</summary>
     public static Fraction Pow(Fraction value, int exponent)
     {
       if (exponent < 0)
       {
-        if (value == Zero) throw new System.DivideByZeroException(@"Raising zero to negative exponent.");
+        if (value.IsZero) throw new System.DivideByZeroException(@"Raising zero to negative exponent.");
         else if (exponent == int.MinValue) throw new System.OverflowException(@"Exponent cannot be negated."); // edge case: because we negate the exponent if it's negative, we would get into an infinite loop because -MIN_VALUE == MIN_VALUE
         else return new(System.Numerics.BigInteger.Pow(value.Denominator, -exponent), System.Numerics.BigInteger.Pow(value.Numerator, -exponent), true);
       }
 
       if (exponent == 0) return One;
-      else if (value == Zero) return Zero;
+      else if (value.IsZero) return Zero;
       else if (exponent == 1) return value;
       else return new(System.Numerics.BigInteger.Pow(value.Numerator, exponent), System.Numerics.BigInteger.Pow(value.Denominator, exponent), true);
     }
+
     /// <summary>Returns the reciprocal of a value.</summary>
     public static Fraction Reciprocal(Fraction value)
-      => value == Zero
+      => value.IsZero
       ? throw new System.DivideByZeroException(@"Reciprocal of zero.")
       : new(value.m_denominator, value.m_numerator, true);
+
     /// <summary>Compute the square root of the specified value.</summary>
     public static Fraction Sqrt(Fraction value)
       => NthRoot(value, 2, EpsilonLikeDouble);
+
     #endregion Static methods
 
     #region Overloaded operators
@@ -325,24 +362,31 @@ namespace Flux
 
       return new Fraction(an + bn, lcm);
     }
+
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator +(Fraction a, System.Numerics.BigInteger b)
       => a + new Fraction(b);
+
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator /(Fraction a, Fraction b)
       => new(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
+
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator /(Fraction a, System.Numerics.BigInteger b)
       => a / new Fraction(b);
+
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator *(Fraction a, Fraction b)
       => new(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
+
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator *(Fraction a, System.Numerics.BigInteger b)
       => a * new Fraction(b);
+
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator %(Fraction a, System.Numerics.BigInteger b)
       => new(a.m_numerator % (a.m_denominator * b), a.m_denominator);
+
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator -(Fraction a, Fraction b)
     {
@@ -353,9 +397,11 @@ namespace Flux
 
       return new Fraction(an - bn, lcm);
     }
+
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator -(Fraction a, System.Numerics.BigInteger b)
       => a - new Fraction(b);
+
     #endregion Overloaded operators
 
     #region Implemented interfaces

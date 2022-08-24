@@ -1,9 +1,4 @@
-//using Flux.Hashing;
-//using System.Numerics;
-
-using Flux.AmbOps;
-using Flux.Hashing;
-
+#if NET7_0_OR_GREATER
 namespace Flux
 {
   //  // <seealso cref="http://aggregate.org/MAGIC/"/>
@@ -147,3 +142,4 @@ namespace Flux
       => ILog2(LeastSignificant1Bit(value));
   }
 }
+#endif
