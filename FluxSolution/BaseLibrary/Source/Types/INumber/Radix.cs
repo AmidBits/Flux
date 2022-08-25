@@ -210,9 +210,9 @@ namespace Flux
     {
       var abs = TSelf.Abs(value);
       var log = TSelf.Log(abs, radix);
-      var round = log.Round( HalfRounding.ToEven);
+      var round = log.Round(HalfRounding.ToEven);
       var pow = TSelf.Pow(radix, round);
-      var signed = pow.CopySign(value);
+      var signed = TSelf.CopySign(pow, value);
       return signed;
     }
 

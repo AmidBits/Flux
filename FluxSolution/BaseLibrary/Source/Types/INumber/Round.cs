@@ -14,12 +14,12 @@ namespace Flux
     /// <summary>PREVIEW! Symmetric rounding: round down, bias: towards zero.</summary>
     public static TSelf RoundFloorZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.Floor(TSelf.Abs(value)).CopySign(value);
+      => TSelf.CopySign(TSelf.Floor(TSelf.Abs(value)), value);
 
     /// <summary>PREVIEW! Symmetric rounding: round up, bias: away from zero.</summary>
     public static TSelf RoundCeilingZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.Ceiling(TSelf.Abs(value)).CopySign(value);
+      => TSelf.CopySign(TSelf.Ceiling(TSelf.Abs(value)), value);
 
     /// <summary>PREVIEW! Common rounding: round half down, bias: negative infinity.</summary>
     public static TSelf RoundHalfDown<TSelf>(this TSelf value)
@@ -29,7 +29,7 @@ namespace Flux
     /// <summary>PREVIEW! Symmetric rounding: round half down, bias: towards zero.</summary>
     public static TSelf RoundHalfDownZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => RoundHalfDown(TSelf.Abs(value)).CopySign(value);
+      => TSelf.CopySign(RoundHalfDown(TSelf.Abs(value)), value);
 
     /// <summary>PREVIEW! Common rounding: round half up, bias: positive infinity.</summary>
     public static TSelf RoundHalfUp<TSelf>(this TSelf value)
@@ -39,7 +39,7 @@ namespace Flux
     /// <summary>PREVIEW! Symmetric rounding: round half up, bias: away from zero.</summary>
     public static TSelf RoundHalfUpZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => RoundHalfUp(TSelf.Abs(value)).CopySign(value);
+      => TSelf.CopySign(RoundHalfUp(TSelf.Abs(value)), value);
 
     /// <summary>PREVIEW! Rounds the <paramref name="value"/> to the nearest integer. The <paramref name="mode"/> specifies how to round if it is midway between two numbers.</summary>
     public static TSelf Round<TSelf>(this TSelf value, HalfRounding mode)
