@@ -27,13 +27,16 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public T Height { get => m_height; init => m_height = value; }
 
     //[System.Diagnostics.Contracts.Pure]
-    //public CartesianCoordinate3 ToCartesianCoordinate3()
-    //  => new(m_radius * T.Cos(m_radAzimuth), m_radius * T.Sin(m_radAzimuth), m_height);
+    //public CartesianCoordinate3<TOther> ToCartesianCoordinate3<TOther>()
+    //  where TOther : System.Numerics.IFloatingPoint<TOther>, System.Numerics.ITrigonometricFunctions<TOther>
+    //  => TOther.CreateSaturating(m_radius) is var radius && TOther.CreateSaturating(m_radAzimuth) is var radAzimuth && TOther.CreateSaturating(m_height) is var height ? new CartesianCoordinate3<TOther>(radius * TOther.Cos(radAzimuth), radius * TOther.Sin(radAzimuth), height) : throw new System.NotSupportedException();
+
+    [System.Diagnostics.Contracts.Pure]
+    public PolarCoordinate<T> ToPolarCoordinate()
+      => new(m_radius, m_radAzimuth);
+
     //[System.Diagnostics.Contracts.Pure]
-    //public PolarCoordinate ToPolarCoordinate()
-    //  => new(m_radius, m_radAzimuth);
-    //[System.Diagnostics.Contracts.Pure]
-    //public SphericalCoordinate ToSphericalCoordinate()
+    //public SphericalCoordinate<T> ToSphericalCoordinate()
     //  => new(T.Sqrt(m_radius * m_radius + m_height * m_height), T.Atan2(m_radius, m_height), m_radAzimuth);
 
     #region Overloaded operators

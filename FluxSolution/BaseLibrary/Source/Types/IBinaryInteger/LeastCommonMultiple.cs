@@ -7,7 +7,9 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Least_common_multiple"/>
     public static TSelf Lcm<TSelf>(this TSelf[] values)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => System.Linq.Enumerable.Aggregate(values, (a, b) => a.LeastCommonMultiple(b));
+      => values.Length >= 2
+      ? values.Aggregate((a, b) => a.LeastCommonMultiple(b))
+      : throw new System.ArgumentOutOfRangeException(nameof(values));
 
     /// <summary>PREVIEW! Returns the least common multiple of the two specified values.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Least_common_multiple"/>

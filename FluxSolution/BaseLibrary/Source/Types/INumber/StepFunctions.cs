@@ -35,7 +35,7 @@ namespace Flux
     /// </summary>
     public static TSelf UnitStepHM<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => x < TSelf.Zero ? TSelf.Zero : x > TSelf.Zero ? TSelf.One : TSelf.One.DivideByTwo();
+      => x < TSelf.Zero ? TSelf.Zero : x > TSelf.Zero ? TSelf.One : TSelf.One.Div2();
   }
 }
 #endif

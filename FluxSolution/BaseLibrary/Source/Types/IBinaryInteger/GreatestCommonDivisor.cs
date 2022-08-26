@@ -7,7 +7,9 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
     public static TSelf Gcd<TSelf>(this TSelf[] values)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => System.Linq.Enumerable.Aggregate(values, (a, b) => a.GreatestCommonDivisor(b));
+      => values.Length >= 2
+      ? values.Aggregate((a, b) => a.GreatestCommonDivisor(b))
+      : throw new System.ArgumentOutOfRangeException(nameof(values));
 
     /// <summary>PREVIEW! Returns the greatest common divisor of a and b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>

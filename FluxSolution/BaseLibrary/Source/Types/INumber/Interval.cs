@@ -9,7 +9,7 @@ namespace Flux
       => TSelf.Abs(b - a);
 
     /// <summary>PREVIEW! Folds an out-of-bound <paramref name="value"/> over across the interval, back and forth, between the closed interval [<paramref name="min"/>, <paramref name="max"/>], until the value is back within range.</summary>
-    public static TSelf FoldI<TSelf>(this TSelf value, TSelf min, TSelf max)
+    public static TSelf IFold<TSelf>(this TSelf value, TSelf min, TSelf max)
       where TSelf : System.Numerics.IBinaryNumber<TSelf>
     {
       if (value > max)

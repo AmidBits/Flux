@@ -23,9 +23,11 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public T Azimuth { get => m_radAzimuth; init => m_radAzimuth = value; }
 
     /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="CartesianCoordinate2"/>.</summary>
-    //[System.Diagnostics.Contracts.Pure]
-    //public CartesianCoordinate2 ToCartesianCoordinate2()
-    //  => new(m_radius * System.Math.Cos(m_radAzimuth), m_radius * System.Math.Sin(m_radAzimuth));
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2<TOther> ToCartesianCoordinate2<TOther>()
+      where TOther : System.Numerics.IFloatingPoint<TOther>, System.Numerics.IPowerFunctions<TOther>, System.Numerics.IRootFunctions<TOther>, System.Numerics.ITrigonometricFunctions<TOther>
+      => TOther.CreateSaturating(m_radius) is var radius && TOther.CreateSaturating(m_radAzimuth) is var radAzimuth ? new(radius * TOther.Cos(radAzimuth), radius * TOther.Sin(radAzimuth)) : throw new System.NotSupportedException();
+
     /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="System.Numerics.Complex"/>.</summary>
     //[System.Diagnostics.Contracts.Pure]
     //public System.Numerics.Complex ToComplex()

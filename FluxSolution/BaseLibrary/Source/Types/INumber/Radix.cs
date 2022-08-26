@@ -4,7 +4,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     private static TSelf AssertRadix<TSelf>(TSelf radix)
-      where TSelf : System.Numerics.INumber<TSelf>
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsInteger(radix) && radix > TSelf.One ? radix : throw new System.ArgumentOutOfRangeException(nameof(radix));
 
     /// <summary>PREVIEW! Returns the count of all digits in the value using the specified radix.</summary>
@@ -136,7 +136,7 @@ namespace Flux
 
     /// <summary>PREVIEW! Determines if the number is a power of the specified radix. The sign is ignored so the function can be used on negative numbers as well.</summary>
     public static bool IsPowerOf<TSelf>(this TSelf value, TSelf radix)
-      where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IBitwiseOperators<TSelf, TSelf, TSelf>
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>, System.Numerics.IBitwiseOperators<TSelf, TSelf, TSelf>
     {
       AssertRadix(radix);
 

@@ -3,13 +3,17 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static TSelf DivideByTwo<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.INumber<TSelf>
+    public static TSelf Div2<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.INumberBase<TSelf>
       => value / (TSelf.One + TSelf.One);
 
-    //public static TSelf MultiplyByTwo<TSelf>(this TSelf value)
-    //  where TSelf : System.Numerics.INumber<TSelf>
-    //  => value * (TSelf.One + TSelf.One);
+    public static TSelf Mul2<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.INumberBase<TSelf>
+      => value * (TSelf.One + TSelf.One);
+
+    public static TSelf Pow2<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.INumberBase<TSelf>
+      => value * value;
 
     /// <summary>PREVIEW! Symmetric rounding: round down, bias: towards zero.</summary>
     public static TSelf RoundFloorZero<TSelf>(this TSelf value)
@@ -24,7 +28,7 @@ namespace Flux
     /// <summary>PREVIEW! Common rounding: round half down, bias: negative infinity.</summary>
     public static TSelf RoundHalfDown<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.Ceiling(value - TSelf.One.DivideByTwo());
+      => TSelf.Ceiling(value - TSelf.One.Div2());
 
     /// <summary>PREVIEW! Symmetric rounding: round half down, bias: towards zero.</summary>
     public static TSelf RoundHalfDownZero<TSelf>(this TSelf value)
@@ -34,7 +38,7 @@ namespace Flux
     /// <summary>PREVIEW! Common rounding: round half up, bias: positive infinity.</summary>
     public static TSelf RoundHalfUp<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.Floor(value + TSelf.One.DivideByTwo());
+      => TSelf.Floor(value + TSelf.One.Div2());
 
     /// <summary>PREVIEW! Symmetric rounding: round half up, bias: away from zero.</summary>
     public static TSelf RoundHalfUpZero<TSelf>(this TSelf value)
