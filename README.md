@@ -1,8 +1,10 @@
 # Flux
 
-As the name implies, this is an API and a solution used for source file reference inside of other projects. 
+As the name implies, this is an API.
 
-If using Visual Studio you can reference files external to your project, by editing the project file. E.g.:
+There are also sample solutions for usage referencing, e.g. reference by project. 
+
+If using Visual Studio you can also reference files external to your project, by editing the project file:
 
 	<ItemGroup>
 		<Compile Include="..\Flux\FluxSolution\BaseLibrary\Source\**\*.cs">
