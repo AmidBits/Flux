@@ -3,7 +3,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>PREVIEW! Returns the root of the <paramref name="square"/>.</summary>
+    /// <summary>PREVIEW! Returns the (floor) root of the <paramref name="square"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
     public static TSelf ISqrt<TSelf>(this TSelf square)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -16,14 +16,15 @@ namespace Flux
       var two = TSelf.One + TSelf.One;
 
       while (l != r - TSelf.One)
-      {
-        var m = (l + r) / two;
+        checked
+        {
+          var m = (l + r) / two;
 
-        if (m * m <= square)
-          l = m;
-        else
-          r = m;
-      }
+          if (m * m <= square)
+            l = m;
+          else
+            r = m;
+        }
 
       return l;
     }
