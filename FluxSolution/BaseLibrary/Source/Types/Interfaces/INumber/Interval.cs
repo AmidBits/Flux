@@ -60,7 +60,11 @@ namespace Flux
     /// <summary>PREVIEW! Returns the <paramref name="value"/> indefinitely wrapped (overflowed) around the boundaries of the closed interval [<paramref name="min"/>, <paramref name="max"/>].</summary>
     public static TSelf Wrap<TSelf>(this TSelf value, TSelf min, TSelf max)
       where TSelf : System.Numerics.INumber<TSelf>
-      => value < min ? max - (min - value) % (max - min) : value > max ? min + (value - min) % (max - min) : value;
+      => value < min
+      ? max - (min - value) % (max - min)
+      : value > max
+      ? min + (value - min) % (max - min)
+      : value;
 
   }
 }

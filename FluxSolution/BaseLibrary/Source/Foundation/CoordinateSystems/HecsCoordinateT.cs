@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux
 {
   /// <summary>The HECS coordinate system.</summary>
@@ -154,7 +155,7 @@ namespace Flux
     //  => new(a.m_a - b.m_a, a.m_r - b.m_r, a.m_c - b.m_c);
     //#endregion Static methods
 
-    #region Overloaded operators
+#region Overloaded operators
     public static bool operator ==(HecsCoordinate<T> h1, HecsCoordinate<T> h2) => h1.Equals(h2);
     public static bool operator !=(HecsCoordinate<T> h1, HecsCoordinate<T> h2) => !h1.Equals(h2);
 
@@ -164,17 +165,18 @@ namespace Flux
     //  => Multiply(h, scalar);
     //public static Hecs operator -(Hecs h1, Hecs h2)
     //  => Subtract(h1, h2);
-    #endregion Overloaded operators
+#endregion Overloaded operators
 
-    #region Implemented interfaces
+#region Implemented interfaces
     // IEquatable
     public bool Equals(HecsCoordinate<T> other) => m_a == other.m_a && m_r == other.m_r && m_c == other.m_c;
-    #endregion Implemented interfaces
+#endregion Implemented interfaces
 
-    #region Object overrides
+#region Object overrides
     public override bool Equals(object? obj) => obj is HecsCoordinate<T> o && Equals(o);
     public override int GetHashCode() => System.HashCode.Combine(m_a, m_r, m_c);
     public override string ToString() => $"{GetType().Name} {{ A = {m_a}, R = {m_r}, C = {m_c} }}";
-    #endregion Object overrides
+#endregion Object overrides
   }
 }
+#endif
