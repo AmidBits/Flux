@@ -28,7 +28,7 @@ namespace Flux
     /// <summary>PREVIEW! Common rounding: round half down, bias: negative infinity.</summary>
     public static TSelf RoundHalfDown<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.Ceiling(value - TSelf.One.Div2());
+      => TSelf.Ceiling(value - (TSelf.One / (TSelf.One + TSelf.One)));
 
     /// <summary>PREVIEW! Symmetric rounding: round half down, bias: towards zero.</summary>
     public static TSelf RoundHalfDownZero<TSelf>(this TSelf value)
@@ -38,7 +38,7 @@ namespace Flux
     /// <summary>PREVIEW! Common rounding: round half up, bias: positive infinity.</summary>
     public static TSelf RoundHalfUp<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.Floor(value + TSelf.One.Div2());
+      => TSelf.Floor(value + (TSelf.One / (TSelf.One + TSelf.One)));
 
     /// <summary>PREVIEW! Symmetric rounding: round half up, bias: away from zero.</summary>
     public static TSelf RoundHalfUpZero<TSelf>(this TSelf value)
@@ -50,25 +50,22 @@ namespace Flux
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IModulusOperators<TSelf, TSelf, TSelf>
     {
       var two = TSelf.One + TSelf.One;
-      var halfOne = TSelf.One / two;
-
-      var p = value + halfOne;
-      var n = value - halfOne;
+      var halfOfOne = TSelf.One / two;
 
       return mode switch
       {
-        HalfRounding.ToEven => TSelf.Floor(value + halfOne) is var pi && pi % two != TSelf.Zero && value - TSelf.Floor(value) == halfOne ? pi - TSelf.One : pi,
+        HalfRounding.ToEven => TSelf.Floor(value + halfOfOne) is var pi && pi % two != TSelf.Zero && value - TSelf.Floor(value) == halfOfOne ? pi - TSelf.One : pi,
         HalfRounding.AwayFromZero => RoundHalfUpZero(value),
         HalfRounding.TowardZero => RoundHalfDownZero(value),
         HalfRounding.ToNegativeInfinity => RoundHalfDown(value),
         HalfRounding.ToPositiveInfinity => RoundHalfUp(value),
-        HalfRounding.ToOdd => TSelf.Floor(value + halfOne) is var pi && pi % two == TSelf.Zero && value - TSelf.Floor(value) == halfOne ? pi - TSelf.One : pi,
+        HalfRounding.ToOdd => TSelf.Floor(value + halfOfOne) is var pi && pi % two == TSelf.Zero && value - TSelf.Floor(value) == halfOfOne ? pi - TSelf.One : pi,
         _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
       };
     }
 
     /// <summary>PREVIEW! Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
-    public static TSelf RoundToMultiple<TSelf>(TSelf number, TSelf interval, System.MidpointRounding mode)
+    public static TSelf RoundToMultiple<TSelf>(this TSelf number, TSelf interval, System.MidpointRounding mode)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IModulusOperators<TSelf, TSelf, TSelf>
     {
       if (number % interval is var remainder && remainder == TSelf.Zero)

@@ -43,19 +43,35 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
-      
-      var fv = new Flux.Fraction(13,5);
+
+      var numerator = 7.75;
+      var denominator = 1.2;
+
+      var remainder = numerator % denominator;
+      var quotient = (numerator - remainder) / denominator;
+
+      var quotient2 = numerator.DivRemMul( denominator, out var remainder2, out var multiple2);
+
+      var fv = new Flux.Fraction(13, 5);
 
       var ips = fv.ToImproperString();
       var ps = fv.ToProperString();
       var vs = fv.Value.ToString();
       var s = fv.ToString();
 
+      var number = ulong.MaxValue.ToBigInteger() * ulong.MaxValue.ToBigInteger();
+      var isPerfect = number.TryISqrt(out var root);
+      var square = root.IPow(2);
+
+      var n = 5.0;
+      var rounded = n.Round(HalfRounding.AwayFromZero);
+      var roundedm = n.RoundToMultiple(1.5, MidpointRounding.ToEven);
+
       var p2s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(2, i))).ToArray();
       var p8s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(8, i))).ToArray();
       var p10s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(10, i))).ToArray();
       var p16s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(16, i))).ToArray();
-      
+
       // var nx = 99.0;
 
       // var nxbil = System.Numerics.BigInteger.Log(nx, 10);
@@ -72,7 +88,7 @@ namespace ConsoleApp
       //  System.Console.WriteLine($"{d1} = {d1.Round(HalfRounding.TowardZero)} = {double.Round(d1, MidpointRounding.ToZero)}");
       //}
 
-      for (var f = 1.ToBigInteger(); f <= long.MaxValue.ToBigInteger(); f *= byte.MaxValue*3)
+      for (var f = 1.ToBigInteger(); f <= long.MaxValue.ToBigInteger(); f *= byte.MaxValue * 3)
       {
         System.Console.WriteLine($"{f} : {f.GetByteCount()} : {f.GetBitLength()}");
       }

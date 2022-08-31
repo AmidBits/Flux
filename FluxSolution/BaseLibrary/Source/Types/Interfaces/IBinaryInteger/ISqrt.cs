@@ -3,30 +3,39 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>PREVIEW! Returns the (floor) root of the <paramref name="square"/>.</summary>
+    /// <summary>PREVIEW! Returns the (floor) root of <paramref name="square"/>. Using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
     public static TSelf ISqrt<TSelf>(this TSelf square)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (square <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(square));
+      var x0 = TSelf.One << (square.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the sqrt(s).
 
-      var l = TSelf.Zero;
-      var r = square + TSelf.One;
-
-      var two = TSelf.One + TSelf.One;
-
-      while (l != r - TSelf.One)
+      if (x0 != TSelf.Zero)
         checked
         {
-          var m = (l + r) / two;
+          var x1 = (x0 + square / x0) >> 1;
 
-          if (m * m <= square)
-            l = m;
-          else
-            r = m;
+          while (x1 < x0)
+          {
+            x0 = x1;
+            x1 = (x0 + square / x0) >> 1;
+          }
+
+          return x0;
         }
 
-      return l;
+      return square;
+    }
+
+    /// <summary>PREVIEW! Returns whether the <paramref name="square"/> is perfect and outputs the (floor) root of <paramref name="square"/>. Using Newton's method.</summary>
+    /// <returns>Whether the <paramref name="square"/> is perfect.</returns>
+    /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
+    public static bool TryISqrt<TSelf>(this TSelf square, out TSelf root)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      root = ISqrt(square);
+
+      return (root * root) == square;
     }
   }
 }
