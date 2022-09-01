@@ -50,7 +50,10 @@ namespace ConsoleApp
       var remainder = numerator % denominator;
       var quotient = (numerator - remainder) / denominator;
 
-      var quotient2 = numerator.DivRemMul( denominator, out var remainder2, out var multiple2);
+      var quotient2 = numerator.DivRem(denominator, out var remainder2);
+
+
+      var snap = numerator.DetentInterval(2, .25);
 
       var fv = new Flux.Fraction(13, 5);
 
