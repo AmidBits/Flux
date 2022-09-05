@@ -4,160 +4,192 @@ namespace Flux
   #region ExtensionMethods
   public static partial class ExtensionMethods
   {
-    //  /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
-    //  public static double AngleBetween(this CartesianCoordinate2 source, CartesianCoordinate2 before, CartesianCoordinate2 after)
-    //    => CartesianCoordinate2.AngleBetween(before - source, after - source);
+    /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
+    /// When dot eq 0 then the vectors are perpendicular.
+    /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
+    /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
+    /// </summary>
+    [System.Diagnostics.Contracts.Pure]
+    public static T AngleBetween<T>(this CartesianCoordinate2<T> a, CartesianCoordinate2<T> b)
+      where T : System.Numerics.INumber<T>, System.Numerics.IRootFunctions<T>, System.Numerics.ITrigonometricFunctions<T>
+      => T.Acos(T.Clamp(CartesianCoordinate2<T>.DotProduct(a, b) / (EuclideanLength(a) * EuclideanLength(b)), -T.One, T.One));
 
-    //  /// <summary>Compute the sum angle of all vectors.</summary>
-    //  public static double AngleSum(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source, CartesianCoordinate2 vector)
-    //    => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + vector.AngleBetween(v1, v2), (a, c) => a);
+    /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
+    public static T AngleBetween<T>(this CartesianCoordinate2<T> source, CartesianCoordinate2<T> before, CartesianCoordinate2<T> after)
+      where T : System.Numerics.INumber<T>, System.Numerics.IRootFunctions<T>, System.Numerics.ITrigonometricFunctions<T>
+      => AngleBetween(before - source, after - source);
 
-    //  /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
-    //  public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + ((e1.X * e2.Y - e2.X * e1.Y)), (a, c) => a / 2);
-    //  /// <summary>Compute the surface area of the polygon.</summary>
-    //  public static double ComputeArea(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => System.Math.Abs(ComputeAreaSigned(source));
+    /// <summary>Compute the sum angle of all vectors.</summary>
+    public static T AngleSum<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source, CartesianCoordinate2<T> vector)
+      where T : System.Numerics.INumber<T>, System.Numerics.IRootFunctions<T>, System.Numerics.ITrigonometricFunctions<T>
+      => source.AggregateTuple2(T.Zero, true, (a, v1, v2, i) => a + vector.AngleBetween(v1, v2), (a, c) => a);
 
-    //  /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    //  public static CartesianCoordinate2 ComputeCentroid(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => source.Aggregate(CartesianCoordinate2.Zero, (acc, e, i) => acc + e, (acc, c) => acc / c);
+    /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
+    public static T ComputeAreaSigned<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+      where T : System.Numerics.INumber<T>
+      => source.AggregateTuple2(T.Zero, true, (a, e1, e2, i) => a + ((e1.X * e2.Y - e2.X * e1.Y)), (a, c) => a / (T.One + T.One));
+    /// <summary>Compute the surface area of the polygon.</summary>
+    public static T ComputeArea<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+      where T : System.Numerics.INumber<T>
+      => T.Abs(ComputeAreaSigned(source));
 
-    //  /// <summary>Compute the perimeter length of the polygon.</summary>
-    //  public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + CartesianCoordinate2.EuclideanDistance(e1, e2), (a, c) => a);
+    /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
+    //public static CartesianCoordinate2<T> ComputeCentroid<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+    //  where T : System.Numerics.INumber<T>
+    //  => source.Aggregate(CartesianCoordinate2<T>.Zero, (acc, e, i) => acc + e, (acc, c) => acc / c);
 
-    //  /// <summary>Returns a sequence triplet angles.</summary>
-    //  public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
-    //  /// <summary>Returns a sequence triplet angles.</summary>
-    //  public static System.Collections.Generic.IEnumerable<(CartesianCoordinate2 v1, CartesianCoordinate2 v2, CartesianCoordinate2 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => source.PartitionTuple3(2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
+    /// <summary>Compute the perimeter length of the polygon.</summary>
+    public static double ComputePerimeter<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + CartesianCoordinate2.EuclideanDistance(e1, e2), (a, c) => a);
 
-    //  /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
-    //  public static System.Collections.Generic.IEnumerable<CartesianCoordinate2> GetMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => source.PartitionTuple2(true, (v1, v2, index) => (v1 + v2) / 2);
-    //  /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
-    //  public static System.Collections.Generic.IEnumerable<(CartesianCoordinate2 v1, CartesianCoordinate2 vm, CartesianCoordinate2 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => source.PartitionTuple2(true, (v1, v2, index) => (v1, (v1 + v2) / 2, v2, index));
+    /// <summary>Compute the Euclidean length of the vector.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public static T EuclideanLength<T>(this CartesianCoordinate2<T> source)
+      where T : System.Numerics.INumber<T>, System.Numerics.IRootFunctions<T>
+      => T.Sqrt(CartesianCoordinate2<T>.EuclideanLengthSquared(source));
 
-    //  /// <summary>Determines the inclusion of a vector in the polygon (2D planar). This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
-    //  /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
-    //  public static int InsidePolygon(this System.Collections.Generic.IList<CartesianCoordinate2> source, CartesianCoordinate2 vector)
+    /// <summary>Returns a sequence triplet angles.</summary>
+    public static System.Collections.Generic.IEnumerable<T> GetAngles<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+      where T : System.Numerics.INumber<T>, System.Numerics.IRootFunctions<T>, System.Numerics.ITrigonometricFunctions<T>
+      => source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
+    /// <summary>Returns a sequence triplet angles.</summary>
+    public static System.Collections.Generic.IEnumerable<(CartesianCoordinate2<T> v1, CartesianCoordinate2<T> v2, CartesianCoordinate2<T> v3, int index, T angle)> GetAnglesEx<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+      where T : System.Numerics.INumber<T>, System.Numerics.IRootFunctions<T>, System.Numerics.ITrigonometricFunctions<T>
+      => source.PartitionTuple3(2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
+
+    /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
+    public static System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> GetMidpoints<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+      where T : System.Numerics.INumber<T>
+      => source.PartitionTuple2(true, (v1, v2, index) => (v1 + v2) / (T.One + T.One));
+    /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
+    public static System.Collections.Generic.IEnumerable<(CartesianCoordinate2<T> v1, CartesianCoordinate2<T> vm, CartesianCoordinate2<T> v2, int index)> GetMidpointsEx<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+      where T : System.Numerics.INumber<T>
+      => source.PartitionTuple2(true, (v1, v2, index) => (v1, (v1 + v2) / (T.One + T.One), v2, index));
+
+    /// <summary>Determines the inclusion of a vector in the polygon (2D planar). This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
+    /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
+    public static int InsidePolygon<T>(this System.Collections.Generic.IList<CartesianCoordinate2<T>> source, CartesianCoordinate2<T> vector)
+      where T : System.Numerics.INumber<T>
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      int wn = 0;
+
+      //for (int i = 0; i < source.Count; i++)
+      //{
+      //  var a = source[i];
+      //  var b = (i == source.Count - 1 ? source[0] : source[i + 1]);
+
+      //  if (a.Y <= vector.Y)
+      //  {
+      //    if (b.Y > vector.Y && vector.SideTest(a, b) > 0)
+      //    {
+      //      wn++;
+      //    }
+      //  }
+      //  else
+      //  {
+      //    if (b.Y <= vector.Y && vector.SideTest(a, b) < 0)
+      //    {
+      //      wn--;
+      //    }
+      //  }
+      //}
+
+      foreach (var (a, b) in source.PartitionTuple2(true, (a, b, i) => (a, b)))
+      {
+        if (a.Y <= vector.Y)
+        {
+          if (b.Y > vector.Y && CartesianCoordinate2<T>.SideTest(vector, a, b) > 0)
+            wn++;
+        }
+        else
+        {
+          if (b.Y <= vector.Y && CartesianCoordinate2<T>.SideTest(vector, a, b) < 0)
+            wn--;
+        }
+      }
+
+      return wn;
+    }
+
+    /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
+    public static bool IsConvexPolygon<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+      where T : System.Numerics.INumber<T>, System.Numerics.IRootFunctions<T>, System.Numerics.ITrigonometricFunctions<T>
+    {
+      bool negative = false, positive = false;
+
+      foreach (var angle in GetAngles(source))
+      {
+        if (angle < T.Zero)
+          negative = true;
+        else
+          positive = true;
+
+        if (negative && positive)
+          return false;
+      }
+
+      return negative ^ positive;
+    }
+
+    /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
+    //public static bool IsEquiangularPolygon<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+    //  where T : System.Numerics.INumber<T>, System.Numerics.IRootFunctions<T>, System.Numerics.ITrigonometricFunctions<T>
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+    //  using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
+
+    //  if (e.MoveNext())
     //  {
-    //    if (source is null) throw new System.ArgumentNullException(nameof(source));
+    //    var initialAngle = e.Current;
 
-    //    int wn = 0;
-
-    //    //for (int i = 0; i < source.Count; i++)
-    //    //{
-    //    //  var a = source[i];
-    //    //  var b = (i == source.Count - 1 ? source[0] : source[i + 1]);
-
-    //    //  if (a.Y <= vector.Y)
-    //    //  {
-    //    //    if (b.Y > vector.Y && vector.SideTest(a, b) > 0)
-    //    //    {
-    //    //      wn++;
-    //    //    }
-    //    //  }
-    //    //  else
-    //    //  {
-    //    //    if (b.Y <= vector.Y && vector.SideTest(a, b) < 0)
-    //    //    {
-    //    //      wn--;
-    //    //    }
-    //    //  }
-    //    //}
-
-    //    foreach (var (a, b) in source.PartitionTuple2(true, (a, b, i) => (a, b)))
-    //    {
-    //      if (a.Y <= vector.Y)
-    //      {
-    //        if (b.Y > vector.Y && CartesianCoordinate2.SideTest(vector, a, b) > 0)
-    //          wn++;
-    //      }
-    //      else
-    //      {
-    //        if (b.Y <= vector.Y && CartesianCoordinate2.SideTest(vector, a, b) < 0)
-    //          wn--;
-    //      }
-    //    }
-
-    //    return wn;
-    //  }
-
-    //  /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
-    //  public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //  {
-    //    bool negative = false, positive = false;
-
-    //    foreach (var angle in GetAngles(source))
-    //    {
-    //      if (angle < 0)
-    //        negative = true;
-    //      else
-    //        positive = true;
-
-    //      if (negative && positive)
+    //    while (e.MoveNext())
+    //      if (!EqualityByAbsoluteTolerance.IsApproximatelyEqual(initialAngle, e.Current, Maths.Epsilon1E7))
     //        return false;
-    //    }
-
-    //    return negative ^ positive;
     //  }
-    //  /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
-    //  public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
+
+    //  return true;
+    //}
+
+    /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
+    //public static bool IsEquilateralPolygon<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+    //  where T : System.Numerics.INumber<T>
+    //{
+    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+    //  using var e = source.PartitionTuple2(true, (v1, v2, index) => CartesianCoordinate2<T>.EuclideanDistance(v1, v2)).GetEnumerator();
+
+    //  if (e.MoveNext())
     //  {
-    //    if (source is null) throw new System.ArgumentNullException(nameof(source));
+    //    var initialLength = e.Current;
 
-    //    using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
-
-    //    if (e.MoveNext())
-    //    {
-    //      var initialAngle = e.Current;
-
-    //      while (e.MoveNext())
-    //        if (!EqualityByAbsoluteTolerance.IsApproximatelyEqual(initialAngle, e.Current, Maths.Epsilon1E7))
-    //          return false;
-    //    }
-
-    //    return true;
-    //  }
-    //  /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
-    //  public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //  {
-    //    if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-    //    using var e = source.PartitionTuple2(true, (v1, v2, index) => CartesianCoordinate2.EuclideanDistance(v1, v2)).GetEnumerator();
-
-    //    if (e.MoveNext())
-    //    {
-    //      var initialLength = e.Current;
-
-    //      while (e.MoveNext())
-    //        if (!EqualityByRelativeTolerance.IsApproximatelyEqual(initialLength, e.Current, 1e-15))
-    //          return false;
-    //    }
-
-    //    return true;
+    //    while (e.MoveNext())
+    //      if (!EqualityByRelativeTolerance<T>.IsApproximatelyEqual(initialLength, e.Current, 1e-15))
+    //        return false;
     //  }
 
-    //  /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
-    //  /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    //  /// <remarks>Applicable to any shape. (Figure 1 and 8 in link)</remarks>
-    //  public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitAlongMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //  {
-    //    var midpointPolygon = new System.Collections.Generic.List<CartesianCoordinate2>();
+    //  return true;
+    //}
 
-    //    foreach (var pair in GetMidpointsEx(source).PartitionTuple2(true, (v1, v2, index) => (v1, v2)))
-    //    {
-    //      midpointPolygon.Add(pair.v1.vm);
+    /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
+    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
+    /// <remarks>Applicable to any shape. (Figure 1 and 8 in link)</remarks>
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2<T>>> SplitAlongMidpoints<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+      where T : System.Numerics.INumber<T>
+    {
+      var midpointPolygon = new System.Collections.Generic.List<CartesianCoordinate2<T>>();
 
-    //      yield return new System.Collections.Generic.List<CartesianCoordinate2>() { pair.v1.v2, pair.v2.vm, pair.v1.vm };
-    //    }
+      foreach (var pair in GetMidpointsEx(source).PartitionTuple2(true, (v1, v2, index) => (v1, v2)))
+      {
+        midpointPolygon.Add(pair.v1.vm);
 
-    //    yield return midpointPolygon;
-    //  }
+        yield return new System.Collections.Generic.List<CartesianCoordinate2<T>>() { pair.v1.v2, pair.v2.vm, pair.v1.vm };
+      }
+
+      yield return midpointPolygon;
+    }
 
     //  /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     //  /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
@@ -186,69 +218,73 @@ namespace Flux
     //    }
     //  }
 
-    //  /// <summary>Returns a new set of quadrilaterals from the polygon centroid to its midpoints and their corresponding original vertex. Method 5 in link.</summary>
-    //  /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    //  public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => ComputeCentroid(source) is var c ? GetMidpoints(source).PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+    /// <summary>Returns a new set of quadrilaterals from the polygon centroid to its midpoints and their corresponding original vertex. Method 5 in link.</summary>
+    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
+    //public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2<T>>> SplitCentroidToMidpoints<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+    //  where T : System.Numerics.INumber<T>
+    //  => ComputeCentroid(source) is var c ? GetMidpoints(source).PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate2<T>>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
-    //  /// <summary>Returns a new set of triangles from the polygon centroid to its points. Method 3 and 10 in link.</summary>
-    //  /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    //  public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
-    //    => ComputeCentroid(source) is var c ? source.PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+    /// <summary>Returns a new set of triangles from the polygon centroid to its points. Method 3 and 10 in link.</summary>
+    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
+    //public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2<T>>> SplitCentroidToVertices<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+    //  where T : System.Numerics.INumber<T>
+    //  => ComputeCentroid(source) is var c ? source.PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<CartesianCoordinate2<T>>() { c, v1, v2 }) : throw new System.InvalidOperationException();
 
-    //  /// <summary>Returns a new set of polygons by splitting the polygon at two points. Method 2 in link when odd number of vertices. method 9 in link when even number of vertices.</summary>
-    //  /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    //  public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitInHalf(this System.Collections.Generic.IEnumerable<CartesianCoordinate2> source)
+    /// <summary>Returns a new set of polygons by splitting the polygon at two points. Method 2 in link when odd number of vertices. method 9 in link when even number of vertices.</summary>
+    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
+    //public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2<T>>> SplitInHalf<T>(this System.Collections.Generic.IEnumerable<CartesianCoordinate2<T>> source)
+    //  where T : System.Numerics.INumber<T>
+    //{
+    //  var polygon1 = new System.Collections.Generic.List<CartesianCoordinate2<T>>();
+    //  var polygon2 = new System.Collections.Generic.List<CartesianCoordinate2<T>>();
+
+    //  foreach (var item in source ?? throw new System.ArgumentNullException(nameof(source)))
     //  {
-    //    var polygon1 = new System.Collections.Generic.List<CartesianCoordinate2>();
-    //    var polygon2 = new System.Collections.Generic.List<CartesianCoordinate2>();
+    //    polygon2.Add(item);
 
-    //    foreach (var item in source ?? throw new System.ArgumentNullException(nameof(source)))
-    //    {
-    //      polygon2.Add(item);
-
-    //      if (polygon2.Count > polygon1.Count)
-    //      {
-    //        polygon1.Add(polygon2[0]);
-    //        polygon2.RemoveAt(0);
-    //      }
-    //    }
-
-    //    if (polygon1.Count > polygon2.Count)
-    //    {
-    //      var midpoint = CartesianCoordinate2.Nlerp(polygon1[^1], polygon2[0], 0.5);
-
-    //      polygon1.Add(midpoint);
-    //      polygon2.Insert(0, midpoint);
-    //    }
-    //    else if (polygon1.Count == polygon2.Count)
+    //    if (polygon2.Count > polygon1.Count)
     //    {
     //      polygon1.Add(polygon2[0]);
+    //      polygon2.RemoveAt(0);
     //    }
-
-    //    polygon2.Add(polygon1[0]);
-
-    //    yield return polygon1;
-    //    yield return polygon2;
     //  }
 
-    //  /// <summary>Returns a sequence of triangles from the specified polygon index to all other points. Creates a triangle fan from the specified point. (2D/3D)</summary>
-    //  /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    //  /// <remarks>Applicable to any shape with more than 3 vertices. (Figure 9, in link)</remarks>
-    //  public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2>> SplitVertexToVertices(this System.Collections.Generic.IList<CartesianCoordinate2> source, int index)
+    //  if (polygon1.Count > polygon2.Count)
     //  {
-    //    if (source is null) throw new System.ArgumentNullException(nameof(source));
+    //    var midpoint = CartesianCoordinate2<T>.Nlerp(polygon1[^1], polygon2[0], T.One / (T.One + T.One));
 
-    //    var vertex = source[index];
-
-    //    var startIndex = index + 1;
-    //    var count = startIndex + source.Count - 2;
-
-    //    for (var i = startIndex; i < count; i++)
-    //    {
-    //      yield return new System.Collections.Generic.List<CartesianCoordinate2>() { vertex, source[i % source.Count], source[(i + 1) % source.Count] };
-    //    }
+    //    polygon1.Add(midpoint);
+    //    polygon2.Insert(0, midpoint);
     //  }
+    //  else if (polygon1.Count == polygon2.Count)
+    //  {
+    //    polygon1.Add(polygon2[0]);
+    //  }
+
+    //  polygon2.Add(polygon1[0]);
+
+    //  yield return polygon1;
+    //  yield return polygon2;
+    //}
+
+    /// <summary>Returns a sequence of triangles from the specified polygon index to all other points. Creates a triangle fan from the specified point. (2D/3D)</summary>
+    /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
+    /// <remarks>Applicable to any shape with more than 3 vertices. (Figure 9, in link)</remarks>
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<CartesianCoordinate2<T>>> SplitVertexToVertices<T>(this System.Collections.Generic.IList<CartesianCoordinate2<T>> source, int index)
+      where T : System.Numerics.INumber<T>
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      var vertex = source[index];
+
+      var startIndex = index + 1;
+      var count = startIndex + source.Count - 2;
+
+      for (var i = startIndex; i < count; i++)
+      {
+        yield return new System.Collections.Generic.List<CartesianCoordinate2<T>>() { vertex, source[i % source.Count], source[(i + 1) % source.Count] };
+      }
+    }
 
     //  public static CartesianCoordinate2 ToCartesianCoordinate2(this CartesianCoordinate2I source)
     //    => new(source.X, source.Y);
@@ -268,9 +304,9 @@ namespace Flux
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CartesianCoordinate2<T>
     : System.IEquatable<CartesianCoordinate2<T>>
-    where T : System.Numerics.INumber<T>, System.Numerics.IRootFunctions<T> //, System.Numerics.IPowerFunctions<T>, System.Numerics.IRootFunctions<T>, System.Numerics.ITrigonometricFunctions<T>
+    where T : System.Numerics.INumber<T> //, System.Numerics.IRootFunctions<T> //, System.Numerics.IPowerFunctions<T>, System.Numerics.IRootFunctions<T>, System.Numerics.ITrigonometricFunctions<T>
   {
-    public readonly static CartesianCoordinate2 Zero;
+    public readonly static CartesianCoordinate2<T> Zero;
 
     private readonly T m_x;
     private readonly T m_y;
@@ -386,14 +422,9 @@ namespace Flux
       => T.Max(T.Abs(source.m_x / edgeLength), T.Abs(source.m_y / edgeLength));
 
     /// <summary>Compute the Euclidean distance from vector a to vector b.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static T EuclideanDistance(CartesianCoordinate2<T> source, CartesianCoordinate2<T> target)
-      => EuclideanLength(target - source);
-
-    /// <summary>Compute the Euclidean length of the vector.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static T EuclideanLength(CartesianCoordinate2<T> source)
-      => T.Sqrt(EuclideanLengthSquared(source));
+    //[System.Diagnostics.Contracts.Pure]
+    //public static T EuclideanDistance(CartesianCoordinate2<T> source, CartesianCoordinate2<T> target)
+    //  => EuclideanLength(target - source);
 
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -411,9 +442,9 @@ namespace Flux
     //  => new(rng.NextDouble(-toExclusiveX, toExclusiveX), rng.NextDouble(-toExclusiveY, toExclusiveY));
 
     /// <summary>Returns the direction cosines.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2<T> GetDirectionCosines(CartesianCoordinate2<T> source, CartesianCoordinate2<T> target)
-      => Normalize(target - source);
+    //[System.Diagnostics.Contracts.Pure]
+    //public static CartesianCoordinate2<T> GetDirectionCosines(CartesianCoordinate2<T> source, CartesianCoordinate2<T> target)
+    //  => Normalize(target - source);
 
     /// <summary>Returns the direction ratios.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -463,13 +494,13 @@ namespace Flux
     public static T ManhattanLength(CartesianCoordinate2<T> source, T edgeLength)
       => T.Abs(source.m_x / edgeLength) + T.Abs(source.m_y / edgeLength);
 
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2<T> Nlerp(CartesianCoordinate2<T> source, CartesianCoordinate2<T> target, T mu)
-      => Normalize(Lerp(source, target, mu));
+    //[System.Diagnostics.Contracts.Pure]
+    //public static CartesianCoordinate2<T> Nlerp(CartesianCoordinate2<T> source, CartesianCoordinate2<T> target, T mu)
+    //  => Normalize(Lerp(source, target, mu));
 
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2<T> Normalize(CartesianCoordinate2<T> source)
-      => EuclideanLength(source) is var m && !T.IsZero(m) ? source / m : source;
+    //[System.Diagnostics.Contracts.Pure]
+    //public static CartesianCoordinate2<T> Normalize(CartesianCoordinate2<T> source)
+    //  => EuclideanLength(source) is var m && !T.IsZero(m) ? source / m : source;
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
@@ -493,13 +524,13 @@ namespace Flux
       => new(source.m_y, -source.m_x);
 
     /// <summary>Returns the perpendicular distance from the 2D point (x, y) to the to the 2D line (x1, y1) to (x2, y2).</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static T PerpendicularDistanceTo(CartesianCoordinate2<T> source, CartesianCoordinate2<T> a, CartesianCoordinate2<T> b)
-    {
-      var cc21 = b - a;
+    //[System.Diagnostics.Contracts.Pure]
+    //public static T PerpendicularDistanceTo(CartesianCoordinate2<T> source, CartesianCoordinate2<T> a, CartesianCoordinate2<T> b)
+    //{
+    //  var cc21 = b - a;
 
-      return EuclideanLength(cc21 * (source - a)) / EuclideanLength(cc21);
-    }
+    //  return EuclideanLength(cc21 * (source - a)) / EuclideanLength(cc21);
+    //}
 
     /// <summary>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</summary>
     /// <see cref="https://www.geeksforgeeks.org/find-foot-of-perpendicular-from-a-point-in-2-d-plane-to-a-line/"/>
@@ -577,7 +608,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate2<T> o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength(this)}) }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y} }}";
     #endregion Object overrides
   }
 }

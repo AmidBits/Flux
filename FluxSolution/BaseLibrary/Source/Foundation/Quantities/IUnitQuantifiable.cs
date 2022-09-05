@@ -5,7 +5,7 @@
   /// <typeparam name="TUnit">The unit enum.</typeparam>
   public interface IUnitQuantifiable<TType, TUnit>
     : IQuantifiable<TType>
-    where TType : struct, System.IEquatable<TType>
+    where TType : struct, System.IEquatable<TType>//, System.Numerics.INumber<TType>
     where TUnit : System.Enum
   {
     /// <summary>Create a string of the quantity, suffixed with the unit symbol, in the specified unit.</summary>

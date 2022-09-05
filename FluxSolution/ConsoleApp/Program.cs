@@ -44,6 +44,21 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var num = 6;
+
+      //var bi = Flux.ExtensionMethods.BitIndex(num);
+      var bl = Flux.ExtensionMethods.BitLength(num);
+      var bfl = Flux.ExtensionMethods.BitFoldLeft(num);
+      var bfr = Flux.ExtensionMethods.BitFoldRight(num);
+      var isp2 = Flux.ExtensionMethods.IsPowerOf2(num);
+      var ls1b = Flux.ExtensionMethods.LeastSignificant1Bit(num);
+      var ms1b = Flux.ExtensionMethods.MostSignificant1Bit(num);
+      var rdtp2 = Flux.ExtensionMethods.RoundDownToPowerOf2(num, true);
+      var rtnp2 = Flux.ExtensionMethods.RoundToNearestPowerOf2(num, true, out var ngt, out var nlt);
+      var rutp2 = Flux.ExtensionMethods.RoundUpToPowerOf2(num, true);
+      var lzc = Flux.ExtensionMethods.LeadingZeroCount(num);
+      var tzc = Flux.ExtensionMethods.TrailingZeroCount(num);
+
       var numerator = 7.75;
       var denominator = 1.2;
 
