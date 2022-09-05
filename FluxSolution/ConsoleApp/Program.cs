@@ -44,20 +44,27 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var num = 6;
+      //      var v1 =  new System.Numerics.Vector<double>(1,2);
 
-      //var bi = Flux.ExtensionMethods.BitIndex(num);
-      var bl = Flux.ExtensionMethods.BitLength(num);
-      var bfl = Flux.ExtensionMethods.BitFoldLeft(num);
-      var bfr = Flux.ExtensionMethods.BitFoldRight(num);
-      var isp2 = Flux.ExtensionMethods.IsPowerOf2(num);
-      var ls1b = Flux.ExtensionMethods.LeastSignificant1Bit(num);
-      var ms1b = Flux.ExtensionMethods.MostSignificant1Bit(num);
-      var rdtp2 = Flux.ExtensionMethods.RoundDownToPowerOf2(num, true);
-      var rtnp2 = Flux.ExtensionMethods.RoundToNearestPowerOf2(num, true, out var ngt, out var nlt);
-      var rutp2 = Flux.ExtensionMethods.RoundUpToPowerOf2(num, true);
-      var lzc = Flux.ExtensionMethods.LeadingZeroCount(num);
-      var tzc = Flux.ExtensionMethods.TrailingZeroCount(num);
+      var num = 10L;
+
+      var gBitLength = Flux.ExtensionMethods.GetBitLength(num);
+      var bitFoldL = Flux.ExtensionMethods.BitFoldLeft(num);
+      var bitFoldR = Flux.ExtensionMethods.BitFoldRight(num);
+      //var gil2c = Flux.ExtensionMethods.GetILog2Ceiling(num);
+      //var gil2f = Flux.ExtensionMethods.GetILog2Floor(num);
+      var tryGetILog2 = Flux.ExtensionMethods.TryGetILog2(num, out var tgil2f, out var tgil2c);
+      var isPow2 = Flux.ExtensionMethods.IsPow2(num);
+      var leastS1bit = Flux.ExtensionMethods.LeastSignificant1Bit(num);
+      var mostS1bit = Flux.ExtensionMethods.MostSignificant1Bit(num);
+      var rDownPow2 = Flux.ExtensionMethods.RoundDownToPow2(num);
+      var rDownPow2p = Flux.ExtensionMethods.RoundDownToPow2Proper(num);
+      var rToNearPow2 = Flux.ExtensionMethods.RoundToNearestPow2(num, out var rGTE, out var rLTE);
+      var rToNearPow2p = Flux.ExtensionMethods.RoundToNearestPow2Proper(num, out var rGTEp, out var rLTEp);
+      var rUpPow2 = Flux.ExtensionMethods.RoundUpToPow2(num);
+      var rUpPow2p = Flux.ExtensionMethods.RoundUpToPow2Proper(num);
+      var gLeadingZeroes = Flux.ExtensionMethods.GetLeadingZeroCount(num);
+      var gTrailingZeroes = Flux.ExtensionMethods.GetTrailingZeroCount(num);
 
       var numerator = 7.75;
       var denominator = 1.2;

@@ -12,9 +12,9 @@ namespace Flux
     public static TSelf BitFoldLeft<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var tzc = TrailingZeroCount(value);
+      var tzc = GetTrailingZeroCount(value);
 
-      return BitFoldRight(value << LeadingZeroCount(value)) >> tzc << tzc;
+      return BitFoldRight(value << GetLeadingZeroCount(value)) >> tzc << tzc;
     }
 
     // The fold 'right' (or down towards LSB) function, is the opposite (<see cref="FoldLeft"/>), sets all bits from the MS1B bit 'down' (or 'right'), to 1.
@@ -23,7 +23,7 @@ namespace Flux
     public static TSelf BitFoldRight<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => value < TSelf.Zero ? -TSelf.One
-      : value > TSelf.Zero ? ((MostSignificant1Bit(value) - TSelf.One) << 1) | TSelf.One
+      : value > TSelf.Zero ? (((MostSignificant1Bit(value) - TSelf.One) << 1) | TSelf.One)
       : TSelf.Zero;
   }
 }

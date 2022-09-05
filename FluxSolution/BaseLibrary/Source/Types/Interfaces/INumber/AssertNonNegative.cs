@@ -7,9 +7,7 @@ namespace Flux
     /// <remarks>The implementation is extremely fast for huge BigInteger values.</remarks>
     public static TSelf AssertNonNegativeValue<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumber<TSelf>
-    {
-      return IsNonNegativeValue(value) ? value : throw new System.ArgumentOutOfRangeException(nameof(value), "Non-negative value required.");
-    }
+      => IsNonNegativeValue(value) ? value : throw new System.ArgumentOutOfRangeException(nameof(value), "Non-negative value required.");
 
     public static bool IsNonNegativeValue<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumber<TSelf>
