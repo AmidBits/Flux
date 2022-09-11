@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Reports the first index of any of the specified characters within the source, or -1 if none were found. Uses the specified comparer.</summary>
-    public static int IndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] values)
+    /// <summary>Reports the first index of any of the specified characters within the source, or -1 if none were found. Uses the specified comparer (null for default).</summary>
+    public static int IndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] values)
     {
-      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       for (var index = 0; index < source.Length; index++)
       {
@@ -17,8 +17,5 @@ namespace Flux
 
       return -1;
     }
-    /// <summary>Reports the first index of any of the specified characters within the source, or -1 if none were found. Uses the default comparer.</summary>
-    public static int IndexOfAny<T>(this System.ReadOnlySpan<T> source, params T[] values)
-      => IndexOfAny(source, System.Collections.Generic.EqualityComparer<T>.Default, values);
   }
 }

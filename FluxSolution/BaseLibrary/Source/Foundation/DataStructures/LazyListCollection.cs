@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.DataStructures
 {
   public sealed class LazyListCollection<T>
@@ -38,6 +36,19 @@ namespace Flux.DataStructures
     }
 
     #region Implementation of IList<T>
+    //public void EnsureOrder()
+    //{
+    //  while (m_enumerators.Count > 0)
+    //  {
+    //    var e = m_enumerators.Dequeue();
+
+    //    while (e.MoveNext())
+    //      m_cache.Add(e.Current);
+
+    //    e.Dispose();
+    //  }
+    //}
+
     public T this[int index]
     {
       get => m_cache[index];

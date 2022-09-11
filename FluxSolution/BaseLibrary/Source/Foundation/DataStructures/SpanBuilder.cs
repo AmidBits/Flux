@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+
 namespace Flux
 {
   #region Extension methods.
@@ -163,7 +165,7 @@ namespace Flux
   public ref struct SpanBuilder<T>
     where T : notnull
   {
-    private const int DefaultBufferSize = 32;
+    private const int DefaultBufferSize = 64;
 
     private System.Span<T> m_buffer;
 

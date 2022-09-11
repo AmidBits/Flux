@@ -9,7 +9,7 @@ namespace Flux
     /// <summary>PREVIEW! Find the next largest power of 2 that is less than or equal to <paramref name="value"/>.</summary>
     public static TSelf RoundDownToPow2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsPow2(value) ? value : BitFoldRight(value - TSelf.One) + TSelf.One >> 1;
+      => TSelf.IsPow2(value) ? value : (BitFoldRight(value - TSelf.One) + TSelf.One) >> 1;
     /// <summary>PREVIEW! Find the next largest power of 2 proper (i.e. always) that is less than <paramref name="value"/>.</summary>
     public static TSelf RoundDownToPow2Proper<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

@@ -16,10 +16,10 @@ namespace Flux
       return -1;
     }
 
-    /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the specified comparer (null for default).</summary>
+    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
     {
-      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       for (var index = 0; index < source.Length; index++)
         if (equalityComparer.Equals(source[index], value))
@@ -27,14 +27,11 @@ namespace Flux
 
       return -1;
     }
-    /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the default comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value)
-      => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
 
-    /// <summary>Returns the first index of the specified target within the source, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    /// <summary>Returns the first index of the specified target within the source, or -1 if not found. Uses the specified comparer (null for default).</summary>
+    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
     {
-      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       var targetLength = target.Length;
 
@@ -46,8 +43,5 @@ namespace Flux
 
       return -1;
     }
-    /// <summary>Reports the first index of the specified target within the source, or -1 if not found. Uses the default comparer.</summary>
-    //public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value)
-    //  => IndexOf(source, value, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

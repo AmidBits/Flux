@@ -24,16 +24,13 @@ namespace Flux
 
       return source;
     }
+
     /// <summary>In-place replacement of all specified elements with the specified replacement element. Uses the specified comparer.</summary>
-    public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, T replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] replace)
+    public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, T replacement, System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] replace)
     {
-      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       return ReplaceAll(source, replacement, (e, i) => System.Array.Exists(replace, a => equalityComparer.Equals(a, e)));
     }
-
-    /// <summary>In-place replacement of all specified elements with the specified replacement element. Uses the default comparer.</summary>
-    public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, T replacement, params T[] replace)
-      => ReplaceAll(source, replacement, System.Collections.Generic.EqualityComparer<T>.Default, replace);
   }
 }

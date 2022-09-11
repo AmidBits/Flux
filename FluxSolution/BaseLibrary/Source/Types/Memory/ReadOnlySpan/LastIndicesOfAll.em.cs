@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Reports all last indices of the specified targets within the source (-1 if not found). Uses the specified comparer.</summary>
-    public static int[] LastIndicesOfAll<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] values)
+    /// <summary>Reports all last indices of the specified targets within the source (-1 if not found). Uses the specified comparer (null for default).</summary>
+    public static int[] LastIndicesOfAll<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] values)
     {
-      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       var lastIndices = new int[values.Length];
 
@@ -29,8 +29,5 @@ namespace Flux
 
       return lastIndices;
     }
-    /// <summary>Reports all last indices of the specified targets within the source (-1 if not found). Uses the default comparer.</summary>
-    public static int[] LastIndicesOfAll<T>(this System.ReadOnlySpan<T> source, params T[] values)
-      => LastIndicesOfAll(source, System.Collections.Generic.EqualityComparer<T>.Default, values);
   }
 }

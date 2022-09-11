@@ -46,13 +46,16 @@ namespace ConsoleApp
 
       //      var v1 =  new System.Numerics.Vector<double>(1,2);
 
-      var num = 10L;
+      var num = 8L;
+
+      var store = Flux.ExtensionMethods.RoundUpToPow2(5).Max(Flux.ExtensionMethods.RoundUpToPow2(73), 0);
+      var storage = Flux.ExtensionMethods.GetSmallestPowerOf2StorageSize(4, 73);
 
       var gBitLength = Flux.ExtensionMethods.GetBitLength(num);
       var bitFoldL = Flux.ExtensionMethods.BitFoldLeft(num);
       var bitFoldR = Flux.ExtensionMethods.BitFoldRight(num);
-      //var gil2c = Flux.ExtensionMethods.GetILog2Ceiling(num);
-      //var gil2f = Flux.ExtensionMethods.GetILog2Floor(num);
+      var gil2c = Flux.ExtensionMethods.GetILog2Ceiling(num);
+      var gil2f = Flux.ExtensionMethods.GetILog2Floor(num);
       var tryGetILog2 = Flux.ExtensionMethods.TryGetILog2(num, out var tgil2f, out var tgil2c);
       var isPow2 = Flux.ExtensionMethods.IsPow2(num);
       var leastS1bit = Flux.ExtensionMethods.LeastSignificant1Bit(num);

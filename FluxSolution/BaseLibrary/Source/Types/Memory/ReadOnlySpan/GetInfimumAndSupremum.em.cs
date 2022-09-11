@@ -2,11 +2,12 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Locate the index of the max element that is less than and the index of the min element that is greater than, the specified reference value identified by the <paramref name="valueSelector"/>. Uses the specified comparer.</summary>
-    public static (int indexLessThan, int indexGreaterThan) GetInfimumAndSupremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, TValue referenceValue, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue> comparer)
+    /// <summary>Locate the index of the max element that is less than and the index of the min element that is greater than, the specified reference value identified by the <paramref name="valueSelector"/>. Uses the specified comparer (null for default).</summary>
+    public static (int indexLessThan, int indexGreaterThan) GetInfimumAndSupremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, TValue referenceValue, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+
+      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
       var indexLt = -1;
       var indexGt = -1;
@@ -25,8 +26,5 @@ namespace Flux
 
       return (indexLt, indexGt);
     }
-    /// <summary>Locate the index of the max element that is less than and the index of the min element that is greater than, the specified reference value identified by the <paramref name="valueSelector"/>. Uses the default comparer.</summary>
-    public static (int indexLessThan, int indexGreaterThan) GetInfimumAndSupremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, TValue referenceValue, System.Func<TSource, TValue> valueSelector)
-      => GetInfimumAndSupremum(source, referenceValue, valueSelector, System.Collections.Generic.Comparer<TValue>.Default);
   }
 }

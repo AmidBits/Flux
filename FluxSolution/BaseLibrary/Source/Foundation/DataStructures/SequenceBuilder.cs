@@ -163,7 +163,7 @@ namespace Flux
   public class SequenceBuilder<T>
     where T : notnull
   {
-    private const int DefaultBufferSize = 32;
+    private const int DefaultBufferSize = 128;
 
     private int m_version = 0;
 
@@ -407,9 +407,9 @@ namespace Flux
     }
 
     /// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the specfied comparer.</summary>
-    public SequenceBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public SequenceBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
     {
-      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       m_version++;
 
@@ -430,9 +430,9 @@ namespace Flux
 
       return Remove(targetIndex, Length - targetIndex);
     }
-    /// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the default comparer.</summary>
-    public SequenceBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values)
-      => NormalizeAdjacent(values, System.Collections.Generic.EqualityComparer<T>.Default);
+    ///// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the default comparer.</summary>
+    //public SequenceBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values)
+    //  => NormalizeAdjacent(values, System.Collections.Generic.EqualityComparer<T>.Default);
 
     /// <summary>Creates a new readonlyspan with the predicated characters normalized throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
     public SequenceBuilder<T> NormalizeAll(T normalizeWith, System.Func<T, bool> predicate)
@@ -462,11 +462,15 @@ namespace Flux
       return Remove(normalizedIndex, Length - normalizedIndex);
     }
     /// <summary>Creates a new readonlyspan with the predicated characters normalized throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
-    public SequenceBuilder<T> NormalizeAll(T normalizeWith, System.Collections.Generic.IEqualityComparer<T> equalityComparer, System.Collections.Generic.IList<T> normalize)
-      => NormalizeAll(normalizeWith, t => normalize.Contains(t, equalityComparer));
-    /// <summary>Creates a new readonlyspan with the predicated characters normalized throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the default equality comparer.</summary>
-    public SequenceBuilder<T> NormalizeAll(T normalizeWith, System.Collections.Generic.IList<T> normalize)
-      => NormalizeAll(normalizeWith, normalize.Contains);
+    public SequenceBuilder<T> NormalizeAll(T normalizeWith, System.Collections.Generic.IEqualityComparer<T>? equalityComparer, System.Collections.Generic.IList<T> normalize)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      return NormalizeAll(normalizeWith, t => normalize.Contains(t, equalityComparer));
+    }
+    ///// <summary>Creates a new readonlyspan with the predicated characters normalized throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the default equality comparer.</summary>
+    //public SequenceBuilder<T> NormalizeAll(T normalizeWith, System.Collections.Generic.IList<T> normalize)
+    //  => NormalizeAll(normalizeWith, normalize.Contains);
 
     /// <summary>Pads the StringBuilder evenly on both sides to the specified width by the specified padding characters for left and right respectively.</summary>
     public SequenceBuilder<T> PadEven(int totalWidth, T paddingLeft, T paddingRight, bool leftBias = true)
@@ -541,9 +545,7 @@ namespace Flux
 
       EnsurePrependSpace(value.Length);
 
-      m_head -= value.Length;
-
-      value.CopyTo(m_array, m_head);
+      value.CopyTo(m_array, m_head -= value.Length);
 
       return this;
     }
@@ -589,11 +591,15 @@ namespace Flux
       return Remove(removedIndex, Length - removedIndex);
     }
     /// <summary>Creates a new readonlyspan with all elements satisfying the predicate removed. Uses the specified comparer.</summary>
-    public SequenceBuilder<T> RemoveAll([System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> equalityComparer, System.Collections.Generic.IList<T> remove)
-      => RemoveAll(t => remove.Contains(t, equalityComparer));
-    /// <summary>Creates a new readonlyspan with all elements satisfying the predicate removed. Uses the default comparer.</summary>
-    public SequenceBuilder<T> RemoveAll(System.Collections.Generic.IList<T> remove)
-      => RemoveAll(remove.Contains);
+    public SequenceBuilder<T> RemoveAll(System.Collections.Generic.IEqualityComparer<T>? equalityComparer, System.Collections.Generic.IList<T> remove)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      return RemoveAll(t => remove.Contains(t, equalityComparer));
+    }
+    ///// <summary>Creates a new readonlyspan with all elements satisfying the predicate removed. Uses the default comparer.</summary>
+    //public SequenceBuilder<T> RemoveAll(System.Collections.Generic.IList<T> remove)
+    //  => RemoveAll(remove.Contains);
 
     /// <summary>Repears the content of the  the specified number of times.</summary>
     public SequenceBuilder<T> Repeat(int count)
@@ -628,8 +634,13 @@ namespace Flux
       return this;
     }
     /// <summary>Replace (in-place) all specified elements with the specified element. Uses the specified comparer.</summary>
-    public SequenceBuilder<T> ReplaceAll(T replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] replace)
-      => ReplaceAll(replacement, t => System.Array.Exists(replace, e => equalityComparer.Equals(e, t)));
+    public SequenceBuilder<T> ReplaceAll(T replacement, System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] replace)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      return ReplaceAll(replacement, t => System.Array.Exists(replace, e => equalityComparer.Equals(e, t)));
+    }
+
     /// <summary>Replace (in-place) all specified elements with the specified element. Uses the default comparer.</summary>
     public SequenceBuilder<T> ReplaceAll(T replacement, params T[] replace)
       => ReplaceAll(replacement, System.Collections.Generic.EqualityComparer<T>.Default, replace);

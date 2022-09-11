@@ -8,6 +8,6 @@ namespace Flux
       => source.Length >= 2 && left.Equals(source[0]) && right.Equals(source[^1]);
     /// <summary>Indicates whether the source is already wrapped in the strings.</summary>
     public static bool IsWrapped<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> left, System.ReadOnlySpan<T> right)
-      => source.Length >= (left.Length + right.Length) && source.StartsWithEx(left) && source.EndsWithEx(right);
+      => source.Length >= (left.Length + right.Length) && source.StartsWith(left, null) && source.EndsWith(right, null);
   }
 }
