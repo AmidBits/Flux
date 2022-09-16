@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Flux;
+using Flux.DataStructures;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -44,257 +45,309 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      //      var v1 =  new System.Numerics.Vector<double>(1,2);
+      var ints = new int[] { 9, 7, 5, 3, 1 };
 
-      var num = 8L;
+      var sb = new Flux.SequenceBuilder<char>();
 
-      var store = Flux.ExtensionMethods.RoundUpToPow2(5).Max(Flux.ExtensionMethods.RoundUpToPow2(73), 0);
-      var storage = Flux.ExtensionMethods.GetSmallestPowerOf2StorageSize(4, 73);
+      sb.Append("Hello");
+      sb.Append(' ');
+      sb.Append("World");
+      sb.Append('.');
 
-      var gBitLength = Flux.ExtensionMethods.GetBitLength(num);
-      var bitFoldL = Flux.ExtensionMethods.BitFoldLeft(num);
-      var bitFoldR = Flux.ExtensionMethods.BitFoldRight(num);
-      var gil2c = Flux.ExtensionMethods.GetILog2Ceiling(num);
-      var gil2f = Flux.ExtensionMethods.GetILog2Floor(num);
-      var tryGetILog2 = Flux.ExtensionMethods.TryGetILog2(num, out var tgil2f, out var tgil2c);
-      var isPow2 = Flux.ExtensionMethods.IsPow2(num);
-      var leastS1bit = Flux.ExtensionMethods.LeastSignificant1Bit(num);
-      var mostS1bit = Flux.ExtensionMethods.MostSignificant1Bit(num);
-      var rDownPow2 = Flux.ExtensionMethods.RoundDownToPow2(num);
-      var rDownPow2p = Flux.ExtensionMethods.RoundDownToPow2Proper(num);
-      var rToNearPow2 = Flux.ExtensionMethods.RoundToNearestPow2(num, out var rGTE, out var rLTE);
-      var rToNearPow2p = Flux.ExtensionMethods.RoundToNearestPow2Proper(num, out var rGTEp, out var rLTEp);
-      var rUpPow2 = Flux.ExtensionMethods.RoundUpToPow2(num);
-      var rUpPow2p = Flux.ExtensionMethods.RoundUpToPow2Proper(num);
-      var gLeadingZeroes = Flux.ExtensionMethods.GetLeadingZeroCount(num);
-      var gTrailingZeroes = Flux.ExtensionMethods.GetTrailingZeroCount(num);
+      using var lrol = new BufferedReadOnlyList<int>(ints);
 
-      var numerator = 7.75;
-      var denominator = 1.2;
+      //lrol.GetAllElements();
 
-      var remainder = numerator % denominator;
-      var quotient = (numerator - remainder) / denominator;
+      System.Console.WriteLine($"First... Count={lrol.Count}");
+      var indexF = 0;
+      foreach (var elF in lrol)
+      {
+        System.Console.WriteLine(elF);
 
-      var quotient2 = numerator.DivRem(denominator, out var remainder2);
+        if (indexF == 0)
+        {
+          System.Console.WriteLine($"Second... Count={lrol.Count}");
+          var indexS = 0;
+          foreach (var elS in lrol)
+          {
+            System.Console.WriteLine(elS);
+
+            if (++indexS >= 3)
+              break;
+          }
+        }
+
+        if (++indexF >= 2)
+          break;
+        else
+          System.Console.WriteLine($"Back to First... Count={lrol.Count}");
+      }
+
+      System.Console.WriteLine($"[3] (Count={lrol.Count}) = {lrol.TryGetElementAt(3, out var r)} {r}");
+
+      System.Console.WriteLine($"Third... Count={lrol.Count}");
+      foreach (var el in lrol)
+        System.Console.WriteLine(el);
+
+      System.Console.WriteLine($"Fourth... Count={lrol.Count}");
+      foreach (var el in lrol)
+        System.Console.WriteLine(el);
+
+      var t = ints;
+
+      ////var num = 8L;
+
+      ////var store = Flux.ExtensionMethods.RoundUpToPow2(5).Max(Flux.ExtensionMethods.RoundUpToPow2(73), 0);
+      ////var storage = Flux.ExtensionMethods.GetSmallestPowerOf2StorageSize(4, 73);
+
+      ////var gBitLength = Flux.ExtensionMethods.GetBitLength(num);
+      ////var bitFoldL = Flux.ExtensionMethods.BitFoldLeft(num);
+      ////var bitFoldR = Flux.ExtensionMethods.BitFoldRight(num);
+      ////var gil2c = Flux.ExtensionMethods.GetILog2Ceiling(num);
+      ////var gil2f = Flux.ExtensionMethods.GetILog2Floor(num);
+      ////var tryGetILog2 = Flux.ExtensionMethods.TryGetILog2(num, out var tgil2f, out var tgil2c);
+      ////var isPow2 = Flux.ExtensionMethods.IsPow2(num);
+      ////var leastS1bit = Flux.ExtensionMethods.LeastSignificant1Bit(num);
+      ////var mostS1bit = Flux.ExtensionMethods.MostSignificant1Bit(num);
+      ////var rDownPow2 = Flux.ExtensionMethods.RoundDownToPow2(num);
+      ////var rDownPow2p = Flux.ExtensionMethods.RoundDownToPow2Proper(num);
+      ////var rToNearPow2 = Flux.ExtensionMethods.RoundToNearestPow2(num, out var rGTE, out var rLTE);
+      ////var rToNearPow2p = Flux.ExtensionMethods.RoundToNearestPow2Proper(num, out var rGTEp, out var rLTEp);
+      ////var rUpPow2 = Flux.ExtensionMethods.RoundUpToPow2(num);
+      ////var rUpPow2p = Flux.ExtensionMethods.RoundUpToPow2Proper(num);
+      ////var gLeadingZeroes = Flux.ExtensionMethods.GetLeadingZeroCount(num);
+      ////var gTrailingZeroes = Flux.ExtensionMethods.GetTrailingZeroCount(num);
 
 
-      var snap = numerator.DetentInterval(2, .25);
 
-      var fv = new Flux.Fraction(13, 5);
+      ////var numerator = 7.75;
+      ////var denominator = 1.2;
 
-      var ips = fv.ToImproperString();
-      var ps = fv.ToProperString();
-      var vs = fv.Value.ToString();
-      var s = fv.ToString();
+      ////var remainder = numerator % denominator;
+      ////var quotient = (numerator - remainder) / denominator;
 
-      var number = ulong.MaxValue.ToBigInteger() * ulong.MaxValue.ToBigInteger();
-      var isPerfect = number.TryISqrt(out var root);
-      var square = root.IPow(2);
+      ////var quotient2 = numerator.DivRem(denominator, out var remainder2);
 
-      var n = 5.0;
-      var rounded = n.Round(HalfRounding.AwayFromZero);
-      var roundedm = n.RoundToMultiple(1.5, MidpointRounding.ToEven);
 
-      var p2s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(2, i))).ToArray();
-      var p8s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(8, i))).ToArray();
-      var p10s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(10, i))).ToArray();
-      var p16s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(16, i))).ToArray();
+      ////var snap = numerator.DetentInterval(2, .25);
 
-      // var nx = 99.0;
+      ////var fv = new Flux.Fraction(13, 5);
 
-      // var nxbil = System.Numerics.BigInteger.Log(nx, 10);
+      ////var ips = fv.ToImproperString();
+      ////var ps = fv.ToProperString();
+      ////var vs = fv.Value.ToString();
+      ////var s = fv.ToString();
 
-      //      var nxl = System.Math.Log(nx, 10);
+      ////var number = ulong.MaxValue.ToBigInteger() * ulong.MaxValue.ToBigInteger();
+      ////var isPerfect = number.TryISqrt(out var root);
+      ////var square = root.IPow(2);
 
-      //var nxl = (999.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
-      //var nxe = (1000.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
-      //var nxh = (1001.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+      ////var n = 5.0;
+      ////var rounded = n.Round(HalfRounding.AwayFromZero);
+      ////var roundedm = n.RoundToMultiple(1.5, MidpointRounding.ToEven);
 
-      //for (var d = -7.3; d <= 7.3; d += .3)
+      ////var p2s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(2, i))).ToArray();
+      ////var p8s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(8, i))).ToArray();
+      ////var p10s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(10, i))).ToArray();
+      ////var p16s = System.Linq.Enumerable.Range(1, 10).Select(i => System.Convert.ToInt64(System.Math.Pow(16, i))).ToArray();
+
+
+
+      //// var nx = 99.0;
+
+      //// var nxbil = System.Numerics.BigInteger.Log(nx, 10);
+
+      ////      var nxl = System.Math.Log(nx, 10);
+
+      ////var nxl = (999.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+      ////var nxe = (1000.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+      ////var nxh = (1001.0).RoundToNearestPowerOf(10.0, HalfRounding.TowardZero);
+
+      ////for (var d = -7.3; d <= 7.3; d += .3)
+      ////{
+      ////  var d1 = double.Round(d, 1);
+      ////  System.Console.WriteLine($"{d1} = {d1.Round(HalfRounding.TowardZero)} = {double.Round(d1, MidpointRounding.ToZero)}");
+      ////}
+
+      //for (var f = 1.ToBigInteger(); f <= long.MaxValue.ToBigInteger(); f *= byte.MaxValue * 3)
       //{
-      //  var d1 = double.Round(d, 1);
-      //  System.Console.WriteLine($"{d1} = {d1.Round(HalfRounding.TowardZero)} = {double.Round(d1, MidpointRounding.ToZero)}");
+      //  System.Console.WriteLine($"{f} : {f.GetByteCount()} : {f.GetBitLength()}");
       //}
 
-      for (var f = 1.ToBigInteger(); f <= long.MaxValue.ToBigInteger(); f *= byte.MaxValue * 3)
-      {
-        System.Console.WriteLine($"{f} : {f.GetByteCount()} : {f.GetBitLength()}");
-      }
+      ////var nxd = nx.RoundDownToPowerOf(16);
+      ////var nxu = nx.RoundUpToPowerOf(16);
 
-      //var nxd = nx.RoundDownToPowerOf(16);
-      //var nxu = nx.RoundUpToPowerOf(16);
+      ////var p2 = nx.RoundToNearestPowerOf(2, MidpointRounding.AwayFromZero);
+      ////var p8 = nx.RoundToNearestPowerOf(8, MidpointRounding.AwayFromZero);
+      ////var p10 = nx.RoundToNearestPowerOf(10, MidpointRounding.AwayFromZero);
+      ////var p16 = nx.RoundToNearestPowerOf(16, MidpointRounding.AwayFromZero);
 
-      //var p2 = nx.RoundToNearestPowerOf(2, MidpointRounding.AwayFromZero);
-      //var p8 = nx.RoundToNearestPowerOf(8, MidpointRounding.AwayFromZero);
-      //var p10 = nx.RoundToNearestPowerOf(10, MidpointRounding.AwayFromZero);
-      //var p16 = nx.RoundToNearestPowerOf(16, MidpointRounding.AwayFromZero);
-
-      //var v = 0x670530;
-      var bitSize = 32;
-      var byteSize = bitSize / 4;
-      for (var i = 1; i <= 27; i += 3)
-      {
-        var rn = i;// System.Random.Shared.NextBigInteger(System.Numerics.BigInteger.Pow(2.ToBigInteger(), bitSize));
-
-        System.Console.WriteLine($" Value = {rn.ToRadixString(16)} ({rn})");
-        System.Console.WriteLine($"   Bin = {rn.ToRadixString(2).PadLeft(bitSize, '0').PadLeft(bitSize, '0')}");
-        //System.Console.WriteLine($"    BL = {Flux.ExtensionMethods.BitLength(rn)}");
-        //System.Console.WriteLine($"    FL = {Flux.ExtensionMethods.FoldLeft(rn)} = {Flux.ExtensionMethods.FoldLeft(rn).ToRadixString(2).PadLeft(bitSize, '0')}");
-        //System.Console.WriteLine($"    FR = {Flux.ExtensionMethods.FoldRight(rn)} = {Flux.ExtensionMethods.FoldRight(rn).ToRadixString(2).PadLeft(bitSize, '0')}");
-        //System.Console.WriteLine($"ILog2C = {Flux.ExtensionMethods.ILog2(rn, true)}");
-        //System.Console.WriteLine($" ILog2 = {Flux.ExtensionMethods.ILog2(rn)}");
-        //System.Console.WriteLine($"  ISP2 = {Flux.ExtensionMethods.IsPowerOf2(rn)}");
-        //System.Console.WriteLine($"  LS1B = {Flux.ExtensionMethods.LeastSignificant1Bit(rn).ToRadixString(2).PadLeft(bitSize, '0')} ({Flux.ExtensionMethods.BitIndex(Flux.ExtensionMethods.LeastSignificant1Bit(rn))})");
-        //System.Console.WriteLine($"   TZC = {Flux.ExtensionMethods.TrailingZeroCount(rn)}");
-        //System.Console.WriteLine($"  MS1B = {Flux.ExtensionMethods.MostSignificant1Bit(rn).ToRadixString(2).PadLeft(bitSize, '0')} ({Flux.ExtensionMethods.BitIndex(Flux.ExtensionMethods.MostSignificant1Bit(rn))})");
-        //System.Console.WriteLine($"   LZC = {Flux.ExtensionMethods.LeadingZeroCount(rn)}");
-        //System.Console.WriteLine($"    RD = {Flux.ExtensionMethods.RoundDownToPowerOf2(rn, false)} = {Flux.ExtensionMethods.RoundDownToPowerOf2(rn, false).ToRadixString(2).PadLeft(bitSize, '0')}");
-        //System.Console.WriteLine($"    RU = {Flux.ExtensionMethods.RoundUpToPowerOf2(rn, false)} = {Flux.ExtensionMethods.RoundUpToPowerOf2(rn, false).ToRadixString(2).PadLeft(bitSize, '0')}");
-        //System.Console.WriteLine($" SBSBS = {Flux.ExtensionMethods.GetSmallestPowerOf2StorageSize(rn, 1)}");
-        System.Console.WriteLine();
-      }
-
-      return;
-
-      //if (1 == 1)
+      ////var v = 0x670530;
+      //var bitSize = 32;
+      //var byteSize = bitSize / 4;
+      //for (var i = 1; i <= 27; i += 3)
       //{
-      //  var x1 = 3600530UL;
-      //  var x1l2 = x1.ILog2();
-      //  var x1fr = x1.FoldRight();
-      //  var y1 = (x1 & ((~x1) + 1));
+      //  var rn = i;// System.Random.Shared.NextBigInteger(System.Numerics.BigInteger.Pow(2.ToBigInteger(), bitSize));
+
+      //  System.Console.WriteLine($" Value = {rn.ToRadixString(16)} ({rn})");
+      //  System.Console.WriteLine($"   Bin = {rn.ToRadixString(2).PadLeft(bitSize, '0').PadLeft(bitSize, '0')}");
+      //  //System.Console.WriteLine($"    BL = {Flux.ExtensionMethods.BitLength(rn)}");
+      //  //System.Console.WriteLine($"    FL = {Flux.ExtensionMethods.FoldLeft(rn)} = {Flux.ExtensionMethods.FoldLeft(rn).ToRadixString(2).PadLeft(bitSize, '0')}");
+      //  //System.Console.WriteLine($"    FR = {Flux.ExtensionMethods.FoldRight(rn)} = {Flux.ExtensionMethods.FoldRight(rn).ToRadixString(2).PadLeft(bitSize, '0')}");
+      //  //System.Console.WriteLine($"ILog2C = {Flux.ExtensionMethods.ILog2(rn, true)}");
+      //  //System.Console.WriteLine($" ILog2 = {Flux.ExtensionMethods.ILog2(rn)}");
+      //  //System.Console.WriteLine($"  ISP2 = {Flux.ExtensionMethods.IsPowerOf2(rn)}");
+      //  //System.Console.WriteLine($"  LS1B = {Flux.ExtensionMethods.LeastSignificant1Bit(rn).ToRadixString(2).PadLeft(bitSize, '0')} ({Flux.ExtensionMethods.BitIndex(Flux.ExtensionMethods.LeastSignificant1Bit(rn))})");
+      //  //System.Console.WriteLine($"   TZC = {Flux.ExtensionMethods.TrailingZeroCount(rn)}");
+      //  //System.Console.WriteLine($"  MS1B = {Flux.ExtensionMethods.MostSignificant1Bit(rn).ToRadixString(2).PadLeft(bitSize, '0')} ({Flux.ExtensionMethods.BitIndex(Flux.ExtensionMethods.MostSignificant1Bit(rn))})");
+      //  //System.Console.WriteLine($"   LZC = {Flux.ExtensionMethods.LeadingZeroCount(rn)}");
+      //  //System.Console.WriteLine($"    RD = {Flux.ExtensionMethods.RoundDownToPowerOf2(rn, false)} = {Flux.ExtensionMethods.RoundDownToPowerOf2(rn, false).ToRadixString(2).PadLeft(bitSize, '0')}");
+      //  //System.Console.WriteLine($"    RU = {Flux.ExtensionMethods.RoundUpToPowerOf2(rn, false)} = {Flux.ExtensionMethods.RoundUpToPowerOf2(rn, false).ToRadixString(2).PadLeft(bitSize, '0')}");
+      //  //System.Console.WriteLine($" SBSBS = {Flux.ExtensionMethods.GetSmallestPowerOf2StorageSize(rn, 1)}");
+      //  System.Console.WriteLine();
       //}
 
-      var v = 670530000.ToBigInteger();
+      //return;
 
-      var ibitLength = BitOps.BitLength(v);
-      var ilog2 = BitOps.Log2(v);
-      var ims1b = BitOps.MostSignificant1Bit(v);
-      var ifl = BitOps.FoldLeft(v);
-      var ifr = BitOps.FoldRight(v);
-      var ipopc = BitOps.PopCount(v);
-      //var ils1b = BitOps.LeastSignificant1Bit(v);
+      ////if (1 == 1)
+      ////{
+      ////  var x1 = 3600530UL;
+      ////  var x1l2 = x1.ILog2();
+      ////  var x1fr = x1.FoldRight();
+      ////  var y1 = (x1 & ((~x1) + 1));
+      ////}
 
-      var ll2 = 0b11111111.ToBigInteger();
-      var qbitLength = 8;
-      while (v > ll2)
-      {
-        ll2 = (ll2 << 8) | ll2;
-        qbitLength += 8;
-      }
+      //var v = 670530000.ToBigInteger();
 
-      var fl2 = ll2;
-      ll2 = ll2 ^ (ll2 >> 1);
+      //var ibitLength = BitOps.BitLength(v);
+      //var ilog2 = BitOps.Log2(v);
+      //var ims1b = BitOps.MostSignificant1Bit(v);
+      //var ifl = BitOps.FoldLeft(v);
+      //var ifr = BitOps.FoldRight(v);
+      //var ipopc = BitOps.PopCount(v);
+      ////var ils1b = BitOps.LeastSignificant1Bit(v);
 
-      do
-      {
-        ll2 >>= 1;
-        qbitLength--;
-        fl2 >>= 1;
-      }
-      while (ll2 > v);
+      //var ll2 = 0b11111111.ToBigInteger();
+      //var qbitLength = 8;
+      //while (v > ll2)
+      //{
+      //  ll2 = (ll2 << 8) | ll2;
+      //  qbitLength += 8;
+      //}
 
-      var qlog2 = qbitLength - 1;
-      var qms1b = 1 << qlog2;
+      //var fl2 = ll2;
+      //ll2 = ll2 ^ (ll2 >> 1);
 
-      var qfl = ll2 - 1;
+      //do
+      //{
+      //  ll2 >>= 1;
+      //  qbitLength--;
+      //  fl2 >>= 1;
+      //}
+      //while (ll2 > v);
 
-      var value = 0b100;
+      //var qlog2 = qbitLength - 1;
+      //var qms1b = 1 << qlog2;
 
-      var fr = value.FoldRight();
-      var l2 = fr >> 1;
-      var fl = value.FoldLeft();
+      //var qfl = ll2 - 1;
 
-      var l2pb = l2.PopCount();
-      for (var index = 253.ToBigInteger(); index < 258; index++)
-      //for (var index = -10; index < 2; index++)
-      {
+      //var value = 0b100;
 
-        System.Console.WriteLine($"{index:D2} : {index.ToString("X4")}");
+      //var fr = value.FoldRight();
+      //var l2 = fr >> 1;
+      //var fl = value.FoldLeft();
 
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.BitLength(index)} (BitLength)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldLeft(index)} (FoldLeft) {Flux.BitOps.FoldLeft(index).ToRadixString(2)}");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldRight(index)} (FoldRight) {Flux.BitOps.FoldRight(index).ToRadixString(2)}");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.IsPowerOf2(index)} (IsPowerOf2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeadingZeroCount(index)} (LeadingZeroCount)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1Bit(index)} (LeastSignificant1Bit)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.LeastSignificant1Bit(index))} (LeastSignificant1-BitIndex)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.Log2(index)} (Log2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1Bit(index)} (MostSignificant1Bit)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.MostSignificant1Bit(index))} (MostSignificant1-BitIndex)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundDownToPowerOf2(index, true)} (SmallerPowerOf2-Proper)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundDownToPowerOf2(index, false)} (SmallerPowerOf2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, true, out var gtp, out var ltp)} (GT:{gtp}, LT:{ltp}) (RoundToNearestPowerOf2-Proper)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, false, out var gt, out var lt)} (GT:{gt}, LT:{lt}) (RoundToNearestPowerOf2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundUpToPowerOf2(index, true)} (LargerPowerOf2-Proper)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundUpToPowerOf2(index, false)} (LargerPowerOf2)");
-        System.Console.WriteLine($"{index:D2} : {Flux.BitOps.TrailingZeroCount(index)} (TrailingZeroCount)");
-        System.Console.WriteLine();
-      }
+      //var l2pb = l2.PopCount();
+      //for (var index = 253.ToBigInteger(); index < 258; index++)
+      ////for (var index = -10; index < 2; index++)
+      //{
+
+      //  System.Console.WriteLine($"{index:D2} : {index.ToString("X4")}");
+
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.BitLength(index)} (BitLength)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldLeft(index)} (FoldLeft) {Flux.BitOps.FoldLeft(index).ToRadixString(2)}");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.FoldRight(index)} (FoldRight) {Flux.BitOps.FoldRight(index).ToRadixString(2)}");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.IsPowerOf2(index)} (IsPowerOf2)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeadingZeroCount(index)} (LeadingZeroCount)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.LeastSignificant1Bit(index)} (LeastSignificant1Bit)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.LeastSignificant1Bit(index))} (LeastSignificant1-BitIndex)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.Log2(index)} (Log2)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.MostSignificant1Bit(index)} (MostSignificant1Bit)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PowerOf2BitIndex(Flux.BitOps.MostSignificant1Bit(index))} (MostSignificant1-BitIndex)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.PopCount(index)} (PopCount)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundDownToPowerOf2(index, true)} (SmallerPowerOf2-Proper)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundDownToPowerOf2(index, false)} (SmallerPowerOf2)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, true, out var gtp, out var ltp)} (GT:{gtp}, LT:{ltp}) (RoundToNearestPowerOf2-Proper)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundToNearestPowerOf2(index, false, out var gt, out var lt)} (GT:{gt}, LT:{lt}) (RoundToNearestPowerOf2)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundUpToPowerOf2(index, true)} (LargerPowerOf2-Proper)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.RoundUpToPowerOf2(index, false)} (LargerPowerOf2)");
+      //  System.Console.WriteLine($"{index:D2} : {Flux.BitOps.TrailingZeroCount(index)} (TrailingZeroCount)");
+      //  System.Console.WriteLine();
+      //}
 
 
 
-      var xx = new Flux.Resources.DotNet.FxSequence(TimeZoneInfo.GetSystemTimeZones());
+      //var xx = new Flux.Resources.DotNet.FxSequence(TimeZoneInfo.GetSystemTimeZones());
 
-      var tz = TimeZoneInfo.GetSystemTimeZones();
+      //var tz = TimeZoneInfo.GetSystemTimeZones();
 
-      var t = tz.GetType();
+      //var t = tz.GetType();
 
-      return;
+      //return;
 
-      var weights = new int[] { 23, 26, 20, 18, 32, 27, 29, 26, 30, 27 };
-      var values = new int[] { 505, 352, 458, 220, 354, 414, 498, 545, 473, 543 };
+      //var weights = new int[] { 23, 26, 20, 18, 32, 27, 29, 26, 30, 27 };
+      //var values = new int[] { 505, 352, 458, 220, 354, 414, 498, 545, 473, 543 };
 
-      var ks = new Flux.Model.Knapsack(67, 10, weights, values);
+      //var ks = new Flux.Model.Knapsack(67, 10, weights, values);
 
-      var dg = ks.ComputeDynamicGrid(out var maxValue);
-      //dg = dg.Remove(0, 0);
-      //dg = dg.Remove(1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17);
-      //dg.FlipInPlace(0);
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, dg.ToConsoleStrings()));
-      System.Console.WriteLine();
+      //var dg = ks.ComputeDynamicGrid(out var maxValue);
+      ////dg = dg.Remove(0, 0);
+      ////dg = dg.Remove(1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17);
+      ////dg.FlipInPlace(0);
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, dg.ToConsoleStrings()));
+      //System.Console.WriteLine();
 
-      var rg = ks.ComputeRecursiveGrid(out maxValue, true);
-      //rg = rg.Remove(0, 0);
-      //rg = rg.Remove(1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
-      //rg.FlipInPlace(0);
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, rg.ToConsoleStrings()));
-      System.Console.WriteLine();
+      //var rg = ks.ComputeRecursiveGrid(out maxValue, true);
+      ////rg = rg.Remove(0, 0);
+      ////rg = rg.Remove(1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19);
+      ////rg.FlipInPlace(0);
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, rg.ToConsoleStrings()));
+      //System.Console.WriteLine();
 
-      return;
+      //return;
 
-      var x = new double[] { 19, 23, 28, 34, 36, 39, 41, 47, 48, 52, 58, 59, 61, 65, 68 };
-      //var y = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelExc);
-      //var z = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelInc);
-      var y = Percentiles.PercentileValue(x, .49, Percentiles.InterpolationMethod.ExcelExc);
-      var ze = Percentiles.PercentRank(1.0, x.Length, Percentiles.InterpolationMethod.ExcelExc);
-      var w = Percentiles.PercentNearestOrdinalRank(1, 40);
+      //var x = new double[] { 19, 23, 28, 34, 36, 39, 41, 47, 48, 52, 58, 59, 61, 65, 68 };
+      ////var y = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelExc);
+      ////var z = Percentiles.PercentileValue(x.Select(x => (double)x), 0.80, Percentiles.LerpVariant.ExcelInc);
+      //var y = Percentiles.PercentileValue(x, .49, Percentiles.InterpolationMethod.ExcelExc);
+      //var ze = Percentiles.PercentRank(1.0, x.Length, Percentiles.InterpolationMethod.ExcelExc);
+      //var w = Percentiles.PercentNearestOrdinalRank(1, 40);
 
-      var eq = Quantiles.EmpiricalDistributionFunction(x, 50);
+      //var eq = Quantiles.EmpiricalDistributionFunction(x, 50);
 
-      x.Average();
-      //args = null;
-      var e = args.SubstituteIfEmpty(new string[] { "Hello", "World" });
+      //x.Average();
+      ////args = null;
+      //var e = args.SubstituteIfEmpty(new string[] { "Hello", "World" });
 
-      var a = e.ToArray();
+      //var a = e.ToArray();
 
-      var oldValues = new char[] { 'A', 'B', 'C' };// new System.ValueTuple<System.Globalization.CompareOptions, string>[] { (System.Globalization.CompareOptions.IgnoreCase, "Case"), (System.Globalization.CompareOptions.IgnoreNonSpace, "NonSpace"), (System.Globalization.CompareOptions.IgnoreSymbols, "Symbols"), (System.Globalization.CompareOptions.IgnoreWidth, "Width") };
-      var newValues1 = oldValues.PermuteAlgorithmL().ToArray();
-      var newValues2 = oldValues.PermuteHeapsAlgorithm().ToArray();
+      //var oldValues = new char[] { 'A', 'B', 'C' };// new System.ValueTuple<System.Globalization.CompareOptions, string>[] { (System.Globalization.CompareOptions.IgnoreCase, "Case"), (System.Globalization.CompareOptions.IgnoreNonSpace, "NonSpace"), (System.Globalization.CompareOptions.IgnoreSymbols, "Symbols"), (System.Globalization.CompareOptions.IgnoreWidth, "Width") };
+      //var newValues1 = oldValues.PermuteAlgorithmL().ToArray();
+      //var newValues2 = oldValues.PermuteHeapsAlgorithm().ToArray();
 
-      var grid = new Flux.Model.Grid<System.Text.Rune>(11, 11);
+      //var grid = new Flux.Model.Grid<System.Text.Rune>(11, 11);
 
-      grid[3, 8] = (System.Text.Rune)'X';
-      grid[4, 1] = (System.Text.Rune)'Y';
-      grid[7, 6] = (System.Text.Rune)'Z';
+      //grid[3, 8] = (System.Text.Rune)'X';
+      //grid[4, 1] = (System.Text.Rune)'Y';
+      //grid[7, 6] = (System.Text.Rune)'Z';
 
-      foreach (var kvp in grid)
-        System.Console.WriteLine(kvp);
+      //foreach (var kvp in grid)
+      //  System.Console.WriteLine(kvp);
 
-      System.Console.WriteLine(grid.ToConsoleBlock(v => v == default ? (System.Text.Rune)'\u00B7' : v));
+      //System.Console.WriteLine(grid.ToConsoleBlock(v => v == default ? (System.Text.Rune)'\u00B7' : v));
 
-      for (var i = 0; i <= 1000000; i++)
-        System.Console.WriteLine($"{i} = {Flux.Model.BattleShip.Fleet.ProximityProbability(i):N9}%");
+      //for (var i = 0; i <= 1000000; i++)
+      //  System.Console.WriteLine($"{i} = {Flux.Model.BattleShip.Fleet.ProximityProbability(i):N9}%");
     }
 
     private static void Main(string[] args)

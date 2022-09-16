@@ -36,9 +36,9 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public int Z { get => m_z; init => m_z = value; }
 
-    /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="CartesianCoordinate3"/>.</summary>
+    /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToCartesianCoordinate3()
+    public CartesianCoordinate3R ToCartesianCoordinate3()
       => new(m_x, m_y, m_z);
     /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]

@@ -24,9 +24,9 @@ namespace Flux
     /// <summary>Azimuthal angle, in radians.</summary>
     [System.Diagnostics.Contracts.Pure] public Angle Azimuth { get => new(m_radAzimuth); init => m_radAzimuth = value.Value; }
 
-    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinate3"/>.</summary>
+    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToCartesianCoordinate3()
+    public CartesianCoordinate3R ToCartesianCoordinate3R()
     {
       var sinInclination = System.Math.Sin(m_radInclination);
       return new(m_radius * System.Math.Cos(m_radAzimuth) * sinInclination, m_radius * System.Math.Sin(m_radAzimuth) * sinInclination, m_radius * System.Math.Cos(m_radInclination));

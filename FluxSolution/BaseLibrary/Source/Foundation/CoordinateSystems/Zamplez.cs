@@ -27,18 +27,18 @@ namespace Flux
         var cc = sc.ToCylindricalCoordinate(); // CylindricalCoordinate
         System.Console.WriteLine(cc);
 
-        var cc3 = cc.ToCartesianCoordinate3(); // CartesianCoordinate3
+        var cc3 = cc.ToCartesianCoordinate3R(); // CartesianCoordinate3R
         System.Console.WriteLine(cc3);
 
         // Show 2D coordinate systems also.
         {
-          var cc2 = new Flux.CartesianCoordinate2(cc3.X, cc3.Y); // CartesianCoordinate2 (2D)
+          var cc2 = new Flux.CartesianCoordinate2R(cc3.X, cc3.Y); // CartesianCoordinate2R (2D)
           System.Console.WriteLine($" ({cc2})");
 
           var pc = cc2.ToPolarCoordinate(); // PolarCoordinate (2D)
           System.Console.WriteLine($" ({pc})");
 
-          var cc2r = pc.ToCartesianCoordinate2(); // CartesianCoordinate2 (2D)
+          var cc2r = pc.ToCartesianCoordinate2R(); // CartesianCoordinate2R (2D)
           System.Console.WriteLine($" ({cc2r})");
         }
 

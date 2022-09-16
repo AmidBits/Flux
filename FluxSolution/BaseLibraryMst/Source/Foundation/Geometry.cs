@@ -9,9 +9,9 @@ namespace Foundation
   public class Geometry
   {
     [TestMethod]
-    public void Hex()
+    public void HexCoordinateI()
     {
-      var geometry = new Flux.HexCoordinate(2, 1, -3);
+      var geometry = new Flux.HexCoordinateI(2, 1, -3);
 
       Assert.AreEqual(2, geometry.Q);
       Assert.AreEqual(1, geometry.R);
@@ -19,9 +19,9 @@ namespace Foundation
     }
 
     [TestMethod]
-    public void HexF()
+    public void HexCoordinateR()
     {
-      var geometry = new Flux.Geometry.HexF(2, 1, -3);
+      var geometry = new Flux.HexCoordinateR(2, 1, -3);
 
       Assert.AreEqual(2, geometry.Q);
       Assert.AreEqual(1, geometry.R);

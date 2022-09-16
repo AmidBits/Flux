@@ -20,9 +20,9 @@ namespace Flux
     /// <summary>Polar angle or angular coordinate.</summary>
     [System.Diagnostics.Contracts.Pure] public Angle Azimuth { get => new(m_radAzimuth); init => m_radAzimuth = value.Value; }
 
-    /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="CartesianCoordinate2"/>.</summary>
+    /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="CartesianCoordinate2R"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2 ToCartesianCoordinate2()
+    public CartesianCoordinate2R ToCartesianCoordinate2R()
       => new(m_radius * System.Math.Cos(m_radAzimuth), m_radius * System.Math.Sin(m_radAzimuth));
     /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="System.Numerics.Complex"/>.</summary>
     [System.Diagnostics.Contracts.Pure]

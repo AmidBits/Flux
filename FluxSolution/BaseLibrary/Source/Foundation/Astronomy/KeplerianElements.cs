@@ -92,11 +92,11 @@ namespace Flux
       z3 = ci;
     }
     [System.Diagnostics.Contracts.Pure]
-    public static EulerAngles ToEulerAngles(CartesianCoordinate3 x, CartesianCoordinate3 y, CartesianCoordinate3 z)
+    public static EulerAngles ToEulerAngles(CartesianCoordinate3R x, CartesianCoordinate3R y, CartesianCoordinate3R z)
     {
-      x = CartesianCoordinate3.Normalize(x);
-      y = CartesianCoordinate3.Normalize(y);
-      z = CartesianCoordinate3.Normalize(z);
+      x = CartesianCoordinate3R.Normalize(x);
+      y = CartesianCoordinate3R.Normalize(y);
+      z = CartesianCoordinate3R.Normalize(z);
 
       var alpha = System.Math.Atan2(-x.Y, z.X);
       var beta = System.Math.Atan2(z.Z, System.Math.Sqrt(z.X * z.X + z.Y * z.Y));

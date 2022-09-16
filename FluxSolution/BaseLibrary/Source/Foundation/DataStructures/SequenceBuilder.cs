@@ -163,30 +163,30 @@ namespace Flux
   public class SequenceBuilder<T>
     where T : notnull
   {
-    private const int DefaultBufferSize = 128;
+    private const int DefaultBufferSize = 32;
 
-    private int m_version = 0;
+    private int m_version;
 
-    private T[] m_array;
+    private T[] m_buffer;
 
     private int m_head; // Start of content.
     private int m_tail; // End of content.
 
     private SequenceBuilder(int capacity)
     {
-      var powerOf2Capacity = BitOps.FoldRight(capacity) + 1;
+      var powerOf2Capacity = BitOps.RoundUpToPowerOf2(capacity, false);
 
-      m_array = System.Buffers.ArrayPool<T>.Shared.Rent(powerOf2Capacity);
+      m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(powerOf2Capacity);
 
-      m_head = m_array.Length / 2;
-      m_tail = m_array.Length / 2;
+      m_head = m_buffer.Length / 2;
+      m_tail = m_buffer.Length / 2;
     }
-    public SequenceBuilder(System.ReadOnlySpan<T> values)
-      : this(values.Length)
-      => Append(values);
-    public SequenceBuilder(System.Span<T> values)
-      : this(values.Length)
-      => Append(values);
+    public SequenceBuilder(System.ReadOnlySpan<T> collection)
+      : this(collection.Length)
+      => Append(collection);
+    public SequenceBuilder(System.Span<T> collection)
+      : this(collection.Length)
+      => Append(collection);
     public SequenceBuilder()
       : this(DefaultBufferSize)
     {
@@ -197,22 +197,22 @@ namespace Flux
     {
       if (Length + length + length < Capacity) // We got space, just need to make sure we have it on both sides.
       {
-        var newHead = (m_array.Length - Length) / 2;
+        var newHead = (m_buffer.Length - Length) / 2;
         var newTail = newHead + Length;
 
-        System.Array.Copy(m_array, m_head, m_array, newHead, Length);
+        System.Array.Copy(m_buffer, m_head, m_buffer, newHead, Length);
 
         if (newHead > m_head)
-          System.Array.Clear(m_array, m_head, newHead - m_head);
+          System.Array.Clear(m_buffer, m_head, newHead - m_head);
         else if (newHead < m_head)
-          System.Array.Clear(m_array, newTail, m_head - newHead);
+          System.Array.Clear(m_buffer, newTail, m_head - newHead);
 
         m_head = newHead;
         m_tail = newTail;
       }
       else if (m_head < length || m_tail + length > Capacity) // Not enough uniform space available.
       {
-        var allocateLength = BitOps.FoldRight(length * 2) + 1;
+        var allocateLength = BitOps.RoundUpToPowerOf2(length * 2, false);
 
         var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
         System.Array.Clear(newArray);
@@ -220,11 +220,11 @@ namespace Flux
         var newHead = (newArray.Length - Length) / 2;
         var newTail = newHead + Length;
 
-        System.Array.Copy(m_array, m_head, newArray, newHead, Length);
+        System.Array.Copy(m_buffer, m_head, newArray, newHead, Length);
 
-        System.Buffers.ArrayPool<T>.Shared.Return(m_array);
+        System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
 
-        m_array = newArray;
+        m_buffer = newArray;
 
         m_head = newHead;
         m_tail = newTail;
@@ -236,16 +236,16 @@ namespace Flux
     {
       if (m_tail + length > Capacity) // Not enough append space available.
       {
-        var allocateLength = BitOps.FoldRight(length) + 1;
+        var allocateLength = BitOps.RoundUpToPowerOf2(length, false);
 
         var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
         System.Array.Clear(newArray);
 
-        System.Array.Copy(m_array, m_head, newArray, m_head, Length);
+        System.Array.Copy(m_buffer, m_head, newArray, m_head, Length);
 
-        System.Buffers.ArrayPool<T>.Shared.Return(m_array);
+        System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
 
-        m_array = newArray;
+        m_buffer = newArray;
       }
     }
 
@@ -256,7 +256,7 @@ namespace Flux
       {
         if (Capacity - Length < length) // Not enough prepend space to shift.
         {
-          var allocateLength = BitOps.FoldRight(length) + 1;
+          var allocateLength = BitOps.RoundUpToPowerOf2(length, false);
 
           var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
           System.Array.Clear(newArray);
@@ -264,19 +264,19 @@ namespace Flux
           var newHead = m_head + allocateLength;
           var newTail = m_tail + allocateLength;
 
-          System.Array.Copy(m_array, m_head, newArray, newHead, Length);
+          System.Array.Copy(m_buffer, m_head, newArray, newHead, Length);
 
-          System.Buffers.ArrayPool<T>.Shared.Return(m_array);
+          System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
 
-          m_array = newArray;
+          m_buffer = newArray;
 
           m_head = newHead;
           m_tail = newTail;
         }
         else if (Length > 0) // Enough space to shift existing content.
         {
-          System.Array.Copy(m_array, m_head, m_array, m_head + length, Length); // Enough prepend space, so utilize by moving content.
-          System.Array.Clear(m_array, m_head, length); // Clear prepend space.
+          System.Array.Copy(m_buffer, m_head, m_buffer, m_head + length, Length); // Enough prepend space, so utilize by moving content.
+          System.Array.Clear(m_buffer, m_head, length); // Clear prepend space.
 
           m_head += length;
           m_tail += length;
@@ -295,7 +295,7 @@ namespace Flux
 
     /// <summary>The current capacity of the builder.</summary>
     public int Capacity
-      => m_array.Length;
+      => m_buffer.Length;
 
     /// <summary>The content length of the builder.</summary>
     public int Length
@@ -309,7 +309,7 @@ namespace Flux
       EnsureAppendSpace(count);
 
       while (count-- > 0)
-        m_array[m_tail++] = value;
+        m_buffer[m_tail++] = value;
 
       return this;
     }
@@ -320,7 +320,7 @@ namespace Flux
 
       EnsureAppendSpace(value.Length);
 
-      value.CopyTo(m_array, m_tail);
+      value.CopyTo(m_buffer, m_tail);
 
       m_tail += value.Length;
 
@@ -329,20 +329,20 @@ namespace Flux
 
     /// <summary>Returns a non-allocating readonly span.</summary>
     public System.ReadOnlySpan<T> AsReadOnlySpan()
-      => new System.ReadOnlySpan<T>(m_array, m_head, m_tail - m_head);
+      => new System.ReadOnlySpan<T>(m_buffer, m_head, m_tail - m_head);
     /// <summary>Returns a non-allocating span.</summary>
     public System.Span<T> AsSpan()
-      => new System.Span<T>(m_array, m_head, m_tail - m_head);
+      => new System.Span<T>(m_buffer, m_head, m_tail - m_head);
 
     /// <summary>Removes all items from the builder.</summary>
     public void Clear()
     {
       m_version++;
 
-      System.Array.Clear(m_array);
+      System.Array.Clear(m_buffer);
 
-      m_head = m_array.Length / 2;
-      m_tail = m_array.Length / 2;
+      m_head = m_buffer.Length / 2;
+      m_tail = m_buffer.Length / 2;
     }
 
     /// <summary>Creates a new builder with the same content.</summary>
@@ -354,7 +354,7 @@ namespace Flux
     {
       if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
 
-      return m_array[m_head + index];
+      return m_buffer[m_head + index];
     }
 
     /// <summary>Inserts the value at the specified index of the builder.</summary>
@@ -366,16 +366,16 @@ namespace Flux
 
       startAt += m_head;
 
-      if (m_head >= m_array.Length - m_tail) // Grow from start.
+      if (m_head >= m_buffer.Length - m_tail) // Grow from start.
       {
-        System.Array.Copy(m_array, m_head, m_array, m_head - count, startAt - m_head);
-        System.Array.Fill(m_array, value, startAt - count, count);
+        System.Array.Copy(m_buffer, m_head, m_buffer, m_head - count, startAt - m_head);
+        System.Array.Fill(m_buffer, value, startAt - count, count);
         m_head -= count;
       }
       else // Otherwise grow from end.
       {
-        System.Array.Copy(m_array, startAt, m_array, startAt + count, m_tail - startAt);
-        System.Array.Fill(m_array, value, startAt, count);
+        System.Array.Copy(m_buffer, startAt, m_buffer, startAt + count, m_tail - startAt);
+        System.Array.Fill(m_buffer, value, startAt, count);
         m_tail += count;
       }
 
@@ -390,16 +390,16 @@ namespace Flux
 
       startAt += m_head;
 
-      if (m_head >= m_array.Length - m_tail) // Grow from start.
+      if (m_head >= m_buffer.Length - m_tail) // Grow from start.
       {
-        System.Array.Copy(m_array, m_head, m_array, m_head - value.Length, startAt - m_head);
-        value.CopyTo(m_array, startAt - value.Length);
+        System.Array.Copy(m_buffer, m_head, m_buffer, m_head - value.Length, startAt - m_head);
+        value.CopyTo(m_buffer, startAt - value.Length);
         m_head -= value.Length;
       }
       else // Otherwise grow from end.
       {
-        System.Array.Copy(m_array, startAt, m_array, startAt + value.Length, m_tail - startAt);
-        value.CopyTo(m_array, startAt);
+        System.Array.Copy(m_buffer, startAt, m_buffer, startAt + value.Length, m_tail - startAt);
+        value.CopyTo(m_buffer, startAt);
         m_tail += value.Length;
       }
 
@@ -534,7 +534,7 @@ namespace Flux
 
       EnsurePrependSpace(1);
 
-      m_array[--m_head] = value;
+      m_buffer[--m_head] = value;
 
       return this;
     }
@@ -545,7 +545,7 @@ namespace Flux
 
       EnsurePrependSpace(value.Length);
 
-      value.CopyTo(m_array, m_head -= value.Length);
+      value.CopyTo(m_buffer, m_head -= value.Length);
 
       return this;
     }
@@ -557,17 +557,17 @@ namespace Flux
 
       startAt += m_head;
 
-      if (m_head <= m_array.Length - m_tail) // Shrink from start.
+      if (m_head <= m_buffer.Length - m_tail) // Shrink from start.
       {
-        System.Array.Copy(m_array, m_head, m_array, m_head + count, startAt - m_head);
-        System.Array.Fill(m_array, default, m_head, count);
+        System.Array.Copy(m_buffer, m_head, m_buffer, m_head + count, startAt - m_head);
+        System.Array.Fill(m_buffer, default, m_head, count);
         m_head += count;
       }
       else // Otherwise shrink from end.
       {
-        System.Array.Copy(m_array, startAt + count, m_array, startAt, m_tail - startAt - count);
+        System.Array.Copy(m_buffer, startAt + count, m_buffer, startAt, m_tail - startAt - count);
         m_tail -= count;
-        System.Array.Fill(m_array, default, m_tail, count);
+        System.Array.Fill(m_buffer, default, m_tail, count);
       }
 
       return this;
@@ -666,7 +666,7 @@ namespace Flux
 
       m_version++;
 
-      m_array[m_head + index] = value;
+      m_buffer[m_head + index] = value;
     }
 
     /// <summary>Shuffle all items in the builder. Uses the specified Random.</summary>

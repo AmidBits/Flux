@@ -3,13 +3,13 @@ namespace Flux
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
   public readonly struct AngularAcceleration3D
-      : System.IEquatable<AngularAcceleration3D>, IUnitQuantifiable<CartesianCoordinate3, AngularAccelerationUnit>
+      : System.IEquatable<AngularAcceleration3D>, IUnitQuantifiable<CartesianCoordinate3R, AngularAccelerationUnit>
   {
     public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquared;
 
-    private readonly CartesianCoordinate3 m_value;
+    private readonly CartesianCoordinate3R m_value;
 
-    public AngularAcceleration3D(CartesianCoordinate3 value, AngularAccelerationUnit unit = DefaultUnit)
+    public AngularAcceleration3D(CartesianCoordinate3R value, AngularAccelerationUnit unit = DefaultUnit)
       => m_value = unit switch
       {
         AngularAccelerationUnit.RadianPerSecondSquared => value,
@@ -52,13 +52,13 @@ namespace Flux
       => m_value == other.m_value;
 
     // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate3 Value { get => m_value; init => m_value = value; }
+    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate3R Value { get => m_value; init => m_value = value; }
     // IUnitQuantifiable<>
     [System.Diagnostics.Contracts.Pure]
     public string ToUnitString(AngularAccelerationUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
       => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToUnitValue(AngularAccelerationUnit unit = DefaultUnit)
+    public CartesianCoordinate3R ToUnitValue(AngularAccelerationUnit unit = DefaultUnit)
       => unit switch
       {
         AngularAccelerationUnit.RadianPerSecondSquared => m_value,

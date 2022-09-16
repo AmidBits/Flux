@@ -165,7 +165,7 @@ namespace Flux
   public ref struct SpanBuilder<T>
     where T : notnull
   {
-    private const int DefaultBufferSize = 64;
+    private const int DefaultBufferSize = 16;
 
     private System.Span<T> m_buffer;
 

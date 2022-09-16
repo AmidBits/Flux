@@ -21,8 +21,8 @@ namespace Flux
     public CartesianCoordinate2I Center()
       => new(m_width / 2, m_height / 2);
 
-    /// <summary>Convert the <see cref="Size2"/> to a <see cref="CartesianCoordinate2"/>.</summary>
-    public CartesianCoordinate2 ToCartesianCoordinate2()
+    /// <summary>Convert the <see cref="Size2"/> to a <see cref="CartesianCoordinate2R"/>.</summary>
+    public CartesianCoordinate2R ToCartesianCoordinate2()
       => new(m_width, m_height);
 
     /// <summary>Convert the <see cref="Size2"/> to a <see cref="CartesianCoordinate2I"/>.</summary>

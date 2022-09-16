@@ -1,24 +1,24 @@
-namespace Flux.Geometry
+namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct HexF
-    : System.IEquatable<HexF>
+  public readonly struct HexCoordinateR
+    : IEquatable<HexCoordinateR>
   {
-    public static readonly HexF Zero;
+    public static readonly HexCoordinateR Zero;
 
     public readonly double m_q;
     public readonly double m_r;
     public readonly double m_s;
 
-    public HexF(double q, double r, double s)
+    public HexCoordinateR(double q, double r, double s)
     {
-      if (!IsCubeCoordinate(q, r, s)) throw new System.ArgumentException($"Contraint violation of cube coordinate (Q + R + S = 0) = ({q} + {r} + {s} = {System.Math.Round(q + r + s)}).");
+      AssertCubeCoordinate(q, r, s);
 
       m_q = q;
       m_r = r;
       m_s = s;
     }
-    public HexF(double q, double r)
+    public HexCoordinateR(double q, double r)
     : this(q, r, -q - r)
     { }
 
@@ -26,8 +26,8 @@ namespace Flux.Geometry
     [System.Diagnostics.Contracts.Pure] public double R { get => m_r; init => m_r = value; }
     [System.Diagnostics.Contracts.Pure] public double S { get => m_s; init => m_s = value; }
 
-    public HexCoordinate ToRoundedHex()
-      => RoundToNearest(m_q, m_r, m_s);
+    public HexCoordinateI ToHexCoordinateI()
+      => Round(this);
 
     //static public List<Hex> HexLinedraw(Hex a, Hex b)
     //{
@@ -44,49 +44,65 @@ namespace Flux.Geometry
     //}
 
     #region Static methods
+    public static void AssertCubeCoordinate(double q, double r, double s)
+    {
+      if (!IsCubeCoordinate(q, r, s))
+        throw new ArgumentException($"Contraint violation of cube coordinate (Q + R + S = 0) : ({q} + {r} + {s} = {Math.Round(q + r + s)}).");
+    }
+
     public static bool IsCubeCoordinate(double q, double r, double s)
       => System.Math.Round(q + r + s) == 0;
-    public static HexF Lerp(HexF source, HexF target, double mu)
-      => new(source.m_q * (1 - mu) + target.m_q * mu, source.m_r * (1 - mu) + target.m_r * mu, source.m_s * (1 - mu) + target.m_s * mu);
-    public static HexCoordinate RoundToNearest(double q, double r, double s)
+
+    public static HexCoordinateR Lerp(HexCoordinateR source, HexCoordinateR target, double mu)
+      => new(
+        source.m_q * (1 - mu) + target.m_q * mu,
+        source.m_r * (1 - mu) + target.m_r * mu,
+        source.m_s * (1 - mu) + target.m_s * mu
+      );
+
+    public static HexCoordinateI Round(HexCoordinateR hex)
     {
-      var rq = (int)System.Math.Round(q);
-      var rr = (int)System.Math.Round(r);
-      var rs = (int)System.Math.Round(s);
+      var rQ = System.Math.Round(hex.m_q);
+      var rR = System.Math.Round(hex.m_r);
+      var rS = System.Math.Round(hex.m_s);
 
-      double q_diff = System.Math.Abs(rq - q);
-      double r_diff = System.Math.Abs(rr - r);
-      double s_diff = System.Math.Abs(rs - s);
+      var aQ = System.Math.Abs(rQ - hex.m_q);
+      var aR = System.Math.Abs(rR - hex.m_r);
+      var aS = System.Math.Abs(rS - hex.m_s);
 
-      if (q_diff > r_diff && q_diff > s_diff)
-        rq = -rr - rs;
-      else if (r_diff > s_diff)
-        rr = -rq - rs;
+      if (aQ > aR && aQ > aS)
+        rQ = -rR - rS;
+      else if (aR > aS)
+        rR = -rQ - rS;
       else
-        rs = -rq - rr;
+        rS = -rQ - rR;
 
-      return new(rq, rr, rs);
+      return new(
+        System.Convert.ToInt32(rQ),
+        System.Convert.ToInt32(rR),
+        System.Convert.ToInt32(rS)
+      );
     }
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(HexF p1, HexF p2)
+    public static bool operator ==(HexCoordinateR p1, HexCoordinateR p2)
      => p1.Equals(p2);
-    public static bool operator !=(HexF p1, HexF p2)
+    public static bool operator !=(HexCoordinateR p1, HexCoordinateR p2)
       => !p1.Equals(p2);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable
-    public bool Equals(HexF other)
+    public bool Equals(HexCoordinateR other)
       => m_q == other.m_q && m_r == other.m_r && m_s == other.m_s;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
-      => obj is HexF o && Equals(o);
+      => obj is HexCoordinateR o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(m_q, m_r, m_s);
+      => HashCode.Combine(m_q, m_r, m_s);
     public override string ToString()
       => $"{GetType().Name} {{ Q = {m_q}, R = {m_r}, S = {m_s} }}";
     #endregion Object overrides

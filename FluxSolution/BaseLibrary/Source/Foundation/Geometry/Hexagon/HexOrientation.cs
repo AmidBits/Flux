@@ -1,4 +1,4 @@
-namespace Flux.Geometry
+namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct HexOrientation
@@ -17,7 +17,7 @@ namespace Flux.Geometry
     public readonly double m_b3;
     public readonly double m_startAngle; // in multiples of 60°
 
-    private HexOrientation(double f0, double f1, double f2, double f3, double b0, double b1, double b2, double b3, double startAngle)
+    public HexOrientation(double f0, double f1, double f2, double f3, double b0, double b1, double b2, double b3, double startAngle)
     {
       m_f0 = f0;
       m_f1 = f1;

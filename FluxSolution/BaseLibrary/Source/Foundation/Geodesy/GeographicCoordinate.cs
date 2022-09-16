@@ -47,9 +47,9 @@ namespace Flux
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     [System.Diagnostics.Contracts.Pure] public Longitude Longitude { get => new(Angle.ConvertRadianToDegree(m_radLongitude)); init => m_radLongitude = value.InRadians; }
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
+    /// <summary>Creates a new <see cref="CartesianCoordinate3R"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToEqualEarthProjection()
+    public CartesianCoordinate3R ToEqualEarthProjection()
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -69,12 +69,12 @@ namespace Flux
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new CartesianCoordinate3(x, y, m_meterAltitude);
+      return new CartesianCoordinate3R(x, y, m_meterAltitude);
     }
     //=> (CartesianCoordinate3)ConvertToEqualEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Natural Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToNaturalEarthProjection()
+    public CartesianCoordinate3R ToNaturalEarthProjection()
     {
       var lat = m_radLatitude;
       var lon = m_radLongitude;
@@ -89,15 +89,15 @@ namespace Flux
       var x = lon * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
       var y = lat * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
 
-      return new CartesianCoordinate3(x, y, m_meterAltitude);
+      return new CartesianCoordinate3R(x, y, m_meterAltitude);
     }
     /// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public SphericalCoordinate ToSphericalCoordinate()
       => new(m_meterAltitude, System.Math.PI - (m_radLatitude + Maths.PiOver2), m_radLongitude + System.Math.PI);
-    /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
+    /// <summary>Creates a new <see cref="CartesianCoordinate3R"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3 ToWinkelTripelProjection()
+    public CartesianCoordinate3R ToWinkelTripelProjection()
     {
       var lat = m_radLatitude;
       var lon = m_radLongitude;
@@ -109,7 +109,7 @@ namespace Flux
       var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
-      return new CartesianCoordinate3(x, y, m_meterAltitude);
+      return new CartesianCoordinate3R(x, y, m_meterAltitude);
     }
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>

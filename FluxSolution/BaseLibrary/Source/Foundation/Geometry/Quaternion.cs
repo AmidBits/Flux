@@ -183,23 +183,23 @@ namespace Flux
     // http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
     /// <summary>Returns a quaternion from two vectors.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
-    public static Quaternion FromTwoVectors(CartesianCoordinate3 u, CartesianCoordinate3 v)
+    public static Quaternion FromTwoVectors(CartesianCoordinate3R u, CartesianCoordinate3R v)
     {
-      var norm_u_norm_v = (float)System.Math.Sqrt(CartesianCoordinate3.DotProduct(u, u) * CartesianCoordinate3.DotProduct(v, v));
-      var real_part = norm_u_norm_v + CartesianCoordinate3.DotProduct(u, v);
+      var norm_u_norm_v = (float)System.Math.Sqrt(CartesianCoordinate3R.DotProduct(u, u) * CartesianCoordinate3R.DotProduct(v, v));
+      var real_part = norm_u_norm_v + CartesianCoordinate3R.DotProduct(u, v);
 
-      CartesianCoordinate3 w;
+      CartesianCoordinate3R w;
 
       if (real_part < Maths.Epsilon1E7 * norm_u_norm_v)
       {
         real_part = 0.0f;
 
         // If u and v are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis. Axis normalisation can happen later, when we normalise the quaternion.
-        w = System.Math.Abs(u.X) > System.Math.Abs(u.Z) ? new CartesianCoordinate3(-u.Y, u.X, 0f) : new CartesianCoordinate3(0f, -u.Z, u.Y);
+        w = System.Math.Abs(u.X) > System.Math.Abs(u.Z) ? new CartesianCoordinate3R(-u.Y, u.X, 0f) : new CartesianCoordinate3R(0f, -u.Z, u.Y);
       }
       else
       {
-        w = CartesianCoordinate3.CrossProduct(u, v);
+        w = CartesianCoordinate3R.CrossProduct(u, v);
       }
 
       return CreateNormalized(w.X, w.Y, w.Z, real_part);

@@ -2,48 +2,52 @@ namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct HexLayout
-    : System.IEquatable<HexLayout>
+  : System.IEquatable<HexLayout>
   {
-    public readonly Size2 Size { get; init; }
-    public readonly CartesianCoordinate2I Origin { get; init; }
-    public readonly HexOrientation Orientation { get; init; }
+    private readonly Size2 m_size;
+    private readonly CartesianCoordinate2I m_origin;
+    private readonly HexOrientation m_orientation;
 
     public HexLayout(HexOrientation orientation, Size2 size, CartesianCoordinate2I origin)
     {
-      Orientation = orientation;
-      Size = size;
-      Origin = origin;
+      m_orientation = orientation;
+      m_size = size;
+      m_origin = origin;
     }
 
-    public void HexToPixel(HexCoordinate h, out double x, out double y)
-    {
-      x = (Orientation.F0 * h.Q + Orientation.F1 * h.R) * Size.Width;
-      y = (Orientation.F2 * h.Q + Orientation.F3 * h.R) * Size.Height;
+    public Size2 Size { get => m_size; init => m_size = value; }
+    public CartesianCoordinate2I Origin { get => m_origin; init => m_origin = value; }
+    public HexOrientation Orientation { get => m_orientation; init => m_orientation = value; }
 
-      x += Origin.X;
-      y += Origin.Y;
+    public void HexToPixel(HexCoordinateI h, out double x, out double y)
+    {
+      x = (m_orientation.F0 * h.Q + m_orientation.F1 * h.R) * m_size.Width;
+      y = (m_orientation.F2 * h.Q + m_orientation.F3 * h.R) * m_size.Height;
+
+      x += m_origin.X;
+      y += m_origin.Y;
     }
 
-    public HexF PixelToHex(double x, double y)
+    public HexCoordinateR PixelToHex(double x, double y)
     {
-      var dx = (x - Origin.X) / Size.Width;
-      var dy = (y - Origin.Y) / Size.Height;
+      var dx = (x - m_origin.X) / m_size.Width;
+      var dy = (y - m_origin.Y) / m_size.Height;
 
-      var q = Orientation.B0 * dx + Orientation.B1 * dy;
-      var r = Orientation.B2 * dx + Orientation.B3 * dy;
+      var q = m_orientation.B0 * dx + m_orientation.B1 * dy;
+      var r = m_orientation.B2 * dx + m_orientation.B3 * dy;
 
-      return new HexF(q, r);
+      return new HexCoordinateR(q, r);
     }
 
     public void HexCornerOffset(int corner, out double x, out double y)
     {
-      var angle = Maths.PiX2 * (Orientation.StartAngle - corner) / 6.0;
+      var angle = Maths.PiX2 * (m_orientation.StartAngle - corner) / 6.0;
 
-      x = Size.Width * (float)System.Math.Cos(angle);
-      y = Size.Height * (float)System.Math.Sin(angle);
+      x = m_size.Width * System.Math.Cos(angle);
+      y = m_size.Height * System.Math.Sin(angle);
     }
 
-    public System.Collections.Generic.List<(double x, double y)> PolygonCorners(HexCoordinate h)
+    public System.Collections.Generic.List<(double x, double y)> PolygonCorners(HexCoordinateI h)
     {
       var corners = new System.Collections.Generic.List<(double x, double y)>();
 
@@ -69,16 +73,16 @@ namespace Flux.Geometry
     #region Implemented interfaces
     // IEquatable
     public bool Equals(HexLayout other)
-      => Orientation == other.Orientation && Size == other.Size && Origin == other.Origin;
+      => m_orientation == other.m_orientation && m_size == other.m_size && m_origin == other.m_origin;
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj)
       => obj is HexLayout o && Equals(o);
     public override int GetHashCode()
-      => System.HashCode.Combine(Orientation, Size, Origin);
+      => System.HashCode.Combine(m_orientation, m_size, m_origin);
     public override string? ToString()
-      => $"{GetType().Name} {{ Orientation = {Orientation}, Size = {Size}, Origin = {Origin} }}";
+      => $"{GetType().Name} {{ Orientation = {m_orientation}, Size = {m_size}, Origin = {m_origin} }}";
     #endregion Object overrides
   }
 }

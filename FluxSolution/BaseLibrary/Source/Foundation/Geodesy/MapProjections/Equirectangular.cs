@@ -9,9 +9,9 @@
     public GeographicCoordinate CenterOfMap { get; init; }
     public double StandardParallels { get; init; }
 
-    public CartesianCoordinate3 ProjectForward(GeographicCoordinate project)
+    public CartesianCoordinate3R ProjectForward(GeographicCoordinate project)
       => new(project.Altitude.Value * (project.Longitude.InRadians - CenterOfMap.Longitude.InRadians) * System.Math.Cos(StandardParallels), project.Altitude.Value * (project.Latitude.InRadians - CenterOfMap.Latitude.InRadians), project.Altitude.Value);
-    public GeographicCoordinate ProjectReverse(CartesianCoordinate3 project)
+    public GeographicCoordinate ProjectReverse(CartesianCoordinate3R project)
       => new(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Value, project.Y / project.Z + CenterOfMap.Latitude.Value, project.Z);
 
     #region Overloaded operators
