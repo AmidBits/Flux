@@ -20,18 +20,19 @@ namespace Flux
     //  : ((IsPowerOf2(value) || !ceiling) ? value.GetShortestBitLength() - 1 : value.GetShortestBitLength());
 
     /// <summary>PREVIEW! Computes the ceiling of the base 2 log of the value.</summary>
-    public static int GetILog2Ceiling<TSelf>(this TSelf value)
+    public static int GetIntegerLog2Ceiling
+      <TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       // No zero check is necessary because it's not a power of two.
       => TSelf.IsPow2(AssertNonNegativeValue(value)) ? value.GetShortestBitLength() - 1 : value.GetShortestBitLength();
 
     /// <summary>PREVIEW! Computes the floor of the base 2 log of the value. This is the common log function.</summary>
-    public static int GetILog2Floor<TSelf>(this TSelf value)
+    public static int GetIntegerLog2Floor<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsZero(value) ? 0 : AssertNonNegativeValue(value).GetShortestBitLength() - 1;
 
     /// <summary>PREVIEW! Computes the floor and ceiling of the base 2 log of the value, using the .NET try paradigm.</summary>
-    public static bool TryGetILog2<TSelf>(this TSelf value, out int log2Floor, out int log2Ceiling)
+    public static bool TryGetIntegerLog2<TSelf>(this TSelf value, out int log2Floor, out int log2Ceiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       log2Floor = 0;

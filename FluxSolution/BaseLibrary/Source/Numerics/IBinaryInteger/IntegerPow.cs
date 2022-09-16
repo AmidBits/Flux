@@ -1,4 +1,6 @@
 #if NET7_0_OR_GREATER
+using System.Numerics;
+
 namespace Flux
 {
   public static partial class ExtensionMethods
@@ -6,25 +8,26 @@ namespace Flux
     /// <summary>PREVIEW! Returns x raised to the power of n. Exponentiation by squaring.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation"/>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
-    public static TSelf IPow<TSelf>(this TSelf x, TSelf n)
+    public static TSelf IntegerPow<TSelf, TOther>(this TSelf number, TOther power)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TOther : System.Numerics.IBinaryInteger<TOther>
     {
-      if (n < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(n));
+      if (power < TOther.Zero) throw new System.ArgumentOutOfRangeException(nameof(power));
 
       var y = TSelf.One;
 
-      while (n > TSelf.One)
+      while (power > TOther.One)
         checked
         {
-          if ((n & TSelf.One) == TSelf.One)
-            y *= x;
+          if ((power & TOther.One) == TOther.One)
+            y *= number;
 
-          x *= x;
+          number *= number;
 
-          n >>= 1;
+          power >>= 1;
         }
 
-      return x * y;
+      return number * y;
     }
   }
 }

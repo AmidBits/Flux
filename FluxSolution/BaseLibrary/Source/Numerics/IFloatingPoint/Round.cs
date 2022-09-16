@@ -3,18 +3,6 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static TSelf Div2<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.INumberBase<TSelf>
-      => value / (TSelf.One + TSelf.One);
-
-    public static TSelf Mul2<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.INumberBase<TSelf>
-      => value * (TSelf.One + TSelf.One);
-
-    public static TSelf Pow2<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.INumberBase<TSelf>
-      => value * value;
-
     /// <summary>PREVIEW! Symmetric rounding: round down, bias: towards zero.</summary>
     public static TSelf RoundFloorZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>

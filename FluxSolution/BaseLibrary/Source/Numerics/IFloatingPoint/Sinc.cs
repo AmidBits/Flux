@@ -3,16 +3,16 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>PREVIEW! Returns the normalized sinc of the specified value.</summary>
+    /// <summary>PREVIEW! Returns the normalized form sinc of the specified value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Sinc_function"/>
     public static TSelf Sincn<TSelf>(this TSelf x)
-      where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IFloatingPointIeee754<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => Sincu(TSelf.Pi * x);
 
-    /// <summary>PREVIEW! Returns the unnormalized sinc of the specified value.</summary>
+    /// <summary>PREVIEW! Returns the unnormalized form sinc of the specified value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Sinc_function"/>
     public static TSelf Sincu<TSelf>(this TSelf x)
-      where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
       => x != TSelf.Zero ? TSelf.Sin(x) / x : TSelf.One;
   }
 }
