@@ -20,7 +20,29 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var s = (byte.MaxValue - 3).GetOrdinalIndicator<int>();
+      var numerator = 17.75;
+      var denominator = 4.25;
+      
+      numerator.ConvertTo(out long y, MidpointRounding.ToZero);
+      var interpolated = Flux.FloatingPoint.InterpolateLinear(4, 14, 0.55);
+      var rounded = System.Math.Round(interpolated, MidpointRounding.ToZero);
+      var integer = System.Convert.ToInt32(rounded);
+
+      var dr = Flux.Number.DivRem(numerator, denominator, out var drRemainder);
+      var tdr = Flux.Number.TruncDivRem(numerator, denominator, out var tdrRemainder);
+      var drt = Flux.Number.DivRemTrunc(numerator, denominator, out var drtRemainder, out var drtTruncatedQuotient);
+
+      var start = 0d;
+      var count = 10d;
+      var step = 1.25d;
+
+      foreach (var bi in start.AlternatingLoop(count * 2 - 1, step, AlternatingLoopMethod.TowardsMean)) //.OrderBy(n => n)) //.Where(n => n <= 1.25).Take(10))
+        System.Console.WriteLine(bi);
+
+      System.Console.WriteLine();
+
+      foreach (var bi in start.Loop(count, step))
+        System.Console.WriteLine(bi);
     }
 
     private static void Main(string[] args)

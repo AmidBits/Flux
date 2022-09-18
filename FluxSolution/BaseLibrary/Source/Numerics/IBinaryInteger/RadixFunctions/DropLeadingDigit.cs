@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Drop the leading digit of the number.</summary>
     public static TSelf DropLeadingDigit<TSelf>(this TSelf source, TSelf radix)

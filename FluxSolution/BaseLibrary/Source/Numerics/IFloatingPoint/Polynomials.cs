@@ -1,12 +1,12 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class FloatingPoint
   {
     /// <summary>PREVIEW! A third-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Cubic_function"/>
-    public static TSelf CubicPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d)
+    public static TSelf PolynomialCubic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
         => (a * x * x * x) + (b * x * x) + (c * x) + d;
     //=> (a * x * x * x) + QuadraticPolynomial(x, b, c, d);
@@ -14,14 +14,14 @@ namespace Flux
     /// <summary>PREVIEW! A degree one polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Linear_function"/>
-    public static TSelf LinearPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b)
+    public static TSelf PolynomialLinear<TSelf>(this TSelf x, TSelf a, TSelf b)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (a * x) + b;
 
     /// <summary>PREVIEW! A univariate quadratic function (standard form), or second-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
-    public static TSelf QuadraticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c)
+    public static TSelf PolynomialQuadratic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (a * x * x) + (b * x) + c;
     //=> (a * x * x) + LinearPolynomial(x, b, c);
@@ -29,42 +29,42 @@ namespace Flux
     /// <summary>PREVIEW! A univariate quadratic function (factored form), or second-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
-    public static TSelf QuadraticPolynomialFactored<TSelf>(this TSelf x, TSelf a, TSelf r1, TSelf r2)
+    public static TSelf PolynomialQuadraticFactored<TSelf>(this TSelf x, TSelf a, TSelf r1, TSelf r2)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => a * (x - r1) * (x - r2);
 
     /// <summary>PREVIEW! Compute the root r1 from the univariate function.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
-    public static TSelf QuadraticPolynomialRootR1<TSelf>(this TSelf a, TSelf b, TSelf c)
+    public static TSelf PolynomialQuadraticRootR1<TSelf>(this TSelf a, TSelf b, TSelf c)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => (-b - TSelf.Sqrt(b * b - (TSelf.One + TSelf.One + TSelf.One + TSelf.One) * a * c)) / ((TSelf.One + TSelf.One) * a);
 
     /// <summary>PREVIEW! Compute the root r2 from the univariate function.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
-    public static TSelf QuadraticPolynomialRootR2<TSelf>(this TSelf a, TSelf b, TSelf c)
+    public static TSelf PolynomialQuadraticRootR2<TSelf>(this TSelf a, TSelf b, TSelf c)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => (-b + TSelf.Sqrt(b * b - (TSelf.One + TSelf.One + TSelf.One + TSelf.One) * a * c)) / ((TSelf.One + TSelf.One) * a);
 
     /// <summary>PREVIEW! A bivariate quadratic function, or second-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
-    public static TSelf QuadraticPolynomial<TSelf>(this TSelf x, TSelf y, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f)
+    public static TSelf PolynomialQuadratic<TSelf>(this TSelf x, TSelf y, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (a * x * x) + (b * y * y) + (c * x * y) + (d * x) + (e * y) + f;
 
     /// <summary>PREVIEW! A multivariate quadratic function, or second-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
-    public static TSelf QuadraticPolynomial<TSelf>(this TSelf x, TSelf y, TSelf z, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g, TSelf h, TSelf i, TSelf j)
+    public static TSelf PolynomialQuadratic<TSelf>(this TSelf x, TSelf y, TSelf z, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g, TSelf h, TSelf i, TSelf j)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (a * x * x) + (b * y * y) + (c * z * z) + (d * x * y) + (e * x * z) + (f * y * z) + (g * x) + (h * y) + (i * z) + j;
 
     /// <summary>PREVIEW! A univariate quartic function, or fourth-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quartic_function"/>
-    public static TSelf QuarticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e)
+    public static TSelf PolynomialQuartic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (a * x * x * x * x) + (b * x * x * x) + (c * x * x) + (d * x) + e;
     //=> (a * x * x * x * x) + CubicPolynomial(x, b, c, d, e);
@@ -72,7 +72,7 @@ namespace Flux
     /// <summary>PREVIEW! A univariate quintic function, or fifth-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Sextic_function"/>
-    public static TSelf QuinticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f)
+    public static TSelf PolynomialQuintic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (a * x * x * x * x * x) + (b * x * x * x * x) + (c * x * x * x) + (d * x * x) + (e * x) + f;
     //=> (a * x * x * x * x * x) + QuarticPolynomial(x, b, c, d, e, f);
@@ -80,7 +80,7 @@ namespace Flux
     /// <summary>PREVIEW! A univariate septic function, or seventh-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Septic_function"/>
-    public static TSelf SepticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g, TSelf h)
+    public static TSelf PolynomialSeptic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g, TSelf h)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
       => (a * x * x * x * x * x * x * x) + (b * x * x * x * x * x * x) + (c * x * x * x * x * x) + (d * x * x * x * x) + (e * x * x * x) + (f * x * x) + (g * x) + h;
     //=> (a * x * x * x * x * x * x * x) + SexticPolynomial(x, b, c, d, e, f, g, h);
@@ -88,7 +88,7 @@ namespace Flux
     /// <summary>PREVIEW! A univariate sextic function, or sixth-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quintic_function"/>
-    public static TSelf SexticPolynomial<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g)
+    public static TSelf PolynomialSextic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
       => (a * x * x * x * x * x * x) + (b * x * x * x * x * x) + (c * x * x * x * x) + (d * x * x * x) + (e * x * x) + (f * x) + g;
     //=> (a * x * x * x * x * x * x) + QuinticPolynomial(x, b, c, d, e, f, g);
@@ -98,7 +98,7 @@ namespace Flux
     /// <param name="coefficients"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf UnivariatePolynomial<TSelf>(this TSelf x, params TSelf[] coefficients)
+    public static TSelf PolynomialUnivariate<TSelf>(this TSelf x, params TSelf[] coefficients)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
     {
       if (coefficients.Length < 2) throw new System.ArgumentOutOfRangeException(nameof(coefficients));

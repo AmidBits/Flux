@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Returns the digits (as numbers) of a value.</summary>
     public static System.Span<TSelf> GetDigits<TSelf>(this TSelf value, TSelf radix)

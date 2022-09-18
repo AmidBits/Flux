@@ -128,12 +128,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public Quaternion ToQuaternion()
     {
-      var cy = System.Math.Cos(m_radYaw * 0.5);
-      var sy = System.Math.Sin(m_radYaw * 0.5);
-      var cp = System.Math.Cos(m_radPitch * 0.5);
-      var sp = System.Math.Sin(m_radPitch * 0.5);
-      var cr = System.Math.Cos(m_radRoll * 0.5);
-      var sr = System.Math.Sin(m_radRoll * 0.5);
+      var cy = System.Math.Cos(m_radYaw / 2);
+      var sy = System.Math.Sin(m_radYaw / 2);
+      var cp = System.Math.Cos(m_radPitch / 2);
+      var sp = System.Math.Sin(m_radPitch / 2);
+      var cr = System.Math.Cos(m_radRoll / 2);
+      var sr = System.Math.Sin(m_radRoll / 2);
 
       var w = cr * cp * cy + sr * sp * sy;
       var x = sr * cp * cy - cr * sp * sy;

@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Returns whether two numbers are co-prime.</summary>
     public static bool IsCoprime<TSelf>(this TSelf a, TSelf b)

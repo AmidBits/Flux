@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Returns x raised to the power of n. Exponentiation by squaring.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation"/>

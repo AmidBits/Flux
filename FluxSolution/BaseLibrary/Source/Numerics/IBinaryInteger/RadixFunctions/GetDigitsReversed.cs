@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Returns the place value digits (as numbers) of a value, in reverse order.</summary>
     public static System.Span<TSelf> GetDigitsReversed<TSelf>(this TSelf value, TSelf radix)

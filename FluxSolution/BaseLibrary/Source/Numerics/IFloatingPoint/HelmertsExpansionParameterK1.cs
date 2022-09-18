@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class FloatingPoint
   {
     /// <summary>https://en.wikipedia.org/wiki/Vincenty%27s_formulae</summary>
     public static TSelf HelmertsExpansionParameterK1<TSelf>(this TSelf u)

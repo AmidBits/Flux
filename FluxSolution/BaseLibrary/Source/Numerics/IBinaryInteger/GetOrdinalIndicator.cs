@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     public static string GetOrdinalIndicator<TSelf>(this TSelf source)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

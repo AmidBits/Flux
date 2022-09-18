@@ -4,7 +4,7 @@ namespace Flux
   //  // <seealso cref="http://aggregate.org/MAGIC/"/>
   //  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
 
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit.</summary>
     /// <remarks>Returns a number representing the number of leading zeros of the binary representation of the value. Since BigInteger is arbitrary this version finds and subtracts from the nearest power-of-two bit-length that the value fits in.</remarks>

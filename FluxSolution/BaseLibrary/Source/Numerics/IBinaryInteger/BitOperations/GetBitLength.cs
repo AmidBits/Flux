@@ -4,7 +4,7 @@ namespace Flux
   //  // <seealso cref="http://aggregate.org/MAGIC/"/>
   //  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
 
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     public static int GetShortestBitLength<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class Number
   {
     public static TSelf Div2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumber<TSelf>

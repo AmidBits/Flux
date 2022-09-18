@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Returns the greatest common divisor of all (and at least two) values.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>

@@ -4,7 +4,7 @@ namespace Flux
   //  // <seealso cref="http://aggregate.org/MAGIC/"/>
   //  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
 
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Find the next largest power of 2 less than or equal to <paramref name="value"/>.</summary>
     public static TSelf RoundDownToPow2<TSelf>(this TSelf value)

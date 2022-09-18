@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Returns the count of all digits in the value using the specified radix.</summary>
     public static TSelf DigitCount<TSelf>(this TSelf value, TSelf radix)

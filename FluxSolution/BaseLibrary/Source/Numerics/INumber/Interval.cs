@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class Number
   {
     /// <summary>PREVIEW! Returns the 1-dimensional distance between the two specified values.</summary>
     public static TSelf Distance<TSelf>(this TSelf self, TSelf other)
@@ -12,9 +12,9 @@ namespace Flux
     public static TSelf Fold<TSelf>(this TSelf self, TSelf min, TSelf max)
       where TSelf : System.Numerics.INumber<TSelf>
       => (self > max)
-      ? TSelf.IsEvenInteger(QuotientTruncatedAndRemainder(self - max, max - min, out var remainderHi)) ? max - remainderHi : min + remainderHi
+      ? TSelf.IsEvenInteger(TruncDivRem(self - max, max - min, out var remainderHi)) ? max - remainderHi : min + remainderHi
       : (self < min)
-      ? TSelf.IsEvenInteger(QuotientTruncatedAndRemainder(min - self, max - min, out var remainderLo)) ? min + remainderLo : max - remainderLo
+      ? TSelf.IsEvenInteger(TruncDivRem(min - self, max - min, out var remainderLo)) ? min + remainderLo : max - remainderLo
       : self;
 
     /// <summary>PREVIEW! Proportionally re-scale the <paramref name="self"/> from within one closed interval [<paramref name="minSource"/>, <paramref name="maxSource"/>] to within another closed interval [<paramref name="minTarget"/>, <paramref name="maxTarget"/>]. The value retains its interval ratio. E.g. a 5 in the range [0, 10] becomes 50 when rescaled to the range [0, 100].</summary>

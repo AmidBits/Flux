@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Returns the (floor) root of <paramref name="number"/>. Using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>

@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class Number
   {
     /// <summary>PREVIEW! Min routine for 2 values of T (where T : System.IComparable<T>).</summary>
     //public static TSelf Min<TSelf>(this TSelf a, TSelf b)

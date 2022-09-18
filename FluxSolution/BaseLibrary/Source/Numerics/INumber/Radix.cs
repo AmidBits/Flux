@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class Number
   {
     /// <summary>PREVIEW! Perform a comparison of the difference against radix (base) raised (negated) to the power of the specified number of digits.</summary>
     /// <see cref="https://stackoverflow.com/questions/9180385/is-this-a-valid-float-comparison-that-accounts-for-a-set-number-of-decimal-place"/>
@@ -28,12 +28,12 @@ namespace Flux
     /// less than (or equal to, depending on the proper flag).</returns>
     public static TSelf RoundDownToPowerOf<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => RoundToNearestPowerOf(value, radix, HalfRounding.TowardZero);
+      => RoundToNearestPowerOf(value, radix, HalfwayRounding.TowardZero);
 
     /// <summary>PREVIEW! Round to a multiple of the provided positive radix.</summary>
     /// <param name="value">Number to be rounded.</param>
     /// <param name="radix">The basis to whose powers to round to. Must be positive.</param>
-    public static TSelf RoundToNearestPowerOf<TSelf>(this TSelf value, TSelf radix, HalfRounding mode = HalfRounding.TowardZero)
+    public static TSelf RoundToNearestPowerOf<TSelf>(this TSelf value, TSelf radix, HalfwayRounding mode = HalfwayRounding.TowardZero)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IPowerFunctions<TSelf>, System.Numerics.ISignedNumber<TSelf>
     {
       var abs = TSelf.Abs(value);
@@ -50,7 +50,7 @@ namespace Flux
     /// <returns>The smaller power of 2 that is less than (or equal to, depending on the proper flag).</returns>
     public static TSelf RoundUpToPowerOf<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => RoundToNearestPowerOf(value, radix, HalfRounding.TowardZero);
+      => RoundToNearestPowerOf(value, radix, HalfwayRounding.TowardZero);
   }
 }
 #endif
