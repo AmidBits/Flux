@@ -1,8 +1,8 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  //  // <seealso cref="http://aggregate.org/MAGIC/"/>
-  //  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
+  // <seealso cref="http://aggregate.org/MAGIC/"/>
+  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
 
   public static partial class BinaryInteger
   {
@@ -36,6 +36,7 @@ namespace Flux
 
       return (greaterThanOrEqual - value) > (value - lessThanOrEqual) ? lessThanOrEqual : greaterThanOrEqual;
     }
+
     /// <summary>PREVIEW! Computes the smallest and largest power of 2 greater than and larger than, respectively, and also returns the nearest (to <paramref name="value"/>) of the two.</summary>
     /// <param name="value"></param>
     /// <param name="greaterThan">Outputs the power of 2 proper (i.e. always) greater than <paramref name="value"/>.</param>

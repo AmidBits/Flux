@@ -1,4 +1,6 @@
 #if NET7_0_OR_GREATER
+using Flux.Hashing;
+
 namespace Flux
 {
   public static partial class FloatingPoint
@@ -27,9 +29,9 @@ namespace Flux
 
     #region Integer Rounding Extension Methods
     /// <summary>PREVIEW! Symmetric rounding: round up, bias: away from zero.</summary>
-    public static TSelf IntegerRoundAwayFromZero<TSelf>(this TSelf number)
+    public static TSelf IntegerRoundAwayFromZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.Sign(number) < 0 ? TSelf.Floor(number) : TSelf.Ceiling(number);
+      => TSelf.Sign(value) < 0 ? TSelf.Floor(value) : TSelf.Ceiling(value);
 
     /// <summary>PREVIEW! Common rounding: round up, bias: positive infinity.</summary>
     public static TSelf IntegerRoundCeiling<TSelf>(this TSelf value)
@@ -52,12 +54,12 @@ namespace Flux
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Round(value, mode);
 
-    /// <summary>PREVIEW! Rounds the <paramref name="value"/> to the nearest integer. The <paramref name="mode"/> specifies how to round if it is midway between two numbers.</summary>
+    /// <summary>PREVIEW! Rounds the <paramref name="value"/> to the nearest integer. The <paramref name="mode"/> specifies the strategy to use if the value is midway between two integers (e.g. 11.5).</summary>
     public static TSelf Round<TSelf>(this TSelf value, HalfwayRounding mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
-      var two = TSelf.One + TSelf.One;
-      var halfOfOne = TSelf.One / two;
+      var two = TSelf.CreateChecked(2);
+      var halfOfOne = TSelf.CreateChecked(0.5);
 
       return mode switch
       {
@@ -71,15 +73,15 @@ namespace Flux
       };
     }
 
-    /// <summary>PREVIEW! Rounds a <paramref name="number"/> to an integer boundary. The <paramref name="mode"/> specifies what method to use.</summary>
-    public static TSelf Round<TSelf>(this TSelf number, IntegerRounding mode)
+    /// <summary>PREVIEW! Rounds a <paramref name="value"/> to an integer boundary. The <paramref name="mode"/> specifies which strategy to use.</summary>
+    public static TSelf Round<TSelf>(this TSelf value, IntegerRounding mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => mode switch
       {
-        IntegerRounding.AwayFromZero => IntegerRoundAwayFromZero(number),
-        IntegerRounding.Ceiling => IntegerRoundCeiling(number),
-        IntegerRounding.Floor => IntegerRoundFloor(number),
-        IntegerRounding.TowardZero => IntegerRoundTowardZero(number),
+        IntegerRounding.AwayFromZero => IntegerRoundAwayFromZero(value),
+        IntegerRounding.Ceiling => IntegerRoundCeiling(value),
+        IntegerRounding.Floor => IntegerRoundFloor(value),
+        IntegerRounding.TowardZero => IntegerRoundTowardZero(value),
         _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
       };
 
@@ -93,25 +95,13 @@ namespace Flux
     //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
     //  => TSelf.CopySign(TSelf.Floor(TSelf.Abs(value)), value);
 
-    /// <summary>PREVIEW! Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
-    public static TSelf RoundToMultiple<TSelf>(this TSelf number, TSelf interval, System.MidpointRounding mode)
-      where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IModulusOperators<TSelf, TSelf, TSelf>
-    {
-      if (number % interval is var remainder && remainder == TSelf.Zero)
-        return number; // The number is already a multiple.
-
-      var roundedToZero = number - remainder;
-
-      return mode switch
-      {
-        System.MidpointRounding.AwayFromZero => number < TSelf.Zero ? roundedToZero - interval : roundedToZero + interval,
-        System.MidpointRounding.ToPositiveInfinity => number < TSelf.Zero ? roundedToZero : roundedToZero + interval,
-        System.MidpointRounding.ToNegativeInfinity => number < TSelf.Zero ? roundedToZero - interval : roundedToZero,
-        System.MidpointRounding.ToZero => roundedToZero,
-        System.MidpointRounding.ToEven => TSelf.IsEvenInteger(roundedToZero) ? roundedToZero : roundedToZero < TSelf.Zero && roundedToZero - interval is var n && TSelf.IsEvenInteger(n) ? n : roundedToZero > TSelf.Zero && roundedToZero + interval is var p && TSelf.IsEvenInteger(p) ? p : throw new System.ArgumentException("The number and interval cannot evaluate to even."),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
-      };
-    }
+    /// <summary>Wrapper for System.Math.Round that truncates the number at the specified number of fractional digits and then performs the rounding of the number. The reason for doing this is because unless a value is EXACTLY between two numbers, to the decimal, it will be rounded based on the next lower decimal digit and so on.</summary>
+    /// <seealso cref="https://stackoverflow.com/questions/1423074/rounding-to-even-in-c-sharp"/>
+    public static TSelf RoundToSignificantDigits<TSelf>(this TSelf value, int significantDigits, System.MidpointRounding mode)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+      => significantDigits >= 0 && TSelf.Pow(TSelf.CreateChecked(10), TSelf.CreateChecked(significantDigits + 1)) is var scalar
+      ? TSelf.Round(TSelf.Truncate(value * scalar) / scalar, significantDigits, mode)
+      : throw new System.ArgumentOutOfRangeException(nameof(significantDigits));
   }
 }
 #endif

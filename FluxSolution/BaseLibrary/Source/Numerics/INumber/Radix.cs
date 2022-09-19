@@ -26,14 +26,14 @@ namespace Flux
     /// 
     /// 
     /// less than (or equal to, depending on the proper flag).</returns>
-    public static TSelf RoundDownToPowerOf<TSelf>(this TSelf value, TSelf radix)
+    public static TSelf RoundDownToPow<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => RoundToNearestPowerOf(value, radix, HalfwayRounding.TowardZero);
+      => RoundToNearestPow(value, radix, HalfwayRounding.TowardZero);
 
     /// <summary>PREVIEW! Round to a multiple of the provided positive radix.</summary>
     /// <param name="value">Number to be rounded.</param>
     /// <param name="radix">The basis to whose powers to round to. Must be positive.</param>
-    public static TSelf RoundToNearestPowerOf<TSelf>(this TSelf value, TSelf radix, HalfwayRounding mode = HalfwayRounding.TowardZero)
+    public static TSelf RoundToNearestPow<TSelf>(this TSelf value, TSelf radix, HalfwayRounding mode = HalfwayRounding.TowardZero)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IPowerFunctions<TSelf>, System.Numerics.ISignedNumber<TSelf>
     {
       var abs = TSelf.Abs(value);
@@ -48,9 +48,9 @@ namespace Flux
     /// <param name="value">The reference value.</param>
     /// <param name="proper">If true, then the result is always less than value, othewise it could be less than or equal to.</param>
     /// <returns>The smaller power of 2 that is less than (or equal to, depending on the proper flag).</returns>
-    public static TSelf RoundUpToPowerOf<TSelf>(this TSelf value, TSelf radix)
+    public static TSelf RoundUpToPow<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => RoundToNearestPowerOf(value, radix, HalfwayRounding.TowardZero);
+      => RoundToNearestPow(value, radix, HalfwayRounding.TowardZero);
   }
 }
 #endif
