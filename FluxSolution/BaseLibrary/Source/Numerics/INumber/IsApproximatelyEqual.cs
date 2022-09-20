@@ -20,7 +20,7 @@ namespace Flux
     /// <para>IsApproximatelyEqual(1000.02, 1000.015, 2, 10);</para>
     /// <para>IsApproximatelyEqual(1334.261, 1235.272, -2, 10);</para>
     /// </remarks>
-    public static bool IsApproximatelyEqual<TSelf>(this TSelf a, TSelf b, TSelf significantDigits, TSelf radix)
+    public static bool IsApproximatelyEqualPrecision<TSelf>(this TSelf a, TSelf b, TSelf significantDigits, TSelf radix)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
       => a == b || TSelf.Abs(a - b) <= TSelf.Pow(BinaryInteger.AssertRadix(radix), -significantDigits);
   }

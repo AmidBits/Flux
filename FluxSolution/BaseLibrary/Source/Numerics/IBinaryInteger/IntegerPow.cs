@@ -19,7 +19,7 @@ namespace Flux
       while (power > TOther.One)
         checked
         {
-          if ((power & TOther.One) == TOther.One)
+          if (TOther.IsOddInteger(power))
             y *= number;
 
           number *= number;

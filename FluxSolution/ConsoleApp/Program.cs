@@ -21,9 +21,10 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       var numerator = (1334.261);
+      var rtnp = numerator.RoundToNearestPowProper(10, out var lt, out var gt);
       var denominator = (1235.272);
 
-      var iae = numerator.IsApproximatelyEqual(denominator, -2, 10);
+      var iae = numerator.IsApproximatelyEqualPrecision(denominator, -2, 10);
 
       var n2 = ((int)numerator + 1).RoundToNearestPow2Proper(out var ngt, out var nlt);
       var d2 = ((int)denominator + 1).RoundToNearestPow2Proper(out var dgt, out var dlt);

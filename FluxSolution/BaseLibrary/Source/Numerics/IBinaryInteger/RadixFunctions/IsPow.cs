@@ -4,13 +4,13 @@ namespace Flux
   public static partial class BinaryInteger
   {
     /// <summary>PREVIEW! Determines if the number is a power of the specified radix. The sign is ignored so the function can be used on negative numbers as well.</summary>
-    public static bool IsPowerOf<TSelf>(this TSelf value, TSelf radix)
+    public static bool IsPow<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertRadix(radix);
 
       if (value < TSelf.Zero) // Make it work on negative numbers.
-        return IsPowerOf(-value, radix);
+        return IsPow(-value, radix);
 
       if (value == radix) // If the value is equal to the radix, then it's a power of that radix.
         return true;
