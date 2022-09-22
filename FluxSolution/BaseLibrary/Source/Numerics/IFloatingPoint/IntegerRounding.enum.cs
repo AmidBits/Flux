@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux
 {
   /// <summary>Specifies how mathematical rounding methods should process a number.</summary>
@@ -17,3 +18,4 @@ namespace Flux
     TowardZero = 104,
   }
 }
+#endif

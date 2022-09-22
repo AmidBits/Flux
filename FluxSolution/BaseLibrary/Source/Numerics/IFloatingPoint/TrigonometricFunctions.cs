@@ -62,7 +62,7 @@ namespace Flux
     /// <summary>PREVIEW! Returns the tan of the specified angle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
     public static TSelf Atan2<TSelf>(this TSelf y, TSelf x)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => TSelf.Atan2(y, x);
 
     /// <summary>PREVIEW! Returns the inverse cosecant of the specified angle.</summary>

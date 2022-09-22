@@ -271,15 +271,15 @@ namespace Flux
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
     /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3I  ToGridCoordinate3(System.MidpointRounding rounding)
+    public CartesianCoordinate3I ToGridCoordinate3(System.MidpointRounding rounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)), System.Convert.ToInt32(System.Math.Round(m_z, rounding)));
     /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="Flux.FullRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3I  ToGridCoordinate3(Flux.FullRounding rounding)
+    public CartesianCoordinate3I ToGridCoordinate3(Flux.FullRounding rounding)
       => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
     /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="Flux.HalfRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3I  ToGridCoordinate3(Flux.HalfRounding rounding)
+    public CartesianCoordinate3I ToGridCoordinate3(Flux.HalfRounding rounding)
       => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
     /// <summary>Returns a quaternion from two vectors.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
@@ -402,16 +402,15 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static double ManhattanDistance(CartesianCoordinate3R source, CartesianCoordinate3R target, double edgeLength = 1)
       => ManhattanLength(target - source, edgeLength);
-
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate3R Nlerp(CartesianCoordinate3R source, CartesianCoordinate3R target, double mu)
-      => Normalize(Lerp(source, target, mu));
-
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     [System.Diagnostics.Contracts.Pure]
     public static double ManhattanLength(CartesianCoordinate3R source, double edgeLength = 1)
       => System.Math.Abs(source.m_x / edgeLength) + System.Math.Abs(source.m_y / edgeLength) + System.Math.Abs(source.m_z / edgeLength);
+
+    [System.Diagnostics.Contracts.Pure]
+    public static CartesianCoordinate3R Nlerp(CartesianCoordinate3R source, CartesianCoordinate3R target, double mu)
+      => Normalize(Lerp(source, target, mu));
 
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3R Normalize(CartesianCoordinate3R source)

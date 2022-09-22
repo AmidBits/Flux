@@ -3,30 +3,31 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Locate both the minimum and the maximum element of the sequence. Uses the specified comparer.</summary>
-    public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue> comparer)
+    public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+
+      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
       using var e = source.GetEnumerator();
 
       if (e.MoveNext())
       {
-        var index = 0;
         var value = valueSelector(e.Current);
 
         var minItem = e.Current;
-        var minIndex = index;
+        var minIndex = 0;
         var minValue = value;
 
         var maxItem = e.Current;
-        var maxIndex = index;
+        var maxIndex = 0;
         var maxValue = value;
+
+        var index = 1;
 
         while (e.MoveNext())
         {
-          index++;
           value = valueSelector(e.Current);
 
           if (comparer.Compare(value, minValue) < 0)
@@ -41,14 +42,13 @@ namespace Flux
             maxIndex = index;
             maxValue = value;
           }
+
+          index++;
         }
 
         return (minItem, minIndex, maxItem, maxIndex);
       }
       else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     }
-    /// <summary>Locate both the minimum and the maximum element of the sequence. Uses the default comparer.</summary>
-    public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector)
-      => Extrema(source, valueSelector, System.Collections.Generic.Comparer<TValue>.Default);
   }
 }

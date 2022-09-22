@@ -3,14 +3,14 @@ namespace Flux
   public static partial class Convert
   {
     /// <summary>Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
-    public static string ToNamedGrouping(this System.Numerics.BigInteger value)
+    public static string ToNamedGrouping(System.Numerics.BigInteger value)
       => ConvertToNamedGrouping(value).ToString();
 
     /// <summary>Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
-    public static string ToNamedGrouping(this int value)
+    public static string ToNamedGrouping(int value)
       => ConvertToNamedGrouping(value).ToString();
     /// <summary>Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
-    public static string ToNamedGrouping(this long value)
+    public static string ToNamedGrouping(long value)
       => ConvertToNamedGrouping(value).ToString();
 
     private static readonly System.Collections.Generic.List<string> ZeroThroughNineteen = new()

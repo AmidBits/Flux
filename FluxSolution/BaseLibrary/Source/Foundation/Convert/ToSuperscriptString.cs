@@ -1,5 +1,4 @@
-using BaseLibrary.Source.Foundation.Text;
-using System.Linq;
+using Flux.Text;
 
 namespace Flux
 {

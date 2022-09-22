@@ -1,4 +1,4 @@
-using BaseLibrary.Source.Foundation.Text;
+using Flux.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Flux;

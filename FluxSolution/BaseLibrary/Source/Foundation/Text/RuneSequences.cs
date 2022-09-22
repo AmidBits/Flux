@@ -1,4 +1,4 @@
-namespace BaseLibrary.Source.Foundation.Text
+namespace Flux.Text
 {
   public static class RuneSequences
   {

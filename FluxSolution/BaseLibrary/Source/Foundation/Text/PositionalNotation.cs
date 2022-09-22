@@ -1,4 +1,4 @@
-using BaseLibrary.Source.Foundation.Text;
+using Flux.Text;
 
 namespace Flux
 {

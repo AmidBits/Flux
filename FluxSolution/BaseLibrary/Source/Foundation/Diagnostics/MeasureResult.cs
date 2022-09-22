@@ -74,7 +74,7 @@ namespace Flux.Services
     public override int GetHashCode()
       => System.HashCode.Combine(Identifier, Iterations, LastResult, TotalTime);
     public override string ToString()
-      => $"{GetType().Name} {{ {Identifier}, x {Iterations.ToGroupedString()}, {TotalTime} (avg {new System.TimeSpan(TotalTime.Ticks / (Iterations > 0 ? Iterations : 1))}) {(LastResult is null ? @"null" : $"{LastResult}[{LastResult.GetType().Name}]")} }}";
+      => $"{GetType().Name} {{ {Identifier}, x {Flux.Convert.ToGroupedString(Iterations)}, {TotalTime} (avg {new System.TimeSpan(TotalTime.Ticks / (Iterations > 0 ? Iterations : 1))}) {(LastResult is null ? @"null" : $"{LastResult}[{LastResult.GetType().Name}]")} }}";
     #endregion Object overrides
   }
 }

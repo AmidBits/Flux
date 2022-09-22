@@ -21,7 +21,7 @@ namespace Flux
     private TSelf m_lessThan0;
     private TSelf m_equalTo0;
     private TSelf m_greaterThan0;
-
+    
     public UnitStepFunction(TSelf lessThan0, TSelf equalTo0, TSelf greaterThan0)
     {
       m_lessThan0 = lessThan0;

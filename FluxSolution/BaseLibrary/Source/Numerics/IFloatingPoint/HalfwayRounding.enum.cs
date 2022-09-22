@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux
 {
   /// <summary>Specifies how mathematical rounding methods should process a number that is midway between two numbers.</summary>
@@ -19,3 +20,4 @@ namespace Flux
     ToOdd = 5,
   }
 }
+#endif

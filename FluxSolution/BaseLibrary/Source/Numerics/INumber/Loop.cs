@@ -1,8 +1,7 @@
-using Flux.Hashing;
-
+#if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class BinaryInteger
+  public static partial class Number
   {
     /// <summary>Creates a sequence of numbers from <paramref name="start"/> and <paramref name="count"/> times and increasing/decreasing by <paramref name="step"/> each iteration.</summary>
     public static System.Collections.Generic.IEnumerable<TSelf> Loop<TSelf>(this TSelf start, TSelf count, TSelf step)
@@ -20,3 +19,4 @@ namespace Flux
     }
   }
 }
+#endif

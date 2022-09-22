@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Find the sum of contiguous subarray within a one-dimensional array of numbers which has the largest sum.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Maximum_subarray_problem"/>
-    public static System.Numerics.BigInteger GetMaximumSumSubarray(this System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> source)
+    public static System.Numerics.BigInteger GetMaximumSumSubarray(System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -30,7 +30,7 @@ namespace Flux
 
     /// <summary>Find the sum of contiguous subarray within a one-dimensional array of numbers which has the largest sum, and also return the start index and the number of elements making up the sum.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Maximum_subarray_problem"/>
-    public static System.Numerics.BigInteger GetMaximumSumSubarray(this System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> source, out int startIndex, out int count)
+    public static System.Numerics.BigInteger GetMaximumSumSubarray(System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> source, out int startIndex, out int count)
     {
       startIndex = -1;
       count = 0;
@@ -74,7 +74,7 @@ namespace Flux
 
     /// <summary>Find the sum of contiguous subarray within a one-dimensional array of numbers which has the largest sum.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Maximum_subarray_problem"/>
-    public static int GetMaximumSumSubarray(this System.Collections.Generic.IList<int> source)
+    public static int GetMaximumSumSubarray(System.Collections.Generic.IList<int> source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
@@ -96,7 +96,7 @@ namespace Flux
 
     /// <summary>Find the sum of contiguous subarray within a one-dimensional array of numbers which has the largest sum, and also return the start index and the number of elements making up the sum.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Maximum_subarray_problem"/>
-    public static int GetMaximumSumSubarray(this System.Collections.Generic.IList<int> source, out int startIndex, out int count)
+    public static int GetMaximumSumSubarray(System.Collections.Generic.IList<int> source, out int startIndex, out int count)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 

@@ -9,8 +9,8 @@ namespace Flux
       => a == b || (TSelf.Abs(a - b) <= absoluteTolerance);
 
     /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
-    public static bool IsApproximatelyEqualRelative<TSelf>(this TSelf a, TSelf b, TSelf percentTolerance)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static bool IsApproximatelyEqualRelative<TSelf, TMu>(this TSelf a, TSelf b, TMu percentTolerance)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IMultiplyOperators<TSelf, TMu, TSelf>
       => a == b || TSelf.Abs(a - b) <= TSelf.Max(TSelf.Abs(a), TSelf.Abs(b)) * percentTolerance;
 
     /// <summary>Perform a comparison of the difference against 10 raised to the power of the specified precision. Positive <paramref name="significantDigits"/> means digit tolerance on the right side and negative <paramref name="significantDigits"/> allows for left side tolerance.</summary>

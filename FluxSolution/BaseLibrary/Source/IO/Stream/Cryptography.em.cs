@@ -7,7 +7,7 @@ namespace Flux
 		{
 			using var pdb = new System.Security.Cryptography.PasswordDeriveBytes(key, System.Text.UnicodeEncoding.Unicode.GetBytes(salt));
 
-			using var algo = System.Security.Cryptography.SymmetricAlgorithm.Create(algorithm) ?? throw new System.NullReferenceException();
+      using var algo = System.Security.Cryptography.SymmetricAlgorithm.Create(algorithm) ?? throw new System.NullReferenceException();
      
 			algo.Key = pdb.GetBytes(algo.KeySize / 8);
 			algo.IV = pdb.GetBytes(algo.BlockSize / 8);

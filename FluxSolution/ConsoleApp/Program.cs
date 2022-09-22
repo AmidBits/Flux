@@ -20,18 +20,14 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var numerator = (1334.261);
-      var rtnp = numerator.RoundToNearestPowProper(10, out var lt, out var gt);
-      var denominator = (1235.272);
 
-      var iae = numerator.IsApproximatelyEqualPrecision(denominator, -2, 10);
+      var ints = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
 
-      var n2 = ((int)numerator + 1).RoundToNearestPow2Proper(out var ngt, out var nlt);
-      var d2 = ((int)denominator + 1).RoundToNearestPow2Proper(out var dgt, out var dlt);
+      //var ctadb = 23.NearestMultipleTo(4, out var smaller, out var larger);
 
-      var n = numerator.RoundToMultiple(7, HalfwayRounding.ToPositiveInfinity);
-      var d = denominator.RoundToMultiple(4, HalfwayRounding.AwayFromZero);
+      //var s = (1234).ToNamedGrouping();
 
+      //var sb = (1024).ToTextBin();
     }
 
     private static void Main(string[] args)

@@ -11,7 +11,7 @@
       {
         var number = (uint)rng.Next();
         var sb = new System.Text.StringBuilder();
-        sb.AppendLine($"             Decimal: {number.ToBigInteger().ToGroupedString()}");
+        sb.AppendLine($"             Decimal: {Flux.Convert.ToGroupedString(number.ToBigInteger())}");
         sb.AppendLine($"                 Hex: {number.ToString(@"X8", null)}");
         sb.AppendLine($"              Binary: {System.Convert.ToString(number, 2).PadLeft(32, '0')}");
         sb.AppendLine($"           BitLength: {BitLength(number)}");
