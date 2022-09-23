@@ -33,7 +33,7 @@ namespace Flux.Resources.Census
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
-      using var e = GetStrings().Skip(1).GetEnumerator();
+      using var e = GetStrings().GetEnumerator();
 
       while (e.MoveNext())
       {
@@ -43,10 +43,9 @@ namespace Flux.Resources.Census
         {
           objectArray[i] = i switch
           {
-            var ic when ic >= 5 => System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null),
+            //var ic when ic >= 5 => System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null),
             _ => e.Current[i],
           };
-          ;
         }
 
         yield return objectArray;
@@ -56,8 +55,10 @@ namespace Flux.Resources.Census
     /// <summary>Returns counties all data with the first line being field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
-      foreach (var record in Uri.GetStream().ReadCsv(new CsvOptions()))
-        yield return record;
+      using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+
+      foreach (var line in sr.ReadLines(false))
+        yield return line.Split(',');
     }
   }
 }

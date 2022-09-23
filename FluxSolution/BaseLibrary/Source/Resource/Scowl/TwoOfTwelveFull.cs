@@ -33,8 +33,8 @@ namespace Flux.Resources.Scowl
 
       using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
 
-      foreach (var item in sr.ReadLines(false).Select(s => reSplit.Split(s.Trim())))
-        yield return item;
+      foreach (var line in sr.ReadLines(false))
+        yield return reSplit.Split(line.Trim());
     }
   }
 }

@@ -9,9 +9,5 @@ namespace Flux
       : instanceOrType is System.Type
       ? source.GetValue(null, null)
       : source.GetValue(instanceOrType, indexerValues);
-
-    /// <summary>Returns the value from the instance (or type for static objects) using the specified PropertyInfo.</summary>
-    public static object? GetValueEx(this System.Reflection.PropertyInfo source, object instanceOrType)
-      => GetValueEx(source, instanceOrType, System.Array.Empty<object>());
   }
 }

@@ -8,7 +8,7 @@ namespace Flux
     public static string Testing<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      return string.Join('|', value.GetType().GetTypeChain());
+      return string.Join(System.Environment.NewLine, value.GetType().GetTypeChain().Select(t => t.GetNameEx()));
 
       return "Unknown";
     }

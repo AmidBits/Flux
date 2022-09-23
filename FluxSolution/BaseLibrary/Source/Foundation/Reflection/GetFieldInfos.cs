@@ -16,10 +16,5 @@ namespace Flux
         if (predicate(fieldInfo))
           yield return fieldInfo;
     }
-    /// <summary>Enumerates all FieldInfo matching the specified binding flags. If the source is a System.Type, the values are enumerated from the type, otherwise the instance is used.</summary>
-    /// <param name="source">An object or a System.Type to enumerate fields on.</param>
-    /// <param name="bindingFlags"></param>
-    public static System.Collections.Generic.IEnumerable<System.Reflection.FieldInfo> GetFieldInfos(object source, System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.FlattenHierarchy | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
-      => GetFieldInfos(source, fi => true, bindingFlags);
   }
 }

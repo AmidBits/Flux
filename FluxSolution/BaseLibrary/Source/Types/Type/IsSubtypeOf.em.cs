@@ -18,5 +18,8 @@ namespace Flux
 
       return false;
     }
+    /// <summary>Determines whether the <paramref name="source"/> is a supertype of <paramref name="subtype"/>. Basically switching the two arguments for IsSubtypeOf.</summary>
+    public static bool IsSupertypeOf(this System.Type source, System.Type subtype)
+      => subtype.IsSubtypeOf(source);
   }
 }

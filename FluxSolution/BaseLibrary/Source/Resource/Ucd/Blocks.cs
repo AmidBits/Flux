@@ -56,8 +56,9 @@ namespace Flux.Resources.Ucd
 
       using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
 
-      foreach (var array in sr.ReadLines(false).Where(line => line.Length > 0 && !line.StartsWith('#')).Select(line => m_reSplit.Split(line)))
-        yield return array;
+      foreach (var line in sr.ReadLines(false))
+        if (line.Length > 0 && !line.StartsWith('#'))
+          yield return m_reSplit.Split(line);
     }
   }
 }

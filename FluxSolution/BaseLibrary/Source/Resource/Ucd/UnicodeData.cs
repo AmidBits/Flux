@@ -63,8 +63,8 @@ namespace Flux.Resources.Ucd
     {
       using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
 
-      foreach (var array in sr.ReadLines(false).Select(line => line.Split(';')))
-        yield return array;
+      foreach (var line in sr.ReadLines(false))
+        yield return line.Split(';');
     }
   }
 }
