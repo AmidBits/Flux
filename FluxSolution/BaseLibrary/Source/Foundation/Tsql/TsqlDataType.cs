@@ -61,7 +61,7 @@ namespace Flux.Data
 
     #region Static members
     public static bool IsDataTypeName(string text)
-      => Reflection.GetFieldInfos(typeof(TsqlDataType), fi => true).Where(fi => fi.IsConstant()).Select(fi => Reflection.GetValueEx(fi, typeof(TsqlDataType))).Where(v => v is string).Contains(text);
+      => Reflection.GetFieldInfos(typeof(TsqlDataType), fi => true).Where(fi => fi.IsConstant()).Select(fi => fi.GetValue(null)).Where(v => v is string).Contains(text);
 
     /// <summary>Returns the default argument of the specified dataTypeName.</summary>
     public static string GetDefaultArgument(string dataTypeName, bool beExplicit = false)

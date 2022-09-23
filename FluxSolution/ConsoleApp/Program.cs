@@ -23,6 +23,8 @@ namespace ConsoleApp
 
       var ints = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
 
+      var props = ints.GetType().GetProperties().Select(pi => (pi, val: pi.GetValue(ints))).ToArray();
+
       //var t = ints[3].Testing();
 
       //var ctadb = 23.NearestMultipleTo(4, out var smaller, out var larger);
