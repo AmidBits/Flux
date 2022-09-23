@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class Number
+  public static partial class GenericMath
   {
     /// <summary>PREVIEW! Returns the integer (i.e. floor/truncate for floating point) quotient and also returns the remainder as an output parameter.</summary>
     public static TSelf DivRem<TSelf>(this TSelf numerator, TSelf denominator, out TSelf remainder)

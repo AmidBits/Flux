@@ -6,12 +6,12 @@ namespace Flux
     /// <summary>PREVIEW! Returns the Chebyshev length (magnitude) for the 2D vector.</summary>
     public static TSelf ChebyshevLength<TSelf>(TSelf x, TSelf y, TSelf edgeLength)
       where TSelf : System.Numerics.INumber<TSelf>
-      => Number.Max(TSelf.Abs(x / edgeLength), TSelf.Abs(y / edgeLength));
+      => GenericMath.Max(TSelf.Abs(x / edgeLength), TSelf.Abs(y / edgeLength));
 
     /// <summary>PREVIEW! Returns the Chebyshev length (magnitude) for the 3D vector.</summary>
     public static TSelf ChebyshevLength<TSelf>(TSelf x, TSelf y, TSelf z, TSelf edgeLength)
       where TSelf : System.Numerics.INumber<TSelf>
-      => Number.Max(TSelf.Abs(x / edgeLength), TSelf.Abs(y / edgeLength), TSelf.Abs(z / edgeLength));
+      => GenericMath.Max(TSelf.Abs(x / edgeLength), TSelf.Abs(y / edgeLength), TSelf.Abs(z / edgeLength));
   }
 }
 #endif

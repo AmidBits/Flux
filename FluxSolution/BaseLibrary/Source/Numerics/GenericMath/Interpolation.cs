@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class Number
+  public static partial class GenericMath
   {
     /// <summary>PREVIEW! Cosine interpolation is a smoother and perhaps simplest function. A suitable orientated piece of a cosine function serves to provide a smooth transition between adjacent segments.</summary>
     /// <param name="v1">Source point.</param>

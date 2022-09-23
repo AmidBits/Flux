@@ -306,7 +306,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     [System.Diagnostics.Contracts.Pure]
     public static TSelf ChebyshevLength(CartesianCoordinate3R<TSelf> source, TSelf edgeLength)
-      => Number.Max(TSelf.Abs(source.m_x / edgeLength), TSelf.Abs(source.m_y / edgeLength), TSelf.Abs(source.m_z / edgeLength));
+      => GenericMath.Max(TSelf.Abs(source.m_x / edgeLength), TSelf.Abs(source.m_y / edgeLength), TSelf.Abs(source.m_z / edgeLength));
 
     /// <summary>Compute the Euclidean distance from vector a to vector b.</summary>
     [System.Diagnostics.Contracts.Pure]

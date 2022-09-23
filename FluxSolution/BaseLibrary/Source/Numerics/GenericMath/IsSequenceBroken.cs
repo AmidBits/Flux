@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class Number
+  public static partial class GenericMath
   {
     /// <summary>Examines whether the ordered sequence is broken.</summary>
     public static bool IsSequenceBroken<TSelf>(this System.Linq.IOrderedEnumerable<TSelf> ordinalSequence)

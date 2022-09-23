@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class NumberBase
+  public static partial class GenericMath
   {
     public static TSelf Div2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumberBase<TSelf>
