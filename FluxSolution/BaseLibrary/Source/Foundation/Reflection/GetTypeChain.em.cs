@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class TypeEm
+  public static partial class Reflection
   {
     /// <summary>Creates a new sequence with the implementation and inheritance type chain of the <paramref name="source"/>.</summary>
     public static System.Collections.Generic.IList<System.Type> GetTypeChain(this System.Type source)

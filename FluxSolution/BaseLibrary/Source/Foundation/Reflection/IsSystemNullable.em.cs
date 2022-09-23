@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class TypeEm
+  public static partial class Reflection
   {
     /// <summary>Determines whether the type is System.Nullable<T>.</summary>
     /// <remark>Should be able to alternatively use: (System.Nullable.GetUnderlyingType(typeof(T)) != null)</remark>
