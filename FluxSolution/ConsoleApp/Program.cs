@@ -20,38 +20,27 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      System.Console.WriteLine();
+      var radix = 2;
 
-      foreach (var n in Flux.Loop.Alternating(10, 5, -1.16, Flux.Loop.AlternatingDirection.AwayFromMean))
-        System.Console.WriteLine(n);
+      var x = .3;
+      for (var i = 1; i < 100; i++)
+      {
+        var r = x * i;
+        var t = System.Math.Truncate(x * i);
+        //var a = System.Convert.ToInt64(System.Math.Log(x * i));
+        //var b = System.Convert.ToInt64().GetIntegerLog2Floor();
 
-      System.Console.WriteLine();
+        var ti = System.Convert.ToInt32(t);
 
-      foreach (var n in Flux.Loop.Between(2, 20, -1.0))
-        System.Console.WriteLine(n);
+        System.Console.WriteLine($"{r} >= {t} : {ti}");
+        System.Console.WriteLine($"{System.Math.Log(r, radix)} : {System.Math.Log(t, radix)}");
+        System.Console.WriteLine($"{ti.TryGetIntegerLog(radix, out var fi, out var ci)} : {fi} : {ci}");
+        System.Console.WriteLine();
+      }
 
-      System.Console.WriteLine();
+      //var np2 = (8192.00001).RoundToNearestPowEx((byte)2, out byte lte, out byte gte);
+      //var np2b = (8191.99999).RoundToNearestPow(2, out var lteb, out var gteb);
 
-      foreach (var n in Flux.Loop.Range(10, 4, -1.16))
-        System.Console.WriteLine(n);
-
-      System.Console.WriteLine();
-
-      var d = 23.456;
-      var bi = System.Convert.ToInt64(d);
-      var f = d - bi;
-
-      var ints = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 };
-
-      var props = ints.GetType().GetProperties().Select(pi => (pi, val: pi.GetValue(ints))).ToArray();
-
-      //var t = ints[3].Testing();
-
-      //var ctadb = 23.NearestMultipleTo(4, out var smaller, out var larger);
-
-      //var s = (1234).ToNamedGrouping();
-
-      //var sb = (1024).ToTextBin();
     }
 
     private static void Main(string[] args)
