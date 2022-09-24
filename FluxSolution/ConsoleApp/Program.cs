@@ -20,6 +20,23 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      System.Console.WriteLine();
+
+      foreach (var n in Flux.Loop.Alternating(10, 5, -1.16, Flux.Loop.AlternatingDirection.AwayFromMean))
+        System.Console.WriteLine(n);
+
+      System.Console.WriteLine();
+
+      foreach (var n in Flux.Loop.Between(2, 20, -1.0))
+        System.Console.WriteLine(n);
+
+      System.Console.WriteLine();
+
+      foreach (var n in Flux.Loop.Range(10, 4, -1.16))
+        System.Console.WriteLine(n);
+
+      System.Console.WriteLine();
+
       var d = 23.456;
       var bi = System.Convert.ToInt64(d);
       var f = d - bi;

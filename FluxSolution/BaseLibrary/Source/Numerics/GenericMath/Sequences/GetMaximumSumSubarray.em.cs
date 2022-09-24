@@ -3,12 +3,13 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Find the sum of contiguous subarray within a one-dimensional array of numbers which has the largest sum.</summary>
+    /// <summary>Find the sum of subarray within a one-dimensional array of numbers which adds up to the largest sum.</summary>
+    /// <remarks>(new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }).GetMaximumSumSubarray(out var startIndex, out var count); // Resulting in { 4, -1, 2, 1 } with sum 6 (startIndex = 3 and count = 4).</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Maximum_subarray_problem"/>
-    public static TSelf GetMaximumSumSubarray<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> source, out int startIndex, out int count)
+    public static TSelf GetMaximumSumSubarray<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> collection, out int startIndex, out int count)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (collection is null) throw new System.ArgumentNullException(nameof(collection));
 
       var bestSum = -TSelf.One;
       var bestStart = -1;
@@ -18,7 +19,7 @@ namespace Flux
       var currentStart = 0;
       var currentEnd = 0;
 
-      using var e = source.GetEnumerator();
+      using var e = collection.GetEnumerator();
 
       while (e.MoveNext())
       {
