@@ -10,13 +10,13 @@ namespace Flux
     {
       GenericMath.AssertRadix(radix);
 
-      while (value != TSelf.Zero)
+      while (!TSelf.IsZero(value))
       {
         var remainder = value % radix;
 
         value /= radix;
 
-        if (value == TSelf.Zero)
+        if (TSelf.IsZero(value))
           break;
         else if (TSelf.Abs((value % radix) - remainder) > TSelf.One) // If the difference to the digit is greater than 1, then the number cannot jumbled.
           return false;

@@ -61,12 +61,12 @@ namespace Flux
 
       return mode switch
       {
-        HalfwayRounding.ToEven => TSelf.Floor(value + halfOfOne) is var pi && pi % two != TSelf.Zero && value - TSelf.Floor(value) == halfOfOne ? pi - TSelf.One : pi,
+        HalfwayRounding.ToEven => TSelf.Floor(value + halfOfOne) is var pi && !TSelf.IsZero(pi % two) && value - TSelf.Floor(value) == halfOfOne ? pi - TSelf.One : pi,
         HalfwayRounding.AwayFromZero => HalfwayRoundUpZero(value),
         HalfwayRounding.TowardZero => HalfwayRoundDownZero(value),
         HalfwayRounding.ToNegativeInfinity => HalfwayRoundDown(value),
         HalfwayRounding.ToPositiveInfinity => HalfwayRoundUp(value),
-        HalfwayRounding.ToOdd => TSelf.Floor(value + halfOfOne) is var pi && pi % two == TSelf.Zero && value - TSelf.Floor(value) == halfOfOne ? pi - TSelf.One : pi,
+        HalfwayRounding.ToOdd => TSelf.Floor(value + halfOfOne) is var pi && TSelf.IsZero(pi % two) && value - TSelf.Floor(value) == halfOfOne ? pi - TSelf.One : pi,
         _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
       };
     }

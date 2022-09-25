@@ -12,7 +12,7 @@ namespace Flux
 
       var sum = TSelf.Zero;
 
-      while (value != TSelf.Zero)
+      while (!TSelf.IsZero(value))
       {
         sum += value % radix;
 

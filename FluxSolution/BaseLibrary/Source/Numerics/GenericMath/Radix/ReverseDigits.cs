@@ -10,7 +10,7 @@ namespace Flux
 
       var reverse = TSelf.Zero;
 
-      while (value != TSelf.Zero)
+      while (!TSelf.IsZero(value))
       {
         value /= radix;
 

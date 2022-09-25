@@ -10,14 +10,16 @@ namespace Flux
     {
       var x0 = TSelf.One << (number.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square number.
 
-      if (x0 != TSelf.Zero)
+      if (!TSelf.IsZero(x0))
+      {
         checked
         {
           while (((x0 + number / x0) >> 1) is var x1 && x1 < x0)
             x0 = x1;
-
-          return x0;
         }
+
+        return x0;
+      }
 
       return number;
     }

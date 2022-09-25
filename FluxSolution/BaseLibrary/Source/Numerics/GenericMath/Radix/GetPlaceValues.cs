@@ -10,7 +10,7 @@ namespace Flux
       var span = GetDigitsReversed(self, radix); // Already asserts radix.
 
       for (int index = span.Length - 1; index > 0; index--) // Skip index == 0, because it's the 'ones' column.
-        if (span[index] != TSelf.Zero || !skipZeroes)
+        if (!TSelf.IsZero(span[index]) || !skipZeroes)
           span[index] *= GenericMath.IntegerPow(radix, index);
 
       return span;

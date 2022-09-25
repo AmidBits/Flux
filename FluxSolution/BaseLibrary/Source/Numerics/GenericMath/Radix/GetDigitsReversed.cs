@@ -13,7 +13,7 @@ namespace Flux
 
       var list = new System.Collections.Generic.List<TSelf>();
 
-      while (value != TSelf.Zero)
+      while (!TSelf.IsZero(value))
       {
         list.Add(value % radix);
         value /= radix;

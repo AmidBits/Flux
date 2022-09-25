@@ -11,7 +11,7 @@ namespace Flux
 
       var sb = new System.Text.StringBuilder();
 
-      if (number == TSelf.Zero)
+      if (TSelf.IsZero(number))
         sb.Append('0');
       else if (number < TSelf.Zero) // Needs a REAL solution for negative numbers.
       {

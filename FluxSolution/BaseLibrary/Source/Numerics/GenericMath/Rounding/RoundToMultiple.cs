@@ -7,7 +7,7 @@ namespace Flux
     public static TSelf RoundToMultiple<TSelf>(this TSelf value, TSelf multiple, HalfwayRounding mode)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      if (value % multiple is var remainder && remainder == TSelf.Zero)
+      if (value % multiple is var remainder && TSelf.IsZero(remainder))
         return value; // The number is already a multiple.
 
       var towardsZero = value - remainder;
@@ -36,7 +36,7 @@ namespace Flux
     public static TSelf RoundToMultiple<TSelf>(this TSelf value, TSelf multiple, IntegerRounding mode)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      if (value % multiple is var remainder && remainder == TSelf.Zero)
+      if (value % multiple is var remainder && TSelf.IsZero(remainder))
         return value; // The number is already a multiple.
 
       var towardsZero = value - remainder;

@@ -1,6 +1,4 @@
 #if NET7_0_OR_GREATER
-using Flux.AmbOps;
-
 namespace Flux
 {
   //  // <seealso cref="http://aggregate.org/MAGIC/"/>
@@ -12,7 +10,26 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static TSelf IntegerLogCeiling<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => IntegerLogFloor(value, radix) + TSelf.One;
+    {
+      GenericMath.AssertNonNegativeValue(value);
+      GenericMath.AssertRadix(radix);
+
+      if (!TSelf.IsZero(value))
+      {
+        var logCeiling = TSelf.One;
+
+        while (value >= radix)
+        {
+          value /= radix;
+
+          logCeiling++;
+        }
+
+        return logCeiling;
+      }
+
+      return TSelf.Zero;
+    }
 
     /// <summary>PREVIEW! Computes the integer log floor of an integer number in the specified radix (base).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
@@ -35,7 +52,7 @@ namespace Flux
       return logFloor;
     }
 
-    /// <summary>PREVIEW! Tried to compute the integer log floor and ceiling of an integer number in the specified radix (base).</summary>
+    /// <summary>PREVIEW! Attempt to compute the integer log floor and ceiling of an integer number in the specified radix (base).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static bool TryGetIntegerLog<TSelf>(this TSelf value, TSelf radix, out TSelf logFloor, out TSelf logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

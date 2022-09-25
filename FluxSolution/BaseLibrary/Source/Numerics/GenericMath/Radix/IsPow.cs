@@ -9,17 +9,17 @@ namespace Flux
     {
       GenericMath.AssertRadix(radix);
 
-      if (value < TSelf.Zero) // Make it work on negative numbers.
+      if (TSelf.IsNegative(value)) // Make it work on negative numbers.
         return IsPow(-value, radix);
 
       if (value == radix) // If the value is equal to the radix, then it's a power of that radix.
         return true;
 
       if (radix == (TSelf.One + TSelf.One)) // Special case for binary numbers.
-        return value != TSelf.Zero && (value & (value - TSelf.One)) == TSelf.Zero;
+        return BitOps.IsPow2(value);
 
       if (value > TSelf.One)
-        while (value % radix is var remainder && remainder == TSelf.Zero)
+        while (value % radix is var remainder && TSelf.IsZero(remainder))
           value /= radix;
 
       return value == TSelf.One;

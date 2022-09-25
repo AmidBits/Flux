@@ -11,7 +11,7 @@ namespace Flux
 
       var count = TSelf.Zero;
 
-      while (value != TSelf.Zero)
+      while (!TSelf.IsZero(value))
       {
         count++;
 

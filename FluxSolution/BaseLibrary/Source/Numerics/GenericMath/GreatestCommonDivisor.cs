@@ -42,7 +42,7 @@ namespace Flux
       var u = TSelf.Zero;
       var v = TSelf.One;
 
-      while (b != TSelf.Zero)
+      while (!TSelf.IsZero(b))
       {
         a = b;
         b = a % b;

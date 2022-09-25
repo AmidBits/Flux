@@ -7,7 +7,7 @@ namespace Flux
     public static TSelf Mod<TSelf>(this TSelf a, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (b == TSelf.Zero) throw new System.DivideByZeroException();
+      if (TSelf.IsZero(b)) throw new System.DivideByZeroException();
 
       if (b == -TSelf.One)
         return TSelf.Zero;
@@ -40,7 +40,7 @@ namespace Flux
       var r = b;
       var nr = a % b;
 
-      while (nr != TSelf.Zero)
+      while (!TSelf.IsZero(nr))
       {
         var q = r / nr;
 
