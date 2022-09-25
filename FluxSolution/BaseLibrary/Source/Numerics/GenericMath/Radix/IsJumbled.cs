@@ -8,6 +8,8 @@ namespace Flux
     public static bool IsJumbled<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
+      GenericMath.AssertRadix(radix);
+
       while (value != TSelf.Zero)
       {
         var remainder = value % radix;

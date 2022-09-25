@@ -29,7 +29,7 @@ namespace Flux
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IPowerFunctions<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>, System.Numerics.ISignedNumber<TResult>
     {
-      Radix.AssertRadix(radix);
+      GenericMath.AssertRadix(radix);
 
       var towardZero = TResult.CreateChecked(TSelf.Truncate(TSelf.Log(TSelf.Abs(value), TSelf.CreateChecked(radix))));
 

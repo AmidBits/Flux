@@ -8,7 +8,7 @@ namespace Flux
     public static TSelf DigitSum<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(radix);
+      GenericMath.AssertRadix(radix);
 
       var sum = TSelf.Zero;
 

@@ -6,7 +6,7 @@ namespace Flux
     public static TSelf ReverseDigits<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(radix);
+      GenericMath.AssertRadix(radix);
 
       var reverse = TSelf.Zero;
 

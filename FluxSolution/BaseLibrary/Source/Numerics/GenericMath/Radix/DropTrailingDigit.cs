@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>PREVIEW! Drop the trailing digit of the number.</summary>
     public static TSelf DropTrailingDigit<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value / AssertRadix(radix);
+      => value / GenericMath.AssertRadix(radix);
   }
 }
 #endif

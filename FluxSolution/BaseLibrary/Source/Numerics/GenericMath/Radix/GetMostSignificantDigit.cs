@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>PREVIEW! Drop the leading digit of the number.</summary>
     public static TSelf GetMostSignificantDigit<TSelf>(this TSelf source, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => source == TSelf.Zero ? TSelf.Zero : source / GenericMath.IntegerPow(radix, DigitCount(source, radix));
+      => source == TSelf.Zero ? TSelf.Zero : source / GenericMath.IntegerPow(radix, DigitCount(source, radix)); // Radix is already asserted elsewhere.
   }
 }
 #endif

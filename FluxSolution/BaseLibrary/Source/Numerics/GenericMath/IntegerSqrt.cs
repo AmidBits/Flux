@@ -8,18 +8,13 @@ namespace Flux
     public static TSelf IntegerSqrt<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var x0 = TSelf.One << (number.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the sqrt(s).
+      var x0 = TSelf.One << (number.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square number.
 
       if (x0 != TSelf.Zero)
         checked
         {
-          var x1 = (x0 + number / x0) >> 1;
-
-          while (x1 < x0)
-          {
+          while (((x0 + number / x0) >> 1) is var x1 && x1 < x0)
             x0 = x1;
-            x1 = (x0 + number / x0) >> 1;
-          }
 
           return x0;
         }
@@ -28,7 +23,7 @@ namespace Flux
     }
 
     /// <summary>PREVIEW! Returns whether <paramref name="number"/> is the integer (not perfect) square of <paramref name="root"/>.</summary>
-    private static bool IsIntegerSqrt<TSelf>(this TSelf number, TSelf root)
+    public static bool IsIntegerSqrt<TSelf>(this TSelf number, TSelf root)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => number >= (root * root) && number < ((root + TSelf.One) * (root + TSelf.One));
 

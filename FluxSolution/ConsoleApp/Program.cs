@@ -20,22 +20,12 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var radix = 2;
+      var value = 15;
+      var radix = 10;
 
-      var x = .3;
-      for (var i = 1; i < 100; i++)
+      for (value = 999; value <= 1001; value++)
       {
-        var r = x * i;
-        var t = System.Math.Truncate(x * i);
-        //var a = System.Convert.ToInt64(System.Math.Log(x * i));
-        //var b = System.Convert.ToInt64().GetIntegerLog2Floor();
-
-        var ti = System.Convert.ToInt32(t);
-
-        System.Console.WriteLine($"{r} >= {t} : {ti}");
-        System.Console.WriteLine($"{System.Math.Log(r, radix)} : {System.Math.Log(t, radix)}");
-        System.Console.WriteLine($"{ti.TryGetIntegerLog(radix, out var fi, out var ci)} : {fi} : {ci}");
-        System.Console.WriteLine();
+        System.Console.WriteLine($"{value} = {value.TryGetIntegerLog(radix, out var fi, out var ci)} ({System.Math.Log(value, radix)}) : {fi} : {ci}");
       }
 
       //var np2 = (8192.00001).RoundToNearestPowEx((byte)2, out byte lte, out byte gte);

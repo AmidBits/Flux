@@ -7,7 +7,7 @@ namespace Flux
     public static bool IsPow<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(radix);
+      GenericMath.AssertRadix(radix);
 
       if (value < TSelf.Zero) // Make it work on negative numbers.
         return IsPow(-value, radix);

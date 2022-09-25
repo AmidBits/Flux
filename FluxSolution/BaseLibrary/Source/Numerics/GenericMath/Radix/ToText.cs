@@ -3,28 +3,30 @@ namespace Flux
 {
   public static partial class Radix
   {
-    /// <summary>PREVIEW! Determines if the number is a power of the specified radix. The sign is ignored so the function can be used on negative numbers as well.</summary>
+    /// <summary>PREVIEW! Converts the number to text using the specified symbols. The count of symbols represents the radix of conversion.</summary>
     public static System.Text.StringBuilder ToText<TSelf>(this TSelf number, System.ReadOnlySpan<System.Text.Rune> symbols)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var sb = new System.Text.StringBuilder(128);
+      if (!GenericMath.IsRadix(symbols.Length)) throw new System.ArgumentOutOfRangeException(nameof(symbols), "The count of symbols represents the radix for conversion, and radix must be 2 or greater.");
+
+      var sb = new System.Text.StringBuilder();
 
       if (number == TSelf.Zero)
-      {
         sb.Append('0');
-      }
       else if (number < TSelf.Zero) // Needs a REAL solution for negative numbers.
       {
-        for (var bit = number.GetShortestBitLength() - 1; bit >= 0; bit--)
-          sb.Append(((TSelf.One << bit) & number) != TSelf.Zero ? '1' : '0');
+        sb = ToText(TSelf.Abs(number), symbols);
+        sb.Append('-');
       }
+      //for (var bit = number.GetShortestBitLength() - 1; bit >= 0; bit--)
+      //  sb.Append(((TSelf.One << bit) & number) != TSelf.Zero ? (System.Text.Rune)'1' : (System.Text.Rune)'0');
+      else
+        while (number > TSelf.Zero)
+        {
+          number = GenericMath.DivRem(number, TSelf.CreateChecked(symbols.Length), out var remainder);
 
-      while (number > TSelf.Zero)
-      {
-        number = GenericMath.DivRem(number, TSelf.CreateChecked(symbols.Length), out var remainder);
-
-        sb.Insert(0, symbols[TSelf.Abs(remainder).ConvertTo<TSelf, int>(out var abs)]);
-      }
+          sb.Insert(0, symbols[TSelf.Abs(remainder).ConvertTo<TSelf, int>(out var abs)]);
+        }
 
       return sb;
     }

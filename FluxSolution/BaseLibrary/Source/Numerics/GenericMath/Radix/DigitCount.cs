@@ -7,7 +7,7 @@ namespace Flux
     public static TSelf DigitCount<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(radix);
+      GenericMath.AssertRadix(radix);
 
       var count = TSelf.Zero;
 

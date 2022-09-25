@@ -22,7 +22,7 @@ namespace Flux
     /// </remarks>
     public static bool IsApproximatelyEqualPrecision<TSelf>(this TSelf a, TSelf b, TSelf significantDigits, TSelf radix)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => a == b || TSelf.Abs(a - b) <= TSelf.Pow(Radix.AssertRadix(radix), -significantDigits);
+      => a == b || TSelf.Abs(a - b) <= TSelf.Pow(GenericMath.AssertRadix(radix), -significantDigits);
   }
 }
 #endif

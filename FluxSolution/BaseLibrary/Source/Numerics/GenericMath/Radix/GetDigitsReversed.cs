@@ -9,7 +9,7 @@ namespace Flux
     public static System.Span<TSelf> GetDigitsReversed<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(radix);
+      GenericMath.AssertRadix(radix);
 
       var list = new System.Collections.Generic.List<TSelf>();
 
