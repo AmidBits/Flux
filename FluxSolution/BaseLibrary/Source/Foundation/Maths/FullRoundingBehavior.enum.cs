@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>Specifies how mathematical rounding methods should process a number.</summary>
-  public enum FullRounding
+  public enum FullRoundingBehavior
   {
     /// <summary>Rounds a number to an integer that is further away from zero.</summary>
     AwayFromZero = 101,

@@ -12,9 +12,9 @@ namespace Flux
 
       while (!TSelf.IsZero(value))
       {
-        value /= radix;
-
         reverse = reverse * radix + (value % radix);
+
+        value /= radix;
       }
 
       return reverse;

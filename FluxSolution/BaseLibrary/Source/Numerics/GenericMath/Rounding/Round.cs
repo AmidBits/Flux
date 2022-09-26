@@ -72,14 +72,14 @@ namespace Flux
     }
 
     /// <summary>PREVIEW! Rounds a <paramref name="value"/> to an integer boundary. The <paramref name="mode"/> specifies which strategy to use.</summary>
-    public static TSelf Round<TSelf>(this TSelf value, IntegerRounding mode)
+    public static TSelf Round<TSelf>(this TSelf value, FullRounding mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => mode switch
       {
-        IntegerRounding.AwayFromZero => IntegerRoundAwayFromZero(value),
-        IntegerRounding.Ceiling => IntegerRoundCeiling(value),
-        IntegerRounding.Floor => IntegerRoundFloor(value),
-        IntegerRounding.TowardZero => IntegerRoundTowardZero(value),
+        FullRounding.AwayFromZero => IntegerRoundAwayFromZero(value),
+        FullRounding.Ceiling => IntegerRoundCeiling(value),
+        FullRounding.Floor => IntegerRoundFloor(value),
+        FullRounding.TowardZero => IntegerRoundTowardZero(value),
         _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
       };
 
@@ -92,14 +92,6 @@ namespace Flux
     //public static TSelf IntegerRoundTowardZero<TSelf>(this TSelf value)
     //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
     //  => TSelf.CopySign(TSelf.Floor(TSelf.Abs(value)), value);
-
-    /// <summary>Wrapper for System.Math.Round that truncates the number at the specified number of fractional digits and then performs the rounding of the number. The reason for doing this is because unless a value is EXACTLY between two numbers, to the decimal, it will be rounded based on the next lower decimal digit and so on.</summary>
-    /// <seealso cref="https://stackoverflow.com/questions/1423074/rounding-to-even-in-c-sharp"/>
-    public static TSelf RoundToSignificantDigits<TSelf>(this TSelf value, int significantDigits, System.MidpointRounding mode)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => significantDigits >= 0 && TSelf.Pow(TSelf.CreateChecked(10), TSelf.CreateChecked(significantDigits + 1)) is var scalar
-      ? TSelf.Round(TSelf.Truncate(value * scalar) / scalar, significantDigits, mode)
-      : throw new System.ArgumentOutOfRangeException(nameof(significantDigits));
   }
 }
 #endif

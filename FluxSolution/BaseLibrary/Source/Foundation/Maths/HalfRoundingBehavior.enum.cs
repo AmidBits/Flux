@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Specifies how mathematical rounding methods should process a number that is midway between two numbers.</summary>
   /// <seealso cref="http://www.jackleitch.net/2010/06/adventures-in-net-rounding-part-2-exotic-rounding-algorithms/"/>
   /// <seealso cref="http://www.cplusplus.com/articles/1UCRko23/"/>
-  public enum HalfRounding
+  public enum HalfRoundingBehavior
   {
     /// <summary>Rounds a fraction part of 0.5 to the nearest even integer. For example, 1.5 and 2.5 both round to 2.0 and -1.5 and -2.5 both round to -2.0. A.k.a. Bankers Rounding.</summary>
     ToEven = System.MidpointRounding.ToEven,

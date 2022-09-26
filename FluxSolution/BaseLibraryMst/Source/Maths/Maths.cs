@@ -80,7 +80,7 @@ namespace Maths
     [TestMethod]
     public void RoundToInterval()
     {
-      Assert.AreEqual(1.8, Flux.Maths.RoundToMultiple(1.75, 0.45, HalfRounding.AwayFromZero), $"{nameof(Flux.Maths.RoundToMultiple)} {HalfRounding.AwayFromZero}");
+      Assert.AreEqual(1.8, Flux.Maths.RoundToMultiple(1.75, 0.45, HalfRoundingBehavior.AwayFromZero), $"{nameof(Flux.Maths.RoundToMultiple)} {HalfRoundingBehavior.AwayFromZero}");
     }
 
     [TestMethod]

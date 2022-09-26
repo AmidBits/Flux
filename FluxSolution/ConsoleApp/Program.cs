@@ -20,8 +20,19 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var digits = (243).GetDigits(10).ToArray();
 
+      System.Console.WriteLine($"\"{string.Join(' ', digits)}\" = {string.Join(' ', digits.Select(d => d.ToRadixString(2).PadLeft(4, '0')))}");
+      return;
+      var n = 80.0;
 
+      var radix = 2;
+      var hp = n.RoundToNearestPow(radix, true, HalfwayRounding.AwayFromZero, out int hptz, out int hpafz);
+      var fp = n.RoundToPow(radix, false, FullRounding.AwayFromZero, out int fptz, out int fpafz);
+
+      var multiple = 20;
+      var hm = n.RoundToNearestMultipleOf(multiple, true, HalfwayRounding.AwayFromZero, out var hmtz, out var hmafz);
+      var fm = n.RoundToMultipleOf(multiple, true, FullRounding.AwayFromZero, out var fmtz, out var fmafz);
     }
 
     private static void Main(string[] args)
