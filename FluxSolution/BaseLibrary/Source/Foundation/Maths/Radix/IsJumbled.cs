@@ -5,7 +5,7 @@ namespace Flux
   {
     /// <summary>Indicates whether the instance is jumbled (i.e. no neighboring digits having a difference larger than 1).</summary>
     /// <see cref="http://www.geeksforgeeks.org/check-if-a-number-is-jumbled-or-not/"/>
-    public static bool IsJumbled(this System.Numerics.BigInteger value, int radix)
+    public static bool IsJumbled(System.Numerics.BigInteger value, int radix)
     {
       while (value != 0)
       {
@@ -22,7 +22,7 @@ namespace Flux
 
     /// <summary>Indicates whether the instance is jumbled (i.e. no neighboring digits having a difference larger than 1).</summary>
     /// <see cref="http://www.geeksforgeeks.org/check-if-a-number-is-jumbled-or-not/"/>
-    public static bool IsJumbled(this int value, int radix)
+    public static bool IsJumbled(int value, int radix)
     {
       while (value != 0)
       {
@@ -38,7 +38,7 @@ namespace Flux
     }
     /// <summary>Indicates whether the instance is jumbled (i.e. no neighboring digits having a difference larger than 1).</summary>
     /// <see cref="http://www.geeksforgeeks.org/check-if-a-number-is-jumbled-or-not/"/>
-    public static bool IsJumbled(this long value, int radix)
+    public static bool IsJumbled(long value, int radix)
     {
       while (value != 0)
       {

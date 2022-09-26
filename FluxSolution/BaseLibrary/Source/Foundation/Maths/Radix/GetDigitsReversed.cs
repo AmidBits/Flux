@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Maths
   {
     /// <summary>Returns the place value digits (as numbers) of a value, in reverse order.</summary>
-    public static System.Span<System.Numerics.BigInteger> GetDigitsReversed(this System.Numerics.BigInteger value, int radix)
+    public static System.Span<System.Numerics.BigInteger> GetDigitsReversed(System.Numerics.BigInteger value, int radix)
     {
       AssertRadix(radix);
 
@@ -19,7 +19,7 @@ namespace Flux
     }
 
     /// <summary>Returns the place value digits (as numbers) of a value, in reverse order.</summary>
-    public static System.Span<int> GetDigitsReversed(this int value, int radix)
+    public static System.Span<int> GetDigitsReversed(int value, int radix)
     {
       AssertRadix(radix);
 
@@ -34,7 +34,7 @@ namespace Flux
       return System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
     }
     /// <summary>Returns the place value digits (as numbers) of a value, in reverse order.</summary>
-    public static System.Span<long> GetDigitsReversed(this long value, int radix)
+    public static System.Span<long> GetDigitsReversed(long value, int radix)
     {
       AssertRadix(radix);
 

@@ -20,16 +20,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var value = 15;
-      var radix = 10;
 
-      for (value = 999; value <= 1001; value++)
-      {
-        System.Console.WriteLine($"{value} = {value.TryGetIntegerLog(radix, out var fi, out var ci)} ({System.Math.Log(value, radix)}) : {fi} : {ci}");
-      }
-
-      //var np2 = (8192.00001).RoundToNearestPowEx((byte)2, out byte lte, out byte gte);
-      //var np2b = (8191.99999).RoundToNearestPow(2, out var lteb, out var gteb);
 
     }
 

@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Maths
   {
-    public static System.Numerics.BigInteger ReverseDigits(this System.Numerics.BigInteger value, int radix)
+    public static System.Numerics.BigInteger ReverseDigits(System.Numerics.BigInteger value, int radix)
     {
       AssertRadix(radix);
 
@@ -18,7 +18,7 @@ namespace Flux
       return reverse;
     }
 
-    public static int ReverseDigits(this int value, int radix)
+    public static int ReverseDigits(int value, int radix)
     {
       AssertRadix(radix);
 
@@ -34,7 +34,7 @@ namespace Flux
       return reverse;
     }
 
-    public static long ReverseDigits(this long value, int radix)
+    public static long ReverseDigits(long value, int radix)
     {
       AssertRadix(radix);
 

@@ -9,7 +9,7 @@ namespace Flux
     // http://aggregate.org/MAGIC/#Log2%20of%20an%20Integer
 
     /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
-    public static int Log2(this System.Numerics.BigInteger value)
+    public static int Log2(System.Numerics.BigInteger value)
       => value > 255 && value.ToByteArrayEx(out var byteIndex, out var byteValue) is var _
       ? System.Numerics.BitOperations.Log2(byteValue) + byteIndex * 8
       : value > 0
@@ -17,11 +17,11 @@ namespace Flux
       : 0;
 
     /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
-    public static int Log2(this int value)
+    public static int Log2(int value)
       => System.Numerics.BitOperations.Log2(unchecked((uint)value));
 
     /// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>
-    public static int Log2(this long value)
+    public static int Log2(long value)
       => System.Numerics.BitOperations.Log2(unchecked((ulong)value));
 
     ///// <summary>The log base 2 of an integer is the same as the position of the highest bit set (or most significant bit set, MSB).</summary>

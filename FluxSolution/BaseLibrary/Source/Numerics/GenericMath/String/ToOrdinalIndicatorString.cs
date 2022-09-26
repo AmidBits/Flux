@@ -3,8 +3,8 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Creates the ordinal indicator for the number. E.g. "st" for 1 and "nd" for 122.</summary>
-    public static System.ReadOnlySpan<char> GetOrdinalIndicator<TSelf>(this TSelf source)
+    /// <summary>PREVIEW! Gets the ordinal indicator for the number. E.g. "st" for 1 and "nd" for 122.</summary>
+    public static string GetOrdinalIndicatorString<TSelf>(TSelf source)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       return (source % TSelf.CreateChecked(10) is var d && d < TSelf.CreateChecked(4) && source % TSelf.CreateChecked(100) is var dd && (dd < TSelf.CreateChecked(11) || dd > TSelf.CreateChecked(13)) ? d : TSelf.Zero) switch
@@ -16,6 +16,10 @@ namespace Flux
         _ => throw new System.IndexOutOfRangeException()
       };
     }
+
+    public static string ToOrdinalIndicatorString<TSelf>(this TSelf source)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => $"{source}{GetOrdinalIndicatorString(source)}";
   }
 }
 #endif

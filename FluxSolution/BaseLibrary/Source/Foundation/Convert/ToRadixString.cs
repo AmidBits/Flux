@@ -1,3 +1,4 @@
+#if NET6_0
 namespace Flux
 {
   public static partial class Convert
@@ -14,3 +15,4 @@ namespace Flux
       => PositionalNotation.ForRadix(radix).NumberToText(number).ToString();
   }
 }
+#endif

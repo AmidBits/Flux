@@ -4,10 +4,11 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
-    public static string ToNamedGrouping<TSelf>(this TSelf value)
+    public static string ToNamedGroupingString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => ConvertToNamedGrouping(value).ToString();
 
+    #region Named Grouping
     private static System.Collections.Generic.List<string> ZeroThroughNineteen()
       => new()
       {
@@ -119,6 +120,7 @@ namespace Flux
           Ge20Lt100(value);
       }
     }
+    #endregion Named Grouping
   }
 }
 #endif

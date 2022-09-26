@@ -14,7 +14,9 @@ namespace Flux
       else if (source == typeof(System.Int16)) return @"short";
       else if (source == typeof(System.Int32)) return @"int";
       else if (source == typeof(System.Int64)) return @"long";
+#if NET7_0_OR_GREATER
       else if (source == typeof(System.Int128)) throw new System.NotImplementedException(); // Cannot find alias at this time.
+#endif
       else if (source == typeof(System.IntPtr)) return @"nint";
       else if (source == typeof(System.Object)) return @"object";
       else if (source == typeof(System.SByte)) return @"sbyte";
@@ -23,7 +25,9 @@ namespace Flux
       else if (source == typeof(System.UInt16)) return @"ushort";
       else if (source == typeof(System.UInt32)) return @"uint";
       else if (source == typeof(System.UInt64)) return @"ulong";
+#if NET7_0_OR_GREATER
       else if (source == typeof(System.UInt128)) throw new System.NotImplementedException(); // Cannot find alias at this time.
+#endif
       else if (source == typeof(System.UIntPtr)) return @"nuint";
       else return source.Name;
     }

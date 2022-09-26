@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Produces a new sequence of numbers starting with at the specified mean, how many numbers and step size, with every other number above/below the mean.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> AlternatingLoop(this System.Numerics.BigInteger mean, int count, System.Numerics.BigInteger step, AlternatingLoopDirection direction)
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> AlternatingLoop(System.Numerics.BigInteger mean, int count, System.Numerics.BigInteger step, AlternatingLoopDirection direction)
     {
       switch (direction)
       {

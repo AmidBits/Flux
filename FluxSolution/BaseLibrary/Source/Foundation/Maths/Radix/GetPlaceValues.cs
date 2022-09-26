@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Maths
   {
     /// <summary>Returns the digit components of the value. E.g. 1234 return { 4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands) }.</summary>
-    public static System.Span<System.Numerics.BigInteger> GetPlaceValues(this System.Numerics.BigInteger value, int radix, bool skipZeroes = false)
+    public static System.Span<System.Numerics.BigInteger> GetPlaceValues(System.Numerics.BigInteger value, int radix, bool skipZeroes = false)
     {
       var list = GetDigitsReversed(value, radix);
 
@@ -15,7 +15,7 @@ namespace Flux
     }
 
     /// <summary>Returns the digit components of the value. E.g. 1234 return { 4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands) }.</summary>
-    public static System.Span<int> GetPlaceValues(this int value, int radix, bool skipZeroes = false)
+    public static System.Span<int> GetPlaceValues(int value, int radix, bool skipZeroes = false)
     {
       var list = GetDigitsReversed(value, radix);
 
@@ -26,7 +26,7 @@ namespace Flux
       return list;
     }
     /// <summary>Returns the digit components of the value. E.g. 1234 return { 4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands) }.</summary>
-    public static System.Span<long> GetPlaceValues(this long value, int radix, bool skipZeroes = false)
+    public static System.Span<long> GetPlaceValues(long value, int radix, bool skipZeroes = false)
     {
       var list = GetDigitsReversed(value, radix);
 

@@ -6,7 +6,7 @@ namespace Flux
 
     /// <summary>Returns the sum of all digits in the value using the specified radix.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static System.Numerics.BigInteger DigitSum(this System.Numerics.BigInteger value, int radix)
+    public static System.Numerics.BigInteger DigitSum(System.Numerics.BigInteger value, int radix)
     {
       var sum = System.Numerics.BigInteger.Zero;
 
@@ -21,7 +21,7 @@ namespace Flux
 
     /// <summary>Returns the sum of all digits in the value using the specified radix.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static int DigitSum(this int value, int radix)
+    public static int DigitSum(int value, int radix)
     {
       var sum = 0;
 
@@ -35,7 +35,7 @@ namespace Flux
     }
     /// <summary>Returns the sum of all digits in the value using the specified radix.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static long DigitSum(this long value, int radix)
+    public static long DigitSum(long value, int radix)
     {
       var sum = 0L;
 

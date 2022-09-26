@@ -8,7 +8,7 @@ namespace Flux
     // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetNaive
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of bits set to 1 in the value. Since <see cref="System.Numerics.BigInteger"/> is of arbitrary bit-size, this version finds and count bits with the nearest power-of-two bit-length that the value fits in.</summary>
-    public static int PopCount(this System.Numerics.BigInteger value)
+    public static int PopCount(System.Numerics.BigInteger value)
     {
       if (value >= 0) // If value is positive...
       {
@@ -36,11 +36,11 @@ namespace Flux
     }
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
-    public static int PopCount(this int value)
+    public static int PopCount(int value)
       => System.Numerics.BitOperations.PopCount(unchecked((uint)value));
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
-    public static int PopCount(this long value)
+    public static int PopCount(long value)
       => System.Numerics.BitOperations.PopCount(unchecked((ulong)value));
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>

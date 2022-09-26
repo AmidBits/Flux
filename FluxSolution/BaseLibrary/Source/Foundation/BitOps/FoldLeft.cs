@@ -9,7 +9,7 @@ namespace Flux
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>All bits set from LSB up, or -1 if the value is less than zero.</returns>
-    public static System.Numerics.BigInteger FoldLeft(this System.Numerics.BigInteger value)
+    public static System.Numerics.BigInteger FoldLeft(System.Numerics.BigInteger value)
     {
       if (value < 0) return -1;
       //var values = value.ToString("X4");
@@ -44,18 +44,18 @@ namespace Flux
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
-    public static int FoldLeft(this int value)
+    public static int FoldLeft(int value)
       => unchecked((int)FoldLeft((uint)value));
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
-    public static long FoldLeft(this long value)
+    public static long FoldLeft(long value)
       => unchecked((long)FoldLeft((ulong)value));
 
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
     [System.CLSCompliant(false)]
-    public static uint FoldLeft(this uint value)
+    public static uint FoldLeft(uint value)
     {
       if (value != 0)
       {
@@ -72,7 +72,7 @@ namespace Flux
     /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
     /// <returns>Returns all ones from the LSB up.</returns>
     [System.CLSCompliant(false)]
-    public static ulong FoldLeft(this ulong value)
+    public static ulong FoldLeft(ulong value)
     {
       if (value != 0)
       {

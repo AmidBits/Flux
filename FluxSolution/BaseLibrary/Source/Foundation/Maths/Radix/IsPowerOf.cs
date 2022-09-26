@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Maths
   {
     /// <summary>Determines if the number is a power of the specified radix. The sign is ignored so the function can be used on negative numbers as well.</summary>
-    public static bool IsPowerOf(this System.Numerics.BigInteger value, int radix)
+    public static bool IsPowerOf(System.Numerics.BigInteger value, int radix)
     {
       AssertRadix(radix);
 
@@ -24,7 +24,7 @@ namespace Flux
     }
 
     /// <summary>Determines if the number is a power of the specified radix. The sign is ignored so the function can be used on negative numbers as well.</summary>
-    public static bool IsPowerOf(this int value, int radix)
+    public static bool IsPowerOf(int value, int radix)
     {
       AssertRadix(radix);
 
@@ -45,7 +45,7 @@ namespace Flux
     }
 
     /// <summary>Determines if the number is a power of the specified radix. The sign is ignored so the function can be used on negative numbers as well.</summary>
-    public static bool IsPowerOf(this long value, int radix)
+    public static bool IsPowerOf(long value, int radix)
     {
       AssertRadix(radix);
 

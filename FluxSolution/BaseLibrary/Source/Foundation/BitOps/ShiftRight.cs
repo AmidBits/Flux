@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Shifts the bits one position to the right.</summary>
     /// <returns>Whether the LSB (least significant BIT), or overflow bit, was set.</returns>
     [System.CLSCompliant(false)]
-    public static uint ShiftRight(ref this uint value, int count)
+    public static uint ShiftRight(ref uint value, int count)
     {
       var carry = value << (32 - count);
       value >>= count;
@@ -15,7 +15,7 @@ namespace Flux
     /// <summary>Shifts the bits one position to the right.</summary>
     /// <returns>Whether the LSB (least significant BIT), or overflow bit, was set.</returns>
     [System.CLSCompliant(false)]
-    public static ulong ShiftRight(ref this ulong value, int count)
+    public static ulong ShiftRight(ref ulong value, int count)
     {
       var carry = value << (64 - count);
       value >>= count;

@@ -9,25 +9,25 @@ namespace Flux
 
     /// <summary>"Folds" the upper bits into the lower bits, by taking the most significant 1 bit (MS1B) and OR it with (MS1B - 1). The process yields a bit vector with the same most significant 1 as the value, but all 1's below it.</summary>
     /// <returns>All bits set from MSB down, or -1 if the value is less than zero.</returns>
-    public static System.Numerics.BigInteger FoldRight(this System.Numerics.BigInteger value)
+    public static System.Numerics.BigInteger FoldRight(System.Numerics.BigInteger value)
       => value < 0 ? -1
       : value > 0 ? (System.Numerics.BigInteger.One << BitLength(value)) - 1
       : 0;
 
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>
-    public static int FoldRight(this int value)
+    public static int FoldRight(int value)
       => unchecked((int)(value < 0 ? uint.MaxValue : FoldRight((uint)value)));
 
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>
-    public static long FoldRight(this long value)
+    public static long FoldRight(long value)
       => unchecked((long)(value < 0 ? ulong.MaxValue : FoldRight((ulong)value)));
 
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>
     [System.CLSCompliant(false)]
-    public static uint FoldRight(this uint value)
+    public static uint FoldRight(uint value)
     {
       if (value != 0)
       {
@@ -44,7 +44,7 @@ namespace Flux
     /// <summary>Recursively "folds" the upper bits into the lower bits. The process yields a bit vector with the same most significant 1 as value, but all 1's below it.</summary>
     /// <returns>Returns all ones from the MSB down.</returns>
     [System.CLSCompliant(false)]
-    public static ulong FoldRight(this ulong value)
+    public static ulong FoldRight(ulong value)
     {
       if (value != 0)
       {

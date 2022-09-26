@@ -31,15 +31,10 @@ namespace Flux
       var sb = new System.Text.StringBuilder(128);
 
       if (number.IsZero)
-      {
         sb.Append('0');
-      }
       else if (number < 0) // Needs a REAL solution for negative numbers.
-      {
-        for (var bit = number.BitLength().MostSignificant1Bit() - 1; bit >= 0; bit--)
-          sb.Append(((System.Numerics.BigInteger.One << (int)bit) & number) != 0 ? '1' : '0');
-      }
-      
+        return NumberToText(-number).Insert(0, '-');
+
       while (number > 0)
       {
         number = System.Numerics.BigInteger.DivRem(number, Symbols.Length, out var remainder);

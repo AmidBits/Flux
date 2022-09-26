@@ -2,11 +2,11 @@
 {
   public static partial class BigIntegerEm
   {
-    public static bool IsPerfectIRoot(this System.Numerics.BigInteger number, int nth, System.Numerics.BigInteger root)
+    public static bool IsPerfectIRoot(System.Numerics.BigInteger number, int nth, System.Numerics.BigInteger root)
       => number == System.Numerics.BigInteger.Pow(root, nth);
 
     /// <summary>Returns the the largest integer less than or equal to the square root of the specified number.</summary>
-    public static System.Numerics.BigInteger IRoot(this System.Numerics.BigInteger number, int nth)
+    public static System.Numerics.BigInteger IRoot(System.Numerics.BigInteger number, int nth)
     {
       if (number < 0) throw new System.ArgumentOutOfRangeException(nameof(number));
       if (nth <= 0) throw new System.ArgumentOutOfRangeException(nameof(nth));
@@ -26,7 +26,7 @@
       return d < e ? d : e;
     }
 
-    public static bool TryIRoot(this System.Numerics.BigInteger number, int nth, out System.Numerics.BigInteger root, out bool isPerfect)
+    public static bool TryIRoot(System.Numerics.BigInteger number, int nth, out System.Numerics.BigInteger root, out bool isPerfect)
     {
       try
       {
