@@ -6,67 +6,64 @@ namespace Flux
 
   public static partial class BitOps
   {
-    /// <summary>PREVIEW! Find the next largest power of 2 less than or equal to <paramref name="value"/>.</summary>
-    public static TSelf RoundDownToPow2<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsPow2(value) ? value : (BitFoldRight(value - TSelf.One) + TSelf.One) >> 1;
-    /// <summary>PREVIEW! Find the next largest power of 2 proper (i.e. always) less than <paramref name="value"/>.</summary>
-    public static TSelf RoundDownToPow2Proper<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsPow2(value) ? value >> 1 : BitFoldRight(value - TSelf.One) + TSelf.One >> 1;
-
-    /// <summary>PREVIEW! Computes the smallest and largest power of 2 greater than or equal to and less than or equal to, respectively, and also returns the nearest (to <paramref name="value"/>) of the two.</summary>
-    /// <param name="value"></param>
-    /// <param name="greaterThanOrEqual">Outputs the power of 2 greater than or equal to <paramref name="value"/>.</param>
-    /// <param name="lessThanOrEqual">Outputs the power of 2 less than or equal to <paramref name="value"/>.</param>
-    /// <returns>The nearest power of 2.</returns>
-    public static TSelf RoundToNearestPow2<TSelf>(this TSelf value, out TSelf greaterThanOrEqual, out TSelf lessThanOrEqual)
+    /// <summary>PREVIEW! Get the two power-of-2 nearest to value.</summary>
+    /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
+    /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
+    /// <param name="towardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="awayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <returns>The nearest two power-of-2 to value as out parameters.</returns>
+    public static void GetNearestPow2<TSelf>(this TSelf value, bool proper, out TSelf towardsZero, out TSelf awayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (TSelf.IsPow2(value))
       {
-        greaterThanOrEqual = value;
-        lessThanOrEqual = value;
+        if (proper)
+        {
+          awayFromZero = value << 1;
+          towardsZero = value >> 1;
+        }
+        else
+        {
+          awayFromZero = value;
+          towardsZero = value;
+        }
       }
       else
       {
-        greaterThanOrEqual = BitFoldRight(value - TSelf.One) + TSelf.One;
-        lessThanOrEqual = greaterThanOrEqual >> 1;
+        awayFromZero = BitFoldRight(value - TSelf.One) + TSelf.One;
+        towardsZero = awayFromZero >> 1;
       }
-
-      return (greaterThanOrEqual - value) > (value - lessThanOrEqual) ? lessThanOrEqual : greaterThanOrEqual;
     }
 
-    /// <summary>PREVIEW! Computes the smallest and largest power of 2 greater than and larger than, respectively, and also returns the nearest (to <paramref name="value"/>) of the two.</summary>
-    /// <param name="value"></param>
-    /// <param name="greaterThan">Outputs the power of 2 proper (i.e. always) greater than <paramref name="value"/>.</param>
-    /// <param name="lessThan">Outputs the power of 2 proper (i.e. always) less than <paramref name="value"/>.</param>
-    /// <returns>The nearest power of 2.</returns>
-    public static TSelf RoundToNearestPow2Proper<TSelf>(this TSelf value, out TSelf greaterThan, out TSelf lessThan)
+    /// <summary>PREVIEW! Find the nearest (to <paramref name="value"/>) of two power-of-2, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
+    /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
+    /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
+    /// <param name="mode">The halfway rounding mode to use, when halfway between two values.</param>
+    /// <param name="towardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="awayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <returns>The nearest two power-of-2 to value.</returns>
+    public static TSelf RoundToNearestPow2<TSelf>(this TSelf value, bool proper, HalfwayRounding mode, out TSelf towardsZero, out TSelf awayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (TSelf.IsPow2(value))
-      {
-        greaterThan = value << 1;
-        lessThan = value >> 1;
-      }
-      else
-      {
-        greaterThan = BitFoldRight(value - TSelf.One) + TSelf.One;
-        lessThan = greaterThan >> 1;
-      }
+      GetNearestPow2(value, proper, out towardsZero, out awayFromZero);
 
-      return (greaterThan - value) > (value - lessThan) ? lessThan : greaterThan;
+      return GenericMath.RoundToNearest(value, towardsZero, awayFromZero, mode);
     }
 
-    /// <summary>PREVIEW! Find the next smallest power of 2 greater than or equal to <paramref name="value"/>.</summary>
-    public static TSelf RoundUpToPow2<TSelf>(this TSelf value)
+    /// <summary>PREVIEW! Find the nearest (to <paramref name="value"/>) of two power-of-2, using the specified <see cref="FullRounding"/> <paramref name="mode"/>, and also return both power-of-2 as out parameters.</summary>
+    /// <param name="value">The value for which the power-of-2 will be found.</param>
+    /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
+    /// <param name="mode">The full rounding mode to use.</param>
+    /// <param name="towardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="awayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <returns>The nearest two power-of-2 to value.</returns>
+    public static TSelf RoundToPow2<TSelf>(this TSelf value, bool proper, FullRounding mode, out TSelf towardsZero, out TSelf awayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsPow2(value) ? value : BitFoldRight(value - TSelf.One) + TSelf.One;
-    /// <summary>PREVIEW! Find the next smallest power of 2 proper (i.e. always) greater than <paramref name="value"/>.</summary>
-    public static TSelf RoundUpToPow2Proper<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsPow2(value) ? value << 1 : BitFoldRight(value - TSelf.One) + TSelf.One;
+    {
+      GetNearestPow2(value, proper, out towardsZero, out awayFromZero);
+
+      return GenericMath.RoundTo(value, towardsZero, awayFromZero, mode);
+    }
   }
 }
 #endif

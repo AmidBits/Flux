@@ -33,6 +33,7 @@ namespace Flux
       //};
     }
 
+    /// <summary>PREVIEW! Creates a new string with the number and the ordinal indicator. E.g. "1st" for 1 and "122nd" for 122.</summary>
     public static string ToOrdinalIndicatorString<TSelf>(this TSelf source)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => $"{source}{GetOrdinalIndicatorString(source)}";

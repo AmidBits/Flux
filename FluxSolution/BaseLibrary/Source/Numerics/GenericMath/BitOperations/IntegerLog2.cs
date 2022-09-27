@@ -8,20 +8,8 @@ namespace Flux
 
   public static partial class BitOps
   {
-    ///// <summary>PREVIEW! Computes the floor or ceiling (depending on the <paramref name="ceiling"/> argument) of the base 2 log of the value.</summary>
-    ///// <typeparam name="TSelf"></typeparam>
-    ///// <param name="value"></param>
-    ///// <param name="ceiling"></param>
-    ///// <returns></returns>
-    //public static int ILog2<TSelf>(this TSelf value, bool ceiling = false)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //  => value < TSelf.Zero ? throw new System.ArgumentOutOfRangeException(nameof(value), "Non-negative value required.")
-    //  : TSelf.IsZero(value) ? 0
-    //  : ((IsPowerOf2(value) || !ceiling) ? value.GetShortestBitLength() - 1 : value.GetShortestBitLength());
-
     /// <summary>PREVIEW! Computes the ceiling of the base 2 log of the value.</summary>
-    public static int GetIntegerLog2Ceiling
-      <TSelf>(this TSelf value)
+    public static int GetIntegerLog2Ceiling<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       // No zero check is necessary because it's not a power of two.
       => TSelf.IsPow2(value.AssertNonNegativeValue()) ? value.GetShortestBitLength() - 1 : value.GetShortestBitLength();

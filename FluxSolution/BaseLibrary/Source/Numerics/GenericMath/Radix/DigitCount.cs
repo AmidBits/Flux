@@ -1,13 +1,13 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class Radix
+  public static partial class GenericMath
   {
     /// <summary>PREVIEW! Returns the count of all digits in the value using the specified radix.</summary>
     public static TSelf DigitCount<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      GenericMath.AssertRadix(radix);
+      AssertRadix(radix);
 
       var count = TSelf.Zero;
 

@@ -3,13 +3,13 @@ using System.Numerics;
 
 namespace Flux
 {
-  public static partial class Radix
+  public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Returns the place value digits (as numbers) of a value, in reverse order.</summary>
+    /// <summary>PREVIEW! Returns the place value digits (as numbers) of a value in the specified radix, in reverse order.</summary>
     public static System.Span<TSelf> GetDigitsReversed<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      GenericMath.AssertRadix(radix);
+      AssertRadix(radix);
 
       var list = new System.Collections.Generic.List<TSelf>();
 

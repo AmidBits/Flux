@@ -3,7 +3,7 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
+    /// <summary>PREVIEW! Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
     public static string ToNamedGroupingString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => ConvertToNamedGrouping(value).ToString();

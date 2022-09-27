@@ -1,13 +1,13 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class Radix
+  public static partial class GenericMath
   {
     public static bool IsPowEx<TSelf, TRadix>(this TSelf value, TRadix radix)
       where TSelf : System.Numerics.INumber<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      GenericMath.AssertRadix(radix, out TSelf tradix);
+      AssertRadix(radix, out TSelf tradix);
 
       if (TSelf.IsNegative(value)) // Make it work on negative numbers.
         return IsPowEx(-value, radix);
@@ -26,7 +26,7 @@ namespace Flux
     public static bool IsPow<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      GenericMath.AssertRadix(radix);
+      AssertRadix(radix);
 
       if (TSelf.IsNegative(value)) // Make it work on negative numbers.
         return IsPow(-value, radix);

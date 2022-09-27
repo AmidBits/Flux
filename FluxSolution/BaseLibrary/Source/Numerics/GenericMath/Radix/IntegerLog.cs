@@ -4,15 +4,15 @@ namespace Flux
   //  // <seealso cref="http://aggregate.org/MAGIC/"/>
   //  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
 
-  public static partial class Radix
+  public static partial class GenericMath
   {
     /// <summary>PREVIEW! Computes the integer log ceiling of an integer number in the specified radix (base).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static TSelf IntegerLogCeiling<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      GenericMath.AssertNonNegativeValue(value);
-      GenericMath.AssertRadix(radix);
+      AssertNonNegativeValue(value);
+      AssertRadix(radix);
 
       if (!TSelf.IsZero(value))
       {
@@ -36,8 +36,8 @@ namespace Flux
     public static TSelf IntegerLogFloor<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      GenericMath.AssertNonNegativeValue(value);
-      GenericMath.AssertRadix(radix);
+      AssertNonNegativeValue(value);
+      AssertRadix(radix);
 
       var logFloor = TSelf.Zero;
 

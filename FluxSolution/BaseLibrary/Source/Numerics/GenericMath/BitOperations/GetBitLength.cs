@@ -17,7 +17,7 @@ namespace Flux
     //: value < TSelf.Zero ? -1
     //: 0;
 
-    /// <summary>Projects the built-in GetShortestBitLength as an extension method.</summary>
+    /// <summary>PREVIEW! Projects the built-in GetShortestBitLength as an extension method.</summary>
     public static int GetShortestBitLength<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => value.GetShortestBitLength();
