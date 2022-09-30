@@ -28,8 +28,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double X => m_x;
     [System.Diagnostics.Contracts.Pure] public double Y => m_y;
     [System.Diagnostics.Contracts.Pure] public double Z => m_z;
+
     [System.Diagnostics.Contracts.Pure] public Angle Angle => new(m_radAngle);
-    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate3R Axis => new(m_x, m_y, m_z);
+
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate3R ToCartesianCoordinate()
+      => new(m_x, m_y, m_z);
 
     [System.Diagnostics.Contracts.Pure]
     public EulerAngles ToEulerAngles()
@@ -50,6 +54,7 @@ namespace Flux
 
       return new(heading, attitude, bank);
     }
+
     [System.Diagnostics.Contracts.Pure]
     public Quaternion ToQuaternion()
     {
@@ -63,31 +68,41 @@ namespace Flux
     }
 
     #region Overloaded operators
+
     [System.Diagnostics.Contracts.Pure]
     public static bool operator ==(AxisAngle a, AxisAngle b)
       => a.Equals(b);
+
     [System.Diagnostics.Contracts.Pure]
     public static bool operator !=(AxisAngle a, AxisAngle b)
       => !a.Equals(b);
+
     #endregion Overloaded operators
 
     #region Implemented interfaces
+
     // IEquatable
+
     [System.Diagnostics.Contracts.Pure]
     public bool Equals(AxisAngle other)
       => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z && m_radAngle == other.m_radAngle;
+
     #endregion Implemented interfaces
 
     #region Object overrides
+
     [System.Diagnostics.Contracts.Pure]
     public override bool Equals(object? obj)
       => obj is AxisAngle o && Equals(o);
+
     [System.Diagnostics.Contracts.Pure]
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y, m_z, m_radAngle);
+
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
       => $"{GetType().Name} {{ X = {m_x}, Y = {m_x}, Z = {m_x}, Angle = {new Angle(m_radAngle).ToUnitString(AngleUnit.Radian)} ({new Angle(m_radAngle).ToUnitString(AngleUnit.Degree, "N1")}) }}";
+
     #endregion Object overrides
   }
 }

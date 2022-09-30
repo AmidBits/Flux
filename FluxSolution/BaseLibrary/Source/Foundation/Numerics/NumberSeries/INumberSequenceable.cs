@@ -1,8 +1,8 @@
 namespace Flux.Numerics
 {
-	public interface INumberSequenceable<T>
-		: System.Collections.Generic.IEnumerable<T>
+	public interface INumberSequenceable<TNumber>
+		: System.Collections.Generic.IEnumerable<TNumber>
   {
-		System.Collections.Generic.IEnumerable<T> GetNumberSequence();
+		System.Collections.Generic.IEnumerable<TNumber> GetNumberSequence();
 	}
 }

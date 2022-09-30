@@ -10,26 +10,27 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static TSelf IntegerLogCeiling<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      AssertNonNegativeValue(value);
-      AssertRadix(radix);
+      => TSelf.IsZero(value) ? value : IntegerLogFloor(value - TSelf.One, radix) + TSelf.One;
+    //{
+    //  AssertNonNegativeValue(value);
+    //  AssertRadix(radix);
 
-      if (!TSelf.IsZero(value))
-      {
-        var logCeiling = TSelf.One;
+    //  if (!TSelf.IsZero(value))
+    //  {
+    //    var logCeiling = value.IsPow(radix) ?  TSelf.Zero: TSelf.One;
 
-        while (value >= radix)
-        {
-          value /= radix;
+    //    while (value >= radix)
+    //    {
+    //      value /= radix;
 
-          logCeiling++;
-        }
+    //      logCeiling++;
+    //    }
 
-        return logCeiling;
-      }
+    //    return logCeiling;
+    //  }
 
-      return TSelf.Zero;
-    }
+    //  return TSelf.Zero;
+    //}
 
     /// <summary>PREVIEW! Computes the integer log floor of an integer number in the specified radix (base).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
@@ -60,7 +61,7 @@ namespace Flux
       try
       {
         logFloor = IntegerLogFloor(value, radix);
-        logCeiling = logFloor + TSelf.One;
+        logCeiling = IntegerLogCeiling(value, radix);
         return true;
       }
       catch

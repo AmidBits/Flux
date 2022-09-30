@@ -5,6 +5,7 @@ using System.Linq;
 
 using Flux;
 using Flux.DataStructures;
+using Flux.Numerics;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -20,19 +21,29 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var digits = (243).GetDigits(10).ToArray();
+      var radix = 10;
 
-      System.Console.WriteLine($"\"{string.Join(' ', digits)}\" = {string.Join(' ', digits.Select(d => d.ToRadixString(2).PadLeft(4, '0')))}");
-      return;
-      var n = 80.0;
+      for (var value = 0; value <= 133; value++)
+      {
+        var ml = System.Math.Log(value, radix);
 
-      var radix = 2;
-      var hp = n.RoundToNearestPow(radix, true, HalfwayRounding.AwayFromZero, out int hptz, out int hpafz);
-      var fp = n.RoundToPow(radix, false, FullRounding.AwayFromZero, out int fptz, out int fpafz);
+        var lac = value.IntegerLogCeiling(radix);
+        var laf = value.IntegerLogFloor(radix);
+        value.TryGetIntegerLog(radix, out var lbf, out var lbc);
 
-      var multiple = 20;
-      var hm = n.RoundToNearestMultipleOf(multiple, true, HalfwayRounding.AwayFromZero, out var hmtz, out var hmafz);
-      var fm = n.RoundToMultipleOf(multiple, true, FullRounding.AwayFromZero, out var fmtz, out var fmafz);
+        if (radix != 2)
+        {
+          System.Console.WriteLine($"{(value.IsPow(radix) ? 'R' : ' ')} {value:D2}|{radix} : [{laf:D2}, {lbf:D2}] < {ml:N3} > [{lac:D2}, {lbc:D2}]");
+        }
+        else
+        {
+          var l2ac = value.GetIntegerLog2Ceiling();
+          var l2af = value.GetIntegerLog2Floor();
+          value.TryGetIntegerLog2(out var l2bf, out var l2bc);
+
+          System.Console.WriteLine($"{(value.IsPow(radix) ? 'R' : ' ')} {value:D2}|{radix} : ({l2af:D2}, {l2bf:D2}) : [{laf:D2}], {lbf:D2}] < {ml:N3} > [{lac:D2}, {lbc:D2}] : ({l2ac:D2}, {l2bc:D2})");
+        }
+      }
     }
 
     private static void Main(string[] args)

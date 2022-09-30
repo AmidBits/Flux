@@ -38,9 +38,14 @@ namespace Flux
       : this(System.Runtime.Intrinsics.Vector256.Create(x, y, z, w))
     {
     }
-    /// <summary>Constructs a vector with the specified x, y and z values, while W will be assigned a value of 1.</summary>
+    /// <summary>Constructs a vector with the specified x, y and z values, while W will be assigned a value of 0.</summary>
     public Vector4(double x, double y, double z)
       : this(x, y, z, 0)
+    {
+    }
+    /// <summary>Constructs a vector with the specified x and y values, while Z abd W will be assigned a value of 0.</summary>
+    public Vector4(double x, double y)
+      : this(x, y, 0, 0)
     {
     }
 
@@ -275,7 +280,7 @@ namespace Flux
       => System.HashCode.Combine(X, Y, Z, W);
     /// <summary>Returns a String representing this Quaternion instance.</summary>
     public override string ToString()
-      => $"{GetType().Name} {{ X = {X} Y = {Y} Z = {Z} W = {W} }}";
+      => $"{GetType().Name} {{ {X}, {Y}, {Z}, {W} }}";
     #endregion Object overrides
   }
 }

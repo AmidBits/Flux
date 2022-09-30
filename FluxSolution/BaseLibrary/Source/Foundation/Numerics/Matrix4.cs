@@ -1605,7 +1605,8 @@ namespace Flux
     }
     /// <summary>Returns a String representing this matrix instance.</summary>
     public override string ToString()
-      => $"{GetType().Name} {{ {{M11:{m_11} M12:{m_12} M13:{m_13} M14:{m_14}}} {{M21:{m_21} M22:{m_22} M23:{m_23} M24:{m_24}}} {{M31:{m_31} M32:{m_32} M33:{m_33} M34:{m_34}}} {{M41:{m_41} M42:{m_42} M43:{m_43} M44:{m_44}}} }}";
+      //=> $"{GetType().Name} {{ {{M11:{m_11} M12:{m_12} M13:{m_13} M14:{m_14}}}, {{M21:{m_21} M22:{m_22} M23:{m_23} M24:{m_24}}} {{M31:{m_31} M32:{m_32} M33:{m_33} M34:{m_34}}} {{M41:{m_41} M42:{m_42} M43:{m_43} M44:{m_44}}} }}";
+      => $"{GetType().Name} {{ {{ {m_11}, {m_12}, {m_13}, {m_14} }} {{ {m_21}, {m_22}, {m_23}, {m_24} }} {{ {m_31}, {m_32}, {m_33}, {m_34} }} {{ {m_41}, {m_42}, {m_43}, {m_44}}} }}";
     #endregion Object overrides
   }
 }

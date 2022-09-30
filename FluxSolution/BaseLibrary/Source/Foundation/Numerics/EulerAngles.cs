@@ -25,6 +25,7 @@ namespace Flux
     /// <summary>The horizontal lean (left/right) angle. A.k.a. Bank and Tilt.</summary>
     public Angle Roll => new(m_radRoll);
 
+    [System.Diagnostics.Contracts.Pure]
     public AxisAngle ToAxisAngle()
     {
       var c1 = System.Math.Cos(m_radYaw / 2);
@@ -57,6 +58,7 @@ namespace Flux
 
       return new(x, y, z, angle);
     }
+
     [System.Diagnostics.Contracts.Pure]
     public Matrix4 ToMatrixTaitBryanXYZ()
     {
@@ -74,6 +76,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
+
     [System.Diagnostics.Contracts.Pure]
     public Matrix4 ToMatrixLhTaitBryanYXZ()
     {
@@ -91,6 +94,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
+
     [System.Diagnostics.Contracts.Pure]
     public Matrix4 ToMatrixLhTaitBryanZYX()
     {
@@ -108,6 +112,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
+
     [System.Diagnostics.Contracts.Pure]
     public Matrix4 ToMatrixLhProperEulerZXZ()
     {
@@ -125,6 +130,7 @@ namespace Flux
         0, 0, 0, 1
       );
     }
+
     [System.Diagnostics.Contracts.Pure]
     public Quaternion ToQuaternion()
     {
