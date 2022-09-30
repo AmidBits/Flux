@@ -9,7 +9,7 @@ namespace Flux
     /// <param name="carryingCapacity">The carrying capacity of the environment (k).</param>
     /// <returns>The expected number (or density) of individuals in (the next) generation (Nt + 1).</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Ricker_model"/>
-    public static TSelf RickerPopulationModel<TSelf>(TSelf population, TSelf growthRate, TSelf carryingCapacity)
+    public static TSelf PopulationModelRicker<TSelf>(TSelf population, TSelf growthRate, TSelf carryingCapacity)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
       => population * TSelf.Pow(TSelf.E, growthRate * (TSelf.One - (population / carryingCapacity)));
   }

@@ -11,7 +11,7 @@ namespace Flux
     /// <param name="emigrated">The number of individuals emigrating into the population between Nt and Nt+1 (E).</param>
     /// <returns>The number of individuals at time Nt+1.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Matrix_population_models"/>
-    public static TSelf BidePopulationModel<TSelf>(this TSelf population, TSelf births, TSelf immigrated, TSelf deaths, TSelf emigrated)
+    public static TSelf PopulationModelBide<TSelf>(this TSelf population, TSelf births, TSelf immigrated, TSelf deaths, TSelf emigrated)
       where TSelf : System.Numerics.INumber<TSelf>
       => population + births - deaths + immigrated - emigrated;
   }

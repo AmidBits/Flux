@@ -10,7 +10,7 @@ namespace Flux
     /// <returns>The number of individuals at time Nt+1.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Beverton%E2%80%93Holt_model"/>
     /// <seealso cref="RickerModel(double, double, double)" />
-    public static TSelf BevertonHoltPopulationModel<TSelf>(TSelf population, TSelf growthRate, TSelf carryingCapacity)
+    public static TSelf PopulationModelBevertonHolt<TSelf>(TSelf population, TSelf growthRate, TSelf carryingCapacity)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (growthRate * population) / (TSelf.One + population / carryingCapacity);
   }
