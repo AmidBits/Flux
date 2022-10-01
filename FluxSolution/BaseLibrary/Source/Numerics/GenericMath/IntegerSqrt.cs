@@ -3,27 +3,27 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Returns the (floor) root of <paramref name="number"/>. Using Newton's method.</summary>
+    /// <summary>PREVIEW! Returns the (floor) root of the <paramref name="value"/>. Using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
-    public static TSelf IntegerSqrt<TSelf>(this TSelf number)
+    public static TSelf IntegerSqrt<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (TSelf.IsNegative(number)) throw new System.ArgumentOutOfRangeException(nameof(number));
+      if (TSelf.IsNegative(value)) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-      var x0 = TSelf.One << (number.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square number.
+      var x0 = TSelf.One << (value.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square number.
 
       if (!TSelf.IsZero(x0))
       {
         checked
         {
-          while (((x0 + number / x0) >> 1) is var x1 && x1 < x0)
+          while (((x0 + value / x0) >> 1) is var x1 && x1 < x0)
             x0 = x1;
         }
 
         return x0;
       }
 
-      return number;
+      return value;
     }
 
     /// <summary>PREVIEW! Returns whether <paramref name="number"/> is the integer (not perfect) square of <paramref name="root"/>.</summary>

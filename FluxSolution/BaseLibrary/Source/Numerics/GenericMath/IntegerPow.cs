@@ -6,26 +6,26 @@ namespace Flux
     /// <summary>PREVIEW! Returns x raised to the power of n. Exponentiation by squaring.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation"/>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
-    public static TSelf IntegerPow<TSelf, TPower>(this TSelf number, TPower power)
+    public static TSelf IntegerPow<TSelf, TExponent>(this TSelf value, TExponent exponent)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TPower : System.Numerics.IBinaryInteger<TPower>
+      where TExponent : System.Numerics.IBinaryInteger<TExponent>
     {
-      if (power < TPower.Zero) throw new System.ArgumentOutOfRangeException(nameof(power));
+      if (exponent < TExponent.Zero) throw new System.ArgumentOutOfRangeException(nameof(exponent));
 
       var y = TSelf.One;
 
-      while (power > TPower.One)
+      while (exponent > TExponent.One)
         checked
         {
-          if (TPower.IsOddInteger(power))
-            y *= number;
+          if (TExponent.IsOddInteger(exponent))
+            y *= value;
 
-          number *= number;
+          value *= value;
 
-          power >>= 1;
+          exponent >>= 1;
         }
 
-      return number * y;
+      return value * y;
     }
   }
 }
