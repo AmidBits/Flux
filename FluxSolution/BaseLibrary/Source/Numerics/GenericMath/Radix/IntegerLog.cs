@@ -1,9 +1,6 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  //  // <seealso cref="http://aggregate.org/MAGIC/"/>
-  //  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
-
   public static partial class GenericMath
   {
     /// <summary>PREVIEW! Computes the integer log ceiling of an integer number in the specified radix (base).</summary>
@@ -58,15 +55,29 @@ namespace Flux
     public static bool TryGetIntegerLog<TSelf>(this TSelf value, TSelf radix, out TSelf logFloor, out TSelf logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
+      logFloor = TSelf.Zero;
+      logCeiling = TSelf.Zero;
+
       try
       {
-        logFloor = IntegerLogFloor(value, radix);
-        logCeiling = IntegerLogCeiling(value, radix);
+        if (!TSelf.IsZero(value))
+        {
+          if (!value.IsPow(radix))
+            logCeiling++;
+
+          while (value >= radix)
+          {
+            value /= radix;
+
+            logFloor++;
+            logCeiling++;
+          }
+        }
+
         return true;
       }
       catch
       {
-        logCeiling = logFloor = TSelf.Zero;
         return false;
       }
     }

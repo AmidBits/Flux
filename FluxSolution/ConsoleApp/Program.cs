@@ -21,40 +21,33 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-
-
       var array = new int[] { 2, 8, 10, 16 };
 
       foreach (var radix in array)
       {
         for (var value = 0; value <= (radix + 1); value++)
         {
-          var ml = System.Math.Log(value, radix);
+          if (System.Math.Log(value, radix) is var logfp && logfp == double.NegativeInfinity)
+            logfp = 0;
 
-          if (ml == double.NegativeInfinity)
-            ml = 0;
-
-          var lac = value.IntegerLogCeiling(radix);
-          var laf = value.IntegerLogFloor(radix);
-          value.TryGetIntegerLog(radix, out var lbf, out var lbc);
+          var logac = value.IntegerLogCeiling(radix);
+          var logaf = value.IntegerLogFloor(radix);
+          value.TryGetIntegerLog(radix, out var logbf, out var logbc);
 
           if (radix == 2)
           {
-            var l2ac = value.GetIntegerLog2Ceiling();
-            var l2af = value.GetIntegerLog2Floor();
-            value.TryGetIntegerLog2(out var l2bf, out var l2bc);
+            var lg2ac = value.GetIntegerLog2Ceiling();
+            var lg2af = value.GetIntegerLog2Floor();
+            value.TryGetIntegerLog2(out var lg2bf, out var lg2bc);
 
-            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} {value:D2}|{radix} : ({l2af:D2}, {l2bf:D2}) : [{laf:D2}], {lbf:D2}] < {ml:N3} > [{lac:D2}, {lbc:D2}] : ({l2ac:D2}, {l2bc:D2})");
+            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} {value:D2}|{radix} : ({lg2af:D2}, {lg2bf:D2}) : [{logaf:D2}], {logbf:D2}] < {logfp:N3} > [{logac:D2}, {logbc:D2}] : ({lg2ac:D2}, {lg2bc:D2})");
           }
           else
-            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} {value:D2}|{radix} : [{laf:D2}, {lbf:D2}] < {ml:N3} > [{lac:D2}, {lbc:D2}]");
+            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} {value:D2}|{radix} : [{logaf:D2}, {logbf:D2}] < {logfp:N3} > [{logac:D2}, {logbc:D2}]");
         }
 
         System.Console.WriteLine();
       }
-
-
-
     }
 
     private static void Main(string[] args)
