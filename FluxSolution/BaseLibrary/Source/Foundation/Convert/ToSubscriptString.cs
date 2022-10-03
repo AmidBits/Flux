@@ -24,7 +24,7 @@ namespace Flux
       var span = Maths.GetDigits(number, radix);
       var chars = new char[span.Length];
       for (var index = span.Length - 1; index >= 0; index--)
-        chars[index] = RuneSequences.Subscript0Through9[index].ToString()[0];
+        chars[index] = RuneSequences.Subscript0Through9[span[index]].ToString()[0];
       return new string(chars);
     }
     /// <summary>Returns a string with the numeric subscript.</summary>
@@ -35,7 +35,7 @@ namespace Flux
       var span = Maths.GetDigits(number, radix);
       var chars = new char[span.Length];
       for (var index = span.Length - 1; index >= 0; index--)
-        chars[index] = RuneSequences.Subscript0Through9[index].ToString()[0];
+        chars[index] = RuneSequences.Subscript0Through9[(int)span[index]].ToString()[0];
       return new string(chars);
     }
   }

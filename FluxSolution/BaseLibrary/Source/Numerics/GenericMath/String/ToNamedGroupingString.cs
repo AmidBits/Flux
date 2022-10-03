@@ -4,7 +4,7 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>PREVIEW! Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
-    public static string ToCompoundStringCardinalNumerals<TSelf>(this TSelf value)
+    public static System.ReadOnlySpan<char> ToCompoundStringCardinalNumerals<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => NumberComposition.ToCardinalNumeralCompoundString(System.Numerics.BigInteger.CreateChecked(value));
   }
@@ -149,7 +149,7 @@ namespace Flux
       }
     }
 
-    public static string ToCardinalNumeralCompoundString(System.Numerics.BigInteger number)
+    public static System.ReadOnlySpan<char> ToCardinalNumeralCompoundString(System.Numerics.BigInteger number)
       => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
   }
 }

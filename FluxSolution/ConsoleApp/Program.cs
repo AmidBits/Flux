@@ -27,26 +27,26 @@ namespace ConsoleApp
       {
         for (var value = 0; value <= (radix + 1); value++)
         {
-          if (System.Math.Log(value, radix) is var logfp && logfp == double.NegativeInfinity)
-            logfp = 0;
+          if (System.Math.Log(value, radix) is var logFp && logFp == double.NegativeInfinity)
+            logFp = 0;
 
-          var logac = value.IntegerLogCeiling(radix);
-          var logaf = value.IntegerLogFloor(radix);
-          value.TryGetIntegerLog(radix, out var logbf, out var logbc);
+          var logAc = value.IntegerLogCeiling(radix);
+          var logAf = value.IntegerLogFloor(radix);
+          value.TryGetIntegerLog(radix, out var logBf, out var logBc);
 
           if (radix == 2)
           {
-            var lg2ac = value.GetIntegerLog2Ceiling();
-            var lg2af = value.GetIntegerLog2Floor();
-            value.TryGetIntegerLog2(out var lg2bf, out var lg2bc);
+            var lg2Ac = value.GetIntegerLog2Ceiling();
+            var lg2Af = value.GetIntegerLog2Floor();
+            value.TryGetIntegerLog2(out var lg2Bf, out var lg2Bc);
 
-            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} {value:D2}|{radix} : ({lg2af:D2}, {lg2bf:D2}) : [{logaf:D2}], {logbf:D2}] < {logfp:N3} > [{logac:D2}, {logbc:D2}] : ({lg2ac:D2}, {lg2bc:D2})");
+//            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : ({lg2Af:D2}, {lg2Bf:D2}) : [{logAf:D2}], {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}] : ({lg2Ac:D2}, {lg2Bc:D2})");
           }
-          else
-            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} {value:D2}|{radix} : [{logaf:D2}, {logbf:D2}] < {logfp:N3} > [{logac:D2}, {logbc:D2}]");
+//          else
+//            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : [{logAf:D2}, {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}]");
         }
 
-        System.Console.WriteLine();
+//        System.Console.WriteLine();
       }
     }
 
@@ -56,7 +56,7 @@ namespace ConsoleApp
 
       SetSize(0.75);
 
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1000000));
 
       ResetEncoding(originalOutputEncoding);
 

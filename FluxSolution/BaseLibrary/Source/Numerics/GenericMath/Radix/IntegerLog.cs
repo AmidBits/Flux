@@ -1,4 +1,6 @@
 #if NET7_0_OR_GREATER
+using System.Collections.Specialized;
+
 namespace Flux
 {
   public static partial class GenericMath
