@@ -6,16 +6,16 @@ namespace Flux
     /// <summary>PREVIEW! Returns <paramref name="x"/> raised to the power of <paramref name="n"/>, using exponentiation by squaring.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation"/>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
-    public static TBase IntegerPow<TBase, TExponent>(this TBase x, TExponent n)
-      where TBase : System.Numerics.IBinaryInteger<TBase>
+    public static TSelf IntegerPow<TSelf, TExponent>(this TSelf x, TExponent n)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TExponent : System.Numerics.IBinaryInteger<TExponent>
     {
       AssertNonNegativeValue(n);
 
       if (TExponent.IsZero(n))
-        return TBase.One;
+        return TSelf.One;
 
-      var y = TBase.One;
+      var y = TSelf.One;
 
       while (n > TExponent.One)
         checked

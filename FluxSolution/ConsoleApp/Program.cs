@@ -21,9 +21,12 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
       var n = 99.96535789;
-      var r = n.Round(2, HalfwayRounding.ToEven);
-      var rtsd = n.TruncatingRound(2, HalfwayRounding.ToEven);
+      var r1 = Flux.GenericMath.Round(99.96535789, 2, HalfwayRounding.ToEven);
+      var r2 = Flux.GenericMath.TruncatingRound(99.96535789, 2, HalfwayRounding.ToEven);
+
+      System.Console.WriteLine($"{n} = {r1} (Round) = {r2} (TruncatingRound) : both with 2 significant digits and ToEven.");
 
       return;
 

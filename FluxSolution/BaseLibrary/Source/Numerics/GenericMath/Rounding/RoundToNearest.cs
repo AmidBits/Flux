@@ -3,7 +3,7 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
+    /// <summary>PREVIEW! Rounds a value to the nearest boundary. The distance computation is a slight optimization for special cases, e.g. when rounding to multiple of. The mode specifies how to round when between two intervals.</summary>
     public static TBound RoundToNearest<TSelf, TBound>(this TSelf x, TBound boundaryTowardsZero, TBound boundaryAwayFromZero, TSelf distanceTowardsZero, TSelf distanceAwayFromZero, HalfwayRounding mode)
       where TSelf : System.Numerics.INumber<TSelf>
       where TBound : System.Numerics.INumber<TBound>
@@ -25,7 +25,7 @@ namespace Flux
       };
     }
 
-    /// <summary>PREVIEW! Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
+    /// <summary>PREVIEW! Rounds a value to the nearest boundary. The mode specifies how to round when between two intervals.</summary>
     public static TBound RoundToNearest<TSelf, TBound>(this TSelf x, TBound boundaryTowardsZero, TBound boundaryAwayFromZero, HalfwayRounding mode)
     where TSelf : System.Numerics.INumber<TSelf>
     where TBound : System.Numerics.INumber<TBound>
