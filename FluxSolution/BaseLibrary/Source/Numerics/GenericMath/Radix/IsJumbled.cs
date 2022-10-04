@@ -3,22 +3,22 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Indicates whether the instance is jumbled (i.e. no neighboring digits having a difference larger than 1).</summary>
+    /// <summary>PREVIEW! Indicates whether <paramref name="x"/> using base <paramref name="b"/> is jumbled (i.e. no neighboring digits having a difference larger than 1).</summary>
     /// <see cref="http://www.geeksforgeeks.org/check-if-a-number-is-jumbled-or-not/"/>
-    public static bool IsJumbled<TSelf>(this TSelf value, TSelf radix)
+    public static bool IsJumbled<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(radix);
+      AssertRadix(b);
 
-      while (!TSelf.IsZero(value))
+      while (!TSelf.IsZero(x))
       {
-        var remainder = value % radix;
+        var remainder = x % b;
 
-        value /= radix;
+        x /= b;
 
-        if (TSelf.IsZero(value))
+        if (TSelf.IsZero(x))
           break;
-        else if (TSelf.Abs((value % radix) - remainder) > TSelf.One) // If the difference to the digit is greater than 1, then the number cannot jumbled.
+        else if (TSelf.Abs((x % b) - remainder) > TSelf.One) // If the difference to the digit is greater than 1, then the number cannot jumbled.
           return false;
       }
 

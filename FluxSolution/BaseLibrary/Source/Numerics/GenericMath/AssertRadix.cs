@@ -3,14 +3,9 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    public static TSelf AssertRadix<TSelf>(TSelf radix)
+    public static TSelf AssertRadix<TSelf>(TSelf radix, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IsRadix(radix) ? radix : throw new System.ArgumentOutOfRangeException(nameof(radix), "Radix must be an integer that is 2 or greater.");
-
-    //public static TRadix AssertRadix<TSelf, TRadix>(TSelf radix, out TRadix asserted)
-    //  where TSelf : System.Numerics.INumber<TSelf>
-    //  where TRadix : System.Numerics.INumber<TRadix>
-    //  => asserted = TRadix.CreateChecked(AssertRadix(radix));
+      => IsRadix(radix) ? radix : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), "Must be an integer value greater than or equal to 2.");
 
     public static bool IsRadix<TSelf>(TSelf radix)
       where TSelf : System.Numerics.INumber<TSelf> // Accomodate INumber so that other types than integer can be used if needed.

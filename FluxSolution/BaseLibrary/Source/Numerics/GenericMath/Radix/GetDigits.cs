@@ -3,11 +3,11 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Returns the digits (as numbers) of a value in the specified radix.</summary>
-    public static System.Span<TSelf> GetDigits<TSelf>(this TSelf value, TSelf radix)
+    /// <summary>PREVIEW! Returns the digits (as numbers) of x using base b.</summary>
+    public static System.Span<TSelf> GetDigits<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var reversed = GetDigitsReversed(value, radix);
+      var reversed = GetDigitsReversed(x, b);
       reversed.Reverse();
       return reversed;
     }

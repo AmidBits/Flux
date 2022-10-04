@@ -8,7 +8,7 @@ namespace Flux
     where TNode : System.Numerics.INumber<TNode>
     where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TNode, TMu>
   {
-    public TMu Interpolate(TNode v0, TNode v1, TNode v2, TNode v3, TMu mu)
+    public TMu Interpolate(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu)
     {
       var two = TMu.One + TMu.One;
       var half = TMu.One / two;
@@ -16,10 +16,10 @@ namespace Flux
 
       var mu2 = mu * mu;
 
-      var a0 = -half * v0 + oneAndHalf * v1 - oneAndHalf * v2 + half * v3;
-      var a1 = TMu.CreateChecked(v0) - (two + half) * v1 + two * v2 - half * v3;
-      var a2 = -half * v0 + half * v2;
-      var a3 = TMu.CreateChecked(v1);
+      var a0 = -half * n0 + oneAndHalf * n1 - oneAndHalf * n2 + half * n3;
+      var a1 = TMu.CreateChecked(n0) - (two + half) * n1 + two * n2 - half * n3;
+      var a2 = -half * n0 + half * n2;
+      var a3 = TMu.CreateChecked(n1);
 
       return mu * mu2 * a0 + mu2 * a1 + mu * a2 + a3;
     }

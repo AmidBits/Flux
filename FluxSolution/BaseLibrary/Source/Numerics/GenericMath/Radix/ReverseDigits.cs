@@ -3,19 +3,19 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Reverse the digits of the number in the specified radix, obtaining a new number.</summary>
-    public static TSelf ReverseDigits<TSelf>(this TSelf value, TSelf radix)
+    /// <summary>PREVIEW! Reverse the digits of <paramref name="x"/> using base <paramref name="b"/>, obtaining a new number.</summary>
+    public static TSelf ReverseDigits<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(radix);
+      AssertRadix(b);
 
       var reverse = TSelf.Zero;
 
-      while (!TSelf.IsZero(value))
+      while (!TSelf.IsZero(x))
       {
-        reverse = reverse * radix + (value % radix);
+        reverse = reverse * b + (x % b);
 
-        value /= radix;
+        x /= b;
       }
 
       return reverse;

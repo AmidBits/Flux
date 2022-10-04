@@ -5,24 +5,24 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Computes the integer log ceiling of an integer number in the specified radix (base).</summary>
+    /// <summary>PREVIEW! Computes the integer log ceiling of x using base b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TSelf IntegerLogCeiling<TSelf>(this TSelf value, TSelf radix)
+    public static TSelf IntegerLogCeiling<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertNonNegativeValue(value);
-      AssertRadix(radix);
+      AssertNonNegativeValue(x);
+      AssertRadix(b);
 
       var logCeiling = TSelf.Zero;
 
-      if (!TSelf.IsZero(value))
+      if (!TSelf.IsZero(x))
       {
-        if (!value.IsPow(radix))
+        if (!x.IsPow(b))
           logCeiling++;
 
-        while (value >= radix)
+        while (x >= b)
         {
-          value /= radix;
+          x /= b;
 
           logCeiling++;
         }
@@ -31,20 +31,20 @@ namespace Flux
       return logCeiling;
     }
 
-    /// <summary>PREVIEW! Computes the integer log floor of an integer number in the specified radix (base).</summary>
+    /// <summary>PREVIEW! Computes the integer log floor of <paramref name="x"/> using base <paramref name="b"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TSelf IntegerLogFloor<TSelf>(this TSelf value, TSelf radix)
+    public static TSelf IntegerLogFloor<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertNonNegativeValue(value);
-      AssertRadix(radix);
+      AssertNonNegativeValue(x);
+      AssertRadix(b);
 
       var logFloor = TSelf.Zero;
 
-      if (!TSelf.IsZero(value))
-        while (value >= radix)
+      if (!TSelf.IsZero(x))
+        while (x >= b)
         {
-          value /= radix;
+          x /= b;
 
           logFloor++;
         }
@@ -52,9 +52,9 @@ namespace Flux
       return logFloor;
     }
 
-    /// <summary>PREVIEW! Attempt to compute the integer log floor and ceiling of an integer number in the specified radix (base).</summary>
+    /// <summary>PREVIEW! Attempt to compute the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/> into the out parameters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static bool TryGetIntegerLog<TSelf>(this TSelf value, TSelf radix, out TSelf logFloor, out TSelf logCeiling)
+    public static bool TryGetIntegerLog<TSelf>(this TSelf x, TSelf b, out TSelf logFloor, out TSelf logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       logFloor = TSelf.Zero;
@@ -62,14 +62,17 @@ namespace Flux
 
       try
       {
-        if (!TSelf.IsZero(value))
+        AssertNonNegativeValue(x);
+        AssertRadix(b);
+
+        if (!TSelf.IsZero(x))
         {
-          if (!value.IsPow(radix))
+          if (!x.IsPow(b))
             logCeiling++;
 
-          while (value >= radix)
+          while (x >= b)
           {
-            value /= radix;
+            x /= b;
 
             logFloor++;
             logCeiling++;
@@ -78,10 +81,9 @@ namespace Flux
 
         return true;
       }
-      catch
-      {
-        return false;
-      }
+      catch { }
+
+      return false;
     }
   }
 }

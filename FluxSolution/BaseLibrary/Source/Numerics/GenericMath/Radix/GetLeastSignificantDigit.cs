@@ -3,10 +3,10 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Drop the leading digit of the number.</summary>
-    public static TSelf GetLeastSignificantDigit<TSelf>(this TSelf source, TSelf radix)
+    /// <summary>PREVIEW! Drop the leading digit of x using base b.</summary>
+    public static TSelf GetLeastSignificantDigit<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => source % AssertRadix(radix);
+      => x % AssertRadix(b);
   }
 }
 #endif

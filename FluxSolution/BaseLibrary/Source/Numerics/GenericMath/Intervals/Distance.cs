@@ -3,10 +3,10 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Returns the 1-dimensional distance between the two specified values.</summary>
-    public static TSelf Distance<TSelf>(this TSelf self, TSelf other)
+    /// <summary>PREVIEW! Returns the 1-dimensional distance between <paramref name="a"/> and <paramref name="b"/>.</summary>
+    public static TSelf Distance<TSelf>(this TSelf a, TSelf b)
       where TSelf : System.Numerics.INumberBase<TSelf>
-      => TSelf.Abs(other - self);
+      => TSelf.Abs(b - a);
   }
 }
 #endif

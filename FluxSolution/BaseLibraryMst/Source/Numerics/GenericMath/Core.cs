@@ -29,7 +29,7 @@ namespace GenericMath
     [TestMethod]
     public void DivRem()
     {
-      var quotient = (9.0).DivRem(6, out var remainder);
+      var quotient = (9.0).DivMod(6, out var remainder);
 
       Assert.AreEqual(1.5, quotient);
       Assert.AreEqual(3, remainder);
@@ -38,7 +38,7 @@ namespace GenericMath
     [TestMethod]
     public void DivRemTrunc()
     {
-      var quotient = (9.0).DivRemTrunc(6, out var remainder, out var truncatedQuotient);
+      var quotient = (9.0).DivModTrunc(6, out var remainder, out var truncatedQuotient);
 
       Assert.AreEqual(1.5, quotient);
       Assert.AreEqual(3, remainder);
@@ -48,7 +48,7 @@ namespace GenericMath
     [TestMethod]
     public void TruncDivRem()
     {
-      var truncatedQuotient = (9.0).TruncDivRem(6, out var remainder);
+      var truncatedQuotient = (9.0).TruncMod(6, out var remainder);
 
       Assert.AreEqual(1, truncatedQuotient);
       Assert.AreEqual(3, remainder);

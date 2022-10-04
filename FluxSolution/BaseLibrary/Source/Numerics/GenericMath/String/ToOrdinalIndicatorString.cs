@@ -3,11 +3,11 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Gets the ordinal indicator for the number. E.g. "st" for 1 and "nd" for 122.</summary>
-    public static System.ReadOnlySpan<char> GetOrdinalIndicator<TSelf>(this TSelf source)
+    /// <summary>PREVIEW! Gets the ordinal indicator for <paramref name="x"/>. E.g. "st" for 1 and "nd" for 122.</summary>
+    public static System.ReadOnlySpan<char> GetOrdinalIndicator<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var n = int.CreateSaturating(TSelf.Abs(source));
+      var n = int.CreateSaturating(TSelf.Abs(x));
 
       return (n % 10 is var o && o < 4 && n % 100 is var t && (t < 11 || t > 13) ? o : 0) switch
       {
@@ -18,10 +18,10 @@ namespace Flux
       };
     }
 
-    /// <summary>PREVIEW! Creates a new string with the number and the ordinal indicator. E.g. "1st" for 1 and "122nd" for 122.</summary>
-    public static System.ReadOnlySpan<char> ToOrdinalIndicatorString<TSelf>(this TSelf source)
+    /// <summary>PREVIEW! Creates a new string with <paramref name="x"/> and its ordinal indicator. E.g. "1st" for 1 and "122nd" for 122.</summary>
+    public static System.ReadOnlySpan<char> ToOrdinalIndicatorString<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => $"{source}{GetOrdinalIndicator(source)}";
+      => $"{x}{GetOrdinalIndicator(x)}";
   }
 }
 #endif

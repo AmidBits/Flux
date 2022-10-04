@@ -8,30 +8,30 @@ namespace Flux
 
   public static partial class BitOps
   {
-    /// <summary>PREVIEW! Computes the ceiling of the base 2 log of the value.</summary>
-    public static int GetIntegerLog2Ceiling<TSelf>(this TSelf value)
+    /// <summary>PREVIEW! Computes the ceiling of the base 2 log of <paramref name="x"/>.</summary>
+    public static int GetIntegerLog2Ceiling<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       // No zero check is necessary because it's not a power of two.
-      => TSelf.IsPow2(value.AssertNonNegativeValue()) ? value.GetShortestBitLength() - 1 : value.GetShortestBitLength();
+      => TSelf.IsPow2(x.AssertNonNegativeValue()) ? x.GetShortestBitLength() - 1 : x.GetShortestBitLength();
 
-    /// <summary>PREVIEW! Computes the floor of the base 2 log of the value. This is the common log function.</summary>
-    public static int GetIntegerLog2Floor<TSelf>(this TSelf value)
+    /// <summary>PREVIEW! Computes the floor of the base 2 log of <paramref name="x"/>. This is the common log function.</summary>
+    public static int GetIntegerLog2Floor<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsZero(value) ? 0 : value.AssertNonNegativeValue().GetShortestBitLength() - 1;
+      => TSelf.IsZero(x) ? 0 : x.AssertNonNegativeValue().GetShortestBitLength() - 1;
 
-    /// <summary>PREVIEW! Computes the floor and ceiling of the base 2 log of the value, using the .NET try paradigm.</summary>
-    public static bool TryGetIntegerLog2<TSelf>(this TSelf value, out int log2Floor, out int log2Ceiling)
+    /// <summary>PREVIEW! Computes the floor and ceiling of the base 2 log of <paramref name="x"/>, using the .NET try paradigm.</summary>
+    public static bool TryGetIntegerLog2<TSelf>(this TSelf x, out int log2Floor, out int log2Ceiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       log2Floor = 0;
       log2Ceiling = 0;
 
-      if (value.IsNonNegativeValue())
+      if (x.IsNonNegativeValue())
       {
-        if (!TSelf.IsZero(value))
+        if (!TSelf.IsZero(x))
         {
-          log2Floor = value.GetShortestBitLength() - 1;
-          log2Ceiling = TSelf.IsPow2(value) ? log2Floor : value.GetShortestBitLength();
+          log2Floor = x.GetShortestBitLength() - 1;
+          log2Ceiling = TSelf.IsPow2(x) ? log2Floor : x.GetShortestBitLength();
         }
 
         return true;

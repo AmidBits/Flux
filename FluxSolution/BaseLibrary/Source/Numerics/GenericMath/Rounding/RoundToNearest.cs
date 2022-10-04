@@ -4,28 +4,36 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>PREVIEW! Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
-    public static TBound RoundToNearest<TSelf, TBound>(this TSelf value, TBound boundTowardsZero, TBound boundAwayFromZero, HalfwayRounding mode)
+    public static TBound RoundToNearest<TSelf, TBound>(this TSelf x, TBound boundaryTowardsZero, TBound boundaryAwayFromZero, TSelf distanceTowardsZero, TSelf distanceAwayFromZero, HalfwayRounding mode)
       where TSelf : System.Numerics.INumber<TSelf>
       where TBound : System.Numerics.INumber<TBound>
     {
-      var tzDistance = TSelf.Abs(value - TSelf.CreateChecked(boundTowardsZero)); // Distance from value to towardsZero.
-      var afzDistance = TSelf.Abs(TSelf.CreateChecked(boundAwayFromZero) - value); // Distance from value to awayFromZero;
-
-      if (tzDistance < afzDistance) // It's a clear win for towardsZero.
-        return boundTowardsZero;
-      if (afzDistance < tzDistance) // It's a clear win for awayFromZero.
-        return boundAwayFromZero;
+      if (distanceTowardsZero < distanceAwayFromZero) // It's a clear win for towardsZero.
+        return boundaryTowardsZero;
+      if (distanceAwayFromZero < distanceTowardsZero) // It's a clear win for awayFromZero.
+        return boundaryAwayFromZero;
 
       return mode switch // It's exactly halfway, use appropriate rounding to resolve winner.
       {
-        HalfwayRounding.ToEven => TBound.IsEvenInteger(boundTowardsZero) ? boundTowardsZero : boundAwayFromZero,
-        HalfwayRounding.AwayFromZero => boundAwayFromZero,
-        HalfwayRounding.TowardZero => boundTowardsZero,
-        HalfwayRounding.ToNegativeInfinity => value < TSelf.Zero ? boundAwayFromZero : boundTowardsZero,
-        HalfwayRounding.ToPositiveInfinity => value < TSelf.Zero ? boundTowardsZero : boundAwayFromZero,
-        HalfwayRounding.ToOdd => TBound.IsOddInteger(boundAwayFromZero) ? boundAwayFromZero : boundTowardsZero,
+        HalfwayRounding.ToEven => TBound.IsEvenInteger(boundaryTowardsZero) ? boundaryTowardsZero : boundaryAwayFromZero,
+        HalfwayRounding.AwayFromZero => boundaryAwayFromZero,
+        HalfwayRounding.TowardZero => boundaryTowardsZero,
+        HalfwayRounding.ToNegativeInfinity => x < TSelf.Zero ? boundaryAwayFromZero : boundaryTowardsZero,
+        HalfwayRounding.ToPositiveInfinity => x < TSelf.Zero ? boundaryTowardsZero : boundaryAwayFromZero,
+        HalfwayRounding.ToOdd => TBound.IsOddInteger(boundaryAwayFromZero) ? boundaryAwayFromZero : boundaryTowardsZero,
         _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
       };
+    }
+
+    /// <summary>PREVIEW! Rounds a value to the nearest specified interval. The mode specifies how to round when between two intervals.</summary>
+    public static TBound RoundToNearest<TSelf, TBound>(this TSelf x, TBound boundaryTowardsZero, TBound boundaryAwayFromZero, HalfwayRounding mode)
+    where TSelf : System.Numerics.INumber<TSelf>
+    where TBound : System.Numerics.INumber<TBound>
+    {
+      var distanceTowardsZero = TSelf.Abs(x - TSelf.CreateChecked(boundaryTowardsZero)); // Distance from value to the boundary towardsZero.
+      var distanceAwayFromZero = TSelf.Abs(TSelf.CreateChecked(boundaryAwayFromZero) - x); // Distance from value to the boundary awayFromZero;
+
+      return RoundToNearest(x, boundaryTowardsZero, boundaryAwayFromZero, distanceTowardsZero, distanceAwayFromZero, mode);
     }
   }
 }

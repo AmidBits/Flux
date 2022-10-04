@@ -3,10 +3,10 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Creates a string with the number converted using the specified radix (base).</summary>
-    public static System.ReadOnlySpan<char> ToRadixString<TSelf>(this TSelf number, TSelf radix)
+    /// <summary>PREVIEW! Creates <paramref name="x"/> to text using base <paramref name="b"/>.</summary>
+    public static System.ReadOnlySpan<char> ToRadixString<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(number, Flux.Text.RuneSequences.Base62[..AssertRadix(int.CreateChecked(radix))]).ToString();
+      => ToRadixString(x, Flux.Text.RuneSequences.Base62[..AssertRadix(int.CreateChecked(b))]).ToString();
 
     /// <summary>PREVIEW! Converts the number to text using the specified symbols. The count of symbols represents the radix of conversion.</summary>
     public static System.Text.StringBuilder ToRadixString<TSelf>(this TSelf number, System.ReadOnlySpan<System.Text.Rune> symbols)
@@ -26,7 +26,7 @@ namespace Flux
       else
         while (number > TSelf.Zero)
         {
-          number = DivRem(number, TSelf.CreateChecked(symbols.Length), out var remainder);
+          number = DivMod(number, TSelf.CreateChecked(symbols.Length), out var remainder);
 
           sb.Insert(0, symbols[int.CreateChecked(TSelf.Abs(remainder))]);
         }

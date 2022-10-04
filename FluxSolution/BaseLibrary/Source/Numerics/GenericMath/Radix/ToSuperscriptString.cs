@@ -3,11 +3,11 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Converts the number to text using the specified symbols. The count of symbols represents the radix of conversion.</summary>
-    public static System.ReadOnlySpan<char> ToSuperscriptString<TSelf>(this TSelf number, TSelf radix)
+    /// <summary>PREVIEW! Converts <paramref name="x"/> to text using base <paramref name="b"/>.</summary>
+    public static System.ReadOnlySpan<char> ToSuperscriptString<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var digits = GetDigits(number, radix);
+      var digits = GetDigits(x, b);
       var chars = new char[digits.Length];
 
       for (var index = digits.Length - 1; index >= 0; index--)

@@ -3,7 +3,7 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
+    /// <summary>PREVIEW! Converts <paramref name="x"/> to text using cardinal numerals, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
     public static System.ReadOnlySpan<char> ToCompoundStringCardinalNumerals<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => NumberComposition.ToCardinalNumeralCompoundString(System.Numerics.BigInteger.CreateChecked(value));

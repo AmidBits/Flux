@@ -3,12 +3,11 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Returns the <see cref="System.Numerics.INumber{TSelf}">value</see> as the same type with the sign of any <see cref="System.Numerics.ISignedNumber{TSign}">sign</see>.</summary>
-    public static TResult CopySign<TSelf, TSign, TResult>(this TSelf value, TSign sign, out TResult result)
-      where TSelf : System.Numerics.INumber<TSelf>
-      where TSign : System.Numerics.ISignedNumber<TSign>
-      where TResult : System.Numerics.INumber<TResult>
-      => result = TResult.CreateChecked(TSign.IsNegative(sign) ? -TSelf.Abs(value) : TSelf.Abs(value));
+    /// <summary>Returns the value of <paramref name="x"/> with the sign of <paramref name="y"/>.</summary>
+    public static TValueSign CopySign<TAbsoluteValue, TValueSign>(this TAbsoluteValue x, TValueSign y)
+      where TAbsoluteValue : System.Numerics.INumber<TAbsoluteValue>
+      where TValueSign : System.Numerics.ISignedNumber<TValueSign>
+      => TValueSign.CreateChecked(TValueSign.IsNegative(y) ? -TAbsoluteValue.Abs(x) : TAbsoluteValue.Abs(x));
   }
 }
 #endif

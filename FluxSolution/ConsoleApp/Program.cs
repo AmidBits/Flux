@@ -21,6 +21,12 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var n = 99.96535789;
+      var r = n.Round(2, HalfwayRounding.ToEven);
+      var rtsd = n.TruncatingRound(2, HalfwayRounding.ToEven);
+
+      return;
+
       var array = new int[] { 2, 8, 10, 16 };
 
       foreach (var radix in array)
@@ -40,13 +46,13 @@ namespace ConsoleApp
             var lg2Af = value.GetIntegerLog2Floor();
             value.TryGetIntegerLog2(out var lg2Bf, out var lg2Bc);
 
-//            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : ({lg2Af:D2}, {lg2Bf:D2}) : [{logAf:D2}], {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}] : ({lg2Ac:D2}, {lg2Bc:D2})");
+            //            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : ({lg2Af:D2}, {lg2Bf:D2}) : [{logAf:D2}], {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}] : ({lg2Ac:D2}, {lg2Bc:D2})");
           }
-//          else
-//            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : [{logAf:D2}, {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}]");
+          //          else
+          //            System.Console.WriteLine($"{(value.IsPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : [{logAf:D2}, {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}]");
         }
 
-//        System.Console.WriteLine();
+        //        System.Console.WriteLine();
       }
     }
 
@@ -56,7 +62,7 @@ namespace ConsoleApp
 
       SetSize(0.75);
 
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1000000));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
 
       ResetEncoding(originalOutputEncoding);
 

@@ -22,7 +22,7 @@ namespace Flux
           break;
         case AlternatingDirection.TowardsMean:
           // Setup the inital outer edge value for inward iteration.
-          mean += step * GenericMath.TruncDivRem(count, TSelf.One + TSelf.One, out var _);
+          mean += step * GenericMath.TruncMod(count, TSelf.One + TSelf.One, out var _);
 
           for (var index = count - TSelf.One; index >= TSelf.Zero; index--)
           {
