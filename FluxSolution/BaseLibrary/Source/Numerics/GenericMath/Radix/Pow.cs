@@ -43,12 +43,12 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value.</returns>
-    public static TResult RoundToNearestPow<TSelf, TRadix, TResult>(this TSelf x, TRadix b, bool proper, HalfwayRounding mode, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
+    public static TResult RoundToNearestPow<TSelf, TRadix, TResult>(this TSelf x, TRadix b, bool properNearest, HalfwayRounding mode, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IPowerFunctions<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TResult : System.Numerics.INumber<TResult>
     {
-      GetNearestPow(x, b, proper, out nearestTowardsZero, out nearestAwayFromZero);
+      GetNearestPow(x, b, properNearest, out nearestTowardsZero, out nearestAwayFromZero);
 
       return RoundToNearest(x, nearestTowardsZero, nearestAwayFromZero, mode);
     }
@@ -61,12 +61,12 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value.</returns>
-    public static TResult RoundToPow<TSelf, TRadix, TResult>(this TSelf x, TRadix b, bool proper, FullRounding mode, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
+    public static TResult RoundToPow<TSelf, TRadix, TResult>(this TSelf x, TRadix b, bool properNearest, FullRounding mode, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IPowerFunctions<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TResult : System.Numerics.INumber<TResult>
     {
-      GetNearestPow(x, b, proper, out nearestTowardsZero, out nearestAwayFromZero);
+      GetNearestPow(x, b, properNearest, out nearestTowardsZero, out nearestAwayFromZero);
 
       return RoundTo(x, nearestTowardsZero, nearestAwayFromZero, mode);
     }

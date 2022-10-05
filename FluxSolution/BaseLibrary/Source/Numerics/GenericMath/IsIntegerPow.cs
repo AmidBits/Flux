@@ -3,8 +3,8 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Determines if <paramref name="x"/> is a power of <paramref name="b"/>. The sign is ignored so the function can be used on negative numbers as well.</summary>
-    public static bool IsPow<TSelf>(this TSelf x, TSelf b)
+    /// <summary>PREVIEW! Determines if <paramref name="x"/> is a power of <paramref name="b"/>.</summary>
+    public static bool IsIntegerPow<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertNonNegativeValue(x);
@@ -14,7 +14,7 @@ namespace Flux
         return true;
 
       if (b == (TSelf.One + TSelf.One)) // Special case for binary numbers, we can use dedicated IsPow2().
-        return BitOps.IsPow2(x);
+        return TSelf.IsPow2(x);
 
       if (x > TSelf.One)
         while (TSelf.IsZero(x % b))

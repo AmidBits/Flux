@@ -99,9 +99,9 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void TryGetIntegerLog()
+    public void TryIntegerLog()
     {
-      512.TryGetIntegerLog(10, out var logFloor, out var logCeiling);
+      512.TryIntegerLog(10, out var logFloor, out var logCeiling);
 
       Assert.AreEqual(2, logFloor);
       Assert.AreEqual(3, logCeiling);
@@ -116,7 +116,7 @@ namespace GenericMath
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, 512.IsPow(2));
+      Assert.AreEqual(true, 512.IsIntegerPow(2));
     }
 
     [TestMethod]

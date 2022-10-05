@@ -56,15 +56,6 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void TryGetIntegerLog2()
-    {
-      88.ToBigInteger().TryGetIntegerLog2(out var log2Floor, out var log2Ceiling);
-
-      Assert.AreEqual(6, log2Floor);
-      Assert.AreEqual(7, log2Ceiling);
-    }
-
-    [TestMethod]
     public void IsPow2()
     {
       Assert.AreEqual(false, 88.ToBigInteger().IsPow2());

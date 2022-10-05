@@ -7,62 +7,62 @@ namespace Flux
   public static partial class BitOps
   {
     /// <summary>PREVIEW! Get the two power-of-2 nearest to value.</summary>
-    /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
-    /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
-    /// <param name="towardsZero">Outputs the power-of-2 that is closer to zero.</param>
-    /// <param name="awayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <param name="x">The value for which the nearest power-of-2 will be found.</param>
+    /// <param name="properNearest">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
+    /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value as out parameters.</returns>
-    public static void GetNearestPow2<TSelf>(this TSelf value, bool proper, out TSelf towardsZero, out TSelf awayFromZero)
+    public static void GetNearestPow2<TSelf>(this TSelf x, bool properNearest, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (TSelf.IsPow2(value))
+      if (TSelf.IsPow2(x))
       {
-        if (proper)
+        if (properNearest)
         {
-          awayFromZero = value << 1;
-          towardsZero = value >> 1;
+          nearestAwayFromZero = x << 1;
+          nearestTowardsZero = x >> 1;
         }
         else
         {
-          awayFromZero = value;
-          towardsZero = value;
+          nearestAwayFromZero = x;
+          nearestTowardsZero = x;
         }
       }
       else
       {
-        awayFromZero = BitFoldRight(value - TSelf.One) + TSelf.One;
-        towardsZero = awayFromZero >> 1;
+        nearestAwayFromZero = BitFoldRight(x - TSelf.One) + TSelf.One;
+        nearestTowardsZero = nearestAwayFromZero >> 1;
       }
     }
 
-    /// <summary>PREVIEW! Find the nearest (to <paramref name="value"/>) of two power-of-2, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
-    /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
-    /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
+    /// <summary>PREVIEW! Find the nearest (to <paramref name="x"/>) of two power-of-2, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
+    /// <param name="x">The value for which the nearest power-of-2 will be found.</param>
+    /// <param name="properNearest">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
     /// <param name="mode">The halfway rounding mode to use, when halfway between two values.</param>
-    /// <param name="towardsZero">Outputs the power-of-2 that is closer to zero.</param>
-    /// <param name="awayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value.</returns>
-    public static TSelf RoundToNearestPow2<TSelf>(this TSelf value, bool proper, HalfwayRounding mode, out TSelf towardsZero, out TSelf awayFromZero)
+    public static TSelf RoundToNearestPow2<TSelf>(this TSelf x, bool properNearest, HalfwayRounding mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      GetNearestPow2(value, proper, out towardsZero, out awayFromZero);
+      GetNearestPow2(x, properNearest, out nearestTowardsZero, out nearestAwayFromZero);
 
-      return GenericMath.RoundToNearest(value, towardsZero, awayFromZero, mode);
+      return GenericMath.RoundToNearest(x, nearestTowardsZero, nearestAwayFromZero, mode);
     }
 
-    /// <summary>PREVIEW! Find the nearest (to <paramref name="value"/>) of two power-of-2, using the specified <see cref="FullRounding"/> <paramref name="mode"/>, and also return both power-of-2 as out parameters.</summary>
-    /// <param name="value">The value for which the power-of-2 will be found.</param>
-    /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
+    /// <summary>PREVIEW! Find the nearest (to <paramref name="x"/>) of two power-of-2, using the specified <see cref="FullRounding"/> <paramref name="mode"/>, and also return both power-of-2 as out parameters.</summary>
+    /// <param name="x">The value for which the power-of-2 will be found.</param>
+    /// <param name="properNearest">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
     /// <param name="mode">The full rounding mode to use.</param>
-    /// <param name="towardsZero">Outputs the power-of-2 that is closer to zero.</param>
-    /// <param name="awayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value.</returns>
-    public static TSelf RoundToPow2<TSelf>(this TSelf value, bool proper, FullRounding mode, out TSelf towardsZero, out TSelf awayFromZero)
+    public static TSelf RoundToPow2<TSelf>(this TSelf x, bool properNearest, FullRounding mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      GetNearestPow2(value, proper, out towardsZero, out awayFromZero);
+      GetNearestPow2(x, properNearest, out nearestTowardsZero, out nearestAwayFromZero);
 
-      return GenericMath.RoundTo(value, towardsZero, awayFromZero, mode);
+      return GenericMath.RoundTo(x, nearestTowardsZero, nearestAwayFromZero, mode);
     }
   }
 }
