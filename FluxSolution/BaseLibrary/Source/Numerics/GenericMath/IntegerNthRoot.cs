@@ -13,6 +13,20 @@ namespace Flux
       if (TSelf.IsNegative(y)) throw new System.ArgumentOutOfRangeException(nameof(y));
       if (n <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(n));
 
+      var nM1 = n - TSelf.One;
+      var c = TSelf.One;
+      var d = (nM1 + y) / n;
+      var e = (nM1 * d + y / IntegerPow(d, nM1)) / n;
+
+      while (c != d && c != e)
+      {
+        c = d;
+        d = e;
+        e = (nM1 * d + y / IntegerPow(d, nM1)) / n;
+      }
+
+      return d < e ? d : e;
+
       #region First brackets the answer between lo and hi by repeatedly multiplying hi by 2 until n is between lo and hi, then uses binary search to compute the exact answer.
       // 
 
@@ -59,20 +73,6 @@ namespace Flux
 
       //return s;
       #endregion
-
-      var nM1 = n - TSelf.One;
-      var c = TSelf.One;
-      var d = (nM1 + y) / n;
-      var e = (nM1 * d + y / IntegerPow(d, nM1)) / n;
-
-      while (c != d && c != e)
-      {
-        c = d;
-        d = e;
-        e = (nM1 * d + y / IntegerPow(d, nM1)) / n;
-      }
-
-      return d < e ? d : e;
     }
 
     /// <summary>Returns whether <paramref name="x"/> is a perfect <paramref name="n"/>th root of <paramref name="y"/>.</summary>

@@ -7,9 +7,10 @@ namespace Flux
     public static System.ReadOnlySpan<char> GetOrdinalIndicator<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var n = int.CreateSaturating(TSelf.Abs(x));
+      var nm100 = int.CreateChecked(TSelf.Abs(x) % TSelf.CreateChecked(100));
+      var nm10 = nm100 % 10;
 
-      return (n % 10 is var o && o < 4 && n % 100 is var t && (t < 11 || t > 13) ? o : 0) switch
+      return (nm10 is var o && o < 4 && nm100 is var t && (t < 11 || t > 13) ? o : 0) switch
       {
         1 => "st",
         2 => "nd",

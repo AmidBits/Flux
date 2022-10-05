@@ -7,7 +7,7 @@ namespace Flux
     /// <summary>PREVIEW! Common rounding: round half down, bias: negative infinity.</summary>
     public static TSelf HalfwayRoundDown<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.Ceiling(x - (TSelf.One / (TSelf.One + TSelf.One)));
+      => TSelf.Ceiling(x - (TSelf.One.Div2()));
 
     /// <summary>PREVIEW! Symmetric rounding: round half down, bias: towards zero.</summary>
     public static TSelf HalfwayRoundDownZero<TSelf>(this TSelf x)
@@ -17,7 +17,7 @@ namespace Flux
     /// <summary>PREVIEW! Common rounding: round half up, bias: positive infinity.</summary>
     public static TSelf HalfwayRoundUp<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.Floor(x + (TSelf.One / (TSelf.One + TSelf.One)));
+      => TSelf.Floor(x + (TSelf.One.Div2()));
 
     /// <summary>PREVIEW! Symmetric rounding: round half up, bias: away from zero.</summary>
     public static TSelf HalfwayRoundUpZero<TSelf>(this TSelf x)

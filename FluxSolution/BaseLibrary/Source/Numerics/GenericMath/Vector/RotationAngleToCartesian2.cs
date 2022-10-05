@@ -12,7 +12,11 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     public static (TSelf x, TSelf y) RotationAngleToCartesian2Ex<TSelf>(TSelf radAngle)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => RotationAngleToCartesian2(TSelf.Pi * (TSelf.One + TSelf.One) - (radAngle % (TSelf.Pi * (TSelf.One + TSelf.One)) is var rad && rad < TSelf.Zero ? rad + (TSelf.Pi * (TSelf.One + TSelf.One)) : rad) + (TSelf.Pi / (TSelf.One + TSelf.One)));
+    {
+      var pi2 = TSelf.Pi.Mul2();
+
+      return RotationAngleToCartesian2(pi2 - (radAngle % pi2 is var rad && rad < TSelf.Zero ? rad + pi2 : rad) + TSelf.Pi.Div2());
+    }
   }
 }
 #endif

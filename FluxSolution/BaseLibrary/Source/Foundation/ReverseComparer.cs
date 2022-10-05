@@ -11,20 +11,13 @@ namespace Flux
   {
     private readonly System.Collections.Generic.IComparer<T> m_sourceComparer;
 
-    private ReverseComparer()
-      : this(System.Collections.Generic.Comparer<T>.Default) { }
-    public ReverseComparer(System.Collections.Generic.IComparer<T> sourceComparer)
-      => m_sourceComparer = sourceComparer;
+    private ReverseComparer() : this(System.Collections.Generic.Comparer<T>.Default) { }
+    public ReverseComparer(System.Collections.Generic.IComparer<T> comparer) => m_sourceComparer = comparer;
 
-    public System.Collections.Generic.IComparer<T> Source
-      => m_sourceComparer;
+    public System.Collections.Generic.IComparer<T> SourceComparer => m_sourceComparer;
 
-    [System.Diagnostics.Contracts.Pure]
-    public override int Compare([System.Diagnostics.CodeAnalysis.AllowNull] T x, [System.Diagnostics.CodeAnalysis.AllowNull] T y)
-      => -m_sourceComparer.Compare(x, y);
+    public override int Compare(T? x, T? y) => -m_sourceComparer.Compare(x, y);
 
-    [System.Diagnostics.Contracts.Pure]
-    public override string ToString()
-      => $"{GetType().Name} {{ {m_sourceComparer} }}";
+    public override string ToString() => $"{GetType().Name} {{ {m_sourceComparer} }}";
   }
 }

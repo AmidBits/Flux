@@ -23,7 +23,7 @@ namespace Flux
     public TMu Interpolate(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu)
     {
       var one = TMu.One;
-      var two = one + one;
+      var two = TMu.One.Mul2();
       var three = two + one;
 
       var mu2 = mu * mu;

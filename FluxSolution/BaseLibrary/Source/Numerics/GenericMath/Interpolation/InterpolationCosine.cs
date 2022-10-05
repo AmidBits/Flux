@@ -13,7 +13,7 @@ namespace Flux
   {
     public TMu Interpolate(TNode n1, TNode n2, TMu mu)
     {
-      var mu2 = (TMu.One - TMu.CosPi(mu)) / (TMu.One + TMu.One);
+      var mu2 = (TMu.One - TMu.CosPi(mu)).Div2();
 
       return (TMu.One - mu2) * n1 + mu2 * n2;
     }
