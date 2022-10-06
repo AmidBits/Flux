@@ -24,7 +24,7 @@ namespace Flux
 
     /// <summary>Compute the perimeter length of the polygon.</summary>
     public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<CartesianCoordinate2R> source)
-      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + CartesianCoordinate2R.EuclideanDistance(e1, e2), (a, c) => a);
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e2 - e1).EuclideanLength(), (a, c) => a);
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<CartesianCoordinate2R> source)
@@ -127,7 +127,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      using var e = source.PartitionTuple2(true, (v1, v2, index) => CartesianCoordinate2R.EuclideanDistance(v1, v2)).GetEnumerator();
+      using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).EuclideanLength()).GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -282,66 +282,127 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
 
-    /// <summary>Returns the angle to the 2D X-axis.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public double AngleToAxisX
-      => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_x);
-    /// <summary>Returns the angle to the 2D Y-axis.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public double AngleToAxisY
-      => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_y);
+    ///// <summary>Returns the angle to the 2D X-axis.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public double AngleToAxisX
+    //  => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_x);
+    ///// <summary>Returns the angle to the 2D Y-axis.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public double AngleToAxisY
+    //  => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_y);
 
-    /// <summary>Returns the X-slope of the line to the point (x, y).</summary>
+    ///// <summary>Returns the X-slope of the line to the point (x, y).</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public double LineSlopeX
+    //  => System.Math.CopySign(m_x / m_y, m_x);
+    ///// <summary>Returns the Y-slope of the line to the point (x, y).</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public double LineSlopeY
+    //  => System.Math.CopySign(m_y / m_x, m_y);
+
+    /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     [System.Diagnostics.Contracts.Pure]
-    public double LineSlopeX
-      => System.Math.CopySign(m_x / m_y, m_x);
-    /// <summary>Returns the Y-slope of the line to the point (x, y).</summary>
+    public double ChebyshevLength(double edgeLength = 1)
+      => System.Math.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength));
+
+    /// <summary>Compute the Euclidean length of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public double LineSlopeY
-      => System.Math.CopySign(m_y / m_x, m_y);
+    public double EuclideanLength()
+      => System.Math.Sqrt(EuclideanLengthSquared());
+
+    /// <summary>Compute the Euclidean length squared of the vector.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public double EuclideanLengthSquared()
+      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2);
+
+    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    [System.Diagnostics.Contracts.Pure]
+    public double ManhattanLength(double edgeLength = 1)
+      => System.Math.Abs(m_x / edgeLength) + System.Math.Abs(m_y / edgeLength);
+
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2R Normalized()
+      => EuclideanLength() is var m && m != 0 ? this / m : this;
+
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    [System.Diagnostics.Contracts.Pure]
+    public int OrthantNumber(CartesianCoordinate2R center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2),
+        OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2),
+        OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+
+    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2R PerpendicularCcw()
+      => new(-m_y, m_x);
+
+    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2R PerpendicularCw()
+      => new(m_y, -m_x);
+
+    #region To..
+
+    /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2I ToCartesianCoordinate2I(System.MidpointRounding rounding)
+      => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)));
+
+    /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="Flux.FullRoundingBehavior"/>.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2I ToCartesianCoordinate2I(Flux.FullRoundingBehavior rounding)
+      => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
+
+    /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="Flux.HalfRoundingBehavior"/>.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2I ToCartesianCoordinate2I(Flux.HalfRoundingBehavior rounding)
+      => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
 
     /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="EllipseGeometry"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public EllipseGeometry ToEllipseGeometry()
       => new(m_x, m_y);
-    /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2I  ToGridCoordinate2(System.MidpointRounding rounding)
-      => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="Flux.FullRoundingBehavior"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2I  ToGridCoordinate2(Flux.FullRoundingBehavior rounding)
-      => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="Flux.HalfRoundingBehavior"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2I  ToGridCoordinate2(Flux.HalfRoundingBehavior rounding)
-      => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
+
     /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="PolarCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public PolarCoordinate ToPolarCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
+
     /// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     [System.Diagnostics.Contracts.Pure]
     public Angle ToRotationAngle()
       => (Angle)ConvertCartesian2ToRotationAngle(m_x, m_y);
+
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     [System.Diagnostics.Contracts.Pure]
     public Angle ToRotationAngleEx()
       => (Angle)ConvertCartesian2ToRotationAngleEx(m_x, m_y);
+
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector128"/> with the cartesian values as vector elements [X, Y].</summary>
     [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector128<double> ToVector128()
       => System.Runtime.Intrinsics.Vector128.Create(m_x, m_y);
+
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, <paramref name="z"/>, <paramref name="w"/>].</summary>
     [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector256<double> ToVector256(double z, double w)
       => System.Runtime.Intrinsics.Vector256.Create(m_x, m_y, z, w);
+
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, X, Y], i.e. the values are duplicated.</summary>
     [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector256<double> ToVector256()
       => ToVector256(m_x, m_y);
+
+    #endregion
 
     #region Static methods
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
@@ -351,7 +412,7 @@ namespace Flux
     /// </summary>
     [System.Diagnostics.Contracts.Pure]
     public static double AngleBetween(CartesianCoordinate2R a, CartesianCoordinate2R b)
-      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (CartesianCoordinate2R.EuclideanLength(a) * CartesianCoordinate2R.EuclideanLength(b)), -1, 1));
+      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -1, 1));
 
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
@@ -374,30 +435,6 @@ namespace Flux
     public static double DotProduct(CartesianCoordinate2R a, CartesianCoordinate2R b)
       => a.X * b.X + a.Y * b.Y;
 
-    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static double ChebyshevDistance(CartesianCoordinate2R source, CartesianCoordinate2R target, double edgeLength = 1)
-      => ChebyshevLength(target - source, edgeLength);
-    /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static double ChebyshevLength(CartesianCoordinate2R source, double edgeLength = 1)
-      => System.Math.Max(System.Math.Abs(source.m_x / edgeLength), System.Math.Abs(source.m_y / edgeLength));
-
-    /// <summary>Compute the Euclidean distance from vector a to vector b.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static double EuclideanDistance(CartesianCoordinate2R source, CartesianCoordinate2R target)
-      => EuclideanLength(target - source);
-    /// <summary>Compute the Euclidean length of the vector.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static double EuclideanLength(CartesianCoordinate2R source)
-      => System.Math.Sqrt(EuclideanLengthSquared(source));
-    /// <summary>Compute the Euclidean length squared of the vector.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static double EuclideanLengthSquared(CartesianCoordinate2R source)
-      => System.Math.Pow(source.m_x, 2) + System.Math.Pow(source.m_y, 2);
-
     /// <summary>Create a new random vector in the range [(0, 0), (toExlusiveX, toExclusiveY)] using the specified rng.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate2R FromRandomAbsolute(double toExclusiveX, double toExclusiveY, System.Random rng)
@@ -411,7 +448,7 @@ namespace Flux
     /// <summary>Returns the direction cosines.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate2R GetDirectionCosines(CartesianCoordinate2R source, CartesianCoordinate2R target)
-      => Normalize(target - source);
+      => (target - source).Normalized();
     /// <summary>Returns the direction ratios.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate2R GetDirectionRatios(CartesianCoordinate2R source, CartesianCoordinate2R target)
@@ -448,45 +485,9 @@ namespace Flux
       return new CartesianCoordinate2R(source.X * imu + target.X * mu, source.Y * imu + target.Y * mu);
     }
 
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static double ManhattanDistance(CartesianCoordinate2R source, CartesianCoordinate2R target, double edgeLength = 1)
-      => ManhattanLength(target - source, edgeLength);
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static double ManhattanLength(CartesianCoordinate2R source, double edgeLength = 1)
-      => System.Math.Abs(source.m_x / edgeLength) + System.Math.Abs(source.m_y / edgeLength);
-
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate2R Nlerp(CartesianCoordinate2R source, CartesianCoordinate2R target, double mu)
-      => Normalize(Lerp(source, target, mu));
-
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2R Normalize(CartesianCoordinate2R source)
-      => EuclideanLength(source) is var m && m != 0 ? source / m : source;
-
-    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static int OrthantNumber(CartesianCoordinate2R source, CartesianCoordinate2R center, OrthantNumbering numbering)
-      => numbering switch
-      {
-        OrthantNumbering.Traditional => source.m_y >= center.m_y ? (source.m_x >= center.m_x ? 0 : 1) : (source.m_x >= center.m_x ? 3 : 2),
-        OrthantNumbering.BinaryNegativeAs1 => (source.m_x >= center.m_x ? 0 : 1) + (source.m_y >= center.m_y ? 0 : 2),
-        OrthantNumbering.BinaryPositiveAs1 => (source.m_x < center.m_x ? 0 : 1) + (source.m_y < center.m_y ? 0 : 2),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
-      };
-
-    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2R PerpendicularCcw(CartesianCoordinate2R source)
-      => new(-source.m_y, source.m_x);
-    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate2R PerpendicularCw(CartesianCoordinate2R source)
-      => new(source.m_y, -source.m_x);
+      => Lerp(source, target, mu).Normalized();
 
     /// <summary>Returns the perpendicular distance from the 2D point (x, y) to the to the 2D line (x1, y1) to (x2, y2).</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -494,7 +495,7 @@ namespace Flux
     {
       var cc21 = b - a;
 
-      return EuclideanLength(cc21 * (source - a)) / EuclideanLength(cc21);
+      return (cc21 * (source - a)).EuclideanLength() / cc21.EuclideanLength();
     }
 
     /// <summary>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</summary>
@@ -573,7 +574,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate2R o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength(this)}) }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength()}) }}";
     #endregion Object overrides
   }
 }

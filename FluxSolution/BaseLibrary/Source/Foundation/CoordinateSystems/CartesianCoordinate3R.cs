@@ -24,7 +24,7 @@ namespace Flux
 
     /// <summary>Compute the perimeter length of the polygon.</summary>
     public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<CartesianCoordinate3R> source)
-      => source.AggregateTuple2(0.0, true, (a, e1, e2, i) => a + CartesianCoordinate3R.EuclideanLength(e2 - e1), (a, c) => a);
+      => source.AggregateTuple2(0.0, true, (a, e1, e2, i) => a + (e2 - e1).EuclideanLength(), (a, c) => a);
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<CartesianCoordinate3R> source)
@@ -81,7 +81,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      using var e = source.PartitionTuple2(true, (v1, v2, index) => CartesianCoordinate3R.EuclideanLength(v2 - v1)).GetEnumerator();
+      using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).EuclideanLength()).GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -220,7 +220,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CartesianCoordinate3R
-    : System.IEquatable<CartesianCoordinate3R>
+    : System.IEquatable<CartesianCoordinate3R>, IVector3<double>
   {
     public static readonly CartesianCoordinate3R Zero;
 
@@ -239,53 +239,104 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public double Z { get => m_z; init => m_z = value; }
 
-    /// <summary>Returns the axes angles to the 3D X-axis.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public (double toYaxis, double toZaxis) AnglesToAxisX
-      => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_x), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2)), m_x));
-    /// <summary>Returns the axes angles to the 3D Y-axis.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public (double toXaxis, double toZaxis) AnglesToAxisY
-      => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_y), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2)), m_y));
-    /// <summary>Returns the axes angles to the 3D Z-axis.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public (double toXaxis, double toYaxis) AnglesToAxisZ
-      => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_z), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_z));
+    ///// <summary>Returns the axes angles to the 3D X-axis.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public (double toYaxis, double toZaxis) AnglesToAxisX
+    //  => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_x), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2)), m_x));
+    ///// <summary>Returns the axes angles to the 3D Y-axis.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public (double toXaxis, double toZaxis) AnglesToAxisY
+    //  => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_y), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2)), m_y));
+    ///// <summary>Returns the axes angles to the 3D Z-axis.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public (double toXaxis, double toYaxis) AnglesToAxisZ
+    //  => (System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2)), m_z), System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2)), m_z));
 
-    /// <summary>Returns the angle to the 3D X-axis.</summary>
+    ///// <summary>Returns the angle to the 3D X-axis.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public double AngleToAxisX
+    //  => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2)), m_x);
+    ///// <summary>Returns the angle to the 3D Y-axis.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public double AngleToAxisY
+    //  => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2) + System.Math.Pow(m_x, 2)), m_y);
+    ///// <summary>Returns the angle to the 3D Z-axis.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public double AngleToAxisZ
+    //  => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2)), m_z);
+
+    /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     [System.Diagnostics.Contracts.Pure]
-    public double AngleToAxisX
-      => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2)), m_x);
-    /// <summary>Returns the angle to the 3D Y-axis.</summary>
+    public double ChebyshevLength(double edgeLength = 1)
+      => Maths.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength), System.Math.Abs(m_z / edgeLength));
+
+    /// <summary>Compute the Euclidean length of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public double AngleToAxisY
-      => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_z, 2) + System.Math.Pow(m_x, 2)), m_y);
-    /// <summary>Returns the angle to the 3D Z-axis.</summary>
+    public double EuclideanLength()
+      => System.Math.Sqrt(EuclideanLengthSquared());
+
+    /// <summary>Compute the Euclidean length squared of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public double AngleToAxisZ
-      => System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2)), m_z);
+    public double EuclideanLengthSquared()
+      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2);
+
+    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    [System.Diagnostics.Contracts.Pure]
+    public double ManhattanLength(double edgeLength = 1)
+      => System.Math.Abs(m_x / edgeLength) + System.Math.Abs(m_y / edgeLength) + System.Math.Abs(m_z / edgeLength);
+
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate3R Normalized()
+      => EuclideanLength() is var m && m != 0 ? this / m : this;
+
+    /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    [System.Diagnostics.Contracts.Pure]
+    public int OrthantNumber(CartesianCoordinate3R center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => m_z >= center.m_z ? (m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2)) : (m_y >= center.m_y ? (m_x >= center.m_x ? 7 : 6) : (m_x >= center.m_x ? 4 : 5)),
+        OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2) + (m_z >= center.m_z ? 0 : 4),
+        OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2) + (m_z < center.m_z ? 0 : 4),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+
+    /// <summary>Always works if the input is non-zero. Does not require the input to be normalized, and does not normalize the output.</summary>
+    /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate3R Orthogonal()
+      => System.Math.Abs(m_x) > System.Math.Abs(m_z) ? new CartesianCoordinate3R(-m_y, m_x, 0) : new CartesianCoordinate3R(0, -m_x, m_y);
+
+    #region To..
+
+    /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate3I ToCartesianCoordinate3I(System.MidpointRounding rounding)
+      => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)), System.Convert.ToInt32(System.Math.Round(m_z, rounding)));
+
+    /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="Flux.FullRoundingBehavior"/>.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate3I ToCartesianCoordinate3I(Flux.FullRoundingBehavior rounding)
+      => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
+
+    /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="Flux.HalfRoundingBehavior"/>.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate3I ToCartesianCoordinate3I(Flux.HalfRoundingBehavior rounding)
+      => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
 
     /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
-    /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3I ToGridCoordinate3(System.MidpointRounding rounding)
-      => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)), System.Convert.ToInt32(System.Math.Round(m_z, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="Flux.FullRoundingBehavior"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3I ToGridCoordinate3(Flux.FullRoundingBehavior rounding)
-      => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
-    /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="Flux.HalfRoundingBehavior"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3I ToGridCoordinate3(Flux.HalfRoundingBehavior rounding)
-      => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
+
     /// <summary>Returns a quaternion from two vectors.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
     [System.Diagnostics.Contracts.Pure]
     public Quaternion ToQuaternion(CartesianCoordinate3R rotatingTo)
       => Quaternion.FromTwoVectors(this, rotatingTo);
+
     /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="SphericalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public SphericalCoordinate ToSphericalCoordinate()
@@ -293,14 +344,23 @@ namespace Flux
       var x2y2 = m_x * m_x + m_y * m_y;
       return new SphericalCoordinate(System.Math.Sqrt(x2y2 + m_z * m_z), System.Math.Atan2(System.Math.Sqrt(x2y2), m_z) + System.Math.PI, System.Math.Atan2(m_y, m_x) + System.Math.PI);
     }
+
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, Z, <paramref name="w"/>].</summary>
     [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector256<double> ToVector256(double w)
       => System.Runtime.Intrinsics.Vector256.Create(m_x, m_y, m_z, w);
+
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, Z, 0].</summary>
     [System.Diagnostics.Contracts.Pure]
     public System.Runtime.Intrinsics.Vector256<double> ToVector256()
       => ToVector256(0);
+
+    /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="System.Numerics.Vector3"/>.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public System.Numerics.Vector3 ToVector3()
+      => new((float)m_x, (float)m_y, (float)m_z);
+
+    #endregion
 
     #region Static methods
     /// <summary>(3D) Calculate the angle between the source vector and the specified target vector.
@@ -310,7 +370,7 @@ namespace Flux
     /// </summary>
     [System.Diagnostics.Contracts.Pure]
     public static double AngleBetween(CartesianCoordinate3R a, CartesianCoordinate3R b)
-      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (CartesianCoordinate3R.EuclideanLength(a) * CartesianCoordinate3R.EuclideanLength(b)), -1, 1));
+      => System.Math.Acos(System.Math.Clamp(DotProduct(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -1, 1));
 
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3R ConvertEclipticToEquatorial(CartesianCoordinate3R ecliptic, double obliquityOfTheEcliptic)
@@ -329,30 +389,6 @@ namespace Flux
     public static double DotProduct(CartesianCoordinate3R a, CartesianCoordinate3R b)
       => a.m_x * b.m_x + a.m_y * b.m_y + a.m_z * b.m_z;
 
-    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static double ChebyshevDistance(CartesianCoordinate3R source, CartesianCoordinate3R target, double edgeLength = 1)
-      => ChebyshevLength(target - source, edgeLength);
-    /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static double ChebyshevLength(CartesianCoordinate3R source, double edgeLength = 1)
-      => Maths.Max(System.Math.Abs(source.m_x / edgeLength), System.Math.Abs(source.m_y / edgeLength), System.Math.Abs(source.m_z / edgeLength));
-
-    /// <summary>Compute the Euclidean distance from vector a to vector b.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static double EuclideanDistance(CartesianCoordinate3R source, CartesianCoordinate3R target)
-      => CartesianCoordinate3R.EuclideanLength(target - source);
-    /// <summary>Compute the Euclidean length of the vector.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static double EuclideanLength(CartesianCoordinate3R source)
-      => System.Math.Sqrt(EuclideanLengthSquared(source));
-    /// <summary>Compute the Euclidean length squared of the vector.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static double EuclideanLengthSquared(CartesianCoordinate3R source)
-      => System.Math.Pow(source.m_x, 2) + System.Math.Pow(source.m_y, 2) + System.Math.Pow(source.m_z, 2);
-
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3R FromRandomAbsolute(double toExclusiveX, double toExclusiveY, double toExclusiveZ, System.Random rng)
@@ -365,7 +401,7 @@ namespace Flux
     /// <summary>Returns the direction cosines.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3R GetDirectionCosines(CartesianCoordinate3R source, CartesianCoordinate3R target)
-      => Normalize(target - source);
+      => (target - source).Normalized();
     /// <summary>Returns the direction ratios.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3R GetDirectionRatios(CartesianCoordinate3R source, CartesianCoordinate3R target)
@@ -397,42 +433,9 @@ namespace Flux
       return new CartesianCoordinate3R(source.m_x * imu + target.m_x * mu, source.m_y * imu + target.m_y * mu, source.m_z * imu + target.m_z * mu);
     }
 
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static double ManhattanDistance(CartesianCoordinate3R source, CartesianCoordinate3R target, double edgeLength = 1)
-      => ManhattanLength(target - source, edgeLength);
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static double ManhattanLength(CartesianCoordinate3R source, double edgeLength = 1)
-      => System.Math.Abs(source.m_x / edgeLength) + System.Math.Abs(source.m_y / edgeLength) + System.Math.Abs(source.m_z / edgeLength);
-
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3R Nlerp(CartesianCoordinate3R source, CartesianCoordinate3R target, double mu)
-      => Normalize(Lerp(source, target, mu));
-
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate3R Normalize(CartesianCoordinate3R source)
-      => EuclideanLength(source) is var m && m != 0 ? source / m : source;
-
-    /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static int OrthantNumber(CartesianCoordinate3R source, CartesianCoordinate3R center, OrthantNumbering numbering)
-      => numbering switch
-      {
-        OrthantNumbering.Traditional => source.m_z >= center.m_z ? (source.m_y >= center.m_y ? (source.m_x >= center.m_x ? 0 : 1) : (source.m_x >= center.m_x ? 3 : 2)) : (source.m_y >= center.m_y ? (source.m_x >= center.m_x ? 7 : 6) : (source.m_x >= center.m_x ? 4 : 5)),
-        OrthantNumbering.BinaryNegativeAs1 => (source.m_x >= center.m_x ? 0 : 1) + (source.m_y >= center.m_y ? 0 : 2) + (source.m_z >= center.m_z ? 0 : 4),
-        OrthantNumbering.BinaryPositiveAs1 => (source.m_x < center.m_x ? 0 : 1) + (source.m_y < center.m_y ? 0 : 2) + (source.m_z < center.m_z ? 0 : 4),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
-      };
-
-    /// <summary>Always works if the input is non-zero. Does not require the input to be normalized, and does not normalize the output.</summary>
-    /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
-    [System.Diagnostics.Contracts.Pure]
-    public static CartesianCoordinate3R Orthogonal(CartesianCoordinate3R source)
-      => System.Math.Abs(source.m_x) > System.Math.Abs(source.m_z) ? new CartesianCoordinate3R(-source.m_y, source.m_x, 0) : new CartesianCoordinate3R(0, -source.m_x, source.m_y);
+      => Lerp(source, target, mu).Normalized();
 
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
@@ -503,7 +506,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate3R o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y, m_z);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength(this)}) }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength()}) }}";
     #endregion Object overrides
   }
 }

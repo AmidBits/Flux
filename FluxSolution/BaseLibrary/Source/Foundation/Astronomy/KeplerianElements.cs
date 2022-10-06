@@ -94,9 +94,9 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static EulerAngles ToEulerAngles(CartesianCoordinate3R x, CartesianCoordinate3R y, CartesianCoordinate3R z)
     {
-      x = CartesianCoordinate3R.Normalize(x);
-      y = CartesianCoordinate3R.Normalize(y);
-      z = CartesianCoordinate3R.Normalize(z);
+      x = x.Normalized();
+      y = y.Normalized();
+      z = z.Normalized();
 
       var alpha = System.Math.Atan2(-x.Y, z.X);
       var beta = System.Math.Atan2(z.Z, System.Math.Sqrt(z.X * z.X + z.Y * z.Y));

@@ -36,81 +36,72 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public int Z { get => m_z; init => m_z = value; }
 
+    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public double ChebyshevLength()
+      => Maths.Max(System.Math.Abs(m_x), System.Math.Abs(m_y), System.Math.Abs(m_z));
+
+    /// <summary>Compute the length (or magnitude) of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public double EuclideanLength()
+      => System.Math.Sqrt(EuclideanLengthSquared());
+    /// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public double EuclideanLengthSquared()
+      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2);
+
+    /// <summary>Compute the Manhattan distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public int ManhattanLength()
+      => System.Math.Abs(m_x) + System.Math.Abs(m_y) + System.Math.Abs(m_z);
+
+    /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    [System.Diagnostics.Contracts.Pure]
+    public int OrthantNumber(CartesianCoordinate3I center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => m_z >= center.m_z ? (m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2)) : (m_y >= center.m_y ? (m_x >= center.m_x ? 7 : 6) : (m_x >= center.m_x ? 4 : 5)),
+        OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2) + (m_z >= center.m_z ? 0 : 4),
+        OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2) + (m_z < center.m_z ? 0 : 4),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+
+    #region To..
+
     /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3R ToCartesianCoordinate3()
+    public CartesianCoordinate3R ToCartesianCoordinate3R()
       => new(m_x, m_y, m_z);
-    /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="CylindricalCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public CylindricalCoordinate ToCylindricalCoordinate()
-      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
-    /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="PolarCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public PolarCoordinate ToPolarCoordinate()
-      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
-    /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="Size3"/>.</summary>
+
+    /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a <see cref="Size2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public Size3 ToSize3()
       => new(m_x, m_y, m_z);
-    /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="SphericalCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public SphericalCoordinate ToSphericalCoordinate()
-    {
-      var x2y2 = m_x * m_x + m_y * m_y;
-      return new SphericalCoordinate(System.Math.Sqrt(x2y2 + m_z * m_z), System.Math.Atan2(System.Math.Sqrt(x2y2), m_z) + System.Math.PI, System.Math.Atan2(m_y, m_x) + System.Math.PI);
-    }
+
     /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public long ToUniqueIndex(int gridWidth, int gridHeight)
       => ToUniqueIndex(m_x, m_y, m_z, gridWidth, gridHeight);
-    /// <summary>Converts the <see cref="CartesianCoordinate3I"/> to a <see cref="System.Numerics.Vector3"/>.</summary>
+
+    /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a <see cref="System.Numerics.Vector2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public System.Numerics.Vector3 ToVector3()
       => new(m_x, m_y, m_z);
 
+    #endregion
+
     #region Static methods
-    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistance(CartesianCoordinate3I p1, CartesianCoordinate3I p2)
-      => ChebyshevLength(p2 - p1);
-    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevLength(CartesianCoordinate3I p)
-      => Maths.Max(System.Math.Abs(p.m_x), System.Math.Abs(p.m_y), System.Math.Abs(p.m_z));
 
     /// <summary>Create a new vector by computing the cross product, i.e. cross(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cross_product"/>
     public static CartesianCoordinate3I CrossProduct(CartesianCoordinate3I p1, CartesianCoordinate3I p2)
       => new(p1.m_y * p2.m_z - p1.m_z * p2.m_y, p1.m_z * p2.m_x - p1.m_x * p2.m_z, p1.m_x * p2.m_y - p1.m_y * p2.m_x);
 
-    /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static CartesianCoordinate3I DivideCeiling(CartesianCoordinate3I p, double value)
-      => new((int)System.Math.Ceiling(p.m_x / value), (int)System.Math.Ceiling(p.m_y / value), (int)System.Math.Ceiling(p.m_z / value));
-    /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static CartesianCoordinate3I DivideFloor(CartesianCoordinate3I p, double value)
-      => new((int)System.Math.Floor(p.m_x / value), (int)System.Math.Floor(p.m_y / value), (int)System.Math.Floor(p.m_z / value));
-
     /// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
     public static int DotProduct(CartesianCoordinate3I p1, CartesianCoordinate3I p2)
       => p1.m_x * p2.m_x + p1.m_y * p2.m_y + p1.m_z * p2.m_z;
-
-    /// <summary>Compute the euclidean distance of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistance(CartesianCoordinate3I p1, CartesianCoordinate3I p2)
-      => EuclideanLength(p2 - p1);
-    /// <summary>Compute the euclidean distance squared of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistanceSquare(CartesianCoordinate3I p1, CartesianCoordinate3I p2)
-      => EuclideanLengthSquared(p2 - p1);
-    /// <summary>Compute the length (or magnitude) of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanLength(CartesianCoordinate3I p)
-      => System.Math.Sqrt(EuclideanLengthSquared(p));
-    /// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanLengthSquared(CartesianCoordinate3I p)
-      => System.Math.Pow(p.m_x, 2) + System.Math.Pow(p.m_y, 2) + System.Math.Pow(p.m_z, 2);
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static CartesianCoordinate3I FromRandomAbsolute(int toExclusiveX, int toExclusiveY, int toExclusiveZ)
@@ -162,22 +153,6 @@ namespace Flux
 
       return new(System.Convert.ToInt32(source.X * imu + target.X * mu), System.Convert.ToInt32(source.Y * imu + target.Y * mu), System.Convert.ToInt32(source.Z * imu + target.Z * mu));
     }
-
-    /// <summary>Compute the Manhattan distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static int ManhattanDistance(CartesianCoordinate3I p1, CartesianCoordinate3I p2)
-      => ManhattanLength(p2 - p1);
-    /// <summary>Compute the Manhattan distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static int ManhattanLength(CartesianCoordinate3I p)
-      => System.Math.Abs(p.m_x) + System.Math.Abs(p.m_y) + System.Math.Abs(p.m_z);
-
-    /// <summary>Create a new vector with the ceiling(product) from each member multiplied with the value.</summary>
-    public static CartesianCoordinate3I MultiplyCeiling(CartesianCoordinate3I p, double value)
-      => new((int)System.Math.Ceiling(p.m_x * value), (int)System.Math.Ceiling(p.m_y * value), (int)System.Math.Ceiling(p.m_z * value));
-    /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-    public static CartesianCoordinate3I MultiplyFloor(CartesianCoordinate3I p, double value)
-      => new((int)System.Math.Floor(p.m_x * value), (int)System.Math.Floor(p.m_y * value), (int)System.Math.Floor(p.m_z * value));
 
     //public static Point3 Nlerp(Point3 source, Point3 target, double mu)
     //  => Lerp(source, target, mu).Normalized();
@@ -236,6 +211,7 @@ namespace Flux
     /// <summary>Converts the (x, y, z) point to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
     public static long ToUniqueIndex(int x, int y, int z, int gridWidth, int gridHeight)
       => x + (y * gridWidth) + (z * gridWidth * gridHeight);
+
     #endregion Static methods
 
     #region Overloaded operators

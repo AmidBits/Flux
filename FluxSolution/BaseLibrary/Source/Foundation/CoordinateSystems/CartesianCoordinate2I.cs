@@ -33,33 +33,70 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public int Y { get => m_y; init => m_y = value; }
 
+    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    public double ChebyshevLength()
+      => System.Math.Max(System.Math.Abs(m_x), System.Math.Abs(m_y));
+
+    /// <summary>Compute the length (or magnitude) of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public double EuclideanLength()
+      => System.Math.Sqrt(EuclideanLengthSquared());
+    /// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    public double EuclideanLengthSquared()
+      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2);
+
+    /// <summary>Compute the Manhattan distance between the vectors.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    public int ManhattanLength()
+      => System.Math.Abs(m_x) + System.Math.Abs(m_y);
+
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    [System.Diagnostics.Contracts.Pure]
+    public int OrthantNumber(CartesianCoordinate2I center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2),
+        OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2),
+        OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+
+    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    public CartesianCoordinate2I PerpendicularCcw()
+      => new(-m_y, m_x);
+
+    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    public CartesianCoordinate2I PerpendicularCw()
+      => new(m_y, -m_x);
+
+    #region To..
+
     /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2R ToCartesianCoordinate2()
+    public CartesianCoordinate2R ToCartesianCoordinate2R()
       => new(m_x, m_y);
+
     /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a <see cref="Size2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public Size2 ToSize2()
       => new(m_x, m_y);
+
     /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public long ToUniqueIndex(int gridWidth)
       => ToUniqueIndex(m_x, m_y, gridWidth);
+
     /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a <see cref="System.Numerics.Vector2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public System.Numerics.Vector2 ToVector2()
       => new(m_x, m_y);
 
-    #region Static methods
-    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevDistance(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
-      => ChebyshevLength(p2 - p1);
-    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevLength(CartesianCoordinate2I source)
-      => System.Math.Max(System.Math.Abs(source.m_x), System.Math.Abs(source.m_y));
+    #endregion
 
+    #region Static methods
     /// <summary>Computes the closest cartesian coordinate point at the specified angle and distance.</summary>
     public static CartesianCoordinate2I ComputePoint(double angle, double distance)
       => new(System.Convert.ToInt32(distance * System.Math.Sin(angle)), System.Convert.ToInt32(distance * System.Math.Cos(angle)));
@@ -69,34 +106,10 @@ namespace Flux
     public static int CrossProduct(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => p1.m_x * p2.m_y - p1.m_y * p2.m_x;
 
-    /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static CartesianCoordinate2I DivideCeiling(CartesianCoordinate2I p, double value)
-      => new(System.Convert.ToInt32(System.Math.Ceiling(p.m_x / value)), System.Convert.ToInt32(System.Math.Ceiling(p.m_y / value)));
-    /// <summary>Create a new vector with the floor(quotient) from each member divided by the value.</summary>
-    public static CartesianCoordinate2I DivideFloor(CartesianCoordinate2I p, double value)
-      => new(System.Convert.ToInt32(System.Math.Floor(p.m_x / value)), System.Convert.ToInt32(System.Math.Floor(p.m_y / value)));
-
     /// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
     public static int DotProduct(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
       => p1.m_x * p2.m_x + p1.m_y * p2.m_y;
-
-    /// <summary>Compute the euclidean distance of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistance(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
-      => EuclideanLength(p2 - p1);
-    /// <summary>Compute the euclidean distance squared of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanDistanceSquare(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
-      => EuclideanLengthSquared(p2 - p1);
-    /// <summary>Compute the length (or magnitude) of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanLength(CartesianCoordinate2I p)
-      => System.Math.Sqrt(EuclideanLengthSquared(p));
-    /// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public static double EuclideanLengthSquared(CartesianCoordinate2I p)
-      => System.Math.Pow(p.m_x, 2) + System.Math.Pow(p.m_y, 2);
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static CartesianCoordinate2I FromRandomAbsolute(int toExclusiveX, int toExclusiveY)
@@ -144,22 +157,6 @@ namespace Flux
       return new CartesianCoordinate2I(System.Convert.ToInt32(source.X * imu + target.X * mu), System.Convert.ToInt32(source.Y * imu + target.Y * mu));
     }
 
-    /// <summary>Compute the Manhattan distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static int ManhattanDistance(CartesianCoordinate2I p1, CartesianCoordinate2I p2)
-      => ManhattanLength(p2 - p1);
-    /// <summary>Compute the Manhattan distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static int ManhattanLength(CartesianCoordinate2I p)
-      => System.Math.Abs(p.m_x) + System.Math.Abs(p.m_y);
-
-    /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-    public static CartesianCoordinate2I MultiplyCeiling(CartesianCoordinate2I p, double value)
-      => new(System.Convert.ToInt32(System.Math.Ceiling(p.m_x * value)), System.Convert.ToInt32(System.Math.Ceiling(p.m_y * value)));
-    /// <summary>Create a new vector with the floor(product) from each member multiplied with the value.</summary>
-    public static CartesianCoordinate2I MultiplyFloor(CartesianCoordinate2I p, double value)
-      => new(System.Convert.ToInt32(System.Math.Floor(p.m_x * value)), System.Convert.ToInt32(System.Math.Floor(p.m_y * value)));
-
     //public static Point2 Nlerp(Point2 source, Point2 target, double mu)
     //  => Lerp(source, target, mu).Normalized();
 
@@ -193,13 +190,6 @@ namespace Flux
       }
     }
 
-    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    public static CartesianCoordinate2I PerpendicularCcw(CartesianCoordinate2I p)
-      => new(-p.m_y, p.m_x);
-    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    public static CartesianCoordinate2I PerpendicularCw(CartesianCoordinate2I p)
-      => new(p.m_y, -p.m_x);
-
     /// <summary>Slerp is a sherical linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0). Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
     public static CartesianCoordinate2I Slerp(CartesianCoordinate2I source, CartesianCoordinate2I target, double mu)
     {
@@ -214,6 +204,7 @@ namespace Flux
     /// <summary>Converts the (x, y) point to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
     public static long ToUniqueIndex(int x, int y, int gridWidth)
       => x + (y * gridWidth);
+
     #endregion Static methods
 
     #region Overloaded operators
