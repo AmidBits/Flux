@@ -239,6 +239,9 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public double Z { get => m_z; init => m_z = value; }
 
+    public IVector3<double> Create(double x, double y, double z)
+      => new CartesianCoordinate3R(x, y, z);
+
     ///// <summary>Returns the axes angles to the 3D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
     //public (double toYaxis, double toZaxis) AnglesToAxisX
@@ -274,12 +277,12 @@ namespace Flux
     /// <summary>Compute the Euclidean length of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
     public double EuclideanLength()
-      => System.Math.Sqrt(EuclideanLengthSquared());
+      => System.Math.Sqrt(((IVector3<double>)this).EuclideanLengthSquared());
 
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
     public double EuclideanLengthSquared()
-      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2);
+      => m_x * m_x + m_y * m_y + m_z * m_z;
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>

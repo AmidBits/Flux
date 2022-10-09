@@ -13,19 +13,14 @@ namespace Flux
     /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
     public Azimuth(double degAzimuth)
       => m_degAzimuth = Wrap(degAzimuth);
-    /// <summary>Creates a new Azimuth from the specfied Angle instance. The value is wrapped within the degree range [0, +360].</summary>
-    public Azimuth(Angle azimuth)
-      : this(azimuth.ToUnitValue(AngleUnit.Degree)) // Call this to ensure value is between min/max.
-    { }
-
-    [System.Diagnostics.Contracts.Pure]
-    public double Radian
-      => Angle.ConvertDegreeToRadian(m_degAzimuth);
 
     [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()
       => new(m_degAzimuth, AngleUnit.Degree);
 
+    [System.Diagnostics.Contracts.Pure]
+    public double ToRadians()
+      => Angle.ConvertDegreeToRadian(m_degAzimuth);
 
     #region Static methods
     /// <summary>Finding the angle between two bearings.</summary>
@@ -40,6 +35,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     private static string[] Words
       => new string[] { "North", "East", "South", "West", "By" };
+
+    [System.Diagnostics.Contracts.Pure]
+    public Azimuth FromRadians(double radAzimuth)
+       => new(Angle.ConvertRadianToDegree(radAzimuth));
 
     [System.Diagnostics.Contracts.Pure]
     public static Azimuth FromWords(string compassPointInWords)

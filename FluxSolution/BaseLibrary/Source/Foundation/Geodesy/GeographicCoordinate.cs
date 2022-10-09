@@ -27,7 +27,7 @@ namespace Flux
       => new(32.221667, -110.926389, 728);
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public readonly double m_meterAltitude;
+    public readonly double m_altitude;
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     public readonly double m_radLatitude;
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
@@ -35,13 +35,13 @@ namespace Flux
 
     public GeographicCoordinate(double degLatitude, double degLongitude, double meterAltitude = 1.0)
     {
-      m_meterAltitude = ValidAltitude(meterAltitude) ? meterAltitude : throw new System.ArgumentOutOfRangeException(nameof(meterAltitude));
+      m_altitude = ValidAltitude(meterAltitude) ? meterAltitude : throw new System.ArgumentOutOfRangeException(nameof(meterAltitude));
       m_radLatitude = Angle.ConvertDegreeToRadian(degLatitude);
       m_radLongitude = Angle.ConvertDegreeToRadian(degLongitude);
     }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    [System.Diagnostics.Contracts.Pure] public Length Altitude { get => new(m_meterAltitude); init => m_meterAltitude = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     [System.Diagnostics.Contracts.Pure] public Latitude Latitude { get => new(Angle.ConvertRadianToDegree(m_radLatitude)); init => m_radLatitude = value.InRadians; }
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
@@ -69,7 +69,7 @@ namespace Flux
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new CartesianCoordinate3R(x, y, m_meterAltitude);
+      return new CartesianCoordinate3R(x, y, m_altitude);
     }
     //=> (CartesianCoordinate3)ConvertToEqualEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Natural Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
@@ -89,12 +89,12 @@ namespace Flux
       var x = lon * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);
       var y = lat * (1.007226 + 0.015085 * latP2 - 0.044475 * latP6 + 0.028874 * latP8 - 0.005916 * latP10);
 
-      return new CartesianCoordinate3R(x, y, m_meterAltitude);
+      return new CartesianCoordinate3R(x, y, m_altitude);
     }
     /// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public SphericalCoordinate ToSphericalCoordinate()
-      => new(m_meterAltitude, System.Math.PI - (m_radLatitude + Maths.PiOver2), m_radLongitude + System.Math.PI);
+      => new(m_altitude, System.Math.PI - (m_radLatitude + Maths.PiOver2), m_radLongitude + System.Math.PI);
     /// <summary>Creates a new <see cref="CartesianCoordinate3R"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinate3R ToWinkelTripelProjection()
@@ -109,7 +109,7 @@ namespace Flux
       var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
-      return new CartesianCoordinate3R(x, y, m_meterAltitude);
+      return new CartesianCoordinate3R(x, y, m_altitude);
     }
 
     ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
@@ -511,7 +511,7 @@ namespace Flux
     // IEquatable<>
     [System.Diagnostics.Contracts.Pure]
     public bool Equals(GeographicCoordinate other)
-      => m_meterAltitude == other.m_meterAltitude && m_radLatitude == other.m_radLatitude && m_radLongitude == other.m_radLongitude;
+      => m_altitude == other.m_altitude && m_radLatitude == other.m_radLatitude && m_radLongitude == other.m_radLongitude;
     #endregion Implemented interfaces
 
     #region Object overrides
@@ -520,7 +520,7 @@ namespace Flux
       => obj is GeographicCoordinate o && Equals(o);
     [System.Diagnostics.Contracts.Pure]
     public override int GetHashCode()
-      => System.HashCode.Combine(m_meterAltitude, m_radLatitude, m_radLongitude);
+      => System.HashCode.Combine(m_altitude, m_radLatitude, m_radLongitude);
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
       => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.Value}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({Longitude.Value}), Altitude = {Altitude.ToUnitString(LengthUnit.Meter)} }}";

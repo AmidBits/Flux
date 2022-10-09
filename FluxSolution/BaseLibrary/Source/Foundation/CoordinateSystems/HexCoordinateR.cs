@@ -26,9 +26,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double R { get => m_r; init => m_r = value; }
     [System.Diagnostics.Contracts.Pure] public double S { get => m_s; init => m_s = value; }
 
-    public HexCoordinateI ToHexCoordinateI()
-      => Round(this);
-
     //static public List<Hex> HexLinedraw(Hex a, Hex b)
     //{
     //  int N = a.Distance(b);

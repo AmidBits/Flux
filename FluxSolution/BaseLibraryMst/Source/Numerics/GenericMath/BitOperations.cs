@@ -64,13 +64,13 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPow2AwayFromZero()
     {
-      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().RoundToPow2(false, FullRounding.AwayFromZero, out var _, out var _));
+      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().RoundToPow2(false, IntegerRounding.AwayFromZero, out var _, out var _));
     }
 
     [TestMethod]
     public void RoundToPow2AwayFromZeroProper()
     {
-      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().RoundToPow2(true, FullRounding.AwayFromZero, out var _, out var _));
+      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().RoundToPow2(true, IntegerRounding.AwayFromZero, out var _, out var _));
     }
 
     [TestMethod]
@@ -94,13 +94,13 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPow2TowardsZero()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().RoundToPow2(false, FullRounding.TowardZero, out var _, out var _));
+      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().RoundToPow2(false, IntegerRounding.TowardZero, out var _, out var _));
     }
 
     [TestMethod]
     public void RoundToPow2TowardsZeroProper()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().RoundToPow2(true, FullRounding.TowardZero, out var _, out var _));
+      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().RoundToPow2(true, IntegerRounding.TowardZero, out var _, out var _));
     }
 
     [TestMethod]

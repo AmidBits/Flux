@@ -2,7 +2,7 @@
 namespace Flux
 {
   /// <summary>PREVIEW! Specifies the strategy to use when processing a number between two numbers.</summary>
-  public enum FullRounding
+  public enum IntegerRounding
   {
     /// <summary>Round to the number that is further from zero.</summary>
     /// <remarks>This is either the typical Math.Floor (if less than zero) or Math.Ceiling (if greater than zero) of the number.</remarks>

@@ -50,14 +50,14 @@ namespace Flux
       return GenericMath.RoundToNearest(x, nearestTowardsZero, nearestAwayFromZero, mode);
     }
 
-    /// <summary>PREVIEW! Find the nearest (to <paramref name="x"/>) of two power-of-2, using the specified <see cref="FullRounding"/> <paramref name="mode"/>, and also return both power-of-2 as out parameters.</summary>
+    /// <summary>PREVIEW! Find the nearest (to <paramref name="x"/>) of two power-of-2, using the specified <see cref="IntegerRounding"/> <paramref name="mode"/>, and also return both power-of-2 as out parameters.</summary>
     /// <param name="x">The value for which the power-of-2 will be found.</param>
     /// <param name="properNearest">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
     /// <param name="mode">The full rounding mode to use.</param>
     /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value.</returns>
-    public static TSelf RoundToPow2<TSelf>(this TSelf x, bool properNearest, FullRounding mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+    public static TSelf RoundToPow2<TSelf>(this TSelf x, bool properNearest, IntegerRounding mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       GetNearestPow2(x, properNearest, out nearestTowardsZero, out nearestAwayFromZero);

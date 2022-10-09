@@ -266,7 +266,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CartesianCoordinate2R
-    : System.IEquatable<CartesianCoordinate2R>
+    : System.IEquatable<CartesianCoordinate2R>, IVector2<double>
   {
     public readonly static CartesianCoordinate2R Zero;
 
@@ -281,6 +281,9 @@ namespace Flux
 
     [System.Diagnostics.Contracts.Pure] public double X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
+
+    public IVector2<double> Create(double x, double y)
+      => new CartesianCoordinate2R(x, y);
 
     ///// <summary>Returns the angle to the 2D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
@@ -314,7 +317,7 @@ namespace Flux
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
     public double EuclideanLengthSquared()
-      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2);
+      => m_x * m_x + m_y * m_y;
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>

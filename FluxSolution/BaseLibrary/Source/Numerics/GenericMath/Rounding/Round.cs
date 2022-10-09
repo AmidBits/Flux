@@ -75,19 +75,19 @@ namespace Flux
       : throw new System.ArgumentOutOfRangeException(nameof(significantDigits));
 
     /// <summary>PREVIEW! Rounds <paramref name="x"/> to an integer boundary. The <paramref name="mode"/> specifies which full rounding strategy to use. Full rounding in this context means to directly force an integer rounding, i.e. like the traditional Truncate, Ceiling, etc.</summary>
-    public static TSelf Round<TSelf>(this TSelf x, FullRounding mode)
+    public static TSelf Round<TSelf>(this TSelf x, IntegerRounding mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => mode switch
       {
-        FullRounding.AwayFromZero => IntegerRoundAwayFromZero(x),
-        FullRounding.Ceiling => IntegerRoundCeiling(x),
-        FullRounding.Floor => IntegerRoundFloor(x),
-        FullRounding.TowardZero => IntegerRoundTowardZero(x),
+        IntegerRounding.AwayFromZero => IntegerRoundAwayFromZero(x),
+        IntegerRounding.Ceiling => IntegerRoundCeiling(x),
+        IntegerRounding.Floor => IntegerRoundFloor(x),
+        IntegerRounding.TowardZero => IntegerRoundTowardZero(x),
         _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
       };
 
     /// <summary>PREVIEW! Rounds the <paramref name="x"/> to the nearest integer. The <paramref name="mode"/> specifies the halfway rounding strategy to use if the value is halfway between two integers (e.g. 11.5).</summary>
-    public static TSelf Round<TSelf>(this TSelf x, int significantDigits, FullRounding mode)
+    public static TSelf Round<TSelf>(this TSelf x, int significantDigits, IntegerRounding mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
       => significantDigits >= 0 && TSelf.Pow(TSelf.CreateChecked(10), TSelf.CreateChecked(significantDigits)) is var scalar
       ? Round(x * scalar, mode) / scalar

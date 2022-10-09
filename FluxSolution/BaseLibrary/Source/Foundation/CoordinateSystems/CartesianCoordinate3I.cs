@@ -2,7 +2,7 @@ namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CartesianCoordinate3I
-    : System.IEquatable<CartesianCoordinate3I>
+    : System.IEquatable<CartesianCoordinate3I>, IPoint3<int>
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly CartesianCoordinate3I Zero;
@@ -17,43 +17,42 @@ namespace Flux
       m_y = y;
       m_z = z;
     }
-    public CartesianCoordinate3I(int value)
-      : this(value, value, value)
-    { }
-    public CartesianCoordinate3I(int[] array, int startIndex)
-    {
-      if (array is null) throw new System.ArgumentNullException(nameof(array));
-
-      if (array.Length < 3) throw new System.ArgumentOutOfRangeException(nameof(array));
-      if (startIndex + 3 >= array.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
-
-      m_x = array[startIndex++];
-      m_y = array[startIndex++];
-      m_z = array[startIndex];
-    }
+    public CartesianCoordinate3I(int value) : this(value, value, value) { }
 
     [System.Diagnostics.Contracts.Pure] public int X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public int Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public int Z { get => m_z; init => m_z = value; }
 
+    public IPoint3<int> Create(int x, int y, int z)
+      => new CartesianCoordinate3I(x, y, z);
+
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public double ChebyshevLength()
-      => Maths.Max(System.Math.Abs(m_x), System.Math.Abs(m_y), System.Math.Abs(m_z));
+    [System.Diagnostics.Contracts.Pure]
+    public int ChebyshevLength(int edgeLength = 1)
+      => System.Math.Max(System.Math.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength)), System.Math.Abs(m_z / edgeLength));
 
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public double EuclideanLength()
-      => System.Math.Sqrt(EuclideanLengthSquared());
+    [System.Diagnostics.Contracts.Pure]
+    public int EuclideanLength()
+      => GenericMath.IntegerSqrt(EuclideanLengthSquared());
+
     /// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    public double EuclideanLengthSquared()
-      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2) + System.Math.Pow(m_z, 2);
+    [System.Diagnostics.Contracts.Pure]
+    public int EuclideanLengthSquared()
+      => m_x * m_x + m_y * m_y + m_z * m_z;
 
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public int ManhattanLength()
-      => System.Math.Abs(m_x) + System.Math.Abs(m_y) + System.Math.Abs(m_z);
+    [System.Diagnostics.Contracts.Pure]
+    public int ManhattanLength(int edgeLength = 1)
+      => System.Math.Abs(m_x / edgeLength) + System.Math.Abs(m_y / edgeLength) + System.Math.Abs(m_z / edgeLength);
+
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate3I Normalized()
+      => EuclideanLength() is var m && m != 0 ? this / m : this;
 
     /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>

@@ -4,7 +4,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct SphericalCoordinate
-    : System.IEquatable<SphericalCoordinate>
+    : System.IEquatable<SphericalCoordinate>, ISphericalCoordinate
   {
     private readonly double m_radius;
     private readonly double m_radInclination;
@@ -17,24 +17,27 @@ namespace Flux
       m_radAzimuth = radAzimuth;
     }
 
-    /// <summary>Radial distance (to origin) or radial coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
+    /// <summary>Radial distance (to origin) or radial coordinate, in meters.</summary>
+    [System.Diagnostics.Contracts.Pure] public Length Radius { get => new(m_radius); init => m_radius = value.Value; }
     /// <summary>Polar angle or angular coordinate, in radians.</summary>
     [System.Diagnostics.Contracts.Pure] public Angle Inclination { get => new(m_radInclination); init => m_radInclination = value.Value; }
     /// <summary>Azimuthal angle, in radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public Angle Azimuth { get => new(m_radAzimuth); init => m_radAzimuth = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public Azimuth Azimuth { get => Azimuth.FromRadians(m_radAzimuth); init => m_radAzimuth = value.ToRadians(); }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinate3R ToCartesianCoordinate3R()
     {
       var sinInclination = System.Math.Sin(m_radInclination);
+
       return new(m_radius * System.Math.Cos(m_radAzimuth) * sinInclination, m_radius * System.Math.Sin(m_radAzimuth) * sinInclination, m_radius * System.Math.Cos(m_radInclination));
     }
+
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new(m_radius * System.Math.Sin(m_radInclination), m_radAzimuth, m_radius * System.Math.Cos(m_radInclination));
+
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public GeographicCoordinate ToGeographicCoordinate()
@@ -64,7 +67,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is SphericalCoordinate o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radius, m_radInclination, m_radAzimuth);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {Inclination.ToUnitValue(AngleUnit.Degree):N1}\u00B0 (Elevation = {Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_radInclination)):N1}\u00B0), Azimuth = {Azimuth.ToUnitValue(AngleUnit.Degree):N1}\u00B0 }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {Inclination.ToUnitValue(AngleUnit.Degree):N1}\u00B0 (Elevation = {Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_radInclination)):N1}\u00B0), Azimuth = {Azimuth.ToAngle().ToUnitValue(AngleUnit.Degree):N1}\u00B0 }}";
     #endregion Object overrides
   }
 }

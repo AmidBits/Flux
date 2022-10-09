@@ -1,9 +1,11 @@
+using System.Runtime.InteropServices;
+
 namespace Flux
 {
   /// <summary>A cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CartesianCoordinate2I
-    : System.IComparable<CartesianCoordinate2I>, System.IEquatable<CartesianCoordinate2I>
+    : System.IComparable<CartesianCoordinate2I>, System.IEquatable<CartesianCoordinate2I>, IPoint2<int>
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly CartesianCoordinate2I Zero;
@@ -35,22 +37,30 @@ namespace Flux
 
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public double ChebyshevLength()
-      => System.Math.Max(System.Math.Abs(m_x), System.Math.Abs(m_y));
+    [System.Diagnostics.Contracts.Pure]
+    public int ChebyshevLength(int edgeLength = 1)
+      => System.Math.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength));
 
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    [System.Diagnostics.Contracts.Pure]
     public double EuclideanLength()
       => System.Math.Sqrt(EuclideanLengthSquared());
     /// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    [System.Diagnostics.Contracts.Pure]
     public double EuclideanLengthSquared()
-      => System.Math.Pow(m_x, 2) + System.Math.Pow(m_y, 2);
+      => m_x * m_x + m_y * m_y;
 
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public int ManhattanLength()
-      => System.Math.Abs(m_x) + System.Math.Abs(m_y);
+    [System.Diagnostics.Contracts.Pure]
+    public int ManhattanLength(int edgeLength = 1)
+      => System.Math.Abs(m_x / edgeLength) + System.Math.Abs(m_y / edgeLength);
+
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2I Normalized()
+      => EuclideanLength() is var m && m != 0 ? this / m : this;
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
@@ -65,12 +75,17 @@ namespace Flux
       };
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinate2I PerpendicularCcw()
       => new(-m_y, m_x);
 
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinate2I PerpendicularCw()
       => new(m_y, -m_x);
+
+    public IPoint2<int> Create(int x, int y)
+      => new CartesianCoordinate2I(x, y);
 
     #region To..
 
