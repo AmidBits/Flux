@@ -4,7 +4,7 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>PREVIEW! Snaps the value to the nearest interval if it's within the specified distance of an interval, otherwise unaltered.</summary>
-    public static TSelf DetentInterval<TSelf>(this TSelf value, TSelf interval, TSelf distance, HalfwayRounding mode)
+    public static TSelf DetentInterval<TSelf>(this TSelf value, TSelf interval, TSelf distance, RoundingMode mode)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       if (value % interval is var remainder && TSelf.IsZero(remainder))
@@ -19,7 +19,7 @@ namespace Flux
       if (distanceTowardsZero > distance && distanceAwayFromZero > distance) // If neither is within distance of interval.
         return value;
 
-      return RoundToNearest(value, boundaryTowardsZero, boundaryAwayFromZero, distanceTowardsZero, distanceAwayFromZero, mode);
+      return new BoundaryRounding<TSelf>(mode, boundaryTowardsZero, boundaryAwayFromZero).RoundNumber(value);
     }
   }
 }

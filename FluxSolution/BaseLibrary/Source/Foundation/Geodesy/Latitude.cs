@@ -24,34 +24,34 @@ namespace Flux
     /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
     [System.Diagnostics.Contracts.Pure]
     public Length ApproximateLatitudinalHeight
-      => new(GetApproximateLatitudinalHeight(InRadians));
+      => new(GetApproximateLatitudinalHeight(ToRadians()));
 
     /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
     [System.Diagnostics.Contracts.Pure]
     public Length ApproximateLongitudinalWidth
-      => new(GetApproximateLongitudinalWidth(InRadians));
+      => new(GetApproximateLongitudinalWidth(ToRadians()));
 
     /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     [System.Diagnostics.Contracts.Pure]
     public Length ApproximateRadius
-      => new(GetApproximateRadius(InRadians));
-
-    [System.Diagnostics.Contracts.Pure]
-    public double InRadians
-      => Angle.ConvertDegreeToRadian(m_degLatitude);
+      => new(GetApproximateRadius(ToRadians()));
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     [System.Diagnostics.Contracts.Pure]
     public double GetMercatorProjectedY()
-      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + InRadians / 2))), -System.Math.PI, System.Math.PI);
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToRadians() / 2))), -System.Math.PI, System.Math.PI);
 
     [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()
       => new(m_degLatitude, AngleUnit.Degree);
+
+    [System.Diagnostics.Contracts.Pure]
+    public double ToRadians()
+      => Angle.ConvertDegreeToRadian(m_degLatitude);
 
     [System.Diagnostics.Contracts.Pure]
     public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
@@ -62,6 +62,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static double FoldLatitude(double degLatitude)
       => Maths.Fold(degLatitude, MinValue, MaxValue);
+
+    [System.Diagnostics.Contracts.Pure]
+    public Latitude FromRadians(double radLatitude)
+      => new(Angle.ConvertRadianToDegree(radLatitude));
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     [System.Diagnostics.Contracts.Pure]

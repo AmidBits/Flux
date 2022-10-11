@@ -62,45 +62,47 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void RoundToPow2AwayFromZero()
+    public void GetNearestPow2HalfwayAwayFromZero()
     {
-      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().RoundToPow2(false, IntegerRounding.AwayFromZero, out var _, out var _));
+      //var rounding = new RoundToBoundary<System.Numerics.BigInteger>(RoundingMode.HalfwayToEven);
+      
+      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().GetNearestPow2(false, RoundingMode.HalfwayAwayFromZero, out var _, out var _));
     }
 
     [TestMethod]
-    public void RoundToPow2AwayFromZeroProper()
+    public void GetNearestPow2AwayFromZeroProper()
     {
-      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().RoundToPow2(true, IntegerRounding.AwayFromZero, out var _, out var _));
+      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().GetNearestPow2(true, RoundingMode.HalfwayAwayFromZero, out var _, out var _));
     }
 
     [TestMethod]
-    public void RoundToNearestPow2()
+    public void GetNearestPow2()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().RoundToNearestPow2(false, HalfwayRounding.ToEven, out var towardsZero, out var awayFromZero));
+      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().GetNearestPow2(false, RoundingMode.HalfwayToEven, out var towardsZero, out var awayFromZero));
 
       Assert.AreEqual(64.ToBigInteger(), towardsZero);
       Assert.AreEqual(128.ToBigInteger(), awayFromZero);
     }
 
     [TestMethod]
-    public void RoundToNearestPow2Proper()
+    public void GetNearestPow2Proper()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().RoundToNearestPow2(true, HalfwayRounding.ToEven, out var towardsZero, out var awayFromZero));
+      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().GetNearestPow2(true, RoundingMode.HalfwayToEven, out var towardsZero, out var awayFromZero));
 
       Assert.AreEqual(64.ToBigInteger(), towardsZero);
       Assert.AreEqual(128.ToBigInteger(), awayFromZero);
     }
 
     [TestMethod]
-    public void RoundToPow2TowardsZero()
+    public void GetNearestPow2TowardsZero()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().RoundToPow2(false, IntegerRounding.TowardZero, out var _, out var _));
+      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().GetNearestPow2(false, RoundingMode.HalfwayTowardZero, out var _, out var _));
     }
 
     [TestMethod]
-    public void RoundToPow2TowardsZeroProper()
+    public void GetNearestPow2TowardsZeroProper()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().RoundToPow2(true, IntegerRounding.TowardZero, out var _, out var _));
+      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().GetNearestPow2(true, RoundingMode.HalfwayTowardZero, out var _, out var _));
     }
 
     [TestMethod]

@@ -105,10 +105,6 @@
       };
 
     [System.Diagnostics.Contracts.Pure]
-    public double InDegrees
-      => ConvertRadianToDegree(m_radAngle);
-
-    [System.Diagnostics.Contracts.Pure]
     public Azimuth ToAzimuth()
       => new(ToUnitValue(AngleUnit.Degree));
 
@@ -123,6 +119,18 @@
     [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinate2R ToCartesian2Ex()
       => (CartesianCoordinate2R)ConvertRotationAngleToCartesian2Ex(m_radAngle);
+
+    [System.Diagnostics.Contracts.Pure]
+    public double ToDegrees()
+      => ConvertRadianToDegree(m_radAngle);
+
+    [System.Diagnostics.Contracts.Pure]
+    public Latitude ToLatitude()
+      => new(ToUnitValue(AngleUnit.Degree));
+
+    [System.Diagnostics.Contracts.Pure]
+    public Longitude ToLongitude()
+      => new(ToUnitValue(AngleUnit.Degree));
 
     [System.Diagnostics.Contracts.Pure]
     public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format, SexagesimalDegreeDirection direction, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)

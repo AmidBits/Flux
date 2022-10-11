@@ -18,10 +18,6 @@ namespace Flux
       : this(longitude.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
-    [System.Diagnostics.Contracts.Pure]
-    public double InRadians
-      => Angle.ConvertDegreeToRadian(m_degLongitude);
-
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
     [System.Diagnostics.Contracts.Pure]
     public int TheoreticalTimezoneOffset
@@ -32,17 +28,25 @@ namespace Flux
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     [System.Diagnostics.Contracts.Pure]
     public double GetMercatorProjectedX()
-      => InRadians;
+      => ToRadians();
 
     [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()
       => new(m_degLongitude, AngleUnit.Degree);
 
     [System.Diagnostics.Contracts.Pure]
+    public double ToRadians()
+      => Angle.ConvertDegreeToRadian(m_degLongitude);
+
+    [System.Diagnostics.Contracts.Pure]
     public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
       => ToAngle().ToSexagesimalDegreeString(format, SexagesimalDegreeDirection.EastWest, -1, useSpaces, preferUnicode);
 
     #region Static methods
+    [System.Diagnostics.Contracts.Pure]
+    public Longitude FromRadians(double radLongitude)
+      => new(Angle.ConvertRadianToDegree(radLongitude));
+
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
     /// <param name="degLongitude"></param>
     [System.Diagnostics.Contracts.Pure]

@@ -43,9 +43,9 @@ namespace Flux
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     [System.Diagnostics.Contracts.Pure] public Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    [System.Diagnostics.Contracts.Pure] public Latitude Latitude { get => new(Angle.ConvertRadianToDegree(m_radLatitude)); init => m_radLatitude = value.InRadians; }
+    [System.Diagnostics.Contracts.Pure] public Latitude Latitude { get => Latitude.FromRadians(m_radLatitude); init => m_radLatitude = value.ToRadians(); }
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    [System.Diagnostics.Contracts.Pure] public Longitude Longitude { get => new(Angle.ConvertRadianToDegree(m_radLongitude)); init => m_radLongitude = value.InRadians; }
+    [System.Diagnostics.Contracts.Pure] public Longitude Longitude { get => Longitude.FromRadians(m_radLongitude); init => m_radLongitude = value.ToRadians(); }
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3R"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]

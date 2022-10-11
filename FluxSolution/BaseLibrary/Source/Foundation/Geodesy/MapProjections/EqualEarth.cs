@@ -17,8 +17,8 @@
       const double A37 = A3 * 7;
       const double A49 = A4 * 9;
 
-      var lat = location.Latitude.InRadians;
-      var lon = location.Longitude.InRadians;
+      var lat = location.Latitude.ToRadians();
+      var lon = location.Longitude.ToRadians();
 
       var M = System.Math.Sqrt(3) / 2;
       var p = System.Math.Asin(M * System.Math.Sin(lat)); // parametric latitude

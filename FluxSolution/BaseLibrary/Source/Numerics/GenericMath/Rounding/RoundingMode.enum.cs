@@ -4,7 +4,7 @@ namespace Flux
   /// <summary>PREVIEW! The strategy of rounding to the nearest number, and either when a number is halfway between two others or directly to one of two others.</summary>
   /// <seealso cref="http://www.jackleitch.net/2010/06/adventures-in-net-rounding-part-2-exotic-rounding-algorithms/"/>
   /// <seealso cref="http://www.cplusplus.com/articles/1UCRko23/"/>
-  public enum Rounding
+  public enum RoundingMode
   {
     /// <summary>Round to the nearest number, and when a number is halfway between two others, round to the nearest even number, if possible.</summary>
     /// <remarks>E.g. rounding a fraction part of 0.5 to the nearest even integer. For example, 1.5 and 2.5 both round to 2.0 and -1.5 and -2.5 both round to -2.0. A.k.a. Bankers Rounding.</remarks>

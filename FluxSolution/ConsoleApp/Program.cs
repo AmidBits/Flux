@@ -22,6 +22,7 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
 
+
       //var n = 99.96535789;
       //var r1 = Flux.GenericMath.Round(99.96535789, 2, HalfwayRounding.ToEven);
       //var r2 = Flux.GenericMath.TruncatingRound(99.96535789, 2, HalfwayRounding.ToEven);
