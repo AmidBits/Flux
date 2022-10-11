@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿#if NET7_0_OR_GREATER
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
 
@@ -118,3 +119,4 @@ namespace GenericMath
     }
   }
 }
+#endif

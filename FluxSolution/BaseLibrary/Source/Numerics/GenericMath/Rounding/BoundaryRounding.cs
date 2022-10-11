@@ -1,4 +1,5 @@
-﻿namespace Flux
+﻿#if NET7_0_OR_GREATER
+namespace Flux
 {
   public class BoundaryRounding<TSelf>
     : INumberRoundable<TSelf>
@@ -48,10 +49,11 @@
       return Round(x, boundaryTowardsZero, boundaryAwayFromZero, mode, distanceTowardsZero, distanceAwayFromZero);
     }
 
-    #region Implemented interfaces
+#region Implemented interfaces
     /// <summary>PREVIEW! Rounds a value to the nearest boundary. The mode specifies how to round when between two intervals.</summary>
     public TSelf RoundNumber(TSelf x)
       => Round(x, m_boundaryTowardsZero, m_boundaryAwayFromZero, m_mode);
-    #endregion Implemented interfaces
+#endregion Implemented interfaces
   }
 }
+#endif

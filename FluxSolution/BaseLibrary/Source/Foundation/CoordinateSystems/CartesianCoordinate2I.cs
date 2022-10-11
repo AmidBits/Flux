@@ -5,7 +5,10 @@ namespace Flux
   /// <summary>A cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CartesianCoordinate2I
-    : System.IComparable<CartesianCoordinate2I>, System.IEquatable<CartesianCoordinate2I>, IPoint2<int>
+    : System.IComparable<CartesianCoordinate2I>, System.IEquatable<CartesianCoordinate2I>
+#if NET7_0_OR_GREATER
+    , IPoint2<int>
+#endif
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly CartesianCoordinate2I Zero;
@@ -84,10 +87,12 @@ namespace Flux
     public CartesianCoordinate2I PerpendicularCw()
       => new(m_y, -m_x);
 
+#if NET7_0_OR_GREATER
     public IPoint2<int> Create(int x, int y)
       => new CartesianCoordinate2I(x, y);
+#endif
 
-    #region To..
+#region To..
 
     /// <summary>Converts the <see cref="CartesianCoordinate2I"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -109,9 +114,9 @@ namespace Flux
     public System.Numerics.Vector2 ToVector2()
       => new(m_x, m_y);
 
-    #endregion
+#endregion
 
-    #region Static methods
+#region Static methods
     /// <summary>Computes the closest cartesian coordinate point at the specified angle and distance.</summary>
     public static CartesianCoordinate2I ComputePoint(double angle, double distance)
       => new(System.Convert.ToInt32(distance * System.Math.Sin(angle)), System.Convert.ToInt32(distance * System.Math.Cos(angle)));
@@ -220,9 +225,9 @@ namespace Flux
     public static long ToUniqueIndex(int x, int y, int gridWidth)
       => x + (y * gridWidth);
 
-    #endregion Static methods
+#endregion Static methods
 
-    #region Overloaded operators
+#region Overloaded operators
     public static explicit operator CartesianCoordinate2I(System.ValueTuple<int, int> xy)
       => new(xy.Item1, xy.Item2);
 
@@ -314,22 +319,22 @@ namespace Flux
       => new(p.m_x << v, p.m_y << v);
     public static CartesianCoordinate2I operator >>(CartesianCoordinate2I p, int v)
       => new(p.m_x >> v, p.m_y >> v);
-    #endregion Overloaded operators
+#endregion Overloaded operators
 
-    #region Implemented interfaces
+#region Implemented interfaces
     public int CompareTo(CartesianCoordinate2I other)
       => m_x > other.m_x ? 1 : m_x < other.m_x ? -1 : m_y > other.m_y ? 1 : m_y < other.m_y ? -1 : 0;
     public bool Equals(CartesianCoordinate2I other)
       => m_x == other.m_x && m_y == other.m_y;
-    #endregion Implemented interfaces
+#endregion Implemented interfaces
 
-    #region Object overrides
+#region Object overrides
     public override bool Equals(object? obj)
        => obj is CartesianCoordinate2I o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(m_x, m_y);
     public override string ToString()
       => $"{GetType().Name} {{ X = {m_x}, Y = {m_y} }}";
-    #endregion Object overrides
+#endregion Object overrides
   }
 }

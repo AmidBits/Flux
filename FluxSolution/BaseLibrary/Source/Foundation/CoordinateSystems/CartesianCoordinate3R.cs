@@ -220,7 +220,10 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CartesianCoordinate3R
-    : System.IEquatable<CartesianCoordinate3R>, IVector3<double>
+    : System.IEquatable<CartesianCoordinate3R>
+#if NET7_0_OR_GREATER
+    , IVector3<double>
+#endif
   {
     public static readonly CartesianCoordinate3R Zero;
 
@@ -239,8 +242,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public double Z { get => m_z; init => m_z = value; }
 
+#if NET7_0_OR_GREATER
     public IVector3<double> Create(double x, double y, double z)
       => new CartesianCoordinate3R(x, y, z);
+#endif
 
     ///// <summary>Returns the axes angles to the 3D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
@@ -277,7 +282,7 @@ namespace Flux
     /// <summary>Compute the Euclidean length of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
     public double EuclideanLength()
-      => System.Math.Sqrt(((IVector3<double>)this).EuclideanLengthSquared());
+      => System.Math.Sqrt(EuclideanLengthSquared());
 
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -312,7 +317,7 @@ namespace Flux
     public CartesianCoordinate3R Orthogonal()
       => System.Math.Abs(m_x) > System.Math.Abs(m_z) ? new CartesianCoordinate3R(-m_y, m_x, 0) : new CartesianCoordinate3R(0, -m_x, m_y);
 
-    #region To..
+#region To..
 
     /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CartesianCoordinate3I"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -363,9 +368,9 @@ namespace Flux
     public System.Numerics.Vector3 ToVector3()
       => new((float)m_x, (float)m_y, (float)m_z);
 
-    #endregion
+#endregion
 
-    #region Static methods
+#region Static methods
     /// <summary>(3D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
@@ -463,9 +468,9 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static CartesianCoordinate3R VectorTripleProduct(CartesianCoordinate3R a, CartesianCoordinate3R b, CartesianCoordinate3R c)
       => CrossProduct(a, CrossProduct(b, c));
-    #endregion Static methods
+#endregion Static methods
 
-    #region Overloaded operators
+#region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate3R(System.ValueTuple<double, double, double> vt3) => new(vt3.Item1, vt3.Item2, vt3.Item3);
     [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double, double>(CartesianCoordinate3R cc3) => new(cc3.X, cc3.Y, cc3.Z);
 
@@ -499,17 +504,17 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3R operator %(CartesianCoordinate3R cc1, CartesianCoordinate3R cc2) => new(cc1.X % cc2.X, cc1.Y % cc2.Y, cc1.Z % cc2.Z);
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3R operator %(CartesianCoordinate3R cc, double scalar) => new(cc.X % scalar, cc.Y % scalar, cc.Z % scalar);
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3R operator %(double scalar, CartesianCoordinate3R cc) => new(scalar % cc.X, scalar % cc.Y, scalar % cc.Z);
-    #endregion Overloaded operators
+#endregion Overloaded operators
 
-    #region Implemented interfaces
+#region Implemented interfaces
     // IEquatable
     [System.Diagnostics.Contracts.Pure] public bool Equals(CartesianCoordinate3R other) => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
-    #endregion Implemented interfaces
+#endregion Implemented interfaces
 
-    #region Object overrides
+#region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate3R o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y, m_z);
     [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength()}) }}";
-    #endregion Object overrides
+#endregion Object overrides
   }
 }

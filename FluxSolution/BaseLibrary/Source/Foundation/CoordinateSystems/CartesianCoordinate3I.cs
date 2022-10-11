@@ -2,7 +2,10 @@ namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CartesianCoordinate3I
-    : System.IEquatable<CartesianCoordinate3I>, IPoint3<int>
+    : System.IEquatable<CartesianCoordinate3I>
+#if NET7_0_OR_GREATER
+    , IPoint3<int>
+#endif
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly CartesianCoordinate3I Zero;
@@ -23,8 +26,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public int Z { get => m_z; init => m_z = value; }
 
+#if NET7_0_OR_GREATER
     public IPoint3<int> Create(int x, int y, int z)
       => new CartesianCoordinate3I(x, y, z);
+#endif
 
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
@@ -36,7 +41,8 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     [System.Diagnostics.Contracts.Pure]
     public int EuclideanLength()
-      => GenericMath.IntegerSqrt(EuclideanLengthSquared());
+      //=> GenericMath.IntegerSqrt(EuclideanLengthSquared());
+      => (int)System.Math.Sqrt(EuclideanLengthSquared());
 
     /// <summary>Compute the length (or magnitude) squared (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>

@@ -4,7 +4,10 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CylindricalCoordinate
-    : System.IEquatable<CylindricalCoordinate>, ICylindricalCoordinate
+    : System.IEquatable<CylindricalCoordinate>
+#if NET7_0_OR_GREATER
+    , ICylindricalCoordinate
+#endif
   {
     private readonly double m_radius;
     private readonly double m_radAzimuth;
@@ -36,20 +39,20 @@ namespace Flux
     public SphericalCoordinate ToSphericalCoordinate()
       => new(System.Math.Sqrt(m_radius * m_radius + m_height * m_height), System.Math.Atan2(m_radius, m_height), m_radAzimuth);
 
-    #region Overloaded operators
+#region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static bool operator ==(CylindricalCoordinate a, CylindricalCoordinate b) => a.Equals(b);
     [System.Diagnostics.Contracts.Pure] public static bool operator !=(CylindricalCoordinate a, CylindricalCoordinate b) => !a.Equals(b);
-    #endregion Overloaded operators
+#endregion Overloaded operators
 
-    #region Implemented interfaces
+#region Implemented interfaces
     // IEquatable
     [System.Diagnostics.Contracts.Pure] public bool Equals(CylindricalCoordinate other) => m_radius == other.m_radius && m_radAzimuth == other.m_radAzimuth && m_height == other.m_height;
-    #endregion Implemented interfaces
+#endregion Implemented interfaces
 
-    #region Object overrides
+#region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CylindricalCoordinate o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radius, m_radAzimuth, m_height);
     [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {Azimuth.ToAngle().ToUnitValue(AngleUnit.Degree):N1}\u00B0, Height = {m_height} }}";
-    #endregion Object overrides
+#endregion Object overrides
   }
 }

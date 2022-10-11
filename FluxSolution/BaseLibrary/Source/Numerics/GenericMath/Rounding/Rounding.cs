@@ -1,4 +1,5 @@
-﻿namespace Flux
+﻿#if NET7_0_OR_GREATER
+namespace Flux
 {
   public class Rounding<TSelf>
     : INumberRoundable<TSelf>
@@ -21,7 +22,7 @@
     public Rounding(RoundingMode mode)
       => m_mode = mode;
 
-    #region Static methods
+#region Static methods
 
     // Halfway Rounding Extension Methods
     /// <summary>PREVIEW! Common rounding: round half down, bias: negative infinity.</summary>
@@ -57,9 +58,9 @@
     public static TSelf IntegerRoundTruncate(TSelf x)
       => TSelf.Truncate(x);
 
-    #endregion Static methods
+#endregion Static methods
 
-    #region Implemented interfaces
+#region Implemented interfaces
     public TSelf RoundNumber(TSelf x)
     {
       var two = TSelf.CreateChecked(2);
@@ -80,6 +81,7 @@
         _ => throw new System.ArgumentOutOfRangeException(m_mode.ToString()),
       };
     }
-    #endregion Implemented interfaces
+#endregion Implemented interfaces
   }
 }
+#endif

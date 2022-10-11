@@ -1,4 +1,5 @@
-﻿namespace Flux
+﻿#if NET7_0_OR_GREATER
+namespace Flux
 {
   public class PrecisionTruncatedRounding<TSelf>
     : INumberRoundable<TSelf>
@@ -24,9 +25,10 @@
       ? new PrecisionRounding<TSelf>(mode, significantDigits).RoundNumber(TSelf.Truncate(x * scalar) / scalar)
       : throw new System.ArgumentOutOfRangeException(nameof(significantDigits));
 
-    #region Implemented interfaces
+#region Implemented interfaces
     public TSelf RoundNumber(TSelf value)
       => Round(value, m_significantDigits, m_mode);
-    #endregion Implemented interfaces
+#endregion Implemented interfaces
   }
 }
+#endif

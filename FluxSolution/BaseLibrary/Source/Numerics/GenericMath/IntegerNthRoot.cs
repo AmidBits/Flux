@@ -1,6 +1,4 @@
-﻿using Flux.Hashing;
-using System.Security.Cryptography;
-
+﻿#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
@@ -27,7 +25,7 @@ namespace Flux
 
       return d < e ? d : e;
 
-      #region First brackets the answer between lo and hi by repeatedly multiplying hi by 2 until n is between lo and hi, then uses binary search to compute the exact answer.
+#region First brackets the answer between lo and hi by repeatedly multiplying hi by 2 until n is between lo and hi, then uses binary search to compute the exact answer.
       // 
 
       //var hi = TSelf.One;
@@ -55,9 +53,9 @@ namespace Flux
       //  return hi;
       //else
       //  return lo;
-      #endregion
+#endregion
 
-      #region Newton's method, division-by-zero at the IntegerPow.
+#region Newton's method, division-by-zero at the IntegerPow.
       // 
 
       //var u = TSelf.Zero;
@@ -72,7 +70,7 @@ namespace Flux
       //}
 
       //return s;
-      #endregion
+#endregion
     }
 
     /// <summary>Returns whether <paramref name="x"/> is a perfect <paramref name="n"/>th root of <paramref name="y"/>.</summary>
@@ -102,3 +100,4 @@ namespace Flux
     }
   }
 }
+#endif

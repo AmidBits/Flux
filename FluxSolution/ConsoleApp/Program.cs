@@ -31,35 +31,35 @@ namespace ConsoleApp
 
       //return;
 
-      var array = new int[] { 2, 8, 10, 16 };
+      //var array = new int[] { 2, 8, 10, 16 };
 
-      foreach (var radix in array)
-      {
-        for (var value = 0; value <= (radix + 1); value++)
-        {
-          if (System.Math.Log(value, radix) is var logFp && logFp == double.NegativeInfinity)
-            logFp = 0;
+      //foreach (var radix in array)
+      //{
+      //  for (var value = 0; value <= (radix + 1); value++)
+      //  {
+      //    if (System.Math.Log(value, radix) is var logFp && logFp == double.NegativeInfinity)
+      //      logFp = 0;
 
-          var logAc = value.IntegerLogCeiling(radix);
-          var logAf = value.IntegerLogFloor(radix);
-          value.TryIntegerLog(radix, out var logBf, out var logBc);
+      //    var logAc = value.IntegerLogCeiling(radix);
+      //    var logAf = value.IntegerLogFloor(radix);
+      //    value.TryIntegerLog(radix, out var logBf, out var logBc);
 
-          if (radix == 2)
-          {
-            var log2f = int.Log2(value);
-            var log2c = int.IsPow2(value) ? log2f : log2f + 1;
+      //    if (radix == 2)
+      //    {
+      //      var log2f = int.Log2(value);
+      //      var log2c = int.IsPow2(value) ? log2f : log2f + 1;
 
-            var lg2Ac = value.GetIntegerLog2Ceiling();
-            var lg2Af = value.GetIntegerLog2Floor();
+      //      var lg2Ac = value.GetIntegerLog2Ceiling();
+      //      var lg2Af = value.GetIntegerLog2Floor();
 
-            System.Console.WriteLine($"{(value.IsIntegerPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : ({lg2Af:D2}) : [{logAf:D2}], {logBf:D2}] < {logFp:N3} ({log2f}, {log2c}) > [{logAc:D2}, {logBc:D2}] : ({lg2Ac:D2})");
-          }
-          else
-            System.Console.WriteLine($"{(value.IsIntegerPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : [{logAf:D2}, {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}]");
-        }
+      //      System.Console.WriteLine($"{(value.IsIntegerPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : ({lg2Af:D2}) : [{logAf:D2}], {logBf:D2}] < {logFp:N3} ({log2f}, {log2c}) > [{logAc:D2}, {logBc:D2}] : ({lg2Ac:D2})");
+      //    }
+      //    else
+      //      System.Console.WriteLine($"{(value.IsIntegerPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : [{logAf:D2}, {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}]");
+      //  }
 
-        System.Console.WriteLine();
-      }
+      //  System.Console.WriteLine();
+      //}
     }
 
     private static void Main(string[] args)

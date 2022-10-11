@@ -266,7 +266,10 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct CartesianCoordinate2R
-    : System.IEquatable<CartesianCoordinate2R>, IVector2<double>
+    : System.IEquatable<CartesianCoordinate2R>
+#if NET7_0_OR_GREATER
+    , IVector2<double>
+#endif
   {
     public readonly static CartesianCoordinate2R Zero;
 
@@ -282,8 +285,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
 
+#if NET7_0_OR_GREATER
     public IVector2<double> Create(double x, double y)
       => new CartesianCoordinate2R(x, y);
+#endif
 
     ///// <summary>Returns the angle to the 2D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
@@ -351,7 +356,7 @@ namespace Flux
     public CartesianCoordinate2R PerpendicularCw()
       => new(m_y, -m_x);
 
-    #region To..
+#region To..
 
     /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="CartesianCoordinate2I"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -405,9 +410,9 @@ namespace Flux
     public System.Runtime.Intrinsics.Vector256<double> ToVector256()
       => ToVector256(m_x, m_y);
 
-    #endregion
+#endregion
 
-    #region Static methods
+#region Static methods
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
@@ -531,9 +536,9 @@ namespace Flux
 
       return new CartesianCoordinate2R(source.m_x * cos + (target.m_x - source.m_x) * dp * sin, source.m_y * cos + (target.m_y - source.m_y) * dp * sin);
     }
-    #endregion Static methods
+#endregion Static methods
 
-    #region Overloaded operators
+#region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate2R(System.ValueTuple<double, double> vt2) => new(vt2.Item1, vt2.Item2);
     [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double>(CartesianCoordinate2R cc2) => new(cc2.X, cc2.Y);
 
@@ -567,17 +572,17 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2R operator %(CartesianCoordinate2R cc1, CartesianCoordinate2R cc2) => new(cc1.X % cc2.X, cc1.Y % cc2.Y);
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2R operator %(CartesianCoordinate2R cc, double scalar) => new(cc.X % scalar, cc.Y % scalar);
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2R operator %(double scalar, CartesianCoordinate2R cc) => new(scalar % cc.X, scalar % cc.Y);
-    #endregion Overloaded operators
+#endregion Overloaded operators
 
-    #region Implemented interfaces
+#region Implemented interfaces
     // IEquatable
     [System.Diagnostics.Contracts.Pure] public bool Equals(CartesianCoordinate2R other) => m_x == other.m_x && m_y == other.m_y;
-    #endregion Implemented interfaces
+#endregion Implemented interfaces
 
-    #region Object overrides
+#region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate2R o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y);
     [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength()}) }}";
-    #endregion Object overrides
+#endregion Object overrides
   }
 }

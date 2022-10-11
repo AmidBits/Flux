@@ -4,7 +4,10 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct SphericalCoordinate
-    : System.IEquatable<SphericalCoordinate>, ISphericalCoordinate
+    : System.IEquatable<SphericalCoordinate>
+#if NET7_0_OR_GREATER
+    , ISphericalCoordinate
+#endif
   {
     private readonly double m_radius;
     private readonly double m_radInclination;
@@ -43,7 +46,7 @@ namespace Flux
     public GeographicCoordinate ToGeographicCoordinate()
       => new(Angle.ConvertRadianToDegree(System.Math.PI - m_radInclination - Maths.PiOver2), Angle.ConvertRadianToDegree(m_radAzimuth - System.Math.PI), m_radius);
 
-    #region Static methods
+#region Static methods
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertInclinationToElevation(double inclinationRad)
@@ -52,22 +55,22 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertElevationToInclination(double elevationRad)
       => Maths.PiOver2 - elevationRad;
-    #endregion Static methods
+#endregion Static methods
 
-    #region Overloaded operators
+#region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static bool operator ==(SphericalCoordinate a, SphericalCoordinate b) => a.Equals(b);
     [System.Diagnostics.Contracts.Pure] public static bool operator !=(SphericalCoordinate a, SphericalCoordinate b) => !a.Equals(b);
-    #endregion Overloaded operators
+#endregion Overloaded operators
 
-    #region Implemented interfaces
+#region Implemented interfaces
     // IEquatable
     [System.Diagnostics.Contracts.Pure] public bool Equals(SphericalCoordinate other) => m_radius == other.m_radius && m_radInclination == other.m_radInclination && m_radAzimuth == other.m_radAzimuth;
-    #endregion Implemented interfaces
+#endregion Implemented interfaces
 
-    #region Object overrides
+#region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is SphericalCoordinate o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radius, m_radInclination, m_radAzimuth);
     [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {Inclination.ToUnitValue(AngleUnit.Degree):N1}\u00B0 (Elevation = {Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_radInclination)):N1}\u00B0), Azimuth = {Azimuth.ToAngle().ToUnitValue(AngleUnit.Degree):N1}\u00B0 }}";
-    #endregion Object overrides
+#endregion Object overrides
   }
 }
