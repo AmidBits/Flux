@@ -26,12 +26,12 @@ namespace Flux
 
       return mode switch // It's exactly halfway, use appropriate rounding to resolve winner.
       {
-        RoundingMode.HalfwayToEven => TSelf.IsEvenInteger(boundaryTowardsZero) ? boundaryTowardsZero : boundaryAwayFromZero,
-        RoundingMode.HalfwayAwayFromZero => boundaryAwayFromZero,
-        RoundingMode.HalfwayTowardZero => boundaryTowardsZero,
-        RoundingMode.HalfwayToNegativeInfinity => x < TSelf.Zero ? boundaryAwayFromZero : boundaryTowardsZero,
-        RoundingMode.HalfwayToPositiveInfinity => x < TSelf.Zero ? boundaryTowardsZero : boundaryAwayFromZero,
-        RoundingMode.HalfwayToOdd => TSelf.IsOddInteger(boundaryAwayFromZero) ? boundaryAwayFromZero : boundaryTowardsZero,
+        RoundingMode.HalfToEven => TSelf.IsEvenInteger(boundaryTowardsZero) ? boundaryTowardsZero : boundaryAwayFromZero,
+        RoundingMode.HalfAwayFromZero => boundaryAwayFromZero,
+        RoundingMode.HalfTowardZero => boundaryTowardsZero,
+        RoundingMode.HalfToNegativeInfinity => x < TSelf.Zero ? boundaryAwayFromZero : boundaryTowardsZero,
+        RoundingMode.HalfToPositiveInfinity => x < TSelf.Zero ? boundaryTowardsZero : boundaryAwayFromZero,
+        RoundingMode.HalfToOdd => TSelf.IsOddInteger(boundaryAwayFromZero) ? boundaryAwayFromZero : boundaryTowardsZero,
         RoundingMode.Envelop => boundaryAwayFromZero,
         RoundingMode.Truncate => boundaryTowardsZero,
         RoundingMode.Floor => x < TSelf.Zero ? boundaryAwayFromZero : boundaryTowardsZero,
