@@ -4,8 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Flux;
-using Flux.DataStructures;
-using Flux.Numerics;
 
 // C# Interactive commands:
 // #r "System.Runtime"

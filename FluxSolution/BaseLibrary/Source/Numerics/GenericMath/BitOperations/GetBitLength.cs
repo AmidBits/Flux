@@ -13,9 +13,7 @@ namespace Flux
       => value < TSelf.Zero // If negative,
       ? (value.GetByteCount() * 8) // return the maximum number of bits, according to GetByteCount(),
       : value.GetShortestBitLength(); // otherwise return the bit-length using GetShortestBitLength().
-    //=> value > TSelf.Zero ? ILog2(value) + 1
-    //: value < TSelf.Zero ? -1
-    //: 0;
+    //=> value > TSelf.Zero ? IntegerLog2(value) + 1 : value < TSelf.Zero ? -1 : 0;
 
     /// <summary>PREVIEW! Projects the built-in GetShortestBitLength as an extension method.</summary>
     public static int GetShortestBitLength<TSelf>(this TSelf value)

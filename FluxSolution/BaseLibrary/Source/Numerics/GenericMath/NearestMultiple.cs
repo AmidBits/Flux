@@ -10,7 +10,7 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static void FindNearestMultiples<TSelf>(this TSelf x, TSelf multiple, bool proper, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+    public static void FindNearestMultiple<TSelf>(this TSelf x, TSelf multiple, bool proper, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       var offsetTowardsZero = x % multiple;
@@ -38,7 +38,7 @@ namespace Flux
     public static TSelf GetNearestMultiple<TSelf>(this TSelf x, TSelf multiple, bool proper, RoundingMode mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      FindNearestMultiples(x, multiple, proper, out nearestTowardsZero, out nearestAwayFromZero);
+      FindNearestMultiple(x, multiple, proper, out nearestTowardsZero, out nearestAwayFromZero);
 
       return new BoundaryRounding<TSelf>(mode, nearestTowardsZero, nearestAwayFromZero).RoundNumber(x);
     }

@@ -63,17 +63,22 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void GetNearestPow2HalfwayAwayFromZero()
+    public void GetNearestPow2AwayFromZero()
     {
       //var rounding = new RoundToBoundary<System.Numerics.BigInteger>(RoundingMode.HalfwayToEven);
-      
-      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().GetNearestPow2(false, RoundingMode.HalfAwayFromZero, out var _, out var _));
+      var expected = 128.ToBigInteger();
+      var actual = 88.ToBigInteger().GetNearestPow2(false, RoundingMode.Envelop, out var _, out var _);
+
+      Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void GetNearestPow2AwayFromZeroProper()
     {
-      Assert.AreEqual(128.ToBigInteger(), 88.ToBigInteger().GetNearestPow2(true, RoundingMode.HalfAwayFromZero, out var _, out var _));
+      var expected = 128.ToBigInteger();
+      var actual = 88.ToBigInteger().GetNearestPow2(true, RoundingMode.Envelop, out var _, out var _);
+
+      Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]

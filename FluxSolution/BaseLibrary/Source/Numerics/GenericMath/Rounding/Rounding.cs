@@ -56,21 +56,24 @@ namespace Flux
     public TSelf RoundNumber(TSelf x)
     {
       var two = TSelf.CreateChecked(2);
-      var halfOfOne = TSelf.CreateChecked(0.5);
+      var half = TSelf.CreateChecked(0.5);
 
       return m_mode switch
       {
-        RoundingMode.HalfAwayFromZero => RoundHalfAwayFromZero(x),
-        RoundingMode.HalfTowardZero => RoundHalfTowardZero(x),
-        RoundingMode.HalfToEven => TSelf.Floor(x + halfOfOne) is var pi && !TSelf.IsZero(pi % two) && x - TSelf.Floor(x) == halfOfOne ? pi - TSelf.One : pi,
-        RoundingMode.HalfToNegativeInfinity => RoundHalfToNegativeInfinity(x),
-        RoundingMode.HalfToOdd => TSelf.Floor(x + halfOfOne) is var pi && TSelf.IsZero(pi % two) && x - TSelf.Floor(x) == halfOfOne ? pi - TSelf.One : pi,
-        RoundingMode.HalfToPositiveInfinity => RoundHalfToPositiveInfinity(x),
         RoundingMode.Envelop => RoundEnvelop(x),
         RoundingMode.Ceiling => RoundCeiling(x),
         RoundingMode.Floor => RoundFloor(x),
         RoundingMode.Truncate => RoundTruncate(x),
-        _ => throw new System.ArgumentOutOfRangeException(m_mode.ToString()),
+        _ => m_mode switch
+        {
+          RoundingMode.HalfAwayFromZero => RoundHalfAwayFromZero(x),
+          RoundingMode.HalfTowardZero => RoundHalfTowardZero(x),
+          RoundingMode.HalfToEven => TSelf.Floor(x + half) is var pi && !TSelf.IsZero(pi % two) && x - TSelf.Floor(x) == half ? pi - TSelf.One : pi,
+          RoundingMode.HalfToNegativeInfinity => RoundHalfToNegativeInfinity(x),
+          RoundingMode.HalfToOdd => TSelf.Floor(x + half) is var pi && TSelf.IsZero(pi % two) && x - TSelf.Floor(x) == half ? pi - TSelf.One : pi,
+          RoundingMode.HalfToPositiveInfinity => RoundHalfToPositiveInfinity(x),
+          _ => throw new System.ArgumentOutOfRangeException(m_mode.ToString()),
+        }
       };
     }
     #endregion Implemented interfaces

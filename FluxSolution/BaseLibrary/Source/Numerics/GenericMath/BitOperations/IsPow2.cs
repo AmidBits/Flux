@@ -10,8 +10,7 @@ namespace Flux
     /// <remarks>The implementation is extremely fast for huge BigInteger values.</remarks>
     public static bool IsPow2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsPow2(value);
-    // value > TSelf.Zero && TSelf.IsZero(value & (value - TSelf.One));
+      => TSelf.IsPow2(value); // value > TSelf.Zero && TSelf.IsZero(value & (value - TSelf.One));
   }
 }
 #endif

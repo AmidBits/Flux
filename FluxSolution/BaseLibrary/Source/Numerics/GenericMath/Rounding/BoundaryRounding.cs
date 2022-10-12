@@ -19,24 +19,24 @@ namespace Flux
     /// <summary>PREVIEW! Rounds a value to the nearest boundary. The distance computation is a slight optimization for special cases, e.g. when rounding to multiple of. The mode specifies how to round when between two intervals.</summary>
     public static TSelf Round(TSelf x, TSelf boundaryTowardsZero, TSelf boundaryAwayFromZero, RoundingMode mode, TSelf distanceTowardsZero, TSelf distanceAwayFromZero)
     {
-      if (distanceTowardsZero < distanceAwayFromZero) // It's a clear win for towardsZero.
-        return boundaryTowardsZero;
-      if (distanceAwayFromZero < distanceTowardsZero) // It's a clear win for awayFromZero.
-        return boundaryAwayFromZero;
-
-      return mode switch // It's exactly halfway, use appropriate rounding to resolve winner.
+      return mode switch
       {
-        RoundingMode.HalfToEven => TSelf.IsEvenInteger(boundaryTowardsZero) ? boundaryTowardsZero : boundaryAwayFromZero,
-        RoundingMode.HalfAwayFromZero => boundaryAwayFromZero,
-        RoundingMode.HalfTowardZero => boundaryTowardsZero,
-        RoundingMode.HalfToNegativeInfinity => x < TSelf.Zero ? boundaryAwayFromZero : boundaryTowardsZero,
-        RoundingMode.HalfToPositiveInfinity => x < TSelf.Zero ? boundaryTowardsZero : boundaryAwayFromZero,
-        RoundingMode.HalfToOdd => TSelf.IsOddInteger(boundaryAwayFromZero) ? boundaryAwayFromZero : boundaryTowardsZero,
         RoundingMode.Envelop => boundaryAwayFromZero,
         RoundingMode.Truncate => boundaryTowardsZero,
         RoundingMode.Floor => x < TSelf.Zero ? boundaryAwayFromZero : boundaryTowardsZero,
         RoundingMode.Ceiling => x < TSelf.Zero ? boundaryTowardsZero : boundaryAwayFromZero,
-        _ => throw new System.ArgumentOutOfRangeException(mode.ToString()),
+        _ => (distanceTowardsZero < distanceAwayFromZero) ? boundaryTowardsZero // It's a clear win for towardsZero.
+          : (distanceAwayFromZero < distanceTowardsZero) ? boundaryAwayFromZero // It's a clear win for awayFromZero.
+          : mode switch // Here it's exactly halfway, use appropriate rounding to resolve winner.
+          {
+            RoundingMode.HalfToEven => TSelf.IsEvenInteger(boundaryTowardsZero) ? boundaryTowardsZero : boundaryAwayFromZero,
+            RoundingMode.HalfAwayFromZero => boundaryAwayFromZero,
+            RoundingMode.HalfTowardZero => boundaryTowardsZero,
+            RoundingMode.HalfToNegativeInfinity => x < TSelf.Zero ? boundaryAwayFromZero : boundaryTowardsZero,
+            RoundingMode.HalfToPositiveInfinity => x < TSelf.Zero ? boundaryTowardsZero : boundaryAwayFromZero,
+            RoundingMode.HalfToOdd => TSelf.IsOddInteger(boundaryAwayFromZero) ? boundaryAwayFromZero : boundaryTowardsZero,
+            _ => throw new System.ArgumentOutOfRangeException(mode.ToString()),
+          }
       };
     }
 
@@ -49,11 +49,11 @@ namespace Flux
       return Round(x, boundaryTowardsZero, boundaryAwayFromZero, mode, distanceTowardsZero, distanceAwayFromZero);
     }
 
-#region Implemented interfaces
+    #region Implemented interfaces
     /// <summary>PREVIEW! Rounds a value to the nearest boundary. The mode specifies how to round when between two intervals.</summary>
     public TSelf RoundNumber(TSelf x)
       => Round(x, m_boundaryTowardsZero, m_boundaryAwayFromZero, m_mode);
-#endregion Implemented interfaces
+    #endregion Implemented interfaces
   }
 }
 #endif
