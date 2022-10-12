@@ -24,7 +24,24 @@ namespace Flux
 
     [System.Diagnostics.Contracts.Pure] public TSelf Distance => m_hi - m_lo;
 
+    [System.Diagnostics.Contracts.Pure] public TSelf Fold(TSelf value) => value.Fold(m_lo, m_hi);
+
+    [System.Diagnostics.Contracts.Pure] public TSelf Rescale(TSelf value, ValueRange2<TSelf> targetRange) => value.Rescale(m_lo, m_hi, targetRange.m_lo, targetRange.m_hi);
+
+    [System.Diagnostics.Contracts.Pure] public TSelf Wrap(TSelf value) => value.Wrap(m_lo, m_hi);
+
+    [System.Diagnostics.Contracts.Pure]
+    public TMu InterpolateCosine<TMu>(TMu mu)
+      where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TSelf, TMu>, System.Numerics.ITrigonometricFunctions<TMu>
+      => new InterpolationCosine<TSelf, TMu>().Interpolate(m_lo, m_hi, mu);
+
+    [System.Diagnostics.Contracts.Pure]
+    public TMu InterpolateLinear<TMu>(TMu mu)
+      where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TSelf, TMu>
+      => new InterpolationLinear<TSelf, TMu>().Interpolate(m_lo, m_hi, mu);
+
     #region Static methods
+
     /// <summary>The intersection of A and B, denoted by A ∩ B, is the set of all things that are members of both A and B. If A ∩ B = none, then A and B are said to be disjoint.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static ValueRange2<TSelf> Intersect(ValueRange2<TSelf> a, ValueRange2<TSelf> b)
@@ -92,41 +109,13 @@ namespace Flux
       => IsOverlapping(a, b) ? new ValueRange2<TSelf>(MinLo(a, b), MaxHi(a, b)) : Empty;
 
     [System.Diagnostics.Contracts.Pure]
+    /// <summary>The union of A and B, denoted by A ∪ B, is the set of all things that are members of A and B, unconditionally.</summary>
     public static ValueRange2<TSelf> UnionAll(ValueRange2<TSelf> a, ValueRange2<TSelf> b)
       => new(MinLo(a, b), MaxHi(a, b));
 
-    //public static TSelf Fold(TSelf value, ValueRange2<TSelf> range)
-    //{
-    //  if (value > range.High)
-    //  {
-    //    var magnitude = value - range.High;
-
-    //    var count = 0;
-
-    //    while(magnitude > range.Distance)
-    //    {
-    //      magnitude -= range.Distance;
-
-    //      count++;
-    //    }
-
-    //    if (count % 2 == 0)
-    //      return range.High - magnitude;
-    //    else
-    //      return range.Low + magnitude;
-    //  }
-    //}
-
-    public static TSelf Rescale(TSelf value, ValueRange2<TSelf> source, ValueRange2<TSelf> target)
-      => target.Distance * (value - source.Low) / source.Distance + target.Low;
-
     [System.Diagnostics.Contracts.Pure]
-    public static TSelf Wrap(TSelf value, ValueRange2<TSelf> range)
-      => value < range.Low
-      ? range.High - (range.Low - value) % range.Distance
-      : value > range.High
-      ? range.Low + (value - range.Low) % range.Distance
-      : value;
+    public static TSelf Rescale(TSelf value, ValueRange2<TSelf> source, ValueRange2<TSelf> target)
+      => value.Rescale(source.m_lo, source.m_hi, target.m_lo, target.m_hi);
 
     [System.Diagnostics.Contracts.Pure]
     public static bool IsOverlapping(ValueRange2<TSelf> a, ValueRange2<TSelf> b)
@@ -135,15 +124,19 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static TSelf MaxHi(ValueRange2<TSelf> a, ValueRange2<TSelf> b)
       => a.m_hi.CompareTo(b.m_hi) >= 0 ? a.m_hi : b.m_hi;
+
     [System.Diagnostics.Contracts.Pure]
     public static TSelf MaxLo(ValueRange2<TSelf> a, ValueRange2<TSelf> b)
       => a.m_lo.CompareTo(b.m_lo) >= 0 ? a.m_lo : b.m_lo;
+
     [System.Diagnostics.Contracts.Pure]
     public static TSelf MinHi(ValueRange2<TSelf> a, ValueRange2<TSelf> b)
       => a.m_hi.CompareTo(b.m_hi) <= 0 ? a.m_hi : b.m_hi;
+
     [System.Diagnostics.Contracts.Pure]
     public static TSelf MinLo(ValueRange2<TSelf> a, ValueRange2<TSelf> b)
       => a.m_lo.CompareTo(b.m_lo) <= 0 ? a.m_lo : b.m_lo;
+
     #endregion Static methods
 
     #region Overloaded operators
