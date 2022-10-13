@@ -21,13 +21,13 @@ namespace Flux
     /// <remarks>var r = Flux.GenericMath.TruncatingRound(99.96535789, 2, HalfwayRounding.ToEven); // = 99.97 (compare with the corresponding TruncatingRound method)</remarks>
     public static TSelf Round(TSelf x, int significantDigits, RoundingMode mode)
       => significantDigits >= 0 && TSelf.Pow(TSelf.CreateChecked(10), TSelf.CreateChecked(significantDigits)) is var scalar
-      ? new Rounding<TSelf>(mode).RoundNumber(x * scalar) / scalar
+      ? Rounding<TSelf>.Round(x * scalar, mode) / scalar
       : throw new System.ArgumentOutOfRangeException(nameof(significantDigits));
 
-#region Implemented interfaces
+    #region Implemented interfaces
     public TSelf RoundNumber(TSelf value)
       => Round(value, m_significantDigits, m_mode);
-#endregion Implemented interfaces
+    #endregion Implemented interfaces
   }
 }
 #endif

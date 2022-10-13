@@ -5,7 +5,7 @@ namespace Flux
     where TNode : System.Numerics.INumber<TNode>
     where TMu : System.Numerics.IFloatingPoint<TMu>
   {
-    TMu Interpolate(TNode n1, TNode n2, TMu mu);
+    TMu Interpolate2Node(TNode n1, TNode n2, TMu mu);
   }
 }
 #endif

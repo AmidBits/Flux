@@ -2,7 +2,7 @@
 namespace Flux.NumberSequencing
 {
   public record class Factors
-    : INumericSequence<System.Numerics.BigInteger>
+    : INumericSequence<System.Numerics.BigInteger>, INumberSubset<System.Numerics.BigInteger>
   {
     public System.Numerics.BigInteger Number { get; }
 
@@ -156,9 +156,17 @@ namespace Flux.NumberSequencing
     #endregion Static methods
 
     #region Implemented interfaces
-    // INumberSequence
+    // INumericSequence
     [System.Diagnostics.Contracts.Pure]
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+    {
+      foreach (var divisor in GetDivisors(Number))
+        yield return divisor;
+    }
+
+    // INumberSubset
+    [System.Diagnostics.Contracts.Pure]
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSubset(System.Numerics.BigInteger number)
     {
       foreach (var divisor in GetDivisors(Number))
         yield return divisor;

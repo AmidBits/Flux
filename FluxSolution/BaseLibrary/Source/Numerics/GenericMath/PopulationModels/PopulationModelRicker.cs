@@ -7,7 +7,7 @@ namespace Flux
   /// <param name="carryingCapacity">The carrying capacity of the environment (k).</param>
   /// <returns>The expected number (or density) of individuals in (the next) generation (Nt + 1).</returns>
   /// <see cref="https://en.wikipedia.org/wiki/Ricker_model"/>
-  public record class RickerPopulationModel<TSelf>
+  public record class PopulationModelRicker<TSelf>
     : IPopulationModelable<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
   {
@@ -15,7 +15,7 @@ namespace Flux
     public TSelf m_growthRate;
     public TSelf m_carryingCapacity;
 
-    public RickerPopulationModel(TSelf population, TSelf growthRate, TSelf carryingCapacity)
+    public PopulationModelRicker(TSelf population, TSelf growthRate, TSelf carryingCapacity)
     {
       m_population = population;
       m_growthRate = growthRate;
@@ -34,7 +34,7 @@ namespace Flux
 
     /// <returns>The number of individuals at time Nt+1.</returns>
     public IPopulationModelable<TSelf> ModelPopulation()
-      => new RickerPopulationModel<TSelf>(Compute(m_population, m_growthRate, m_carryingCapacity), m_growthRate, m_carryingCapacity);
+      => new PopulationModelRicker<TSelf>(Compute(m_population, m_growthRate, m_carryingCapacity), m_growthRate, m_carryingCapacity);
 
     /// <summary>A classic discrete population model which gives the expected number N t+1 (or density) of individuals in generation t + 1 as a function of the number of individuals in the previous generation.</summary>
     /// <param name="population">The number of individuals in the previous generation (Nt).</param>

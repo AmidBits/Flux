@@ -8,7 +8,8 @@ namespace Flux
     where TNode : System.Numerics.INumber<TNode>
     where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TNode, TMu>
   {
-    public TMu Interpolate(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu)
+    #region Static methods
+    public static TMu Interpolate(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu)
     {
       var two = TMu.One + TMu.One;
       var half = TMu.One / two;
@@ -23,6 +24,12 @@ namespace Flux
 
       return mu * mu2 * a0 + mu2 * a1 + mu * a2 + a3;
     }
+    #endregion Static methods
+
+    #region Implemented interfaces
+    public TMu Interpolate4Node(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu)
+      => Interpolate(n0, n1, n2, n3, mu);
+    #endregion Implemented interfaces
   }
 }
 #endif

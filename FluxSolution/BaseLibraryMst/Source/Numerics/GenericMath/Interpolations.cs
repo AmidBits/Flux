@@ -13,7 +13,7 @@ namespace GenericMath
     {
       var ic = new InterpolationCosine<double, double>();
 
-      Assert.AreEqual(5.732233047033631, ic.Interpolate(5.0, 10, 0.25));
+      Assert.AreEqual(5.732233047033631, ic.Interpolate2Node(5.0, 10, 0.25));
     }
 
     [TestMethod]
@@ -21,7 +21,7 @@ namespace GenericMath
     {
       var il = new InterpolationLinear<double, double>();
 
-      Assert.AreEqual(6.25, il.Interpolate(5.0, 10, 0.25));
+      Assert.AreEqual(6.25, il.Interpolate2Node(5.0, 10, 0.25));
     }
   }
 }

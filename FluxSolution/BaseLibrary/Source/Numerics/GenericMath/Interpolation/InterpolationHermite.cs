@@ -20,7 +20,8 @@ namespace Flux
     public TMu Bias { get => m_bias; init => m_bias = value; }
     public TMu Tension { get => m_tension; init => m_tension = value; }
 
-    public TMu Interpolate(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu)
+    #region Static methods
+    public static TMu Interpolate(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu, TMu tension, TMu bias)
     {
       var one = TMu.One;
       var two = TMu.One.Mul2();
@@ -29,8 +30,8 @@ namespace Flux
       var mu2 = mu * mu;
       var mu3 = mu2 * mu;
 
-      var biasP = (one + m_bias) * (one - m_tension);
-      var biasM = (one - m_bias) * (one - m_tension);
+      var biasP = (one + bias) * (one - tension);
+      var biasM = (one - bias) * (one - tension);
 
       var m0 = biasP * (n1 - n0) / two + biasM * (n2 - n1) / two;
       var m1 = biasP * (n2 - n1) / two + biasM * (n3 - n2) / two;
@@ -42,6 +43,12 @@ namespace Flux
 
       return a0 * n1 + a1 * m0 + a2 * m1 + a3 * n2;
     }
+    #endregion Static methods
+
+    #region Implemented interfaces
+    public TMu Interpolate4Node(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu)
+      => Interpolate(n0, n1, n2, n3, mu, m_tension, m_bias);
+    #endregion Implemented interfaces
   }
 }
 #endif
