@@ -19,6 +19,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var cen = Flux.GenericMath.ComputeNegativeEpsilon<double>();
+      var cep = Flux.GenericMath.ComputePositiveEpsilon<double>();
+
+      System.Console.WriteLine($"{cen} <> {cep}");
+
       //Flux.IPopulationModelable
 
       //var n = 99.96535789;
