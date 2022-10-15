@@ -12,7 +12,7 @@ namespace Flux
     /// </remarks>
     public static bool IsApproximatelyEqualPrecision<TSelf>(this TSelf a, TSelf b, int significantDigits, int radix)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => new EqualityBySignificantDigits<TSelf>(significantDigits, radix).IsApproximatelyEqual(a, b);
+      => new Equality.EqualityBySignificantDigits<TSelf>(significantDigits, radix).IsApproximatelyEqual(a, b);
   }
 
   namespace Equality

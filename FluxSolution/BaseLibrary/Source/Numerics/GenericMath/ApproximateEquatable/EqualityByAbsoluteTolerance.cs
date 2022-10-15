@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>PREVIEW! Perform a comparison where the tolerance is the same, no matter how small or large the compared numbers.</summary>
     public static bool IsApproximatelyEqualAbsolute<TSelf>(this TSelf a, TSelf b, TSelf absoluteTolerance)
       where TSelf : System.Numerics.INumber<TSelf>
-      => new EqualityByAbsoluteTolerance<TSelf>(absoluteTolerance).IsApproximatelyEqual(a, b);
+      => new Equality.EqualityByAbsoluteTolerance<TSelf>(absoluteTolerance).IsApproximatelyEqual(a, b);
   }
 
   namespace Equality

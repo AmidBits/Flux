@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>PREVIEW! Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
     public static bool IsApproximatelyEqualRelative<TSelf>(this TSelf a, TSelf b, TSelf percentTolerance)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => new EqualityByRelativeTolerance<TSelf>(percentTolerance).IsApproximatelyEqual(a, b);
+      => new Equality.EqualityByRelativeTolerance<TSelf>(percentTolerance).IsApproximatelyEqual(a, b);
   }
 
   namespace Equality
