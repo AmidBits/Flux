@@ -1,9 +1,9 @@
 #if NET7_0_OR_GREATER
-namespace Flux
+namespace Flux.Interpolation
 {
   /// <summary>Cosine interpolation is a smoother and perhaps simplest function. A suitable orientated piece of a cosine function serves to provide a smooth transition between adjacent segments.</summary>
   /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
-  public readonly struct InterpolationCubicPb<TNode, TMu>
+  public readonly struct CubicInterpolationPb<TNode, TMu>
     : I4NodeInterpolatable<TNode, TMu>
     where TNode : System.Numerics.INumber<TNode>
     where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TNode, TMu>

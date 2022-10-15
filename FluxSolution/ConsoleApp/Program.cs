@@ -19,17 +19,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var cen = Flux.GenericMath.ComputeNegativeEpsilon<double>();
-      var cep = Flux.GenericMath.ComputePositiveEpsilon<double>();
-
-      System.Console.WriteLine($"{cen:N17} <> {cep:N17} == {(cep-cen):N17}");
-
-      var cenf = Flux.GenericMath.ComputeNegativeEpsilon<float>();
-      var cepf = Flux.GenericMath.ComputePositiveEpsilon<float>();
-
-      System.Console.WriteLine($"{cenf:N17} <> {cepf:N17} == {(cepf - cenf):N17}");
-
-      System.Console.WriteLine($"{Flux.GenericMath.SingleEpsilonNegative:N17} <> {Flux.GenericMath.SingleEpsilonPositive:N17} == {(Flux.GenericMath.SingleEpsilonPositive - Flux.GenericMath.SingleEpsilonNegative):N17}");
+      
 
       //Flux.IPopulationModelable
 

@@ -9,22 +9,25 @@ namespace Flux
       => new EqualityByRelativeTolerance<TSelf>(percentTolerance).IsApproximatelyEqual(a, b);
   }
 
-  /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
-  public record class EqualityByRelativeTolerance<TSelf>
-   : IEqualityApproximatable<TSelf>
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
+  namespace Equality
   {
-    private readonly TSelf m_relativeTolerance;
+    /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
+    public record class EqualityByRelativeTolerance<TSelf>
+      : IEqualityApproximatable<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    {
+      private readonly TSelf m_relativeTolerance;
 
-    public EqualityByRelativeTolerance(TSelf relativeTolerance)
-      => m_relativeTolerance = relativeTolerance;
+      public EqualityByRelativeTolerance(TSelf relativeTolerance)
+        => m_relativeTolerance = relativeTolerance;
 
-    public TSelf RelativeTolerance { get => m_relativeTolerance; init => m_relativeTolerance = value; }
+      public TSelf RelativeTolerance { get => m_relativeTolerance; init => m_relativeTolerance = value; }
 
-    [System.Diagnostics.Contracts.Pure]
-    public bool IsApproximatelyEqual(TSelf a, TSelf b)
-      => a == b
-      || (m_relativeTolerance * TSelf.Max(TSelf.Abs(a), TSelf.Abs(b)) > TSelf.Abs(a - b));
+      [System.Diagnostics.Contracts.Pure]
+      public bool IsApproximatelyEqual(TSelf a, TSelf b)
+        => a == b
+        || (m_relativeTolerance * TSelf.Max(TSelf.Abs(a), TSelf.Abs(b)) > TSelf.Abs(a - b));
+    }
   }
 }
 #endif

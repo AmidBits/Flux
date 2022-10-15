@@ -33,12 +33,12 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public TMu InterpolateCosine<TMu>(TMu mu)
       where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TSelf, TMu>, System.Numerics.ITrigonometricFunctions<TMu>
-      => new InterpolationCosine<TSelf, TMu>().Interpolate2Node(m_lo, m_hi, mu);
+      => new Interpolation.CosineInterpolation<TSelf, TMu>().Interpolate2Node(m_lo, m_hi, mu);
 
     [System.Diagnostics.Contracts.Pure]
     public TMu InterpolateLinear<TMu>(TMu mu)
       where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TSelf, TMu>
-      => new InterpolationLinear<TSelf, TMu>().Interpolate2Node(m_lo, m_hi, mu);
+      => new Interpolation.LinearInterpolation<TSelf, TMu>().Interpolate2Node(m_lo, m_hi, mu);
 
     #region Static methods
 
