@@ -3,19 +3,19 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Returns the count of all digits in x using base b.</summary>
-    public static TSelf DigitCount<TSelf>(this TSelf x, TSelf b)
+    /// <summary>PREVIEW! Returns the count of all single digits in <paramref name="number"/> using base <paramref name="radix"/>.</summary>
+    public static TSelf DigitCount<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(b);
+      AssertRadix(radix);
 
       var count = TSelf.Zero;
 
-      while (!TSelf.IsZero(x))
+      while (!TSelf.IsZero(number))
       {
         count++;
 
-        x /= b;
+        number /= radix;
       }
 
       return count;

@@ -3,10 +3,10 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Creates <paramref name="x"/> to text using base <paramref name="b"/>.</summary>
-    public static System.ReadOnlySpan<char> ToRadixString<TSelf>(this TSelf x, TSelf b)
+    /// <summary>PREVIEW! Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
+    public static System.ReadOnlySpan<char> ToRadixString<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(x, Flux.Text.RuneSequences.Base62[..AssertRadix(int.CreateChecked(b))]).ToString();
+      => ToRadixString(number, Flux.Text.RuneSequences.Base62[..AssertRadix(int.CreateChecked(radix))]).ToString();
 
     /// <summary>PREVIEW! Converts the number to text using the specified symbols. The count of symbols represents the radix of conversion.</summary>
     public static System.Text.StringBuilder ToRadixString<TSelf>(this TSelf number, System.ReadOnlySpan<System.Text.Rune> symbols)

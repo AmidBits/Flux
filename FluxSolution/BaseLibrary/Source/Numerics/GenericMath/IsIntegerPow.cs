@@ -7,7 +7,7 @@ namespace Flux
     public static bool IsIntegerPow<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertNonNegativeValue(x);
+      AssertNonNegative(x);
       AssertRadix(b);
 
       if (x == b) // If the value is equal to the radix, then it's a power of the radix.

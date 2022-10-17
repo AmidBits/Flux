@@ -19,10 +19,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var rf = Flux.StepFunction<float, double>.Sign;
+      for (var i = -1.25f; i <= 1.25; i += 0.25f)
+        System.Console.WriteLine($"{i:N2} = {Flux.StepFunction<float, double>.Sign.Evaluate(i)}");
 
-      for (var i = -1.25f; i  <= 1.25; i += 0.25f)
-        System.Console.WriteLine($"{i:N2} = {rf.Evaluate(i)}");
+      var number = 6705302039;
+
+      System.Console.WriteLine($"{number} = DropLeastSignificantDigit:{number.DropLeastSignificantDigit(10)}");
+      System.Console.WriteLine($"{number} = DropLeastSignificantDigits:{number.DropLeastSignificantDigits(10, 3)}");
+      System.Console.WriteLine($"{number} = DropMostSignificantDigits:{number.DropMostSignificantDigits(10, 3)}");
+
+      System.Console.WriteLine($"{number} = KeepLeastSignificantDigit:{number.KeepLeastSignificantDigit(10)}");
+      System.Console.WriteLine($"{number} = KeepLeastSignificantDigits:{number.KeepLeastSignificantDigits(10, 3)}");
+      System.Console.WriteLine($"{number} = KeepMostSignificantDigits:{number.KeepMostSignificantDigits(10, 3)}");
 
       //Flux.IPopulationModelable
 

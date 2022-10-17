@@ -12,47 +12,25 @@ namespace GenericMath
     [TestMethod]
     public void DetentInterval()
     {
-      Assert.AreEqual(520, (515).ToBigInteger().DetentInterval(20, 5, RoundingMode.HalfAwayFromZero));
+      Assert.AreEqual(520, 515.DetentInterval(20, 5, RoundingMode.HalfAwayFromZero));
     }
 
     [TestMethod]
     public void DetentPosition()
     {
-      Assert.AreEqual(520, 515.ToBigInteger().DetentPosition(520, 5));
+      Assert.AreEqual(520, 515.DetentPosition(520, 5));
     }
 
     [TestMethod]
     public void DetentZero()
     {
-      Assert.AreEqual(0, 4.ToBigInteger().DetentZero(5));
+      Assert.AreEqual(0, 4.DetentZero(5));
     }
 
     [TestMethod]
-    public void DivRem()
+    public void Factorial()
     {
-      var quotient = (9.0).DivMod(6, out var remainder);
-
-      Assert.AreEqual(1.5, quotient);
-      Assert.AreEqual(3, remainder);
-    }
-
-    [TestMethod]
-    public void DivRemTrunc()
-    {
-      var quotient = (9.0).DivModTrunc(6, out var remainder, out var truncatedQuotient);
-
-      Assert.AreEqual(1.5, quotient);
-      Assert.AreEqual(3, remainder);
-      Assert.AreEqual(1, truncatedQuotient);
-    }
-
-    [TestMethod]
-    public void TruncDivRem()
-    {
-      var truncatedQuotient = (9.0).TruncMod(6, out var remainder);
-
-      Assert.AreEqual(1, truncatedQuotient);
-      Assert.AreEqual(3, remainder);
+      Assert.AreEqual(362880, 9.Factorial());
     }
 
     [TestMethod]
@@ -65,6 +43,25 @@ namespace GenericMath
     public void IntegerPow()
     {
       Assert.AreEqual(85766121, 21.IntegerPow(6));
+    }
+
+    [TestMethod]
+    public void IntegerSqrt()
+    {
+      Assert.AreEqual(4, 21.IntegerSqrt());
+    }
+
+    [TestMethod]
+    public void IsCoprime()
+    {
+      Assert.AreEqual(true, 23.IsCoprime(43));
+    }
+
+    [TestMethod]
+    public void IsIntegerPow()
+    {
+      Assert.AreEqual(true, 100.IsIntegerPow(10));
+      Assert.AreEqual(true, 100.IsIntegerPow(10));
     }
 
     [TestMethod]
@@ -81,12 +78,14 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void NearestMultipleOf()
+    public void NearestMultiple()
     {
-      Assert.AreEqual(520, 512.GetNearestMultiple(20, false, RoundingMode.HalfTowardZero, out var smaller, out var larger));
+      var nearestMultiple = 512.GetNearestMultiple(20, false, RoundingMode.HalfTowardZero, out var nearestTowardsZero, out var nearestAwayFromZero);
 
-      Assert.AreEqual(500, smaller);
-      Assert.AreEqual(520, larger);
+      Assert.AreEqual(520, nearestMultiple);
+
+      Assert.AreEqual(500, nearestTowardsZero);
+      Assert.AreEqual(520, nearestAwayFromZero);
     }
   }
 }

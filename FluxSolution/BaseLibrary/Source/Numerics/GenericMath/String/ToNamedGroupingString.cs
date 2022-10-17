@@ -140,7 +140,7 @@ namespace Flux
 
     public static System.Collections.Generic.IEnumerable<string> GetCardinalNumerals(System.Collections.Generic.List<System.Numerics.BigInteger> ordinalNumbers)
     {
-      if (!ordinalNumbers.First().IsNonNegativeValue())
+      if (!ordinalNumbers.First().IsNonNegative())
         yield return "Negative";
 
       foreach (var ordinalNumber in ordinalNumbers.Skip(1))

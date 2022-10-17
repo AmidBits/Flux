@@ -3,20 +3,20 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Returns the sum of all digits in x using base b.</summary>
+    /// <summary>PREVIEW! Returns the sum of all single digits in <paramref name="number"/> using base <paramref name="radix"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static TSelf DigitSum<TSelf>(this TSelf x, TSelf b)
+    public static TSelf DigitSum<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(b);
+      AssertRadix(radix);
 
       var sum = TSelf.Zero;
 
-      while (!TSelf.IsZero(x))
+      while (!TSelf.IsZero(number))
       {
-        sum += x % b;
+        sum += number % radix;
 
-        x /= b;
+        number /= radix;
       }
 
       return sum;

@@ -7,7 +7,7 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf AssertRadix<TSelf>(TSelf radix, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IsRadix(radix) ? radix : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), "Must be an integer value greater than or equal to 2.");
+      => IsRadix(radix) ? radix : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), "Must be an integer, greater than or equal to 2.");
 
     /// <summary>PREVIEW! Returns whether the number is a valid radix.</summary>
     public static bool IsRadix<TSelf>(TSelf radix)

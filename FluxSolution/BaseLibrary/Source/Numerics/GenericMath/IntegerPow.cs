@@ -10,7 +10,7 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TExponent : System.Numerics.IBinaryInteger<TExponent>
     {
-      AssertNonNegativeValue(n);
+      AssertNonNegative(n);
 
       if (TExponent.IsZero(n))
         return TSelf.One;

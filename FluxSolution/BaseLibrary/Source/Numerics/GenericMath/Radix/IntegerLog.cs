@@ -3,23 +3,23 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    public static void IntegerLog<TSelf>(this TSelf x, TSelf b, out TSelf logFloor, out TSelf logCeiling)
+    public static void IntegerLog<TSelf>(this TSelf number, TSelf radix, out TSelf logFloor, out TSelf logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       logFloor = TSelf.Zero;
       logCeiling = TSelf.Zero;
 
-      AssertNonNegativeValue(x);
-      AssertRadix(b);
+      AssertNonNegative(number);
+      AssertRadix(radix);
 
-      if (!TSelf.IsZero(x))
+      if (!TSelf.IsZero(number))
       {
-        if (!IsIntegerPow(x, b))
+        if (!IsIntegerPow(number, radix))
           logCeiling++;
 
-        while (x >= b)
+        while (number >= radix)
         {
-          x /= b;
+          number /= radix;
 
           logFloor++;
           logCeiling++;
@@ -29,22 +29,22 @@ namespace Flux
 
     /// <summary>PREVIEW! Computes the integer log ceiling of x using base b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TSelf IntegerLogCeiling<TSelf>(this TSelf x, TSelf b)
+    public static TSelf IntegerLogCeiling<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertNonNegativeValue(x);
-      AssertRadix(b);
+      AssertNonNegative(number);
+      AssertRadix(radix);
 
       var logCeiling = TSelf.Zero;
 
-      if (!TSelf.IsZero(x))
+      if (!TSelf.IsZero(number))
       {
-        if (!x.IsIntegerPow(b))
+        if (!number.IsIntegerPow(radix))
           logCeiling++;
 
-        while (x >= b)
+        while (number >= radix)
         {
-          x /= b;
+          number /= radix;
 
           logCeiling++;
         }
@@ -58,7 +58,7 @@ namespace Flux
     public static TSelf IntegerLogFloor<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertNonNegativeValue(x);
+      AssertNonNegative(x);
       AssertRadix(b);
 
       var logFloor = TSelf.Zero;

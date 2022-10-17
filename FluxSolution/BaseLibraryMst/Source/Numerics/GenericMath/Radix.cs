@@ -12,25 +12,31 @@ namespace GenericMath
     [TestMethod]
     public void DigitCount()
     {
-      Assert.AreEqual(3.ToBigInteger(), 512.ToBigInteger().DigitCount(10));
+      Assert.AreEqual(7, 1234567.DigitCount(10));
     }
 
     [TestMethod]
     public void DigitSum()
     {
-      Assert.AreEqual(8.ToBigInteger(), 512.ToBigInteger().DigitSum(10));
+      Assert.AreEqual(28, 1234567.DigitSum(10));
     }
 
     [TestMethod]
-    public void DropLeadingDigit()
+    public void DropLeastSignificantDigit()
     {
-      Assert.AreEqual(12.ToBigInteger(), 512.ToBigInteger().DropLeadingDigit(10));
+      Assert.AreEqual(123456.ToBigInteger(), 1234567.ToBigInteger().DropLeastSignificantDigit(10));
     }
 
     [TestMethod]
-    public void DropTrailingDigit()
+    public void DropLeastSignificantDigits()
     {
-      Assert.AreEqual(51.ToBigInteger(), 512.ToBigInteger().DropTrailingDigit(10));
+      Assert.AreEqual(1234, 1234567.DropLeastSignificantDigits(10, 3));
+    }
+
+    [TestMethod]
+    public void DropMostSignificantDigits()
+    {
+      Assert.AreEqual(4567, 1234567.DropMostSignificantDigits(10, 3));
     }
 
     [TestMethod]
@@ -63,18 +69,6 @@ namespace GenericMath
       expected = new System.Numerics.BigInteger[] { 2, 4, 11, 3, 10 };
       actual = 670530.ToBigInteger().GetDigitsReversed(16).ToArray();
       CollectionAssert.AreEqual(expected, actual, nameof(Flux.GenericMath.GetDigits) + ".Radix=16");
-    }
-
-    [TestMethod]
-    public void GetLeastSignificantDigit()
-    {
-      Assert.AreEqual(2.ToBigInteger(), 512.ToBigInteger().GetLeastSignificantDigit(10));
-    }
-
-    [TestMethod]
-    public void GetMostSignificantDigit()
-    {
-      Assert.AreEqual(5, 512.GetMostSignificantDigit(10));
     }
 
     [TestMethod]
@@ -117,6 +111,7 @@ namespace GenericMath
     [TestMethod]
     public void IsPow()
     {
+      Assert.AreEqual(false, 511.IsIntegerPow(2));
       Assert.AreEqual(true, 512.IsIntegerPow(2));
     }
 
@@ -127,9 +122,56 @@ namespace GenericMath
     }
 
     [TestMethod]
+    public void KeepLeastSignificantDigit()
+    {
+      Assert.AreEqual(7.ToBigInteger(), 1234567.ToBigInteger().KeepLeastSignificantDigit(10));
+    }
+
+    [TestMethod]
+    public void KeepLeastSignificantDigits()
+    {
+      Assert.AreEqual(567, 1234567.KeepLeastSignificantDigits(10, 3));
+    }
+
+    [TestMethod]
+    public void KeepMostSignificantDigits()
+    {
+      Assert.AreEqual(123, 1234567.KeepMostSignificantDigits(10, 3));
+    }
+
+    [TestMethod]
+    public void NearestPow()
+    {
+      var nearestPow = 1234567.RoundToNearestPow(10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+
+      Assert.AreEqual(1000000, nearestTowardsZero);
+      Assert.AreEqual(10000000, nearestAwayFromZero);
+
+      Assert.AreEqual(1000000, nearestPow);
+    }
+
+    [TestMethod]
     public void ReverseDigits()
     {
-      Assert.AreEqual(215, 512.ReverseDigits(10));
+      Assert.AreEqual(7654321, 1234567.ReverseDigits(10));
+    }
+
+    [TestMethod]
+    public void ToRadixString()
+    {
+      Assert.AreEqual("1234567", 1234567.ToRadixString(10).ToString());
+    }
+
+    [TestMethod]
+    public void ToSubscriptString()
+    {
+      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToSubscriptString(10).ToString());
+    }
+
+    [TestMethod]
+    public void ToSuperscriptString()
+    {
+      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToSuperscriptString(10).ToString());
     }
   }
 }

@@ -8,7 +8,7 @@ namespace Flux
     public static TSelf IntegerSqrt<TSelf>(this TSelf y)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertNonNegativeValue(y);
+      AssertNonNegative(y);
 
       var x0 = TSelf.One << (y.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square number.
 
