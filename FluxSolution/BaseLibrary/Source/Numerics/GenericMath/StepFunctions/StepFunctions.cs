@@ -1,49 +1,54 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public interface IStepFunction<TSelf, TValue>
+  public interface IStepFunction<TSelf, TResult>
     where TSelf : System.Numerics.INumber<TSelf>
-    where TValue : System.Numerics.INumber<TValue>
+    where TResult : System.Numerics.INumber<TResult>
   {
     TSelf Value { get; }
 
-    TValue LessThan { get; }
-    TValue EqualTo { get; }
-    TValue GreaterThan { get; }
+    TResult LessThan { get; }
+    TResult EqualTo { get; }
+    TResult GreaterThan { get; }
 
-    TValue Evaluate(TSelf x);
+    TResult Evaluate(TSelf x);
   }
 
-  public record class StepFunction<TSelf, TValue>
-    : IStepFunction<TSelf, TValue>
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
-    where TValue : System.Numerics.INumber<TValue>
+  public record class StepFunction<TSelf, TResult>
+    : IStepFunction<TSelf, TResult>
+    where TSelf : System.Numerics.INumber<TSelf>
+    where TResult : System.Numerics.INumber<TResult>
   {
     /// <summary>The rectangular function.</summary>
+    /// <remarks>Basis is +0.5, where < makes +1.0, = makes +0.5 and > makes 0.0.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Rectangular_function"/>
-    public static IStepFunction<TSelf, TValue> Rectangular => new StepFunction<TSelf, TValue>(TSelf.One.Div2(), TValue.One, TValue.One.Div2(), TValue.Zero);
+    public static IStepFunction<TSelf, TResult> Rectangular => new StepFunction<TSelf, TResult>(TSelf.One.Div2(), TResult.One, TResult.One.Div2(), TResult.Zero);
 
     /// <summary>The unit step function (as per Wikipedia).</summary>
+    /// <remarks>Zero basis, where <= makes 0.0 and > makes +1.0.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Heaviside_step_function"/>
-    public static IStepFunction<TSelf, TValue> UnitStep => new StepFunction<TSelf, TValue>(TSelf.Zero, TValue.Zero, TValue.Zero, TValue.One);
+    public static IStepFunction<TSelf, TResult> UnitStep => new StepFunction<TSelf, TResult>(TSelf.Zero, TResult.Zero, TResult.Zero, TResult.One);
     /// <summary>The Wikipedia discrete, alternative form, of the unit step function.</summary>
+    /// <remarks>Zero basis, where < makes 0.0 and >= makes +1.0.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Heaviside_step_function#Discrete_form"/>
-    public static IStepFunction<TSelf, TValue> AlternativeFormUnitStep => new StepFunction<TSelf, TValue>(TSelf.Zero, TValue.Zero, TValue.One, TValue.One);
+    public static IStepFunction<TSelf, TResult> AlternativeFormUnitStep => new StepFunction<TSelf, TResult>(TSelf.Zero, TResult.Zero, TResult.One, TResult.One);
     /// <summary>The Wikipedia discrete form, half maximum convention, of the unit step.</summary>
+    /// <remarks>Zero basis, where < is 0.0, = is +0.5 and > is +1.0.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Heaviside_step_function#Discrete_form"/>
-    public static IStepFunction<TSelf, TValue> HalfMaximumUnitStep => new StepFunction<TSelf, TValue>(TSelf.Zero, TValue.Zero, TValue.One.Div2(), TValue.One);
+    public static IStepFunction<TSelf, TResult> HalfMaximumUnitStep => new StepFunction<TSelf, TResult>(TSelf.Zero, TResult.Zero, TResult.One.Div2(), TResult.One);
 
-    /// <summary>The sign() step function.</summary>
+    /// <summary>The sign, sometimes signum, step function.</summary>
+    /// <remarks>Zero basis, where < is -1.0, = is 0.0 and > is +1.0.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Step_function"/>
     /// <seealso href="https://en.wikipedia.org/wiki/Sign_function"/>
-    public static StepFunction<TSelf, TValue> Sign => new StepFunction<TSelf, TValue>(TSelf.Zero, -TValue.One, TValue.Zero, TValue.One);
+    public static StepFunction<TSelf, TResult> Sign => new StepFunction<TSelf, TResult>(TSelf.Zero, -TResult.One, TResult.Zero, TResult.One);
 
     private TSelf m_value;
-    private TValue m_lessThan;
-    private TValue m_equalTo;
-    private TValue m_greaterThan;
+    private TResult m_lessThan;
+    private TResult m_equalTo;
+    private TResult m_greaterThan;
 
-    public StepFunction(TSelf value, TValue lessThan, TValue equalTo, TValue greaterThan)
+    public StepFunction(TSelf value, TResult lessThan, TResult equalTo, TResult greaterThan)
     {
       m_value = value;
       m_lessThan = lessThan;
@@ -52,11 +57,11 @@ namespace Flux
     }
 
     public TSelf Value => m_value;
-    public TValue LessThan => m_lessThan;
-    public TValue EqualTo => m_equalTo;
-    public TValue GreaterThan => m_greaterThan;
+    public TResult LessThan => m_lessThan;
+    public TResult EqualTo => m_equalTo;
+    public TResult GreaterThan => m_greaterThan;
 
-    public TValue Evaluate(TSelf x)
+    public TResult Evaluate(TSelf x)
       => (x < m_value) ? m_lessThan : (x > m_value) ? m_greaterThan : m_equalTo;
   }
 }
