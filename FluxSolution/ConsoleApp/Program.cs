@@ -23,14 +23,16 @@ namespace ConsoleApp
         System.Console.WriteLine($"{i:N2} = {Flux.StepFunction<float, double>.Sign.Evaluate(i)}");
 
       var number = 6705302039;
+      var radix = 10;
+      var count = 4;
 
-      System.Console.WriteLine($"{number} = DropLeastSignificantDigit:{number.DropLeastSignificantDigit(10)}");
-      System.Console.WriteLine($"{number} = DropLeastSignificantDigits:{number.DropLeastSignificantDigits(10, 3)}");
-      System.Console.WriteLine($"{number} = DropMostSignificantDigits:{number.DropMostSignificantDigits(10, 3)}");
+      System.Console.WriteLine($"{number} = DropLeastSignificantDigit:{number.DropLeastSignificantDigit(radix)}");
+      System.Console.WriteLine($"{number} = DropLeastSignificantDigits:{number.DropLeastSignificantDigits(radix, count)}");
+      System.Console.WriteLine($"{number} = DropMostSignificantDigits:{number.DropMostSignificantDigits(radix, count)}");
 
-      System.Console.WriteLine($"{number} = KeepLeastSignificantDigit:{number.KeepLeastSignificantDigit(10)}");
-      System.Console.WriteLine($"{number} = KeepLeastSignificantDigits:{number.KeepLeastSignificantDigits(10, 3)}");
-      System.Console.WriteLine($"{number} = KeepMostSignificantDigits:{number.KeepMostSignificantDigits(10, 3)}");
+      System.Console.WriteLine($"{number} = KeepLeastSignificantDigit:{number.KeepLeastSignificantDigit(radix)}");
+      System.Console.WriteLine($"{number} = KeepLeastSignificantDigits:{number.KeepLeastSignificantDigits(radix, count)}");
+      System.Console.WriteLine($"{number} = KeepMostSignificantDigits:{number.KeepMostSignificantDigits(radix, count)}");
 
       //Flux.IPopulationModelable
 

@@ -4,7 +4,7 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Returns whether the sequence consists of consecutive numbers.</summary>
-    public static bool IsConsecutive<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> collection)
+    public static bool IsSequenceConsecutive<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> collection)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       using var e = collection.GetEnumerator();

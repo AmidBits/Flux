@@ -4,7 +4,7 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>PREVIEW! Creates a new sequence of consecutive numbers between the min and max from the specified collection.</summary>
-    public static System.Collections.Generic.IEnumerable<TSelf> CreateConsecutive<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> collection)
+    public static System.Collections.Generic.IEnumerable<TSelf> CreateConsecutiveSequence<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> collection)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (collection is null) throw new System.ArgumentNullException(nameof(collection));
