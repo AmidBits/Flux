@@ -19,20 +19,30 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      for (var i = -1.25f; i <= 1.25; i += 0.25f)
-        System.Console.WriteLine($"{i:N2} = {Flux.StepFunction<float, double>.Sign.Evaluate(i)}");
+      //for (var i = -1.25f; i <= 1.25; i += 0.25f)
+      //  System.Console.WriteLine($"{i:N2} = {Flux.StepFunction<float, double>.Sign.Evaluate(i)}");
 
-      var number = 6705302039;
-      var radix = 10;
-      var count = 4;
+      //var number = 6705302039;
+      //var radix = 10;
+      //var count = 4;
 
-      System.Console.WriteLine($"{number} = DropLeastSignificantDigit:{number.DropLeastSignificantDigit(radix)}");
-      System.Console.WriteLine($"{number} = DropLeastSignificantDigits:{number.DropLeastSignificantDigits(radix, count)}");
-      System.Console.WriteLine($"{number} = DropMostSignificantDigits:{number.DropMostSignificantDigits(radix, count)}");
+      //var values = new double[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 };
 
-      System.Console.WriteLine($"{number} = KeepLeastSignificantDigit:{number.KeepLeastSignificantDigit(radix)}");
-      System.Console.WriteLine($"{number} = KeepLeastSignificantDigits:{number.KeepLeastSignificantDigits(radix, count)}");
-      System.Console.WriteLine($"{number} = KeepMostSignificantDigits:{number.KeepMostSignificantDigits(radix, count)}");
+      //var r = Flux.Quantilers.R7.Default;
+
+      //System.Console.WriteLine($"{r.EstimateQuantile(values, 0)}");
+      //System.Console.WriteLine($"{r.EstimateQuantile(values, 0.25)}");
+      //System.Console.WriteLine($"{r.EstimateQuantile(values, 0.5)}");
+      //System.Console.WriteLine($"{r.EstimateQuantile(values, 0.75)}");
+      //System.Console.WriteLine($"{r.EstimateQuantile(values, 1.0)}");
+
+      //System.Console.WriteLine($"{number} = DropLeastSignificantDigit:{number.DropLeastSignificantDigit(radix)}");
+      //System.Console.WriteLine($"{number} = DropLeastSignificantDigits:{number.DropLeastSignificantDigits(radix, count)}");
+      //System.Console.WriteLine($"{number} = DropMostSignificantDigits:{number.DropMostSignificantDigits(radix, count)}");
+
+      //System.Console.WriteLine($"{number} = KeepLeastSignificantDigit:{number.KeepLeastSignificantDigit(radix)}");
+      //System.Console.WriteLine($"{number} = KeepLeastSignificantDigits:{number.KeepLeastSignificantDigits(radix, count)}");
+      //System.Console.WriteLine($"{number} = KeepMostSignificantDigits:{number.KeepMostSignificantDigits(radix, count)}");
 
       //Flux.IPopulationModelable
 

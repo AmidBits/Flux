@@ -6,6 +6,9 @@ namespace Flux
     public static TSelf Div2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumberBase<TSelf>
       => value / (TSelf.One + TSelf.One);
+    public static TSelf Div3<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.INumberBase<TSelf>
+      => value / (TSelf.One + TSelf.One + TSelf.One);
 
     public static TSelf Mul2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumberBase<TSelf>
