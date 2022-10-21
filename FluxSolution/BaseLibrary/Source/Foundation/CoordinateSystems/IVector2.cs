@@ -50,6 +50,13 @@ namespace Flux
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
     IVector2<TSelf> PerpendicularCw()
       => Create(Y, -X);
+
+    ///// <summary>Converts the <see cref="CartesianCoordinate2"/> to a <see cref="IPolarCoordinate"/>.</summary>
+    //public IPolarCoordinate ToPolarCoordinate()
+    //  => new PolarCoordinate(
+    //    System.Math.Sqrt(X * X + Y * Y),
+    //    System.Math.Atan2(Y, X)
+    //  );
   }
 }
 #endif

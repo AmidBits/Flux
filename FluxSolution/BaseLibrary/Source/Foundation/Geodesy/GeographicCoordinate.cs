@@ -5,7 +5,7 @@ namespace Flux
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public struct GeographicCoordinate
-    : System.IEquatable<GeographicCoordinate>
+    : System.IEquatable<GeographicCoordinate>, IGeographicCoordinate
   {
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;

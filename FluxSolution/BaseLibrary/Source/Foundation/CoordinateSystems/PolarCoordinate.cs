@@ -4,10 +4,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct PolarCoordinate
-    : System.IEquatable<PolarCoordinate>
-#if NET7_0_OR_GREATER
-    , IPolarCoordinate
-#endif
+    : System.IEquatable<PolarCoordinate>, IPolarCoordinate
   {
     private readonly double m_radius;
     private readonly double m_radAzimuth;
@@ -33,20 +30,20 @@ namespace Flux
     public System.Numerics.Complex ToComplex()
       => System.Numerics.Complex.FromPolarCoordinates(m_radius, m_radAzimuth);
 
-#region Overloaded operators
+    #region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static bool operator ==(PolarCoordinate a, PolarCoordinate b) => a.Equals(b);
     [System.Diagnostics.Contracts.Pure] public static bool operator !=(PolarCoordinate a, PolarCoordinate b) => !a.Equals(b);
-#endregion Overloaded operators
+    #endregion Overloaded operators
 
-#region Implemented interfaces
+    #region Implemented interfaces
     // IEquatable
     [System.Diagnostics.Contracts.Pure] public bool Equals(PolarCoordinate other) => m_radAzimuth == other.m_radAzimuth && m_radius == other.m_radius;
-#endregion Implemented interfaces
+    #endregion Implemented interfaces
 
-#region Object overrides
+    #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is PolarCoordinate o && Equals(o);
     [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radAzimuth, m_radius);
     [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {Azimuth.ToAngle().ToUnitValue(AngleUnit.Degree):N1}\u00B0 }}";
-#endregion Object overrides
+    #endregion Object overrides
   }
 }
