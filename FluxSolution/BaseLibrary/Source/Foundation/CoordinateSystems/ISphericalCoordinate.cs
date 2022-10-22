@@ -10,6 +10,9 @@
 
     abstract ISphericalCoordinate Create(double radius, double inclination, double azimuth);
 
+    (Length radius, Angle inclination, Azimuth azimuth) ToUnits()
+      => (new Length(Radius), new Angle(Inclination), new Angle(Azimuth).ToAzimuth());
+
     /// <summary>Converts the <see cref="ISphericalCoordinate"/> to a <see cref="System.ValueTuple{double,double,double}">CartesianCoordinate3</see>.</summary>
     ICartesianCoordinate3 ToCartesianCoordinate3()
     {
@@ -37,5 +40,8 @@
        Angle.ConvertRadianToDegree(Azimuth - System.Math.PI),
        Radius
      );
+
+    static ISphericalCoordinate FromUnits(Length radius, Angle inclination, Azimuth azimuth)
+      => new SphericalCoordinate(radius.Value, inclination.Value, azimuth.ToRadians());
   }
 }

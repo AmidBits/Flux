@@ -8,6 +8,9 @@
 
     abstract ICylindricalCoordinate Create(double radius, double azimuth, double height);
 
+    (Length radius, Azimuth azimuth, Length height) ToUnits()
+     => (new Length(Radius), new Angle(Azimuth).ToAzimuth(), new Length(Height));
+
     /// <summary>Converts the <see cref="ICylindricalCoordinate"/> to a <see cref="System.ValueTuple{double,double,double}">CartesianCoordinate3</see>..</summary>
     ICartesianCoordinate3 ToCartesianCoordinate3()
      => new CartesianCoordinate3R(
@@ -30,5 +33,8 @@
        System.Math.Atan2(Radius, Height),
        Azimuth
      );
+
+    static ICylindricalCoordinate FromUnits(Length radius, Azimuth azimuth, Length height)
+      => new CylindricalCoordinate(radius.Value, azimuth.ToRadians(), height.Value);
   }
 }

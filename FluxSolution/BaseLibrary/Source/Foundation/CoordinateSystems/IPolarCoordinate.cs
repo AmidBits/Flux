@@ -8,6 +8,9 @@
 
     abstract IPolarCoordinate Create(double radius, double azimuth);
 
+    (Length radius, Azimuth azimuth) ToUnits()
+     => (new Length(Radius), new Angle(Azimuth).ToAzimuth());
+
     /// <summary>Converts the <see cref="IPolarCoordinate"/> to a <see cref="CartesianCoordinate2R">CartesianCoordinate2</see>.</summary>
     ICartesianCoordinate2 ToCartesianCoordinate2()
      => new CartesianCoordinate2R(Radius * System.Math.Cos(Azimuth), Radius * System.Math.Sin(Azimuth));
@@ -18,5 +21,8 @@
        Radius,
        Azimuth
      );
+
+    static IPolarCoordinate FromUnits(Length radius, Azimuth azimuth)
+      => new PolarCoordinate(radius.Value, azimuth.ToRadians());
   }
 }
