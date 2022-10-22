@@ -62,6 +62,10 @@ namespace Flux
     #region Implemented interfaces
     // IEquatable
     [System.Diagnostics.Contracts.Pure] public bool Equals(SphericalCoordinate other) => m_radius == other.m_radius && m_radInclination == other.m_radInclination && m_radAzimuth == other.m_radAzimuth;
+
+    // ISphericalCoordinate
+    public ISphericalCoordinate Create(Length radius, Angle inclination, Azimuth azimuth)
+     => new SphericalCoordinate(radius.Value, inclination.Value, azimuth.ToRadians());
     #endregion Implemented interfaces
 
     #region Object overrides

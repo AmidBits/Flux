@@ -64,8 +64,8 @@ namespace Flux
       => Maths.Fold(degLatitude, MinValue, MaxValue);
 
     [System.Diagnostics.Contracts.Pure]
-    public Latitude FromRadians(double radLatitude)
-      => new(Angle.ConvertRadianToDegree(radLatitude));
+    public static Latitude FromRadians(double radLatitude)
+      => new(Angle.ConvertRadianToDegree(radLatitude) % MaxValue);
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     [System.Diagnostics.Contracts.Pure]

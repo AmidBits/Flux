@@ -12,7 +12,7 @@ namespace Flux
 
     /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
     public Azimuth(double degAzimuth)
-      => m_degAzimuth = Wrap(degAzimuth);
+      => m_degAzimuth = WrapAzimuth(degAzimuth);
 
     [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()
@@ -37,8 +37,8 @@ namespace Flux
       => new string[] { "North", "East", "South", "West", "By" };
 
     [System.Diagnostics.Contracts.Pure]
-    public Azimuth FromRadians(double radAzimuth)
-       => new(Angle.ConvertRadianToDegree(radAzimuth));
+    public static Azimuth FromRadians(double radAzimuth)
+      => new(Angle.ConvertRadianToDegree(radAzimuth));
 
     [System.Diagnostics.Contracts.Pure]
     public static Azimuth FromWords(string compassPointInWords)
@@ -77,7 +77,7 @@ namespace Flux
     /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static int LatchNeedle(double degAzimuth, int positions)
-      => (int)System.Math.Round(Wrap(degAzimuth) / (360d / positions) % positions);
+      => (int)System.Math.Round(WrapAzimuth(degAzimuth) / (360d / positions) % positions);
 
     [System.Diagnostics.Contracts.Pure]
     public static Azimuth Parse(string compassPointInWordsOrAbbreviation)
@@ -110,7 +110,7 @@ namespace Flux
 
     /// <summary>An azimuth is wrapped over the range [0, 360).</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double Wrap(double degAzimuth)
+    public static double WrapAzimuth(double degAzimuth)
       => Maths.Wrap(degAzimuth, MinValue, MaxValue) % MaxValue;
     #endregion Static methods
 
@@ -127,15 +127,15 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static bool operator !=(Azimuth a, Azimuth b) => !a.Equals(b);
 
     [System.Diagnostics.Contracts.Pure] public static Azimuth operator -(Azimuth v) => new(-v.m_degAzimuth);
-    [System.Diagnostics.Contracts.Pure] public static Azimuth operator +(Azimuth a, double b) => new(Wrap(a.m_degAzimuth + b));
+    [System.Diagnostics.Contracts.Pure] public static Azimuth operator +(Azimuth a, double b) => new(WrapAzimuth(a.m_degAzimuth + b));
     [System.Diagnostics.Contracts.Pure] public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Azimuth operator /(Azimuth a, double b) => new(Wrap(a.m_degAzimuth / b));
+    [System.Diagnostics.Contracts.Pure] public static Azimuth operator /(Azimuth a, double b) => new(WrapAzimuth(a.m_degAzimuth / b));
     [System.Diagnostics.Contracts.Pure] public static Azimuth operator /(Azimuth a, Azimuth b) => a / b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Azimuth operator *(Azimuth a, double b) => new(Wrap(a.m_degAzimuth * b));
+    [System.Diagnostics.Contracts.Pure] public static Azimuth operator *(Azimuth a, double b) => new(WrapAzimuth(a.m_degAzimuth * b));
     [System.Diagnostics.Contracts.Pure] public static Azimuth operator *(Azimuth a, Azimuth b) => a * b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Azimuth operator %(Azimuth a, double b) => new(Wrap(a.m_degAzimuth % b));
+    [System.Diagnostics.Contracts.Pure] public static Azimuth operator %(Azimuth a, double b) => new(WrapAzimuth(a.m_degAzimuth % b));
     [System.Diagnostics.Contracts.Pure] public static Azimuth operator %(Azimuth a, Azimuth b) => a % b.Value;
-    [System.Diagnostics.Contracts.Pure] public static Azimuth operator -(Azimuth a, double b) => new(Wrap(a.m_degAzimuth - b));
+    [System.Diagnostics.Contracts.Pure] public static Azimuth operator -(Azimuth a, double b) => new(WrapAzimuth(a.m_degAzimuth - b));
     [System.Diagnostics.Contracts.Pure] public static Azimuth operator -(Azimuth a, Azimuth b) => a - b.Value;
     #endregion Overloaded operators
 

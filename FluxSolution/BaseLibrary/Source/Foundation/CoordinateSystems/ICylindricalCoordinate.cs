@@ -6,7 +6,11 @@
     Azimuth Azimuth { get; }
     Length Height { get; }
 
-    /// <summary>Converts the <see cref="ICylindricalCoordinate"/> to a CartesianCoordinate3.</summary>
+#if NET7_0_OR_GREATER
+    abstract ICylindricalCoordinate Create(Length radius, Azimuth azimuth, Length height);
+#endif
+
+    /// <summary>Converts the <see cref="ICylindricalCoordinate"/> to a <see cref="System.ValueTuple{double,double,double}">CartesianCoordinate3</see>..</summary>
     public (double x, double y, double z) ToCartesianCoordinate3()
     {
       var azimuth = Angle.ConvertDegreeToRadian(Azimuth.Value);
@@ -22,7 +26,7 @@
     public IPolarCoordinate ToPolarCoordinate()
       => new PolarCoordinate(
         Radius.Value,
-        Angle.ConvertDegreeToRadian(Azimuth.Value)
+        Azimuth.ToRadians()
       );
 
     /// <summary>Converts the <see cref="ICylindricalCoordinate"/> to a <see cref="ISphericalCoordinate"/>.</summary>
@@ -30,7 +34,7 @@
       => new SphericalCoordinate(
         System.Math.Sqrt(Radius.Value * Radius.Value + Height.Value * Height.Value),
         System.Math.Atan2(Radius.Value, Height.Value),
-        Angle.ConvertDegreeToRadian(Azimuth.Value)
+        Azimuth.ToRadians()
       );
   }
 }

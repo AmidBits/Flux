@@ -512,6 +512,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public bool Equals(GeographicCoordinate other)
       => m_altitude == other.m_altitude && m_radLatitude == other.m_radLatitude && m_radLongitude == other.m_radLongitude;
+
+    // IGeographicCoordinate
+    public static IGeographicCoordinate Create(Length altitude, Latitude latitude, Longitude longitude)
+     => new GeographicCoordinate(altitude.Value, latitude.Value, longitude.Value);
     #endregion Implemented interfaces
 
     #region Object overrides

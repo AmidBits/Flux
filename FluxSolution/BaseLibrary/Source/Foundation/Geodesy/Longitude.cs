@@ -44,7 +44,7 @@ namespace Flux
 
     #region Static methods
     [System.Diagnostics.Contracts.Pure]
-    public Longitude FromRadians(double radLongitude)
+    public static Longitude FromRadians(double radLongitude)
       => new(Angle.ConvertRadianToDegree(radLongitude));
 
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>

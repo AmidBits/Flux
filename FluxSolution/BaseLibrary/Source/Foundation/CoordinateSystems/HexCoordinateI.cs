@@ -5,6 +5,9 @@ namespace Flux
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct HexCoordinateI
     : System.IEquatable<HexCoordinateI>
+#if NET7_0_OR_GREATER
+    , IHexCoordinate<int>
+#endif
   {
     public static HexCoordinateI[] Directions
       => new HexCoordinateI[] {
@@ -157,6 +160,12 @@ namespace Flux
     // IEquatable
     public bool Equals(HexCoordinateI other)
       => m_q == other.m_q && m_r == other.m_r && m_s == other.m_s;
+
+#if NET7_0_OR_GREATER
+    // IHexCoordinate<>
+    public IHexCoordinate<int> Create(int q, int r, int s)
+      => new HexCoordinateI(q, r, s);
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides

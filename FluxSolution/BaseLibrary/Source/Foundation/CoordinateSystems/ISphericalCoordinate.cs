@@ -8,11 +8,15 @@
 
     Angle Elevatiuon => new(System.Math.PI / 2 - Inclination.Value);
 
-    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
+#if NET7_0_OR_GREATER
+    abstract ISphericalCoordinate Create(Length radius, Angle inclination, Azimuth azimuth);
+#endif
+
+    /// <summary>Converts the <see cref="ISphericalCoordinate"/> to a <see cref="System.ValueTuple{double,double,double}">CartesianCoordinate3</see>.</summary>
     public (double x, double y, double z) ToCartesianCoordinate3()
     {
-      var inclination = Angle.ConvertDegreeToRadian(Inclination.Value);
-      var azimuth = Angle.ConvertDegreeToRadian(Azimuth.Value);
+      var inclination = Inclination.Value;
+      var azimuth = Azimuth.ToRadians();
 
       var sinInclination = System.Math.Sin(inclination);
 
@@ -23,11 +27,11 @@
       );
     }
 
-    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CylindricalCoordinate"/>.</summary>
+    /// <summary>Converts the <see cref="ISphericalCoordinate"/> to a <see cref="ICylindricalCoordinate"/>.</summary>
     public ICylindricalCoordinate ToCylindricalCoordinate()
       => new CylindricalCoordinate(
         Radius.Value * System.Math.Sin(Inclination.Value),
-        Angle.ConvertDegreeToRadian(Azimuth.Value),
+        Azimuth.ToRadians(),
         Radius.Value * System.Math.Cos(Inclination.Value)
       );
 
@@ -35,7 +39,7 @@
     public IGeographicCoordinate ToGeographicCoordinate()
       => new GeographicCoordinate(
         Angle.ConvertRadianToDegree(System.Math.PI - Inclination.Value - Maths.PiOver2),
-        Angle.ConvertRadianToDegree(Angle.ConvertDegreeToRadian(Azimuth.Value) - System.Math.PI),
+        Angle.ConvertRadianToDegree(Azimuth.ToRadians() - System.Math.PI),
         Radius.Value
       );
   }

@@ -1,3 +1,5 @@
+using Flux.Formatting;
+
 namespace Flux
 {
   /// <summary>Cylindrical coordinate. It is assumed that the reference plane is the Cartesian xy-plane (with equation z/height = 0), and the cylindrical axis is the Cartesian z-axis, i.e. the z-coordinate is the same in both systems, and the correspondence between cylindrical (radius, azimuth, height) and Cartesian (x, y, z) are the same as for polar coordinates.</summary>
@@ -44,6 +46,12 @@ namespace Flux
     #region Implemented interfaces
     // IEquatable
     [System.Diagnostics.Contracts.Pure] public bool Equals(CylindricalCoordinate other) => m_radius == other.m_radius && m_radAzimuth == other.m_radAzimuth && m_height == other.m_height;
+
+#if NET7_0_OR_GREATER
+    // ICylindricalCoordinate
+    public ICylindricalCoordinate Create(Length radius, Azimuth azimuth, Length height)
+      => new CylindricalCoordinate(radius.Value, azimuth.ToRadians(), height.Value);
+#endif
     #endregion Implemented interfaces
 
     #region Object overrides

@@ -219,11 +219,8 @@ namespace Flux
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct CartesianCoordinate3R
-    : System.IEquatable<CartesianCoordinate3R>
-#if NET7_0_OR_GREATER
-    , IVector3<double>
-#endif
+  public record struct CartesianCoordinate3R
+    : /*System.IEquatable<CartesianCoordinate3R>, */ICartesianCoordinate3
   {
     public static readonly CartesianCoordinate3R Zero;
 
@@ -242,10 +239,8 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public double Z { get => m_z; init => m_z = value; }
 
-#if NET7_0_OR_GREATER
-    public IVector3<double> Create(double x, double y, double z)
+    public ICartesianCoordinate3 Create(double x, double y, double z)
       => new CartesianCoordinate3R(x, y, z);
-#endif
 
     ///// <summary>Returns the axes angles to the 3D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
@@ -477,8 +472,8 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate3R(double[] v) => new(v[0], v[1], v[2]);
     [System.Diagnostics.Contracts.Pure] public static explicit operator double[](CartesianCoordinate3R v) => new double[] { v.m_x, v.m_y, v.m_z };
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(CartesianCoordinate3R a, CartesianCoordinate3R b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(CartesianCoordinate3R a, CartesianCoordinate3R b) => !a.Equals(b);
+    //[System.Diagnostics.Contracts.Pure] public static bool operator ==(CartesianCoordinate3R a, CartesianCoordinate3R b) => a.Equals(b);
+    //[System.Diagnostics.Contracts.Pure] public static bool operator !=(CartesianCoordinate3R a, CartesianCoordinate3R b) => !a.Equals(b);
 
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate3R operator -(CartesianCoordinate3R cc) => new(-cc.X, -cc.Y, -cc.Z);
 
@@ -508,13 +503,13 @@ namespace Flux
 
     #region Implemented interfaces
     // IEquatable
-    [System.Diagnostics.Contracts.Pure] public bool Equals(CartesianCoordinate3R other) => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
+    //[System.Diagnostics.Contracts.Pure] public bool Equals(CartesianCoordinate3R other) => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
     #endregion Implemented interfaces
 
     #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate3R o && Equals(o);
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y, m_z);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength()}) }}";
+    //[System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate3R o && Equals(o);
+    //[System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y, m_z);
+    //[System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z}, (Length = {EuclideanLength()}) }}";
     #endregion Object overrides
   }
 }

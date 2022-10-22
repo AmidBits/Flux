@@ -38,6 +38,10 @@ namespace Flux
     #region Implemented interfaces
     // IEquatable
     [System.Diagnostics.Contracts.Pure] public bool Equals(PolarCoordinate other) => m_radAzimuth == other.m_radAzimuth && m_radius == other.m_radius;
+
+    // IPolarCoordinate
+    public IPolarCoordinate Create(Length radius, Azimuth azimuth)
+     => new PolarCoordinate(radius.Value, azimuth.ToRadians());
     #endregion Implemented interfaces
 
     #region Object overrides
