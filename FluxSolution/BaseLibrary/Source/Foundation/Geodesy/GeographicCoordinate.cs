@@ -91,10 +91,10 @@ namespace Flux
 
       return new CartesianCoordinate3R(x, y, m_altitude);
     }
-    /// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public SphericalCoordinate ToSphericalCoordinate()
-      => new(m_altitude, System.Math.PI - (m_radLatitude + Maths.PiOver2), m_radLongitude + System.Math.PI);
+    ///// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public SphericalCoordinate ToSphericalCoordinate()
+    //  => new(m_altitude, System.Math.PI - (m_radLatitude + Maths.PiOver2), m_radLongitude + System.Math.PI);
     /// <summary>Creates a new <see cref="CartesianCoordinate3R"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinate3R ToWinkelTripelProjection()
@@ -527,7 +527,7 @@ namespace Flux
       => System.HashCode.Combine(m_altitude, m_radLatitude, m_radLongitude);
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
-      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.Value}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({Longitude.Value}), Altitude = {Altitude.ToUnitString(LengthUnit.Meter)} }}";
+      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.Value}), Longitude = {Longitude.ToSexagesimalDegreeString(preferUnicode: false)} ({Longitude.Value}), Altitude = {Altitude.ToUnitString()} }}";
     #endregion Object overrides
   }
 }

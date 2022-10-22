@@ -373,10 +373,10 @@ namespace Flux
     public EllipseGeometry ToEllipseGeometry()
       => new(m_x, m_y);
 
-    /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="PolarCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public PolarCoordinate ToPolarCoordinate()
-      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
+    ///// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="PolarCoordinate"/>.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public PolarCoordinate ToPolarCoordinate()
+    //  => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
 
     /// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>

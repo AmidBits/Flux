@@ -19,9 +19,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var p = new Flux.CartesianCoordinate3R(11.11, 12.12, 13.13);
-      var pc = p.Create(p.X, p.Y, p.Z);
+      Zamplez.RunCoordinateSystems();
 
+      //var p = new Flux.PolarCoordinate(11.11, 12.12);
+      
+      //var pc = p.Create(p.Radius, p.Azimuth);
 
       //for (var i = -1.25f; i <= 1.25; i += 0.25f)
       //  System.Console.WriteLine($"{i:N2} = {Flux.StepFunction<float, double>.Sign.Evaluate(i)}");

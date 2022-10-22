@@ -15,7 +15,7 @@ namespace Flux
       Draw(GeographicCoordinate.TakapauNewZealand, nameof(GeographicCoordinate.TakapauNewZealand));
       Draw(GeographicCoordinate.TucsonAzUsa, nameof(GeographicCoordinate.TucsonAzUsa));
 
-      static void Draw(GeographicCoordinate gc0, System.ReadOnlySpan<char> label)
+      static void Draw(IGeographicCoordinate gc0, System.ReadOnlySpan<char> label)
       {
         System.Console.WriteLine($"{label.ToString()}:");
 
@@ -27,18 +27,18 @@ namespace Flux
         var cc = sc.ToCylindricalCoordinate(); // CylindricalCoordinate
         System.Console.WriteLine(cc);
 
-        var cc3 = cc.ToCartesianCoordinate3R(); // CartesianCoordinate3R
+        var cc3 = cc.ToCartesianCoordinate3(); // CartesianCoordinate3R
         System.Console.WriteLine(cc3);
 
         // Show 2D coordinate systems also.
         {
-          var cc2 = new Flux.CartesianCoordinate2R(cc3.X, cc3.Y); // CartesianCoordinate2R (2D)
+          var cc2 = (Flux.ICartesianCoordinate2)new Flux.CartesianCoordinate2R(cc3.X, cc3.Y); // CartesianCoordinate2R (2D)
           System.Console.WriteLine($" ({cc2})");
 
           var pc = cc2.ToPolarCoordinate(); // PolarCoordinate (2D)
           System.Console.WriteLine($" ({pc})");
 
-          var cc2r = pc.ToCartesianCoordinate2R(); // CartesianCoordinate2R (2D)
+          var cc2r = pc.ToCartesianCoordinate2(); // CartesianCoordinate2R (2D)
           System.Console.WriteLine($" ({cc2r})");
         }
 

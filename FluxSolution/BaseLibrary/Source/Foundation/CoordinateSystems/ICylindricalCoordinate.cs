@@ -2,39 +2,33 @@
 {
   public interface ICylindricalCoordinate
   {
-    Length Radius { get; }
-    Azimuth Azimuth { get; }
-    Length Height { get; }
+    double Radius { get; }
+    double Azimuth { get; }
+    double Height { get; }
 
-#if NET7_0_OR_GREATER
-    abstract ICylindricalCoordinate Create(Length radius, Azimuth azimuth, Length height);
-#endif
+    abstract ICylindricalCoordinate Create(double radius, double azimuth, double height);
 
     /// <summary>Converts the <see cref="ICylindricalCoordinate"/> to a <see cref="System.ValueTuple{double,double,double}">CartesianCoordinate3</see>..</summary>
-    public (double x, double y, double z) ToCartesianCoordinate3()
-    {
-      var azimuth = Angle.ConvertDegreeToRadian(Azimuth.Value);
-
-      return (
-        Radius.Value * System.Math.Cos(azimuth),
-        Radius.Value * System.Math.Sin(azimuth),
-        Height.Value
-      );
-    }
+    ICartesianCoordinate3 ToCartesianCoordinate3()
+     => new CartesianCoordinate3R(
+       Radius * System.Math.Cos(Azimuth),
+       Radius * System.Math.Sin(Azimuth),
+       Height
+     );
 
     /// <summary>Converts the <see cref="ICylindricalCoordinate"/> to a <see cref="IPolarCoordinate"/>.</summary>
-    public IPolarCoordinate ToPolarCoordinate()
-      => new PolarCoordinate(
-        Radius.Value,
-        Azimuth.ToRadians()
-      );
+    IPolarCoordinate ToPolarCoordinate()
+     => new PolarCoordinate(
+       Radius,
+       Azimuth
+     );
 
     /// <summary>Converts the <see cref="ICylindricalCoordinate"/> to a <see cref="ISphericalCoordinate"/>.</summary>
-    public ISphericalCoordinate ToSphericalCoordinate()
-      => new SphericalCoordinate(
-        System.Math.Sqrt(Radius.Value * Radius.Value + Height.Value * Height.Value),
-        System.Math.Atan2(Radius.Value, Height.Value),
-        Azimuth.ToRadians()
-      );
+    ISphericalCoordinate ToSphericalCoordinate()
+     => new SphericalCoordinate(
+       System.Math.Sqrt(Radius * Radius + Height * Height),
+       System.Math.Atan2(Radius, Height),
+       Azimuth
+     );
   }
 }

@@ -9,34 +9,34 @@ namespace Flux
     : System.IEquatable<CylindricalCoordinate>, ICylindricalCoordinate
   {
     private readonly double m_radius;
-    private readonly double m_radAzimuth;
+    private readonly double m_azimuth;
     private readonly double m_height;
 
-    public CylindricalCoordinate(double radius, double radAzimuth, double height)
+    public CylindricalCoordinate(double radius, double azimuth, double height)
     {
       m_radius = radius;
-      m_radAzimuth = radAzimuth;
+      m_azimuth = azimuth;
       m_height = height;
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure] public Length Radius { get => new(m_radius); init => m_radius = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
     /// <summary>Angular position or angular coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure] public Azimuth Azimuth { get => Azimuth.FromRadians(m_radAzimuth); init => m_radAzimuth = value.ToRadians(); }
+    [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
     /// <summary>Also known as altitude. For convention, this correspond to the cartesian z-axis.</summary>
-    [System.Diagnostics.Contracts.Pure] public Length Height { get => new(m_height); init => m_height = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public double Height { get => m_height; init => m_height = value; }
 
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3R ToCartesianCoordinate3R()
-      => new(m_radius * System.Math.Cos(m_radAzimuth), m_radius * System.Math.Sin(m_radAzimuth), m_height);
+    //[System.Diagnostics.Contracts.Pure]
+    //public ICartesianCoordinate3 ToCartesianCoordinate3R()
+    //  => new CartesianCoordinate3R(m_radius * System.Math.Cos(m_azimuth), m_radius * System.Math.Sin(m_azimuth), m_height);
 
-    [System.Diagnostics.Contracts.Pure]
-    public PolarCoordinate ToPolarCoordinate()
-      => new(m_radius, m_radAzimuth);
+    //[System.Diagnostics.Contracts.Pure]
+    //public IPolarCoordinate ToPolarCoordinate()
+    //  => new PolarCoordinate(m_radius, m_azimuth);
 
-    [System.Diagnostics.Contracts.Pure]
-    public SphericalCoordinate ToSphericalCoordinate()
-      => new(System.Math.Sqrt(m_radius * m_radius + m_height * m_height), System.Math.Atan2(m_radius, m_height), m_radAzimuth);
+    //[System.Diagnostics.Contracts.Pure]
+    //public ISphericalCoordinate ToSphericalCoordinate()
+    //  => new SphericalCoordinate(System.Math.Sqrt(m_radius * m_radius + m_height * m_height), System.Math.Atan2(m_radius, m_height), m_azimuth);
 
     #region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static bool operator ==(CylindricalCoordinate a, CylindricalCoordinate b) => a.Equals(b);
@@ -45,19 +45,17 @@ namespace Flux
 
     #region Implemented interfaces
     // IEquatable
-    [System.Diagnostics.Contracts.Pure] public bool Equals(CylindricalCoordinate other) => m_radius == other.m_radius && m_radAzimuth == other.m_radAzimuth && m_height == other.m_height;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(CylindricalCoordinate other) => m_radius == other.m_radius && m_azimuth == other.m_azimuth && m_height == other.m_height;
 
-#if NET7_0_OR_GREATER
     // ICylindricalCoordinate
-    public ICylindricalCoordinate Create(Length radius, Azimuth azimuth, Length height)
-      => new CylindricalCoordinate(radius.Value, azimuth.ToRadians(), height.Value);
-#endif
+    public ICylindricalCoordinate Create(double radius, double azimuth, double height)
+      => new CylindricalCoordinate(radius, azimuth, height);
     #endregion Implemented interfaces
 
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CylindricalCoordinate o && Equals(o);
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radius, m_radAzimuth, m_height);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {Azimuth.ToAngle().ToUnitValue(AngleUnit.Degree):N1}\u00B0, Height = {m_height} }}";
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radius, m_azimuth, m_height);
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N1")}, Height = {m_height} }}";
     #endregion Object overrides
   }
 }

@@ -54,7 +54,7 @@
     }
 
     /// <summary>Converts the <see cref="ICartesianCoordinate2"/> to a <see cref="IPolarCoordinate"/>.</summary>
-    IPolarCoordinate ToPolarCoordinate()
+    public IPolarCoordinate ToPolarCoordinate()
       => new PolarCoordinate(
         System.Math.Sqrt(X * X + Y * Y),
         System.Math.Atan2(Y, X)

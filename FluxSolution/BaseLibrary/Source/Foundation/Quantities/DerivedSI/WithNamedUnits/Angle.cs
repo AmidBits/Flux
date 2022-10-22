@@ -137,7 +137,7 @@
     {
       var (decimalDegrees, degrees, decimalMinutes, minutes, decimalSeconds) = ConvertDecimalDegreeToSexagesimalDegree(ConvertRadianToDegree(m_radAngle));
 
-      var spacing = useSpaces ? @" " : string.Empty;
+      var spacing = useSpaces ? " " : string.Empty;
 
       var directional = spacing + direction.ToCardinalDirection(degrees < 0).ToString();
 

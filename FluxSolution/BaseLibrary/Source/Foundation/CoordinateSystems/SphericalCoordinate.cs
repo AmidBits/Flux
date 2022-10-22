@@ -7,51 +7,63 @@ namespace Flux
     : System.IEquatable<SphericalCoordinate>, ISphericalCoordinate
   {
     private readonly double m_radius;
-    private readonly double m_radInclination;
-    private readonly double m_radAzimuth;
+    private readonly double m_inclination;
+    private readonly double m_azimuth;
 
-    public SphericalCoordinate(double radius, double radInclination, double radAzimuth)
+    public SphericalCoordinate(double radius, double inclination, double azimuth)
     {
       m_radius = radius;
-      m_radInclination = radInclination;
-      m_radAzimuth = radAzimuth;
+      m_inclination = inclination;
+      m_azimuth = azimuth;
     }
 
     /// <summary>Radial distance (to origin) or radial coordinate, in meters.</summary>
-    [System.Diagnostics.Contracts.Pure] public Length Radius { get => new(m_radius); init => m_radius = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
     /// <summary>Polar angle or angular coordinate, in radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public Angle Inclination { get => new(m_radInclination); init => m_radInclination = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public double Inclination { get => m_inclination; init => m_inclination = value; }
     /// <summary>Azimuthal angle, in radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public Azimuth Azimuth { get => Azimuth.FromRadians(m_radAzimuth); init => m_radAzimuth = value.ToRadians(); }
+    [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3R ToCartesianCoordinate3R()
+    public ICartesianCoordinate3 ToCartesianCoordinate3R()
     {
-      var sinInclination = System.Math.Sin(m_radInclination);
+      var sinInclination = System.Math.Sin(m_inclination);
 
-      return new(m_radius * System.Math.Cos(m_radAzimuth) * sinInclination, m_radius * System.Math.Sin(m_radAzimuth) * sinInclination, m_radius * System.Math.Cos(m_radInclination));
+      return new CartesianCoordinate3R(
+        m_radius * System.Math.Cos(m_azimuth) * sinInclination,
+        m_radius * System.Math.Sin(m_azimuth) * sinInclination,
+        m_radius * System.Math.Cos(m_inclination)
+      );
     }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CylindricalCoordinate ToCylindricalCoordinate()
-      => new(m_radius * System.Math.Sin(m_radInclination), m_radAzimuth, m_radius * System.Math.Cos(m_radInclination));
+    public ICylindricalCoordinate ToCylindricalCoordinate()
+      => new CylindricalCoordinate(
+        m_radius * System.Math.Sin(m_inclination),
+        m_azimuth,
+        m_radius * System.Math.Cos(m_inclination)
+      );
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public GeographicCoordinate ToGeographicCoordinate()
-      => new(Angle.ConvertRadianToDegree(System.Math.PI - m_radInclination - Maths.PiOver2), Angle.ConvertRadianToDegree(m_radAzimuth - System.Math.PI), m_radius);
+    public IGeographicCoordinate ToGeographicCoordinate()
+      => new GeographicCoordinate(
+        Angle.ConvertRadianToDegree(System.Math.PI - m_inclination - System.Math.PI / 2),
+        Angle.ConvertRadianToDegree(m_azimuth - System.Math.PI),
+        m_radius
+      );
 
     #region Static methods
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double ConvertInclinationToElevation(double radInclination)
-      => Maths.PiOver2 - radInclination;
+    public static double ConvertInclinationToElevation(double inclination)
+      => System.Math.PI / 2 - inclination;
     /// <summary>Converting from elevation to inclination is simply a quarter turn (PI / 2) minus the elevation.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static double ConvertElevationToInclination(double radElevation)
-      => Maths.PiOver2 - radElevation;
+    public static double ConvertElevationToInclination(double elevation)
+      => System.Math.PI / 2 - elevation;
     #endregion Static methods
 
     #region Overloaded operators
@@ -61,17 +73,17 @@ namespace Flux
 
     #region Implemented interfaces
     // IEquatable
-    [System.Diagnostics.Contracts.Pure] public bool Equals(SphericalCoordinate other) => m_radius == other.m_radius && m_radInclination == other.m_radInclination && m_radAzimuth == other.m_radAzimuth;
+    [System.Diagnostics.Contracts.Pure] public bool Equals(SphericalCoordinate other) => m_radius == other.m_radius && m_inclination == other.m_inclination && m_azimuth == other.m_azimuth;
 
     // ISphericalCoordinate
-    public ISphericalCoordinate Create(Length radius, Angle inclination, Azimuth azimuth)
-     => new SphericalCoordinate(radius.Value, inclination.Value, azimuth.ToRadians());
+    public ISphericalCoordinate Create(double radius, double inclination, double azimuth)
+     => new SphericalCoordinate(radius, inclination, azimuth);
     #endregion Implemented interfaces
 
     #region Object overrides
     [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is SphericalCoordinate o && Equals(o);
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radius, m_radInclination, m_radAzimuth);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {Inclination.ToUnitValue(AngleUnit.Degree):N1}\u00B0 (Elevation = {Angle.ConvertRadianToDegree(ConvertInclinationToElevation(m_radInclination)):N1}\u00B0), Azimuth = {Azimuth.ToAngle().ToUnitValue(AngleUnit.Degree):N1}\u00B0 }}";
+    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radius, m_inclination, m_azimuth);
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {new Angle(m_inclination).ToUnitString(AngleUnit.Degree, "N1")} (Elevation = {new Angle(ConvertInclinationToElevation(m_inclination)).ToUnitString(AngleUnit.Degree, "N1")}, Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N1")} }}";
     #endregion Object overrides
   }
 }

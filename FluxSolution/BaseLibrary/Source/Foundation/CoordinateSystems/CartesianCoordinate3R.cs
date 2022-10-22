@@ -329,10 +329,10 @@ namespace Flux
     public CartesianCoordinate3I ToCartesianCoordinate3I(Flux.HalfRoundingBehavior rounding)
       => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
 
-    /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CylindricalCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public CylindricalCoordinate ToCylindricalCoordinate()
-      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
+    ///// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="CylindricalCoordinate"/>.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public CylindricalCoordinate ToCylindricalCoordinate()
+    //  => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
 
     /// <summary>Returns a quaternion from two vectors.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
@@ -340,13 +340,13 @@ namespace Flux
     public Quaternion ToQuaternion(CartesianCoordinate3R rotatingTo)
       => Quaternion.FromTwoVectors(this, rotatingTo);
 
-    /// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="SphericalCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public SphericalCoordinate ToSphericalCoordinate()
-    {
-      var x2y2 = m_x * m_x + m_y * m_y;
-      return new SphericalCoordinate(System.Math.Sqrt(x2y2 + m_z * m_z), System.Math.Atan2(System.Math.Sqrt(x2y2), m_z) + System.Math.PI, System.Math.Atan2(m_y, m_x) + System.Math.PI);
-    }
+    ///// <summary>Converts the <see cref="CartesianCoordinate3R"/> to a <see cref="SphericalCoordinate"/>.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public SphericalCoordinate ToSphericalCoordinate()
+    //{
+    //  var x2y2 = m_x * m_x + m_y * m_y;
+    //  return new SphericalCoordinate(System.Math.Sqrt(x2y2 + m_z * m_z), System.Math.Atan2(System.Math.Sqrt(x2y2), m_z) + System.Math.PI, System.Math.Atan2(m_y, m_x) + System.Math.PI);
+    //}
 
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, Z, <paramref name="w"/>].</summary>
     [System.Diagnostics.Contracts.Pure]
