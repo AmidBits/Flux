@@ -5,26 +5,5 @@
   {
     double Radius { get; }
     double Azimuth { get; }
-
-    abstract IPolarCoordinate Create(double radius, double azimuth);
-
-    /// <summary>Return the components of the <see cref="IPolarCoordinate"/>.</summary>
-    (Length radius, Azimuth azimuth) ToUnits()
-     => (new Length(Radius), new Angle(Azimuth).ToAzimuth());
-
-    /// <summary>Converts the <see cref="IPolarCoordinate"/> to a <see cref="CartesianCoordinate2R">CartesianCoordinate2</see>.</summary>
-    ICartesianCoordinate2 ToCartesianCoordinate2()
-     => new CartesianCoordinate2R(Radius * System.Math.Cos(Azimuth), Radius * System.Math.Sin(Azimuth));
-
-    /// <summary>Converts the <see cref="IPolarCoordinate"/> to a <see cref="System.Numerics.Complex"/>.</summary>
-    System.Numerics.Complex ToComplex()
-     => System.Numerics.Complex.FromPolarCoordinates(
-       Radius,
-       Azimuth
-     );
-
-    /// <summary>Return the <see cref="IPolarCoordinate"/> from the specified components.</summary>
-    static IPolarCoordinate FromUnits(Length radius, Azimuth azimuth)
-      => new PolarCoordinate(radius.Value, azimuth.ToRadians());
   }
 }

@@ -24,14 +24,33 @@ namespace Flux
     /// <summary>Azimuthal angle, in radians.</summary>
     [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
-    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
-    [System.Diagnostics.Contracts.Pure] public ICartesianCoordinate3 ToCartesianCoordinate3() => ((ISphericalCoordinate)this).ToCartesianCoordinate3();
+    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinate3R">CartesianCoordinate3</see>.</summary>
+    public CartesianCoordinate3R ToCartesianCoordinate3()
+    {
+      var sinInclination = System.Math.Sin(Inclination);
+
+      return new CartesianCoordinate3R(
+        Radius * System.Math.Cos(Azimuth) * sinInclination,
+        Radius * System.Math.Sin(Azimuth) * sinInclination,
+        Radius * System.Math.Cos(Inclination)
+      );
+    }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CylindricalCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure] public ICylindricalCoordinate ToCylindricalCoordinate() => ((ISphericalCoordinate)this).ToCylindricalCoordinate();
+    public CylindricalCoordinate ToCylindricalCoordinate()
+      => new CylindricalCoordinate(
+        Radius * System.Math.Sin(Inclination),
+        Azimuth,
+        Radius * System.Math.Cos(Inclination)
+      );
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure] public IGeographicCoordinate ToGeographicCoordinate() => ((ISphericalCoordinate)this).ToGeographicCoordinate();
+    public GeographicCoordinate ToGeographicCoordinate()
+     => new GeographicCoordinate(
+       Angle.ConvertRadianToDegree(System.Math.PI - Inclination - System.Math.PI / 2),
+       Angle.ConvertRadianToDegree(Azimuth - System.Math.PI),
+       Radius
+     );
 
     #region Static methods
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
@@ -45,10 +64,10 @@ namespace Flux
       => System.Math.PI / 2 - elevation;
     #endregion Static methods
 
-    #region Implemented interfaces
-    // ISphericalCoordinate
-    public ISphericalCoordinate Create(double radius, double inclination, double azimuth)
-     => new SphericalCoordinate(radius, inclination, azimuth);
-    #endregion Implemented interfaces
+    #region Static methods
+    /// <summary>Return the <see cref="ISphericalCoordinate"/> from the specified components.</summary>
+    public static SphericalCoordinate From(Length radius, Angle inclination, Azimuth azimuth)
+      => new SphericalCoordinate(radius.Value, inclination.Value, azimuth.ToRadians());
+    #endregion Static methods
   }
 }

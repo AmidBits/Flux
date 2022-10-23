@@ -265,8 +265,8 @@ namespace Flux
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct CartesianCoordinate2R
-    : System.IEquatable<CartesianCoordinate2R>, ICartesianCoordinate2
+  public record struct CartesianCoordinate2R
+    : ICartesianCoordinate2<double>
   {
     public readonly static CartesianCoordinate2R Zero;
 
@@ -281,9 +281,6 @@ namespace Flux
 
     [System.Diagnostics.Contracts.Pure] public double X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
-
-    public ICartesianCoordinate2 Create(double x, double y)
-      => new CartesianCoordinate2R(x, y);
 
     ///// <summary>Returns the angle to the 2D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
@@ -343,12 +340,12 @@ namespace Flux
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2R PerpendicularCcw()
+    public CartesianCoordinate2R GetPerpendicularCcw()
       => new(-m_y, m_x);
 
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2R PerpendicularCw()
+    public CartesianCoordinate2R GetPerpendicularCw()
       => new(m_y, -m_x);
 
     #region To..
@@ -373,10 +370,10 @@ namespace Flux
     public EllipseGeometry ToEllipseGeometry()
       => new(m_x, m_y);
 
-    ///// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="PolarCoordinate"/>.</summary>
-    //[System.Diagnostics.Contracts.Pure]
-    //public PolarCoordinate ToPolarCoordinate()
-    //  => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
+    /// <summary>Converts the <see cref="CartesianCoordinate2R"/> to a <see cref="PolarCoordinate"/>.</summary>
+    [System.Diagnostics.Contracts.Pure]
+    public PolarCoordinate ToPolarCoordinate()
+      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), System.Math.Atan2(m_y, m_x));
 
     /// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
@@ -540,9 +537,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static explicit operator CartesianCoordinate2R(double[] v) => new(v[0], v[1]);
     [System.Diagnostics.Contracts.Pure] public static explicit operator double[](CartesianCoordinate2R v) => new double[] { v.m_x, v.m_y };
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(CartesianCoordinate2R a, CartesianCoordinate2R b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(CartesianCoordinate2R a, CartesianCoordinate2R b) => !a.Equals(b);
-
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2R operator -(CartesianCoordinate2R cc) => new(-cc.X, -cc.Y);
 
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2R operator --(CartesianCoordinate2R cc) => cc - 1;
@@ -568,16 +562,5 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2R operator %(CartesianCoordinate2R cc, double scalar) => new(cc.X % scalar, cc.Y % scalar);
     [System.Diagnostics.Contracts.Pure] public static CartesianCoordinate2R operator %(double scalar, CartesianCoordinate2R cc) => new(scalar % cc.X, scalar % cc.Y);
     #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    [System.Diagnostics.Contracts.Pure] public bool Equals(CartesianCoordinate2R other) => m_x == other.m_x && m_y == other.m_y;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is CartesianCoordinate2R o && Equals(o);
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_x, m_y);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, (Length = {EuclideanLength()}) }}";
-    #endregion Object overrides
   }
 }

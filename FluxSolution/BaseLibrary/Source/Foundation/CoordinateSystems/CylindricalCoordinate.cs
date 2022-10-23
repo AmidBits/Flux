@@ -26,22 +26,33 @@ namespace Flux
     /// <summary>Also known as altitude. For convention, this correspond to the cartesian z-axis.</summary>
     [System.Diagnostics.Contracts.Pure] public double Height { get => m_height; init => m_height = value; }
 
-    [System.Diagnostics.Contracts.Pure]
-    public ICartesianCoordinate3 ToCartesianCoordinate3()
-      => ((ICylindricalCoordinate)this).ToCartesianCoordinate3();
+    /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
+    public CartesianCoordinate3R ToCartesianCoordinate3()
+     => new CartesianCoordinate3R(
+       Radius * System.Math.Cos(Azimuth),
+       Radius * System.Math.Sin(Azimuth),
+       Height
+     );
 
-    [System.Diagnostics.Contracts.Pure]
-    public IPolarCoordinate ToPolarCoordinate()
-      => ((ICylindricalCoordinate)this).ToPolarCoordinate();
+    /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="PolarCoordinate"/>.</summary>
+    public PolarCoordinate ToPolarCoordinate()
+     => new PolarCoordinate(
+       Radius,
+       Azimuth
+     );
 
-    [System.Diagnostics.Contracts.Pure]
-    public ISphericalCoordinate ToSphericalCoordinate()
-      => ((ICylindricalCoordinate)this).ToSphericalCoordinate();
+    /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
+    public SphericalCoordinate ToSphericalCoordinate()
+     => new SphericalCoordinate(
+       System.Math.Sqrt(Radius * Radius + Height * Height),
+       System.Math.Atan2(Radius, Height),
+       Azimuth
+     );
 
-    #region Implemented interfaces
-    // ICylindricalCoordinate
-    public ICylindricalCoordinate Create(double radius, double azimuth, double height)
-      => new CylindricalCoordinate(radius, azimuth, height);
-    #endregion Implemented interfaces
+    #region Static methods
+    /// <summary>Return a <see cref="CylindricalCoordinate"/> from the specified components.</summary>
+    public static CylindricalCoordinate From(Length radius, Azimuth azimuth, Length height)
+      => new CylindricalCoordinate(radius.Value, azimuth.ToRadians(), height.Value);
+    #endregion Static methods
   }
 }

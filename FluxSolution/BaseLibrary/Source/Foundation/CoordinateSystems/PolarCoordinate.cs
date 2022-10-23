@@ -21,23 +21,25 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
     /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="CartesianCoordinate2R"/>.</summary>
-    [System.Diagnostics.Contracts.Pure] public ICartesianCoordinate2 ToCartesianCoordinate2()
+    [System.Diagnostics.Contracts.Pure]
+    public CartesianCoordinate2R ToCartesianCoordinate2()
      => new CartesianCoordinate2R(
-       m_radius * System.Math.Cos(m_azimuth), 
+       m_radius * System.Math.Cos(m_azimuth),
        m_radius * System.Math.Sin(m_azimuth)
      );
 
     /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="System.Numerics.Complex"/>.</summary>
-    [System.Diagnostics.Contracts.Pure] public System.Numerics.Complex ToComplex()
+    [System.Diagnostics.Contracts.Pure]
+    public System.Numerics.Complex ToComplex()
      => System.Numerics.Complex.FromPolarCoordinates(
        m_radius,
        m_azimuth
      );
 
-    #region Implemented interfaces
-    // IPolarCoordinate
-    public IPolarCoordinate Create(double radius, double azimuth)
-     => new PolarCoordinate(radius, azimuth);
-    #endregion Implemented interfaces
+    #region Static methods
+    /// <summary>Return the <see cref="IPolarCoordinate"/> from the specified components.</summary>
+    public static PolarCoordinate From(Length radius, Azimuth azimuth)
+       => new PolarCoordinate(radius.Value, azimuth.ToRadians());
+    #endregion Static methods
   }
 }

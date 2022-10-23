@@ -94,7 +94,13 @@ namespace Flux
     }
 
     /// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
-    [System.Diagnostics.Contracts.Pure] public ISphericalCoordinate ToSphericalCoordinate() => ((IGeographicCoordinate)this).ToSphericalCoordinate();
+    [System.Diagnostics.Contracts.Pure]
+    public SphericalCoordinate ToSphericalCoordinate()
+      => SphericalCoordinate.From(
+        Altitude,
+        new Angle(System.Math.PI - (Angle.ConvertDegreeToRadian(Latitude.Value) + System.Math.PI / 2)),
+        Azimuth.FromRadians(Angle.ConvertDegreeToRadian(Longitude.Value) + System.Math.PI)
+      );
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3R"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -175,6 +181,14 @@ namespace Flux
 
       return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
     }
+
+    /// <summary>Return the <see cref="IGeographicCoordinate"/> from the specified components.</summary>
+    static GeographicCoordinate From(Length altitude, Latitude latitude, Longitude longitude)
+      => new GeographicCoordinate(
+        altitude.Value,
+        latitude.Value,
+        longitude.Value
+      );
 
     /// <summary>Converts the specified Equal Earth projected X, Y coordinate components with Z optionally containing the altitude to geographical coordinate components.</summary>
     /// <param name="z">Optional altitude (in meters).</param>
