@@ -8,6 +8,7 @@
 
     abstract IPolarCoordinate Create(double radius, double azimuth);
 
+    /// <summary>Return the components of the <see cref="IPolarCoordinate"/>.</summary>
     (Length radius, Azimuth azimuth) ToUnits()
      => (new Length(Radius), new Angle(Azimuth).ToAzimuth());
 
@@ -22,6 +23,7 @@
        Azimuth
      );
 
+    /// <summary>Return the <see cref="IPolarCoordinate"/> from the specified components.</summary>
     static IPolarCoordinate FromUnits(Length radius, Azimuth azimuth)
       => new PolarCoordinate(radius.Value, azimuth.ToRadians());
   }

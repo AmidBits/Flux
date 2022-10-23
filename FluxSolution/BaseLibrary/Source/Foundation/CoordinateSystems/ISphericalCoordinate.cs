@@ -2,14 +2,19 @@
 {
   public interface ISphericalCoordinate
   {
+    /// <summary>Radius in meters.</summary>
     double Radius { get; }
+    /// <summary>Inclination in radians.</summary>
     double Inclination { get; }
+    /// <summary>Azimuth in radians.</summary>
     double Azimuth { get; }
 
-    double Elevatiuon => 90.0 - Inclination;
+    /// <summary>Elevation in radians.</summary>
+    double Elevatiuon => System.Math.PI / 2 - Inclination;
 
     abstract ISphericalCoordinate Create(double radius, double inclination, double azimuth);
 
+    /// <summary>Return the components of the <see cref="ISphericalCoordinate"/>.</summary>
     (Length radius, Angle inclination, Azimuth azimuth) ToUnits()
       => (new Length(Radius), new Angle(Inclination), new Angle(Azimuth).ToAzimuth());
 
@@ -41,6 +46,7 @@
        Radius
      );
 
+    /// <summary>Return the <see cref="ISphericalCoordinate"/> from the specified components.</summary>
     static ISphericalCoordinate FromUnits(Length radius, Angle inclination, Azimuth azimuth)
       => new SphericalCoordinate(radius.Value, inclination.Value, azimuth.ToRadians());
   }

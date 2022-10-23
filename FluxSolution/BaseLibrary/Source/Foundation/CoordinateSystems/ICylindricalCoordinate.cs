@@ -8,6 +8,7 @@
 
     abstract ICylindricalCoordinate Create(double radius, double azimuth, double height);
 
+    /// <summary>Return the components of the <see cref="ICylindricalCoordinate"/>.</summary>
     (Length radius, Azimuth azimuth, Length height) ToUnits()
      => (new Length(Radius), new Angle(Azimuth).ToAzimuth(), new Length(Height));
 
@@ -34,6 +35,7 @@
        Azimuth
      );
 
+    /// <summary>Return the <see cref="ICylindricalCoordinate"/> from the specified components.</summary>
     static ICylindricalCoordinate FromUnits(Length radius, Azimuth azimuth, Length height)
       => new CylindricalCoordinate(radius.Value, azimuth.ToRadians(), height.Value);
   }

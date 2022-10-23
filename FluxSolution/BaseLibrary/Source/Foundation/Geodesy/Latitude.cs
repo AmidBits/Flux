@@ -8,6 +8,8 @@ namespace Flux
     public const double MaxValue = +90;
     public const double MinValue = -90;
 
+    public static Latitude Zero => new();
+
     public static Latitude TropicOfCancer => new(23.43648);
     public static Latitude TropicOfCapricorn => new(-23.43648);
 

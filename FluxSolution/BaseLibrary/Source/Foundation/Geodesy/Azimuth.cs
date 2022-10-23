@@ -8,6 +8,8 @@ namespace Flux
     public const double MaxValue = 360;
     public const double MinValue = 0;
 
+    public static Azimuth Zero => new();
+
     private readonly double m_degAzimuth;
 
     /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>

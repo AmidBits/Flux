@@ -71,6 +71,7 @@ namespace Flux
 
       return new CartesianCoordinate3R(x, y, m_altitude);
     }
+
     //=> (CartesianCoordinate3)ConvertToEqualEarthProjection(Latitude.Radian, Longitude.Radian, Altitude.Value);
     /// <summary>Creates a new <see cref="CartesianCoordinate3"/> Natural Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -91,10 +92,10 @@ namespace Flux
 
       return new CartesianCoordinate3R(x, y, m_altitude);
     }
-    ///// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
-    //[System.Diagnostics.Contracts.Pure]
-    //public SphericalCoordinate ToSphericalCoordinate()
-    //  => new(m_altitude, System.Math.PI - (m_radLatitude + Maths.PiOver2), m_radLongitude + System.Math.PI);
+
+    /// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
+    [System.Diagnostics.Contracts.Pure] public ISphericalCoordinate ToSphericalCoordinate() => ((IGeographicCoordinate)this).ToSphericalCoordinate();
+
     /// <summary>Creates a new <see cref="CartesianCoordinate3R"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CartesianCoordinate3R ToWinkelTripelProjection()
@@ -514,8 +515,8 @@ namespace Flux
       => m_altitude == other.m_altitude && m_radLatitude == other.m_radLatitude && m_radLongitude == other.m_radLongitude;
 
     // IGeographicCoordinate
-    public static IGeographicCoordinate Create(Length altitude, Latitude latitude, Longitude longitude)
-     => new GeographicCoordinate(altitude.Value, latitude.Value, longitude.Value);
+    public IGeographicCoordinate Create(double altitude, double latitude, double longitude)
+     => new GeographicCoordinate(altitude, latitude, longitude);
     #endregion Implemented interfaces
 
     #region Object overrides

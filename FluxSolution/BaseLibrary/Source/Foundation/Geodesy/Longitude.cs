@@ -8,6 +8,8 @@ namespace Flux
     public const double MaxValue = +180;
     public const double MinValue = -180;
 
+    public static Longitude Zero => new();
+
     private readonly double m_degLongitude;
 
     /// <summary>Creates a new Longitude from the specified number of degrees. The value is wrapped within the degree range [-180, +180].</summary>
