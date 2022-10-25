@@ -1,11 +1,10 @@
+using Flux.Hashing;
+
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct HexCoordinateR
-    : IEquatable<HexCoordinateR>
-#if NET7_0_OR_GREATER
-    , IHexCoordinate<double>
-#endif
+  public record struct HexCoordinateR
+    : IHexCoordinate<double>
   {
     public static readonly HexCoordinateR Zero;
 
@@ -58,13 +57,15 @@ namespace Flux
         source.m_q * (1 - mu) + target.m_q * mu,
         source.m_r * (1 - mu) + target.m_r * mu,
         source.m_s * (1 - mu) + target.m_s * mu
-      );
+    );
 
-    public static HexCoordinateI Round(HexCoordinateR hex)
+    public static HexCoordinateI Round(HexCoordinateR hex, RoundingMode mode = RoundingMode.HalfToEven)
     {
-      var rQ = System.Math.Round(hex.m_q);
-      var rR = System.Math.Round(hex.m_r);
-      var rS = System.Math.Round(hex.m_s);
+      var rounding = new Rounding<double>(mode);
+
+      var rQ = rounding.RoundNumber(hex.m_q);
+      var rR = rounding.RoundNumber(hex.m_r);
+      var rS = rounding.RoundNumber(hex.m_s);
 
       var aQ = System.Math.Abs(rQ - hex.m_q);
       var aR = System.Math.Abs(rR - hex.m_r);
@@ -84,33 +85,5 @@ namespace Flux
       );
     }
     #endregion Static methods
-
-    #region Overloaded operators
-    public static bool operator ==(HexCoordinateR p1, HexCoordinateR p2)
-     => p1.Equals(p2);
-    public static bool operator !=(HexCoordinateR p1, HexCoordinateR p2)
-      => !p1.Equals(p2);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(HexCoordinateR other)
-      => m_q == other.m_q && m_r == other.m_r && m_s == other.m_s;
-
-#if NET7_0_OR_GREATER
-    // IHexCoordinate<>
-    public IHexCoordinate<double> Create(double q, double r, double s)
-      => new HexCoordinateR(q, r, s);
-#endif
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is HexCoordinateR o && Equals(o);
-    public override int GetHashCode()
-      => HashCode.Combine(m_q, m_r, m_s);
-    public override string ToString()
-      => $"{GetType().Name} {{ Q = {m_q}, R = {m_r}, S = {m_s} }}";
-    #endregion Object overrides
   }
 }

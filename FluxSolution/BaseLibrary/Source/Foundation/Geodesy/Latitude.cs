@@ -2,8 +2,8 @@ namespace Flux
 {
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
-  public struct Latitude
-    : System.IComparable<Latitude>, System.IConvertible, System.IEquatable<Latitude>, IQuantifiable<double>
+  public record struct Latitude
+    : System.IComparable<Latitude>, System.IConvertible, IQuantifiable<double>
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;
@@ -39,6 +39,8 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public Length ApproximateRadius
       => new(GetApproximateRadius(ToRadians()));
+
+    public string SexagesimalDegreeString => ToSexagesimalDegreeString();
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
@@ -109,9 +111,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static bool operator >(Latitude a, Latitude b) => a.CompareTo(b) > 0;
     [System.Diagnostics.Contracts.Pure] public static bool operator >=(Latitude a, Latitude b) => a.CompareTo(b) >= 0;
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Latitude a, Latitude b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Latitude a, Latitude b) => !a.Equals(b);
-
     [System.Diagnostics.Contracts.Pure] public static Latitude operator -(Latitude v) => new(-v.m_degLatitude);
     [System.Diagnostics.Contracts.Pure] public static Latitude operator +(Latitude a, double b) => new(FoldLatitude(a.m_degLatitude + b));
     [System.Diagnostics.Contracts.Pure] public static Latitude operator +(Latitude a, Latitude b) => a + b.Value;
@@ -151,17 +150,10 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_degLatitude);
     #endregion IConvertible
 
-    // IEquatable<>
-    [System.Diagnostics.Contracts.Pure] public bool Equals(Latitude other) => m_degLatitude == other.m_degLatitude;
-
     // IQuantifiable<>
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_degLatitude; init => m_degLatitude = value; }
     #endregion Implemented interfaces
 
-    #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Latitude o && Equals(o);
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_degLatitude.GetHashCode();
     [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degLatitude}\u00B0, {ToSexagesimalDegreeString()} }}";
-    #endregion Object overrides
   }
 }

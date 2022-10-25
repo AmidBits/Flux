@@ -4,8 +4,8 @@ namespace Flux
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct GeographicCoordinate
-    : System.IEquatable<GeographicCoordinate>, IGeographicCoordinate
+  public record struct GeographicCoordinate
+    : IGeographicCoordinate
   {
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
@@ -27,11 +27,11 @@ namespace Flux
       => new(32.221667, -110.926389, 728);
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public readonly double m_altitude;
+    private readonly double m_altitude;
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public readonly double m_radLatitude;
+    private readonly double m_radLatitude;
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public readonly double m_radLongitude;
+    private readonly double m_radLongitude;
 
     public GeographicCoordinate(double degLatitude, double degLongitude, double meterAltitude = 1.0)
     {
@@ -515,34 +515,8 @@ namespace Flux
       => altitudeInMeters >= MinAltitudeInMeters && altitudeInMeters <= MaxAltitudeInMeters;
     #endregion Static members
 
-    #region Overloaded operators
-    public static bool operator ==(GeographicCoordinate a, GeographicCoordinate b)
-      => a.Equals(b);
-    public static bool operator !=(GeographicCoordinate a, GeographicCoordinate b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable<>
-    [System.Diagnostics.Contracts.Pure]
-    public bool Equals(GeographicCoordinate other)
-      => m_altitude == other.m_altitude && m_radLatitude == other.m_radLatitude && m_radLongitude == other.m_radLongitude;
-
-    // IGeographicCoordinate
-    public IGeographicCoordinate Create(double altitude, double latitude, double longitude)
-     => new GeographicCoordinate(altitude, latitude, longitude);
-    #endregion Implemented interfaces
-
     #region Object overrides
-    [System.Diagnostics.Contracts.Pure]
-    public override bool Equals(object? obj)
-      => obj is GeographicCoordinate o && Equals(o);
-    [System.Diagnostics.Contracts.Pure]
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_altitude, m_radLatitude, m_radLongitude);
-    [System.Diagnostics.Contracts.Pure]
-    public override string ToString()
-      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.Value}), Longitude = {Longitude.ToSexagesimalDegreeString(preferUnicode: false)} ({Longitude.Value}), Altitude = {Altitude.ToUnitString()} }}";
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.ToAngle().ToUnitString(AngleUnit.Degree, "N1", true)}), Longitude = {Longitude.ToSexagesimalDegreeString(preferUnicode: false)} ({Longitude.ToAngle().ToUnitString(AngleUnit.Degree, "N1", true)}), Altitude = {Altitude.ToUnitString()} }}";
     #endregion Object overrides
   }
 }

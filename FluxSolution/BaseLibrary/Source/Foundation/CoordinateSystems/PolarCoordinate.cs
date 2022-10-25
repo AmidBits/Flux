@@ -41,5 +41,8 @@ namespace Flux
     public static PolarCoordinate From(Length radius, Azimuth azimuth)
        => new PolarCoordinate(radius.Value, azimuth.ToRadians());
     #endregion Static methods
+
+    public override string ToString()
+      => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N1", true)} }}";
   }
 }

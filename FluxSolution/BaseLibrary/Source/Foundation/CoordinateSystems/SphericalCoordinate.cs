@@ -62,12 +62,13 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertElevationToInclination(double elevation)
       => System.Math.PI / 2 - elevation;
-    #endregion Static methods
 
-    #region Static methods
     /// <summary>Return the <see cref="ISphericalCoordinate"/> from the specified components.</summary>
     public static SphericalCoordinate From(Length radius, Angle inclination, Azimuth azimuth)
       => new SphericalCoordinate(radius.Value, inclination.Value, azimuth.ToRadians());
     #endregion Static methods
+
+    public override string ToString()
+      => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {new Angle(m_inclination).ToUnitString(AngleUnit.Degree, "N1", true)} (Elevation = {new Angle(ConvertInclinationToElevation(m_inclination)).ToUnitString(AngleUnit.Degree, "N1", true)}), Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N1", true)} }}";
   }
 }

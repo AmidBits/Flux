@@ -22,7 +22,7 @@ namespace ConsoleApp
       Zamplez.RunCoordinateSystems();
 
       //var p = new Flux.PolarCoordinate(11.11, 12.12);
-      
+
       //var pc = p.Create(p.Radius, p.Azimuth);
 
       //for (var i = -1.25f; i <= 1.25; i += 0.25f)

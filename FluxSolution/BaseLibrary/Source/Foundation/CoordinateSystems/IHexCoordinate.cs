@@ -7,8 +7,6 @@ namespace Flux
     TSelf Q { get; }
     TSelf R { get; }
     TSelf S { get; }
-
-    abstract IHexCoordinate<TSelf> Create(TSelf q, TSelf r, TSelf s);
   }
 }
 #endif

@@ -1,9 +1,11 @@
+using Flux.Riff.Smf;
+
 namespace Flux
 {
   /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
-  public struct Longitude
-    : System.IComparable<Longitude>, System.IConvertible, System.IEquatable<Longitude>, IQuantifiable<double>
+  public record struct Longitude
+    : System.IComparable<Longitude>, System.IConvertible, IQuantifiable<double>
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;
@@ -19,6 +21,8 @@ namespace Flux
     public Longitude(Angle longitude)
       : this(longitude.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
+
+    public string SexagesimalDegreeString => ToSexagesimalDegreeString();
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -70,9 +74,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static bool operator >(Longitude a, Longitude b) => a.CompareTo(b) > 0;
     [System.Diagnostics.Contracts.Pure] public static bool operator >=(Longitude a, Longitude b) => a.CompareTo(b) >= 0;
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Longitude a, Longitude b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Longitude a, Longitude b) => !a.Equals(b);
-
     [System.Diagnostics.Contracts.Pure] public static Longitude operator -(Longitude v) => new(-v.m_degLongitude);
     [System.Diagnostics.Contracts.Pure] public static Longitude operator +(Longitude a, double b) => new(WrapLongitude(a.m_degLongitude + b));
     [System.Diagnostics.Contracts.Pure] public static Longitude operator +(Longitude a, Longitude b) => a + b.Value;
@@ -112,19 +113,10 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_degLongitude);
     #endregion IConvertible
 
-    // IEquatable<>
-    [System.Diagnostics.Contracts.Pure] public bool Equals(Longitude other) => m_degLongitude == other.m_degLongitude;
-
     // IQuantifiable<>
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_degLongitude; init => m_degLongitude = value; }
     #endregion Implemented interfaces
 
-    #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Longitude o && Equals(o);
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_degLongitude.GetHashCode();
-    [System.Diagnostics.Contracts.Pure]
-    public override string ToString()
-      => $"{GetType().Name} {{ Value = {m_degLongitude}\u00B0, {ToSexagesimalDegreeString()} }}";
-    #endregion Object overrides
+    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degLongitude}\u00B0, {ToSexagesimalDegreeString()} }}";
   }
 }

@@ -54,5 +54,8 @@ namespace Flux
     public static CylindricalCoordinate From(Length radius, Azimuth azimuth, Length height)
       => new CylindricalCoordinate(radius.Value, azimuth.ToRadians(), height.Value);
     #endregion Static methods
+
+    public override string ToString()
+      => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N1", true)}, Height = {m_height} }}";
   }
 }

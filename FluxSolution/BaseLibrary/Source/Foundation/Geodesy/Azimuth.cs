@@ -2,8 +2,8 @@ namespace Flux
 {
   /// <summary>Azimuth unit of degree. The internal unit here is defined in the range [0, +360]. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
-  public readonly struct Azimuth
-    : System.IComparable<Azimuth>, System.IConvertible, System.IEquatable<Azimuth>, IQuantifiable<double>
+  public record struct Azimuth
+    : System.IComparable<Azimuth>, System.IConvertible, IQuantifiable<double>
   {
     public const double MaxValue = 360;
     public const double MinValue = 0;
@@ -125,9 +125,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static bool operator >(Azimuth a, Azimuth b) => a.CompareTo(b) > 0;
     [System.Diagnostics.Contracts.Pure] public static bool operator >=(Azimuth a, Azimuth b) => a.CompareTo(b) >= 0;
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Azimuth a, Azimuth b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Azimuth a, Azimuth b) => !a.Equals(b);
-
     [System.Diagnostics.Contracts.Pure] public static Azimuth operator -(Azimuth v) => new(-v.m_degAzimuth);
     [System.Diagnostics.Contracts.Pure] public static Azimuth operator +(Azimuth a, double b) => new(WrapAzimuth(a.m_degAzimuth + b));
     [System.Diagnostics.Contracts.Pure] public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.Value;
@@ -167,17 +164,10 @@ namespace Flux
     [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_degAzimuth);
     #endregion IConvertible
 
-    // IEquatable<>
-    [System.Diagnostics.Contracts.Pure] public bool Equals(Azimuth other) => m_degAzimuth == other.m_degAzimuth;
-
     // IQuantifiable<>
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_degAzimuth; init => m_degAzimuth = value; }
     #endregion Implemented interfaces
 
-    #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is Azimuth o && Equals(o);
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => m_degAzimuth.GetHashCode();
     [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degAzimuth}\u00B0 }}";
-    #endregion Object overrides
   }
 }
