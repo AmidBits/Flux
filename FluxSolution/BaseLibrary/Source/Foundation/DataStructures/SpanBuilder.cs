@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-
 namespace Flux
 {
   #region Extension methods.
@@ -119,32 +117,6 @@ namespace Flux
       return target;
     }
 
-    //public static SpanBuilder<System.Text.Rune> ToRuneBuilder(ref this SpanBuilder<char> source)
-    //{
-    //  var runes = new SpanBuilder<System.Text.Rune>();
-
-    //  for (var index = 0; index < source.Length; index++)
-    //  {
-    //    var c1 = source[index];
-
-    //    if (char.IsHighSurrogate(c1))
-    //    {
-    //      var c2 = source[++index];
-
-    //      if (!char.IsLowSurrogate(c2))
-    //        throw new System.InvalidOperationException(@"Missing low surrogate (required after high surrogate).");
-
-    //      runes.Append(new System.Text.Rune(c1, c2));
-    //    }
-    //    else if (char.IsLowSurrogate(c1))
-    //      throw new System.InvalidOperationException(@"Unexpected low surrogate (only allowed after high surrogate).");
-    //    else
-    //      runes.Append(new System.Text.Rune(c1));
-    //  }
-
-    //  return runes;
-    //}
-
     public static SpanBuilder<System.Text.Rune> ToRuneSpanBuilder(this ref SpanBuilder<char> source)
     {
       var target = new SpanBuilder<System.Text.Rune>();
@@ -155,6 +127,14 @@ namespace Flux
       return target;
     }
 
+    /// <summary>Creates a new SpanBuilder from the source.</summary>
+    public static SpanBuilder<T> ToSpanBuilder<T>(this System.ReadOnlySpan<T> source)
+      => new(source);
+
+    /// <summary>Creates a new SpanBuilder from the source.</summary>
+    public static SpanBuilder<T> ToSpanBuilder<T>(this System.Span<T> source)
+      => new(source);
+
     public static string ToString(ref this SpanBuilder<char> source, int startIndex, int length)
       => source.AsReadOnlySpan().Slice(startIndex, length).ToString();
     public static string ToString(ref this SpanBuilder<char> source, int startIndex)
@@ -163,7 +143,6 @@ namespace Flux
   #endregion Extension methods.
 
   public ref struct SpanBuilder<T>
-    where T : notnull
   {
     private const int DefaultBufferSize = 16;
 
@@ -173,10 +152,12 @@ namespace Flux
 
     public SpanBuilder(int capacity)
     {
+      //capacity.FindNearestPow2(false, out var _, out var nearestAwayFromZero)
+      //m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(nearestAwayFromZero);
+      //m_position = 0;
+
       var powerOf2Capacity = BitOps.FoldRight(capacity) + 1;
-
       m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(powerOf2Capacity);
-
       m_position = 0;
     }
     public SpanBuilder(System.ReadOnlySpan<T> value)

@@ -107,6 +107,14 @@ namespace Flux
           source.Insert(index, ' ');
     }
 
+    /// <summary>Creates a new builder from the source.</summary>
+    public static SequenceBuilder<T> ToSequenceBuilder<T>(this System.ReadOnlySpan<T> source)
+      => new SequenceBuilder<T>().Append(source);
+
+    /// <summary>Creates a new builder from the source.</summary>
+    public static SequenceBuilder<T> ToSequenceBuilder<T>(this System.Span<T> source)
+      => new SequenceBuilder<T>().Append(source);
+
     public static SequenceBuilder<char> ToSequenceBuilderOfChar(this SpanBuilder<System.Text.Rune> source)
     {
       var target = new SequenceBuilder<char>();
@@ -117,31 +125,16 @@ namespace Flux
       return target;
     }
 
-    //public static SpanBuilder<System.Text.Rune> ToRuneBuilder( this SequenceBuilder<char> source)
-    //{
-    //  var runes = new SpanBuilder<System.Text.Rune>();
+    public static SequenceBuilder<TSelf> ToSequenceBuilderOfBinaryInteger<TSelf>(this SequenceBuilder<char> source)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      var target = new SequenceBuilder<TSelf>();
 
-    //  for (var index = 0; index < source.Length; index++)
-    //  {
-    //    var c1 = source[index];
+      foreach (var c in source.AsReadOnlySpan())
+        target.Append(TSelf.CreateChecked(c));
 
-    //    if (char.IsHighSurrogate(c1))
-    //    {
-    //      var c2 = source[++index];
-
-    //      if (!char.IsLowSurrogate(c2))
-    //        throw new System.InvalidOperationException(@"Missing low surrogate (required after high surrogate).");
-
-    //      runes.Append(new System.Text.Rune(c1, c2));
-    //    }
-    //    else if (char.IsLowSurrogate(c1))
-    //      throw new System.InvalidOperationException(@"Unexpected low surrogate (only allowed after high surrogate).");
-    //    else
-    //      runes.Append(new System.Text.Rune(c1));
-    //  }
-
-    //  return runes;
-    //}
+      return target;
+    }
 
     public static SequenceBuilder<System.Text.Rune> ToSequenceBuilderOfRune(this SequenceBuilder<char> source)
     {
@@ -160,8 +153,7 @@ namespace Flux
   }
   #endregion Extension methods.
 
-  public class SequenceBuilder<T>
-    where T : notnull
+  public sealed class SequenceBuilder<T>
   {
     private const int DefaultBufferSize = 32;
 
@@ -736,5 +728,8 @@ namespace Flux
 
       return this;
     }
+
+    public override string ToString()
+      => AsSpan().ToString();
   }
 }

@@ -15,41 +15,28 @@ namespace Flux
       Draw(GeographicCoordinate.TakapauNewZealand, nameof(GeographicCoordinate.TakapauNewZealand));
       Draw(GeographicCoordinate.TucsonAzUsa, nameof(GeographicCoordinate.TucsonAzUsa));
 
-      static void Draw(GeographicCoordinate gc0, System.ReadOnlySpan<char> label)
+      static void Draw(GeographicCoordinate gc, System.ReadOnlySpan<char> label)
       {
-        System.Console.WriteLine($"{label.ToString()}:");
+        Flux.Console.WriteInformationLine($"{label.ToString()}:");
 
-        System.Console.WriteLine(gc0);
+        System.Console.WriteLine(gc);
 
-        var sc = gc0.ToSphericalCoordinate(); // SphericalCoordinate
-        System.Console.WriteLine(sc);
-
-        var cc = sc.ToCylindricalCoordinate(); // CylindricalCoordinate
-        System.Console.WriteLine(cc);
-
-        var cc3 = cc.ToCartesianCoordinate3(); // CartesianCoordinate3R
-        System.Console.WriteLine(cc3);
+        var sca = gc.ToSphericalCoordinate(); System.Console.WriteLine(sca);
+        var cca = sca.ToCylindricalCoordinate(); System.Console.WriteLine(cca);
+        var cc3a = cca.ToCartesianCoordinate3(); System.Console.WriteLine(cc3a);
 
         // Show 2D coordinate systems also.
         {
-          var cc2 = new Flux.CartesianCoordinate2R(cc3.X, cc3.Y); // CartesianCoordinate2R (2D)
-          System.Console.WriteLine($" ({cc2})");
+          Flux.Console.WriteInformationLine($" Sub 2D coordinate show-case from the 3D components X and Y.");
 
-          var pc = cc2.ToPolarCoordinate(); // PolarCoordinate (2D)
-          System.Console.WriteLine($" ({pc})");
-
-          var cc2r = pc.ToCartesianCoordinate2(); // CartesianCoordinate2R (2D)
-          System.Console.WriteLine($" ({cc2r})");
+          var cc2a = new Flux.CartesianCoordinate2R(cc3a.X, cc3a.Y); System.Console.WriteLine($" {cc2a}");
+          var pca = cc2a.ToPolarCoordinate(); System.Console.WriteLine($" {pca}");
+          var cc2b = pca.ToCartesianCoordinate2(); System.Console.WriteLine($" {cc2b}");
         }
 
-        var ccr = cc3.ToCylindricalCoordinate(); // CylindricalCoordinate
-        System.Console.WriteLine(ccr);
-
-        var scr = ccr.ToSphericalCoordinate(); // SphericalCoordinate
-        System.Console.WriteLine(scr);
-
-        var gcr = scr.ToGeographicCoordinate(); // GeographicalCoordinate
-        System.Console.WriteLine(gcr);
+        var ccb = cc3a.ToCylindricalCoordinate(); System.Console.WriteLine(ccb);
+        var scb = ccb.ToSphericalCoordinate(); System.Console.WriteLine(scb);
+        var gcb = scb.ToGeographicCoordinate(); System.Console.WriteLine(gcb);
 
         System.Console.WriteLine();
       }

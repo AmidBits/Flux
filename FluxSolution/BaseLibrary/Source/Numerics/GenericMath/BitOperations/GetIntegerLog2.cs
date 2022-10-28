@@ -8,6 +8,16 @@ namespace Flux
 
   public static partial class BitOps
   {
+    public static void GetIntegerLog2<TSelf, TResult>(this TSelf x, out TResult log2Ceiling, out TResult log2Floor)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TResult : System.Numerics.IBinaryInteger<TResult>
+    {
+      log2Ceiling = log2Floor = TResult.CreateChecked(TSelf.Log2(x));
+
+      if (!TSelf.IsPow2(x))
+        log2Ceiling++;
+    }
+
     /// <summary>PREVIEW! Computes the ceiling of the base 2 log of <paramref name="x"/>.</summary>
     public static int GetIntegerLog2Ceiling<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

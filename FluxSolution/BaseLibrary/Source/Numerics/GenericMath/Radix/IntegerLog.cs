@@ -3,6 +3,8 @@ namespace Flux
 {
   public static partial class GenericMath
   {
+    /// <summary>PREVIEW! Computes the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/>.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static void IntegerLog<TSelf>(this TSelf number, TSelf radix, out TSelf logFloor, out TSelf logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

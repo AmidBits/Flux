@@ -19,76 +19,35 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      Zamplez.RunCoordinateSystems();
+      var array = new int[] { 0x02, 0x08, 0x0a, 0x10 };
 
-      //var p = new Flux.PolarCoordinate(11.11, 12.12);
+      foreach (var radix in array)
+      {
+        for (var value = 0; value <= (radix + 1); value++)
+        {
+          if (System.Math.Log(value, radix) is var logFp && logFp == double.NegativeInfinity)
+            logFp = 0;
 
-      //var pc = p.Create(p.Radius, p.Azimuth);
+          var logAc = value.IntegerLogCeiling(radix);
+          var logAf = value.IntegerLogFloor(radix);
+          value.TryIntegerLog(radix, out var logBf, out var logBc);
 
-      //for (var i = -1.25f; i <= 1.25; i += 0.25f)
-      //  System.Console.WriteLine($"{i:N2} = {Flux.StepFunction<float, double>.Sign.Evaluate(i)}");
+          if (radix == 2)
+          {
+            var log2f = int.Log2(value);
+            var log2c = int.IsPow2(value) ? log2f : log2f + 1;
 
-      //var number = 6705302039;
-      //var radix = 10;
-      //var count = 4;
+            var lg2Ac = value.GetIntegerLog2Ceiling();
+            var lg2Af = value.GetIntegerLog2Floor();
 
-      //var values = new double[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 };
+            System.Console.WriteLine($"{(value.IsIntegerPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10).ToSequenceBuilder().PadLeft(2, 0.ToSubscriptString(10))}({value:D2}) : ({lg2Af:D2}) : [{logAf:D2}, {logBf:D2}] < {logFp:N3} ({log2f}, {log2c}) > [{logAc:D2}, {logBc:D2}] : ({lg2Ac:D2})");
+          }
+          else
+            System.Console.WriteLine($"{(value.IsIntegerPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10).ToSequenceBuilder().PadLeft(2, 0.ToSubscriptString(10))}({value:D2}) : [{logAf:D2}, {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}]");
+        }
 
-      //var r = Flux.Quantilers.R7.Default;
-
-      //System.Console.WriteLine($"{r.EstimateQuantile(values, 0)}");
-      //System.Console.WriteLine($"{r.EstimateQuantile(values, 0.25)}");
-      //System.Console.WriteLine($"{r.EstimateQuantile(values, 0.5)}");
-      //System.Console.WriteLine($"{r.EstimateQuantile(values, 0.75)}");
-      //System.Console.WriteLine($"{r.EstimateQuantile(values, 1.0)}");
-
-      //System.Console.WriteLine($"{number} = DropLeastSignificantDigit:{number.DropLeastSignificantDigit(radix)}");
-      //System.Console.WriteLine($"{number} = DropLeastSignificantDigits:{number.DropLeastSignificantDigits(radix, count)}");
-      //System.Console.WriteLine($"{number} = DropMostSignificantDigits:{number.DropMostSignificantDigits(radix, count)}");
-
-      //System.Console.WriteLine($"{number} = KeepLeastSignificantDigit:{number.KeepLeastSignificantDigit(radix)}");
-      //System.Console.WriteLine($"{number} = KeepLeastSignificantDigits:{number.KeepLeastSignificantDigits(radix, count)}");
-      //System.Console.WriteLine($"{number} = KeepMostSignificantDigits:{number.KeepMostSignificantDigits(radix, count)}");
-
-      //Flux.IPopulationModelable
-
-      //var n = 99.96535789;
-      //var r1 = Flux.GenericMath.Round(99.96535789, 2, HalfwayRounding.ToEven);
-      //var r2 = Flux.GenericMath.TruncatingRound(99.96535789, 2, HalfwayRounding.ToEven);
-
-      //System.Console.WriteLine($"{n} = {r1} (Round) = {r2} (TruncatingRound) : both with 2 significant digits and ToEven.");
-
-      //return;
-
-      //var array = new int[] { 2, 8, 10, 16 };
-
-      //foreach (var radix in array)
-      //{
-      //  for (var value = 0; value <= (radix + 1); value++)
-      //  {
-      //    if (System.Math.Log(value, radix) is var logFp && logFp == double.NegativeInfinity)
-      //      logFp = 0;
-
-      //    var logAc = value.IntegerLogCeiling(radix);
-      //    var logAf = value.IntegerLogFloor(radix);
-      //    value.TryIntegerLog(radix, out var logBf, out var logBc);
-
-      //    if (radix == 2)
-      //    {
-      //      var log2f = int.Log2(value);
-      //      var log2c = int.IsPow2(value) ? log2f : log2f + 1;
-
-      //      var lg2Ac = value.GetIntegerLog2Ceiling();
-      //      var lg2Af = value.GetIntegerLog2Floor();
-
-      //      System.Console.WriteLine($"{(value.IsIntegerPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : ({lg2Af:D2}) : [{logAf:D2}], {logBf:D2}] < {logFp:N3} ({log2f}, {log2c}) > [{logAc:D2}, {logBc:D2}] : ({lg2Ac:D2})");
-      //    }
-      //    else
-      //      System.Console.WriteLine($"{(value.IsIntegerPow(radix) ? radix.ToString().PadLeft(2, ' ') : "  ")} ILog{radix.ToSubscriptString(10)}({value:D2}) : [{logAf:D2}, {logBf:D2}] < {logFp:N3} > [{logAc:D2}, {logBc:D2}]");
-      //  }
-
-      //  System.Console.WriteLine();
-      //}
+        System.Console.WriteLine();
+      }
     }
 
     private static void Main(string[] args)

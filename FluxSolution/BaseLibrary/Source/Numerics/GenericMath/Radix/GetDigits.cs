@@ -20,11 +20,14 @@ namespace Flux
 
       var list = new System.Collections.Generic.List<TSelf>();
 
-      while (!TSelf.IsZero(number))
-      {
-        list.Add(number % radix);
-        number /= radix;
-      }
+      if (TSelf.IsZero(number))
+        list.Add(TSelf.Zero);
+      else
+        while (!TSelf.IsZero(number))
+        {
+          list.Add(number % radix);
+          number /= radix;
+        }
 
       return System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
     }
