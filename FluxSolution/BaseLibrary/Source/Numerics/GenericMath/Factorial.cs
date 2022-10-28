@@ -12,7 +12,7 @@ namespace Flux
       ? -Factorial(-x)
       : x <= TSelf.One
       ? TSelf.One
-      : Loop.Range(TSelf.One + TSelf.One, x - TSelf.One, TSelf.One).AsParallel().Aggregate(TSelf.One, (a, b) => a * b);
+      : (TSelf.One + TSelf.One).LoopRange(x - TSelf.One, TSelf.One).AsParallel().Aggregate(TSelf.One, (a, b) => a * b);
   }
 }
 #endif

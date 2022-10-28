@@ -1,5 +1,5 @@
 #if NET7_0_OR_GREATER
-namespace Flux.NumberSequencing
+namespace Flux.NumberSequences
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sieve_of_Atkin"/>
   public sealed class SieveOfAtkin

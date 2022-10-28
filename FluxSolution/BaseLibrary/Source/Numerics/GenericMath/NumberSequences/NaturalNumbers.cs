@@ -1,5 +1,5 @@
 #if NET7_0_OR_GREATER
-namespace Flux.NumberSequencing
+namespace Flux.NumberSequences
 {
   /// <summary>Creates a new sequence.</summary>
   public record class NaturalNumber

@@ -11,7 +11,7 @@ namespace Flux
 
       var (minItem, minIndex, maxItem, maxIndex) = collection.Extrema(s => s);
 
-      return Loop.Between(minItem, maxItem, TSelf.One);
+      return Loops.Range<TSelf>.CreateBetween(minItem, maxItem, TSelf.One);
     }
   }
 }

@@ -1,5 +1,5 @@
 #if NET7_0_OR_GREATER
-namespace Flux.NumberSequencing
+namespace Flux.NumberSequences
 {
   public sealed class CompositeNumber
     : INumericSequence<System.Numerics.BigInteger>

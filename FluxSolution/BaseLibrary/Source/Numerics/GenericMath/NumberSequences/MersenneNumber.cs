@@ -1,5 +1,5 @@
 #if NET7_0_OR_GREATER
-namespace Flux.NumberSequencing
+namespace Flux.NumberSequences
 {
   /// <summary>Results in a sequence of mersenne numbers.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Mersenne_number"/>

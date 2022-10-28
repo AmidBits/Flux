@@ -1,5 +1,5 @@
 #if NET7_0_OR_GREATER
-namespace Flux.NumberSequencing
+namespace Flux.NumberSequences
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
