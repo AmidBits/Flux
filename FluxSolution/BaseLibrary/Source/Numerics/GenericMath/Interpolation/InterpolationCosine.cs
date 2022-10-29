@@ -9,7 +9,7 @@ namespace Flux.Interpolation
   public sealed class CosineInterpolation<TNode, TMu>
     : I2NodeInterpolatable<TNode, TMu>
     where TNode : System.Numerics.INumber<TNode>
-    where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.ITrigonometricFunctions<TMu>, System.Numerics.IMultiplyOperators<TMu, TNode, TMu>
+    where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TNode, TMu>, System.Numerics.ITrigonometricFunctions<TMu>
   {
     #region Static methods
     public static TMu Interpolate(TNode n1, TNode n2, TMu mu)

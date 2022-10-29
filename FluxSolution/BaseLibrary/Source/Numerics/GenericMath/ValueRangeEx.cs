@@ -2,8 +2,7 @@
 namespace Flux
 {
   /// <summary>Represents a value range of two components, for various range operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable and IEquatable to operate.</summary>
-  public readonly struct ValueRangeEx<TSelf>
-    : System.IEquatable<ValueRangeEx<TSelf>>
+  public record struct ValueRangeEx<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
     public readonly static ValueRangeEx<TSelf> Empty;
@@ -20,15 +19,25 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public TSelf Low => m_lo;
     [System.Diagnostics.Contracts.Pure] public TSelf High => m_hi;
 
-    [System.Diagnostics.Contracts.Pure] public bool IsProper => m_lo.CompareTo(m_hi) < 0 && m_hi.CompareTo(m_lo) > 0;
+    [System.Diagnostics.Contracts.Pure]
+    public bool IsProper
+      => m_lo.CompareTo(m_hi) < 0 && m_hi.CompareTo(m_lo) > 0;
 
-    [System.Diagnostics.Contracts.Pure] public TSelf Distance => m_hi - m_lo;
+    [System.Diagnostics.Contracts.Pure]
+    public TSelf Distance
+      => m_hi - m_lo;
 
-    [System.Diagnostics.Contracts.Pure] public TSelf Fold(TSelf value) => value.Fold(m_lo, m_hi);
+    [System.Diagnostics.Contracts.Pure]
+    public TSelf Fold(TSelf value)
+      => value.Fold(m_lo, m_hi);
 
-    [System.Diagnostics.Contracts.Pure] public TSelf Rescale(TSelf value, ValueRangeEx<TSelf> targetRange) => value.Rescale(m_lo, m_hi, targetRange.m_lo, targetRange.m_hi);
+    [System.Diagnostics.Contracts.Pure]
+    public TSelf Rescale(TSelf value, ValueRangeEx<TSelf> targetRange)
+      => value.Rescale(m_lo, m_hi, targetRange.m_lo, targetRange.m_hi);
 
-    [System.Diagnostics.Contracts.Pure] public TSelf Wrap(TSelf value) => value.Wrap(m_lo, m_hi);
+    [System.Diagnostics.Contracts.Pure]
+    public TSelf Wrap(TSelf value)
+      => value.Wrap(m_lo, m_hi);
 
     [System.Diagnostics.Contracts.Pure]
     public TMu InterpolateCosine<TMu>(TMu mu)
@@ -138,33 +147,6 @@ namespace Flux
       => a.m_lo.CompareTo(b.m_lo) <= 0 ? a.m_lo : b.m_lo;
 
     #endregion Static methods
-
-    #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure]
-    public static bool operator ==(ValueRangeEx<TSelf> a, ValueRangeEx<TSelf> b)
-      => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure]
-    public static bool operator !=(ValueRangeEx<TSelf> a, ValueRangeEx<TSelf> b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    [System.Diagnostics.Contracts.Pure]
-    public bool Equals(ValueRangeEx<TSelf> other)
-      => m_lo.Equals(other.m_lo) && m_hi.Equals(other.m_hi);
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    [System.Diagnostics.Contracts.Pure]
-    public override bool Equals(object? obj)
-      => obj is ValueRange<TSelf> o && Equals(o);
-    [System.Diagnostics.Contracts.Pure]
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_lo, m_hi);
-    [System.Diagnostics.Contracts.Pure]
-    public override string ToString()
-      => $"{GetType().Name} {{ Low = {m_lo}, High = {m_hi} }}";
-    #endregion Object overrides
   }
 }
 #endif

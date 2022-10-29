@@ -19,6 +19,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var range = new Flux.ValueRangeEx<int>(7, 19);
+
+      var il = Flux.Interpolation.LinearInterpolation<double, double>.Interpolate(range.Low, range.High, 0.45);
+
       var array = new int[] { 0x02, 0x08, 0x0a, 0x10 };
 
       foreach (var radix in array)
