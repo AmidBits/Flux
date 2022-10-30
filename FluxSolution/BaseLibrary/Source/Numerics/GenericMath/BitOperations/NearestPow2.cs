@@ -12,7 +12,7 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value as out parameters.</returns>
-    public static void FindNearestPow2<TSelf>(this TSelf x, bool properNearest, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+    public static void LocateNearestPow2<TSelf>(this TSelf x, bool properNearest, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (TSelf.IsPow2(x))
@@ -42,10 +42,10 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value.</returns>
-    public static TSelf GetNearestPow2<TSelf>(this TSelf x, bool properNearest, RoundingMode mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+    public static TSelf NearestPow2<TSelf>(this TSelf x, bool properNearest, RoundingMode mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      FindNearestPow2(x, properNearest, out nearestTowardsZero, out nearestAwayFromZero);
+      LocateNearestPow2(x, properNearest, out nearestTowardsZero, out nearestAwayFromZero);
 
       return new BoundaryRounding<TSelf>(mode, nearestTowardsZero, nearestAwayFromZero).RoundNumber(x);
     }

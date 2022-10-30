@@ -142,7 +142,7 @@ namespace GenericMath
     [TestMethod]
     public void NearestPow()
     {
-      var nearestPow = 1234567.RoundToNearestPow(10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+      var nearestPow = 1234567.NearestPow(10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
 
       Assert.AreEqual(1000000, nearestTowardsZero);
       Assert.AreEqual(10000000, nearestAwayFromZero);
