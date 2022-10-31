@@ -8,6 +8,8 @@ namespace Flux.Interpolation
     where TNode : System.Numerics.INumber<TNode>
     where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TNode, TMu>
   {
+    public static I2NodeInterpolatable<TNode, TMu> Default => new LinearInterpolation<TNode, TMu>();
+
     #region Static methods
     public static TMu Interpolate(TNode n1, TNode n2, TMu mu)
       => (TMu.One - mu) * n1 + mu * n2;
