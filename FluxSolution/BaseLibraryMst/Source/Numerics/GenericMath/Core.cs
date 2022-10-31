@@ -80,7 +80,7 @@ namespace GenericMath
     [TestMethod]
     public void NearestMultiple()
     {
-      var nearestMultiple = 512.GetNearestMultiple(20, false, RoundingMode.HalfTowardZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+      var nearestMultiple = 512.NearestMultiple(20, false, RoundingMode.HalfTowardZero, out var nearestTowardsZero, out var nearestAwayFromZero);
 
       Assert.AreEqual(520, nearestMultiple);
 

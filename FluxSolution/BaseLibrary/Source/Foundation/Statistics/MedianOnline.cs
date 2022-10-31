@@ -62,7 +62,7 @@ namespace Flux
       else if (m_minHeap.Peek() is var minHeapPeek && minHeapCount > maxHeapCount)
         return minHeapPeek;
       else // Counts are equal and not zero.
-        return (maxHeapPeek + minHeapPeek) / 2;
+        return (maxHeapPeek + minHeapPeek) / 2.0;
     }
 
     [System.Diagnostics.Contracts.Pure]

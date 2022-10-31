@@ -10,7 +10,7 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static void FindNearestPow<TSelf>(this TSelf number, TSelf radix, bool properNearest, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+    public static void LocateNearestPow<TSelf>(this TSelf number, TSelf radix, bool properNearest, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertRadix(radix);
@@ -35,10 +35,10 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value.</returns>
-    public static TSelf RoundToNearestPow<TSelf>(this TSelf number, TSelf radix, bool properNearest, RoundingMode mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+    public static TSelf NearestPow<TSelf>(this TSelf number, TSelf radix, bool properNearest, RoundingMode mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      FindNearestPow(number, radix, properNearest, out nearestTowardsZero, out nearestAwayFromZero);
+      LocateNearestPow(number, radix, properNearest, out nearestTowardsZero, out nearestAwayFromZero);
 
       return new BoundaryRounding<TSelf>(mode, nearestTowardsZero, nearestAwayFromZero).RoundNumber(number);
     }
