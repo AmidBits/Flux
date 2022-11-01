@@ -4,7 +4,7 @@ namespace Flux
   public static partial class ArrayRank2
   {
     /// <summary>Create a new System.Data.DataTable from the two dimensional array.</summary>
-    public static System.Data.DataTable ToDataTable<T>(this T[,] source, bool hasColumnNames, params string[] customColumnNames)
+    public static System.Data.DataTable ToDataTable<T>(this T[,] source, bool sourceHasColumnNames, params string[] customColumnNames)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
@@ -15,9 +15,13 @@ namespace Flux
       var dt = new System.Data.DataTable();
 
       for (var i1 = 0; i1 < sourceLength1; i1++)
-        dt.Columns.Add((customColumnNames.Length > i1 ? customColumnNames[i1] : null) ?? (hasColumnNames ? source[0, i1]?.ToString() : null) ?? $"Column{i1}");
+        dt.Columns.Add(
+          (customColumnNames.Length > i1 ? customColumnNames[i1] : null) // First choice, use custom column name if there is one.
+          ?? (sourceHasColumnNames ? source[0, i1]?.ToString() : null) // Second choice, if the parameter 'sourceHasColumnNames' is true, use source.
+          ?? $"Column{i1}" // Last resort, use generic name with index.
+        );
 
-      for (var i0 = (hasColumnNames ? 1 : 0); i0 < sourceLength0; i0++)
+      for (var i0 = (sourceHasColumnNames ? 1 : 0); i0 < sourceLength0; i0++)
       {
         var array = new object[sourceLength1];
         for (var i1 = 0; i1 < sourceLength1; i1++)

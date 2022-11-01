@@ -1,8 +1,8 @@
-namespace Flux
-{
-  public enum AlternatingLoopDirection
-  {
-    AwayFromMean,
-    TowardsMean
-  }
-}
+//namespace Flux
+//{
+//  public enum AlternatingLoopDirection
+//  {
+//    AwayFromMean,
+//    TowardsMean
+//  }
+//}

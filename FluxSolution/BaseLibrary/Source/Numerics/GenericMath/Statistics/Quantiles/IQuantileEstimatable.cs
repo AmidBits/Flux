@@ -3,7 +3,7 @@ namespace Flux
 {
   public interface IQuantileEstimatable
   {
-    TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IList<TSelf> sample, TSelf probability)
+    TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf probability)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>;
   }
 }

@@ -8,21 +8,21 @@ namespace Flux
         yield return start;
     }
 
-    public static System.Collections.Generic.IEnumerable<decimal> Loop(decimal start, decimal count, decimal step)
-    {
-      for (; count > 0; count--, start += step)
-        yield return start;
-    }
-    public static System.Collections.Generic.IEnumerable<double> Loop(double start, double count, double step)
-    {
-      for (; count > 0; count--, start += step)
-        yield return start;
-    }
-    public static System.Collections.Generic.IEnumerable<float> Loop(float start, float count, float step)
-    {
-      for (; count > 0; count--, start += step)
-        yield return start;
-    }
+    //public static System.Collections.Generic.IEnumerable<decimal> Loop(decimal start, decimal count, decimal step)
+    //{
+    //  for (; count > 0; count--, start += step)
+    //    yield return start;
+    //}
+    //public static System.Collections.Generic.IEnumerable<double> Loop(double start, double count, double step)
+    //{
+    //  for (; count > 0; count--, start += step)
+    //    yield return start;
+    //}
+    //public static System.Collections.Generic.IEnumerable<float> Loop(float start, float count, float step)
+    //{
+    //  for (; count > 0; count--, start += step)
+    //    yield return start;
+    //}
 
     public static System.Collections.Generic.IEnumerable<int> Loop(int start, int count, int step)
     {

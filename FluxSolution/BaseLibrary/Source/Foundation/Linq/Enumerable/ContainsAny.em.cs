@@ -5,10 +5,12 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Returns whether the source contains any of the items in subset, using the specified comparer.</summary>
-    public static bool ContainsAny<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static bool ContainsAny<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      var shs = source is System.Collections.Generic.HashSet<T> hsTemporary 
-        ? hsTemporary 
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      var shs = source is System.Collections.Generic.HashSet<T> hsTemporary
+        ? hsTemporary
         : new System.Collections.Generic.HashSet<T>(source, equalityComparer);
 
       if (!shs.Any())
@@ -19,8 +21,5 @@ namespace Flux
 
       return target.Any(t => shs.Contains(t));
     }
-    /// <summary>Returns whether the source contains any of the items in subset.</summary>
-    public static bool ContainsAny<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)
-      => ContainsAny(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }

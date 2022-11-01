@@ -9,15 +9,15 @@ namespace Flux.Quantilers
 
     /// <summary>Linear interpolation of the empirical distribution function.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IList<TSelf> sample, TSelf p)
+    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       if (sample is null) throw new System.ArgumentNullException(nameof(sample));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      var h = TSelf.CreateChecked(sample.Count) * p;
+      var h = TSelf.CreateChecked(sample.Count()) * p;
 
-      return LinearInterpolationEmpiricalDistributionFunction.Default.EstimateQuantile(sample, h);
+      return EmpiricalDistributionFunction.Default.EstimateQuantile(sample, h);
     }
   }
 }

@@ -62,9 +62,9 @@
       => m_bitArray[index];
 
     public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse()
-      => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt64(b => !b);
+      => System.Linq.Enumerable.Cast<bool>(this).GetElementsAndIndicesInt64((e, i) => !e).Select(e => e.index);
     public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue()
-      => System.Linq.Enumerable.Cast<bool>(this).GetIndicesInt64(b => b);
+      => System.Linq.Enumerable.Cast<bool>(this).GetElementsAndIndicesInt64((e, i) => e).Select(e => e.index);
 
     [System.CLSCompliant(false)]
     public void SetAll(ulong value)

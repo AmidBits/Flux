@@ -36,6 +36,10 @@ namespace Flux
         }
       }
     }
+
+    public static string ToConsole<T>(this T[,] source, char horizontalSeparator = '\u007c', char verticalSeparator = '\u002d', bool uniformWidth = false, bool centerContent = false)
+      => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, uniformWidth, centerContent));
+
     /// <summary>Returns the two-dimensional array as a ready-to-print grid-like formatted string, that can be printed in the console.</summary>
     public static void WriteToConsole<T>(this T[,] source, char horizontalSeparator = '\u007c', char verticalSeparator = '\u002d', bool uniformWidth = false, bool centerContent = false)
       => ToConsoleStrings(source, horizontalSeparator, verticalSeparator, uniformWidth, centerContent).WriteToConsole();

@@ -86,7 +86,7 @@ namespace Flux
     };
 
     // These are known facts.
-    public readonly static System.Collections.Generic.List<PositiveFact> PositiveFacts = new()
+    public readonly static System.Collections.Generic.IList<PositiveFact> PositiveFacts = new System.Collections.Generic.List<PositiveFact>()
     {
       new PositiveFact() { House = new System.Collections.Generic.List<int>() { 3 }, Color = EnumColor.Red, Nationality = EnumNationality.Englishman },
       new PositiveFact() { Nationality = EnumNationality.Spaniard, Pet = EnumPet.Dog },
@@ -207,7 +207,7 @@ namespace Flux
                 h.Pet = kf.Pet;
             }
 
-            var indices = PositiveFacts.GetIndicesInt32(kf => kf.House.Count == 1 && kf.House.First() == hn).OrderByDescending(k => k).ToArray();
+            var indices = PositiveFacts.GetElementsAndIndices((kf, i) => kf.House.Count == 1 && kf.House.First() == hn).Select(e => e.index).OrderByDescending(k => k).ToArray();
 
             foreach (var index in indices)
               PositiveFacts.RemoveAt((int)index);

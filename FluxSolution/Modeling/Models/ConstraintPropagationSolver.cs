@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux
+﻿namespace Flux
 {
   public static class ConstraintPropagationSolver
   {
@@ -66,7 +64,7 @@ namespace Flux
     }
 
     // These are known facts.
-    public readonly static System.Collections.Generic.List<Fact> KnownFacts = new()
+    public readonly static System.Collections.Generic.IList<Fact> KnownFacts = new System.Collections.Generic.List<Fact>()
     {
       new Fact() { Color = EnumColor.Red, Nationality = EnumNationality.Brit },
       new Fact() { Nationality = EnumNationality.Swede, Animal = EnumAnimal.Dog },
@@ -103,7 +101,7 @@ namespace Flux
         matrix[5, index] = kf.Animal != EnumAnimal.Unkown ? kf.Animal.ToString() : string.Empty;
       }
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.ToConsoleStrings(uniformWidth: true, centerContent: true)));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.ToConsole(uniformWidth: true, centerContent: true)));
     }
 
     public static void Example()
@@ -165,7 +163,8 @@ namespace Flux
                 h.Animal = kf.Animal;
             }
 
-            var indices = KnownFacts.GetIndicesInt32(kf => kf.House.Count == 1 && kf.House.First() == hn).OrderByDescending(k => k).ToArray();
+
+            var indices = KnownFacts.GetElementsAndIndices((kf, i) => kf.House.Count == 1 && kf.House.First() == hn).Select(e => e.index).OrderByDescending(k => k).ToArray();
 
             foreach (var index in indices)
               KnownFacts.RemoveAt((int)index);

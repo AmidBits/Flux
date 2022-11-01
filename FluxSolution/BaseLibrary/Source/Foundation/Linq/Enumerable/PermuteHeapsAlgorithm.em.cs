@@ -4,11 +4,11 @@ namespace Flux
   {
     /// <summary>Heap's algorithm generates all possible permutations of n objects.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Heap%27s_algorithm"/>
-    public static System.Collections.Generic.IEnumerable<T[]> PermuteHeapsAlgorithm<T>(this System.Collections.Generic.IEnumerable<T> source)
+    public static System.Collections.Generic.IEnumerable<TSource[]> PermuteHeapsAlgorithm<TSource>(this System.Collections.Generic.IEnumerable<TSource> source)
     {
       return Permute(source.ToArray());
 
-      static System.Collections.Generic.IEnumerable<T[]> Permute(T[] array)
+      static System.Collections.Generic.IEnumerable<TSource[]> Permute(TSource[] array)
       {
         var stackState = new int[array.Length];
 

@@ -5,14 +5,15 @@ namespace Flux
     /// <summary>Generates all possible permutations of the elements in the sequence. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Permutation"/>
     /// <see cref="https://stackoverflow.com/a/4319074"/>
-    public static System.Collections.Generic.IEnumerable<T[]> PermuteAlgorithmL<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IComparer<T> comparer)
+    public static System.Collections.Generic.IEnumerable<TSource[]> PermuteAlgorithmL<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IComparer<TSource>? comparer = null)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (comparer is null) throw new System.ArgumentNullException(nameof(comparer));
+
+      comparer ??= System.Collections.Generic.Comparer<TSource>.Default;
 
       return Permute(source.ToList());
 
-      System.Collections.Generic.IEnumerable<T[]> Permute(System.Collections.Generic.IList<T> list)
+      System.Collections.Generic.IEnumerable<TSource[]> Permute(System.Collections.Generic.IList<TSource> list)
       {
         var length = list.Count;
 
@@ -51,17 +52,14 @@ namespace Flux
           System.Array.Reverse(transform, decreasingPart + 1, length - decreasingPart - 1); // Reverse the decreasing partition.
         }
 
-        static T[] ApplyTransform(System.Collections.Generic.IList<T> items, System.ValueTuple<int, int>[] transform)
+        static TSource[] ApplyTransform(System.Collections.Generic.IList<TSource> items, System.ValueTuple<int, int>[] transform)
         {
-          var array = new T[transform.Length];
+          var array = new TSource[transform.Length];
           for (var i = 0; i < transform.Length; i++)
             array[i] = items[transform[i].Item2];
           return array;
         }
       }
     }
-    /// <summary>Generates all possible permutations of the elements in the sequence. Uses the default comparer.</summary>
-    public static System.Collections.Generic.IEnumerable<T[]> PermuteAlgorithmL<T>(this System.Collections.Generic.IEnumerable<T> source)
-      => PermuteAlgorithmL(source, System.Collections.Generic.Comparer<T>.Default);
   }
 }

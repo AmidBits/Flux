@@ -3,13 +3,15 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Returns whether the source contains all of the items in subset, using the specified comparer.</summary>
-    public static bool ContainsAll<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static bool ContainsAll<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
       if (target is System.Collections.Generic.ICollection<T> tc && !tc.Any())
         return true; // If target is empty, all is included, the result is true.
 
-      var shs = source is System.Collections.Generic.HashSet<T> hsTemporary 
-        ? hsTemporary 
+      var shs = source is System.Collections.Generic.HashSet<T> hsTemporary
+        ? hsTemporary
         : new System.Collections.Generic.HashSet<T>(source, equalityComparer);
 
       if (!shs.Any()) // If source is empty, it cannot contain anything, the result is false.
@@ -17,8 +19,5 @@ namespace Flux
 
       return target.All(t => shs.Contains(t));
     }
-    /// <summary>Returns whether the source contains all of the items in subset, using the default comparer.</summary>
-    public static bool ContainsAll<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)
-      => ContainsAll(source, target, System.Collections.Generic.EqualityComparer<T>.Default);
   }
 }
