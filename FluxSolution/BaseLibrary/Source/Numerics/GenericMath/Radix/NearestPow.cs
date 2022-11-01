@@ -15,7 +15,7 @@ namespace Flux
     {
       AssertRadix(radix);
 
-      nearestTowardsZero = IntegerPow(radix, TSelf.Abs(number).IntegerLogFloor(radix)) * NumberSign(number);
+      nearestTowardsZero = IntegerPow(radix, TSelf.Abs(number).IntegerLogFloor(radix)) * number.Signum();
       nearestAwayFromZero = nearestTowardsZero * radix;
 
       if (properNearest)

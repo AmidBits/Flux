@@ -1,6 +1,19 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    /// <summary>Returns the sign of <paramref name="x"/>.</summary>
+    public static TSelf Signum<TSelf>(this TSelf x)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => StepFunction<TSelf, TSelf>.Sign.Evaluate(x);
+
+    /// <summary>Returns the sign of <paramref name="x"/>.</summary>
+    public static TSelf SignumNoZero<TSelf>(this TSelf x)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => StepFunction<TSelf, TSelf>.SignNoZero.Evaluate(x);
+  }
+
   public record class StepFunction<TSelf, TResult>
     : IStepFunction<TSelf, TResult>
     where TSelf : System.Numerics.INumber<TSelf>
@@ -29,10 +42,16 @@ namespace Flux
     public static IStepFunction<TSelf, TResult> HalfMaximumUnit => new StepFunction<TSelf, TResult>(TSelf.Zero, TResult.Zero, TResult.One.Div2(), TResult.One);
 
     /// <summary>The sign, sometimes signum, step function.</summary>
-    /// <remarks>Zero basis, where < is -1.0, = is 0.0 and > is +1.0.</remarks>
+    /// <remarks>Zero basis, where < is -1, = is 0 and > is +1.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Step_function"/>
     /// <seealso href="https://en.wikipedia.org/wiki/Sign_function"/>
     public static IStepFunction<TSelf, TResult> Sign => new StepFunction<TSelf, TResult>(TSelf.Zero, -TResult.One, TResult.Zero, TResult.One);
+
+    /// <summary>The sign, sometimes signum, step function.</summary>
+    /// <remarks>Zero basis, where < is -1, >= is +1.</remarks>
+    /// <see href="https://en.wikipedia.org/wiki/Step_function"/>
+    /// <seealso href="https://en.wikipedia.org/wiki/Sign_(mathematics)"/>
+    public static IStepFunction<TSelf, TResult> SignNoZero => new StepFunction<TSelf, TResult>(TSelf.Zero, -TResult.One, TResult.One, TResult.One);
 
     #endregion Static instances
 

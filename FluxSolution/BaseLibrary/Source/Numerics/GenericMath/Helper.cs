@@ -19,10 +19,10 @@ namespace Flux
       => value * value;
     public static TSelf Pow8<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumberBase<TSelf>
-      => value * value * value * value * value * value * value * value;
+      => Pow2(Pow2(Pow2(value)));
     public static TSelf Pow10<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumberBase<TSelf>
-      => Pow2(value) * Pow8(value);
+      => Pow2(value * Pow2(Pow2(value)));
     public static TSelf Pow16<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumberBase<TSelf>
       => Pow2(Pow8(value));
