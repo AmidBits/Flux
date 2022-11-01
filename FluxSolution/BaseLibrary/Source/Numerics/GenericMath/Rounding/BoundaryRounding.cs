@@ -16,7 +16,7 @@ namespace Flux
       m_boundaryAwayFromZero = boundaryAwayFromZero;
     }
 
-    /// <summary>PREVIEW! Rounds a value to the nearest boundary. The distance computation is a slight optimization for special cases, e.g. when rounding to multiple of. The mode specifies how to round when between two intervals.</summary>
+    /// <summary>Rounds a value to the nearest boundary. The distance computation is a slight optimization for special cases, e.g. when rounding to multiple of. The mode specifies how to round when between two intervals.</summary>
     public static TSelf Round(TSelf x, TSelf boundaryTowardsZero, TSelf boundaryAwayFromZero, RoundingMode mode, TSelf distanceTowardsZero, TSelf distanceAwayFromZero)
     {
       return mode switch
@@ -40,7 +40,7 @@ namespace Flux
       };
     }
 
-    /// <summary>PREVIEW! Rounds a value to the nearest boundary. Computes the distance to both boundaries and then calls the alternate <see cref="Round(TSelf, TSelf, TSelf, RoundingMode, TSelf, TSelf)"/>.</summary>
+    /// <summary>Rounds a value to the nearest boundary. Computes the distance to both boundaries and then calls the alternate <see cref="Round(TSelf, TSelf, TSelf, RoundingMode, TSelf, TSelf)"/>.</summary>
     public static TSelf Round(TSelf x, TSelf boundaryTowardsZero, TSelf boundaryAwayFromZero, RoundingMode mode)
     {
       var distanceTowardsZero = TSelf.Abs(x - TSelf.CreateChecked(boundaryTowardsZero)); // Distance from value to the boundary towardsZero.

@@ -41,13 +41,13 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Heaviside_step_function#Discrete_form"/>
     public static IStepFunction<TSelf, TResult> HalfMaximumUnit => new StepFunction<TSelf, TResult>(TSelf.Zero, TResult.Zero, TResult.One.Div2(), TResult.One);
 
-    /// <summary>The sign, sometimes signum, step function.</summary>
+    /// <summary>The sign step function.</summary>
     /// <remarks>Zero basis, where < is -1, = is 0 and > is +1.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Step_function"/>
     /// <seealso href="https://en.wikipedia.org/wiki/Sign_function"/>
     public static IStepFunction<TSelf, TResult> Sign => new StepFunction<TSelf, TResult>(TSelf.Zero, -TResult.One, TResult.Zero, TResult.One);
 
-    /// <summary>The sign, sometimes signum, step function.</summary>
+    /// <summary>The same as the signum step function, but restricted to unit values, -1 (less than zero) or 1 (greater or equal to zero).</summary>
     /// <remarks>Zero basis, where < is -1, >= is +1.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Step_function"/>
     /// <seealso href="https://en.wikipedia.org/wiki/Sign_(mathematics)"/>
