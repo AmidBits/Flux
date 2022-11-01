@@ -27,16 +27,16 @@ namespace Flux
 
     /// <summary>Round to the number that is further from zero.</summary>
     /// <remarks>This is either the typical Math.Floor (if less than zero) or Math.Ceiling (if greater than zero) of the number.</remarks>
-    Envelop = 100 + MidpointRounding.AwayFromZero,
+    Envelop = 10 + MidpointRounding.AwayFromZero,
     /// <summary>Round to the number that is closer to zero.</summary>
     /// <remarks>This is the same as Math.Truncate of the number.</remarks>
-    Truncate = 100 + MidpointRounding.ToZero,
+    Truncate = 10 + MidpointRounding.ToZero,
     /// <summary>Round (down) to the number that is less than.</summary>
     /// <remarks>This is the same as Math.Floor of the number.</remarks>
-    Floor = 100 + MidpointRounding.ToNegativeInfinity,
+    Floor = 10 + MidpointRounding.ToNegativeInfinity,
     /// <summary>Round (up) to the number that is greater.</summary>
     /// <remarks>This is the same as Math.Ceiling of the number.</remarks>
-    Ceiling = 100 + MidpointRounding.ToPositiveInfinity,
+    Ceiling = 10 + MidpointRounding.ToPositiveInfinity,
   }
 }
 #endif
