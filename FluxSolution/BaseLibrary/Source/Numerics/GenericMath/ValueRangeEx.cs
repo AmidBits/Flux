@@ -84,22 +84,27 @@ namespace Flux
     public static ValueRangeEx<TSelf> UnionAll(ValueRangeEx<TSelf> a, ValueRangeEx<TSelf> b)
       => new(MinLow(a, b), MaxHigh(a, b));
 
+    /// <summary>Returns whether a and b are overlapping.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static bool IsOverlapping(ValueRangeEx<TSelf> a, ValueRangeEx<TSelf> b)
       => a.m_low < b.m_high && b.m_low < a.m_high;
 
+    /// <summary>Returns the maximum high value of a and b.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static TSelf MaxHigh(ValueRangeEx<TSelf> a, ValueRangeEx<TSelf> b)
       => a.m_high >= b.m_high ? a.m_high : b.m_high;
 
+    /// <summary>Returns the maximum low value of a and b.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static TSelf MaxLow(ValueRangeEx<TSelf> a, ValueRangeEx<TSelf> b)
       => a.m_low >= b.m_low ? a.m_low : b.m_low;
 
+    /// <summary>Returns the minimum high value of a and b.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static TSelf MinHigh(ValueRangeEx<TSelf> a, ValueRangeEx<TSelf> b)
       => a.m_high <= b.m_high ? a.m_high : b.m_high;
 
+    /// <summary>Returns the minimum low value of a and b.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static TSelf MinLow(ValueRangeEx<TSelf> a, ValueRangeEx<TSelf> b)
       => a.m_low <= b.m_low ? a.m_low : b.m_low;

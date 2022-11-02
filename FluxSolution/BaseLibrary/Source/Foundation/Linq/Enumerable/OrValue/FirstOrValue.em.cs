@@ -16,8 +16,10 @@ namespace Flux
 
         do
         {
-          if (predicate(e.Current, index++))
+          if (predicate(e.Current, index))
             return e.Current;
+
+          index++;
         }
         while (e.MoveNext());
       }

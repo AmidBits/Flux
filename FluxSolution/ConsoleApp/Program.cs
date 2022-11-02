@@ -19,8 +19,14 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      
+      var ints = new Flux.Loops.Range<int>(0, 100, 1).GetSequence().ToArray();
 
+      foreach (var i in ints.SkipEvery(6, 6))
+        System.Console.WriteLine(i);
+
+
+
+      return;
       var range = new Flux.ValueRangeEx<int>(7, 19);
 
       var il = Flux.Interpolation.LinearInterpolation<double, double>.Interpolate(range.Low, range.High, 0.45);

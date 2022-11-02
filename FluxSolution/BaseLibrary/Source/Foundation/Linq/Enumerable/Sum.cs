@@ -7,7 +7,7 @@ namespace Flux
       => source.AsParallel().Aggregate(System.Numerics.BigInteger.Zero, (a, e) => a + e);
 
 #if NET7_0_OR_GREATER
-    /// <summary>Sum for BigInteger.</summary>
+    /// <summary>Sum of all System.Numerics.INumber<TSelf> elements.</summary>
     public static TSelf Sum<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => source.AsParallel().Aggregate(TSelf.Zero, (a, e) => a + e);
