@@ -6,7 +6,6 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<T> RotateLeft<T>(this System.Collections.Generic.IEnumerable<T> source, int count)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       var buffer = new System.Collections.Generic.Queue<T>(count);
 

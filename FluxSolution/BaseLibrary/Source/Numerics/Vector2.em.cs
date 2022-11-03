@@ -107,7 +107,7 @@ namespace Flux
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     public static System.Numerics.Vector2 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.Aggregate(System.Numerics.Vector2.Zero, (a, e, i) => a + e, (a, c) => a / c);
+      => source.Aggregate(() => System.Numerics.Vector2.Zero, (a, e, i) => a + e, (a, c) => a / c);
 
     ///// <summary>Compute the perimeter length of the polygon.</summary>
     //public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)

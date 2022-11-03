@@ -9,6 +9,6 @@ namespace Flux
         yield return resultSelector(current, index);
     }
     public static System.Collections.Generic.IEnumerable<TResult> Loop<TValue, TResult>(this System.Func<TValue> initializerSelector, System.Func<TValue, bool> conditionSelector, System.Func<TValue, TValue> iteratorSelector, System.Func<TValue, TResult> resultSelector)
-      => Loop(initializerSelector, v => conditionSelector(v), v => iteratorSelector(v), v => resultSelector(v));
+      => Loop(initializerSelector, (e, i) => conditionSelector(e), (e, i) => iteratorSelector(e), (e, i) => resultSelector(e));
   }
 }

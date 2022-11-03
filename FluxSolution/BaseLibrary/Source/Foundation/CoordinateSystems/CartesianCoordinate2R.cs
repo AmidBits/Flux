@@ -20,7 +20,7 @@ namespace Flux
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     public static CartesianCoordinate2R ComputeCentroid(this System.Collections.Generic.IEnumerable<CartesianCoordinate2R> source)
-      => source.Aggregate(CartesianCoordinate2R.Zero, (acc, e, i) => acc + e, (acc, c) => acc / c);
+      => source.Aggregate(() => CartesianCoordinate2R.Zero, (acc, e, i) => acc + e, (acc, c) => acc / c);
 
     /// <summary>Compute the perimeter length of the polygon.</summary>
     public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<CartesianCoordinate2R> source)
