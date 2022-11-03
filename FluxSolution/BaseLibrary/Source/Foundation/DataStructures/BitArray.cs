@@ -34,8 +34,7 @@
       : this(bitLength, false)
     { }
 
-    public long Length
-      => m_bitLength;
+    public long Length => m_bitLength;
 
     public bool GetBit(long bitIndex)
       => (bool)((m_bitArray[(bitIndex >> 6)] & (1UL << (int)(bitIndex % 64))) != 0);

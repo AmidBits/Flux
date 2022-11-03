@@ -1,15 +1,28 @@
 namespace Flux
 {
+  public enum OptionSkipEvery
+  {
+    First,
+    Last
+  }
+
   public static partial class Enumerable
   {
-    /// <summary>Creates a new sequence by skipping every <paramref name="interval"/> element from the specified <paramref name="offset"/>.</summary>
-    public static System.Collections.Generic.IEnumerable<T> SkipEvery<T>(this System.Collections.Generic.IEnumerable<T> source, int interval, int offset)
+    /// <summary>Creates a new sequence by skipping the <paramref name="option"/> at every <paramref name="interval"/> starting at the specified <paramref name="offset"/>.</summary>
+    public static System.Collections.Generic.IEnumerable<T> SkipEvery<T>(this System.Collections.Generic.IEnumerable<T> source, int interval, int offset, OptionSkipEvery option)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (interval <= 0) throw new System.ArgumentOutOfRangeException(nameof(interval));
       if (offset < 0) throw new System.ArgumentOutOfRangeException(nameof(offset));
 
-      return source.Skip(offset).Where((e, i) => i % interval != 0);
+      var skipIndex = option switch
+      {
+        OptionSkipEvery.First => 0,
+        OptionSkipEvery.Last => interval - 1,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(option)),
+      };
+
+      return source.Skip(offset).Where((e, i) => i % interval != skipIndex);
     }
   }
 }

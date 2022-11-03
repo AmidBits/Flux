@@ -11,45 +11,43 @@ namespace Flux
 
       comparer ??= System.Collections.Generic.Comparer<TSource>.Default;
 
-      return Permute(source.ToList());
+      return Permute(source.ToArray());
 
-      System.Collections.Generic.IEnumerable<TSource[]> Permute(System.Collections.Generic.IList<TSource> list)
+      System.Collections.Generic.IEnumerable<TSource[]> Permute(TSource[] array)
       {
-        var length = list.Count;
-
-        var initialOrder = new int[length]; // Figure out where we are in the sequence of all permutations
-        for (var i = 0; i < length; i++)
+        var initialOrder = new int[array.Length]; // Figure out where we are in the sequence of all permutations
+        for (var i = 0; i < array.Length; i++)
           initialOrder[i] = i;
 
-        System.Array.Sort(initialOrder, (x, y) => comparer.Compare(list[x], list[y]));
+        System.Array.Sort(initialOrder, (x, y) => comparer.Compare(array[x], array[y]));
 
-        var transform = new System.ValueTuple<int, int>[length];
-        for (var i = 0; i < length; i++)
+        var transform = new System.ValueTuple<int, int>[array.Length];
+        for (var i = 0; i < array.Length; i++)
           transform[i] = (initialOrder[i], i);
 
-        for (var i = 1; i < length; i++) // Handle duplicates
-          if (comparer.Compare(list[transform[i - 1].Item2], list[transform[i].Item2]) == 0)
+        for (var i = 1; i < array.Length; i++) // Handle duplicates
+          if (comparer.Compare(array[transform[i - 1].Item2], array[transform[i].Item2]) == 0)
             transform[i].Item1 = transform[i - 1].Item1;
 
         while (true)
         {
-          yield return ApplyTransform(list, transform);
+          yield return ApplyTransform(array, transform);
 
           //Ref: E. W. Dijkstra, A Discipline of Programming, Prentice-Hall, 1997
-          var decreasingPart = length - 2;
+          var decreasingPart = array.Length - 2;
           while (decreasingPart >= 0 && transform[decreasingPart].Item1 >= transform[decreasingPart + 1].Item1) //Find the largest partition from the back that is in decreasing (non-increasing) order.
             decreasingPart--;
 
           if (decreasingPart < 0) // The whole sequence is in decreasing order, finished.
             yield break;
 
-          var greater = length - 1;
+          var greater = array.Length - 1;
           while (greater > decreasingPart && transform[decreasingPart].Item1 >= transform[greater].Item1) // Find the smallest element in the decreasing partition that is greater than (or equal to) the item in front of the decreasing partition.
             greater--;
 
           (transform[greater], transform[decreasingPart]) = (transform[decreasingPart], transform[greater]); // Swap.
 
-          System.Array.Reverse(transform, decreasingPart + 1, length - decreasingPart - 1); // Reverse the decreasing partition.
+          System.Array.Reverse(transform, decreasingPart + 1, array.Length - decreasingPart - 1); // Reverse the decreasing partition.
         }
 
         static TSource[] ApplyTransform(System.Collections.Generic.IList<TSource> items, System.ValueTuple<int, int>[] transform)

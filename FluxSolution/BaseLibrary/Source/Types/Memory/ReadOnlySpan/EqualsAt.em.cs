@@ -7,8 +7,13 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      if (sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length)
-        return false;
+      if (sourceIndex < 0 || sourceIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
+      if (targetIndex < 0 || targetIndex >= target.Length) throw new System.ArgumentOutOfRangeException(nameof(targetIndex));
+
+      if (sourceIndex + length > source.Length || targetIndex + length > target.Length) throw new System.ArgumentOutOfRangeException(nameof(length));
+
+      //if (sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length)
+      //  return false;
 
       while (length-- > 0)
         if (!equalityComparer.Equals(source[sourceIndex++], target[targetIndex++]))

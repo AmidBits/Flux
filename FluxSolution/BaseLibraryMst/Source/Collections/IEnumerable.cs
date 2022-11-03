@@ -164,7 +164,7 @@ namespace Collections.Generic
     [TestMethod]
     public void TakeEvery()
     {
-      CollectionAssert.AreEqual(new int[] { 17, 19, 23 }, integers.TakeEvery(2, 0).ToArray());
+      CollectionAssert.AreEqual(new int[] { 17, 19, 23 }, integers.TakeEvery(2, 0, Flux.OptionTakeEvery.First).ToArray());
     }
 
     [TestMethod]

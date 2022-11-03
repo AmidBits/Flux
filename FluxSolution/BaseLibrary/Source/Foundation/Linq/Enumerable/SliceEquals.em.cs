@@ -13,17 +13,15 @@ namespace Flux
       if (source is null || target is null || sourceStartAt < 0 || targetStartAt < 0 || length <= 0) return false;
 
       using var se = source!.GetEnumerator();
-      var sourceIndex = 0;
-      while (sourceIndex < sourceStartAt && se.MoveNext())
-        sourceIndex++;
-      if (sourceIndex != sourceStartAt)
+      while (sourceStartAt > 0 && se.MoveNext())
+        sourceStartAt--;
+      if (sourceStartAt > 0)
         return false;
 
       using var te = target!.GetEnumerator();
-      var targetIndex = 0;
-      while (targetIndex < targetStartAt && te.MoveNext())
-        targetIndex++;
-      if (targetIndex != targetStartAt)
+      while (targetStartAt > 0 && te.MoveNext())
+        targetStartAt--;
+      if (targetStartAt > 0)
         return false;
 
       while (length-- > 0 && se.MoveNext() && te.MoveNext())
