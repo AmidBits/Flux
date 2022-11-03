@@ -3,44 +3,44 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Locate both the minimum and the maximum element of the sequence. Uses the specified comparer.</summary>
-    public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) Extrema<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
+    public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) Extrema<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IComparer<TKey>? comparer = null)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
+      if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
 
-      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
+      comparer ??= System.Collections.Generic.Comparer<TKey>.Default;
 
       using var e = source.GetEnumerator();
 
       if (e.MoveNext())
       {
-        var value = valueSelector(e.Current);
+        var key = keySelector(e.Current);
 
         var minItem = e.Current;
         var minIndex = 0;
-        var minValue = value;
+        var minKey = key;
 
         var maxItem = e.Current;
         var maxIndex = 0;
-        var maxValue = value;
+        var maxKey = key;
 
         var index = 1;
 
         while (e.MoveNext())
         {
-          value = valueSelector(e.Current);
+          key = keySelector(e.Current);
 
-          if (comparer.Compare(value, minValue) < 0)
+          if (comparer.Compare(key, minKey) < 0)
           {
             minItem = e.Current;
             minIndex = index;
-            minValue = value;
+            minKey = key;
           }
-          if (comparer.Compare(value, maxValue) > 0)
+          if (comparer.Compare(key, maxKey) > 0)
           {
             maxItem = e.Current;
             maxIndex = index;
-            maxValue = value;
+            maxKey = key;
           }
 
           index++;
