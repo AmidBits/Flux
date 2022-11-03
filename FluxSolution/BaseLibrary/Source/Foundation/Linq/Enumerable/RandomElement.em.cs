@@ -7,26 +7,27 @@ namespace Flux
     /// <param name="rng">The random number generator to use.</param>
     public static bool TryGetRandomElement<T>(this System.Collections.Generic.IEnumerable<T> source, out T result, System.Random? rng = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       rng ??= new System.Random();
 
       result = default!;
 
-      using var e = source.GetEnumerator();
-
-      if (e.MoveNext())
+      if (source is not null)
       {
-        var count = 1;
+        using var e = source.GetEnumerator();
 
-        do
+        if (e.MoveNext())
         {
-          if (rng.Next(count++) == 0)
-            result = e.Current;
-        }
-        while (e.MoveNext());
+          var count = 1;
 
-        return true;
+          do
+          {
+            if (rng.Next(count++) == 0)
+              result = e.Current;
+          }
+          while (e.MoveNext());
+
+          return true;
+        }
       }
 
       return false;
@@ -34,6 +35,6 @@ namespace Flux
 
     /// <summary>Returns a random element from the sequence. Uses the specified random number generator.</summary>
     public static T RandomElement<T>(this System.Collections.Generic.IEnumerable<T> source, System.Random rng)
-      => TryGetRandomElement(source, out var re, rng) ? re : throw new System.InvalidOperationException();
+    => TryGetRandomElement(source, out var re, rng) ? re : throw new System.InvalidOperationException();
   }
 }

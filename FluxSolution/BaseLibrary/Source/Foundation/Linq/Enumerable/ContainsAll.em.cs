@@ -7,8 +7,8 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      if (target is System.Collections.Generic.ICollection<T> tc && !tc.Any())
-        return true; // If target is empty, all is included, the result is true.
+      if ((target is System.Collections.Generic.ICollection<T> tc && !tc.Any()) || target is null)
+        return true; // If target is empty (or null), all is included, the result is true.
 
       var shs = source is System.Collections.Generic.HashSet<T> hsTemporary
         ? hsTemporary

@@ -6,7 +6,7 @@ namespace Flux
   {
     /// <summary>Substitute if the sequence is empty. An exception is thrown if the source sequence or if the substitute sequence is null.</summary>
     /// <exception cref="System.ArgumentNullException">Either source is null or substitute is null.</exception>
-    public static System.Collections.Generic.IEnumerable<T> SubstituteIfEmpty<T>(this System.Collections.Generic.IEnumerable<T>? source, System.Collections.Generic.IEnumerable<T>? substitute)
+    public static System.Collections.Generic.IEnumerable<TSource> SubstituteIfEmpty<TSource>(this System.Collections.Generic.IEnumerable<TSource>? source, System.Collections.Generic.IEnumerable<TSource>? substitute)
     {
       using var e = source.ThrowIfNull().GetEnumerator();
 

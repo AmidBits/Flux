@@ -23,8 +23,5 @@ namespace Flux
         index++;
       }
     }
-    /// <summary>Return a new sequence of elements based on the selector (without indexed parameter).</summary>
-    public static System.Collections.Generic.IEnumerable<TResult> Choose<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate, System.Func<TSource, TResult> resultSelector)
-      => Choose(source, (e, i) => predicate(e), (e, i) => resultSelector(e));
   }
 }

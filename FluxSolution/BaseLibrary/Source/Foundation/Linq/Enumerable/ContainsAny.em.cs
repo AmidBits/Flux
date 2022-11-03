@@ -16,7 +16,7 @@ namespace Flux
       if (!shs.Any())
         return false; // If source is empty, it cannot contain any, so the result is false.
 
-      if (target is System.Collections.Generic.ICollection<T> tc && !tc.Any()) // If target is empty, there is nothing to contain, so the result is false.
+      if ((target is System.Collections.Generic.ICollection<T> tc && !tc.Any()) || target is null) // If target is empty (or null), there is nothing to contain, so the result is false.
         return false;
 
       return target.Any(t => shs.Contains(t));
