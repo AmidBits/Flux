@@ -5,6 +5,7 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Returns whether the source contains any of the items in subset, using the specified comparer.</summary>
+    /// <exception cref="System.ArgumentNullException">The <paramref name="source"/> cannot be null.</exception>
     public static bool ContainsAny<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;

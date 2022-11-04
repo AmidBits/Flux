@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Creates a new dictionary with all indices of all target occurences in the source. Uses the specified equality comparer.</summary>
+    /// <summary>Creates a new dictionary with all indices of all target occurences in the source. Uses the specified (default if null) <paramref name="equalityComparer"/>.</summary>
     public static System.Collections.Generic.IDictionary<TKey, System.Collections.Generic.List<int>> GetIndexMap<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IEnumerable<TSource> target, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey>? equalityComparer = null)
       where TKey : notnull
     {

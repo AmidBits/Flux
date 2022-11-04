@@ -11,11 +11,18 @@ namespace Flux
       using var e = source.ThrowIfNull().GetEnumerator();
 
       if (e.MoveNext())
-        do yield return e.Current;
+      {
+        do
+          yield return e.Current;
         while (e.MoveNext());
+      }
       else
-        foreach (var item in substitute.ThrowIfNull(nameof(substitute)))
-          yield return item;
+      {
+        using var e2 = substitute.ThrowIfNull(nameof(substitute)).GetEnumerator();
+
+        while (e2.MoveNext())
+          yield return e2.Current;
+      }
     }
   }
 }

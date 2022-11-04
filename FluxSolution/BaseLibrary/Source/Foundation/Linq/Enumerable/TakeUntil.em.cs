@@ -22,8 +22,5 @@ namespace Flux
           yield break;
       }
     }
-    /// <summary>Creates a new sequence by taking elements from the sequence until the predicate is satisfied, and also takes the first element that satisfies the predicate.</summary>
-    public static System.Collections.Generic.IEnumerable<TSource> TakeUntil<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate)
-      => TakeUntil(source, (e, i) => predicate(e));
   }
 }

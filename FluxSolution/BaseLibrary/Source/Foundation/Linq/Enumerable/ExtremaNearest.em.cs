@@ -2,7 +2,8 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Locate the max element that is less than and the min element that is greater than the specified <paramref name="targetKey"/> in <paramref name="source"/>. Keys are identified using the <see cref="keySelector"/>. Uses the specified <paramref name="comparer"/> (or the default comparer, if null).</summary>
+    /// <summary>Locate the nearest (less than/greater than) elements and indices to <paramref name="targetKey"/>, as evaluated by the <paramref name="keySelector"/>, in <paramref name="source"/>. Uses the specified (default if null) <paramref name="comparer"/>.</summary>
+    /// <exception cref="System.ArgumentNullException">The <paramref name="source"/>/<paramref name="keySelector"/> cannot be null.</exception>
     public static (TSource ltItem, int ltIndex, TSource gtItem, int gtIndex) ExtremaNearest<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, TKey targetKey, System.Collections.Generic.IComparer<TKey>? comparer = null)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Creates a new sequence by taking the last elements of the sequence that satisfies the predicate. This version also passes the source index into the predicate.</summary>
+    /// <summary>Creates a new sequence by taking the last elements of <paramref name="source"/> that satisfies the <paramref name="predicate"/>. This version also passes the source index into the predicate.</summary>
     public static System.Collections.Generic.IEnumerable<T> TakeLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -24,8 +24,5 @@ namespace Flux
 
       return buffer;
     }
-    /// <summary>Creates a new sequence by taking the last elements of the sequence that satisfies the predicate.</summary>
-    public static System.Collections.Generic.IEnumerable<T> TakeLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate)
-      => TakeLastWhile(source, (t, i) => predicate(t));
   }
 }

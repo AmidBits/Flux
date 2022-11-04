@@ -21,8 +21,5 @@ namespace Flux
       while (e.MoveNext())
         yield return e.Current;
     }
-    /// <summary>Creates a new sequence by skipping elements in the sequence until the predicate is satisfied, and also skips the first element that satisfies the predicate.</summary>
-    public static System.Collections.Generic.IEnumerable<TSource> SkipUntil<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, bool> predicate)
-      => SkipUntil(source, (e, i) => predicate(e));
   }
 }
