@@ -1,8 +1,7 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct LineSlope
-    : System.IEquatable<LineSlope>
+  public record struct LineSlope
   {
     public static readonly LineSlope Zero;
 
@@ -17,27 +16,5 @@ namespace Flux.Geometry
 
     #region Static methods
     #endregion Static methods
-
-    #region Overloaded operators
-    public static bool operator ==(LineSlope a, LineSlope b)
-      => a.Equals(b);
-    public static bool operator !=(LineSlope a, LineSlope b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(LineSlope other)
-      => m_slope == other.m_slope;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is LineSlope o && Equals(o);
-    public override int GetHashCode()
-      => m_slope.GetHashCode();
-    public override string? ToString()
-      => $"{GetType().Name} {{ Slope = {m_slope} }}";
-    #endregion Object overrides
   }
 }

@@ -1,8 +1,8 @@
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct CircleGeometry
-    : System.IComparable<CircleGeometry>, System.IEquatable<CircleGeometry>, ISurfaceArea, ISurfaceContains, ISurfacePerimeter
+  public record struct CircleGeometry
+    : System.IComparable<CircleGeometry>, ISurfaceArea, ISurfaceContains, ISurfacePerimeter
   {
     public static readonly CircleGeometry Empty;
 
@@ -65,30 +65,10 @@ namespace Flux
       => System.Math.PI * radius * 2;
     #endregion Static methods
 
-    #region Overloaded operators
-    public static bool operator ==(CircleGeometry a, CircleGeometry b)
-      => a.Equals(b);
-    public static bool operator !=(CircleGeometry a, CircleGeometry b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
     #region Implemented interfaces
     // IComparable<T>
     public int CompareTo(CircleGeometry other)
       => m_radius.CompareTo(other.m_radius);
-
-    // IEquatable<T>
-    public bool Equals(CircleGeometry other)
-      => m_radius == other.m_radius;
     #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is CircleGeometry o && Equals(o);
-    public override int GetHashCode()
-      => m_radius.GetHashCode();
-    public override string? ToString()
-      => $"{GetType().Name} {{ Radius = {m_radius} }}";
-    #endregion Object overrides
   }
 }

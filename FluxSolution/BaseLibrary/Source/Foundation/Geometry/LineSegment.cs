@@ -1,8 +1,7 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct LineSegment
-    : System.IEquatable<LineSegment>
+  public record struct LineSegment
   {
     public static readonly LineSegment Empty;
 
@@ -101,27 +100,5 @@ namespace Flux.Geometry
     // https://math.stackexchange.com/questions/637922/how-can-i-find-coefficients-a-b-c-given-two-points
     // https://www.mathsisfun.com/algebra/line-equation-2points.html
     // https://keisan.casio.com/exec/system/1223508685
-
-    #region Overloaded operators
-    public static bool operator ==(LineSegment a, LineSegment b)
-      => a.Equals(b);
-    public static bool operator !=(LineSegment a, LineSegment b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(LineSegment other)
-      => X1 == other.X1 && Y1 == other.Y1 && X2 == other.X2 && Y2 == other.Y2;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is LineSegment o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(X1, Y1, X2, Y2);
-    public override string? ToString()
-      => $"{GetType().Name} {{ X1 = {X1}, Y1 = {Y1}, X2 = {X2}, Y2 = {Y2} }}";
-    #endregion Object overrides
   }
 }

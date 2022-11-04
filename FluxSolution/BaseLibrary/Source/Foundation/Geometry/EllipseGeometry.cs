@@ -1,8 +1,8 @@
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct EllipseGeometry
-    : System.IComparable<EllipseGeometry>, System.IEquatable<EllipseGeometry>, ISurfaceArea, ISurfaceContains, ISurfacePerimeter
+  public record struct EllipseGeometry
+    : System.IComparable<EllipseGeometry>, ISurfaceArea, ISurfaceContains, ISurfacePerimeter
   {
     public static readonly EllipseGeometry Empty;
 
@@ -16,10 +16,10 @@ namespace Flux
     }
 
     /// <summary>The height (Y axis) of the ellipse.</summary>
-    public double SemiMinorAxis 
+    public double SemiMinorAxis
       => m_semiMinorAxis;
     /// <summary>The width (X axis) of the ellipse.</summary>
-    public double SemiMajorAxis 
+    public double SemiMajorAxis
       => m_semiMajorAxis;
 
     public double GetSurfaceArea()
@@ -94,30 +94,10 @@ namespace Flux
     }
     #endregion Static methods
 
-    #region Overloaded operators
-    public static bool operator ==(EllipseGeometry a, EllipseGeometry b)
-      => a.Equals(b);
-    public static bool operator !=(EllipseGeometry a, EllipseGeometry b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
     #region Implemented interfaces
-    // EComparable<T>
+    // IComparable<T>
     public int CompareTo(EllipseGeometry other)
       => (m_semiMajorAxis + m_semiMinorAxis).CompareTo(other.m_semiMajorAxis + other.m_semiMinorAxis);
-
-    // IEquatable<T>
-    public bool Equals(EllipseGeometry other)
-      => m_semiMajorAxis == other.m_semiMajorAxis && m_semiMinorAxis == other.m_semiMinorAxis;
     #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is EllipseGeometry o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_semiMajorAxis, m_semiMinorAxis);
-    public override string? ToString()
-      => $"{GetType().Name} {{ {nameof(m_semiMajorAxis)} = {m_semiMajorAxis}, {nameof(m_semiMinorAxis)} = {m_semiMinorAxis}>";
-    #endregion Object overrides
   }
 }

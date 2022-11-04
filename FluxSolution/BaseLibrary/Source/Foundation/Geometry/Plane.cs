@@ -3,8 +3,7 @@ namespace Flux
   /// <summary>A structure encapsulating a 3D Plane.</summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Plane.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct Plane
-    : System.IEquatable<Plane>
+  public record struct Plane
   {
     private const double NormalizeEpsilon = 1.192092896e-07f; // Smallest such that 1.0+NormalizeEpsilon != 1.0
 
@@ -161,33 +160,5 @@ namespace Flux
           plane.m_distance);
     }
     #endregion Static methods
-
-    #region Overloaded operators
-    /// <summary>Returns a boolean indicating whether the two given Planes are equal.</summary>
-    public static bool operator ==(Plane value1, Plane value2)
-      => value1.m_x == value2.m_x && value1.m_y == value2.m_y && value1.m_z == value2.m_z && value1.m_distance == value2.m_distance;
-    /// <summary>Returns a boolean indicating whether the two given Planes are not equal.</summary>
-    public static bool operator !=(Plane value1, Plane value2)
-      => value1.m_x != value2.m_x || value1.m_y != value2.m_y || value1.m_z != value2.m_z || value1.m_distance != value2.m_distance;
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    /// <summary>Returns a boolean indicating whether the given Plane is equal to this Plane instance.</summary>
-    public readonly bool Equals(Plane p)
-      => m_x == p.m_x && m_y == p.m_y && m_z == p.m_z && m_distance == p.m_distance;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    /// <summary>Returns a boolean indicating whether the given Object is equal to this Plane instance.</summary>
-    public override readonly bool Equals(object? obj)
-      => obj is Plane o && Equals(o);
-    /// <summary>Returns the hash code for this instance.</summary>
-    public override readonly int GetHashCode()
-      => System.HashCode.Combine(m_x, m_y, m_z, m_distance);
-    /// <summary>Returns a String representing this Plane instance.</summary>
-    public override readonly string ToString()
-      => $"{GetType().Name} {{ X = {m_x} Y = {m_y} Z = {m_z}, Distance = {m_distance} }}";
-    #endregion Object overrides
   }
 }

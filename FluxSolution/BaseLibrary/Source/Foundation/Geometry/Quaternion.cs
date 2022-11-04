@@ -9,8 +9,7 @@ namespace Flux
   /// <summary>A structure encapsulating a four-dimensional vector (x,y,z,w), which is used to efficiently rotate an object about the (x,y,z) vector by the angle theta, where w = cos(theta/2).</summary>
   /// <see cref="https://github.com/mono/mono/blob/c5b88ec4f323f2bdb7c7d0a595ece28dae66579c/mcs/class/referencesource/System.Numerics/System/Numerics/Quaternion.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct Quaternion
-    : System.IEquatable<Quaternion>
+  public record struct Quaternion
   {
     /// <summary>Returns a Quaternion representing no rotation.</summary>
     public static Quaternion Identity
@@ -280,13 +279,6 @@ namespace Flux
     public static explicit operator Quaternion(System.ValueTuple<double, double, double, double> xyzw)
       => new(xyzw.Item1, xyzw.Item2, xyzw.Item3, xyzw.Item4);
 
-    /// <summary>Returns a boolean indicating whether the two given Quaternions are equal.</summary>
-    public static bool operator ==(Quaternion q1, Quaternion q2)
-      => q1.m_x == q2.m_x && q1.m_y == q2.m_y && q1.m_z == q2.m_z && q1.m_w == q2.m_w;
-    /// <summary>Returns a boolean indicating whether the two given Quaternions are not equal.</summary>
-    public static bool operator !=(Quaternion q1, Quaternion q2)
-      => q1.m_x != q2.m_x || q1.m_y != q2.m_y || q1.m_z != q2.m_z || q1.m_w != q2.m_w;
-
     /// <summary>Flips the sign of each component of the quaternion.</summary>
     public static Quaternion operator -(Quaternion q)
       => new(-q.m_x, -q.m_y, -q.m_z, -q.m_w);
@@ -311,19 +303,5 @@ namespace Flux
       => q1 * q2.Inverse();
     #endregion Operator overloads
 
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(Quaternion q)
-      => X == q.m_x && Y == q.m_y && Z == q.m_z && W == q.m_w;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Quaternion o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(X, Y, Z, W);
-    public override string ToString()
-      => $"{GetType().Name} {{ X = {X}, Y = {Y}, Z = {Z}, W = {W} }}";
-    #endregion Object overrides
   }
 }

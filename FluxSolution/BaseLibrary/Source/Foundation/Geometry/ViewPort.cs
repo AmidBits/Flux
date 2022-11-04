@@ -2,8 +2,7 @@ namespace Flux.Geometry
 {
   /// <summary></summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct ViewPort
-    : System.IEquatable<ViewPort>
+  public record struct ViewPort
   {
     public static readonly ViewPort Empty;
 
@@ -63,27 +62,5 @@ namespace Flux.Geometry
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
     public CartesianCoordinate2R TransformNdcToRaster(CartesianCoordinate2R ndc)
       => new(ndc.X * m_rasterWidth, (1 - ndc.Y) * m_rasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
-
-    #region Overloaded operators
-    public static bool operator ==(ViewPort a, ViewPort b)
-      => a.Equals(b);
-    public static bool operator !=(ViewPort a, ViewPort b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(ViewPort other)
-      => m_canvasHeight == other.m_canvasHeight && m_canvasWidth == other.m_canvasWidth && m_rasterHeight == other.m_rasterHeight && m_rasterWidth == other.m_rasterWidth && m_worldToCamera == other.m_worldToCamera;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is ViewPort o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_canvasHeight, m_canvasWidth, m_rasterHeight, m_rasterWidth, m_worldToCamera);
-    public override string? ToString()
-      => $"{GetType().Name} {{ Canvas = ({m_canvasWidth}, {m_canvasHeight}), Raster = ({m_rasterWidth}, {m_rasterHeight}), W2C = {m_worldToCamera} }}";
-    #endregion Object overrides
   }
 }
