@@ -4,8 +4,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Euler_angles"/>
   /// <remarks>The Tait-Bryan sequence z-y'-x" (intrinsic rotations) or x-y-z (extrinsic rotations) represents the intrinsic rotations are known as: yaw, pitch and roll.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct EulerAngles
-    : System.IEquatable<EulerAngles>
+  public readonly record struct EulerAngles
   {
     private readonly double m_radYaw; // Yaw.
     private readonly double m_radPitch; // Pitch.
@@ -192,21 +191,5 @@ namespace Flux
       return new(h, a, b);
     }
     #endregion Static methods
-
-    #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(EulerAngles a, EulerAngles b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(EulerAngles a, EulerAngles b) => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    [System.Diagnostics.Contracts.Pure] public bool Equals(EulerAngles other) => m_radYaw == other.m_radYaw && m_radPitch == other.m_radPitch && m_radRoll == other.m_radRoll;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override bool Equals(object? obj) => obj is EulerAngles o && Equals(o);
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode() => System.HashCode.Combine(m_radYaw, m_radPitch, m_radRoll);
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Heading = {m_radYaw}, Attitude = {m_radPitch}, Bank = {m_radRoll} }}";
-    #endregion Object overrides
   }
 }

@@ -220,7 +220,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public record struct CartesianCoordinate3R
-    : /*System.IEquatable<CartesianCoordinate3R>, */ICartesianCoordinate3<double>
+    : /*System.IEquatable<CartesianCoordinate3R>, */IVector3<double>
   {
     public static readonly CartesianCoordinate3R Zero;
 

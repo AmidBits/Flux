@@ -6,8 +6,7 @@ namespace Flux
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4.cs"/>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4_Intrinsics.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct Vector4
-    : System.IEquatable<Vector4>
+  public readonly record struct Vector4
   {
     /// <summary>Returns the vector (0,0,0,0).</summary>
     public static Vector4 Zero
@@ -231,13 +230,6 @@ namespace Flux
     public static explicit operator Vector4(System.Runtime.Intrinsics.Vector256<double> v)
       => new(v);
 
-    /// <summary>Returns a boolean indicating whether the two given vectors are equal.</summary>
-    public static bool operator ==(in Vector4 v1, in Vector4 v2)
-      => v1.Equals(v2);
-    /// <summary>Returns a boolean indicating whether the two given vectors are not equal.</summary>
-    public static bool operator !=(in Vector4 v1, in Vector4 v2)
-      => !v1.Equals(v2);
-
     /// <summary>Negates a given vector.</summary>
     public static Vector4 operator -(in Vector4 v)
       => (Vector4)v.m_v256d.Negate();
@@ -263,24 +255,5 @@ namespace Flux
     public static Vector4 operator /(in Vector4 v, double divisor)
       => (Vector4)v.m_v256d.Add(divisor);
     #endregion Operator overloads
-
-    #region Implemented interfaces
-    // IEquatable
-    /// <summary>Returns a boolean indicating whether the given Vector4 is equal to this Vector4 instance.</summary>
-    public bool Equals(Vector4 v)
-      => X == v.X && Y == v.Y && Z == v.Z && W == v.W;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    /// <summary>Returns a boolean indicating whether the given Object is equal to this Vector4 instance.</summary>
-    public override bool Equals(object? obj)
-      => obj is Vector4 o && Equals(o);
-    /// <summary>Returns the hash code for this instance.</summary>
-    public override int GetHashCode()
-      => System.HashCode.Combine(X, Y, Z, W);
-    /// <summary>Returns a String representing this Quaternion instance.</summary>
-    public override string ToString()
-      => $"{GetType().Name} {{ {X}, {Y}, {Z}, {W} }}";
-    #endregion Object overrides
   }
 }

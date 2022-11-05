@@ -266,7 +266,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public record struct CartesianCoordinate2R
-    : ICartesianCoordinate2<double>
+    : IVector2<double>
   {
     public readonly static CartesianCoordinate2R Zero;
 

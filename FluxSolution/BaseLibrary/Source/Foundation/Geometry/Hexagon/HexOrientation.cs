@@ -1,8 +1,7 @@
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct HexOrientation
-    : System.IEquatable<HexOrientation>
+  public record class HexOrientation
   {
     public static readonly HexOrientation FlatTopped = new(3.0 / 2.0, 0.0, System.Math.Sqrt(3.0) / 2.0, System.Math.Sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, System.Math.Sqrt(3.0) / 3.0, 0.0);
     public static readonly HexOrientation PointyTopped = new(System.Math.Sqrt(3.0), System.Math.Sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, System.Math.Sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5);
@@ -41,39 +40,5 @@ namespace Flux
 
     /// <summary>In multiples of 60°.</summary>
     public double StartAngle { get => m_startAngle; init => m_startAngle = value; }
-
-    #region Overloaded operators
-    public static bool operator ==(HexOrientation a, HexOrientation b)
-      => a.Equals(b);
-    public static bool operator !=(HexOrientation a, HexOrientation b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(HexOrientation other)
-      => m_f0 == other.m_f0 && m_f1 == other.m_f1 && m_f2 == other.m_f2 && m_f3 == other.m_f3 && m_b0 == other.m_b0 && m_b1 == other.m_b1 && m_b2 == other.m_b2 && m_b3 == other.m_b3 && m_startAngle == other.m_startAngle;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is HexOrientation o && Equals(o);
-    public override int GetHashCode()
-    {
-      var hc = new System.HashCode();
-      hc.Add(m_f0);
-      hc.Add(m_f1);
-      hc.Add(m_f2);
-      hc.Add(m_f3);
-      hc.Add(m_b0);
-      hc.Add(m_b1);
-      hc.Add(m_b2);
-      hc.Add(m_b3);
-      hc.Add(m_startAngle);
-      return hc.ToHashCode();
-    }
-    public override string? ToString()
-      => $"{GetType().Name} {{ F = [{m_f0}, {m_f1}, {m_f2}, {m_f3}], B = [{m_b0}, {m_b1}, {m_b2}, {m_b3}], StartAngle = {m_startAngle}° }}";
-    #endregion Object overrides
   }
 }

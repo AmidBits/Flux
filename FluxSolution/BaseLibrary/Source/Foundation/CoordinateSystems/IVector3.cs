@@ -1,7 +1,7 @@
 ﻿namespace Flux
 {
-  public interface ICartesianCoordinate3<TSelf>
-    where TSelf : System.Numerics.INumber<TSelf>
+  public interface IVector3<TSelf>
+    where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
   {
     TSelf X { get; }
     TSelf Y { get; }
@@ -14,7 +14,7 @@
 
     /// <summary>Compute the Euclidean length of the vector.</summary>
     TSelf EuclideanLength()
-      => TSelf.CreateChecked(double.Sqrt(double.CreateChecked(EuclideanLengthSquared())));
+      => TSelf.Sqrt(EuclideanLengthSquared());
 
     /// <summary>Compute the length squared of the 3D vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
@@ -28,7 +28,7 @@
 
     /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    int OrthantNumber(ICartesianCoordinate3<TSelf> center, OrthantNumbering numbering)
+    int OrthantNumber(IVector3<TSelf> center, OrthantNumbering numbering)
       => numbering switch
       {
         OrthantNumbering.Traditional => Z >= center.Z ? (Y >= center.Y ? (X >= center.X ? 0 : 1) : (X >= center.X ? 3 : 2)) : (Y >= center.Y ? (X >= center.X ? 7 : 6) : (X >= center.X ? 4 : 5)),

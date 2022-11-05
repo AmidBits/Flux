@@ -1,7 +1,7 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record struct LineSegment
+  public readonly record struct LineSegment
   {
     public static readonly LineSegment Empty;
 

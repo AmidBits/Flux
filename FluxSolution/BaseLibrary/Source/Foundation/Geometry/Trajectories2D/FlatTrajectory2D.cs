@@ -1,12 +1,12 @@
 namespace Flux.Mechanics
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public struct FlatTrajectory2D
-    : System.IEquatable<FlatTrajectory2D>, ITrajectory2D
+  public readonly record struct FlatTrajectory2D
+    : ITrajectory2D
   {
-    private Acceleration m_gravitationalAcceleration;
-    private Angle m_initialAngle;
-    private LinearVelocity m_initialVelocity;
+    private readonly Acceleration m_gravitationalAcceleration;
+    private readonly Angle m_initialAngle;
+    private readonly LinearVelocity m_initialVelocity;
 
     public FlatTrajectory2D(Angle initialAngle, LinearVelocity initialVelocity, Acceleration gravitationalAcceleration)
     {
@@ -19,50 +19,28 @@ namespace Flux.Mechanics
     { }
 
     /// <summary>Gravitational acceleration in meters per second square (M/S²).</summary>
-    public Acceleration GravitationalAcceleration { get => m_gravitationalAcceleration; set => m_gravitationalAcceleration = value; }
+    public Acceleration GravitationalAcceleration { get => m_gravitationalAcceleration; init => m_gravitationalAcceleration = value; }
     /// <summary>Initial angle in radians (RAD).</summary>
-    public Angle InitialAngle { get => m_initialAngle; set => m_initialAngle = value; }
+    public Angle InitialAngle { get => m_initialAngle; init => m_initialAngle = value; }
     /// <summary>Initial velocity in meters per second (M/S).</summary>
-    public LinearVelocity InitialVelocity { get => m_initialVelocity; set => m_initialVelocity = value; }
+    public LinearVelocity InitialVelocity { get => m_initialVelocity; init => m_initialVelocity = value; }
 
-    public double MaxHeight
-      => System.Math.Pow(m_initialVelocity.Value, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.Value), 2) / (2 * m_gravitationalAcceleration.Value);
-    public double MaxRange
-      => m_initialVelocity.Value * MaxTime * System.Math.Cos(m_initialAngle.Value);
-    public double MaxTime
-      => 2 * m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) / m_gravitationalAcceleration.Value;
+    public Length MaxHeight
+      => new(System.Math.Pow(m_initialVelocity.Value, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle.Value), 2) / (2 * m_gravitationalAcceleration.Value));
+    public Length MaxRange
+      => new(m_initialVelocity.Value * MaxTime.Value * System.Math.Cos(m_initialAngle.Value));
+    public Time MaxTime
+      => new(2 * m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) / m_gravitationalAcceleration.Value);
 
-    public double GetX(double time)
-      => m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Value) * time;
-    public double GetY(double time)
-      => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) * time - m_gravitationalAcceleration.Value * time * time / 2;
-    public double GetVelocityX(double time)
-      => m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Value);
-    public double GetVelocityY(double time)
-      => m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) - m_gravitationalAcceleration.Value * time;
-    public double GetVelocity(double time)
-      => m_initialVelocity.Value * m_initialVelocity.Value - 2 * m_gravitationalAcceleration.Value * time * m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) + System.Math.Pow(m_gravitationalAcceleration.Value, 2) * time * time;
-
-    #region Overloaded operators
-    public static bool operator ==(FlatTrajectory2D h1, FlatTrajectory2D h2)
-      => h1.Equals(h2);
-    public static bool operator !=(FlatTrajectory2D h1, FlatTrajectory2D h2)
-      => !h1.Equals(h2);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(FlatTrajectory2D other)
-      => m_gravitationalAcceleration == other.m_gravitationalAcceleration && m_initialAngle == other.m_initialAngle && m_initialVelocity == other.m_initialVelocity;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is FlatTrajectory2D o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_gravitationalAcceleration.Value, m_initialAngle.Value, m_initialVelocity.Value);
-    public override string ToString()
-      => $"{GetType().Name} {{ MaxHeight = {MaxHeight:N1} m, MaxRange = {MaxRange:N1} m, MaxTime = {MaxTime:N1} s }}";
-    #endregion Object overrides
+    public Length GetX(Time time)
+      => new(m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Value) * time.Value);
+    public Length GetY(Time time)
+      => new(m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) * time.Value - m_gravitationalAcceleration.Value * time.Value * time.Value / 2);
+    public LinearVelocity GetVelocityX(Time time)
+      => new(m_initialVelocity.Value * System.Math.Cos(m_initialAngle.Value) * time.Value);
+    public LinearVelocity GetVelocityY(Time time)
+      => new(m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) - m_gravitationalAcceleration.Value * time.Value);
+    public LinearVelocity GetVelocity(Time time)
+      => new(m_initialVelocity.Value * m_initialVelocity.Value - 2 * m_gravitationalAcceleration.Value * time.Value * m_initialVelocity.Value * System.Math.Sin(m_initialAngle.Value) + System.Math.Pow(m_gravitationalAcceleration.Value, 2) * time.Value * time.Value);
   }
 }

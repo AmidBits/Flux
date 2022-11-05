@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>A structure encapsulating a 3D Plane.</summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Plane.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record struct Plane
+  public readonly record struct Plane
   {
     private const double NormalizeEpsilon = 1.192092896e-07f; // Smallest such that 1.0+NormalizeEpsilon != 1.0
 

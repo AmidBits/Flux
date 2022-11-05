@@ -15,8 +15,7 @@ namespace Flux
   /// <summary></summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Matrix4x4.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct Matrix4
-    : System.IEquatable<Matrix4>
+  public readonly record struct Matrix4
   {
     /// <summary>Returns an empty matrix.</summary>
     public static readonly Matrix4 Empty;
@@ -1406,30 +1405,6 @@ namespace Flux
     #endregion Static methods
 
     #region Operator overloads
-    /// <summary>
-    /// Returns a boolean indicating whether the given two matrices are equal.
-    /// </summary>
-    /// <param name="value1">The first matrix to compare.</param>
-    /// <param name="value2">The second matrix to compare.</param>
-    /// <returns>True if the given matrices are equal; False otherwise.</returns>
-    public static bool operator ==(Matrix4 value1, Matrix4 value2)
-      => (value1.m_11 == value2.m_11 && value1.m_22 == value2.m_22 && value1.m_33 == value2.m_33 && value1.m_44 == value2.m_44 && // Check diagonal element first for early out.
-          value1.m_12 == value2.m_12 && value1.m_13 == value2.m_13 && value1.m_14 == value2.m_14 &&
-          value1.m_21 == value2.m_21 && value1.m_23 == value2.m_23 && value1.m_24 == value2.m_24 &&
-          value1.m_31 == value2.m_31 && value1.m_32 == value2.m_32 && value1.m_34 == value2.m_34 &&
-          value1.m_41 == value2.m_41 && value1.m_42 == value2.m_42 && value1.m_43 == value2.m_43);
-
-    /// <summary>
-    /// Returns a boolean indicating whether the given two matrices are not equal.
-    /// </summary>
-    /// <param name="value1">The first matrix to compare.</param>
-    /// <param name="value2">The second matrix to compare.</param>
-    /// <returns>True if the given matrices are not equal; False if they are equal.</returns>
-    public static bool operator !=(Matrix4 value1, Matrix4 value2)
-      => (value1.m_11 != value2.m_11 || value1.m_12 != value2.m_12 || value1.m_13 != value2.m_13 || value1.m_14 != value2.m_14 ||
-          value1.m_21 != value2.m_21 || value1.m_22 != value2.m_22 || value1.m_23 != value2.m_23 || value1.m_24 != value2.m_24 ||
-          value1.m_31 != value2.m_31 || value1.m_32 != value2.m_32 || value1.m_33 != value2.m_33 || value1.m_34 != value2.m_34 ||
-          value1.m_41 != value2.m_41 || value1.m_42 != value2.m_42 || value1.m_43 != value2.m_43 || value1.m_44 != value2.m_44);
 
     /// <summary>
     /// Returns a new matrix with the negated elements of the given matrix.
@@ -1564,49 +1539,7 @@ namespace Flux
         value1.m_43 * value2,
         value1.m_44 * value2
       );
+
     #endregion Operator overloads
-
-    #region Implemented interfaces
-    // IEquatable
-    /// <summary>Returns a boolean indicating whether this matrix instance is equal to the specified matrix.</summary>
-    public bool Equals(Matrix4 m)
-      => m_11 == m.m_11 && m_22 == m.m_22 && m_33 == m.m_33 && m_44 == m.m_44 && // Check diagonal elements first for early out.
-      m_12 == m.m_12 && m_13 == m.m_13 && m_14 == m.m_14 &&
-      m_21 == m.m_21 && m_23 == m.m_23 && m_24 == m.m_24 &&
-      m_31 == m.m_31 && m_32 == m.m_32 && m_34 == m.m_34 &&
-      m_41 == m.m_41 && m_42 == m.m_42 && m_43 == m.m_43;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    /// <summary>Returns a boolean indicating whether the given Object is equal to this matrix instance.</summary>
-    public override bool Equals(object? obj)
-      => obj is Matrix4 o && Equals(o);
-    /// <summary>Returns the hash code for this instance.</summary>
-    public override int GetHashCode()
-    {
-      var hc = new System.HashCode();
-      hc.Add(m_11);
-      hc.Add(m_12);
-      hc.Add(m_13);
-      hc.Add(m_14);
-      hc.Add(m_21);
-      hc.Add(m_22);
-      hc.Add(m_23);
-      hc.Add(m_24);
-      hc.Add(m_31);
-      hc.Add(m_32);
-      hc.Add(m_33);
-      hc.Add(m_34);
-      hc.Add(m_41);
-      hc.Add(m_42);
-      hc.Add(m_43);
-      hc.Add(m_44);
-      return hc.ToHashCode();
-    }
-    /// <summary>Returns a String representing this matrix instance.</summary>
-    public override string ToString()
-      //=> $"{GetType().Name} {{ {{M11:{m_11} M12:{m_12} M13:{m_13} M14:{m_14}}}, {{M21:{m_21} M22:{m_22} M23:{m_23} M24:{m_24}}} {{M31:{m_31} M32:{m_32} M33:{m_33} M34:{m_34}}} {{M41:{m_41} M42:{m_42} M43:{m_43} M44:{m_44}}} }}";
-      => $"{GetType().Name} {{ {{ {m_11}, {m_12}, {m_13}, {m_14} }} {{ {m_21}, {m_22}, {m_23}, {m_24} }} {{ {m_31}, {m_32}, {m_33}, {m_34} }} {{ {m_41}, {m_42}, {m_43}, {m_44}}} }}";
-    #endregion Object overrides
   }
 }

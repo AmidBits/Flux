@@ -2,7 +2,7 @@ namespace Flux.Geometry
 {
   /// <summary></summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record struct ViewPort
+  public readonly record struct ViewPort
   {
     public static readonly ViewPort Empty;
 

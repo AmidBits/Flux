@@ -3,8 +3,7 @@ namespace Flux
   /// <summary>Axis-angle 3D rotation.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Axis-angle_representation"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct AxisAngle
-    : System.IEquatable<AxisAngle>
+  public readonly record struct AxisAngle
   {
     private readonly double m_x;
     private readonly double m_y;
@@ -66,43 +65,5 @@ namespace Flux
       var w = System.Math.Cos(h);
       return new(x, y, z, w);
     }
-
-    #region Overloaded operators
-
-    [System.Diagnostics.Contracts.Pure]
-    public static bool operator ==(AxisAngle a, AxisAngle b)
-      => a.Equals(b);
-
-    [System.Diagnostics.Contracts.Pure]
-    public static bool operator !=(AxisAngle a, AxisAngle b)
-      => !a.Equals(b);
-
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-
-    // IEquatable
-
-    [System.Diagnostics.Contracts.Pure]
-    public bool Equals(AxisAngle other)
-      => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z && m_radAngle == other.m_radAngle;
-
-    #endregion Implemented interfaces
-
-    #region Object overrides
-
-    [System.Diagnostics.Contracts.Pure]
-    public override bool Equals(object? obj)
-      => obj is AxisAngle o && Equals(o);
-
-    [System.Diagnostics.Contracts.Pure]
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_x, m_y, m_z, m_radAngle);
-
-    [System.Diagnostics.Contracts.Pure]
-    public override string ToString()
-      => $"{GetType().Name} {{ X = {m_x}, Y = {m_x}, Z = {m_x}, Angle = {new Angle(m_radAngle).ToUnitString(AngleUnit.Radian)} ({new Angle(m_radAngle).ToUnitString(AngleUnit.Degree, "N1")}) }}";
-
-    #endregion Object overrides
   }
 }

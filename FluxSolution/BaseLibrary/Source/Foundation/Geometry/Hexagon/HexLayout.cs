@@ -1,8 +1,7 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct HexLayout
-  : System.IEquatable<HexLayout>
+  public record class HexLayout
   {
     private readonly Size2 m_size;
     private readonly CartesianCoordinate2I m_origin;
@@ -62,27 +61,5 @@ namespace Flux.Geometry
 
       return corners;
     }
-
-    #region Overloaded operators
-    public static bool operator ==(HexLayout a, HexLayout b)
-      => a.Equals(b);
-    public static bool operator !=(HexLayout a, HexLayout b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(HexLayout other)
-      => m_orientation == other.m_orientation && m_size == other.m_size && m_origin == other.m_origin;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is HexLayout o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_orientation, m_size, m_origin);
-    public override string? ToString()
-      => $"{GetType().Name} {{ Orientation = {m_orientation}, Size = {m_size}, Origin = {m_origin} }}";
-    #endregion Object overrides
   }
 }
