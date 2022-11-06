@@ -1,5 +1,6 @@
 ﻿namespace Flux
 {
+#if NET7_0_OR_GREATER
   public interface IVector2<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
   {
@@ -36,7 +37,13 @@
         _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
       };
   }
-
+#else
+  public interface IVector2
+  {
+    double X { get; }
+    double Y { get; }
+  }
+#endif
   public interface ICartesianCoordinate2
   {
     double X { get; }

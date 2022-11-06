@@ -5,6 +5,8 @@ namespace Flux
     : System.IEquatable<CartesianCoordinate3I>
 #if NET7_0_OR_GREATER
     , IPoint3<int>
+#else
+    , IPoint3
 #endif
   {
     /// <summary>Returns the vector (0,0).</summary>

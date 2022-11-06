@@ -8,6 +8,8 @@ namespace Flux
     : System.IComparable<CartesianCoordinate2I>, System.IEquatable<CartesianCoordinate2I>
 #if NET7_0_OR_GREATER
     , IPoint2<int>
+#else
+    , IPoint2
 #endif
   {
     /// <summary>Returns the vector (0,0).</summary>

@@ -1,6 +1,8 @@
-﻿#if NET7_0_OR_GREATER
+﻿using Flux.Hashing;
+
 namespace Flux
 {
+#if NET7_0_OR_GREATER
   public interface IPoint2<TSelf>
     where TSelf : System.Numerics.IBinaryInteger<TSelf>
   {
@@ -52,5 +54,52 @@ namespace Flux
     IPoint2<TSelf> PerpendicularCw()
       => Create(Y, -X);
   }
-}
+#else
+  public interface IPoint2
+  {
+    int X { get; }
+    int Y { get; }
+
+    IPoint2 Create(int x, int y);
+
+    /// <summary>Compute the Chebyshev length of the 2D vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    int ChebyshevLength(int edgeLength)
+     => System.Math.Max(System.Math.Abs(X / edgeLength), System.Math.Abs(Y / edgeLength));
+
+    /// <summary>Compute the length (or magnitude) of the vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    int EuclideanLength()
+      => System.Convert.ToInt32(System.Math.Floor(System.Math.Sqrt(EuclideanLengthSquared())));
+
+    /// <summary>Compute the length squared of the 2D vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    int EuclideanLengthSquared()
+      => X * X + Y * Y;
+
+    /// <summary>Compute the Manhattan length of the 2D vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    int ManhattanLength(int edgeLength)
+      => System.Math.Abs(X / edgeLength) + System.Math.Abs(Y / edgeLength);
+
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    int OrthantNumber(IPoint2 center, OrthantNumbering numbering)
+     => numbering switch
+     {
+       OrthantNumbering.Traditional => Y >= center.Y ? (X >= center.X ? 0 : 1) : (X >= center.X ? 3 : 2),
+       OrthantNumbering.BinaryNegativeAs1 => (X >= center.X ? 0 : 1) + (Y >= center.Y ? 0 : 2),
+       OrthantNumbering.BinaryPositiveAs1 => (X < center.X ? 0 : 1) + (Y < center.Y ? 0 : 2),
+       _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+     };
+
+    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    IPoint2 PerpendicularCcw()
+      => Create(-Y, X);
+
+    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    IPoint2 PerpendicularCw()
+      => Create(Y, -X);
+  }
 #endif
+}

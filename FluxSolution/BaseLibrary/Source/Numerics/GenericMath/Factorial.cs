@@ -13,6 +13,22 @@ namespace Flux
       : x <= TSelf.One
       ? TSelf.One
       : (TSelf.One + TSelf.One).LoopRange(x - TSelf.One, TSelf.One).AsParallel().Aggregate(TSelf.One, (a, b) => a * b);
+
+
+    public static TSelf FactorialEx<TSelf>(this TSelf x)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      var processorCount = TSelf.CreateChecked(System.Environment.ProcessorCount);
+
+      var size = x / processorCount + TSelf.One;
+
+      var list = new System.Collections.Generic.List<Flux.Loops.Range<TSelf>>(System.Environment.ProcessorCount);
+
+      for (var index = TSelf.One; index <= x; index += size)
+        list.Add(new Flux.Loops.Range<TSelf>(index, TSelf.Min(size, x - index), TSelf.One));
+
+      return list.AsParallel().Select(l => l.Aggregate(TSelf.One, (a, b) => a * b)).Aggregate(TSelf.One, (a, b) => a * b);
+    }
   }
 }
 #endif

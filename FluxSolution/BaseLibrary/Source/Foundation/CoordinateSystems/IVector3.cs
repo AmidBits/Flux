@@ -1,5 +1,6 @@
 ﻿namespace Flux
 {
+#if NET7_0_OR_GREATER
   public interface IVector3<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
   {
@@ -37,7 +38,14 @@
         _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
       };
   }
-
+#else
+  public interface IVector3
+  {
+    double X { get; }
+    double Y { get; }
+    double Z { get; }
+  }
+#endif
   public interface ICartesianCoordinate3
   {
     double X { get; }
@@ -80,6 +88,7 @@
     ICylindricalCoordinate ToCylindricalCoordinate()
       => new CylindricalCoordinate(System.Math.Sqrt(X * X + Y * Y), (System.Math.Atan2(Y, X) + Maths.PiX2) % Maths.PiX2, Z);
 
+#if NET7_0_OR_GREATER
     /// <summary>Converts the <see cref="ICartesianCoordinate3"/> to a <see cref="System.ValueTuple{int, int, int}"/>.</summary>
     (int x, int y, int z) ToPoint(RoundingMode mode)
     {
@@ -87,7 +96,7 @@
 
       return (int.CreateChecked(rm.RoundNumber(X)), int.CreateChecked(rm.RoundNumber(Y)), int.CreateChecked(rm.RoundNumber(Z)));
     }
-
+#endif
     /// <summary>Converts the <see cref="ICartesianCoordinate3"/> to a <see cref="ISphericalCoordinate"/>.</summary>
     ISphericalCoordinate ToSphericalCoordinate()
     {

@@ -4,7 +4,9 @@ namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public record struct HexCoordinateR
+#if NET7_0_OR_GREATER
     : IHexCoordinate<double>
+#endif
   {
     public static readonly HexCoordinateR Zero;
 
@@ -42,7 +44,7 @@ namespace Flux
     //  return results;
     //}
 
-    #region Static methods
+#region Static methods
     public static void AssertCubeCoordinate(double q, double r, double s)
     {
       if (!IsCubeCoordinate(q, r, s))
@@ -59,6 +61,7 @@ namespace Flux
         source.m_s * (1 - mu) + target.m_s * mu
     );
 
+#if NET7_0_OR_GREATER
     public static HexCoordinateI Round(HexCoordinateR hex, RoundingMode mode = RoundingMode.HalfToEven)
     {
       var rounding = new Rounding<double>(mode);
@@ -84,6 +87,31 @@ namespace Flux
         System.Convert.ToInt32(rS)
       );
     }
+#else
+    public static HexCoordinateI Round(HexCoordinateR hex)
+    {
+      var rQ = System.Math.Round(hex.m_q);
+      var rR = System.Math.Round(hex.m_r);
+      var rS = System.Math.Round(hex.m_s);
+
+      var aQ = System.Math.Abs(rQ - hex.m_q);
+      var aR = System.Math.Abs(rR - hex.m_r);
+      var aS = System.Math.Abs(rS - hex.m_s);
+
+      if (aQ > aR && aQ > aS)
+        rQ = -rR - rS;
+      else if (aR > aS)
+        rR = -rQ - rS;
+      else
+        rS = -rQ - rR;
+
+      return new(
+        System.Convert.ToInt32(rQ),
+        System.Convert.ToInt32(rR),
+        System.Convert.ToInt32(rS)
+      );
+    }
+#endif
     #endregion Static methods
   }
 }

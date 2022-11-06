@@ -125,6 +125,7 @@ namespace Flux
       return target;
     }
 
+#if NET7_0_OR_GREATER
     public static SequenceBuilder<TSelf> ToSequenceBuilderOfBinaryInteger<TSelf>(this SequenceBuilder<char> source)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -135,6 +136,7 @@ namespace Flux
 
       return target;
     }
+#endif
 
     public static SequenceBuilder<System.Text.Rune> ToSequenceBuilderOfRune(this SequenceBuilder<char> source)
     {
@@ -151,7 +153,7 @@ namespace Flux
     public static string ToString(this SequenceBuilder<char> source, int startIndex)
       => source.ToString(startIndex, source.Length - startIndex);
   }
-  #endregion Extension methods.
+#endregion Extension methods.
 
   public sealed class SequenceBuilder<T>
   {
