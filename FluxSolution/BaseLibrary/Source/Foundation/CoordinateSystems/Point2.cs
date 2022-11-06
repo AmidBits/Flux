@@ -1,3 +1,4 @@
+using Flux.Hashing;
 using System.Runtime.InteropServices;
 
 namespace Flux

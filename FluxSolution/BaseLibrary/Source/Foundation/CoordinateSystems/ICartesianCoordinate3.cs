@@ -1,0 +1,13 @@
+﻿namespace Flux
+{
+#if NET7_0_OR_GREATER
+  /// <summary>Cartesian 3D coordinate.</summary>
+  public interface ICartesianCoordinate3<TSelf>
+    where TSelf : System.Numerics.INumber<TSelf>
+  {
+    TSelf X { get; }
+    TSelf Y { get; }
+    TSelf Z { get; }
+  }
+#endif
+}

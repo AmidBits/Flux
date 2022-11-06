@@ -1,12 +1,11 @@
 ﻿namespace Flux
 {
 #if NET7_0_OR_GREATER
+  /// <summary>Cartesian 2D coordinate with real numbers.</summary>
   public interface IVector2<TSelf>
+    : ICartesianCoordinate2<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
   {
-    TSelf X { get; }
-    TSelf Y { get; }
-
     /// <summary>Compute the Chebyshev length of the 2D vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     TSelf ChebyshevLength(TSelf edgeLength)

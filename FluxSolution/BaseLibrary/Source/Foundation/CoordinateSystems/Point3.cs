@@ -1,3 +1,5 @@
+using Flux.Hashing;
+
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]

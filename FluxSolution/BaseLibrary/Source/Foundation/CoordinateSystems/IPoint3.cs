@@ -1,13 +1,11 @@
 ﻿namespace Flux
 {
 #if NET7_0_OR_GREATER
+  /// <summary>Cartesian 3D coordinate using integers.</summary>
   public interface IPoint3<TSelf>
+    : ICartesianCoordinate3<TSelf>
     where TSelf : System.Numerics.IBinaryInteger<TSelf>
   {
-    TSelf X { get; }
-    TSelf Y { get; }
-    TSelf Z { get; }
-
     /// <summary>Compute the Chebyshev length of the 3D vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     TSelf ChebyshevLength(TSelf edgeLength)
