@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace Flux
 {
   #region ExtensionMethods
@@ -265,7 +267,7 @@ namespace Flux
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record struct Vector2
+  public readonly record struct Vector2
 #if NET7_0_OR_GREATER
     : IVector2<double>
 #else
@@ -286,8 +288,13 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
 
-    public IVector2<double> Create(double x, double y)
-      => new Vector2(x, y);
+//#if NET7_0_OR_GREATER
+//    public IVector2<double> Create(double x, double y)
+//      => new Vector2(x, y);
+//#else
+//    public IVector2 Create(double x, double y)
+//      => new Vector2(x, y);
+//#endif
 
     ///// <summary>Returns the angle to the 2D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
@@ -307,11 +314,11 @@ namespace Flux
     //public double LineSlopeY
     //  => System.Math.CopySign(m_y / m_x, m_y);
 
-    ///// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
-    ///// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    //[System.Diagnostics.Contracts.Pure]
-    //public double ChebyshevLength(double edgeLength = 1)
-    //  => System.Math.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength));
+    /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    [System.Diagnostics.Contracts.Pure]
+    public double ChebyshevLength(double edgeLength = 1)
+      => System.Math.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength));
 
     /// <summary>Compute the Euclidean length of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -323,11 +330,11 @@ namespace Flux
     public double EuclideanLengthSquared()
       => m_x * m_x + m_y * m_y;
 
-    ///// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
-    ///// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    //[System.Diagnostics.Contracts.Pure]
-    //public double ManhattanLength(double edgeLength = 1)
-    //  => System.Math.Abs(m_x / edgeLength) + System.Math.Abs(m_y / edgeLength);
+    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    [System.Diagnostics.Contracts.Pure]
+    public double ManhattanLength(double edgeLength = 1)
+      => System.Math.Abs(m_x / edgeLength) + System.Math.Abs(m_y / edgeLength);
 
     [System.Diagnostics.Contracts.Pure]
     public Vector2 Normalized()
@@ -347,15 +354,15 @@ namespace Flux
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public Vector2 GetPerpendicularCcw()
+    public Vector2 PerpendicularCcw()
       => new(-m_y, m_x);
 
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public Vector2 GetPerpendicularCw()
+    public Vector2 PerpendicularCw()
       => new(m_y, -m_x);
 
-    #region To..
+#region To..
 
     /// <summary>Converts the <see cref="Vector2"/> to a <see cref="Point2"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -409,9 +416,9 @@ namespace Flux
     public System.Runtime.Intrinsics.Vector256<double> ToVector256()
       => ToVector256(m_x, m_y);
 
-    #endregion
+#endregion
 
-    #region Static methods
+#region Static methods
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
@@ -535,9 +542,9 @@ namespace Flux
 
       return new Vector2(source.m_x * cos + (target.m_x - source.m_x) * dp * sin, source.m_y * cos + (target.m_y - source.m_y) * dp * sin);
     }
-    #endregion Static methods
+#endregion Static methods
 
-    #region Overloaded operators
+#region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static explicit operator Vector2(System.ValueTuple<double, double> vt2) => new(vt2.Item1, vt2.Item2);
     [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double>(Vector2 cc2) => new(cc2.X, cc2.Y);
 
@@ -568,6 +575,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static Vector2 operator %(Vector2 cc1, Vector2 cc2) => new(cc1.X % cc2.X, cc1.Y % cc2.Y);
     [System.Diagnostics.Contracts.Pure] public static Vector2 operator %(Vector2 cc, double scalar) => new(cc.X % scalar, cc.Y % scalar);
     [System.Diagnostics.Contracts.Pure] public static Vector2 operator %(double scalar, Vector2 cc) => new(scalar % cc.X, scalar % cc.Y);
-    #endregion Overloaded operators
+#endregion Overloaded operators
   }
 }
