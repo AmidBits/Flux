@@ -7,7 +7,7 @@
     public static readonly EqualEarthProjection Default;
 
 //#pragma warning disable CA1822 // Mark members as static
-    public CartesianCoordinate3R ProjectForward(GeographicCoordinate location)
+    public Vector3 ProjectForward(GeographicCoordinate location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -27,9 +27,9 @@
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new CartesianCoordinate3R(x, y, location.Altitude.Value);
+      return new Vector3(x, y, location.Altitude.Value);
     }
-    public GeographicCoordinate ProjectReverse(CartesianCoordinate3R location)
+    public GeographicCoordinate ProjectReverse(Vector3 location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;

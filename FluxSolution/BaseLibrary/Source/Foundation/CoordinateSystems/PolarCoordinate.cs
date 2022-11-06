@@ -20,10 +20,10 @@ namespace Flux
     /// <summary>Polar angle or angular coordinate.</summary>
     [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
-    /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="CartesianCoordinate2R"/>.</summary>
+    /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="Vector2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate2R ToCartesianCoordinate2()
-     => new CartesianCoordinate2R(
+    public Vector2 ToCartesianCoordinate2()
+     => new Vector2(
        m_radius * System.Math.Cos(m_azimuth),
        m_radius * System.Math.Sin(m_azimuth)
      );

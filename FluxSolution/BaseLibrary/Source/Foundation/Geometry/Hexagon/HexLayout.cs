@@ -4,10 +4,10 @@ namespace Flux.Geometry
   public record class HexLayout
   {
     private readonly Size2 m_size;
-    private readonly CartesianCoordinate2I m_origin;
+    private readonly Point2 m_origin;
     private readonly HexOrientation m_orientation;
 
-    public HexLayout(HexOrientation orientation, Size2 size, CartesianCoordinate2I origin)
+    public HexLayout(HexOrientation orientation, Size2 size, Point2 origin)
     {
       m_orientation = orientation;
       m_size = size;
@@ -15,7 +15,7 @@ namespace Flux.Geometry
     }
 
     public Size2 Size { get => m_size; init => m_size = value; }
-    public CartesianCoordinate2I Origin { get => m_origin; init => m_origin = value; }
+    public Point2 Origin { get => m_origin; init => m_origin = value; }
     public HexOrientation Orientation { get => m_orientation; init => m_orientation = value; }
 
     public void HexToPixel(HexCoordinateI h, out double x, out double y)

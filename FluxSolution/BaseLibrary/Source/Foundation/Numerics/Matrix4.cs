@@ -1339,8 +1339,8 @@ namespace Flux
       m1.m_44 + (m2.m_44 - m1.m_44) * amount
     );
 
-    public static CartesianCoordinate3R Transform(Matrix4 matrix, CartesianCoordinate3R vector)
-      => new CartesianCoordinate3R(
+    public static Vector3 Transform(Matrix4 matrix, Vector3 vector)
+      => new Vector3(
         vector.X * matrix.M11 + vector.Y * matrix.M12 + vector.Z * matrix.M13,
         vector.X * matrix.M21 + vector.Y * matrix.M22 + vector.Z * matrix.M23,
         vector.X * matrix.M31 + vector.Y * matrix.M32 + vector.Z * matrix.M33

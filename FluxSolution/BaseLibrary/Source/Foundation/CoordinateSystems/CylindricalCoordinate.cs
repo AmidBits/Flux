@@ -26,9 +26,9 @@ namespace Flux
     /// <summary>Also known as altitude. For convention, this correspond to the cartesian z-axis.</summary>
     [System.Diagnostics.Contracts.Pure] public double Height { get => m_height; init => m_height = value; }
 
-    /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
-    public CartesianCoordinate3R ToCartesianCoordinate3()
-     => new CartesianCoordinate3R(
+    /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="Vector3"/>.</summary>
+    public Vector3 ToCartesianCoordinate3()
+     => new Vector3(
        Radius * System.Math.Cos(Azimuth),
        Radius * System.Math.Sin(Azimuth),
        Height

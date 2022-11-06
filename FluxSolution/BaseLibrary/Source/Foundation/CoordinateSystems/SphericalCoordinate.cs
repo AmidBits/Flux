@@ -24,12 +24,12 @@ namespace Flux
     /// <summary>Azimuthal angle, in radians.</summary>
     [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
-    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CartesianCoordinate3R">CartesianCoordinate3</see>.</summary>
-    public CartesianCoordinate3R ToCartesianCoordinate3()
+    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="Vector3">CartesianCoordinate3</see>.</summary>
+    public Vector3 ToCartesianCoordinate3()
     {
       var sinInclination = System.Math.Sin(Inclination);
 
-      return new CartesianCoordinate3R(
+      return new Vector3(
         Radius * System.Math.Cos(Azimuth) * sinInclination,
         Radius * System.Math.Sin(Azimuth) * sinInclination,
         Radius * System.Math.Cos(Inclination)

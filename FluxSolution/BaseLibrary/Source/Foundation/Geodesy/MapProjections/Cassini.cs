@@ -7,9 +7,9 @@
     public static readonly CassiniProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public CartesianCoordinate3R ProjectForward(GeographicCoordinate project)
+    public Vector3 ProjectForward(GeographicCoordinate project)
       => new(System.Math.Asin(System.Math.Cos(project.Latitude.ToRadians()) * System.Math.Sin(project.Longitude.ToRadians())), System.Math.Atan(System.Math.Tan(project.Latitude.ToRadians()) / System.Math.Cos(project.Longitude.ToRadians())), project.Altitude.Value);
-    public GeographicCoordinate ProjectReverse(CartesianCoordinate3R project)
+    public GeographicCoordinate ProjectReverse(Vector3 project)
       => new(System.Math.Asin(System.Math.Sin(project.Y) * System.Math.Cos(project.X)), System.Math.Atan2(System.Math.Tan(project.X), System.Math.Cos(project.Y)), project.Z);
     //#pragma warning restore CA1822 // Mark members as static
   }

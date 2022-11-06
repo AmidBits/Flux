@@ -8,12 +8,12 @@
     TSelf Y { get; }
     TSelf Z { get; }
 
-    IPoint3<TSelf> Create(TSelf x, TSelf y, TSelf z);
-
     /// <summary>Compute the Chebyshev length of the 3D vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     TSelf ChebyshevLength(TSelf edgeLength)
      => TSelf.Max(TSelf.Max(TSelf.Abs(X / edgeLength), TSelf.Abs(Y / edgeLength)), TSelf.Abs(Z / edgeLength));
+
+    IPoint3<TSelf> Create(TSelf x, TSelf y, TSelf z);
 
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
@@ -29,6 +29,9 @@
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     TSelf ManhattanLength(TSelf edgeLength)
      => TSelf.Abs(X / edgeLength) + TSelf.Abs(Y / edgeLength) + TSelf.Abs(Z / edgeLength);
+
+    IPoint3<TSelf> Normalized()
+      => EuclideanLength() is var m && !TSelf.IsZero(m) ? Create(X / m, Y / m, Z / m) : this;
 
     /// <summary>Returns the orthant (octant) of the 3D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>

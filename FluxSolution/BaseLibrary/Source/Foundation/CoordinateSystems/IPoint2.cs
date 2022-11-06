@@ -9,16 +9,16 @@ namespace Flux
     TSelf X { get; }
     TSelf Y { get; }
 
+    /// <summary>Compute the Chebyshev length of the 2D vector.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    TSelf ChebyshevLength(TSelf edgeLength)
+     => TSelf.Max(TSelf.Abs(X / edgeLength), TSelf.Abs(Y / edgeLength));
+
     IPoint2<TSelf> Create(TSelf x, TSelf y);
 
     /// <summary>Computes the closest cartesian coordinate point at the specified angle and distance.</summary>
     IPoint2<TSelf> CreatePoint(double radAngle, double radius)
       => Create(TSelf.CreateChecked(System.Math.Sin(radAngle) * radius), TSelf.CreateChecked(System.Math.Cos(radAngle) * radius));
-
-    /// <summary>Compute the Chebyshev length of the 2D vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    TSelf ChebyshevLength(TSelf edgeLength)
-     => TSelf.Max(TSelf.Abs(X / edgeLength), TSelf.Abs(Y / edgeLength));
 
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
@@ -34,6 +34,9 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     TSelf ManhattanLength(TSelf edgeLength)
       => TSelf.Abs(X / edgeLength) + TSelf.Abs(Y / edgeLength);
+
+    IPoint2<TSelf> Normalized()
+      => EuclideanLength() is var m && !TSelf.IsZero(m) ? Create(X / m, Y / m) : this;
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>

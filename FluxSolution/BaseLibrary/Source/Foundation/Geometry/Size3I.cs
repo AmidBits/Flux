@@ -21,30 +21,30 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int Height { get => m_height; init => m_height = value; }
     [System.Diagnostics.Contracts.Pure] public int Depth { get => m_depth; init => m_depth = value; }
 
-    public CartesianCoordinate3I Center()
+    public Point3 Center()
       => new(m_width / 2, m_height / 2, m_depth / 2);
 
-    /// <summary>Convert the <see cref="Size3I"/> to a <see cref="CartesianCoordinate3R"/>.</summary>
-    public CartesianCoordinate3R ToCartesianCoordinate3()
+    /// <summary>Convert the <see cref="Size3I"/> to a <see cref="Vector3"/>.</summary>
+    public Vector3 ToCartesianCoordinate3()
       => new(m_width, m_height, m_depth);
 
-    /// <summary>Convert the <see cref="Size3I"/> to a <see cref="CartesianCoordinate3I"/>.</summary>
-    public CartesianCoordinate3I ToCartesianCoordinate3I()
+    /// <summary>Convert the <see cref="Size3I"/> to a <see cref="Point3"/>.</summary>
+    public Point3 ToCartesianCoordinate3I()
       => new(m_width, m_height, m_depth);
 
     /// <summary>Convert a mapped index to a 3D point. This index is uniquely mapped using the size.</summary>
-    public CartesianCoordinate3I UniqueIndexToPoint(long index)
+    public Point3 UniqueIndexToPoint(long index)
     {
       var xy = (long)m_width * (long)m_height;
       var irxy = index % xy;
 
-      return new CartesianCoordinate3I((int)(irxy % m_width), (int)(irxy / m_width), (int)(index / xy));
+      return new Point3((int)(irxy % m_width), (int)(irxy / m_width), (int)(index / xy));
     }
     /// <summary>Converts the 3D point to a mapped index. This index is uniquely mapped using the size.</summary>
     public long PointToUniqueIndex(int x, int y, int z)
       => x + (y * m_width) + (z * m_width * m_height);
     /// <summary>Converts the 3D point to a mapped index. This index is uniquely mapped using the size.</summary>
-    public long PointToUniqueIndex(in CartesianCoordinate3I point)
+    public long PointToUniqueIndex(in Point3 point)
       => PointToUniqueIndex(point.X, point.Y, point.X);
 
     #region Static methods
@@ -75,8 +75,8 @@ namespace Flux
     /// <summary>Subtracts a <see cref='int'/> by a <see cref='Size3I'/>.</summary>
     public static Size3I Subtract(int a, in Size3I b)
       => new(unchecked(a - b.m_width), unchecked(a - b.m_height), unchecked(a - b.m_depth));
-    /// <summary>Creates a <see cref='CartesianCoordinate3I'/> from a <see cref='Size3I'/>.</summary>
-    public static CartesianCoordinate3I ToPoint3(in Size3I size)
+    /// <summary>Creates a <see cref='Point3'/> from a <see cref='Size3I'/>.</summary>
+    public static Point3 ToPoint3(in Size3I size)
       => new(size.m_width, size.m_height, size.m_depth);
     #endregion Static methods
 

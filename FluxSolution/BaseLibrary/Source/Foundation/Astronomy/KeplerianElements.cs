@@ -92,7 +92,7 @@ namespace Flux
       z3 = ci;
     }
     [System.Diagnostics.Contracts.Pure]
-    public static EulerAngles ToEulerAngles(CartesianCoordinate3R x, CartesianCoordinate3R y, CartesianCoordinate3R z)
+    public static EulerAngles ToEulerAngles(Vector3 x, Vector3 y, Vector3 z)
     {
       x = x.Normalized();
       y = y.Normalized();
