@@ -4,7 +4,7 @@
   /// <see cref="http://stackoverflow.com/questions/616897/how-can-i-make-a-pink-noise-generator"/>
   /// <see cref="http://www.firstpr.com.au/dsp/pink-noise/"/>
   public sealed class PinkNoise3
-    : IMonoWaveMuGeneratable, IMonoWavePi2Generatable
+    : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
     private readonly System.Random m_rng;
 
@@ -37,7 +37,7 @@
       return ((A0 * m_state0 + A1 * m_state1 + A2 * m_state2) * RMI2 - Offset);
     }
 
-    public double GenerateMonoWaveMu(double phaseMu)
+    public double GenerateMonoWaveUi(double phaseMu)
       => Sample();
     public double GenerateMonoWavePi2(double phasePi2)
       => Sample();

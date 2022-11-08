@@ -3,16 +3,11 @@ namespace Flux
   public static partial class Reflection
   {
     /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/> from types in the specified type collection.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypes(this System.Type source, params System.Type[] types)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+    public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypes(this System.Type source, System.Collections.Generic.IEnumerable<System.Type> types)
+      => types.Where(type => IsSubtypeOf(type, source));
 
-      foreach (var type in types)
-        if (IsSubtypeOf(type, source))
-          yield return type;
-    }
-    /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/> from types within the Flux type library.</summary>
+    /// <summary>Creates a new sequence with the derived types of <paramref name="source"/> selected from types within the assemblies referenced by the <paramref name="source"/> assembly.</summary>
     public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypes(this System.Type source)
-      => GetDerivedTypes(source, typeof(Reflection).Assembly.GetTypes());
+      => GetDerivedTypes(source, source.Assembly.GetReferencedAssemblies().SelectMany(an => System.Reflection.Assembly.Load(an).DefinedTypes));
   }
 }

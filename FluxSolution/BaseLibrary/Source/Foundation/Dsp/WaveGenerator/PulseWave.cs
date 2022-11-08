@@ -2,7 +2,7 @@
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Square_wave"/>
   public sealed class PulseWave
-    : IMonoWaveMuGeneratable, IMonoWavePi2Generatable
+    : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
     private double m_dutyCycle;
     /// <summary>The duty cycle (pulse width) in the range [0, 2PI].</summary>
@@ -14,19 +14,19 @@
       : this(0.5)
     { }
 
-    public double GenerateMonoWaveMu(double phaseMu)
-      => SampleMu(phaseMu, m_dutyCycle);
+    public double GenerateMonoWaveUi(double phaseUi)
+      => SampleUi(phaseUi, m_dutyCycle);
     public double GenerateMonoWavePi2(double phasePi2)
       => SamplePi2(phasePi2, m_dutyCycle);
 
     /// <summary>Generates a pulse wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>
-    public static double SampleMu(double phaseMu, double pulseWidthMu)
-      => Tools.AbsolutePhaseMu(phaseMu) < Tools.AbsolutePhaseMu(pulseWidthMu)
+    public static double SampleUi(double phaseUi, double pulseWidthUi)
+      => Tools.AbsolutePhaseUi(phaseUi) < Tools.AbsolutePhaseUi(pulseWidthUi)
       ? 1
       : -1;
     /// <summary>Generates a pulse wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2, double pulseWidthPi2)
-      => Tools.AbsolutePhasePiX2(phasePi2) < Tools.AbsolutePhasePiX2(pulseWidthPi2)
+      => Tools.AbsolutePhasePi2(phasePi2) < Tools.AbsolutePhasePi2(pulseWidthPi2)
       ? 1
       : -1;
   }

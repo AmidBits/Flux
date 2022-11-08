@@ -1,42 +1,24 @@
 ﻿namespace Flux.Dsp
 {
-  public struct SampleQuadraphonic
-    : System.IEquatable<SampleQuadraphonic>
-    , IAudioChannelFrontLeft, IAudioChannelFrontRight, IAudioChannelBackLeft, IAudioChannelBackRight
+  public readonly record struct SampleQuadraphonic
+    : IAudioChannelFrontLeft, IAudioChannelFrontRight, IAudioChannelBackLeft, IAudioChannelBackRight
   {
-    public double FrontLeft { get; }
-    public double FrontRight { get; }
-    public double BackLeft { get; }
-    public double BackRight { get; }
+    private readonly double m_frontLeft;
+    private readonly double m_frontRight;
+    private readonly double m_backLeft;
+    private readonly double m_backRight;
 
     public SampleQuadraphonic(in double frontLeft, in double frontRight, in double backLeft, in double backRight)
     {
-      FrontLeft = frontLeft;
-      FrontRight = frontRight;
-      BackLeft = backLeft;
-      BackRight = backRight;
+      m_frontLeft = frontLeft;
+      m_frontRight = frontRight;
+      m_backLeft = backLeft;
+      m_backRight = backRight;
     }
 
-    #region Overloaded operators
-    public static bool operator ==(in SampleQuadraphonic a, in SampleQuadraphonic b)
-      => a.Equals(b);
-    public static bool operator !=(in SampleQuadraphonic a, in SampleQuadraphonic b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable<T>
-    public bool Equals(SampleQuadraphonic other)
-      => FrontLeft.Equals(other.FrontLeft) && FrontRight.Equals(other.FrontRight) && BackLeft.Equals(other.BackLeft) && BackRight.Equals(other.BackRight);
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is SampleQuadraphonic o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(FrontLeft, FrontRight, BackLeft, BackRight);
-    public override string ToString()
-      => $"{GetType().Name} {{ FL = {FrontLeft}, FR = {FrontRight}, BL = {BackLeft}, BR = {BackRight} }}";
-    #endregion Object overrides
+    public double FrontLeft { get => m_frontLeft; }
+    public double FrontRight { get => m_frontRight; }
+    public double BackLeft { get => m_backLeft; }
+    public double BackRight { get => m_backRight; }
   }
 }

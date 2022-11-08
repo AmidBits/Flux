@@ -12,7 +12,7 @@ namespace Flux
         if (supertype.Equals(supertype.IsGenericTypeDefinition && type.IsGenericType ? type.GetGenericTypeDefinition() : type))
           return true;
 
-      foreach (var type in GetBaseTypeChain(source))
+      foreach (var type in GetInheritance(source))
         if (supertype.Equals(supertype.IsGenericTypeDefinition && type.IsGenericType ? type.GetGenericTypeDefinition() : type))
           return true;
 

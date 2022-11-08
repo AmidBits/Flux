@@ -8,7 +8,7 @@
   /// </summary>
   /// <see cref="http://sampo.kapsi.fi/PinkNoise/"/>
   public sealed class VariableNoiseSN
-    : IMonoWaveMuGeneratable, IMonoWavePi2Generatable
+    : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
     private readonly System.Random m_rng;
 
@@ -67,7 +67,7 @@
       return (value0);
     }
 
-    public double GenerateMonoWaveMu(double phaseMu)
+    public double GenerateMonoWaveUi(double phaseMu)
       => Sample();
     public double GenerateMonoWavePi2(double phasePi2)
       => Sample();

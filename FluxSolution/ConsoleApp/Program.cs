@@ -20,6 +20,33 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
 
+
+      var types = typeof(Flux.Locale).Assembly.GetTypes().Where(t => !t.IsNested && t.IsPublic).OrderBy(t => t.Name).ToArray();
+
+      //types = System.Linq.Enumerable.Empty<System.Type>().Append(typeof(Flux.Voltage)).ToArray();
+
+      foreach (var type in types)
+      {
+        var implements = type.GetImplements().Select(t => t.GetNameEx()).ToArray();
+        //var implements2 = type.GetImplements2().Select(t => t.GetNameEx()).ToArray();
+        var inheritance = type.GetInheritance().Select(t => t.GetNameEx()).Reverse().ToArray();
+        var derivedTypes = type.GetDerivedTypes().Select(t => t.GetNameEx()).ToArray();
+
+        //if (inheritance.Length > 0 || derivedTypes.Length > 0 || implements.Length > 0)
+        {
+          System.Console.WriteLine($"{type.GetFullNameEx()}");
+          if (inheritance.Length > 0)
+            System.Console.WriteLine($" Inheritance:\r\n  {string.Join(" < ", inheritance)}");
+          if (derivedTypes.Length > 0)
+            System.Console.WriteLine($" Derived:\r\n  {string.Join("\r\n  ", derivedTypes)}");
+          if (implements.Length > 0)
+            System.Console.WriteLine($" Implements:\r\n  {string.Join(", ", implements)}");
+          //if (implements2.Length > 0)
+          //  System.Console.WriteLine($" Implements:\r\n  {string.Join(", ", implements2)}");
+          System.Console.WriteLine();
+        }
+      }
+
       //System.Console.WriteLine(System.Environment.ProcessorCount);
       //var fact = int.MaxValue.ToBigInteger();
       //System.Console.WriteLine(fact.FactorialEx());

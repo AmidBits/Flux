@@ -1,46 +1,30 @@
 ﻿namespace Flux.Dsp
 {
-  public struct Sample51
-    : System.IEquatable<Sample51>
-    , IAudioChannelBackLeft, IAudioChannelBackRight, IAudioChannelFrontCenter, IAudioChannelFrontLeft, IAudioChannelFrontRight, IAudioChannelLowFrequencyEffect
+  public readonly record struct Sample51
+    : IAudioChannelBackLeft, IAudioChannelBackRight, IAudioChannelFrontCenter, IAudioChannelFrontLeft, IAudioChannelFrontRight, IAudioChannelLowFrequencyEffect
   {
-    public double FrontLeft { get; }
-    public double FrontRight { get; }
-    public double FrontCenter { get; }
-    public double LowFrequency { get; }
-    public double BackLeft { get; }
-    public double BackRight { get; }
+    private readonly double m_frontLeft;
+    private readonly double m_frontRight;
+    private readonly double m_frontCenter;
+    private readonly double m_lowFrequency;
+    private readonly double m_backLeft;
+    private readonly double m_backRight;
 
     public Sample51(in double frontLeft, in double frontRight, in double frontCenter, in double lowFrequency, in double backLeft, in double backRight)
     {
-      FrontLeft = frontLeft;
-      FrontRight = frontRight;
-      FrontCenter = frontCenter;
-      LowFrequency = lowFrequency;
-      BackLeft = backLeft;
-      BackRight = backRight;
+      m_frontLeft = frontLeft;
+      m_frontRight = frontRight;
+      m_frontCenter = frontCenter;
+      m_lowFrequency = lowFrequency;
+      m_backLeft = backLeft;
+      m_backRight = backRight;
     }
 
-    #region Overloaded operators
-    public static bool operator ==(in Sample51 a, in Sample51 b)
-      => a.Equals(b);
-    public static bool operator !=(in Sample51 a, in Sample51 b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable<T>
-    public bool Equals(Sample51 other)
-      => FrontLeft.Equals(other.FrontLeft) && FrontRight.Equals(other.FrontRight) && FrontCenter.Equals(other.FrontCenter) && BackLeft.Equals(other.BackLeft) && BackRight.Equals(other.BackRight) && LowFrequency.Equals(other.LowFrequency);
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Sample51 o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(FrontLeft, FrontRight, FrontCenter, LowFrequency, BackLeft, BackRight);
-    public override string ToString()
-      => $"{GetType().Name} {{ FL = {FrontLeft}, FR = {FrontRight}, FC = {FrontCenter}, LFE = {LowFrequency}, BL = {BackLeft}, BR = {BackRight} }}";
-    #endregion Object overrides
+    public double FrontLeft { get => m_frontLeft; init => m_frontLeft = value; }
+    public double FrontRight { get => m_frontRight; init => m_frontRight = value; }
+    public double FrontCenter { get => m_frontCenter; init => m_frontCenter = value; }
+    public double LowFrequency { get => m_lowFrequency; init => m_lowFrequency = value; }
+    public double BackLeft { get => m_backLeft; init => m_backLeft = value; }
+    public double BackRight { get => m_backRight; init => m_backRight = value; }
   }
 }

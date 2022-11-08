@@ -1,43 +1,24 @@
 ﻿namespace Flux.Dsp
 {
-  public struct Sample21
-    : System.IEquatable<Sample21>
-    , IAudioChannelFrontLeft, IAudioChannelFrontRight, IAudioChannelLowFrequencyEffect
+  public readonly record struct Sample21
+    : IAudioChannelFrontLeft, IAudioChannelFrontRight, IAudioChannelLowFrequencyEffect
   {
-    public double FrontLeft { get; }
-    public double FrontRight { get; }
-    public double LowFrequency { get; }
+    private readonly double m_frontLeft;
+    private readonly double m_frontRight;
+    private readonly double m_lowFrequency;
 
     public Sample21(in double frontLeft, in double frontRight, in double lowFrequency)
     {
-      FrontLeft = frontLeft;
-      FrontRight = frontRight;
-      LowFrequency = lowFrequency;
+      m_frontLeft = frontLeft;
+      m_frontRight = frontRight;
+      m_lowFrequency = lowFrequency;
     }
     public Sample21(in SampleStereo stereo, in double lowFrequency)
       : this(stereo.FrontLeft, stereo.FrontRight, lowFrequency)
     { }
 
-    #region Overloaded operators
-    public static bool operator ==(in Sample21 a, in Sample21 b)
-      => a.Equals(b);
-    public static bool operator !=(in Sample21 a, in Sample21 b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable<T>
-    public bool Equals(Sample21 other)
-      => FrontLeft.Equals(other.FrontLeft) && FrontRight.Equals(other.FrontRight) && LowFrequency.Equals(other.LowFrequency);
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Sample51 o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(FrontLeft, FrontRight, LowFrequency);
-    public override string ToString()
-      => $"{GetType().Name} {{ Fl:{FrontLeft}, Fr:{FrontRight}, Lfe:{LowFrequency} }}";
-    #endregion Object overrides
+    public double FrontLeft { get => m_frontLeft; init => m_frontLeft = value; }
+    public double FrontRight { get => m_frontRight; init => m_frontRight = value; }
+    public double LowFrequency { get => m_lowFrequency; init => m_lowFrequency = value; }
   }
 }

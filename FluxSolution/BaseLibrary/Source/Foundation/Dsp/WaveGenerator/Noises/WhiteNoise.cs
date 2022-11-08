@@ -2,7 +2,7 @@
 {
   /// <see cref="https://en.wikipedia.org/wiki/White_noise"/>
   public sealed class WhiteNoise
-    : IMonoWaveMuGeneratable, IMonoWavePi2Generatable
+    : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
     private readonly System.Random m_rng;
 
@@ -15,7 +15,7 @@
     public double Sample()
       => m_rng.NextDouble() * 2 - 1;
 
-    public double GenerateMonoWaveMu(double phaseMu)
+    public double GenerateMonoWaveUi(double phaseMu)
       => Sample();
     public double GenerateMonoWavePi2(double phasePi2)
       => Sample();
