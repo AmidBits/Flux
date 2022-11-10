@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor.Adapter
 {
   /// <summary>Add as many effects as desired, and use them as one effect.</summary>
-  public sealed class StereoStack
+  public record class StereoStack
     : IStereoWaveProcessable
   {
     public System.Collections.Generic.IReadOnlyList<IStereoWaveProcessable> Processors { get; } = new System.Collections.Generic.List<IStereoWaveProcessable>();

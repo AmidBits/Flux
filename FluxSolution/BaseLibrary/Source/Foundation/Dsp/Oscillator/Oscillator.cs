@@ -1,6 +1,6 @@
 namespace Flux.Dsp.Synthesis
 {
-  public sealed class Oscillator
+  public record class Oscillator
     : IOscillator
   {
     private double m_amplitudeModulation;
@@ -182,10 +182,5 @@ namespace Flux.Dsp.Synthesis
       SamplePeriod = 1.0 / m_sampleRate;
       SignalPeriod = 1.0 / m_frequency;
     }
-
-    #region Object overrides.
-    public override string ToString()
-      => $"{GetType().Name}";
-    #endregion Object overrides.
   }
 }

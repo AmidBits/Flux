@@ -18,6 +18,9 @@
     public double FrontCenter { get => m_frontCenter; init => m_frontCenter = value; }
 
     #region Static methods
+    public static SampleMono From(SampleStereo stereo)
+      => SampleStereo.ConvertStereoToMono(stereo.FrontLeft, stereo.FrontRight);
+
     /// <summary>Mix one or more mono signals. One mono signal will be returned as is.</summary>
     public static SampleMono Mix(System.Collections.Generic.IEnumerable<SampleMono> mono)
     {

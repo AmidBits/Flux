@@ -5,7 +5,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   /// <see cref="https://en.wikipedia.org/wiki/Low-pass_filter"/>
   /// <see cref="https://cytomic.com/files/dsp/SkfLinearTrapOptimised2.pdf"/>
   /// <seealso cref="https://cytomic.com/index.php?q=technical-papers"/>
-  public sealed class SallenKey
+  public record class SallenKey
     : IMonoWaveFilterable, IMonoWaveProcessable
   {
     private double m_cutoff;
@@ -71,10 +71,5 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 
     public double ProcessMonoWave(double sample)
       => (FilterMonoWave(sample));
-
-    #region Object overrides.
-    public override string ToString()
-      => $"{GetType().Name}";
-    #endregion Object overrides.
   }
 }

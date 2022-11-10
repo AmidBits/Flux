@@ -1,6 +1,6 @@
 namespace Flux.Dsp.WaveFilter
 {
-  public sealed class TripleEq
+  public record class TripleEq
     : IMonoWaveFilterable, IMonoWaveProcessable
   {
     private const double vsa = (1.0 / uint.MaxValue); // Very small amount (Denormal Fix)
@@ -86,10 +86,5 @@ namespace Flux.Dsp.WaveFilter
 
     public double ProcessMonoWave(double sample)
       => (FilterMonoWave(sample));
-
-    #region Object overrides.
-    public override string ToString()
-      => $"{GetType().Name}";
-    #endregion Object overrides.
   }
 }

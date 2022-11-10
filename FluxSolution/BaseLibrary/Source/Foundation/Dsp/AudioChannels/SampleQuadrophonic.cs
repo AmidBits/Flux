@@ -8,7 +8,7 @@
     private readonly double m_backLeft;
     private readonly double m_backRight;
 
-    public SampleQuadraphonic(in double frontLeft, in double frontRight, in double backLeft, in double backRight)
+    public SampleQuadraphonic(double frontLeft, double frontRight, double backLeft, double backRight)
     {
       m_frontLeft = frontLeft;
       m_frontRight = frontRight;
@@ -20,5 +20,10 @@
     public double FrontRight { get => m_frontRight; }
     public double BackLeft { get => m_backLeft; }
     public double BackRight { get => m_backRight; }
+
+    #region Static methods
+    public static SampleQuadraphonic From(SampleStereo front, SampleStereo back)
+      => new(front.FrontLeft, front.FrontRight, back.FrontLeft, back.FrontRight);
+    #endregion Static methods
   }
 }

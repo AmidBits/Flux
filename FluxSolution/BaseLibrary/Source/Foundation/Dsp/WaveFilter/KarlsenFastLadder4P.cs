@@ -4,7 +4,7 @@ namespace Flux.Dsp.WaveFilter
   // http://musicdsp.org/files/Audio-EQ-Cookbook.txt
 
   // http://musicdsp.org/showArchiveComment.php?ArchiveID=240 // Karlsen 24 dB Ladder
-  public sealed class KarlsenFastLadder4P
+  public record class KarlsenFastLadder4P
     : IMonoWaveFilterable, IMonoWaveProcessable
   {
     private double m_cutoffFrequency;
@@ -63,10 +63,5 @@ namespace Flux.Dsp.WaveFilter
 
     public double ProcessMonoWave(double sample)
       => FilterMonoWave(sample);
-
-    #region Object overrides.
-    public override string ToString()
-      => $"{GetType().Name} {{ }}";
-    #endregion Object overrides.
   }
 }

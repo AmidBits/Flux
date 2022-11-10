@@ -11,7 +11,7 @@
     private double m_b0, m_b1, m_b2, m_b3, m_b4, m_b5, m_b6;
 
     public PinkNoisePk3(System.Random rng)
-      => m_rng = rng ?? throw new System.ArgumentNullException(nameof(rng));
+      => m_rng = rng ?? new System.Random();
     public PinkNoisePk3()
       : this(new System.Random())
     { }

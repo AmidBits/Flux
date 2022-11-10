@@ -40,15 +40,13 @@ namespace Flux.Dsp.AudioProcessor.Adapter
 
       var mono = Convert.StereoToMono(stereo.FrontLeft, stereo.FrontRight);
 
-      var processorCount = WaveProcessors.Count;
+      var gapSize = 2.0 / (WaveProcessors.Count - 1); // Compute a distribution gap size spread evenly across the stereo field.
 
-      var gapSize = 2.0 / (processorCount - 1); // Compute a distribution gap size spread evenly across the stereo field.
-
-      for (var i = 0; i < processorCount; i++)
+      for (var i = 0; i < WaveProcessors.Count; i++)
       {
-        if (WaveProcessors[i] as IMonoWaveProcessable is var waveProcessor && waveProcessor != null)
+        if (WaveProcessors[i] is IMonoWaveProcessable processor && processor is not null)
         {
-          var sampleM = waveProcessor.ProcessMonoWave(mono);
+          var sampleM = processor.ProcessMonoWave(mono);
 
           var (frontLeft, frontRight) = StereoPan.Apply(-1.0 + gapSize * i, sampleM, sampleM);
 
@@ -57,8 +55,8 @@ namespace Flux.Dsp.AudioProcessor.Adapter
         }
       }
 
-      left /= processorCount;
-      right /= processorCount;
+      left /= WaveProcessors.Count;
+      right /= WaveProcessors.Count;
 
       return new SampleStereo(stereo.FrontLeft * m_dryMix + left * m_wetMix, stereo.FrontRight * m_dryMix + right * m_wetMix);
     }

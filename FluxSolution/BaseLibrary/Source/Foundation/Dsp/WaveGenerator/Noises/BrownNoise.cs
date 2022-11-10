@@ -10,7 +10,7 @@
     private double m_brown;
 
     public BrownNoise(System.Random rng)
-      => m_rng = rng ?? throw new System.ArgumentNullException(nameof(rng));
+      => m_rng = rng ?? new System.Random();
     public BrownNoise()
       : this(new System.Random())
     { }

@@ -7,7 +7,7 @@
     private readonly System.Random m_rng;
 
     public WhiteNoise(System.Random? rng)
-      => m_rng = rng ?? throw new System.ArgumentNullException(nameof(rng));
+      => m_rng = rng ?? new System.Random();
     public WhiteNoise()
       : this(new System.Random())
     { }

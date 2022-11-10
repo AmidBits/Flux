@@ -11,7 +11,7 @@
 
   /// <summary>Enables inline conversion of the polarity range, e.g. bipolar to unipolar (or the other way around).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polarization_(waves)"/>
-  public sealed class MonoPolarizer
+  public record class MonoPolarizer
     : IMonoWaveProcessable
   {
     public MonoPolarizerMode Mode { get; }

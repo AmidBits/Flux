@@ -1,7 +1,7 @@
 ﻿namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 {
   /// <summary>Calculates all filter frequency functions all at once.</summary>
-  public sealed class MultiSvf
+  public record class MultiSvf
     : IMonoWaveFilterable, IMonoWaveProcessable
   {
     private double m_cutoff;
@@ -79,10 +79,5 @@
 
     public double ProcessMonoWave(double sample)
       => (FilterMonoWave(sample));
-
-    #region Object overrides.
-    public override string ToString()
-      => $"{GetType().Name}";
-    #endregion Object overrides.
   }
 }

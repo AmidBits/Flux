@@ -15,7 +15,7 @@ namespace Flux.Dsp.AudioProcessor
 
   /// <summary>Rectifies (cuts or mirrors) the wave signal above or below a threshold.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Rectifier"/>
-  public sealed class MonoRectifier
+  public record class MonoRectifier
     : IMonoWaveProcessable
   {
     public MonoRectifierMode Mode { get; }

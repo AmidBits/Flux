@@ -20,5 +20,10 @@
     public double FrontLeft { get => m_frontLeft; init => m_frontLeft = value; }
     public double FrontRight { get => m_frontRight; init => m_frontRight = value; }
     public double LowFrequency { get => m_lowFrequency; init => m_lowFrequency = value; }
+
+    #region Static methods
+    public static Sample21 From(SampleStereo front, SampleMono lowFrequency)
+      => new(front.FrontLeft, front.FrontRight, lowFrequency.FrontCenter);
+    #endregion Static methods
   }
 }

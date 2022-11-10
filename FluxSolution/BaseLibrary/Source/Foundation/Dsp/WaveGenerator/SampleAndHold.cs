@@ -1,7 +1,7 @@
 namespace Flux.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sample_and_hold"/>
-  public sealed class SampleAndHold
+  public record class SampleAndHold
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
     private readonly System.Random m_rng;
@@ -9,7 +9,7 @@ namespace Flux.Dsp.WaveGenerator
     private double m_sample, m_hold = System.Math.PI;
 
     public SampleAndHold(System.Random rng)
-      => m_rng = rng ?? throw new System.ArgumentNullException(nameof(rng));
+      => m_rng = rng ?? new System.Random();
     public SampleAndHold()
       : this(new System.Random())
     { }

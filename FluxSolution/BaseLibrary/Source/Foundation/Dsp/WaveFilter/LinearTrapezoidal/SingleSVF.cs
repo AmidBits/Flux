@@ -3,7 +3,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   /// <summary>A linear trapezoidal integrated state variable filter (SVF) collection</summary>
   /// <see cref="https://cytomic.com/index.php?q=technical-papers"/>
   /// <seealso cref="https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf"/>
-  public sealed class SingleSvf
+  public record class SingleSvf
     : IMonoWaveFilterable, IMonoWaveProcessable
   {
     public SingleSvfFrequencyFunction Function { get; private set; }
@@ -159,10 +159,5 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
     }
 
     public double ProcessMonoWave(double sample) => (FilterMonoWave(sample));
-
-    #region Object overrides.
-    public override string ToString()
-      => $"{GetType().Name}";
-    #endregion Object overrides.
   }
 }

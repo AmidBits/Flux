@@ -13,9 +13,6 @@
       m_frontLeft = frontLeft;
       m_frontRight = frontRight;
     }
-    public SampleStereo(double frontCenter)
-      : this(frontCenter, frontCenter)
-    { }
 
     public double FrontLeft { get => m_frontLeft; init => m_frontLeft = value; }
     public double FrontRight { get => m_frontRight; init => m_frontRight = value; }
@@ -26,6 +23,9 @@
     #region Static methods
     public static double ConvertStereoToMono(double frontLeft, double frontRight)
       => (frontLeft + frontRight) / 2;
+
+    public SampleStereo From(SampleMono mono)
+      => new(mono.FrontCenter, mono.FrontCenter);
 
     /// <summary>Mix one or more stereo signals. One stereo signal will be returned as is.</summary>
     public static SampleStereo Mix(System.Collections.Generic.IEnumerable<SampleStereo> stereo)

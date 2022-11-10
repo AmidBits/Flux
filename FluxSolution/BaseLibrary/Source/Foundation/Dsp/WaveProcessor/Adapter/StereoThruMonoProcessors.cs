@@ -1,7 +1,7 @@
 namespace Flux.Dsp.AudioProcessor.Adapter
 {
   /// <summary>Process a stereo signal using two mono audio processors (IAudioProcessorMono).</summary>
-  public sealed class StereoThruMonoProcessors
+  public record class StereoThruMonoProcessors
     : IStereoWaveProcessable
   {
     public IMonoWaveProcessable Left { get; set; }

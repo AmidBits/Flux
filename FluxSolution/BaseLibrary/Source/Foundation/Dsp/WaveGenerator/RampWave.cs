@@ -2,7 +2,7 @@
 {
   /// <summary>This is simply an inverted saw wave.</summary>
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sawtooth_wave"/>
-  public sealed class RampWave
+  public record class RampWave
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
     public double GenerateMonoWaveUi(double phaseUi)

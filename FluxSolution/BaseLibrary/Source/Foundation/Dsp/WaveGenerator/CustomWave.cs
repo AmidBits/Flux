@@ -1,7 +1,7 @@
 ﻿namespace Flux.Dsp.WaveGenerator
 {
   /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sine_wave"/>
-  public sealed class CustomWave
+  public record class CustomWave
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
     private readonly System.Func<double, double> m_functionUi;

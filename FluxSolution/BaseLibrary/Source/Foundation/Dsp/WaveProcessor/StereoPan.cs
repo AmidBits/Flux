@@ -1,6 +1,6 @@
 namespace Flux.Dsp.AudioProcessor
 {
-  public sealed class StereoPan
+  public record class StereoPan
     : IStereoWaveProcessable
   {
     private double m_position, m_positionInvAbs, m_scaledAbs, m_scaledAbsInv;

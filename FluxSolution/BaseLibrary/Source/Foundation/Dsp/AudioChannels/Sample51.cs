@@ -26,5 +26,10 @@
     public double LowFrequency { get => m_lowFrequency; init => m_lowFrequency = value; }
     public double BackLeft { get => m_backLeft; init => m_backLeft = value; }
     public double BackRight { get => m_backRight; init => m_backRight = value; }
+
+    #region Static methods
+    public static Sample51 From(SampleStereo frontLeftRight, SampleMono frontCenter, SampleMono lowFrequency, SampleStereo backLeftRight)
+      => new(frontLeftRight.FrontLeft, frontLeftRight.FrontRight, frontCenter.FrontCenter, lowFrequency.FrontCenter, backLeftRight.FrontLeft, backLeftRight.FrontRight);
+    #endregion Static methods
   }
 }

@@ -1,6 +1,6 @@
 namespace Flux.Dsp.Synthesis
 {
-  public sealed class Phase
+  public record class Phase
   {
     private double m_frequencyModulation;
     /// <summary>The amount [0, 1] of output from the frequency modulator to apply.</summary>
@@ -78,10 +78,5 @@ namespace Flux.Dsp.Synthesis
 
       m_position = Maths.Wrap(m_position + shift, m_minimumPhase, m_maximumPhase);
     }
-
-    #region Object overrides.
-    public override string ToString()
-      => $"{GetType().Name}";
-    #endregion Object overrides.
   }
 }

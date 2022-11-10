@@ -2,7 +2,7 @@ namespace Flux.Dsp.Synthesis
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Amplitude"/>
-  public sealed class Amplitude
+  public record class Amplitude
   {
     private double m_amplitudeModulation;
     /// <summary>The amount [0, 1] of output from the amplitude modulator to apply.</summary>
@@ -75,10 +75,5 @@ namespace Flux.Dsp.Synthesis
 
       return sample;
     }
-
-    #region Object overrides.
-    public override string ToString()
-      => $"{GetType().Name}";
-    #endregion Object overrides.
   }
 }
