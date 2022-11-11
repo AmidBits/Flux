@@ -30,25 +30,25 @@ namespace Flux
       var sinInclination = System.Math.Sin(Inclination);
 
       return new Vector3(
-        Radius * System.Math.Cos(Azimuth) * sinInclination,
-        Radius * System.Math.Sin(Azimuth) * sinInclination,
-        Radius * System.Math.Cos(Inclination)
+        Radius * System.Math.Cos(m_azimuth) * sinInclination,
+        Radius * System.Math.Sin(m_azimuth) * sinInclination,
+        Radius * System.Math.Cos(m_inclination)
       );
     }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new CylindricalCoordinate(
-        Radius * System.Math.Sin(Inclination),
-        Azimuth,
-        Radius * System.Math.Cos(Inclination)
+        Radius * System.Math.Sin(m_inclination),
+        m_azimuth,
+        Radius * System.Math.Cos(m_inclination)
       );
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
     public GeographicCoordinate ToGeographicCoordinate()
      => new GeographicCoordinate(
-       Angle.ConvertRadianToDegree(System.Math.PI - Inclination - System.Math.PI / 2),
-       Angle.ConvertRadianToDegree(Azimuth - System.Math.PI),
+       Angle.ConvertRadianToDegree(System.Math.PI - m_inclination - System.Math.PI / 2),
+       Angle.ConvertRadianToDegree(m_azimuth - System.Math.PI),
        Radius
      );
 

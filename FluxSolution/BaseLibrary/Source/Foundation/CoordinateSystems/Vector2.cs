@@ -107,9 +107,11 @@ namespace Flux
       return negative ^ positive;
     }
     /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
-    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<Vector2> source)
+    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<Vector2> source, IEqualityApproximable mode)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      mode ??= new EqualityByAbsoluteTolerance();
 
       using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 
@@ -118,16 +120,18 @@ namespace Flux
         var initialAngle = e.Current;
 
         while (e.MoveNext())
-          if (!EqualityByAbsoluteTolerance.IsApproximatelyEqual(initialAngle, e.Current, Maths.Epsilon1E7))
+          if (!mode.IsApproximatelyEqual(initialAngle, e.Current))
             return false;
       }
 
       return true;
     }
     /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
-    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<Vector2> source)
+    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<Vector2> source, IEqualityApproximable mode)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      mode ??= new EqualityByRelativeTolerance();
 
       using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).EuclideanLength()).GetEnumerator();
 
@@ -136,7 +140,7 @@ namespace Flux
         var initialLength = e.Current;
 
         while (e.MoveNext())
-          if (!EqualityByRelativeTolerance.IsApproximatelyEqual(initialLength, e.Current, 1e-15))
+          if (!mode.IsApproximatelyEqual(initialLength, e.Current))
             return false;
       }
 

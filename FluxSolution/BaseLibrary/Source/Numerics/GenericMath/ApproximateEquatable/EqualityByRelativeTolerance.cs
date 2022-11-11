@@ -11,7 +11,7 @@ namespace Flux
 
   namespace Equality
   {
-    /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
+    /// <summary>PREVIEW! Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
     public record class EqualityByRelativeTolerance<TSelf>
       : IEqualityApproximatable<TSelf>
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
@@ -21,12 +21,18 @@ namespace Flux
       public EqualityByRelativeTolerance(TSelf relativeTolerance)
         => m_relativeTolerance = relativeTolerance;
 
+      /// <summary>The relative tolerance, i.e. tolerance as a percentage, a proportional property.</summary>
       public TSelf RelativeTolerance { get => m_relativeTolerance; init => m_relativeTolerance = value; }
 
-      [System.Diagnostics.Contracts.Pure]
+      #region Static methods
+      public static bool IsApproximatelyEqual(TSelf a, TSelf b, TSelf relativeTolerance)
+       => a == b || (TSelf.Abs(a - b) <= TSelf.Max(TSelf.Abs(a), TSelf.Abs(b)) * relativeTolerance);
+      #endregion Static methods
+
+      #region Implemented interfaces
       public bool IsApproximatelyEqual(TSelf a, TSelf b)
-        => a == b
-        || (m_relativeTolerance * TSelf.Max(TSelf.Abs(a), TSelf.Abs(b)) > TSelf.Abs(a - b));
+        => IsApproximatelyEqual(a, b, m_relativeTolerance);
+      #endregion Implemented interfaces
     }
   }
 }

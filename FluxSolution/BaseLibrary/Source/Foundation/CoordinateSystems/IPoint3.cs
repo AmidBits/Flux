@@ -49,7 +49,7 @@
     int Y { get; }
     int Z { get; }
 
-    IPoint3 Create(int x, int y, int z);
+    //IPoint3 Create(int x, int y, int z);
 
     /// <summary>Compute the Chebyshev length of the 3D vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>

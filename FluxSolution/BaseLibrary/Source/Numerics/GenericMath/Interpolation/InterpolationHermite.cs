@@ -3,13 +3,13 @@ namespace Flux.Interpolation
 {
   /// <summary>Cosine interpolation is a smoother and perhaps simplest function. A suitable orientated piece of a cosine function serves to provide a smooth transition between adjacent segments.</summary>
   /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
-  public sealed class HermiteInterpolation<TNode, TMu>
+  public record class HermiteInterpolation<TNode, TMu>
     : I4NodeInterpolatable<TNode, TMu>
     where TNode : System.Numerics.INumber<TNode>
     where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TNode, TMu>
   {
-    private TMu m_bias;
-    private TMu m_tension;
+    private readonly TMu m_bias;
+    private readonly TMu m_tension;
 
     public HermiteInterpolation(TMu bias, TMu tension)
     {

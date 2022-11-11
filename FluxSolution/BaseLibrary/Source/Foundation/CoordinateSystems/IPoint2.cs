@@ -60,7 +60,7 @@
     int X { get; }
     int Y { get; }
 
-    IPoint2 Create(int x, int y);
+    //IPoint2 Create(int x, int y);
 
     /// <summary>Compute the Chebyshev length of the 2D vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
@@ -93,13 +93,13 @@
        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
      };
 
-    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    IPoint2 PerpendicularCcw()
-      => Create(-Y, X);
+    ///// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    //IPoint2 PerpendicularCcw()
+    //  => Create(-Y, X);
 
-    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    IPoint2 PerpendicularCw()
-      => Create(Y, -X);
+    ///// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    //IPoint2 PerpendicularCw()
+    //  => Create(Y, -X);
   }
 #endif
 }
