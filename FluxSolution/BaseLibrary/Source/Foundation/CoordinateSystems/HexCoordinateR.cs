@@ -1,9 +1,7 @@
-using Flux.Hashing;
-
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record struct HexCoordinateR
+  public readonly record struct HexCoordinateR
 #if NET7_0_OR_GREATER
     : IHexCoordinate<double>
 #endif

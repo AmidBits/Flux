@@ -8,5 +8,11 @@
     TSelf X { get; }
     TSelf Y { get; }
   }
+#else
+  public interface ICartesianCoordinate2
+  {
+    double X { get; }
+    double Y { get; }
+  }
 #endif
 }

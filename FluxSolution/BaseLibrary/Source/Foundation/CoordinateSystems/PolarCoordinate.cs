@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Polar coordinate. Please note that polar coordinates are two dimensional.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record struct PolarCoordinate
+  public readonly record struct PolarCoordinate
     : IPolarCoordinate
   {
     private readonly double m_radius;

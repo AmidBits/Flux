@@ -1,16 +1,12 @@
-using Flux.Hashing;
-using System.Runtime.InteropServices;
-
 namespace Flux
 {
   /// <summary>A cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct Point2
-    : System.IComparable<Point2>, System.IEquatable<Point2>
+  public readonly record struct Point2
 #if NET7_0_OR_GREATER
-    , IPoint2<int>
+    : IPoint2<int>
 #else
-    , IPoint2
+    : IPoint2
 #endif
   {
     /// <summary>Returns the vector (0,0).</summary>
@@ -237,11 +233,6 @@ namespace Flux
     public static explicit operator Point2(System.ValueTuple<int, int> xy)
       => new(xy.Item1, xy.Item2);
 
-    public static bool operator ==(Point2 p1, Point2 p2)
-      => p1.Equals(p2);
-    public static bool operator !=(Point2 p1, Point2 p2)
-      => !p1.Equals(p2);
-
     public static Point2 operator -(Point2 v)
       => new(-v.m_x, -v.m_y);
 
@@ -326,21 +317,5 @@ namespace Flux
     public static Point2 operator >>(Point2 p, int v)
       => new(p.m_x >> v, p.m_y >> v);
     #endregion Overloaded operators
-
-    #region Implemented interfaces
-    public int CompareTo(Point2 other)
-      => m_x > other.m_x ? 1 : m_x < other.m_x ? -1 : m_y > other.m_y ? 1 : m_y < other.m_y ? -1 : 0;
-    public bool Equals(Point2 other)
-      => m_x == other.m_x && m_y == other.m_y;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-       => obj is Point2 o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_x, m_y);
-    public override string ToString()
-      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y} }}";
-    #endregion Object overrides
   }
 }

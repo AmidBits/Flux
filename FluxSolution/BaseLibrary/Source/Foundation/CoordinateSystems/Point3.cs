@@ -1,14 +1,11 @@
-using Flux.Hashing;
-
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct Point3
-    : System.IEquatable<Point3>
+  public readonly record struct Point3
 #if NET7_0_OR_GREATER
-    , IPoint3<int>
+    : IPoint3<int>
 #else
-    , IPoint3
+    : IPoint3
 #endif
   {
     /// <summary>Returns the vector (0,0).</summary>
@@ -227,11 +224,6 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(Point3 p1, Point3 p2)
-      => p1.Equals(p2);
-    public static bool operator !=(Point3 p1, Point3 p2)
-      => !p1.Equals(p2);
-
     public static Point3 operator -(Point3 p)
       => new(-p.m_x, -p.m_y, -p.m_z);
 
@@ -316,19 +308,5 @@ namespace Flux
     public static Point3 operator >>(Point3 p, int v)
       => new(p.m_x >> v, p.m_y >> v, p.m_z >> v);
     #endregion Overloaded operators
-
-    #region Implemented interfaces
-    public bool Equals(Point3 other)
-      => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Point3 o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_x, m_y, m_z);
-    public override string ToString()
-      => $"{GetType().Name} {{ X = {m_x}, Y = {m_y}, Z = {m_z} }}";
-    #endregion Object overrides
   }
 }

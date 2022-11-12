@@ -223,7 +223,7 @@ namespace Flux
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record struct Vector3
+  public readonly record struct Vector3
 #if NET7_0_OR_GREATER
     : IVector3<double>
 #else

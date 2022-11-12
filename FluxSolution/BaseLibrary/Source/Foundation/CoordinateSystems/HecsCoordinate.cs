@@ -3,8 +3,7 @@ namespace Flux
   /// <summary>The HECS coordinate system.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Hexagonal_Efficient_Coordinate_System"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct HecsCoordinate
-    : System.IEquatable<HecsCoordinate>
+  public readonly record struct HecsCoordinate
   {
     public static readonly HecsCoordinate Zero;
 
@@ -154,11 +153,6 @@ namespace Flux
     //#endregion Static methods
 
     #region Overloaded operators
-    public static bool operator ==(HecsCoordinate h1, HecsCoordinate h2)
-      => h1.Equals(h2);
-    public static bool operator !=(HecsCoordinate h1, HecsCoordinate h2)
-      => !h1.Equals(h2);
-
     //public static Hecs operator +(Hecs h1, Hecs h2)
     //  => Add(h1, h2);
     //public static Hecs operator *(Hecs h, int scalar)
@@ -166,20 +160,5 @@ namespace Flux
     //public static Hecs operator -(Hecs h1, Hecs h2)
     //  => Subtract(h1, h2);
     #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(HecsCoordinate other)
-      => m_a == other.m_a && m_r == other.m_r && m_c == other.m_c;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is HecsCoordinate o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_a, m_r, m_c);
-    public override string ToString()
-      => $"{GetType().Name} {{ A = {m_a}, R = {m_r}, C = {m_c} }}";
-    #endregion Object overrides
   }
 }

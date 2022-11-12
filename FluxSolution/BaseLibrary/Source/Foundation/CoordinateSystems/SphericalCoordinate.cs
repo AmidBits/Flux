@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Spherical coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record struct SphericalCoordinate
+  public readonly record struct SphericalCoordinate
     : ISphericalCoordinate
   {
     private readonly double m_radius;
