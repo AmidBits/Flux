@@ -1,5 +1,3 @@
-using Flux.Formatting;
-
 namespace Flux
 {
   /// <summary>Cylindrical coordinate. It is assumed that the reference plane is the Cartesian xy-plane (with equation z/height = 0), and the cylindrical axis is the Cartesian z-axis, i.e. the z-coordinate is the same in both systems, and the correspondence between cylindrical (radius, azimuth, height) and Cartesian (x, y, z) are the same as for polar coordinates.</summary>
@@ -19,34 +17,31 @@ namespace Flux
       m_height = height;
     }
 
-    /// <summary>Radial distance (to origin) or radial coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
-    /// <summary>Angular position or angular coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
-    /// <summary>Also known as altitude. For convention, this correspond to the cartesian z-axis.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Height { get => m_height; init => m_height = value; }
+    [System.Diagnostics.Contracts.Pure] public Length Radius { get => new(m_radius); init => m_radius = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public Azimuth Azimuth { get => Azimuth.FromRadians(m_azimuth); init => m_azimuth = value.ToRadians(); }
+    [System.Diagnostics.Contracts.Pure] public Length Height { get => new(m_height); init => m_height = value.Value; }
 
     /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="Vector3"/>.</summary>
     public Vector3 ToCartesianCoordinate3()
      => new Vector3(
-       Radius * System.Math.Cos(Azimuth),
-       Radius * System.Math.Sin(Azimuth),
-       Height
+       m_radius * System.Math.Cos(m_azimuth),
+       m_radius * System.Math.Sin(m_azimuth),
+       m_height
      );
 
     /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="PolarCoordinate"/>.</summary>
     public PolarCoordinate ToPolarCoordinate()
      => new PolarCoordinate(
-       Radius,
-       Azimuth
+       m_radius,
+       m_azimuth
      );
 
     /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
     public SphericalCoordinate ToSphericalCoordinate()
      => new SphericalCoordinate(
-       System.Math.Sqrt(Radius * Radius + Height * Height),
-       System.Math.Atan2(Radius, Height),
-       Azimuth
+       System.Math.Sqrt(m_radius * m_radius + m_height * m_height),
+       System.Math.Atan2(m_radius, m_height),
+       m_azimuth
      );
 
     #region Static methods

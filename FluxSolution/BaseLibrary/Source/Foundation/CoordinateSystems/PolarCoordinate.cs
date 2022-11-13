@@ -15,10 +15,8 @@ namespace Flux
       m_azimuth = azimuth;
     }
 
-    /// <summary>Radial distance (to origin) or radial coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
-    /// <summary>Polar angle or angular coordinate.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
+    [System.Diagnostics.Contracts.Pure] public Length Radius { get => new(m_radius); init => m_radius = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public Azimuth Azimuth { get => Azimuth.FromRadians(m_azimuth); init => m_azimuth = value.ToRadians(); }
 
     /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="Vector2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]

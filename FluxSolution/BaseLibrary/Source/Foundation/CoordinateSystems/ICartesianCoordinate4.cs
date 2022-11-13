@@ -6,9 +6,9 @@
     : ICartesianCoordinate3<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
-    TSelf X { get; }
-    TSelf Y { get; }
-    TSelf Z { get; }
+    //TSelf X { get; }
+    //TSelf Y { get; }
+    //TSelf Z { get; }
     TSelf W { get; }
   }
 #else

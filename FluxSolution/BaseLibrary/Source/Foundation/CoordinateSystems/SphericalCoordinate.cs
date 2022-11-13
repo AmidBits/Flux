@@ -17,31 +17,30 @@ namespace Flux
       m_azimuth = azimuth;
     }
 
-    /// <summary>Radial distance (to origin) or radial coordinate, in meters.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
-    /// <summary>Polar angle or angular coordinate, in radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Inclination { get => m_inclination; init => m_inclination = value; }
-    /// <summary>Azimuthal angle, in radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
+    [System.Diagnostics.Contracts.Pure] public Length Radius { get => new(m_radius); init => m_radius = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public Angle Inclination { get => new Angle(m_inclination); init => m_inclination = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public Azimuth Azimuth { get => Azimuth.FromRadians(m_azimuth); init => m_azimuth = value.ToRadians(); }
+
+    [System.Diagnostics.Contracts.Pure] public Angle Elevatiuon { get => new(System.Math.PI / 2 - m_inclination); init => m_inclination = System.Math.PI / 2 - value.Value; }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="Vector3">CartesianCoordinate3</see>.</summary>
     public Vector3 ToCartesianCoordinate3()
     {
-      var sinInclination = System.Math.Sin(Inclination);
+      var sinInclination = System.Math.Sin(m_inclination);
 
       return new Vector3(
-        Radius * System.Math.Cos(m_azimuth) * sinInclination,
-        Radius * System.Math.Sin(m_azimuth) * sinInclination,
-        Radius * System.Math.Cos(m_inclination)
+        m_radius * System.Math.Cos(m_azimuth) * sinInclination,
+        m_radius * System.Math.Sin(m_azimuth) * sinInclination,
+        m_radius * System.Math.Cos(m_inclination)
       );
     }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     public CylindricalCoordinate ToCylindricalCoordinate()
       => new CylindricalCoordinate(
-        Radius * System.Math.Sin(m_inclination),
+        m_radius * System.Math.Sin(m_inclination),
         m_azimuth,
-        Radius * System.Math.Cos(m_inclination)
+        m_radius * System.Math.Cos(m_inclination)
       );
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
@@ -49,7 +48,7 @@ namespace Flux
      => new GeographicCoordinate(
        Angle.ConvertRadianToDegree(System.Math.PI - m_inclination - System.Math.PI / 2),
        Angle.ConvertRadianToDegree(m_azimuth - System.Math.PI),
-       Radius
+       m_radius
      );
 
     #region Static methods
