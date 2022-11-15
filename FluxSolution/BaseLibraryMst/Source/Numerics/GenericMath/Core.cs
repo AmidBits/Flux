@@ -1,8 +1,8 @@
 ﻿#if NET7_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Flux;
 using System;
+using Flux;
 
 namespace GenericMath
 {
@@ -37,12 +37,6 @@ namespace GenericMath
     public void GreatestCommonDivisor()
     {
       Assert.AreEqual(3, 21.GreatestCommonDivisor(6));
-    }
-
-    [TestMethod]
-    public void IntegerPow()
-    {
-      Assert.AreEqual(85766121, 21.IntegerPow(6));
     }
 
     [TestMethod]

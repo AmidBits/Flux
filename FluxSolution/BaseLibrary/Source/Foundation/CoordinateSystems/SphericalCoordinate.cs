@@ -23,6 +23,18 @@ namespace Flux
 
     [System.Diagnostics.Contracts.Pure] public Angle Elevatiuon { get => new(System.Math.PI / 2 - m_inclination); init => m_inclination = System.Math.PI / 2 - value.Value; }
 
+    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref=ICartesianCoordinate3{T}">CartesianCoordinate3</see>.</summary>
+    public (double x, double y, double z) ToCartesianCoordinate()
+    {
+      var sinInclination = System.Math.Sin(m_inclination);
+
+      return (
+        m_radius * System.Math.Cos(m_azimuth) * sinInclination,
+        m_radius * System.Math.Sin(m_azimuth) * sinInclination,
+        m_radius * System.Math.Cos(m_inclination)
+      );
+    }
+
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="Vector3">CartesianCoordinate3</see>.</summary>
     public Vector3 ToCartesianCoordinate3()
     {
@@ -65,6 +77,14 @@ namespace Flux
     /// <summary>Return the <see cref="ISphericalCoordinate"/> from the specified components.</summary>
     public static SphericalCoordinate From(Length radius, Angle inclination, Azimuth azimuth)
       => new SphericalCoordinate(radius.Value, inclination.Value, azimuth.ToRadians());
+
+    public static SphericalCoordinate FromCartesianCoordinate(double x, double y, double z)
+    {
+      var x2y2 = x * x + y * y;
+
+      return new(System.Math.Sqrt(x2y2 + z * z), System.Math.Atan2(System.Math.Sqrt(x2y2), z) + System.Math.PI, System.Math.Atan2(y, x) + System.Math.PI);
+    }
+
     #endregion Static methods
 
     public override string ToString()

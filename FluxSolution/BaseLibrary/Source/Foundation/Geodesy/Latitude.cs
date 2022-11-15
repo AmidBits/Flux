@@ -65,7 +65,7 @@ namespace Flux
     /// <summary>A latitude is folded over the range [-90, +90].</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double FoldLatitude(double degLatitude)
-      => Maths.Fold(degLatitude, MinValue, MaxValue);
+      => degLatitude.Fold(MinValue, MaxValue);
 
     [System.Diagnostics.Contracts.Pure]
     public static Latitude FromRadians(double radLatitude)

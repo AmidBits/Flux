@@ -62,7 +62,7 @@ namespace Flux
     /// <summary>A longitude is wrapped over within the range [-180, +180].</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double WrapLongitude(double degLongitude)
-      => Maths.Wrap(degLongitude, MinValue, MaxValue);
+      => degLongitude.Wrap(MinValue, MaxValue);
     #endregion Static methods
 
     #region Overloaded operators

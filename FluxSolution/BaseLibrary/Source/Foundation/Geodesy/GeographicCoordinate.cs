@@ -177,7 +177,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static ThirtytwoWindCompassRose CompassPoint(double absoluteBearing, PointsOfTheCompass precision, out double notch)
     {
-      notch = System.Math.Round(Maths.Wrap(absoluteBearing, 0, Maths.PiX2) / (Maths.PiX2 / (int)precision) % (int)precision);
+      notch = System.Math.Round(absoluteBearing.Wrap(0, Maths.PiX2) / (Maths.PiX2 / (int)precision) % (int)precision);
 
       return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
     }
@@ -516,7 +516,9 @@ namespace Flux
     #endregion Static members
 
     #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.ToAngle().ToUnitString(AngleUnit.Degree, "N1", true)}), Longitude = {Longitude.ToSexagesimalDegreeString(preferUnicode: false)} ({Longitude.ToAngle().ToUnitString(AngleUnit.Degree, "N1", true)}), Altitude = {Altitude.ToUnitString()} }}";
+    [System.Diagnostics.Contracts.Pure]
+    public override string ToString()
+      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.ToAngle().ToUnitString(AngleUnit.Degree, "N1", true)}), Longitude = {Longitude.ToSexagesimalDegreeString(preferUnicode: false)} ({Longitude.ToAngle().ToUnitString(AngleUnit.Degree, "N1", true)}), Altitude = {Altitude.ToUnitString()} }}";
     #endregion Object overrides
   }
 }

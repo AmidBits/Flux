@@ -36,9 +36,9 @@ namespace Flux.Dsp.AudioProcessor
     public MonoFolder() : this(0, 0) { }
 
     public double ProcessMonoWave(double sample)
-      => Maths.Fold(m_multiplier * (sample + m_polarBias), -1, 1);
+      => (m_multiplier * (sample + m_polarBias)).Fold(-1, 1);
 
     public static double ApplyFolder(double sample, double polarBias, double multiplier)
-      => Maths.Fold(multiplier * (sample + polarBias), -1, 1);
+      => (multiplier * (sample + polarBias)).Fold(-1, 1);
   }
 }

@@ -34,9 +34,9 @@ namespace Flux.NumberSequences
     {
       var fiver = 5 * number * number;
       var fp4 = fiver + 4;
-      var fp4sr = Maths.ISqrt(fp4);
+      var fp4sr = GenericMath.IntegerSqrt(fp4);
       var fm4 = fiver - 4;
-      var fm4sr = Maths.ISqrt(fm4);
+      var fm4sr = GenericMath.IntegerSqrt(fm4);
 
       return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
     }

@@ -107,11 +107,11 @@ namespace Flux
       return negative ^ positive;
     }
     /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
-    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<Vector2> source, IEqualityApproximable mode)
+    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<Vector2> source, IEqualityApproximatable<double> mode)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new EqualityByAbsoluteTolerance();
+      mode ??= new Flux.Equality.EqualityByAbsoluteTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 
@@ -127,11 +127,11 @@ namespace Flux
       return true;
     }
     /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
-    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<Vector2> source, IEqualityApproximable mode)
+    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<Vector2> source, IEqualityApproximatable<double> mode)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new EqualityByRelativeTolerance();
+      mode ??= new Flux.Equality.EqualityByRelativeTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).EuclideanLength()).GetEnumerator();
 
@@ -261,8 +261,8 @@ namespace Flux
       => new(source.X, source.Y);
     public static Point2 ToPoint2(this Vector2 source, System.Func<double, double> transformSelector)
       => new(System.Convert.ToInt32(transformSelector(source.X)), System.Convert.ToInt32(transformSelector(source.Y)));
-    public static Point2 ToPoint2(this Vector2 source, HalfRoundingBehavior behavior)
-      => new(System.Convert.ToInt32(Maths.Round(source.X, behavior)), System.Convert.ToInt32(Maths.Round(source.Y, behavior)));
+    public static Point2 ToPoint2(this Vector2 source, RoundingMode behavior)
+      => new(System.Convert.ToInt32(Flux.Rounding<double>.Round(source.X, behavior)), System.Convert.ToInt32(Flux.Rounding<double>.Round(source.Y, behavior)));
     public static System.Numerics.Vector2 ToVector2(this Vector2 source)
       => new((float)source.X, (float)source.Y);
   }
@@ -292,13 +292,13 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
 
-//#if NET7_0_OR_GREATER
-//    public IVector2<double> Create(double x, double y)
-//      => new Vector2(x, y);
-//#else
-//    public IVector2 Create(double x, double y)
-//      => new Vector2(x, y);
-//#endif
+    //#if NET7_0_OR_GREATER
+    //    public IVector2<double> Create(double x, double y)
+    //      => new Vector2(x, y);
+    //#else
+    //    public IVector2 Create(double x, double y)
+    //      => new Vector2(x, y);
+    //#endif
 
     ///// <summary>Returns the angle to the 2D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
@@ -366,22 +366,17 @@ namespace Flux
     public Vector2 PerpendicularCw()
       => new(m_y, -m_x);
 
-#region To..
+    #region To..
 
     /// <summary>Converts the <see cref="Vector2"/> to a <see cref="Point2"/> using the specified <see cref="System.MidpointRounding"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public Point2 ToCartesianCoordinate2I(System.MidpointRounding rounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)));
 
-    /// <summary>Converts the <see cref="Vector2"/> to a <see cref="Point2"/> using the specified <see cref="Flux.FullRoundingBehavior"/>.</summary>
+    /// <summary>Converts the <see cref="Vector2"/> to a <see cref="Point2"/> using the specified <see cref="Flux.RoundingMode"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public Point2 ToCartesianCoordinate2I(Flux.FullRoundingBehavior rounding)
-      => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
-
-    /// <summary>Converts the <see cref="Vector2"/> to a <see cref="Point2"/> using the specified <see cref="Flux.HalfRoundingBehavior"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Point2 ToCartesianCoordinate2I(Flux.HalfRoundingBehavior rounding)
-      => new(System.Convert.ToInt32(Flux.Maths.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Maths.Round(m_y, rounding)));
+    public Point2 ToCartesianCoordinate2I(Flux.RoundingMode rounding)
+      => new(System.Convert.ToInt32(Flux.Rounding<double>.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Rounding<double>.Round(m_y, rounding)));
 
     /// <summary>Converts the <see cref="Vector2"/> to a <see cref="EllipseGeometry"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -420,9 +415,9 @@ namespace Flux
     public System.Runtime.Intrinsics.Vector256<double> ToVector256()
       => ToVector256(m_x, m_y);
 
-#endregion
+    #endregion
 
-#region Static methods
+    #region Static methods
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
@@ -478,21 +473,37 @@ namespace Flux
       => new(source.X, source.Y, target.X, target.Y);
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static Vector2 InterpolateCosine(Vector2 y1, Vector2 y2, double mu)
-      => new(CosineInterpolation.Interpolate(y1.m_x, y2.m_x, mu), CosineInterpolation.Interpolate(y1.m_y, y2.m_y, mu));
+    public static Point2 Interpolate(Vector2 p1, Vector2 p2, double mu, I2NodeInterpolatable<double, double> mode)
+    {
+      mode ??= new Interpolation.LinearInterpolation<double, double>();
+
+      return new(System.Convert.ToInt32(mode.Interpolate2Node(p1.X, p2.X, mu)), System.Convert.ToInt32(mode.Interpolate2Node(p1.Y, p2.Y, mu)));
+    }
+
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static Vector2 InterpolateCubic(Vector2 y0, Vector2 y1, Vector2 y2, Vector2 y3, double mu)
-      => new(CubicInterpolation.Interpolate(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu), CubicInterpolation.Interpolate(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu));
-    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static Vector2 InterpolateHermite2(Vector2 y0, Vector2 y1, Vector2 y2, Vector2 y3, double mu, double tension, double bias)
-      => new(HermiteInterpolation.Interpolate(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu, tension, bias), HermiteInterpolation.Interpolate(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu, tension, bias));
-    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static Vector2 InterpolateLinear(Vector2 y1, Vector2 y2, double mu)
-      => new(LinearInterpolation.Interpolate(y1.m_x, y2.m_x, mu), LinearInterpolation.Interpolate(y1.m_y, y2.m_y, mu));
+    public static Point2 Interpolate(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, double mu, I4NodeInterpolatable<double, double> mode)
+    {
+      mode ??= new Interpolation.CubicInterpolation<double, double>();
+
+      return new(System.Convert.ToInt32(mode.Interpolate4Node(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(mode.Interpolate4Node(p0.Y, p1.Y, p2.Y, p3.Y, mu)));
+    }
+
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public static Vector2 InterpolateCosine(Vector2 y1, Vector2 y2, double mu)
+    //  => new(CosineInterpolation.Interpolate(y1.m_x, y2.m_x, mu), CosineInterpolation.Interpolate(y1.m_y, y2.m_y, mu));
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public static Vector2 InterpolateCubic(Vector2 y0, Vector2 y1, Vector2 y2, Vector2 y3, double mu)
+    //  => new(CubicInterpolation.Interpolate(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu), CubicInterpolation.Interpolate(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu));
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public static Vector2 InterpolateHermite2(Vector2 y0, Vector2 y1, Vector2 y2, Vector2 y3, double mu, double tension, double bias)
+    //  => new(HermiteInterpolation.Interpolate(y0.m_x, y1.m_x, y2.m_x, y3.m_x, mu, tension, bias), HermiteInterpolation.Interpolate(y0.m_y, y1.m_y, y2.m_y, y3.m_y, mu, tension, bias));
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public static Vector2 InterpolateLinear(Vector2 y1, Vector2 y2, double mu)
+    //  => new(LinearInterpolation.Interpolate(y1.m_x, y2.m_x, mu), LinearInterpolation.Interpolate(y1.m_y, y2.m_y, mu));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -546,9 +557,9 @@ namespace Flux
 
       return new Vector2(source.m_x * cos + (target.m_x - source.m_x) * dp * sin, source.m_y * cos + (target.m_y - source.m_y) * dp * sin);
     }
-#endregion Static methods
+    #endregion Static methods
 
-#region Overloaded operators
+    #region Overloaded operators
     [System.Diagnostics.Contracts.Pure] public static explicit operator Vector2(System.ValueTuple<double, double> vt2) => new(vt2.Item1, vt2.Item2);
     [System.Diagnostics.Contracts.Pure] public static explicit operator System.ValueTuple<double, double>(Vector2 cc2) => new(cc2.X, cc2.Y);
 
@@ -579,6 +590,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static Vector2 operator %(Vector2 cc1, Vector2 cc2) => new(cc1.X % cc2.X, cc1.Y % cc2.Y);
     [System.Diagnostics.Contracts.Pure] public static Vector2 operator %(Vector2 cc, double scalar) => new(cc.X % scalar, cc.Y % scalar);
     [System.Diagnostics.Contracts.Pure] public static Vector2 operator %(double scalar, Vector2 cc) => new(scalar % cc.X, scalar % cc.Y);
-#endregion Overloaded operators
+    #endregion Overloaded operators
   }
 }

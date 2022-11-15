@@ -36,7 +36,7 @@ namespace Flux.Metrical
         {
           var targetItem = target[ti - 1];
 
-          ldg[si, ti] = ldg[si, ti] = Maths.Min(
+          ldg[si, ti] = ldg[si, ti] = GenericMath.Min(
             ldg[si - 1, ti] + 1, // Deletion.
             ldg[si, ti - 1] + 1, // Insertion.
             EqualityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1, // Substitution.
@@ -104,7 +104,7 @@ namespace Flux.Metrical
         {
           var targetItem = target[ti - 1];
 
-          v0[ti] = Maths.Min(
+          v0[ti] = GenericMath.Min(
             v1[ti] + 1, // Deletion.
             v0[ti - 1] + 1, // Insertion.
             EqualityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + 1, // Substitution.

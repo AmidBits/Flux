@@ -59,11 +59,11 @@ namespace Flux
       return negative ^ positive;
     }
     /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
-    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<Vector3> source, IEqualityApproximable mode)
+    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<Vector3> source, IEqualityApproximatable<double> mode)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new EqualityByAbsoluteTolerance();
+      mode ??= new Flux.Equality.EqualityByAbsoluteTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 
@@ -79,11 +79,11 @@ namespace Flux
       return true;
     }
     /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
-    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<Vector3> source, IEqualityApproximable mode)
+    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<Vector3> source, IEqualityApproximatable<double> mode)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new EqualityByRelativeTolerance();
+      mode ??= new Flux.Equality.EqualityByRelativeTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).EuclideanLength()).GetEnumerator();
 
@@ -213,8 +213,8 @@ namespace Flux
       => new(source.X, source.Y, source.Z);
     public static Point3 ToPoint3(this Vector3 source, System.Func<double, double> transformSelector)
       => new(System.Convert.ToInt32(transformSelector(source.X)), System.Convert.ToInt32(transformSelector(source.Y)), System.Convert.ToInt32(transformSelector(source.Z)));
-    public static Point3 ToPoint3(this Vector3 source, HalfRoundingBehavior behavior)
-      => new(System.Convert.ToInt32(Maths.Round(source.X, behavior)), System.Convert.ToInt32(Maths.Round(source.Y, behavior)), System.Convert.ToInt32(Maths.Round(source.Z, behavior)));
+    public static Point3 ToPoint3(this Vector3 source, RoundingMode behavior)
+      => new(System.Convert.ToInt32(Flux.Rounding<double>.Round(source.X, behavior)), System.Convert.ToInt32(Flux.Rounding<double>.Round(source.Y, behavior)), System.Convert.ToInt32(Flux.Rounding<double>.Round(source.Z, behavior)));
     public static System.Numerics.Vector3 ToVector3(this Vector3 source)
       => new((float)source.X, (float)source.Y, (float)source.Z);
   }
@@ -285,7 +285,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     [System.Diagnostics.Contracts.Pure]
     public double ChebyshevLength(double edgeLength = 1)
-      => Maths.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength), System.Math.Abs(m_z / edgeLength));
+      => GenericMath.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength), System.Math.Abs(m_z / edgeLength));
 
     /// <summary>Compute the Euclidean length of the vector.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -332,15 +332,10 @@ namespace Flux
     public Point3 ToCartesianCoordinate3I(System.MidpointRounding rounding)
       => new(System.Convert.ToInt32(System.Math.Round(m_x, rounding)), System.Convert.ToInt32(System.Math.Round(m_y, rounding)), System.Convert.ToInt32(System.Math.Round(m_z, rounding)));
 
-    /// <summary>Converts the <see cref="Vector3"/> to a <see cref="Point3"/> using the specified <see cref="Flux.FullRoundingBehavior"/>.</summary>
+    /// <summary>Converts the <see cref="Vector3"/> to a <see cref="Point3"/> using the specified <see cref="Flux.RoundingMode"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public Point3 ToCartesianCoordinate3I(Flux.FullRoundingBehavior rounding)
-      => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
-
-    /// <summary>Converts the <see cref="Vector3"/> to a <see cref="Point3"/> using the specified <see cref="Flux.HalfRoundingBehavior"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Point3 ToCartesianCoordinate3I(Flux.HalfRoundingBehavior rounding)
-      => new(System.Convert.ToInt32(Maths.Round(m_x, rounding)), System.Convert.ToInt32(Maths.Round(m_y, rounding)), System.Convert.ToInt32(Maths.Round(m_z, rounding)));
+    public Point3 ToCartesianCoordinate3I(Flux.RoundingMode rounding)
+      => new(System.Convert.ToInt32(Flux.Rounding<double>.Round(m_x, rounding)), System.Convert.ToInt32(Flux.Rounding<double>.Round(m_y, rounding)), System.Convert.ToInt32(Flux.Rounding<double>.Round(m_z, rounding)));
 
     /// <summary>Converts the <see cref="Vector3"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -425,21 +420,37 @@ namespace Flux
       => target - source;
 
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static Vector3 InterpolateCosine(Vector3 p1, Vector3 p2, double mu)
-      => new(CosineInterpolation.Interpolate(p1.m_x, p2.m_x, mu), CosineInterpolation.Interpolate(p1.m_y, p2.m_y, mu), CosineInterpolation.Interpolate(p1.Z, p2.Z, mu));
+    public static Vector3 Interpolate(Vector3 p1, Vector3 p2, double mu, I2NodeInterpolatable<double, double> mode)
+    {
+      mode ??= new Interpolation.LinearInterpolation<double, double>();
+
+      return new(System.Convert.ToInt32(mode.Interpolate2Node(p1.X, p2.X, mu)), System.Convert.ToInt32(mode.Interpolate2Node(p1.Y, p2.Y, mu)), System.Convert.ToInt32(mode.Interpolate2Node(p1.Z, p2.Z, mu)));
+    }
+
     /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static Vector3 InterpolateCubic(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, double mu)
-      => new(CubicInterpolation.Interpolate(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu), CubicInterpolation.Interpolate(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu), CubicInterpolation.Interpolate(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu));
-    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static Vector3 InterpolateHermite2(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, double mu, double tension, double bias)
-      => new(HermiteInterpolation.Interpolate(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu, tension, bias), HermiteInterpolation.Interpolate(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu, tension, bias), HermiteInterpolation.Interpolate(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu, tension, bias));
-    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public static Vector3 InterpolateLinear(Vector3 p1, Vector3 p2, double mu)
-      => new(LinearInterpolation.Interpolate(p1.m_x, p2.m_x, mu), LinearInterpolation.Interpolate(p1.m_y, p2.m_y, mu), LinearInterpolation.Interpolate(p1.m_z, p2.m_z, mu));
+    public static Vector3 Interpolate(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, double mu, I4NodeInterpolatable<double, double> mode)
+    {
+      mode ??= new Interpolation.CubicInterpolation<double, double>();
+
+      return new(System.Convert.ToInt32(mode.Interpolate4Node(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(mode.Interpolate4Node(p0.Y, p1.Y, p2.Y, p3.Y, mu)), System.Convert.ToInt32(mode.Interpolate4Node(p0.Z, p1.Z, p2.Z, p3.Z, mu)));
+    }
+
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public static Vector3 InterpolateCosine(Vector3 p1, Vector3 p2, double mu)
+    //  => new(CosineInterpolation.Interpolate(p1.m_x, p2.m_x, mu), CosineInterpolation.Interpolate(p1.m_y, p2.m_y, mu), CosineInterpolation.Interpolate(p1.Z, p2.Z, mu));
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public static Vector3 InterpolateCubic(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, double mu)
+    //  => new(CubicInterpolation.Interpolate(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu), CubicInterpolation.Interpolate(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu), CubicInterpolation.Interpolate(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu));
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public static Vector3 InterpolateHermite2(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, double mu, double tension, double bias)
+    //  => new(HermiteInterpolation.Interpolate(p0.m_x, p1.m_x, p2.m_x, p3.m_x, mu, tension, bias), HermiteInterpolation.Interpolate(p0.m_y, p1.m_y, p2.m_y, p3.m_y, mu, tension, bias), HermiteInterpolation.Interpolate(p0.m_z, p1.m_z, p2.m_z, p3.m_z, mu, tension, bias));
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public static Vector3 InterpolateLinear(Vector3 p1, Vector3 p2, double mu)
+    //  => new(LinearInterpolation.Interpolate(p1.m_x, p2.m_x, mu), LinearInterpolation.Interpolate(p1.m_y, p2.m_y, mu), LinearInterpolation.Interpolate(p1.m_z, p2.m_z, mu));
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     [System.Diagnostics.Contracts.Pure]

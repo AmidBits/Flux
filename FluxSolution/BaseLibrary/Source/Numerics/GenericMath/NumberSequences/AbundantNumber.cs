@@ -7,7 +7,7 @@ namespace Flux.NumberSequences
     #region Static methods
     [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger n, System.Numerics.BigInteger sum)> GetAbundantNumbers()
-      => Enumerable.Loop(() => (System.Numerics.BigInteger)3, e => true, e => e + 1, e => e).AsParallel().AsOrdered().Select(n => (n, sum: Numerics.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
+      => Enumerable.Loop(() => (System.Numerics.BigInteger)3, e => true, e => e + 1, e => e).AsParallel().AsOrdered().Select(n => (n, sum: NumberSequences.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Highly_abundant_number"/>

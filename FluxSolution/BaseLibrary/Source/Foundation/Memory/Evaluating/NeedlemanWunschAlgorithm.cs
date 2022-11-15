@@ -49,7 +49,7 @@
         {
           var te = target[ti - 1];
 
-          matrix[si, ti] = Maths.Max(
+          matrix[si, ti] = GenericMath.Max(
             matrix[si - 1, ti - 1] + SubstitutionMatrix(se, te), // Match.
             matrix[si - 1, ti] + LinearGapPenalty, // Delete.
             matrix[si, ti - 1] + LinearGapPenalty // Insert.

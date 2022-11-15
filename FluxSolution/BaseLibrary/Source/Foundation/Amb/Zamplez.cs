@@ -5,7 +5,7 @@ namespace Flux
 {
   public static partial class Zamplez
   {
-    private readonly static System.Numerics.BigInteger[] m_ap = Flux.Numerics.PrimeNumber.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
+    private readonly static System.Numerics.BigInteger[] m_ap = Flux.NumberSequences.PrimeNumber.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
     private readonly static int[] m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
     private readonly static int[] m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
     private readonly static int[] m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.

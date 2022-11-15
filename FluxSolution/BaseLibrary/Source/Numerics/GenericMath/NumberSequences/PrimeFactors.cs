@@ -10,7 +10,7 @@ namespace Flux.NumberSequences
     [System.Diagnostics.Contracts.Pure]
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPrimeFactors(System.Numerics.BigInteger number)
     {
-      foreach (var prime in Flux.Numerics.PrimeNumber.GetAscendingPrimes(2))
+      foreach (var prime in NumberSequences.PrimeNumber.GetAscendingPrimes(2))
         while ((number % prime) == 0)
         {
           yield return prime;

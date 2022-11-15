@@ -1,7 +1,7 @@
 
-namespace Flux
-{
-  public static partial class Polynomial
-  {
-  }
-}
+//namespace Flux
+//{
+//  public static partial class Polynomial
+//  {
+//  }
+//}

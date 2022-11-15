@@ -1,53 +1,53 @@
-namespace Flux
-{
-  public static partial class Maths
-  {
-    public static System.Numerics.BigInteger ReverseDigits(System.Numerics.BigInteger value, int radix)
-    {
-      AssertRadix(radix);
+//namespace Flux
+//{
+//  public static partial class Maths
+//  {
+//    public static System.Numerics.BigInteger ReverseDigits(System.Numerics.BigInteger value, int radix)
+//    {
+//      AssertRadix(radix);
 
-      var reverse = System.Numerics.BigInteger.Zero;
+//      var reverse = System.Numerics.BigInteger.Zero;
 
-      while (value != 0)
-      {
-        value = System.Numerics.BigInteger.DivRem(value, radix, out var remainder);
+//      while (value != 0)
+//      {
+//        value = System.Numerics.BigInteger.DivRem(value, radix, out var remainder);
 
-        reverse = reverse * radix + remainder;
-      }
+//        reverse = reverse * radix + remainder;
+//      }
 
-      return reverse;
-    }
+//      return reverse;
+//    }
 
-    public static int ReverseDigits(int value, int radix)
-    {
-      AssertRadix(radix);
+//    public static int ReverseDigits(int value, int radix)
+//    {
+//      AssertRadix(radix);
 
-      var reverse = 0;
+//      var reverse = 0;
 
-      while (value != 0)
-      {
-        value = System.Math.DivRem(value, radix, out var remainder);
+//      while (value != 0)
+//      {
+//        value = System.Math.DivRem(value, radix, out var remainder);
 
-        reverse = reverse * radix + remainder;
-      }
+//        reverse = reverse * radix + remainder;
+//      }
 
-      return reverse;
-    }
+//      return reverse;
+//    }
 
-    public static long ReverseDigits(long value, int radix)
-    {
-      AssertRadix(radix);
+//    public static long ReverseDigits(long value, int radix)
+//    {
+//      AssertRadix(radix);
 
-      var reverse = 0L;
+//      var reverse = 0L;
 
-      while (value != 0)
-      {
-        value = System.Math.DivRem(value, radix, out var remainder);
+//      while (value != 0)
+//      {
+//        value = System.Math.DivRem(value, radix, out var remainder);
 
-        reverse = reverse * radix + remainder;
-      }
+//        reverse = reverse * radix + remainder;
+//      }
 
-      return reverse;
-    }
-  }
-}
+//      return reverse;
+//    }
+//  }
+//}

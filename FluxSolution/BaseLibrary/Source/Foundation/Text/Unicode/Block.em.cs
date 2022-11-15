@@ -26,8 +26,7 @@ namespace Flux
       var actualFirst = GetMinUtf32(source) + skipFirst;
       var actualLast = GetMaxUtf32(source) - skipLast;
 
-      var roundedFirst = Maths.RoundToMultiple(actualFirst, 0x10, FullRoundingBehavior.Floor);
-      var roundedLast = Maths.RoundToMultiple(actualLast, 0x10, FullRoundingBehavior.Ceiling);
+      actualFirst.LocateNearestMultiple(0x10, false, out var roundedFirst, out var roundedLast);
 
       var digitCount = System.Math.Max(System.Convert.ToInt32(System.Math.Log10(roundedLast)), 4); // Show 4 or 5 digits.
 

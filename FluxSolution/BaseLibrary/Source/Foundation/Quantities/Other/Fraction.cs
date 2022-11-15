@@ -364,7 +364,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator +(Fraction a, Fraction b)
     {
-      var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);
+      var lcm = GenericMath.LeastCommonMultiple(a.m_denominator, b.m_denominator);
 
       var an = lcm / a.m_denominator * a.m_numerator;
       var bn = lcm / b.m_denominator * b.m_numerator;
@@ -399,7 +399,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static Fraction operator -(Fraction a, Fraction b)
     {
-      var lcm = Maths.LeastCommonMultiple(a.m_denominator, b.m_denominator);
+      var lcm = GenericMath.LeastCommonMultiple(a.m_denominator, b.m_denominator);
 
       var an = lcm / a.m_denominator * a.m_numerator;
       var bn = lcm / b.m_denominator * b.m_numerator;

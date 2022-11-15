@@ -16,7 +16,7 @@ namespace Flux.Model
         return numberOfDisks;
 
       if (numberOfRods == 3)
-        return Maths.Pow(2, numberOfDisks) - 1;
+        return Flux.GenericMath.IntegerPow(2, numberOfDisks) - 1;
       else if (numberOfRods >= 3 && numberOfDisks > 0)
       {
         var potentialMoves = new int[numberOfDisks - 1];

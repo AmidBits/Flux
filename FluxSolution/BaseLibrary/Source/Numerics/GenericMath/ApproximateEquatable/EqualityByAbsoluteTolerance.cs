@@ -25,7 +25,7 @@ namespace Flux
       public TSelf AbsoluteTolerance { get => m_absoluteTolerance; init => m_absoluteTolerance = value; }
 
       #region Static methods
-      public static bool IsApproximatelyEqual(TSelf a, TSelf b, TSelf absoluteTolerance )
+      public static bool IsApproximatelyEqual(TSelf a, TSelf b, TSelf absoluteTolerance)
         => a == b || (TSelf.Abs(a - b) <= absoluteTolerance);
       #endregion Static methods
 

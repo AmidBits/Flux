@@ -28,7 +28,7 @@ namespace Flux
     /// <summary>Finding the angle between two bearings.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double DeltaBearing(double degAzimuth1, double degAzimuth2)
-      => Flux.Maths.Wrap(degAzimuth2 - degAzimuth1, MinValue, MaxValue);
+      => (degAzimuth2 - degAzimuth1).Wrap(MinValue, MaxValue);
 
     [System.Diagnostics.Contracts.Pure]
     public static Azimuth FromAbbreviation(string compassPointAbbreviated)
@@ -113,7 +113,7 @@ namespace Flux
     /// <summary>An azimuth is wrapped over the range [0, 360).</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double WrapAzimuth(double degAzimuth)
-      => Maths.Wrap(degAzimuth, MinValue, MaxValue) % MaxValue;
+      => degAzimuth.Wrap(MinValue, MaxValue) % MaxValue;
     #endregion Static methods
 
     #region Overloaded operators

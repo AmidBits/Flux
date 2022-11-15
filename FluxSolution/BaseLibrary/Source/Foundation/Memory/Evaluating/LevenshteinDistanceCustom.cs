@@ -33,7 +33,7 @@ namespace Flux.Metrical
 
       for (var si = 1; si <= sourceLength; si++)
         for (var ti = 1; ti <= targetLength; ti++)
-          ldg[si, ti] = Maths.Min(
+          ldg[si, ti] = GenericMath.Min(
             ldg[si - 1, ti] + CostOfDeletion,
             ldg[si, ti - 1] + CostOfInsertion,
             EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + CostOfSubstitution
@@ -64,7 +64,7 @@ namespace Flux.Metrical
 
         for (var j = 0; j < targetCount; j++)
         {
-          v0[j + 1] = Maths.Min(
+          v0[j + 1] = GenericMath.Min(
             v1[j + 1] + CostOfDeletion, // Deletion.
             v0[j] + CostOfInsertion, // Insertion.
             EqualityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + CostOfSubstitution // Substitution.

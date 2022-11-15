@@ -62,7 +62,7 @@ namespace Flux.Metrical
 
           var isEqual = EqualityComparer.Equals(sourceItem, targetItem);
 
-          ldg[si + 1, ti + 1] = Maths.Min(
+          ldg[si + 1, ti + 1] = GenericMath.Min(
             ldg[si, ti + 1] + 1, // Deletion.
             ldg[si + 1, ti] + 1, // Insertion
             isEqual ? ldg[si, ti] : ldg[si, ti] + 1, // Substitution.

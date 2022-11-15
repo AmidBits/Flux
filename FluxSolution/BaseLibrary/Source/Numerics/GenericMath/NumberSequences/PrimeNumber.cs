@@ -282,7 +282,7 @@ namespace Flux.NumberSequences
     /// <see cref="https://en.wikipedia.org/wiki/List_of_prime_numbers#Additive_primes"/>
     [System.Diagnostics.Contracts.Pure]
     public static bool IsAlsoAdditivePrime(System.Numerics.BigInteger primeNumber)
-      => IsPrimeNumber(Maths.DigitSum(primeNumber, 10));
+      => IsPrimeNumber(GenericMath.DigitSum(primeNumber, 10));
     /// <summary>Indicates whether the prime number is also a congruent modulo prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     [System.Diagnostics.Contracts.Pure]

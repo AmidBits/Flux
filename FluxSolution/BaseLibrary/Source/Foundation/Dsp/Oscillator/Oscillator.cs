@@ -40,12 +40,12 @@ namespace Flux.Dsp.Synthesis
     private double m_offset;
     /// <summary>Initial offset of the oscillator phase.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Phase_(waves)"/>
-    public double Offset { get => m_offset; set => m_offset = Maths.Wrap(value, -1.0, 1.0); }
+    public double Offset { get => m_offset; set => m_offset = value.Wrap(-1.0, 1.0); }
 
     private double m_phase;
     /// <summary>The position of a point in time (an instant) on the waveform cycle in the range [0, 1].</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Phase_(waves)"/>
-    public double Phase { get => m_phase; set => m_phase = Maths.Wrap(value, 0.0, 1.0); }
+    public double Phase { get => m_phase; set => m_phase = value.Wrap(0.0, 1.0); }
 
     private double m_phaseModulation;
     /// <summary>The amount [0, 1] of output from the phase modulator to apply.</summary>
@@ -139,7 +139,7 @@ namespace Flux.Dsp.Synthesis
       if (ReversePhase)
         phaseShift = -phaseShift;
 
-      m_phase = Maths.Wrap(m_phase + phaseShift, 0, 1); // Ensure phase wraps within cycle.
+      m_phase = (m_phase + phaseShift).Wrap(0, 1); // Ensure phase wraps within cycle.
 
       System.Diagnostics.Debug.Assert(Current >= -1 && Current <= 1);
 
