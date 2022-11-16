@@ -25,7 +25,7 @@
       : throw new System.ArgumentOutOfRangeException(nameof(significantDigits));
 
     #region Implemented interfaces
-    /// <summary>PREVIEW! Rounds the <paramref name="x"/> to the nearest integer. The <paramref name="mode"/> specifies the halfway rounding strategy to use if the value is halfway between two integers (e.g. 11.5).</summary>
+    /// <summary>Rounds the <paramref name="x"/> to the nearest integer. The <paramref name="mode"/> specifies the halfway rounding strategy to use if the value is halfway between two integers (e.g. 11.5).</summary>
     /// <remarks>var r = Flux.GenericMath.TruncatingRound(99.96535789, 2, HalfwayRounding.ToEven); // = 99.97 (compare with the corresponding TruncatingRound method)</remarks>
     public TSelf RoundNumber(TSelf value)
       => Round(value, m_significantDigits, m_mode);

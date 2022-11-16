@@ -82,7 +82,7 @@
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => y == IntegerPow(x, n);
 
-    /// <summary>PREVIEW! Attempts to compute the (floor) <paramref name="n"/>th root of <paramref name="y"/> into the out parameter <paramref name="x"/>.</summary>
+    /// <summary>Attempts to compute the (floor) <paramref name="n"/>th root of <paramref name="y"/> into the out parameter <paramref name="x"/>.</summary>
     public static bool TryIntegerNthRoot<TSelf>(TSelf y, TSelf n, out TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

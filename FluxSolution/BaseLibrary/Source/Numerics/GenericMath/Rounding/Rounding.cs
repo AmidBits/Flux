@@ -25,11 +25,11 @@
     #region Static methods
 
     #region Halfway rounding functions
-    /// <summary>PREVIEW! Symmetric rounding: round half up, bias: away from zero.</summary>
+    /// <summary>Symmetric rounding: round half up, bias: away from zero.</summary>
     public static TSelf RoundHalfAwayFromZero(TSelf x)
       => TSelf.CopySign(RoundHalfToPositiveInfinity(TSelf.Abs(x)), x);
 
-    /// <summary>PREVIEW! Common rounding: round half, bias: even.</summary>
+    /// <summary>Common rounding: round half, bias: even.</summary>
     public static TSelf RoundHalfToEven(TSelf x)
     {
       var half = TSelf.CreateChecked(0.5);
@@ -39,11 +39,11 @@
       return !TSelf.IsZero(positiveInfinity % TSelf.CreateChecked(2)) && x - TSelf.Floor(x) == half ? positiveInfinity - TSelf.One : positiveInfinity;
     }
 
-    /// <summary>PREVIEW! Common rounding: round half down, bias: negative infinity.</summary>
+    /// <summary>Common rounding: round half down, bias: negative infinity.</summary>
     public static TSelf RoundHalfToNegativeInfinity(TSelf x)
       => TSelf.Ceiling(x - TSelf.CreateChecked(0.5));
 
-    /// <summary>PREVIEW! Common rounding: round half, bias: even.</summary>
+    /// <summary>Common rounding: round half, bias: even.</summary>
     public static TSelf RoundHalfToOdd(TSelf x)
     {
       var half = TSelf.CreateChecked(0.5);
@@ -53,29 +53,29 @@
       return TSelf.IsZero(positiveInfinity % TSelf.CreateChecked(2)) && x - TSelf.Floor(x) == half ? positiveInfinity - TSelf.One : positiveInfinity;
     }
 
-    /// <summary>PREVIEW! Common rounding: round half up, bias: positive infinity.</summary>
+    /// <summary>Common rounding: round half up, bias: positive infinity.</summary>
     public static TSelf RoundHalfToPositiveInfinity(TSelf x)
       => TSelf.Floor(x + TSelf.CreateChecked(0.5));
 
-    /// <summary>PREVIEW! Symmetric rounding: round half down, bias: towards zero.</summary>
+    /// <summary>Symmetric rounding: round half down, bias: towards zero.</summary>
     public static TSelf RoundHalfTowardZero(TSelf x)
       => TSelf.CopySign(RoundHalfToNegativeInfinity(TSelf.Abs(x)), x);
     #endregion Halfway rounding functions
 
     #region Direct rounding functions
-    /// <summary>PREVIEW! Common rounding: round up, bias: positive infinity.</summary>
+    /// <summary>Common rounding: round up, bias: positive infinity.</summary>
     public static TSelf RoundCeiling(TSelf x)
      => TSelf.Ceiling(x);
 
-    /// <summary>PREVIEW! Symmetric rounding: round up, bias: away from zero.</summary>
+    /// <summary>Symmetric rounding: round up, bias: away from zero.</summary>
     public static TSelf RoundEnvelop(TSelf x)
       => TSelf.Sign(x) < 0 ? TSelf.Floor(x) : TSelf.Ceiling(x);
 
-    /// <summary>PREVIEW! Common rounding: round down, bias: negative infinity.</summary>
+    /// <summary>Common rounding: round down, bias: negative infinity.</summary>
     public static TSelf RoundFloor(TSelf x)
       => TSelf.Floor(x);
 
-    /// <summary>PREVIEW! Symmetric rounding: round down, bias: towards zero.</summary>
+    /// <summary>Symmetric rounding: round down, bias: towards zero.</summary>
     public static TSelf RoundTruncate(TSelf x)
       => TSelf.Truncate(x);
     #endregion Direct rounding functions

@@ -50,7 +50,7 @@
     }
 
     #region Implemented interfaces
-    /// <summary>PREVIEW! Rounds a value to the nearest boundary. The mode specifies how to round when between two intervals.</summary>
+    /// <summary>Rounds a value to the nearest boundary. The mode specifies how to round when between two intervals.</summary>
     public TSelf RoundNumber(TSelf x)
       => Round(x, m_boundaryTowardsZero, m_boundaryAwayFromZero, m_mode);
     #endregion Implemented interfaces
