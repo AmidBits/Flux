@@ -1,9 +1,8 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux
+﻿namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Get the two multiples nearest to value.</summary>
+    /// <summary>Get the two multiples nearest to value.</summary>
     /// <param name="x">The value for which the nearest multiples of will be found.</param>
     /// <param name="multiple">The multiple to which the results will align.</param>
     /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
@@ -27,7 +26,7 @@ namespace Flux
       }
     }
 
-    /// <summary>PREVIEW! Find the nearest (to <paramref name="x"/>) of two multiples, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both multiples as out parameters.</summary>
+    /// <summary>Find the nearest (to <paramref name="x"/>) of two multiples, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both multiples as out parameters.</summary>
     /// <param name="x">The value for which the nearest multiples of will be found.</param>
     /// <param name="multiple">The multiple to which the results will align.</param>
     /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
@@ -44,4 +43,3 @@ namespace Flux
     }
   }
 }
-#endif

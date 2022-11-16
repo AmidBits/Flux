@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Returns the (floor) root of the <paramref name="y"/>, using Newton's method.</summary>
+    /// <summary>Returns the (floor) root of the <paramref name="y"/>, using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
     public static TSelf IntegerSqrt<TSelf>(this TSelf y)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -26,17 +25,17 @@ namespace Flux
       return y;
     }
 
-    /// <summary>PREVIEW! Returns whether <paramref name="y"/> is the integer (not necessarily perfect) square of <paramref name="x"/>.</summary>
+    /// <summary>Returns whether <paramref name="y"/> is the integer (not necessarily perfect) square of <paramref name="x"/>.</summary>
     public static bool IsIntegerSqrt<TSelf>(this TSelf y, TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => y >= (x * x) && (x + TSelf.One) is var x1 && y < (x1 * x1);
 
-    /// <summary>PREVIEW! Returns whether <paramref name="y"/> is a perfect square of <paramref name="x"/>.</summary>
+    /// <summary>Returns whether <paramref name="y"/> is a perfect square of <paramref name="x"/>.</summary>
     public static bool IsPerfectIntegerSqrt<TSelf>(this TSelf y, TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => y / x == x && y % x == TSelf.Zero; // Not using "y == checked(x * x)" because risk of overflow.
 
-    /// <summary>PREVIEW! Attempts to compute the (floor) square root of <paramref name="y"/> into the out parameter <paramref name="x"/>, using Newton's method.</summary>
+    /// <summary>Attempts to compute the (floor) square root of <paramref name="y"/> into the out parameter <paramref name="x"/>, using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
     public static bool TryIntegerSqrt<TSelf>(this TSelf y, out TSelf x)
@@ -54,4 +53,3 @@ namespace Flux
     }
   }
 }
-#endif

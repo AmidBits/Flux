@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux
+﻿namespace Flux
 {
   /// <summary>Represents a value range of two components, for various range operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable and IEquatable to operate.</summary>
   public readonly record struct ValueRangeEx<TSelf>
@@ -112,4 +111,3 @@ namespace Flux
     #endregion Static methods
   }
 }
-#endif

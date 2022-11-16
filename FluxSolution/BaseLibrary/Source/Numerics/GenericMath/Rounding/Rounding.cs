@@ -1,6 +1,6 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux
+﻿namespace Flux
 {
+  /// <summary></summary>
   public class Rounding<TSelf>
     : INumberRoundable<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
@@ -109,4 +109,3 @@ namespace Flux
     #endregion Implemented interfaces
   }
 }
-#endif

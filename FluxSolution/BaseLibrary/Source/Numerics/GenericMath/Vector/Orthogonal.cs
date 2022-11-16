@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class Vector
@@ -10,4 +9,3 @@ namespace Flux
       => TSelf.Abs(x) > TSelf.Abs(z) ? (-y, x, TSelf.Zero) : (TSelf.Zero, -x, y);
   }
 }
-#endif

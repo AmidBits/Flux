@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Quantilers
 {
   /// <summary>Linear interpolation of the empirical distribution function.</summary>
@@ -28,4 +27,3 @@ namespace Flux.Quantilers
     }
   }
 }
-#endif

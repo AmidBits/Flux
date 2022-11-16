@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Snaps the value to the nearest interval if it's within the specified distance of an interval, otherwise unaltered.</summary>
+    /// <summary>Snaps the value to the nearest interval if it's within the specified distance of an interval, otherwise unaltered.</summary>
     public static TSelf DetentInterval<TSelf>(this TSelf number, TSelf interval, TSelf distance, RoundingMode mode)
       where TSelf : System.Numerics.INumber<TSelf>
     {
@@ -23,4 +22,3 @@ namespace Flux
     }
   }
 }
-#endif

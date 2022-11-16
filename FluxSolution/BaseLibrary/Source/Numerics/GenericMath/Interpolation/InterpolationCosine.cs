@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Interpolation
 {
   /// <summary>Cosine interpolation is a smoother and perhaps simplest function. A suitable orientated piece of a cosine function serves to provide a smooth transition between adjacent segments.</summary>
@@ -26,4 +25,3 @@ namespace Flux.Interpolation
     #endregion Implemented interfaces
   }
 }
-#endif

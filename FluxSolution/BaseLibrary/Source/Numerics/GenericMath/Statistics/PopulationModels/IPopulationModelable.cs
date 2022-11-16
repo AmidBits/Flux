@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   // https://en.wikipedia.org/wiki/Population_model
@@ -13,4 +12,3 @@ namespace Flux
     public IPopulationModelable<TSelf> ModelPopulation();
   }
 }
-#endif

@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.PopulationModel
 {
   /// <summary>Although BIDE models are conceptually simple, reliable estimates of the 5 variables contained therein (N, B, D, I and E) are often difficult to obtain.</summary>
@@ -52,4 +51,3 @@ namespace Flux.PopulationModel
       => population + births - deaths + immigrated - emigrated;
   }
 }
-#endif

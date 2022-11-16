@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class GenericMath
   {
     /// <summary>Returns the sign of <paramref name="x"/>.</summary>
     public static TSelf Signum<TSelf>(this TSelf x)

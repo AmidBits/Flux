@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Gets the ordinal indicator for <paramref name="x"/>. E.g. "st" for 1 and "nd" for 122.</summary>
+    /// <summary>Gets the ordinal indicator for <paramref name="x"/>. E.g. "st" for 1 and "nd" for 122.</summary>
     public static System.ReadOnlySpan<char> GetOrdinalIndicator<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -19,10 +18,9 @@ namespace Flux
       };
     }
 
-    /// <summary>PREVIEW! Creates a new string with <paramref name="x"/> and its ordinal indicator. E.g. "1st" for 1 and "122nd" for 122.</summary>
+    /// <summary>Creates a new string with <paramref name="x"/> and its ordinal indicator. E.g. "1st" for 1 and "122nd" for 122.</summary>
     public static System.ReadOnlySpan<char> ToOrdinalIndicatorString<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => $"{x}{GetOrdinalIndicator(x)}";
   }
 }
-#endif

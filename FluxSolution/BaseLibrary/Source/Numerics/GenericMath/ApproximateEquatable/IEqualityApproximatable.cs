@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   /// <summary>An interface for approximate comparisons of two real numbers, i.e. when the equality canbe defined by some size difference.</summary>
@@ -9,4 +8,3 @@ namespace Flux
     bool IsApproximatelyEqual(TSelf a, TSelf b);
   }
 }
-#endif

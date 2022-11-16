@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Returns <paramref name="x"/> raised to the power of <paramref name="n"/>, using exponentiation by squaring. Does not work with a negative exponent.</summary>
+    /// <summary>Returns <paramref name="x"/> raised to the power of <paramref name="n"/>, using exponentiation by squaring. Does not work with a negative exponent.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation"/>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
     public static TSelf IntegerPow<TSelf, TExponent>(this TSelf x, TExponent n)
@@ -31,4 +30,3 @@ namespace Flux
     }
   }
 }
-#endif

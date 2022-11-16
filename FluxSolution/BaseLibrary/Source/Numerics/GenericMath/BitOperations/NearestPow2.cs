@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   // <seealso cref="http://aggregate.org/MAGIC/"/>
@@ -6,7 +5,7 @@ namespace Flux
 
   public static partial class BitOps
   {
-    /// <summary>PREVIEW! Get the two power-of-2 nearest to value.</summary>
+    /// <summary>Get the two power-of-2 nearest to value.</summary>
     /// <param name="x">The value for which the nearest power-of-2 will be found.</param>
     /// <param name="properNearest">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
     /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
@@ -35,7 +34,7 @@ namespace Flux
       }
     }
 
-    /// <summary>PREVIEW! Find the nearest (to <paramref name="x"/>) of two power-of-2, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
+    /// <summary>Find the nearest (to <paramref name="x"/>) of two power-of-2, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
     /// <param name="x">The value for which the nearest power-of-2 will be found.</param>
     /// <param name="properNearest">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
     /// <param name="mode">The halfway rounding mode to use, when halfway between two values.</param>
@@ -51,4 +50,3 @@ namespace Flux
     }
   }
 }
-#endif

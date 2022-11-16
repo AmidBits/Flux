@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Determines if <paramref name="x"/> is a power of <paramref name="b"/>.</summary>
+    /// <summary>Determines if <paramref name="x"/> is a power of <paramref name="b"/>.</summary>
     public static bool IsIntegerPow<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -24,4 +23,3 @@ namespace Flux
     }
   }
 }
-#endif

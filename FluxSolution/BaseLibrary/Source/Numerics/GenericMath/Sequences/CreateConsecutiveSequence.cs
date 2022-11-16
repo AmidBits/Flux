@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Creates a new sequence of consecutive numbers between the min and max from the specified collection.</summary>
+    /// <summary>Creates a new sequence of consecutive numbers between the min and max from the specified collection.</summary>
     public static System.Collections.Generic.IEnumerable<TSelf> CreateConsecutiveSequence<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> collection)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -15,4 +14,3 @@ namespace Flux
     }
   }
 }
-#endif

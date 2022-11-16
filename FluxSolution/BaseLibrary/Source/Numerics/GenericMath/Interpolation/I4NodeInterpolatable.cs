@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public interface I4NodeInterpolatable<TNode, TMu>
@@ -8,4 +7,3 @@ namespace Flux
     TMu Interpolate4Node(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu);
   }
 }
-#endif

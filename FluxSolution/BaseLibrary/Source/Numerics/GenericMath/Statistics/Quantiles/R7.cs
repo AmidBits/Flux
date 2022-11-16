@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Quantilers
 {
   /// <summary>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</summary>
@@ -24,4 +23,3 @@ namespace Flux.Quantilers
     }
   }
 }
-#endif

@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>PREVIEW! Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
+    /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
     public static bool IsApproximatelyEqualRelative<TSelf>(this TSelf a, TSelf b, TSelf percentTolerance)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new Equality.EqualityByRelativeTolerance<TSelf>(percentTolerance).IsApproximatelyEqual(a, b);
@@ -11,7 +10,7 @@ namespace Flux
 
   namespace Equality
   {
-    /// <summary>PREVIEW! Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
+    /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
     public record class EqualityByRelativeTolerance<TSelf>
       : IEqualityApproximatable<TSelf>
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
@@ -36,4 +35,3 @@ namespace Flux
     }
   }
 }
-#endif

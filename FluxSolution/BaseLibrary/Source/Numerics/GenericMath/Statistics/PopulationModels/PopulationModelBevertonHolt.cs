@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.PopulationModel
 {
   /// <summary>A classic discrete-time population model which gives the expected number Nt+1 (or density) of individuals in generation t+1 as a function of the number of individuals in the previous generation.</summary>
@@ -47,4 +46,3 @@ namespace Flux.PopulationModel
       => (growthRate * population) / (TSelf.One + population / carryingCapacity);
   }
 }
-#endif

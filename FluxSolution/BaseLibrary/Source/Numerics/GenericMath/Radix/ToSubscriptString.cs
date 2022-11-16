@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
+    /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static System.ReadOnlySpan<char> ToSubscriptString<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -30,4 +29,3 @@ namespace Flux
     }
   }
 }
-#endif

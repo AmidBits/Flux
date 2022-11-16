@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Quantilers
 {
   /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
@@ -21,4 +20,3 @@ namespace Flux.Quantilers
     }
   }
 }
-#endif

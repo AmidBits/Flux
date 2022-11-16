@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
@@ -9,4 +8,3 @@ namespace Flux
       => x < min ? min : x > max ? max : x;
   }
 }
-#endif

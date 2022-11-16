@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
@@ -11,4 +10,3 @@ namespace Flux
       => r = TResult.CreateChecked(TValue.Abs(x)) * TResult.CreateChecked(TSign.Sign(y));
   }
 }
-#endif

@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux
+﻿namespace Flux
 {
   public interface INumberRoundable<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
@@ -7,4 +6,3 @@ namespace Flux
     TSelf RoundNumber(TSelf value);
   }
 }
-#endif

@@ -19,7 +19,6 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      Zamplez.RunCoordinateSystems();
       return;
 
       var types = typeof(Flux.Locale).Assembly.GetTypes().Where(t => !t.IsNested && t.IsPublic).OrderBy(t => t.Name).ToArray();

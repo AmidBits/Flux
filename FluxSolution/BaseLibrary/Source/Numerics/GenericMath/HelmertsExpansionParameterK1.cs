@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
@@ -9,4 +8,3 @@ namespace Flux
       => TSelf.Sqrt(TSelf.One + u * u) is var k ? (k - TSelf.One) / (k + TSelf.One) : throw new System.ArithmeticException();
   }
 }
-#endif

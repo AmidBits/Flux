@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Quantilers
 {
   /// <summary>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</summary>
@@ -23,4 +22,3 @@ namespace Flux.Quantilers
     }
   }
 }
-#endif

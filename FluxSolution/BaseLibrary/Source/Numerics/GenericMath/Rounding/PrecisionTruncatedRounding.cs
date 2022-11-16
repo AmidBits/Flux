@@ -1,6 +1,6 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux
+﻿namespace Flux
 {
+  /// <summary>Rounds <paramref name="x"/> by truncating to the specified number of <paramref name="significantDigits"> decimal digits</paramref> and then round using the <paramref name="mode"/>. The reason for doing this is because unless a value is EXACTLY between two numbers, to the decimal, it will be rounded based on the next least significant decimal digit and so on.</summary>
   public class PrecisionTruncatedRounding<TSelf>
     : INumberRoundable<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
@@ -34,4 +34,3 @@ namespace Flux
     #endregion Implemented interfaces
   }
 }
-#endif

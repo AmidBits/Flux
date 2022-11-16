@@ -1,7 +1,6 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
-  /// <summary>PREVIEW! The strategy of rounding to the nearest number, and either when a number is halfway between two others or directly to one of two others.</summary>
+  /// <summary>The strategy of rounding to the nearest number, and either when a number is halfway between two others or directly to one of two others.</summary>
   /// <seealso cref="http://www.jackleitch.net/2010/06/adventures-in-net-rounding-part-2-exotic-rounding-algorithms/"/>
   /// <seealso cref="http://www.cplusplus.com/articles/1UCRko23/"/>
   public enum RoundingMode
@@ -39,4 +38,3 @@ namespace Flux
     Ceiling = 10 + MidpointRounding.ToPositiveInfinity,
   }
 }
-#endif

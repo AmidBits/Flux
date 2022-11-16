@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Computes the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/>.</summary>
+    /// <summary>Computes the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static void IntegerLog<TSelf>(this TSelf number, TSelf radix, out TSelf logFloor, out TSelf logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -29,7 +28,7 @@ namespace Flux
       }
     }
 
-    /// <summary>PREVIEW! Computes the integer log ceiling of x using base b.</summary>
+    /// <summary>Computes the integer log ceiling of x using base b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static TSelf IntegerLogCeiling<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -55,7 +54,7 @@ namespace Flux
       return logCeiling;
     }
 
-    /// <summary>PREVIEW! Computes the integer log floor of <paramref name="x"/> using base <paramref name="b"/>.</summary>
+    /// <summary>Computes the integer log floor of <paramref name="x"/> using base <paramref name="b"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static TSelf IntegerLogFloor<TSelf>(this TSelf x, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -76,7 +75,7 @@ namespace Flux
       return logFloor;
     }
 
-    /// <summary>PREVIEW! Attempt to compute the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/> into the out parameters.</summary>
+    /// <summary>Attempt to compute the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/> into the out parameters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static bool TryIntegerLog<TSelf>(this TSelf x, TSelf b, out TSelf logFloor, out TSelf logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -96,4 +95,3 @@ namespace Flux
     }
   }
 }
-#endif

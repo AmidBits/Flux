@@ -1,6 +1,3 @@
-#if NET7_0_OR_GREATER
-using Flux.Hashing;
-
 namespace Flux
 {
   public static partial class GenericMath
@@ -91,4 +88,3 @@ namespace Flux
     //}
   }
 }
-#endif

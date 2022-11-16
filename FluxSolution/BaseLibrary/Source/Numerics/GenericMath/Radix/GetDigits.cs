@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Returns the individual digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
+    /// <summary>Returns the individual digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
     public static System.Span<TSelf> GetDigits<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -12,7 +11,7 @@ namespace Flux
       return reversed;
     }
 
-    /// <summary>PREVIEW! Returns the place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
+    /// <summary>Returns the place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
     public static System.Span<TSelf> GetDigitsReversed<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -33,4 +32,3 @@ namespace Flux
     }
   }
 }
-#endif

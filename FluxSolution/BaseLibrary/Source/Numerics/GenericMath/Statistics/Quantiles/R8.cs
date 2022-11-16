@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Quantilers
 {
   /// <summary>Linear interpolation of the approximate medians for order statistics.</summary>
@@ -23,4 +22,3 @@ namespace Flux.Quantilers
     }
   }
 }
-#endif

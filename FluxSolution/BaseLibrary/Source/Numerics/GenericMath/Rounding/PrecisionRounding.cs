@@ -1,6 +1,6 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux
+﻿namespace Flux
 {
+  /// <summary>Rounds the <paramref name="x"/> to the nearest integer. The <paramref name="mode"/> specifies the halfway rounding strategy to use if the value is halfway between two integers (e.g. 11.5).</summary>
   public class PrecisionRounding<TSelf>
     : INumberRoundable<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
@@ -32,4 +32,3 @@ namespace Flux
     #endregion Implemented interfaces
   }
 }
-#endif

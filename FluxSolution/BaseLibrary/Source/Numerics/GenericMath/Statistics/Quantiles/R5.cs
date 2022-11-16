@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Quantilers
 {
   /// <summary>Piecewise linear function where the knots are the values midway through the steps of the empirical distribution function.</summary>
@@ -23,4 +22,3 @@ namespace Flux.Quantilers
     }
   }
 }
-#endif

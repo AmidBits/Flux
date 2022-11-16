@@ -1,9 +1,8 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>PREVIEW! Converts the number to text using the specified symbols. The count of symbols represents the radix of conversion.</summary>
+    /// <summary>Converts the number to text using the specified symbols. The count of symbols represents the radix of conversion.</summary>
     public static System.Text.StringBuilder ToRadixString<TSelf>(this TSelf number, System.ReadOnlySpan<System.Text.Rune> symbols)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -29,10 +28,9 @@ namespace Flux
       return sb;
     }
 
-    /// <summary>PREVIEW! Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
+    /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static System.ReadOnlySpan<char> ToRadixString<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => ToRadixString(number, Flux.Text.RuneSequences.Base62[..AssertRadix(int.CreateChecked(radix))]).ToString();
   }
 }
-#endif

@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class Vector
@@ -14,4 +13,3 @@ namespace Flux
       => ax * bx + ay * by + az * bz;
   }
 }
-#endif
