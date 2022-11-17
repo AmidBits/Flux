@@ -27,7 +27,7 @@ namespace ConsoleApp
       System.Console.WriteLine($"(Rounding) Mode = {mode}");
       System.Console.WriteLine();
 
-      var number = -0;
+      var number = 0;
       System.Console.WriteLine($"Number = {number}");
       System.Console.WriteLine();
 
