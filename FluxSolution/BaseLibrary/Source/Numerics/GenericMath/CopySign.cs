@@ -7,6 +7,6 @@ namespace Flux
       where TValue : System.Numerics.INumber<TValue>
       where TSign : System.Numerics.INumber<TSign>
       where TResult : System.Numerics.INumber<TResult>
-      => result = TResult.CreateChecked(TValue.Abs(x)) * TResult.CreateChecked(TSign.Sign(y));
+      => result = TResult.CreateChecked(TValue.Abs(x)) * TResult.CreateChecked(y.SignumNoZero());
   }
 }

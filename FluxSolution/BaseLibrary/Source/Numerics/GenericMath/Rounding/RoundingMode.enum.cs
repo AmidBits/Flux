@@ -24,10 +24,10 @@ namespace Flux
     /// <remarks>E.g. rounding a fraction part of 0.5 to the nearest odd integer. For example, 1.5 rounds to 1.0, 2.5 rounds to 3.0, -1.5 rounds to -1.0, and -2.5 rounds to -3.0.</remarks>
     HalfToOdd = 5,
 
-    /// <summary>Round to the number that is further from zero.</summary>
+    /// <summary>Round to the number that is further/away from zero.</summary>
     /// <remarks>This is either the typical Math.Floor (if less than zero) or Math.Ceiling (if greater than zero) of the number.</remarks>
     Envelop = 10 + MidpointRounding.AwayFromZero,
-    /// <summary>Round to the number that is closer to zero.</summary>
+    /// <summary>Round to the number that is closer to/towards zero.</summary>
     /// <remarks>This is the same as Math.Truncate of the number.</remarks>
     Truncate = 10 + MidpointRounding.ToZero,
     /// <summary>Round (down) to the number that is less than.</summary>

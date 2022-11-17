@@ -19,10 +19,31 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var x = -16;
-      var mn = x.NearestMultiple(3, true, RoundingMode.HalfToEven, out var mntz, out var mnafz);
-      var p10n = x.NearestPowOf(10, true, RoundingMode.HalfToEven, out var p10ntz, out var p10nafz);
-      var p2n = x.NearestPow2(true, RoundingMode.HalfToEven, out var p2ntz, out var p2nafz);
+      var proper = false;
+      System.Console.WriteLine($"Proper = {proper}");
+      System.Console.WriteLine();
+
+      var mode = RoundingMode.HalfTowardZero;
+      System.Console.WriteLine($"(Rounding) Mode = {mode}");
+      System.Console.WriteLine();
+
+      var number = -0;
+      System.Console.WriteLine($"Number = {number}");
+      System.Console.WriteLine();
+
+      var multiple = 7;
+      var nm = double.CreateChecked(number).NearestMultiple(multiple, proper, mode, out var nmtz, out var nmafz);
+      System.Console.WriteLine($"Nearest Multiple of {multiple} = [{nmtz}, {nmafz}] = {nm}");
+      System.Console.WriteLine();
+
+      var radix = 2;
+      var npr = number.NearestPowOf(radix, proper, mode, out var nprtz, out var nprafz);
+      System.Console.WriteLine($"Nearest Power of {radix} = [{nprtz}, {nprafz}] = {npr}.");
+      System.Console.WriteLine();
+
+      var np2 = number.NearestPow2(proper, mode, out var np2tz, out var np2afz);
+      System.Console.WriteLine($"Nearest Pow2 = [{np2tz}, {np2afz}] = {np2}");
+      System.Console.WriteLine();
 
       return;
 

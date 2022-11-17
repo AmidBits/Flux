@@ -16,6 +16,7 @@
       m_boundaryAwayFromZero = boundaryAwayFromZero;
     }
 
+    #region Static methods
     /// <summary>Rounds a value to the nearest boundary. The distance computation is a slight optimization for special cases, e.g. when rounding to multiple of. The mode specifies how to round when between two intervals.</summary>
     public static TSelf Round(TSelf x, TSelf boundaryTowardsZero, TSelf boundaryAwayFromZero, RoundingMode mode, TSelf distanceTowardsZero, TSelf distanceAwayFromZero)
     {
@@ -48,6 +49,7 @@
 
       return Round(x, boundaryTowardsZero, boundaryAwayFromZero, mode, distanceTowardsZero, distanceAwayFromZero);
     }
+    #endregion Static methods
 
     #region Implemented interfaces
     /// <summary>Rounds a value to the nearest boundary. The mode specifies how to round when between two intervals.</summary>

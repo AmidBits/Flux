@@ -50,7 +50,7 @@
       => TSelf.CopySign(RoundHalfToNegativeInfinity(TSelf.Abs(x)), x);
     #endregion Halfway rounding functions
 
-    #region Direct rounding functions
+    #region Direct (non-halfway) rounding functions
     /// <summary>Common rounding: round up, bias: positive infinity.</summary>
     public static TSelf RoundCeiling(TSelf x)
      => TSelf.Ceiling(x);
@@ -66,7 +66,7 @@
     /// <summary>Symmetric rounding: round down, bias: towards zero.</summary>
     public static TSelf RoundTruncate(TSelf x)
       => TSelf.Truncate(x);
-    #endregion Direct rounding functions
+    #endregion Direct (non-halfway) rounding functions
 
     public static TSelf Round(TSelf x, RoundingMode mode)
     {
