@@ -18,7 +18,7 @@ namespace Flux
       {
         if (!TSelf.IsZero(number))
         {
-          if (!IsIntegerPow(number, radix))
+          if (!IsIntegerPowOf(number, radix))
             logCeiling++;
 
           while (number >= radix)

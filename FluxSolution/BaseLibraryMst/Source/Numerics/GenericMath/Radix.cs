@@ -111,8 +111,8 @@ namespace GenericMath
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(false, 511.IsIntegerPow(2));
-      Assert.AreEqual(true, 512.IsIntegerPow(2));
+      Assert.AreEqual(false, 511.IsIntegerPowOf(2));
+      Assert.AreEqual(true, 512.IsIntegerPowOf(2));
     }
 
     [TestMethod]
