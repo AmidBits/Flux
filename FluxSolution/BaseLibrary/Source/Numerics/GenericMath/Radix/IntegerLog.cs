@@ -4,26 +4,30 @@ namespace Flux
   {
     /// <summary>Computes the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static void IntegerLog<TSelf>(this TSelf number, TSelf radix, out TSelf logFloor, out TSelf logCeiling)
+    public static void IntegerLog<TSelf, TResult>(this TSelf number, TSelf radix, out TResult logFloor, out TResult logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
-      logFloor = TSelf.Zero;
-      logCeiling = TSelf.Zero;
+      logFloor = TResult.Zero;
+      logCeiling = TResult.Zero;
 
       AssertNonNegative(number);
       AssertRadix(radix);
 
-      if (!TSelf.IsZero(number))
+      checked
       {
-        if (!IsIntegerPowOf(number, radix))
-          logCeiling++;
-
-        while (number >= radix)
+        if (!TSelf.IsZero(number))
         {
-          number /= radix;
+          if (!IsIntegerPowOf(number, radix))
+            logCeiling++;
 
-          logFloor++;
-          logCeiling++;
+          while (number >= radix)
+          {
+            number /= radix;
+
+            logFloor++;
+            logCeiling++;
+          }
         }
       }
     }
@@ -77,8 +81,9 @@ namespace Flux
 
     /// <summary>Attempt to compute the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/> into the out parameters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static bool TryIntegerLog<TSelf>(this TSelf x, TSelf b, out TSelf logFloor, out TSelf logCeiling)
+    public static bool TryIntegerLog<TSelf, TResult>(this TSelf x, TSelf b, out TResult logFloor, out TResult logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       try
       {
@@ -88,8 +93,8 @@ namespace Flux
       }
       catch { }
 
-      logFloor = TSelf.Zero;
-      logCeiling = TSelf.Zero;
+      logFloor = TResult.Zero;
+      logCeiling = TResult.Zero;
 
       return false;
     }

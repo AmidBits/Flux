@@ -96,7 +96,7 @@ namespace GenericMath
     [TestMethod]
     public void TryIntegerLog()
     {
-      512.TryIntegerLog(10, out var logFloor, out var logCeiling);
+      512.TryIntegerLog(10, out int logFloor, out int logCeiling);
 
       Assert.AreEqual(2, logFloor);
       Assert.AreEqual(3, logCeiling);
