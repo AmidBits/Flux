@@ -156,7 +156,7 @@ namespace Flux
       //m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(nearestAwayFromZero);
       //m_position = 0;
 
-      var powerOf2Capacity = BitOps.FoldRight(capacity) + 1;
+      var powerOf2Capacity = capacity.BitFoldRight() + 1;
       m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(powerOf2Capacity);
       m_position = 0;
     }
@@ -204,7 +204,7 @@ namespace Flux
 
       if (capacity > realCapacity)
       {
-        realCapacity = realCapacity == 0 ? DefaultBufferSize : BitOps.FoldRight(realCapacity) + 1;
+        realCapacity = realCapacity == 0 ? DefaultBufferSize : realCapacity.BitFoldRight() + 1;
 
         var rented = System.Buffers.ArrayPool<T>.Shared.Rent(realCapacity);
         System.Array.Clear(rented);

@@ -5,18 +5,6 @@
     : INumberRoundable<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
-    public static Rounding<TSelf> HalfToAwayFromZero => new(RoundingMode.HalfAwayFromZero);
-    public static Rounding<TSelf> HalfToEven => new(RoundingMode.HalfToEven);
-    public static Rounding<TSelf> HalfToNegativeInfinity => new(RoundingMode.HalfToNegativeInfinity);
-    public static Rounding<TSelf> HalfToOdd => new(RoundingMode.HalfToOdd);
-    public static Rounding<TSelf> HalfToPositiveInfinity => new(RoundingMode.HalfToPositiveInfinity);
-    public static Rounding<TSelf> HalfTowardZero => new(RoundingMode.HalfTowardZero);
-
-    public static Rounding<TSelf> Ceiling => new(RoundingMode.Ceiling);
-    public static Rounding<TSelf> Envelop => new(RoundingMode.Envelop);
-    public static Rounding<TSelf> Floor => new(RoundingMode.Floor);
-    public static Rounding<TSelf> Truncate => new(RoundingMode.Truncate);
-
     private readonly RoundingMode m_mode;
 
     public Rounding(RoundingMode mode)

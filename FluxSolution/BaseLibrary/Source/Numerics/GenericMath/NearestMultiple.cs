@@ -2,44 +2,71 @@
 {
   public static partial class GenericMath
   {
-    /// <summary>Get the two multiples nearest to value.</summary>
-    /// <param name="x">The value for which the nearest multiples of will be found.</param>
+    /// <summary>Get the two multiples nearest to value. Negative <paramref name="number"/> resilient.</summary>
+    /// <param name="number">The value for which the nearest multiples of will be found.</param>
     /// <param name="multiple">The multiple to which the results will align.</param>
     /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
     /// <param name="nearestTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static void LocateNearestMultiple<TSelf>(this TSelf x, TSelf multiple, bool proper, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+    public static void LocateNearestMultiple<TSelf>(this TSelf number, TSelf multiple, bool proper, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      var offsetTowardsZero = x % multiple;
+      var offsetTowardsZero = number % multiple;
 
-      nearestTowardsZero = x - offsetTowardsZero;
-      nearestAwayFromZero = TSelf.IsNegative(x) ? nearestTowardsZero - multiple : nearestTowardsZero + multiple;
+      nearestTowardsZero = number - offsetTowardsZero;
+      nearestAwayFromZero = TSelf.IsNegative(number) ? nearestTowardsZero - multiple : nearestTowardsZero + multiple;
 
       if (proper)
       {
-        if (nearestTowardsZero == x)
+        if (nearestTowardsZero == number)
           nearestTowardsZero -= multiple;
-        if (nearestAwayFromZero == x)
+        if (nearestAwayFromZero == number)
           nearestAwayFromZero -= multiple;
       }
     }
 
-    /// <summary>Find the nearest (to <paramref name="x"/>) of two multiples, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both multiples as out parameters.</summary>
-    /// <param name="x">The value for which the nearest multiples of will be found.</param>
+    /// <summary>Find the nearest (to <paramref name="number"/>) of the two multiples <paramref name="nearestTowardsZero"/> and <paramref name="nearestAwayFromZero"/>, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both multiples as out parameters. Negative <paramref name="number"/> resilient.</summary>
+    /// <param name="number">The value for which the nearest multiples of will be found.</param>
     /// <param name="multiple">The multiple to which the results will align.</param>
     /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
     /// <param name="mode"></param>
     /// <param name="nearestTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value.</returns>
-    public static TSelf NearestMultiple<TSelf>(this TSelf x, TSelf multiple, bool proper, RoundingMode mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+    public static TSelf NearestMultiple<TSelf>(this TSelf number, TSelf multiple, bool proper, RoundingMode mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      LocateNearestMultiple(x, multiple, proper, out nearestTowardsZero, out nearestAwayFromZero);
+      LocateNearestMultiple(number, multiple, proper, out nearestTowardsZero, out nearestAwayFromZero);
 
-      return new BoundaryRounding<TSelf>(mode, nearestTowardsZero, nearestAwayFromZero).RoundNumber(x);
+      return BoundaryRounding<TSelf>.Round(number, nearestTowardsZero, nearestAwayFromZero, mode);
+    }
+
+    /// <summary>Find the nearest (to <paramref name="number"/>) multiple away from zero (round-up). Negative <paramref name="number"/> resilient.</summary>
+    /// <param name="number">The value for which the nearest multiples of will be found.</param>
+    /// <param name="multiple">The multiple to which the results will align.</param>
+    /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
+    /// <returns>The nearest multiple to <paramref name="number"/> away from zero.</returns>
+    public static TSelf NearestMultipleAwayFromZero<TSelf>(this TSelf number, TSelf multiple, bool proper)
+      where TSelf : System.Numerics.INumber<TSelf>
+    {
+      LocateNearestMultiple(number, multiple, proper, out var _, out var nearestAwayFromZero);
+
+      return nearestAwayFromZero;
+    }
+
+
+    /// <summary>Find the nearest (to <paramref name="number"/>) multiple towards zero (round-down). Negative <paramref name="number"/> resilient.</summary>
+    /// <param name="number">The value for which the nearest multiples of will be found.</param>
+    /// <param name="multiple">The multiple to which the results will align.</param>
+    /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
+    /// <returns>The nearest multiple to <paramref name="number"/> towards zero.</returns>
+    public static TSelf NearestMultipleTowardsZero<TSelf>(this TSelf number, TSelf multiple, bool proper)
+      where TSelf : System.Numerics.INumber<TSelf>
+    {
+      LocateNearestMultiple(number, multiple, proper, out var nearestTowardsZero, out var _);
+
+      return nearestTowardsZero;
     }
   }
 }

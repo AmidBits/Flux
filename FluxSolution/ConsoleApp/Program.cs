@@ -19,7 +19,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      
+      var x = -16;
+      var mn = x.NearestMultiple(3, true, RoundingMode.HalfToEven, out var mntz, out var mnafz);
+      var p10n = x.NearestPowOf(10, true, RoundingMode.HalfToEven, out var p10ntz, out var p10nafz);
+      var p2n = x.NearestPow2(true, RoundingMode.HalfToEven, out var p2ntz, out var p2nafz);
 
       return;
 

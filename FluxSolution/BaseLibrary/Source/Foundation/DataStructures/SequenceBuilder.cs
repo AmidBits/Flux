@@ -168,7 +168,7 @@ namespace Flux
 
     private SequenceBuilder(int capacity)
     {
-      var powerOf2Capacity = BitOps.RoundUpToPowerOf2(capacity, false);
+      var powerOf2Capacity = BitOps.NearestPowOf2AwayFromZero(capacity, false);
 
       m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(powerOf2Capacity);
 
@@ -206,7 +206,7 @@ namespace Flux
       }
       else if (m_head < length || m_tail + length > Capacity) // Not enough uniform space available.
       {
-        var allocateLength = BitOps.RoundUpToPowerOf2(length * 2, false);
+        var allocateLength = BitOps.NearestPowOf2AwayFromZero(length * 2, false);
 
         var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
         System.Array.Clear(newArray);
@@ -230,7 +230,7 @@ namespace Flux
     {
       if (m_tail + length > Capacity) // Not enough append space available.
       {
-        var allocateLength = BitOps.RoundUpToPowerOf2(length, false);
+        var allocateLength = BitOps.NearestPowOf2AwayFromZero(length, false);
 
         var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
         System.Array.Clear(newArray);
@@ -250,7 +250,7 @@ namespace Flux
       {
         if (Capacity - Length < length) // Not enough prepend space to shift.
         {
-          var allocateLength = BitOps.RoundUpToPowerOf2(length, false);
+          var allocateLength = BitOps.NearestPowOf2AwayFromZero(length, false);
 
           var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
           System.Array.Clear(newArray);
