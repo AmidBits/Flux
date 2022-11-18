@@ -26,7 +26,7 @@
       RunResource();
       RunRulesEngine();
       RunISetOps();
-      RunStatistics();
+      //RunStatistics();
       RunTemporal();
 #else
       throw new System.NotImplementedException(@"/define:ZAMPLEZ");
