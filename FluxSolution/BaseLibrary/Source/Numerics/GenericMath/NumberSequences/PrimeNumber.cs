@@ -344,6 +344,12 @@ namespace Flux.NumberSequences
     public static bool IsAlsoSophieGermainPrime(System.Numerics.BigInteger primeNumber)
       => IsPrimeNumber((primeNumber * 2) + 1);
 
+    /// <summary>Returns whether <paramref name="a"/> and <paramref name="b"/> are co-prime.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
+    [System.Diagnostics.Contracts.Pure]
+    public static bool IsCoprime<TSelf>(System.Numerics.BigInteger a, System.Numerics.BigInteger b)
+      => GenericMath.GreatestCommonDivisor(a, b) == 1;
+
     /// <summary>Indicates whether a specified number is a prime candidate.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static bool IsPrimeCandidate(System.Numerics.BigInteger number)
