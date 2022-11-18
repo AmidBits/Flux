@@ -19,6 +19,16 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
+
+      var bs = new Flux.BitStruct(123456789m);
+      System.Console.WriteLine(bs);
+
+      var firstReturn = Flux.BitOps.CreateBitMask(10, out System.Int32 firstOut);
+      var secondReturn = Flux.BitOps.CreateBitMask(10, 22, out System.Int32 secondOut);
+
+      return;
+
       var proper = false;
       System.Console.WriteLine($"Proper = {proper}");
       System.Console.WriteLine();

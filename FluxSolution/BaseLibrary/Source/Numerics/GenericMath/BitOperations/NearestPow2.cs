@@ -55,7 +55,7 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       LocateNearestPow2(number, proper, out nearestTowardsZero, out nearestAwayFromZero);
-      
+
       return BoundaryRounding<TSelf>.Round(number, nearestTowardsZero, nearestAwayFromZero, mode);
     }
 
@@ -63,7 +63,7 @@ namespace Flux
     /// <param name="number">The reference value.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="number"/>.</param>
     /// <returns>The the next power of 2 away from zero.</returns>
-    public static TSelf NearestPowOf2AwayFromZero<TSelf>(this TSelf number, bool proper)
+    public static TSelf NearestPow2AwayFromZero<TSelf>(this TSelf number, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       LocateNearestPow2(number, proper, out var _, out var nearestAwayFromZero);
@@ -75,7 +75,7 @@ namespace Flux
     /// <param name="number">The reference value.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="number"/>.</param>
     /// <returns>The the next power of 2 towards zero.</returns>
-    public static TSelf NearestPowOf2TowardZero<TSelf>(this TSelf number, bool proper)
+    public static TSelf NearestPow2TowardZero<TSelf>(this TSelf number, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       LocateNearestPow2(number, proper, out var nearestTowardsZero, out var _);

@@ -7,11 +7,14 @@ using Flux;
 namespace GenericMath
 {
   [TestClass]
-  public class NumberRounding
+  public class Rounding
   {
     [TestMethod]
     public void BoundaryRounding()
     {
+      var actual = Flux.BoundaryRounding<int>.Round(11, 7, 17, RoundingMode.HalfAwayFromZero);
+
+      Assert.AreEqual(7, actual);
     }
 
     [TestMethod]
@@ -37,8 +40,11 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void Rounding()
+    public void Rounding_()
     {
+      var actual = Flux.Rounding<double>.Round(11.5, RoundingMode.HalfAwayFromZero);
+
+      Assert.AreEqual(12, actual);
     }
   }
 }

@@ -15,7 +15,7 @@
       if (multiple <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(multiple));
 
       nearestTowardsZero = number - (number % multiple);
-      nearestAwayFromZero = nearestTowardsZero == number ? nearestTowardsZero : nearestTowardsZero - multiple;
+      nearestAwayFromZero = nearestTowardsZero == number ? nearestTowardsZero : nearestTowardsZero + multiple.CopySign(number, out TSelf _);
 
       if (proper)
       {

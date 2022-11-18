@@ -74,7 +74,7 @@ namespace Flux
       => CopyBytes(value, 8, buffer, startAt);
     /// <summary>Copies the specified single-precision floating point value into the specified byte array, beginning at the specified index.</summary>
     public void CopyBytes(float value, byte[] buffer, int startAt)
-      => CopyBytes(new BitStructure32(value).Int32, 4, buffer, startAt);
+      => CopyBytes(new BitStruct(value).Int32, 4, buffer, startAt);
     /// <summary>Copies the specified 16-bit unsigned integer value into the specified byte array, beginning at the specified index.</summary>
     [System.CLSCompliant(false)]
     public void CopyBytes(ushort value, byte[] buffer, int startAt)
@@ -115,7 +115,7 @@ namespace Flux
     }
     /// <summary>Returns the specified double-precision floating point value as an array of 8 bytes.</summary>
     public byte[] GetBytes(double value)
-      => GetBytes(new BitStructure64(value).Int64, 8);
+      => GetBytes(new BitStruct(value).Int64, 8);
     /// <summary>Returns the specified 16-bit signed integer value as an array of 2 bytes.</summary>
     public byte[] GetBytes(short value)
       => GetBytes(value, 2);
@@ -129,7 +129,7 @@ namespace Flux
       => GetBytes(value, 8);
     /// <summary>Returns the specified single-precision floating point value as an array of 4 bytes.</summary>
     public byte[] GetBytes(float value)
-      => GetBytes(new BitStructure32(value).Int32, 4);
+      => GetBytes(new BitStruct(value).Int32, 4);
     /// <summary>Returns the specified 16-bit unsigned integer value as an array of 2 bytes.</summary>
     [System.CLSCompliant(false)]
     public byte[] GetBytes(ushort value)
@@ -202,7 +202,7 @@ namespace Flux
       => FromBytes(value, startIndex, 8);
     /// <summary>Returns a single-precision floating point number converted from four bytes at a specified position in a byte array.</summary>
     public float ToSingle(byte[] value, int startIndex)
-      => new BitStructure32(ToInt32(value, startIndex)).Single;
+      => new BitStruct(ToInt32(value, startIndex)).Single;
     /// <summary>Returns a 16-bit unsigned integer converted from two bytes at a specified position in a byte array.</summary>
     [System.CLSCompliant(false)]
     public ushort ToUInt16(byte[] value, int startIndex)

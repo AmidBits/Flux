@@ -1,8 +1,7 @@
-﻿#if NET7_0_OR_GREATER
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Flux;
-using System;
+using System.Linq;
 
 namespace GenericMath
 {
@@ -13,6 +12,15 @@ namespace GenericMath
     public void DigitCount()
     {
       Assert.AreEqual(7, 1234567.DigitCount(10));
+    }
+
+    [TestMethod]
+    public void DigitStatistics()
+    {
+      var (count, sum) = 1234567.DigitStatistics(10);
+
+      Assert.AreEqual(7, count);
+      Assert.AreEqual(28, sum);
     }
 
     [TestMethod]
@@ -82,6 +90,15 @@ namespace GenericMath
     }
 
     [TestMethod]
+    public void IntegerLog()
+    {
+      512.IntegerLog(10, out int logFloor, out int logCeiling);
+
+      Assert.AreEqual(2, logFloor);
+      Assert.AreEqual(3, logCeiling);
+    }
+
+    [TestMethod]
     public void IntegerLogCeiling()
     {
       Assert.AreEqual(3, 512.IntegerLogCeiling(10));
@@ -103,16 +120,16 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void IsJumbled()
-    {
-      Assert.AreEqual(false, 512.IsJumbled(10));
-    }
-
-    [TestMethod]
-    public void IsPow()
+    public void IsIntegerPowOf()
     {
       Assert.AreEqual(false, 511.IsIntegerPowOf(2));
       Assert.AreEqual(true, 512.IsIntegerPowOf(2));
+    }
+
+    [TestMethod]
+    public void IsJumbled()
+    {
+      Assert.AreEqual(false, 512.IsJumbled(10));
     }
 
     [TestMethod]
@@ -148,10 +165,29 @@ namespace GenericMath
       Assert.AreEqual(10000000, nearestAwayFromZero);
 
       Assert.AreEqual(1000000, nearestPow);
+    }
 
+    [TestMethod]
+    public void NearestPowOf2()
+    {
       Assert.AreEqual(128, Flux.GenericMath.NearestPowOf(101, 2, false, RoundingMode.HalfToEven, out var _, out var _));
+    }
+
+    [TestMethod]
+    public void NearestPowOf8()
+    {
       Assert.AreEqual(64, Flux.GenericMath.NearestPowOf(101, 8, false, RoundingMode.HalfToEven, out var _, out var _));
+    }
+
+    [TestMethod]
+    public void NearestPowOf10()
+    {
       Assert.AreEqual(100, Flux.GenericMath.NearestPowOf(101, 10, false, RoundingMode.HalfToEven, out var _, out var _));
+    }
+
+    [TestMethod]
+    public void NearestPowOf16()
+    {
       Assert.AreEqual(16, Flux.GenericMath.NearestPowOf(101, 16, false, RoundingMode.HalfToEven, out var _, out var _));
     }
 
@@ -159,6 +195,14 @@ namespace GenericMath
     public void ReverseDigits()
     {
       Assert.AreEqual(7654321, 1234567.ReverseDigits(10));
+    }
+
+    [TestMethod]
+    public void SelfNumber()
+    {
+      var expected = new int[] { 1, 3, 5, 7, 9, 20, 31, 42, 53, 64, 75, 86, 97, 108, 110, 121, 132, 143, 154, 165, 176, 187, 198, 209, 211, 222, 233, 244, 255, 266, 277, 288, 299, 310, 312, 323, 334, 345, 356, 367, 378, 389, 400, 411, 413, 424, 435, 446, 457, 468, 479, 490 };
+      var actual = System.Linq.Enumerable.Range(1, 500).Where(i => Flux.GenericMath.IsSelfNumber(i, 10)).ToArray();
+      CollectionAssert.AreEqual(expected, actual);
     }
 
     [TestMethod]
@@ -180,4 +224,3 @@ namespace GenericMath
     }
   }
 }
-#endif

@@ -33,15 +33,12 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void GetLeadingZeroCount()
+    public void GetIntegerLog2()
     {
-      Assert.AreEqual(25, 88.ToBigInteger().GetLeadingZeroCount());
-    }
+      88.ToBigInteger().GetIntegerLog2(out int logCeiling, out int logFloor);
 
-    [TestMethod]
-    public void GetTrailingZeroCount()
-    {
-      Assert.AreEqual(3, 88.ToBigInteger().GetTrailingZeroCount());
+      Assert.AreEqual(7, logCeiling);
+      Assert.AreEqual(6, logFloor);
     }
 
     [TestMethod]
@@ -57,58 +54,84 @@ namespace GenericMath
     }
 
     [TestMethod]
+    public void GetLeadingZeroCount()
+    {
+      Assert.AreEqual(25, 88.ToBigInteger().GetLeadingZeroCount());
+    }
+
+    [TestMethod]
+    public void GetTrailingZeroCount()
+    {
+      Assert.AreEqual(3, 88.ToBigInteger().GetTrailingZeroCount());
+    }
+
+    [TestMethod]
     public void IsPow2()
     {
       Assert.AreEqual(false, 88.ToBigInteger().IsPow2());
     }
 
     [TestMethod]
-    public void GetNearestPow2AwayFromZero()
+    public void LocateNearestPow2()
     {
-      //var rounding = new RoundToBoundary<System.Numerics.BigInteger>(RoundingMode.HalfwayToEven);
-      var expected = 128.ToBigInteger();
-      var actual = 88.ToBigInteger().NearestPow2(false, RoundingMode.Envelop, out var _, out var _);
-
-      Assert.AreEqual(expected, actual);
-    }
-
-    [TestMethod]
-    public void GetNearestPow2AwayFromZeroProper()
-    {
-      var expected = 128.ToBigInteger();
-      var actual = 88.ToBigInteger().NearestPow2(true, RoundingMode.Envelop, out var _, out var _);
-
-      Assert.AreEqual(expected, actual);
-    }
-
-    [TestMethod]
-    public void GetNearestPow2()
-    {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().NearestPow2(false, RoundingMode.HalfToEven, out var towardsZero, out var awayFromZero));
+      88.ToBigInteger().LocateNearestPow2(false, out var towardsZero, out var awayFromZero);
 
       Assert.AreEqual(64.ToBigInteger(), towardsZero);
       Assert.AreEqual(128.ToBigInteger(), awayFromZero);
     }
 
     [TestMethod]
-    public void GetNearestPow2Proper()
+    public void NearestPow2()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().NearestPow2(true, RoundingMode.HalfToEven, out var towardsZero, out var awayFromZero));
+      var nearest = 88.ToBigInteger().NearestPow2(false, RoundingMode.HalfToEven, out var towardsZero, out var awayFromZero);
+
+      Assert.AreEqual(64.ToBigInteger(), nearest);
 
       Assert.AreEqual(64.ToBigInteger(), towardsZero);
       Assert.AreEqual(128.ToBigInteger(), awayFromZero);
     }
 
     [TestMethod]
-    public void GetNearestPow2TowardsZero()
+    public void NearestPow2Proper()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().NearestPow2(false, RoundingMode.HalfTowardZero, out var _, out var _));
+      var nearest = 88.ToBigInteger().NearestPow2(true, RoundingMode.HalfToEven, out var towardsZero, out var awayFromZero);
+
+      Assert.AreEqual(64.ToBigInteger(), nearest);
+
+      Assert.AreEqual(64.ToBigInteger(), towardsZero);
+      Assert.AreEqual(128.ToBigInteger(), awayFromZero);
     }
 
     [TestMethod]
-    public void GetNearestPow2TowardsZeroProper()
+    public void NearestPow2AwayFromZero()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().NearestPow2(true, RoundingMode.HalfTowardZero, out var _, out var _));
+      var actual = 88.ToBigInteger().NearestPow2AwayFromZero(false);
+
+      Assert.AreEqual(128.ToBigInteger(), actual);
+    }
+
+    [TestMethod]
+    public void NearestPow2AwayFromZeroProper()
+    {
+      var actual = 88.ToBigInteger().NearestPow2AwayFromZero(true);
+
+      Assert.AreEqual(128.ToBigInteger(), actual);
+    }
+
+    [TestMethod]
+    public void NearestPow2TowardsZero()
+    {
+      var actual = 88.ToBigInteger().NearestPow2TowardZero(false);
+
+      Assert.AreEqual(64.ToBigInteger(), actual);
+    }
+
+    [TestMethod]
+    public void NearestPow2TowardsZeroProper()
+    {
+      var actual = 88.ToBigInteger().NearestPow2TowardZero(true);
+
+      Assert.AreEqual(64.ToBigInteger(), actual);
     }
 
     [TestMethod]
