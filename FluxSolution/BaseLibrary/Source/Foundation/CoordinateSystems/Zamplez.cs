@@ -10,8 +10,8 @@ namespace Flux
       System.Console.WriteLine(nameof(RunCoordinateSystems));
       System.Console.WriteLine();
 
-      //Draw(GeographicCoordinate.MadridSpain, nameof(GeographicCoordinate.MadridSpain));
-      //Draw(GeographicCoordinate.PhoenixAzUsa, nameof(GeographicCoordinate.PhoenixAzUsa));
+      Draw(GeographicCoordinate.MadridSpain, nameof(GeographicCoordinate.MadridSpain));
+      Draw(GeographicCoordinate.PhoenixAzUsa, nameof(GeographicCoordinate.PhoenixAzUsa));
       Draw(GeographicCoordinate.TakapauNewZealand, nameof(GeographicCoordinate.TakapauNewZealand));
       Draw(GeographicCoordinate.TucsonAzUsa, nameof(GeographicCoordinate.TucsonAzUsa));
 

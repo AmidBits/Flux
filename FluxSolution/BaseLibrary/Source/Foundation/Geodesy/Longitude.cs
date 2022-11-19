@@ -46,7 +46,7 @@ namespace Flux
 
     [System.Diagnostics.Contracts.Pure]
     public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
-      => ToAngle().ToSexagesimalDegreeString(format, SexagesimalDegreeDirection.EastWest, -1, useSpaces, preferUnicode);
+      => ToAngle().ToSexagesimalDegreeString(format, SexagesimalDegreeDirection.WestEast, -1, useSpaces, preferUnicode);
 
     #region Static methods
     [System.Diagnostics.Contracts.Pure]
@@ -117,6 +117,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_degLongitude; init => m_degLongitude = value; }
     #endregion Implemented interfaces
 
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degLongitude}\u00B0, {ToSexagesimalDegreeString()} }}";
+    #region Object overrides
+    [System.Diagnostics.Contracts.Pure]
+    public override string ToString()
+      => $"{GetType().Name} {{ Value = {new Angle(m_degLongitude, AngleUnit.Degree).ToUnitString(AngleUnit.Degree)}, {ToSexagesimalDegreeString()} }}";
+    #endregion Object overrides
   }
 }

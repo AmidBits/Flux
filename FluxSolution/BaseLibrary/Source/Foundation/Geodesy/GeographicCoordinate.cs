@@ -518,7 +518,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
-      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.ToAngle().ToUnitString(AngleUnit.Degree, "N1", true)}), Longitude = {Longitude.ToSexagesimalDegreeString(preferUnicode: false)} ({Longitude.ToAngle().ToUnitString(AngleUnit.Degree, "N1", true)}), Altitude = {Altitude.ToUnitString()} }}";
+      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.ToAngle().ToUnitString(AngleUnit.Degree, "N3", true)}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({Longitude.ToAngle().ToUnitString(AngleUnit.Degree, "N3", true)}), Altitude = {Altitude.ToUnitString()} }}";
     #endregion Object overrides
   }
 }

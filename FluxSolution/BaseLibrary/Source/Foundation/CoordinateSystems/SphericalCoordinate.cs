@@ -88,6 +88,6 @@ namespace Flux
     #endregion Static methods
 
     public override string ToString()
-      => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {new Angle(m_inclination).ToUnitString(AngleUnit.Degree, "N1", true)} (Elevation = {new Angle(ConvertInclinationToElevation(m_inclination)).ToUnitString(AngleUnit.Degree, "N1", true)}), Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N1", true)} }}";
+      => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {new Angle(m_inclination).ToUnitString(AngleUnit.Degree, "N3", true)} (Elevation = {new Angle(ConvertInclinationToElevation(m_inclination)).ToUnitString(AngleUnit.Degree, "N3", true)}), Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N3", true)} }}";
   }
 }

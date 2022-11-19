@@ -1,6 +1,8 @@
+using BaseLibrary.Source.Types.BigInteger;
+
 namespace Flux
 {
-  public static partial class BitOps
+    public static partial class BitOps
   {
     // https://stackoverflow.com/questions/33910399/reverse-the-order-of-bits-in-a-bit-array
     // http://aggregate.org/MAGIC/

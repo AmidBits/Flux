@@ -1,8 +1,10 @@
 //Implement this (down a bit in the article) : https://stackoverflow.com/questions/218060/random-gaussian-variables
 
+using BaseLibrary.Source.Types.BigInteger;
+
 namespace Flux
 {
-  public static partial class RandomEm
+    public static partial class RandomEm
   {
     // https://docs.microsoft.com/en-us/dotnet/api/system.random?view=netstandard-2.0
 
@@ -42,7 +44,7 @@ namespace Flux
       if (maxValue <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"Maximum value ({maxValue}) must be greater than 0.");
 
       var maxValueBytes = maxValue.ToByteArrayEx(out var msbIndex, out var msbValue); // Already checked for positive integer, so no padding byte is present.
-      var maxByteBitMask = (byte)((1 << msbValue.GetBitLength()) - 1);
+      var maxByteBitMask = (byte)((1 << msbValue.GetBitLengthEx()) - 1);
       var maxIndex = maxValueBytes.Length - 1;
       var hasPaddingByte = msbIndex < maxIndex;
 

@@ -154,6 +154,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_degLatitude; init => m_degLatitude = value; }
     #endregion Implemented interfaces
 
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degLatitude}\u00B0, {ToSexagesimalDegreeString()} }}";
+    #region Object overrides
+    [System.Diagnostics.Contracts.Pure]
+    public override string ToString()
+      => $"{GetType().Name} {{ Value = {new Angle(m_degLatitude, AngleUnit.Degree).ToUnitString(AngleUnit.Degree)}, {ToSexagesimalDegreeString()} }}";
+    #endregion Object overrides
   }
 }

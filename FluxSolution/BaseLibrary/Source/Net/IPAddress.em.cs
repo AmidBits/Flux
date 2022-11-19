@@ -1,3 +1,5 @@
+using BaseLibrary.Source.Types.BigInteger;
+
 namespace Flux
 {
   public static partial class IPAddressEm
@@ -82,7 +84,6 @@ namespace Flux
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
       var addressBytes = source.GetAddressBytes();
-
       System.Array.Reverse(addressBytes);
 
       return addressBytes.ToBigInteger();
@@ -97,6 +98,7 @@ namespace Flux
       if (byteArray.Length < 4)
         System.Array.Resize(ref byteArray, 4);
       System.Array.Reverse(byteArray);
+
       return new System.Net.IPAddress(byteArray);
     }
   }

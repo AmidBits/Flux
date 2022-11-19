@@ -28,7 +28,7 @@ namespace Formatting
     [TestMethod]
     public void LongitudeFormatter()
     {
-      Assert.AreEqual(new Angle(_dms1tp, AngleUnit.Degree).ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, SexagesimalDegreeDirection.EastWest), _dms1 + 'E');
+      Assert.AreEqual(new Angle(_dms1tp, AngleUnit.Degree).ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, SexagesimalDegreeDirection.WestEast), _dms1 + 'E');
     }
 
     [TestMethod]

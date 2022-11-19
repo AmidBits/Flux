@@ -3,8 +3,7 @@ namespace Flux
   /// <summary>Kepler elements for computing orbits.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Orbital_elements"/>
   /// <see cref="https://www.amsat.org/keplerian-elements-tutorial/"/>
-  public struct TwoLineElementSet2
-    : System.IEquatable<TwoLineElementSet2>
+  public readonly record struct TwoLineElementSet2
   {
     private readonly double m_radInclination;
     private readonly double m_radRightAscensionOfAscendingNode;
@@ -97,32 +96,10 @@ namespace Flux
     //}
     #endregion Static methods
 
-    #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure]
-    public static bool operator ==(TwoLineElementSet2 a, TwoLineElementSet2 b)
-      => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure]
-    public static bool operator !=(TwoLineElementSet2 a, TwoLineElementSet2 b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    [System.Diagnostics.Contracts.Pure]
-    public bool Equals(TwoLineElementSet2 other)
-      => m_radMeanAnomaly == other.m_radMeanAnomaly && m_eccentricity == other.m_eccentricity && m_radInclination == other.m_radInclination && m_radRightAscensionOfAscendingNode == other.m_radRightAscensionOfAscendingNode && m_radArgumentOfPerigee == other.m_radArgumentOfPerigee && m_meanMotion == other.m_meanMotion;
-    #endregion Implemented interfaces
-
     #region Object overrides
     [System.Diagnostics.Contracts.Pure]
-    public override bool Equals(object? obj)
-      => obj is TwoLineElementSet2 o && Equals(o);
-    [System.Diagnostics.Contracts.Pure]
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_radMeanAnomaly, m_eccentricity, m_radInclination, m_radRightAscensionOfAscendingNode, m_radArgumentOfPerigee, m_meanMotion);
-    [System.Diagnostics.Contracts.Pure]
     public override string ToString()
-      => $"{GetType().Name} {{ Inclination = {Inclination}{AngleUnit.Degree.GetUnitString(false, false)}, RightAscensionOfAscendingNode = {RightAscensionOfAscendingNode}{AngleUnit.Degree.GetUnitString(false, false)}, Eccentricity = {Eccentricity}, ArgumentOfPerigee = {ArgumentOfPerigee}{AngleUnit.Degree.GetUnitString(false, false)}, MeanAnomaly = {MeanAnomaly}{AngleUnit.Degree.GetUnitString(false, false)}, MeanMotion = {MeanMotion} }}";
+      => $"{GetType().Name} {{ Inclination = {new Angle(m_radInclination).ToUnitString(AngleUnit.Degree)}, RightAscensionOfAscendingNode = {new Angle(m_radRightAscensionOfAscendingNode).ToUnitString(AngleUnit.Degree)}, Eccentricity = {m_eccentricity}, ArgumentOfPerigee = {new Angle(m_radArgumentOfPerigee).ToUnitString(AngleUnit.Degree)}, MeanAnomaly = {new Angle(m_radMeanAnomaly).ToUnitString(AngleUnit.Degree)}, MeanMotion = {m_meanMotion} }}";
     #endregion Object overrides
   }
 }

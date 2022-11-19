@@ -168,6 +168,10 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Value { get => m_degAzimuth; init => m_degAzimuth = value; }
     #endregion Implemented interfaces
 
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ Value = {m_degAzimuth}\u00B0 }}";
+    #region Object overrides
+    [System.Diagnostics.Contracts.Pure]
+    public override string ToString()
+      => $"{GetType().Name} {{ Value = {new Angle(m_degAzimuth, AngleUnit.Degree).ToUnitString(AngleUnit.Degree)} }}";
+    #endregion Object overrides
   }
 }
