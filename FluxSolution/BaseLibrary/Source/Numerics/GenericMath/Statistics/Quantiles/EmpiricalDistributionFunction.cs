@@ -1,8 +1,10 @@
-namespace Flux.Quantilers
+namespace Flux.Quantiles
 {
-  /// <summary>Linear interpolation of the empirical distribution function.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-  /// <see cref="https://en.wikipedia.org/wiki/Empirical_distribution_function"/>
+  /// <summary>
+  /// <para>Linear interpolation of the empirical distribution function.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <see href="https://en.wikipedia.org/wiki/Empirical_distribution_function"/>
+  /// </summary>
   public record class EmpiricalDistributionFunction
     : IQuantileEstimatable
   {

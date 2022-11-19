@@ -1,14 +1,19 @@
-namespace Flux.Quantilers
+namespace Flux.Quantiles
 {
-  /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <summary>
+  /// <para>Linear interpolation of the empirical distribution function.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// </summary>
   public record class R4
     : IQuantileEstimatable
   {
-    public static IQuantileEstimatable Default => new R4();
+    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => Estimate(sample, p);
 
     /// <summary>Linear interpolation of the empirical distribution function.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
+    public static TSelf Estimate<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       if (sample is null) throw new System.ArgumentNullException(nameof(sample));

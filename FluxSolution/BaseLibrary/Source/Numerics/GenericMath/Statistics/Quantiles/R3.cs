@@ -1,14 +1,19 @@
-namespace Flux.Quantilers
+namespace Flux.Quantiles
 {
-  /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <summary>
+  /// <para>The observation numbered closest to Np. Here, h indicates rounding to the nearest integer, choosing the even integer in the case of a tie.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// </summary>
   public record class R3
     : IQuantileEstimatable
   {
-    public static IQuantileEstimatable Default => new R3();
+    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => Estimate(sample, p);
 
     /// <summary>The observation numbered closest to Np. Here, h indicates rounding to the nearest integer, choosing the even integer in the case of a tie.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
+    public static TSelf Estimate<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       if (sample is null) throw new System.ArgumentNullException(nameof(sample));

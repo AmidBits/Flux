@@ -1,14 +1,19 @@
-namespace Flux.Quantilers
+namespace Flux.Quantiles
 {
-  /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <summary>
+  /// <para>The same as R1, but with averaging at discontinuities.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// </summary>
   public record class R2
     : IQuantileEstimatable
   {
-    public static IQuantileEstimatable Default => new R2();
+    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => Estimate(sample, p);
 
     /// <summary>The same as R1, but with averaging at discontinuities.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
+    public static TSelf Estimate<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       if (sample is null) throw new System.ArgumentNullException(nameof(sample));

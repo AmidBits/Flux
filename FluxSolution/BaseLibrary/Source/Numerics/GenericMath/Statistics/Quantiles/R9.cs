@@ -1,16 +1,19 @@
-namespace Flux.Quantilers
+namespace Flux.Quantiles
 {
-  /// <summary>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Quantile"/>
-  /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
+  /// <summary>
+  /// <para>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// </summary>
   public record class R9
     : IQuantileEstimatable
   {
-    public static IQuantileEstimatable Default => new R9();
+    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => Estimate(sample, p);
 
     /// <summary>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
+    public static TSelf Estimate<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       if (sample is null) throw new System.ArgumentNullException(nameof(sample));
