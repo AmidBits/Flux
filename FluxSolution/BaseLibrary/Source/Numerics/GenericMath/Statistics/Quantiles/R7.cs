@@ -3,7 +3,7 @@ namespace Flux.Quantiles
   /// <summary>
   /// <para>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</para>
   /// <para><remarks>Equivalent to Excel's PERCENTILE and PERCENTILE.INC and Python's optional "inclusive" method.</remarks></para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class R7
     : IQuantileEstimatable
@@ -22,7 +22,7 @@ namespace Flux.Quantiles
 
       var h = (TSelf.CreateChecked(sample.Count() - 1) * p) - TSelf.One;
 
-      return EmpiricalDistributionFunction.Default.EstimateQuantile(sample, h);
+      return EmpiricalDistributionFunction.Estimate(sample, h);
     }
   }
 }

@@ -2,7 +2,7 @@ namespace Flux.Quantiles
 {
   /// <summary>
   /// <para>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class R9
     : IQuantileEstimatable
@@ -21,7 +21,7 @@ namespace Flux.Quantiles
 
       var h = (TSelf.CreateChecked(sample.Count() + 0.25) * p) + TSelf.CreateChecked(3.0 / 8.0);
 
-      return EmpiricalDistributionFunction.Default.EstimateQuantile(sample, h);
+      return EmpiricalDistributionFunction.Estimate(sample, h);
     }
   }
 }

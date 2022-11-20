@@ -7,7 +7,7 @@ namespace Flux.Quartiles
   public record class Method3
     : IQuartileComputable
   {
-    public (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IList<TSelf> sample)
+    public (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       Compute(sample, out var q1, out var q2, out var q3);
@@ -15,7 +15,7 @@ namespace Flux.Quartiles
       return (q1, q2, q3);
     }
 
-    public static void Compute<TSelf>(System.Collections.Generic.IList<TSelf> sample, out TSelf q1, out TSelf q2, out TSelf q3)
+    public static void Compute<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, out TSelf q1, out TSelf q2, out TSelf q3)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => throw new System.NotImplementedException();
   }

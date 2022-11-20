@@ -7,9 +7,9 @@ namespace Flux.Percentiles
   public record class NearestRankMethod
     : IPercentileComputable
   {
-    public TSelf ComputePercentile<TSelf>(System.Collections.Generic.IList<TSelf> sample, TSelf p)
+    public TSelf ComputePercentile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> distribution, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => PercentValue(sample, p);
+      => PercentValue(distribution, p);
 
     /// <summary>Computes the ordinal rank.</summary>
     public static TPercent PercentRank<TPercent, TCount>(TPercent percent, TCount count)
@@ -25,13 +25,13 @@ namespace Flux.Percentiles
     /// <para>Inverse of empirical distribution function.</para>
     /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
     /// </summary>
-    public static TSelf PercentValue<TSelf>(System.Collections.Generic.IList<TSelf> sample, TSelf p)
+    public static TSelf PercentValue<TSelf>(System.Collections.Generic.IEnumerable<TSelf> distribution, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
-      if (sample is null) throw new System.ArgumentNullException(nameof(sample));
+      if (distribution is null) throw new System.ArgumentNullException(nameof(distribution));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return sample[System.Convert.ToInt32(PercentRank(p, sample.Count))];
+      return distribution.ElementAt(System.Convert.ToInt32(PercentRank(p, distribution.Count())));
     }
   }
 }

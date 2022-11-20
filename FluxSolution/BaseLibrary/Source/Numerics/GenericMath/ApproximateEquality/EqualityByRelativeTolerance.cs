@@ -5,19 +5,19 @@ namespace Flux
     /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
     public static bool IsApproximatelyEqualRelative<TSelf>(this TSelf a, TSelf b, TSelf percentTolerance)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => new Equality.EqualityByRelativeTolerance<TSelf>(percentTolerance).IsApproximatelyEqual(a, b);
+      => new ApproximateEquality.ApproximateEqualityByRelativeTolerance<TSelf>(percentTolerance).IsApproximatelyEqual(a, b);
   }
 
-  namespace Equality
+  namespace ApproximateEquality
   {
     /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
-    public record class EqualityByRelativeTolerance<TSelf>
+    public record class ApproximateEqualityByRelativeTolerance<TSelf>
       : IEqualityApproximatable<TSelf>
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       private readonly TSelf m_relativeTolerance;
 
-      public EqualityByRelativeTolerance(TSelf relativeTolerance)
+      public ApproximateEqualityByRelativeTolerance(TSelf relativeTolerance)
         => m_relativeTolerance = relativeTolerance;
 
       /// <summary>The relative tolerance, i.e. tolerance as a percentage, a proportional property.</summary>

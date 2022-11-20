@@ -124,7 +124,7 @@ namespace LoggerApp
       m_logFile = GetFileInfo(System.IO.Path.Combine(m_config.LogDirectory.FullName, m_name + (m_config.LogicalName.Length > 0 ? '.' + m_config.LogicalName : string.Empty) + @".log"));
     }
 
-    public System.IDisposable BeginScope<TState>(TState state) => null!;
+    System.IDisposable Microsoft.Extensions.Logging.ILogger.BeginScope<TState>(TState state) => null!;
 
     [System.CLSCompliant(false)]
     public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) => m_config is null || m_config.LogLevel is null || m_config.LogLevel.Count == 0 || m_config.LogLevel.Contains(logLevel);

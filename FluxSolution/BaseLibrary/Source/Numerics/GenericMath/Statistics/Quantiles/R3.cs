@@ -2,7 +2,7 @@ namespace Flux.Quantiles
 {
   /// <summary>
   /// <para>The observation numbered closest to Np. Here, h indicates rounding to the nearest integer, choosing the even integer in the case of a tie.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class R3
     : IQuantileEstimatable

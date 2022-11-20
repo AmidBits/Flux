@@ -1,4 +1,4 @@
-using Flux.Equality;
+using Flux.ApproximateEquality;
 using System.Linq;
 
 namespace Flux
@@ -158,7 +158,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new Flux.Equality.EqualityByAbsoluteTolerance<double>(1E-15);
+      mode ??= new Flux.ApproximateEquality.ApproximateEqualityByAbsoluteTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 
@@ -180,7 +180,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new Flux.Equality.EqualityByRelativeTolerance<double>(1E-15);
+      mode ??= new Flux.ApproximateEquality.ApproximateEqualityByRelativeTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).Length()).GetEnumerator();
 

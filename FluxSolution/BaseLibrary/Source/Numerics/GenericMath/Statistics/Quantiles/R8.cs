@@ -2,7 +2,7 @@ namespace Flux.Quantiles
 {
   /// <summary>
   /// <para>Linear interpolation of the approximate medians for order statistics.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class R8
     : IQuantileEstimatable
@@ -21,7 +21,7 @@ namespace Flux.Quantiles
 
       var h = (TSelf.CreateChecked(sample.Count() + 1.0 / 3.0) * p) + TSelf.CreateChecked(1.0 / 3.0);
 
-      return EmpiricalDistributionFunction.Default.EstimateQuantile(sample, h);
+      return EmpiricalDistributionFunction.Estimate(sample, h);
     }
   }
 }

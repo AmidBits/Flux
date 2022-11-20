@@ -2,7 +2,7 @@ namespace Flux.Quantiles
 {
   /// <summary>
   /// <para>The same as R1, but with averaging at discontinuities.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class R2
     : IQuantileEstimatable

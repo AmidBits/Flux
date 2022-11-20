@@ -47,7 +47,7 @@
       _config = config;
     }
 
-    public System.IDisposable BeginScope<TState>(TState state) => null!;
+    System.IDisposable Microsoft.Extensions.Logging.ILogger.BeginScope<TState>(TState state) => null!;
 
     [System.CLSCompliant(false)]
     public bool IsEnabled(Microsoft.Extensions.Logging.LogLevel logLevel) => logLevel == _config.LogLevel;

@@ -2,7 +2,7 @@ namespace Flux.Quantiles
 {
   /// <summary>
   /// <para>Piecewise linear function where the knots are the values midway through the steps of the empirical distribution function.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
+  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class R5
     : IQuantileEstimatable
@@ -21,7 +21,7 @@ namespace Flux.Quantiles
 
       var h = TSelf.CreateChecked(sample.Count()) * p + TSelf.One.Div2();
 
-      return EmpiricalDistributionFunction.Default.EstimateQuantile(sample, h);
+      return EmpiricalDistributionFunction.Estimate(sample, h);
     }
   }
 }

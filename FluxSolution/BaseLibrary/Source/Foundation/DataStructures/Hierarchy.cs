@@ -92,15 +92,12 @@ namespace Flux
     {
     }
 
-    public bool IsEmpty
-      => false;
-    public bool IsRoot
-      => Empty.Equals(m_parent);
-    public System.Collections.Generic.IReadOnlyList<IHierarchy<TKey, TValue>> Children
-      => m_children;
-    public TKey Key { get; }
-    public TValue Value { get; }
-    public IHierarchy<TKey, TValue> Parent { get; }
+    public bool IsEmpty => false;
+    public bool IsRoot => Empty.Equals(m_parent);
+    public System.Collections.Generic.IReadOnlyList<IHierarchy<TKey, TValue>> Children => m_children;
+    public TKey Key => m_key;
+    public TValue Value => m_value;
+    public IHierarchy<TKey, TValue> Parent => m_parent;
 
     public IHierarchy<TKey, TValue> this[int index]
     => m_children[index];

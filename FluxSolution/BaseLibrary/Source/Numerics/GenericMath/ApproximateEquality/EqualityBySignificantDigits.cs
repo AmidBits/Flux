@@ -11,23 +11,23 @@ namespace Flux
     /// </remarks>
     public static bool IsApproximatelyEqualPrecision<TSelf>(this TSelf a, TSelf b, int significantDigits, int radix)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => new Equality.EqualityBySignificantDigits<TSelf>(significantDigits, radix).IsApproximatelyEqual(a, b);
+      => new ApproximateEquality.ApproximateEqualityBySignificantDigits<TSelf>(significantDigits, radix).IsApproximatelyEqual(a, b);
   }
 
-  namespace Equality
+  namespace ApproximateEquality
   {
     /// <summary>Perform a comparison of the difference against a radix raised to the power of the specified precision, e.g. the number of decimal places at which the numbers are considered equal.</summary>
     /// <see cref="https://stackoverflow.com/questions/9180385/is-this-a-valid-float-comparison-that-accounts-for-a-set-number-of-decimal-place"/>
     /// <remarks>The tolerance, as a number of decimals, considered before finding inequality. Using a negative value allows for left side tolerance.</remarks>
     /// <example>Flux.Math.EqualityApproximation.Almost(1000.02, 1000.015, 2)</example>
-    public record class EqualityBySignificantDigits<TSelf>
+    public record class ApproximateEqualityBySignificantDigits<TSelf>
       : IEqualityApproximatable<TSelf>
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
     {
       private readonly int m_radix;
       private readonly int m_significantDigits;
 
-      public EqualityBySignificantDigits(int significantDigits, int radix)
+      public ApproximateEqualityBySignificantDigits(int significantDigits, int radix)
       {
         m_radix = GenericMath.AssertRadix(radix);
         m_significantDigits = significantDigits;
