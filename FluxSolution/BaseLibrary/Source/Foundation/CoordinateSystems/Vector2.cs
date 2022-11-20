@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Flux
 {
   #region ExtensionMethods
@@ -272,11 +270,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct Vector2
-#if NET7_0_OR_GREATER
     : IVector2<double>
-#else
-    : IVector2
-#endif
   {
     public readonly static Vector2 Zero;
 

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+    public static partial class ExtensionMethods
   {
     public static Quaternion ToQuaternion(this System.Numerics.Quaternion source)
       => new(source.X, source.Y, source.Z, source.W);

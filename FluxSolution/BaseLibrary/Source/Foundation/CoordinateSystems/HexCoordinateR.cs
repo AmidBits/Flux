@@ -1,10 +1,10 @@
 namespace Flux
 {
+  /// <summary>Cube hex coordinate system using the double floating points.</summary>
+  /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct HexCoordinateR
-#if NET7_0_OR_GREATER
     : IHexCoordinate<double>
-#endif
   {
     public static readonly HexCoordinateR Zero;
 

@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux
+﻿namespace Flux
 {
   /// <summary>The Hex coordinate system used is the Cube coordinate, and can be specified using </summary>
   /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
@@ -21,4 +20,3 @@ namespace Flux
 
   }
 }
-#endif

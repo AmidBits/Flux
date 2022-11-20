@@ -1,12 +1,10 @@
 namespace Flux
 {
-  /// <summary>The Hex coordinate system used is the Cube coordinate, and can be specified using </summary>
+  /// <summary>Cube hex coordinate system using integer.</summary>
   /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct HexCoordinateI
-#if NET7_0_OR_GREATER
     : IHexCoordinate<int>
-#endif
   {
     public static readonly HexCoordinateI Zero;
 

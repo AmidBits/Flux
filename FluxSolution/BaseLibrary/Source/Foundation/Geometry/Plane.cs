@@ -1,5 +1,3 @@
-using BaseLibrary.Source.Foundation.CoordinateSystems;
-
 namespace Flux
 {
     /// <summary>A structure encapsulating a 3D Plane.</summary>

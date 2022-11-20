@@ -1,5 +1,3 @@
-using BaseLibrary.Source.Foundation.CoordinateSystems;
-
 namespace Flux
 {
     public static partial class ExtensionMethods

@@ -1,12 +1,9 @@
 namespace Flux
 {
+  /// <summary>A 3D cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct Point3
-#if NET7_0_OR_GREATER
     : IPoint3<int>
-#else
-    : IPoint3
-#endif
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly Point3 Zero;

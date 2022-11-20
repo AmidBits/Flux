@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux
+﻿namespace Flux
 {
   /// <summary>Spherical coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
@@ -16,4 +15,3 @@ namespace Flux
     Angle Elevatiuon { get; init; }
   }
 }
-#endif

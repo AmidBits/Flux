@@ -1,15 +1,9 @@
-using Flux.Interpolation;
-
 namespace Flux
 {
-  /// <summary>A cartesian coordinate using integers.</summary>
+  /// <summary>A 2D cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct Point2
-#if NET7_0_OR_GREATER
     : IPoint2<int>
-#else
-    : IPoint2
-#endif
   {
     /// <summary>Returns the vector (0,0).</summary>
     public static readonly Point2 Zero;
