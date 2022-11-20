@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   public sealed class SieveOfEratosthenesSegmented
@@ -143,4 +142,3 @@ namespace Flux.NumberSequences
       => GetEnumerator();
   }
 }
-#endif

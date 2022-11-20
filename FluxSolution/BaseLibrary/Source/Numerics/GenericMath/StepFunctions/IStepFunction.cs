@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public interface IStepFunction<TSelf, TResult>
@@ -14,4 +13,3 @@ namespace Flux
     TResult Evaluate(TSelf x);
   }
 }
-#endif

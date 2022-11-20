@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   /// <see cref="https://en.wikipedia.org/wiki/Sieve_of_Atkin"/>
@@ -74,4 +73,3 @@ namespace Flux.NumberSequences
       => GetEnumerator();
   }
 }
-#endif

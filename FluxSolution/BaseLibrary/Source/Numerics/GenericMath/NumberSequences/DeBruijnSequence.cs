@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   // https://www.rosettacode.org/wiki/De_Bruijn_sequences
@@ -284,4 +283,3 @@ namespace Flux.NumberSequences
   //  //}
   //}
 }
-#endif

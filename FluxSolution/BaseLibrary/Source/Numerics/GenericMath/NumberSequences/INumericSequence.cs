@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public interface INumericSequence<TNumber>
@@ -11,4 +10,3 @@ namespace Flux
      => GetSequence().PartitionTuple2(includeLastFirstGap, (leading, trailing, index) => trailing - leading);
   }
 }
-#endif

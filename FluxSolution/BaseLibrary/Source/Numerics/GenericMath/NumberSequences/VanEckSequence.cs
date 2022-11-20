@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
@@ -62,4 +61,3 @@ namespace Flux.NumberSequences
     #endregion Implemented interfaces
   }
 }
-#endif

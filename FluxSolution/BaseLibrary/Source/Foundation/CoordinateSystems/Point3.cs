@@ -24,14 +24,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public int Z { get => m_z; init => m_z = value; }
 
-//#if NET7_0_OR_GREATER
-//    public IPoint3<int> Create(int x, int y, int z)
-//      => new Point3(x, y, z);
-//#else
-//    public IPoint3 Create(int x, int y, int z)
-//      => new Point3(x, y, z);
-//#endif
-
     /// <summary>Compute the Chebyshev distance between the vectors.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     [System.Diagnostics.Contracts.Pure]

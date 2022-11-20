@@ -286,14 +286,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
 
-    //#if NET7_0_OR_GREATER
-    //    public IVector2<double> Create(double x, double y)
-    //      => new Vector2(x, y);
-    //#else
-    //    public IVector2 Create(double x, double y)
-    //      => new Vector2(x, y);
-    //#endif
-
     ///// <summary>Returns the angle to the 2D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
     //public double AngleToAxisX

@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   public sealed class PrimeFactors
@@ -31,4 +30,3 @@ namespace Flux.NumberSequences
     #endregion Implemented interfaces
   }
 }
-#endif

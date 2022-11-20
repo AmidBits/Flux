@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
@@ -8,4 +7,3 @@ namespace Flux
       => (n / k) * TSelf.Pow(p, k) * TSelf.Pow(TSelf.One - p, n - k);
   }
 }
-#endif

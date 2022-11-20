@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   /// <summary>Creates a new sequence with padovan numbers.</summary>
@@ -47,4 +46,3 @@ namespace Flux.NumberSequences
     #endregion Implemented interfaces
   }
 }
-#endif

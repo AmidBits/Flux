@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public interface INumberSubset<TNumber>
@@ -10,4 +9,3 @@ namespace Flux
      => GetSubset(number).PartitionTuple2(includeLastFirstGap, (leading, trailing, index) => trailing - leading);
   }
 }
-#endif

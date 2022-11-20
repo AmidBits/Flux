@@ -243,14 +243,6 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public double Y { get => m_y; init => m_y = value; }
     [System.Diagnostics.Contracts.Pure] public double Z { get => m_z; init => m_z = value; }
 
-#if NET7_0_OR_GREATER
-    public IVector3<double> Create(double x, double y, double z)
-      => new Vector3(x, y, z);
-#else
-    public IVector3 Create(double x, double y, double z)
-      => new Vector3(x, y, z);
-#endif
-
     ///// <summary>Returns the axes angles to the 3D X-axis.</summary>
     //[System.Diagnostics.Contracts.Pure]
     //public (double toYaxis, double toZaxis) AnglesToAxisX

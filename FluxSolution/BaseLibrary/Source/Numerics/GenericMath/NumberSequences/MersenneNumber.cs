@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   /// <summary>Results in a sequence of mersenne numbers.</summary>
@@ -39,4 +38,3 @@ namespace Flux.NumberSequences
     #endregion Implemented interfaces
   }
 }
-#endif

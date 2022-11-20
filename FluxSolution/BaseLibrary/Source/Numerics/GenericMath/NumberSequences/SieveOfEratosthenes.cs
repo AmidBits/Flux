@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   /// <summary>The Sieve of Eratosthenes is a simple, ancient algorithm for finding all prime numbers up to any given limit.</summary>
@@ -77,4 +76,3 @@ namespace Flux.NumberSequences
       => GetEnumerator();
   }
 }
-#endif

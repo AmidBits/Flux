@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   public sealed class CompositeNumber
@@ -101,4 +100,3 @@ namespace Flux.NumberSequences
     #endregion Implemented interfaces
   }
 }
-#endif

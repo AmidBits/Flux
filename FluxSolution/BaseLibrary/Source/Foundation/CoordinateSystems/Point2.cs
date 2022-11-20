@@ -39,14 +39,6 @@ namespace Flux
     public int ChebyshevLength(int edgeLength = 1)
       => System.Math.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength));
 
-//#if NET7_0_OR_GREATER
-//    public IPoint2<int> Create(int x, int y)
-//      => new Point2(x, y);
-//#else
-//    public IPoint2 Create(int x, int y)
-//      => new Point2(x, y);
-//#endif
-
     /// <summary>Compute the length (or magnitude) of the vector.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
     [System.Diagnostics.Contracts.Pure]

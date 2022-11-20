@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
@@ -77,4 +76,3 @@ namespace Flux
       => (x < m_referenceValue) ? m_lessThan : (x > m_referenceValue) ? m_greaterThan : m_equalTo;
   }
 }
-#endif
