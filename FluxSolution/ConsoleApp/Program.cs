@@ -20,17 +20,8 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
 
-      Zamplez.RunCoordinateSystems();
 
-      //var geographicCoordinate = Flux.GeographicCoordinate.TucsonAzUsa;
-      //var gc = geographicCoordinate.ToSphericalCoordinates<double>();
-      ////System.Console.WriteLine(gc);
-      ////System.Console.WriteLine(geographicCoordinate);
-      ////System.Console.WriteLine(geographicCoordinate.ToQuantities());
-      //var sphericalCoordinate = geographicCoordinate.ToSphericalCoordinate();
-      ////System.Console.WriteLine(sphericalCoordinate.ToQuantities());
-      //System.Console.WriteLine(sphericalCoordinate);
-      //System.Console.WriteLine();
+      Zamplez.RunCoordinateSystems();
     }
 
     private static void Main(string[] args)
