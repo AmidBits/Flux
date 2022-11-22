@@ -4,7 +4,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct PolarCoordinate
-    : IPolarCoordinate
+    : IPolarCoordinate<double>
   {
     private readonly double m_radius;
     private readonly double m_azimuth;
@@ -15,8 +15,8 @@ namespace Flux
       m_azimuth = azimuth;
     }
 
-    [System.Diagnostics.Contracts.Pure] public Length Radius { get => new(m_radius); init => m_radius = value.Value; }
-    [System.Diagnostics.Contracts.Pure] public Azimuth Azimuth { get => Azimuth.FromRadians(m_azimuth); init => m_azimuth = value.ToRadians(); }
+    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
+    [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
     /// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="Vector2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -39,8 +39,5 @@ namespace Flux
     public static PolarCoordinate From(Length radius, Azimuth azimuth)
        => new PolarCoordinate(radius.Value, azimuth.ToRadians());
     #endregion Static methods
-
-    public override string ToString()
-      => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N3", true)} }}";
   }
 }

@@ -514,11 +514,5 @@ namespace Flux
     public static bool ValidAltitude(double altitudeInMeters)
       => altitudeInMeters >= MinAltitudeInMeters && altitudeInMeters <= MaxAltitudeInMeters;
     #endregion Static members
-
-    #region Object overrides
-    [System.Diagnostics.Contracts.Pure]
-    public override string ToString()
-      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.ToAngle().ToUnitString(AngleUnit.Degree, "N3", true)}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({Longitude.ToAngle().ToUnitString(AngleUnit.Degree, "N3", true)}), Altitude = {Altitude.ToUnitString()} }}";
-    #endregion Object overrides
   }
 }

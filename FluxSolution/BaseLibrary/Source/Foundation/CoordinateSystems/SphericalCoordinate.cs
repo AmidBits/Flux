@@ -4,7 +4,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct SphericalCoordinate
-    : ISphericalCoordinate
+    : ISphericalCoordinate<double>
   {
     private readonly double m_radius;
     private readonly double m_inclination;
@@ -17,11 +17,11 @@ namespace Flux
       m_azimuth = azimuth;
     }
 
-    [System.Diagnostics.Contracts.Pure] public Length Radius { get => new(m_radius); init => m_radius = value.Value; }
-    [System.Diagnostics.Contracts.Pure] public Angle Inclination { get => new Angle(m_inclination); init => m_inclination = value.Value; }
-    [System.Diagnostics.Contracts.Pure] public Azimuth Azimuth { get => Azimuth.FromRadians(m_azimuth); init => m_azimuth = value.ToRadians(); }
+    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
+    [System.Diagnostics.Contracts.Pure] public double Inclination { get => m_inclination; init => m_inclination = value; }
+    [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
-    [System.Diagnostics.Contracts.Pure] public Angle Elevatiuon { get => new(System.Math.PI / 2 - m_inclination); init => m_inclination = System.Math.PI / 2 - value.Value; }
+    [System.Diagnostics.Contracts.Pure] public double Elevation { get => ConvertInclinationToElevation(m_inclination); init => m_inclination = ConvertElevationToInclination(value); }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref=ICartesianCoordinate3{T}">CartesianCoordinate3</see>.</summary>
     public (double x, double y, double z) ToCartesianCoordinate()
@@ -86,8 +86,5 @@ namespace Flux
     }
 
     #endregion Static methods
-
-    public override string ToString()
-      => $"{GetType().Name} {{ Radius = {m_radius}, Inclination = {new Angle(m_inclination).ToUnitString(AngleUnit.Degree, "N3", true)} (Elevation = {new Angle(ConvertInclinationToElevation(m_inclination)).ToUnitString(AngleUnit.Degree, "N3", true)}), Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N3", true)} }}";
   }
 }

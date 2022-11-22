@@ -4,7 +4,7 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct CylindricalCoordinate
-    : ICylindricalCoordinate
+    : ICylindricalCoordinate<double>
   {
     private readonly double m_radius;
     private readonly double m_azimuth;
@@ -17,13 +17,13 @@ namespace Flux
       m_height = height;
     }
 
-    [System.Diagnostics.Contracts.Pure] public Length Radius { get => new(m_radius); init => m_radius = value.Value; }
-    [System.Diagnostics.Contracts.Pure] public Azimuth Azimuth { get => Azimuth.FromRadians(m_azimuth); init => m_azimuth = value.ToRadians(); }
-    [System.Diagnostics.Contracts.Pure] public Length Height { get => new(m_height); init => m_height = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public double Radius { get => m_radius; init => m_radius = value; }
+    [System.Diagnostics.Contracts.Pure] public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
+    [System.Diagnostics.Contracts.Pure] public double Height { get => m_height; init => m_height = value; }
 
     /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="Vector3"/>.</summary>
     public Vector3 ToCartesianCoordinate3()
-     => new Vector3(
+     => new(
        m_radius * System.Math.Cos(m_azimuth),
        m_radius * System.Math.Sin(m_azimuth),
        m_height
@@ -31,14 +31,14 @@ namespace Flux
 
     /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="PolarCoordinate"/>.</summary>
     public PolarCoordinate ToPolarCoordinate()
-     => new PolarCoordinate(
+     => new(
        m_radius,
        m_azimuth
      );
 
     /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
     public SphericalCoordinate ToSphericalCoordinate()
-     => new SphericalCoordinate(
+     => new(
        System.Math.Sqrt(m_radius * m_radius + m_height * m_height),
        System.Math.Atan2(m_radius, m_height),
        m_azimuth
@@ -49,8 +49,5 @@ namespace Flux
     public static CylindricalCoordinate From(Length radius, Azimuth azimuth, Length height)
       => new CylindricalCoordinate(radius.Value, azimuth.ToRadians(), height.Value);
     #endregion Static methods
-
-    public override string ToString()
-      => $"{GetType().Name} {{ Radius = {m_radius}, Azimuth = {new Angle(m_azimuth).ToUnitString(AngleUnit.Degree, "N3", true)}, Height = {m_height} }}";
   }
 }

@@ -17,6 +17,5 @@
 
     /// <summary>Returns the length of the coordinate.</summary>
     public static TSelf CubeLength(TSelf q, TSelf r, TSelf s) => (TSelf.Abs(q) + TSelf.Abs(r) + TSelf.Abs(s)).Div2();
-
   }
 }

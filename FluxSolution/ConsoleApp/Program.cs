@@ -19,6 +19,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
+      Zamplez.RunCoordinateSystems();
+
+      //var geographicCoordinate = Flux.GeographicCoordinate.TucsonAzUsa;
+      //var gc = geographicCoordinate.ToSphericalCoordinates<double>();
+      ////System.Console.WriteLine(gc);
+      ////System.Console.WriteLine(geographicCoordinate);
+      ////System.Console.WriteLine(geographicCoordinate.ToQuantities());
+      //var sphericalCoordinate = geographicCoordinate.ToSphericalCoordinate();
+      ////System.Console.WriteLine(sphericalCoordinate.ToQuantities());
+      //System.Console.WriteLine(sphericalCoordinate);
+      //System.Console.WriteLine();
     }
 
     private static void Main(string[] args)

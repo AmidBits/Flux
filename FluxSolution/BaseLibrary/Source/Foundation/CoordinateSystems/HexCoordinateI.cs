@@ -130,7 +130,7 @@ namespace Flux
         yield return GetRing(k);
     }
 
-#region Static methods
+    #region Static methods
     public static void AssertCubeCoordinate(int q, int r, int s)
     {
       if (!IsCubeCoordinate(q, r, s))
@@ -184,9 +184,9 @@ namespace Flux
       for (var i = 0; i <= distance; i++)
         yield return HexCoordinateR.Round(HexCoordinateR.Lerp(a_nudge, b_nudge, step * i));
     }
-#endregion Static methods
+    #endregion Static methods
 
-#region Overloaded operators
+    #region Overloaded operators
     public static HexCoordinateI operator +(HexCoordinateI a, HexCoordinateI b)
       => new(a.m_q + b.m_q, a.m_r + b.m_r, a.m_s + b.m_s);
     public static HexCoordinateI operator *(HexCoordinateI h, int scalar)
@@ -197,6 +197,6 @@ namespace Flux
       : new(h.m_q / scalar, h.m_r / scalar, h.m_s / scalar);
     public static HexCoordinateI operator -(HexCoordinateI a, HexCoordinateI b)
       => new(a.m_q - b.m_q, a.m_r - b.m_r, a.m_s - b.m_s);
-#endregion Overloaded operators
+    #endregion Overloaded operators
   }
 }
