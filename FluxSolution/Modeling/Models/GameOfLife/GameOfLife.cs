@@ -2,7 +2,6 @@
 {
   /// <summary>Plays Conway's Game of Life on the console with a random initial state.</summary>
   public sealed class GameOfLife
-    : IConsoleWritable
   {
     private System.Collections.BitArray m_deadOrAlive;
     private readonly bool m_canLifeLogicWrapAroundEdges;

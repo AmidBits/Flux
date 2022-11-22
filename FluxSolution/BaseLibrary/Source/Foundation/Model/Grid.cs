@@ -1,7 +1,7 @@
 ﻿namespace Flux.Model
 {
   public class Grid<TValue>
-    : IConsoleWritable, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<(int row, int column), TValue>>
+    : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<(int row, int column), TValue>>
     where TValue : notnull
   {
     private readonly int m_rows;
