@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class Reflection
   {
-    /// <summary>Enumerates all PropertyInfo matching the specified binding flags and predicate. If the source is a System.Type, the values are enumerated from the type, otherwise the instance is used.</summary>
-    /// <param name="source">An object or a System.Type to enumerate properties on.</param>
+    /// <summary>Enumerates all PropertyInfo matching the specified binding flags and predicate. If the source is a System.Type, the properties are enumerated from the type, otherwise the instance is used.</summary>
+    /// <param name="source">An instance object or a System.Type to enumerate properties on.</param>
     /// <param name="bindingFlags"></param>
     /// <param name="predicate"></param>
     public static System.Collections.Generic.IEnumerable<System.Reflection.PropertyInfo> GetPropertyInfos(object source, System.Func<System.Reflection.PropertyInfo, bool> predicate, System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.FlattenHierarchy | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)

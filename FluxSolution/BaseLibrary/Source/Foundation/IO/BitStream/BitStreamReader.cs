@@ -6,19 +6,21 @@ namespace Flux.IO
     private readonly System.IO.Stream m_baseStream;
 
     private ulong m_bitBuffer;
+
+    private int m_bitCount;
+
+    public BitStreamReader(System.IO.Stream input)
+      => m_baseStream = input;
+
     /// <summary>The intermediate 64-bit storage buffer.</summary>
     [System.CLSCompliant(false)]
     public ulong BitBuffer => m_bitBuffer & ((1UL << m_bitCount) - 1UL);
 
-    private int m_bitCount;
     /// <summary>The number of bits currently stored in the bit buffer.</summary>
     public int BitCount => m_bitCount;
 
     /// <summary>The total number of bits read through the bit stream.</summary>
     public int TotalBits { get; private set; }
-
-    public BitStreamReader(System.IO.Stream input)
-      => m_baseStream = input;
 
     private void ReadBytes(int bitCount)
     {
@@ -68,6 +70,7 @@ namespace Flux.IO
       return bits | ReadBitsUInt32(bitCount);
     }
 
+    #region Overridden inheritance
     // System.IO.Stream
     public override bool CanRead
       => m_baseStream.CanRead;
@@ -105,5 +108,6 @@ namespace Flux.IO
       => throw new System.NotImplementedException();
     public override void Write(byte[] buffer, int offset, int count)
       => throw new System.NotImplementedException();
+    #endregion Overridden inheritance
   }
 }
