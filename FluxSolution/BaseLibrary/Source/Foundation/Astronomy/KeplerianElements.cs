@@ -1,9 +1,11 @@
 namespace Flux
 {
-    /// <summary>Kepler elements for computing orbits.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orbital_elements"/>
-    /// <see cref="https://www.amsat.org/keplerian-elements-tutorial/"/>
-    public readonly record struct KeplerianElements
+  /// <summary>Kepler elements for computing orbits.
+  /// <para><see href="https://en.wikipedia.org/wiki/Orbital_elements"/></para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion"/></para>
+  /// <para><see href="https://www.amsat.org/keplerian-elements-tutorial/"/></para>
+  /// </summary>
+  public readonly record struct KeplerianElements
   {
     public const double TheObliquityOfTheEclipticInDegrees = 23.4;
 
