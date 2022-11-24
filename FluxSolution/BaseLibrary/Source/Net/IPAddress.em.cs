@@ -92,7 +92,9 @@ namespace Flux
     /// <summary>Convert the BigInteger to an IP address.</summary>
     public static System.Net.IPAddress ToIPAddress(this System.Numerics.BigInteger source)
     {
-      if (source < 0 || source > Flux.Net.IP.MaxValueIPv6) throw new System.ArgumentOutOfRangeException(nameof(source));
+      var maxValueIPv6 = System.Numerics.BigInteger.Parse(@"340282366920938463463374607431768211456", System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture);
+
+      if (source < 0 || source > maxValueIPv6) throw new System.ArgumentOutOfRangeException(nameof(source));
 
       var byteArray = source.ToByteArrayEx(out var _);
       if (byteArray.Length < 4)

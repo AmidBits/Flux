@@ -87,7 +87,7 @@ namespace Flux.Net
         Socket.Dispose();
     }
 
-    public static void Chat(System.Net.IPEndPoint multicastAddress)
+    public static void ConsoleChat(System.Net.IPEndPoint multicastAddress)
     {
       System.Console.OutputEncoding = System.Text.Encoding.Unicode;
 
@@ -97,6 +97,8 @@ namespace Flux.Net
       {
         uc.DataReceived += Uc_DataReceived;
 
+        System.Console.WriteLine($"{string.Join(", ", System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().WhereOperational().WhereActive().WhereNoLoopbacksOrTunnels().WhereGateway().GetAllUnicastAddresses(true).First())}");
+
         while (System.Console.ReadLine() is string line && line.Length > 0)
           uc.SendData(System.Text.UnicodeEncoding.UTF32.GetBytes(line));
 
@@ -104,7 +106,7 @@ namespace Flux.Net
       }
 
       static void Uc_DataReceived(object? sender, Flux.Net.UdpCastDataReceivedEventArgs e)
-        => System.Console.WriteLine(System.Text.UnicodeEncoding.UTF32.GetString(e.Bytes));
+        => System.Console.WriteLine($"{System.Text.UnicodeEncoding.UTF32.GetString(e.Bytes)} ({e.Remote.ToString()})");
     }
   }
 }

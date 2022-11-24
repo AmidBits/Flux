@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Net
 {
   public static class QueryString
@@ -22,7 +20,7 @@ namespace Flux.Net
           if (changed.ContainsKey(kvp.Key)) changed[kvp.Key] = kvp.Value;
           else changed.Add(kvp.Key, kvp.Value);
         }
-        else if (changed.ContainsKey(kvp.Key)) changed.Remove(kvp.Key);
+        else changed.Remove(kvp.Key);
 
       return changed;
     }
@@ -40,8 +38,7 @@ namespace Flux.Net
           removed.Add(kvp.Key, kvp.Value);
 
       foreach (var kvp in remove)
-        if (removed.ContainsKey(kvp.Key))
-          removed.Remove(kvp.Key);
+        removed.Remove(kvp.Key);
 
       return removed;
     }
@@ -63,11 +60,11 @@ namespace Flux.Net
     }
 
     /// <summary>Generate a 'simplified query string dictionary' from the 'query string dictionary'.</summary>
-    public static System.Collections.Generic.IDictionary<string, string> ToSimplifiedDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source)
+    public static System.Collections.Generic.IDictionary<string, string> ToSimplifiedDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source, string delimiter = "|")
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      return source.ToDictionary(kvp => kvp.Key, kvp => string.Join('|', kvp.Value));
+      return source.ToDictionary(kvp => kvp.Key, kvp => string.Join(delimiter, kvp.Value));
     }
   }
 }
