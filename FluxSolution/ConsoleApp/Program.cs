@@ -19,9 +19,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var i0 = 0x07070707;
+      var i0 = (0x07e00180FF).ToBigInteger();
       var i1 = i0.ReverseBits();
       var i2 = i1.ReverseBits();
+      var i3 = i2.ReverseBytes();
+      var i4 = i3.ReverseBytes();
 
       //var nic1 = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().WhereOperational().WhereActive().WhereNoLoopbacksOrTunnels().First();
       //var ipp1 = nic1.GetIPv4Statistics();
