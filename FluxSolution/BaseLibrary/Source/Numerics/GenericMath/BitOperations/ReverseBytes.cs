@@ -9,9 +9,9 @@ namespace Flux
     public static TSelf ReverseBytes<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var bytes = new byte[value.GetByteCountEx(out var byteCountEx, out var bitCount)];
+      var bytes = new byte[value.GetByteCountEx(out var actualByteCount, out var _)];
       value.WriteLittleEndian(bytes);
-      System.Array.Reverse(bytes, 0, byteCountEx);
+      System.Array.Reverse(bytes, 0, actualByteCount);
 
       return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(value.GetType()));
     }

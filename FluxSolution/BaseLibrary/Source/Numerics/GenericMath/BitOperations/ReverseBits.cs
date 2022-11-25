@@ -13,6 +13,22 @@ namespace Flux
     {
       var bytes = new byte[value.GetByteCountEx(out var byteCountEx, out var bitCount)];
       value.WriteLittleEndian(bytes);
+
+      var shift = byteCountEx * 8 - bitCount;
+
+      var sl = int.Abs(shift);
+      var sr = 8 - sl;
+
+      //var ashift = 8 - shift;
+
+
+      //var shiftLeft = 8 - shiftRight;
+
+      for (var i = byteCountEx - 1; i > 0; i--)
+        bytes[i] = MirrorBits((byte)((bytes[i] << sl) | (bytes[i - 1] >>sr<<sr)));
+
+      bytes[0] <<= sl;
+
       System.Array.Reverse(bytes, 0, byteCountEx);
 
       //for (int inc = 0, dec = byteCountEx - 1; inc <= dec; inc += 1, dec -= 1)
@@ -24,15 +40,15 @@ namespace Flux
 
       // NOTE: All this needs to be done in one loop somehow.
 
-      for (var index = byteCountEx; index >= 0; index--)
-        bytes[index] = bytes[index].MirrorBits();
+      //for (var index = byteCountEx; index >= 0; index--)
+      //  bytes[index] = bytes[index].MirrorBits();
 
-      var shiftRight = byteCountEx * 8 - bitCount;
-      var shiftLeft = 8 - shiftRight;
+      //var shiftRight = byteCountEx * 8 - bitCount;
+      //var shiftLeft = 8 - shiftRight;
 
-      if (shiftRight > 0)
-        for (var i = 0; i < byteCountEx; i++)
-          bytes[i] = (byte)((bytes[i] >> shiftRight) | ((i + 1) < byteCountEx ? (bytes[i + 1] << shiftLeft) : 0));
+      //if (shiftRight > 0)
+      //  for (var i = 0; i < byteCountEx; i++)
+      //    bytes[i] = (byte)((bytes[i] >> shiftRight) | ((i + 1) < byteCountEx ? (bytes[i + 1] << shiftLeft) : 0));
 
       return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(value.GetType()));
     }
