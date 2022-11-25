@@ -151,7 +151,7 @@ namespace Flux
     public static string ToString(this SequenceBuilder<char> source, int startIndex)
       => source.ToString(startIndex, source.Length - startIndex);
   }
-#endregion Extension methods.
+  #endregion Extension methods.
 
   public sealed class SequenceBuilder<T>
   {
@@ -321,10 +321,10 @@ namespace Flux
 
     /// <summary>Returns a non-allocating readonly span.</summary>
     public System.ReadOnlySpan<T> AsReadOnlySpan()
-      => new System.ReadOnlySpan<T>(m_buffer, m_head, m_tail - m_head);
+      => new(m_buffer, m_head, m_tail - m_head);
     /// <summary>Returns a non-allocating span.</summary>
     public System.Span<T> AsSpan()
-      => new System.Span<T>(m_buffer, m_head, m_tail - m_head);
+      => new(m_buffer, m_head, m_tail - m_head);
 
     /// <summary>Removes all items from the builder.</summary>
     public void Clear()
@@ -497,7 +497,12 @@ namespace Flux
 
     /// <summary>Pads this StringBuilder on the left with the specified padding character.</summary>
     public SequenceBuilder<T> PadLeft(int totalWidth, T padding)
-      => Insert(0, padding, totalWidth - Length);
+    {
+      if (Length < totalWidth)
+        Insert(0, padding, totalWidth - Length);
+
+      return this;
+    }
     /// <summary>Pads this StringBuilder on the left with the specified padding string.</summary>
     public SequenceBuilder<T> PadLeft(int totalWidth, System.ReadOnlySpan<T> padding)
     {

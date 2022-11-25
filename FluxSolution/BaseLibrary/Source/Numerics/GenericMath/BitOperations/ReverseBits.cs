@@ -1,5 +1,3 @@
-using System.Reflection;
-
 namespace Flux
 {
   public static partial class BitOps
@@ -11,44 +9,12 @@ namespace Flux
     public static TSelf ReverseBits<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var bytes = new byte[value.GetByteCountEx(out var byteCountEx, out var bitCount)];
+      var bytes = new byte[value.GetByteCount()]; // Retrieve the byte size of the number, which will be the basis for the bit reversal.
       value.WriteLittleEndian(bytes);
+      System.Array.Reverse(bytes, 0, bytes.Length); // Reverse all bytes.
 
-      var shift = byteCountEx * 8 - bitCount;
-
-      var sl = int.Abs(shift);
-      var sr = 8 - sl;
-
-      //var ashift = 8 - shift;
-
-
-      //var shiftLeft = 8 - shiftRight;
-
-      for (var i = byteCountEx - 1; i > 0; i--)
-        bytes[i] = MirrorBits((byte)((bytes[i] << sl) | (bytes[i - 1] >>sr<<sr)));
-
-      bytes[0] <<= sl;
-
-      System.Array.Reverse(bytes, 0, byteCountEx);
-
-      //for (int inc = 0, dec = byteCountEx - 1; inc <= dec; inc += 1, dec -= 1)
-      //{
-      //  var tmp = bytes[inc].MirrorBits();
-      //  bytes[inc] = bytes[dec].MirrorBits();
-      //  bytes[dec] = tmp;
-      //}
-
-      // NOTE: All this needs to be done in one loop somehow.
-
-      //for (var index = byteCountEx; index >= 0; index--)
-      //  bytes[index] = bytes[index].MirrorBits();
-
-      //var shiftRight = byteCountEx * 8 - bitCount;
-      //var shiftLeft = 8 - shiftRight;
-
-      //if (shiftRight > 0)
-      //  for (var i = 0; i < byteCountEx; i++)
-      //    bytes[i] = (byte)((bytes[i] >> shiftRight) | ((i + 1) < byteCountEx ? (bytes[i + 1] << shiftLeft) : 0));
+      for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
+        bytes[i] = MirrorBits(bytes[i]); // Mirror (reverse) bits in each byte.
 
       return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(value.GetType()));
     }
