@@ -6,7 +6,7 @@
   {
     public static readonly WinkelTripelProjection Default;
 
-//#pragma warning disable CA1822 // Mark members as static
+    //#pragma warning disable CA1822 // Mark members as static
     public Vector3 ProjectForward(GeographicCoordinate project)
     {
       var lat = project.Latitude.ToRadians();
@@ -16,12 +16,12 @@
 
       var sinc = Angle.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(lon / 2)));
 
-      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
+      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Constants.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
       return new Vector3(x, y, project.Altitude.Value);
     }
-//#pragma warning restore CA1822 // Mark members as static
+    //#pragma warning restore CA1822 // Mark members as static
   }
 
 }

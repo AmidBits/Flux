@@ -38,7 +38,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
     [System.Diagnostics.Contracts.Pure]
     public AngularVelocity ToAngularVelocity()
-      => new(Maths.PiX2 * m_hertz);
+      => new(Constants.PiX2 * m_hertz);
 
     /// <summary>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</summary>
     [System.Diagnostics.Contracts.Pure]

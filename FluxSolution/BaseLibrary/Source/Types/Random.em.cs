@@ -4,7 +4,7 @@ using BaseLibrary.Source.Types.BigInteger;
 
 namespace Flux
 {
-    public static partial class RandomEm
+  public static partial class RandomEm
   {
     // https://docs.microsoft.com/en-us/dotnet/api/system.random?view=netstandard-2.0
 
@@ -125,8 +125,8 @@ namespace Flux
       }
       while (u1 <= double.Epsilon || u2 <= double.Epsilon);
 
-      var z0 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Cos(Maths.PiX2 * u2);
-      var z1 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Sin(Maths.PiX2 * u2);
+      var z0 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Cos(Constants.PiX2 * u2);
+      var z1 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Sin(Constants.PiX2 * u2);
 
       return (z0 * stdDev + mean, z1 * stdDev + mean);
     }
@@ -197,7 +197,7 @@ namespace Flux
 
     /// <summary>Using the Box-Muller algorithm.</summary>
     public static double NextNormal([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source)
-      => System.Math.Sqrt(-2 * System.Math.Log(NextUniform(source))) * System.Math.Sin(Maths.PiOver2 * NextUniform(source));
+      => System.Math.Sqrt(-2 * System.Math.Log(NextUniform(source))) * System.Math.Sin(Constants.PiOver2 * NextUniform(source));
     /// <summary>Get normal (Gaussian) random sample with specified mean and standard deviation.</summary>
     public static double NextNormal([System.Diagnostics.CodeAnalysis.DisallowNull] this System.Random source, double mean, double standardDeviation)
       => standardDeviation > 0 ? mean + standardDeviation * NextNormal(source) : throw new System.ArgumentOutOfRangeException(nameof(standardDeviation), $"{standardDeviation} > 0");

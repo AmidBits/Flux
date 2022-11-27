@@ -133,8 +133,8 @@ namespace Flux
           Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).RandomElement(rng),
           Geometry.TriangulationType.SmallestAngle => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => a.angle < b.angle ? a : b),
           Geometry.TriangulationType.LargestAngle => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => a.angle > b.angle ? a : b),
-          Geometry.TriangulationType.LeastSquare => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
-          Geometry.TriangulationType.MostSquare => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
+          Geometry.TriangulationType.LeastSquare => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => System.Math.Abs(a.angle - Constants.PiOver2) > System.Math.Abs(b.angle - Constants.PiOver2) ? a : b),
+          Geometry.TriangulationType.MostSquare => System.Linq.Enumerable.Aggregate(GetAnglesEx(copy), (a, b) => System.Math.Abs(a.angle - Constants.PiOver2) < System.Math.Abs(b.angle - Constants.PiOver2) ? a : b),
           _ => throw new System.Exception(),
         };
         yield return new System.Collections.Generic.List<Vector3>() { triplet.v2, triplet.v3, triplet.v1 };
@@ -328,7 +328,7 @@ namespace Flux
     /// <summary>Converts the <see cref="Vector3"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public CylindricalCoordinate ToCylindricalCoordinate()
-      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Maths.PiX2) % Maths.PiX2, m_z);
+      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Constants.PiX2) % Constants.PiX2, m_z);
 
     /// <summary>Returns a quaternion from two vectors.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>

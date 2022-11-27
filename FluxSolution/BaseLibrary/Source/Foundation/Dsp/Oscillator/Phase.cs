@@ -67,10 +67,10 @@ namespace Flux.Dsp.Synthesis
 
       var shift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
 
-      if (PhaseModulator != null && m_phaseModulation > Maths.EpsilonCpp32)
+      if (PhaseModulator != null && m_phaseModulation > Constants.EpsilonCpp32)
         shift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * m_phaseModulation;
 
-      if (FrequencyModulator != null && m_frequencyModulation > Maths.EpsilonCpp32)
+      if (FrequencyModulator != null && m_frequencyModulation > Constants.EpsilonCpp32)
         shift += normalizedFrequency.Value * FrequencyModulator.NextSample() * m_frequencyModulation;
 
       if (Reverse)

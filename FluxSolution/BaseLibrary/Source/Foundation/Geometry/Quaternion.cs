@@ -1,6 +1,6 @@
 namespace Flux
 {
-    public static partial class ExtensionMethods
+  public static partial class ExtensionMethods
   {
     public static Quaternion ToQuaternion(this System.Numerics.Quaternion source)
       => new(source.X, source.Y, source.Z, source.W);
@@ -189,7 +189,7 @@ namespace Flux
 
       Vector3 w;
 
-      if (real_part < Maths.Epsilon1E7 * norm_u_norm_v)
+      if (real_part < Constants.Epsilon1E7 * norm_u_norm_v)
       {
         real_part = 0.0f;
 

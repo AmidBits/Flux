@@ -1,6 +1,6 @@
 namespace Flux
 {
-    public static partial class ExtensionMethods
+  public static partial class ExtensionMethods
   {
     public static Matrix4 ToMatrix4(this System.Numerics.Matrix4x4 source)
       => new
@@ -431,7 +431,7 @@ namespace Flux
     public static Matrix4 CreateConstrainedBillboard(Vector4 objectPosition, Vector4 cameraPosition, Vector4 rotateAxis, Vector4 cameraForwardVector, Vector4 objectForwardVector)
     {
       const double epsilon = 1e-4f;
-      const double minAngle = 1 - (0.1f * Maths.PiOver180); // 0.1 degrees
+      const double minAngle = 1 - (0.1f * Constants.PiOver180); // 0.1 degrees
 
       // Treat the case when object and camera positions are too close.
       var faceDir = new Vector4(objectPosition.X - cameraPosition.X, objectPosition.Y - cameraPosition.Y, objectPosition.Z - cameraPosition.Z);

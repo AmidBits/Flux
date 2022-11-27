@@ -14,8 +14,8 @@ namespace Flux.Dsp
     /// <summary>Returns the absolute phase (negative phase align correctly on positive side) normalized to 2*PI [0, 2*PI).</summary>
     public static double AbsolutePhasePi2(double phasePi2)
       => phasePi2 < 0
-      ? (phasePi2 % Maths.PiX2) + Maths.PiX2 // Align phased correctly on positive side.
-      : phasePi2 % Maths.PiX2;
+      ? (phasePi2 % Constants.PiX2) + Constants.PiX2 // Align phased correctly on positive side.
+      : phasePi2 % Constants.PiX2;
 
     /// <summary>Compute the root mean square (RMS) of the samples in the sequence.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Root_mean_square"/>

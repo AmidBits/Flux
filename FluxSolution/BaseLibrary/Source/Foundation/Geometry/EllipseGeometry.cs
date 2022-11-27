@@ -45,13 +45,13 @@ namespace Flux
     /// </summary>
     public static System.Collections.Generic.IEnumerable<TResult> CreateCircularArcPoints<TResult>(double numberOfPoints, double radiusX, double radiusY, System.Func<double, double, TResult> resultSelector, double offsetRadians = 0, double maxRandomVariation = 0)
     {
-      var circularArc = Maths.PiX2 / numberOfPoints;
+      var circularArc = Constants.PiX2 / numberOfPoints;
 
       for (var segment = 0; segment < numberOfPoints; segment++)
       {
         var angle = offsetRadians + segment * circularArc;
 
-        if (maxRandomVariation > Flux.Maths.Epsilon1E7)
+        if (maxRandomVariation > Constants.Epsilon1E7)
           angle += Random.NumberGenerators.Crypto.NextDouble(0, circularArc * maxRandomVariation);
 
         var (x, y) = Flux.Angle.ConvertRotationAngleToCartesian2Ex(angle);

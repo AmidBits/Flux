@@ -7,15 +7,15 @@ namespace Flux.Wpf
       /// <summary>Creates a circular polygon with a specified number of sides, radius and an optional offset (in radians).</summary>
       public static System.Collections.Generic.IEnumerable<System.Windows.Point> CreateCircular(double numberOfSides, double radius, double offsetRadians = 0f)
       {
-        var step = Flux.Maths.PiX2 / numberOfSides;
+        var step = Flux.Constants.PiX2 / numberOfSides;
 
-        for (var angle = 0.0; angle < Flux.Maths.PiX2; angle += step)
+        for (var angle = 0.0; angle < Flux.Constants.PiX2; angle += step)
           yield return (angle + offsetRadians).AngularRotationToPoint().Multiply(radius);
       }
 
       public static System.Collections.Generic.IEnumerable<System.Windows.Point> CreateHexagonHorizontal(double radius)
       {
-        return CreateCircular(6, radius, Flux.Maths.PiOver2);
+        return CreateCircular(6, radius, Constants.PiOver2);
       }
       public static System.Collections.Generic.IEnumerable<System.Windows.Point> CreateHexagonVertical(double radius)
       {

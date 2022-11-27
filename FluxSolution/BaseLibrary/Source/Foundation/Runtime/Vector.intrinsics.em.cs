@@ -31,14 +31,14 @@ namespace Flux
       => Vector128.Create(2d);
 
     internal static Vector128<double> OneOverPI2_128
-      => Vector128.Create(1 / Maths.PiOver2);
+      => Vector128.Create(1 / Constants.PiOver2);
     internal static Vector256<double> OneOverPI2
-      => Vector256.Create(1 / Maths.PiOver2);
+      => Vector256.Create(1 / Constants.PiOver2);
 
     internal static Vector128<double> PI2_128
-      => Vector128.Create(Maths.PiOver2);
+      => Vector128.Create(Constants.PiOver2);
     internal static Vector256<double> PI2
-      => Vector256.Create(Maths.PiOver2);
+      => Vector256.Create(Constants.PiOver2);
 
     /// <summary>Returns the vector with absolute values.</summary>
     public static Vector128<double> Abs(this Vector128<double> source)

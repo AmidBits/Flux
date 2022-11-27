@@ -11,7 +11,7 @@ namespace Flux.Dsp.WaveGenerator
 
     /// <summary>Generates a sine wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>
     public static double SampleUi(double phaseUi)
-      => System.Math.Sin(phaseUi * Maths.PiX2);
+      => System.Math.Sin(phaseUi * Constants.PiX2);
     /// <summary>Generates a sine wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2)
       => System.Math.Sin(phasePi2);

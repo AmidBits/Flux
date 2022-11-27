@@ -87,7 +87,7 @@
 
     public const double OneFullRotationInDegrees = 360;
     public const double OneFullRotationInGradians = 400;
-    public const double OneFullRotationInRadians = Maths.PiX2;
+    public const double OneFullRotationInRadians = Constants.PiX2;
     public const double OneFullRotationInTurns = 1;
 
     private readonly double m_radAngle;
@@ -186,7 +186,7 @@
     /// <summary>Convert the angle specified in degrees to radians.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertDegreeToRadian(double degAngle)
-      => degAngle * Maths.PiOver180;
+      => degAngle * Constants.PiOver180;
 
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertDegreeToTurn(double degAngle)
@@ -200,7 +200,7 @@
     /// <summary>Convert the angle specified in gradians (grads) to radians.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertGradianToRadian(double gradAngle)
-      => gradAngle * Maths.PiOver200;
+      => gradAngle * Constants.PiOver200;
 
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertGradianToTurn(double gradAngle)
@@ -227,12 +227,12 @@
     /// <summary>Convert the angle specified in radians to degrees.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertRadianToDegree(double radAngle)
-      => radAngle * Maths.PiInto180;
+      => radAngle * Constants.PiInto180;
 
     /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertRadianToGradian(double radAngle)
-      => radAngle * Maths.PiInto200;
+      => radAngle * Constants.PiInto200;
 
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertRadianToMilliradian(double radAngle)
@@ -244,7 +244,7 @@
 
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertRadianToTurn(double radAngle)
-      => radAngle / Maths.PiX2;
+      => radAngle / Constants.PiX2;
 
     /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
@@ -256,7 +256,7 @@
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     [System.Diagnostics.Contracts.Pure]
     public static (double x, double y) ConvertRotationAngleToCartesian2Ex(double radAngle)
-      => ConvertRotationAngleToCartesian2(Maths.PiX2 - (radAngle % Maths.PiX2 is var rad && rad < 0 ? rad + Maths.PiX2 : rad) + Maths.PiOver2);
+      => ConvertRotationAngleToCartesian2(Constants.PiX2 - (radAngle % Constants.PiX2 is var rad && rad < 0 ? rad + Constants.PiX2 : rad) + Constants.PiOver2);
 
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertSexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds)
@@ -264,7 +264,7 @@
 
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertTurnToRadian(double revolutions)
-      => revolutions * Maths.PiX2;
+      => revolutions * Constants.PiX2;
 
     [System.Diagnostics.Contracts.Pure]
     public static Angle FromSexagesimalDegrees(double degrees, double minutes, double seconds)

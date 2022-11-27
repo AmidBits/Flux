@@ -47,7 +47,7 @@ namespace Flux
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     [System.Diagnostics.Contracts.Pure]
     public double GetMercatorProjectedY()
-      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Maths.PiOver4 + ToRadians() / 2))), -System.Math.PI, System.Math.PI);
+      => System.Math.Clamp(System.Math.Log((System.Math.Tan(Constants.PiOver4 + ToRadians() / 2))), -System.Math.PI, System.Math.PI);
 
     [System.Diagnostics.Contracts.Pure]
     public Angle ToAngle()

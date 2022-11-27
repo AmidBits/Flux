@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Flux;
+using Flux.ApproximateEquality;
 
 // C# Interactive commands:
 // #r "System.Runtime"

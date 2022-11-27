@@ -11,7 +11,7 @@ namespace Flux.NumberSequences
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
     [System.Diagnostics.Contracts.Pure]
     public static System.Numerics.BigInteger GetCatalanNumber(System.Numerics.BigInteger number)
-      => Maths.Factorial(number * 2) / (Maths.Factorial(number + 1) * Maths.Factorial(number));
+      => GenericMath.Factorial(number * 2) / (GenericMath.Factorial(number + 1) * GenericMath.Factorial(number));
 
     /// <summary>Creates a new sequence with Catalan numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>

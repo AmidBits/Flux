@@ -32,13 +32,13 @@ namespace Flux
       };
 
     public Frequency ToFrequency()
-      => new(m_value / Maths.PiX2);
+      => new(m_value / Constants.PiX2);
 
     #region Static methods
     /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
     [System.Diagnostics.Contracts.Pure]
     public static double ConvertAngularVelocityToRotationalSpeed(double radPerSecond)
-      => radPerSecond / Maths.PiX2;
+      => radPerSecond / Constants.PiX2;
 
     /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
     [System.Diagnostics.Contracts.Pure]

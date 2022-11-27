@@ -138,7 +138,7 @@ namespace Flux.Dsp.WaveFilter.Chebyshev
       var T = 2.0 * System.Math.Tan(0.5);
       var T2 = (T * T);
       var RPmulT = RP * T;
-      var W = Maths.PiOver2 * FC;
+      var W = Constants.PiOver2 * FC;
       var M = (RP * RP) + (IP * IP);
       var MmulT2 = M * T2;
       var D = 4.0 - 4.0 * RPmulT + MmulT2;

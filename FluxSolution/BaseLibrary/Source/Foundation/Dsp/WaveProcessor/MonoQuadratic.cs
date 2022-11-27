@@ -30,8 +30,8 @@ namespace Flux.Dsp.AudioProcessor
 
         m_exponentExpanded = (-m_exponent) switch
         {
-          var exp when exp > Maths.EpsilonCpp32 => 1 + -m_exponent * 99,
-          var exp when exp < -Maths.EpsilonCpp32 => 1 + -m_exponent,
+          var exp when exp > Constants.EpsilonCpp32 => 1 + -m_exponent * 99,
+          var exp when exp < -Constants.EpsilonCpp32 => 1 + -m_exponent,
           _ => 0,
         };
       }

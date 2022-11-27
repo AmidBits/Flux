@@ -1,8 +1,7 @@
 ﻿#if NET7_0_OR_GREATER
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using System;
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GenericMath
 {
@@ -32,9 +31,9 @@ namespace GenericMath
     {
       Assert.AreEqual(362880, 9.Factorial());
 
-      Assert.AreEqual(System.Numerics.BigInteger.Parse("36471110918188685288249859096605464427167635314049524593701628500267962436943872000000000000000"), Flux.Maths.Factorial(67.ToBigInteger()));
-      Assert.AreEqual(479001600, Flux.Maths.Factorial(12.ToBigInteger()));
-      Assert.AreEqual(-479001600, Flux.Maths.Factorial(-12.ToBigInteger()));
+      Assert.AreEqual(System.Numerics.BigInteger.Parse("36471110918188685288249859096605464427167635314049524593701628500267962436943872000000000000000"), Flux.GenericMath.Factorial(67.ToBigInteger()));
+      Assert.AreEqual(479001600, Flux.GenericMath.Factorial(12.ToBigInteger()));
+      Assert.AreEqual(-479001600, Flux.GenericMath.Factorial(-12.ToBigInteger()));
     }
 
     [TestMethod]
