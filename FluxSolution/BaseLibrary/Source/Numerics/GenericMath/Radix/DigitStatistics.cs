@@ -3,10 +3,11 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Returns the count of all single digits in <paramref name="number"/> using base <paramref name="radix"/>.</summary>
-    public static (TSelf count, TSelf sum) DigitStatistics<TSelf>(this TSelf number, TSelf radix)
+    public static (TSelf count, TSelf sum) DigitStatistics<TSelf, TRadix>(this TSelf number, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      AssertRadix(radix);
+      AssertRadix(radix, out TSelf tradix);
 
       var count = TSelf.Zero;
       var sum = TSelf.Zero;
@@ -14,9 +15,9 @@ namespace Flux
       while (!TSelf.IsZero(number))
       {
         count++;
-        sum += number % radix;
+        sum += number % tradix;
 
-        number /= radix;
+        number /= tradix;
       }
 
       return (count, sum);

@@ -3,7 +3,7 @@ namespace Flux
   namespace Loops
   {
     /// <summary>Creates a new sequence.</summary>
-    public record class BySelectors<TSelf, TResult>
+    public record class CustomSelectors<TSelf, TResult>
     : INumericSequence<TResult>
     where TSelf : System.Numerics.INumber<TSelf>
     where TResult : System.Numerics.INumber<TResult>
@@ -13,7 +13,7 @@ namespace Flux
       private System.Func<TSelf, int, TSelf> m_iteratorSelector;
       private System.Func<TSelf, int, TResult> m_resultSelector;
 
-      public BySelectors(System.Func<TSelf> initializerSelector, System.Func<TSelf, int, bool> conditionSelector, System.Func<TSelf, int, TSelf> iteratorSelector, System.Func<TSelf, int, TResult> resultSelector)
+      public CustomSelectors(System.Func<TSelf> initializerSelector, System.Func<TSelf, int, bool> conditionSelector, System.Func<TSelf, int, TSelf> iteratorSelector, System.Func<TSelf, int, TResult> resultSelector)
       {
         m_initializerSelector = initializerSelector;
         m_conditionSelector = conditionSelector;
@@ -21,6 +21,7 @@ namespace Flux
         m_resultSelector = resultSelector;
       }
 
+      #region Implemented interfaces
       // INumberSequence
       [System.Diagnostics.Contracts.Pure]
       public System.Collections.Generic.IEnumerable<TResult> GetSequence()
@@ -33,6 +34,7 @@ namespace Flux
       // IEnumerable<>
       [System.Diagnostics.Contracts.Pure] public System.Collections.Generic.IEnumerator<TResult> GetEnumerator() => GetSequence().GetEnumerator();
       [System.Diagnostics.Contracts.Pure] System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+      #endregion Implemented interfaces
     }
   }
 }

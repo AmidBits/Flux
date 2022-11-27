@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Returns the (floor) root of the <paramref name="y"/>, using Newton's method.</summary>
+    /// <summary>Returns the (floor) square root of the <paramref name="y"/>, using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
     public static TSelf IntegerSqrt<TSelf>(this TSelf y)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

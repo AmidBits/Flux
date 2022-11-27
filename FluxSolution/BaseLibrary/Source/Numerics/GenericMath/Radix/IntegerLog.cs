@@ -4,15 +4,16 @@ namespace Flux
   {
     /// <summary>Computes the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static void IntegerLog<TSelf, TResult>(this TSelf number, TSelf radix, out TResult logFloor, out TResult logCeiling)
+    public static void IntegerLog<TSelf, TRadix, TResult>(this TSelf number, TRadix radix, out TResult logFloor, out TResult logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       logFloor = TResult.Zero;
       logCeiling = TResult.Zero;
 
       AssertNonNegative(number);
-      AssertRadix(radix);
+      AssertRadix(radix, out TSelf tradix);
 
       checked
       {
@@ -21,9 +22,9 @@ namespace Flux
           if (!IsIntegerPowOf(number, radix))
             logCeiling++;
 
-          while (number >= radix)
+          while (number >= tradix)
           {
-            number /= radix;
+            number /= tradix;
 
             logFloor++;
             logCeiling++;
@@ -34,11 +35,12 @@ namespace Flux
 
     /// <summary>Computes the integer log ceiling of x using base b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TSelf IntegerLogCeiling<TSelf>(this TSelf number, TSelf radix)
+    public static TSelf IntegerLogCeiling<TSelf, TRadix>(this TSelf number, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       AssertNonNegative(number);
-      AssertRadix(radix);
+      AssertRadix(radix, out TSelf tradix);
 
       var logCeiling = TSelf.Zero;
 
@@ -47,9 +49,9 @@ namespace Flux
         if (!IsIntegerPowOf(number, radix))
           logCeiling++;
 
-        while (number >= radix)
+        while (number >= tradix)
         {
-          number /= radix;
+          number /= tradix;
 
           logCeiling++;
         }
@@ -58,20 +60,21 @@ namespace Flux
       return logCeiling;
     }
 
-    /// <summary>Computes the integer log floor of <paramref name="x"/> using base <paramref name="b"/>.</summary>
+    /// <summary>Computes the integer log floor of <paramref name="x"/> using base <paramref name="radix"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TSelf IntegerLogFloor<TSelf>(this TSelf x, TSelf b)
+    public static TSelf IntegerLogFloor<TSelf, TRadix>(this TSelf x, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       AssertNonNegative(x);
-      AssertRadix(b);
+      AssertRadix(radix, out TSelf tradix);
 
       var logFloor = TSelf.Zero;
 
       if (!TSelf.IsZero(x))
-        while (x >= b)
+        while (x >= tradix)
         {
-          x /= b;
+          x /= tradix;
 
           logFloor++;
         }
@@ -79,15 +82,16 @@ namespace Flux
       return logFloor;
     }
 
-    /// <summary>Attempt to compute the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/> into the out parameters.</summary>
+    /// <summary>Attempt to compute the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="radix"/> into the out parameters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static bool TryIntegerLog<TSelf, TResult>(this TSelf x, TSelf b, out TResult logFloor, out TResult logCeiling)
+    public static bool TryIntegerLog<TSelf, TRadix, TResult>(this TSelf x, TRadix radix, out TResult logFloor, out TResult logCeiling)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       try
       {
-        IntegerLog(x, b, out logFloor, out logCeiling);
+        IntegerLog(x, radix, out logFloor, out logCeiling);
 
         return true;
       }

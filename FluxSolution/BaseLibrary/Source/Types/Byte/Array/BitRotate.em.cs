@@ -1,22 +1,20 @@
 namespace Flux
 {
-	public static partial class ByteEm
-	{
-		/// <summary>Performs an in-place left rotation of all bits in the array.</summary>
-		public static void BitRotateLeft(this byte[] source)
-		{
-			if (source is null) throw new System.ArgumentNullException(nameof(source));
+  public static partial class ByteEm
+  {
+    /// <summary>Performs an in-place bit rotate <paramref name="count"/> left on all bytes in the <paramref name="source"/> array.</summary>
+    public static void BitRotateLeft(this byte[] source, int count)
+    {
+      var carryBits = BitShiftLeft(source, count);
 
-			if (BitShiftLeft(source))
-				source[^1] |= 0x01;
-		}
-		/// <summary>Performs an in-place right rotation of all bits in the array.</summary>
-		public static void BitRotateRight(this byte[] source)
-		{
-			if (source is null) throw new System.ArgumentNullException(nameof(source));
+      source[0] |= carryBits;
+    }
+    /// <summary>Performs an in-place bit rotate <paramref name="count"/> right on all bytes in the <paramref name="source"/> array.</summary>
+    public static void BitRotateRight(this byte[] source, int count)
+    {
+      var carryBits = BitShiftRight(source, count);
 
-			if (BitShiftRight(source))
-				source[0] |= 0x80;
-		}
-	}
+      source[^1] |= carryBits;
+    }
+  }
 }

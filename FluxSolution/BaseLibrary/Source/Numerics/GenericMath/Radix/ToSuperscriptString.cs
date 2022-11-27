@@ -3,8 +3,9 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
-    public static System.ReadOnlySpan<char> ToSuperscriptString<TSelf>(this TSelf number, TSelf radix)
+    public static System.ReadOnlySpan<char> ToSuperscriptString<TSelf, TRadix>(this TSelf number, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       var digits = GetDigits(number, radix);
       var chars = new char[digits.Length];

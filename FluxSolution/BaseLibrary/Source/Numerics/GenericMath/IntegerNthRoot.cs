@@ -7,8 +7,8 @@
     public static TSelf IntegerNthRoot<TSelf>(this TSelf y, TSelf n)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (TSelf.IsNegative(y)) throw new System.ArgumentOutOfRangeException(nameof(y));
-      if (n <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(n));
+      AssertNonNegative(y, nameof(y));
+      AssertRoot(n);
 
       var nM1 = n - TSelf.One;
       var c = TSelf.One;
@@ -24,7 +24,7 @@
 
       return d < e ? d : e;
 
-#region First brackets the answer between lo and hi by repeatedly multiplying hi by 2 until n is between lo and hi, then uses binary search to compute the exact answer.
+      #region First brackets the answer between lo and hi by repeatedly multiplying hi by 2 until n is between lo and hi, then uses binary search to compute the exact answer.
       // 
 
       //var hi = TSelf.One;
@@ -52,9 +52,9 @@
       //  return hi;
       //else
       //  return lo;
-#endregion
+      #endregion
 
-#region Newton's method, division-by-zero at the IntegerPow.
+      #region Newton's method, division-by-zero at the IntegerPow.
       // 
 
       //var u = TSelf.Zero;
@@ -69,7 +69,7 @@
       //}
 
       //return s;
-#endregion
+      #endregion
     }
 
     /// <summary>Returns whether <paramref name="x"/> is a perfect <paramref name="n"/>th root of <paramref name="y"/>.</summary>

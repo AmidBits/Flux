@@ -1,7 +1,6 @@
 ﻿#if NET7_0_OR_GREATER
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GenericMath
 {
@@ -144,6 +143,18 @@ namespace GenericMath
     public void MostSignificant1Bit()
     {
       Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().MostSignificant1Bit());
+    }
+
+    [TestMethod]
+    public void ReverseBits()
+    {
+      Assert.AreEqual(65536.ToBigInteger(), Flux.BitOps.ReverseBits(32768.ToBigInteger()));
+    }
+
+    [TestMethod]
+    public void ReverseBytes()
+    {
+      Assert.AreEqual(65536.ToBigInteger(), Flux.BitOps.ReverseBytes(256.ToBigInteger()));
     }
   }
 }

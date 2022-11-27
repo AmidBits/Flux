@@ -11,7 +11,7 @@ namespace Flux
       var sb = new System.Text.StringBuilder();
 
       if (TSelf.IsZero(number))
-        sb.Append('0');
+        sb.Append(symbols[0]);
       else if (number < TSelf.Zero) // Needs a REAL solution for negative numbers.
       {
         sb = ToRadixString(TSelf.Abs(number), symbols);
@@ -28,9 +28,24 @@ namespace Flux
       return sb;
     }
 
-    /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
-    public static System.ReadOnlySpan<char> ToRadixString<TSelf>(this TSelf number, TSelf radix)
+    public static string ToRadixString<TSelf, TRadix>(this TSelf number, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(number, Flux.Text.RuneSequences.Base62[..AssertRadix(int.CreateChecked(radix))]).ToString();
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      => ToRadixString(number, Flux.Text.RuneSequences.Base62[..AssertRadix(radix, out int _)]).ToString();
+
+    /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
+    public static string ToRadixString<TSelf, TRadix>(this TSelf number, TRadix radix, int minimumLength)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
+    {
+      var sb = ToRadixString(number, Flux.Text.RuneSequences.Base62[..AssertRadix(radix, out int _)]);
+
+      var negative = sb[0] == '-' ? 1 : 0;
+
+      if (minimumLength > (sb.Length - negative))
+        sb.Insert(negative, "0", minimumLength - (sb.Length - negative));
+
+      return sb.ToString();
+    }
   }
 }
