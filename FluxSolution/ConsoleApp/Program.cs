@@ -20,6 +20,8 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var nearest = System.DateTime.Now.GetPeriodOfDay();
+
       var number = -32;
       BitOps.LocateNearestIntegerLog2(number, out int lf, out int lc);
       System.Console.WriteLine($"{lf} <= {number} >= {lc}");

@@ -2,6 +2,19 @@ namespace Flux
 {
   public static partial class DateTimeEm
   {
+    public static void LocateNearestDayOfWeek(this System.DateTime source, System.DayOfWeek dayOfWeek, bool proper, out System.DateTime nearestPrevious, out System.DateTime nearestNext)
+    {
+      nearestPrevious = PreviousDayOfWeek(source, dayOfWeek, proper);
+      nearestNext = NextDayOfWeek(source, dayOfWeek, proper);
+    }
+    public static System.DateTime NearestDayOfWeek(this System.DateTime source, System.DayOfWeek dayOfWeek, bool proper, RoundingMode mode, out System.DateTime nearestPrevious, out System.DateTime nearestNext)
+    {
+      LocateNearestDayOfWeek(source, dayOfWeek, proper, out nearestPrevious, out nearestNext);
+
+      return new System.DateTime(BoundaryRounding<long>.Round(source.Ticks, nearestPrevious.Ticks, nearestNext.Ticks, mode));
+    }
+
+
     /// <summary>Determines the closest DayOfWeek date before and after the source.</summary>
     public static System.DateTime Closest(this System.DateTime source, System.DayOfWeek dayOfWeek, out System.DateTime secondClosest)
     {
