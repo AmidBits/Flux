@@ -3,7 +3,7 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Determines if <paramref name="number"/> is a power of <paramref name="radix"/>.</summary>
-    public static bool IsIntegerPowOf<TSelf, TRadix>(this TSelf number, TRadix radix)
+    public static bool IsPow<TSelf, TRadix>(this TSelf number, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {

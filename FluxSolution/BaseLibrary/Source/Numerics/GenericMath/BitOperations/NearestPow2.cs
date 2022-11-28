@@ -44,7 +44,7 @@ namespace Flux
       }
     }
 
-    /// <summary>Find the nearest (to <paramref name="number"/>) of two power-of-2, using the specified <see cref="HalfRounding"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
+    /// <summary>Find the nearest (to <paramref name="number"/>) of two power-of-2, using the specified <see cref="RoundingMode"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
     /// <param name="number">The value for which the nearest power-of-2 will be found.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="number"/>.</param>
     /// <param name="mode">The halfway rounding mode to use, when halfway between two values.</param>
@@ -81,6 +81,29 @@ namespace Flux
       LocateNearestPow2(number, proper, out var nearestTowardsZero, out var _);
 
       return nearestTowardsZero;
+    }
+
+    /// <summary>Attempt to get the two power-of-2 nearest to value.</summary>
+    /// <param name="number">The value for which the nearest power-of-2 will be found.</param>
+    /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
+    /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <returns>Whether the operation was successful.</returns>
+    public static bool TryNearestPow2<TSelf, TRadix>(this TSelf number, bool proper, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      try
+      {
+        LocateNearestPow2(number, proper, out nearestTowardsZero, out nearestAwayFromZero);
+
+        return true;
+      }
+      catch { }
+
+      nearestTowardsZero = TSelf.Zero;
+      nearestAwayFromZero = TSelf.Zero;
+
+      return false;
     }
   }
 }

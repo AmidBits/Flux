@@ -68,5 +68,29 @@
 
       return nearestTowardsZero;
     }
+
+    /// <summary>Attempt to get the two multiples nearest to value. Negative <paramref name="number"/> resilient.</summary>
+    /// <param name="number">The value for which the nearest multiples of will be found.</param>
+    /// <param name="multiple">The multiple to which the results will align.</param>
+    /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly "nearest" (but not the same), or LT/GT rather than LTE/GTE.</param>
+    /// <param name="nearestTowardsZero">Outputs the multiple of that is closer to zero.</param>
+    /// <param name="nearestAwayFromZero">Outputs the multiple of that is farther from zero.</param>
+    /// <returns>Whether the operation was successful.</returns>
+    public static bool TryNearestMultiple<TSelf>(this TSelf number, TSelf multiple, bool proper, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      try
+      {
+        LocateNearestMultiple(number, multiple, proper, out nearestTowardsZero, out nearestAwayFromZero);
+
+        return true;
+      }
+      catch { }
+
+      nearestTowardsZero = TSelf.Zero;
+      nearestAwayFromZero = TSelf.Zero;
+
+      return false;
+    }
   }
 }

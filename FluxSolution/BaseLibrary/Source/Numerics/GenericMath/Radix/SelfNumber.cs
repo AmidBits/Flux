@@ -22,7 +22,7 @@ namespace Flux
     {
       if (number <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(number));
 
-      var logRadix = IntegerLogFloor(number, AssertRadix(radix, out TSelf tradix));
+      var logRadix = NearestIntegerLogTowardsZero(number, AssertRadix(radix, out TSelf tradix), out TSelf _);
       var maxDistinct = (TSelf.CreateChecked(9) * logRadix) + (number / IntegerPow(tradix, logRadix));
       return TSelf.Max(number - maxDistinct, TSelf.Zero);
     }

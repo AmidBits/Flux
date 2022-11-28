@@ -20,6 +20,14 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var number = -32;
+      BitOps.LocateNearestIntegerLog2(number, out int lf, out int lc);
+      System.Console.WriteLine($"{lf} <= {number} >= {lc}");
+      var l2f = BitOps.NearestIntegerLog2TowardsZero(number, out int _);
+      var l2c = BitOps.NearestIntegerLog2AwayFromZero(number, out int _);
+      System.Console.WriteLine($"{l2f} <= {number} >= {l2c}");
+      return;
+
       var bytes = new byte[] { 0x42, 0x42, 0x42, 0x42 };
       System.Console.WriteLine(string.Join(" ", bytes.Reverse().Select(b => b.ToRadixString(2, 8))));
       //bytes = new byte[] { 0x02, 0x01, 0x01, 0x05 }; // 0x81, 0x80, 0x80, 0x02

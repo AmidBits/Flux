@@ -32,24 +32,24 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void GetIntegerLog2()
+    public void LocateNearestIntegerLog2()
     {
-      88.ToBigInteger().GetIntegerLog2(out int logCeiling, out int logFloor);
+      88.ToBigInteger().LocateNearestIntegerLog2(out int nearestTowardsZero, out int nearestAwayFromZero);
 
-      Assert.AreEqual(7, logCeiling);
-      Assert.AreEqual(6, logFloor);
+      Assert.AreEqual(6, nearestTowardsZero);
+      Assert.AreEqual(7, nearestAwayFromZero);
     }
 
     [TestMethod]
-    public void GetIntegerLog2Ceiling()
+    public void NearestIntegerLog2AwayFromZero()
     {
-      Assert.AreEqual(7, 88.ToBigInteger().GetIntegerLog2Ceiling());
+      Assert.AreEqual(7, 88.ToBigInteger().NearestIntegerLog2AwayFromZero(out int _));
     }
 
     [TestMethod]
-    public void GetIntegerLog2Floor()
+    public void NearestIntegerLog2TowardsZero()
     {
-      Assert.AreEqual(6, 88.ToBigInteger().GetIntegerLog2Floor());
+      Assert.AreEqual(6, 88.ToBigInteger().NearestIntegerLog2TowardsZero(out int _));
     }
 
     [TestMethod]
