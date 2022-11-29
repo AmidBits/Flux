@@ -20,25 +20,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var nearest = System.DateTime.Now.GetPeriodOfDay();
+      Flux.Zamplez.RunCoordinateSystems();
+      //var s = (670530);
 
-      var number = -32;
-      BitOps.LocateNearestIntegerLog2(number, out int lf, out int lc);
-      System.Console.WriteLine($"{lf} <= {number} >= {lc}");
-      var l2f = BitOps.NearestIntegerLog2TowardsZero(number, out int _);
-      var l2c = BitOps.NearestIntegerLog2AwayFromZero(number, out int _);
-      System.Console.WriteLine($"{l2f} <= {number} >= {l2c}");
-      return;
-
-      var bytes = new byte[] { 0x42, 0x42, 0x42, 0x42 };
-      System.Console.WriteLine(string.Join(" ", bytes.Reverse().Select(b => b.ToRadixString(2, 8))));
-      //bytes = new byte[] { 0x02, 0x01, 0x01, 0x05 }; // 0x81, 0x80, 0x80, 0x02
-      bytes.BitRotateRight(2);
-
-      System.Console.WriteLine(string.Join(" ", bytes.Reverse().Select(b => b.ToRadixString(2, 8))));
-      //System.Console.WriteLine($"Carry: {System.Convert.ToString(carry, 2).PadLeft(8, '0')}");
-
-      System.Console.WriteLine(GenericMath.ProbabilityMassFunctionBinomialDistribution(4, 6, 0.3));
+      //System.Console.WriteLine(s);
+      //var r = Flux.CartesianCoordinate3<int>.
     }
 
     private static void Main(string[] args)

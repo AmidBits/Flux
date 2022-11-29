@@ -95,11 +95,11 @@ namespace Flux
 
     /// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public SphericalCoordinate ToSphericalCoordinate()
-      => SphericalCoordinate.From(
+    public SphericalCoordinate<double> ToSphericalCoordinate()
+      => SphericalCoordinate<double>.From(
         Altitude,
-        new Angle(System.Math.PI - (Angle.ConvertDegreeToRadian(Latitude.Value) + System.Math.PI / 2)),
-        Azimuth.FromRadians(Angle.ConvertDegreeToRadian(Longitude.Value) + System.Math.PI)
+        new Angle(double.Pi - (Angle.ConvertDegreeToRadian(Latitude.Value) + double.Pi / 2)),
+        Azimuth.FromRadians(Angle.ConvertDegreeToRadian(Longitude.Value) + double.Pi)
       );
 
     /// <summary>Creates a new <see cref="Vector3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>

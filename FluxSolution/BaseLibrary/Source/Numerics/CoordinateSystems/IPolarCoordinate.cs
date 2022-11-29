@@ -4,35 +4,39 @@
   {
     /// <summary>Converts the polar coordinates to cartesian 2D coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static (TSelf x, TSelf y) ToCartesianCoordinates<TSelf>(this IPolarCoordinate<TSelf> polarCoordinate)
+    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this IPolarCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => (
-        polarCoordinate.Radius * TSelf.Cos(polarCoordinate.Azimuth),
-        polarCoordinate.Radius * TSelf.Sin(polarCoordinate.Azimuth)
+      => new(
+        source.Radius * TSelf.Cos(source.Azimuth),
+        source.Radius * TSelf.Sin(source.Azimuth)
       );
 
     /// <summary>Converts the polar coordinates to a complex number.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static System.Numerics.Complex ToComplex<TSelf>(this IPolarCoordinate<TSelf> polarCoordinate)
+    public static System.Numerics.Complex ToComplex<TSelf>(this IPolarCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => System.Numerics.Complex.FromPolarCoordinates(
-        double.CreateChecked(polarCoordinate.Radius),
-        double.CreateChecked(polarCoordinate.Azimuth)
+        double.CreateChecked(source.Radius),
+        double.CreateChecked(source.Azimuth)
       );
 
-    public static (Length radius, Angle azimuth) ToQuantities<TSelf>(this IPolarCoordinate<TSelf> polarCoordinate)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => (
-        new Length(double.CreateChecked(polarCoordinate.Radius)),
-        new Angle(double.CreateChecked(polarCoordinate.Azimuth))
-      );
+    public static PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this IPolarCoordinate<TSelf> source)
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+      => new(source.Radius, source.Azimuth);
+
+    public static (Length radius, Angle azimuth) ToQuantities<TSelf>(this IPolarCoordinate<TSelf> source)
+    where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    => (
+      new Length(double.CreateChecked(source.Radius)),
+      new Angle(double.CreateChecked(source.Azimuth))
+    );
   }
 
   /// <summary>The polar coordinate system is a two-dimensional coordinate system in which each point on a plane is determined by a distance from a reference point and an angle from a reference direction.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
   public interface IPolarCoordinate<TSelf>
-    : System.IFormattable
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      : System.IFormattable
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
     /// <summary>Radius. A.k.a. radial coordinate, or radial distance.</summary>
     TSelf Radius { get; init; }

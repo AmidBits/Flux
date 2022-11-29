@@ -229,89 +229,53 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    public static Point3 operator -(Point3 p)
-      => new(-p.m_x, -p.m_y, -p.m_z);
+    public static Point3 operator -(Point3 p) => new(-p.m_x, -p.m_y, -p.m_z);
 
-    public static Point3 operator ~(Point3 p)
-      => new(~p.m_x, ~p.m_y, ~p.m_z);
+    public static Point3 operator ~(Point3 p) => new(~p.m_x, ~p.m_y, ~p.m_z);
 
-    public static Point3 operator --(Point3 p)
-      => new(p.m_x - 1, p.m_y - 1, p.m_z - 1);
-    public static Point3 operator ++(Point3 p)
-      => new(p.m_x + 1, p.m_y + 1, p.m_z + 1);
+    public static Point3 operator --(Point3 p) => new(p.m_x - 1, p.m_y - 1, p.m_z - 1);
+    public static Point3 operator ++(Point3 p) => new(p.m_x + 1, p.m_y + 1, p.m_z + 1);
 
-    public static Point3 operator +(Point3 p1, Point3 p2)
-      => new(p1.m_x + p2.m_x, p1.m_y + p2.m_y, p1.m_z + p2.m_z);
-    public static Point3 operator +(Point3 p, int v)
-      => new(p.m_x + v, p.m_y + v, p.m_z + v);
-    public static Point3 operator +(int v, Point3 p)
-      => new(v + p.m_x, v + p.m_y, v + p.m_z);
+    public static Point3 operator +(Point3 p1, Point3 p2) => new(p1.m_x + p2.m_x, p1.m_y + p2.m_y, p1.m_z + p2.m_z);
+    public static Point3 operator +(Point3 p, int v) => new(p.m_x + v, p.m_y + v, p.m_z + v);
+    public static Point3 operator +(int v, Point3 p) => new(v + p.m_x, v + p.m_y, v + p.m_z);
 
-    public static Point3 operator -(Point3 p1, Point3 p2)
-      => new(p1.m_x - p2.m_x, p1.m_y - p2.m_y, p1.m_z - p2.m_z);
-    public static Point3 operator -(Point3 p, int v)
-      => new(p.m_x - v, p.m_y - v, p.m_z - v);
-    public static Point3 operator -(int v, Point3 p)
-      => new(v - p.m_x, v - p.m_y, v - p.m_z);
+    public static Point3 operator -(Point3 p1, Point3 p2) => new(p1.m_x - p2.m_x, p1.m_y - p2.m_y, p1.m_z - p2.m_z);
+    public static Point3 operator -(Point3 p, int v) => new(p.m_x - v, p.m_y - v, p.m_z - v);
+    public static Point3 operator -(int v, Point3 p) => new(v - p.m_x, v - p.m_y, v - p.m_z);
 
-    public static Point3 operator *(Point3 p1, Point3 p2)
-      => new(p1.m_x * p2.m_x, p1.m_y * p2.m_y, p1.m_z * p2.m_z);
-    public static Point3 operator *(Point3 p, int v)
-      => new(p.m_x * v, p.m_y * v, p.m_z * v);
-    public static Point3 operator *(Point3 p, double v)
-      => new((int)(p.m_x * v), (int)(p.m_y * v), (int)(p.m_z * v));
-    public static Point3 operator *(int v, Point3 p)
-      => new(v * p.m_x, v * p.m_y, v * p.m_z);
-    public static Point3 operator *(double v, Point3 p)
-      => new((int)(v * p.m_x), (int)(v * p.m_y), (int)(v * p.m_z));
+    public static Point3 operator *(Point3 p1, Point3 p2) => new(p1.m_x * p2.m_x, p1.m_y * p2.m_y, p1.m_z * p2.m_z);
+    public static Point3 operator *(Point3 p, int v) => new(p.m_x * v, p.m_y * v, p.m_z * v);
+    public static Point3 operator *(Point3 p, double v) => new((int)(p.m_x * v), (int)(p.m_y * v), (int)(p.m_z * v));
+    public static Point3 operator *(int v, Point3 p) => new(v * p.m_x, v * p.m_y, v * p.m_z);
+    public static Point3 operator *(double v, Point3 p) => new((int)(v * p.m_x), (int)(v * p.m_y), (int)(v * p.m_z));
 
-    public static Point3 operator /(Point3 p1, Point3 p2)
-      => new(p1.m_x / p2.m_x, p1.m_y / p2.m_y, p1.m_z / p2.m_z);
-    public static Point3 operator /(Point3 p, int v)
-      => new(p.m_x / v, p.m_y / v, p.m_z / v);
-    public static Point3 operator /(Point3 p, double v)
-      => new((int)(p.m_x / v), (int)(p.m_y / v), (int)(p.m_z / v));
-    public static Point3 operator /(int v, Point3 p)
-      => new(v / p.m_x, v / p.m_y, v / p.m_z);
-    public static Point3 operator /(double v, Point3 p)
-      => new((int)(v / p.m_x), (int)(v / p.m_y), (int)(v / p.m_z));
+    public static Point3 operator /(Point3 p1, Point3 p2) => new(p1.m_x / p2.m_x, p1.m_y / p2.m_y, p1.m_z / p2.m_z);
+    public static Point3 operator /(Point3 p, int v) => new(p.m_x / v, p.m_y / v, p.m_z / v);
+    public static Point3 operator /(Point3 p, double v) => new((int)(p.m_x / v), (int)(p.m_y / v), (int)(p.m_z / v));
+    public static Point3 operator /(int v, Point3 p) => new(v / p.m_x, v / p.m_y, v / p.m_z);
+    public static Point3 operator /(double v, Point3 p) => new((int)(v / p.m_x), (int)(v / p.m_y), (int)(v / p.m_z));
 
-    public static Point3 operator %(Point3 p1, Point3 p2)
-      => new(p1.m_x % p2.m_x, p1.m_y % p2.m_y, p1.m_z % p2.m_z);
-    public static Point3 operator %(Point3 p, int v)
-      => new(p.m_x % v, p.m_y % v, p.m_z % v);
-    public static Point3 operator %(Point3 p, double v)
-      => new((int)(p.m_x % v), (int)(p.m_y % v), (int)(p.m_z % v));
-    public static Point3 operator %(int v, Point3 p)
-      => new(v % p.m_x, v % p.m_y, v % p.m_z);
-    public static Point3 operator %(double v, Point3 p)
-      => new((int)(v % p.m_x), (int)(v % p.m_y), (int)(v % p.m_z));
+    public static Point3 operator %(Point3 p1, Point3 p2) => new(p1.m_x % p2.m_x, p1.m_y % p2.m_y, p1.m_z % p2.m_z);
+    public static Point3 operator %(Point3 p, int v) => new(p.m_x % v, p.m_y % v, p.m_z % v);
+    public static Point3 operator %(Point3 p, double v) => new((int)(p.m_x % v), (int)(p.m_y % v), (int)(p.m_z % v));
+    public static Point3 operator %(int v, Point3 p) => new(v % p.m_x, v % p.m_y, v % p.m_z);
+    public static Point3 operator %(double v, Point3 p) => new((int)(v % p.m_x), (int)(v % p.m_y), (int)(v % p.m_z));
 
-    public static Point3 operator &(Point3 p1, Point3 p2)
-      => new(p1.m_x & p2.m_x, p1.m_y & p2.m_y, p1.m_z & p2.m_z);
-    public static Point3 operator &(Point3 p, int v)
-      => new(p.m_x & v, p.m_y & v, p.m_z & v);
-    public static Point3 operator &(int v, Point3 p)
-      => new(v & p.m_x, v & p.m_y, v & p.m_z);
+    public static Point3 operator &(Point3 p1, Point3 p2) => new(p1.m_x & p2.m_x, p1.m_y & p2.m_y, p1.m_z & p2.m_z);
+    public static Point3 operator &(Point3 p, int v) => new(p.m_x & v, p.m_y & v, p.m_z & v);
+    public static Point3 operator &(int v, Point3 p) => new(v & p.m_x, v & p.m_y, v & p.m_z);
 
-    public static Point3 operator |(Point3 p1, Point3 p2)
-      => new(p1.m_x | p2.m_x, p1.m_y | p2.m_y, p1.m_z | p2.m_z);
-    public static Point3 operator |(Point3 p, int v)
-      => new(p.m_x | v, p.m_y | v, p.m_z | v);
-    public static Point3 operator |(int v, Point3 p)
-      => new(v | p.m_x, v | p.m_y, v | p.m_z);
+    public static Point3 operator |(Point3 p1, Point3 p2) => new(p1.m_x | p2.m_x, p1.m_y | p2.m_y, p1.m_z | p2.m_z);
+    public static Point3 operator |(Point3 p, int v) => new(p.m_x | v, p.m_y | v, p.m_z | v);
+    public static Point3 operator |(int v, Point3 p) => new(v | p.m_x, v | p.m_y, v | p.m_z);
 
-    public static Point3 operator ^(Point3 p1, Point3 p2)
-      => new(p1.m_x ^ p2.m_x, p1.m_y ^ p2.m_y, p1.m_z ^ p2.m_z);
-    public static Point3 operator ^(Point3 p, int v)
-      => new(p.m_x ^ v, p.m_y ^ v, p.m_z ^ v);
-    public static Point3 operator ^(int v, Point3 p)
-      => new(v ^ p.m_x, v ^ p.m_y, v ^ p.m_z);
+    public static Point3 operator ^(Point3 p1, Point3 p2) => new(p1.m_x ^ p2.m_x, p1.m_y ^ p2.m_y, p1.m_z ^ p2.m_z);
+    public static Point3 operator ^(Point3 p, int v) => new(p.m_x ^ v, p.m_y ^ v, p.m_z ^ v);
+    public static Point3 operator ^(int v, Point3 p) => new(v ^ p.m_x, v ^ p.m_y, v ^ p.m_z);
 
-    public static Point3 operator <<(Point3 p, int v)
-      => new(p.m_x << v, p.m_y << v, p.m_z << v);
-    public static Point3 operator >>(Point3 p, int v)
-      => new(p.m_x >> v, p.m_y >> v, p.m_z >> v);
+    public static Point3 operator <<(Point3 p, int v) => new(p.m_x << v, p.m_y << v, p.m_z << v);
+    public static Point3 operator >>(Point3 p, int v) => new(p.m_x >> v, p.m_y >> v, p.m_z >> v);
     #endregion Overloaded operators
   }
 }

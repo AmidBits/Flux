@@ -29,7 +29,7 @@ namespace Flux
         //{
         Flux.Console.WriteWarningLine($" Sub 2D coordinate show-case from the 3D components X and Y.");
 
-        var cc2a = new Flux.Vector2(cc3a.X, cc3a.Y); System.Console.WriteLine($" {cc2a}");
+        var cc2a = cc3a.ToCartesianCoordinate2XY(); System.Console.WriteLine($" {cc2a}");
         var pca = cc2a.ToPolarCoordinate(); System.Console.WriteLine($" {pca}");
         var cc2b = pca.ToCartesianCoordinate2(); System.Console.WriteLine($" {cc2b}");
         //}

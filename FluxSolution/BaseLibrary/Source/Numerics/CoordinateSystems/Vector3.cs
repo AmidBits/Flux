@@ -327,22 +327,22 @@ namespace Flux
 
     /// <summary>Converts the <see cref="Vector3"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public CylindricalCoordinate ToCylindricalCoordinate()
-      => new(System.Math.Sqrt(m_x * m_x + m_y * m_y), (System.Math.Atan2(m_y, m_x) + Constants.PiX2) % Constants.PiX2, m_z);
+    public CylindricalCoordinate<double> ToCylindricalCoordinate()
+      => new(double.Sqrt(m_x * m_x + m_y * m_y), (double.Atan2(m_y, m_x) + double.Tau) % double.Tau, m_z);
 
-    /// <summary>Returns a quaternion from two vectors.</summary>
-    /// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
-    [System.Diagnostics.Contracts.Pure]
-    public Quaternion ToQuaternion(Vector3 rotatingTo)
-      => Quaternion.FromTwoVectors(this, rotatingTo);
+    ///// <summary>Returns a quaternion from two vectors.</summary>
+    ///// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
+    //[System.Diagnostics.Contracts.Pure]
+    //public Quaternion ToQuaternion(Vector3 rotatingTo)
+    //  => Quaternion.FromTwoVectors(this, rotatingTo);
 
     /// <summary>Converts the <see cref="Vector3"/> to a <see cref="SphericalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public SphericalCoordinate ToSphericalCoordinate()
+    public SphericalCoordinate<double> ToSphericalCoordinate()
     {
       var x2y2 = m_x * m_x + m_y * m_y;
 
-      return new SphericalCoordinate(System.Math.Sqrt(x2y2 + m_z * m_z), System.Math.Atan2(System.Math.Sqrt(x2y2), m_z) + System.Math.PI, System.Math.Atan2(m_y, m_x) + System.Math.PI);
+      return new(double.Sqrt(x2y2 + m_z * m_z), double.Atan2(double.Sqrt(x2y2), m_z) + double.Pi, double.Atan2(m_y, m_x) + double.Pi);
     }
 
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, Z, <paramref name="w"/>].</summary>

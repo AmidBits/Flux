@@ -16,7 +16,7 @@
       RunAmbOperator();
       RunArrayRank2();
       RunColors();
-      RunCoordinateSystems();
+      //RunCoordinateSystems();
       RunDataStructuresGraphs();
       RunImmutableDataStructures();
       RunLocale();

@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Returns the integer (i.e. truncated) quotient and also returns the remainder as an output parameter.</summary>
     public static TSelf TruncMod<TSelf>(this TSelf dividend, TSelf divisor, out TSelf remainder)
-      where TSelf : System.Numerics.IDivisionOperators<TSelf, TSelf, TSelf>, System.Numerics.IModulusOperators<TSelf, TSelf, TSelf>, System.Numerics.ISubtractionOperators<TSelf, TSelf, TSelf>
+      where TSelf : System.Numerics.INumber<TSelf>
     {
       remainder = dividend % divisor;
 
