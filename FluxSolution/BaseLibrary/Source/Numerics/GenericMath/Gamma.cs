@@ -149,7 +149,7 @@ namespace Flux
 
       var halfLogTwoPi = TSelf.CreateChecked(0.91893853320467274178032973640562);
 
-      var logGamma = (x - TSelf.One.Div2()) * TSelf.Log(x) - x + halfLogTwoPi + series;
+      var logGamma = (x - TSelf.One.Divide(2)) * TSelf.Log(x) - x + halfLogTwoPi + series;
 
       return logGamma;
     }

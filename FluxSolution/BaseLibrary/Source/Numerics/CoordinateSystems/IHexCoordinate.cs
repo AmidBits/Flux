@@ -16,6 +16,6 @@
     public static bool IsCubeCoordinate(TSelf q, TSelf r, TSelf s) => TSelf.IsZero(q + r + s);
 
     /// <summary>Returns the length of the coordinate.</summary>
-    public static TSelf CubeLength(TSelf q, TSelf r, TSelf s) => (TSelf.Abs(q) + TSelf.Abs(r) + TSelf.Abs(s)).Div2();
+    public static TSelf CubeLength(TSelf q, TSelf r, TSelf s) => (TSelf.Abs(q) + TSelf.Abs(r) + TSelf.Abs(s)).Divide(2);
   }
 }

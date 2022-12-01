@@ -47,7 +47,7 @@ namespace Flux
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
     public GeographicCoordinate ToGeographicCoordinate()
      => new GeographicCoordinate(
-       Angle.ConvertRadianToDegree(double.CreateChecked(TSelf.Pi - m_inclination - TSelf.Pi.Div2())),
+       Angle.ConvertRadianToDegree(double.CreateChecked(TSelf.Pi - m_inclination - TSelf.Pi.Divide(2))),
        Angle.ConvertRadianToDegree(double.CreateChecked(m_azimuth - TSelf.Pi)),
        double.CreateChecked(m_radius)
      );
@@ -57,12 +57,12 @@ namespace Flux
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static TSelf ConvertInclinationToElevation(TSelf inclination)
-      => TSelf.Pi.Div2() - inclination;
+      => TSelf.Pi.Divide(2) - inclination;
 
     /// <summary>Converting from elevation to inclination is simply a quarter turn (PI / 2) minus the elevation.</summary>
     [System.Diagnostics.Contracts.Pure]
     public static TSelf ConvertElevationToInclination(TSelf elevation)
-      => TSelf.Pi.Div2() - elevation;
+      => TSelf.Pi.Divide(2) - elevation;
 
     /// <summary>Return the <see cref="ISphericalCoordinate"/> from the specified components.</summary>
     public static SphericalCoordinate<TSelf> From(Length radius, Angle inclination, Azimuth azimuth)

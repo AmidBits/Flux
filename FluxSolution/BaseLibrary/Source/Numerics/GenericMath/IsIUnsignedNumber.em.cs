@@ -3,7 +3,8 @@ namespace Flux
   public static partial class Reflection
   {
     /// <summary>Returns whether the source is of System.Numerics.INumberBase<>.</summary>
-    public static bool IsIUnsignedNumber(this object source)
+    public static bool IsIUnsignedNumber<TSelf>(this TSelf source)
+      where TSelf : System.Numerics.INumberBase<TSelf>
     {
       switch (source)
       {

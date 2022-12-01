@@ -21,7 +21,7 @@ namespace Flux.Quantiles
 
       var sampleCount = sample.Count();
 
-      var h = TSelf.CreateChecked(sampleCount) * p - TSelf.One.Div2();
+      var h = TSelf.CreateChecked(sampleCount) * p - TSelf.One.Divide(2);
 
       var index = System.Convert.ToInt32(TSelf.Round(h, System.MidpointRounding.ToEven)) - 1;
 

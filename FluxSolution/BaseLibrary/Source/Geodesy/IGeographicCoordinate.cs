@@ -8,7 +8,7 @@
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => (
         TSelf.CreateChecked(geographicCoordinate.Altitude.Value),
-        TSelf.Pi - (TSelf.CreateChecked(Angle.ConvertDegreeToRadian(geographicCoordinate.Latitude.Value)) + TSelf.Pi.Div2()),
+        TSelf.Pi - (TSelf.CreateChecked(Angle.ConvertDegreeToRadian(geographicCoordinate.Latitude.Value)) + TSelf.Pi.Divide(2)),
         TSelf.CreateChecked(Angle.ConvertDegreeToRadian(geographicCoordinate.Longitude.Value)) + TSelf.Pi
       );
 

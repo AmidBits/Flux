@@ -13,7 +13,7 @@ namespace Flux.Interpolation
     #region Static methods
     public static TMu Interpolate(TNode n1, TNode n2, TMu mu)
     {
-      var mu2 = (TMu.One - TMu.CosPi(mu)).Div2();
+      var mu2 = (TMu.One - TMu.CosPi(mu)).Divide(2);
 
       return (TMu.One - mu2) * n1 + mu2 * n2;
     }

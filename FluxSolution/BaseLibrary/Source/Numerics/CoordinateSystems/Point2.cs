@@ -33,76 +33,74 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public int X { get => m_x; init => m_x = value; }
     [System.Diagnostics.Contracts.Pure] public int Y { get => m_y; init => m_y = value; }
 
-    /// <summary>Compute the Chebyshev distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    [System.Diagnostics.Contracts.Pure]
-    public int ChebyshevLength(int edgeLength = 1)
-      => System.Math.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength));
+    ///// <summary>Compute the Chebyshev distance between the vectors.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    //[System.Diagnostics.Contracts.Pure]
+    //public int ChebyshevLength(int edgeLength = 1)
+    //  => System.Math.Max(System.Math.Abs(m_x / edgeLength), System.Math.Abs(m_y / edgeLength));
 
-    /// <summary>Compute the length (or magnitude) of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    [System.Diagnostics.Contracts.Pure]
-    public double EuclideanLength()
-      => System.Math.Sqrt(EuclideanLengthSquared());
-    /// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
-    [System.Diagnostics.Contracts.Pure]
-    public double EuclideanLengthSquared()
-      => m_x * m_x + m_y * m_y;
+    ///// <summary>Compute the length (or magnitude) of the vector.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    //[System.Diagnostics.Contracts.Pure]
+    //public double EuclideanLength()
+    //  => System.Math.Sqrt(EuclideanLengthSquared());
+    ///// <summary>Compute the length (or magnitude) squared of the vector. This is much faster than Getlength(), if comparing magnitudes of vectors.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Norm_(mathematics)#Euclidean_norm"/>
+    //[System.Diagnostics.Contracts.Pure]
+    //public double EuclideanLengthSquared()
+    //  => m_x * m_x + m_y * m_y;
 
-    /// <summary>Compute the Manhattan distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    [System.Diagnostics.Contracts.Pure]
-    public int ManhattanLength(int edgeLength = 1)
-      => System.Math.Abs(m_x / edgeLength) + System.Math.Abs(m_y / edgeLength);
+    ///// <summary>Compute the Manhattan distance between the vectors.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    //[System.Diagnostics.Contracts.Pure]
+    //public int ManhattanLength(int edgeLength = 1)
+    //  => System.Math.Abs(m_x / edgeLength) + System.Math.Abs(m_y / edgeLength);
 
-    [System.Diagnostics.Contracts.Pure]
-    public Point2 Normalized()
-      => EuclideanLength() is var m && m != 0 ? this / m : this;
+    //[System.Diagnostics.Contracts.Pure]
+    //public Point2 Normalized()
+    //  => EuclideanLength() is var m && m != 0 ? this / m : this;
 
-    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    [System.Diagnostics.Contracts.Pure]
-    public int OrthantNumber(Point2 center, OrthantNumbering numbering)
-      => numbering switch
-      {
-        OrthantNumbering.Traditional => m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2),
-        OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2),
-        OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
-      };
+    ///// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    //[System.Diagnostics.Contracts.Pure]
+    //public int OrthantNumber(Point2 center, OrthantNumbering numbering)
+    //  => numbering switch
+    //  {
+    //    OrthantNumbering.Traditional => m_y >= center.m_y ? (m_x >= center.m_x ? 0 : 1) : (m_x >= center.m_x ? 3 : 2),
+    //    OrthantNumbering.BinaryNegativeAs1 => (m_x >= center.m_x ? 0 : 1) + (m_y >= center.m_y ? 0 : 2),
+    //    OrthantNumbering.BinaryPositiveAs1 => (m_x < center.m_x ? 0 : 1) + (m_y < center.m_y ? 0 : 2),
+    //    _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+    //  };
 
-    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Point2 PerpendicularCcw()
-      => new(-m_y, m_x);
+    ///// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public Point2 PerpendicularCcw()
+    //  => new(-m_y, m_x);
 
-    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Point2 PerpendicularCw()
-      => new(m_y, -m_x);
+    ///// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public Point2 PerpendicularCw()
+    //  => new(m_y, -m_x);
 
     #region To..
 
-    /// <summary>Converts the <see cref="Point2"/> to a <see cref="Vector3"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Vector2 ToCartesianCoordinate2R()
-      => new(m_x, m_y);
+    ///// <summary>Converts the <see cref="Point2"/> to a <see cref="Vector3"/>.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public Vector2 ToCartesianCoordinate2R()
+    //  => new(m_x, m_y);
 
-    /// <summary>Converts the <see cref="Point2"/> to a <see cref="Size2"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public Size2 ToSize2()
-      => new(m_x, m_y);
+    ///// <summary>Converts the <see cref="Point2"/> to a <see cref="Size2"/>.</summary>
+    //[System.Diagnostics.Contracts.Pure]
+    //public Size2 ToSize2()
+    //  => new(m_x, m_y);
+
+    ///// <summary>Converts the <see cref="Point2"/> to a <see cref="System.Numerics.Vector2"/>.</summary>
+    //public Flux.CartesianCoordinate2<int> ToCartesianCoordinate2()
+    //  => new(m_x, m_y);
 
     /// <summary>Converts the <see cref="Point2"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
     public long ToUniqueIndex(int gridWidth)
       => ToUniqueIndex(m_x, m_y, gridWidth);
-
-    /// <summary>Converts the <see cref="Point2"/> to a <see cref="System.Numerics.Vector2"/>.</summary>
-    [System.Diagnostics.Contracts.Pure]
-    public System.Numerics.Vector2 ToVector2()
-      => new(m_x, m_y);
 
     #endregion
 
@@ -111,15 +109,15 @@ namespace Flux
     public static Point2 ComputePoint(double angle, double distance)
       => new(System.Convert.ToInt32(distance * System.Math.Sin(angle)), System.Convert.ToInt32(distance * System.Math.Cos(angle)));
 
-    /// <summary>Returns the cross product of the two vectors.</summary>
-    /// <remarks>This is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</remarks>
-    public static int CrossProduct(Point2 p1, Point2 p2)
-      => p1.m_x * p2.m_y - p1.m_y * p2.m_x;
+    ///// <summary>Returns the cross product of the two vectors.</summary>
+    ///// <remarks>This is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</remarks>
+    //public static int CrossProduct(Point2 p1, Point2 p2)
+    //  => p1.m_x * p2.m_y - p1.m_y * p2.m_x;
 
-    /// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
-    public static int DotProduct(Point2 p1, Point2 p2)
-      => p1.m_x * p2.m_x + p1.m_y * p2.m_y;
+    ///// <summary>Compute the dot product, i.e. dot(a, b), of the vector (a) and vector b.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Dot_product"/>
+    //public static int DotProduct(Point2 p1, Point2 p2)
+    //  => p1.m_x * p2.m_x + p1.m_y * p2.m_y;
 
     /// <summary>Create a new random vector using the crypto-grade rng.</summary>
     public static Point2 FromRandomAbsolute(int toExclusiveX, int toExclusiveY)
@@ -146,21 +144,21 @@ namespace Flux
     //  yield return new Point2(source.m_x + subQuadrant.Width, source.m_y - subQuadrant.Height);
     //}
 
-    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static Point2 Interpolate(Point2 p1, Point2 p2, double mu, I2NodeInterpolatable<double, double> mode)
-    {
-      mode ??= new Interpolation.LinearInterpolation<double, double>();
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //public static Point2 Interpolate(Point2 p1, Point2 p2, double mu, I2NodeInterpolatable<double, double> mode)
+    //{
+    //  mode ??= new Interpolation.LinearInterpolation<double, double>();
 
-      return new(System.Convert.ToInt32(mode.Interpolate2Node(p1.X, p2.X, mu)), System.Convert.ToInt32(mode.Interpolate2Node(p1.Y, p2.Y, mu)));
-    }
+    //  return new(System.Convert.ToInt32(mode.Interpolate2Node(p1.X, p2.X, mu)), System.Convert.ToInt32(mode.Interpolate2Node(p1.Y, p2.Y, mu)));
+    //}
 
-    /// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    public static Point2 Interpolate(Point2 p0, Point2 p1, Point2 p2, Point2 p3, double mu, I4NodeInterpolatable<double, double> mode)
-    {
-      mode ??= new Interpolation.CubicInterpolation<double, double>();
+    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
+    //public static Point2 Interpolate(Point2 p0, Point2 p1, Point2 p2, Point2 p3, double mu, I4NodeInterpolatable<double, double> mode)
+    //{
+    //  mode ??= new Interpolation.CubicInterpolation<double, double>();
 
-      return new(System.Convert.ToInt32(mode.Interpolate4Node(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(mode.Interpolate4Node(p0.Y, p1.Y, p2.Y, p3.Y, mu)));
-    }
+    //  return new(System.Convert.ToInt32(mode.Interpolate4Node(p0.X, p1.X, p2.X, p3.X, mu)), System.Convert.ToInt32(mode.Interpolate4Node(p0.Y, p1.Y, p2.Y, p3.Y, mu)));
+    //}
 
     ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
     //public static Point2 InterpolateCosine(Point2 p1, Point2 p2, double mu)
@@ -175,27 +173,27 @@ namespace Flux
     //public static Point2 InterpolateLinear(Point2 p1, Point2 p2, double mu)
     //  => new(System.Convert.ToInt32(LinearInterpolation.Interpolate(p1.X, p2.X, mu)), System.Convert.ToInt32(LinearInterpolation.Interpolate(p1.Y, p2.Y, mu)));
 
-    /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
-    public static Point2 Lerp(Point2 source, Point2 target, double mu)
-    {
-      var imu = 1 - mu;
+    ///// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
+    //public static Point2 Lerp(Point2 source, Point2 target, double mu)
+    //{
+    //  var imu = 1 - mu;
 
-      return new Point2(System.Convert.ToInt32(source.X * imu + target.X * mu), System.Convert.ToInt32(source.Y * imu + target.Y * mu));
-    }
+    //  return new Point2(System.Convert.ToInt32(source.X * imu + target.X * mu), System.Convert.ToInt32(source.Y * imu + target.Y * mu));
+    //}
 
     //public static Point2 Nlerp(Point2 source, Point2 target, double mu)
     //  => Lerp(source, target, mu).Normalized();
 
-    /// <summary>Returns the orthant (quadrant) of the 2D vector using binary numbering: X = 0 or 1, Y = 0 or 2, which are then added up, based on the sign of the respective component.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public static int OrthantBinaryNumber(Point2 p, Point2 center)
-      => (p.m_x >= center.m_x ? 0 : 1) + (p.m_y >= center.m_y ? 0 : 2);
+    ///// <summary>Returns the orthant (quadrant) of the 2D vector using binary numbering: X = 0 or 1, Y = 0 or 2, which are then added up, based on the sign of the respective component.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    //public static int OrthantBinaryNumber(Point2 p, Point2 center)
+    //  => (p.m_x >= center.m_x ? 0 : 1) + (p.m_y >= center.m_y ? 0 : 2);
 
-    /// <summary>Returns the quadrant of the 2D vector based on some specified center vector. Enumerated according to the mathematical custom, where the numbering goes counter-clockwise starting from the upper right ("northeast") quadrant.</summary>
-    /// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
-    public static int QuadrantNumber(Point2 p, Point2 center)
-      => p.m_y >= center.m_y ? (p.m_x >= center.m_x ? 0 : 1) : (p.m_x >= center.m_x ? 3 : 2);
+    ///// <summary>Returns the quadrant of the 2D vector based on some specified center vector. Enumerated according to the mathematical custom, where the numbering goes counter-clockwise starting from the upper right ("northeast") quadrant.</summary>
+    ///// <returns>The quadrant identifer in the range 0-3, i.e. one of the four quadrants.</returns>
+    ///// <see cref="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)"/>
+    //public static int QuadrantNumber(Point2 p, Point2 center)
+    //  => p.m_y >= center.m_y ? (p.m_x >= center.m_x ? 0 : 1) : (p.m_x >= center.m_x ? 3 : 2);
 
     private static readonly System.Text.RegularExpressions.Regex m_regexParse = new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
     public static Point2 Parse(string pointAsString)
@@ -216,16 +214,16 @@ namespace Flux
       }
     }
 
-    /// <summary>Slerp is a sherical linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0). Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
-    public static Point2 Slerp(Point2 source, Point2 target, double mu)
-    {
-      var dp = System.Math.Clamp(DotProduct(source, target), -1.0, 1.0); // Ensure precision doesn't exceed acos limits.
-      var theta = System.Math.Acos(dp) * mu; // Angle between start and desired.
-      var cos = System.Math.Cos(theta);
-      var sin = System.Math.Sin(theta);
+    ///// <summary>Slerp is a sherical linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0). Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
+    //public static Point2 Slerp(Point2 source, Point2 target, double mu)
+    //{
+    //  var dp = System.Math.Clamp(DotProduct(source, target), -1.0, 1.0); // Ensure precision doesn't exceed acos limits.
+    //  var theta = System.Math.Acos(dp) * mu; // Angle between start and desired.
+    //  var cos = System.Math.Cos(theta);
+    //  var sin = System.Math.Sin(theta);
 
-      return new Point2(System.Convert.ToInt32(source.m_x * cos + (target.m_x - source.m_x) * dp * sin), System.Convert.ToInt32(source.m_y * cos + (target.m_y - source.m_y) * dp * sin));
-    }
+    //  return new Point2(System.Convert.ToInt32(source.m_x * cos + (target.m_x - source.m_x) * dp * sin), System.Convert.ToInt32(source.m_y * cos + (target.m_y - source.m_y) * dp * sin));
+    //}
 
     /// <summary>Converts the (x, y) point to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/>.</summary>
     public static long ToUniqueIndex(int x, int y, int gridWidth)
@@ -295,31 +293,6 @@ namespace Flux
     public static Point2 operator %(double v, Point2 p)
       => new((int)(v % p.m_x), (int)(v % p.m_y));
 
-    public static Point2 operator &(Point2 p1, Point2 p2)
-      => new(p1.m_x & p2.m_x, p1.m_y & p2.m_y);
-    public static Point2 operator &(Point2 p, int v)
-      => new(p.m_x & v, p.m_y & v);
-    public static Point2 operator &(int v, Point2 p)
-      => new(v & p.m_x, v & p.m_y);
-
-    public static Point2 operator |(Point2 p1, Point2 p2)
-      => new(p1.m_x | p2.m_x, p1.m_y | p2.m_y);
-    public static Point2 operator |(Point2 p, int v)
-      => new(p.m_x | v, p.m_y | v);
-    public static Point2 operator |(int v, Point2 p)
-      => new(v | p.m_x, v | p.m_y);
-
-    public static Point2 operator ^(Point2 p1, Point2 p2)
-      => new(p1.m_x ^ p2.m_x, p1.m_y ^ p2.m_y);
-    public static Point2 operator ^(Point2 p, int v)
-      => new(p.m_x ^ v, p.m_y ^ v);
-    public static Point2 operator ^(int v, Point2 p)
-      => new(v ^ p.m_x, v ^ p.m_y);
-
-    public static Point2 operator <<(Point2 p, int v)
-      => new(p.m_x << v, p.m_y << v);
-    public static Point2 operator >>(Point2 p, int v)
-      => new(p.m_x >> v, p.m_y >> v);
     #endregion Overloaded operators
   }
 }

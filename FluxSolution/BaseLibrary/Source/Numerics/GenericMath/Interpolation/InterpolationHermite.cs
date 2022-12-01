@@ -23,7 +23,7 @@ namespace Flux.Interpolation
     public static TMu Interpolate(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu, TMu tension, TMu bias)
     {
       var one = TMu.One;
-      var two = TMu.One.Mul2();
+      var two = TMu.One.Multiply(2);
       var three = two + one;
 
       var mu2 = mu * mu;

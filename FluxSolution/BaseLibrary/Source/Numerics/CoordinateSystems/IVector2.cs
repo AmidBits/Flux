@@ -5,7 +5,5 @@
     : ICartesianCoordinate2<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
-    //TSelf X { get; }
-    //TSelf Y { get; }
   }
 }

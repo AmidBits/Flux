@@ -1,37 +1,5 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethods
-  {
-    /// <summary>Converts the polar coordinates to cartesian 2D coordinates.</summary>
-    /// <remarks>All angles in radians.</remarks>
-    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this IPolarCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => new(
-        source.Radius * TSelf.Cos(source.Azimuth),
-        source.Radius * TSelf.Sin(source.Azimuth)
-      );
-
-    /// <summary>Converts the polar coordinates to a complex number.</summary>
-    /// <remarks>All angles in radians.</remarks>
-    public static System.Numerics.Complex ToComplex<TSelf>(this IPolarCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => System.Numerics.Complex.FromPolarCoordinates(
-        double.CreateChecked(source.Radius),
-        double.CreateChecked(source.Azimuth)
-      );
-
-    public static PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this IPolarCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => new(source.Radius, source.Azimuth);
-
-    public static (Length radius, Angle azimuth) ToQuantities<TSelf>(this IPolarCoordinate<TSelf> source)
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
-    => (
-      new Length(double.CreateChecked(source.Radius)),
-      new Angle(double.CreateChecked(source.Azimuth))
-    );
-  }
-
   /// <summary>The polar coordinate system is a two-dimensional coordinate system in which each point on a plane is determined by a distance from a reference point and an angle from a reference direction.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
   public interface IPolarCoordinate<TSelf>

@@ -16,13 +16,13 @@ namespace Flux
 
       var signX = x < TSelf.Zero ? -TSelf.One : TSelf.One;
 
-      x = TSelf.Abs(x) / TSelf.Sqrt(TSelf.One.Mul2());
+      x = TSelf.Abs(x) / TSelf.Sqrt(TSelf.One.Multiply(2));
 
       // A&S formula 7.1.26
       var t = TSelf.One / (TSelf.One + p * x);
       var y = TSelf.One - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * TSelf.Exp(-x * x);
 
-      return TSelf.One.Div2() * (TSelf.One + signX * y);
+      return TSelf.One.Divide(2) * (TSelf.One + signX * y);
     }
 
     public static TSelf RationalApproximation<TSelf>(TSelf t)
@@ -46,10 +46,10 @@ namespace Flux
     {
       if (p <= TSelf.Zero || p >= TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      var two = TSelf.One.Mul2();
+      var two = TSelf.One.Multiply(2);
 
       // See article above for explanation of the following section.
-      return (p < TSelf.One.Div2())
+      return (p < TSelf.One.Divide(2))
         ? -RationalApproximation(TSelf.Sqrt(-two * TSelf.Log(p))) // F^-1(p) = - G^-1(p)
         : RationalApproximation(TSelf.Sqrt(-two * TSelf.Log(TSelf.One - p))); // F^-1(p) = G^-1(1-p)
     }

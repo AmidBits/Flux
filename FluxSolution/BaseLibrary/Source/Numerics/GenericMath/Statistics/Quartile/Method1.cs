@@ -21,15 +21,15 @@ namespace Flux.Quartiles
       var e2 = (sample.Count() & 1) == 0;
 
       var m2 = sample.Count() / 2;
-      q2 = e2 ? (sample.ElementAt(m2 - 1) + sample.ElementAt(m2)).Div2() : sample.ElementAt(m2);
+      q2 = e2 ? (sample.ElementAt(m2 - 1) + sample.ElementAt(m2)).Divide(2) : sample.ElementAt(m2);
 
       var o2 = (m2 & 1) == 1;
 
       var m1 = m2 / 2;
-      q1 = o2 ? sample.ElementAt(m1) : (sample.ElementAt(m1) + sample.ElementAt(m1 + 1)).Div2();
+      q1 = o2 ? sample.ElementAt(m1) : (sample.ElementAt(m1) + sample.ElementAt(m1 + 1)).Divide(2);
 
       var m3 = sample.Count() - (m2 - m1);
-      q3 = o2 ? sample.ElementAt(m3) : (sample.ElementAt(m3 - 1) + sample.ElementAt(m3)).Div2();
+      q3 = o2 ? sample.ElementAt(m3) : (sample.ElementAt(m3 - 1) + sample.ElementAt(m3)).Divide(2);
     }
   }
 }

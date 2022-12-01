@@ -24,7 +24,7 @@ namespace Flux
     {
       var epsilonNegative = -TSelf.One;
 
-      while (epsilonNegative.Div2() is var halfEpsilonNegative && (-TSelf.One + halfEpsilonNegative) < -TSelf.One)
+      while (epsilonNegative.Divide(2) is var halfEpsilonNegative && (-TSelf.One + halfEpsilonNegative) < -TSelf.One)
         epsilonNegative = halfEpsilonNegative;
 
       return epsilonNegative;
@@ -36,7 +36,7 @@ namespace Flux
     {
       var epsilonPositive = TSelf.One;
 
-      while (epsilonPositive.Div2() is var halfEpsilonPositive && (TSelf.One + halfEpsilonPositive) > TSelf.One)
+      while (epsilonPositive.Divide(2) is var halfEpsilonPositive && (TSelf.One + halfEpsilonPositive) > TSelf.One)
         epsilonPositive = halfEpsilonPositive;
 
       return epsilonPositive;

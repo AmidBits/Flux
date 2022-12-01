@@ -19,7 +19,7 @@ namespace Flux.Quantiles
       if (sample is null) throw new System.ArgumentNullException(nameof(sample));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      var h = TSelf.CreateChecked(sample.Count()) * p + TSelf.One.Div2();
+      var h = TSelf.CreateChecked(sample.Count()) * p + TSelf.One.Divide(2);
 
       return EmpiricalDistributionFunction.Estimate(sample, h);
     }

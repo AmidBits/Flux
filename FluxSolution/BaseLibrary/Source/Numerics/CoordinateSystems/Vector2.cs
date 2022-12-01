@@ -253,16 +253,16 @@ namespace Flux
       }
     }
 
-    public static Vector2 ToCartesianCoordinate2(this Point2 source)
-      => new(source.X, source.Y);
-    public static Vector2 ToCartesianCoordinate2(this System.Numerics.Vector2 source)
-      => new(source.X, source.Y);
-    public static Point2 ToPoint2(this Vector2 source, System.Func<double, double> transformSelector)
-      => new(System.Convert.ToInt32(transformSelector(source.X)), System.Convert.ToInt32(transformSelector(source.Y)));
-    public static Point2 ToPoint2(this Vector2 source, RoundingMode behavior)
-      => new(System.Convert.ToInt32(Flux.Rounding<double>.Round(source.X, behavior)), System.Convert.ToInt32(Flux.Rounding<double>.Round(source.Y, behavior)));
-    public static System.Numerics.Vector2 ToVector2(this Vector2 source)
-      => new((float)source.X, (float)source.Y);
+    //public static Vector2 ToCartesianCoordinate2(this Point2 source)
+    //  => new(source.X, source.Y);
+    //public static Vector2 ToCartesianCoordinate2(this System.Numerics.Vector2 source)
+    //  => new(source.X, source.Y);
+    //public static Point2 ToPoint2(this Vector2 source, System.Func<double, double> transformSelector)
+    //  => new(System.Convert.ToInt32(transformSelector(source.X)), System.Convert.ToInt32(transformSelector(source.Y)));
+    //public static Point2 ToPoint2(this Vector2 source, RoundingMode behavior)
+    //  => new(System.Convert.ToInt32(Flux.Rounding<double>.Round(source.X, behavior)), System.Convert.ToInt32(Flux.Rounding<double>.Round(source.Y, behavior)));
+    //public static System.Numerics.Vector2 ToVector2(this Vector2 source)
+    //  => new((float)source.X, (float)source.Y);
   }
   #endregion ExtensionMethods
 

@@ -23,7 +23,7 @@ namespace Flux
     /// <summary>The rectangular function.</summary>
     /// <remarks>Basis is +0.5, where < makes +1.0, = makes +0.5 and > makes 0.0.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Rectangular_function"/>
-    public static IStepFunction<TSelf, TResult> Rectangular => new StepFunction<TSelf, TResult>(TSelf.One.Div2(), TResult.One, TResult.One.Div2(), TResult.Zero);
+    public static IStepFunction<TSelf, TResult> Rectangular => new StepFunction<TSelf, TResult>(TSelf.One.Divide(2), TResult.One, TResult.One.Divide(2), TResult.Zero);
 
     /// <summary>The unit step function (as per Wikipedia).</summary>
     /// <remarks>Zero basis, where <= makes 0.0 and > makes +1.0.</remarks>
@@ -38,7 +38,7 @@ namespace Flux
     /// <summary>The Wikipedia discrete form, half maximum convention, of the unit step.</summary>
     /// <remarks>Zero basis, where < is 0.0, = is +0.5 and > is +1.0.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Heaviside_step_function#Discrete_form"/>
-    public static IStepFunction<TSelf, TResult> HalfMaximumUnit => new StepFunction<TSelf, TResult>(TSelf.Zero, TResult.Zero, TResult.One.Div2(), TResult.One);
+    public static IStepFunction<TSelf, TResult> HalfMaximumUnit => new StepFunction<TSelf, TResult>(TSelf.Zero, TResult.Zero, TResult.One.Divide(2), TResult.One);
 
     /// <summary>The sign step function.</summary>
     /// <remarks>Zero basis, where < is -1, = is 0 and > is +1.</remarks>

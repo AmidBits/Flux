@@ -23,17 +23,17 @@ namespace Flux.Quartiles
       var o2 = (sample.Count() & 1) == 1;
 
       var m2 = sample.Count() / 2;
-      q2 = o2 ? sample.ElementAt(m2) : (sample.ElementAt(m2 - 1) + sample.ElementAt(m2)).Div2();
+      q2 = o2 ? sample.ElementAt(m2) : (sample.ElementAt(m2 - 1) + sample.ElementAt(m2)).Divide(2);
 
       if (o2) m2 += 1; // If odd counts, include median in both halfs.
 
       o2 = (m2 & 1) == 1;
 
       var m1 = m2 / 2;
-      q1 = o2 ? sample.ElementAt(m1) : (sample.ElementAt(m1 - 1) + sample.ElementAt(m1)).Div2();
+      q1 = o2 ? sample.ElementAt(m1) : (sample.ElementAt(m1 - 1) + sample.ElementAt(m1)).Divide(2);
 
       var m3 = sample.Count() - (m2 - m1);
-      q3 = o2 ? sample.ElementAt(m3) : (sample.ElementAt(m3 - 1) + sample.ElementAt(m3)).Div2();
+      q3 = o2 ? sample.ElementAt(m3) : (sample.ElementAt(m3 - 1) + sample.ElementAt(m3)).Divide(2);
     }
   }
 }

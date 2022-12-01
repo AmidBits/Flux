@@ -19,7 +19,7 @@ namespace Flux.Quantiles
       if (sample is null) throw new System.ArgumentNullException(nameof(sample));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      var half = TSelf.One.Div2();
+      var half = TSelf.One.Divide(2);
 
       var sourceCount = sample.Count();
 
@@ -30,7 +30,7 @@ namespace Flux.Quantiles
 
       var sourceCountM1 = sourceCount - 1;
 
-      return (sample.ElementAt(System.Math.Clamp(indexLo, 0, sourceCountM1)) + sample.ElementAt(System.Math.Clamp(indexHi, 0, sourceCountM1))).Div2();
+      return (sample.ElementAt(System.Math.Clamp(indexLo, 0, sourceCountM1)) + sample.ElementAt(System.Math.Clamp(indexHi, 0, sourceCountM1))).Divide(2);
     }
   }
 }
