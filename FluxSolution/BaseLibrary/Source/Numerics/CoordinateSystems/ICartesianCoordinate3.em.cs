@@ -37,7 +37,7 @@
       => GenericMath.Max(TSelf.Abs(source.X / edgeLength), TSelf.Abs(source.Y / edgeLength), TSelf.Abs(source.Z / edgeLength));
 
     /// <summary>Returns the dot product of two non-normalized 3D vectors.</summary>
-    /// <remarks>This method saves a square root call by doing a two-in-one.</remarks>
+    /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
     /// <see href="https://gamedev.stackexchange.com/a/89832/129646"/>
     public static TSelf DotProductEx<TSelf>(this ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>

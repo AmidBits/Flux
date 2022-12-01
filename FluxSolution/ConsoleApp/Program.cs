@@ -21,18 +21,6 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
 
-      var a = new Flux.CartesianCoordinate3<double>(1, 3, -5).ToCartesianCoordinate2XY();
-      var b = new Flux.CartesianCoordinate3<double>(4, -2, -1).ToCartesianCoordinate2XY();
-
-      var dp = Flux.ICartesianCoordinate2<double>.DotProduct(a, b);
-      var dpn = Flux.ICartesianCoordinate2<double>.DotProduct(a.Normalized(), b.Normalized());
-      var dpex = a.DotProductEx(b);
-
-      Flux.Zamplez.RunCoordinateSystems();
-      //var s = (670530);
-
-      //System.Console.WriteLine(s);
-      //var r = Flux.CartesianCoordinate3<int>.
     }
 
     private static void Main(string[] args)
