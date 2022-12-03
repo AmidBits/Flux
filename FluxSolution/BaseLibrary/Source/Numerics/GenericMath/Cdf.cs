@@ -25,10 +25,14 @@ namespace Flux
       return TSelf.One.Divide(2) * (TSelf.One + signX * y);
     }
 
+    /// <summary></summary>
+    /// <see href="https://www.johndcook.com/blog/normal_cdf_inverse/"/>
+    /// <seealso href="https://en.wikipedia.org/wiki/Horner%27s_method"/>
     public static TSelf RationalApproximation<TSelf>(TSelf t)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       // Abramowitz and Stegun formula 26.2.23. The absolute value of the error should be less than 4.5 e-4.
+
       var c0 = TSelf.CreateChecked(2.515517);
       var c1 = TSelf.CreateChecked(0.802853);
       var c2 = TSelf.CreateChecked(0.010328);
@@ -41,6 +45,7 @@ namespace Flux
     }
 
     /// <summary>Compute the inverse of the normal (Gaussian) CDF. </summary>
+    /// <see href="https://www.johndcook.com/blog/normal_cdf_inverse/"/>
     public static TSelf NormalCdfInverse<TSelf>(TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>, System.Numerics.IRootFunctions<TSelf>
     {

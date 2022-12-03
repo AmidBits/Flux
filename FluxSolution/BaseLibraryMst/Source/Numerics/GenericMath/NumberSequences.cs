@@ -168,8 +168,8 @@ namespace GenericMath
     [TestMethod]
     public void ParallelSplitFactorial()
     {
-      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.Default.ComputeFactorial(12));
-      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.Default.ComputeFactorial(12.ToBigInteger()));
+      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12));
+      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12.ToBigInteger()));
     }
 
     [TestMethod]

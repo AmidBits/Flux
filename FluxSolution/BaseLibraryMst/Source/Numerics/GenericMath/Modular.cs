@@ -6,12 +6,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace GenericMath
 {
   [TestClass]
-  public class Modulus
+  public class Modular
   {
     [TestMethod]
     public void DivMod()
     {
-      var quotient = (9.0).DivRem(6, out var remainder);
+      var quotient = (9.0).DivMod(6, out var remainder);
 
       Assert.AreEqual(1.5, quotient);
       Assert.AreEqual(3, remainder);
@@ -20,7 +20,7 @@ namespace GenericMath
     [TestMethod]
     public void DivModTrunc()
     {
-      var quotient = (9.0).DivRemTrunc(6, out var remainder, out var truncatedQuotient);
+      var quotient = (9.0).DivModTrunc(6, out var remainder, out var truncatedQuotient);
 
       Assert.AreEqual(1.5, quotient);
       Assert.AreEqual(3, remainder);
@@ -48,7 +48,7 @@ namespace GenericMath
     [TestMethod]
     public void TruncMod()
     {
-      var truncatedQuotient = (9.0).TruncRem(6, out var remainder);
+      var truncatedQuotient = (9.0).TruncMod(6, out var remainder);
 
       Assert.AreEqual(1, truncatedQuotient);
       Assert.AreEqual(3, remainder);

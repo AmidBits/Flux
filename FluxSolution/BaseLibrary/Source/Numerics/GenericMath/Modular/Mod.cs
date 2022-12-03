@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Returns the Euclidean modulus of <paramref name="dividend"/> and <paramref name="divisor"/>, i.e. the remainder of modular division of a and b.</summary>
+    /// <summary>Returns the remainder of the Euclidean division of <paramref name="dividend"/> and <paramref name="divisor"/>, i.e. the remainder of modular division of a and b.</summary>
     public static TSelf Mod<TSelf>(this TSelf dividend, TSelf divisor)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

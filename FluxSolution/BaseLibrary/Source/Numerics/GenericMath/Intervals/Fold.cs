@@ -6,9 +6,9 @@ namespace Flux
     public static TSelf Fold<TSelf>(this TSelf x, TSelf min, TSelf max)
       where TSelf : System.Numerics.INumber<TSelf>
       => (x > max)
-      ? TSelf.IsEvenInteger(TruncRem(x - max, max - min, out var remainderHi)) ? max - remainderHi : min + remainderHi
+      ? TSelf.IsEvenInteger(TruncMod(x - max, max - min, out var remainderHi)) ? max - remainderHi : min + remainderHi
       : (x < min)
-      ? TSelf.IsEvenInteger(TruncRem(min - x, max - min, out var remainderLo)) ? min + remainderLo : max - remainderLo
+      ? TSelf.IsEvenInteger(TruncMod(min - x, max - min, out var remainderLo)) ? min + remainderLo : max - remainderLo
       : x;
   }
 }

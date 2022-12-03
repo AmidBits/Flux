@@ -1,11 +1,15 @@
 namespace Flux
 {
-  public sealed class ParallelSplitFactorial
-    : IFactorialFunction
+  public static class ParallelSplitFactorial
   {
-    public static readonly IFactorialFunction Default = new ParallelSplitFactorial();
+    public static System.Numerics.BigInteger ComputeFactorial(this System.Numerics.BigInteger number)
+    {
+      var task = ComputeFactorialAsync(number);
+      task.Wait();
+      return task.Result;
+    }
 
-    public static async Task<System.Numerics.BigInteger> ComputeFactorialAsync(System.Numerics.BigInteger number)
+    public static async Task<System.Numerics.BigInteger> ComputeFactorialAsync(this System.Numerics.BigInteger number)
     {
       if (number < 0) throw new ArgumentOutOfRangeException(nameof(number));
       else if (number == 0) return 1;
@@ -55,13 +59,6 @@ namespace Flux
 
         return await Product(n, k).ConfigureAwait(false) * await Product(k + 1, m).ConfigureAwait(false);
       }
-    }
-
-    public System.Numerics.BigInteger ComputeFactorial(System.Numerics.BigInteger number)
-    {
-      var task = ComputeFactorialAsync(number);
-      task.Wait();
-      return task.Result;
     }
   }
 }

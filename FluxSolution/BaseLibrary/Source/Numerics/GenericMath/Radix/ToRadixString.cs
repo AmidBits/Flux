@@ -20,7 +20,7 @@ namespace Flux
       else
         while (number > TSelf.Zero)
         {
-          number = DivRem(number, TSelf.CreateChecked(symbols.Length), out var remainder);
+          number = DivMod(number, TSelf.CreateChecked(symbols.Length), out var remainder);
 
           sb.Insert(0, symbols[int.CreateChecked(TSelf.Abs(remainder))]);
         }

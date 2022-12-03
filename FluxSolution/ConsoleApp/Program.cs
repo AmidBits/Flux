@@ -5,6 +5,7 @@ using System.Linq;
 
 using Flux;
 using Flux.ApproximateEquality;
+using Flux.Geometry;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -20,7 +21,20 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var value = (3).ToBigInteger();
+      System.Console.WriteLine($"Num = {value}");
+      var exponent = -3;
+      System.Console.WriteLine($"Exp = {exponent}");
 
+      var ipow = value.IntegerPow(int.Abs(exponent));
+      System.Console.WriteLine($"IPow = {ipow}");
+
+      var ipowrec = value.IntegerPowRec(exponent, out double rec);
+      System.Console.WriteLine($"IPow = {ipowrec}, Rec = {rec}");
+
+      var pow = System.Math.Pow((double)value, exponent);
+      var inv = System.Math.Pow((double)value, -exponent);
+      System.Console.WriteLine($"System.Math.Pow = {pow}, Inv: {inv}");
     }
 
     private static void Main(string[] args)

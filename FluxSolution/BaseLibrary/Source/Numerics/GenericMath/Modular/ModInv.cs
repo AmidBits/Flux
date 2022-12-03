@@ -2,25 +2,25 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Modular multiplicative inverse of <paramref name="a"/> and <paramref name="m"/>.</summary>
+    /// <summary>Modular multiplicative inverse of an integer <paramref name="a"/> and the modulus <paramref name="modulus"/>.</summary>
     /// <returns>-1, if no inverse.</returns>
     /// <remarks>
     /// <para>var mi = ModInv(4, 7); // mi = 2, i.e. "2 is the modular multiplicative inverse of 4 (and vice versa), mod 7".</para>
     /// <para>var mi = ModInv(8, 11); // mi = 7, i.e. "7 is the modular inverse of 8, mod 11".</para>
     /// </remarks>
-    public static TSelf ModInv<TSelf>(this TSelf a, TSelf m)
+    public static TSelf ModInv<TSelf>(this TSelf a, TSelf modulus)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (m < TSelf.Zero)
-        m = -m;
+      if (modulus < TSelf.Zero)
+        modulus = -modulus;
 
       if (a < TSelf.Zero)
-        a = m - (-a % m);
+        a = modulus - (-a % modulus);
 
       var t = TSelf.Zero;
       var nt = TSelf.One;
-      var r = m;
-      var nr = a % m;
+      var r = modulus;
+      var nr = a % modulus;
 
       while (!TSelf.IsZero(nr))
       {
@@ -34,7 +34,7 @@ namespace Flux
         return -TSelf.One; // No inverse.
 
       if (t < TSelf.Zero)
-        t += m;
+        t += modulus;
 
       return t;
     }

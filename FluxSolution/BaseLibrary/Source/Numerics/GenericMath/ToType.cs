@@ -2,10 +2,16 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Returns the value of <paramref name="x"/> (<typeparamref name="TSelf"/>) as type <typeparamref name="TType"/> and also in the out parameter <see cref="result"/>.</summary>
-    public static TType ToType<TSelf, TType>(this TSelf x, out TType result)
+    /// <summary>Returns the value of <paramref name="number"/> (<typeparamref name="TSelf"/>) as type <typeparamref name="TResult"/>. The result is also returned out in the parameter <paramref name="result"/>.</summary>
+    public static TResult ToType<TSelf, TResult>(this TSelf number, out TResult result)
       where TSelf : System.Numerics.INumber<TSelf>
-      where TType : System.Numerics.INumber<TType>
-      => result = TType.CreateChecked(x);
+      where TResult : System.Numerics.INumber<TResult>
+      => result = TResult.CreateChecked(number);
+
+    /// <summary>Returns the value of <paramref name="number"/> as type <typeparamref name="TResult"/> rounded using the specified <paramref name="mode"/>. The return value is also output in the parameter <paramref name="result"/>.</summary>
+    public static TResult ToType<TSelf, TResult>(this TSelf number, out TResult result, RoundingMode mode)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      where TResult : System.Numerics.INumber<TResult>
+      => result = TResult.CreateChecked(Rounding<TSelf>.Round(number, mode));
   }
 }
