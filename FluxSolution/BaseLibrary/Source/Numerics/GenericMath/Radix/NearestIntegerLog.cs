@@ -50,7 +50,7 @@ namespace Flux
     {
       LocateNearestIntegerLog(number, radix, out nearestTowardsZero, out nearestAwayFromZero);
 
-      return BoundaryRounding<TSelf>.Round(number, TSelf.CreateChecked(nearestTowardsZero), TSelf.CreateChecked(nearestAwayFromZero), mode);
+      return BoundaryRounding<TSelf, TSelf>.Round(number, TSelf.CreateChecked(nearestTowardsZero), TSelf.CreateChecked(nearestAwayFromZero), mode);
     }
 
     /// <summary>Computes the integer log ceiling of x using base b.</summary>

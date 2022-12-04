@@ -11,8 +11,8 @@ namespace Flux
     /// <param name="nearestAwayFromZero">Outputs the integer log-2 that is farther from zero.</param>
     /// <returns>The nearest two integer log-2 to value as out parameters.</returns>
     public static void LocateNearestIntegerLog2<TSelf, TResult>(this TSelf number, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TResult : System.Numerics.IBinaryInteger<TResult>
+     where TSelf : System.Numerics.INumber<TSelf>
+     where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       if (TSelf.IsNegative(number))
       {
@@ -24,8 +24,10 @@ namespace Flux
         return;
       }
 
-      nearestTowardsZero = TResult.CreateChecked(TSelf.Log2(number));
-      nearestAwayFromZero = TSelf.IsPow2(number) || TSelf.IsZero(number) ? nearestTowardsZero : nearestTowardsZero + TResult.One;
+      var rnumber = TResult.CreateChecked(number.TruncMod(TSelf.One, out var remainder));
+
+      nearestTowardsZero = TResult.Log2(rnumber);
+      nearestAwayFromZero = TResult.IsPow2(rnumber) || TResult.IsZero(rnumber) ? nearestTowardsZero : nearestTowardsZero + TResult.One;
     }
 
     /// <summary>Find the nearest (to <paramref name="number"/>) of two integer log-2, using the specified <see cref="RoundingMode"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both log-2 as out parameters.</summary>
@@ -34,13 +36,13 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the integer log-2 that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the integer log-2 that is farther from zero.</param>
     /// <returns>The nearest (to <paramref name="number"/>) integer log-2, and also the nearest two integer log-2 to value as out parameters.</returns>
-    public static TSelf NearestIntegerLog2<TSelf, TResult>(this TSelf number, RoundingMode mode, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
+    public static TResult NearestIntegerLog2<TSelf, TResult>(this TSelf number, RoundingMode mode, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       LocateNearestIntegerLog2(number, out nearestTowardsZero, out nearestAwayFromZero);
 
-      return BoundaryRounding<TSelf>.Round(number, TSelf.CreateChecked(nearestTowardsZero), TSelf.CreateChecked(nearestAwayFromZero), mode);
+      return BoundaryRounding<TSelf, TResult>.Round(number, TResult.CreateChecked(nearestTowardsZero), TResult.CreateChecked(nearestAwayFromZero), mode);
     }
 
     /// <summary>Computes the integer base 2 log away from zero (ceiling) of <paramref name="number"/>.</summary>

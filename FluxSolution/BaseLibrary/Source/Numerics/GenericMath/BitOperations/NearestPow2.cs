@@ -11,35 +11,38 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value as out parameters.</returns>
-    public static void LocateNearestPow2<TSelf>(this TSelf number, bool proper, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static void LocateNearestPow2<TSelf, TResult>(this TSelf number, bool proper, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
+      where TSelf : System.Numerics.INumber<TSelf>
+      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       if (TSelf.IsNegative(number))
       {
         LocateNearestPow2(TSelf.Abs(number), proper, out nearestTowardsZero, out nearestAwayFromZero);
 
-        nearestAwayFromZero.CopySign(number, out nearestAwayFromZero);
-        nearestTowardsZero.CopySign(number, out nearestTowardsZero);
+        nearestTowardsZero = nearestTowardsZero.CopySign(number);
+        nearestAwayFromZero = nearestAwayFromZero.CopySign(number);
 
         return;
       }
 
-      if (TSelf.IsPow2(number))
+      var rnumber = TResult.CreateChecked(number.TruncMod(TSelf.One, out var r));
+
+      if (TResult.IsPow2(rnumber))
       {
         if (proper)
         {
-          nearestAwayFromZero = number << 1;
-          nearestTowardsZero = number >> 1;
+          nearestAwayFromZero = rnumber << 1;
+          nearestTowardsZero = rnumber >> 1;
         }
         else
         {
-          nearestAwayFromZero = number;
-          nearestTowardsZero = number;
+          nearestAwayFromZero = rnumber;
+          nearestTowardsZero = rnumber;
         }
       }
       else
       {
-        nearestAwayFromZero = BitFoldRight(number - TSelf.One) + TSelf.One;
+        nearestAwayFromZero = BitFoldRight(rnumber - TResult.One) + TResult.One;
         nearestTowardsZero = nearestAwayFromZero >> 1;
       }
     }
@@ -51,22 +54,24 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value.</returns>
-    public static TSelf NearestPow2<TSelf>(this TSelf number, bool proper, RoundingMode mode, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TResult NearestPow2<TSelf, TResult>(this TSelf number, bool proper, RoundingMode mode, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
+      where TSelf : System.Numerics.INumber<TSelf>
+      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       LocateNearestPow2(number, proper, out nearestTowardsZero, out nearestAwayFromZero);
 
-      return BoundaryRounding<TSelf>.Round(number, nearestTowardsZero, nearestAwayFromZero, mode);
+      return BoundaryRounding<TSelf, TResult>.Round(number, nearestTowardsZero, nearestAwayFromZero, mode);
     }
 
     /// <summary>Find the next power of 2 away from zero.</summary>
     /// <param name="number">The reference value.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="number"/>.</param>
     /// <returns>The the next power of 2 away from zero.</returns>
-    public static TSelf NearestPow2AwayFromZero<TSelf>(this TSelf number, bool proper)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TResult NearestPow2AwayFromZero<TSelf, TResult>(this TSelf number, bool proper, out TResult nearestAwayFromZero)
+      where TSelf : System.Numerics.INumber<TSelf>
+      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
-      LocateNearestPow2(number, proper, out var _, out var nearestAwayFromZero);
+      LocateNearestPow2(number, proper, out var _, out nearestAwayFromZero);
 
       return nearestAwayFromZero;
     }
@@ -75,10 +80,11 @@ namespace Flux
     /// <param name="number">The reference value.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="number"/>.</param>
     /// <returns>The the next power of 2 towards zero.</returns>
-    public static TSelf NearestPow2TowardZero<TSelf>(this TSelf number, bool proper)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TResult NearestPow2TowardZero<TSelf, TResult>(this TSelf number, bool proper, out TResult nearestTowardsZero)
+      where TSelf : System.Numerics.INumber<TSelf>
+      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
-      LocateNearestPow2(number, proper, out var nearestTowardsZero, out var _);
+      LocateNearestPow2(number, proper, out nearestTowardsZero, out var _);
 
       return nearestTowardsZero;
     }
@@ -89,8 +95,9 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryNearestPow2<TSelf, TRadix>(this TSelf number, bool proper, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static bool TryNearestPow2<TSelf, TRadix, TResult>(this TSelf number, bool proper, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
+      where TSelf : System.Numerics.INumber<TSelf>
+      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       try
       {
@@ -100,8 +107,8 @@ namespace Flux
       }
       catch { }
 
-      nearestTowardsZero = TSelf.Zero;
-      nearestAwayFromZero = TSelf.Zero;
+      nearestTowardsZero = TResult.Zero;
+      nearestAwayFromZero = TResult.Zero;
 
       return false;
     }

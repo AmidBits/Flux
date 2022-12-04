@@ -9,23 +9,23 @@ namespace Flux
     /// <param name="nearestTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="nearestAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static void LocateNearestPow<TSelf, TRadix>(this TSelf number, TRadix radix, bool proper, out TSelf nearestTowardsZero, out TSelf nearestAwayFromZero)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static void LocateNearestPow<TValue, TRadix>(this TValue number, TRadix radix, bool proper, out TValue nearestTowardsZero, out TValue nearestAwayFromZero)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      if (TSelf.IsNegative(number))
+      if (TValue.IsNegative(number))
       {
-        LocateNearestPow(TSelf.Abs(number), radix, proper, out nearestTowardsZero, out nearestAwayFromZero);
+        LocateNearestPow(TValue.Abs(number), radix, proper, out nearestTowardsZero, out nearestAwayFromZero);
 
-        nearestAwayFromZero.CopySign(number, out nearestAwayFromZero);
-        nearestTowardsZero.CopySign(number, out nearestTowardsZero);
+        nearestAwayFromZero = TValue.CopySign(nearestAwayFromZero, number);
+        nearestTowardsZero = TValue.CopySign(nearestTowardsZero, number);
 
         return;
       }
 
-      AssertRadix(radix, out TSelf tradix);
+      AssertRadix(radix, out TValue tradix);
 
-      nearestTowardsZero = IntegerPow(tradix, TSelf.Abs(number).NearestIntegerLogTowardsZero(tradix, out TSelf _)) * number.Signum();
+      nearestTowardsZero = IntegerPow(tradix, TValue.Abs(number).NearestIntegerLogTowardsZero(tradix, out TValue _)) * TValue.CreateChecked(TValue.Sign(number));
       nearestAwayFromZero = nearestTowardsZero * tradix;
 
       if (proper)
@@ -51,7 +51,7 @@ namespace Flux
     {
       LocateNearestPow(number, radix, proper, out nearestTowardsZero, out nearestAwayFromZero);
 
-      return BoundaryRounding<TSelf>.Round(number, nearestTowardsZero, nearestAwayFromZero, mode);
+      return BoundaryRounding<TSelf, TSelf>.Round(number, nearestTowardsZero, nearestAwayFromZero, mode);
     }
 
     /// <summary>Find the next power of <paramref name="radix"/> away from zero.</summary>

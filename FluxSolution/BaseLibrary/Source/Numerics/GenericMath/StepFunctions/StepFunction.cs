@@ -1,18 +1,5 @@
 namespace Flux
 {
-  public static partial class GenericMath
-  {
-    /// <summary>Returns the sign of <paramref name="x"/>.</summary>
-    public static TSelf Signum<TSelf>(this TSelf x)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => StepFunction<TSelf, TSelf>.Sign.Evaluate(x);
-
-    /// <summary>Returns the sign of <paramref name="x"/>.</summary>
-    public static TSelf SignumNoZero<TSelf>(this TSelf x)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => StepFunction<TSelf, TSelf>.SignNoZero.Evaluate(x);
-  }
-
   public record class StepFunction<TSelf, TResult>
     : IStepFunction<TSelf, TResult>
     where TSelf : System.Numerics.INumber<TSelf>

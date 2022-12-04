@@ -1,8 +1,9 @@
 ﻿namespace Flux
 {
-  public interface INumberRoundable<TSelf>
+  public interface INumberRoundable<TSelf, TBound>
     where TSelf : System.Numerics.INumber<TSelf>
+    where TBound : System.Numerics.INumber<TBound>
   {
-    TSelf RoundNumber(TSelf value);
+    TBound RoundNumber(TSelf value);
   }
 }

@@ -21,20 +21,32 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var value = (3).ToBigInteger();
-      System.Console.WriteLine($"Num = {value}");
-      var exponent = -3;
-      System.Console.WriteLine($"Exp = {exponent}");
+      //var v = 0;
 
-      var ipow = value.IntegerPow(int.Abs(exponent));
-      System.Console.WriteLine($"IPow = {ipow}");
+      //var blx = v.GetBitLengthEx();
+      //var log2 = int.Log2(v);
+      //var ms1b2 = 1 << log2;
+      //var ms1b = v.MostSignificant1Bit();
 
-      var ipowrec = value.IntegerPowRec(exponent, out double rec);
-      System.Console.WriteLine($"IPow = {ipowrec}, Rec = {rec}");
 
-      var pow = System.Math.Pow((double)value, exponent);
-      var inv = System.Math.Pow((double)value, -exponent);
-      System.Console.WriteLine($"System.Math.Pow = {pow}, Inv: {inv}");
+      var value = 13;
+      var trunc = value.TruncMod(1, out var rem);
+      value.LocateNearestIntegerLog2(out System.Numerics.BigInteger tz, out System.Numerics.BigInteger afz);
+
+      //var value = (3).ToBigInteger();
+      //System.Console.WriteLine($"Num = {value}");
+      //var exponent = -3;
+      //System.Console.WriteLine($"Exp = {exponent}");
+
+      //var ipow = value.IntegerPow(int.Abs(exponent));
+      //System.Console.WriteLine($"IPow = {ipow}");
+
+      //var ipowrec = value.IntegerPowRec(exponent, out double rec);
+      //System.Console.WriteLine($"IPow = {ipowrec}, Rec = {rec}");
+
+      //var pow = System.Math.Pow((double)value, exponent);
+      //var inv = System.Math.Pow((double)value, -exponent);
+      //System.Console.WriteLine($"System.Math.Pow = {pow}, Inv: {inv}");
     }
 
     private static void Main(string[] args)

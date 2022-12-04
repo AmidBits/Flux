@@ -2,7 +2,7 @@
 {
   /// <summary>Rounds the <paramref name="x"/> to the nearest integer. The <paramref name="mode"/> specifies the halfway rounding strategy to use if the value is halfway between two integers (e.g. 11.5).</summary>
   public class PrecisionRounding<TSelf>
-    : INumberRoundable<TSelf>
+    : INumberRoundable<TSelf, TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
   {
     private readonly RoundingMode m_mode;

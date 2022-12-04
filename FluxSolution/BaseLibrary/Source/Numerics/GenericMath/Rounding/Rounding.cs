@@ -2,7 +2,7 @@
 {
   /// <summary></summary>
   public class Rounding<TSelf>
-    : INumberRoundable<TSelf>
+    : INumberRoundable<TSelf, TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
     private readonly RoundingMode m_mode;

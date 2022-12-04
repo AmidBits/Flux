@@ -18,7 +18,7 @@ namespace Flux
       if (distanceTowardsZero > distance && distanceAwayFromZero > distance) // If neither is within distance of interval.
         return number;
 
-      return new BoundaryRounding<TSelf>(mode, boundaryTowardsZero, boundaryAwayFromZero).RoundNumber(number);
+      return new BoundaryRounding<TSelf, TSelf>(mode, boundaryTowardsZero, boundaryAwayFromZero).RoundNumber(number);
     }
   }
 }

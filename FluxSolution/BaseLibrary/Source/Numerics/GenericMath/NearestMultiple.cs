@@ -15,14 +15,14 @@
       if (multiple <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(multiple));
 
       nearestTowardsZero = number - (number % multiple);
-      nearestAwayFromZero = nearestTowardsZero == number ? nearestTowardsZero : nearestTowardsZero + multiple.CopySign(number, out TSelf _);
+      nearestAwayFromZero = nearestTowardsZero == number ? nearestTowardsZero : nearestTowardsZero + TSelf.CopySign(multiple, number);
 
       if (proper)
       {
         if (nearestTowardsZero == number)
-          nearestTowardsZero -= multiple.CopySign(number, out TSelf _);
+          nearestTowardsZero -= TSelf.CopySign(multiple, number);
         if (nearestAwayFromZero == number)
-          nearestAwayFromZero += multiple.CopySign(number, out TSelf _);
+          nearestAwayFromZero += TSelf.CopySign(multiple, number);
       }
     }
 
@@ -39,7 +39,7 @@
     {
       LocateNearestMultiple(number, multiple, proper, out nearestTowardsZero, out nearestAwayFromZero);
 
-      return BoundaryRounding<TSelf>.Round(number, nearestTowardsZero, nearestAwayFromZero, mode);
+      return BoundaryRounding<TSelf, TSelf>.Round(number, nearestTowardsZero, nearestAwayFromZero, mode);
     }
 
     /// <summary>Find the nearest (to <paramref name="number"/>) multiple away from zero (round-up). Negative <paramref name="number"/> resilient.</summary>

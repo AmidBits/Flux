@@ -1,8 +1,7 @@
 ﻿#if NET7_0_OR_GREATER
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using System;
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GenericMath
 {
@@ -12,7 +11,7 @@ namespace GenericMath
     [TestMethod]
     public void BoundaryRounding()
     {
-      var actual = Flux.BoundaryRounding<int>.Round(11, 7, 17, RoundingMode.HalfAwayFromZero);
+      var actual = Flux.BoundaryRounding<int, int>.Round(11, 7, 17, RoundingMode.HalfAwayFromZero);
 
       Assert.AreEqual(7, actual);
     }
