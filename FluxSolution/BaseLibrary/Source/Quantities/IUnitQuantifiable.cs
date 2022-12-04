@@ -5,7 +5,7 @@
   /// <typeparam name="TUnit">The unit enum.</typeparam>
   public interface IUnitQuantifiable<TType, TUnit>
     : IQuantifiable<TType>
-    where TType : System.Numerics.INumber<TType>
+    where TType : System.Numerics.INumberBase<TType>
     where TUnit : System.Enum
   {
     //static abstract IUnitQuantifiable<TType, TUnit> FromUnitValue(TType value, TUnit unit);

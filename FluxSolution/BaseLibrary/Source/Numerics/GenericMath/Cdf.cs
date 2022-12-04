@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>The function Cdf(x) is the cumulative density function(CDF) of a standard normal (Gaussian) random variable. It is closely related to the error function Erf(x).</summary>
+    /// <summary>The function Cdf(x) is the CDF of a standard normal (Gaussian) random variable. It is closely related to the error function Erf(x).</summary>
     public static TSelf Cdf<TSelf>(TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IExponentialFunctions<TSelf>, System.Numerics.IRootFunctions<TSelf>
     {
