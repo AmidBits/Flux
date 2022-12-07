@@ -6,6 +6,6 @@ namespace Flux
     public static bool IsSingleDigit<TSelf, TRadix>(this TSelf number, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TSelf.IsZero(number) || (TSelf.IsPositive(number) && number < AssertRadix(radix, out TSelf ptradix)) || (TSelf.IsNegative(number) && number > -AssertRadix(radix, out TSelf ntradix));
+      => TSelf.CreateChecked(AssertRadix(radix)) is var rdx && (TSelf.IsZero(number) || (TSelf.IsPositive(number) && number < rdx) || (TSelf.IsNegative(number) && number > -rdx));
   }
 }

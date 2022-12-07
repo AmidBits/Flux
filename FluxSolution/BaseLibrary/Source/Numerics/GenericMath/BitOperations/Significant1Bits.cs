@@ -1,18 +1,16 @@
 namespace Flux
 {
-  //  // <seealso cref="http://aggregate.org/MAGIC/"/>
-  //  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
-
   public static partial class BitOps
   {
     /// <summary>Extracts the lowest numbered element of a bit set. Given a 2's complement binary integer value, this is the least significant 1 bit.</summary>
+    /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
     public static TSelf LeastSignificant1Bit<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => x & ((~x) + TSelf.One);
 
-    /// <summary>Extracts the lowest numbered element of a bit set. Given a 2's complement binary integer value, this is the least significant 1 bit.</summary>
+    /// <summary>Extracts the highest numbered element of a bit set. Given a 2's complement binary integer value, this is the most significant 1 bit.</summary>
     public static TSelf MostSignificant1Bit<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.One << (GetBitLengthEx(x) - 1);
+      => TSelf.IsZero(x) ? x : (TSelf.One << (x.GetShortestBitLength() - 1));
   }
 }

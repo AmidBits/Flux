@@ -1,10 +1,5 @@
-using Flux.Geometry;
-
 namespace Flux
 {
-  //  // <seealso cref="http://aggregate.org/MAGIC/"/>
-  //  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
-
   public static partial class BitOps
   {
     /// <summary>Create a bit mask with <paramref name="oneCount"/> bits set to 1 on the LSB (Least Significant Bit) side.</summary>

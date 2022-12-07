@@ -31,14 +31,14 @@ namespace Flux
     public static string ToRadixString<TSelf, TRadix>(this TSelf number, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => ToRadixString(number, Flux.Text.RuneSequences.Base62[..AssertRadix(radix, out int _)]).ToString();
+      => ToRadixString(number, Flux.Text.RuneSequences.Base62[..int.CreateChecked(AssertRadix(radix))]).ToString();
 
     /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static string ToRadixString<TSelf, TRadix>(this TSelf number, TRadix radix, int minimumLength)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var sb = ToRadixString(number, Flux.Text.RuneSequences.Base62[..AssertRadix(radix, out int _)]);
+      var sb = ToRadixString(number, Flux.Text.RuneSequences.Base62[..int.CreateChecked(AssertRadix(radix))]);
 
       var negative = sb[0] == '-' ? 1 : 0;
 

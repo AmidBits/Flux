@@ -44,11 +44,13 @@ namespace Flux
       try
       {
         x = IntegerSqrt(y);
+
         return true;
       }
       catch { }
 
       x = TSelf.Zero;
+
       return false;
     }
   }

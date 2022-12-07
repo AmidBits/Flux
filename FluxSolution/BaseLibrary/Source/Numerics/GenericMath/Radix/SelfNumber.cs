@@ -15,16 +15,17 @@ namespace Flux
       return true;
     }
 
-    /// <summary>Returns the minimum possible number that can make <paramref name="number"/> a self number using base <paramref name="radix"/>.</summary>
-    public static TSelf SelfNumberLowBound<TSelf, TRadix>(this TSelf number, TRadix radix)
+    /// <summary>Returns the minimum possible number that can make <paramref name="value"/> a self number using base <paramref name="radix"/>.</summary>
+    public static TSelf SelfNumberLowBound<TSelf, TRadix>(this TSelf value, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      if (number <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(number));
+      if (value <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-      var logRadix = NearestIntegerLogTowardsZero(number, AssertRadix(radix, out TSelf tradix), out TSelf _);
-      var maxDistinct = (TSelf.CreateChecked(9) * logRadix) + (number / IntegerPow(tradix, logRadix));
-      return TSelf.Max(number - maxDistinct, TSelf.Zero);
+      var logRadix = ILogTowardsZero(value, radix, out TSelf _);
+      var maxDistinct = (TSelf.CreateChecked(9) * logRadix) + (value / IntegerPow(TSelf.CreateChecked(AssertRadix(radix)), logRadix));
+
+      return TSelf.Max(value - maxDistinct, TSelf.Zero);
     }
   }
 }

@@ -33,6 +33,6 @@ namespace Flux
     }
 
     public override string ToString()
-      => $"{GetType().Name} {{ \"{Value.Chars}\", Index = {Index}, Chars = [{string.Join(", ", Value.Chars.Select(c => c.ToStringEx()))}], Runes = [{string.Join(", ", Value.Runes.Select(r => r.ToStringEx()))}]{(string.Concat(GetNormalizationForms(Value.Chars, false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $", {s}" : string.Empty)} }}";
+      => $"{GetType().Name} {{ \"{Value.Chars}\", Index = {Index}, Chars = {Value.Chars.Length}:[{string.Join(", ", Value.Chars.Select(c => $"0x{(int)c:x4}"))}], Runes = {Value.Runes.Count}:[{string.Join(", ", Value.Runes.Select(r => r.ToStringEx()))}]{(string.Concat(GetNormalizationForms(Value.Chars, false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $", {s}" : string.Empty)} }}";
   }
 }

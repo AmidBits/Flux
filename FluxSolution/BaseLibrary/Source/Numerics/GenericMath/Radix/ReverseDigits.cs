@@ -7,15 +7,15 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      AssertRadix(radix, out TSelf tradix);
+      var rdx = TSelf.CreateChecked(AssertRadix(radix));
 
       var reverse = TSelf.Zero;
 
       while (!TSelf.IsZero(number))
       {
-        reverse = reverse * tradix + (number % tradix);
+        reverse = reverse * rdx + (number % rdx);
 
-        number /= tradix;
+        number /= rdx;
       }
 
       return reverse;

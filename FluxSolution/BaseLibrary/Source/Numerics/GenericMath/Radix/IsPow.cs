@@ -2,25 +2,25 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Determines if <paramref name="number"/> is a power of <paramref name="radix"/>.</summary>
-    public static bool IsPow<TSelf, TRadix>(this TSelf number, TRadix radix)
+    /// <summary>Determines if <paramref name="value"/> is a power of <paramref name="radix"/>.</summary>
+    public static bool IsPow<TSelf, TRadix>(this TSelf value, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      AssertNonNegative(number);
-      AssertRadix(radix, out TSelf tradix);
+      AssertNonNegative(value);
+      var tradix = TSelf.CreateChecked(AssertRadix(radix));
 
-      if (number == tradix) // If the value is equal to the radix, then it's a power of the radix.
+      if (value == tradix) // If the value is equal to the radix, then it's a power of the radix.
         return true;
 
       if (radix == (TRadix.One + TRadix.One)) // Special case for binary numbers, we can use dedicated IsPow2().
-        return TSelf.IsPow2(number);
+        return TSelf.IsPow2(value);
 
-      if (number > TSelf.One)
-        while (TSelf.IsZero(number % tradix))
-          number /= tradix;
+      if (value > TSelf.One)
+        while (TSelf.IsZero(value % tradix))
+          value /= tradix;
 
-      return number == TSelf.One;
+      return value == TSelf.One;
     }
   }
 }

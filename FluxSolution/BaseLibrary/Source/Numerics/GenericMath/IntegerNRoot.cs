@@ -89,11 +89,13 @@
       try
       {
         x = IntegerNRoot(y, n);
+
         return true;
       }
       catch
       {
         x = TSelf.Zero;
+
         return false;
       }
     }

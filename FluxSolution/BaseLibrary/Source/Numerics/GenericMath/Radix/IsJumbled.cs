@@ -8,7 +8,7 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      AssertRadix(radix, out TSelf tradix);
+      var tradix = TSelf.CreateChecked(AssertRadix(radix));
 
       while (!TSelf.IsZero(number))
       {

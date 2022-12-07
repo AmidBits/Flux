@@ -18,7 +18,7 @@
       SourceIndex = sourceIndex;
     }
 
-    public static System.Collections.Generic.IEnumerable<TextElementCluster> GetAll(string text)
+    public static System.Collections.Generic.IEnumerable<TextElementCluster> ExtractAll(string text)
     {
       var e = System.Globalization.StringInfo.GetTextElementEnumerator(text);
 

@@ -15,6 +15,6 @@ namespace Flux
     }
 
     public override string ToString()
-      => $"{GetType().Name} {{ \"{Value}\", Index = {Index}, Length = {Value.Utf16SequenceLength}, {Value.ToStringEx()} }}";
+      => $"{GetType().Name} {{ \"{Value}\", Index = {Index}, Chars = {Value.Utf16SequenceLength}:[{string.Join(", ", Value.ToString().Select(c => $"0x{(int)c:x4}"))}], Rune = {Value.ToStringEx()} }}";
   }
 }

@@ -20,36 +20,31 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void GetBitLength()
+    public void GetBitLengthEx()
     {
+      Assert.AreEqual(7, 88.ToBigInteger().GetBitLengthEx());
       Assert.AreEqual(7, 88.ToBigInteger().GetBitLength());
     }
 
     [TestMethod]
-    public void GetShortestBitLength()
+    public void LocateILog2()
     {
-      Assert.AreEqual(7, 88.ToBigInteger().GetBitLength());
-    }
-
-    [TestMethod]
-    public void LocateNearestIntegerLog2()
-    {
-      (88.5).LocateNearestIntegerLog2(out int nearestTowardsZero, out int nearestAwayFromZero);
+      (88.5).LocateILog2(out int nearestTowardsZero, out int nearestAwayFromZero);
 
       Assert.AreEqual(6, nearestTowardsZero);
       Assert.AreEqual(7, nearestAwayFromZero);
     }
 
     [TestMethod]
-    public void NearestIntegerLog2AwayFromZero()
+    public void ILog2AwayFromZero()
     {
-      Assert.AreEqual(7, 88.ToBigInteger().NearestIntegerLog2AwayFromZero(out int _));
+      Assert.AreEqual(7, 88.ToBigInteger().ILog2AwayFromZero(out int _));
     }
 
     [TestMethod]
-    public void NearestIntegerLog2TowardsZero()
+    public void ILog2TowardsZero()
     {
-      Assert.AreEqual(6, 88.ToBigInteger().NearestIntegerLog2TowardsZero(out int _));
+      Assert.AreEqual(6, 88.ToBigInteger().ILog2TowardsZero(out int _));
     }
 
     [TestMethod]
@@ -64,16 +59,16 @@ namespace GenericMath
       Assert.AreEqual(3, 88.ToBigInteger().GetTrailingZeroCount());
     }
 
-    [TestMethod]
-    public void IsPow2()
-    {
-      Assert.AreEqual(false, 88.ToBigInteger().IsPow2());
-    }
+    //[TestMethod]
+    //public void IsPow2Ex()
+    //{
+    //  Assert.AreEqual(false, 88.ToBigInteger().IsPow2Ex());
+    //}
 
     [TestMethod]
-    public void LocateNearestPow2()
+    public void LocatePow2()
     {
-      88.LocateNearestPow2(false, out int towardsZero, out int awayFromZero);
+      88.LocatePow2(false, out int towardsZero, out int awayFromZero);
 
       Assert.AreEqual(64, towardsZero);
       Assert.AreEqual(128, awayFromZero);
@@ -102,33 +97,33 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void NearestPow2AwayFromZero()
+    public void Pow2AwayFromZero()
     {
-      var actual = 88.ToBigInteger().NearestPow2AwayFromZero(false, out System.Numerics.BigInteger _);
+      var actual = 88.ToBigInteger().Pow2AwayFromZero(false, out System.Numerics.BigInteger _);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
 
     [TestMethod]
-    public void NearestPow2AwayFromZeroProper()
+    public void Pow2AwayFromZeroProper()
     {
-      var actual = 88.ToBigInteger().NearestPow2AwayFromZero(true, out System.Numerics.BigInteger _);
+      var actual = 88.ToBigInteger().Pow2AwayFromZero(true, out System.Numerics.BigInteger _);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
 
     [TestMethod]
-    public void NearestPow2TowardsZero()
+    public void Pow2TowardsZero()
     {
-      var actual = 88.ToBigInteger().NearestPow2TowardZero(false, out System.Numerics.BigInteger _);
+      var actual = 88.ToBigInteger().Pow2TowardZero(false, out System.Numerics.BigInteger _);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }
 
     [TestMethod]
-    public void NearestPow2TowardsZeroProper()
+    public void Pow2TowardsZeroProper()
     {
-      var actual = 88.ToBigInteger().NearestPow2TowardZero(true, out System.Numerics.BigInteger _);
+      var actual = 88.ToBigInteger().Pow2TowardZero(true, out System.Numerics.BigInteger _);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }

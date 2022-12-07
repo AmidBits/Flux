@@ -206,7 +206,7 @@
       var k = data.GetLength(0);
       var n = data.GetLength(1);
 
-      if ((!k.IsPow2()) || (!n.IsPow2()) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
+      if ((!int.IsPow2(k)) || (!int.IsPow2(n)) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
       {
         throw new System.ArgumentException("Incorrect data length.");
       }
@@ -322,7 +322,7 @@
       var len = data.Length;
 
       // check data length
-      if ((len < minLength) || (len > maxLength) || (!len.IsPow2()))
+      if ((len < minLength) || (len > maxLength) || (!int.IsPow2(len)))
       {
         throw new System.ArgumentException("Incorrect data length.");
       }

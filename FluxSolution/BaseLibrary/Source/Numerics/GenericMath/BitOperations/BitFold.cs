@@ -21,8 +21,10 @@ namespace Flux
     /// <returns>All bits set from MSB down, or -1 (all bits) if the value is less than zero.</returns>
     public static TSelf BitFoldRight<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsNegative(value) ? -TSelf.One
-      : TSelf.IsZero(value) ? TSelf.Zero
-      : (((MostSignificant1Bit(value) - TSelf.One) << 1) | TSelf.One); // Ensures the max bit is always set (signed or unsigned).
+      => TSelf.IsNegative(value)
+      ? -TSelf.One
+      : TSelf.IsZero(value)
+      ? TSelf.Zero
+      : (((MostSignificant1Bit(value) - TSelf.One) << 1) | TSelf.One);
   }
 }
