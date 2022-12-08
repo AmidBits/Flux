@@ -34,13 +34,13 @@ namespace Flux
     //   double.CreateChecked(m_azimuth)
     // );
 
-    #region Static methods
-    /// <summary>Return the <see cref="IPolarCoordinate"/> from the specified components.</summary>
-    public static PolarCoordinate<TSelf> From(Quantities.Length radius, Azimuth azimuth)
-      => new(
-        TSelf.CreateChecked(radius.Value),
-        TSelf.CreateChecked(azimuth.ToRadians())
-      );
-    #endregion Static methods
+    //#region Static methods
+    ///// <summary>Return the <see cref="IPolarCoordinate"/> from the specified components.</summary>
+    //public static PolarCoordinate<TSelf> From(Quantities.Length radius, Azimuth azimuth)
+    //  => new(
+    //    TSelf.CreateChecked(radius.Value),
+    //    TSelf.CreateChecked(azimuth.ToRadians())
+    //  );
+    //#endregion Static methods
   }
 }

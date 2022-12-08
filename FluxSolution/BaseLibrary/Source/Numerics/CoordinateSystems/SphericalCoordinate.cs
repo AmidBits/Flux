@@ -64,13 +64,13 @@ namespace Flux
     public static TSelf ConvertElevationToInclination(TSelf elevation)
       => TSelf.Pi.Divide(2) - elevation;
 
-    /// <summary>Return the <see cref="ISphericalCoordinate"/> from the specified components.</summary>
-    public static SphericalCoordinate<TSelf> From(Quantities.Length radius, Quantities.Angle inclination, Azimuth azimuth)
-      => new(
-        TSelf.CreateChecked(radius.Value),
-        TSelf.CreateChecked(inclination.Value),
-        TSelf.CreateChecked(azimuth.ToRadians())
-      );
+    ///// <summary>Return the <see cref="ISphericalCoordinate"/> from the specified components.</summary>
+    //public static SphericalCoordinate<TSelf> From(Quantities.Length radius, Quantities.Angle inclination, Azimuth azimuth)
+    //  => new(
+    //    TSelf.CreateChecked(radius.Value),
+    //    TSelf.CreateChecked(inclination.Value),
+    //    TSelf.CreateChecked(azimuth.ToRadians())
+    //  );
 
     #endregion Static methods
   }

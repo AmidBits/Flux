@@ -45,14 +45,14 @@ namespace Flux
        m_azimuth
      );
 
-    #region Static methods
-    /// <summary>Return a <see cref="CylindricalCoordinate"/> from the specified components.</summary>
-    public static CylindricalCoordinate<TSelf> From(Quantities.Length radius, Azimuth azimuth, Quantities.Length height)
-      => new(
-        TSelf.CreateChecked(radius.Value),
-        TSelf.CreateChecked(azimuth.ToRadians()),
-        TSelf.CreateChecked(height.Value)
-      );
-    #endregion Static methods
+    //#region Static methods
+    ///// <summary>Return a <see cref="CylindricalCoordinate"/> from the specified components.</summary>
+    //public static CylindricalCoordinate<TSelf> From(Quantities.Length radius, Azimuth azimuth, Quantities.Length height)
+    //  => new(
+    //    TSelf.CreateChecked(radius.Value),
+    //    TSelf.CreateChecked(azimuth.ToRadians()),
+    //    TSelf.CreateChecked(height.Value)
+    //  );
+    //#endregion Static methods
   }
 }

@@ -4,33 +4,35 @@
   {
     /// <summary>Converts the geographic coordinates to spherical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static (TSelf radius, TSelf inclination, TSelf azimuth) ToSphericalCoordinates<TSelf>(this IGeographicCoordinate geographicCoordinate)
+    public static SphericalCoordinate<TSelf> ToSphericalCoordinates<TSelf>(this IGeographicCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => (
-        TSelf.CreateChecked(geographicCoordinate.Altitude.Value),
-        TSelf.Pi - (TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(geographicCoordinate.Latitude.Value)) + TSelf.Pi.Divide(2)),
-        TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(geographicCoordinate.Longitude.Value)) + TSelf.Pi
+      => new(
+        source.Altitude,
+        TSelf.Pi - (TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(source.Latitude))) + TSelf.Pi.Divide(2)),
+        TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(source.Longitude))) + TSelf.Pi
       );
 
-    public static (Quantities.Length altitude, Latitude latitude, Longitude longitude) ToQuantities(this IGeographicCoordinate geographicCoordinate)
-      => (
-        new Quantities.Length(double.CreateChecked(geographicCoordinate.Altitude.Value)),
-        new Latitude(double.CreateChecked(geographicCoordinate.Latitude.Value)),
-        new Longitude(double.CreateChecked(geographicCoordinate.Longitude.Value))
-      );
+    //public static (Quantities.Length altitude, Latitude latitude, Longitude longitude) ToQuantities<TSelf>(this IGeographicCoordinate<TSelf> source)
+    //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    //  => (
+    //    new Quantities.Length(double.CreateChecked(source.Altitude)),
+    //    new Latitude(double.CreateChecked(source.Latitude)),
+    //    new Longitude(double.CreateChecked(source.Longitude))
+    //  );
   }
 
-  public interface IGeographicCoordinate
+  public interface IGeographicCoordinate<TSelf>
     : System.IFormattable
+    where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    Quantities.Length Altitude { get; }
+    TSelf Altitude { get; init; }
     /// <summary>The latitude component of the geographic position in degrees. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    Latitude Latitude { get; }
+    TSelf Latitude { get; init; }
     /// <summary>The longitude component of the geographic position in degrees. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    Longitude Longitude { get; }
+    TSelf Longitude { get; init; }
 
     string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.ToAngle().ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({Longitude.ToAngle().ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Altitude = {Altitude.ToUnitString(format: format ?? "N1")} }}";
+      => $"{GetType().Name} {{ Latitude = {new Flux.Latitude(double.CreateChecked(Latitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Latitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Longitude = {new Flux.Longitude(double.CreateChecked(Longitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Longitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Altitude = {new Quantities.Length(double.CreateChecked(Altitude)).ToUnitString(format: format ?? "N1")} }}";
   }
 }

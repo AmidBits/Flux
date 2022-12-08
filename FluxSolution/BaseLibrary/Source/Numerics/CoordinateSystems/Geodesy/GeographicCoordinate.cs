@@ -1,3 +1,5 @@
+using Flux.Quantities;
+
 namespace Flux
 {
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
@@ -5,7 +7,7 @@ namespace Flux
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public record struct GeographicCoordinate
-    : IGeographicCoordinate
+    : IGeographicCoordinate<double>
   {
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
@@ -41,11 +43,11 @@ namespace Flux
     }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    [System.Diagnostics.Contracts.Pure] public Quantities.Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
+    public double Altitude { get => m_altitude; init => m_altitude = value; }
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    [System.Diagnostics.Contracts.Pure] public Latitude Latitude { get => Latitude.FromRadians(m_radLatitude); init => m_radLatitude = value.ToRadians(); }
+    public double Latitude { get => Angle.ConvertRadianToDegree(m_radLatitude); init => m_radLatitude = Angle.ConvertDegreeToRadian(value); }
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    [System.Diagnostics.Contracts.Pure] public Longitude Longitude { get => Longitude.FromRadians(m_radLongitude); init => m_radLongitude = value.ToRadians(); }
+    public double Longitude { get => Angle.ConvertRadianToDegree(m_radLongitude); init => m_radLongitude = Angle.ConvertDegreeToRadian(value); }
 
     /// <summary>Creates a new <see cref=" CartesianCoordinate3{double}"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]
@@ -96,10 +98,10 @@ namespace Flux
     /// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
     public SphericalCoordinate<double> ToSphericalCoordinate()
-      => SphericalCoordinate<double>.From(
+      => new(
         Altitude,
-        new Quantities.Angle(double.Pi - (Quantities.Angle.ConvertDegreeToRadian(Latitude.Value) + double.Pi / 2)),
-        Azimuth.FromRadians(Quantities.Angle.ConvertDegreeToRadian(Longitude.Value) + double.Pi)
+        double.Pi - (Quantities.Angle.ConvertDegreeToRadian(Latitude) + double.Pi / 2),
+        Quantities.Angle.ConvertDegreeToRadian(Longitude) + double.Pi
       );
 
     /// <summary>Creates a new <see cref=" CartesianCoordinate3{double}"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
@@ -182,13 +184,13 @@ namespace Flux
       return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
     }
 
-    /// <summary>Return the <see cref="IGeographicCoordinate"/> from the specified components.</summary>
-    static GeographicCoordinate From(Quantities.Length altitude, Latitude latitude, Longitude longitude)
-      => new GeographicCoordinate(
-        altitude.Value,
-        latitude.Value,
-        longitude.Value
-      );
+    ///// <summary>Return the <see cref="IGeographicCoordinate"/> from the specified components.</summary>
+    //static GeographicCoordinate From(Quantities.Length altitude, Latitude latitude, Longitude longitude)
+    //  => new GeographicCoordinate(
+    //    altitude.Value,
+    //    latitude.Value,
+    //    longitude.Value
+    //  );
 
     /// <summary>Converts the specified Equal Earth projected X, Y coordinate components with Z optionally containing the altitude to geographical coordinate components.</summary>
     /// <param name="z">Optional altitude (in meters).</param>

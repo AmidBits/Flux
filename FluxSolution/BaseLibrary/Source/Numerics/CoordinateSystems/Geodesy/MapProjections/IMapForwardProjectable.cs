@@ -1,8 +1,9 @@
 ﻿namespace Flux.MapProjections
 {
-  public interface IMapForwardProjectable
+  public interface IMapForwardProjectable<TSelf>
+    where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
-    /// <summary>Creates a new <see cref=" CartesianCoordinate3{double}"/> from the <see cref="GeographicCoordinate"/> (where the Z component equals the Altitude component, without any manipulations).</summary>
-    public CartesianCoordinate3<double> ProjectForward(GeographicCoordinate project);
+    /// <summary>Creates a new <see cref=" CartesianCoordinate3{TSelf}"/> from the <see cref="IGeographicCoordinate{TSelf}"/> (where the Z component equals the Altitude component, without any manipulations).</summary>
+    public CartesianCoordinate3<TSelf> ProjectForward(IGeographicCoordinate<TSelf> project);
   }
 }

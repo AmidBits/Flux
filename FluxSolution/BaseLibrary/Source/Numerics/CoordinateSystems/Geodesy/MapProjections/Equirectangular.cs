@@ -2,17 +2,25 @@
 {
   // https://en.wikipedia.org/wiki/Equirectangular_projection
   public record struct EquirectangularProjection
-    : IMapForwardProjectable, IMapReverseProjectable
+    : IMapForwardProjectable<double>, IMapReverseProjectable<double>
   {
     public static readonly EquirectangularProjection Default;
 
     public GeographicCoordinate CenterOfMap { get; init; }
     public double StandardParallels { get; init; }
 
-    public CartesianCoordinate3<double> ProjectForward(GeographicCoordinate project)
-      => new(project.Altitude.Value * (project.Longitude.ToRadians() - CenterOfMap.Longitude.ToRadians()) * System.Math.Cos(StandardParallels), project.Altitude.Value * (project.Latitude.ToRadians() - CenterOfMap.Latitude.ToRadians()), project.Altitude.Value);
-    public GeographicCoordinate ProjectReverse(ICartesianCoordinate3<double> project)
-      => new(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Value, project.Y / project.Z + CenterOfMap.Latitude.Value, project.Z);
+    public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> project)
+      => new(
+        project.Altitude * (Quantities.Angle.ConvertDegreeToRadian(project.Longitude) - Quantities.Angle.ConvertDegreeToRadian(CenterOfMap.Longitude)) * System.Math.Cos(StandardParallels),
+        project.Altitude * (Quantities.Angle.ConvertDegreeToRadian(project.Latitude) - Quantities.Angle.ConvertDegreeToRadian(CenterOfMap.Latitude)),
+        project.Altitude
+      );
+    public IGeographicCoordinate<double> ProjectReverse(ICartesianCoordinate3<double> project)
+      => new GeographicCoordinate(
+        Quantities.Angle.ConvertRadianToDegree(project.X / (project.Z * System.Math.Cos(StandardParallels)) + Quantities.Angle.ConvertDegreeToRadian(CenterOfMap.Longitude)),
+        Quantities.Angle.ConvertRadianToDegree(project.Y / project.Z + Quantities.Angle.ConvertDegreeToRadian(CenterOfMap.Latitude)),
+        project.Z
+      );
   }
 
 }

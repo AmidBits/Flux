@@ -2,15 +2,15 @@
 {
   // https://en.wikipedia.org/wiki/Winkel_tripel_projection
   public record struct WinkelTripelProjection
-    : IMapForwardProjectable
+    : IMapForwardProjectable<double>
   {
     public static readonly WinkelTripelProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public CartesianCoordinate3<double> ProjectForward(GeographicCoordinate project)
+    public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> project)
     {
-      var lat = project.Latitude.ToRadians();
-      var lon = project.Longitude.ToRadians();
+      var lat = Quantities.Angle.ConvertDegreeToRadian(project.Latitude);
+      var lon = Quantities.Angle.ConvertDegreeToRadian(project.Longitude);
 
       var cosLatitude = System.Math.Cos(lat);
 
@@ -19,7 +19,7 @@
       var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Constants.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
-      return new(x, y, project.Altitude.Value);
+      return new(x, y, project.Altitude);
     }
     //#pragma warning restore CA1822 // Mark members as static
   }

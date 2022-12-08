@@ -2,12 +2,12 @@
 {
   // https://en.wikipedia.org/wiki/Equal_Earth_projection
   public record struct EqualEarthProjection
-    : IMapForwardProjectable, IMapReverseProjectable
+    : IMapForwardProjectable<double>, IMapReverseProjectable<double>
   {
     public static readonly EqualEarthProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public CartesianCoordinate3<double> ProjectForward(GeographicCoordinate location)
+    public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -17,8 +17,8 @@
       const double A37 = A3 * 7;
       const double A49 = A4 * 9;
 
-      var lat = location.Latitude.ToRadians();
-      var lon = location.Longitude.ToRadians();
+      var lat = Quantities.Angle.ConvertDegreeToRadian(location.Latitude);
+      var lon = Quantities.Angle.ConvertDegreeToRadian(location.Longitude);
 
       var M = System.Math.Sqrt(3) / 2;
       var p = System.Math.Asin(M * System.Math.Sin(lat)); // parametric latitude
@@ -27,9 +27,9 @@
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new(x, y, location.Altitude.Value);
+      return new(x, y, location.Altitude);
     }
-    public GeographicCoordinate ProjectReverse(ICartesianCoordinate3<double> location)
+    public IGeographicCoordinate<double> ProjectReverse(ICartesianCoordinate3<double> location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -60,7 +60,11 @@
       var lon = M * location.X * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new(Quantities.Angle.ConvertRadianToDegree(lat), Quantities.Angle.ConvertRadianToDegree(lon), location.Z);
+      return new GeographicCoordinate(
+        Quantities.Angle.ConvertRadianToDegree(lat),
+        Quantities.Angle.ConvertRadianToDegree(lon),
+        location.Z
+      );
     }
     //#pragma warning restore CA1822 // Mark members as static
   }
