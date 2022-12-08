@@ -36,7 +36,7 @@ namespace Flux
 
     #region Static methods
     /// <summary>Return the <see cref="IPolarCoordinate"/> from the specified components.</summary>
-    public static PolarCoordinate<TSelf> From(Length radius, Azimuth azimuth)
+    public static PolarCoordinate<TSelf> From(Quantities.Length radius, Azimuth azimuth)
       => new(
         TSelf.CreateChecked(radius.Value),
         TSelf.CreateChecked(azimuth.ToRadians())

@@ -23,7 +23,7 @@ namespace Flux.Music.Midi
     [System.Diagnostics.Contracts.Pure] public int GetOctave() => (m_number / 12) - 1;
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-    [System.Diagnostics.Contracts.Pure] public Frequency ToFrequency() => new(ConvertToFrequency(m_number));
+    [System.Diagnostics.Contracts.Pure] public Quantities.Frequency ToFrequency() => new(ConvertToFrequency(m_number));
     [System.Diagnostics.Contracts.Pure] public string ToString(string? format, bool preferUnicode = false, bool useFullName = false) => $"{GetScientificPitchNotationLabel(preferUnicode)}{GetOctave()}";
 
     #region Static methods
@@ -46,11 +46,11 @@ namespace Flux.Music.Midi
 
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static MidiNote FromFrequency(Frequency frequency)
+    public static MidiNote FromFrequency(Quantities.Frequency frequency)
       => new(ConvertFromFrequency(frequency.Value));
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public static bool TryFromFrequency(Frequency frequency, out MidiNote result)
+    public static bool TryFromFrequency(Quantities.Frequency frequency, out MidiNote result)
     {
       try
       {

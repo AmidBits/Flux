@@ -11,7 +11,7 @@ namespace Flux
     /// </remarks>
     public static bool IsApproximatelyEqualPrecision<TSelf>(this TSelf a, TSelf b, int significantDigits)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => new ApproximateEquality.ApproximateEqualityBySignificantDigits<TSelf>(significantDigits).IsApproximatelyEqual(a, b);
+      => new ApproximateEquality.BySignificantDigits<TSelf>(significantDigits).IsApproximatelyEqual(a, b);
   }
 
   namespace ApproximateEquality
@@ -23,13 +23,13 @@ namespace Flux
     /// <para>IsApproximatelyEqual(1000.02, 1000.015, 2); // 2 will compare the two numbers at 2 decimals, if the difference is smaller than 2 (0.01), which is true in this case.</para>
     /// <para>IsApproximatelyEqual(1334.261, 1235.272, -2); // -2 = 100 (two zeroes), so if the difference is less than 100, which is true in this case.</para>
     /// </remarks>
-    public record class ApproximateEqualityBySignificantDigits<TSelf>
+    public record class BySignificantDigits<TSelf>
       : IEqualityApproximatable<TSelf>
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
     {
       private readonly int m_significantDigits;
 
-      public ApproximateEqualityBySignificantDigits(int significantDigits)
+      public BySignificantDigits(int significantDigits)
         => m_significantDigits = significantDigits;
 
       /// <summary>The number of significant digits to consider.</summary>

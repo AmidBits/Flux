@@ -32,17 +32,17 @@
     public static GeographicCoordinate ToGeographicCoordinates<TSelf>(this ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
-        Angle.ConvertRadianToDegree(double.CreateChecked(TSelf.Pi - source.Inclination - TSelf.Pi.Divide(2))),
-        Angle.ConvertRadianToDegree(double.CreateChecked(source.Azimuth - TSelf.Pi)),
+        Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(TSelf.Pi - source.Inclination - TSelf.Pi.Divide(2))),
+        Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(source.Azimuth - TSelf.Pi)),
         double.CreateChecked(source.Radius)
       );
 
-    public static (Length radius, Angle inclination, Angle azimuth) ToQuantities<TSelf>(this ISphericalCoordinate<TSelf> source)
+    public static (Quantities.Length radius, Quantities.Angle inclination, Quantities.Angle azimuth) ToQuantities<TSelf>(this ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (
-        new Length(double.CreateChecked(source.Radius)),
-        new Angle(double.CreateChecked(source.Inclination)),
-        new Angle(double.CreateChecked(source.Azimuth))
+        new Quantities.Length(double.CreateChecked(source.Radius)),
+        new Quantities.Angle(double.CreateChecked(source.Inclination)),
+        new Quantities.Angle(double.CreateChecked(source.Azimuth))
       );
 
     public static SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this ISphericalCoordinate<TSelf> source)
@@ -71,6 +71,6 @@
     TSelf Elevation { get; init; }
 
     string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-      => $"{GetType().Name} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Inclination = {new Angle(double.CreateChecked(Inclination)).ToUnitString(AngleUnit.Degree, format ?? "N3", true)} (Elevation = {new Angle(double.CreateChecked(Elevation)).ToUnitString(AngleUnit.Degree, format ?? "N3", true)}), Azimuth = {new Angle(double.CreateChecked(Azimuth)).ToUnitString(AngleUnit.Degree, format ?? "N3", true)} }}";
+      => $"{GetType().Name} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Inclination = {new Quantities.Angle(double.CreateChecked(Inclination)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)} (Elevation = {new Quantities.Angle(double.CreateChecked(Elevation)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Azimuth = {new Quantities.Angle(double.CreateChecked(Azimuth)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)} }}";
   }
 }

@@ -7,7 +7,7 @@ namespace Flux
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4_Intrinsics.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct Vector4
-    : IVector4<double>
+    : ICartesianCoordinate4<double>, IVector4<double>
   {
     /// <summary>Returns the vector (0,0,0,0).</summary>
     public static Vector4 Zero

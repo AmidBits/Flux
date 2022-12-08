@@ -23,7 +23,7 @@
     public int Rows => m_rows;
     public int Columns => m_columns;
 
-    public Size2 Size
+    public Size2<int> Size
       => new(m_columns, m_rows);
 
     public System.Collections.Generic.IReadOnlyCollection<(int row, int column)> Keys

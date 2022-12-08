@@ -16,16 +16,16 @@ namespace Flux
       => PolarDiameter.Value / EquatorialDiameter.Value;
 
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
-    public static Length EquatorialCircumference
+    public static Quantities.Length EquatorialCircumference
       => EquatorialRadius * Constants.PiX2;
     /// <summary>Diameter of Earth's semi-major axis.</summary>
-    public static Length EquatorialDiameter
+    public static Quantities.Length EquatorialDiameter
       => EquatorialRadius * 2;
     /// <summary>Radius Earth's semi-major axis.</summary>
-    public static Length EquatorialRadius
+    public static Quantities.Length EquatorialRadius
       => new(SemiMajorAxisInMeters);
 
-    public static Length MeanRadius
+    public static Quantities.Length MeanRadius
       => new(MeanRadiusInMeters); // WGS-84
 
     /// <summary>This is the amount of oblateness of the Earth.</summary>
@@ -33,17 +33,17 @@ namespace Flux
       => (EquatorialRadius.Value - PolarRadius.Value) / EquatorialRadius.Value;
 
     /// <summary>The polar circumference equals Cp=4mp, i.e. four times the quarter meridian.</summary>
-    public static Length PolarCircumference
+    public static Quantities.Length PolarCircumference
       => new(QuarterMeridianInMeters * 4);
     /// <summary>Diameter of Earth's semi-minor axis.</summary>
-    public static Length PolarDiameter
+    public static Quantities.Length PolarDiameter
       => PolarRadius * 2;
     /// <summary>Radius of Earth's semi-minor axis.</summary>
-    public static Length PolarRadius
+    public static Quantities.Length PolarRadius
       => new(SemiMinorAxisInMeters);
 
     /// <summary>Approximate volume of the Earth's oblate sphere.</summary>
-    public static Volume Volume
+    public static Quantities.Volume Volume
       => new(Constants.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
   }
 }

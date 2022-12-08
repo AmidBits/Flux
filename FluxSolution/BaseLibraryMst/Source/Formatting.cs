@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Formatting
 {
@@ -14,29 +13,29 @@ namespace Formatting
     [TestMethod]
     public void LatitudeFormatter()
     {
-      Assert.AreEqual(new Angle(_dms1tp, AngleUnit.Degree).ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, SexagesimalDegreeDirection.NorthSouth), _dms1 + 'N');
+      Assert.AreEqual(new Flux.Quantities.Angle(_dms1tp, Flux.Quantities.AngleUnit.Degree).ToSexagesimalDegreeString(Flux.Quantities.SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, Flux.Quantities.SexagesimalDegreeDirection.NorthSouth), _dms1 + 'N');
     }
 
     [TestMethod]
     public void LatitudeTryParse()
     {
-      Assert.IsTrue(Flux.Angle.TryParseSexagesimalDegrees(_dms1, out var dms1tp));
+      Assert.IsTrue(Flux.Quantities.Angle.TryParseSexagesimalDegrees(_dms1, out var dms1tp));
 
-      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(AngleUnit.Degree));
+      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(Flux.Quantities.AngleUnit.Degree));
     }
 
     [TestMethod]
     public void LongitudeFormatter()
     {
-      Assert.AreEqual(new Angle(_dms1tp, AngleUnit.Degree).ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, SexagesimalDegreeDirection.WestEast), _dms1 + 'E');
+      Assert.AreEqual(new Flux.Quantities.Angle(_dms1tp, Flux.Quantities.AngleUnit.Degree).ToSexagesimalDegreeString(Flux.Quantities.SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, Flux.Quantities.SexagesimalDegreeDirection.WestEast), _dms1 + 'E');
     }
 
     [TestMethod]
     public void LongitudeTryParse()
     {
-      Assert.IsTrue(Flux.Angle.TryParseSexagesimalDegrees(_dms1, out var dms1tp));
+      Assert.IsTrue(Flux.Quantities.Angle.TryParseSexagesimalDegrees(_dms1, out var dms1tp));
 
-      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(AngleUnit.Degree));
+      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(Flux.Quantities.AngleUnit.Degree));
     }
   }
 

@@ -5,9 +5,9 @@
   {
     private System.Collections.BitArray m_deadOrAlive;
     private readonly bool m_canLifeLogicWrapAroundEdges;
-    private readonly Size2 m_cellGrid;
+    private readonly Size2<int> m_cellGrid;
 
-    public GameOfLife(Size2 cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
+    public GameOfLife(Size2<int> cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
     {
       m_deadOrAlive = new System.Collections.BitArray(cellGrid.Height * cellGrid.Width);
       m_canLifeLogicWrapAroundEdges = canLifeLogicWrapAroundEdges;
@@ -26,11 +26,11 @@
       }
     }
     public GameOfLife()
-      : this(new Size2(40, 20), true, 0.25)
+      : this(new Size2<int>(40, 20), true, 0.25)
     {
     }
 
-    public Size2 CellGrid
+    public Size2<int> CellGrid
       => m_cellGrid;
 
     /// <summary>Moves the board to the next state based on Conway's rules.</summary>

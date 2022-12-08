@@ -36,12 +36,12 @@ namespace Flux
     public GeographicCoordinate(double degLatitude, double degLongitude, double meterAltitude = 1.0)
     {
       m_altitude = ValidAltitude(meterAltitude) ? meterAltitude : throw new System.ArgumentOutOfRangeException(nameof(meterAltitude));
-      m_radLatitude = Angle.ConvertDegreeToRadian(degLatitude);
-      m_radLongitude = Angle.ConvertDegreeToRadian(degLongitude);
+      m_radLatitude = Quantities.Angle.ConvertDegreeToRadian(degLatitude);
+      m_radLongitude = Quantities.Angle.ConvertDegreeToRadian(degLongitude);
     }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    [System.Diagnostics.Contracts.Pure] public Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
+    [System.Diagnostics.Contracts.Pure] public Quantities.Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     [System.Diagnostics.Contracts.Pure] public Latitude Latitude { get => Latitude.FromRadians(m_radLatitude); init => m_radLatitude = value.ToRadians(); }
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
@@ -98,8 +98,8 @@ namespace Flux
     public SphericalCoordinate<double> ToSphericalCoordinate()
       => SphericalCoordinate<double>.From(
         Altitude,
-        new Angle(double.Pi - (Angle.ConvertDegreeToRadian(Latitude.Value) + double.Pi / 2)),
-        Azimuth.FromRadians(Angle.ConvertDegreeToRadian(Longitude.Value) + double.Pi)
+        new Quantities.Angle(double.Pi - (Quantities.Angle.ConvertDegreeToRadian(Latitude.Value) + double.Pi / 2)),
+        Azimuth.FromRadians(Quantities.Angle.ConvertDegreeToRadian(Longitude.Value) + double.Pi)
       );
 
     /// <summary>Creates a new <see cref="Vector3"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
@@ -111,7 +111,7 @@ namespace Flux
 
       var cosLatitude = System.Math.Cos(lat);
 
-      var sinc = Angle.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(lon / 2)));
+      var sinc = Quantities.Angle.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(lon / 2)));
 
       var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Constants.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
@@ -183,7 +183,7 @@ namespace Flux
     }
 
     /// <summary>Return the <see cref="IGeographicCoordinate"/> from the specified components.</summary>
-    static GeographicCoordinate From(Length altitude, Latitude latitude, Longitude longitude)
+    static GeographicCoordinate From(Quantities.Length altitude, Latitude latitude, Longitude longitude)
       => new GeographicCoordinate(
         altitude.Value,
         latitude.Value,
@@ -225,7 +225,7 @@ namespace Flux
       var lon = M * x * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate(Angle.ConvertRadianToDegree(lat), Angle.ConvertRadianToDegree(lon), z ?? EarthWgs84.MeanRadius.Value);
+      return new GeographicCoordinate(Quantities.Angle.ConvertRadianToDegree(lat), Quantities.Angle.ConvertRadianToDegree(lon), z ?? EarthWgs84.MeanRadius.Value);
     }
 
     /// <summary>The along-track distance, from the start point to the closest point on the path to the third point.</summary>
@@ -280,7 +280,7 @@ namespace Flux
     /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>
     [System.Diagnostics.Contracts.Pure]
     public static double GetCentralAngleHaversineFormula(double latitude1, double longitude1, double latitude2, double longitude2)
-      => Angle.Ahvsin(Angle.Hvsin(latitude2 - latitude1) + System.Math.Cos(latitude1) * System.Math.Cos(latitude2) * Angle.Hvsin(longitude2 - longitude1));
+      => Quantities.Angle.Ahvsin(Quantities.Angle.Hvsin(latitude2 - latitude1) + System.Math.Cos(latitude1) * System.Math.Cos(latitude2) * Quantities.Angle.Hvsin(longitude2 - longitude1));
     /// <summary>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Vincenty%27s_formulae"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Central_angle"/>
@@ -499,9 +499,9 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure]
     public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoordinate result, double earthRadius)
     {
-      if (Angle.TryParseSexagesimalDegrees(latitudeDMS, out var latitude) && Angle.TryParseSexagesimalDegrees(longitudeDMS, out var longitude))
+      if (Quantities.Angle.TryParseSexagesimalDegrees(latitudeDMS, out var latitude) && Quantities.Angle.TryParseSexagesimalDegrees(longitudeDMS, out var longitude))
       {
-        result = new GeographicCoordinate(latitude.ToUnitValue(AngleUnit.Degree), longitude.ToUnitValue(AngleUnit.Degree), earthRadius);
+        result = new GeographicCoordinate(latitude.ToUnitValue(Quantities.AngleUnit.Degree), longitude.ToUnitValue(Quantities.AngleUnit.Degree), earthRadius);
         return true;
       }
 

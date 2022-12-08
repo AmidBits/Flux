@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Foundation
 {
@@ -11,7 +10,7 @@ namespace Foundation
     [TestMethod]
     public void HexCoordinateI()
     {
-      var geometry = new Flux.HexCoordinateI(2, 1, -3);
+      var geometry = new Flux.HexCoordinate<int>(2, 1, -3);
 
       Assert.AreEqual(2, geometry.Q);
       Assert.AreEqual(1, geometry.R);
@@ -21,7 +20,7 @@ namespace Foundation
     [TestMethod]
     public void HexCoordinateR()
     {
-      var geometry = new Flux.HexCoordinateR(2, 1, -3);
+      var geometry = new Flux.HexCoordinate<double>(2, 1, -3);
 
       Assert.AreEqual(2, geometry.Q);
       Assert.AreEqual(1, geometry.R);
@@ -70,7 +69,7 @@ namespace Foundation
     [TestMethod]
     public void Size2()
     {
-      var geometry = new Flux.Size2(5, 7);
+      var geometry = new Flux.Size2<int>(5, 7);
 
       Assert.AreEqual(5, geometry.Width);
       Assert.AreEqual(7, geometry.Height);
@@ -79,7 +78,7 @@ namespace Foundation
     [TestMethod]
     public void Size3()
     {
-      var geometry = new Flux.Size3(5, 7, 11);
+      var geometry = new Flux.Size3<int>(5, 7, 11);
 
       Assert.AreEqual(5, geometry.Width);
       Assert.AreEqual(7, geometry.Height);

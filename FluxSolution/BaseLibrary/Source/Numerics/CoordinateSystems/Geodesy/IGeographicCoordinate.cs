@@ -8,13 +8,13 @@
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => (
         TSelf.CreateChecked(geographicCoordinate.Altitude.Value),
-        TSelf.Pi - (TSelf.CreateChecked(Angle.ConvertDegreeToRadian(geographicCoordinate.Latitude.Value)) + TSelf.Pi.Divide(2)),
-        TSelf.CreateChecked(Angle.ConvertDegreeToRadian(geographicCoordinate.Longitude.Value)) + TSelf.Pi
+        TSelf.Pi - (TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(geographicCoordinate.Latitude.Value)) + TSelf.Pi.Divide(2)),
+        TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(geographicCoordinate.Longitude.Value)) + TSelf.Pi
       );
 
-    public static (Length altitude, Latitude latitude, Longitude longitude) ToQuantities(this IGeographicCoordinate geographicCoordinate)
+    public static (Quantities.Length altitude, Latitude latitude, Longitude longitude) ToQuantities(this IGeographicCoordinate geographicCoordinate)
       => (
-        new Length(double.CreateChecked(geographicCoordinate.Altitude.Value)),
+        new Quantities.Length(double.CreateChecked(geographicCoordinate.Altitude.Value)),
         new Latitude(double.CreateChecked(geographicCoordinate.Latitude.Value)),
         new Longitude(double.CreateChecked(geographicCoordinate.Longitude.Value))
       );
@@ -24,13 +24,13 @@
     : System.IFormattable
   {
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    Length Altitude { get; }
+    Quantities.Length Altitude { get; }
     /// <summary>The latitude component of the geographic position in degrees. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     Latitude Latitude { get; }
     /// <summary>The longitude component of the geographic position in degrees. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     Longitude Longitude { get; }
 
     string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.ToAngle().ToUnitString(AngleUnit.Degree, format ?? "N3", true)}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({Longitude.ToAngle().ToUnitString(AngleUnit.Degree, format ?? "N3", true)}), Altitude = {Altitude.ToUnitString(format: format ?? "N1")} }}";
+      => $"{GetType().Name} {{ Latitude = {Latitude.ToSexagesimalDegreeString()} ({Latitude.ToAngle().ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Longitude = {Longitude.ToSexagesimalDegreeString()} ({Longitude.ToAngle().ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Altitude = {Altitude.ToUnitString(format: format ?? "N1")} }}";
   }
 }

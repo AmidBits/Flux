@@ -3,9 +3,9 @@ namespace Flux.Model.MineSweeper
 {
   public sealed class Field
   {
-    public Size2 Size { get; }
+    public Size2<int> Size { get; }
 
-    public Field(Size2 size)
+    public Field(Size2<int> size)
       => Size = size;
 
     public System.Collections.Generic.IEnumerable<Point2> GetNeighbours(Point2 point)

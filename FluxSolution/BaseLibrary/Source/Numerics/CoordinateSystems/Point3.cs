@@ -74,7 +74,7 @@ namespace Flux
 
     /// <summary>Converts the <see cref="Point2"/> to a <see cref="Size2"/>.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public Size3 ToSize3()
+    public Size3<int> ToSize3()
       => new(m_x, m_y, m_z);
 
     /// <summary>Converts the <see cref="Point3"/> to a 'mapped' unique index. This index is uniquely mapped using the specified <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>

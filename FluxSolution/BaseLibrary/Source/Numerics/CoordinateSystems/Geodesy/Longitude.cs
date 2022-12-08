@@ -18,8 +18,8 @@ namespace Flux
     public Longitude(double degLongitude)
       => m_degLongitude = WrapLongitude(degLongitude);
     /// <summary>Creates a new Longitude from the specfied Angle instance. The value is wrapped within the degree range [-180, +180].</summary>
-    public Longitude(Angle longitude)
-      : this(longitude.ToUnitValue(AngleUnit.Degree)) // Call base to ensure value is between min/max.
+    public Longitude(Quantities.Angle longitude)
+      : this(longitude.ToUnitValue(Quantities.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
     public string SexagesimalDegreeString => ToSexagesimalDegreeString();
@@ -37,21 +37,21 @@ namespace Flux
       => ToRadians();
 
     [System.Diagnostics.Contracts.Pure]
-    public Angle ToAngle()
-      => new(m_degLongitude, AngleUnit.Degree);
+    public Quantities.Angle ToAngle()
+      => new(m_degLongitude, Quantities.AngleUnit.Degree);
 
     [System.Diagnostics.Contracts.Pure]
     public double ToRadians()
-      => Angle.ConvertDegreeToRadian(m_degLongitude);
+      => Quantities.Angle.ConvertDegreeToRadian(m_degLongitude);
 
     [System.Diagnostics.Contracts.Pure]
-    public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
-      => ToAngle().ToSexagesimalDegreeString(format, SexagesimalDegreeDirection.WestEast, -1, useSpaces, preferUnicode);
+    public string ToSexagesimalDegreeString(Quantities.SexagesimalDegreeFormat format = Quantities.SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
+      => ToAngle().ToSexagesimalDegreeString(format, Quantities.SexagesimalDegreeDirection.WestEast, -1, useSpaces, preferUnicode);
 
     #region Static methods
     [System.Diagnostics.Contracts.Pure]
     public static Longitude FromRadians(double radLongitude)
-      => new(Angle.ConvertRadianToDegree(radLongitude));
+      => new(Quantities.Angle.ConvertRadianToDegree(radLongitude));
 
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
     /// <param name="degLongitude"></param>
@@ -120,7 +120,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {new Angle(m_degLongitude, AngleUnit.Degree).ToUnitString(AngleUnit.Degree)}, {ToSexagesimalDegreeString()} }}";
+      => $"{GetType().Name} {{ Value = {new Quantities.Angle(m_degLongitude, Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree)}, {ToSexagesimalDegreeString()} }}";
     #endregion Object overrides
   }
 }

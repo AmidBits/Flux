@@ -15,7 +15,7 @@ namespace Flux
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
     [System.Diagnostics.Contracts.Pure]
-    public Frequency ShiftPitch(Frequency frequency)
+    public Quantities.Frequency ShiftPitch(Quantities.Frequency frequency)
       => new(PitchShift(frequency.Value, m_value));
 
     [System.Diagnostics.Contracts.Pure]

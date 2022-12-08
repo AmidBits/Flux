@@ -34,7 +34,7 @@ namespace Flux.Geometry
     private readonly System.Numerics.Vector2[] m_points = new System.Numerics.Vector2[6];
 
     public HexagonShape(HexagonOrientation orientation, double outerDiameter = 1.0)
-      => m_points = (orientation == HexagonOrientation.FlatTopped) ? EllipseGeometry.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y), Angle.ConvertDegreeToRadian(90)).ToArray() : EllipseGeometry.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y)).ToArray();
+      => m_points = (orientation == HexagonOrientation.FlatTopped) ? EllipseGeometry.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y), Quantities.Angle.ConvertDegreeToRadian(90)).ToArray() : EllipseGeometry.CreateCircularArcPoints(6, outerDiameter, outerDiameter, (x, y) => new System.Numerics.Vector2((float)x, (float)y)).ToArray();
 
     /// <summary>The six hexagon points.</summary>
     public System.Collections.Generic.IReadOnlyList<System.Numerics.Vector2> Points { get => m_points; }

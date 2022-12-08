@@ -150,8 +150,8 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public static JulianDate operator %(JulianDate a, int b) => new(a.m_value % b);
     [System.Diagnostics.Contracts.Pure] public static JulianDate operator -(JulianDate a, int b) => new(a.m_value - b);
 
-    [System.Diagnostics.Contracts.Pure] public static JulianDate operator +(JulianDate a, Time b) => a + (b.Value / 86400);
-    [System.Diagnostics.Contracts.Pure] public static JulianDate operator -(JulianDate a, Time b) => a - (b.Value / 86400);
+    [System.Diagnostics.Contracts.Pure] public static JulianDate operator +(JulianDate a, Quantities.Time b) => a + (b.Value / 86400);
+    [System.Diagnostics.Contracts.Pure] public static JulianDate operator -(JulianDate a, Quantities.Time b) => a - (b.Value / 86400);
 
     [System.Diagnostics.Contracts.Pure] public static JulianDate operator +(JulianDate a, System.TimeSpan b) => a + (b.TotalSeconds / 86400);
     [System.Diagnostics.Contracts.Pure] public static JulianDate operator -(JulianDate a, System.TimeSpan b) => a - (b.TotalSeconds / 86400);

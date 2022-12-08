@@ -37,7 +37,7 @@ namespace Flux.Model
     public static readonly string[] Files = new string[] { "a", "b", "c", "d", "e", "f", "g", "h" };
     public static readonly string[] Ranks = new string[] { "8", "7", "6", "5", "4", "3", "2", "1" };
 
-    public static readonly Size2 BoardSize = new(Files.Length, Ranks.Length);
+    public static readonly Size2<int> BoardSize = new(Files.Length, Ranks.Length);
 
     public static readonly System.Collections.Generic.List<string> Labels = Ranks.SelectMany(rl => Files.Select(cl => $"{cl}{rl}")).ToList();
 

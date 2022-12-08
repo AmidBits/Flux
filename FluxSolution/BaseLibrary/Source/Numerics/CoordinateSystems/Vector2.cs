@@ -109,7 +109,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new Flux.ApproximateEquality.ApproximateEqualityByAbsoluteTolerance<double>(1E-15);
+      mode ??= new Flux.ApproximateEquality.ByAbsoluteTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 
@@ -129,7 +129,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new Flux.ApproximateEquality.ApproximateEqualityByRelativeTolerance<double>(1E-15);
+      mode ??= new Flux.ApproximateEquality.ByRelativeTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).EuclideanLength()).GetEnumerator();
 
@@ -377,14 +377,14 @@ namespace Flux
     /// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     [System.Diagnostics.Contracts.Pure]
-    public Angle ToRotationAngle()
-      => (Angle)ConvertCartesian2ToRotationAngle(m_x, m_y);
+    public Quantities.Angle ToRotationAngle()
+      => (Quantities.Angle)ConvertCartesian2ToRotationAngle(m_x, m_y);
 
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
     [System.Diagnostics.Contracts.Pure]
-    public Angle ToRotationAngleEx()
-      => (Angle)ConvertCartesian2ToRotationAngleEx(m_x, m_y);
+    public Quantities.Angle ToRotationAngleEx()
+      => (Quantities.Angle)ConvertCartesian2ToRotationAngleEx(m_x, m_y);
 
     /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector128"/> with the cartesian values as vector elements [X, Y].</summary>
     [System.Diagnostics.Contracts.Pure]

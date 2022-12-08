@@ -131,23 +131,80 @@
       return new(source.X * cos + (target.X - source.X) * dp * sin, source.Y * cos + (target.Y - source.Y) * dp * sin);
     }
 
-    /// <summary>Converts the <see cref="ICartesianCoordinate2{TSelf}"/> to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Drawing.Point"/>.</summary>
+    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.Point source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y));
+
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Drawing.PointF"/>.</summary>
+    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.PointF source)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y));
+
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Drawing.Size"/>.</summary>
+    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.Size source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(TSelf.CreateChecked(source.Width), TSelf.CreateChecked(source.Height));
+
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Drawing.SizeF"/>.</summary>
+    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.SizeF source)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => new(TSelf.CreateChecked(source.Width), TSelf.CreateChecked(source.Height));
+
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
+    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Numerics.Vector2 source)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y));
+
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
     public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => source is CartesianCoordinate2<TSelf> cc ? cc : new(source.X, source.Y);
 
-    /// <summary>Converts the <see cref="ICartesianCoordinate2{TSelf}"/> to a <see cref="CartesianCoordinate2{TResult}"/>.</summary>
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TResult}"/>.</summary>
     public static CartesianCoordinate2<TResult> ToCartesianCoordinate2<TSelf, TResult>(this ICartesianCoordinate2<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out CartesianCoordinate2<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
       => result = new(TResult.CreateChecked(rounding.RoundNumber(source.X)), TResult.CreateChecked(rounding.RoundNumber(source.Y)));
 
-    /// <summary>Converts the <see cref="ICartesianCoordinate2{TSelf}"/> to a <see cref="CartesianCoordinate3{TSelf}"/> from the X and Y coordinates.</summary>
+    /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/> using the X and Y coordinates.</summary>
     public static CartesianCoordinate3<TSelf> ToCartesianCoordinate3XY<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(source.X, source.Y, TSelf.Zero);
 
-    /// <summary>Converts the <see cref="ICartesianCoordinate2{TSelf}"/> to a <see cref="PolarCoordinate{TSelf}"/>.</summary>
+    /// <summary>Creates a new <see cref="System.Drawing.Point"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.Point ToPoint<TSelf>(this ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(
+        int.CreateChecked(source.X),
+        int.CreateChecked(source.Y)
+      );
+
+    /// <summary>Creates a new <see cref="System.Drawing.PointF"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.PointF ToPointF<TSelf>(this ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(
+        float.CreateChecked(source.X),
+        float.CreateChecked(source.Y)
+      );
+
+    /// <summary>Creates a new <see cref="System.Drawing.Size"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.Size ToSize<TSelf>(this ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(
+        int.CreateChecked(source.X),
+        int.CreateChecked(source.Y)
+      );
+
+    /// <summary>Creates a new <see cref="System.Drawing.SizeF"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.SizeF ToSizeF<TSelf>(this ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(
+        float.CreateChecked(source.X),
+        float.CreateChecked(source.Y)
+      );
+
+    /// <summary>Creates a new <see cref="PolarCoordinate{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
     public static PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
@@ -179,6 +236,15 @@
     public static TSelf ToUniqueIndex<TSelf>(this ICartesianCoordinate2<TSelf> source, TSelf gridWidth)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => source.X + (source.Y * gridWidth);
+
+    /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Numerics.Vector2 ToVector2<TSelf>(this ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(float.CreateChecked(source.X), float.CreateChecked(source.Y));
+
+    //public static Vector4 ToVector4<TSelf>(this ICartesianCoordinate2<TSelf> source, double z = 0, double w = 0)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //  => new(double.CreateChecked(source.X), double.CreateChecked(source.Y), z, w);
   }
   #endregion ExtensionMethods
 

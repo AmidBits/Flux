@@ -3,9 +3,9 @@
   public record class Fleet
   {
     private readonly int[] m_shipSizes;
-    private readonly Size2 m_seaSize;
+    private readonly Size2<int> m_seaSize;
 
-    public Fleet(int[] shipSizes, Size2 seaSize)
+    public Fleet(int[] shipSizes, Size2<int> seaSize)
     {
       if (shipSizes.Length < 1) throw new System.ArgumentOutOfRangeException(nameof(shipSizes));
 
@@ -15,7 +15,7 @@
 
     public System.Collections.Generic.IReadOnlyList<int> ShipSizes
       => m_shipSizes;
-    public Size2 SeaSize
+    public Size2<int> SeaSize
       => m_seaSize;
 
     public bool IsValid(Vessel vessel)

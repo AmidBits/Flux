@@ -66,7 +66,7 @@ namespace Flux.Wpf
 			var angleInRadians = System.Math.Atan2(cos, sin);
 
 			if (inDegrees)
-				return Angle.ConvertRadianToDegree(angleInRadians);
+				return Quantities.Angle.ConvertRadianToDegree(angleInRadians);
 
 			return angleInRadians;
 		}
@@ -131,7 +131,7 @@ namespace Flux.Wpf
 		public static System.Windows.Point Rotate(this System.Windows.Point self, double relativeRotationAngle, bool inDegrees = false)
 		{
 			if (inDegrees)
-				relativeRotationAngle = Angle.ConvertDegreeToRadian(relativeRotationAngle);
+				relativeRotationAngle = Quantities.Angle.ConvertDegreeToRadian(relativeRotationAngle);
 
 			var cos = System.Math.Cos(relativeRotationAngle);
 			var sin = System.Math.Sin(relativeRotationAngle);
@@ -215,7 +215,7 @@ namespace Flux.Wpf
 		public static System.Collections.Generic.IEnumerable<System.Windows.Point> GetMidways(this System.Collections.Generic.IEnumerable<System.Windows.Point> polygon, bool includeOriginalPoints = false)
 		{
 			using var enumerator = polygon.GetEnumerator();
-			
+
 			if (enumerator.MoveNext())
 			{
 				var first = enumerator.Current;

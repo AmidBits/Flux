@@ -4,7 +4,7 @@ namespace Flux
 {
   public static partial class VesselEm
   {
-    public static string ToConsoleString(this System.Collections.Generic.IList<Model.BattleShip.Vessel> ships, Size2 size, int screenPositionLeft, int screenPositionTop)
+    public static string ToConsoleString(this System.Collections.Generic.IList<Model.BattleShip.Vessel> ships, Size2<int> size, int screenPositionLeft, int screenPositionTop)
     {
       if (ships is null) throw new System.ArgumentNullException(nameof(ships));
 
@@ -74,7 +74,7 @@ namespace Flux
       public VesselOrientation Orientation
         => m_orientation;
 
-      public bool IsValid(Size2 boardSize)
+      public bool IsValid(Size2<int> boardSize)
       {
         if (m_positions[0].X < 0 || m_positions[0].Y < 0)
           return false;
@@ -144,7 +144,7 @@ namespace Flux
       public static double ProximityProbabilities(int proximity) // Max length of 9, could leave wide open.
         => proximity >= 0 && proximity <= 9 ? 1.0 / (proximity + 1) : throw new System.ArgumentOutOfRangeException(nameof(proximity));
 
-      public static System.Collections.Generic.List<Vessel> StageFleet(Size2 gridSize, params int[] shipSizes)
+      public static System.Collections.Generic.List<Vessel> StageFleet(Size2<int> gridSize, params int[] shipSizes)
       {
         var ships = new System.Collections.Generic.List<Vessel>();
 

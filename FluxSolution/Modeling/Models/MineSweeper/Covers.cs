@@ -29,7 +29,7 @@ namespace Flux.Model.MineSweeper
       => new(m_covers.RemoveRange(points));
 
     // Statics
-    public static Covers Create(Size2 size)
+    public static Covers Create(Size2<int> size)
       => new(size.AllPoints().ToImmutableDictionary(p => p, p => false));
     // IEnumerable
     public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Point2, bool>> GetEnumerator()

@@ -44,7 +44,7 @@ namespace Flux.Model.MineSweeper
 
     public static void PlayInConsole()
     {
-      var mineField = new Model.MineSweeper.MineField(new Size2(10, 10), 10);
+      var mineField = new Model.MineSweeper.MineField(new Size2<int>(10, 10), 10);
       var gameState = Model.MineSweeper.Game.Start(mineField);
       //var gameResult = gameState.Evaluate(mineField.Mines);
 

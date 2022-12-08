@@ -6,7 +6,7 @@
   {
     public static readonly EqualEarthProjection Default;
 
-//#pragma warning disable CA1822 // Mark members as static
+    //#pragma warning disable CA1822 // Mark members as static
     public Vector3 ProjectForward(GeographicCoordinate location)
     {
       const double A1 = 1.340264;
@@ -60,8 +60,8 @@
       var lon = M * location.X * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate(Angle.ConvertRadianToDegree(lat), Angle.ConvertRadianToDegree(lon), location.Z);
+      return new GeographicCoordinate(Quantities.Angle.ConvertRadianToDegree(lat), Quantities.Angle.ConvertRadianToDegree(lon), location.Z);
     }
-//#pragma warning restore CA1822 // Mark members as static
+    //#pragma warning restore CA1822 // Mark members as static
   }
 }

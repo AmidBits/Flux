@@ -17,12 +17,12 @@ namespace Flux
       => m_degAzimuth = WrapAzimuth(degAzimuth);
 
     [System.Diagnostics.Contracts.Pure]
-    public Angle ToAngle()
-      => new(m_degAzimuth, AngleUnit.Degree);
+    public Quantities.Angle ToAngle()
+      => new(m_degAzimuth, Quantities.AngleUnit.Degree);
 
     [System.Diagnostics.Contracts.Pure]
     public double ToRadians()
-      => Angle.ConvertDegreeToRadian(m_degAzimuth);
+      => Quantities.Angle.ConvertDegreeToRadian(m_degAzimuth);
 
     #region Static methods
     /// <summary>Finding the angle between two bearings.</summary>
@@ -40,7 +40,7 @@ namespace Flux
 
     [System.Diagnostics.Contracts.Pure]
     public static Azimuth FromRadians(double radAzimuth)
-      => new(Angle.ConvertRadianToDegree(radAzimuth));
+      => new(Quantities.Angle.ConvertRadianToDegree(radAzimuth));
 
     [System.Diagnostics.Contracts.Pure]
     public static Azimuth FromWords(string compassPointInWords)
@@ -171,7 +171,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {new Angle(m_degAzimuth, AngleUnit.Degree).ToUnitString(AngleUnit.Degree)} }}";
+      => $"{GetType().Name} {{ Value = {new Quantities.Angle(m_degAzimuth, Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree)} }}";
     #endregion Object overrides
   }
 }

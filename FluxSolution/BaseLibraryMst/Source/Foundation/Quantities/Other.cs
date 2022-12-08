@@ -10,7 +10,7 @@ namespace Foundation.Units
     [TestMethod]
     public void AbsoluteHumidity()
     {
-      var u = new Flux.AbsoluteHumidity(1);
+      var u = new Flux.Quantities.AbsoluteHumidity(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -18,18 +18,18 @@ namespace Foundation.Units
     [TestMethod]
     public void AmplitudeRatio()
     {
-      Assert.AreEqual(1.1220184543019633, Flux.AmplitudeRatio.FromDecibelChange(1).Value);
-      Assert.AreEqual(29.999237311923803, Flux.AmplitudeRatio.From(new Flux.Voltage(31.62), new Flux.Voltage(1)).Value);
+      Assert.AreEqual(1.1220184543019633, Flux.Quantities.AmplitudeRatio.FromDecibelChange(1).Value);
+      Assert.AreEqual(29.999237311923803, Flux.Quantities.AmplitudeRatio.From(new Flux.Quantities.Voltage(31.62), new Flux.Quantities.Voltage(1)).Value);
     }
 
     [TestMethod]
     public void Azimuth()
     {
-      var a = new Flux.Angle(1, Flux.AngleUnit.Degree);
+      var a = new Flux.Quantities.Angle(1, Flux.Quantities.AngleUnit.Degree);
 
       var u = a.ToAzimuth();
 
-      Assert.AreEqual(a.ToUnitValue(Flux.AngleUnit.Degree), u.Value);
+      Assert.AreEqual(a.ToUnitValue(Flux.Quantities.AngleUnit.Degree), u.Value);
     }
 
     [TestMethod]
@@ -44,21 +44,21 @@ namespace Foundation.Units
     [TestMethod]
     public void Latitude()
     {
-      var a = new Flux.Angle(1, Flux.AngleUnit.Degree);
+      var a = new Flux.Quantities.Angle(1, Flux.Quantities.AngleUnit.Degree);
 
       var u = new Flux.Latitude(a);
 
-      Assert.AreEqual(a.ToUnitValue(Flux.AngleUnit.Degree), u.Value);
+      Assert.AreEqual(a.ToUnitValue(Flux.Quantities.AngleUnit.Degree), u.Value);
     }
 
     [TestMethod]
     public void Longitude()
     {
-      var a = new Flux.Angle(1, Flux.AngleUnit.Degree);
+      var a = new Flux.Quantities.Angle(1, Flux.Quantities.AngleUnit.Degree);
 
       var u = new Flux.Longitude(a);
 
-      Assert.AreEqual(a.ToUnitValue(Flux.AngleUnit.Degree), u.Value);
+      Assert.AreEqual(a.ToUnitValue(Flux.Quantities.AngleUnit.Degree), u.Value);
     }
 
     [TestMethod]
@@ -74,15 +74,15 @@ namespace Foundation.Units
     [TestMethod]
     public void PowerRatio()
     {
-      Assert.AreEqual(1.2589254117941673, Flux.PowerRatio.FromDecibelChange(1).Value);
-      Assert.AreEqual(30, Flux.PowerRatio.From(new Flux.Power(1000), new Flux.Power(1)).Value);
-      Assert.AreEqual(40, Flux.PowerRatio.From(new Flux.Power(10), new Flux.Power(0.001)).Value);
+      Assert.AreEqual(1.2589254117941673, Flux.Quantities.PowerRatio.FromDecibelChange(1).Value);
+      Assert.AreEqual(30, Flux.Quantities.PowerRatio.From(new Flux.Quantities.Power(1000), new Flux.Quantities.Power(1)).Value);
+      Assert.AreEqual(40, Flux.Quantities.PowerRatio.From(new Flux.Quantities.Power(10), new Flux.Quantities.Power(0.001)).Value);
     }
 
     [TestMethod]
     public void Probability()
     {
-      var u = new Flux.Probability(1);
+      var u = new Flux.Quantities.Probability(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -90,7 +90,7 @@ namespace Foundation.Units
     [TestMethod]
     public void RelativeHumidity()
     {
-      var u = new Flux.RelativeHumidity(1);
+      var u = new Flux.Quantities.RelativeHumidity(1);
 
       Assert.AreEqual(1, u.Value);
     }

@@ -31,11 +31,11 @@ namespace Flux
     /// <summary>The amount by which an orbit around another body deviates from a perfect circle.</summary>
     [System.Diagnostics.Contracts.Pure] public double Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
     /// <summary>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Inclination { get => Angle.ConvertRadianToDegree(m_radInclination); init => m_radInclination = Angle.ConvertDegreeToRadian(value); }
+    [System.Diagnostics.Contracts.Pure] public double Inclination { get => Quantities.Angle.ConvertRadianToDegree(m_radInclination); init => m_radInclination = Quantities.Angle.ConvertDegreeToRadian(value); }
     /// <summary>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public double LongitudeOfAscendingNode { get => Angle.ConvertRadianToDegree(m_radLongitudeOfAscendingNode); init => m_radLongitudeOfAscendingNode = Angle.ConvertDegreeToRadian(value); }
+    [System.Diagnostics.Contracts.Pure] public double LongitudeOfAscendingNode { get => Quantities.Angle.ConvertRadianToDegree(m_radLongitudeOfAscendingNode); init => m_radLongitudeOfAscendingNode = Quantities.Angle.ConvertDegreeToRadian(value); }
     /// <summary>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
-    [System.Diagnostics.Contracts.Pure] public double ArgumentOfPeriapsis { get => Angle.ConvertRadianToDegree(m_radArgumentOfPeriapsis); init => m_radArgumentOfPeriapsis = Angle.ConvertDegreeToRadian(value); }
+    [System.Diagnostics.Contracts.Pure] public double ArgumentOfPeriapsis { get => Quantities.Angle.ConvertRadianToDegree(m_radArgumentOfPeriapsis); init => m_radArgumentOfPeriapsis = Quantities.Angle.ConvertDegreeToRadian(value); }
     /// <summary>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</summary>
     [System.Diagnostics.Contracts.Pure] public double TrueAnomaly { get => m_trueAnomaly; init => m_trueAnomaly = value; }
 
@@ -119,7 +119,7 @@ namespace Flux
     #region Object overrides
     [System.Diagnostics.Contracts.Pure]
     public override string ToString()
-      => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {new Angle(m_radInclination).ToUnitString(AngleUnit.Degree)}, LongitudeOfAscendingNode = {new Angle(m_radLongitudeOfAscendingNode).ToUnitString(AngleUnit.Degree)}, ArgumentOfPeriapsis = {new Angle(m_radArgumentOfPeriapsis).ToUnitString(AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly} }}";
+      => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {new Quantities.Angle(m_radInclination).ToUnitString(Quantities.AngleUnit.Degree)}, LongitudeOfAscendingNode = {new Quantities.Angle(m_radLongitudeOfAscendingNode).ToUnitString(Quantities.AngleUnit.Degree)}, ArgumentOfPeriapsis = {new Quantities.Angle(m_radArgumentOfPeriapsis).ToUnitString(Quantities.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly} }}";
     #endregion Object overrides
   }
 }

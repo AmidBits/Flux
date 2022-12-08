@@ -14,7 +14,7 @@ namespace Flux
       => m_value = cents;
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    [System.Diagnostics.Contracts.Pure] public Frequency ShiftPitch(Frequency frequency) => new(PitchShift(frequency.Value, m_value));
+    [System.Diagnostics.Contracts.Pure] public Quantities.Frequency ShiftPitch(Quantities.Frequency frequency) => new(PitchShift(frequency.Value, m_value));
 
     [System.Diagnostics.Contracts.Pure] public double ToFrequencyRatio() => ConvertCentToFrequencyRatio(m_value);
 

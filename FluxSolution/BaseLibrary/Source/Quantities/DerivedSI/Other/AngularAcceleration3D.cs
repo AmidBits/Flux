@@ -1,63 +1,66 @@
 namespace Flux
 {
-  /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
-  public record struct AngularAcceleration3D
-    : IUnitQuantifiable<CartesianCoordinate3<double>, AngularAccelerationUnit>
+  namespace Quantities
   {
-    private readonly CartesianCoordinate3<double> m_value;
+    /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
+    public record struct AngularAcceleration3D
+    : IUnitQuantifiable<CartesianCoordinate3<double>, AngularAccelerationUnit>
+    {
+      private readonly CartesianCoordinate3<double> m_value;
 
-    public AngularAcceleration3D(CartesianCoordinate3<double> value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
-      => m_value = unit switch
-      {
-        AngularAccelerationUnit.RadianPerSecondSquared => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+      public AngularAcceleration3D(CartesianCoordinate3<double> value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+        => m_value = unit switch
+        {
+          AngularAccelerationUnit.RadianPerSecondSquared => value,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
-    #region Overloaded operators
-    public static AngularAcceleration3D operator -(AngularAcceleration3D v)
-      => new(-v.m_value);
-    public static AngularAcceleration3D operator +(AngularAcceleration3D a, double b)
-      => new(a.m_value + b);
-    public static AngularAcceleration3D operator +(AngularAcceleration3D a, AngularAcceleration3D b)
-      => new(a.m_value + b.m_value);
-    public static AngularAcceleration3D operator /(AngularAcceleration3D a, double b)
-      => new(a.m_value / b);
-    public static AngularAcceleration3D operator /(AngularAcceleration3D a, AngularAcceleration3D b)
-      => new(a.m_value / b.m_value);
-    public static AngularAcceleration3D operator *(AngularAcceleration3D a, double b)
-      => new(a.m_value * b);
-    public static AngularAcceleration3D operator *(AngularAcceleration3D a, AngularAcceleration3D b)
-      => new(a.m_value * b.m_value);
-    public static AngularAcceleration3D operator %(AngularAcceleration3D a, double b)
-      => new(a.m_value % b);
-    public static AngularAcceleration3D operator %(AngularAcceleration3D a, AngularAcceleration3D b)
-      => new(a.m_value % b.m_value);
-    public static AngularAcceleration3D operator -(AngularAcceleration3D a, double b)
-      => new(a.m_value - b);
-    public static AngularAcceleration3D operator -(AngularAcceleration3D a, AngularAcceleration3D b)
-      => new(a.m_value - b.m_value);
-    #endregion Overloaded operators
+      #region Overloaded operators
+      public static AngularAcceleration3D operator -(AngularAcceleration3D v)
+        => new(-v.m_value);
+      public static AngularAcceleration3D operator +(AngularAcceleration3D a, double b)
+        => new(a.m_value + b);
+      public static AngularAcceleration3D operator +(AngularAcceleration3D a, AngularAcceleration3D b)
+        => new(a.m_value + b.m_value);
+      public static AngularAcceleration3D operator /(AngularAcceleration3D a, double b)
+        => new(a.m_value / b);
+      public static AngularAcceleration3D operator /(AngularAcceleration3D a, AngularAcceleration3D b)
+        => new(a.m_value / b.m_value);
+      public static AngularAcceleration3D operator *(AngularAcceleration3D a, double b)
+        => new(a.m_value * b);
+      public static AngularAcceleration3D operator *(AngularAcceleration3D a, AngularAcceleration3D b)
+        => new(a.m_value * b.m_value);
+      public static AngularAcceleration3D operator %(AngularAcceleration3D a, double b)
+        => new(a.m_value % b);
+      public static AngularAcceleration3D operator %(AngularAcceleration3D a, AngularAcceleration3D b)
+        => new(a.m_value % b.m_value);
+      public static AngularAcceleration3D operator -(AngularAcceleration3D a, double b)
+        => new(a.m_value - b);
+      public static AngularAcceleration3D operator -(AngularAcceleration3D a, AngularAcceleration3D b)
+        => new(a.m_value - b.m_value);
+      #endregion Overloaded operators
 
-    #region Implemented interfaces
-    // IQuantifiable<>
-    [System.Diagnostics.Contracts.Pure] public CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
-    // IUnitQuantifiable<>
-    [System.Diagnostics.Contracts.Pure]
-    public string ToUnitString(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-    [System.Diagnostics.Contracts.Pure]
-    public CartesianCoordinate3<double> ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
-      => unit switch
-      {
-        AngularAccelerationUnit.RadianPerSecondSquared => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-    #endregion Implemented interfaces
+      #region Implemented interfaces
+      // IQuantifiable<>
+      [System.Diagnostics.Contracts.Pure] public CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
+      // IUnitQuantifiable<>
+      [System.Diagnostics.Contracts.Pure]
+      public string ToUnitString(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      [System.Diagnostics.Contracts.Pure]
+      public CartesianCoordinate3<double> ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+        => unit switch
+        {
+          AngularAccelerationUnit.RadianPerSecondSquared => m_value,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
+      #endregion Implemented interfaces
 
-    #region Object overrides
-    public override string ToString()
-      => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
-    #endregion Object overrides
+      #region Object overrides
+      public override string ToString()
+        => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+      #endregion Object overrides
+    }
   }
 }

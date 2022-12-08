@@ -1,4 +1,6 @@
-﻿namespace Flux
+﻿using System.Numerics;
+
+namespace Flux
 {
   #region ExtensionMethods
   public static partial class CoordinateSystems
@@ -137,23 +139,28 @@
       return new(source.X * cos + (target.X - source.X) * dp * sin, source.Y * cos + (target.Y - source.Y) * dp * sin, source.Z * cos + (target.Z - source.Z) * dp * sin);
     }
 
-    /// <summary>Converts the <see cref="ICartesianCoordinate3{TSelf}"/> to a <see cref="CartesianCoordinate2{TSelf}"/> from the X and Y coordinates.</summary>
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/> using the X and Y.</summary>
     public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2XY<TSelf>(this ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(source.X, source.Y);
 
-    /// <summary>Converts the <see cref="ICartesianCoordinate3{TSelf}"/> to a <see cref="CartesianCoordinate3{TSelf}"/>.</summary>
+    /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
+    public static CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this System.Numerics.Vector3 source)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y), TSelf.CreateChecked(source.Z));
+
+    /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
     public static CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => source is CartesianCoordinate3<TSelf> cc ? cc : new(source.X, source.Y, source.Z);
 
-    /// <summary>Converts the <see cref="ICartesianCoordinate3{TSelf}"/> to a <see cref="CartesianCoordinate3{TResult}"/>.</summary>
+    /// <summary>Creates a new <see cref="CartesianCoordinate3{TResult}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/> using a <see cref="INumberRoundable{TSelf, TSelf}"/>.</summary>
     public static CartesianCoordinate3<TResult> ToCartesianCoordinate3<TSelf, TResult>(this ICartesianCoordinate3<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out CartesianCoordinate3<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
       => result = new(TResult.CreateChecked(rounding.RoundNumber(source.X)), TResult.CreateChecked(rounding.RoundNumber(source.Y)), TResult.CreateChecked(rounding.RoundNumber(source.Z)));
 
-    /// <summary>Converts the <see cref="CartesianCoordinate3"/> to a <see cref="CylindricalCoordinate"/>.</summary>
+    /// <summary>Creates a new <see cref="CylindricalCoordinate{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
     public static CylindricalCoordinate<TSelf> ToCylindricalCoordinate<TSelf>(this ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
@@ -168,7 +175,7 @@
     ////public Quaternion ToQuaternion(CartesianCoordinate3 rotatingTo)
     ////  => Quaternion.FromTwoVectors(this, rotatingTo);
 
-    /// <summary>Converts the <see cref="ICartesianCoordinate3{TSelf}"/> to a <see cref="SphericalCoordinate{TSelf}"/>.</summary>
+    /// <summary>Creates a new <see cref="SphericalCoordinate{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
     public static SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
@@ -181,11 +188,20 @@
       );
     }
 
-    /// <summary>Converts the <see cref="ICartesianCoordinate3{TSelf}"/> to a 'mapped' unique index.</summary>
+    /// <summary>Creates a new 'mapped' unique index from a <see cref="ICartesianCoordinate3{TSelf}"/> using the <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
     /// <remarks>A 3D cartesian coordinate can be uniquely indexed using a <paramref name="gridWidth"/> and <paramref name="gridHeight"/>. The unique index can also be converted back to a 3D cartesian coordinate with the same grid width and height values.</remarks>
     public static TSelf ToUniqueIndex<TSelf>(this ICartesianCoordinate3<TSelf> source, TSelf gridWidth, TSelf gridHeight)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => source.X + (source.Y * gridWidth) + (source.Z * gridWidth * gridHeight);
+
+    /// <summary>Creates a new <see cref="System.Numerics.Vector3"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
+    public static System.Numerics.Vector3 ToVector3<TSelf>(this ICartesianCoordinate3<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(float.CreateChecked(source.X), float.CreateChecked(source.Y), float.CreateChecked(source.Z));
+
+    //public static Vector4 ToVector4<TSelf>(this ICartesianCoordinate3<TSelf> source, double w = 0)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //  => new(double.CreateChecked(source.X), double.CreateChecked(source.Y), double.CreateChecked(source.Z), w);
   }
   #endregion ExtensionMethods
 
