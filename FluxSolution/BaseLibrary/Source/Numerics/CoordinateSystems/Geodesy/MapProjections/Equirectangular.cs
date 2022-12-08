@@ -9,9 +9,9 @@
     public GeographicCoordinate CenterOfMap { get; init; }
     public double StandardParallels { get; init; }
 
-    public Vector3 ProjectForward(GeographicCoordinate project)
+    public CartesianCoordinate3<double> ProjectForward(GeographicCoordinate project)
       => new(project.Altitude.Value * (project.Longitude.ToRadians() - CenterOfMap.Longitude.ToRadians()) * System.Math.Cos(StandardParallels), project.Altitude.Value * (project.Latitude.ToRadians() - CenterOfMap.Latitude.ToRadians()), project.Altitude.Value);
-    public GeographicCoordinate ProjectReverse(Vector3 project)
+    public GeographicCoordinate ProjectReverse(ICartesianCoordinate3<double> project)
       => new(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Value, project.Y / project.Z + CenterOfMap.Latitude.Value, project.Z);
   }
 

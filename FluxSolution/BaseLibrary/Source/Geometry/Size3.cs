@@ -71,7 +71,7 @@ namespace Flux
     /// <summary>Subtracts a <see cref='int'/> by a <see cref='Size3'/>.</summary>
     public static Size3<TSelf> Subtract(TSelf a, Size3<TSelf> b)
       => new(unchecked(a - b.m_width), unchecked(a - b.m_height), unchecked(a - b.m_depth));
-    /// <summary>Creates a <see cref='Point3'/> from a <see cref='Size3'/>.</summary>
+    /// <summary>Creates a new <see cref='CartesianCoordinate3<int>'/> from a <see cref='Size3'/>.</summary>
     public static CartesianCoordinate3<TSelf> ToPoint3(Size3<TSelf> size)
       => new(size.m_width, size.m_height, size.m_depth);
     #endregion Static methods

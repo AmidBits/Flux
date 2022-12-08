@@ -28,14 +28,14 @@ namespace Flux
     }
 
     /// <summary>Constructs a Plane from the given normal (the W component is not used) and distance along the normal from the origin.</summary>
-    public Plane(Vector4 normal, double distance)
+    public Plane(CartesianCoordinate4 normal, double distance)
       : this(normal.X, normal.Y, normal.Z, distance)
     {
     }
 
     /// <summary>Constructs a Plane from the given Vector4.</summary>
     /// <param name="value">A vector whose first 3 elements describe the normal vector, and whose W component defines the distance along that normal from the origin.</param>
-    public Plane(Vector4 value)
+    public Plane(CartesianCoordinate4 value)
       : this(value.X, value.Y, value.Z, value.W)
     {
     }
@@ -52,9 +52,9 @@ namespace Flux
 
     #region Static methods
     /// <summary>Creates a Plane that contains the three given points.</summary>
-    public static Plane CreateFromVertices(Vector4 point1, Vector4 point2, Vector4 point3)
+    public static Plane CreateFromVertices(CartesianCoordinate4 point1, CartesianCoordinate4 point2, CartesianCoordinate4 point3)
     {
-      var normal = Vector4.Normalize(Vector4.Cross(point2 - point1, point3 - point1));
+      var normal = CartesianCoordinate4.Normalize(CartesianCoordinate4.Cross(point2 - point1, point3 - point1));
 
       return new(normal, -(normal.X * point1.X + normal.Y * point1.Y + normal.Z * point1.Z));
 
@@ -79,13 +79,13 @@ namespace Flux
       //return new(normal, -(normal.X * point1.X + normal.Y * point1.Y + normal.Z * point1.Z));
     }
     /// <summary>Calculates the dot product of a Plane and Vector4.</summary>
-    public static double Dot(Plane plane, Vector4 value)
+    public static double Dot(Plane plane, CartesianCoordinate4 value)
       => plane.m_x * value.X + plane.m_y * value.Y + plane.m_z * value.Z + plane.m_distance * value.W;
     /// <summary>Returns the dot product of a specified Vector4 and the normal vector of this Plane plus the distance (D) value of the Plane.</summary>
-    public static double DotCoordinate(Plane plane, Vector4 value)
+    public static double DotCoordinate(Plane plane, CartesianCoordinate4 value)
       => plane.m_x * value.X + plane.m_y * value.Y + plane.m_z * value.Z + plane.m_distance;
     /// <summary>Returns the dot product of a specified Vector4 and the Normal vector of this Plane.</summary>
-    public static double DotNormal(Plane plane, Vector4 value)
+    public static double DotNormal(Plane plane, CartesianCoordinate4 value)
       => plane.m_x * value.X + plane.m_y * value.Y + plane.m_z * value.Z;
     /// <summary>Creates a new Plane whose normal vector is the source Plane's normal vector normalized.</summary>
     public static Plane Normalize(Plane value)

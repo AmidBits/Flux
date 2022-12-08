@@ -3,7 +3,7 @@
   [System.Runtime.Versioning.SupportedOSPlatform("Windows")]
   public class User32
   {
-#region Enums
+    #region Enums
     [System.Flags]
     public enum MouseEventFlags
     {
@@ -191,7 +191,7 @@
       VK_PA1 = 0xFD,
       VK_OEM_CLEAR = 0xFE
     }
-#endregion Enums
+    #endregion Enums
 
     //[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     //private struct Point
@@ -225,7 +225,7 @@
 
       [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
       [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
-      static extern bool GetCursorPos(out Point2 point);
+      static extern bool GetCursorPos(out CartesianCoordinate2<int> point);
     }
     public static byte[] GetKeyboardState()
     {

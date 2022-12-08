@@ -31,7 +31,7 @@ namespace Flux
     [System.Diagnostics.Contracts.Pure] public Quantities.Angle Angle => new(m_radAngle);
 
     [System.Diagnostics.Contracts.Pure]
-    public Vector3 ToCartesianCoordinate()
+    public CartesianCoordinate3<double> ToCartesianCoordinate()
       => new(m_x, m_y, m_z);
 
     [System.Diagnostics.Contracts.Pure]

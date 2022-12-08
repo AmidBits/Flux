@@ -22,7 +22,7 @@ namespace Flux
     public TSelf Azimuth { get => m_azimuth; init => m_azimuth = value; }
     public TSelf Height { get => m_height; init => m_height = value; }
 
-    /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="Vector3"/>.</summary>
+    /// <summary>Converts the <see cref="CylindricalCoordinate{TSelf}"/> to a <see cref="CartesianCoordinate3{TSelf}"/>.</summary>
     public CartesianCoordinate3<TSelf> ToCartesianCoordinate3()
      => new(
        m_radius * TSelf.Cos(m_azimuth),
@@ -30,7 +30,7 @@ namespace Flux
        m_height
      );
 
-    /// <summary>Converts the <see cref="CylindricalCoordinate"/> to a <see cref="PolarCoordinate"/>.</summary>
+    /// <summary>Converts the <see cref="CylindricalCoordinate{TSelf}"/> to a <see cref="PolarCoordinate{TSelf}"/>.</summary>
     public PolarCoordinate<TSelf> ToPolarCoordinate()
      => new(
        m_radius,

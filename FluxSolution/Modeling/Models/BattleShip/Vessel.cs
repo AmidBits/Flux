@@ -31,7 +31,7 @@ namespace Flux
           placement[y, x] = '.';
 
       foreach (Model.BattleShip.Vessel s in ships)
-        foreach (Point2 p in s.Locations)
+        foreach (CartesianCoordinate2<int> p in s.Locations)
           placement[p.Y, p.X] = (char)('0' + s.Length);
 
       var sb = new System.Text.StringBuilder();
@@ -47,28 +47,28 @@ namespace Flux
   {
     public record class Vessel
     {
-      private readonly System.Collections.Generic.List<Point2> m_positions;
+      private readonly System.Collections.Generic.List<CartesianCoordinate2<int>> m_positions;
 
       public VesselOrientation m_orientation;
 
-      public Vessel(int length, Point2 location, VesselOrientation orientation)
+      public Vessel(int length, CartesianCoordinate2<int> location, VesselOrientation orientation)
       {
         if (length <= 1) throw new System.ArgumentOutOfRangeException(nameof(length));
 
         m_orientation = orientation;
 
-        m_positions = new System.Collections.Generic.List<Point2>();
+        m_positions = new System.Collections.Generic.List<CartesianCoordinate2<int>>();
 
         for (int i = 0; i < length; i++)
-          m_positions.Add(orientation == VesselOrientation.Horizontal ? new Point2(location.X + i, location.Y) : new Point2(location.X, location.Y + i));
+          m_positions.Add(orientation == VesselOrientation.Horizontal ? new CartesianCoordinate2<int>(location.X + i, location.Y) : new CartesianCoordinate2<int>(location.X, location.Y + i));
       }
 
       public int Length
         => m_positions.Count;
 
-      public Point2 Location
+      public CartesianCoordinate2<int> Location
         => m_positions[0];
-      public System.Collections.Generic.IReadOnlyList<Point2> Locations
+      public System.Collections.Generic.IReadOnlyList<CartesianCoordinate2<int>> Locations
         => m_positions;
 
       public VesselOrientation Orientation
@@ -93,30 +93,30 @@ namespace Flux
         return true;
       }
 
-      public static bool AnyHitsOn(Vessel ship, System.Collections.Generic.IEnumerable<Point2> shots)
+      public static bool AnyHitsOn(Vessel ship, System.Collections.Generic.IEnumerable<CartesianCoordinate2<int>> shots)
         => ship.m_positions.Any(location => shots.Any(shot => shot == location));
-      public static bool AnyHits(System.Collections.Generic.IEnumerable<Vessel> ships, System.Collections.Generic.IEnumerable<Point2> shots)
+      public static bool AnyHits(System.Collections.Generic.IEnumerable<Vessel> ships, System.Collections.Generic.IEnumerable<CartesianCoordinate2<int>> shots)
         => ships.Any(ship => AnyHitsOn(ship, shots));
-      public static bool IsSunk(Vessel ship, System.Collections.Generic.IEnumerable<Point2> shots)
+      public static bool IsSunk(Vessel ship, System.Collections.Generic.IEnumerable<CartesianCoordinate2<int>> shots)
         => ship.m_positions.All(l => shots.Any(s => s == l));
 
       public static bool AreAdjacent(Vessel a, Vessel b)
       {
-        foreach (Point2 p in a.Locations)
+        foreach (CartesianCoordinate2<int> p in a.Locations)
         {
-          if (Intersects(b, new Point2(p.X + 1, p.Y + 0)))
+          if (Intersects(b, new CartesianCoordinate2<int>(p.X + 1, p.Y + 0)))
             return true;
-          if (Intersects(b, new Point2(p.X + -1, p.Y + 0)))
+          if (Intersects(b, new CartesianCoordinate2<int>(p.X + -1, p.Y + 0)))
             return true;
-          if (Intersects(b, new Point2(p.X + 0, p.Y + 1)))
+          if (Intersects(b, new CartesianCoordinate2<int>(p.X + 0, p.Y + 1)))
             return true;
-          if (Intersects(b, new Point2(p.X + 0, p.Y + -1)))
+          if (Intersects(b, new CartesianCoordinate2<int>(p.X + 0, p.Y + -1)))
             return true;
         }
         return false;
       }
 
-      public static bool Intersects(Vessel ship, Point2 position)
+      public static bool Intersects(Vessel ship, CartesianCoordinate2<int> position)
       {
         return ship.Orientation == VesselOrientation.Horizontal
         ? (ship.m_positions[0].Y == position.Y) && (ship.m_positions[0].X <= position.X) && (ship.m_positions[0].X + ship.m_positions.Count > position.X)
@@ -154,7 +154,7 @@ namespace Flux
 
           do
           {
-            ship = new Vessel(size, new Point2(Random.NumberGenerators.Crypto.Next(gridSize.Width), Random.NumberGenerators.Crypto.Next(gridSize.Height)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
+            ship = new Vessel(size, new CartesianCoordinate2<int>(Random.NumberGenerators.Crypto.Next(gridSize.Width), Random.NumberGenerators.Crypto.Next(gridSize.Height)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
           }
           while (!ship.IsValid(gridSize) || ships.Any(s => Intersects(ship, s)));
 

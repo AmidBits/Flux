@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace Flux
 {
   /// <summary>A 2D cartesian coordinate using integers.</summary>
@@ -53,6 +55,41 @@ namespace Flux
 
     ///// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, X, Y], i.e. the values are duplicated.</summary>
     //public System.Runtime.Intrinsics.Vector256<TSelf> ToVector256() => ToVector256(m_x, m_y);
+
+
+    /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
+    /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a <paramref name="gridWidth"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
+    public static CartesianCoordinate2<TSelf> ConvertFromUniqueIndex(TSelf uniqueIndex, TSelf gridWidth)
+      => new(
+        uniqueIndex % gridWidth,
+        uniqueIndex / gridWidth
+      );
+
+    /// <summary>Converts the <see cref="CartesianCoordinate2{TSelf}"/> to a 'mapped' unique index.</summary>
+    /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a <paramref name="gridWidth"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>
+    public static TSelf ConvertToUniqueIndex(TSelf x, TSelf y, TSelf gridWidth)
+      => x + (y * gridWidth);
+
+    //[GeneratedRegex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$")]
+    private static readonly System.Text.RegularExpressions.Regex m_regexParse = new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
+    public static CartesianCoordinate2<TSelf> Parse(string pointAsString)
+      => m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && TSelf.TryParse(gX.Value, System.Globalization.NumberStyles.Number, null, out var x) && m.Groups["Y"] is var gY && gY.Success && TSelf.TryParse(gY.Value, System.Globalization.NumberStyles.Number, null, out var y)
+      ? new CartesianCoordinate2<TSelf>(x, y)
+      : throw new System.ArgumentOutOfRangeException(nameof(pointAsString));
+    public static bool TryParse(string pointAsString, out CartesianCoordinate2<TSelf> point)
+    {
+      try
+      {
+        point = Parse(pointAsString);
+        return true;
+      }
+      catch
+      {
+        point = default!;
+        return false;
+      }
+    }
+
 
     #region Implemented interfaces
 

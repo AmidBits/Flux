@@ -2,7 +2,7 @@
 {
   public interface IMapReverseProjectable
   {
-    /// <summary>Converts the <see cref="Vector3"/> to a <see cref="GeographicCoordinate"/> (where the Altitude component equals the Z component, without any manipulations).</summary>
-    public GeographicCoordinate ProjectReverse(Vector3 project);
+    /// <summary>Creates a new <see cref="GeographicCoordinate"/> from the <see cref=" CartesianCoordinate3{double}"/> (where the Altitude component equals the Z component, without any manipulations).</summary>
+    public GeographicCoordinate ProjectReverse(ICartesianCoordinate3<double> project);
   }
 }

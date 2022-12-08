@@ -4,35 +4,35 @@
 namespace Flux.Model.MineSweeper
 {
   public sealed class Covers
-    : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<Point2, bool>>
+    : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<CartesianCoordinate2<int>, bool>>
   {
-    private readonly System.Collections.Immutable.IImmutableDictionary<Point2, bool> m_covers;
+    private readonly System.Collections.Immutable.IImmutableDictionary<CartesianCoordinate2<int>, bool> m_covers;
 
     public int Count
       => m_covers.Count;
 
-    private Covers(System.Collections.Immutable.IImmutableDictionary<Point2, bool> covers)
+    private Covers(System.Collections.Immutable.IImmutableDictionary<CartesianCoordinate2<int>, bool> covers)
       => m_covers = covers;
 
-    public bool HasFlag(Point2 point)
+    public bool HasFlag(CartesianCoordinate2<int> point)
       => m_covers[point];
-    public bool IsCovered(Point2 point)
+    public bool IsCovered(CartesianCoordinate2<int> point)
       => m_covers.ContainsKey(point);
 
-    public Covers SwitchFlag(Point2 point)
+    public Covers SwitchFlag(CartesianCoordinate2<int> point)
       => m_covers.TryGetValue(point, out var hasFlag) ? new Covers(m_covers.SetItem(point, !hasFlag)) : this;
 
-    public Covers Uncover(Point2 point)
+    public Covers Uncover(CartesianCoordinate2<int> point)
       => IsCovered(point) ? new Covers(m_covers.Remove(point)) : this;
 
-    public Covers UncoverRange(System.Collections.Generic.IEnumerable<Point2> points)
+    public Covers UncoverRange(System.Collections.Generic.IEnumerable<CartesianCoordinate2<int>> points)
       => new(m_covers.RemoveRange(points));
 
     // Statics
     public static Covers Create(Size2<int> size)
       => new(size.AllPoints().ToImmutableDictionary(p => p, p => false));
     // IEnumerable
-    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Point2, bool>> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<CartesianCoordinate2<int>, bool>> GetEnumerator()
       => m_covers.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();

@@ -24,7 +24,7 @@ namespace Flux
 
     public TSelf Elevation { get => ConvertInclinationToElevation(m_inclination); init => m_inclination = ConvertElevationToInclination(value); }
 
-    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="Vector3">CartesianCoordinate3</see>.</summary>
+    /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref=" CartesianCoordinate3{double}">CartesianCoordinate3</see>.</summary>
     public CartesianCoordinate3<TSelf> ToCartesianCoordinate3()
     {
       var sinInclination = TSelf.Sin(m_inclination);
