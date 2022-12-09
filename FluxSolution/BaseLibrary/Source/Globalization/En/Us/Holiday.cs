@@ -1,4 +1,4 @@
-namespace Flux.English.UnitedStates
+namespace Flux.Globalization.EnUs
 {
   public static partial class Holiday
   {

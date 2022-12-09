@@ -71,7 +71,7 @@ namespace Flux.Midi
 
     public const int CallbackFunction = 0x00030000;
 
-    private readonly Win32.Winmm.MidiInProcedure m_midiInProc;
+    private readonly Win32.Winmm.MidiInProc m_midiInProc;
 
     private System.IntPtr m_id;
 
@@ -81,7 +81,7 @@ namespace Flux.Midi
 
     private MidiIn(int index, Win32.Winmm.MidiInCapabilities capabilities)
     {
-      m_midiInProc = new Win32.Winmm.MidiInProcedure(MidiProc);
+      m_midiInProc = new Win32.Winmm.MidiInProc(MidiProc);
 
       Index = index;
       Capabilities = capabilities;

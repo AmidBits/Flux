@@ -1,4 +1,4 @@
-namespace Flux.Cultural.EnUs
+namespace Flux.Globalization.EnUs
 {
   /// <summary>The North American Numbering Plan (NANP) is a telephone numbering plan that encompasses 25 distinct regions.</summary>
   public struct NorthAmericanNumberingPlan

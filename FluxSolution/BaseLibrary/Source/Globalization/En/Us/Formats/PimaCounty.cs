@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 
-namespace Flux.Cultural.EnUs.PimaCounty
+namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
 {
-  public struct StreetAddress
-    : System.IEquatable<StreetAddress>
+  public struct PimaCountyStreetAddress
+    : System.IEquatable<PimaCountyStreetAddress>
   {
-    public static readonly StreetAddress Empty;
+    public static readonly PimaCountyStreetAddress Empty;
 
     /// <summary>Regular expression for Pima county street addresses.</summary>
     /// <see cref="http://webcms.pima.gov/cms/One.aspx?pageId=61696"/>
@@ -61,13 +61,13 @@ namespace Flux.Cultural.EnUs.PimaCounty
     public bool IsValid
       => Regex.IsMatch(ToString()!);
 
-    public static StreetAddress Parse(string text)
+    public static PimaCountyStreetAddress Parse(string text)
     {
       var re = Regex;
 
       if (re.Match(text) is var match && match.Success)
       {
-        var sa = new StreetAddress
+        var sa = new PimaCountyStreetAddress
         {
           Number = match.Groups[nameof(Number)].Value,
           Direction = match.Groups[nameof(Direction)].Value,
@@ -88,7 +88,7 @@ namespace Flux.Cultural.EnUs.PimaCounty
 
       throw new System.InvalidOperationException();
     }
-    public static bool TryParse(string text, out StreetAddress result)
+    public static bool TryParse(string text, out PimaCountyStreetAddress result)
     {
       try
       {
@@ -97,23 +97,23 @@ namespace Flux.Cultural.EnUs.PimaCounty
       }
       catch { }
 
-      result = new StreetAddress();
+      result = new PimaCountyStreetAddress();
       return false;
     }
 
     // Operators
-    public static bool operator ==(StreetAddress a, StreetAddress b)
+    public static bool operator ==(PimaCountyStreetAddress a, PimaCountyStreetAddress b)
       => a.Equals(b);
-    public static bool operator !=(StreetAddress a, StreetAddress b)
+    public static bool operator !=(PimaCountyStreetAddress a, PimaCountyStreetAddress b)
       => !a.Equals(b);
 
     // IEquatable
-    public bool Equals(StreetAddress other)
+    public bool Equals(PimaCountyStreetAddress other)
       => Number == other.Number && Direction == other.Direction && Intersection == other.Intersection && Name == other.Name && Type == other.Type && Unit == other.Unit;
 
     // Object (overrides)
     public override bool Equals(object? obj)
-      => obj is StreetAddress o && Equals(o);
+      => obj is PimaCountyStreetAddress o && Equals(o);
     public override int GetHashCode()
       => System.HashCode.Combine(Number, Direction, Intersection, Name, Type, Unit);
     public override string? ToString()

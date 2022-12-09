@@ -70,15 +70,15 @@ namespace Flux
       /// <param name="frequency"></param>
       /// <param name="cent"></param>
       [System.Diagnostics.Contracts.Pure]
-      public static Frequency PitchShift(Frequency frequency, Cent cent)
-        => new(frequency.Value * Cent.ConvertCentToFrequencyRatio(cent.Value));
+      public static Frequency PitchShift(Frequency frequency, Music.Cent cent)
+        => new(frequency.Value * Music.Cent.ConvertCentToFrequencyRatio(cent.Value));
 
       /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in semitones.</summary>
       /// <param name="frequency"></param>
       /// <param name="semitone"></param>
       [System.Diagnostics.Contracts.Pure]
-      public static Frequency PitchShift(Frequency frequency, Semitone semitone)
-        => new(frequency.Value * Semitone.ConvertSemitoneToFrequencyRatio(semitone.Value));
+      public static Frequency PitchShift(Frequency frequency, Music.Semitone semitone)
+        => new(frequency.Value * Music.Semitone.ConvertSemitoneToFrequencyRatio(semitone.Value));
 
       /// <summary>Computes the number of samples per cycle at the specified frequency and sample rate.</summary>
       [System.Diagnostics.Contracts.Pure]

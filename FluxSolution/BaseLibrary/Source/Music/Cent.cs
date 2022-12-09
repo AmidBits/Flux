@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Music
 {
   /// <summary>Cent, unit of itself. Musical interval equal to one hundredth of one semitone.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cent_(music)"/>

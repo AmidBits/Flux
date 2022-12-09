@@ -1,4 +1,4 @@
-namespace Flux.Cultural.EnUs
+namespace Flux.Globalization.EnUs
 {
   public struct SocialSecurityNumber
     : System.IEquatable<SocialSecurityNumber>

@@ -1,4 +1,4 @@
-namespace Flux.Cultural
+namespace Flux.Globalization
 {
   public static partial class Number
   {

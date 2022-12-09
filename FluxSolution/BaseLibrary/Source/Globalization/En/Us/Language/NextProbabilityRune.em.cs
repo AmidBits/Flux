@@ -9,9 +9,9 @@ namespace Flux
 
       double accumulatedValues = 0.0, probabilityThreshold = source.NextDouble();
 
-      for (var index = 0; index < English.UnitedStates.Language.AlphabetRelativeFrequencyOfLetters.Length; index++)
+      for (var index = 0; index < Flux.Globalization.EnUs.Language.AlphabetRelativeFrequencyOfLetters.Length; index++)
       {
-        var relativeFrequency = English.UnitedStates.Language.AlphabetRelativeFrequencyOfLetters[index];
+        var relativeFrequency = Globalization.EnUs.Language.AlphabetRelativeFrequencyOfLetters[index];
 
         accumulatedValues += relativeFrequency;
 

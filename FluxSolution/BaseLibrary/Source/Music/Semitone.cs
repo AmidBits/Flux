@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Music
 {
   /// <summary>Semitone, unit of itself. A musical interval equal to one hundred cents.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Semitone"/>

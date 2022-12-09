@@ -1,22 +1,22 @@
-namespace Flux.English.UnitedStates.Arizona.Pima
+namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
 {
   public record struct PimaCountyPayPeriod
     : System.IComparable<PimaCountyPayPeriod>
   {
     public static System.DateTime ReferenceDate
-      => new(2014, 11, 2);
+      => new(2014, 11, 2); // As of 2023 this was still active.
 
     private System.DateTime m_targetDate;
 
     public PimaCountyPayPeriod(System.DateTime target)
-      => m_targetDate = new(target.Year, target.Month, target.Day);
+      => m_targetDate = target.Date;
     public PimaCountyPayPeriod()
       : this(System.DateTime.Now)
     {
     }
 
     public System.DateTime TargetDate
-    { get => m_targetDate; set => m_targetDate = new(value.Year, value.Month, value.Day); }
+    { get => m_targetDate; set => m_targetDate = value.Date; }
 
     public System.DateTime ApprovalDate
       => StartDate.AddDays(12); // One day before pay period ends.

@@ -3,10 +3,10 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static double GetFrequencyRatios(this Music.TwelveToneEqualTemperament source)
-      => Semitone.ConvertSemitoneToFrequencyRatio((int)source);
+      => Music.Semitone.ConvertSemitoneToFrequencyRatio((int)source);
 
     public static int GetCents(this Music.TwelveToneEqualTemperament source)
-      => Semitone.ConvertSemitoneToCent((int)source);
+      => Music.Semitone.ConvertSemitoneToCent((int)source);
   }
 
   namespace Music
