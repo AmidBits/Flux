@@ -7,7 +7,7 @@
     public static readonly EqualEarthProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> location)
+    public CoordinateSystems.CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -60,7 +60,7 @@
       var lon = M * location.X * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate(
+      return new CoordinateSystems.GeographicCoordinate(
         Quantities.Angle.ConvertRadianToDegree(lat),
         Quantities.Angle.ConvertRadianToDegree(lon),
         location.Z

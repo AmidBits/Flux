@@ -3,9 +3,13 @@ namespace Flux
   #region ExtensionMethods
   public static partial class ExtensionMethods
   {
-    public static CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this ISize3<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this ISize3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
-      => new(source.Width, source.Height, source.Depth);
+      => new(
+        source.Width,
+        source.Height,
+        source.Depth
+      );
   }
   #endregion ExtensionMethods
 

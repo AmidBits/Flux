@@ -19,7 +19,7 @@
       {
         for (var c = m_cellGrid.Width - 1; c >= 0; c--)
         {
-          var index = (int)CartesianCoordinate2<int>.ConvertToUniqueIndex(c, r, m_cellGrid.Width);
+          var index = (int)CoordinateSystems.CartesianCoordinate2<int>.ConvertToUniqueIndex(c, r, m_cellGrid.Width);
 
           m_deadOrAlive[index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
         }
@@ -75,7 +75,7 @@
 
           var x1 = (x + c + m_cellGrid.Width) % m_cellGrid.Width; // Loop around the edges if x+i is off the board.
 
-          var pointIndex = (int)CartesianCoordinate2<int>.ConvertToUniqueIndex(x1, y1, m_cellGrid.Width);
+          var pointIndex = (int)CoordinateSystems.CartesianCoordinate2<int>.ConvertToUniqueIndex(x1, y1, m_cellGrid.Width);
 
           cn += m_deadOrAlive[pointIndex] ? 1 : 0;
         }
@@ -96,7 +96,7 @@
 
         for (var x = 0; x < m_cellGrid.Width; x++)
         {
-          var index = (int)CartesianCoordinate2<int>.ConvertToUniqueIndex(x, y, m_cellGrid.Width);
+          var index = (int)CoordinateSystems.CartesianCoordinate2<int>.ConvertToUniqueIndex(x, y, m_cellGrid.Width);
 
           var c = m_deadOrAlive[index] ? '\u2588' : ' ';
 

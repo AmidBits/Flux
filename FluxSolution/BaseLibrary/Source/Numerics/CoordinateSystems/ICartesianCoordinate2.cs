@@ -1,7 +1,7 @@
 ﻿namespace Flux
 {
   #region ExtensionMethods
-  public static partial class CoordinateSystems
+  public static partial class ExtensionMethods
   {
     public static TSelf AbsoluteSum<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
@@ -18,7 +18,7 @@
 
     /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
     /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a <paramref name="gridWidth"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
-    public static CartesianCoordinate2<TSelf> AsUniqueIndexToCartesianCoordinate2<TSelf>(this TSelf uniqueIndex, TSelf gridWidth)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> AsUniqueIndexToCartesianCoordinate2<TSelf>(this TSelf uniqueIndex, TSelf gridWidth)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => new(
         uniqueIndex % gridWidth,
@@ -67,7 +67,7 @@
     //}
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
-    public static CartesianCoordinate2<TSelf> Lerp<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> target, TSelf mu)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> Lerp<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       var imu = TSelf.One - mu;
@@ -82,12 +82,12 @@
       => TSelf.Abs(source.X / edgeLength) + TSelf.Abs(source.Y / edgeLength);
 
     /// <summary>Lerp is a normalized linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
-    public static CartesianCoordinate2<TSelf> Nlerp<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> target, TSelf mu)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> Nlerp<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => Lerp(source, target, mu).Normalized();
 
     /// <summary>Creates a new normalized <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static CartesianCoordinate2<TSelf> Normalized<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> Normalized<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => source.EuclideanLength() is var m && m != TSelf.Zero ? source.ToCartesianCoordinate2<TSelf>() / m : source.ToCartesianCoordinate2<TSelf>();
 
@@ -104,7 +104,7 @@
       };
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    public static CartesianCoordinate2<TSelf> PerpendicularCcw<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> PerpendicularCcw<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(
         -source.Y,
@@ -112,7 +112,7 @@
       );
 
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    public static CartesianCoordinate2<TSelf> PerpendicularCw<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> PerpendicularCw<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(
         source.Y,
@@ -120,7 +120,7 @@
       );
 
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
-    public static CartesianCoordinate2<TSelf> Slerp<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> target, TSelf mu)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> Slerp<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
     {
       var dp = TSelf.Clamp(ICartesianCoordinate2<TSelf>.DotProduct(source, target), -TSelf.One, TSelf.One); // Ensure precision doesn't exceed acos limits.
@@ -132,43 +132,43 @@
     }
 
     /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Drawing.Point"/>.</summary>
-    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.Point source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.Point source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y));
 
     /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Drawing.PointF"/>.</summary>
-    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.PointF source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.PointF source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y));
 
     /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Drawing.Size"/>.</summary>
-    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.Size source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.Size source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(TSelf.CreateChecked(source.Width), TSelf.CreateChecked(source.Height));
 
     /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Drawing.SizeF"/>.</summary>
-    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.SizeF source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Drawing.SizeF source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new(TSelf.CreateChecked(source.Width), TSelf.CreateChecked(source.Height));
 
     /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
-    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Numerics.Vector2 source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this System.Numerics.Vector2 source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y));
 
     /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
-      => source is CartesianCoordinate2<TSelf> cc ? cc : new(source.X, source.Y);
+      => source is CoordinateSystems.CartesianCoordinate2<TSelf> cc ? cc : new(source.X, source.Y);
 
     /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TResult}"/>.</summary>
-    public static CartesianCoordinate2<TResult> ToCartesianCoordinate2<TSelf, TResult>(this ICartesianCoordinate2<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out CartesianCoordinate2<TResult> result)
+    public static CoordinateSystems.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TSelf, TResult>(this ICartesianCoordinate2<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out CoordinateSystems.CartesianCoordinate2<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
       => result = new(TResult.CreateChecked(rounding.RoundNumber(source.X)), TResult.CreateChecked(rounding.RoundNumber(source.Y)));
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/> using the X and Y coordinates.</summary>
-    public static CartesianCoordinate3<TSelf> ToCartesianCoordinate3XY<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3XY<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(source.X, source.Y, TSelf.Zero);
 
@@ -205,7 +205,7 @@
       );
 
     /// <summary>Creates a new <see cref="PolarCoordinate{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static CoordinateSystems.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         TSelf.Sqrt(source.X * source.X + source.Y * source.Y),

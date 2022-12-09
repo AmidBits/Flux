@@ -5,11 +5,11 @@ namespace Flux
     /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
     public record struct AngularAcceleration2D
-    : IUnitQuantifiable<CartesianCoordinate2<double>, AngularAccelerationUnit>
+    : IUnitQuantifiable<CoordinateSystems.CartesianCoordinate2<double>, AngularAccelerationUnit>
     {
-      private readonly CartesianCoordinate2<double> m_value;
+      private readonly CoordinateSystems.CartesianCoordinate2<double> m_value;
 
-      public AngularAcceleration2D(CartesianCoordinate2<double> value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+      public AngularAcceleration2D(CoordinateSystems.CartesianCoordinate2<double> value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
         => m_value = unit switch
         {
           AngularAccelerationUnit.RadianPerSecondSquared => value,
@@ -43,13 +43,13 @@ namespace Flux
 
       #region Implemented interfaces
       // IQuantifiable<>
-      [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
+      [System.Diagnostics.Contracts.Pure] public CoordinateSystems.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
       // IUnitQuantifiable<>
       [System.Diagnostics.Contracts.Pure]
       public string ToUnitString(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
       [System.Diagnostics.Contracts.Pure]
-      public CartesianCoordinate2<double> ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+      public CoordinateSystems.CartesianCoordinate2<double> ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
         => unit switch
         {
           AngularAccelerationUnit.RadianPerSecondSquared => m_value,

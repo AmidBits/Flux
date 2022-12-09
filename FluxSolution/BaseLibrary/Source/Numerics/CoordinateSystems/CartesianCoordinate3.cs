@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.CoordinateSystems
 {
   //#region ExtensionMethods
   //public static partial class CoordinateSystems

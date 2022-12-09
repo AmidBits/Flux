@@ -7,14 +7,14 @@
     public static readonly CassiniProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> project)
+    public CoordinateSystems.CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> project)
       => new(
         System.Math.Asin(System.Math.Cos(Quantities.Angle.ConvertDegreeToRadian(project.Latitude)) * System.Math.Sin(Quantities.Angle.ConvertDegreeToRadian(project.Longitude))),
         System.Math.Atan(System.Math.Tan(Quantities.Angle.ConvertDegreeToRadian(project.Latitude)) / System.Math.Cos(Quantities.Angle.ConvertDegreeToRadian(project.Longitude))),
         project.Altitude
       );
     public IGeographicCoordinate<double> ProjectReverse(ICartesianCoordinate3<double> project)
-      => new GeographicCoordinate(
+      => new CoordinateSystems.GeographicCoordinate(
         Quantities.Angle.ConvertRadianToDegree(System.Math.Asin(System.Math.Sin(project.Y) * System.Math.Cos(project.X))),
         Quantities.Angle.ConvertRadianToDegree(System.Math.Atan2(System.Math.Tan(project.X), System.Math.Cos(project.Y))),
         project.Z

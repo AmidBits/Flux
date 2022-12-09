@@ -406,16 +406,16 @@ namespace Flux
     /// <param name="cameraUpVector">The up vector of the camera.</param>
     /// <param name="cameraForwardVector">The forward vector of the camera.</param>
     /// <returns>The created billboard matrix</returns>
-    public static Matrix4 CreateBillboard(CartesianCoordinate4 objectPosition, CartesianCoordinate4 cameraPosition, CartesianCoordinate4 cameraUpVector, CartesianCoordinate4 cameraForwardVector)
+    public static Matrix4 CreateBillboard(CoordinateSystems.CartesianCoordinate4 objectPosition, CoordinateSystems.CartesianCoordinate4 cameraPosition, CoordinateSystems.CartesianCoordinate4 cameraUpVector, CoordinateSystems.CartesianCoordinate4 cameraForwardVector)
     {
       const double epsilon = 1e-4f;
 
-      var zaxis = new CartesianCoordinate4(objectPosition.X - cameraPosition.X, objectPosition.Y - cameraPosition.Y, objectPosition.Z - cameraPosition.Z);
+      var zaxis = new CoordinateSystems.CartesianCoordinate4(objectPosition.X - cameraPosition.X, objectPosition.Y - cameraPosition.Y, objectPosition.Z - cameraPosition.Z);
 
-      zaxis = CartesianCoordinate4.EuclideanLengthSquared(zaxis) is var znorm && znorm < epsilon ? -cameraForwardVector : zaxis * (1 / System.Math.Sqrt(znorm));
+      zaxis = CoordinateSystems.CartesianCoordinate4.EuclideanLengthSquared(zaxis) is var znorm && znorm < epsilon ? -cameraForwardVector : zaxis * (1 / System.Math.Sqrt(znorm));
 
-      var xaxis = CartesianCoordinate4.Normalize(CartesianCoordinate4.Cross(cameraUpVector, zaxis));
-      var yaxis = CartesianCoordinate4.Cross(zaxis, xaxis);
+      var xaxis = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(cameraUpVector, zaxis));
+      var yaxis = CoordinateSystems.CartesianCoordinate4.Cross(zaxis, xaxis);
 
       return new Matrix4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, objectPosition.X, objectPosition.Y, objectPosition.Z, 1);
     }
@@ -428,42 +428,42 @@ namespace Flux
     /// <param name="cameraForwardVector">Forward vector of the camera.</param>
     /// <param name="objectForwardVector">Forward vector of the object.</param>
     /// <returns>The created billboard matrix.</returns>
-    public static Matrix4 CreateConstrainedBillboard(CartesianCoordinate4 objectPosition, CartesianCoordinate4 cameraPosition, CartesianCoordinate4 rotateAxis, CartesianCoordinate4 cameraForwardVector, CartesianCoordinate4 objectForwardVector)
+    public static Matrix4 CreateConstrainedBillboard(CoordinateSystems.CartesianCoordinate4 objectPosition, CoordinateSystems.CartesianCoordinate4 cameraPosition, CoordinateSystems.CartesianCoordinate4 rotateAxis, CoordinateSystems.CartesianCoordinate4 cameraForwardVector, CoordinateSystems.CartesianCoordinate4 objectForwardVector)
     {
       const double epsilon = 1e-4f;
       const double minAngle = 1 - (0.1f * Constants.PiOver180); // 0.1 degrees
 
       // Treat the case when object and camera positions are too close.
-      var faceDir = new CartesianCoordinate4(objectPosition.X - cameraPosition.X, objectPosition.Y - cameraPosition.Y, objectPosition.Z - cameraPosition.Z);
+      var faceDir = new CoordinateSystems.CartesianCoordinate4(objectPosition.X - cameraPosition.X, objectPosition.Y - cameraPosition.Y, objectPosition.Z - cameraPosition.Z);
 
-      faceDir = CartesianCoordinate4.EuclideanLengthSquared(faceDir) is var norm && norm < epsilon ? -cameraForwardVector : faceDir * (1 / System.Math.Sqrt(norm));
+      faceDir = CoordinateSystems.CartesianCoordinate4.EuclideanLengthSquared(faceDir) is var norm && norm < epsilon ? -cameraForwardVector : faceDir * (1 / System.Math.Sqrt(norm));
 
-      CartesianCoordinate4 yaxis = rotateAxis;
-      CartesianCoordinate4 xaxis;
-      CartesianCoordinate4 zaxis;
+      CoordinateSystems.CartesianCoordinate4 yaxis = rotateAxis;
+      CoordinateSystems.CartesianCoordinate4 xaxis;
+      CoordinateSystems.CartesianCoordinate4 zaxis;
 
       // Treat the case when angle between faceDir and rotateAxis is too close to 0.
-      var dot = CartesianCoordinate4.Dot(rotateAxis, faceDir);
+      var dot = CoordinateSystems.CartesianCoordinate4.Dot(rotateAxis, faceDir);
 
       if (System.Math.Abs(dot) > minAngle)
       {
         zaxis = objectForwardVector;
 
         // Make sure passed values are useful for compute.
-        dot = CartesianCoordinate4.Dot(rotateAxis, zaxis);
+        dot = CoordinateSystems.CartesianCoordinate4.Dot(rotateAxis, zaxis);
 
         if (System.Math.Abs(dot) > minAngle)
         {
-          zaxis = (System.Math.Abs(rotateAxis.Z) > minAngle) ? new CartesianCoordinate4(1, 0, 0) : new CartesianCoordinate4(0, 0, -1);
+          zaxis = (System.Math.Abs(rotateAxis.Z) > minAngle) ? new CoordinateSystems.CartesianCoordinate4(1, 0, 0) : new CoordinateSystems.CartesianCoordinate4(0, 0, -1);
         }
 
-        xaxis = CartesianCoordinate4.Normalize(CartesianCoordinate4.Cross(rotateAxis, zaxis));
-        zaxis = CartesianCoordinate4.Normalize(CartesianCoordinate4.Cross(xaxis, rotateAxis));
+        xaxis = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(rotateAxis, zaxis));
+        zaxis = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(xaxis, rotateAxis));
       }
       else
       {
-        xaxis = CartesianCoordinate4.Normalize(CartesianCoordinate4.Cross(rotateAxis, faceDir));
-        zaxis = CartesianCoordinate4.Normalize(CartesianCoordinate4.Cross(xaxis, yaxis));
+        xaxis = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(rotateAxis, faceDir));
+        zaxis = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(xaxis, yaxis));
       }
 
       return new Matrix4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, objectPosition.X, objectPosition.Y, objectPosition.Z, 1);
@@ -474,7 +474,7 @@ namespace Flux
     /// <param name="axis">The axis to rotate around.</param>
     /// <param name="angle">The angle to rotate around the given axis, in radians.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4 CreateFromAxisAngle(CartesianCoordinate4 axis, double angle)
+    public static Matrix4 CreateFromAxisAngle(CoordinateSystems.CartesianCoordinate4 axis, double angle)
     {
       // a: angle
       // x, y, z: unit vector for axis.
@@ -544,13 +544,13 @@ namespace Flux
     /// <param name="cameraTarget">The target towards which the camera is pointing.</param>
     /// <param name="cameraUpVector">The direction that is "up" from the camera's point of view.</param>
     /// <returns>The view matrix.</returns>
-    public static Matrix4 CreateLookAt(CartesianCoordinate4 cameraPosition, CartesianCoordinate4 cameraTarget, CartesianCoordinate4 cameraUpVector)
+    public static Matrix4 CreateLookAt(CoordinateSystems.CartesianCoordinate4 cameraPosition, CoordinateSystems.CartesianCoordinate4 cameraTarget, CoordinateSystems.CartesianCoordinate4 cameraUpVector)
     {
-      CartesianCoordinate4 zaxis = CartesianCoordinate4.Normalize(cameraPosition - cameraTarget);
-      CartesianCoordinate4 xaxis = CartesianCoordinate4.Normalize(CartesianCoordinate4.Cross(cameraUpVector, zaxis));
-      CartesianCoordinate4 yaxis = CartesianCoordinate4.Cross(zaxis, xaxis);
+      var zaxis = CoordinateSystems.CartesianCoordinate4.Normalize(cameraPosition - cameraTarget);
+      var xaxis = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(cameraUpVector, zaxis));
+      var yaxis = CoordinateSystems.CartesianCoordinate4.Cross(zaxis, xaxis);
 
-      return new(xaxis.X, yaxis.X, zaxis.X, 0, xaxis.Y, yaxis.Y, zaxis.Y, 0, xaxis.Z, yaxis.Z, zaxis.Z, 0, -CartesianCoordinate4.Dot(xaxis, cameraPosition), -CartesianCoordinate4.Dot(yaxis, cameraPosition), -CartesianCoordinate4.Dot(zaxis, cameraPosition), 1);
+      return new(xaxis.X, yaxis.X, zaxis.X, 0, xaxis.Y, yaxis.Y, zaxis.Y, 0, xaxis.Z, yaxis.Z, zaxis.Z, 0, -CoordinateSystems.CartesianCoordinate4.Dot(xaxis, cameraPosition), -CoordinateSystems.CartesianCoordinate4.Dot(yaxis, cameraPosition), -CoordinateSystems.CartesianCoordinate4.Dot(zaxis, cameraPosition), 1);
     }
     /// <summary>
     /// Creates an orthographic perspective matrix from the given view volume dimensions.
@@ -670,7 +670,7 @@ namespace Flux
     /// <param name="radians">The amount, in radians, by which to rotate around the X-axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4 CreateRotationX(double radians, CartesianCoordinate4 centerPoint)
+    public static Matrix4 CreateRotationX(double radians, CoordinateSystems.CartesianCoordinate4 centerPoint)
     {
       // [  1  0  0  0 ]
       // [  0  c  s  0 ]
@@ -708,7 +708,7 @@ namespace Flux
     /// <param name="radians">The amount, in radians, by which to rotate around the Y-axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4 CreateRotationY(double radians, CartesianCoordinate4 centerPoint)
+    public static Matrix4 CreateRotationY(double radians, CoordinateSystems.CartesianCoordinate4 centerPoint)
     {
       // [  c  0 -s  0 ]
       // [  0  1  0  0 ]
@@ -746,7 +746,7 @@ namespace Flux
     /// <param name="radians">The amount, in radians, by which to rotate around the Z-axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4 CreateRotationZ(double radians, CartesianCoordinate4 centerPoint)
+    public static Matrix4 CreateRotationZ(double radians, CoordinateSystems.CartesianCoordinate4 centerPoint)
     {
       // [  c  s  0  0 ]
       // [ -s  c  0  0 ]
@@ -778,7 +778,7 @@ namespace Flux
     /// <param name="zScale">Value to scale by on the Z-axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4 CreateScale(double xScale, double yScale, double zScale, CartesianCoordinate4 centerPoint)
+    public static Matrix4 CreateScale(double xScale, double yScale, double zScale, CoordinateSystems.CartesianCoordinate4 centerPoint)
     {
       var tx = centerPoint.X * (1 - xScale);
       var ty = centerPoint.Y * (1 - yScale);
@@ -789,7 +789,7 @@ namespace Flux
     /// <summary>Creates a scaling matrix.</summary>
     /// <param name="scales">The vector containing the amount to scale by on each axis.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4 CreateScale(CartesianCoordinate4 scales)
+    public static Matrix4 CreateScale(CoordinateSystems.CartesianCoordinate4 scales)
       => new(scales.X, 0, 0, 0, 0, scales.Y, 0, 0, 0, 0, scales.Z, 0, 0, 0, 0, 1);
     /// <summary>
     /// Creates a scaling matrix with a center point.
@@ -797,7 +797,7 @@ namespace Flux
     /// <param name="scales">The vector containing the amount to scale by on each axis.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4 CreateScale(CartesianCoordinate4 scales, CartesianCoordinate4 centerPoint)
+    public static Matrix4 CreateScale(CoordinateSystems.CartesianCoordinate4 scales, CoordinateSystems.CartesianCoordinate4 centerPoint)
     {
       var tx = centerPoint.X * (1 - scales.X);
       var ty = centerPoint.Y * (1 - scales.Y);
@@ -818,7 +818,7 @@ namespace Flux
     /// <param name="scale">The uniform scaling factor.</param>
     /// <param name="centerPoint">The center point.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4 CreateScale(double scale, CartesianCoordinate4 centerPoint)
+    public static Matrix4 CreateScale(double scale, CoordinateSystems.CartesianCoordinate4 centerPoint)
     {
       var tx = centerPoint.X * (1 - scale);
       var ty = centerPoint.Y * (1 - scale);
@@ -832,7 +832,7 @@ namespace Flux
     /// <param name="lightDirection">The direction from which the light that will cast the shadow is coming.</param>
     /// <param name="plane">The Plane onto which the new matrix should flatten geometry so as to cast a shadow.</param>
     /// <returns>A new Matrix that can be used to flatten geometry onto the specified plane from the specified direction.</returns>
-    public static Matrix4 CreateShadow(CartesianCoordinate4 lightDirection, Plane plane)
+    public static Matrix4 CreateShadow(CoordinateSystems.CartesianCoordinate4 lightDirection, Plane plane)
     {
       var p = Plane.Normalize(plane);
 
@@ -871,7 +871,7 @@ namespace Flux
     /// </summary>
     /// <param name="position">The amount to translate in each axis.</param>
     /// <returns>The translation matrix.</returns>
-    public static Matrix4 CreateTranslation(CartesianCoordinate4 position)
+    public static Matrix4 CreateTranslation(CoordinateSystems.CartesianCoordinate4 position)
       => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, position.X, position.Y, position.Z, 1);
     /// <summary>
     /// Creates a translation matrix.
@@ -889,11 +889,11 @@ namespace Flux
     /// <param name="forward">Forward direction of the object.</param>
     /// <param name="up">Upward direction of the object, usually [0, 1, 0].</param>
     /// <returns>The world matrix.</returns>
-    public static Matrix4 CreateWorld(CartesianCoordinate4 position, CartesianCoordinate4 forward, CartesianCoordinate4 up)
+    public static Matrix4 CreateWorld(CoordinateSystems.CartesianCoordinate4 position, CoordinateSystems.CartesianCoordinate4 forward, CoordinateSystems.CartesianCoordinate4 up)
     {
-      var zaxis = CartesianCoordinate4.Normalize(-forward);
-      var xaxis = CartesianCoordinate4.Normalize(CartesianCoordinate4.Cross(up, zaxis));
-      var yaxis = CartesianCoordinate4.Cross(zaxis, xaxis);
+      var zaxis = CoordinateSystems.CartesianCoordinate4.Normalize(-forward);
+      var xaxis = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(up, zaxis));
+      var yaxis = CoordinateSystems.CartesianCoordinate4.Cross(zaxis, xaxis);
 
       return new Matrix4(xaxis.X, xaxis.Y, xaxis.Z, 0, yaxis.X, yaxis.Y, yaxis.Z, 0, zaxis.X, zaxis.Y, zaxis.Z, 0, position.X, position.Y, position.Z, 1);
     }
@@ -1339,7 +1339,7 @@ namespace Flux
       m1.m_44 + (m2.m_44 - m1.m_44) * amount
     );
 
-    public static CartesianCoordinate3<double> Transform(Matrix4 matrix, CartesianCoordinate3<double> vector)
+    public static CoordinateSystems.CartesianCoordinate3<double> Transform(Matrix4 matrix, CoordinateSystems.CartesianCoordinate3<double> vector)
       => new(
         vector.X * matrix.M11 + vector.Y * matrix.M12 + vector.Z * matrix.M13,
         vector.X * matrix.M21 + vector.Y * matrix.M22 + vector.Z * matrix.M23,

@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Flux
+namespace Flux.CoordinateSystems
 {
   /// <summary>A 2D cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]

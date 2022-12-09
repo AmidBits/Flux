@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.CoordinateSystems
 {
   /// <summary>Spherical coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>

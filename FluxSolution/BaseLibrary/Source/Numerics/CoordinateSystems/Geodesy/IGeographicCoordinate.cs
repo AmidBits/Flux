@@ -4,7 +4,7 @@
   {
     /// <summary>Converts the geographic coordinates to spherical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static SphericalCoordinate<TSelf> ToSphericalCoordinates<TSelf>(this IGeographicCoordinate<TSelf> source)
+    public static CoordinateSystems.SphericalCoordinate<TSelf> ToSphericalCoordinates<TSelf>(this IGeographicCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         source.Altitude,

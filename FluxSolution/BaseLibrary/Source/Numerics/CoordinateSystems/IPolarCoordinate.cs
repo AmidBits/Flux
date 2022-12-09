@@ -1,11 +1,11 @@
 ﻿namespace Flux
 {
   #region ExtensionMethods
-  public static partial class CoordinateSystems
+  public static partial class ExtensionMethods
   {
     /// <summary>Converts the polar coordinates to cartesian 2D coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this IPolarCoordinate<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this IPolarCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         source.Radius * TSelf.Cos(source.Azimuth),
@@ -21,7 +21,7 @@
         double.CreateChecked(source.Azimuth)
       );
 
-    public static PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this IPolarCoordinate<TSelf> source)
+    public static CoordinateSystems.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this IPolarCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(source.Radius, source.Azimuth);
 

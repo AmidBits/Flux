@@ -18,8 +18,11 @@ namespace Flux
     public TSelf Width { get => m_width; init => m_width = value; }
     public TSelf Height { get => m_height; init => m_height = value; }
 
-    public CartesianCoordinate2<TSelf> Center()
-      => new(m_width.Divide(2), m_height.Divide(2));
+    public CoordinateSystems.CartesianCoordinate2<TSelf> Center()
+      => new(
+        m_width.Divide(2),
+        m_height.Divide(2)
+      );
 
     ///// <summary>Convert the <see cref="Size2"/> to a <see cref="Vector2"/>.</summary>
     //public Vector2 ToCartesianCoordinate2()

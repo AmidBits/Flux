@@ -7,7 +7,7 @@
     public static readonly NaturalEarthProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> project)
+    public CoordinateSystems.CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> project)
     {
       var lat = Quantities.Angle.ConvertDegreeToRadian(project.Latitude);
       var lon = Quantities.Angle.ConvertDegreeToRadian(project.Longitude);

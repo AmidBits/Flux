@@ -8,21 +8,21 @@ namespace Flux.Model.MineSweeper
   {
     private readonly IImmutableStack<Covers> m_moves;
 
-    public CartesianCoordinate2<int> CursorPosition { get; set; }
+    public CoordinateSystems.CartesianCoordinate2<int> CursorPosition { get; set; }
 
-    private GameState(IImmutableStack<Covers> moves, CartesianCoordinate2<int> cursorPosition)
+    private GameState(IImmutableStack<Covers> moves, CoordinateSystems.CartesianCoordinate2<int> cursorPosition)
     {
       m_moves = moves;
       CursorPosition = cursorPosition;
     }
 
     public static GameState Create(Covers covers)
-      => new(ImmutableStack.Create(covers), new CartesianCoordinate2<int>(0, 0));
+      => new(ImmutableStack.Create(covers), new CoordinateSystems.CartesianCoordinate2<int>(0, 0));
 
     public GameState Do(Covers covers)
       => new(m_moves.Push(covers), CursorPosition);
 
-    public GameState Do(CartesianCoordinate2<int> cursorPosition)
+    public GameState Do(CoordinateSystems.CartesianCoordinate2<int> cursorPosition)
       => new(m_moves, cursorPosition);
 
     public GameState Undo()

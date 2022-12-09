@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.CoordinateSystems
 {
   /// <summary>Cube hex coordinate system using integer.</summary>
   /// <see href="https://www.redblobgames.com/grids/hexagons/"/>

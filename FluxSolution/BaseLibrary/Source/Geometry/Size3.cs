@@ -21,15 +21,23 @@ namespace Flux
     public TSelf Height { get => m_height; init => m_height = value; }
     public TSelf Depth { get => m_depth; init => m_depth = value; }
 
-    public CartesianCoordinate3<TSelf> Center()
-      => new(m_width.Divide(2), m_height.Divide(2), m_depth.Divide(2));
+    public CoordinateSystems.CartesianCoordinate3<TSelf> Center()
+      => new(
+        m_width.Divide(2),
+        m_height.Divide(2),
+        m_depth.Divide(2)
+      );
 
     /// <summary>Convert the <see cref="Size3{TSelf}"/> to a <see cref="CartesianCoordinate3{TSelf}"/>.</summary>
-    public CartesianCoordinate3<TSelf> ToCartesianCoordinate3()
-      => new(m_width, m_height, m_depth);
+    public CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3()
+      => new(
+        m_width,
+        m_height,
+        m_depth
+      );
 
     /// <summary>Convert a mapped index to a 3D point. This index is uniquely mapped using the size.</summary>
-    public CartesianCoordinate3<TSelf> UniqueIndexToPoint(TSelf index)
+    public CoordinateSystems.CartesianCoordinate3<TSelf> UniqueIndexToPoint(TSelf index)
     {
       var xy = m_width * m_height;
       var irxy = index % xy;
@@ -72,7 +80,7 @@ namespace Flux
     public static Size3<TSelf> Subtract(TSelf a, Size3<TSelf> b)
       => new(unchecked(a - b.m_width), unchecked(a - b.m_height), unchecked(a - b.m_depth));
     /// <summary>Creates a new <see cref='CartesianCoordinate3<int>'/> from a <see cref='Size3'/>.</summary>
-    public static CartesianCoordinate3<TSelf> ToPoint3(Size3<TSelf> size)
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToPoint3(Size3<TSelf> size)
       => new(size.m_width, size.m_height, size.m_depth);
     #endregion Static methods
 

@@ -5,11 +5,11 @@ namespace Flux
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
     public record struct Acceleration2D
-    : IUnitQuantifiable<CartesianCoordinate2<double>, AccelerationUnit>
+    : IUnitQuantifiable<CoordinateSystems.CartesianCoordinate2<double>, AccelerationUnit>
     {
-      private readonly CartesianCoordinate2<double> m_value;
+      private readonly CoordinateSystems.CartesianCoordinate2<double> m_value;
 
-      public Acceleration2D(CartesianCoordinate2<double> value, AccelerationUnit unit = Acceleration.DefaultUnit)
+      public Acceleration2D(CoordinateSystems.CartesianCoordinate2<double> value, AccelerationUnit unit = Acceleration.DefaultUnit)
         => m_value = unit switch
         {
           AccelerationUnit.MeterPerSecondSquared => value,
@@ -43,13 +43,13 @@ namespace Flux
 
       #region Implemented interfaces
       // IQuantifiable<>
-      [System.Diagnostics.Contracts.Pure] public CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
+      [System.Diagnostics.Contracts.Pure] public CoordinateSystems.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
       // IUnitQuantifiable<>
       [System.Diagnostics.Contracts.Pure]
       public string ToUnitString(AccelerationUnit unit = Acceleration.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
       [System.Diagnostics.Contracts.Pure]
-      public CartesianCoordinate2<double> ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
+      public CoordinateSystems.CartesianCoordinate2<double> ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
         => unit switch
         {
           AccelerationUnit.MeterPerSecondSquared => m_value,

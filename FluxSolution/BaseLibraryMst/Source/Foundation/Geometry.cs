@@ -10,7 +10,7 @@ namespace Foundation
     [TestMethod]
     public void HexCoordinateI()
     {
-      var geometry = new Flux.HexCoordinate<int>(2, 1, -3);
+      var geometry = new Flux.CoordinateSystems.HexCoordinate<int>(2, 1, -3);
 
       Assert.AreEqual(2, geometry.Q);
       Assert.AreEqual(1, geometry.R);
@@ -20,7 +20,7 @@ namespace Foundation
     [TestMethod]
     public void HexCoordinateR()
     {
-      var geometry = new Flux.HexCoordinate<double>(2, 1, -3);
+      var geometry = new Flux.CoordinateSystems.HexCoordinate<double>(2, 1, -3);
 
       Assert.AreEqual(2, geometry.Q);
       Assert.AreEqual(1, geometry.R);

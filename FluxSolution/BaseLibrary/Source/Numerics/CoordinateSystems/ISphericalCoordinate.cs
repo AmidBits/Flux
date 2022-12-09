@@ -1,11 +1,11 @@
 ﻿namespace Flux
 {
   #region ExtensionMethods
-  public static partial class CoordinateSystems
+  public static partial class ExtensionMethods
   {
     /// <summary>Converts the spherical coordinates to cartesian 3D coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this ISphericalCoordinate<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var sinInclination = TSelf.Sin(source.Inclination);
@@ -29,7 +29,7 @@
 
     /// <summary>Converts the spherical coordinates to a geographic coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static GeographicCoordinate ToGeographicCoordinates<TSelf>(this ISphericalCoordinate<TSelf> source)
+    public static CoordinateSystems.GeographicCoordinate ToGeographicCoordinates<TSelf>(this ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(TSelf.Pi - source.Inclination - TSelf.Pi.Divide(2))),
@@ -45,9 +45,13 @@
         new Quantities.Angle(double.CreateChecked(source.Azimuth))
       );
 
-    public static SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this ISphericalCoordinate<TSelf> source)
+    public static CoordinateSystems.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => new SphericalCoordinate<TSelf>(source.Radius, source.Inclination, source.Azimuth);
+      => new(
+        source.Radius,
+        source.Inclination,
+        source.Azimuth
+      );
   }
   #endregion ExtensionMethods
 

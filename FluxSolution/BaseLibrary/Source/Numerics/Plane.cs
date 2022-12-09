@@ -1,8 +1,8 @@
 namespace Flux
 {
-    /// <summary>A structure encapsulating a 3D Plane.</summary>
-    /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Plane.cs"/>
-    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+  /// <summary>A structure encapsulating a 3D Plane.</summary>
+  /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Plane.cs"/>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct Plane
   {
     private const double NormalizeEpsilon = 1.192092896e-07f; // Smallest such that 1.0+NormalizeEpsilon != 1.0
@@ -28,14 +28,14 @@ namespace Flux
     }
 
     /// <summary>Constructs a Plane from the given normal (the W component is not used) and distance along the normal from the origin.</summary>
-    public Plane(CartesianCoordinate4 normal, double distance)
+    public Plane(CoordinateSystems.CartesianCoordinate4 normal, double distance)
       : this(normal.X, normal.Y, normal.Z, distance)
     {
     }
 
     /// <summary>Constructs a Plane from the given Vector4.</summary>
     /// <param name="value">A vector whose first 3 elements describe the normal vector, and whose W component defines the distance along that normal from the origin.</param>
-    public Plane(CartesianCoordinate4 value)
+    public Plane(CoordinateSystems.CartesianCoordinate4 value)
       : this(value.X, value.Y, value.Z, value.W)
     {
     }
@@ -52,9 +52,9 @@ namespace Flux
 
     #region Static methods
     /// <summary>Creates a Plane that contains the three given points.</summary>
-    public static Plane CreateFromVertices(CartesianCoordinate4 point1, CartesianCoordinate4 point2, CartesianCoordinate4 point3)
+    public static Plane CreateFromVertices(CoordinateSystems.CartesianCoordinate4 point1, CoordinateSystems.CartesianCoordinate4 point2, CoordinateSystems.CartesianCoordinate4 point3)
     {
-      var normal = CartesianCoordinate4.Normalize(CartesianCoordinate4.Cross(point2 - point1, point3 - point1));
+      var normal = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(point2 - point1, point3 - point1));
 
       return new(normal, -(normal.X * point1.X + normal.Y * point1.Y + normal.Z * point1.Z));
 
@@ -79,13 +79,13 @@ namespace Flux
       //return new(normal, -(normal.X * point1.X + normal.Y * point1.Y + normal.Z * point1.Z));
     }
     /// <summary>Calculates the dot product of a Plane and Vector4.</summary>
-    public static double Dot(Plane plane, CartesianCoordinate4 value)
+    public static double Dot(Plane plane, CoordinateSystems.CartesianCoordinate4 value)
       => plane.m_x * value.X + plane.m_y * value.Y + plane.m_z * value.Z + plane.m_distance * value.W;
     /// <summary>Returns the dot product of a specified Vector4 and the normal vector of this Plane plus the distance (D) value of the Plane.</summary>
-    public static double DotCoordinate(Plane plane, CartesianCoordinate4 value)
+    public static double DotCoordinate(Plane plane, CoordinateSystems.CartesianCoordinate4 value)
       => plane.m_x * value.X + plane.m_y * value.Y + plane.m_z * value.Z + plane.m_distance;
     /// <summary>Returns the dot product of a specified Vector4 and the Normal vector of this Plane.</summary>
-    public static double DotNormal(Plane plane, CartesianCoordinate4 value)
+    public static double DotNormal(Plane plane, CoordinateSystems.CartesianCoordinate4 value)
       => plane.m_x * value.X + plane.m_y * value.Y + plane.m_z * value.Z;
     /// <summary>Creates a new Plane whose normal vector is the source Plane's normal vector normalized.</summary>
     public static Plane Normalize(Plane value)
