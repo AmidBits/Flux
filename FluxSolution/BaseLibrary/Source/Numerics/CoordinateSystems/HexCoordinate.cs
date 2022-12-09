@@ -7,6 +7,8 @@ namespace Flux
     : IHexCoordinate<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
+    public static readonly HexCoordinate<TSelf> Zero;
+
     private readonly TSelf m_q;
     private readonly TSelf m_r;
     private readonly TSelf m_s;

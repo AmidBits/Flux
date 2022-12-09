@@ -7,6 +7,8 @@ namespace Flux
     : IPolarCoordinate<TSelf>
     where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
   {
+    public static readonly PolarCoordinate<TSelf> Zero;
+
     private readonly TSelf m_radius;
     private readonly TSelf m_azimuth;
 

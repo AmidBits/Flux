@@ -10,23 +10,22 @@ namespace Flux
     : ICartesianCoordinate4<double>//, IVector4<double>
   {
     /// <summary>Returns the vector (0,0,0,0).</summary>
-    public static CartesianCoordinate4 Zero
-      => new();
+    public static CartesianCoordinate4 Zero;
+
     /// <summary>Returns the vector (1,1,1,1).</summary>
-    public static CartesianCoordinate4 One
-      => new(1, 1, 1, 1);
+    public static CartesianCoordinate4 One => new(1, 1, 1, 1);
+
     /// <summary>Returns the vector (1,0,0,0).</summary>
-    public static CartesianCoordinate4 UnitX
-      => new(1, 0, 0, 0);
+    public static CartesianCoordinate4 UnitX => new(1, 0, 0, 0);
+
     /// <summary>Returns the vector (0,1,0,0).</summary>
-    public static CartesianCoordinate4 UnitY
-      => new(0, 1, 0, 0);
+    public static CartesianCoordinate4 UnitY => new(0, 1, 0, 0);
+
     /// <summary>Returns the vector (0,0,1,0).</summary>
-    public static CartesianCoordinate4 UnitZ
-      => new(0, 0, 1, 0);
+    public static CartesianCoordinate4 UnitZ => new(0, 0, 1, 0);
+
     /// <summary>Returns the vector (0,0,0,1).</summary>
-    public static CartesianCoordinate4 UnitW
-      => new(0, 0, 0, 1);
+    public static CartesianCoordinate4 UnitW => new(0, 0, 0, 1);
 
     private readonly System.Runtime.Intrinsics.Vector256<double> m_v256d;
 

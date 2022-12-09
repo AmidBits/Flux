@@ -160,6 +160,11 @@ namespace Flux
       where TResult : System.Numerics.IBinaryInteger<TResult>
       => result = new(TResult.CreateChecked(rounding.RoundNumber(source.X)), TResult.CreateChecked(rounding.RoundNumber(source.Y)), TResult.CreateChecked(rounding.RoundNumber(source.Z)));
 
+    /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
+    public static CartesianCoordinate4 ToCartesianCoordinate4<TSelf>(this ICartesianCoordinate3<TSelf> source, double w)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(double.CreateChecked(source.X), double.CreateChecked(source.Y), double.CreateChecked(source.Z), w);
+
     /// <summary>Creates a new <see cref="CylindricalCoordinate{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
     public static CylindricalCoordinate<TSelf> ToCylindricalCoordinate<TSelf>(this ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>

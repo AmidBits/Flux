@@ -7,6 +7,8 @@ namespace Flux
     : ISphericalCoordinate<TSelf>
     where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
   {
+    public static readonly SphericalCoordinate<TSelf> Zero;
+
     private readonly TSelf m_radius;
     private readonly TSelf m_inclination;
     private readonly TSelf m_azimuth;

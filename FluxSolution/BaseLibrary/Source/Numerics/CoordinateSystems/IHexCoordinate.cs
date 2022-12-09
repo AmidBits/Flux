@@ -110,7 +110,7 @@ namespace Flux
       where TSelf : System.Numerics.INumber<TSelf>
       => new(-source.R, -source.S, -source.Q);
 
-    public static HexCoordinate<TResult> Round<TSelf, TResult>(this IHexCoordinate<TSelf> source, RoundingMode mode = RoundingMode.HalfToEven)
+    public static HexCoordinate<TResult> Round<TSelf, TResult>(this IHexCoordinate<TSelf> source, RoundingMode mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
     {
@@ -138,19 +138,19 @@ namespace Flux
       );
     }
 
-    public static HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this IHexCoordinate<TSelf> source)
+    public static IHexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this IHexCoordinate<TSelf> source, out HexCoordinate<TResult> result)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TResult : System.Numerics.INumber<TResult>
-      => new(
+      => result = new HexCoordinate<TResult>(
         TResult.CreateChecked(source.Q),
         TResult.CreateChecked(source.R),
         TResult.CreateChecked(source.S)
       );
 
-    public static HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this IHexCoordinate<TSelf> source, RoundingMode mode)
+    public static IHexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this IHexCoordinate<TSelf> source, RoundingMode mode, out HexCoordinate<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
-      => Round<TSelf, TResult>(source, mode);
+      => result = Round<TSelf, TResult>(source, mode);
 
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<IHexCoordinate<TSelf>>> TraverseSpiral<TSelf>(this IHexCoordinate<TSelf> source, TSelf radius)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

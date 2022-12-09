@@ -7,6 +7,8 @@ namespace Flux
     : ICylindricalCoordinate<TSelf>
     where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
   {
+    public static readonly CylindricalCoordinate<TSelf> Zero;
+
     private readonly TSelf m_radius;
     private readonly TSelf m_azimuth;
     private readonly TSelf m_height;
