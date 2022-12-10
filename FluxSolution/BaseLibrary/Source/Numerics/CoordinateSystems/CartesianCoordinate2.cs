@@ -1,12 +1,9 @@
-using System.Text.RegularExpressions;
-
 namespace Flux.CoordinateSystems
 {
   /// <summary>A 2D cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly record struct CartesianCoordinate2<TSelf>
+  public readonly partial record struct CartesianCoordinate2<TSelf>
     : ICartesianCoordinate2<TSelf>
-    , System.IEquatable<CartesianCoordinate2<TSelf>>
     , System.Numerics.IAdditionOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
     , System.Numerics.IAdditiveIdentity<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
     , System.Numerics.IDecrementOperators<CartesianCoordinate2<TSelf>>
@@ -70,10 +67,10 @@ namespace Flux.CoordinateSystems
     public static TSelf ConvertToUniqueIndex(TSelf x, TSelf y, TSelf gridWidth)
       => x + (y * gridWidth);
 
-    //[GeneratedRegex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$")]
-    private static readonly System.Text.RegularExpressions.Regex m_regexParse = new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
+    [System.Text.RegularExpressions.GeneratedRegex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    private static partial System.Text.RegularExpressions.Regex ParsingRegex();
     public static CartesianCoordinate2<TSelf> Parse(string pointAsString)
-      => m_regexParse.Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && TSelf.TryParse(gX.Value, System.Globalization.NumberStyles.Number, null, out var x) && m.Groups["Y"] is var gY && gY.Success && TSelf.TryParse(gY.Value, System.Globalization.NumberStyles.Number, null, out var y)
+      => ParsingRegex().Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && TSelf.TryParse(gX.Value, System.Globalization.NumberStyles.Number, null, out var x) && m.Groups["Y"] is var gY && gY.Success && TSelf.TryParse(gY.Value, System.Globalization.NumberStyles.Number, null, out var y)
       ? new CartesianCoordinate2<TSelf>(x, y)
       : throw new System.ArgumentOutOfRangeException(nameof(pointAsString));
     public static bool TryParse(string pointAsString, out CartesianCoordinate2<TSelf> point)

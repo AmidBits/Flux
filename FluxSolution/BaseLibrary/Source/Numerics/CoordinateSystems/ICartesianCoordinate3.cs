@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace Flux
+﻿namespace Flux
 {
   #region ExtensionMethods
   public static partial class ExtensionMethods

@@ -7,7 +7,7 @@ namespace Flux.Model.MineSweeper
     {
       for (var i = 0; i < size.Width; i++)
         for (var j = 0; j < size.Height; j++)
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(i, j);
+          yield return new(i, j);
     }
   }
 }

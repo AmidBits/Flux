@@ -1,5 +1,3 @@
-using Flux.Quantities;
-
 namespace Flux.CoordinateSystems
 {
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
@@ -45,9 +43,9 @@ namespace Flux.CoordinateSystems
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public double Altitude { get => m_altitude; init => m_altitude = value; }
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => Angle.ConvertRadianToDegree(m_radLatitude); init => m_radLatitude = Angle.ConvertDegreeToRadian(value); }
+    public double Latitude { get => Quantities.Angle.ConvertRadianToDegree(m_radLatitude); init => m_radLatitude = Quantities.Angle.ConvertDegreeToRadian(value); }
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => Angle.ConvertRadianToDegree(m_radLongitude); init => m_radLongitude = Angle.ConvertDegreeToRadian(value); }
+    public double Longitude { get => Quantities.Angle.ConvertRadianToDegree(m_radLongitude); init => m_radLongitude = Quantities.Angle.ConvertDegreeToRadian(value); }
 
     /// <summary>Creates a new <see cref=" CartesianCoordinate3{double}"/> Equal Earth projected X, Y coordinate with the Z component containing the altitude.</summary>
     [System.Diagnostics.Contracts.Pure]

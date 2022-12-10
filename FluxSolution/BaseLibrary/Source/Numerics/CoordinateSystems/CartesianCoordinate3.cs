@@ -212,9 +212,8 @@ namespace Flux.CoordinateSystems
   /// <summary>Cartesian coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct CartesianCoordinate3<TSelf>
+  public readonly record struct CartesianCoordinate3<TSelf>
     : ICartesianCoordinate3<TSelf>
-    , System.IEquatable<CartesianCoordinate3<TSelf>>
     , System.Numerics.IAdditionOperators<CartesianCoordinate3<TSelf>, CartesianCoordinate3<TSelf>, CartesianCoordinate3<TSelf>>
     , System.Numerics.IAdditiveIdentity<CartesianCoordinate3<TSelf>, CartesianCoordinate3<TSelf>>
     , System.Numerics.IDecrementOperators<CartesianCoordinate3<TSelf>>
@@ -438,12 +437,12 @@ namespace Flux.CoordinateSystems
       throw new NotImplementedException();
     }
 
-    // IEquatable<>, System.Numerics.IEqualityOperators<>
-    public bool Equals(CartesianCoordinate3<TSelf> other) => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
-    public static bool operator ==(CartesianCoordinate3<TSelf> a, CartesianCoordinate3<TSelf> b) => a.Equals(b);
-    public static bool operator !=(CartesianCoordinate3<TSelf> a, CartesianCoordinate3<TSelf> b) => !a.Equals(b);
-    public override bool Equals([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] object? obj) => obj is CartesianCoordinate3<TSelf> o && Equals(o);
-    public override int GetHashCode() => System.HashCode.Combine(m_x, m_y, m_z);
+    //// IEquatable<>, System.Numerics.IEqualityOperators<>
+    //public bool Equals(CartesianCoordinate3<TSelf> other) => m_x == other.m_x && m_y == other.m_y && m_z == other.m_z;
+    //public static bool operator ==(CartesianCoordinate3<TSelf> a, CartesianCoordinate3<TSelf> b) => a.Equals(b);
+    //public static bool operator !=(CartesianCoordinate3<TSelf> a, CartesianCoordinate3<TSelf> b) => !a.Equals(b);
+    //public override bool Equals([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] object? obj) => obj is CartesianCoordinate3<TSelf> o && Equals(o);
+    //public override int GetHashCode() => System.HashCode.Combine(m_x, m_y, m_z);
 
     //// IComparable<>, System.Numerics.INumber<>
     //public int CompareTo(CartesianCoordinate3<TSelf> other) => EuclideanLength() is var el && other.EuclideanLength() is var oel && el > oel ? 1 : el < oel ? -1 : 0;

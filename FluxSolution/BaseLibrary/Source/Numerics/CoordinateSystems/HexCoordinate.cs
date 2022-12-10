@@ -1,6 +1,6 @@
 namespace Flux.CoordinateSystems
 {
-  /// <summary>Cube hex coordinate system using integer.</summary>
+  /// <summary>A cube hex coordinate system.</summary>
   /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct HexCoordinate<TSelf>
