@@ -19,12 +19,12 @@ namespace Flux.NumberSequences
 
     #region Implemented interfaces
     // INumberSequence
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence() => GetNaturalNumbers(m_includeZero);
 
     // IEnumerable<>
-    [System.Diagnostics.Contracts.Pure] public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator() => GetSequence().GetEnumerator();
-    [System.Diagnostics.Contracts.Pure] System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator() => GetSequence().GetEnumerator();
+     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     #endregion Implemented interfaces
   }
 }

@@ -13,7 +13,7 @@ namespace Flux.Sorting
       : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public void SortInPlaceOld(System.Span<T> source)
     {
       var sourceLength = source.Length;
@@ -23,7 +23,7 @@ namespace Flux.Sorting
           source.Swap(j, j - 1);
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public void SortInPlace(System.Span<T> source)
     {
       var sourceLength = source.Length;

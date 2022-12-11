@@ -49,21 +49,21 @@ namespace Flux
       m_intercept = m_avgY - m_slope * m_avgX;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public double AvgX
       => m_avgX;
-    [System.Diagnostics.Contracts.Pure]
+    
     public double AvgY
       => m_avgY;
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public int Count
       => m_count;
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Slope
       => m_slope;
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Intercept
       => m_intercept;
   }

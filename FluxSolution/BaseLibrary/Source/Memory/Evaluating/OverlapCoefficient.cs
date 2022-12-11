@@ -12,11 +12,11 @@ namespace Flux.Metrical
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public double MeasureSimilarity(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => GetSimilarityCoefficient(source.ToArray(), target.ToArray(), EqualityComparer);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static double GetSimilarityCoefficient(T[] source, T[] target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       => (double)System.Linq.Enumerable.Count(System.Linq.Enumerable.Intersect(source, target, equalityComparer)) / (double)System.Math.Min(source.Length, target.Length);
   }

@@ -40,7 +40,7 @@
 
       public System.Collections.Generic.IComparer<T> Comparer { get; private set; }
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public int[,] GetMatrix(System.ReadOnlySpan<T> source, out int length)
       {
         var sourceLength = source.Length;
@@ -74,7 +74,7 @@
         return matrix;
       }
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public T[] GetSubsequence(System.ReadOnlySpan<T> source, out int[,] matrix)
       {
         matrix = GetMatrix(source, out var length);
@@ -96,7 +96,7 @@
         return subsequence;
       }
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public int GetLengthMeasure(System.ReadOnlySpan<T> source)
       {
         GetMatrix(source, out var length);

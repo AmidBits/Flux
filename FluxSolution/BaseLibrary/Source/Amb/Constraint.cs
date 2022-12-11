@@ -14,10 +14,10 @@
 
     #region Implemented interfaces
     // IConstraint
-    [System.Diagnostics.Contracts.Pure]
+    
     public int AppliesForItems
       => m_appliesForItems;
-    [System.Diagnostics.Contracts.Pure]
+    
     public bool Invoke()
       => m_predicate?.Invoke() ?? default;
     #endregion Implemented interfaces

@@ -21,11 +21,11 @@ namespace Flux.Metrical
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public double GetNormalizedEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1 - GetNormalizedSimilarity(source, target);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public double GetNormalizedSimilarity(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceCount = source.Length;

@@ -12,7 +12,7 @@ namespace Flux.NumberSequences
       => System.Linq.Enumerable.First(System.Linq.Enumerable.Where(GetPerrinNumbers(), (e, i) => i == index));
     /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPerrinNumbers()
     {
       System.Numerics.BigInteger a = 3, b = 0, c = 2;
@@ -39,10 +39,10 @@ namespace Flux.NumberSequences
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => GetPerrinNumbers();
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    [System.Diagnostics.Contracts.Pure]
+    
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

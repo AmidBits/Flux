@@ -82,8 +82,8 @@ namespace Flux.Colors
     #endregion Static member
 
     #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Hwb a, Hwb b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Hwb a, Hwb b) => !a.Equals(b);
+     public static bool operator ==(Hwb a, Hwb b) => a.Equals(b);
+     public static bool operator !=(Hwb a, Hwb b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

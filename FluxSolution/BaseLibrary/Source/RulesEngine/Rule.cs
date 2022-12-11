@@ -26,22 +26,22 @@ namespace Flux.RulesEngine
       m_value = value;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public string Name
       => m_name;
-    [System.Diagnostics.Contracts.Pure]
+    
     public string Operator 
       => m_operator;
-    [System.Diagnostics.Contracts.Pure]
+    
     public object Value 
       => m_value;
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Func<T, bool> Compile<T>()
       => CompileRule<T>(this);
 
     #region Static methods
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Linq.Expressions.Expression BuildExpression<T>(Rule rule, System.Linq.Expressions.ParameterExpression parameterExpression)
     {
       var propertyType = typeof(T).GetProperty(rule.m_name)?.PropertyType ?? throw new System.ArgumentNullException(nameof(rule), $"There is no property named {rule.m_name} in the type.");
@@ -64,7 +64,7 @@ namespace Flux.RulesEngine
       }
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Func<T, bool> CompileRule<T>(Rule rule)
     {
       var parameterExpression = System.Linq.Expressions.Expression.Parameter(typeof(T));
@@ -75,29 +75,29 @@ namespace Flux.RulesEngine
     #endregion Static methods
 
     #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator ==(Rule a, Rule b)
       => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator !=(Rule a, Rule b)
       => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // System.IEquatable<Rule>
-    [System.Diagnostics.Contracts.Pure]
+    
     public bool Equals(Rule other)
       => m_name == other.m_name && m_operator == other.m_operator && m_value == other.m_value;
     #endregion Implemented interfaces
 
     #region Object overrides
-    [System.Diagnostics.Contracts.Pure]
+    
     public override bool Equals(object? obj)
       => obj is Rule o && Equals(o);
-    [System.Diagnostics.Contracts.Pure]
+    
     public override int GetHashCode()
       => System.HashCode.Combine(m_name, m_operator, m_value);
-    [System.Diagnostics.Contracts.Pure]
+    
     public override string? ToString()
       => $"{nameof(Rule)} {{ \"{m_name}\" {m_operator} '{m_value}' }}";
     #endregion Object overrides

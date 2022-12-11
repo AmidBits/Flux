@@ -22,7 +22,7 @@ namespace Flux.CoordinateSystems
     public TSelf Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
     ///// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="Vector2"/>.</summary>
-    //[System.Diagnostics.Contracts.Pure]
+    //
     //public CartesianCoordinate2<TSelf> ToCartesianCoordinate2()
     // => new(
     //   m_radius * TSelf.Cos(m_azimuth),

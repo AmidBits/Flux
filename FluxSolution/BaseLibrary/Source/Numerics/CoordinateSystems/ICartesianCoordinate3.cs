@@ -3,7 +3,7 @@
   #region ExtensionMethods
   public static partial class ExtensionMethods
   {
-    public static TSelf AbsoluteSum<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    public static TSelf AbsoluteSum<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.Abs(source.X) + TSelf.Abs(source.Y) + TSelf.Abs(source.Z);
 
@@ -12,9 +12,9 @@
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
-    public static TSelf AngleTo<TSelf>(this ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b)
+    public static TSelf AngleTo<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> a, CoordinateSystems.ICartesianCoordinate3<TSelf> b)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
-      => TSelf.Acos(TSelf.Clamp(ICartesianCoordinate3<TSelf>.DotProduct(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -TSelf.One, TSelf.One));
+      => TSelf.Acos(TSelf.Clamp(CoordinateSystems.ICartesianCoordinate3<TSelf>.DotProduct(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -TSelf.One, TSelf.One));
 
     /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate3{TSelf}"/>.</summary>
     /// <remarks>An index can be uniquely mapped to 3D cartesian coordinates using a <paramref name="gridWidth"/> and <paramref name="gridHeight"/>. The 3D cartesian coordinates can also be converted back to a unique index with the same grid width and height values.</remarks>
@@ -33,24 +33,24 @@
 
     /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static TSelf ChebyshevLength<TSelf>(this ICartesianCoordinate3<TSelf> source, TSelf edgeLength)
+    public static TSelf ChebyshevLength<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source, TSelf edgeLength)
       where TSelf : System.Numerics.INumber<TSelf>
       => GenericMath.Max(TSelf.Abs(source.X / edgeLength), TSelf.Abs(source.Y / edgeLength), TSelf.Abs(source.Z / edgeLength));
 
     /// <summary>Returns the dot product of two non-normalized 3D vectors.</summary>
     /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
     /// <see href="https://gamedev.stackexchange.com/a/89832/129646"/>
-    public static TSelf DotProductEx<TSelf>(this ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b)
+    public static TSelf DotProductEx<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> a, CoordinateSystems.ICartesianCoordinate3<TSelf> b)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
-      => ICartesianCoordinate3<TSelf>.DotProduct(a, b) / TSelf.Sqrt(a.EuclideanLengthSquared() * b.EuclideanLengthSquared());
+      => CoordinateSystems.ICartesianCoordinate3<TSelf>.DotProduct(a, b) / TSelf.Sqrt(a.EuclideanLengthSquared() * b.EuclideanLengthSquared());
 
     /// <summary>Compute the Euclidean length of the vector.</summary>
-    public static TSelf EuclideanLength<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    public static TSelf EuclideanLength<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => TSelf.Sqrt(source.EuclideanLengthSquared());
 
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
-    public static TSelf EuclideanLengthSquared<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    public static TSelf EuclideanLengthSquared<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => source.X * source.X + source.Y * source.Y + source.Z * source.Z;
 
@@ -73,7 +73,7 @@
     //}
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> Lerp<TSelf>(this ICartesianCoordinate3<TSelf> source, ICartesianCoordinate3<TSelf> target, TSelf mu)
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> Lerp<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source, CoordinateSystems.ICartesianCoordinate3<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       var imu = TSelf.One - mu;
@@ -83,23 +83,23 @@
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static TSelf ManhattanLength<TSelf>(this ICartesianCoordinate3<TSelf> source, TSelf edgeLength)
+    public static TSelf ManhattanLength<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source, TSelf edgeLength)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.Abs(source.X / edgeLength) + TSelf.Abs(source.Y / edgeLength) + TSelf.Abs(source.Z / edgeLength);
 
     /// <summary>Lerp is a normalized linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> Nlerp<TSelf>(this ICartesianCoordinate3<TSelf> source, ICartesianCoordinate3<TSelf> target, TSelf mu)
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> Nlerp<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source, CoordinateSystems.ICartesianCoordinate3<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => Lerp(source, target, mu).Normalized();
 
-    /// <summary>Creates a new normalized <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> Normalized<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    /// <summary>Creates a new normalized <see cref="CoordinateSystems.CartesianCoordinate2{TSelf}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> Normalized<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => source.EuclideanLength() is var m && m != TSelf.Zero ? source.ToCartesianCoordinate3() / m : source.ToCartesianCoordinate3();
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public static int OrthantNumber<TSelf>(this ICartesianCoordinate3<TSelf> source, ICartesianCoordinate3<TSelf> center, OrthantNumbering numbering)
+    public static int OrthantNumber<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source, CoordinateSystems.ICartesianCoordinate3<TSelf> center, OrthantNumbering numbering)
       where TSelf : System.Numerics.INumber<TSelf>
       => numbering switch
       {
@@ -111,7 +111,7 @@
 
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalized, and does not normalize the output.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> Orthogonal<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> Orthogonal<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.Abs(source.X) > TSelf.Abs(source.Z)
       ? new(
@@ -126,10 +126,10 @@
         );
 
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> Slerp<TSelf>(this ICartesianCoordinate3<TSelf> source, ICartesianCoordinate3<TSelf> target, TSelf mu)
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> Slerp<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source, CoordinateSystems.ICartesianCoordinate3<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
     {
-      var dp = TSelf.Clamp(ICartesianCoordinate3<TSelf>.DotProduct(source, target), -TSelf.One, TSelf.One); // Ensure precision doesn't exceed acos limits.
+      var dp = TSelf.Clamp(CoordinateSystems.ICartesianCoordinate3<TSelf>.DotProduct(source, target), -TSelf.One, TSelf.One); // Ensure precision doesn't exceed acos limits.
       var theta = TSelf.Acos(dp) * mu; // Angle between start and desired.
       var cos = TSelf.Cos(theta);
       var sin = TSelf.Sin(theta);
@@ -137,34 +137,34 @@
       return new(source.X * cos + (target.X - source.X) * dp * sin, source.Y * cos + (target.Y - source.Y) * dp * sin, source.Z * cos + (target.Z - source.Z) * dp * sin);
     }
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/> using the X and Y.</summary>
-    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2XY<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    /// <summary>Creates a new <see cref="CoordinateSystems.CartesianCoordinate2{TSelf}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate3{TSelf}"/> using the X and Y.</summary>
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2XY<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(source.X, source.Y);
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
+    /// <summary>Creates a new <see cref="CoordinateSystems.CartesianCoordinate3{TSelf}"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
     public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this System.Numerics.Vector3 source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y), TSelf.CreateChecked(source.Z));
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    /// <summary>Creates a new <see cref="CoordinateSystems.CartesianCoordinate3{TSelf}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate3{TSelf}"/>.</summary>
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => source is CoordinateSystems.CartesianCoordinate3<TSelf> cc ? cc : new(source.X, source.Y, source.Z);
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate3{TResult}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/> using a <see cref="INumberRoundable{TSelf, TSelf}"/>.</summary>
-    public static CoordinateSystems.CartesianCoordinate3<TResult> ToCartesianCoordinate3<TSelf, TResult>(this ICartesianCoordinate3<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out CoordinateSystems.CartesianCoordinate3<TResult> result)
+    /// <summary>Creates a new <see cref="CoordinateSystems.CartesianCoordinate3{TResult}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate3{TSelf}"/> using a <see cref="INumberRoundable{TSelf, TSelf}"/>.</summary>
+    public static CoordinateSystems.CartesianCoordinate3<TResult> ToCartesianCoordinate3<TSelf, TResult>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out CoordinateSystems.CartesianCoordinate3<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
       => result = new(TResult.CreateChecked(rounding.RoundNumber(source.X)), TResult.CreateChecked(rounding.RoundNumber(source.Y)), TResult.CreateChecked(rounding.RoundNumber(source.Z)));
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static CoordinateSystems.CartesianCoordinate4 ToCartesianCoordinate4<TSelf>(this ICartesianCoordinate3<TSelf> source, double w)
+    /// <summary>Creates a new <see cref="CoordinateSystems.CartesianCoordinate3{TSelf}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate3{TSelf}"/>.</summary>
+    public static CoordinateSystems.CartesianCoordinate4 ToCartesianCoordinate4<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source, double w)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(double.CreateChecked(source.X), double.CreateChecked(source.Y), double.CreateChecked(source.Z), w);
 
-    /// <summary>Creates a new <see cref="CylindricalCoordinate{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static CoordinateSystems.CylindricalCoordinate<TSelf> ToCylindricalCoordinate<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    /// <summary>Creates a new <see cref="CoordinateSystems.CylindricalCoordinate{TSelf}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate3{TSelf}"/>.</summary>
+    public static CoordinateSystems.CylindricalCoordinate<TSelf> ToCylindricalCoordinate<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         TSelf.Sqrt(source.X * source.X + source.Y * source.Y),
@@ -174,12 +174,12 @@
 
     /////// <summary>Returns a quaternion from two vectors.</summary>
     /////// <see cref="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/>
-    ////[System.Diagnostics.Contracts.Pure]
+    ////
     ////public Quaternion ToQuaternion(CartesianCoordinate3 rotatingTo)
     ////  => Quaternion.FromTwoVectors(this, rotatingTo);
 
-    /// <summary>Creates a new <see cref="SphericalCoordinate{TSelf}"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static CoordinateSystems.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    /// <summary>Creates a new <see cref="CoordinateSystems.SphericalCoordinate{TSelf}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate3{TSelf}"/>.</summary>
+    public static CoordinateSystems.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var x2y2 = source.X * source.X + source.Y * source.Y;
@@ -193,12 +193,12 @@
 
     /// <summary>Creates a new 'mapped' unique index from a <see cref="ICartesianCoordinate3{TSelf}"/> using the <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
     /// <remarks>A 3D cartesian coordinate can be uniquely indexed using a <paramref name="gridWidth"/> and <paramref name="gridHeight"/>. The unique index can also be converted back to a 3D cartesian coordinate with the same grid width and height values.</remarks>
-    public static TSelf ToUniqueIndex<TSelf>(this ICartesianCoordinate3<TSelf> source, TSelf gridWidth, TSelf gridHeight)
+    public static TSelf ToUniqueIndex<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source, TSelf gridWidth, TSelf gridHeight)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => source.X + (source.Y * gridWidth) + (source.Z * gridWidth * gridHeight);
 
-    /// <summary>Creates a new <see cref="System.Numerics.Vector3"/> from a <see cref="ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static System.Numerics.Vector3 ToVector3<TSelf>(this ICartesianCoordinate3<TSelf> source)
+    /// <summary>Creates a new <see cref="System.Numerics.Vector3"/> from a <see cref="CoordinateSystems.ICartesianCoordinate3{TSelf}"/>.</summary>
+    public static System.Numerics.Vector3 ToVector3<TSelf>(this CoordinateSystems.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(float.CreateChecked(source.X), float.CreateChecked(source.Y), float.CreateChecked(source.Z));
 
@@ -208,34 +208,37 @@
   }
   #endregion ExtensionMethods
 
-  /// <summary>Cartesian 3D coordinate.</summary>
-  public interface ICartesianCoordinate3<TSelf>
-    : System.IFormattable
-    where TSelf : System.Numerics.INumber<TSelf>
+  namespace CoordinateSystems
   {
-    TSelf X { get; }
-    TSelf Y { get; }
-    TSelf Z { get; }
+    /// <summary>Cartesian 3D coordinate.</summary>
+    public interface ICartesianCoordinate3<TSelf>
+      : System.IFormattable
+      where TSelf : System.Numerics.INumber<TSelf>
+    {
+      TSelf X { get; }
+      TSelf Y { get; }
+      TSelf Z { get; }
 
-    /// <summary>Returns the cross product of two 3D vectors as out variables.</summary>
-    static CoordinateSystems.CartesianCoordinate3<TSelf> CrossProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b)
-     => new(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
+      /// <summary>Returns the cross product of two 3D vectors as out variables.</summary>
+      static CoordinateSystems.CartesianCoordinate3<TSelf> CrossProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b)
+       => new(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
 
-    /// <summary>Returns the dot product of two normalized 3D vectors.</summary>
-    static TSelf DotProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b)
-     => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
+      /// <summary>Returns the dot product of two normalized 3D vectors.</summary>
+      static TSelf DotProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b)
+       => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
 
-    /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
-    static TSelf ScalarTripleProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b, ICartesianCoordinate3<TSelf> c)
-      => DotProduct(a, CrossProduct(b, c));
+      /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
+      /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
+      static TSelf ScalarTripleProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b, ICartesianCoordinate3<TSelf> c)
+        => DotProduct(a, CrossProduct(b, c));
 
-    /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
-    static CoordinateSystems.CartesianCoordinate3<TSelf> VectorTripleProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b, ICartesianCoordinate3<TSelf> c)
-     => CrossProduct(a, CrossProduct(b, c));
+      /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
+      /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
+      static CoordinateSystems.CartesianCoordinate3<TSelf> VectorTripleProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b, ICartesianCoordinate3<TSelf> c)
+       => CrossProduct(a, CrossProduct(b, c));
 
-    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-      => $"{GetType().Name} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N6"}}}", Z)} }}";
+      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+        => $"{GetType().Name} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N6"}}}", Z)} }}";
+    }
   }
 }

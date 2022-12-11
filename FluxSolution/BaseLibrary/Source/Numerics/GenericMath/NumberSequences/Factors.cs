@@ -51,7 +51,7 @@ namespace Flux.NumberSequences
     // https://codeforces.com/blog/entry/22229
     /// <summary>Generates an array of divisor counts of all numbers less than or equal to the specified number. This is done as with the sum of divisors, only increase by 1 instead of by the divisor.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static int[] GenerateCountOfFactors(int number)
     {
       var counts = new int[number + 1];
@@ -62,7 +62,7 @@ namespace Flux.NumberSequences
     }
     /// <summary>Generates am array of Euler totient values for numbers up to the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static int[] GenerateEulerTotient(int number)
     {
       var totient = new int[number + 1];
@@ -76,7 +76,7 @@ namespace Flux.NumberSequences
     }
     /// <summary>Generates am array of the largest prime factors for numbers up to the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static int[] GenerateLargestPrimeFactor(int number)
     {
       var factor = new int[number + 1];
@@ -89,7 +89,7 @@ namespace Flux.NumberSequences
     }
     /// <summary>Generates an array of divisor sums of all numbers less than or equal to the specified number. This is done as the count of divisors, only we increase by the divisor instead of by 1.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static int[] GenerateSumOfFactors(int number)
     {
       var sums = new int[number + 1];
@@ -110,7 +110,7 @@ namespace Flux.NumberSequences
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
     /// <remarks>This implementaion does not order the result.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDivisors(System.Numerics.BigInteger number)
     {
       if (number > 0)
@@ -156,7 +156,7 @@ namespace Flux.NumberSequences
 
     #region Implemented interfaces
     // INumericSequence
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
     {
       foreach (var divisor in GetDivisors(Number))
@@ -164,17 +164,17 @@ namespace Flux.NumberSequences
     }
 
     // INumberSubset
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSubset(System.Numerics.BigInteger number)
     {
       foreach (var divisor in GetDivisors(Number))
         yield return divisor;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    [System.Diagnostics.Contracts.Pure]
+    
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

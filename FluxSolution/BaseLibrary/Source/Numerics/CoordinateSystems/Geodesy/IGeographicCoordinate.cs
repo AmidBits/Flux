@@ -4,7 +4,7 @@
   {
     /// <summary>Converts the geographic coordinates to spherical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static CoordinateSystems.SphericalCoordinate<TSelf> ToSphericalCoordinates<TSelf>(this IGeographicCoordinate<TSelf> source)
+    public static CoordinateSystems.SphericalCoordinate<TSelf> ToSphericalCoordinates<TSelf>(this CoordinateSystems.IGeographicCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         source.Altitude,
@@ -21,18 +21,21 @@
     //  );
   }
 
-  public interface IGeographicCoordinate<TSelf>
-    : System.IFormattable
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
+  namespace CoordinateSystems
   {
-    /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    TSelf Altitude { get; init; }
-    /// <summary>The latitude component of the geographic position in degrees. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    TSelf Latitude { get; init; }
-    /// <summary>The longitude component of the geographic position in degrees. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    TSelf Longitude { get; init; }
+    public interface IGeographicCoordinate<TSelf>
+      : System.IFormattable
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    {
+      /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
+      TSelf Altitude { get; init; }
+      /// <summary>The latitude component of the geographic position in degrees. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
+      TSelf Latitude { get; init; }
+      /// <summary>The longitude component of the geographic position in degrees. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
+      TSelf Longitude { get; init; }
 
-    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-      => $"{GetType().Name} {{ Latitude = {new Flux.Latitude(double.CreateChecked(Latitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Latitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Longitude = {new Flux.Longitude(double.CreateChecked(Longitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Longitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Altitude = {new Quantities.Length(double.CreateChecked(Altitude)).ToUnitString(format: format ?? "N1")} }}";
+      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+        => $"{GetType().Name} {{ Latitude = {new Quantities.Latitude(double.CreateChecked(Latitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Latitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Longitude = {new Quantities.Longitude(double.CreateChecked(Longitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Longitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Altitude = {new Quantities.Length(double.CreateChecked(Altitude)).ToUnitString(format: format ?? "N1")} }}";
+    }
   }
 }

@@ -21,7 +21,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-
+      var a = new Flux.Quantities.Azimuth(260);
+      var b = new Flux.Quantities.Azimuth(270);
+      var c = a - b;
     }
 
     private static void Main(string[] args)

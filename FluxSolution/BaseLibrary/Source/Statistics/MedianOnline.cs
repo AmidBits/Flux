@@ -49,7 +49,7 @@ namespace Flux
         Add(value);
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public double EffectiveMedian()
     {
       var maxHeapCount = m_maxHeap.Count;
@@ -65,7 +65,7 @@ namespace Flux
         return (maxHeapPeek + minHeapPeek) / 2.0;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public override string ToString()
       => $"{GetType().Name} {{ {EffectiveMedian()} [{m_minHeap.Count}:{m_maxHeap.Count}] }}";
   }

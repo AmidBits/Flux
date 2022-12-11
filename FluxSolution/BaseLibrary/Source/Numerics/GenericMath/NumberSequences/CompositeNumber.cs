@@ -4,7 +4,7 @@ namespace Flux.NumberSequences
     : INumericSequence<System.Numerics.BigInteger>
   {
     #region Static methods
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool IsComposite(System.Numerics.BigInteger value)
     {
       if (value <= long.MaxValue)
@@ -25,7 +25,7 @@ namespace Flux.NumberSequences
       return false;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool IsComposite(int value)
     {
       if (value <= 3)
@@ -42,7 +42,7 @@ namespace Flux.NumberSequences
 
       return false;
     }
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool IsComposite(long value)
     {
       if (value <= int.MaxValue)
@@ -63,7 +63,7 @@ namespace Flux.NumberSequences
       return false;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCompositeNumbers()
     {
       for (var k = System.Numerics.BigInteger.One; ; k++)
@@ -73,7 +73,7 @@ namespace Flux.NumberSequences
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Highly_composite_number"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyCompositeNumbers()
     {
       var largestCountOfDivisors = System.Numerics.BigInteger.Zero;
@@ -91,10 +91,10 @@ namespace Flux.NumberSequences
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => GetCompositeNumbers();
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    [System.Diagnostics.Contracts.Pure]
+    
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

@@ -7,7 +7,7 @@
     public static readonly EqualEarthProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public CoordinateSystems.CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate<double> location)
+    public CoordinateSystems.CartesianCoordinate3<double> ProjectForward(CoordinateSystems.IGeographicCoordinate<double> location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -29,7 +29,7 @@
 
       return new(x, y, location.Altitude);
     }
-    public IGeographicCoordinate<double> ProjectReverse(ICartesianCoordinate3<double> location)
+    public CoordinateSystems.IGeographicCoordinate<double> ProjectReverse(CoordinateSystems.ICartesianCoordinate3<double> location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;

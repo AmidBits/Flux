@@ -44,7 +44,7 @@ namespace Flux
 
       #region Implemented interfaces
       // INumberSequence
-      [System.Diagnostics.Contracts.Pure]
+      
       public System.Collections.Generic.IEnumerable<TSelf> GetSequence()
       {
         for (TSelf n = m_startNumber, c = m_count - TSelf.One; c >= TSelf.Zero; n += m_stepSize, c--)
@@ -52,8 +52,8 @@ namespace Flux
       }
 
       // IEnumerable<>
-      [System.Diagnostics.Contracts.Pure] public System.Collections.Generic.IEnumerator<TSelf> GetEnumerator() => GetSequence().GetEnumerator();
-      [System.Diagnostics.Contracts.Pure] System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+       public System.Collections.Generic.IEnumerator<TSelf> GetEnumerator() => GetSequence().GetEnumerator();
+       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
       #endregion Implemented interfaces
     }
   }

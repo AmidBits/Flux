@@ -33,8 +33,8 @@ namespace Flux.Colors
     #endregion Static members
 
     #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Ahsi a, Ahsi b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Ahsi a, Ahsi b) => !a.Equals(b);
+     public static bool operator ==(Ahsi a, Ahsi b) => a.Equals(b);
+     public static bool operator !=(Ahsi a, Ahsi b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interface

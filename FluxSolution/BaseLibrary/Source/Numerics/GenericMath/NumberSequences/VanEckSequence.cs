@@ -16,7 +16,7 @@ namespace Flux.NumberSequences
     /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetVanEckSequence(System.Numerics.BigInteger startWith)
     {
       if (startWith < 0) throw new System.ArgumentOutOfRangeException(nameof(startWith));
@@ -48,14 +48,14 @@ namespace Flux.NumberSequences
 
     #region Implemented interfaces
     // INumberSequence
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => GetVanEckSequence(StartWith);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    [System.Diagnostics.Contracts.Pure]
+    
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

@@ -350,20 +350,20 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      [System.Diagnostics.Contracts.Pure] public static explicit operator double(Fraction v) => v.Value;
+       public static explicit operator double(Fraction v) => v.Value;
 
-      [System.Diagnostics.Contracts.Pure] public static bool operator <(Fraction a, Fraction b) => a.CompareTo(b) < 0;
-      [System.Diagnostics.Contracts.Pure] public static bool operator <=(Fraction a, Fraction b) => a.CompareTo(b) <= 0;
-      [System.Diagnostics.Contracts.Pure] public static bool operator >(Fraction a, Fraction b) => a.CompareTo(b) > 0;
-      [System.Diagnostics.Contracts.Pure] public static bool operator >=(Fraction a, Fraction b) => a.CompareTo(b) >= 0;
+       public static bool operator <(Fraction a, Fraction b) => a.CompareTo(b) < 0;
+       public static bool operator <=(Fraction a, Fraction b) => a.CompareTo(b) <= 0;
+       public static bool operator >(Fraction a, Fraction b) => a.CompareTo(b) > 0;
+       public static bool operator >=(Fraction a, Fraction b) => a.CompareTo(b) >= 0;
 
-      [System.Diagnostics.Contracts.Pure] public static bool operator ==(Fraction a, Fraction b) => a.Equals(b);
-      [System.Diagnostics.Contracts.Pure] public static bool operator !=(Fraction a, Fraction b) => !a.Equals(b);
+       public static bool operator ==(Fraction a, Fraction b) => a.Equals(b);
+       public static bool operator !=(Fraction a, Fraction b) => !a.Equals(b);
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator -(Fraction f)
         => new(f.m_numerator, -f.m_denominator, false);
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator +(Fraction a, Fraction b)
       {
         var lcm = GenericMath.LeastCommonMultiple(a.m_denominator, b.m_denominator);
@@ -374,31 +374,31 @@ namespace Flux
         return new Fraction(an + bn, lcm);
       }
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator +(Fraction a, System.Numerics.BigInteger b)
         => a + new Fraction(b);
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator /(Fraction a, Fraction b)
         => new(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator /(Fraction a, System.Numerics.BigInteger b)
         => a / new Fraction(b);
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator *(Fraction a, Fraction b)
         => new(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator *(Fraction a, System.Numerics.BigInteger b)
         => a * new Fraction(b);
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator %(Fraction a, System.Numerics.BigInteger b)
         => new(a.m_numerator % (a.m_denominator * b), a.m_denominator);
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator -(Fraction a, Fraction b)
       {
         var lcm = GenericMath.LeastCommonMultiple(a.m_denominator, b.m_denominator);
@@ -409,7 +409,7 @@ namespace Flux
         return new Fraction(an - bn, lcm);
       }
 
-      [System.Diagnostics.Contracts.Pure]
+      
       public static Fraction operator -(Fraction a, System.Numerics.BigInteger b)
         => a - new Fraction(b);
 
@@ -417,7 +417,7 @@ namespace Flux
 
       #region Implemented interfaces
       // IComparable<>
-      [System.Diagnostics.Contracts.Pure]
+      
       public int CompareTo(Fraction other)
         => (Sign != other.Sign)
         ? (Sign - other.Sign)
@@ -425,43 +425,43 @@ namespace Flux
         ? m_numerator.CompareTo(other.m_numerator)
         : (m_numerator * other.m_denominator).CompareTo(m_denominator * other.m_numerator);
       // IComparable
-      [System.Diagnostics.Contracts.Pure] public int CompareTo(object? other) => other is Fraction o ? CompareTo(o) : -1;
+       public int CompareTo(object? other) => other is Fraction o ? CompareTo(o) : -1;
 
       #region IConvertible
-      [System.Diagnostics.Contracts.Pure] public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-      [System.Diagnostics.Contracts.Pure] public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
-      [System.Diagnostics.Contracts.Pure] public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
-      [System.Diagnostics.Contracts.Pure] public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
-      [System.Diagnostics.Contracts.Pure] public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
-      [System.Diagnostics.Contracts.Pure] public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
-      [System.Diagnostics.Contracts.Pure] public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
-      [System.Diagnostics.Contracts.Pure] public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
-      [System.Diagnostics.Contracts.Pure] public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
-      [System.Diagnostics.Contracts.Pure] public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
-      [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
-      [System.Diagnostics.Contracts.Pure] public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-      [System.Diagnostics.Contracts.Pure] public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
-      [System.Diagnostics.Contracts.Pure] public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
-      [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
-      [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
-      [System.CLSCompliant(false)][System.Diagnostics.Contracts.Pure] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
+       public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+       public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
+       public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
+       public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
+       public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
+       public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
+       public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
+       public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
+       public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
+       public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
+      [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
+       public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
+       public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
+       public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
+      [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
+      [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
+      [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
       // IEquatable<>
-      [System.Diagnostics.Contracts.Pure] public bool Equals(Fraction other) => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
+       public bool Equals(Fraction other) => m_numerator == other.m_numerator && m_denominator == other.m_denominator;
 
       // IQuantifiable<>
-      [System.Diagnostics.Contracts.Pure] public double Value => ToQuotient();
+       public double Value => ToQuotient();
       #endregion Implemented interfaces
 
       #region Object overrides
-      [System.Diagnostics.Contracts.Pure]
+      
       public override bool Equals(object? obj)
         => obj is Fraction o && Equals(o);
-      [System.Diagnostics.Contracts.Pure]
+      
       public override int GetHashCode()
         => System.HashCode.Combine(m_numerator, m_denominator);
-      [System.Diagnostics.Contracts.Pure]
+      
       public override string ToString()
       {
         var sb = new System.Text.StringBuilder();

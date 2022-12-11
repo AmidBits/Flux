@@ -27,17 +27,17 @@ namespace Flux
     }
 
     /// <summary>The longest diameter of an ellipse.</summary>
-    [System.Diagnostics.Contracts.Pure] public double SemiMajorAxis { get => m_semiMajorAxis; init => m_semiMajorAxis = value; }
+     public double SemiMajorAxis { get => m_semiMajorAxis; init => m_semiMajorAxis = value; }
     /// <summary>The amount by which an orbit around another body deviates from a perfect circle.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
+     public double Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
     /// <summary>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public double Inclination { get => Quantities.Angle.ConvertRadianToDegree(m_radInclination); init => m_radInclination = Quantities.Angle.ConvertDegreeToRadian(value); }
+     public double Inclination { get => Quantities.Angle.ConvertRadianToDegree(m_radInclination); init => m_radInclination = Quantities.Angle.ConvertDegreeToRadian(value); }
     /// <summary>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
-    [System.Diagnostics.Contracts.Pure] public double LongitudeOfAscendingNode { get => Quantities.Angle.ConvertRadianToDegree(m_radLongitudeOfAscendingNode); init => m_radLongitudeOfAscendingNode = Quantities.Angle.ConvertDegreeToRadian(value); }
+     public double LongitudeOfAscendingNode { get => Quantities.Angle.ConvertRadianToDegree(m_radLongitudeOfAscendingNode); init => m_radLongitudeOfAscendingNode = Quantities.Angle.ConvertDegreeToRadian(value); }
     /// <summary>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
-    [System.Diagnostics.Contracts.Pure] public double ArgumentOfPeriapsis { get => Quantities.Angle.ConvertRadianToDegree(m_radArgumentOfPeriapsis); init => m_radArgumentOfPeriapsis = Quantities.Angle.ConvertDegreeToRadian(value); }
+     public double ArgumentOfPeriapsis { get => Quantities.Angle.ConvertRadianToDegree(m_radArgumentOfPeriapsis); init => m_radArgumentOfPeriapsis = Quantities.Angle.ConvertDegreeToRadian(value); }
     /// <summary>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</summary>
-    [System.Diagnostics.Contracts.Pure] public double TrueAnomaly { get => m_trueAnomaly; init => m_trueAnomaly = value; }
+     public double TrueAnomaly { get => m_trueAnomaly; init => m_trueAnomaly = value; }
 
     public Flux.Matrix4 ToMatrix4()
     {
@@ -51,7 +51,7 @@ namespace Flux
       );
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Numerics.Matrix4x4 ToMatrix4x4()
     {
       ToRotationMatrix(m_radLongitudeOfAscendingNode, m_radInclination, m_radArgumentOfPeriapsis, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
@@ -66,11 +66,11 @@ namespace Flux
     }
 
     #region Static methods
-    [System.Diagnostics.Contracts.Pure]
+    
     public static double ComputeProportionalityConstant(double gravitionalConstant, double massOfSun, double massOfPlanet)
       => System.Math.Pow(4 * System.Math.PI, 2) / (gravitionalConstant * (massOfSun + massOfPlanet));
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static void ToRotationMatrix(double longitudeOfAscendingNode, double inclination, double argumentOfPeriapsis, out double x1, out double x2, out double x3, out double y1, out double y2, out double y3, out double z1, out double z2, out double z3)
     {
       var co = System.Math.Cos(longitudeOfAscendingNode);
@@ -93,7 +93,7 @@ namespace Flux
       z3 = ci;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static EulerAngles ToEulerAngles(CoordinateSystems.CartesianCoordinate3<double> x, CoordinateSystems.CartesianCoordinate3<double> y, CoordinateSystems.CartesianCoordinate3<double> z)
     {
       x = x.Normalized();
@@ -107,7 +107,7 @@ namespace Flux
       return new(alpha, beta, gamma);
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static void ToOrbitalElements(double x1, double x2, double x3, double y1, double y2, double y3, double z1, double z2, double z3, out double longitudeOfAscendingNode, out double inclination, out double argumentOfPeriapsis)
     {
       longitudeOfAscendingNode = System.Math.Atan2(-x2, z1);
@@ -117,7 +117,7 @@ namespace Flux
     #endregion Static methods
 
     #region Object overrides
-    [System.Diagnostics.Contracts.Pure]
+    
     public override string ToString()
       => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {new Quantities.Angle(m_radInclination).ToUnitString(Quantities.AngleUnit.Degree)}, LongitudeOfAscendingNode = {new Quantities.Angle(m_radLongitudeOfAscendingNode).ToUnitString(Quantities.AngleUnit.Degree)}, ArgumentOfPeriapsis = {new Quantities.Angle(m_radArgumentOfPeriapsis).ToUnitString(Quantities.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly} }}";
     #endregion Object overrides

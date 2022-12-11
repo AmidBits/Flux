@@ -29,7 +29,7 @@ namespace Flux
     /// <remarks>The dictionary has to be ordered descending by value, and like its keys already are, the values must also be unique.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Text.StringBuilder NumberToText(System.Numerics.BigInteger number)
     {
       var sb = new System.Text.StringBuilder();
@@ -51,7 +51,7 @@ namespace Flux
     /// <remarks>The dictionary has to be ordered descending by value, and like its keys already are, the values must also be unique.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-    [System.Diagnostics.Contracts.Pure]
+    
      public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)
     {
       var bi = System.Numerics.BigInteger.Zero;

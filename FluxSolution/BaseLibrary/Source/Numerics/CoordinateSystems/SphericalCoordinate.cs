@@ -57,12 +57,12 @@ namespace Flux.CoordinateSystems
     #region Static methods
 
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
-    [System.Diagnostics.Contracts.Pure]
+
     public static TSelf ConvertInclinationToElevation(TSelf inclination)
       => TSelf.Pi.Divide(2) - inclination;
 
     /// <summary>Converting from elevation to inclination is simply a quarter turn (PI / 2) minus the elevation.</summary>
-    [System.Diagnostics.Contracts.Pure]
+
     public static TSelf ConvertElevationToInclination(TSelf elevation)
       => TSelf.Pi.Divide(2) - elevation;
 

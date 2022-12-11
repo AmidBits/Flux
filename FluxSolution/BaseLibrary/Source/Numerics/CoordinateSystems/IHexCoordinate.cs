@@ -1,26 +1,24 @@
-﻿using Flux.Geometry;
-
-namespace Flux
+﻿namespace Flux
 {
   #region ExtensionMethods
   public static partial class ExtensionMethods
   {
-    public static void AssertCubeCoordinate<TSelf>(this IHexCoordinate<TSelf> source)
+    public static void AssertCubeCoordinate<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       if (!IsCubeCoordinate(source)) throw new ArgumentException($"Contraint violation of cube coordinate (Q + R + S = 0) : ({source.Q} + {source.R} + {source.S} = {(source.Q + source.R + source.S)}).");
     }
 
     /// <summary>Returns the length of the coordinate.</summary>
-    public static TSelf CubeLength<TSelf>(this IHexCoordinate<TSelf> source)
+    public static TSelf CubeLength<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => (TSelf.Abs(source.Q) + TSelf.Abs(source.R) + TSelf.Abs(source.S)).Divide(2);
 
     /// <summary>Returns the diagonal neighbor two cells over on-the-line and in-between two adjacent cells.</summary>
     /// <param name="direction">The hexagon direction [-5, 5] (either direction).</param>
-    public static CoordinateSystems.HexCoordinate<TSelf> DiagonalNeighbor<TSelf>(this IHexCoordinate<TSelf> source, int direction)
+    public static CoordinateSystems.HexCoordinate<TSelf> DiagonalNeighbor<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source, int direction)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IHexCoordinate<TSelf>.Diagonal(direction) + source;
+      => CoordinateSystems.IHexCoordinate<TSelf>.Diagonal(direction) + source;
 
     /// <summary>The distance between two hex locations is computer like a vector is computed, i.e. the length of the difference.</summary>
     public static TSelf Distance<TSelf>(this CoordinateSystems.HexCoordinate<TSelf> source, CoordinateSystems.HexCoordinate<TSelf> target)
@@ -29,14 +27,14 @@ namespace Flux
 
     /// <summary>Creates a new sequence of the surrounding neighbors of the specified center hex (excluded in the sequence).</summary>
     /// <param name="center">The center reference hex.</param>
-    public static System.Collections.Generic.IEnumerable<CoordinateSystems.HexCoordinate<TSelf>> GetNeighbors<TSelf>(this IHexCoordinate<TSelf> source)
+    public static System.Collections.Generic.IEnumerable<CoordinateSystems.HexCoordinate<TSelf>> GetNeighbors<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IHexCoordinate<TSelf>.Directions.Select(d => d + source);
+      => CoordinateSystems.IHexCoordinate<TSelf>.Directions.Select(d => d + source);
 
     /// <summary>Creates a new sequence of all (including the specified center) hex cubes within the specified radius (inclusive).</summary>
     /// <param name="center">The center reference hex.</param>
     /// <param name="radius">The radius from the center reference hex.</param>
-    public static System.Collections.Generic.IEnumerable<CoordinateSystems.HexCoordinate<TSelf>> GetRange<TSelf>(this IHexCoordinate<TSelf> source, TSelf radius)
+    public static System.Collections.Generic.IEnumerable<CoordinateSystems.HexCoordinate<TSelf>> GetRange<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source, TSelf radius)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       for (var q = -radius; q <= radius; q++)
@@ -49,7 +47,7 @@ namespace Flux
     /// <param name="radius">[0,]</param>
     /// <param name="startDirection">In the range [0, 6]. The default is 0.</param>
     /// <param name="isCounterClockWise">Determines whether to enumerate counter-clockwise or not. The default is clockwise.</param>
-    public static System.Collections.Generic.IEnumerable<IHexCoordinate<TSelf>> GetRing<TSelf>(this IHexCoordinate<TSelf> source, TSelf radius, int startDirection = 0, bool isCounterClockWise = false)
+    public static System.Collections.Generic.IEnumerable<CoordinateSystems.IHexCoordinate<TSelf>> GetRing<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source, TSelf radius, int startDirection = 0, bool isCounterClockWise = false)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (startDirection < 0 || startDirection >= 6) throw new System.ArgumentOutOfRangeException(nameof(startDirection));
@@ -59,7 +57,7 @@ namespace Flux
       {
         var deltaMultiplier = isCounterClockWise ? -1 : 1; // Determines the sign of the delta direction as a multiplier.
 
-        var corner = IHexCoordinate<TSelf>.Direction(startDirection) * radius + source; // Find the first corner hex, relative center in direction of choice (plus the length of the radius).
+        var corner = CoordinateSystems.IHexCoordinate<TSelf>.Direction(startDirection) * radius + source; // Find the first corner hex, relative center in direction of choice (plus the length of the radius).
         var deltaDirection = (startDirection + 2 * deltaMultiplier) % 6; // Set initial delta direction.
 
         for (var index = 0; index < 6; index++)
@@ -67,7 +65,7 @@ namespace Flux
           yield return corner;
 
           for (var deltaIndex = TSelf.One; deltaIndex < radius; deltaIndex++) // Enumerate the 'side of the current corner hex'.
-            yield return IHexCoordinate<TSelf>.Direction(deltaDirection) * deltaIndex + corner; // Compute the direction and offset of the side.
+            yield return CoordinateSystems.IHexCoordinate<TSelf>.Direction(deltaDirection) * deltaIndex + corner; // Compute the direction and offset of the side.
 
           corner = isCounterClockWise ? corner.NextCornerCcw() : corner.NextCornerCw(); // Locate the next corner hex.
           deltaDirection = (deltaDirection + 1 * deltaMultiplier) % 6; // Set next delta direction (i.e. rotate clockwise one 'turn').
@@ -77,15 +75,15 @@ namespace Flux
     }
 
     /// <summary>Returns whether the coordinate make up a valid cube hex, i.e. it satisfies the required cube constraint.</summary>
-    public static bool IsCubeCoordinate<TSelf>(this IHexCoordinate<TSelf> source)
+    public static bool IsCubeCoordinate<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.IsZero(source.Q + source.R + source.S);
 
-    public static TSelf Length<TSelf>(this IHexCoordinate<TSelf> source)
+    public static TSelf Length<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => (TSelf.Abs(source.Q) + TSelf.Abs(source.R) + TSelf.Abs(source.S)).Divide(2);
 
-    public static CoordinateSystems.HexCoordinate<TSelf> Lerp<TSelf>(this IHexCoordinate<TSelf> source, IHexCoordinate<TSelf> target, TSelf mu)
+    public static CoordinateSystems.HexCoordinate<TSelf> Lerp<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source, CoordinateSystems.IHexCoordinate<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new(
         source.Q * (TSelf.One - mu) + target.Q * mu,
@@ -96,21 +94,21 @@ namespace Flux
     /// <summary>Returns the neighbor of the specified hex and direction.</summary>
     /// <param name="direction">The hexagon direction [-5, 5] (either direction).</param>
     /// <returns>The neighbor of the reference hex.</returns>
-    public static CoordinateSystems.HexCoordinate<TSelf> Neighbor<TSelf>(this IHexCoordinate<TSelf> source, int direction)
+    public static CoordinateSystems.HexCoordinate<TSelf> Neighbor<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source, int direction)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IHexCoordinate<TSelf>.Direction(direction) + source;
+      => CoordinateSystems.IHexCoordinate<TSelf>.Direction(direction) + source;
 
     /// <summary>Returns the next corner hex in a clockwise direction on the same ring as the specified 'corner' hex. This can also be use for other any 'non-corner' hex for various 'circular' (symmetrical) pattern traverals.</summary>
-    public static CoordinateSystems.HexCoordinate<TSelf> NextCornerCw<TSelf>(this IHexCoordinate<TSelf> source)
+    public static CoordinateSystems.HexCoordinate<TSelf> NextCornerCw<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(-source.S, -source.Q, -source.R);
 
     /// <summary>Returns the next corner hex in a counter-clockwise direction on the same ring as the specified 'corner' hex. This can also be use for any 'non-corner' hex for various 'circular' (symmetrical) pattern traverals.</summary>
-    public static CoordinateSystems.HexCoordinate<TSelf> NextCornerCcw<TSelf>(this IHexCoordinate<TSelf> source)
+    public static CoordinateSystems.HexCoordinate<TSelf> NextCornerCcw<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(-source.R, -source.S, -source.Q);
 
-    public static CoordinateSystems.HexCoordinate<TResult> Round<TSelf, TResult>(this IHexCoordinate<TSelf> source, RoundingMode mode)
+    public static CoordinateSystems.HexCoordinate<TResult> Round<TSelf, TResult>(this CoordinateSystems.IHexCoordinate<TSelf> source, RoundingMode mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
     {
@@ -138,7 +136,7 @@ namespace Flux
       );
     }
 
-    public static IHexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this IHexCoordinate<TSelf> source, out CoordinateSystems.HexCoordinate<TResult> result)
+    public static CoordinateSystems.IHexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this CoordinateSystems.IHexCoordinate<TSelf> source, out CoordinateSystems.HexCoordinate<TResult> result)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TResult : System.Numerics.INumber<TResult>
       => result = new CoordinateSystems.HexCoordinate<TResult>(
@@ -147,12 +145,12 @@ namespace Flux
         TResult.CreateChecked(source.S)
       );
 
-    public static IHexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this IHexCoordinate<TSelf> source, RoundingMode mode, out CoordinateSystems.HexCoordinate<TResult> result)
+    public static CoordinateSystems.IHexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this CoordinateSystems.IHexCoordinate<TSelf> source, RoundingMode mode, out CoordinateSystems.HexCoordinate<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
       => result = Round<TSelf, TResult>(source, mode);
 
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<IHexCoordinate<TSelf>>> TraverseSpiral<TSelf>(this IHexCoordinate<TSelf> source, TSelf radius)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<CoordinateSystems.IHexCoordinate<TSelf>>> TraverseSpiral<TSelf>(this CoordinateSystems.IHexCoordinate<TSelf> source, TSelf radius)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       for (var k = TSelf.Zero; k < radius; k++)
@@ -161,71 +159,74 @@ namespace Flux
   }
   #endregion ExtensionMethods
 
-  /// <summary>The Hex coordinate system used is the Cube coordinate, and can be specified using </summary>
-  /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
-  public interface IHexCoordinate<TSelf>
-    where TSelf : System.Numerics.INumber<TSelf>
+  namespace CoordinateSystems
   {
-    /// <summary>The first component or coordinate.</summary>
-    TSelf Q { get; }
-    /// <summary>The second component or coordinate.</summary>
-    TSelf R { get; }
-    /// <summary>The third component or coordinate, that can be calculated from Q and R with the formula (-Q - R).</summary>
-    TSelf S { get; }
+    /// <summary>The Hex coordinate system used is the Cube coordinate, and can be specified using </summary>
+    /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
+    public interface IHexCoordinate<TSelf>
+    where TSelf : System.Numerics.INumber<TSelf>
+    {
+      /// <summary>The first component or coordinate.</summary>
+      TSelf Q { get; }
+      /// <summary>The second component or coordinate.</summary>
+      TSelf R { get; }
+      /// <summary>The third component or coordinate, that can be calculated from Q and R with the formula (-Q - R).</summary>
+      TSelf S { get; }
 
-    /// <summary>Returns the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
-    public static int ComputeRangeCount(int radius)
-      => Flux.Enumerable.Loop(0, radius + 1, 6).AsParallel().Sum() + 1;
+      /// <summary>Returns the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
+      public static int ComputeRangeCount(int radius)
+        => Flux.Enumerable.Loop(0, radius + 1, 6).AsParallel().Sum() + 1;
 
-    /// <summary>Returns the count of hexes in the ring of the specified radius.</summary>
-    public static int ComputeRingCount(int radius)
-      => radius < 0
-      ? throw new System.ArgumentOutOfRangeException(nameof(radius))
-      : radius == 0
-      ? 1
-      : radius * 6;
+      /// <summary>Returns the count of hexes in the ring of the specified radius.</summary>
+      public static int ComputeRingCount(int radius)
+        => radius < 0
+        ? throw new System.ArgumentOutOfRangeException(nameof(radius))
+        : radius == 0
+        ? 1
+        : radius * 6;
 
-    /// <summary>In counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry).</summary>
-    public static CoordinateSystems.HexCoordinate<TSelf>[] Diagonals
-      => new CoordinateSystems.HexCoordinate<TSelf>[] {
+      /// <summary>In counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry).</summary>
+      public static CoordinateSystems.HexCoordinate<TSelf>[] Diagonals
+        => new CoordinateSystems.HexCoordinate<TSelf>[] {
         new(TSelf.CreateChecked(2), -TSelf.One, -TSelf.One),
         new(TSelf.One, -TSelf.CreateChecked(2), TSelf.One),
         new(-TSelf.One, -TSelf.One, TSelf.CreateChecked(2)),
         new(-TSelf.CreateChecked(2), TSelf.One, TSelf.One),
         new(-TSelf.One, TSelf.CreateChecked(2), -TSelf.One),
         new(TSelf.One, TSelf.One, -TSelf.CreateChecked(2))
-      };
+        };
 
-    /// <summary>In counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry).</summary>
-    public static CoordinateSystems.HexCoordinate<TSelf>[] Directions
-      => new CoordinateSystems.HexCoordinate<TSelf>[] {
+      /// <summary>In counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry).</summary>
+      public static CoordinateSystems.HexCoordinate<TSelf>[] Directions
+        => new CoordinateSystems.HexCoordinate<TSelf>[] {
         new(TSelf.One, TSelf.Zero, -TSelf.One),
         new(TSelf.One, -TSelf.One, TSelf.Zero),
         new(TSelf.Zero, -TSelf.One, TSelf.One),
         new(-TSelf.One, TSelf.Zero, TSelf.One),
         new(-TSelf.One, TSelf.One, TSelf.Zero),
         new(TSelf.Zero, TSelf.One, -TSelf.One),
-      };
+        };
 
-    public static CoordinateSystems.HexCoordinate<TSelf> Diagonal(int direction)
-      => (direction >= -5 && direction < 0)
-      ? Diagonals[direction + 6]
-      : (direction >= 0 && direction <= 5)
-      ? Diagonals[direction]
-      : throw new System.ArgumentOutOfRangeException(nameof(direction));
+      public static CoordinateSystems.HexCoordinate<TSelf> Diagonal(int direction)
+        => (direction >= -5 && direction < 0)
+        ? Diagonals[direction + 6]
+        : (direction >= 0 && direction <= 5)
+        ? Diagonals[direction]
+        : throw new System.ArgumentOutOfRangeException(nameof(direction));
 
-    /// <summary>Returns the unit hex of the specified direction range [0, 5].</summary>
-    public static CoordinateSystems.HexCoordinate<TSelf> Direction(int direction /* [-5, 5] */)
-      => (direction >= -5 && direction < 0)
-      ? Directions[direction + 6]
-      : (direction >= 0 && direction <= 5)
-      ? Directions[direction]
-      : throw new System.ArgumentOutOfRangeException(nameof(direction));
+      /// <summary>Returns the unit hex of the specified direction range [0, 5].</summary>
+      public static CoordinateSystems.HexCoordinate<TSelf> Direction(int direction /* [-5, 5] */)
+        => (direction >= -5 && direction < 0)
+        ? Directions[direction + 6]
+        : (direction >= 0 && direction <= 5)
+        ? Directions[direction]
+        : throw new System.ArgumentOutOfRangeException(nameof(direction));
 
-    ///// <summary>Returns whether the coordinate make up a valid cube hex, i.e. it satisfies the required cube constraint.</summary>
-    //public static bool IsCubeCoordinate(TSelf q, TSelf r, TSelf s) => TSelf.IsZero(q + r + s);
+      ///// <summary>Returns whether the coordinate make up a valid cube hex, i.e. it satisfies the required cube constraint.</summary>
+      //public static bool IsCubeCoordinate(TSelf q, TSelf r, TSelf s) => TSelf.IsZero(q + r + s);
 
-    ///// <summary>Returns the length of the coordinate.</summary>
-    //public static TSelf CubeLength(TSelf q, TSelf r, TSelf s) => (TSelf.Abs(q) + TSelf.Abs(r) + TSelf.Abs(s)).Divide(2);
+      ///// <summary>Returns the length of the coordinate.</summary>
+      //public static TSelf CubeLength(TSelf q, TSelf r, TSelf s) => (TSelf.Abs(q) + TSelf.Abs(r) + TSelf.Abs(s)).Divide(2);
+    }
   }
 }

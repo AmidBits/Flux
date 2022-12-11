@@ -15,7 +15,7 @@ namespace Flux.Sorting
       : this(System.Collections.Generic.Comparer<T>.Default)
     { }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public void SortInPlace(System.Span<T> source)
     {
       var sourceLength = source.Length;

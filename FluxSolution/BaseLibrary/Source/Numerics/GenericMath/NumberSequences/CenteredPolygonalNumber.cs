@@ -14,7 +14,7 @@ namespace Flux.NumberSequences
     #region Static methods
     /// <summary></summary>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<(int minCenteredNumber, int maxCenteredNumber, int count)> GetLayers(int numberOfSides)
     {
       yield return (1, 1, 1);
@@ -25,7 +25,7 @@ namespace Flux.NumberSequences
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static int GetNumber(int index, int numberOfSides)
     {
       if (index < 0) throw new System.ArgumentOutOfRangeException(nameof(index));
@@ -37,7 +37,7 @@ namespace Flux.NumberSequences
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<int> GetSequence(int numberOfSides)
     {
       for (var index = 0; ; index++)
@@ -47,14 +47,14 @@ namespace Flux.NumberSequences
 
     #region Implemented interfaces
     // INumberSequence
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerable<int> GetSequence()
       => GetSequence(NumberOfSides);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerator<int> GetEnumerator()
       => GetSequence().GetEnumerator();
-    [System.Diagnostics.Contracts.Pure]
+    
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

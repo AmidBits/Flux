@@ -14,7 +14,7 @@ namespace Flux.Metrical
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       if (source.Length != target.Length) throw new System.ArgumentException($"The source length ({source.Length}) and the target length ({target.Length}) must be equal.");
@@ -28,11 +28,11 @@ namespace Flux.Metrical
       return equalCount;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1.0 - GetSimpleMatchingDistance(source, target);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetEditDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
   }

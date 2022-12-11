@@ -38,26 +38,26 @@ namespace Flux.Hashing
     }
 
     // Operators
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator ==(Fnv1a a, Fnv1a b)
       => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator !=(Fnv1a a, Fnv1a b)
       => !a.Equals(b);
 
     // IEquatable
-    [System.Diagnostics.Contracts.Pure]
+    
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Fnv1a other)
       => m_hash == other.m_hash && m_primeMultiplier == other.m_primeMultiplier;
 
     // Object (overrides)
-    [System.Diagnostics.Contracts.Pure]
+    
     public override bool Equals(object? obj)
       => obj is Fnv1a o && Equals(o);
-    [System.Diagnostics.Contracts.Pure]
+    
     public override int GetHashCode()
       => m_hash.GetHashCode();
-    [System.Diagnostics.Contracts.Pure]
+    
     public override string ToString()
       => $"{nameof(Fnv1a)} {{ HashCode = {m_hash} }}";
   }

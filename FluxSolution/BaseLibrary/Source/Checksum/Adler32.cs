@@ -41,26 +41,26 @@ namespace Flux.Checksum
     }
 
     // Operators
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator ==(Adler32 a, Adler32 b)
       => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator !=(Adler32 a, Adler32 b)
       => !a.Equals(b);
 
     // IEquatable
-    [System.Diagnostics.Contracts.Pure]
+    
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Adler32 other)
       => m_hash == other.m_hash;
 
     // Object (overrides)
-    [System.Diagnostics.Contracts.Pure]
+    
     public override bool Equals(object? obj)
       => obj is Adler32 o && Equals(o);
-    [System.Diagnostics.Contracts.Pure]
+    
     public override int GetHashCode()
       => m_hash.GetHashCode();
-    [System.Diagnostics.Contracts.Pure]
+    
     public override string ToString()
       => $"{nameof(Adler32)} {{ CheckSum = {m_hash} }}";
   }

@@ -13,7 +13,7 @@ namespace Flux.Metrical
       : this(System.Collections.Generic.EqualityComparer<T>.Default)
     { }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     private int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex)
     {
       var sourceLength = source.Length;
@@ -49,11 +49,11 @@ namespace Flux.Metrical
 
       return lcsg;
     }
-    [System.Diagnostics.Contracts.Pure]
+    
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => GetMatrix(source, target, out var _, out var _, out var _);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public T[] GetSubstring(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
       matrix = GetMatrix(source, target, out var length, out var sourceIndex, out var targetIndex);
@@ -74,7 +74,7 @@ namespace Flux.Metrical
       return lcs;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public int GetLengthMeasure(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var maxLength = 0;

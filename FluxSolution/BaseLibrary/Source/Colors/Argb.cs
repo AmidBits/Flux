@@ -153,15 +153,15 @@ namespace Flux.Colors
     #endregion Static methods
 
     #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure]
+    
     public static explicit operator int(Argb v)
       => (v.Alpha << 24) | (v.RGB.Red << 16) | (v.RGB.Green << 8) | (v.RGB.Blue << 0);
-    [System.Diagnostics.Contracts.Pure]
+    
     public static explicit operator Argb(int v)
       => unchecked(new Argb((byte)(v >> 24), (byte)(v >> 16), (byte)(v >> 8), (byte)v));
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Argb a, Argb b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Argb a, Argb b) => !a.Equals(b);
+     public static bool operator ==(Argb a, Argb b) => a.Equals(b);
+     public static bool operator !=(Argb a, Argb b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

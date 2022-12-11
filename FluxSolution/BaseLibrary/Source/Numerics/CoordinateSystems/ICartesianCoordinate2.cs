@@ -3,7 +3,7 @@
   #region ExtensionMethods
   public static partial class ExtensionMethods
   {
-    public static TSelf AbsoluteSum<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static TSelf AbsoluteSum<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.Abs(source.X) + TSelf.Abs(source.Y);
 
@@ -12,9 +12,9 @@
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
-    public static TSelf AngleTo<TSelf>(this ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b)
+    public static TSelf AngleTo<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> a, CoordinateSystems.ICartesianCoordinate2<TSelf> b)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
-      => TSelf.Acos(TSelf.Clamp(ICartesianCoordinate2<TSelf>.DotProduct(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -TSelf.One, TSelf.One));
+      => TSelf.Acos(TSelf.Clamp(CoordinateSystems.ICartesianCoordinate2<TSelf>.DotProduct(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -TSelf.One, TSelf.One));
 
     /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
     /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a <paramref name="gridWidth"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
@@ -27,24 +27,24 @@
 
     /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static TSelf ChebyshevLength<TSelf>(this ICartesianCoordinate2<TSelf> source, TSelf edgeLength)
+    public static TSelf ChebyshevLength<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source, TSelf edgeLength)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.Max(TSelf.Abs(source.X / edgeLength), TSelf.Abs(source.Y / edgeLength));
 
     /// <summary>Returns the dot product of two non-normalized 3D vectors.</summary>
     /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
     /// <see href="https://gamedev.stackexchange.com/a/89832/129646"/>
-    public static TSelf DotProductEx<TSelf>(this ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b)
+    public static TSelf DotProductEx<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> a, CoordinateSystems.ICartesianCoordinate2<TSelf> b)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
-      => ICartesianCoordinate2<TSelf>.DotProduct(a, b) / TSelf.Sqrt(a.EuclideanLengthSquared() * b.EuclideanLengthSquared());
+      => CoordinateSystems.ICartesianCoordinate2<TSelf>.DotProduct(a, b) / TSelf.Sqrt(a.EuclideanLengthSquared() * b.EuclideanLengthSquared());
 
     /// <summary>Compute the Euclidean length of the vector.</summary>
-    public static TSelf EuclideanLength<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static TSelf EuclideanLength<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => TSelf.Sqrt(source.EuclideanLengthSquared());
 
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
-    public static TSelf EuclideanLengthSquared<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static TSelf EuclideanLengthSquared<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => source.X * source.X + source.Y * source.Y;
 
@@ -67,7 +67,7 @@
     //}
 
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
-    public static CoordinateSystems.CartesianCoordinate2<TSelf> Lerp<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> target, TSelf mu)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> Lerp<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source, CoordinateSystems.ICartesianCoordinate2<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       var imu = TSelf.One - mu;
@@ -77,23 +77,23 @@
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static TSelf ManhattanLength<TSelf>(this ICartesianCoordinate2<TSelf> source, TSelf edgeLength)
+    public static TSelf ManhattanLength<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source, TSelf edgeLength)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.Abs(source.X / edgeLength) + TSelf.Abs(source.Y / edgeLength);
 
     /// <summary>Lerp is a normalized linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
-    public static CoordinateSystems.CartesianCoordinate2<TSelf> Nlerp<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> target, TSelf mu)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> Nlerp<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source, CoordinateSystems.ICartesianCoordinate2<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => Lerp(source, target, mu).Normalized();
 
     /// <summary>Creates a new normalized <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static CoordinateSystems.CartesianCoordinate2<TSelf> Normalized<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> Normalized<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
       => source.EuclideanLength() is var m && m != TSelf.Zero ? source.ToCartesianCoordinate2<TSelf>() / m : source.ToCartesianCoordinate2<TSelf>();
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
-    public static int OrthantNumber<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> center, OrthantNumbering numbering)
+    public static int OrthantNumber<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source, CoordinateSystems.ICartesianCoordinate2<TSelf> center, OrthantNumbering numbering)
       where TSelf : System.Numerics.INumber<TSelf>
       => numbering switch
       {
@@ -104,7 +104,7 @@
       };
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
-    public static CoordinateSystems.CartesianCoordinate2<TSelf> PerpendicularCcw<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> PerpendicularCcw<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(
         -source.Y,
@@ -112,7 +112,7 @@
       );
 
     /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
-    public static CoordinateSystems.CartesianCoordinate2<TSelf> PerpendicularCw<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> PerpendicularCw<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(
         source.Y,
@@ -120,10 +120,10 @@
       );
 
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
-    public static CoordinateSystems.CartesianCoordinate2<TSelf> Slerp<TSelf>(this ICartesianCoordinate2<TSelf> source, ICartesianCoordinate2<TSelf> target, TSelf mu)
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> Slerp<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source, CoordinateSystems.ICartesianCoordinate2<TSelf> target, TSelf mu)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
     {
-      var dp = TSelf.Clamp(ICartesianCoordinate2<TSelf>.DotProduct(source, target), -TSelf.One, TSelf.One); // Ensure precision doesn't exceed acos limits.
+      var dp = TSelf.Clamp(CoordinateSystems.ICartesianCoordinate2<TSelf>.DotProduct(source, target), -TSelf.One, TSelf.One); // Ensure precision doesn't exceed acos limits.
       var theta = TSelf.Acos(dp) * mu; // Angle between start and desired.
       var cos = TSelf.Cos(theta);
       var sin = TSelf.Sin(theta);
@@ -156,56 +156,56 @@
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y));
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => source is CoordinateSystems.CartesianCoordinate2<TSelf> cc ? cc : new(source.X, source.Y);
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TResult}"/>.</summary>
-    public static CoordinateSystems.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TSelf, TResult>(this ICartesianCoordinate2<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out CoordinateSystems.CartesianCoordinate2<TResult> result)
+    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate2{TResult}"/>.</summary>
+    public static CoordinateSystems.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TSelf, TResult>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out CoordinateSystems.CartesianCoordinate2<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
       => result = new(TResult.CreateChecked(rounding.RoundNumber(source.X)), TResult.CreateChecked(rounding.RoundNumber(source.Y)));
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/> using the X and Y coordinates.</summary>
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3XY<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="CoordinateSystems.ICartesianCoordinate2{TSelf}"/> using the X and Y coordinates.</summary>
+    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3XY<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(source.X, source.Y, TSelf.Zero);
 
-    /// <summary>Creates a new <see cref="System.Drawing.Point"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static System.Drawing.Point ToPoint<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    /// <summary>Creates a new <see cref="System.Drawing.Point"/> from a <see cref="CoordinateSystems.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.Point ToPoint<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(
         int.CreateChecked(source.X),
         int.CreateChecked(source.Y)
       );
 
-    /// <summary>Creates a new <see cref="System.Drawing.PointF"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static System.Drawing.PointF ToPointF<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    /// <summary>Creates a new <see cref="System.Drawing.PointF"/> from a <see cref="CoordinateSystems.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.PointF ToPointF<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(
         float.CreateChecked(source.X),
         float.CreateChecked(source.Y)
       );
 
-    /// <summary>Creates a new <see cref="System.Drawing.Size"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static System.Drawing.Size ToSize<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    /// <summary>Creates a new <see cref="System.Drawing.Size"/> from a <see cref="CoordinateSystems.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.Size ToSize<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(
         int.CreateChecked(source.X),
         int.CreateChecked(source.Y)
       );
 
-    /// <summary>Creates a new <see cref="System.Drawing.SizeF"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static System.Drawing.SizeF ToSizeF<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    /// <summary>Creates a new <see cref="System.Drawing.SizeF"/> from a <see cref="CoordinateSystems.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.SizeF ToSizeF<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(
         float.CreateChecked(source.X),
         float.CreateChecked(source.Y)
       );
 
-    /// <summary>Creates a new <see cref="PolarCoordinate{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static CoordinateSystems.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    /// <summary>Creates a new <see cref="CoordinateSystems.PolarCoordinate{TSelf}"/> from a <see cref=" CoordinateSystems.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static CoordinateSystems.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         TSelf.Sqrt(source.X * source.X + source.Y * source.Y),
@@ -221,24 +221,24 @@
 
     /// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static TSelf ToRotationAngle<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static TSelf ToRotationAngle<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => TSelf.Atan2(source.Y, source.X) is var atan2 && atan2 < TSelf.Zero ? TSelf.Tau + atan2 : atan2;
 
     /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-    public static TSelf ToRotationAngleEx<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static TSelf ToRotationAngleEx<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => TSelf.Tau - (TSelf.Atan2(source.Y, -source.X) is var atan2 && atan2 < TSelf.Zero ? TSelf.Tau + atan2 : atan2);
 
     /// <summary>Converts the <see cref="CartesianCoordinate2{TSelf}"/> to a 'mapped' unique index.</summary>
     /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a <paramref name="gridWidth"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>
-    public static TSelf ToUniqueIndex<TSelf>(this ICartesianCoordinate2<TSelf> source, TSelf gridWidth)
+    public static TSelf ToUniqueIndex<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source, TSelf gridWidth)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => source.X + (source.Y * gridWidth);
 
     /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static System.Numerics.Vector2 ToVector2<TSelf>(this ICartesianCoordinate2<TSelf> source)
+    public static System.Numerics.Vector2 ToVector2<TSelf>(this CoordinateSystems.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(float.CreateChecked(source.X), float.CreateChecked(source.Y));
 
@@ -248,23 +248,26 @@
   }
   #endregion ExtensionMethods
 
-  /// <summary>Cartesian 2D coordinate.</summary>
-  public interface ICartesianCoordinate2<TSelf>
-    : System.IFormattable
-    where TSelf : System.Numerics.INumber<TSelf>
+  namespace CoordinateSystems
   {
-    TSelf X { get; }
-    TSelf Y { get; }
+    /// <summary>Cartesian 2D coordinate.</summary>
+    public interface ICartesianCoordinate2<TSelf>
+      : System.IFormattable
+      where TSelf : System.Numerics.INumber<TSelf>
+    {
+      TSelf X { get; }
+      TSelf Y { get; }
 
-    /// <summary>For 2D vectors, the cross product of two vectors, is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</summary>
-    static TSelf CrossProduct(ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b)
-      => a.X * b.Y - a.Y * b.X;
+      /// <summary>For 2D vectors, the cross product of two vectors, is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</summary>
+      static TSelf CrossProduct(ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b)
+        => a.X * b.Y - a.Y * b.X;
 
-    /// <summary>Returns the dot product of two normalized 2D vectors.</summary>
-    static TSelf DotProduct(ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b)
-      => a.X * b.X + a.Y * b.Y;
+      /// <summary>Returns the dot product of two normalized 2D vectors.</summary>
+      static TSelf DotProduct(ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b)
+        => a.X * b.X + a.Y * b.Y;
 
-    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-      => $"{GetType().Name} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)} }}";
+      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+        => $"{GetType().Name} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)} }}";
+    }
   }
 }

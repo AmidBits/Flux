@@ -7,9 +7,9 @@ namespace Flux.Net.Nmea
       : base(sentence)
     { }
 
-    public Latitude Latitude
+    public Quantities.Latitude Latitude
       => new(NmeaSentence.ParseDecimalLatitude(m_values[1], m_values[2]));
-    public Longitude Longitude
+    public Quantities.Longitude Longitude
       => new(NmeaSentence.ParseDecimalLongitude(m_values[3], m_values[4]));
     public System.DateTime UtcTime
       => NmeaSentence.ParseUtcTime(m_values[5]);

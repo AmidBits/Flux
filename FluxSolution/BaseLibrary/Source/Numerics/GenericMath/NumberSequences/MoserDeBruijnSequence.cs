@@ -14,7 +14,7 @@ namespace Flux.NumberSequences
     /// <summary>Creates a sequence of Moser/DeBruijn numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
     /// <seealso cref="https://www.geeksforgeeks.org/moser-de-bruijn-sequence/"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.List<System.Numerics.BigInteger> GetMoserDeBruijnSequence(System.Numerics.BigInteger maxNumber)
     {
       if (maxNumber < 0) throw new System.ArgumentOutOfRangeException(nameof(maxNumber));
@@ -41,10 +41,10 @@ namespace Flux.NumberSequences
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => GetMoserDeBruijnSequence(MaxNumber);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    [System.Diagnostics.Contracts.Pure]
+    
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

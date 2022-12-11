@@ -12,7 +12,7 @@ namespace Flux.NumberSequences
       => System.Numerics.BigInteger.Pow(2, number) - 1;
     /// <summary>Results in a sequence of mersenne numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Mersenne_number"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetMersenneNumbers()
     {
       for (var number = 1; number <= int.MaxValue; number++)
@@ -29,10 +29,10 @@ namespace Flux.NumberSequences
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => GetMersenneNumbers();
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    [System.Diagnostics.Contracts.Pure]
+    
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

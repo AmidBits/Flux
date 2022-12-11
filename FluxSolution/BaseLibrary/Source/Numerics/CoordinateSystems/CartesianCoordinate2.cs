@@ -3,7 +3,7 @@ namespace Flux.CoordinateSystems
   /// <summary>A 2D cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly partial record struct CartesianCoordinate2<TSelf>
-    : ICartesianCoordinate2<TSelf>
+    : CoordinateSystems.ICartesianCoordinate2<TSelf>
     , System.Numerics.IAdditionOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
     , System.Numerics.IAdditiveIdentity<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
     , System.Numerics.IDecrementOperators<CartesianCoordinate2<TSelf>>

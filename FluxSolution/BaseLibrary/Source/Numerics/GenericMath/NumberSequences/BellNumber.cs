@@ -7,7 +7,7 @@ namespace Flux.NumberSequences
     /// <summary>Yields a Bell number of the specified value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetBellNumbers()
     {
       var current = new System.Numerics.BigInteger[1] { 1 };
@@ -27,7 +27,7 @@ namespace Flux.NumberSequences
     /// <summary>Creates a new sequence with each element being an array (i.e. row) of Bell numbers in a Bell triangle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger[]> GetBellTriangle()
     {
       var current = new System.Numerics.BigInteger[] { 1 };
@@ -47,7 +47,7 @@ namespace Flux.NumberSequences
     /// <summary>Creates a new sequence with each element being an array (i.e. row) of Bell numbers in an augmented Bell triangle.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger[]> GetBellTriangleAugmented()
     {
       var current = new System.Numerics.BigInteger[] { 1 };
@@ -70,10 +70,10 @@ namespace Flux.NumberSequences
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => GetBellNumbers();
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    [System.Diagnostics.Contracts.Pure]
+    
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

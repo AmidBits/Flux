@@ -18,11 +18,11 @@ namespace Flux.CoordinateSystems
       m_c = c;
     }
 
-    [System.Diagnostics.Contracts.Pure] public int A { get => m_a; init => m_a = value; }
-    [System.Diagnostics.Contracts.Pure] public int R { get => m_r; init => m_r = value; }
-    [System.Diagnostics.Contracts.Pure] public int C { get => m_c; init => m_c = value; }
+     public int A { get => m_a; init => m_a = value; }
+     public int R { get => m_r; init => m_r = value; }
+     public int C { get => m_c; init => m_c = value; }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public HecsCoordinate[] NearestNeighborsCcw()
     {
       var cPa = m_c + m_a;
@@ -41,7 +41,7 @@ namespace Flux.CoordinateSystems
         new HecsCoordinate(uMa, rPa, cPa),
       };
     }
-    [System.Diagnostics.Contracts.Pure]
+    
     public HecsCoordinate[] NearestNeighborsCw()
     {
       var cPa = m_c + m_a;

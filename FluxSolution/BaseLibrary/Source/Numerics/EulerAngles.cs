@@ -24,7 +24,7 @@ namespace Flux
     /// <summary>The horizontal lean (left/right) angle. A.k.a. Bank and Tilt.</summary>
     public Quantities.Angle Roll => new(m_radRoll);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public AxisAngle ToAxisAngle()
     {
       var c1 = Math.Cos(m_radYaw / 2);
@@ -58,7 +58,7 @@ namespace Flux
       return new(x, y, z, angle);
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public Matrix4 ToMatrixTaitBryanXYZ()
     {
       var c1 = Math.Cos(m_radYaw);
@@ -76,7 +76,7 @@ namespace Flux
       );
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public Matrix4 ToMatrixLhTaitBryanYXZ()
     {
       var c1 = Math.Cos(m_radYaw);
@@ -94,7 +94,7 @@ namespace Flux
       );
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public Matrix4 ToMatrixLhTaitBryanZYX()
     {
       var c3 = Math.Cos(m_radYaw);
@@ -112,7 +112,7 @@ namespace Flux
       );
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public Matrix4 ToMatrixLhProperEulerZXZ()
     {
       var c1 = Math.Cos(m_radYaw);
@@ -130,7 +130,7 @@ namespace Flux
       );
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public Quaternion ToQuaternion()
     {
       var cy = Math.Cos(m_radYaw / 2);
@@ -149,7 +149,7 @@ namespace Flux
     }
 
     #region Static methods
-    [System.Diagnostics.Contracts.Pure]
+    
     public (double x, double y, double z, double w) ConvertToQuaternion()
     {
       var c1 = Math.Cos(m_radYaw / 2);
@@ -167,7 +167,7 @@ namespace Flux
       return (x, y, z, w);
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static EulerAngles ConvertQuaternionToEulerAngles(double x, double y, double z, double w)
     {
       var sqw = w * w;

@@ -41,21 +41,21 @@ namespace Flux
 
     #region Implemented interfaces
     // IComparer<string>
-    [System.Diagnostics.Contracts.Pure] public override int Compare(string? x, string? y) => m_stringComparer.Compare(x, y);
+     public override int Compare(string? x, string? y) => m_stringComparer.Compare(x, y);
     // IComparer<char>
-    [System.Diagnostics.Contracts.Pure] public int Compare(char x, char y) => m_stringComparer.Compare(x.ToString(), y.ToString());
+     public int Compare(char x, char y) => m_stringComparer.Compare(x.ToString(), y.ToString());
 
     // IEqualityComparer<string>
-    [System.Diagnostics.Contracts.Pure] public override bool Equals(string? x, string? y) => m_stringComparer.Equals(x, y);
+     public override bool Equals(string? x, string? y) => m_stringComparer.Equals(x, y);
     // IEqualityComparer<char>
-    [System.Diagnostics.Contracts.Pure] public bool Equals(char x, char y) => m_stringComparer.Equals(x.ToString(), y.ToString());
+     public bool Equals(char x, char y) => m_stringComparer.Equals(x.ToString(), y.ToString());
     #endregion Implemented interfaces
 
     #region Object overrides
-    [System.Diagnostics.Contracts.Pure] public override int GetHashCode(string s) => m_stringComparer.GetHashCode(s);
-    [System.Diagnostics.Contracts.Pure] public int GetHashCode(char c) => m_stringComparer.GetHashCode(c.ToString());
+     public override int GetHashCode(string s) => m_stringComparer.GetHashCode(s);
+     public int GetHashCode(char c) => m_stringComparer.GetHashCode(c.ToString());
 
-    [System.Diagnostics.Contracts.Pure] public override string ToString() => $"{GetType().Name} {{ {m_stringComparer} }}";
+     public override string ToString() => $"{GetType().Name} {{ {m_stringComparer} }}";
     #endregion Object overrides
   }
 }

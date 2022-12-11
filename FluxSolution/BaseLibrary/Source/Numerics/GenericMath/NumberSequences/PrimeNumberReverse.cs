@@ -10,7 +10,7 @@ namespace Flux.NumberSequences
 
     #region Static members
     /// <summary>Creates a new sequence of descending potential primes, less than the specified number.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDescendingPotentialPrimes(System.Numerics.BigInteger startAt)
     {
       var quotient = System.Numerics.BigInteger.DivRem(startAt, 6, out var remainder);
@@ -31,7 +31,7 @@ namespace Flux.NumberSequences
     }
     /// <summary>Creates a new sequence descending prime numbers, less than the specified number.</summary>
     /// <see cref="https://math.stackexchange.com/questions/164767/prime-number-generator-how-to-make"/>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDescendingPrimes(System.Numerics.BigInteger startAt)
       => GetDescendingPotentialPrimes(startAt).AsParallel().AsOrdered().Where(PrimeNumber.IsPrimeNumber);
     #endregion Static members

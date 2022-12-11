@@ -18,7 +18,7 @@ namespace Flux.Sorting
 
     #region MergeSort helpers.
     // Sort the elements between min and max index (inclusive).
-    [System.Diagnostics.Contracts.Pure]
+    
     public void Sort(System.Span<T> source, int minIndex, int maxIndex)
     {
       if (minIndex < maxIndex)
@@ -32,7 +32,7 @@ namespace Flux.Sorting
       }
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     private void Merge(System.Span<T> source, int minIndex, int centerIndex, int maxIndex)
     {
       var minIndex2 = centerIndex + 1;

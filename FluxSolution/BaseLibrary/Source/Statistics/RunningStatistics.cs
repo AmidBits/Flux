@@ -20,74 +20,74 @@
     private double m_sum; // The sum of all values.
 
     /// <summary>The number of samples.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public long Count
       => m_count;
 
     /// <summary>Returns the maximum value of all samples, or NaN if no data/any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Maximum
       => m_count > 0 ? m_max : double.NaN;
     /// <summary>Returns the minimum value of all samples. Returns NaN if data is empty or if any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Minimum
       => m_count > 0 ? m_min : double.NaN;
 
     /// <summary>The product of all samples. Returns NaN if no data or any sample is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Product
       => m_count > 0 ? m_product : double.NaN;
     /// <summary>The sum of all samples. Returns NaN if no data or any sample is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Sum
       => m_count > 0 ? m_sum : double.NaN;
 
     /// <summary>Evaluates the sample mean, an estimate of the population mean. Returns NaN if data is empty or if any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Mean
       => m_count > 0 ? m_m1 : double.NaN;
     /// <summary>Evaluates the geometric mean of the enumerable, in a single pass without memoization. Returns NaN if data is empty or any entry is NaN.</summary>    
-    [System.Diagnostics.Contracts.Pure]
+    
     public double GeometricMean
       => m_count > 0 ? System.Math.Pow(m_product, 1.0 / m_count) : double.NaN;
     /// <summary>Evaluates the harmonic mean of the enumerable, in a single pass without memoization. Returns NaN if data is empty or any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double HarmonicMean
       => m_count > 0 ? m_count / m_reciprocalSum : double.NaN;
 
     /// <summary>Estimates the unbiased population variance from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction). Returns NaN if data has less than two entries or if any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Variance
       => m_count < 2 ? double.NaN : m_m2 / (m_count - 1);
     /// <summary>Evaluates the variance from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset. Returns NaN if data is empty or if any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double PopulationVariance
       => m_count < 2 ? double.NaN : m_m2 / m_count;
 
     /// <summary> Estimates the unbiased population standard deviation from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction). Returns NaN if data has less than two entries or if any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double StandardDeviation
       => m_count < 2 ? double.NaN : System.Math.Sqrt(m_m2 / (m_count - 1));
     /// <summary>Evaluates the standard deviation from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset. Returns NaN if data is empty or if any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double PopulationStandardDeviation
       => m_count < 2 ? double.NaN : System.Math.Sqrt(m_m2 / m_count);
 
     /// <summary>Estimates the unbiased population skewness from the provided samples. Uses a normalizer (Bessel's correction; type 2). Returns NaN if data has less than three entries or if any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Skewness
       => m_count < 3 ? double.NaN : (m_count * m_m3 * System.Math.Sqrt(m_m2 / (m_count - 1)) / (m_m2 * m_m2 * (m_count - 2))) * (m_count - 1);
     /// <summary>Evaluates the population skewness from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1). Returns NaN if data has less than two entries or if any entry is NaN. </summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double PopulationSkewness
       => m_count < 2 ? double.NaN : System.Math.Sqrt(m_count) * m_m3 / System.Math.Pow(m_m2, 1.5);
 
     /// <summary>Estimates the unbiased population kurtosis from the provided samples. Uses a normalizer (Bessel's correction; type 2). Returns NaN if data has less than four entries or if any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double Kurtosis
       => m_count < 4 ? double.NaN : ((double)m_count * m_count - 1) / ((m_count - 2) * (m_count - 3)) * (m_count * m_m4 / (m_m2 * m_m2) - 3 + 6.0 / (m_count + 1));
     /// <summary>Evaluates the population kurtosis from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1). Returns NaN if data has less than three entries or if any entry is NaN.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public double PopulationKurtosis
       => m_count < 3 ? double.NaN : m_count * m_m4 / (m_m2 * m_m2) - 3.0;
 
@@ -136,7 +136,7 @@
 
     #region Static members
     /// <summary>Create a new running statistics over the combined samples of two existing running statistics.</summary>
-    [System.Diagnostics.Contracts.Pure]
+    
     public static RunningStatistics Combine(RunningStatistics a, RunningStatistics b)
     {
       if (a.m_count == 0) return b;
@@ -172,7 +172,7 @@
       };
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static RunningStatistics Create()
     {
       return new RunningStatistics()
@@ -189,7 +189,7 @@
         m_product = 1
       };
     }
-    [System.Diagnostics.Contracts.Pure]
+    
     public static RunningStatistics Create(System.Collections.Generic.IEnumerable<double> values)
     {
       var rs = Create();
@@ -199,38 +199,38 @@
     #endregion Static members
 
     #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator ==(in RunningStatistics a, in RunningStatistics b)
       => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator !=(in RunningStatistics a, in RunningStatistics b)
       => !a.Equals(b);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public static RunningStatistics operator +(RunningStatistics a, RunningStatistics b)
       => Combine(a, b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IEquatable<RunningStatistics>
-    [System.Diagnostics.Contracts.Pure]
+    
     public bool Equals(RunningStatistics other)
       => m_count == other.m_count && m_m1 == other.m_m1 && m_m2 == other.m_m2 && m_m3 == other.m_m3 && m_m4 == other.m_m4 && m_max == other.m_max && m_min == other.m_min && m_product == other.m_product && m_reciprocalSum == other.m_reciprocalSum && m_sum == other.m_sum;
 
     // IFormattable
-    [System.Diagnostics.Contracts.Pure]
+    
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"{GetType().Name} {{ Count = {m_count}, M = [{m_m1}, {m_m2}, {m_m3}, {m_m4}], Min/Max = [{m_min}, {m_max}], Product = {m_product}, Sum = {m_sum} }}";
     #endregion Implemented interfaces
 
     #region Object overrides
-    [System.Diagnostics.Contracts.Pure]
+    
     public override bool Equals(object? obj)
       => obj is VersionEx o && Equals(o);
-    [System.Diagnostics.Contracts.Pure]
+    
     public override int GetHashCode()
       => System.HashCode.Combine(m_count, m_reciprocalSum, m_m1, m_m2, m_m3, m_m4);
-    [System.Diagnostics.Contracts.Pure]
+    
     public override string? ToString()
       => ToString(null, null);
     #endregion Object overrides

@@ -29,26 +29,26 @@ namespace Flux.Checksum
     }
 
     // Operators
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator ==(Bsd a, Bsd b)
       => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure]
+    
     public static bool operator !=(Bsd a, Bsd b)
       => !a.Equals(b);
 
     // IEquatable
-    [System.Diagnostics.Contracts.Pure]
+    
     public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Bsd other)
       => m_hash == other.m_hash;
 
     // Object (overrides)
-    [System.Diagnostics.Contracts.Pure]
+    
     public override bool Equals(object? obj)
       => obj is Bsd o && Equals(o);
-    [System.Diagnostics.Contracts.Pure]
+    
     public override int GetHashCode()
       => m_hash.GetHashCode();
-    [System.Diagnostics.Contracts.Pure]
+    
     public override string ToString()
       => $"{nameof(Bsd)} {{ CheckSum = {m_hash} }}";
   }

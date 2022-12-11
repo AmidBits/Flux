@@ -46,7 +46,7 @@ namespace Foundation.Units
     {
       var a = new Flux.Quantities.Angle(1, Flux.Quantities.AngleUnit.Degree);
 
-      var u = new Flux.Latitude(a);
+      var u = new Flux.Quantities.Latitude(a);
 
       Assert.AreEqual(a.ToUnitValue(Flux.Quantities.AngleUnit.Degree), u.Value);
     }
@@ -56,7 +56,7 @@ namespace Foundation.Units
     {
       var a = new Flux.Quantities.Angle(1, Flux.Quantities.AngleUnit.Degree);
 
-      var u = new Flux.Longitude(a);
+      var u = new Flux.Quantities.Longitude(a);
 
       Assert.AreEqual(a.ToUnitValue(Flux.Quantities.AngleUnit.Degree), u.Value);
     }

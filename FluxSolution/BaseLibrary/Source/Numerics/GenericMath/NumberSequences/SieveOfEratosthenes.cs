@@ -38,7 +38,7 @@ namespace Flux.NumberSequences
       => m_sieve.GetIndicesEqualToTrue();
 
     #region Static methods
-    [System.Diagnostics.Contracts.Pure]
+    
     public static System.Collections.BitArray CreateBitArray(int length)
     {
       if (length < 1) throw new System.ArgumentOutOfRangeException(nameof(length));

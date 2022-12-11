@@ -33,19 +33,19 @@ namespace Flux.Sorting
     }
 
     #region Heap sort helpers
-    [System.Diagnostics.Contracts.Pure]
+    
     public int GetParent(int index)
       => (index - 1) / 2;
-    [System.Diagnostics.Contracts.Pure]
+    
     public int GetLeftChild(int index)
       => 2 * index + 1;
-    [System.Diagnostics.Contracts.Pure]
+    
     public int GetRightChild(int index)
       => 2 * index + 2;
     #endregion Heap sort helpers
 
     #region Heap sort basic down helpers
-    [System.Diagnostics.Contracts.Pure]
+    
     private void BasicHeapSort(System.Span<T> source, int count)
     {
       BasicHeapifyDown(source, count); // Build the heap in array a so that largest value is at the root.
@@ -65,7 +65,7 @@ namespace Flux.Sorting
     }
 
     // (Put elements of 'a' in heap order, in-place)
-    [System.Diagnostics.Contracts.Pure]
+    
     private void BasicHeapifyDown(System.Span<T> source, int count)
     {
       var start = GetParent(count - 1); // Start is assigned the index in 'source' of the last parent node. The last element in a 0-based array is at [count - 1]; find the parent of that element.
@@ -82,7 +82,7 @@ namespace Flux.Sorting
       }
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     private void BasicSiftDown(System.Span<T> source, int start, int end)
     {
       var root = start;
@@ -114,7 +114,7 @@ namespace Flux.Sorting
     #endregion Heap sort basic down helpers
 
     #region Heap sort Floyd's construction (down) helpers
-    [System.Diagnostics.Contracts.Pure]
+    
     private void FloydHeapSort(System.Span<T> source, int count)
     {
       FloydHeapifyDown(source, count); // Build the heap in array a so that largest value is at the root.
@@ -134,7 +134,7 @@ namespace Flux.Sorting
     }
 
     // (Put elements of 'a' in heap order, in-place)
-    [System.Diagnostics.Contracts.Pure]
+    
     private void FloydHeapifyDown(System.Span<T> source, int count)
     {
       // Start is assigned the index in source of the last parent node. The last element in a 0-based array is [count-1]; find the parent of that element.
@@ -152,7 +152,7 @@ namespace Flux.Sorting
       }
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     private int FloydLeafSearch(System.Span<T> source, int i, int end)
     {
       var j = i;
@@ -171,7 +171,7 @@ namespace Flux.Sorting
       return j;
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     private void FloydSiftDown(System.Span<T> source, int i, int end)
     {
       var j = FloydLeafSearch(source, i, end);

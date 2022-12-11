@@ -24,17 +24,17 @@ namespace Flux
       m_radAngle = radAngle;
     }
 
-    [System.Diagnostics.Contracts.Pure] public double X => m_x;
-    [System.Diagnostics.Contracts.Pure] public double Y => m_y;
-    [System.Diagnostics.Contracts.Pure] public double Z => m_z;
+     public double X => m_x;
+     public double Y => m_y;
+     public double Z => m_z;
 
-    [System.Diagnostics.Contracts.Pure] public Quantities.Angle Angle => new(m_radAngle);
+     public Quantities.Angle Angle => new(m_radAngle);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public CoordinateSystems.CartesianCoordinate3<double> ToCartesianCoordinate()
       => new(m_x, m_y, m_z);
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public EulerAngles ToEulerAngles()
     {
       var s = Math.Sin(m_radAngle);
@@ -54,7 +54,7 @@ namespace Flux
       return new(heading, attitude, bank);
     }
 
-    [System.Diagnostics.Contracts.Pure]
+    
     public Quaternion ToQuaternion()
     {
       var h = m_radAngle / 2;

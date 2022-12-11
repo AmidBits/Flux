@@ -37,11 +37,11 @@ namespace Flux.Colors
     #endregion Static members
 
     #region Overloaded operators
-    [System.Diagnostics.Contracts.Pure] public static explicit operator Acmyk(System.ValueTuple<double, double, double, double, double> v) => new(v.Item1, v.Item2, v.Item3, v.Item4, v.Item5);
-    [System.Diagnostics.Contracts.Pure] public static explicit operator Acmyk(double[] v) => new(v[0], v[1], v[2], v[3], v[4]);
+     public static explicit operator Acmyk(System.ValueTuple<double, double, double, double, double> v) => new(v.Item1, v.Item2, v.Item3, v.Item4, v.Item5);
+     public static explicit operator Acmyk(double[] v) => new(v[0], v[1], v[2], v[3], v[4]);
 
-    [System.Diagnostics.Contracts.Pure] public static bool operator ==(Acmyk a, Acmyk b) => a.Equals(b);
-    [System.Diagnostics.Contracts.Pure] public static bool operator !=(Acmyk a, Acmyk b) => !a.Equals(b);
+     public static bool operator ==(Acmyk a, Acmyk b) => a.Equals(b);
+     public static bool operator !=(Acmyk a, Acmyk b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

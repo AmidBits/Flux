@@ -23,7 +23,7 @@ namespace Flux
 
       #region Implemented interfaces
       // INumberSequence
-      [System.Diagnostics.Contracts.Pure]
+      
       public System.Collections.Generic.IEnumerable<TResult> GetSequence()
       {
         var index = 0;
@@ -32,8 +32,8 @@ namespace Flux
       }
 
       // IEnumerable<>
-      [System.Diagnostics.Contracts.Pure] public System.Collections.Generic.IEnumerator<TResult> GetEnumerator() => GetSequence().GetEnumerator();
-      [System.Diagnostics.Contracts.Pure] System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+       public System.Collections.Generic.IEnumerator<TResult> GetEnumerator() => GetSequence().GetEnumerator();
+       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
       #endregion Implemented interfaces
     }
   }

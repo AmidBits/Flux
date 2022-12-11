@@ -34,7 +34,7 @@ namespace Flux
         => CreateBetween(source, target, TNumber.One, direction);
 
       // INumberSequence
-      [System.Diagnostics.Contracts.Pure]
+      
       public System.Collections.Generic.IEnumerable<TNumber> GetSequence()
       {
         var mean = m_mean;
@@ -67,8 +67,8 @@ namespace Flux
       }
 
       // IEnumerable<>
-      [System.Diagnostics.Contracts.Pure] public System.Collections.Generic.IEnumerator<TNumber> GetEnumerator() => GetSequence().GetEnumerator();
-      [System.Diagnostics.Contracts.Pure] System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+       public System.Collections.Generic.IEnumerator<TNumber> GetEnumerator() => GetSequence().GetEnumerator();
+       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     }
   }
 }
