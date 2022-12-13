@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Numerics
 {
   /// <summary>Kepler elements for computing orbits.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Orbital_elements"/>
@@ -40,7 +40,7 @@ namespace Flux
     /// <summary>The orbit number at Epoch Time. This time is chosen very near the time of true ascending node passage as a matter of routine. Revolutions.</summary>
     public TSelf RevolutionNumberAtEpoch { get => m_revolutionNumberAtEpoch; init => m_revolutionNumberAtEpoch = value; }
 
-    public Matrix4<TSelf> ToMatrix4()
+    public Numerics.Matrix4<TSelf> ToMatrix4()
     {
       var co = TSelf.Cos(m_radRightAscensionOfAscendingNode);
       var so = TSelf.Sin(m_radRightAscensionOfAscendingNode);

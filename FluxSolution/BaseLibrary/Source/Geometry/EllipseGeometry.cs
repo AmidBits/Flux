@@ -24,7 +24,7 @@ namespace Flux
 
     public double GetSurfaceArea()
       => SurfaceArea(m_semiMajorAxis, m_semiMinorAxis);
-    public bool GetSurfaceContains(CoordinateSystems.CartesianCoordinate2<double> point)
+    public bool GetSurfaceContains(Numerics.CartesianCoordinate2<double> point)
       => SurfaceContains(point.X, point.Y, m_semiMajorAxis, m_semiMinorAxis, 0);
     /// <summary>Returns the circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
     public double GetSurfacePerimeter()
@@ -67,7 +67,7 @@ namespace Flux
     /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
     public static EllipseGeometry FromCartesian(double x, double y)
       => new(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
-    public static CoordinateSystems.CartesianCoordinate2<double> ToCartesianCoordinate2(double semiMajorAxis, double semiMinorAxis, double angle)
+    public static Numerics.CartesianCoordinate2<double> ToCartesianCoordinate2(double semiMajorAxis, double semiMinorAxis, double angle)
       => new(
         System.Math.Cos(angle) * semiMajorAxis,
         System.Math.Sin(angle) * semiMinorAxis

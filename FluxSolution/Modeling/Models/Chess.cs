@@ -22,9 +22,9 @@ namespace Flux.Model
   public sealed class ChessPiece
   {
     public ChessPieceType Type { get; }
-    public System.Collections.Generic.List<CoordinateSystems.CartesianCoordinate2<int>> Position { get; } = new System.Collections.Generic.List<CoordinateSystems.CartesianCoordinate2<int>>();
+    public System.Collections.Generic.List<Numerics.CartesianCoordinate2<int>> Position { get; } = new System.Collections.Generic.List<Numerics.CartesianCoordinate2<int>>();
 
-    public ChessPiece(ChessPieceType type, CoordinateSystems.CartesianCoordinate2<int> vector)
+    public ChessPiece(ChessPieceType type, Numerics.CartesianCoordinate2<int> vector)
     {
       Type = type;
       Position.Add(vector);
@@ -37,7 +37,7 @@ namespace Flux.Model
     public static readonly string[] Files = new string[] { "a", "b", "c", "d", "e", "f", "g", "h" };
     public static readonly string[] Ranks = new string[] { "8", "7", "6", "5", "4", "3", "2", "1" };
 
-    public static readonly Size2<int> BoardSize = new(Files.Length, Ranks.Length);
+    public static readonly Numerics.Size2<int> BoardSize = new(Files.Length, Ranks.Length);
 
     public static readonly System.Collections.Generic.List<string> Labels = Ranks.SelectMany(rl => Files.Select(cl => $"{cl}{rl}")).ToList();
 
@@ -45,145 +45,145 @@ namespace Flux.Model
       => index >= 0 && index <= 63;
     public static bool IsValidLabel(string column, string row)
       => System.Array.Exists(Files, f => f.Equals(column, System.StringComparison.Ordinal)) && System.Array.Exists(Ranks, f => f.Equals(row, System.StringComparison.Ordinal));
-    public static bool IsValidVector(CoordinateSystems.CartesianCoordinate2<int> vector)
+    public static bool IsValidVector(Numerics.CartesianCoordinate2<int> vector)
       => vector.X >= 0 && vector.X <= 7 && vector.Y >= 0 && vector.Y <= 7;
 
     public static (string column, string row) IndexToLabel(int index)
     {
-      var p = CoordinateSystems.CartesianCoordinate2<int>.ConvertFromUniqueIndex(index, BoardSize.Width);
+      var p = Numerics.CartesianCoordinate2<int>.ConvertFromUniqueIndex(index, BoardSize.Width);
 
       return (Files[p.X], Ranks[p.Y]);
     }
 
-    public static CoordinateSystems.CartesianCoordinate2<int> IndexToVector(int index)
-      => CoordinateSystems.CartesianCoordinate2<int>.ConvertFromUniqueIndex(index, BoardSize.Width);
+    public static Numerics.CartesianCoordinate2<int> IndexToVector(int index)
+      => Numerics.CartesianCoordinate2<int>.ConvertFromUniqueIndex(index, BoardSize.Width);
 
     public static int LabelToIndex(string column, string row)
     {
-      var p = new CoordinateSystems.CartesianCoordinate2<int>(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
+      var p = new Numerics.CartesianCoordinate2<int>(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
       return (int)p.ToUniqueIndex(BoardSize.Width);
     }
 
-    public static CoordinateSystems.CartesianCoordinate2<int> LabelToVector(string column, string row)
+    public static Numerics.CartesianCoordinate2<int> LabelToVector(string column, string row)
       => new(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
-    public static int VectorToIndex(CoordinateSystems.CartesianCoordinate2<int> vector)
+    public static int VectorToIndex(Numerics.CartesianCoordinate2<int> vector)
       => (int)vector.ToUniqueIndex(BoardSize.Width);
-    public static (string column, string row) VectorToLabel(CoordinateSystems.CartesianCoordinate2<int> vector)
+    public static (string column, string row) VectorToLabel(Numerics.CartesianCoordinate2<int> vector)
       => (Files[vector.X], Ranks[vector.Y]);
 
-    public static System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> GetMovesOfBishop(CoordinateSystems.CartesianCoordinate2<int> vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> GetMovesOfBishop(Numerics.CartesianCoordinate2<int> vector)
     {
       return BlankMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> BlankMoves()
+      System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> BlankMoves()
       {
         for (var i = 1; i < 8; i++)
         {
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + i, vector.Y + i);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + i, vector.Y - i);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - i, vector.Y - i);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - i, vector.Y + i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X + i, vector.Y + i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X + i, vector.Y - i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X - i, vector.Y - i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X - i, vector.Y + i);
         }
       }
     }
-    public static System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> GetMovesOfKing(CoordinateSystems.CartesianCoordinate2<int> vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> GetMovesOfKing(Numerics.CartesianCoordinate2<int> vector)
     {
       return BlankMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> BlankMoves()
+      System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> BlankMoves()
       {
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + 1, vector.Y + 1);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + 1, vector.Y);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + 1, vector.Y - 1);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y - 1);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - 1, vector.Y - 1);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - 1, vector.Y);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - 1, vector.Y + 1);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y + 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X + 1, vector.Y + 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X + 1, vector.Y);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X + 1, vector.Y - 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y - 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X - 1, vector.Y - 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X - 1, vector.Y);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X - 1, vector.Y + 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y + 1);
       }
     }
-    public static System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> GetMovesOfKnight(CoordinateSystems.CartesianCoordinate2<int> vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> GetMovesOfKnight(Numerics.CartesianCoordinate2<int> vector)
     {
       return BlankMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> BlankMoves()
+      System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> BlankMoves()
       {
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + 1, vector.Y + 2);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + 2, vector.Y + 1);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + 2, vector.Y - 1);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + 1, vector.Y - 2);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - 1, vector.Y - 2);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - 2, vector.Y - 1);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - 2, vector.Y + 1);
-        yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - 1, vector.Y + 2);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X + 1, vector.Y + 2);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X + 2, vector.Y + 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X + 2, vector.Y - 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X + 1, vector.Y - 2);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X - 1, vector.Y - 2);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X - 2, vector.Y - 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X - 2, vector.Y + 1);
+        yield return new Numerics.CartesianCoordinate2<int>(vector.X - 1, vector.Y + 2);
       }
     }
-    public static System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> GetMovesOfQueen(CoordinateSystems.CartesianCoordinate2<int> vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> GetMovesOfQueen(Numerics.CartesianCoordinate2<int> vector)
     {
       return BlankerMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> BlankerMoves()
+      System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> BlankerMoves()
       {
         for (var i = 1; i < 8; i++)
         {
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + i, vector.Y + i);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + i, vector.Y);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + i, vector.Y - i);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y - i);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - i, vector.Y - i);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - i, vector.Y);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - i, vector.Y + i);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y + i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X + i, vector.Y + i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X + i, vector.Y);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X + i, vector.Y - i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y - i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X - i, vector.Y - i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X - i, vector.Y);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X - i, vector.Y + i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y + i);
         }
       }
     }
-    public static System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> GetMovesOfPawn(CoordinateSystems.CartesianCoordinate2<int> vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> GetMovesOfPawn(Numerics.CartesianCoordinate2<int> vector)
     {
       return BlanketMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> BlanketMoves()
+      System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> BlanketMoves()
       {
         // Moves going "upwards" on the board.
         {
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y + 1);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y + 1);
 
           if (vector.Y == 1)
           {
-            yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y + 2); // Initial optional move (up).
+            yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y + 2); // Initial optional move (up).
           }
 
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - 1, vector.Y + 1); // Capture move (up).
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + 1, vector.Y + 1); // Capture move (up).
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X - 1, vector.Y + 1); // Capture move (up).
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X + 1, vector.Y + 1); // Capture move (up).
         }
 
         // Moves going "downwards" on the board.
         {
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y - 1);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y - 1);
 
           if (vector.Y == 6)
           {
-            yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y - 2); // Initial optional move (down).
+            yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y - 2); // Initial optional move (down).
           }
 
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + 1, vector.Y - 1); // Capture move (down).
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - 1, vector.Y - 1); // Capture move (down).
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X + 1, vector.Y - 1); // Capture move (down).
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X - 1, vector.Y - 1); // Capture move (down).
         }
       }
     }
-    public static System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> GetMovesOfRook(CoordinateSystems.CartesianCoordinate2<int> vector)
+    public static System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> GetMovesOfRook(Numerics.CartesianCoordinate2<int> vector)
     {
       return BlanketMoves().Where(v => IsValidVector(v));
 
-      System.Collections.Generic.IEnumerable<CoordinateSystems.CartesianCoordinate2<int>> BlanketMoves()
+      System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> BlanketMoves()
       {
         for (var i = 1; i < 8; i++)
         {
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X + i, vector.Y);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y - i);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X - i, vector.Y);
-          yield return new CoordinateSystems.CartesianCoordinate2<int>(vector.X, vector.Y + i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X + i, vector.Y);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y - i);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X - i, vector.Y);
+          yield return new Numerics.CartesianCoordinate2<int>(vector.X, vector.Y + i);
         }
       }
     }

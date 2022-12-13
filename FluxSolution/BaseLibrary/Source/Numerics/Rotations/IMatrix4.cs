@@ -4,12 +4,12 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Computes the determinant (generally) of the matrix.</summary>
-    public static TSelf GetDeterminantGeneral<TSelf>(this IMatrix4<TSelf> source)
+    public static TSelf GetDeterminantGeneral<TSelf>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => source.M14 * source.M23 * source.M32 * source.M41 - source.M13 * source.M24 * source.M32 * source.M41 - source.M14 * source.M22 * source.M33 * source.M41 + source.M12 * source.M24 * source.M33 * source.M41 + source.M13 * source.M22 * source.M34 * source.M41 - source.M12 * source.M23 * source.M34 * source.M41 - source.M14 * source.M23 * source.M31 * source.M42 + source.M13 * source.M24 * source.M31 * source.M42 + source.M14 * source.M21 * source.M33 * source.M42 - source.M11 * source.M24 * source.M33 * source.M42 - source.M13 * source.M21 * source.M34 * source.M42 + source.M11 * source.M23 * source.M34 * source.M42 + source.M14 * source.M22 * source.M31 * source.M43 - source.M12 * source.M24 * source.M31 * source.M43 - source.M14 * source.M21 * source.M32 * source.M43 + source.M11 * source.M24 * source.M32 * source.M43 + source.M12 * source.M21 * source.M34 * source.M43 - source.M11 * source.M22 * source.M34 * source.M43 - source.M13 * source.M22 * source.M31 * source.M44 + source.M12 * source.M23 * source.M31 * source.M44 + source.M13 * source.M21 * source.M32 * source.M44 - source.M11 * source.M23 * source.M32 * source.M44 - source.M12 * source.M21 * source.M33 * source.M44 + source.M11 * source.M22 * source.M33 * source.M44;
 
     /// <summary>Computes the determinant (optimized) of the matrix.</summary>
-    public static TSelf GetDeterminantOptimized<TSelf>(this IMatrix4<TSelf> source)
+    public static TSelf GetDeterminantOptimized<TSelf>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       // | a b c d |     | f g h |     | e g h |     | e f h |     | e f g |
@@ -58,7 +58,7 @@ namespace Flux
     }
 
     /// <summary>Computes the general inverse of the matrix.</summary>
-    public static Matrix4<TSelf> GetInverseGeneral<TSelf>(this IMatrix4<TSelf> source)
+    public static Numerics.Matrix4<TSelf> GetInverseGeneral<TSelf>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var det = TSelf.One / source.GetDeterminantGeneral();
@@ -88,7 +88,7 @@ namespace Flux
 
     /// <summary>Linearly interpolates between the corresponding values of two matrices.</summary>
     /// <param name="amount">The relative weight of the second source matrix.</param>
-    public static Matrix4<TSelf> Lerp<TSelf>(this IMatrix4<TSelf> m1, IMatrix4<TSelf> m2, TSelf amount)
+    public static Numerics.Matrix4<TSelf> Lerp<TSelf>(this Numerics.IMatrix4<TSelf> m1, Numerics.IMatrix4<TSelf> m2, TSelf amount)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         // First row
@@ -114,7 +114,7 @@ namespace Flux
       );
 
     /// <summary>Creates a new matrix with the elements negated.</summary>
-    public static Matrix4<TSelf> Negate<TSelf>(this IMatrix4<TSelf> source)
+    public static Numerics.Matrix4<TSelf> Negate<TSelf>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(-source.M11, -source.M12, -source.M13, -source.M14, -source.M21, -source.M22, -source.M23, -source.M24, -source.M31, -source.M32, -source.M33, -source.M34, -source.M41, -source.M42, -source.M43, -source.M44);
 
@@ -332,7 +332,7 @@ namespace Flux
     //  return true;
     //}
 
-    public static TSelf[,] ToArray<TSelf>(this IMatrix4<TSelf> source)
+    public static TSelf[,] ToArray<TSelf>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new TSelf[,]
       {
@@ -342,7 +342,7 @@ namespace Flux
         { source.M41, source.M42, source.M43, source.M44 }
       };
 
-    public static EulerAngles<TSelf> ToEulerAnglesTaitBryanZYX<TSelf>(this IMatrix4<TSelf> source)
+    public static Numerics.EulerAngles<TSelf> ToEulerAnglesTaitBryanZYX<TSelf>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         TSelf.Atan2(source.M11, source.M21),
@@ -350,7 +350,7 @@ namespace Flux
         TSelf.Atan2(source.M33, source.M32)
       );
 
-    public static EulerAngles<TSelf> ToEulerAnglesProperEulerZXZ<TSelf>(this IMatrix4<TSelf> source)
+    public static Numerics.EulerAngles<TSelf> ToEulerAnglesProperEulerZXZ<TSelf>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         TSelf.Atan2(-source.M23, source.M13),
@@ -358,7 +358,7 @@ namespace Flux
         TSelf.Atan2(source.M32, source.M31)
       );
 
-    public static System.Numerics.Matrix4x4 ToMatrix4x4<TSelf>(this IMatrix4<TSelf> source)
+    public static System.Numerics.Matrix4x4 ToMatrix4x4<TSelf>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         float.CreateChecked(source.M11), float.CreateChecked(source.M12), float.CreateChecked(source.M13), float.CreateChecked(source.M14),
@@ -367,7 +367,7 @@ namespace Flux
         float.CreateChecked(source.M41), float.CreateChecked(source.M42), float.CreateChecked(source.M43), float.CreateChecked(source.M44)
       );
 
-    public static Matrix4<TResult> ToMatrix4<TSelf, TResult>(this Matrix4<TSelf> source)
+    public static Numerics.Matrix4<TResult> ToMatrix4<TSelf, TResult>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       where TResult : System.Numerics.IFloatingPointIeee754<TResult>
       => new(
@@ -377,7 +377,7 @@ namespace Flux
         TResult.CreateChecked(source.M41), TResult.CreateChecked(source.M42), TResult.CreateChecked(source.M43), TResult.CreateChecked(source.M44)
       );
 
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> Transform<TSelf>(this IMatrix4<TSelf> source, CoordinateSystems.ICartesianCoordinate3<TSelf> vector)
+    public static Numerics.CartesianCoordinate3<TSelf> Transform<TSelf>(this Numerics.IMatrix4<TSelf> source, Numerics.ICartesianCoordinate3<TSelf> vector)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         vector.X * source.M11 + vector.Y * source.M12 + vector.Z * source.M13,
@@ -388,7 +388,7 @@ namespace Flux
     /// <summary>Transforms the given matrix by applying the given Quaternion rotation.</summary>
     /// <param name="source">The source matrix to transform.</param>
     /// <param name="rotation">The rotation to apply.</param>
-    public static Matrix4<TSelf> Transform<TSelf>(this IMatrix4<TSelf> source, IQuaternion<TSelf> rotation)
+    public static Numerics.Matrix4<TSelf> Transform<TSelf>(this Numerics.IMatrix4<TSelf> source, Numerics.IQuaternion<TSelf> rotation)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       // Compute rotation matrix.
@@ -444,7 +444,7 @@ namespace Flux
     }
 
     /// <summary>Creates a new matrix with the rows and columns transposed.</summary>
-    public static Matrix4<TSelf> Transpose<TSelf>(this IMatrix4<TSelf> source)
+    public static Numerics.Matrix4<TSelf> Transpose<TSelf>(this Numerics.IMatrix4<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(source.M11, source.M21, source.M31, source.M41, source.M12, source.M22, source.M32, source.M42, source.M13, source.M23, source.M33, source.M43, source.M14, source.M24, source.M34, source.M44);
 
@@ -452,7 +452,7 @@ namespace Flux
     /// <param name="matrix">The source matrix to invert.</param>
     /// <param name="result">If successful, contains the inverted matrix.</param>
     /// <returns>True if the source matrix could be inverted; False otherwise.</returns>
-    public static bool TryGetInverseOptimized<TSelf>(this IMatrix4<TSelf> source, out Matrix4<TSelf> result)
+    public static bool TryGetInverseOptimized<TSelf>(this Numerics.IMatrix4<TSelf> source, out Numerics.Matrix4<TSelf> result)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       //                                       -1
@@ -616,40 +616,43 @@ namespace Flux
   }
   #endregion ExtensionMethods
 
-  public interface IMatrix4<TSelf>
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
+  namespace Numerics
   {
-    /// <summary>Value at row 1, column 1 of the matrix.</summary>
-    public TSelf M11 { get; }
-    /// <summary>Value at row 1, column 2 of the matrix.</summary>
-    public TSelf M12 { get; }
-    /// <summary>Value at row 1, column 3 of the matrix.</summary>
-    public TSelf M13 { get; }
-    /// <summary>Value at row 1, column 4 of the matrix.</summary>
-    public TSelf M14 { get; }
-    /// <summary>Value at row 2, column 1 of the matrix.</summary>
-    public TSelf M21 { get; }
-    /// <summary>Value at row 2, column 2 of the matrix.</summary>
-    public TSelf M22 { get; }
-    /// <summary>Value at row 2, column 3 of the matrix.</summary>
-    public TSelf M23 { get; }
-    /// <summary>Value at row 2, column 4 of the matrix.</summary>
-    public TSelf M24 { get; }
-    /// <summary>Value at row 3, column 1 of the matrix.</summary>
-    public TSelf M31 { get; }
-    /// <summary>Value at row 3, column 2 of the matrix.</summary>
-    public TSelf M32 { get; }
-    /// <summary>Value at row 3, column 3 of the matrix.</summary>
-    public TSelf M33 { get; }
-    /// <summary>Value at row 3, column 4 of the matrix.</summary>
-    public TSelf M34 { get; }
-    /// <summary>Value at row 4, column 1 of the matrix.</summary>
-    public TSelf M41 { get; }
-    /// <summary>Value at row 4, column 2 of the matrix.</summary>
-    public TSelf M42 { get; }
-    /// <summary>Value at row 4, column 3 of the matrix.</summary>
-    public TSelf M43 { get; }
-    /// <summary>Value at row 4, column 4 of the matrix.</summary>
-    public TSelf M44 { get; }
+    public interface IMatrix4<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    {
+      /// <summary>Value at row 1, column 1 of the matrix.</summary>
+      public TSelf M11 { get; }
+      /// <summary>Value at row 1, column 2 of the matrix.</summary>
+      public TSelf M12 { get; }
+      /// <summary>Value at row 1, column 3 of the matrix.</summary>
+      public TSelf M13 { get; }
+      /// <summary>Value at row 1, column 4 of the matrix.</summary>
+      public TSelf M14 { get; }
+      /// <summary>Value at row 2, column 1 of the matrix.</summary>
+      public TSelf M21 { get; }
+      /// <summary>Value at row 2, column 2 of the matrix.</summary>
+      public TSelf M22 { get; }
+      /// <summary>Value at row 2, column 3 of the matrix.</summary>
+      public TSelf M23 { get; }
+      /// <summary>Value at row 2, column 4 of the matrix.</summary>
+      public TSelf M24 { get; }
+      /// <summary>Value at row 3, column 1 of the matrix.</summary>
+      public TSelf M31 { get; }
+      /// <summary>Value at row 3, column 2 of the matrix.</summary>
+      public TSelf M32 { get; }
+      /// <summary>Value at row 3, column 3 of the matrix.</summary>
+      public TSelf M33 { get; }
+      /// <summary>Value at row 3, column 4 of the matrix.</summary>
+      public TSelf M34 { get; }
+      /// <summary>Value at row 4, column 1 of the matrix.</summary>
+      public TSelf M41 { get; }
+      /// <summary>Value at row 4, column 2 of the matrix.</summary>
+      public TSelf M42 { get; }
+      /// <summary>Value at row 4, column 3 of the matrix.</summary>
+      public TSelf M43 { get; }
+      /// <summary>Value at row 4, column 4 of the matrix.</summary>
+      public TSelf M44 { get; }
+    }
   }
 }

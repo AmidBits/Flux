@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Numerics
 {
   public readonly record struct Size2<TSelf>
     : ISize2<TSelf>
@@ -18,7 +18,7 @@ namespace Flux
     public TSelf Width { get => m_width; init => m_width = value; }
     public TSelf Height { get => m_height; init => m_height = value; }
 
-    public CoordinateSystems.CartesianCoordinate2<TSelf> Center()
+    public Numerics.CartesianCoordinate2<TSelf> Center()
       => new(
         m_width.Divide(2),
         m_height.Divide(2)

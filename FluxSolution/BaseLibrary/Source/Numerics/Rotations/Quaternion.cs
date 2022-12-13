@@ -1,11 +1,12 @@
-namespace Flux
+namespace Flux.Numerics
 {
   /// <summary>A structure encapsulating a four-dimensional vector (x,y,z,w), which is used to efficiently rotate an object about the (x,y,z) vector by the angle theta, where w = cos(theta/2).</summary>
+  /// <remarks>All angles in radians.</remarks>
   /// <see cref="https://github.com/mono/mono/blob/c5b88ec4f323f2bdb7c7d0a595ece28dae66579c/mcs/class/referencesource/System.Numerics/System/Numerics/Quaternion.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct Quaternion<TSelf>
     : IQuaternion<TSelf>
-    where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
     /// <summary>Returns a Quaternion representing no rotation.</summary>
     public static Quaternion<TSelf> Identity
@@ -90,54 +91,59 @@ namespace Flux
     //  return q;
     //}
 
-    /// <summary>Returns a quaternion from two vectors.
-    /// <para><see href="http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final"/></para>
-    /// <para><see href="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/></para>
-    /// </summary>
-    public static Quaternion<TSelf> CreateFromTwoVectors(CoordinateSystems.ICartesianCoordinate3<TSelf> u, CoordinateSystems.ICartesianCoordinate3<TSelf> v)
-    {
-      var norm_u_norm_v = TSelf.Sqrt(CoordinateSystems.ICartesianCoordinate3<TSelf>.DotProduct(u, u) * CoordinateSystems.ICartesianCoordinate3<TSelf>.DotProduct(v, v));
-      var real_part = norm_u_norm_v + CoordinateSystems.ICartesianCoordinate3<TSelf>.DotProduct(u, v);
+    ///// <summary>Returns a quaternion from two vectors.
+    ///// <para><see href="http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final"/></para>
+    ///// <para><see href="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/></para>
+    ///// </summary>
+    //public static Quaternion<TSelf> CreateFromTwoVectors(Numerics.ICartesianCoordinate3<TSelf> u, Numerics.ICartesianCoordinate3<TSelf> v)
+    //{
+    //  var norm_u_norm_v = TSelf.Sqrt(Numerics.ICartesianCoordinate3<TSelf>.DotProduct(u, u) * Numerics.ICartesianCoordinate3<TSelf>.DotProduct(v, v));
+    //  var real_part = norm_u_norm_v + Numerics.ICartesianCoordinate3<TSelf>.DotProduct(u, v);
 
-      CoordinateSystems.CartesianCoordinate3<TSelf> w;
+    //  Numerics.CartesianCoordinate3<TSelf> w;
 
-      if (real_part < TSelf.CreateChecked(GenericMath.Epsilon1E7) * norm_u_norm_v)
-      {
-        real_part = TSelf.Zero;
+    //  if (real_part < TSelf.CreateChecked(GenericMath.Epsilon1E7) * norm_u_norm_v)
+    //  {
+    //    real_part = TSelf.Zero;
 
-        // If u and v are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis. Axis normalisation can happen later, when we normalise the quaternion.
-        w = TSelf.Abs(u.X) > TSelf.Abs(u.Z) ? new CoordinateSystems.CartesianCoordinate3<TSelf>(-u.Y, u.X, TSelf.Zero) : new CoordinateSystems.CartesianCoordinate3<TSelf>(TSelf.Zero, -u.Z, u.Y);
-      }
-      else
-      {
-        w = CoordinateSystems.ICartesianCoordinate3<TSelf>.CrossProduct(u, v);
-      }
+    //    // If u and v are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis. Axis normalisation can happen later, when we normalise the quaternion.
+    //    w = TSelf.Abs(u.X) > TSelf.Abs(u.Z) ? new Numerics.CartesianCoordinate3<TSelf>(-u.Y, u.X, TSelf.Zero) : new Numerics.CartesianCoordinate3<TSelf>(TSelf.Zero, -u.Z, u.Y);
+    //  }
+    //  else
+    //  {
+    //    w = Numerics.ICartesianCoordinate3<TSelf>.CrossProduct(u, v);
+    //  }
 
-      return new Quaternion<TSelf>(w.X, w.Y, w.Z, real_part).Normalized();
-    }
+    //  return new Quaternion<TSelf>(w.X, w.Y, w.Z, real_part).Normalized();
+    //}
 
-    /// <summary>Creates a new Quaternion from the given yaw, pitch, and roll, in radians.</summary>
-    /// <param name="yaw">The yaw angle, in radians, around the Y-axis.</param>
-    /// <param name="pitch">The pitch angle, in radians, around the X-axis.</param>
-    /// <param name="roll">The roll angle, in radians, around the Z-axis.</param>
-    public static Quaternion<TSelf> CreateFromYawPitchRoll(TSelf yaw, TSelf pitch, TSelf roll)
-    {
-      //  Roll first, about axis the object is facing, then pitch upward, then yaw to face into the new heading.
+    ///// <summary>Creates a new Quaternion from the given yaw, pitch, and roll, in radians.</summary>
+    ///// <param name="yaw">The yaw angle, in radians, around the Y-axis.</param>
+    ///// <param name="pitch">The pitch angle, in radians, around the X-axis.</param>
+    ///// <param name="roll">The roll angle, in radians, around the Z-axis.</param>
+    //public static Quaternion<TSelf> CreateFromYawPitchRoll(TSelf yaw, TSelf pitch, TSelf roll)
+    //{
+    //  //  Roll first, about axis the object is facing, then pitch upward, then yaw to face into the new heading.
 
-      var halfRoll = roll * TSelf.CreateChecked(0.5);
-      var sr = TSelf.Sin(halfRoll);
-      var cr = TSelf.Cos(halfRoll);
+    //  var halfRoll = roll * TSelf.CreateChecked(0.5);
+    //  var sr = TSelf.Sin(halfRoll);
+    //  var cr = TSelf.Cos(halfRoll);
 
-      var halfPitch = pitch * TSelf.CreateChecked(0.5);
-      var sp = TSelf.Sin(halfPitch);
-      var cp = TSelf.Cos(halfPitch);
+    //  var halfPitch = pitch * TSelf.CreateChecked(0.5);
+    //  var sp = TSelf.Sin(halfPitch);
+    //  var cp = TSelf.Cos(halfPitch);
 
-      var halfYaw = yaw * TSelf.CreateChecked(0.5);
-      var sy = TSelf.Sin(halfYaw);
-      var cy = TSelf.Cos(halfYaw);
+    //  var halfYaw = yaw * TSelf.CreateChecked(0.5);
+    //  var sy = TSelf.Sin(halfYaw);
+    //  var cy = TSelf.Cos(halfYaw);
 
-      return new(cy * sp * cr + sy * cp * sr, sy * cp * cr - cy * sp * sr, cy * cp * sr - sy * sp * cr, cy * cp * cr + sy * sp * sr);
-    }
+    //  return new(
+    //    cy * sp * cr + sy * cp * sr,
+    //    sy * cp * cr - cy * sp * sr,
+    //    cy * cp * sr - sy * sp * cr,
+    //    cy * cp * cr + sy * sp * sr
+    //  );
+    //}
 
     /// <summary>Calculates the dot product of two Quaternions.</summary>
     public static TSelf DotProduct(IQuaternion<TSelf> q1, IQuaternion<TSelf> q2)
@@ -175,9 +181,9 @@ namespace Flux
     public static Quaternion<TSelf> operator *(Quaternion<TSelf> q, TSelf scalar)
   => new(q.m_x * scalar, q.m_y * scalar, q.m_z * scalar, q.m_w * scalar);
 
-    /// <summary>Divides a Quaternion by another Quaternion.</summary>
-    public static IQuaternion<TSelf> operator /(Quaternion<TSelf> q1, Quaternion<TSelf> q2)
-      => q1 * q2.Inverse();
+    ///// <summary>Divides a Quaternion by another Quaternion.</summary>
+    //public static IQuaternion<TSelf> operator /(Quaternion<TSelf> q1, Quaternion<TSelf> q2)
+    //  => q1 * q2.Inverse();
     #endregion Operator overloads
   }
 }

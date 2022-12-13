@@ -115,14 +115,14 @@
       /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
 
-      public CoordinateSystems.CartesianCoordinate2<double> ToCartesian2()
-        => (CoordinateSystems.CartesianCoordinate2<double>)ConvertRotationAngleToCartesian2(m_radAngle);
+      public Numerics.CartesianCoordinate2<double> ToCartesian2()
+        => (Numerics.CartesianCoordinate2<double>)ConvertRotationAngleToCartesian2(m_radAngle);
 
       /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
 
-      public CoordinateSystems.CartesianCoordinate2<double> ToCartesian2Ex()
-        => (CoordinateSystems.CartesianCoordinate2<double>)ConvertRotationAngleToCartesian2Ex(m_radAngle);
+      public Numerics.CartesianCoordinate2<double> ToCartesian2Ex()
+        => (Numerics.CartesianCoordinate2<double>)ConvertRotationAngleToCartesian2Ex(m_radAngle);
 
 
       public double ToDegrees()

@@ -5,7 +5,7 @@
   {
     /// <summary>Converts the spherical coordinates to cartesian 3D coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this CoordinateSystems.ISphericalCoordinate<TSelf> source)
+    public static Numerics.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var sinInclination = TSelf.Sin(source.Inclination);
@@ -19,7 +19,7 @@
 
     /// <summary>Converts the spherical coordinates to cylindrical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static (TSelf radius, TSelf azimuth, TSelf height) ToCylindricalCoordinates<TSelf>(this CoordinateSystems.ISphericalCoordinate<TSelf> source)
+    public static (TSelf radius, TSelf azimuth, TSelf height) ToCylindricalCoordinates<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => (
         source.Radius * TSelf.Sin(source.Inclination),
@@ -29,7 +29,7 @@
 
     /// <summary>Converts the spherical coordinates to a geographic coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static CoordinateSystems.GeographicCoordinate ToGeographicCoordinates<TSelf>(this CoordinateSystems.ISphericalCoordinate<TSelf> source)
+    public static Numerics.GeographicCoordinate ToGeographicCoordinates<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(TSelf.Pi - source.Inclination - TSelf.Pi.Divide(2))),
@@ -37,7 +37,7 @@
         double.CreateChecked(source.Radius)
       );
 
-    public static (Quantities.Length radius, Quantities.Angle inclination, Quantities.Angle azimuth) ToQuantities<TSelf>(this CoordinateSystems.ISphericalCoordinate<TSelf> source)
+    public static (Quantities.Length radius, Quantities.Angle inclination, Quantities.Angle azimuth) ToQuantities<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (
         new Quantities.Length(double.CreateChecked(source.Radius)),
@@ -45,7 +45,7 @@
         new Quantities.Angle(double.CreateChecked(source.Azimuth))
       );
 
-    public static CoordinateSystems.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this CoordinateSystems.ISphericalCoordinate<TSelf> source)
+    public static Numerics.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         source.Radius,
@@ -55,7 +55,7 @@
   }
   #endregion ExtensionMethods
 
-  namespace CoordinateSystems
+  namespace Numerics
   {
     /// <summary>Spherical coordinate.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>

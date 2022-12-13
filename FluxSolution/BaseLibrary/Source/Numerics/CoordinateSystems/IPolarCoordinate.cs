@@ -5,7 +5,7 @@
   {
     /// <summary>Converts the polar coordinates to cartesian 2D coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static CoordinateSystems.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this CoordinateSystems.IPolarCoordinate<TSelf> source)
+    public static Numerics.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         source.Radius * TSelf.Cos(source.Azimuth),
@@ -14,18 +14,18 @@
 
     /// <summary>Converts the polar coordinates to a complex number.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static System.Numerics.Complex ToComplex<TSelf>(this CoordinateSystems.IPolarCoordinate<TSelf> source)
+    public static System.Numerics.Complex ToComplex<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => System.Numerics.Complex.FromPolarCoordinates(
         double.CreateChecked(source.Radius),
         double.CreateChecked(source.Azimuth)
       );
 
-    public static CoordinateSystems.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this CoordinateSystems.IPolarCoordinate<TSelf> source)
+    public static Numerics.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(source.Radius, source.Azimuth);
 
-    public static (Quantities.Length radius, Quantities.Angle azimuth) ToQuantities<TSelf>(this CoordinateSystems.IPolarCoordinate<TSelf> source)
+    public static (Quantities.Length radius, Quantities.Angle azimuth) ToQuantities<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
     => (
       new Quantities.Length(double.CreateChecked(source.Radius)),
@@ -34,7 +34,7 @@
   }
   #endregion ExtensionMethods
 
-  namespace CoordinateSystems
+  namespace Numerics
   {
     /// <summary>The polar coordinate system is a two-dimensional coordinate system in which each point on a plane is determined by a distance from a reference point and an angle from a reference direction.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>

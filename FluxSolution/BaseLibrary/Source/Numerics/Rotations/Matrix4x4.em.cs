@@ -11,7 +11,7 @@ namespace Flux
             { source.M41, source.M42, source.M43, source.M44 }
       };
 
-    public static Matrix4<float> ToMatrix4(this System.Numerics.Matrix4x4 source)
+    public static Numerics.Matrix4<float> ToMatrix4(this System.Numerics.Matrix4x4 source)
       => new(
         source.M11, source.M12, source.M13, source.M14,
         source.M21, source.M22, source.M23, source.M24,
@@ -19,7 +19,7 @@ namespace Flux
         source.M41, source.M42, source.M43, source.M44
       );
 
-    public static Matrix4<TResult> ToMatrix4<TResult>(this System.Numerics.Matrix4x4 source)
+    public static Numerics.Matrix4<TResult> ToMatrix4<TResult>(this System.Numerics.Matrix4x4 source)
       where TResult : System.Numerics.IFloatingPointIeee754<TResult>
       => new(
         TResult.CreateChecked(source.M11), TResult.CreateChecked(source.M12), TResult.CreateChecked(source.M13), TResult.CreateChecked(source.M14),

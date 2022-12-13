@@ -10,12 +10,12 @@ namespace Flux
       System.Console.WriteLine(nameof(RunCoordinateSystems));
       System.Console.WriteLine();
 
-      Draw(CoordinateSystems.GeographicCoordinate.MadridSpain, nameof(CoordinateSystems.GeographicCoordinate.MadridSpain));
-      Draw(CoordinateSystems.GeographicCoordinate.PhoenixAzUsa, nameof(CoordinateSystems.GeographicCoordinate.PhoenixAzUsa));
-      Draw(CoordinateSystems.GeographicCoordinate.TakapauNewZealand, nameof(CoordinateSystems.GeographicCoordinate.TakapauNewZealand));
-      Draw(CoordinateSystems.GeographicCoordinate.TucsonAzUsa, nameof(CoordinateSystems.GeographicCoordinate.TucsonAzUsa));
+      Draw(Numerics.GeographicCoordinate.MadridSpain, nameof(Numerics.GeographicCoordinate.MadridSpain));
+      Draw(Numerics.GeographicCoordinate.PhoenixAzUsa, nameof(Numerics.GeographicCoordinate.PhoenixAzUsa));
+      Draw(Numerics.GeographicCoordinate.TakapauNewZealand, nameof(Numerics.GeographicCoordinate.TakapauNewZealand));
+      Draw(Numerics.GeographicCoordinate.TucsonAzUsa, nameof(Numerics.GeographicCoordinate.TucsonAzUsa));
 
-      static void Draw(CoordinateSystems.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
+      static void Draw(Numerics.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
       {
         Flux.Console.WriteInformationLine($"{label.ToString()}:");
 

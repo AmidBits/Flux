@@ -28,7 +28,7 @@ namespace Flux.Dsp
     }
 
     #region Static methods
-    public static CoordinateSystems.CartesianCoordinate2<double> RandomGradient(int ix, int iy)
+    public static Numerics.CartesianCoordinate2<double> RandomGradient(int ix, int iy)
     {
       // No precomputed gradients mean this works for any number of grid coordinates
       const int w = 8 * 4;

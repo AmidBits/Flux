@@ -5,109 +5,108 @@ namespace Flux
     /// <summary>Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
     public static string ToNamedGrouping<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Flux.Text.NamedGrouping<TSelf>.ToNamedGrouping(value);
+      => Flux.Text.NamedGrouping.ToNamedGrouping(System.Numerics.BigInteger.CreateChecked(value));
   }
 
   namespace Text
   {
-    public static class NamedGrouping<TSelf>
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static class NamedGrouping
     {
       /// <summary>Converts an integer to named grouping, e.g. 145,000 would become "one hundred fourty five thousand".</summary>
-      public static string ToNamedGrouping(TSelf value)
+      public static string ToNamedGrouping(System.Numerics.BigInteger value)
         => ConvertToNamedGrouping(value).ToString();
 
       private static readonly System.Collections.Generic.List<string> ZeroThroughNineteen = new()
-    {
-      @"Zero",
-      @"One",
-      @"Two",
-      @"Three",
-      @"Four",
-      @"Five",
-      @"Six",
-      @"Seven",
-      @"Eight",
-      @"Nine",
-      @"Ten",
-      @"Eleven",
-      @"Twelve",
-      @"Thirteen",
-      @"Fourteen",
-      @"Fifteen",
-      @"Sixteen",
-      @"Seventeen",
-      @"Eighteen",
-      @"Nineteen"
-    };
+      {
+        @"Zero",
+        @"One",
+        @"Two",
+        @"Three",
+        @"Four",
+        @"Five",
+        @"Six",
+        @"Seven",
+        @"Eight",
+        @"Nine",
+        @"Ten",
+        @"Eleven",
+        @"Twelve",
+        @"Thirteen",
+        @"Fourteen",
+        @"Fifteen",
+        @"Sixteen",
+        @"Seventeen",
+        @"Eighteen",
+        @"Nineteen"
+      };
 
-      private static readonly System.Collections.Generic.Dictionary<TSelf, string> TensDictionaryNumbers = new()
-    {
-      { TSelf.CreateChecked(20), @"Twenty" },
-      { TSelf.CreateChecked(30), @"Thirty" },
-      { TSelf.CreateChecked(40), @"Fourty" },
-      { TSelf.CreateChecked(50), @"Fifty" },
-      { TSelf.CreateChecked(60), @"Sixty" },
-      { TSelf.CreateChecked(70), @"Seventy" },
-      { TSelf.CreateChecked(80), @"Eighty" },
-      { TSelf.CreateChecked(90), @"Ninety" },
-      { TSelf.CreateChecked(100), @"Hundred" }
-    };
+      private static readonly System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string> TensDictionaryNumbers = new()
+      {
+        { 20, @"Twenty" },
+        { 30, @"Thirty" },
+        { 40, @"Fourty" },
+        { 50, @"Fifty" },
+        { 60, @"Sixty" },
+        { 70, @"Seventy" },
+        { 80, @"Eighty" },
+        { 90, @"Ninety" },
+        { 100, @"Hundred" }
+      };
 
-      public static readonly System.Collections.Generic.Dictionary<TSelf, string> StandardDictionaryNumbers = new()
-    {
-      { TSelf.Parse("1e54", System.Globalization.NumberStyles.AllowExponent, null), @"Septendecillion" },
-      { TSelf.Parse("1e51", System.Globalization.NumberStyles.AllowExponent, null), @"Sexdecillion" },
-      { TSelf.Parse("1e48", System.Globalization.NumberStyles.AllowExponent, null), @"Quindecillion" },
-      { TSelf.Parse("1e45", System.Globalization.NumberStyles.AllowExponent, null), @"Quattuordecillion" },
-      { TSelf.Parse("1e42", System.Globalization.NumberStyles.AllowExponent, null), @"Tredecillion" },
-      { TSelf.Parse("1e39", System.Globalization.NumberStyles.AllowExponent, null), @"Duodecillion" },
-      { TSelf.Parse("1e36", System.Globalization.NumberStyles.AllowExponent, null), @"Undecillion" },
-      { TSelf.Parse("1e33", System.Globalization.NumberStyles.AllowExponent, null), @"Decillion" },
-      { TSelf.Parse("1e30", System.Globalization.NumberStyles.AllowExponent, null), @"Nonillion" },
-      { TSelf.Parse("1e27", System.Globalization.NumberStyles.AllowExponent, null), @"Octillion" },
-      { TSelf.Parse("1e24", System.Globalization.NumberStyles.AllowExponent, null), @"Septillion" },
-      { TSelf.Parse("1e21", System.Globalization.NumberStyles.AllowExponent, null), @"Sextillion" },
-      { TSelf.CreateChecked(1000000000000000000L), @"Quintillion" },
-      { TSelf.CreateChecked(1000000000000000L), @"Quadrillion" },
-      { TSelf.CreateChecked(1000000000000L), @"Trillion" },
-      { TSelf.CreateChecked(1000000000L), @"Billion" },
-      { TSelf.CreateChecked(1000000L), @"Million" },
-      { TSelf.CreateChecked(1000L), @"Thousand" },
-      { TSelf.CreateChecked(100L), @"Hundred" },
-    };
+      public static readonly System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string> StandardDictionaryNumbers = new()
+      {
+        { System.Numerics.BigInteger.Parse("1e54", System.Globalization.NumberStyles.AllowExponent, null), @"Septendecillion" },
+        { System.Numerics.BigInteger.Parse("1e51", System.Globalization.NumberStyles.AllowExponent, null), @"Sexdecillion" },
+        { System.Numerics.BigInteger.Parse("1e48", System.Globalization.NumberStyles.AllowExponent, null), @"Quindecillion" },
+        { System.Numerics.BigInteger.Parse("1e45", System.Globalization.NumberStyles.AllowExponent, null), @"Quattuordecillion" },
+        { System.Numerics.BigInteger.Parse("1e42", System.Globalization.NumberStyles.AllowExponent, null), @"Tredecillion" },
+        { System.Numerics.BigInteger.Parse("1e39", System.Globalization.NumberStyles.AllowExponent, null), @"Duodecillion" },
+        { System.Numerics.BigInteger.Parse("1e36", System.Globalization.NumberStyles.AllowExponent, null), @"Undecillion" },
+        { System.Numerics.BigInteger.Parse("1e33", System.Globalization.NumberStyles.AllowExponent, null), @"Decillion" },
+        { System.Numerics.BigInteger.Parse("1e30", System.Globalization.NumberStyles.AllowExponent, null), @"Nonillion" },
+        { System.Numerics.BigInteger.Parse("1e27", System.Globalization.NumberStyles.AllowExponent, null), @"Octillion" },
+        { System.Numerics.BigInteger.Parse("1e24", System.Globalization.NumberStyles.AllowExponent, null), @"Septillion" },
+        { System.Numerics.BigInteger.Parse("1e21", System.Globalization.NumberStyles.AllowExponent, null), @"Sextillion" },
+        { 1000000000000000000L, @"Quintillion" },
+        { 1000000000000000L, @"Quadrillion" },
+        { 1000000000000L, @"Trillion" },
+        { 1000000000L, @"Billion" },
+        { 1000000L, @"Million" },
+        { 1000L, @"Thousand" },
+        { 100L, @"Hundred" },
+      };
 
       /// <summary>Convert the specified integer to words.</summary>
-      private static System.Text.StringBuilder ConvertToNamedGrouping(TSelf value)
+      private static System.Text.StringBuilder ConvertToNamedGrouping(System.Numerics.BigInteger value)
       {
-        if (value < TSelf.Zero)
+        if (value < 0)
           return ConvertToNamedGrouping(-value).Insert(0, @"Negative ");
 
         var sb = new System.Text.StringBuilder();
         Ge100(value);
         return sb;
 
-        void Lt20(TSelf value)
+        void Lt20(System.Numerics.BigInteger value)
         {
           if (sb!.Length > 0) sb.Append(' ');
           sb.Append(ZeroThroughNineteen[int.CreateChecked(value)]);
         }
-        void Ge20Lt100(TSelf value)
+        void Ge20Lt100(System.Numerics.BigInteger value)
         {
-          if (value >= TSelf.CreateChecked(20))
+          if (value >= 20)
           {
-            var remainder = value % TSelf.CreateChecked(10);
+            var remainder = value % 10;
             if (sb!.Length > 0) sb.Append(' ');
             sb.Append(TensDictionaryNumbers[value - remainder]);
             value = remainder;
           }
 
-          if (value > TSelf.Zero)
+          if (value > 0)
             Lt20(value);
         }
-        void Ge100(TSelf value)
+        void Ge100(System.Numerics.BigInteger value)
         {
-          if (value >= TSelf.CreateChecked(100))
+          if (value >= 100)
             foreach (var kvp in StandardDictionaryNumbers)
               if (value >= kvp.Key)
               {
@@ -118,7 +117,7 @@ namespace Flux
                 value -= quotient * kvp.Key;
               }
 
-          if (value > TSelf.Zero)
+          if (value > 0)
             Ge20Lt100(value);
         }
       }

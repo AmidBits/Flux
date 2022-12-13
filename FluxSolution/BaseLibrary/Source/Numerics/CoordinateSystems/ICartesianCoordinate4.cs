@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  namespace CoordinateSystems
+  namespace Numerics
   {
     /// <summary>Cartesian 4D coordinate.</summary>
     public interface ICartesianCoordinate4<TSelf>

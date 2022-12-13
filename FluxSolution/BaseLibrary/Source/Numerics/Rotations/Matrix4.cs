@@ -1,6 +1,7 @@
-namespace Flux
+namespace Flux.Numerics
 {
-  /// <summary></summary>
+  /// <summary>A matrix of 16 elements (4 rows by 4 columns).</summary>
+  /// <remarks>All angles in radians.</remarks>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Matrix4x4.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct Matrix4<TSelf>
@@ -254,15 +255,15 @@ namespace Flux
     //    TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One
     //  );
     //}
-    /// <summary>
-    /// Creates a rotation matrix from the specified yaw, pitch, and roll.
-    /// </summary>
-    /// <param name="yaw">Angle of rotation, in radians, around the Y-axis.</param>
-    /// <param name="pitch">Angle of rotation, in radians, around the X-axis.</param>
-    /// <param name="roll">Angle of rotation, in radians, around the Z-axis.</param>
-    /// <returns>The rotation matrix.</returns>
-    public static Matrix4<TSelf> CreateFromYawPitchRoll(TSelf yaw, TSelf pitch, TSelf roll)
-      => Quaternion<TSelf>.CreateFromYawPitchRoll(yaw, pitch, roll).ToMatrix4();
+    ///// <summary>
+    ///// Creates a rotation matrix from the specified yaw, pitch, and roll.
+    ///// </summary>
+    ///// <param name="yaw">Angle of rotation, in radians, around the Y-axis.</param>
+    ///// <param name="pitch">Angle of rotation, in radians, around the X-axis.</param>
+    ///// <param name="roll">Angle of rotation, in radians, around the Z-axis.</param>
+    ///// <returns>The rotation matrix.</returns>
+    //public static Matrix4<TSelf> CreateFromYawPitchRoll(TSelf yaw, TSelf pitch, TSelf roll)
+    //  => Quaternion<TSelf>.CreateFromYawPitchRoll(yaw, pitch, roll).ToMatrix4();
     ///// <summary>
     ///// Creates a view matrix.
     ///// </summary>

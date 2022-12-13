@@ -5,9 +5,9 @@
   {
     private System.Collections.BitArray m_deadOrAlive;
     private readonly bool m_canLifeLogicWrapAroundEdges;
-    private readonly Size2<int> m_cellGrid;
+    private readonly Numerics.Size2<int> m_cellGrid;
 
-    public GameOfLife(Size2<int> cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
+    public GameOfLife(Numerics.Size2<int> cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
     {
       m_deadOrAlive = new System.Collections.BitArray(cellGrid.Height * cellGrid.Width);
       m_canLifeLogicWrapAroundEdges = canLifeLogicWrapAroundEdges;
@@ -19,18 +19,18 @@
       {
         for (var c = m_cellGrid.Width - 1; c >= 0; c--)
         {
-          var index = (int)CoordinateSystems.CartesianCoordinate2<int>.ConvertToUniqueIndex(c, r, m_cellGrid.Width);
+          var index = (int)Numerics.CartesianCoordinate2<int>.ConvertToUniqueIndex(c, r, m_cellGrid.Width);
 
           m_deadOrAlive[index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
         }
       }
     }
     public GameOfLife()
-      : this(new Size2<int>(40, 20), true, 0.25)
+      : this(new Numerics.Size2<int>(40, 20), true, 0.25)
     {
     }
 
-    public Size2<int> CellGrid
+    public Numerics.Size2<int> CellGrid
       => m_cellGrid;
 
     /// <summary>Moves the board to the next state based on Conway's rules.</summary>
@@ -75,7 +75,7 @@
 
           var x1 = (x + c + m_cellGrid.Width) % m_cellGrid.Width; // Loop around the edges if x+i is off the board.
 
-          var pointIndex = (int)CoordinateSystems.CartesianCoordinate2<int>.ConvertToUniqueIndex(x1, y1, m_cellGrid.Width);
+          var pointIndex = (int)Numerics.CartesianCoordinate2<int>.ConvertToUniqueIndex(x1, y1, m_cellGrid.Width);
 
           cn += m_deadOrAlive[pointIndex] ? 1 : 0;
         }
@@ -96,7 +96,7 @@
 
         for (var x = 0; x < m_cellGrid.Width; x++)
         {
-          var index = (int)CoordinateSystems.CartesianCoordinate2<int>.ConvertToUniqueIndex(x, y, m_cellGrid.Width);
+          var index = (int)Numerics.CartesianCoordinate2<int>.ConvertToUniqueIndex(x, y, m_cellGrid.Width);
 
           var c = m_deadOrAlive[index] ? '\u2588' : ' ';
 

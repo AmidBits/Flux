@@ -3,9 +3,9 @@
   public record class Fleet
   {
     private readonly int[] m_shipSizes;
-    private readonly Size2<int> m_seaSize;
+    private readonly Numerics.Size2<int> m_seaSize;
 
-    public Fleet(int[] shipSizes, Size2<int> seaSize)
+    public Fleet(int[] shipSizes, Numerics.Size2<int> seaSize)
     {
       if (shipSizes.Length < 1) throw new System.ArgumentOutOfRangeException(nameof(shipSizes));
 
@@ -15,7 +15,7 @@
 
     public System.Collections.Generic.IReadOnlyList<int> ShipSizes
       => m_shipSizes;
-    public Size2<int> SeaSize
+    public Numerics.Size2<int> SeaSize
       => m_seaSize;
 
     public bool IsValid(Vessel vessel)
@@ -47,7 +47,7 @@
 
         do
         {
-          ship = new Vessel(size, new CoordinateSystems.CartesianCoordinate2<int>(Random.NumberGenerators.Crypto.Next(m_seaSize.Width), Random.NumberGenerators.Crypto.Next(m_seaSize.Height)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
+          ship = new Vessel(size, new Numerics.CartesianCoordinate2<int>(Random.NumberGenerators.Crypto.Next(m_seaSize.Width), Random.NumberGenerators.Crypto.Next(m_seaSize.Height)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
         }
         while (!ship.IsValid(m_seaSize) || ships.Any(s => Vessel.Intersects(ship, s)));
 

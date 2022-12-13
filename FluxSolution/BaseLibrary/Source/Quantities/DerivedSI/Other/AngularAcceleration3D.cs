@@ -5,11 +5,11 @@ namespace Flux
     /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
     public record struct AngularAcceleration3D
-    : IUnitQuantifiable<CoordinateSystems.CartesianCoordinate3<double>, AngularAccelerationUnit>
+    : IUnitQuantifiable<Numerics.CartesianCoordinate3<double>, AngularAccelerationUnit>
     {
-      private readonly CoordinateSystems.CartesianCoordinate3<double> m_value;
+      private readonly Numerics.CartesianCoordinate3<double> m_value;
 
-      public AngularAcceleration3D(CoordinateSystems.CartesianCoordinate3<double> value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+      public AngularAcceleration3D(Numerics.CartesianCoordinate3<double> value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
         => m_value = unit switch
         {
           AngularAccelerationUnit.RadianPerSecondSquared => value,
@@ -43,13 +43,13 @@ namespace Flux
 
       #region Implemented interfaces
       // IQuantifiable<>
-       public CoordinateSystems.CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
+      public Numerics.CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
       // IUnitQuantifiable<>
-      
+
       public string ToUnitString(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      
-      public CoordinateSystems.CartesianCoordinate3<double> ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+
+      public Numerics.CartesianCoordinate3<double> ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
         => unit switch
         {
           AngularAccelerationUnit.RadianPerSecondSquared => m_value,

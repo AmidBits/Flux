@@ -4,7 +4,7 @@
   public static partial class ExtensionMethods
   {
     /// <summary>Calculates the dot product of two Quaternions.</summary>
-    public static TSelf DotProduct<TSelf>(this IQuaternion<TSelf> q1, IQuaternion<TSelf> q2)
+    public static TSelf DotProduct<TSelf>(this Numerics.IQuaternion<TSelf> q1, Numerics.IQuaternion<TSelf> q2)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
 
@@ -12,41 +12,41 @@
     //  -1   (       a              -v       )
     // q   = ( -------------   ------------- )
     //       (  a^2 + |v|^2  ,  a^2 + |v|^2  )
-    public static Quaternion<TSelf> Inverse<TSelf>(this IQuaternion<TSelf> source)
+    public static Numerics.Quaternion<TSelf> Inverse<TSelf>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => source.Conjugate().Multiply(TSelf.One / source.LengthSquared());
 
     /// <summary>Creates the conjugate of a specified Quaternion.</summary>
-    public static Quaternion<TSelf> Conjugate<TSelf>(this IQuaternion<TSelf> source)
+    public static Numerics.Quaternion<TSelf> Conjugate<TSelf>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(-source.X, -source.Y, -source.Z, source.W);
 
     /// <summary>Calculates the length of the Quaternion.</summary>
-    public static TSelf Length<TSelf>(this IQuaternion<TSelf> source)
+    public static TSelf Length<TSelf>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => TSelf.Sqrt(source.LengthSquared());
 
     /// <summary>Calculates the length squared of the Quaternion. This operation is cheaper than Length().</summary>
-    public static TSelf LengthSquared<TSelf>(this IQuaternion<TSelf> source)
+    public static TSelf LengthSquared<TSelf>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => source.X * source.X + source.Y * source.Y + source.Z * source.Z + source.W * source.W;
 
     /// <summary>Linearly interpolates between two quaternions.</summary>
     /// <param name="mu">The relative weight of the second source Quaternion in the interpolation.</param>
-    public static Quaternion<TSelf> Lerp<TSelf>(this IQuaternion<TSelf> q1, IQuaternion<TSelf> q2, TSelf mu)
+    public static Numerics.Quaternion<TSelf> Lerp<TSelf>(this Numerics.IQuaternion<TSelf> q1, Numerics.IQuaternion<TSelf> q2, TSelf mu)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var um = TSelf.One - mu;
 
       if (q1.DotProduct(q2) >= TSelf.Zero)
-        return new Quaternion<TSelf>(
+        return new Numerics.Quaternion<TSelf>(
           um * q1.X + mu * q2.X,
           um * q1.Y + mu * q2.Y,
           um * q1.Z + mu * q2.Z,
           um * q1.W + mu * q2.W
         ).Normalized();
       else
-        return new Quaternion<TSelf>(
+        return new Numerics.Quaternion<TSelf>(
           um * q1.X - mu * q2.X,
           um * q1.Y - mu * q2.Y,
           um * q1.Z - mu * q2.Z,
@@ -55,23 +55,23 @@
     }
 
     /// <summary>Multiplies a set of Quaternion components by a scalar value.</summary>
-    private static Quaternion<TSelf> Multiply<TSelf>(this IQuaternion<TSelf> source, TSelf scalar)
+    private static Numerics.Quaternion<TSelf> Multiply<TSelf>(this Numerics.IQuaternion<TSelf> source, TSelf scalar)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(source.X * scalar, source.Y * scalar, source.Z * scalar, source.W * scalar);
 
     /// <summary>Flips the sign of each component of the quaternion.</summary>
-    public static Quaternion<TSelf> Negate<TSelf>(this IQuaternion<TSelf> source)
+    public static Numerics.Quaternion<TSelf> Negate<TSelf>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(-source.X, -source.Y, -source.Z, -source.W);
 
     /// <summary>Divides each component of the Quaternion by the length of the Quaternion.</summary>
-    public static Quaternion<TSelf> Normalized<TSelf>(this IQuaternion<TSelf> source)
+    public static Numerics.Quaternion<TSelf> Normalized<TSelf>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => source.Multiply(TSelf.One / source.LengthSquared());
 
     /// <summary>Interpolates between two quaternions, using spherical linear interpolation.</summary>
     /// <param name="mu">The relative weight of the second source Quaternion in the interpolation.</param>
-    public static Quaternion<TSelf> Slerp<TSelf>(this IQuaternion<TSelf> q1, IQuaternion<TSelf> q2, TSelf mu)
+    public static Numerics.Quaternion<TSelf> Slerp<TSelf>(this Numerics.IQuaternion<TSelf> q1, Numerics.IQuaternion<TSelf> q2, TSelf mu)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var dot = q1.DotProduct(q2);
@@ -107,7 +107,7 @@
 
     /// <summary></summary>
     /// <remarks>The quaternion must be normalized.</remarks>
-    public static AxisAngle<TSelf> ToAxisAngle<TSelf>(this IQuaternion<TSelf> source)
+    public static Numerics.AxisAngle<TSelf> ToAxisAngle<TSelf>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var n = source.Normalized(); // If w>1 acos and sqrt will produce errors, this will not happen if quaternion is normalized.
@@ -124,7 +124,7 @@
       return new(n.X / s, n.Y / s, n.Z / s, angle);
     }
 
-    public static EulerAngles<TSelf> ToEulerAngles<TSelf>(this IQuaternion<TSelf> source) // yaw (Z), pitch (Y), roll (X)
+    public static Numerics.EulerAngles<TSelf> ToEulerAngles<TSelf>(this Numerics.IQuaternion<TSelf> source) // yaw (Z), pitch (Y), roll (X)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var x = source.X;
@@ -153,7 +153,7 @@
       return new(h, a, b);
     }
 
-    public static Matrix4<TSelf> ToMatrix4<TSelf>(this IQuaternion<TSelf> source)
+    public static Numerics.Matrix4<TSelf> ToMatrix4<TSelf>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var xx = source.X * source.X;
@@ -175,7 +175,7 @@
       );
     }
 
-    public static Quaternion<TResult> ToQuaternion<TSelf, TResult>(this IQuaternion<TSelf> source)
+    public static Numerics.Quaternion<TResult> ToQuaternion<TSelf, TResult>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IFloatingPointIeee754<TResult>
       => new(
@@ -185,7 +185,7 @@
         TResult.CreateChecked(source.W)
       );
 
-    public static System.Numerics.Quaternion ToQuaternion<TSelf>(this IQuaternion<TSelf> source)
+    public static System.Numerics.Quaternion ToQuaternion<TSelf>(this Numerics.IQuaternion<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new(
         float.CreateChecked(source.X),
@@ -196,25 +196,25 @@
   }
   #endregion ExtensionMethods
 
-  //namespace Rotations
-  //{
   /// <summary>The polar coordinate system is a two-dimensional coordinate system in which each point on a plane is determined by a distance from a reference point and an angle from a reference direction.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
-  public interface IQuaternion<TSelf>
-    : System.IFormattable
-  where TSelf : System.Numerics.IFloatingPoint<TSelf>
+  namespace Numerics
   {
-    TSelf X { get; init; }
-    TSelf Y { get; init; }
-    TSelf Z { get; init; }
-    TSelf W { get; init; }
+    public interface IQuaternion<TSelf>
+      : System.IFormattable
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    {
+      TSelf X { get; init; }
+      TSelf Y { get; init; }
+      TSelf Z { get; init; }
+      TSelf W { get; init; }
 
-    /// <summary>Calculates the dot product of two Quaternions.</summary>
-    public static TSelf DotProduct(IQuaternion<TSelf> q1, IQuaternion<TSelf> q2)
-      => q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
+      /// <summary>Calculates the dot product of two Quaternions.</summary>
+      public static TSelf DotProduct(IQuaternion<TSelf> q1, IQuaternion<TSelf> q2)
+        => q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
 
-    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-      => $"{GetType().Name} {{ X = {string.Format($"{{0:{format ?? "N1"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N1"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N1"}}}", Z)}, W = {string.Format($"{{0:{format ?? "N1"}}}", W)} }}";
+      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+        => $"{GetType().Name} {{ X = {string.Format($"{{0:{format ?? "N1"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N1"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N1"}}}", Z)}, W = {string.Format($"{{0:{format ?? "N1"}}}", W)} }}";
+    }
   }
-  //}
 }

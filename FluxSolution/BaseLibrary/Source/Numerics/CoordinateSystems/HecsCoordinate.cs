@@ -1,4 +1,4 @@
-namespace Flux.CoordinateSystems
+namespace Flux.Numerics
 {
   /// <summary>The HECS coordinate system.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Hexagonal_Efficient_Coordinate_System"/>
@@ -18,11 +18,11 @@ namespace Flux.CoordinateSystems
       m_c = c;
     }
 
-     public int A { get => m_a; init => m_a = value; }
-     public int R { get => m_r; init => m_r = value; }
-     public int C { get => m_c; init => m_c = value; }
+    public int A { get => m_a; init => m_a = value; }
+    public int R { get => m_r; init => m_r = value; }
+    public int C { get => m_c; init => m_c = value; }
 
-    
+
     public HecsCoordinate[] NearestNeighborsCcw()
     {
       var cPa = m_c + m_a;
@@ -41,7 +41,7 @@ namespace Flux.CoordinateSystems
         new HecsCoordinate(uMa, rPa, cPa),
       };
     }
-    
+
     public HecsCoordinate[] NearestNeighborsCw()
     {
       var cPa = m_c + m_a;

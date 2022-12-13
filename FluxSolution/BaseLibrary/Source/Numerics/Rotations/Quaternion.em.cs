@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static Quaternion<TSelf> ToQuaternion<TSelf>(this System.Numerics.Quaternion source)
+    public static Numerics.Quaternion<TSelf> ToQuaternion<TSelf>(this System.Numerics.Quaternion source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         TSelf.CreateChecked(source.X),

@@ -5,7 +5,7 @@
   {
     /// <summary>Converts the cylindrical coordinates to cartesian 3D coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static CoordinateSystems.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this CoordinateSystems.ICylindricalCoordinate<TSelf> source)
+    public static Numerics.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this Numerics.ICylindricalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         source.Radius * TSelf.Cos(source.Azimuth),
@@ -13,20 +13,20 @@
         source.Height
       );
 
-    public static CoordinateSystems.CylindricalCoordinate<TSelf> ToCylindricalCoordinate<TSelf>(this CoordinateSystems.ICylindricalCoordinate<TSelf> source)
+    public static Numerics.CylindricalCoordinate<TSelf> ToCylindricalCoordinate<TSelf>(this Numerics.ICylindricalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(source.Radius, source.Azimuth, source.Height);
 
     /// <summary>Converts the cylindrical coordinates to polar coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static CoordinateSystems.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this CoordinateSystems.ICylindricalCoordinate<TSelf> source)
+    public static Numerics.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this Numerics.ICylindricalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         source.Radius,
         source.Azimuth
       );
 
-    public static (Quantities.Length radius, Quantities.Angle azimuth, Quantities.Length height) ToQuantities<TSelf>(this CoordinateSystems.ICylindricalCoordinate<TSelf> source)
+    public static (Quantities.Length radius, Quantities.Angle azimuth, Quantities.Length height) ToQuantities<TSelf>(this Numerics.ICylindricalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (
         new Quantities.Length(double.CreateChecked(source.Radius)),
@@ -36,7 +36,7 @@
 
     /// <summary>Converts the cylindrical coordinates to spherical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static CoordinateSystems.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this CoordinateSystems.ICylindricalCoordinate<TSelf> source)
+    public static Numerics.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this Numerics.ICylindricalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         TSelf.Sqrt(source.Radius * source.Radius + source.Height * source.Height),
@@ -46,7 +46,7 @@
   }
   #endregion ExtensionMethods
 
-  namespace CoordinateSystems
+  namespace Numerics
   {
     /// <summary>Cylindrical coordinate. It is assumed that the reference plane is the Cartesian xy-plane (with equation z/height = 0), and the cylindrical axis is the Cartesian z-axis, i.e. the z-coordinate is the same in both systems, and the correspondence between cylindrical (radius, azimuth, height) and Cartesian (x, y, z) are the same as for polar coordinates.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/>

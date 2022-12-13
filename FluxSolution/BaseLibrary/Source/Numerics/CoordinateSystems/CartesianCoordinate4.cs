@@ -1,6 +1,6 @@
 using System.Runtime.Intrinsics;
 
-namespace Flux.CoordinateSystems
+namespace Flux.Numerics
 {
   /// <summary>A structure encapsulating four double precision floating point values and provides hardware accelerated methods.</summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4.cs"/>

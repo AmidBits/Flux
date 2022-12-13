@@ -1,4 +1,4 @@
-namespace Flux.CoordinateSystems
+namespace Flux.Numerics
 {
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
@@ -93,14 +93,14 @@ namespace Flux.CoordinateSystems
       return new(x, y, m_altitude);
     }
 
-    /// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
+    ///// <summary>Converts the <see cref="GeographicCoordinate"/> to a <see cref="SphericalCoordinate"/>.</summary>
 
-    public SphericalCoordinate<double> ToSphericalCoordinate()
-      => new(
-        Altitude,
-        double.Pi - (Quantities.Angle.ConvertDegreeToRadian(Latitude) + double.Pi / 2),
-        Quantities.Angle.ConvertDegreeToRadian(Longitude) + double.Pi
-      );
+    //public SphericalCoordinate<double> ToSphericalCoordinate()
+    //  => new(
+    //    Altitude,
+    //    double.Pi - (Quantities.Angle.ConvertDegreeToRadian(Latitude) + double.Pi / 2),
+    //    Quantities.Angle.ConvertDegreeToRadian(Longitude) + double.Pi
+    //  );
 
     /// <summary>Creates a new <see cref=" CartesianCoordinate3{double}"/> Winkel Tripel projected X, Y coordinate with the Z component containing the altitude.</summary>
 

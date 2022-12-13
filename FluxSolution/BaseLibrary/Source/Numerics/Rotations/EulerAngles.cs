@@ -1,43 +1,21 @@
 namespace Flux
 {
+  #region ExtensionMethods
   public static partial class ExtensionMethods
   {
-
-  }
-
-  /// <summary>Euler-angles 3D orientation.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Euler_angles"/>
-  /// <remarks>The Tait-Bryan sequence z-y'-x" (intrinsic rotations) or x-y-z (extrinsic rotations) represents the intrinsic rotations are known as: yaw, pitch and roll.</remarks>
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly record struct EulerAngles<TSelf>
-    where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-  {
-    private readonly TSelf m_radYaw; // Yaw.
-    private readonly TSelf m_radPitch; // Pitch.
-    private readonly TSelf m_radRoll; // Roll.
-
-    public EulerAngles(TSelf radYaw, TSelf radPitch, TSelf radRoll)
+    public static Numerics.AxisAngle<TSelf> ToAxisAngle<TSelf>(this Numerics.EulerAngles<TSelf> source)
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      m_radYaw = radYaw;
-      m_radPitch = radPitch;
-      m_radRoll = radRoll;
-    }
+      var halfYaw = source.Yaw.Divide(2);
+      var halfPitch = source.Pitch.Divide(2);
+      var halfRoll = source.Roll.Divide(2);
 
-    /// <summary>The horizontal directional (left/right) angle. A.k.a. Azimuth, Bearing and Heading.</summary>
-    public TSelf Yaw { get => m_radYaw; init => m_radYaw = value; }
-    /// <summary>The vertical directional (up/down) angle. A.k.a. Attitude, Elevation and Inclination.</summary>
-    public TSelf Pitch { get => m_radPitch; init => m_radPitch = value; }
-    /// <summary>The horizontal lean (left/right) angle. A.k.a. Bank and Tilt.</summary>
-    public TSelf Roll { get => m_radRoll; init => m_radRoll = value; }
-
-    public AxisAngle<TSelf> ToAxisAngle()
-    {
-      var c1 = TSelf.Cos(m_radYaw.Divide(2));
-      var s1 = TSelf.Sin(m_radYaw.Divide(2));
-      var c2 = TSelf.Cos(m_radPitch.Divide(2));
-      var s2 = TSelf.Sin(m_radPitch.Divide(2));
-      var c3 = TSelf.Cos(m_radRoll.Divide(2));
-      var s3 = TSelf.Sin(m_radRoll.Divide(2));
+      var c1 = TSelf.Cos(halfYaw);
+      var s1 = TSelf.Sin(halfYaw);
+      var c2 = TSelf.Cos(halfPitch);
+      var s2 = TSelf.Sin(halfPitch);
+      var c3 = TSelf.Cos(halfRoll);
+      var s3 = TSelf.Sin(halfRoll);
 
       var c1c2 = c1 * c2;
       var s1s2 = s1 * s2;
@@ -63,14 +41,15 @@ namespace Flux
       return new(x, y, z, angle);
     }
 
-    public Matrix4<TSelf> ToMatrixTaitBryanXYZ()
+    public static Numerics.Matrix4<TSelf> ToMatrixTaitBryanXYZ<TSelf>(this Numerics.EulerAngles<TSelf> source)
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var c1 = TSelf.Cos(m_radYaw);
-      var s1 = TSelf.Sin(m_radYaw);
-      var c2 = TSelf.Cos(m_radPitch);
-      var s2 = TSelf.Sin(m_radPitch);
-      var c3 = TSelf.Cos(m_radRoll);
-      var s3 = TSelf.Sin(m_radRoll);
+      var c1 = TSelf.Cos(source.Yaw);
+      var s1 = TSelf.Sin(source.Yaw);
+      var c2 = TSelf.Cos(source.Pitch);
+      var s2 = TSelf.Sin(source.Pitch);
+      var c3 = TSelf.Cos(source.Roll);
+      var s3 = TSelf.Sin(source.Roll);
 
       return new(
         c2 * c3, -s2, c2 * s3, TSelf.Zero,
@@ -80,14 +59,15 @@ namespace Flux
       );
     }
 
-    public Matrix4<TSelf> ToMatrixLhTaitBryanYXZ()
+    public static Numerics.Matrix4<TSelf> ToMatrixLhTaitBryanYXZ<TSelf>(this Numerics.EulerAngles<TSelf> source)
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var c1 = TSelf.Cos(m_radYaw);
-      var s1 = TSelf.Sin(m_radYaw);
-      var c2 = TSelf.Cos(m_radPitch);
-      var s2 = TSelf.Sin(m_radPitch);
-      var c3 = TSelf.Cos(m_radRoll);
-      var s3 = TSelf.Sin(m_radRoll);
+      var c1 = TSelf.Cos(source.Yaw);
+      var s1 = TSelf.Sin(source.Yaw);
+      var c2 = TSelf.Cos(source.Pitch);
+      var s2 = TSelf.Sin(source.Pitch);
+      var c3 = TSelf.Cos(source.Roll);
+      var s3 = TSelf.Sin(source.Roll);
 
       return new(
         c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3, c2 * s1, TSelf.Zero,
@@ -97,14 +77,15 @@ namespace Flux
       );
     }
 
-    public Matrix4<TSelf> ToMatrixLhTaitBryanZYX()
+    public static Numerics.Matrix4<TSelf> ToMatrixLhTaitBryanZYX<TSelf>(this Numerics.EulerAngles<TSelf> source)
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var c3 = TSelf.Cos(m_radYaw);
-      var s3 = TSelf.Sin(m_radYaw);
-      var c2 = TSelf.Cos(m_radPitch);
-      var s2 = TSelf.Sin(m_radPitch);
-      var c1 = TSelf.Cos(m_radRoll);
-      var s1 = TSelf.Sin(m_radRoll);
+      var c3 = TSelf.Cos(source.Yaw);
+      var s3 = TSelf.Sin(source.Yaw);
+      var c2 = TSelf.Cos(source.Pitch);
+      var s2 = TSelf.Sin(source.Pitch);
+      var c1 = TSelf.Cos(source.Roll);
+      var s1 = TSelf.Sin(source.Roll);
 
       return new(
         c1 * c2, c1 * s2 * s3 - c3 * s1, s1 * s3 + c1 * c3 * s2, TSelf.Zero,
@@ -114,14 +95,15 @@ namespace Flux
       );
     }
 
-    public Matrix4<TSelf> ToMatrixLhProperEulerZXZ()
+    public static Numerics.Matrix4<TSelf> ToMatrixLhProperEulerZXZ<TSelf>(this Numerics.EulerAngles<TSelf> source)
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var c1 = TSelf.Cos(m_radYaw);
-      var s1 = TSelf.Sin(m_radYaw);
-      var c2 = TSelf.Cos(m_radPitch);
-      var s2 = TSelf.Sin(m_radPitch);
-      var c3 = TSelf.Cos(m_radRoll);
-      var s3 = TSelf.Sin(m_radRoll);
+      var c1 = TSelf.Cos(source.Yaw);
+      var s1 = TSelf.Sin(source.Yaw);
+      var c2 = TSelf.Cos(source.Pitch);
+      var s2 = TSelf.Sin(source.Pitch);
+      var c3 = TSelf.Cos(source.Roll);
+      var s3 = TSelf.Sin(source.Roll);
 
       return new(
         c1 * c3 - c2 * s1 * s3, -c1 * s3 - c2 * c3 * s1, s1 * s2, TSelf.Zero,
@@ -131,64 +113,56 @@ namespace Flux
       );
     }
 
-    public Quaternion<TSelf> ToQuaternion()
+    public static Numerics.Quaternion<TSelf> ToQuaternion<TSelf>(this Numerics.EulerAngles<TSelf> source)
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var cy = TSelf.Cos(m_radYaw.Divide(2));
-      var sy = TSelf.Sin(m_radYaw.Divide(2));
-      var cp = TSelf.Cos(m_radPitch.Divide(2));
-      var sp = TSelf.Sin(m_radPitch.Divide(2));
-      var cr = TSelf.Cos(m_radRoll.Divide(2));
-      var sr = TSelf.Sin(m_radRoll.Divide(2));
+      var halfYaw = source.Yaw.Divide(2);
+      var halfPitch = source.Pitch.Divide(2);
+      var halfRoll = source.Roll.Divide(2);
 
-      var x = sr * cp * cy - cr * sp * sy;
-      var y = cr * sp * cy + sr * cp * sy;
-      var z = cr * cp * sy - sr * sp * cy;
-      var w = cr * cp * cy + sr * sp * sy;
+      var cy = TSelf.Cos(halfYaw);
+      var sy = TSelf.Sin(halfYaw);
+      var cp = TSelf.Cos(halfPitch);
+      var sp = TSelf.Sin(halfPitch);
+      var cr = TSelf.Cos(halfRoll);
+      var sr = TSelf.Sin(halfRoll);
 
-      return new(x, y, z, w);
+      return new(
+        sr * cp * cy - cr * sp * sy,
+        cr * sp * cy + sr * cp * sy,
+        cr * cp * sy - sr * sp * cy,
+        cr * cp * cy + sr * sp * sy
+      );
     }
+  }
+  #endregion ExtensionMethods
 
-    #region Static methods
-
-    public (TSelf x, TSelf y, TSelf z, TSelf w) ConvertToQuaternion()
+  namespace Numerics
+  {
+    /// <summary>Euler-angles 3D orientation.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Euler_angles"/>
+    /// <remarks>The Tait-Bryan sequence z-y'-x" (intrinsic rotations) or x-y-z (extrinsic rotations) represents the intrinsic rotations are known as: yaw, pitch and roll. All angles in radians.</remarks>
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    public readonly record struct EulerAngles<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
-      var c1 = TSelf.Cos(m_radYaw.Divide(2));
-      var s1 = TSelf.Sin(m_radYaw.Divide(2));
-      var c2 = TSelf.Cos(m_radPitch.Divide(2));
-      var s2 = TSelf.Sin(m_radPitch.Divide(2));
-      var c3 = TSelf.Cos(m_radRoll.Divide(2));
-      var s3 = TSelf.Sin(m_radRoll.Divide(2));
-      var c1c2 = c1 * c2;
-      var s1s2 = s1 * s2;
-      var x = c1c2 * s3 + s1s2 * c3;
-      var y = s1 * c2 * c3 + c1 * s2 * s3;
-      var z = c1 * s2 * c3 - s1 * c2 * s3;
-      var w = c1c2 * c3 - s1s2 * s3;
-      return (x, y, z, w);
+      private readonly TSelf m_yaw;
+      private readonly TSelf m_pitch;
+      private readonly TSelf m_roll;
+
+      public EulerAngles(TSelf yaw, TSelf pitch, TSelf roll)
+      {
+        m_yaw = yaw;
+        m_pitch = pitch;
+        m_roll = roll;
+      }
+
+      /// <summary>The horizontal directional (left/right) angle, in radians. A.k.a. Azimuth, Bearing and Heading.</summary>
+      public TSelf Yaw { get => m_yaw; init => m_yaw = value; }
+      /// <summary>The vertical directional (up/down) angle, in radians. A.k.a. Attitude, Elevation and Inclination.</summary>
+      public TSelf Pitch { get => m_pitch; init => m_pitch = value; }
+      /// <summary>The horizontal lean (left/right) angle, in radians. A.k.a. Bank and Tilt.</summary>
+      public TSelf Roll { get => m_roll; init => m_roll = value; }
     }
-
-    public static EulerAngles<TSelf> ConvertQuaternionToEulerAngles(TSelf x, TSelf y, TSelf z, TSelf w)
-    {
-      var sqw = w * w;
-      var sqx = x * x;
-      var sqy = y * y;
-      var sqz = z * z;
-
-      var unit = sqx + sqy + sqz + sqw; // If normalised is one, otherwise is correction factor.
-      var test = x * y + z * w;
-
-      if (test > TSelf.CreateChecked(0.499) * unit) // singularity at north pole.
-        return new(TSelf.Atan2(x, w).Multiply(2), TSelf.Pi.Divide(2), TSelf.Zero);
-
-      if (test < -TSelf.CreateChecked(0.499) * unit) // // singularity at south pole
-        return new(TSelf.Atan2(x, w).Multiply(-2), -TSelf.Pi.Divide(2), TSelf.Zero);
-
-      var h = TSelf.Atan2(y.Multiply(2) * w - x.Multiply(2) * z, sqx - sqy - sqz + sqw);
-      var a = TSelf.Asin(test.Multiply(2) / unit);
-      var b = TSelf.Atan2(x.Multiply(2) * w - y.Multiply(2) * z, -sqx + sqy - sqz + sqw);
-
-      return new(h, a, b);
-    }
-    #endregion Static methods
   }
 }

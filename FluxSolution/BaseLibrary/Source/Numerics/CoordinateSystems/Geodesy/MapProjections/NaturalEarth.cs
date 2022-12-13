@@ -1,4 +1,4 @@
-﻿namespace Flux.MapProjections
+﻿namespace Flux.Numerics.MapProjections
 {
   // https://en.wikipedia.org/wiki/Natural_Earth_projection
   public record struct NaturalEarthProjection
@@ -7,7 +7,7 @@
     public static readonly NaturalEarthProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public CoordinateSystems.CartesianCoordinate3<double> ProjectForward(CoordinateSystems.IGeographicCoordinate<double> project)
+    public Numerics.CartesianCoordinate3<double> ProjectForward(Numerics.IGeographicCoordinate<double> project)
     {
       var lat = Quantities.Angle.ConvertDegreeToRadian(project.Latitude);
       var lon = Quantities.Angle.ConvertDegreeToRadian(project.Longitude);

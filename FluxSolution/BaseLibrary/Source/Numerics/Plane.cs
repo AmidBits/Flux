@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Numerics
 {
   /// <summary>A structure encapsulating a 3D Plane.</summary>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Plane.cs"/>
@@ -30,14 +30,14 @@ namespace Flux
     }
 
     /// <summary>Constructs a Plane from the given normal (the W component is not used) and distance along the normal from the origin.</summary>
-    public Plane(CoordinateSystems.CartesianCoordinate4 normal, TSelf distance)
+    public Plane(Numerics.CartesianCoordinate4 normal, TSelf distance)
       : this(TSelf.CreateChecked(normal.X), TSelf.CreateChecked(normal.Y), TSelf.CreateChecked(normal.Z), distance)
     {
     }
 
     /// <summary>Constructs a Plane from the given Vector4.</summary>
     /// <param name="value">A vector whose first 3 elements describe the normal vector, and whose W component defines the distance along that normal from the origin.</param>
-    public Plane(CoordinateSystems.CartesianCoordinate4 value)
+    public Plane(Numerics.CartesianCoordinate4 value)
       : this(TSelf.CreateChecked(value.X), TSelf.CreateChecked(value.Y), TSelf.CreateChecked(value.Z), TSelf.CreateChecked(value.W))
     {
     }
@@ -54,11 +54,11 @@ namespace Flux
 
     #region Static methods
     /// <summary>Creates a Plane that contains the three given points.</summary>
-    public static Plane<TSelf> CreateFromVertices(CoordinateSystems.CartesianCoordinate4 point1, CoordinateSystems.CartesianCoordinate4 point2, CoordinateSystems.CartesianCoordinate4 point3)
+    public static Plane<TSelf> CreateFromVertices(Numerics.CartesianCoordinate4 point1, Numerics.CartesianCoordinate4 point2, Numerics.CartesianCoordinate4 point3)
     {
-      var normal = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(point2 - point1, point3 - point1));
+      var normal = Numerics.CartesianCoordinate4.Normalize(Numerics.CartesianCoordinate4.Cross(point2 - point1, point3 - point1));
 
-      return new(normal, -TSelf.CreateChecked(CoordinateSystems.CartesianCoordinate4.EuclideanLengthSquared(normal)));
+      return new(normal, -TSelf.CreateChecked(Numerics.CartesianCoordinate4.EuclideanLengthSquared(normal)));
 
       //double ax = point2.X - point1.X;
       //double ay = point2.Y - point1.Y;
@@ -81,13 +81,13 @@ namespace Flux
       //return new(normal, -(normal.X * point1.X + normal.Y * point1.Y + normal.Z * point1.Z));
     }
     /// <summary>Calculates the dot product of a Plane and Vector4.</summary>
-    public static TSelf Dot(Plane<TSelf> plane, CoordinateSystems.CartesianCoordinate4 value)
+    public static TSelf Dot(Plane<TSelf> plane, Numerics.CartesianCoordinate4 value)
       => DotCoordinate(plane, value) * TSelf.CreateChecked(value.W);
     /// <summary>Returns the dot product of a specified Vector4 and the normal vector of this Plane plus the distance (D) value of the Plane.</summary>
-    public static TSelf DotCoordinate(Plane<TSelf> plane, CoordinateSystems.CartesianCoordinate4 value)
+    public static TSelf DotCoordinate(Plane<TSelf> plane, Numerics.CartesianCoordinate4 value)
       => DotNormal(plane, value) + plane.m_distance;
     /// <summary>Returns the dot product of a specified Vector4 and the Normal vector of this Plane.</summary>
-    public static TSelf DotNormal(Plane<TSelf> plane, CoordinateSystems.CartesianCoordinate4 value)
+    public static TSelf DotNormal(Plane<TSelf> plane, Numerics.CartesianCoordinate4 value)
       => plane.m_x * TSelf.CreateChecked(value.X) + plane.m_y * TSelf.CreateChecked(value.Y) + plane.m_z * TSelf.CreateChecked(value.Z);
     /// <summary>Creates a new Plane whose normal vector is the source Plane's normal vector normalized.</summary>
     public static Plane<TSelf> Normalize(Plane<TSelf> value)
@@ -104,7 +104,7 @@ namespace Flux
     /// <summary>Transforms a normalized Plane by a Matrix.</summary>
     /// <param name="plane"> The normalized Plane to transform. This Plane must already be normalized, so that its Normal vector is of unit length, before this method is called.</param>
     /// <param name="matrix">The transformation matrix to apply to the Plane.</param>
-    public static Plane<TSelf> Transform(Plane<TSelf> plane, Matrix4<TSelf> matrix)
+    public static Plane<TSelf> Transform(Plane<TSelf> plane, Numerics.IMatrix4<TSelf> matrix)
     {
       matrix.TryGetInverseOptimized(out var m);
 
@@ -122,7 +122,7 @@ namespace Flux
     /// <summary>Transforms a normalized Plane by a Quaternion rotation.</summary>
     /// <param name="plane"> The normalized Plane to transform. This Plane must already be normalized, so that its Normal vector is of unit length, before this method is called.</param>
     /// <param name="rotation">The Quaternion rotation to apply to the Plane.</param>
-    public static Plane<TSelf> Transform(Plane<TSelf> plane, Quaternion<TSelf> rotation)
+    public static Plane<TSelf> Transform(Plane<TSelf> plane, Numerics.Quaternion<TSelf> rotation)
     {
       // Compute rotation matrix.
       var x2 = rotation.X + rotation.X;
