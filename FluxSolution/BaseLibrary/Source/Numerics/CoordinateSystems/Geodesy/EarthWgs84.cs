@@ -17,7 +17,7 @@ namespace Flux
 
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
     public static Quantities.Length EquatorialCircumference
-      => EquatorialRadius * Constants.PiX2;
+      => EquatorialRadius * GenericMath.PiX2;
     /// <summary>Diameter of Earth's semi-major axis.</summary>
     public static Quantities.Length EquatorialDiameter
       => EquatorialRadius * 2;
@@ -44,6 +44,6 @@ namespace Flux
 
     /// <summary>Approximate volume of the Earth's oblate sphere.</summary>
     public static Quantities.Volume Volume
-      => new(Constants.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
+      => new(GenericMath.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
   }
 }

@@ -14,7 +14,7 @@ namespace Flux.Dsp.AudioProcessor
       {
         m_angle = System.Math.Clamp(value, -1.0, 1.0);
 
-        if (m_angle > Constants.EpsilonCpp32 || m_angle < -Constants.EpsilonCpp32)
+        if (m_angle > GenericMath.EpsilonCpp32 || m_angle < -GenericMath.EpsilonCpp32)
         {
           var angle = m_angle * System.Math.PI;
 
@@ -37,6 +37,6 @@ namespace Flux.Dsp.AudioProcessor
     /// <param name="left">Left stereo sample.</param>
     /// <param name="right">Right stereo sample.</param>
     public static (double left, double right) Apply(double angle, double left, double right)
-      => (angle > Constants.EpsilonCpp32 || angle < Constants.EpsilonCpp32) && angle * System.Math.PI is var anglePi && System.Math.Cos(anglePi) is var cos && System.Math.Sin(anglePi) is var sin ? (left * cos - right * sin, left * sin + right * cos) : (left, right);
+      => (angle > GenericMath.EpsilonCpp32 || angle < GenericMath.EpsilonCpp32) && angle * System.Math.PI is var anglePi && System.Math.Cos(anglePi) is var cos && System.Math.Sin(anglePi) is var sin ? (left * cos - right * sin, left * sin + right * cos) : (left, right);
   }
 }

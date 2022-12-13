@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Interpolation
 {
   public interface I4NodeInterpolatable<TNode, TMu>
     where TNode : System.Numerics.INumber<TNode>

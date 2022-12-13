@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Text
 {
   /// <see cref="https://en.wikipedia.org/wiki/Ascii85"/>
   public static class Ascii85
@@ -7,7 +7,7 @@ namespace Flux
 
     public static readonly char[] Characters = System.Linq.Enumerable.Range(33, 85).Select(i => System.Convert.ToChar(i)).ToArray();
 
-    
+
     public static byte[] Encode(System.ReadOnlySpan<char> characters)
     {
       if (characters == null) throw new System.ArgumentNullException(nameof(characters));
@@ -52,7 +52,7 @@ namespace Flux
 
       return stream.ToArray();
     }
-    
+
     private static byte[] EncodeValue(uint value, int count)
     {
       var encoded = new byte[count - 1];
@@ -68,7 +68,7 @@ namespace Flux
       return encoded;
     }
 
-    
+
     public static string Decode(byte[] bytes)
     {
       if (bytes == null) throw new System.ArgumentNullException(nameof(bytes));
@@ -97,7 +97,7 @@ namespace Flux
 
       return sb.ToString();
     }
-    
+
     private static char[] DecodeValue(uint value, int count)
     {
       var encoded = new char[5];

@@ -186,38 +186,38 @@ namespace Flux.CoordinateSystems
     /// <summary>Returns a vector whose elements are the square root of each of the source vector's elements.</summary>
     public static CartesianCoordinate4 Sqrt(in CartesianCoordinate4 v)
       => (CartesianCoordinate4)v.m_v256d.Sqrt();
-    /// <summary>Transforms a vector by the given matrix.</summary>
-    public static CartesianCoordinate4 Transform(in CartesianCoordinate4 v, in Matrix4 m)
-      => new(
-        v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31 + v.W * m.M41,
-        v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32 + v.W * m.M42,
-        v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33 + v.W * m.M43,
-        v.X * m.M14 + v.Y * m.M24 + v.Z * m.M34 + v.W * m.M44
-      );
-    /// <summary>Transforms a vector by the given Quaternion rotation value.</summary>
-    public static CartesianCoordinate4 Transform(in CartesianCoordinate4 v, in Quaternion q)
-    {
-      var x2 = q.X + q.X;
-      var y2 = q.Y + q.Y;
-      var z2 = q.Z + q.Z;
+    ///// <summary>Transforms a vector by the given matrix.</summary>
+    //public static CartesianCoordinate4 Transform( CartesianCoordinate4 v,  Matrix4<TSelf> m)
+    //  => new(
+    //    v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31 + v.W * m.M41,
+    //    v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32 + v.W * m.M42,
+    //    v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33 + v.W * m.M43,
+    //    v.X * m.M14 + v.Y * m.M24 + v.Z * m.M34 + v.W * m.M44
+    //  );
+    ///// <summary>Transforms a vector by the given Quaternion rotation value.</summary>
+    //public static CartesianCoordinate4 Transform(in CartesianCoordinate4 v, in Quaternion<TSelf> q)
+    //{
+    //  var x2 = q.X + q.X;
+    //  var y2 = q.Y + q.Y;
+    //  var z2 = q.Z + q.Z;
 
-      var wx2 = q.W * x2;
-      var wy2 = q.W * y2;
-      var wz2 = q.W * z2;
-      var xx2 = q.X * x2;
-      var xy2 = q.X * y2;
-      var xz2 = q.X * z2;
-      var yy2 = q.Y * y2;
-      var yz2 = q.Y * z2;
-      var zz2 = q.Z * z2;
+    //  var wx2 = q.W * x2;
+    //  var wy2 = q.W * y2;
+    //  var wz2 = q.W * z2;
+    //  var xx2 = q.X * x2;
+    //  var xy2 = q.X * y2;
+    //  var xz2 = q.X * z2;
+    //  var yy2 = q.Y * y2;
+    //  var yz2 = q.Y * z2;
+    //  var zz2 = q.Z * z2;
 
-      return new CartesianCoordinate4(
-        v.X * (1 - yy2 - zz2) + v.Y * (xy2 - wz2) + v.Z * (xz2 + wy2),
-        v.X * (xy2 + wz2) + v.Y * (1 - xx2 - zz2) + v.Z * (yz2 - wx2),
-        v.X * (xz2 - wy2) + v.Y * (yz2 + wx2) + v.Z * (1 - xx2 - yy2),
-        v.W
-      );
-    }
+    //  return new CartesianCoordinate4(
+    //    v.X * (1 - yy2 - zz2) + v.Y * (xy2 - wz2) + v.Z * (xz2 + wy2),
+    //    v.X * (xy2 + wz2) + v.Y * (1 - xx2 - zz2) + v.Z * (yz2 - wx2),
+    //    v.X * (xz2 - wy2) + v.Y * (yz2 + wx2) + v.Z * (1 - xx2 - yy2),
+    //    v.W
+    //  );
+    //}
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
     public static CartesianCoordinate4 VectorTripleProduct(in CartesianCoordinate4 a, in CartesianCoordinate4 b, in CartesianCoordinate4 c)

@@ -3,10 +3,11 @@ namespace Flux
   /// <summary>The functionality here relates to \uxxxx and \UXXXXXXXX style formatting.</summary>
   public static partial class Unicode
   {
-    public static readonly System.Text.RegularExpressions.Regex ParseCsharpLiteralRegex = new(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8,})", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+    [System.Text.RegularExpressions.GeneratedRegex(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8,})", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase)]
+    public static partial System.Text.RegularExpressions.Regex ParseCsharpLiteralRegex();
 
     public static System.Collections.Generic.IEnumerable<char> ParseCsharpLiteral(this string text)
-      => ParseCsharpLiteralRegex.Matches(text).Where(m => m.Success).Select(m => (char)int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null));
+      => ParseCsharpLiteralRegex().Matches(text).Where(m => m.Success).Select(m => (char)int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null));
     public static bool TryParseCsharpLiteral(this string text, out System.Collections.Generic.List<char> result)
     {
       try

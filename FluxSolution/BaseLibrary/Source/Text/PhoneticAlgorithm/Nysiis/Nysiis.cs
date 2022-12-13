@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux.Text.PhoneticAlgorithm
+﻿namespace Flux.Text.PhoneticAlgorithm
 {
   // https://rosettacode.org/wiki/NYSIIS?source=post_page-----50165e684526----------------------#Java
   public sealed class Nysiis
@@ -35,7 +33,7 @@ namespace Flux.Text.PhoneticAlgorithm
 
       // Replace end...
 
-      sb.ReplaceIfEqualAt(sb.Length-3, @"SCH", @"SSS");
+      sb.ReplaceIfEqualAt(sb.Length - 3, @"SCH", @"SSS");
 
       if (sb.Length > MaxCodeLength)
         sb.Remove(0, MaxCodeLength);
@@ -46,7 +44,7 @@ namespace Flux.Text.PhoneticAlgorithm
     /// <summary>Ensure valid characters for nysiis code generation.</summary>
     public static string GetValidCharacters(string text)
     {
-      return string.Concat(text.RemoveDiacriticalMarks(c => (char)((System.Text.Rune)c).ReplaceDiacriticalLatinStroke().Value).Where(c => ExtensionMethods.IsEnglishLetter((System.Text.Rune)c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
+      return string.Concat(text.RemoveDiacriticalMarks(c => (char)((System.Text.Rune)c).ReplaceDiacriticalLatinStroke().Value).Where(c => Flux.ExtensionMethods.IsEnglishLetter((System.Text.Rune)c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
     }
   }
 }

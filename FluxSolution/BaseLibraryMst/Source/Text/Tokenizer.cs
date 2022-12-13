@@ -1,5 +1,5 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Text
 {
@@ -11,7 +11,7 @@ namespace Text
     [TestMethod]
     public void RuneTokenizer()
     {
-      var tokenizer = new Flux.RuneTokenizer();
+      var tokenizer = new Flux.Text.RuneTokenizer();
 
       var tokens = tokenizer.GetTokens(s).ToArray();
 
@@ -24,7 +24,7 @@ namespace Text
     [TestMethod]
     public void TextElementTokenizer()
     {
-      var tokenizer = new Flux.TextElementTokenizer();
+      var tokenizer = new Flux.Text.TextElementTokenizer();
 
       var tokens = tokenizer.GetTokens(s).ToArray();
 

@@ -22,7 +22,7 @@ namespace Flux
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
 
         if (!bst.Contains(r))
-          bst = bst.Add(r, Flux.Convert.ToNamedGrouping(r).ToString());
+          bst = bst.Add(r, r.ToNamedGrouping());
       }
 
       System.Console.WriteLine(bst.ToConsoleBlock());

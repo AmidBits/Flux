@@ -12,8 +12,8 @@ namespace Flux
       System.Console.WriteLine(nameof(RunReflection));
       System.Console.WriteLine();
 
-      Write(typeof(Flux.IUnitQuantifiable<,>));
-      Write(typeof(Flux.IQuantifiable<>), typeof(Flux.IUnitQuantifiable<,>));
+      Write(typeof(Quantities.IUnitQuantifiable<,>));
+      Write(typeof(Quantities.IQuantifiable<>), typeof(Quantities.IUnitQuantifiable<,>));
 
       static void Write(System.Type type, params System.Type[] excludingTypes)
       {

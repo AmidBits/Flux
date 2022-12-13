@@ -12,7 +12,7 @@ namespace Flux.Dsp.AudioProcessor
       {
         m_contour = System.Math.Clamp(value, -1.0, 1.0);
 
-        m_contourScaled = m_contour > Constants.EpsilonCpp32 || m_contour < -Constants.EpsilonCpp32 ? m_contour * 0.1 + 1 : 0;
+        m_contourScaled = m_contour > GenericMath.EpsilonCpp32 || m_contour < -GenericMath.EpsilonCpp32 ? m_contour * 0.1 + 1 : 0;
       }
     }
 
@@ -31,7 +31,7 @@ namespace Flux.Dsp.AudioProcessor
     /// <param name="contour">The contour in the range [-1, 1] is used to transform the amplitude sample, where negative means convex/logarithmic, positive means concave/exponential, and 0 means linear.</param>
     /// <param name="sample">The mono sample in the range [-1, 1].</param>
     public static double ApplyCurvature(double sample, double contour)
-      => (contour > Constants.EpsilonCpp32 || contour < -Constants.EpsilonCpp32) && contour * 0.1 + 1.0 is var contourScaled
+      => (contour > GenericMath.EpsilonCpp32 || contour < -GenericMath.EpsilonCpp32) && contour * 0.1 + 1.0 is var contourScaled
       ? 2.0 * ((System.Math.Pow(contourScaled, (sample + 1.0) * 50.0) - 1.0) / (System.Math.Pow(contourScaled, 100.0) - 1.0)) - 1.0
       : sample;
   }

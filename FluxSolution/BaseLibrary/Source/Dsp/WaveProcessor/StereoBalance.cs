@@ -13,12 +13,12 @@ namespace Flux.Dsp.AudioProcessor
       {
         m_position = System.Math.Clamp(value, -1.0, 1.0);
 
-        if (m_position > Constants.EpsilonCpp32)
+        if (m_position > GenericMath.EpsilonCpp32)
         {
           m_peakR = 1.0;
           m_peakL = 1.0 - m_position;
         }
-        else if (m_position < -Constants.EpsilonCpp32)
+        else if (m_position < -GenericMath.EpsilonCpp32)
         {
           m_peakL = 1.0;
           m_peakR = 1.0 + m_position;
@@ -39,6 +39,6 @@ namespace Flux.Dsp.AudioProcessor
     /// <param name="left">Left stereo sample.</param>
     /// <param name="right">Right stereo sample.</param>
     public static (double left, double right) Apply(double position, double left, double right)
-      => position > Constants.EpsilonCpp32 ? (left * (1.0 - position), right) : position < Constants.EpsilonCpp32 ? (left, right * (1.0 + position)) : (left, right);
+      => position > GenericMath.EpsilonCpp32 ? (left * (1.0 - position), right) : position < GenericMath.EpsilonCpp32 ? (left, right * (1.0 + position)) : (left, right);
   }
 }

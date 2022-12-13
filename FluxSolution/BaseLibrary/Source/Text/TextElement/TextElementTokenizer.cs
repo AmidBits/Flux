@@ -1,5 +1,5 @@
 /// <summary>A grapheme is a text element in dot NET.</summary>
-namespace Flux
+namespace Flux.Text
 {
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
   public sealed class TextElementTokenizer

@@ -21,9 +21,9 @@ namespace Flux.Dsp.AudioProcessor
       {
         m_multiplier = System.Math.Clamp(value, -1.0, 1.0);
 
-        if (m_multiplier > Constants.EpsilonCpp32)
+        if (m_multiplier > GenericMath.EpsilonCpp32)
           m_multiplier = m_multiplier * 9.0 + 1.0;
-        else if (m_multiplier < -Constants.EpsilonCpp32)
+        else if (m_multiplier < -GenericMath.EpsilonCpp32)
           m_multiplier += 1.0;
       }
     }

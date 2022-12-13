@@ -112,7 +112,7 @@ namespace Flux.Colors
       var b = m_blue / 255d;
 
       var alpha = (2 * r - g - b) / 2;
-      var beta = (Constants.TheodorusConstant / 2) * (g - b);
+      var beta = (GenericMath.TheodorusConstant / 2) * (g - b);
 
       chroma2 = System.Math.Sqrt(alpha * alpha + beta * beta);
       hue2 = Quantities.Angle.ConvertRadianToDegree(System.Math.Atan2(beta, alpha)).Wrap(0, 360);
@@ -345,8 +345,8 @@ namespace Flux.Colors
     #endregion Static methods
 
     #region Overloaded operators
-     public static bool operator ==(Rgb a, Rgb b) => a.Equals(b);
-     public static bool operator !=(Rgb a, Rgb b) => !a.Equals(b);
+    public static bool operator ==(Rgb a, Rgb b) => a.Equals(b);
+    public static bool operator !=(Rgb a, Rgb b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces

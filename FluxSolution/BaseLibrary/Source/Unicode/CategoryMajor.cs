@@ -4,7 +4,7 @@ namespace Flux
   public static partial class Unicode
   {
     public static UnicodeCategoryMajorCode ParseCategoryMajor(char majorCode)
-      => (UnicodeCategoryMajorCode)System.Enum.Parse(typeof(UnicodeCategoryMajorCode), majorCode.ToString());
+      => (UnicodeCategoryMajorCode)System.Enum.Parse(typeof(UnicodeCategoryMajorCode), majorCode.ToString(), true);
     public static bool TryParseCategoryMajor(char majorCode, out UnicodeCategoryMajorCode result)
     {
       try

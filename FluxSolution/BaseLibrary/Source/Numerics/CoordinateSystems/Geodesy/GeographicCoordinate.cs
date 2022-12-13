@@ -113,7 +113,7 @@ namespace Flux.CoordinateSystems
 
       var sinc = Quantities.Angle.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(lon / 2)));
 
-      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Constants.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
+      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(GenericMath.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
       return new(x, y, m_altitude);
@@ -177,7 +177,7 @@ namespace Flux.CoordinateSystems
 
     public static ThirtytwoWindCompassRose CompassPoint(double absoluteBearing, PointsOfTheCompass precision, out double notch)
     {
-      notch = System.Math.Round(absoluteBearing.Wrap(0, Constants.PiX2) / (Constants.PiX2 / (int)precision) % (int)precision);
+      notch = System.Math.Round(absoluteBearing.Wrap(0, GenericMath.PiX2) / (GenericMath.PiX2 / (int)precision) % (int)precision);
 
       return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
     }
@@ -251,11 +251,11 @@ namespace Flux.CoordinateSystems
       latitudeMin = radLatitude - angularDistance;
       latitudeMax = radLatitude + angularDistance;
 
-      if (latitudeMin <= -Constants.PiOver2 || latitudeMax >= Constants.PiOver2) // A pole is within the given distance.
+      if (latitudeMin <= -GenericMath.PiOver2 || latitudeMax >= GenericMath.PiOver2) // A pole is within the given distance.
       {
-        latitudeMin = System.Math.Max(latitudeMin, -Constants.PiOver2);
+        latitudeMin = System.Math.Max(latitudeMin, -GenericMath.PiOver2);
         longitudeMin = -System.Math.PI;
-        latitudeMax = System.Math.Min(latitudeMax, Constants.PiOver2);
+        latitudeMax = System.Math.Min(latitudeMax, GenericMath.PiOver2);
         longitudeMax = System.Math.PI;
 
         return false;
@@ -265,9 +265,9 @@ namespace Flux.CoordinateSystems
       longitudeMax = radLongitude + longitudeDelta;
 
       if (longitudeMin < -System.Math.PI)
-        longitudeMin += Constants.PiX2;
+        longitudeMin += GenericMath.PiX2;
       if (longitudeMax > System.Math.PI)
-        longitudeMax -= Constants.PiX2;
+        longitudeMax -= GenericMath.PiX2;
 
       return true;
     }
@@ -341,7 +341,7 @@ namespace Flux.CoordinateSystems
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
 
     public static double GetFinalCourse(double latitude1, double longitude1, double latitude2, double longitude2)
-      => (GetInitialCourse(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % Constants.PiX2;
+      => (GetInitialCourse(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % GenericMath.PiX2;
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
@@ -354,7 +354,7 @@ namespace Flux.CoordinateSystems
       var y = System.Math.Sin(lonD) * cosLat2;
       var x = System.Math.Cos(latitude1) * System.Math.Sin(latitude2) - System.Math.Sin(latitude1) * cosLat2 * System.Math.Cos(lonD);
 
-      return (System.Math.Atan2(y, x) + Constants.PiX2) % Constants.PiX2; // Atan2 returns values in the range [-π, +π] radians (i.e. -180 - +180 degrees), shift to [0, 2PI] radians (i.e. 0 - 360 degrees).
+      return (System.Math.Atan2(y, x) + GenericMath.PiX2) % GenericMath.PiX2; // Atan2 returns values in the range [-π, +π] radians (i.e. -180 - +180 degrees), shift to [0, 2PI] radians (i.e. 0 - 360 degrees).
     }
 
     /// <summary>An intermediate point at any fraction along the great circle path between two points can also be calculated.</summary>
@@ -450,14 +450,14 @@ namespace Flux.CoordinateSystems
       var φ1 = System.Math.Acos(sinLat2 - sinLat1 * cosd12 / sind12 * cosLat1);
       var φ2 = System.Math.Acos(sinLat1 - sinLat2 * cosd12 / sind12 * cosLat2);
 
-      var bearing12 = sinlonD > 0 ? φ1 : Constants.PiX2 - φ1;
-      var bearing21 = sinlonD > 0 ? Constants.PiX2 - φ2 : φ2;
+      var bearing12 = sinlonD > 0 ? φ1 : GenericMath.PiX2 - φ1;
+      var bearing21 = sinlonD > 0 ? GenericMath.PiX2 - φ2 : φ2;
 
-      var α1 = (bearing1 - bearing12 + System.Math.PI) % Constants.PiX2 - System.Math.PI;
+      var α1 = (bearing1 - bearing12 + System.Math.PI) % GenericMath.PiX2 - System.Math.PI;
       var α1cos = System.Math.Cos(α1);
       var α1sin = System.Math.Sin(α1);
 
-      var α2 = (bearing21 - bearing2 + System.Math.PI) % Constants.PiX2 - System.Math.PI;
+      var α2 = (bearing21 - bearing2 + System.Math.PI) % GenericMath.PiX2 - System.Math.PI;
       var α2cos = System.Math.Cos(α2);
       var α2sin = System.Math.Sin(α2);
 
@@ -471,7 +471,7 @@ namespace Flux.CoordinateSystems
 
       var dLon13 = System.Math.Atan2(System.Math.Sin(bearing1) * d13sin * cosLat1, d13cos - sinLat1 * System.Math.Sin(latitudeOut));
 
-      longitudeOut = (longitude1 + dLon13 + System.Math.PI) % Constants.PiX2 - System.Math.PI;
+      longitudeOut = (longitude1 + dLon13 + System.Math.PI) % GenericMath.PiX2 - System.Math.PI;
     }
 
     /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>

@@ -16,7 +16,7 @@ namespace Flux.Dsp.AudioProcessor
 
         // var tmp = 1 / System.Math.Max(m_width + 1, 2); // This was present in my code, but I am unsure what it is suppose to do.
 
-        m_stereoCoefficient = (m_width > Constants.EpsilonCpp32 || m_width < -Constants.EpsilonCpp32) ? (m_width + 1) / 2 : 1;
+        m_stereoCoefficient = (m_width > GenericMath.EpsilonCpp32 || m_width < -GenericMath.EpsilonCpp32) ? (m_width + 1) / 2 : 1;
       }
     }
 
@@ -33,6 +33,6 @@ namespace Flux.Dsp.AudioProcessor
     /// <param name="left">Left stereo sample.</param>
     /// <param name="right">Right stereo sample.</param>
     public static (double left, double right) Apply(double width, double left, double right)
-      => (left + right) / 2 is var m && (right - left) * (width > Constants.EpsilonCpp32 || width < -Constants.EpsilonCpp32 ? (width + 1) / 2 : 1) is var s ? (m - s, m + s) : (left, right);
+      => (left + right) / 2 is var m && (right - left) * (width > GenericMath.EpsilonCpp32 || width < -GenericMath.EpsilonCpp32 ? (width + 1) / 2 : 1) is var s ? (m - s, m + s) : (left, right);
   }
 }

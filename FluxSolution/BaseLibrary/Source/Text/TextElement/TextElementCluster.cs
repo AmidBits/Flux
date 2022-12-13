@@ -1,4 +1,4 @@
-﻿namespace Flux
+﻿namespace Flux.Text
 {
   public sealed class TextElementCluster
   {

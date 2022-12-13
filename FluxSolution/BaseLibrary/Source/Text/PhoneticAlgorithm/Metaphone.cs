@@ -1,4 +1,4 @@
-﻿namespace Flux.PhoneticAlgorithm
+﻿namespace Flux.Text.PhoneticAlgorithm
 {
 	/// <summary>Implements the Metaphone algorithm</summary>
 	public sealed class Metaphone

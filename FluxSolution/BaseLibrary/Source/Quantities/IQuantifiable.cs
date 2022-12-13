@@ -1,4 +1,4 @@
-﻿namespace Flux
+﻿namespace Flux.Quantities
 {
   ///// <summary>An interface representing a quantifiable value.</summary>
   ///// <typeparam name="TType">The value type.</typeparam>

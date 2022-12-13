@@ -10,7 +10,7 @@ namespace Flux
   /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public readonly struct JulianDayNumber
-    : System.IComparable<JulianDayNumber>, System.IConvertible, System.IEquatable<JulianDayNumber>, IQuantifiable<int>
+    : System.IComparable<JulianDayNumber>, System.IConvertible, System.IEquatable<JulianDayNumber>, Quantities.IQuantifiable<int>
   {
     public static readonly JulianDayNumber Zero;
 
@@ -25,31 +25,31 @@ namespace Flux
     { }
 
     /// <summary>Returns a <see cref="System.DayOfWeek"/> from the Julian Day Number.</summary>
-    
+
     public System.DayOfWeek DayOfWeek
       => (System.DayOfWeek)(GetDayOfWeekISO8601(m_value) % 7);
     /// <summary>Returns a day of week [1 (Monday), 7 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday. For US day-of-week numbering, simply do "ComputeDayOfWeekIso(JDN) % 7".</summary>
-    
+
     public int DayOfWeekISO8601
       => GetDayOfWeekISO8601(m_value);
 
-    
+
     public JulianDayNumber AddWeeks(int weeks)
       => this + (weeks * 7);
-    
+
     public JulianDayNumber AddDays(int days)
       => this + days;
 
-    
+
     public ConversionCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
 
-    
+
     public void GetDateParts(ConversionCalendar calendar, out int year, out int month, out int day)
       => ConvertToDateParts(m_value, calendar, out year, out month, out day);
 
     /// <summary>Creates a new string from this instance.</summary>
-    
+
     public string ToDateString(ConversionCalendar calendar)
     {
       var sb = new System.Text.StringBuilder();
@@ -92,12 +92,12 @@ namespace Flux
     }
 
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
-    
+
     public JulianDate ToJulianDate()
       => new(m_value);
 
     /// <summary>Creates a new <see cref="MomentUtc"/> from this instance.</summary>
-    
+
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
       ConvertToDateParts((int)(m_value + 0.5), calendar, out var year, out var month, out var day);
@@ -107,7 +107,7 @@ namespace Flux
 
     #region Static methods
     /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
-    
+
     public static int ConvertFromDateParts(int year, int month, int day, ConversionCalendar calendar)
       => calendar switch
       {
@@ -116,7 +116,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(calendar)),
       };
     /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
-    
+
     public static void ConvertToDateParts(int julianDayNumber, ConversionCalendar calendar, out int year, out int month, out int day)
     {
       // This is an algorithm by Edward Graham Richards to convert a Julian Day Number, J, to a date in the Gregorian calendar (proleptic, when applicable).
@@ -137,7 +137,7 @@ namespace Flux
     }
 
     /// <summary>Returns the ISO day of the week from the Julian Day Number. The US day of the week can be determined by: GetDayOfWeekISO(JDN) % 7.</summary>
-    
+
     public static int GetDayOfWeekISO8601(int julianDayNumber)
       => (julianDayNumber % 7 is var dow && dow < 0 ? dow + 7 : dow) + 1;
 
@@ -145,72 +145,72 @@ namespace Flux
     /// <param name="solarCycle">That year's position in the 28-year solar cycle.</param>
     /// <param name="lunarCycle">That year's position in the 19-year lunar cycle.</param>
     /// <param name="indictionCycle">That year's position in the 15-year indiction cycle.</param>
-    
+
     public static int GetJulianPeriod(int solarCycle, int lunarCycle, int indictionCycle)
       => (indictionCycle * 6916 + lunarCycle * 4200 + solarCycle * 4845) % (15 * 19 * 28) is var year && year > 4713 ? year - 4713 : year < 4714 ? -(4714 - year) : year;
 
     /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
-    
+
     public static bool IsGregorianCalendar(int julianDayNumber)
       => julianDayNumber >= 2299161;
     #endregion Static methods
 
     #region Overloaded operators
-     public static bool operator <(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) < 0;
-     public static bool operator <=(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) <= 0;
-     public static bool operator >(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) > 0;
-     public static bool operator >=(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) >= 0;
+    public static bool operator <(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) < 0;
+    public static bool operator <=(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) <= 0;
+    public static bool operator >(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) > 0;
+    public static bool operator >=(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) >= 0;
 
-     public static bool operator ==(JulianDayNumber a, JulianDayNumber b) => a.Equals(b);
-     public static bool operator !=(JulianDayNumber a, JulianDayNumber b) => !a.Equals(b);
+    public static bool operator ==(JulianDayNumber a, JulianDayNumber b) => a.Equals(b);
+    public static bool operator !=(JulianDayNumber a, JulianDayNumber b) => !a.Equals(b);
 
-     public static JulianDayNumber operator -(JulianDayNumber jd) => new(-jd.m_value);
-     public static double operator -(JulianDayNumber a, JulianDayNumber b) => a.m_value - b.m_value;
+    public static JulianDayNumber operator -(JulianDayNumber jd) => new(-jd.m_value);
+    public static double operator -(JulianDayNumber a, JulianDayNumber b) => a.m_value - b.m_value;
 
-     public static JulianDayNumber operator +(JulianDayNumber a, int b) => new(a.m_value + b);
-     public static JulianDayNumber operator /(JulianDayNumber a, int b) => new(a.m_value / b);
-     public static JulianDayNumber operator *(JulianDayNumber a, int b) => new(a.m_value * b);
-     public static JulianDayNumber operator %(JulianDayNumber a, int b) => new(a.m_value % b);
-     public static JulianDayNumber operator -(JulianDayNumber a, int b) => new(a.m_value - b);
+    public static JulianDayNumber operator +(JulianDayNumber a, int b) => new(a.m_value + b);
+    public static JulianDayNumber operator /(JulianDayNumber a, int b) => new(a.m_value / b);
+    public static JulianDayNumber operator *(JulianDayNumber a, int b) => new(a.m_value * b);
+    public static JulianDayNumber operator %(JulianDayNumber a, int b) => new(a.m_value % b);
+    public static JulianDayNumber operator -(JulianDayNumber a, int b) => new(a.m_value - b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable<>
-     public int CompareTo(JulianDayNumber other) => m_value < other.m_value ? -1 : m_value > other.m_value ? 1 : 0;
+    public int CompareTo(JulianDayNumber other) => m_value < other.m_value ? -1 : m_value > other.m_value ? 1 : 0;
     // IComparable
-     public int CompareTo(object? other) => other is not null && other is JulianDayNumber o ? CompareTo(o) : -1;
+    public int CompareTo(object? other) => other is not null && other is JulianDayNumber o ? CompareTo(o) : -1;
 
     #region IConvertible
-     public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-     public bool ToBoolean(System.IFormatProvider? provider) => m_value != 0;
-     public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_value);
-     public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_value);
-     public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_value);
-     public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_value);
-     public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_value);
-     public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_value);
-     public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_value);
-     public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_value);
+    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+    public bool ToBoolean(System.IFormatProvider? provider) => m_value != 0;
+    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_value);
+    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_value);
+    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_value);
+    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_value);
+    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_value);
+    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_value);
+    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_value);
+    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_value);
     [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_value);
-     public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_value);
-     public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_value);
-     public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_value, conversionType, provider);
+    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_value);
+    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_value);
+    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_value, conversionType, provider);
     [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_value);
     [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_value);
     [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
     // IEquatable<>
-     public bool Equals(JulianDayNumber other) => m_value == other.m_value;
+    public bool Equals(JulianDayNumber other) => m_value == other.m_value;
 
     // IQuantifiable<>
-     public int Value { get => m_value; init => m_value = value; }
+    public int Value { get => m_value; init => m_value = value; }
     #endregion Implemented interfaces
 
     #region Object overrides
-     public override bool Equals(object? obj) => obj is JulianDayNumber o && Equals(o);
-     public override int GetHashCode() => m_value.GetHashCode();
-     public override string? ToString() => $"{GetType().Name} {{ {m_value} ({ToDateString(GetConversionCalendar())}) }}";
+    public override bool Equals(object? obj) => obj is JulianDayNumber o && Equals(o);
+    public override int GetHashCode() => m_value.GetHashCode();
+    public override string? ToString() => $"{GetType().Name} {{ {m_value} ({ToDateString(GetConversionCalendar())}) }}";
     #endregion Object overrides
   }
 }

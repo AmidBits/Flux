@@ -1,4 +1,4 @@
-﻿namespace Flux
+﻿namespace Flux.Quantities
 {
   /// <summary>An interface representing a qunatifiable value that can be converted to other units.</summary>
   /// <typeparam name="TType">The value type.</typeparam>

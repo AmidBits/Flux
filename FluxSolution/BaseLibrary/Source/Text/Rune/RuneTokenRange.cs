@@ -1,5 +1,5 @@
 /// <summary>A rune is a Unicode code point.</summary>
-namespace Flux
+namespace Flux.Text
 {
   public struct RuneTokenRange
     : IToken<System.Text.Rune>

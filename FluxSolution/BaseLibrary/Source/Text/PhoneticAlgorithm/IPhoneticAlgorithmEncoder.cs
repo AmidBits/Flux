@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Text
 {
 	/// <summary>Represents an algorithm for indexing of words by their pronunciation.</summary>
 	/// <see cref="https://en.wikipedia.org/wiki/Phonetic_algorithm"/>

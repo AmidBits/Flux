@@ -1,8 +1,8 @@
-﻿namespace Flux.PhoneticAlgorithm
+﻿namespace Flux.Text.PhoneticAlgorithm
 {
-  /// <summary>Implements the Caverphone 1.0 algorithm</summary>
-  // https://en.wikipedia.org/wiki/Caverphone
-  public sealed class Caverphone1
+	/// <summary>Implements the Caverphone 1.0 algorithm</summary>
+	// https://en.wikipedia.org/wiki/Caverphone
+	public sealed class Caverphone1
 		: IPhoneticAlgorithmEncoder
 	{
 		/// <summary>Encodes the given text using the Caverphone 2.0 algorithm.</summary>

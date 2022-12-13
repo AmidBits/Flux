@@ -40,7 +40,7 @@ namespace Flux.Geometry
 
     public void HexCornerOffset(int corner, out double x, out double y)
     {
-      var angle = Constants.PiX2 * (m_orientation.StartAngle - corner) / 6.0;
+      var angle = GenericMath.PiX2 * (m_orientation.StartAngle - corner) / 6.0;
 
       x = m_size.Width * System.Math.Cos(angle);
       y = m_size.Height * System.Math.Sin(angle);

@@ -16,7 +16,7 @@
 
       var sinc = Quantities.Angle.Sincu(System.Math.Acos(cosLatitude * System.Math.Cos(lon / 2)));
 
-      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Constants.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
+      var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(GenericMath.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
       return new(x, y, project.Altitude);
