@@ -30,6 +30,13 @@ namespace Flux
         );
     }
 
+    public static (Numerics.CartesianCoordinate3<TSelf> axis, Quantities.Angle angle) ToQuantities<TSelf>(this Numerics.AxisAngle<TSelf> source)
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+      => (
+        new Numerics.CartesianCoordinate3<TSelf>(source.X, source.Y, source.Z),
+        new Quantities.Angle(double.CreateChecked(source.Angle))
+      );
+
     public static Numerics.Quaternion<TSelf> ToQuaternion<TSelf>(this Numerics.AxisAngle<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {

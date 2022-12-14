@@ -83,13 +83,13 @@
 
     /// <summary>Lerp is a normalized linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static Numerics.CartesianCoordinate2<TSelf> Nlerp<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source, Numerics.ICartesianCoordinate2<TSelf> target, TSelf mu)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => Lerp(source, target, mu).Normalized();
 
     /// <summary>Creates a new normalized <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="ICartesianCoordinate2{TSelf}"/>.</summary>
     public static Numerics.CartesianCoordinate2<TSelf> Normalized<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
-      where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
-      => source.EuclideanLength() is var m && m != TSelf.Zero ? source.ToCartesianCoordinate2<TSelf>() / m : source.ToCartesianCoordinate2<TSelf>();
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+      => source.EuclideanLength() is var m && m != TSelf.Zero ? new Numerics.CartesianCoordinate2<TSelf>(source.X, source.Y) / m : new Numerics.CartesianCoordinate2<TSelf>(source.X, source.Y);
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
@@ -156,16 +156,11 @@
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y));
 
-    /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static Numerics.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => source is Numerics.CartesianCoordinate2<TSelf> cc ? cc : new(source.X, source.Y);
-
     /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate2{TResult}"/>.</summary>
-    public static Numerics.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TSelf, TResult>(this Numerics.ICartesianCoordinate2<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out Numerics.CartesianCoordinate2<TResult> result)
+    public static Numerics.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TSelf, TResult>(this Numerics.ICartesianCoordinate2<TSelf> source, RoundingMode mode, out Numerics.CartesianCoordinate2<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
-      => result = new(TResult.CreateChecked(rounding.RoundNumber(source.X)), TResult.CreateChecked(rounding.RoundNumber(source.Y)));
+      => result = new(TResult.CreateChecked(Rounding<TSelf>.Round(source.X, mode)), TResult.CreateChecked(Rounding<TSelf>.Round(source.Y, mode)));
 
     /// <summary>Creates a new <see cref="CartesianCoordinate3{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate2{TSelf}"/> using the X and Y coordinates.</summary>
     public static Numerics.CartesianCoordinate3<TSelf> ToCartesianCoordinate3XY<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
@@ -182,22 +177,6 @@
 
     /// <summary>Creates a new <see cref="System.Drawing.PointF"/> from a <see cref="Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
     public static System.Drawing.PointF ToPointF<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => new(
-        float.CreateChecked(source.X),
-        float.CreateChecked(source.Y)
-      );
-
-    /// <summary>Creates a new <see cref="System.Drawing.Size"/> from a <see cref="Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static System.Drawing.Size ToSize<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => new(
-        int.CreateChecked(source.X),
-        int.CreateChecked(source.Y)
-      );
-
-    /// <summary>Creates a new <see cref="System.Drawing.SizeF"/> from a <see cref="Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static System.Drawing.SizeF ToSizeF<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => new(
         float.CreateChecked(source.X),
@@ -230,6 +209,22 @@
     public static TSelf ToRotationAngleEx<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => TSelf.Tau - (TSelf.Atan2(source.Y, -source.X) is var atan2 && atan2 < TSelf.Zero ? TSelf.Tau + atan2 : atan2);
+
+    /// <summary>Creates a new <see cref="System.Drawing.Size"/> from a <see cref="Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.Size ToSize<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(
+        int.CreateChecked(source.X),
+        int.CreateChecked(source.Y)
+      );
+
+    /// <summary>Creates a new <see cref="System.Drawing.SizeF"/> from a <see cref="Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static System.Drawing.SizeF ToSizeF<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(
+        float.CreateChecked(source.X),
+        float.CreateChecked(source.Y)
+      );
 
     /// <summary>Converts the <see cref="CartesianCoordinate2{TSelf}"/> to a 'mapped' unique index.</summary>
     /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a <paramref name="gridWidth"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>

@@ -30,16 +30,10 @@ namespace Flux.Numerics
     public TSelf S { get => m_s; init => m_s = value; }
 
     #region Overloaded operators
-    public static HexCoordinate<TSelf> operator +(HexCoordinate<TSelf> a, IHexCoordinate<TSelf> b)
-      => new(a.m_q + b.Q, a.m_r + b.R, a.m_s + b.S);
-    public static HexCoordinate<TSelf> operator *(HexCoordinate<TSelf> h, TSelf scalar)
-      => new(h.m_q * scalar, h.m_r * scalar, h.m_s * scalar);
-    public static HexCoordinate<TSelf> operator /(HexCoordinate<TSelf> h, TSelf scalar)
-      => TSelf.IsZero(scalar)
-      ? throw new System.DivideByZeroException()
-      : new(h.m_q / scalar, h.m_r / scalar, h.m_s / scalar);
-    public static HexCoordinate<TSelf> operator -(HexCoordinate<TSelf> a, IHexCoordinate<TSelf> b)
-      => new(a.m_q - b.Q, a.m_r - b.R, a.m_s - b.S);
+    public static HexCoordinate<TSelf> operator +(HexCoordinate<TSelf> a, IHexCoordinate<TSelf> b) => new(a.m_q + b.Q, a.m_r + b.R, a.m_s + b.S);
+    public static HexCoordinate<TSelf> operator *(HexCoordinate<TSelf> h, TSelf scalar) => new(h.m_q * scalar, h.m_r * scalar, h.m_s * scalar);
+    public static HexCoordinate<TSelf> operator /(HexCoordinate<TSelf> h, TSelf scalar) => TSelf.IsZero(scalar) ? throw new System.DivideByZeroException() : new(h.m_q / scalar, h.m_r / scalar, h.m_s / scalar);
+    public static HexCoordinate<TSelf> operator -(HexCoordinate<TSelf> a, IHexCoordinate<TSelf> b) => new(a.m_q - b.Q, a.m_r - b.R, a.m_s - b.S);
     #endregion Overloaded operators
   }
 }

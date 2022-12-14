@@ -21,10 +21,6 @@
         double.CreateChecked(source.Azimuth)
       );
 
-    public static Numerics.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => new(source.Radius, source.Azimuth);
-
     public static (Quantities.Length radius, Quantities.Angle azimuth) ToQuantities<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
     => (

@@ -12,13 +12,13 @@
         TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(source.Longitude))) + TSelf.Pi
       );
 
-    //public static (Quantities.Length altitude, Latitude latitude, Longitude longitude) ToQuantities<TSelf>(this IGeographicCoordinate<TSelf> source)
-    //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
-    //  => (
-    //    new Quantities.Length(double.CreateChecked(source.Altitude)),
-    //    new Latitude(double.CreateChecked(source.Latitude)),
-    //    new Longitude(double.CreateChecked(source.Longitude))
-    //  );
+    public static (Quantities.Length altitude, Quantities.Latitude latitude, Quantities.Longitude longitude) ToQuantities<TSelf>(this Numerics.IGeographicCoordinate<TSelf> source)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => (
+        new Quantities.Length(double.CreateChecked(source.Altitude)),
+        new Quantities.Latitude(double.CreateChecked(source.Latitude)),
+        new Quantities.Longitude(double.CreateChecked(source.Longitude))
+      );
   }
 
   namespace Numerics

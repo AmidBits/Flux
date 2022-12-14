@@ -19,9 +19,9 @@
 
     /// <summary>Converts the spherical coordinates to cylindrical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static (TSelf radius, TSelf azimuth, TSelf height) ToCylindricalCoordinates<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
+    public static Numerics.CylindricalCoordinate<TSelf> ToCylindricalCoordinates<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => (
+      => new(
         source.Radius * TSelf.Sin(source.Inclination),
         source.Azimuth,
         source.Radius * TSelf.Cos(source.Inclination)
@@ -43,14 +43,6 @@
         new Quantities.Length(double.CreateChecked(source.Radius)),
         new Quantities.Angle(double.CreateChecked(source.Inclination)),
         new Quantities.Angle(double.CreateChecked(source.Azimuth))
-      );
-
-    public static Numerics.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => new(
-        source.Radius,
-        source.Inclination,
-        source.Azimuth
       );
   }
   #endregion ExtensionMethods

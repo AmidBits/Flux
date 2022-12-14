@@ -95,7 +95,7 @@
     /// <summary>Creates a new normalized <see cref="Numerics.CartesianCoordinate2{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
     public static Numerics.CartesianCoordinate3<TSelf> Normalized<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
-      => source.EuclideanLength() is var m && m != TSelf.Zero ? source.ToCartesianCoordinate3() / m : source.ToCartesianCoordinate3();
+      => source.EuclideanLength() is var m && m != TSelf.Zero ? new Numerics.CartesianCoordinate3<TSelf>(source.X, source.Y, source.Z) / m : new(source.X, source.Y, source.Z);
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
@@ -147,16 +147,11 @@
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y), TSelf.CreateChecked(source.Z));
 
-    /// <summary>Creates a new <see cref="Numerics.CartesianCoordinate3{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static Numerics.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => source is Numerics.CartesianCoordinate3<TSelf> cc ? cc : new(source.X, source.Y, source.Z);
-
     /// <summary>Creates a new <see cref="Numerics.CartesianCoordinate3{TResult}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/> using a <see cref="INumberRoundable{TSelf, TSelf}"/>.</summary>
-    public static Numerics.CartesianCoordinate3<TResult> ToCartesianCoordinate3<TSelf, TResult>(this Numerics.ICartesianCoordinate3<TSelf> source, INumberRoundable<TSelf, TSelf> rounding, out Numerics.CartesianCoordinate3<TResult> result)
+    public static Numerics.CartesianCoordinate3<TResult> ToCartesianCoordinate3<TSelf, TResult>(this Numerics.ICartesianCoordinate3<TSelf> source, RoundingMode mode, out Numerics.CartesianCoordinate3<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
-      => result = new(TResult.CreateChecked(rounding.RoundNumber(source.X)), TResult.CreateChecked(rounding.RoundNumber(source.Y)), TResult.CreateChecked(rounding.RoundNumber(source.Z)));
+      => result = new(TResult.CreateChecked(Rounding<TSelf>.Round(source.X, mode)), TResult.CreateChecked(Rounding<TSelf>.Round(source.Y, mode)), TResult.CreateChecked(Rounding<TSelf>.Round(source.Z, mode)));
 
     /// <summary>Creates a new <see cref="Numerics.CartesianCoordinate3{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/>.</summary>
     public static Numerics.CartesianCoordinate4 ToCartesianCoordinate4<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source, double w)
