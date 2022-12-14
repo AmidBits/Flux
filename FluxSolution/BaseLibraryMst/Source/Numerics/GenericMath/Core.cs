@@ -62,10 +62,47 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void IsIntegerPow()
+    public void IntegerPow()
+    {
+      Assert.AreEqual(7766279631452241920, 100L.IntegerPow(10));
+    }
+
+    [TestMethod]
+    public void IntegerPowRec()
+    {
+      Assert.AreEqual(7766279631452241920, 100L.IntegerPowRec(10, out double reciprocal));
+      Assert.AreEqual(1.2876178137472069E-19, reciprocal);
+    }
+
+    [TestMethod]
+    public void IsPow()
     {
       Assert.AreEqual(true, 100.IsPow(10));
       Assert.AreEqual(true, 100.IsPow(10));
+    }
+
+    [TestMethod]
+    public void IsIntegerSqrt()
+    {
+      var v = 15;
+
+      var iq = v.IntegerSqrt();
+
+      var isiq = v.IsIntegerSqrt(iq);
+
+      Assert.IsTrue(isiq);
+    }
+
+    [TestMethod]
+    public void IsPerfectIntegerSqrt()
+    {
+      var v = 15;
+
+      var iq = v.IntegerSqrt();
+
+      var ispiq = v.IsPerfectIntegerSqrt(iq);
+
+      Assert.IsFalse(ispiq);
     }
 
     [TestMethod]

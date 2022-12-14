@@ -1,4 +1,6 @@
 ﻿#if ZAMPLEZ
+using Flux.Numerics;
+
 namespace Flux
 {
   public static partial class Zamplez

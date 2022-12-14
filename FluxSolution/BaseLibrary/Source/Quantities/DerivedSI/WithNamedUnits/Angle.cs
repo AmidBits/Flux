@@ -114,28 +114,22 @@
 
       /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-
       public Numerics.CartesianCoordinate2<double> ToCartesian2()
-        => (Numerics.CartesianCoordinate2<double>)ConvertRotationAngleToCartesian2(m_radAngle);
+        => (Numerics.CartesianCoordinate2<double>)Flux.Convert.RotationAngleToCartesian2(m_radAngle);
 
       /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-
       public Numerics.CartesianCoordinate2<double> ToCartesian2Ex()
-        => (Numerics.CartesianCoordinate2<double>)ConvertRotationAngleToCartesian2Ex(m_radAngle);
-
+        => (Numerics.CartesianCoordinate2<double>)Flux.Convert.RotationAngleToCartesian2Ex(m_radAngle);
 
       public double ToDegrees()
         => ConvertRadianToDegree(m_radAngle);
 
-
       public Latitude ToLatitude()
         => new(ToUnitValue(AngleUnit.Degree));
 
-
       public Longitude ToLongitude()
         => new(ToUnitValue(AngleUnit.Degree));
-
 
       public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format, SexagesimalDegreeDirection direction, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)
       {
@@ -156,15 +150,12 @@
 
       #region Static methods
       /// <summary>Convert the angle specified in arcminutes to radians.</summary>
-
       public static double ConvertArcminuteToRadian(double arcminAngle)
             => arcminAngle / 3437.746771;
 
       /// <summary>Convert the angle specified in arcseconds to radians.</summary>
-
       public static double ConvertArcsecondToRadian(double arcsecAngle)
         => arcsecAngle / 206264.806247;
-
 
       public static (double decimalDegrees, double degrees, double decimalMinutes, double minutes, double decimalSeconds) ConvertDecimalDegreeToSexagesimalDegree(double decimalDegrees)
       {
@@ -180,33 +171,28 @@
         return (decimalDegrees, System.Convert.ToInt32(degrees), decimalMinutes, System.Convert.ToInt32(minutes), decimalSeconds);
       }
 
+      ///// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
+      ///// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      //public static double ConvertCartesian2ToRotationAngle(double x, double y)
+      //   => double.Atan2(y, x) is var atan2 && atan2 < 0 ? double.Tau + atan2 : atan2;
 
-      /// <summary>Return the rotation angle using the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-      public static double ConvertCartesian2ToRotationAngle(double x, double y)
-         => double.Atan2(y, x) is var atan2 && atan2 < 0 ? double.Tau + atan2 : atan2;
-
-      /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-      public static double ConvertCartesian2ToRotationAngleEx(double x, double y)
-        => double.Tau - (double.Atan2(y, -x) is var atan2 && atan2 < 0 ? double.Tau + atan2 : atan2);
+      ///// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
+      ///// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      //public static double ConvertCartesian2ToRotationAngleEx(double x, double y)
+      //  => double.Tau - (double.Atan2(y, -x) is var atan2 && atan2 < 0 ? double.Tau + atan2 : atan2);
 
       /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
-
       public static double ConvertDegreeToGradian(double degAngle)
         => degAngle * (10.0 / 9.0);
 
       /// <summary>Convert the angle specified in degrees to radians.</summary>
-
       public static double ConvertDegreeToRadian(double degAngle)
         => degAngle * GenericMath.PiOver180;
-
 
       public static double ConvertDegreeToTurn(double degAngle)
         => degAngle / 360;
 
       /// <summary>Convert the angle specified in gradians (grads) to degrees.</summary>
-
       public static double ConvertGradianToDegree(double gradAngle)
         => gradAngle * 0.9;
 
@@ -215,74 +201,60 @@
       public static double ConvertGradianToRadian(double gradAngle)
         => gradAngle * GenericMath.PiOver200;
 
-
       public static double ConvertGradianToTurn(double gradAngle)
         => gradAngle / 400;
 
-
       public static double ConvertMilliradianToRadian(double milliradAngle)
         => milliradAngle * 1000;
-
 
       public static double ConvertNatoMilToRadian(double milAngle)
         => milAngle * System.Math.PI / 3200;
 
       /// <summary>Convert the angle specified in radians to arcminutes.</summary>
-
       public static double ConvertRadianToArcminute(double radAngle)
         => radAngle * 3437.746771;
 
       /// <summary>Convert the angle specified in radians to arcseconds.</summary>
-
       public static double ConvertRadianToArcsecond(double radAngle)
         => radAngle * 206264.806247;
 
       /// <summary>Convert the angle specified in radians to degrees.</summary>
-
       public static double ConvertRadianToDegree(double radAngle)
         => radAngle * GenericMath.PiInto180;
 
       /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
-
       public static double ConvertRadianToGradian(double radAngle)
         => radAngle * GenericMath.PiInto200;
-
 
       public static double ConvertRadianToMilliradian(double radAngle)
         => radAngle / 1000;
 
-
       public static double ConvertRadianToNatoMil(double radAngle)
         => radAngle * 3200 / System.Math.PI;
-
 
       public static double ConvertRadianToTurn(double radAngle)
         => radAngle / GenericMath.PiX2;
 
-      /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      ///// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
+      ///// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
 
-      public static (double x, double y) ConvertRotationAngleToCartesian2(double radAngle)
-        => (System.Math.Cos(radAngle), System.Math.Sin(radAngle));
+      //public static (double x, double y) ConvertRotationAngleToCartesian2(double radAngle)
+      //  => (System.Math.Cos(radAngle), System.Math.Sin(radAngle));
 
-      /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      ///// <summary>Convert the specified clockwise rotation angle [0, PI*2] (radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
+      ///// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
 
-      public static (double x, double y) ConvertRotationAngleToCartesian2Ex(double radAngle)
-        => ConvertRotationAngleToCartesian2(GenericMath.PiX2 - (radAngle % GenericMath.PiX2 is var rad && rad < 0 ? rad + GenericMath.PiX2 : rad) + GenericMath.PiOver2);
-
+      //public static (double x, double y) ConvertRotationAngleToCartesian2Ex(double radAngle)
+      //  => ConvertRotationAngleToCartesian2(GenericMath.PiX2 - (radAngle % GenericMath.PiX2 is var rad && rad < 0 ? rad + GenericMath.PiX2 : rad) + GenericMath.PiOver2);
 
       public static double ConvertSexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds)
         => degrees + minutes / 60 + seconds / 3600;
 
-
       public static double ConvertTurnToRadian(double revolutions)
         => revolutions * GenericMath.PiX2;
 
-
       public static Angle FromSexagesimalDegrees(double degrees, double minutes, double seconds)
         => new(ConvertDegreeToRadian(ConvertSexagesimalDegreeToDecimalDegree(degrees, minutes, seconds)));
-
 
       public static Angle ParseSexagesimalDegrees(string dms)
       {
@@ -308,7 +280,6 @@
 
         return new(ConvertDegreeToRadian(decimalDegrees));
       }
-
 
       public static bool TryParseSexagesimalDegrees(string dms, out Angle result)
       {

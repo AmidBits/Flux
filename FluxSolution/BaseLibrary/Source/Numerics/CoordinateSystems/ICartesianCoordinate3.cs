@@ -16,21 +16,6 @@
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
       => TSelf.Acos(TSelf.Clamp(Numerics.ICartesianCoordinate3<TSelf>.DotProduct(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -TSelf.One, TSelf.One));
 
-    /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate3{TSelf}"/>.</summary>
-    /// <remarks>An index can be uniquely mapped to 3D cartesian coordinates using a <paramref name="gridWidth"/> and <paramref name="gridHeight"/>. The 3D cartesian coordinates can also be converted back to a unique index with the same grid width and height values.</remarks>
-    public static Numerics.CartesianCoordinate3<TSelf> AsUniqueIndexToCartesianCoordinate3<TSelf>(this TSelf uniqueIndex, TSelf gridWidth, TSelf gridHeight)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      var xy = gridWidth * gridHeight;
-      var irxy = uniqueIndex % xy;
-
-      return new(
-        irxy % gridWidth,
-        irxy / gridWidth,
-        uniqueIndex / xy
-      );
-    }
-
     /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static TSelf ChebyshevLength<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source, TSelf edgeLength)
@@ -142,11 +127,6 @@
       where TSelf : System.Numerics.INumber<TSelf>
       => new(source.X, source.Y);
 
-    /// <summary>Creates a new <see cref="Numerics.CartesianCoordinate3{TSelf}"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
-    public static Numerics.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this System.Numerics.Vector3 source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => new(TSelf.CreateChecked(source.X), TSelf.CreateChecked(source.Y), TSelf.CreateChecked(source.Z));
-
     /// <summary>Creates a new <see cref="Numerics.CartesianCoordinate3{TResult}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/> using a <see cref="INumberRoundable{TSelf, TSelf}"/>.</summary>
     public static Numerics.CartesianCoordinate3<TResult> ToCartesianCoordinate3<TSelf, TResult>(this Numerics.ICartesianCoordinate3<TSelf> source, RoundingMode mode, out Numerics.CartesianCoordinate3<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
@@ -215,17 +195,6 @@
         TSelf.Atan2(source.Y, source.X) + TSelf.Pi
       );
     }
-
-    /// <summary>Creates a new 'mapped' unique index from a <see cref="ICartesianCoordinate3{TSelf}"/> using the <paramref name="gridWidth"/> and <paramref name="gridHeight"/>.</summary>
-    /// <remarks>A 3D cartesian coordinate can be uniquely indexed using a <paramref name="gridWidth"/> and <paramref name="gridHeight"/>. The unique index can also be converted back to a 3D cartesian coordinate with the same grid width and height values.</remarks>
-    public static TSelf ToUniqueIndex<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source, TSelf gridWidth, TSelf gridHeight)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => source.X + (source.Y * gridWidth) + (source.Z * gridWidth * gridHeight);
-
-    /// <summary>Creates a new <see cref="System.Numerics.Vector3"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static System.Numerics.Vector3 ToVector3<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => new(float.CreateChecked(source.X), float.CreateChecked(source.Y), float.CreateChecked(source.Z));
 
     //public static Vector4 ToVector4<TSelf>(this ICartesianCoordinate3<TSelf> source, double w = 0)
     //  where TSelf : System.Numerics.INumber<TSelf>

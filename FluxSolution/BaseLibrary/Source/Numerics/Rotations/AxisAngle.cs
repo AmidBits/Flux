@@ -1,5 +1,6 @@
 namespace Flux
 {
+  #region ExtensionMethods
   public static partial class ExtensionMethods
   {
     public static Numerics.EulerAngles<TSelf> ToEulerAngles<TSelf>(this Numerics.AxisAngle<TSelf> source)
@@ -53,6 +54,7 @@ namespace Flux
       return new(x, y, z, w);
     }
   }
+  #endregion ExtensionMethods
 
   namespace Numerics
   {
@@ -61,7 +63,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Axis-angle_representation"/>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct AxisAngle<TSelf>
-    where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       private readonly TSelf m_x;
       private readonly TSelf m_y;

@@ -1,4 +1,5 @@
 using System.Linq;
+using Flux.Numerics;
 
 namespace Flux.Model
 {
@@ -62,14 +63,14 @@ namespace Flux.Model
     {
       var p = new Numerics.CartesianCoordinate2<int>(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
-      return (int)p.ToUniqueIndex(BoardSize.Width);
+      return Flux.Convert.Cartesian2ToMapIndex(p.X, p.Y, BoardSize.Width);
     }
 
     public static Numerics.CartesianCoordinate2<int> LabelToVector(string column, string row)
       => new(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
     public static int VectorToIndex(Numerics.CartesianCoordinate2<int> vector)
-      => (int)vector.ToUniqueIndex(BoardSize.Width);
+      => Flux.Convert.Cartesian2ToMapIndex(vector.X, vector.Y, BoardSize.Width);
     public static (string column, string row) VectorToLabel(Numerics.CartesianCoordinate2<int> vector)
       => (Files[vector.X], Ranks[vector.Y]);
 

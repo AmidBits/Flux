@@ -3,7 +3,7 @@ namespace Flux.Geometry
   /// <summary></summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct ViewPort<TSelf>
-    where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
     public static readonly ViewPort<TSelf> Empty;
 
@@ -38,7 +38,7 @@ namespace Flux.Geometry
     /// <summary>Transform the 3D point from world space to camera space.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
     public Numerics.CartesianCoordinate3<TSelf> TransformWorldToCamera(Numerics.CartesianCoordinate3<TSelf> source)
-      => System.Numerics.Vector3.Transform(source.ToVector3(), m_worldToCamera.ToQuaternion()).ToCartesianCoordinate3<TSelf>();
+      => System.Numerics.Vector3.Transform(source.ToVector3<TSelf>(), m_worldToCamera.ToQuaternion()).ToCartesianCoordinate3<TSelf>();
 
     /// <summary>Transform from camera space to vector on the canvas. Use perspective projection.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>

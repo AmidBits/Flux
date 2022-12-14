@@ -1,4 +1,6 @@
-﻿namespace Flux.Model
+﻿using Flux.Numerics;
+
+namespace Flux.Model
 {
   /// <summary>Plays Conway's Game of Life on the console with a random initial state.</summary>
   public sealed class GameOfLife
@@ -42,7 +44,7 @@
       {
         for (var c = m_cellGrid.Width - 1; c >= 0; c--)
         {
-          var index = (int)m_cellGrid.PointToUniqueIndex(c, r);
+          var index = Flux.Convert.Cartesian2ToMapIndex(c, r, m_cellGrid.Width);
 
           var state = m_deadOrAlive[index];
 
@@ -81,7 +83,7 @@
         }
       }
 
-      var positionIndex = (int)m_cellGrid.PointToUniqueIndex(x, y);
+      var positionIndex = Flux.Convert.Cartesian2ToMapIndex(x, y, m_cellGrid.Width);
 
       cn -= m_deadOrAlive[positionIndex] ? 1 : 0;
 

@@ -88,6 +88,14 @@ namespace Flux
 
     //public static Geometry.Ellipse ToEllipse(this System.Numerics.Vector2 vector2)
     //  => new Geometry.Ellipse(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
+
+    public static Numerics.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TResult>(this System.Numerics.Vector2 source)
+      where TResult : System.Numerics.INumber<TResult>
+      => new(TResult.CreateChecked(source.X), TResult.CreateChecked(source.Y));
+    public static System.Numerics.Vector2 ToVector2<TSelf>(this Numerics.CartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(float.CreateChecked(source.X), float.CreateChecked(source.Y));
+
     #endregion 2D Vector (Non-Collection) Computations.
 
     #region 2D Vector Collection (Shape) Algorithms
