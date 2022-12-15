@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Reflection
   {
     /// <summary>Get the C# alias of the .NET type.</summary>
-    public static string GetCsharpAlias(this System.Type source)
+    public static string CsharpAliasName(this System.Type source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       else if (source == typeof(System.Boolean)) return @"bool";
