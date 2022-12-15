@@ -34,11 +34,11 @@ namespace Flux
 
     public NotifyPropertyChangedEx()
     {
-      Explicit = GetType().GetTypeInfo().DeclaredMethods.Where(mi => !mi.IsSpecialName).ToList(); // Explicit methods, i.e. not accessor, etc.
+      Explicit = GetType().GetType().GetMethods().Where(mi => !mi.IsSpecialName).ToList(); // Explicit methods, i.e. not accessor, etc.
 
       m_mapMiExplicit = DependsOnAttribute.MapDependencies(Explicit);
 
-      var piNotICommand = GetType().GetTypeInfo().DeclaredProperties.Where(pi => !pi.PropertyType.GetTypeInfo().Equals(typeof(System.Windows.Input.ICommand)) && !pi.PropertyType.GetTypeInfo().ImplementedInterfaces.Contains(typeof(System.Windows.Input.ICommand)));
+      var piNotICommand = GetType().GetType().GetProperties().Where(pi => !pi.PropertyType.GetType().Equals(typeof(System.Windows.Input.ICommand)) && !pi.PropertyType.GetType().GetInterfaces().Contains(typeof(System.Windows.Input.ICommand)));
 
       m_mapPiNotICommand = DependsOnAttribute.MapDependencies(piNotICommand);
     }
@@ -65,6 +65,6 @@ namespace Flux
     public void RunMethod([System.Runtime.CompilerServices.CallerMemberName] string name = null!) => RunMethods(name);
 
     /// <summary>Run the method event chain for the dependency name.</summary>
-    public virtual void RunMethods(params string[] names) => names.Select(name => GetType().GetTypeInfo().GetDeclaredMethod(name)).ToList().ForEach(mi => mi?.Invoke(this, mi.GetParameters().Length > 0 ? new object[mi.GetParameters().Length] : null));
+    public virtual void RunMethods(params string[] names) => names.Select(name => GetType().GetMethod(name)).ToList().ForEach(mi => mi?.Invoke(this, mi.GetParameters().Length > 0 ? new object[mi.GetParameters().Length] : null));
   }
 }

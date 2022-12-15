@@ -15,10 +15,10 @@ namespace Flux.Compiling
       var syntaxTree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(codeAssembly);
 
       var referencePaths = new[] {
-        typeof(System.Object).GetTypeInfo().Assembly.Location,
-        typeof(System.Console).GetTypeInfo().Assembly.Location,
-        System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(System.Runtime.GCSettings).GetTypeInfo().Assembly.Location) ?? throw new System.NullReferenceException($"{typeof(System.Runtime.GCSettings).FullName}.GetTypeInfo()"), "System.Runtime.dll"),
-        typeof(Flux.Compiling.Helper).GetTypeInfo().Assembly.Location
+        typeof(System.Object).GetType().Assembly.Location,
+        typeof(System.Console).GetType().Assembly.Location,
+        System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(System.Runtime.GCSettings).GetType().Assembly.Location) ?? throw new System.NullReferenceException($"{typeof(System.Runtime.GCSettings).FullName}.GetType()"), "System.Runtime.dll"),
+        typeof(Flux.Compiling.Helper).GetType().Assembly.Location
       };
 
       var metadataReferences = referencePaths.Select(r => Microsoft.CodeAnalysis.MetadataReference.CreateFromFile(r)).ToArray();
