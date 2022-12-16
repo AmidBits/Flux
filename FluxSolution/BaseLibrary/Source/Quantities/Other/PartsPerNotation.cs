@@ -82,65 +82,69 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-       public static explicit operator double(PartsPerNotation v) => v.Value;
+      public static explicit operator double(PartsPerNotation v) => v.Value;
 
-       public static bool operator <(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) < 0;
-       public static bool operator <=(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) <= 0;
-       public static bool operator >(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) > 0;
-       public static bool operator >=(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) >= 0;
+      public static bool operator <(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) < 0;
+      public static bool operator <=(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) <= 0;
+      public static bool operator >(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) > 0;
+      public static bool operator >=(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) >= 0;
 
-       public static bool operator ==(PartsPerNotation a, PartsPerNotation b) => a.Equals(b);
-       public static bool operator !=(PartsPerNotation a, PartsPerNotation b) => !a.Equals(b);
+      public static bool operator ==(PartsPerNotation a, PartsPerNotation b) => a.Equals(b);
+      public static bool operator !=(PartsPerNotation a, PartsPerNotation b) => !a.Equals(b);
 
-       public static PartsPerNotation operator -(PartsPerNotation v) => new(-v.m_parts);
-       public static PartsPerNotation operator +(PartsPerNotation a, double b) => new(a.m_parts + b);
-       public static PartsPerNotation operator +(PartsPerNotation a, PartsPerNotation b) => a + b.m_parts;
-       public static PartsPerNotation operator /(PartsPerNotation a, double b) => new(a.m_parts / b);
-       public static PartsPerNotation operator /(PartsPerNotation a, PartsPerNotation b) => a / b.m_parts;
-       public static PartsPerNotation operator *(PartsPerNotation a, double b) => new(a.m_parts * b);
-       public static PartsPerNotation operator *(PartsPerNotation a, PartsPerNotation b) => a * b.m_parts;
-       public static PartsPerNotation operator %(PartsPerNotation a, double b) => new(a.m_parts % b);
-       public static PartsPerNotation operator %(PartsPerNotation a, PartsPerNotation b) => a % b.m_parts;
-       public static PartsPerNotation operator -(PartsPerNotation a, double b) => new(a.m_parts - b);
-       public static PartsPerNotation operator -(PartsPerNotation a, PartsPerNotation b) => a - b.m_parts;
+      public static PartsPerNotation operator -(PartsPerNotation v) => new(-v.m_parts);
+      public static PartsPerNotation operator +(PartsPerNotation a, double b) => new(a.m_parts + b);
+      public static PartsPerNotation operator +(PartsPerNotation a, PartsPerNotation b) => a + b.m_parts;
+      public static PartsPerNotation operator /(PartsPerNotation a, double b) => new(a.m_parts / b);
+      public static PartsPerNotation operator /(PartsPerNotation a, PartsPerNotation b) => a / b.m_parts;
+      public static PartsPerNotation operator *(PartsPerNotation a, double b) => new(a.m_parts * b);
+      public static PartsPerNotation operator *(PartsPerNotation a, PartsPerNotation b) => a * b.m_parts;
+      public static PartsPerNotation operator %(PartsPerNotation a, double b) => new(a.m_parts % b);
+      public static PartsPerNotation operator %(PartsPerNotation a, PartsPerNotation b) => a % b.m_parts;
+      public static PartsPerNotation operator -(PartsPerNotation a, double b) => new(a.m_parts - b);
+      public static PartsPerNotation operator -(PartsPerNotation a, PartsPerNotation b) => a - b.m_parts;
       #endregion Overloaded operators
 
       #region Implemented interfaces
       // IComparable<>
-       public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
+      public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
       // IComparable
-       public int CompareTo(object? other) => other is not null && other is PartsPerNotation o ? CompareTo(o) : -1;
+      public int CompareTo(object? other) => other is not null && other is PartsPerNotation o ? CompareTo(o) : -1;
 
       #region IConvertible
-       public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-       public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
-       public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
-       public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
-       public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
-       public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
-       public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
-       public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
-       public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
-       public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
+      public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+      public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
+      public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
+      public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
+      public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
+      public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
+      public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
+      public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
+      public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
+      public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
       [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
-       public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-       public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
-       public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
+      public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
+      public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
+      public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
       [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
       [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
       // IEquatable<>
-       public bool Equals(PartsPerNotation other) => m_parts == other.m_parts;
+      public bool Equals(PartsPerNotation other) => m_parts == other.m_parts;
 
       // IQuantifiable<>
-       public double Value { get => m_parts; init => m_parts = value; }
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
+
+      public double Value { get => m_parts; init => m_parts = value; }
+
       // IUnitQuantifiable<>
-      
-      public string ToUnitString(PartsPerNotationUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+
+      public string ToUnitString(PartsPerNotationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      
+
       public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
         => unit switch
         {
@@ -158,9 +162,9 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-       public override bool Equals(object? obj) => obj is PartsPerNotation o && Equals(o);
-       public override int GetHashCode() => System.HashCode.Combine(m_parts);
-       public override string ToString() => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+      public override bool Equals(object? obj) => obj is PartsPerNotation o && Equals(o);
+      public override int GetHashCode() => System.HashCode.Combine(m_parts);
+      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }
   }

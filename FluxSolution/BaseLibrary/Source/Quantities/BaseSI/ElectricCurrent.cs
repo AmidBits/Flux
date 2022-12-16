@@ -114,10 +114,13 @@ namespace Flux
         => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
+
       public double Value { get => m_value; init => m_value = value; }
       // IUnitQuantifiable<>
 
-      public string ToUnitString(ElectricCurrentUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+      public string ToUnitString(ElectricCurrentUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
       public double ToUnitValue(ElectricCurrentUnit unit = DefaultUnit)
@@ -132,7 +135,7 @@ namespace Flux
       #region Object overrides
       public override bool Equals(object? obj) => obj is ElectricCurrent o && Equals(o);
       public override int GetHashCode() => m_value.GetHashCode();
-      public override string ToString() => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }
   }

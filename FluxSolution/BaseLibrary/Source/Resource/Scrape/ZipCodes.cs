@@ -42,25 +42,12 @@ namespace Flux.Resources.Scrape
 
         for (var index = objects.Length - 1; index >= 0; index--)
         {
-          switch (index)
+          objects[index] = index switch
           {
-            case 0:
-            case 16:
-            case 17:
-            case 18:
-              objects[index] = int.TryParse(e.Current[index], System.Globalization.NumberStyles.Integer, null, out var intValue) ? intValue : System.DBNull.Value;
-              break;
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-              objects[index] = double.TryParse(e.Current[index], System.Globalization.NumberStyles.Float, null, out var doubleValue) ? doubleValue : System.DBNull.Value;
-              break;
-            default:
-              objects[index] = e.Current[index];
-              break;
-          }
+            0 or 16 or 17 or 18 => int.TryParse(e.Current[index], System.Globalization.NumberStyles.Integer, null, out var intValue) ? intValue : System.DBNull.Value,
+            6 or 7 or 8 or 9 or 10 => double.TryParse(e.Current[index], System.Globalization.NumberStyles.Float, null, out var doubleValue) ? doubleValue : System.DBNull.Value,
+            _ => e.Current[index],
+          };
         }
 
         yield return objects;

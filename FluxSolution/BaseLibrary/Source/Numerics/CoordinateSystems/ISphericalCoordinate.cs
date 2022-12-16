@@ -69,7 +69,7 @@
       TSelf Elevation { get; init; }
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().Name} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Inclination = {new Quantities.Angle(double.CreateChecked(Inclination)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)} (Elevation = {new Quantities.Angle(double.CreateChecked(Elevation)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Azimuth = {new Quantities.Angle(double.CreateChecked(Azimuth)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)} }}";
+        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Inclination = {new Quantities.Angle(double.CreateChecked(Inclination)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)} (Elevation = {new Quantities.Angle(double.CreateChecked(Elevation)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Azimuth = {new Quantities.Angle(double.CreateChecked(Azimuth)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)} }}";
     }
   }
 }

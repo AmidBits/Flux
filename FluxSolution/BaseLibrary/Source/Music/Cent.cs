@@ -87,6 +87,8 @@ namespace Flux.Music
     public bool Equals(Cent other) => m_value == other.m_value;
 
     // IQuantifiable<>
+    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+      => $"{m_value} cent{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
     public int Value
       => m_value;
@@ -95,7 +97,7 @@ namespace Flux.Music
     #region Object overrides
     public override bool Equals(object? obj) => obj is Cent o && Equals(o);
     public override int GetHashCode() => m_value.GetHashCode();
-    public override string ToString() => $"{GetType().Name} {{ Value = {m_value} }}";
+    public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
     #endregion Object overrides
   }
 }

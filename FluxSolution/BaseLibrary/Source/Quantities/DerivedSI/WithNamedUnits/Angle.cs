@@ -495,10 +495,13 @@
       public bool Equals(Angle other) => m_radAngle == other.m_radAngle;
 
       // IQuantifiable<>
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => $"{ToUnitString(DefaultUnit)}";
+
       public double Value { get => m_radAngle; init => m_radAngle = value; }
       // IUnitQuantifiable<>
 
-      public string ToUnitString(AngleUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+      public string ToUnitString(AngleUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))}{unit.GetUnitSpacing(preferUnicode, useFullName)}{unit.GetUnitString(preferUnicode, useFullName)}";
 
       public double ToUnitValue(AngleUnit unit = DefaultUnit)
@@ -519,7 +522,7 @@
       #region Object overrides
       public override bool Equals(object? obj) => obj is Angle o && Equals(o);
       public override int GetHashCode() => m_radAngle.GetHashCode();
-      public override string ToString() => $"{GetType().Name} {{ Value = {ToUnitString()} ({ToUnitString(AngleUnit.Degree, @"N2")}) }}";
+      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} ({ToUnitString(AngleUnit.Degree, @"N2")}) }}";
       #endregion Object overrides
     }
   }

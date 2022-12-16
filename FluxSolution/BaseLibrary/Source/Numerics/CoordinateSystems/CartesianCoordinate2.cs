@@ -312,5 +312,8 @@ namespace Flux.Numerics
     public static CartesianCoordinate2<TSelf> operator %(TSelf scalar, CartesianCoordinate2<TSelf> cc) => new(scalar % cc.X, scalar % cc.Y);
 
     #endregion Implemented interfaces
+
+    public override string ToString()
+      => ((ICartesianCoordinate2<TSelf>)this).ToString(string.Empty, null);
   }
 }

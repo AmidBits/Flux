@@ -61,95 +61,96 @@ namespace Flux
 
       #region Static methods
       /// <summary>Convert the temperature specified in Celsius to Fahrenheit.</summary>
-       public static double ConvertCelsiusToFahrenheit(double celsius) => celsius * 1.8 + FahrenheitIcePoint;
+      public static double ConvertCelsiusToFahrenheit(double celsius) => celsius * 1.8 + FahrenheitIcePoint;
       /// <summary>Convert the temperature specified in Celsius to Kelvin.</summary>
-       public static double ConvertCelsiusToKelvin(double celsius) => celsius - CelsiusAbsoluteZero;
+      public static double ConvertCelsiusToKelvin(double celsius) => celsius - CelsiusAbsoluteZero;
       /// <summary>Convert the temperature specified in Celsius to Rankine.</summary>
-       public static double ConvertCelsiusToRankine(double celsius) => (celsius - CelsiusAbsoluteZero) * 1.8;
+      public static double ConvertCelsiusToRankine(double celsius) => (celsius - CelsiusAbsoluteZero) * 1.8;
       /// <summary>Convert the temperature specified in Fahrenheit to Celsius.</summary>
-       public static double ConvertFahrenheitToCelsius(double fahrenheit) => (fahrenheit - FahrenheitIcePoint) / 1.8;
+      public static double ConvertFahrenheitToCelsius(double fahrenheit) => (fahrenheit - FahrenheitIcePoint) / 1.8;
       /// <summary>Convert the temperature specified in Fahrenheit to Kelvin.</summary>
-       public static double ConvertFahrenheitToKelvin(double fahrenheit) => (fahrenheit - FahrenheitAbsoluteZero) / 1.8;
+      public static double ConvertFahrenheitToKelvin(double fahrenheit) => (fahrenheit - FahrenheitAbsoluteZero) / 1.8;
       /// <summary>Convert the temperature specified in Fahrenheit to Rankine.</summary>
-       public static double ConvertFahrenheitToRankine(double fahrenheit) => fahrenheit - FahrenheitAbsoluteZero;
+      public static double ConvertFahrenheitToRankine(double fahrenheit) => fahrenheit - FahrenheitAbsoluteZero;
       /// <summary>Convert the temperature specified in Kelvin to Celsius.</summary>
-       public static double ConvertKelvinToCelsius(double kelvin) => kelvin - KelvinIcePoint;
+      public static double ConvertKelvinToCelsius(double kelvin) => kelvin - KelvinIcePoint;
       /// <summary>Convert the temperature specified in Kelvin to Fahrenheit.</summary>
-       public static double ConvertKelvinToFahrenheit(double kelvin) => kelvin * 1.8 + FahrenheitAbsoluteZero;
+      public static double ConvertKelvinToFahrenheit(double kelvin) => kelvin * 1.8 + FahrenheitAbsoluteZero;
       /// <summary>Convert the temperature specified in Kelvin to Rankine.</summary>
-       public static double ConvertKelvinToRankine(double kelvin) => kelvin * 1.8;
+      public static double ConvertKelvinToRankine(double kelvin) => kelvin * 1.8;
       /// <summary>Convert the temperature specified in Rankine to Celsius.</summary>
-       public static double ConvertRankineToCelsius(double rankine) => (rankine - RankineIcePoint) / 1.8;
+      public static double ConvertRankineToCelsius(double rankine) => (rankine - RankineIcePoint) / 1.8;
       /// <summary>Convert the temperature specified in Rankine to Kelvin.</summary>
-       public static double ConvertRankineToKelvin(double rankine) => rankine / 1.8;
+      public static double ConvertRankineToKelvin(double rankine) => rankine / 1.8;
       /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
-       public static double ConvertRankineToFahrenheit(double rankine) => rankine - RankineIcePoint;
+      public static double ConvertRankineToFahrenheit(double rankine) => rankine - RankineIcePoint;
       #endregion Static methods
 
       #region Overloaded operators
-       public static explicit operator double(Temperature v) => v.m_value;
-       public static explicit operator Temperature(double v) => new(v);
+      public static explicit operator double(Temperature v) => v.m_value;
+      public static explicit operator Temperature(double v) => new(v);
 
-       public static bool operator <(Temperature a, Temperature b) => a.CompareTo(b) < 0;
-       public static bool operator <=(Temperature a, Temperature b) => a.CompareTo(b) <= 0;
-       public static bool operator >(Temperature a, Temperature b) => a.CompareTo(b) > 0;
-       public static bool operator >=(Temperature a, Temperature b) => a.CompareTo(b) >= 0;
+      public static bool operator <(Temperature a, Temperature b) => a.CompareTo(b) < 0;
+      public static bool operator <=(Temperature a, Temperature b) => a.CompareTo(b) <= 0;
+      public static bool operator >(Temperature a, Temperature b) => a.CompareTo(b) > 0;
+      public static bool operator >=(Temperature a, Temperature b) => a.CompareTo(b) >= 0;
 
-       public static bool operator ==(Temperature a, Temperature b) => a.Equals(b);
-       public static bool operator !=(Temperature a, Temperature b) => !a.Equals(b);
+      public static bool operator ==(Temperature a, Temperature b) => a.Equals(b);
+      public static bool operator !=(Temperature a, Temperature b) => !a.Equals(b);
 
-       public static Temperature operator -(Temperature v) => new(-v.m_value);
-       public static Temperature operator +(Temperature a, double b) => new(a.m_value + b);
-       public static Temperature operator +(Temperature a, Temperature b) => a + b.m_value;
-       public static Temperature operator /(Temperature a, double b) => new(a.m_value / b);
-       public static Temperature operator /(Temperature a, Temperature b) => a / b.m_value;
-       public static Temperature operator *(Temperature a, double b) => new(a.m_value * b);
-       public static Temperature operator *(Temperature a, Temperature b) => a * b.m_value;
-       public static Temperature operator %(Temperature a, double b) => new(a.m_value % b);
-       public static Temperature operator %(Temperature a, Temperature b) => a % b.m_value;
-       public static Temperature operator -(Temperature a, double b) => new(a.m_value - b);
-       public static Temperature operator -(Temperature a, Temperature b) => a - b.m_value;
+      public static Temperature operator -(Temperature v) => new(-v.m_value);
+      public static Temperature operator +(Temperature a, double b) => new(a.m_value + b);
+      public static Temperature operator +(Temperature a, Temperature b) => a + b.m_value;
+      public static Temperature operator /(Temperature a, double b) => new(a.m_value / b);
+      public static Temperature operator /(Temperature a, Temperature b) => a / b.m_value;
+      public static Temperature operator *(Temperature a, double b) => new(a.m_value * b);
+      public static Temperature operator *(Temperature a, Temperature b) => a * b.m_value;
+      public static Temperature operator %(Temperature a, double b) => new(a.m_value % b);
+      public static Temperature operator %(Temperature a, Temperature b) => a % b.m_value;
+      public static Temperature operator -(Temperature a, double b) => new(a.m_value - b);
+      public static Temperature operator -(Temperature a, Temperature b) => a - b.m_value;
       #endregion Overloaded operators
 
       #region Implemented interfaces
       // IComparable<>
-       public int CompareTo(Temperature other) => m_value.CompareTo(other.m_value);
+      public int CompareTo(Temperature other) => m_value.CompareTo(other.m_value);
       // IComparable
-       public int CompareTo(object? other) => other is not null && other is Temperature o ? CompareTo(o) : -1;
+      public int CompareTo(object? other) => other is not null && other is Temperature o ? CompareTo(o) : -1;
 
       #region IConvertible
-       public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-       public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
-       public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
-       public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
-       public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
-       public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
-       public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
-       public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
-       public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
-       public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
+      public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+      public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
+      public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
+      public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
+      public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
+      public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
+      public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
+      public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
+      public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
+      public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
       [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
-       public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-       public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
-       public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
+      public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
+      public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
+      public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
       [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
       [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
       // IEquatable<>
-       public bool Equals(Temperature other) => m_value == other.m_value;
+      public bool Equals(Temperature other) => m_value == other.m_value;
 
       // IFormattable
-       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-       public double Value { get => m_value; init => m_value = value; }
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
+      public double Value { get => m_value; init => m_value = value; }
       // IUnitQuantifiable<>
-      
-      public string ToUnitString(TemperatureUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+      public string ToUnitString(TemperatureUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      
+
       public double ToUnitValue(TemperatureUnit unit = DefaultUnit)
         => unit switch
         {
@@ -162,9 +163,9 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-       public override bool Equals(object? obj) => obj is Temperature o && Equals(o);
-       public override int GetHashCode() => m_value.GetHashCode();
-       public override string ToString() => $"{GetType().Name} {{ {ToUnitString()} }}";
+      public override bool Equals(object? obj) => obj is Temperature o && Equals(o);
+      public override int GetHashCode() => m_value.GetHashCode();
+      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }
   }

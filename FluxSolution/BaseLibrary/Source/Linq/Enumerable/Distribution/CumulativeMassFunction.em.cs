@@ -53,7 +53,7 @@ namespace Flux
 
       var cmf = new System.Collections.Generic.SortedDictionary<TKey, double>();
 
-      var sof = sumOfFrequencies.HasValue ? sumOfFrequencies.Value : source.Values.Sum();
+      var sof = sumOfFrequencies ?? source.Values.Sum();
 
       var cumulativeFrequencies = 0;
 

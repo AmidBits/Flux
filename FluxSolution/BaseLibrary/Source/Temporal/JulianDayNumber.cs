@@ -204,13 +204,16 @@ namespace Flux
     public bool Equals(JulianDayNumber other) => m_value == other.m_value;
 
     // IQuantifiable<>
+    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+      => $"{m_value}";
+
     public int Value { get => m_value; init => m_value = value; }
     #endregion Implemented interfaces
 
     #region Object overrides
     public override bool Equals(object? obj) => obj is JulianDayNumber o && Equals(o);
     public override int GetHashCode() => m_value.GetHashCode();
-    public override string? ToString() => $"{GetType().Name} {{ {m_value} ({ToDateString(GetConversionCalendar())}) }}";
+    public override string? ToString() => $"{GetType().Name} {{ {ToQuantityString()} ({ToDateString(GetConversionCalendar())}) }}";
     #endregion Object overrides
   }
 }

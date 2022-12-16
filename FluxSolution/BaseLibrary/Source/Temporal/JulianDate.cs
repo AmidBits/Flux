@@ -187,6 +187,9 @@ namespace Flux
     public bool Equals(JulianDate other) => m_value == other.m_value;
 
     // IQuantifiable<>
+    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+      => $"{m_value}";
+
     public double Value { get => m_value; init => m_value = value; }
     #endregion Implemented interfaces
 
@@ -199,7 +202,7 @@ namespace Flux
       => m_value.GetHashCode();
 
     public override string? ToString()
-      => $"{GetType().Name} {{ {m_value} ({ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}) }}";
+      => $"{GetType().Name} {{ {ToQuantityString()} ({ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}) }}";
     #endregion Object overrides
   }
 }

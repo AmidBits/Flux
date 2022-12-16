@@ -44,11 +44,14 @@ namespace Flux
 
       #region Implemented interfaces
       // IQuantifiable<>
-      public Numerics.CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
-      // IUnitQuantifiable<>
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => ToUnitString(MagneticFluxDensity.DefaultUnit, format, preferUnicode, useFullName);
 
-      public string ToUnitString(MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public Numerics.CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
+
+      // IUnitQuantifiable<>
+      public string ToUnitString(MagneticFluxDensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => $"{Value.ToString()} {unit.GetUnitString(preferUnicode, useFullName)}";
 
       public Numerics.CartesianCoordinate3<double> ToUnitValue(MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
         => unit switch
@@ -60,7 +63,7 @@ namespace Flux
 
       #region Object overrides
       public override string ToString()
-        => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+        => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }
   }

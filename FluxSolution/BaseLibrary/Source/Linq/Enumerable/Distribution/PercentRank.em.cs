@@ -53,7 +53,7 @@ namespace Flux
 
       var pr = new System.Collections.Generic.SortedDictionary<TKey, double>();
 
-      var sof = sumOfFrequencies.HasValue ? sumOfFrequencies.Value : source.Values.Sum();
+      var sof = sumOfFrequencies ?? source.Values.Sum();
 
       var count = 0;
 

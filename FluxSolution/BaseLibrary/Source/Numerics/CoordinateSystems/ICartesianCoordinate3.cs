@@ -232,7 +232,7 @@
        => CrossProduct(a, CrossProduct(b, c));
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().Name} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N6"}}}", Z)} }}";
+        => $"<{string.Format($"{{0:{format ?? "N6"}}}", X)}, {string.Format($"{{0:{format ?? "N6"}}}", Y)}, {string.Format($"{{0:{format ?? "N6"}}}", Z)}>";
     }
   }
 }

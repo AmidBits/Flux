@@ -151,12 +151,15 @@ namespace Flux.Quantities
     #endregion IConvertible
 
     // IQuantifiable<>
+    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+      => new Angle(m_degLatitude, AngleUnit.Degree).ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
+
     public double Value { get => m_degLatitude; init => m_degLatitude = value; }
     #endregion Implemented interfaces
 
     #region Object overrides
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {new Quantities.Angle(m_degLatitude, Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree)}, {ToSexagesimalDegreeString()} }}";
+      => $"{GetType().Name} {{ {ToQuantityString()}, {ToSexagesimalDegreeString()} }}";
     #endregion Object overrides
   }
 }

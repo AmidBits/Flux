@@ -77,13 +77,16 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => $"{m_value}";
+
       public double Value { get => m_value; init => m_value = value; }
       #endregion Implemented interfaces
 
       #region Object overrides
       public override bool Equals(object? obj) => obj is UvIndex o && Equals(o);
       public override int GetHashCode() => m_value.GetHashCode();
-      public override string ToString() => $"{GetType().Name} {{ Value = {m_value} }}";
+      public override string ToString() => $"{GetType().Name} {{ {ToString()} }}";
       #endregion Object overrides
     }
   }

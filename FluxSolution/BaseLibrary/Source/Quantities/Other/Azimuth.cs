@@ -17,10 +17,8 @@ namespace Flux.Quantities
     public Azimuth(double degAzimuth)
       => m_degAzimuth = WrapAzimuth(degAzimuth);
 
-
     public Quantities.Angle ToAngle()
       => new(m_degAzimuth, Quantities.AngleUnit.Degree);
-
 
     public double ToRadians()
       => Quantities.Angle.ConvertDegreeToRadian(m_degAzimuth);
@@ -31,7 +29,6 @@ namespace Flux.Quantities
     public static double DeltaBearing(double degAzimuth1, double degAzimuth2)
       => (degAzimuth2 - degAzimuth1).Wrap(MinValue, MaxValue);
 
-
     public static Azimuth FromAbbreviation(string compassPointAbbreviated)
       => System.Enum.TryParse<ThirtytwoWindCompassRose>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
 
@@ -39,10 +36,8 @@ namespace Flux.Quantities
     private static string[] Words
       => new string[] { "North", "East", "South", "West", "By" };
 
-
     public static Azimuth FromRadians(double radAzimuth)
       => new(Quantities.Angle.ConvertRadianToDegree(radAzimuth));
-
 
     public static Azimuth FromWords(string compassPointInWords)
     {
@@ -82,14 +77,12 @@ namespace Flux.Quantities
     public static int LatchNeedle(double degAzimuth, int positions)
       => (int)System.Math.Round(WrapAzimuth(degAzimuth) / (360d / positions) % positions);
 
-
     public static Azimuth Parse(string compassPointInWordsOrAbbreviation)
       => FromAbbreviation(compassPointInWordsOrAbbreviation) is Azimuth fromAbbreviation
       ? fromAbbreviation
       : FromWords(compassPointInWordsOrAbbreviation) is Azimuth fromWords
       ? fromWords
       : throw new System.ArgumentOutOfRangeException(nameof(compassPointInWordsOrAbbreviation));
-
 
     public static bool TryParse(string compassPointInWordsOrAbbreviation, out Azimuth result)
     {
@@ -112,7 +105,6 @@ namespace Flux.Quantities
     }
 
     /// <summary>An azimuth is wrapped over the range [0, 360).</summary>
-
     public static double WrapAzimuth(double degAzimuth)
       => degAzimuth.Wrap(MinValue, MaxValue) % MaxValue;
     #endregion Static methods
@@ -166,12 +158,15 @@ namespace Flux.Quantities
     #endregion IConvertible
 
     // IQuantifiable<>
+    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+      => new Quantities.Angle(m_degAzimuth, Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format, preferUnicode, useFullName);
+
     public double Value { get => m_degAzimuth; init => m_degAzimuth = value; }
     #endregion Implemented interfaces
 
     #region Object overrides
     public override string ToString()
-      => $"{GetType().Name} {{ Value = {new Quantities.Angle(m_degAzimuth, Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree)} }}";
+      => $"{GetType().Name} {{ {ToQuantityString()} }}";
     #endregion Object overrides
   }
 }

@@ -22,7 +22,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var b = (10).GetType().ImplementsInterface(typeof(System.Numerics.BigInteger));
+      foreach (var quantity in typeof(Flux.Quantities.IQuantifiable<>).GetDerivedTypes().OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")))
+        System.Console.WriteLine(quantity.GetDefaultValue().ToString());
+
+
     }
 
     private static void Main(string[] args)

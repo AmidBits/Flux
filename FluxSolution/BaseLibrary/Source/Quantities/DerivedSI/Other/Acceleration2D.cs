@@ -1,10 +1,12 @@
+using System.Net.Http.Headers;
+
 namespace Flux
 {
   namespace Quantities
   {
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
-    public record struct Acceleration2D
+    public readonly record struct Acceleration2D
     : IUnitQuantifiable<Numerics.CartesianCoordinate2<double>, AccelerationUnit>
     {
       private readonly Numerics.CartesianCoordinate2<double> m_value;
@@ -43,11 +45,14 @@ namespace Flux
 
       #region Implemented interfaces
       // IQuantifiable<>
-      public Numerics.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
-      // IUnitQuantifiable<>
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => ToUnitString(Acceleration.DefaultUnit, format, preferUnicode, useFullName);
 
-      public string ToUnitString(AccelerationUnit unit = Acceleration.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public Numerics.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
+
+      // IUnitQuantifiable<>
+      public string ToUnitString(AccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => $"{Value.ToString()} {unit.GetUnitString(preferUnicode, useFullName)}";
 
       public Numerics.CartesianCoordinate2<double> ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
         => unit switch
@@ -59,7 +64,7 @@ namespace Flux
 
       #region Object overrides
       public override string ToString()
-        => $"{GetType().Name} {{ Value = {ToUnitString()} }}";
+        => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }
   }

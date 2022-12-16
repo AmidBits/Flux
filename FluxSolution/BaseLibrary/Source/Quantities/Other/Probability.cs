@@ -18,7 +18,7 @@ namespace Flux
       #region Static methods
       /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
       /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
-      
+
       public static double Expit(double x)
         => 1 / (System.Math.Exp(-x) + 1);
 
@@ -36,7 +36,7 @@ namespace Flux
       /// <param name="k">The logistic growth rate or steepness of the curve (k).</param>
       /// <param name="x0">The x-value of the sigmoid's midpoint (x0).</param>
       /// <param name="L">The curve's maximum value (L).</param>
-      
+
       public static double Logistic(double x, double k = 1, double x0 = 0, double L = 1)
         => L / (System.Math.Exp(-(k * (x - x0))) + 1);
 
@@ -46,7 +46,7 @@ namespace Flux
       /// <returns>The ratio of population to max possible population in the next generation (Xn + 1)</returns>
       /// <see cref="https://en.wikipedia.org/wiki/Logistic_map"/>
       /// <seealso cref="RickerModel(double, double, double)"/>
-      
+
       public static double LogisticMap(double Xn, double r)
         => r * Xn * (1 - Xn);
 
@@ -54,7 +54,7 @@ namespace Flux
       /// <see cref="https://en.wikipedia.org/wiki/Logit"/>
       /// <param name="probability">The probability in the range [0, 1].</param>
       /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
-      
+
       public static double Logit(double probability)
         => System.Math.Log(OddsRatio(probability));
 
@@ -62,7 +62,7 @@ namespace Flux
       /// <see cref="https://en.wikipedia.org/wiki/Logit"/>
       /// <param name="probability">The probability in the range [0, 1].</param>
       /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
-      
+
       public static double OddsRatio(double probability)
         => probability / (1 - probability);
 
@@ -70,7 +70,7 @@ namespace Flux
       /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
       /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
       /// <returns>The probability, which is in the range [0, 1].</returns>
-      
+
       public static Probability OfNoDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount)
       {
         var accumulation = 1d;
@@ -82,82 +82,85 @@ namespace Flux
       /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
       /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
       /// <returns>The probability, which is in the range [0, 1].</returns>
-      
+
       public static Probability OfDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount)
         => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_probability);
 
       /// <summary>Computes the odds (p / (1 - p)) ratio of the probability.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Odds"/>
-      
+
       public Ratio ToOdds()
         => new(m_probability, 1 - m_probability);
       #endregion Static methods
 
       #region Overloaded operators
-       public static explicit operator double(Probability v) => v.m_probability;
-       public static explicit operator Probability(double v) => new(v);
+      public static explicit operator double(Probability v) => v.m_probability;
+      public static explicit operator Probability(double v) => new(v);
 
-       public static bool operator <(Probability a, Probability b) => a.CompareTo(b) < 0;
-       public static bool operator <=(Probability a, Probability b) => a.CompareTo(b) <= 0;
-       public static bool operator >(Probability a, Probability b) => a.CompareTo(b) > 0;
-       public static bool operator >=(Probability a, Probability b) => a.CompareTo(b) >= 0;
+      public static bool operator <(Probability a, Probability b) => a.CompareTo(b) < 0;
+      public static bool operator <=(Probability a, Probability b) => a.CompareTo(b) <= 0;
+      public static bool operator >(Probability a, Probability b) => a.CompareTo(b) > 0;
+      public static bool operator >=(Probability a, Probability b) => a.CompareTo(b) >= 0;
 
-       public static bool operator ==(Probability a, Probability b) => a.Equals(b);
-       public static bool operator !=(Probability a, Probability b) => !a.Equals(b);
+      public static bool operator ==(Probability a, Probability b) => a.Equals(b);
+      public static bool operator !=(Probability a, Probability b) => !a.Equals(b);
 
-       public static Probability operator -(Probability v) => new(-v.m_probability);
-       public static Probability operator +(Probability a, double b) => new(a.m_probability + b);
-       public static Probability operator +(Probability a, Probability b) => a + b.m_probability;
-       public static Probability operator /(Probability a, double b) => new(a.m_probability / b);
-       public static Probability operator /(Probability a, Probability b) => a / b.m_probability;
-       public static Probability operator *(Probability a, double b) => new(a.m_probability * b);
-       public static Probability operator *(Probability a, Probability b) => a * b.m_probability;
-       public static Probability operator %(Probability a, double b) => new(a.m_probability % b);
-       public static Probability operator %(Probability a, Probability b) => a % b.m_probability;
-       public static Probability operator -(Probability a, double b) => new(a.m_probability - b);
-       public static Probability operator -(Probability a, Probability b) => a - b.m_probability;
+      public static Probability operator -(Probability v) => new(-v.m_probability);
+      public static Probability operator +(Probability a, double b) => new(a.m_probability + b);
+      public static Probability operator +(Probability a, Probability b) => a + b.m_probability;
+      public static Probability operator /(Probability a, double b) => new(a.m_probability / b);
+      public static Probability operator /(Probability a, Probability b) => a / b.m_probability;
+      public static Probability operator *(Probability a, double b) => new(a.m_probability * b);
+      public static Probability operator *(Probability a, Probability b) => a * b.m_probability;
+      public static Probability operator %(Probability a, double b) => new(a.m_probability % b);
+      public static Probability operator %(Probability a, Probability b) => a % b.m_probability;
+      public static Probability operator -(Probability a, double b) => new(a.m_probability - b);
+      public static Probability operator -(Probability a, Probability b) => a - b.m_probability;
       #endregion Overloaded operators
 
       #region Implemented interfaces
       // IComparable<>
-       public int CompareTo(Probability other) => m_probability.CompareTo(other.m_probability);
+      public int CompareTo(Probability other) => m_probability.CompareTo(other.m_probability);
       // IComparable
-       public int CompareTo(object? other) => other is not null && other is Probability o ? CompareTo(o) : -1;
+      public int CompareTo(object? other) => other is not null && other is Probability o ? CompareTo(o) : -1;
 
       #region IConvertible
-       public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-       public bool ToBoolean(System.IFormatProvider? provider) => m_probability != 0;
-       public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_probability);
-       public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_probability);
-       public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_probability);
-       public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_probability);
-       public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_probability);
-       public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_probability);
-       public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_probability);
-       public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_probability);
+      public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+      public bool ToBoolean(System.IFormatProvider? provider) => m_probability != 0;
+      public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_probability);
+      public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_probability);
+      public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_probability);
+      public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_probability);
+      public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_probability);
+      public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_probability);
+      public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_probability);
+      public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_probability);
       [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_probability);
-       public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_probability);
-       public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_probability);
-       public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_probability, conversionType, provider);
+      public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_probability);
+      public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_probability);
+      public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_probability, conversionType, provider);
       [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_probability);
       [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_probability);
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_probability);
       #endregion IConvertible
 
       // IEquatable<>
-       public bool Equals(Probability other) => m_probability == other.m_probability;
+      public bool Equals(Probability other) => m_probability == other.m_probability;
 
       // IFormattable
-       public string ToString(string? format, IFormatProvider? formatProvider) => m_probability.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => m_probability.ToString(format, formatProvider);
 
       // IQuantifiable<>
-       public double Value { get => m_probability; init => m_probability = value; }
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => $"{m_probability}";
+
+      public double Value { get => m_probability; init => m_probability = value; }
       #endregion Implemented interfaces
 
       #region Object overrides
-       public override bool Equals(object? obj) => obj is Probability o && Equals(o);
-       public override int GetHashCode() => m_probability.GetHashCode();
-       public override string ToString() => $"{GetType().Name} {{ Value = {m_probability} }}";
+      public override bool Equals(object? obj) => obj is Probability o && Equals(o);
+      public override int GetHashCode() => m_probability.GetHashCode();
+      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }
   }

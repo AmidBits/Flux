@@ -161,7 +161,7 @@
         => a.X * b.X + a.Y * b.Y;
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().Name} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)} }}";
+        => $"<{string.Format($"{{0:{format ?? "N6"}}}", X)}, {string.Format($"{{0:{format ?? "N6"}}}", Y)}>";
     }
   }
 }

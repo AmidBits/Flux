@@ -5,13 +5,11 @@ namespace Flux
     /// <summary>Indicates whether the name in the string can be considered of slavo/germanic origin.</summary>
     public static bool Example(this System.Globalization.CultureInfo source)
     {
-      switch(source.TwoLetterISOLanguageName)
+      return source.TwoLetterISOLanguageName switch
       {
-        case "en":
-          return true;
-        default:
-          return false;
-      }
+        "en" => true,
+        _ => false,
+      };
     }
   }
 }

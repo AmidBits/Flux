@@ -43,7 +43,7 @@ namespace Flux
 
       var pmf = new System.Collections.Generic.SortedDictionary<TKey, double>();
 
-      var sof = sumOfFrequencies.HasValue ? sumOfFrequencies.Value : source.Values.Sum();
+      var sof = sumOfFrequencies ?? source.Values.Sum();
 
       foreach (var kvp in source)
         pmf.Add(kvp.Key, kvp.Value / (double)sof * factor);

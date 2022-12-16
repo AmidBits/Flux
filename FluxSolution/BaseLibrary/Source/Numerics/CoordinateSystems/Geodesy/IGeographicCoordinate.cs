@@ -35,7 +35,7 @@
       TSelf Longitude { get; init; }
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().Name} {{ Latitude = {new Quantities.Latitude(double.CreateChecked(Latitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Latitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Longitude = {new Quantities.Longitude(double.CreateChecked(Longitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Longitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Altitude = {new Quantities.Length(double.CreateChecked(Altitude)).ToUnitString(format: format ?? "N1")} }}";
+        => $"{GetType().Name} {{ Latitude = {new Quantities.Latitude(double.CreateChecked(Latitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Latitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Longitude = {new Quantities.Longitude(double.CreateChecked(Longitude)).ToSexagesimalDegreeString()} ({new Quantities.Angle(double.CreateChecked(Longitude), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}), Altitude = {new Quantities.Length(double.CreateChecked(Altitude)).ToUnitString(Quantities.Length.DefaultUnit, format: format ?? "N1")} }}";
     }
   }
 }

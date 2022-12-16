@@ -48,10 +48,7 @@ namespace Flux.DataStructures
       => GetEnumerator();
     public void Insert(T item)
     {
-      if (m_data is null)
-      {
-        m_data = new System.Collections.Generic.List<T>();
-      }
+      m_data ??= new System.Collections.Generic.List<T>();
 
       m_data.Add(item);
 

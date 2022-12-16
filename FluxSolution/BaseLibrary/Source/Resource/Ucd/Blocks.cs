@@ -5,7 +5,7 @@ namespace Flux.Resources.Ucd
   /// <seealso cref="https://unicode.org/Public/"/>
   /// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt
-  public sealed class Blocks
+  public sealed partial class Blocks
     : ITabularDataAcquirable
   {
     public static string LocalFile
@@ -33,32 +33,31 @@ namespace Flux.Resources.Ucd
 
         for (var index = objects.Length - 1; index >= 0; index--)
         {
-          switch (index)
+          objects[index] = index switch
           {
-            case 0:
-            case 1:
-              objects[index] = int.TryParse(e.Current[index], System.Globalization.NumberStyles.HexNumber, null, out var intValue) ? intValue : System.DBNull.Value;
-              break;
-            default:
-              objects[index] = e.Current[index];
-              break;
-          }
+            0 or 1 => int.TryParse(e.Current[index], System.Globalization.NumberStyles.HexNumber, null, out var intValue) ? intValue : System.DBNull.Value,
+            _ => e.Current[index],
+          };
         }
 
         yield return objects;
       }
     }
 
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture)]
+    private static partial System.Text.RegularExpressions.Regex SplitRegex();
+
     /// <summary>Returns Unicode blocks data. No field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
-      var m_reSplit = new System.Text.RegularExpressions.Regex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture);
+      var reSplit = SplitRegex();
 
       using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
 
       foreach (var line in sr.ReadLines(false))
         if (line.Length > 0 && !line.StartsWith('#'))
-          yield return m_reSplit.Split(line);
+          yield return reSplit.Split(line);
     }
   }
 }

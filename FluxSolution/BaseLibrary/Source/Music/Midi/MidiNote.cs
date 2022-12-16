@@ -24,7 +24,6 @@ namespace Flux.Music.Midi
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
     public Quantities.Frequency ToFrequency() => new(ConvertToFrequency(m_number));
-    public string ToString(string? format, bool preferUnicode = false, bool useFullName = false) => $"{GetScientificPitchNotationLabel(preferUnicode)}{GetOctave()}";
 
     #region Static methods
     /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>
@@ -171,6 +170,8 @@ namespace Flux.Music.Midi
     public bool Equals(MidiNote other) => m_number == other.m_number;
 
     // IQuantifiable<>
+    public string ToQuantityString(string? format, bool preferUnicode = false, bool useFullName = false)
+      => $"{GetScientificPitchNotationLabel(preferUnicode)}{GetOctave()}";
 
     public int Value
       => m_number;
@@ -181,7 +182,7 @@ namespace Flux.Music.Midi
     public override int GetHashCode() => m_number.GetHashCode();
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-    public override string ToString() => $"{GetType().Name} {{ Value = {ToString(null, false, false)} (#{m_number}) }}";
+    public override string ToString() => $"{GetType().Name} {{ {ToQuantityString(null, false, false)} (#{m_number}) }}";
     #endregion Object overrides
   }
 }

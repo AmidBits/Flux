@@ -1,13 +1,14 @@
 namespace Flux.Globalization.EnUs
 {
   /// <summary>The North American Numbering Plan (NANP) is a telephone numbering plan that encompasses 25 distinct regions.</summary>
-  public struct NorthAmericanNumberingPlan
+  /// <see href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"/>
+  public partial struct NorthAmericanNumberingPlan
     : System.IEquatable<NorthAmericanNumberingPlan>
   {
     public static readonly NorthAmericanNumberingPlan Empty;
 
-    /// <see cref="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"/>
-    public const string Regex = @"(?<!\d)(?<CC>1)?[\s\-\.]*?(?<NPA>[2-9][0-9]{2})?[\s\-\.]*?(?<NXX>[2-9][0-9]{2})[\s\-\.]*?(?<XXXX>[0-9]{4})(?!\d)";
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<!\d)(?<CC>1)?[\s\-\.]*?(?<NPA>[2-9][0-9]{2})?[\s\-\.]*?(?<NXX>[2-9][0-9]{2})[\s\-\.]*?(?<XXXX>[0-9]{4})(?!\d)", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    private static partial System.Text.RegularExpressions.Regex MatchingRegex();
 
     public string CC { get; private set; }
     public string NPA { get; private set; }
@@ -15,11 +16,11 @@ namespace Flux.Globalization.EnUs
     public string XXXX { get; private set; }
 
     public bool IsValid
-      => System.Text.RegularExpressions.Regex.IsMatch(Regex, ToString()!);
+      => MatchingRegex().IsMatch(ToString()!);
 
     public static NorthAmericanNumberingPlan Parse(string text)
     {
-      var re = new System.Text.RegularExpressions.Regex(Regex);
+      var re = MatchingRegex();
 
       if (re.Match(text) is var match && match.Success)
       {
