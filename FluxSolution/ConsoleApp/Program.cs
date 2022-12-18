@@ -22,8 +22,25 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      foreach (var quantity in typeof(Flux.Quantities.IQuantifiable<>).GetDerivedTypes().OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")))
-        System.Console.WriteLine(quantity.GetDefaultValue().ToString());
+      var runes0 = System.Text.Unicode.UnicodeRanges.BasicLatin.GetRunes().ToArray();
+
+      var ranges = Flux.Reflection.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges), ur => true).ToDictionary(pi => pi.Name, pi => (System.Text.Unicode.UnicodeRange)pi.GetValue(null)).ToDictionary(d => d.Key, d => d.Value.GetRunes().ToArray());
+
+      foreach (var kvp in ranges.Skip(2))
+      {
+        System.Console.WriteLine(kvp.Key);
+        System.Console.WriteLine(string.Join(", ", kvp.Value));
+        System.Console.WriteLine();
+        //  var runes = (kvp.Key, kvp.Value.GetRunes().ToArray());
+      }
+
+      //var categories = System.Enum.GetValues<System.Globalization.UnicodeCategory>().ToArray();
+
+      //foreach (var category in categories)
+      //{
+      //  var runes = category.GetRunes().ToArray();
+      //}
+
 
 
     }

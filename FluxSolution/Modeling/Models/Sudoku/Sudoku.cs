@@ -14,7 +14,8 @@ namespace Flux.Model
       => System.Linq.Enumerable.Range(0, 81).ToList();
     /// <summary>A list of all squares and their respective list of 3 unit lists, e.g. { "C2", [ ["A2", "B2", "C2", "D2", "E2", "F2", "G2", "H2", "I2"], ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9"], ["A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3"] ] }.</summary>
     public static System.Collections.Generic.List<System.Collections.Generic.List<System.Collections.Generic.List<int>>> Units
-      => Squares.Select(i => System.Linq.Enumerable.Empty<System.Collections.Generic.List<int>>().Append(GetUnitColumn(i).ToList(), GetUnitRow(i).ToList(), GetUnitBox(i).ToList()).ToList()).ToList();
+      => Squares.Select(i => new System.Collections.Generic.List<int>[] { GetUnitColumn(i).ToList(), GetUnitRow(i).ToList(), GetUnitBox(i).ToList() }.ToList()).ToList();
+    //=> Squares.Select(i => System.Linq.Enumerable.Empty<System.Collections.Generic.List<int>>().Append(GetUnitColumn(i).ToList(), GetUnitRow(i).ToList(), GetUnitBox(i).ToList()).ToList()).ToList();
     /// <summary>A list of all squares and their respective list of 20 peer squares, e.g. ["A2", "B2", "D2", "E2", "F2", "G2", "H2", "I2", "C1", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "A1", "A3", "B1", "B3"].</summary>
     public static System.Collections.Generic.List<System.Collections.Generic.List<int>> Peers
       => Squares.Select(i => Units[i].SelectMany(l => l).Distinct().Where(sx => sx != i).ToList()).ToList();

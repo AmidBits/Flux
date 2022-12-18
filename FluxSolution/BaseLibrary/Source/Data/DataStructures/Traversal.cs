@@ -113,7 +113,7 @@ namespace Flux.DataStructures
 
 			var stack = new System.Collections.Generic.Stack<System.Collections.Generic.Queue<T>>();
 
-			stack.Push(new System.Collections.Generic.Queue<T>(System.Linq.Enumerable.Empty<T>().Append((T)node)));
+			stack.Push(new System.Collections.Generic.Queue<T>(new T[] { node }));
 
 			while (stack.Count > 0)
 			{

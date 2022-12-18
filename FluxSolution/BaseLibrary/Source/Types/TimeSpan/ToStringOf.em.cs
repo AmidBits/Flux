@@ -5,7 +5,7 @@ namespace Flux
   public static partial class TimeSpanEm
   {
     public static string ToStringOf(this System.TimeSpan source)
-      => string.Join(' ', System.Array.Empty<string>().Append(ToStringOfDays(source), ToStringOfHours(source), ToStringOfMinutes(source), ToStringOfSeconds(source)).Where(s => s.Length > 0)).Trim();
+      => string.Join(' ', new string[] { ToStringOfDays(source), ToStringOfHours(source), ToStringOfMinutes(source), ToStringOfSeconds(source) }.Where(s => s.Length > 0)).Trim();
     public static string ToStringOfDays(this System.TimeSpan source, string symbol = "d")
       => source.Days > 0 ? $"{source.Days}{symbol}" : string.Empty;
     public static string ToStringOfHours(this System.TimeSpan source, string symbol = "h")

@@ -4,13 +4,14 @@ namespace Flux.NumberSequences
     : INumericSequence<System.Numerics.BigInteger>
   {
     #region Static methods
-    
+
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger n, System.Numerics.BigInteger sum)> GetAbundantNumbers()
-      => Enumerable.Loop(() => (System.Numerics.BigInteger)3, e => true, e => e + 1, e => e).AsParallel().AsOrdered().Select(n => (n, sum: NumberSequences.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
+      => new Flux.Loops.CustomSelectors<System.Numerics.BigInteger, System.Numerics.BigInteger>(() => (System.Numerics.BigInteger)3, (e, i) => true, (e, i) => e + 1, (e, i) => e).AsParallel().AsOrdered().Select(n => (n, sum: NumberSequences.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
+    //=> Enumerable.Loop(() => (System.Numerics.BigInteger)3, e => true, e => e + 1, e => e).AsParallel().AsOrdered().Select(n => (n, sum: NumberSequences.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Highly_abundant_number"/>
-    
+
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyAbundantNumbers()
     {
       var largestSumOfDivisors = System.Numerics.BigInteger.Zero;
@@ -24,7 +25,7 @@ namespace Flux.NumberSequences
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Superabundant_number"/>
-    
+
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetSuperAbundantNumbers()
     {
       var largestValue = 0.0;
@@ -38,21 +39,21 @@ namespace Flux.NumberSequences
 
     /// <summary>Determines whether the number is an abundant number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Abundant_number"/>
-    
+
     public static bool IsAbundantNumber(System.Numerics.BigInteger value)
       => Factors.GetSumOfDivisors(value) - value > value;
     #endregion Static methods
 
     #region Implemented interfaces
     // INumberSequence
-    
+
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => System.Linq.Enumerable.Select(GetAbundantNumbers(), t => t.n);
 
-    
+
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

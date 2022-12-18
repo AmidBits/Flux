@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Unicode
+  public static partial class ExtensionMethods
   {
     /// <summary>Replaces a character with diacritical latin stroke with the closest 'plain' character, i.e. a character without a diacritic is returned in its place. Characters without latin strokes are returned as-is.</summary>
     /// <remarks>These are characters that are not (necessarily) identified in .NET.</remarks>

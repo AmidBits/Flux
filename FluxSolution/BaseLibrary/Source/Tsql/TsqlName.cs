@@ -154,7 +154,7 @@ namespace Flux.Data
 
       if (names.Length >= 1 && names.Length <= 4)
         if (names.Length < 4)
-          names = names.Select(n => n.TsqlUnenquote()).Prepend(new string[4 - names.Length]).Select(n => n is null ? string.Empty : n).ToArray();
+          names = new string[4 - names.Length].Concat(names.Select(n => n.TsqlUnenquote())).Select(n => n is null ? string.Empty : n).ToArray();
         else throw new System.ArgumentOutOfRangeException(nameof(qualifiedName), "The name cannot be parsed.");
 
       return new TsqlName(names[0], names[1], names[2], names[3]);

@@ -14,9 +14,9 @@ namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
     {
       get
       {
-        var directions = string.Join('|', DirectionAliases.SelectMany(kvp => kvp.Value.Any(v => v.StartsWith(kvp.Key, System.StringComparison.InvariantCultureIgnoreCase)) ? kvp.Value.Append(kvp.Key) : kvp.Value.Prepend(kvp.Key)));
+        var directions = string.Join('|', DirectionAliases.SelectMany(kvp => kvp.Value.Any(v => v.StartsWith(kvp.Key, System.StringComparison.InvariantCultureIgnoreCase)) ? kvp.Value.Concat(new string[] { kvp.Key }) : new string[] { kvp.Key }.Concat(kvp.Value)));
         var intersections = @"CL|EPI|PI|SPI";
-        var types = string.Join('|', TypeAliases.SelectMany(kvp => kvp.Value.Any(v => v.StartsWith(kvp.Key, System.StringComparison.InvariantCultureIgnoreCase)) ? kvp.Value.Append(kvp.Key) : kvp.Value.Prepend(kvp.Key)));
+        var types = string.Join('|', TypeAliases.SelectMany(kvp => kvp.Value.Any(v => v.StartsWith(kvp.Key, System.StringComparison.InvariantCultureIgnoreCase)) ? kvp.Value.Concat(new string[] { kvp.Key }) : new string[] { kvp.Key }.Concat(kvp.Value)));
 
         return new System.Text.RegularExpressions.Regex(@"(?<Number>\d+)\s+(?<Direction>" + directions + @")(?:\s+(?<Intersection>" + intersections + @"))?\s+(?<Name>.+?)\s+(?<Type>" + types + @")(?:\s+(?<Unit>.*))?");
       }

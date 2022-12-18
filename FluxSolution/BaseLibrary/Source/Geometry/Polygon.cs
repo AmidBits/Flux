@@ -66,10 +66,10 @@ namespace Flux.Geometry
     #region Static methods
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon.</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).SelectMany(edge => System.Linq.Enumerable.Empty<System.Numerics.Vector2>().Append(edge.leading, (edge.trailing + edge.leading) / 2));
+      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).SelectMany(edge => new System.Numerics.Vector2[] { edge.leading, (edge.trailing + edge.leading) / 2 });
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon. (2D/3D)</summary>
     public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> AddMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).SelectMany(pair => System.Linq.Enumerable.Empty<System.Numerics.Vector3>().Append(pair.leading, (pair.leading + pair.trailing) / 2));
+      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).SelectMany(pair => new System.Numerics.Vector3[] { pair.leading, (pair.leading + pair.trailing) / 2 });
 
     public static bool TryGetAxisAlignedBoundingBox(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, out System.Numerics.Vector3 min, out System.Numerics.Vector3 max)
     {

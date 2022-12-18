@@ -7,11 +7,11 @@ namespace Flux
     /// <summary>The magic packet is a broadcast frame containing anywhere within its payload 6 bytes of all 255 (FF FF FF FF FF FF in hexadecimal), followed by sixteen repetitions of the target computer's 48-bit MAC address, for a total of 102 bytes.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Wake-on-LAN"/>
     public static System.Collections.Generic.IEnumerable<byte> CreateMagicPacket(this System.Net.NetworkInformation.PhysicalAddress source)
-      => System.Linq.Enumerable.Range(0, 16).SelectMany(i => source.GetAddressBytes()).Prepend((byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF);
+      => new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF }.Concat(System.Linq.Enumerable.Range(0, 16).SelectMany(i => source.GetAddressBytes()));
     /// <summary>Certain NICs support a security feature called "SecureOn". It allows users to store within the NIC a hexadecimal password of 6 bytes. Clients have to append this password to the magic packet. Any network eavesdropping will expose the cleartext password.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Wake-on-LAN"/>
     public static System.Collections.Generic.IEnumerable<byte> CreateMagicPacket(this System.Net.NetworkInformation.PhysicalAddress source, byte[] secureOn)
-      => source.CreateMagicPacket().Append(secureOn);
+      => source.CreateMagicPacket().Concat(secureOn);
 
     /// <summary>Send a WOL (magic packet) to the specified macAddress and broadcast address.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Wake-on-LAN"/>

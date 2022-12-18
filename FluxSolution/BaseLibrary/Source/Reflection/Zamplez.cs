@@ -19,9 +19,11 @@ namespace Flux
       {
         var exclusions = excludingTypes.SelectMany(type => type.GetDerivedTypes());
         var implementations = type.GetDerivedTypes().OrderBy(t => t.Name).Where(t => !exclusions.Contains(t)).ToList();
-        System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations)}");
+        System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations.Select(i => i.Name))}");
         System.Console.WriteLine();
       }
+
+      System.Console.WriteLine(string.Join(", ", typeof(Flux.Quantities.IQuantifiable<>).GetDerivedTypes().OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")).Select(q => q.GetDefaultValue()?.ToString() ?? "Null")));
     }
   }
 }

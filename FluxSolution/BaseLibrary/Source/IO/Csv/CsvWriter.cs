@@ -153,6 +153,6 @@ namespace Flux
       => Flush();
 
     public override string ToString()
-      => $"{GetType().Name} {{ EscapeCharacters = {string.Join(@", ", System.Linq.Enumerable.Select(m_escapeCharacters, c => Unicode.ToUnotationString((System.Text.Rune)c)))}, {m_options} }}";
+      => $"{GetType().Name} {{ EscapeCharacters = {string.Join(@", ", System.Linq.Enumerable.Select(m_escapeCharacters, c => ((System.Text.Rune)c).ToUnicodeUnotationString()))}, {m_options} }}";
   }
 }

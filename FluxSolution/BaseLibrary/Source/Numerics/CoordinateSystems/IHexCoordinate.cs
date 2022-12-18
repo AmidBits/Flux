@@ -179,7 +179,7 @@
 
       /// <summary>Computes the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
       public static int ComputeRangeCount(int radius)
-        => Flux.Enumerable.Loop(0, radius + 1, 6).AsParallel().Sum() + 1;
+        => new Flux.Loops.Range<int>(0, radius + 1, 6).AsParallel().Sum() + 1;
 
       /// <summary>Computes the count of hexes in the ring of the specified radius.</summary>
       public static int ComputeRingCount(int radius)
