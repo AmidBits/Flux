@@ -26,21 +26,13 @@ namespace ConsoleApp
 
       var ranges = Flux.Reflection.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges), ur => true).ToDictionary(pi => pi.Name, pi => (System.Text.Unicode.UnicodeRange)pi.GetValue(null)).ToDictionary(d => d.Key, d => d.Value.GetRunes().ToArray());
 
-      foreach (var kvp in ranges.Skip(2))
+      foreach (var kvp in ranges.Where(kvp => kvp.Key != "All"))
       {
         System.Console.WriteLine(kvp.Key);
         System.Console.WriteLine(string.Join(", ", kvp.Value));
         System.Console.WriteLine();
         //  var runes = (kvp.Key, kvp.Value.GetRunes().ToArray());
       }
-
-      //var categories = System.Enum.GetValues<System.Globalization.UnicodeCategory>().ToArray();
-
-      //foreach (var category in categories)
-      //{
-      //  var runes = category.GetRunes().ToArray();
-      //}
-
 
 
     }
