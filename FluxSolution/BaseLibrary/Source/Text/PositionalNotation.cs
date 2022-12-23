@@ -1,37 +1,32 @@
 namespace Flux.Text
 {
+  /// <summary>Convert a number into a positional notation text string.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/List_of_numeral_systems#Standard_positional_numeral_systems"/>
+  /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
   public readonly ref struct PositionalNotation
   {
-    public static PositionalNotation Base2
-      => new(RuneSequences.Base62[..2]);
-    public static PositionalNotation Base8
-      => new(RuneSequences.Base62[..8]);
-    public static PositionalNotation Base10
-      => new(RuneSequences.Base62[..10]);
-    public static PositionalNotation Base16
-      => new(RuneSequences.Base62[..16]);
+    public static PositionalNotation Base2 => new(RuneSequences.Base62[..2]);
+    public static PositionalNotation Base8 => new(RuneSequences.Base62[..8]);
+    public static PositionalNotation Base10 => new(RuneSequences.Base62[..10]);
+    public static PositionalNotation Base16 => new(RuneSequences.Base62[..16]);
 
     public System.ReadOnlySpan<System.Text.Rune> Symbols { get; }
 
+    /// <summary>Convert a number into a positional notation text string.</summary>
+    /// <param name="symbols">Symbols must be represented as TextElements (i.e. graphemes).</param>
     public PositionalNotation(System.ReadOnlySpan<System.Text.Rune> symbols)
       => Symbols = symbols;
 
-    /// <summary>Convert a number into a positional notation text string.</summary>
-    /// <param name="symbols">Symbols must be represented as TextElements (i.e. graphemes).</param>
-    /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-    /// System.Collections.Generic.IList<string>
-
-    public System.Text.StringBuilder NumberToText(System.Numerics.BigInteger number)
+    /// <summary>Converts a number into a positional notation text string.</summary>
+    public Flux.SequenceBuilder<System.Text.Rune> NumberToText(System.Numerics.BigInteger number)
     {
-      var sb = new System.Text.StringBuilder(128);
+      var sb = new Flux.SequenceBuilder<System.Text.Rune>();
 
       if (number.IsZero)
-        sb.Append('0');
+        sb.Append((System.Text.Rune)'0');
       else if (number < 0) // Needs a REAL solution for negative numbers.
-        return NumberToText(-number).Insert(0, '-');
+        return NumberToText(-number).Insert(0, (System.Text.Rune)'-');
 
       while (number > 0)
       {
@@ -43,7 +38,8 @@ namespace Flux.Text
       return sb;
     }
 
-    public bool TryNumberToText(System.Numerics.BigInteger number, out System.Text.StringBuilder? result)
+    /// <summary>Tries to convert a number into a positional notation text string.</summary>
+    public bool TryNumberToText(System.Numerics.BigInteger number, out Flux.SequenceBuilder<System.Text.Rune>? result)
     {
       try
       {
@@ -57,20 +53,15 @@ namespace Flux.Text
     }
 
     /// <summary>Convert a positional notation text string into a number.</summary>
-    /// <param name="number">Must consist of only TextElements (i.e. graphemes).</param>
-    /// <param name="symbols">Symbols must be represented as TextElements (i.e. graphemes).</param>
-    /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-
-    public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)
+    public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<System.Text.Rune> number)
     {
       var bi = System.Numerics.BigInteger.Zero;
 
-      foreach (var rune in number.EnumerateRunes())
+      for (var index = 0; index < number.Length; index++)
       {
         bi *= Symbols.Length;
 
-        var position = MemoryExtensions.IndexOf(Symbols, rune);
+        var position = MemoryExtensions.IndexOf(Symbols, number[index]);
 
         bi += position > -1 ? position : throw new System.InvalidOperationException();
       }
@@ -78,8 +69,11 @@ namespace Flux.Text
       return bi;
     }
     /// <summary>Convert a positional notation text string into a number.</summary>
+    public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)
+      => TextToNumber(number.ToRunes());
 
-    public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result)
+    /// <summary>Convert a positional notation text string into a number.</summary>
+    public bool TryTextToNumber(System.ReadOnlySpan<System.Text.Rune> number, out System.Numerics.BigInteger result)
     {
       try
       {
@@ -91,9 +85,11 @@ namespace Flux.Text
       result = default;
       return false;
     }
+    /// <summary>Convert a positional notation text string into a number.</summary>
+    public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result)
+      => TryTextToNumber(number.ToRunes(), out result);
 
     /// <summary>Custom instance based on Base62 which results in traditional radix conversions.</summary>
-
     public static PositionalNotation ForRadix(int radix)
       => radix switch
       {
@@ -105,10 +101,9 @@ namespace Flux.Text
         _ => throw new System.ArgumentOutOfRangeException(nameof(radix))
       };
 
-
-    public static System.Collections.Generic.Dictionary<int, System.Text.StringBuilder> ToStringRadices(System.Numerics.BigInteger number)
+    public static System.Collections.Generic.Dictionary<int, Flux.SequenceBuilder<System.Text.Rune>> ToStringRadices(System.Numerics.BigInteger number)
     {
-      var dictionary = new System.Collections.Generic.Dictionary<int, System.Text.StringBuilder>();
+      var dictionary = new System.Collections.Generic.Dictionary<int, Flux.SequenceBuilder<System.Text.Rune>>();
       for (var radix = 2; radix <= 62; radix++)
         dictionary.Add(radix, ForRadix(radix).NumberToText(number));
       return dictionary;

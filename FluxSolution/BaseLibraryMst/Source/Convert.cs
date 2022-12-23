@@ -1,4 +1,5 @@
-﻿using Flux;
+﻿using System;
+using Flux;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

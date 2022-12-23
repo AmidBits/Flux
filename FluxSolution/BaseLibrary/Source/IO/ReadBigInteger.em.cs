@@ -11,12 +11,7 @@
       source.Read(bytes, 0, numberOfBytes);
 
       if (reverseBytes)
-      {
-        var halfLength = bytes.Length / 2;
-
-        for (var index = 0; index < halfLength; index++)
-          (bytes[bytes.Length - 1 - index], bytes[index]) = (bytes[index], bytes[bytes.Length - 1 - index]);
-      }
+        System.Array.Reverse(bytes);
 
       return new System.Numerics.BigInteger(bytes);
     }

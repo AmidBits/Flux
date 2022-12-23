@@ -16,7 +16,7 @@ namespace Flux.Resources.DotNet
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
       foreach (var item in m_sequence)
-        yield return Flux.Reflection.GetPropertyInfos(item, pi => true).Select(pi => pi.GetValue(item)!).ToArray();
+        yield return Flux.Reflection.GetPropertyInfos(item).Select(pi => pi.GetValue(item)!).ToArray();
     }
   }
 }

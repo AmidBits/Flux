@@ -13,19 +13,6 @@ namespace Flux
 
   public static partial class ExtensionMethods
   {
-    public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetRunes(this System.Text.Unicode.UnicodeRange unicodeRange)
-    {
-      var length = unicodeRange.Length;
-
-      for (var i = unicodeRange.FirstCodePoint; length > 0; i++)
-        if (System.Text.Rune.IsValid(i))
-        {
-          yield return new System.Text.Rune(i);
-
-          length--;
-        }
-    }
-
     #region UnicodeCategory
 
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetRunes(this System.Globalization.UnicodeCategory unicodeCategory)
@@ -57,6 +44,7 @@ namespace Flux
     #endregion // UnicodeCategory
 
     #region UnicodeCategoryMajor
+
     public static UnicodeCategoryMajor ParseUnicodeCategoryMajor(this char unicodeCategoryMajor)
       => (UnicodeCategoryMajor)System.Enum.Parse(typeof(UnicodeCategoryMajor), unicodeCategoryMajor.ToString(), true);
 
@@ -83,21 +71,15 @@ namespace Flux
     #region UnicodeCategoryMajorMinor
 
     /// <summary>Parses two characters as representing Unicode category major and minor.</summary>
-    public static UnicodeCategoryMajorMinor ToUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor)
+    public static UnicodeCategoryMajorMinor ParseUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor)
       => ((UnicodeCategoryMajorMinor)System.Enum.Parse(typeof(UnicodeCategoryMajorMinor), $"{unicodeCategoryMajor}{unicodeCategoryMinor}"));
 
-    /// <summary>Parses a beginning of a string as Unicode category major and minor.</summary>
-    public static UnicodeCategoryMajorMinor ParseUnicodeCategoryMajorMinor(this string unicodeCategoryMajorMinor)
-      => (unicodeCategoryMajorMinor ?? throw new System.ArgumentNullException(nameof(unicodeCategoryMajorMinor))).Length >= 2
-      ? ToUnicodeCategoryMajorMinor(unicodeCategoryMajorMinor[0], unicodeCategoryMajorMinor[1])
-      : throw new System.ArgumentOutOfRangeException(nameof(unicodeCategoryMajorMinor));
-
     /// <summary>Tries to parse the beginning of a string as Unicode category major and minor.</summary>
-    public static bool TryParseUnicodeCategoryMajorMinor(this string unicodeCategoryMajorMinor, out UnicodeCategoryMajorMinor result)
+    public static bool TryParseUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor, out UnicodeCategoryMajorMinor result)
     {
       try
       {
-        result = ParseUnicodeCategoryMajorMinor(unicodeCategoryMajorMinor);
+        result = ParseUnicodeCategoryMajorMinor(unicodeCategoryMajor, unicodeCategoryMinor);
         return true;
       }
       catch { }
@@ -111,5 +93,91 @@ namespace Flux
       => (System.Globalization.UnicodeCategory)unicodeCategoryMajorMinor;
 
     #endregion // UnicodeCategoryMajorMinor
+
+    #region UnicodeRange
+
+    public static System.Collections.Generic.List<System.Text.Rune> GetRunes(this System.Text.Unicode.UnicodeRange unicodeRange)
+    {
+      var collection = new System.Collections.Generic.List<System.Text.Rune>(unicodeRange.Length);
+
+      for (int codePoint = unicodeRange.FirstCodePoint, length = unicodeRange.Length; length > 0; codePoint++, length--)
+        if (System.Text.Rune.IsValid(codePoint))
+          collection.Add(new System.Text.Rune(codePoint));
+
+      return collection;
+    }
+
+    #endregion // UnicodeRange
+
+    #region UnicodeUnotation
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<=U\+)[0-9A-F]{4,6}", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase)]
+    private static partial System.Text.RegularExpressions.Regex ParseUnicodeUnotationRegex();
+
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> ParseUnicodeUnotation(this string text)
+      => ParseUnicodeUnotationRegex().Matches(text).Where(m => m.Success).Select(m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null)));
+    public static bool TryParseUnicodeUnotation(this string text, out System.Collections.Generic.List<System.Text.Rune> result)
+    {
+      try
+      {
+        result = ParseUnicodeUnotation(text).ToList();
+        return true;
+      }
+      catch { }
+
+      result = default!;
+      return false;
+    }
+
+    /// <summary>Convert the Unicode codepoint to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</summary>
+    public static string ToUnicodeUnotationString(this System.Text.Rune rune)
+      => $"U+{rune.Value:X4}";
+
+    #endregion // UnicodeUnotation
+
+    #region CsEscapeSequence
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8}|(?<=\\x)[0-9A-F]{1,8})", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase)]
+    private static partial System.Text.RegularExpressions.Regex ParseUnicodeCsEscapeSequenceRegex();
+
+    public static System.Collections.Generic.IEnumerable<char> ParseUnicodeCsEscapeSequence(this string text)
+      => ParseUnicodeCsEscapeSequenceRegex().Matches(text).Where(m => m.Success).Select(m => (char)int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null));
+    public static bool TryParseUnicodeCsEscapeSequence(this string text, out System.Collections.Generic.List<char> result)
+    {
+      try
+      {
+        result = ParseUnicodeCsEscapeSequence(text).ToList();
+        return true;
+      }
+      catch { }
+
+      result = default!;
+      return false;
+    }
+
+    /// <summary>Convert the Unicode codepoint to a string literal format, i.e. "\uhhhh" (four hex characters, for UTF-16 size), "\U00HHHHHH" (eight hex characters, for UTF-32 size), or "\x[H][H][H][H].</summary>
+    public static string ToUnicodeCsEscapeSequenceString(this System.Text.Rune rune, Unicode.CsEscapeSequenceFormat format)
+      => format switch
+      {
+        Unicode.CsEscapeSequenceFormat.UTF16 => $@"\u{rune.Value:X4}",
+        Unicode.CsEscapeSequenceFormat.UTF32 => $@"\U{rune.Value:X8}",
+        Unicode.CsEscapeSequenceFormat.Variable => $@"\x{rune.Value:X1}",
+        _ => throw new NotImplementedException(),
+      };
+
+    #endregion // CsEscapeSequence
+  }
+
+  namespace Unicode
+  {
+    public enum CsEscapeSequenceFormat
+    {
+      /// <summary>\u = Unicode escape sequence (UTF-16) \uHHHH (range: 0000 - FFFF; example: \u00E7 = "ç")</summary>
+      UTF16,
+      /// <summary>\U = Unicode escape sequence (UTF-32) \U00HHHHHH (range: 000000 - 10FFFF; example: \U0001F47D)</summary>
+      UTF32,
+      /// <summary>\x = Unicode escape sequence similar to "\u" except with variable length \xH[H][H][H] (range: 0 - FFFF; example: \x00E7 or \x0E7 or \xE7 = "ç")</summary>
+      Variable
+    }
   }
 }

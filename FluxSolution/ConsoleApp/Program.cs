@@ -22,17 +22,6 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var runes0 = System.Text.Unicode.UnicodeRanges.BasicLatin.GetRunes().ToArray();
-
-      var ranges = Flux.Reflection.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges), ur => true).ToDictionary(pi => pi.Name, pi => (System.Text.Unicode.UnicodeRange)pi.GetValue(null)).ToDictionary(d => d.Key, d => d.Value.GetRunes().ToArray());
-
-      foreach (var kvp in ranges.Where(kvp => kvp.Key != "All"))
-      {
-        System.Console.WriteLine(kvp.Key);
-        System.Console.WriteLine(string.Join(", ", kvp.Value));
-        System.Console.WriteLine();
-        //  var runes = (kvp.Key, kvp.Value.GetRunes().ToArray());
-      }
 
 
     }

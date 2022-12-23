@@ -26,7 +26,7 @@ namespace Flux.Formatting
       return HandleOtherFormats(format, arg);
     }
 
-    public static bool TryFormat(System.Numerics.BigInteger number, System.Text.Rune[] radixNumerals, out System.Text.StringBuilder? result)
+    public static bool TryFormat(System.Numerics.BigInteger number, System.Text.Rune[] radixNumerals, out Flux.SequenceBuilder<System.Text.Rune>? result)
     {
       try
       {
