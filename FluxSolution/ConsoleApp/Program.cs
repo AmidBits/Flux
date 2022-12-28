@@ -22,6 +22,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var pi = Flux.Fraction<System.Numerics.BigInteger>.Pi;
+      var tau = Flux.Fraction<System.Numerics.BigInteger>.Tau;
+
+      var f5 = new Flux.Fraction<int>(5);
+      var f2 = new Flux.Fraction<int>(4, 2);
+
+      var f81 = new Flux.Fraction<System.Numerics.BigInteger>(81);
+      var sqrt81 = Flux.Fraction<System.Numerics.BigInteger>.NthRoot(f81, 3, Flux.Fraction<System.Numerics.BigInteger>.EpsilonLikeDouble);
+
+      var fr = f5 / f2;
+      var v = fr.Value;
+
       var n = Flux.Text.RomanNumerals.TextToNumber("MCMXCIV");
 
       var s = n.ToRadixString(10, 5);

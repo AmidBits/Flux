@@ -3,20 +3,7 @@ namespace Flux.Numerics
   /// <summary>A 2D cartesian coordinate using integers.</summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly partial record struct CartesianCoordinate2<TSelf>
-    : ICartesianCoordinate2<TSelf>
-    , System.Numerics.IAdditionOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
-    , System.Numerics.IAdditiveIdentity<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
-    , System.Numerics.IDecrementOperators<CartesianCoordinate2<TSelf>>
-    , System.Numerics.IDivisionOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
-    , System.Numerics.IEqualityOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>, bool>
-    , System.Numerics.IIncrementOperators<CartesianCoordinate2<TSelf>>
-    , System.Numerics.IModulusOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
-    , System.Numerics.IMultiplicativeIdentity<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
-    , System.Numerics.IMultiplyOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
-    , System.Numerics.INumberBase<CartesianCoordinate2<TSelf>>
-    , System.Numerics.ISubtractionOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
-    , System.Numerics.IUnaryNegationOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
-    , System.Numerics.IUnaryPlusOperators<CartesianCoordinate2<TSelf>, CartesianCoordinate2<TSelf>>
+    : System.Numerics.INumberBase<CartesianCoordinate2<TSelf>>, ICartesianCoordinate2<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
     private readonly TSelf m_x;
