@@ -4,10 +4,10 @@
   /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
   public static class BoyerMooreHorspoolAlgorithm
   {
-    public static int FindIndexBMH<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static int FindIndexBMH<T>(this SequenceBuilder<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       where T : notnull
       => FindIndexBMH(source.AsReadOnlySpan(), target, equalityComparer);
-    public static int FindIndexBMH<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target)
+    public static int FindIndexBMH<T>(this SequenceBuilder<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
       => FindIndexBMH(source.AsReadOnlySpan(), target);
 

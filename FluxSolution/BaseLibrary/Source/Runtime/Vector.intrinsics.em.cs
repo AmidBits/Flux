@@ -320,7 +320,18 @@ namespace Flux
       => Vector128.Create(System.Math.Max(source.GetElement(0), source.GetElement(1)));
     /// <summary>Returns a new vector filled with the maximum value of the components in specified vector.</summary>
     public static Vector256<double> MaxHorizontal(this Vector256<double> source)
-      => Vector256.Create(GenericMath.Max(source.GetElement(0), source.GetElement(1), source.GetElement(2), source.GetElement(3)));
+      => Vector256.Create(
+        double.Max(
+          double.Max(
+            source.GetElement(0),
+            source.GetElement(1)
+          ),
+          double.Max(
+            source.GetElement(2),
+            source.GetElement(3)
+          )
+        )
+      );
 
     /// <summary>Returns a new vector with the minimum value for each component of the two specified vectors.</summary>
     public static Vector128<double> Min(this Vector128<double> source, in Vector128<double> target)
@@ -338,7 +349,18 @@ namespace Flux
       => Vector128.Create(System.Math.Min(source.GetElement(0), source.GetElement(1)));
     /// <summary>Returns a new vector filled with the minimum value of the components in specified vector.</summary>
     public static Vector256<double> MinHorizontal(this Vector256<double> source)
-      => Vector256.Create(GenericMath.Min(source.GetElement(0), source.GetElement(1), source.GetElement(2), source.GetElement(3)));
+      => Vector256.Create(
+        double.Min(
+          double.Min(
+            source.GetElement(0),
+            source.GetElement(1)
+          ),
+          double.Min(
+            source.GetElement(2),
+            source.GetElement(3)
+          )
+        )
+      );
 
     /// <summary></summary>
     /// <param name="order"></param>

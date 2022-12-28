@@ -17,7 +17,7 @@ namespace Flux.Metrical
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    
+
     public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
@@ -62,11 +62,15 @@ namespace Flux.Metrical
 
           var isEqual = EqualityComparer.Equals(sourceItem, targetItem);
 
-          ldg[si + 1, ti + 1] = GenericMath.Min(
-            ldg[si, ti + 1] + 1, // Deletion.
-            ldg[si + 1, ti] + 1, // Insertion
-            isEqual ? ldg[si, ti] : ldg[si, ti] + 1, // Substitution.
-            ldg[lsi, ltim] + (si - lsi - 1) + 1 + (ti - ltim - 1) // Transposition.
+          ldg[si + 1, ti + 1] = int.Min(
+            int.Min(
+              ldg[si, ti + 1] + 1, // Deletion.
+              ldg[si + 1, ti] + 1 // Insertion
+            ),
+            int.Min(
+              isEqual ? ldg[si, ti] : ldg[si, ti] + 1, // Substitution.
+              ldg[lsi, ltim] + (si - lsi - 1) + 1 + (ti - ltim - 1) // Transposition.
+            )
           );
 
           if (isEqual)
@@ -141,7 +145,7 @@ namespace Flux.Metrical
     //  return ldg;
     //}
 
-    
+
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
@@ -154,11 +158,11 @@ namespace Flux.Metrical
       return matrix[sourceCount + 1, targetCount + 1];
     }
 
-    
+
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1 - GetSimpleMatchingDistance(source, target);
 
-    
+
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetEditDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
   }

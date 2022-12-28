@@ -20,7 +20,13 @@
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static TSelf ChebyshevLength<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source, TSelf edgeLength)
       where TSelf : System.Numerics.INumber<TSelf>
-      => GenericMath.Max(TSelf.Abs(source.X / edgeLength), TSelf.Abs(source.Y / edgeLength), TSelf.Abs(source.Z / edgeLength));
+      => TSelf.Max(
+        TSelf.Abs(source.X / edgeLength),
+        TSelf.Max(
+          TSelf.Abs(source.Y / edgeLength),
+          TSelf.Abs(source.Z / edgeLength)
+        )
+      );
 
     /// <summary>Returns the dot product of two non-normalized 3D vectors.</summary>
     /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>

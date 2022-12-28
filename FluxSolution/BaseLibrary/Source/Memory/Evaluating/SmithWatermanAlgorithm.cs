@@ -3,6 +3,7 @@
   /// <summary>A general dynamic programming algorithm for comparing sequences.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Smith%E2%80%93Waterman_algorithm"/>
   public sealed class SmithWatermanAlgorithm<T>
+    where T : System.Numerics.INumber<T>
   {
     public int LinearGapPenalty { get; init; }
     public System.Func<T, T, int> SubstitutionMatrix { get; init; }
@@ -27,7 +28,7 @@
       LinearGapPenalty = linearGapPenalty;
     }
 
-    
+
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var matrix = new int[source.Length + 1, target.Length + 1];
@@ -42,11 +43,15 @@
         {
           var te = target[ti - 1];
 
-          matrix[si, ti] = GenericMath.Max(
-            matrix[si - 1, ti - 1] + SubstitutionMatrix(se, te), // Match.
-            matrix[si - 1, ti] + LinearGapPenalty, // Delete.
-            matrix[si, ti - 1] + LinearGapPenalty, // Insert.
-            0 // Minimum max cost.
+          matrix[si, ti] = int.Max(
+            int.Max(
+              matrix[si - 1, ti - 1] + SubstitutionMatrix(se, te), // Match.
+              matrix[si - 1, ti] + LinearGapPenalty // Delete.
+            ),
+            int.Max(
+              matrix[si, ti - 1] + LinearGapPenalty, // Insert.
+              0 // Minimum max cost.
+            )
           );
         }
       }
@@ -54,7 +59,7 @@
       return matrix;
     }
 
-    
+
     public (System.Collections.Generic.List<T> source, System.Collections.Generic.List<T> target) TracebackPath(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var best = 0;

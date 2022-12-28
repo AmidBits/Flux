@@ -14,15 +14,6 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void DigitStatistics()
-    {
-      var (count, sum) = 1234567.DigitStatistics(10);
-
-      Assert.AreEqual(7, count);
-      Assert.AreEqual(28, sum);
-    }
-
-    [TestMethod]
     public void DigitSum()
     {
       Assert.AreEqual(28, 1234567.DigitSum(10));

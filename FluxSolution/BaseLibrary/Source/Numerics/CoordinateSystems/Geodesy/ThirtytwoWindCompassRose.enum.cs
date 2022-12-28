@@ -7,7 +7,7 @@ namespace Flux
       => new Quantities.Azimuth(11.25 * (int)source);
     public static string ToStringOfWords(this ThirtytwoWindCompassRose source)
     {
-      var sb = new Flux.SpanBuilder<char>();
+      var sb = new SequenceBuilder<char>();
 
       var s = source.ToString();
 
@@ -25,7 +25,7 @@ namespace Flux
             sb.Append(word);
       }
 
-      return sb.ToString(0);
+      return sb.AsReadOnlySpan().ToString(0);
     }
   }
 

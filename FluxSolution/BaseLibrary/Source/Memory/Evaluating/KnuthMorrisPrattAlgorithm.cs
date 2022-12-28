@@ -4,10 +4,10 @@
   /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
   public static class KnuthMorrisPrattAlgorithm
   {
-    public static System.Collections.Generic.List<int> FindIndicesKMP<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static System.Collections.Generic.List<int> FindIndicesKMP<T>(this SequenceBuilder<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       where T : notnull
       => FindIndicesKMP(source.AsReadOnlySpan(), target, equalityComparer);
-    public static System.Collections.Generic.List<int> FindIndicesKMP<T>(ref this SpanBuilder<T> source, System.ReadOnlySpan<T> target)
+    public static System.Collections.Generic.List<int> FindIndicesKMP<T>(this SequenceBuilder<T> source, System.ReadOnlySpan<T> target)
       where T : notnull
       => FindIndicesKMP(source.AsReadOnlySpan(), target);
 

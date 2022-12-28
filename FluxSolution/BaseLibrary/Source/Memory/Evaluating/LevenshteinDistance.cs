@@ -14,7 +14,7 @@ namespace Flux.Metrical
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    
+
     public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
@@ -29,10 +29,12 @@ namespace Flux.Metrical
 
       for (var si = 1; si <= sourceLength; si++)
         for (var ti = 1; ti <= targetLength; ti++)
-          ldg[si, ti] = GenericMath.Min(
+          ldg[si, ti] = int.Min(
             ldg[si - 1, ti] + 1, // Deletion.
-            ldg[si, ti - 1] + 1, // Insertion.
-            EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1 // Substitution.
+            int.Min(
+              ldg[si, ti - 1] + 1, // Insertion.
+              EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1 // Substitution.
+            )
           );
 
       return ldg;
@@ -62,7 +64,7 @@ namespace Flux.Metrical
     //  return ldg;
     //}
 
-    
+
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
@@ -84,10 +86,12 @@ namespace Flux.Metrical
 
         for (var ti = 0; ti < targetCount; ti++)
         {
-          v0[ti + 1] = GenericMath.Min(
+          v0[ti + 1] = int.Min(
             v1[ti + 1] + 1, // Deletion.
-            v0[ti] + 1, // Insertion.
-            EqualityComparer.Equals(source[si], target[ti]) ? v1[ti] : v1[ti] + 1 // Substitution.
+            int.Min(
+              v0[ti] + 1, // Insertion.
+              EqualityComparer.Equals(source[si], target[ti]) ? v1[ti] : v1[ti] + 1 // Substitution.
+            )
           );
         }
       }
@@ -151,11 +155,11 @@ namespace Flux.Metrical
       #endregion Another optimized version with one vector and temp variables this time, not yet tested!
     }
 
-    
+
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1.0 - GetSimpleMatchingDistance(source, target);
 
-    
+
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetEditDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
   }

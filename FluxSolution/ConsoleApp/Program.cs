@@ -22,7 +22,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var n = Flux.Text.RomanNumerals.TextToNumber("MCMXCIV");
 
+      var s = n.ToRadixString(10, 5);
+
+      var r = Flux.Text.RomanNumerals.NumberToText(1994);
 
     }
 

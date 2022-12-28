@@ -43,7 +43,7 @@ namespace Flux.Quantities
     {
       var words = new System.Collections.Generic.List<string>();
 
-      var sb = compassPointInWords.ToSpanBuilder();
+      var sb = compassPointInWords.ToSequenceBuilder();
 
       sb.RemoveAll(char.IsWhiteSpace);
 

@@ -15,7 +15,7 @@ namespace Flux.Metrical
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    
+
     public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
@@ -36,11 +36,15 @@ namespace Flux.Metrical
         {
           var targetItem = target[ti - 1];
 
-          ldg[si, ti] = ldg[si, ti] = GenericMath.Min(
-            ldg[si - 1, ti] + 1, // Deletion.
-            ldg[si, ti - 1] + 1, // Insertion.
-            EqualityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1, // Substitution.
-            si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + 1 : int.MaxValue // Transposition.
+          ldg[si, ti] = ldg[si, ti] = int.Min(
+            int.Min(
+              ldg[si - 1, ti] + 1, // Deletion.
+              ldg[si, ti - 1] + 1 // Insertion.
+            ),
+            int.Min(
+              EqualityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1, // Substitution.
+              si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + 1 : int.MaxValue // Transposition.
+            )
           );
         }
       }
@@ -78,7 +82,7 @@ namespace Flux.Metrical
     //  return ldg;
     //}
 
-    
+
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
@@ -104,11 +108,15 @@ namespace Flux.Metrical
         {
           var targetItem = target[ti - 1];
 
-          v0[ti] = GenericMath.Min(
-            v1[ti] + 1, // Deletion.
-            v0[ti - 1] + 1, // Insertion.
-            EqualityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + 1, // Substitution.
-            si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + 1 : int.MaxValue // Transposition.
+          v0[ti] = int.Min(
+            int.Min(
+              v1[ti] + 1, // Deletion.
+              v0[ti - 1] + 1 // Insertion.
+            ),
+            int.Min(
+              EqualityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + 1, // Substitution.
+              si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + 1 : int.MaxValue // Transposition.
+            )
           );
         }
       }
@@ -116,11 +124,11 @@ namespace Flux.Metrical
       return v0[targetCount];
     }
 
-    
+
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1.0 - GetSimpleMatchingDistance(source, target);
 
-    
+
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetEditDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);
   }

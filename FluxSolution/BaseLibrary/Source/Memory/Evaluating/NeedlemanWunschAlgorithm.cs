@@ -29,7 +29,7 @@
       LinearGapPenalty = -1;
     }
 
-    
+
     public int[,] GetMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var matrix = new int[source.Length + 1, target.Length + 1];
@@ -49,10 +49,12 @@
         {
           var te = target[ti - 1];
 
-          matrix[si, ti] = GenericMath.Max(
+          matrix[si, ti] = int.Max(
             matrix[si - 1, ti - 1] + SubstitutionMatrix(se, te), // Match.
-            matrix[si - 1, ti] + LinearGapPenalty, // Delete.
-            matrix[si, ti - 1] + LinearGapPenalty // Insert.
+            int.Max(
+              matrix[si - 1, ti] + LinearGapPenalty, // Delete.
+              matrix[si, ti - 1] + LinearGapPenalty // Insert.
+            )
           );
         }
       }
@@ -60,7 +62,7 @@
       return matrix;
     }
 
-    
+
     public (System.Collections.Generic.List<T> source, System.Collections.Generic.List<T> target) TracebackPath(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var si = matrix.GetLength(0) - 1;

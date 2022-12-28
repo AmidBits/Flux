@@ -18,7 +18,7 @@ namespace Flux.Metrical
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    
+
     public double[,] GetCustomMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
@@ -33,16 +33,18 @@ namespace Flux.Metrical
 
       for (var si = 1; si <= sourceLength; si++)
         for (var ti = 1; ti <= targetLength; ti++)
-          ldg[si, ti] = GenericMath.Min(
+          ldg[si, ti] = double.Min(
             ldg[si - 1, ti] + CostOfDeletion,
-            ldg[si, ti - 1] + CostOfInsertion,
-            EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + CostOfSubstitution
+            double.Min(
+              ldg[si, ti - 1] + CostOfInsertion,
+              EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + CostOfSubstitution
+            )
           );
 
       return ldg;
     }
 
-    
+
     public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
@@ -64,10 +66,12 @@ namespace Flux.Metrical
 
         for (var j = 0; j < targetCount; j++)
         {
-          v0[j + 1] = GenericMath.Min(
+          v0[j + 1] = double.Min(
             v1[j + 1] + CostOfDeletion, // Deletion.
-            v0[j] + CostOfInsertion, // Insertion.
-            EqualityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + CostOfSubstitution // Substitution.
+            double.Min(
+              v0[j] + CostOfInsertion, // Insertion.
+              EqualityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + CostOfSubstitution // Substitution.
+            )
           );
         }
       }

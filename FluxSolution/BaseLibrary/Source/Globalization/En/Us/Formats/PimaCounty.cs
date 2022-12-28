@@ -121,11 +121,11 @@ namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
 
     public string ToUnitString()
     {
-      var sb = $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSpanBuilder();
+      var sb = $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSequenceBuilder();
 
       sb.NormalizeAll(' ', char.IsWhiteSpace);
 
-      return sb.ToString(0);
+      return sb.AsReadOnlySpan().ToString(0);
     }
   }
 }

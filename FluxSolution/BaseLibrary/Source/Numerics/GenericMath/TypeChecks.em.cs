@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class GenericMath
   {
     /// <summary>Returns whether the source is of System.Numerics.IBinaryInteger<>.</summary>
     public static bool IsIBinaryInteger<TSelf>(this TSelf source)

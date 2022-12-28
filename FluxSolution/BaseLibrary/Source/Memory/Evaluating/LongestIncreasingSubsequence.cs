@@ -13,12 +13,12 @@
 
     /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
-    public static T[] LongestIncreasingSubsequence<T>(this SpanBuilder<T> source, System.Collections.Generic.IComparer<T> comparer)
+    public static T[] LongestIncreasingSubsequence<T>(this SequenceBuilder<T> source, System.Collections.Generic.IComparer<T> comparer)
       where T : notnull
       => new Metrical.LongestIncreasingSubsequence<T>(comparer).GetSubsequence(source.AsReadOnlySpan(), out var _);
     /// <summary>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the default comparer.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
-    public static T[] LongestIncreasingSubsequence<T>(this SpanBuilder<T> source)
+    public static T[] LongestIncreasingSubsequence<T>(this SequenceBuilder<T> source)
       where T : notnull
       => LongestIncreasingSubsequence(source, System.Collections.Generic.Comparer<T>.Default);
   }
@@ -38,7 +38,7 @@
 
       public System.Collections.Generic.IComparer<T> Comparer { get; private set; }
 
-      
+
       public int[,] GetMatrix(System.ReadOnlySpan<T> source, out int length)
       {
         length = 0; // Length is returned in the matrix[0, 0].
@@ -74,7 +74,7 @@
         return matrix;
       }
 
-      
+
       public T[] GetSubsequence(System.ReadOnlySpan<T> source, out int[,] matrix)
       {
         matrix = GetMatrix(source, out var length);
@@ -85,7 +85,7 @@
         return result;
       }
 
-      
+
       public int GetLengthMeasure(System.ReadOnlySpan<T> source)
       {
         GetMatrix(source, out var length);

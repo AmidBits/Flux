@@ -20,7 +20,7 @@ namespace Flux.Metrical
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    
+
     public double[,] GetCustomMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
@@ -41,11 +41,15 @@ namespace Flux.Metrical
         {
           var targetItem = target[ti - 1];
 
-          ldg[si, ti] = ldg[si, ti] = GenericMath.Min(
-            ldg[si - 1, ti] + CostOfDeletion,
-            ldg[si, ti - 1] + CostOfInsertion,
-            EqualityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + CostOfSubstitution,
-            si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + CostOfTransposition : double.MaxValue
+          ldg[si, ti] = ldg[si, ti] = double.Min(
+            double.Min(
+              ldg[si - 1, ti] + CostOfDeletion,
+              ldg[si, ti - 1] + CostOfInsertion
+            ),
+            double.Min(
+              EqualityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + CostOfSubstitution,
+              si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + CostOfTransposition : double.MaxValue
+            )
           );
         }
       }
@@ -53,7 +57,7 @@ namespace Flux.Metrical
       return ldg;
     }
 
-    
+
     public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
@@ -79,11 +83,15 @@ namespace Flux.Metrical
         {
           var targetItem = target[ti - 1];
 
-          v0[ti] = GenericMath.Min(
-            v1[ti] + CostOfDeletion, // Deletion.
-            v0[ti - 1] + CostOfInsertion, // Insertion.
-            EqualityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + CostOfSubstitution, // Substitution.
-            si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + CostOfTransposition : double.MaxValue // Transposition.
+          v0[ti] = double.Min(
+            double.Min(
+              v1[ti] + CostOfDeletion, // Deletion.
+              v0[ti - 1] + CostOfInsertion // Insertion.
+            ),
+            double.Min(
+              EqualityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + CostOfSubstitution, // Substitution.
+              si > 1 && ti > 1 && EqualityComparer.Equals(sourceItem, target[ti - 2]) && EqualityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + CostOfTransposition : double.MaxValue // Transposition.
+            )
           );
         }
       }

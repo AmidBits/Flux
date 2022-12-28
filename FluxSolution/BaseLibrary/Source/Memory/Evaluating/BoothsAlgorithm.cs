@@ -5,11 +5,11 @@ namespace Flux
   public static class BoothsAlgorithm
   {
     /// <summary>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation. Uses the specified comparer.</summary>
-    public static int FindMinimalRotationB<T>(ref this SpanBuilder<T> source, System.Collections.Generic.IComparer<T> comparer)
+    public static int FindMinimalRotationB<T>(this SequenceBuilder<T> source, System.Collections.Generic.IComparer<T> comparer)
       where T : notnull
       => FindMinimalRotationB(source.AsReadOnlySpan(), comparer);
     /// <summary>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation. Uses the default comparer.</summary>
-    public static int FindMinimalRotationB<T>(ref this SpanBuilder<T> source)
+    public static int FindMinimalRotationB<T>(this SequenceBuilder<T> source)
       where T : notnull
       => FindMinimalRotationB(source.AsReadOnlySpan());
 
