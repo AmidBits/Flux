@@ -403,8 +403,7 @@ namespace Flux.Numerics
       // [  0 -s  c  0 ]
       // [  0  0  0  1 ]
 
-      var c = TSelf.Cos(radians);
-      var s = TSelf.Sin(radians);
+      var (s, c) = TSelf.SinCos(radians);
 
       return new(TSelf.One, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, c, s, TSelf.Zero, TSelf.Zero, -s, c, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
     }
@@ -441,8 +440,7 @@ namespace Flux.Numerics
       // [  s  0  c  0 ]
       // [  0  0  0  1 ]
 
-      var c = TSelf.Cos(radians);
-      var s = TSelf.Sin(radians);
+      var (s, c) = TSelf.SinCos(radians);
 
       return new(c, TSelf.Zero, -s, TSelf.Zero, TSelf.Zero, TSelf.One, TSelf.Zero, TSelf.Zero, s, TSelf.Zero, c, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
     }
@@ -479,8 +477,7 @@ namespace Flux.Numerics
       // [  0  0  1  0 ]
       // [  0  0  0  1 ]
 
-      var c = TSelf.Cos(radians);
-      var s = TSelf.Sin(radians);
+      var (s, c) = TSelf.SinCos(radians);
 
       return new(c, s, TSelf.Zero, TSelf.Zero, -s, c, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
     }

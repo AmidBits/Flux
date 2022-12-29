@@ -8,12 +8,13 @@
     public static Numerics.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var sinInclination = TSelf.Sin(source.Inclination);
+      var (si, ci) = TSelf.SinCos(source.Inclination);
+      var (sa, ca) = TSelf.SinCos(source.Azimuth);
 
       return new(
-        source.Radius * sinInclination * TSelf.Cos(source.Azimuth),
-        source.Radius * sinInclination * TSelf.Sin(source.Azimuth),
-        source.Radius * TSelf.Cos(source.Inclination)
+        source.Radius * si * ca,
+        source.Radius * si * sa,
+        source.Radius * ci
       );
     }
 
@@ -21,11 +22,15 @@
     /// <remarks>All angles in radians.</remarks>
     public static Numerics.CylindricalCoordinate<TSelf> ToCylindricalCoordinates<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => new(
-        source.Radius * TSelf.Sin(source.Inclination),
+    {
+      var (si, ci) = TSelf.SinCos(source.Inclination);
+
+      return new(
+        source.Radius * si,
         source.Azimuth,
-        source.Radius * TSelf.Cos(source.Inclination)
+        source.Radius * ci
       );
+    }
 
     /// <summary>Converts the spherical coordinates to a geographic coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>

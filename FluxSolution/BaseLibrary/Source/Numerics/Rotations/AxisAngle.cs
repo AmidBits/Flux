@@ -6,23 +6,32 @@ namespace Flux
     public static Numerics.EulerAngles<TSelf> ToEulerAngles<TSelf>(this Numerics.AxisAngle<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var s = TSelf.Sin(source.Angle);
-      var t = TSelf.One - TSelf.Cos(source.Angle);
+      var (s, c) = TSelf.SinCos(source.Angle);
+
+      var t = TSelf.One - c;
 
       var test = source.X * source.Y * t + source.Z * s;
 
       if (test > TSelf.CreateChecked(0.998)) // North pole singularity detected.
+      {
+        var (sa, ca) = TSelf.SinCos(source.Angle.Divide(2));
+
         return new(
-          TSelf.Atan2(source.X * TSelf.Sin(source.Angle.Divide(2)), TSelf.Cos(source.Angle.Divide(2))).Multiply(2),
+          TSelf.Atan2(source.X * sa, ca).Multiply(2),
           TSelf.Pi.Divide(2),
           TSelf.Zero
         );
+      }
       else if (test < -TSelf.CreateChecked(0.998)) // South pole singularity detected.
+      {
+        var (sa, ca) = TSelf.SinCos(source.Angle.Divide(2));
+
         return new(
-          TSelf.Atan2(source.X * TSelf.Sin(source.Angle.Divide(2)), TSelf.Cos(source.Angle.Divide(2))).Multiply(-2),
+          TSelf.Atan2(source.X * sa, ca).Multiply(-2),
           -TSelf.Pi.Divide(2),
           TSelf.Zero
         );
+      }
       else
         return new(
           TSelf.Atan2(source.Y * s - source.X * source.Z * t, TSelf.One - (source.Y * source.Y + source.Z * source.Z) * t),
@@ -43,13 +52,11 @@ namespace Flux
     {
       var h = source.Angle.Divide(2);
 
-      var s = TSelf.Sin(h);
+      var (s, w) = TSelf.SinCos(h);
 
       var x = source.X * s;
       var y = source.Y * s;
       var z = source.Z * s;
-
-      var w = TSelf.Cos(h);
 
       return new(x, y, z, w);
     }

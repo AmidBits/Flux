@@ -26,11 +26,15 @@ namespace Flux.Numerics
 
     /// <summary>Converts the <see cref="CylindricalCoordinate{TSelf}"/> to a <see cref="CartesianCoordinate3{TSelf}"/>.</summary>
     public CartesianCoordinate3<TSelf> ToCartesianCoordinate3()
-     => new(
-       m_radius * TSelf.Cos(m_azimuth),
-       m_radius * TSelf.Sin(m_azimuth),
-       m_height
-     );
+    {
+      var (sa, ca) = TSelf.SinCos(m_azimuth);
+
+      return new(
+           m_radius * ca,
+           m_radius * sa,
+           m_height
+         );
+    }
 
     /// <summary>Converts the <see cref="CylindricalCoordinate{TSelf}"/> to a <see cref="PolarCoordinate{TSelf}"/>.</summary>
     public PolarCoordinate<TSelf> ToPolarCoordinate()

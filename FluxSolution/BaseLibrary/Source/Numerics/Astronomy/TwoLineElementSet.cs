@@ -42,12 +42,9 @@ namespace Flux.Numerics
 
     public Numerics.Matrix4<TSelf> ToMatrix4()
     {
-      var co = TSelf.Cos(m_radRightAscensionOfAscendingNode);
-      var so = TSelf.Sin(m_radRightAscensionOfAscendingNode);
-      var ci = TSelf.Cos(m_radInclination);
-      var si = TSelf.Sin(m_radInclination);
-      var cw = TSelf.Cos(m_radArgumentOfPerigee);
-      var sw = TSelf.Sin(m_radArgumentOfPerigee);
+      var (so, co) = TSelf.SinCos(m_radRightAscensionOfAscendingNode);
+      var (si, ci) = TSelf.SinCos(m_radInclination);
+      var (sw, cw) = TSelf.SinCos(m_radArgumentOfPerigee);
 
       var x1 = co * cw - so * ci * sw;
       var x2 = so * cw + co * ci * sw;

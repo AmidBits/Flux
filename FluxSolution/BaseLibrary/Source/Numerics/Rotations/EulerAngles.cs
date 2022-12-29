@@ -10,12 +10,9 @@ namespace Flux
       var halfPitch = source.Pitch.Divide(2);
       var halfRoll = source.Roll.Divide(2);
 
-      var c1 = TSelf.Cos(halfYaw);
-      var s1 = TSelf.Sin(halfYaw);
-      var c2 = TSelf.Cos(halfPitch);
-      var s2 = TSelf.Sin(halfPitch);
-      var c3 = TSelf.Cos(halfRoll);
-      var s3 = TSelf.Sin(halfRoll);
+      var (s1, c1) = TSelf.SinCos(halfYaw);
+      var (s2, c2) = TSelf.SinCos(halfPitch);
+      var (s3, c3) = TSelf.SinCos(halfRoll);
 
       var c1c2 = c1 * c2;
       var s1s2 = s1 * s2;
@@ -44,12 +41,9 @@ namespace Flux
     public static Numerics.Matrix4<TSelf> ToMatrixTaitBryanXYZ<TSelf>(this Numerics.EulerAngles<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var c1 = TSelf.Cos(source.Yaw);
-      var s1 = TSelf.Sin(source.Yaw);
-      var c2 = TSelf.Cos(source.Pitch);
-      var s2 = TSelf.Sin(source.Pitch);
-      var c3 = TSelf.Cos(source.Roll);
-      var s3 = TSelf.Sin(source.Roll);
+      var (s1, c1) = TSelf.SinCos(source.Yaw);
+      var (s2, c2) = TSelf.SinCos(source.Pitch);
+      var (s3, c3) = TSelf.SinCos(source.Roll);
 
       return new(
         c2 * c3, -s2, c2 * s3, TSelf.Zero,
@@ -62,12 +56,9 @@ namespace Flux
     public static Numerics.Matrix4<TSelf> ToMatrixLhTaitBryanYXZ<TSelf>(this Numerics.EulerAngles<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var c1 = TSelf.Cos(source.Yaw);
-      var s1 = TSelf.Sin(source.Yaw);
-      var c2 = TSelf.Cos(source.Pitch);
-      var s2 = TSelf.Sin(source.Pitch);
-      var c3 = TSelf.Cos(source.Roll);
-      var s3 = TSelf.Sin(source.Roll);
+      var (s1, c1) = TSelf.SinCos(source.Yaw);
+      var (s2, c2) = TSelf.SinCos(source.Pitch);
+      var (s3, c3) = TSelf.SinCos(source.Roll);
 
       return new(
         c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3, c2 * s1, TSelf.Zero,
@@ -80,12 +71,9 @@ namespace Flux
     public static Numerics.Matrix4<TSelf> ToMatrixLhTaitBryanZYX<TSelf>(this Numerics.EulerAngles<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var c3 = TSelf.Cos(source.Yaw);
-      var s3 = TSelf.Sin(source.Yaw);
-      var c2 = TSelf.Cos(source.Pitch);
-      var s2 = TSelf.Sin(source.Pitch);
-      var c1 = TSelf.Cos(source.Roll);
-      var s1 = TSelf.Sin(source.Roll);
+      var (s3, c3) = TSelf.SinCos(source.Yaw);
+      var (s2, c2) = TSelf.SinCos(source.Pitch);
+      var (s1, c1) = TSelf.SinCos(source.Roll);
 
       return new(
         c1 * c2, c1 * s2 * s3 - c3 * s1, s1 * s3 + c1 * c3 * s2, TSelf.Zero,
@@ -98,12 +86,9 @@ namespace Flux
     public static Numerics.Matrix4<TSelf> ToMatrixLhProperEulerZXZ<TSelf>(this Numerics.EulerAngles<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      var c1 = TSelf.Cos(source.Yaw);
-      var s1 = TSelf.Sin(source.Yaw);
-      var c2 = TSelf.Cos(source.Pitch);
-      var s2 = TSelf.Sin(source.Pitch);
-      var c3 = TSelf.Cos(source.Roll);
-      var s3 = TSelf.Sin(source.Roll);
+      var (s1, c1) = TSelf.SinCos(source.Yaw);
+      var (s2, c2) = TSelf.SinCos(source.Pitch);
+      var (s3, c3) = TSelf.SinCos(source.Roll);
 
       return new(
         c1 * c3 - c2 * s1 * s3, -c1 * s3 - c2 * c3 * s1, s1 * s2, TSelf.Zero,
@@ -128,12 +113,9 @@ namespace Flux
       var halfPitch = source.Pitch.Divide(2);
       var halfRoll = source.Roll.Divide(2);
 
-      var cy = TSelf.Cos(halfYaw);
-      var sy = TSelf.Sin(halfYaw);
-      var cp = TSelf.Cos(halfPitch);
-      var sp = TSelf.Sin(halfPitch);
-      var cr = TSelf.Cos(halfRoll);
-      var sr = TSelf.Sin(halfRoll);
+      var (sy, cy) = TSelf.SinCos(halfYaw);
+      var (sp, cp) = TSelf.SinCos(halfPitch);
+      var (sr, cr) = TSelf.SinCos(halfRoll);
 
       return new(
         sr * cp * cy - cr * sp * sy,

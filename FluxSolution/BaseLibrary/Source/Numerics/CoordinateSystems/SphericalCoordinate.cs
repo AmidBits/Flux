@@ -29,22 +29,27 @@ namespace Flux.Numerics
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref=" CartesianCoordinate3{double}">CartesianCoordinate3</see>.</summary>
     public CartesianCoordinate3<TSelf> ToCartesianCoordinate3()
     {
-      var sinInclination = TSelf.Sin(m_inclination);
+      var (si, ci) = TSelf.SinCos(m_inclination);
+      var (sa, ca) = TSelf.SinCos(m_azimuth);
 
       return new(
-        m_radius * TSelf.Cos(m_azimuth) * sinInclination,
-        m_radius * TSelf.Sin(m_azimuth) * sinInclination,
-        m_radius * TSelf.Cos(m_inclination)
+        m_radius * ca * si,
+        m_radius * sa * si,
+        m_radius * ci
       );
     }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CylindricalCoordinate"/>.</summary>
     public CylindricalCoordinate<TSelf> ToCylindricalCoordinate()
-      => new(
-        m_radius * TSelf.Sin(m_inclination),
+    {
+      var (si, ci) = TSelf.SinCos(m_inclination);
+
+      return new(
+        m_radius * si,
         m_azimuth,
-        m_radius * TSelf.Cos(m_inclination)
+        m_radius * ci
       );
+    }
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
     public GeographicCoordinate ToGeographicCoordinate()

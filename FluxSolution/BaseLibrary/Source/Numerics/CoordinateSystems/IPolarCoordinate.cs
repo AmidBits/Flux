@@ -7,10 +7,14 @@
     /// <remarks>All angles in radians.</remarks>
     public static Numerics.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => new(
-        source.Radius * TSelf.Cos(source.Azimuth),
-        source.Radius * TSelf.Sin(source.Azimuth)
+    {
+      var (sa, ca) = TSelf.SinCos(source.Azimuth);
+
+      return new(
+        source.Radius * ca,
+        source.Radius * sa
       );
+    }
 
     /// <summary>Converts the polar coordinates to a complex number.</summary>
     /// <remarks>All angles in radians.</remarks>

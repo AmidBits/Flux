@@ -149,7 +149,7 @@ namespace GenericMath
     [TestMethod]
     public void NearestPowOf()
     {
-      var nearestPow = 1234567.NearestPow(10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+      var nearestPow = 1234567.NearestPowOf(10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
 
       Assert.AreEqual(1000000, nearestTowardsZero);
       Assert.AreEqual(10000000, nearestAwayFromZero);
@@ -160,25 +160,25 @@ namespace GenericMath
     [TestMethod]
     public void NearestPowOf2()
     {
-      Assert.AreEqual(128, Flux.GenericMath.NearestPow(101, 2, false, RoundingMode.HalfToEven, out var _, out var _));
+      Assert.AreEqual(128, Flux.GenericMath.NearestPowOf(101, 2, false, RoundingMode.HalfToEven, out var _, out var _));
     }
 
     [TestMethod]
     public void NearestPowOf8()
     {
-      Assert.AreEqual(64, Flux.GenericMath.NearestPow(101, 8, false, RoundingMode.HalfToEven, out var _, out var _));
+      Assert.AreEqual(64, Flux.GenericMath.NearestPowOf(101, 8, false, RoundingMode.HalfToEven, out var _, out var _));
     }
 
     [TestMethod]
     public void NearestPowOf10()
     {
-      Assert.AreEqual(100, Flux.GenericMath.NearestPow(101, 10, false, RoundingMode.HalfToEven, out var _, out var _));
+      Assert.AreEqual(100, Flux.GenericMath.NearestPowOf(101, 10, false, RoundingMode.HalfToEven, out var _, out var _));
     }
 
     [TestMethod]
     public void NearestPowOf16()
     {
-      Assert.AreEqual(16, Flux.GenericMath.NearestPow(101, 16, false, RoundingMode.HalfToEven, out var _, out var _));
+      Assert.AreEqual(16, Flux.GenericMath.NearestPowOf(101, 16, false, RoundingMode.HalfToEven, out var _, out var _));
     }
 
     [TestMethod]

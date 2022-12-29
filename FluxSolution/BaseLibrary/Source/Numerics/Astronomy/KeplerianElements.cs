@@ -80,12 +80,9 @@ namespace Flux
 
       public static void ToRotationMatrix(TSelf longitudeOfAscendingNode, TSelf inclination, TSelf argumentOfPeriapsis, out TSelf x1, out TSelf x2, out TSelf x3, out TSelf y1, out TSelf y2, out TSelf y3, out TSelf z1, out TSelf z2, out TSelf z3)
       {
-        var co = TSelf.Cos(longitudeOfAscendingNode);
-        var so = TSelf.Sin(longitudeOfAscendingNode);
-        var ci = TSelf.Cos(inclination);
-        var si = TSelf.Sin(inclination);
-        var cw = TSelf.Cos(argumentOfPeriapsis);
-        var sw = TSelf.Sin(argumentOfPeriapsis);
+        var (so, co) = TSelf.SinCos(longitudeOfAscendingNode);
+        var (si, ci) = TSelf.SinCos(inclination);
+        var (sw, cw) = TSelf.SinCos(argumentOfPeriapsis);
 
         x1 = co * cw - so * ci * sw;
         x2 = so * cw + co * ci * sw;

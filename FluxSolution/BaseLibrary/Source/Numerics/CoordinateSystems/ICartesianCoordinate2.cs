@@ -116,8 +116,7 @@
     {
       var dp = TSelf.Clamp(Numerics.ICartesianCoordinate2<TSelf>.DotProduct(source, target), -TSelf.One, TSelf.One); // Ensure precision doesn't exceed acos limits.
       var theta = TSelf.Acos(dp) * mu; // Angle between start and desired.
-      var cos = TSelf.Cos(theta);
-      var sin = TSelf.Sin(theta);
+      var (sin, cos) = TSelf.SinCos(theta);
 
       return new(source.X * cos + (target.X - source.X) * dp * sin, source.Y * cos + (target.Y - source.Y) * dp * sin);
     }
