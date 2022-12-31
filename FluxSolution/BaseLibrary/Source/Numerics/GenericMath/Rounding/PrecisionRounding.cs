@@ -14,7 +14,7 @@
       m_significantDigits = significantDigits;
     }
 
-    public PrecisionTruncatedRounding<TSelf> ToPrecisionTruncatedRounding()
+    public TruncatedPrecisionRounding<TSelf> ToPrecisionTruncatedRounding()
       => new(m_mode, m_significantDigits);
 
     #region Static methods

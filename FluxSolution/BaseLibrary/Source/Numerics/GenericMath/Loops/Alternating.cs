@@ -12,7 +12,7 @@ namespace Flux
   {
     /// <summary>Creates a new sequence.</summary>
     public record class Alternating<TNumber>
-    : INumericSequence<TNumber>
+    : NumberSequences.INumericSequence<TNumber>
     where TNumber : System.Numerics.INumber<TNumber>
     {
       private TNumber m_mean;
@@ -34,7 +34,7 @@ namespace Flux
         => CreateBetween(source, target, TNumber.One, direction);
 
       // INumberSequence
-      
+
       public System.Collections.Generic.IEnumerable<TNumber> GetSequence()
       {
         var mean = m_mean;
@@ -67,8 +67,8 @@ namespace Flux
       }
 
       // IEnumerable<>
-       public System.Collections.Generic.IEnumerator<TNumber> GetEnumerator() => GetSequence().GetEnumerator();
-       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+      public System.Collections.Generic.IEnumerator<TNumber> GetEnumerator() => GetSequence().GetEnumerator();
+      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     }
   }
 }

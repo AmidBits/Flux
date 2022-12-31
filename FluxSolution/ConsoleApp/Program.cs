@@ -22,25 +22,14 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var value = Flux.Fraction.ApproximateRational(double.Pi);
+
+      var n = double.CreateChecked(value.Numerator);
+      var d = double.CreateChecked(value.Denominator);
+
+      var val = value.Value;
+
       var pi = Flux.Fraction.Pi;
-      var tau = Flux.Fraction.Tau;
-
-      var f5 = new Flux.Fraction(5);
-      var f2 = new Flux.Fraction(4, 2);
-
-      var f81 = new Flux.Fraction(81);
-      var cbrt81 = Flux.Fraction.Cbrt(f81);
-      var sqrt81 = Flux.Fraction.Sqrt(f81);
-
-      var fr = f5 / f2;
-      var v = fr.Value;
-
-      var n = Flux.Text.RomanNumerals.TextToNumber("MCMXCIV");
-
-      var s = n.ToRadixString(10, 5);
-
-      var r = Flux.Text.RomanNumerals.NumberToText(1994);
-
     }
 
     private static void Main(string[] args)

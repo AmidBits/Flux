@@ -1,10 +1,10 @@
-namespace Flux.Quartiles
+namespace Flux.Numerics
 {
   /// <summary>
   /// <para>This method is not implemented at this time.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Quartile#Method_3"/></para>
   /// </summary>
-  public record class Method3
+  public record class QuartileMethod3
     : IQuartileComputable
   {
     public (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)

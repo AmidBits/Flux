@@ -1,7 +1,7 @@
-namespace Flux.PopulationModel
+namespace Flux.Numerics
 {
   /// <summary>Although BIDE models are conceptually simple, reliable estimates of the 5 variables contained therein (N, B, D, I and E) are often difficult to obtain.</summary>
-  public record class BidePopulationModel<TSelf>
+  public record class PopulationModelBide<TSelf>
     : IPopulationModelable<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
@@ -11,7 +11,7 @@ namespace Flux.PopulationModel
     public TSelf m_deaths;
     public TSelf m_emigrated;
 
-    public BidePopulationModel(TSelf population, TSelf births, TSelf immigrated, TSelf deaths, TSelf emigrated)
+    public PopulationModelBide(TSelf population, TSelf births, TSelf immigrated, TSelf deaths, TSelf emigrated)
     {
       m_population = population;
       m_births = births;
@@ -37,7 +37,7 @@ namespace Flux.PopulationModel
 
     /// <returns>The number of individuals at time Nt+1.</returns>
     public IPopulationModelable<TSelf> ModelPopulation()
-      => new BidePopulationModel<TSelf>(Compute(m_population, m_births, m_immigrated, m_deaths, m_emigrated), m_births, m_immigrated, m_deaths, m_emigrated);
+      => new PopulationModelBide<TSelf>(Compute(m_population, m_births, m_immigrated, m_deaths, m_emigrated), m_births, m_immigrated, m_deaths, m_emigrated);
 
     /// <summary>Although BIDE models are conceptually simple, reliable estimates of the 5 variables contained therein (N, B, D, I and E) are often difficult to obtain.</summary>
     /// <param name="population">The number of individuals at time t (Nt).</param>

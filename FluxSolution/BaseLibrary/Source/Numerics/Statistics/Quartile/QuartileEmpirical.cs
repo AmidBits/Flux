@@ -1,10 +1,10 @@
-namespace Flux.Quartiles
+namespace Flux.Numerics
 {
   /// <summary>
   /// <para>This interpolates between data points to find the pth empirical quantile</para>
   /// <see href="https://en.wikipedia.org/wiki/Quartile"/>
   /// </summary>
-  public record class Empirical
+  public record class QuartileEmpirical
     : IQuartileComputable
   {
     public (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
@@ -19,7 +19,7 @@ namespace Flux.Quartiles
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       var a = p * TSelf.CreateChecked(source.Count() + 1);
-      var k =TSelf.Truncate(a);
+      var k = TSelf.Truncate(a);
 
       a -= k;
 

@@ -1,10 +1,10 @@
-namespace Flux.Quartiles
+namespace Flux.Numerics
 {
   /// <summary>
   /// <para>This rule is employed by the TI-83 calculator boxplot and "1-Var Stats" functions.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Quartile#Method_1"/></para>
   /// </summary>
-  public record class Method1
+  public record class QuartileMethod1
     : IQuartileComputable
   {
     public (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)

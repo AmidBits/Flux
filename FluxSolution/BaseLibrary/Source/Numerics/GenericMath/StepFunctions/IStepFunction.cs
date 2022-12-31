@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Numerics
 {
   public interface IStepFunction<TSelf, TResult>
     where TSelf : System.Numerics.INumber<TSelf>

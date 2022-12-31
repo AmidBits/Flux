@@ -1,12 +1,10 @@
-using System.Linq;
-
-namespace Flux.Quartiles
+namespace Flux.Numerics
 {
   /// <summary>
   /// <para>The values found by this method are also known as "Tukey's hinges".</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Quartile#Method_2"/></para>
   /// </summary>
-  public record class Method2
+  public record class QuartileMethod2
     : IQuartileComputable
   {
     public (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)

@@ -33,7 +33,7 @@ namespace GenericMath
     [TestMethod]
     public void PrecisionTruncatedRounding()
     {
-      var actual = Flux.PrecisionTruncatedRounding<double>.Round(99.96535789, 2, Flux.RoundingMode.HalfToEven);
+      var actual = Flux.TruncatedPrecisionRounding<double>.Round(99.96535789, 2, Flux.RoundingMode.HalfToEven);
 
       Assert.AreEqual(99.96, actual);
     }

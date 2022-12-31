@@ -1,18 +1,17 @@
-namespace Flux.Quantiles
+namespace Flux.Numerics
 {
   /// <summary>
-  /// <para>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</para>
-  /// <para><remarks>Equivalent to Excel's PERCENTILE and PERCENTILE.INC and Python's optional "inclusive" method.</remarks></para>
+  /// <para>The same as R1, but with averaging at discontinuities.</para>
   /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
-  public record class R7
+  public record class QuantileR2
     : IQuantileEstimatable
   {
     public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => Estimate(sample, p);
 
-    /// <summary>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</summary>
+    /// <summary>The same as R1, but with averaging at discontinuities.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
     public static TSelf Estimate<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
@@ -20,9 +19,18 @@ namespace Flux.Quantiles
       if (sample is null) throw new System.ArgumentNullException(nameof(sample));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      var h = (TSelf.CreateChecked(sample.Count() - 1) * p) - TSelf.One;
+      var half = TSelf.One.Divide(2);
 
-      return EmpiricalDistributionFunction.Estimate(sample, h);
+      var sourceCount = sample.Count();
+
+      var h = TSelf.CreateChecked(sourceCount) * p + half;
+
+      var indexLo = System.Convert.ToInt32(TSelf.Ceiling(h - half)) - 1;
+      var indexHi = System.Convert.ToInt32(TSelf.Floor(h + half)) - 1;
+
+      var sourceCountM1 = sourceCount - 1;
+
+      return (sample.ElementAt(System.Math.Clamp(indexLo, 0, sourceCountM1)) + sample.ElementAt(System.Math.Clamp(indexHi, 0, sourceCountM1))).Divide(2);
     }
   }
 }

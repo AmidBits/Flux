@@ -1,11 +1,11 @@
-namespace Flux.Quantiles
+namespace Flux.Numerics
 {
   /// <summary>
   /// <para>Linear interpolation of the empirical distribution function.</para>
   /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
   /// <see href="https://en.wikipedia.org/wiki/Empirical_distribution_function"/>
   /// </summary>
-  public record class EmpiricalDistributionFunction
+  public record class QuantileEdf
     : IQuantileEstimatable
   {
     /// <summary>Finds the interpolated value from the specified index. The integer part signifies the low index in the sequence and the fractional portion is the interpolation percentage between the low and high (low + 1) index.</summary>

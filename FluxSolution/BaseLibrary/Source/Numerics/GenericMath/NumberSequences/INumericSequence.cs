@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.NumberSequences
 {
   public interface INumericSequence<TNumber>
     : System.Collections.Generic.IEnumerable<TNumber>

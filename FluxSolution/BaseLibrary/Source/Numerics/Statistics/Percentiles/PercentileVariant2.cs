@@ -1,17 +1,17 @@
-namespace Flux.Percentiles
+namespace Flux.Numerics
 {
   /// <summary>
-  /// <para>One definition of percentile, often given in texts, is that the P-th percentile of a list of N ordered values (sorted from least to greatest) is the smallest value in the list such that no more than P percent of the data is strictly less than the value and at least P percent of the data is less than or equal to that value.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Percentile#The_nearest-rank_method"/>
+  /// <para>From Microsoft Excel (up to and including version 2013 by means of the PERCENTILE.INC function). Noted as an alternative by NIST.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Percentile#Second_variant,_C_=_1"/>
   /// </summary>
-  public record class NearestRankMethod
+  public record class PercentileVariant2
     : IPercentileComputable
   {
     public TSelf ComputePercentile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> distribution, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => PercentValue(distribution, p);
 
-    /// <summary>Computes the ordinal rank.</summary>
+    /// <summary>Excel '.EXC' percent rank. Primary variant recommended by NIST.</summary>
     public static TPercent PercentRank<TPercent, TCount>(TPercent percent, TCount count)
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
       where TCount : System.Numerics.IBinaryInteger<TCount>
@@ -19,7 +19,8 @@ namespace Flux.Percentiles
       ? throw new System.ArgumentOutOfRangeException(nameof(percent))
       : count < TCount.Zero
       ? throw new System.ArgumentOutOfRangeException(nameof(count))
-      : TPercent.Ceiling(percent * TPercent.CreateChecked(count));
+      : percent * TPercent.CreateChecked(count - TCount.One) + TPercent.One;
+
 
     /// <summary>
     /// <para>Inverse of empirical distribution function.</para>
@@ -31,7 +32,17 @@ namespace Flux.Percentiles
       if (distribution is null) throw new System.ArgumentNullException(nameof(distribution));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return distribution.ElementAt(System.Convert.ToInt32(PercentRank(p, distribution.Count())));
+      var sampleCount = distribution.Count();
+
+      var x = PercentRank(p, sampleCount);
+      var m = x % TSelf.One;
+
+      var i = System.Convert.ToInt32(TSelf.Floor(x));
+
+      var v3 = distribution.ElementAt(int.Clamp(i, 0, sampleCount - 1));
+      var v2 = distribution.ElementAt(int.Clamp(i - 1, 0, sampleCount - 1));
+
+      return v2 + m * (v3 - v2);
     }
   }
 }

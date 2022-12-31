@@ -5,31 +5,31 @@ namespace Flux
     /// <summary>Perform a comparison where the tolerance is the same, no matter how small or large the compared numbers.</summary>
     public static bool IsApproximatelyEqualAbsolute<TSelf>(this TSelf a, TSelf b, TSelf absoluteTolerance)
       where TSelf : System.Numerics.INumber<TSelf>
-      => new ApproximateEquality.ByAbsoluteTolerance<TSelf>(absoluteTolerance).IsApproximatelyEqual(a, b);
+      => ApproximateEquality.ByAbsoluteTolerance<TSelf>.IsApproximatelyEqual(a, b, absoluteTolerance);
   }
 
   namespace ApproximateEquality
   {
     /// <summary>Perform a comparison where the tolerance is the same, no matter how small or large the compared numbers.</summary>
-    public record class ByAbsoluteTolerance<TSelf>
-      : IEqualityApproximatable<TSelf>
-      where TSelf : System.Numerics.INumber<TSelf>
+    public record class ByAbsoluteTolerance<TValue>
+      : IEqualityApproximatable<TValue>
+      where TValue : System.Numerics.INumber<TValue>
     {
-      private readonly TSelf m_absoluteTolerance;
+      private readonly TValue m_absoluteTolerance;
 
-      public ByAbsoluteTolerance(TSelf absoluteTolerance)
+      public ByAbsoluteTolerance(TValue absoluteTolerance)
         => m_absoluteTolerance = absoluteTolerance;
 
       /// <summary>The absolute tolerance, i.e. the tolerance in a non-relative term, the tolerance is fixed, not proportional.</summary>
-      public TSelf AbsoluteTolerance { get => m_absoluteTolerance; init => m_absoluteTolerance = value; }
+      public TValue AbsoluteTolerance { get => m_absoluteTolerance; init => m_absoluteTolerance = value; }
 
       #region Static methods
-      public static bool IsApproximatelyEqual(TSelf a, TSelf b, TSelf absoluteTolerance)
-        => a == b || (TSelf.Abs(a - b) <= absoluteTolerance);
+      public static bool IsApproximatelyEqual(TValue a, TValue b, TValue absoluteTolerance)
+        => a == b || (TValue.Abs(a - b) <= absoluteTolerance);
       #endregion Static methods
 
       #region Implemented interfaces
-      public bool IsApproximatelyEqual(TSelf a, TSelf b)
+      public bool IsApproximatelyEqual(TValue a, TValue b)
         => IsApproximatelyEqual(a, b, m_absoluteTolerance);
       #endregion Implemented interfaces
     }

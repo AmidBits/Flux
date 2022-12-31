@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Numerics
 {
   /// <summary>
   /// <para>A k-th percentile (percentile score or centile) is a score below which a given percentage k of scores in its frequency distribution falls (exclusive definition) or a score at or below which a given percentage falls (inclusive definition).</para>

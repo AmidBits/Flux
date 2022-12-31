@@ -1,13 +1,13 @@
-namespace Flux.Quantiles
+namespace Flux.Numerics
 {
   /// <summary>
   /// <para>Inverse of empirical distribution function.</para>
   /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
-  public record class R1
+  public record class QuantileR1
     : IQuantileEstimatable
   {
-    public static IQuantileEstimatable Default => new R1();
+    public static IQuantileEstimatable Default => new QuantileR1();
 
     public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>

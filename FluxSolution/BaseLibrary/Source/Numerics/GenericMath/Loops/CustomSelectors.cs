@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Creates a new sequence.</summary>
     public record class CustomSelectors<TSelf, TResult>
-    : INumericSequence<TResult>
+    : NumberSequences.INumericSequence<TResult>
     where TSelf : System.Numerics.INumber<TSelf>
     where TResult : System.Numerics.INumber<TResult>
     {
@@ -23,7 +23,7 @@ namespace Flux
 
       #region Implemented interfaces
       // INumberSequence
-      
+
       public System.Collections.Generic.IEnumerable<TResult> GetSequence()
       {
         var index = 0;
@@ -32,8 +32,8 @@ namespace Flux
       }
 
       // IEnumerable<>
-       public System.Collections.Generic.IEnumerator<TResult> GetEnumerator() => GetSequence().GetEnumerator();
-       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+      public System.Collections.Generic.IEnumerator<TResult> GetEnumerator() => GetSequence().GetEnumerator();
+      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
       #endregion Implemented interfaces
     }
   }

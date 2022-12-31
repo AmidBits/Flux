@@ -9,9 +9,9 @@ namespace Flux
     /// <para>IsApproximatelyEqual(1000.02, 1000.015, 2);</para>
     /// <para>IsApproximatelyEqual(1334.261, 1235.272, -2);</para>
     /// </remarks>
-    public static bool IsApproximatelyEqualPrecision<TSelf>(this TSelf a, TSelf b, int significantDigits)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => new ApproximateEquality.BySignificantDigits<TSelf>(significantDigits).IsApproximatelyEqual(a, b);
+    public static bool IsApproximatelyEqualPrecision<TValue>(this TValue a, TValue b, int significantDigits)
+      where TValue : System.Numerics.INumber<TValue>
+      => ApproximateEquality.BySignificantDigits<TValue>.IsApproximatelyEqual(a, b, significantDigits);
   }
 
   namespace ApproximateEquality
@@ -23,16 +23,18 @@ namespace Flux
     /// <para>IsApproximatelyEqual(1000.02, 1000.015, 2); // 2 will compare the two numbers at 2 decimals, if the difference is smaller than 2 (0.01), which is true in this case.</para>
     /// <para>IsApproximatelyEqual(1334.261, 1235.272, -2); // -2 = 100 (two zeroes), so if the difference is less than 100, which is true in this case.</para>
     /// </remarks>
-    public record class BySignificantDigits<TSelf>
-      : IEqualityApproximatable<TSelf>
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+    public record class BySignificantDigits<TValue>
+      : IEqualityApproximatable<TValue>
+      where TValue : System.Numerics.INumber<TValue>
     {
       private readonly int m_significantDigits;
 
+      /// <summary>Create a comparison with a specified precision.</summary>
+      /// <param name="significantDigits">A positive number will compare the number of digits on the right side of the decimal point. A negative number will compare the number of digits on the left side of the decimal point.</param>
       public BySignificantDigits(int significantDigits)
         => m_significantDigits = significantDigits;
 
-      /// <summary>The number of significant digits to consider.</summary>
+      /// <summary>The number of significant digits to consider (positive means right side of decimal point, negative means left side).</summary>
       public int SignificantDigits { get => m_significantDigits; init => m_significantDigits = value; }
 
       #region Static methods
@@ -40,8 +42,8 @@ namespace Flux
       /// <see cref="https://stackoverflow.com/questions/9180385/is-this-a-valid-float-comparison-that-accounts-for-a-set-number-of-decimal-place"/>
       /// <param name="significantDigits">The tolerance, as a number of decimals, considered before finding inequality. Using a negative value allows for left side tolerance.</param>
       /// <example>Flux.Math.EqualityApproximation.Almost(1000.02, 1000.015, 2)</example>
-      public static bool IsApproximatelyEqual(TSelf a, TSelf b, int significantDigits)
-        => a == b || TSelf.Abs(a - b) <= TSelf.Pow(TSelf.CreateChecked(10), TSelf.CreateChecked(-significantDigits));
+      public static bool IsApproximatelyEqual(TValue a, TValue b, int significantDigits)
+        => a == b || (double.CreateChecked(TValue.Abs(a - b)) <= double.Pow(10, -significantDigits));
       #endregion Static methods
 
       #region Implemented interfaces
@@ -49,7 +51,7 @@ namespace Flux
       /// <see cref="https://stackoverflow.com/questions/9180385/is-this-a-valid-float-comparison-that-accounts-for-a-set-number-of-decimal-place"/>
       /// <param name="significantDigits">The tolerance, as a number of decimals, considered before finding inequality. Using a negative value allows for left side tolerance.</param>
       /// <example>Flux.Math.EqualityApproximation.Almost(1000.02, 1000.015, 2)</example>
-      public bool IsApproximatelyEqual(TSelf a, TSelf b)
+      public bool IsApproximatelyEqual(TValue a, TValue b)
         => IsApproximatelyEqual(a, b, m_significantDigits);
       #endregion Implemented interfaces
     }

@@ -12,7 +12,7 @@ namespace Flux
   {
     /// <summary>Creates a new sequence based on the range properties.</summary>
     public record class Range<TSelf>
-      : INumericSequence<TSelf>
+      : NumberSequences.INumericSequence<TSelf>
       where TSelf : System.Numerics.INumber<TSelf>
     {
       private readonly TSelf m_startNumber;
@@ -44,7 +44,7 @@ namespace Flux
 
       #region Implemented interfaces
       // INumberSequence
-      
+
       public System.Collections.Generic.IEnumerable<TSelf> GetSequence()
       {
         for (TSelf n = m_startNumber, c = m_count - TSelf.One; c >= TSelf.Zero; n += m_stepSize, c--)
@@ -52,8 +52,8 @@ namespace Flux
       }
 
       // IEnumerable<>
-       public System.Collections.Generic.IEnumerator<TSelf> GetEnumerator() => GetSequence().GetEnumerator();
-       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+      public System.Collections.Generic.IEnumerator<TSelf> GetEnumerator() => GetSequence().GetEnumerator();
+      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
       #endregion Implemented interfaces
     }
   }

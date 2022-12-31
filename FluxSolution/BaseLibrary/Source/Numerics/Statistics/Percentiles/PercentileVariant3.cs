@@ -1,12 +1,10 @@
-using System.Linq;
-
-namespace Flux.Percentiles
+namespace Flux.Numerics
 {
   /// <summary>
   /// <para>Adopted by Microsoft Excel since 2010 by means of PERCENTIL.EXC function. The primary variant recommended by NIST.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Percentile#Third_variant,_C_=_0"/></para>
   /// </summary>
-  public record class Variant3
+  public record class PercentileVariant3
     : IPercentileComputable
   {
     public TSelf ComputePercentile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> distribution, TSelf p)

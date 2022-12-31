@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.NumberSequences
 {
   public interface INumberSubset<TNumber>
     where TNumber : System.Numerics.INumber<TNumber>

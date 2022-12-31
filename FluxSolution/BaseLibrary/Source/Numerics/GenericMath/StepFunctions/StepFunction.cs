@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Numerics
 {
   public record class StepFunction<TSelf, TResult>
     : IStepFunction<TSelf, TResult>

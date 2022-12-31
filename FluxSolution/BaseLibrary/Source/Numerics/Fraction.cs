@@ -4,9 +4,19 @@ namespace Flux
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>
   public readonly record struct Fraction
     : System.IComparable, System.IComparable<Fraction>, System.IConvertible, Quantities.IQuantifiable<double>
-    //, System.Numerics.IComparisonOperators<Fraction, Fraction, Fraction>,
+    , System.Numerics.IAdditiveIdentity<Fraction, Fraction>
+    , System.Numerics.IAdditionOperators<Fraction, Fraction, Fraction>
+    , System.Numerics.IDecrementOperators<Fraction>
+    , System.Numerics.IDivisionOperators<Fraction, Fraction, Fraction>
+    , System.Numerics.IIncrementOperators<Fraction>
+    , System.Numerics.IModulusOperators<Fraction, Fraction, Fraction>
+    , System.Numerics.IMultiplicativeIdentity<Fraction, Fraction>
+    , System.Numerics.IMultiplyOperators<Fraction, Fraction, Fraction>
     , System.Numerics.IRootFunctions<Fraction>
     , System.Numerics.ISignedNumber<Fraction>
+    , System.Numerics.ISubtractionOperators<Fraction, Fraction, Fraction>
+    , System.Numerics.IUnaryNegationOperators<Fraction, Fraction>
+    , System.Numerics.IUnaryPlusOperators<Fraction, Fraction>
     , System.Numerics.INumberBase<Fraction>
   {
     public static readonly Fraction EpsilonLikeSingle = new(1, 1000000);
@@ -14,9 +24,6 @@ namespace Flux
 
     /// <summary>Represents a fraction of the Golden Ratio.</summary>
     public static readonly Fraction GoldenRatio = new(7540113804746346429L, 4660046610375530309L, false);
-
-    public static Fraction Pi => new(2646693125139304345L, 842468587426513207L, false);
-    public static Fraction Tau => Pi.Multiply(2);
 
     private readonly System.Numerics.BigInteger m_numerator;
     private readonly System.Numerics.BigInteger m_denominator;
@@ -124,6 +131,58 @@ namespace Flux
 
     #region Static methods
 
+    /// <summary>Calculates rational approximations to a given real number.</summary>
+    /// <param name="x"></param>
+    /// <param name="maxIterations"></param>
+    /// <returns></returns>
+    /// <see href="https://stackoverflow.com/questions/12098461/how-can-i-detect-if-a-float-has-a-repeating-decimal-expansion-in-c/12101996#12101996"/>
+    public static Fraction ApproximateRational(double x, int maxIterations = 101)
+    {
+      var Am = (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One);
+      var Bm = (System.Numerics.BigInteger.One, System.Numerics.BigInteger.Zero);
+
+      var A = System.Numerics.BigInteger.Zero;
+      var B = System.Numerics.BigInteger.Zero;
+
+      var a = System.Numerics.BigInteger.Zero;
+      var b = System.Numerics.BigInteger.Zero;
+
+      if (x > 1)
+      {
+        var xW = double.Truncate(x);
+
+        var ar = ApproximateRational(x - xW, maxIterations);
+
+        return ar + System.Numerics.BigInteger.CreateChecked(xW);
+      }
+
+      var counter = 0;
+
+      for (; counter < maxIterations && x != 0; counter++)
+      {
+        var r = 1 / x;
+        var rR = double.Round(r);
+
+        var rT = System.Numerics.BigInteger.CreateChecked(rR);
+
+        A = Am.Item2 + rT * Am.Item1;
+        B = Bm.Item2 + rT * Bm.Item1;
+
+        if (double.IsInfinity(double.CreateChecked(A)) || double.IsInfinity(double.CreateChecked(B)))
+          break;
+
+        a = A;
+        b = B;
+
+        Am = (A, Am.Item1);
+        Bm = (B, Bm.Item1);
+
+        x = r - rR;
+      }
+
+      return new(a, b);
+    }
+
     /// <summary>Returns the value with the sign of the second argument.</summary>
     public static Fraction CopySign(Fraction value, Fraction sign)
       => (Sign(sign) == 0 || IsZero(value))
@@ -136,10 +195,9 @@ namespace Flux
       where TOther : System.Numerics.INumberBase<TOther>
     {
       if (o.IsIBinaryInteger())
-      {
-        var v = System.Numerics.BigInteger.CreateChecked(o);
-        return new(v, v);
-      }
+        return new(System.Numerics.BigInteger.CreateChecked(o));
+      else if (o.IsIFloatingPoint())
+        return ApproximateRational(double.CreateChecked(o));
       else if (o is Fraction f)
         return new(f.Numerator, f.Denominator);
 
@@ -149,10 +207,9 @@ namespace Flux
       where TOther : System.Numerics.INumberBase<TOther>
     {
       if (o.IsIBinaryInteger())
-      {
-        var v = System.Numerics.BigInteger.CreateSaturating(o);
-        return new(v, v);
-      }
+        return new(System.Numerics.BigInteger.CreateSaturating(o));
+      else if (o.IsIFloatingPoint())
+        return ApproximateRational(double.CreateSaturating(o));
       else if (o is Fraction f)
         return new(f.Numerator, f.Denominator);
 
@@ -162,10 +219,9 @@ namespace Flux
       where TOther : System.Numerics.INumberBase<TOther>
     {
       if (o.IsIBinaryInteger())
-      {
-        var v = System.Numerics.BigInteger.CreateTruncating(o);
-        return new(v, v);
-      }
+        return new(System.Numerics.BigInteger.CreateTruncating(o));
+      else if (o.IsIFloatingPoint())
+        return ApproximateRational(double.CreateTruncating(o));
       else if (o is Fraction f)
         return new(f.Numerator, f.Denominator);
 
@@ -362,12 +418,13 @@ namespace Flux
     //static Fraction System.Numerics.IComparisonOperators<Fraction, Fraction, Fraction>.operator >(Fraction a, Fraction b) => MaxMagnitude(a, b);
     //static Fraction System.Numerics.IComparisonOperators<Fraction, Fraction, Fraction>.operator >=(Fraction a, Fraction b) => MaxMagnitude(a, b);
 
-    public static Fraction operator --(Fraction f) => new(f.Numerator - System.Numerics.BigInteger.One, f.Denominator);
-    public static Fraction operator ++(Fraction f) => new(f.Numerator + System.Numerics.BigInteger.One, f.Denominator);
+    #endregion Overloaded operators
 
-    public static Fraction operator -(Fraction f) => new(f.m_numerator, -f.m_denominator, false);
-    public static Fraction operator +(Fraction f) => new(f.m_numerator, f.m_denominator, false);
+    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider) => ToQuantityString();
 
+    #region Implemented interfaces
+
+    // System.Numerics.IAdditionOperators<>
     public static Fraction operator +(Fraction a, Fraction b)
     {
       var lcm = GenericMath.LeastCommonMultiple(a.m_denominator, b.m_denominator);
@@ -380,19 +437,51 @@ namespace Flux
     public static Fraction operator +(Fraction a, System.Numerics.BigInteger b)
       => a + new Fraction(b);
 
+    // System.Numerics.IAdditiveIdentity<>
+    public static Fraction AdditiveIdentity => Zero;
+
+    // System.Numerics.IDecrementOperators<>
+    public static Fraction operator --(Fraction f) => new(f.Numerator - System.Numerics.BigInteger.One, f.Denominator);
+
+    // System.Numerics.IDivisionOperators<>
     public static Fraction operator /(Fraction a, Fraction b)
       => new(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
     public static Fraction operator /(Fraction a, System.Numerics.BigInteger b)
       => a / new Fraction(b);
 
+    // System.Numerics.IFloatingPointConstants<>
+    public static Fraction E => new Fraction(System.Numerics.BigInteger.Parse("611070150698522592097"), System.Numerics.BigInteger.Parse("224800145555521536000"), false);
+    public static Fraction Pi => new(System.Numerics.BigInteger.Parse("2646693125139304345"), System.Numerics.BigInteger.Parse("842468587426513207"), false);
+    public static Fraction Tau => Pi.Multiply(2);
+
+    // System.Numerics.IIncrementOperators<>
+    public static Fraction operator ++(Fraction f) => new(f.Numerator + System.Numerics.BigInteger.One, f.Denominator);
+
+    // System.Numerics.IModulusOperators<>
+    public static Fraction operator %(Fraction a, Fraction b)
+      => Fraction.IsInteger(b) ? a % b.m_numerator : throw new System.ArithmeticException("Second argument must be an integer.");
+    public static Fraction operator %(Fraction a, System.Numerics.BigInteger b)
+      => new(a.m_numerator % (a.m_denominator * b), a.m_denominator);
+
+    // System.Numerics.IMultiplicativeIdentity<>
+    public static Fraction MultiplicativeIdentity => One;
+
+    // System.Numerics.IMultiplyOperators<>
     public static Fraction operator *(Fraction a, Fraction b)
       => new(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
     public static Fraction operator *(Fraction a, System.Numerics.BigInteger b)
       => a * new Fraction(b);
 
-    public static Fraction operator %(Fraction a, System.Numerics.BigInteger b)
-      => new(a.m_numerator % (a.m_denominator * b), a.m_denominator);
+    // System.Numerics.IRootFunctions<>
+    public static Fraction Cbrt(Fraction value) => NthRoot(value, 3, EpsilonLikeDouble);
+    public static Fraction Hypot(Fraction v1, Fraction v2) => Sqrt(v1 * v1 + v2 * v2);
+    public static Fraction RootN(Fraction value, int n) => NthRoot(value, n, EpsilonLikeDouble);
+    public static Fraction Sqrt(Fraction value) => NthRoot(value, 2, EpsilonLikeDouble);
 
+    // System.Numerics.ISignedNumber<>
+    public static Fraction NegativeOne => -One;
+
+    // System.Numerics.ISubtractionOperators<>
     public static Fraction operator -(Fraction a, Fraction b)
     {
       var lcm = GenericMath.LeastCommonMultiple(a.m_denominator, b.m_denominator);
@@ -405,26 +494,14 @@ namespace Flux
     public static Fraction operator -(Fraction a, System.Numerics.BigInteger b)
       => a - new Fraction(b);
 
-    #endregion Overloaded operators
+    // System.Numerics.IUnaryNegationOperators<>
+    public static Fraction operator -(Fraction f) => new(f.m_numerator, -f.m_denominator, false);
 
-    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider) => ToQuantityString();
-
-    #region Implemented interfaces
-
-    // System.Numerics.IRootFunctions<>
-    public static Fraction E => new Fraction(System.Numerics.BigInteger.Parse("611070150698522592097"), System.Numerics.BigInteger.Parse("224800145555521536000"));
-    public static Fraction Cbrt(Fraction value) => NthRoot(value, 3, EpsilonLikeDouble);
-    public static Fraction Hypot(Fraction v1, Fraction v2) => Sqrt(v1 * v1 + v2 * v2);
-    public static Fraction RootN(Fraction value, int n) => NthRoot(value, n, EpsilonLikeDouble);
-    public static Fraction Sqrt(Fraction value) => NthRoot(value, 2, EpsilonLikeDouble);
-
-    // System.Numerics.ISignedNumber<>
-    public static Fraction NegativeOne => -One;
+    // System.Numerics.IUnaryPlusOperators<>
+    public static Fraction operator +(Fraction f) => new(f.m_numerator, f.m_denominator, false);
 
     #region System.Numerics.INumberBase<>
 
-    public static Fraction AdditiveIdentity => Zero;
-    public static Fraction MultiplicativeIdentity => One;
     public static Fraction One => new(System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, false);
     public static int Radix => 2;
     public static Fraction Zero => new(System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One, false);

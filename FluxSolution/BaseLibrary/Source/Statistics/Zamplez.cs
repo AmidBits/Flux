@@ -33,10 +33,10 @@ namespace Flux
     static void RunQuartiles(System.Collections.Generic.List<double> x)
     {
       System.Console.WriteLine($"The computed quartiles:");
-      System.Console.WriteLine($"Method 1: {new Flux.Quartiles.Method1().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 2: {new Flux.Quartiles.Method2().ComputeQuartiles(x)}");
-      //System.Console.WriteLine($"Method 3: {new Flux.Quartiles.Method3().EstimateQuartiles(x)}");
-      System.Console.WriteLine($"Method 4: {new Flux.Quartiles.Method4().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 1: {new Flux.Numerics.QuartileMethod1().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 2: {new Flux.Numerics.QuartileMethod2().ComputeQuartiles(x)}");
+      //System.Console.WriteLine($"Method 3: {new Flux.Numerics.Method3().EstimateQuartiles(x)}");
+      System.Console.WriteLine($"Method 4: {new Flux.Numerics.QuartileMethod4().ComputeQuartiles(x)}");
     }
 
     static void RunQuantiles(System.Collections.Generic.List<double> x)
@@ -48,15 +48,15 @@ namespace Flux
       {
         var values = new double[]
         {
-          Quantiles.R1.Estimate(x, p),
-          Quantiles.R2.Estimate(x, p),
-          Quantiles.R3.Estimate(x, p),
-          Quantiles.R4.Estimate(x, p),
-          Quantiles.R5.Estimate(x, p),
-          Quantiles.R6.Estimate(x, p),
-          Quantiles.R7.Estimate(x, p),
-          Quantiles.R8.Estimate(x, p),
-          Quantiles.R9.Estimate(x, p),
+          Numerics.QuantileR1.Estimate(x, p),
+          Numerics.QuantileR2.Estimate(x, p),
+          Numerics.QuantileR3.Estimate(x, p),
+          Numerics.QuantileR4.Estimate(x, p),
+          Numerics.QuantileR5.Estimate(x, p),
+          Numerics.QuantileR6.Estimate(x, p),
+          Numerics.QuantileR7.Estimate(x, p),
+          Numerics.QuantileR8.Estimate(x, p),
+          Numerics.QuantileR9.Estimate(x, p),
         };
 
         System.Console.WriteLine($"The estimated quantiles of {p:N2}:");
