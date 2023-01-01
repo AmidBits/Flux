@@ -20,8 +20,7 @@ namespace Flux.Interpolation
     #endregion Static methods
 
     #region Implemented interfaces
-    public TMu Interpolate2Node(TNode n1, TNode n2, TMu mu)
-      => Interpolate(n1, n2, mu);
+    public TMu Interpolate2Node(TNode n1, TNode n2, TMu mu) => Interpolate(n1, n2, mu);
     #endregion Implemented interfaces
   }
 }

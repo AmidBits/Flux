@@ -4,6 +4,6 @@
     where TSelf : System.Numerics.INumber<TSelf>
     where TBound : System.Numerics.INumber<TBound>
   {
-    TBound RoundNumber(TSelf value);
+    TBound RoundNumber(TSelf value, RoundingMode mode);
   }
 }

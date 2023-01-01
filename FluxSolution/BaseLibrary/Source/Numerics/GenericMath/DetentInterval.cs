@@ -6,19 +6,14 @@ namespace Flux
     public static TSelf DetentInterval<TSelf>(this TSelf value, TSelf interval, TSelf distance, RoundingMode mode)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      if (value % interval is var remainder && TSelf.IsZero(remainder))
-        return value; // The number is already on an interval.
+      LocateMultiple(value, interval, false, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      var boundaryTowardsZero = value - remainder;
-      var boundaryAwayFromZero = value < TSelf.Zero ? boundaryTowardsZero - interval : boundaryTowardsZero + interval;
+      BoundaryRounding<TSelf, TSelf>.MeasureDistanceToBoundaries(value, multipleTowardsZero, multipleAwayFromZero, out TSelf distanceTowardsZero, out TSelf distanceAwayFromZero);
 
-      var distanceTowardsZero = TSelf.Abs(value - boundaryTowardsZero);
-      var distanceAwayFromZero = TSelf.Abs(boundaryAwayFromZero - value);
+      if (BoundaryRounding<TSelf, TSelf>.IsWithinDistanceToBoundaries(distanceTowardsZero, distanceAwayFromZero, distance))
+        return BoundaryRounding<TSelf, TSelf>.Round(value, mode, multipleTowardsZero, multipleAwayFromZero);
 
-      if (distanceTowardsZero > distance && distanceAwayFromZero > distance) // If neither is within distance of interval.
-        return value;
-
-      return new BoundaryRounding<TSelf, TSelf>(mode, boundaryTowardsZero, boundaryAwayFromZero).RoundNumber(value);
+      return value; // If it gets here, value was not within the distance from either multipleTowardsZero or multipleAwayFromZero, so we return the value unchanged.
     }
   }
 }

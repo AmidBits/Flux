@@ -112,11 +112,9 @@
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
     {
-      var rounding = new Rounding<TSelf>(mode);
-
-      var rQ = rounding.RoundNumber(source.Q);
-      var rR = rounding.RoundNumber(source.R);
-      var rS = rounding.RoundNumber(source.S);
+      var rQ = Rounding<TSelf>.Round(source.Q, mode);
+      var rR = Rounding<TSelf>.Round(source.R, mode);
+      var rS = Rounding<TSelf>.Round(source.S, mode);
 
       var aQ = TSelf.Abs(rQ - source.Q);
       var aR = TSelf.Abs(rR - source.R);

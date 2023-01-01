@@ -8,13 +8,11 @@ namespace Flux.Interpolation
     where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TNode, TMu>
   {
     #region Static methods
-    public static TMu Interpolate(TNode n1, TNode n2, TMu mu)
-      => (TMu.One - mu) * n1 + mu * n2;
+    public static TMu Interpolate(TNode n1, TNode n2, TMu mu) => (TMu.One - mu) * n1 + mu * n2;
     #endregion Static methods
 
     #region Implemented interfaces
-    public TMu Interpolate2Node(TNode n1, TNode n2, TMu mu)
-      => Interpolate(n1, n2, mu);
+    public TMu Interpolate2Node(TNode n1, TNode n2, TMu mu) => Interpolate(n1, n2, mu);
     #endregion Implemented interfaces
   }
 }

@@ -1,21 +1,23 @@
 ﻿namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static TSelf Round<TSelf>(this TSelf source, RoundingMode mode)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => Rounding<TSelf>.Round(source, mode)
+  }
+
   /// <summary></summary>
   public class Rounding<TSelf>
     : INumberRoundable<TSelf, TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
-    private readonly RoundingMode m_mode;
-
-    public Rounding(RoundingMode mode)
-      => m_mode = mode;
-
     #region Static methods
 
     #region Halfway rounding functions
+
     /// <summary>Symmetric rounding: round half up, bias: away from zero.</summary>
-    public static TSelf RoundHalfAwayFromZero(TSelf x)
-      => TSelf.CopySign(RoundHalfToPositiveInfinity(TSelf.Abs(x)), x);
+    public static TSelf RoundHalfAwayFromZero(TSelf x) => TSelf.CopySign(RoundHalfToPositiveInfinity(TSelf.Abs(x)), x);
 
     /// <summary>Common rounding: round half, bias: even.</summary>
     public static TSelf RoundHalfToEven(TSelf x)
@@ -28,8 +30,7 @@
     }
 
     /// <summary>Common rounding: round half down, bias: negative infinity.</summary>
-    public static TSelf RoundHalfToNegativeInfinity(TSelf x)
-      => TSelf.Ceiling(x - TSelf.CreateChecked(0.5));
+    public static TSelf RoundHalfToNegativeInfinity(TSelf x) => TSelf.Ceiling(x - TSelf.CreateChecked(0.5));
 
     /// <summary>Common rounding: round half, bias: even.</summary>
     public static TSelf RoundHalfToOdd(TSelf x)
@@ -42,30 +43,27 @@
     }
 
     /// <summary>Common rounding: round half up, bias: positive infinity.</summary>
-    public static TSelf RoundHalfToPositiveInfinity(TSelf x)
-      => TSelf.Floor(x + TSelf.CreateChecked(0.5));
+    public static TSelf RoundHalfToPositiveInfinity(TSelf x) => TSelf.Floor(x + TSelf.CreateChecked(0.5));
 
     /// <summary>Symmetric rounding: round half down, bias: towards zero.</summary>
-    public static TSelf RoundHalfTowardZero(TSelf x)
-      => TSelf.CopySign(RoundHalfToNegativeInfinity(TSelf.Abs(x)), x);
+    public static TSelf RoundHalfTowardZero(TSelf x) => TSelf.CopySign(RoundHalfToNegativeInfinity(TSelf.Abs(x)), x);
+
     #endregion Halfway rounding functions
 
     #region Direct (non-halfway) rounding functions
+
     /// <summary>Common rounding: round up, bias: positive infinity.</summary>
-    public static TSelf RoundCeiling(TSelf x)
-     => TSelf.Ceiling(x);
+    public static TSelf RoundCeiling(TSelf x) => TSelf.Ceiling(x);
 
     /// <summary>Symmetric rounding: round up, bias: away from zero.</summary>
-    public static TSelf RoundEnvelop(TSelf x)
-      => TSelf.Sign(x) < 0 ? TSelf.Floor(x) : TSelf.Ceiling(x);
+    public static TSelf RoundEnvelop(TSelf x) => TSelf.Sign(x) < 0 ? TSelf.Floor(x) : TSelf.Ceiling(x);
 
     /// <summary>Common rounding: round down, bias: negative infinity.</summary>
-    public static TSelf RoundFloor(TSelf x)
-      => TSelf.Floor(x);
+    public static TSelf RoundFloor(TSelf x) => TSelf.Floor(x);
 
     /// <summary>Symmetric rounding: round down, bias: towards zero.</summary>
-    public static TSelf RoundTruncate(TSelf x)
-      => TSelf.Truncate(x);
+    public static TSelf RoundTruncate(TSelf x) => TSelf.Truncate(x);
+
     #endregion Direct (non-halfway) rounding functions
 
     public static TSelf Round(TSelf x, RoundingMode mode)
@@ -92,8 +90,7 @@
     #endregion Static methods
 
     #region Implemented interfaces
-    public TSelf RoundNumber(TSelf x)
-      => Round(x, m_mode);
+    public TSelf RoundNumber(TSelf x, RoundingMode mode) => Round(x, mode);
     #endregion Implemented interfaces
   }
 }

@@ -17,21 +17,15 @@ namespace Flux
     {
       private readonly double m_relativeTolerance;
 
-      public ByRelativeTolerance(double relativeTolerance)
-        => m_relativeTolerance = relativeTolerance;
+      public ByRelativeTolerance(double relativeTolerance) => m_relativeTolerance = relativeTolerance;
 
       /// <summary>The relative tolerance, i.e. tolerance as a percentage, a proportional property.</summary>
       public double RelativeTolerance { get => m_relativeTolerance; init => m_relativeTolerance = value; }
 
-      #region Static methods
-      public static bool IsApproximatelyEqual(TValue a, TValue b, double relativeTolerance)
-       => a == b || (double.CreateChecked(TValue.Abs(a - b)) <= double.CreateChecked(TValue.Max(TValue.Abs(a), TValue.Abs(b))) * relativeTolerance);
-      #endregion Static methods
+      /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
+      public static bool IsApproximatelyEqual(TValue a, TValue b, double relativeTolerance) => a == b || (double.CreateChecked(TValue.Abs(a - b)) <= double.CreateChecked(TValue.Max(TValue.Abs(a), TValue.Abs(b))) * relativeTolerance);
 
-      #region Implemented interfaces
-      public bool IsApproximatelyEqual(TValue a, TValue b)
-        => IsApproximatelyEqual(a, b, m_relativeTolerance);
-      #endregion Implemented interfaces
+      public bool IsApproximatelyEqual(TValue a, TValue b) => IsApproximatelyEqual(a, b, m_relativeTolerance);
     }
   }
 }

@@ -39,7 +39,7 @@
     {
       LocateMultiple(value, multiple, proper, out multipleTowardsZero, out multipleAwayFromZero);
 
-      return BoundaryRounding<TSelf, TSelf>.Round(value, multipleTowardsZero, multipleAwayFromZero, mode);
+      return BoundaryRounding<TSelf, TSelf>.Round(value, mode, multipleTowardsZero, multipleAwayFromZero);
     }
 
     /// <summary>Find the nearest (to <paramref name="value"/>) multiple away from zero (round-up). Negative <paramref name="value"/> resilient.</summary>

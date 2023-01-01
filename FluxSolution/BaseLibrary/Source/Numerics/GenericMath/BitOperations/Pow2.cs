@@ -27,7 +27,7 @@ namespace Flux
         pow2TowardsZero = -pow2TowardsZero;
         pow2AwayFromZero = -pow2AwayFromZero;
       }
-      else // The value is greater than zero here.
+      else // The value is positive/greater-than-zero.
       {
         var quotient = TResult.CreateChecked(value.TruncMod(TSelf.One, out var remainder));
 
@@ -44,10 +44,10 @@ namespace Flux
             pow2AwayFromZero = TSelf.IsZero(remainder) ? quotient : quotient << 1;
           }
         }
-        else
+        else // It's a positive non-power-of-two number.
         {
-          pow2TowardsZero = MostSignificant1Bit(quotient);
-          pow2AwayFromZero = pow2TowardsZero << 1;
+          pow2TowardsZero = MostSignificant1Bit(quotient); // Use the MS1B for power-of-two closer to zero.
+          pow2AwayFromZero = pow2TowardsZero << 1; // Use the next greater MS1B for power-of-two farther from zero.
         }
       }
     }
@@ -56,16 +56,16 @@ namespace Flux
     /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
     /// <param name="mode">The halfway rounding mode to use, when halfway between two values.</param>
-    /// <param name="nearestPow2TowardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="pow2TowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="pow2AwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value.</returns>
-    public static TResult NearestPow2<TSelf, TResult>(this TSelf value, bool proper, RoundingMode mode, out TResult nearestPow2TowardsZero, out TResult pow2AwayFromZero)
+    public static TResult NearestPow2<TSelf, TResult>(this TSelf value, bool proper, RoundingMode mode, out TResult pow2TowardsZero, out TResult pow2AwayFromZero)
       where TSelf : System.Numerics.INumber<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
     {
-      LocatePow2(value, proper, out nearestPow2TowardsZero, out pow2AwayFromZero);
+      LocatePow2(value, proper, out pow2TowardsZero, out pow2AwayFromZero);
 
-      return BoundaryRounding<TSelf, TResult>.Round(value, nearestPow2TowardsZero, pow2AwayFromZero, mode);
+      return BoundaryRounding<TSelf, TResult>.Round(value, mode, pow2TowardsZero, pow2AwayFromZero);
     }
 
     /// <summary>Find the next power of 2 away from zero.</summary>

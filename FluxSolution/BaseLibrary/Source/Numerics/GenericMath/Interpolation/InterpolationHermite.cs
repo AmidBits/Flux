@@ -45,8 +45,7 @@ namespace Flux.Interpolation
     #endregion Static methods
 
     #region Implemented interfaces
-    public TMu Interpolate4Node(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu)
-      => Interpolate(n0, n1, n2, n3, mu, m_tension, m_bias);
+    public TMu Interpolate4Node(TNode n0, TNode n1, TNode n2, TNode n3, TMu mu) => Interpolate(n0, n1, n2, n3, mu, m_tension, m_bias);
     #endregion Implemented interfaces
   }
 }

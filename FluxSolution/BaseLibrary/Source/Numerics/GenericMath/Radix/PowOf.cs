@@ -51,7 +51,7 @@ namespace Flux
     {
       LocatePowOf(value, radix, proper, out powTowardsZero, out powAwayFromZero);
 
-      return BoundaryRounding<TSelf, TSelf>.Round(value, powTowardsZero, powAwayFromZero, mode);
+      return BoundaryRounding<TSelf, TSelf>.Round(value, mode, powTowardsZero, powAwayFromZero);
     }
 
     /// <summary>Find the power-of-<paramref name="radix"/> nearest <paramref name="value"/> away from zero, optionally <paramref name="proper"/>.</summary>
