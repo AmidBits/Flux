@@ -80,7 +80,7 @@ namespace Flux
       foreach (var k in a)
         hg[k] = hg.TryGetValue(k, out var v) ? v + 1 : 1;
 
-      var h = a.ToHistogram(out var sof);
+      var h = a.ToHistogram((e, i) => e, (e, i) => 1, out var sof, null);
       System.Console.WriteLine("H:");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, h));
       System.Console.WriteLine();

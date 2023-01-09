@@ -1,8 +1,8 @@
 ﻿namespace Flux
 {
-  /// <summary>Rounds a value to the nearest boundary. The distance computation is a slight optimization for special cases, e.g. when rounding to multiple of. The mode specifies how to round when between two intervals.</summary>
+  /// <summary>Rounds a value to the nearest boundary. The mode specifies how to round when halfway between two boundaries.</summary>
   public class BoundaryRounding<TSelf, TBound>
-    : INumberRoundable<TSelf, TBound>
+    : INumberRoundable<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
     where TBound : System.Numerics.INumber<TBound>
   {
@@ -39,27 +39,27 @@
 
     /// <summary>Rounds a value to the nearest boundary. The distance computation is a slight optimization for special cases, e.g. when rounding to multiple of. The mode specifies how to round when between two intervals.</summary>
     public static TBound Round(TSelf x, RoundingMode mode, TBound boundaryTowardsZero, TBound boundaryAwayFromZero, TSelf distanceTowardsZero, TSelf distanceAwayFromZero)
-    {
-      return mode switch // First we 
+      => mode switch
       {
+        // First we take care of the direct rounding cases.
         RoundingMode.Envelop => boundaryAwayFromZero,
         RoundingMode.Truncate => boundaryTowardsZero,
-        RoundingMode.Floor => x < TSelf.Zero ? boundaryAwayFromZero : boundaryTowardsZero,
-        RoundingMode.Ceiling => x < TSelf.Zero ? boundaryTowardsZero : boundaryAwayFromZero,
-        _ => (distanceTowardsZero < distanceAwayFromZero) ? boundaryTowardsZero // It's a clear win for towardsZero.
-          : (distanceAwayFromZero < distanceTowardsZero) ? boundaryAwayFromZero // It's a clear win for awayFromZero.
-          : mode switch // Here it's exactly halfway, use appropriate rounding to resolve winner.
+        RoundingMode.Floor => TSelf.IsNegative(x) ? boundaryAwayFromZero : boundaryTowardsZero,
+        RoundingMode.Ceiling => TSelf.IsNegative(x) ? boundaryTowardsZero : boundaryAwayFromZero,
+        // If not applicable, and since we're comparing a value against two boundaries, if the distances from the value to the two boundaries are not equal, we can avoid halfway checks.
+        _ => (distanceTowardsZero < distanceAwayFromZero) ? boundaryTowardsZero // A clear win for towards-zero.
+          : (distanceTowardsZero > distanceAwayFromZero) ? boundaryAwayFromZero // A clear win for away-from-zero.
+          : mode switch // If the distances are equal, i.e. exactly halfway, we use the appropriate rounding strategy to resolve a winner.
           {
             RoundingMode.HalfToEven => TBound.IsEvenInteger(boundaryTowardsZero) ? boundaryTowardsZero : boundaryAwayFromZero,
             RoundingMode.HalfAwayFromZero => boundaryAwayFromZero,
             RoundingMode.HalfTowardZero => boundaryTowardsZero,
-            RoundingMode.HalfToNegativeInfinity => x < TSelf.Zero ? boundaryAwayFromZero : boundaryTowardsZero,
-            RoundingMode.HalfToPositiveInfinity => x < TSelf.Zero ? boundaryTowardsZero : boundaryAwayFromZero,
+            RoundingMode.HalfToNegativeInfinity => TSelf.IsNegative(x) ? boundaryAwayFromZero : boundaryTowardsZero,
+            RoundingMode.HalfToPositiveInfinity => TSelf.IsNegative(x) ? boundaryTowardsZero : boundaryAwayFromZero,
             RoundingMode.HalfToOdd => TBound.IsOddInteger(boundaryAwayFromZero) ? boundaryAwayFromZero : boundaryTowardsZero,
-            _ => throw new System.ArgumentOutOfRangeException(mode.ToString()),
+            _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
           }
       };
-    }
 
     /// <summary>Rounds a value to the nearest boundary. Computes the distance to both boundaries and then calls the alternate <see cref="Round(TSelf, TSelf, TSelf, RoundingMode, TSelf, TSelf)"/>.</summary>
     public static TBound Round(TSelf x, RoundingMode mode, TBound boundaryTowardsZero, TBound boundaryAwayFromZero)
@@ -72,7 +72,7 @@
     #endregion Static methods
 
     #region Implemented interfaces
-    public TBound RoundNumber(TSelf x, RoundingMode mode) => Round(x, mode, m_boundaryTowardsZero, m_boundaryAwayFromZero);
+    public TSelf RoundNumber(TSelf x, RoundingMode mode) => TSelf.CreateChecked(Round(x, mode, m_boundaryTowardsZero, m_boundaryAwayFromZero));
     #endregion Implemented interfaces
   }
 }

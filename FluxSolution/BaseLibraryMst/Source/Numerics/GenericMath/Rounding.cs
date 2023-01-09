@@ -39,7 +39,7 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void Rounding_()
+    public void RoundingCore()
     {
       var actual = Flux.Rounding<double>.Round(11.5, RoundingMode.HalfAwayFromZero);
 

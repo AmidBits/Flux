@@ -4,12 +4,12 @@
   {
     public static TSelf Round<TSelf>(this TSelf source, RoundingMode mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => Rounding<TSelf>.Round(source, mode)
+      => Rounding<TSelf>.Round(source, mode);
   }
 
   /// <summary></summary>
   public class Rounding<TSelf>
-    : INumberRoundable<TSelf, TSelf>
+    : INumberRoundable<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
     #region Static methods
@@ -20,27 +20,13 @@
     public static TSelf RoundHalfAwayFromZero(TSelf x) => TSelf.CopySign(RoundHalfToPositiveInfinity(TSelf.Abs(x)), x);
 
     /// <summary>Common rounding: round half, bias: even.</summary>
-    public static TSelf RoundHalfToEven(TSelf x)
-    {
-      var half = TSelf.CreateChecked(0.5);
-
-      var positiveInfinity = TSelf.Floor(x + half);
-
-      return !TSelf.IsZero(positiveInfinity % TSelf.CreateChecked(2)) && x - TSelf.Floor(x) == half ? positiveInfinity - TSelf.One : positiveInfinity;
-    }
+    public static TSelf RoundHalfToEven(TSelf x) => TSelf.CreateChecked(0.5) is var half && TSelf.Floor(x + half) is var xh && TSelf.IsOddInteger(xh) && x - TSelf.Floor(x) == half ? xh - TSelf.One : xh;
 
     /// <summary>Common rounding: round half down, bias: negative infinity.</summary>
     public static TSelf RoundHalfToNegativeInfinity(TSelf x) => TSelf.Ceiling(x - TSelf.CreateChecked(0.5));
 
     /// <summary>Common rounding: round half, bias: even.</summary>
-    public static TSelf RoundHalfToOdd(TSelf x)
-    {
-      var half = TSelf.CreateChecked(0.5);
-
-      var positiveInfinity = TSelf.Floor(x + half);
-
-      return TSelf.IsZero(positiveInfinity % TSelf.CreateChecked(2)) && x - TSelf.Floor(x) == half ? positiveInfinity - TSelf.One : positiveInfinity;
-    }
+    public static TSelf RoundHalfToOdd(TSelf x) => TSelf.CreateChecked(0.5) is var half && TSelf.Floor(x + half) is var xh && TSelf.IsEvenInteger(xh) && x - TSelf.Floor(x) == half ? xh - TSelf.One : xh;
 
     /// <summary>Common rounding: round half up, bias: positive infinity.</summary>
     public static TSelf RoundHalfToPositiveInfinity(TSelf x) => TSelf.Floor(x + TSelf.CreateChecked(0.5));
@@ -56,7 +42,7 @@
     public static TSelf RoundCeiling(TSelf x) => TSelf.Ceiling(x);
 
     /// <summary>Symmetric rounding: round up, bias: away from zero.</summary>
-    public static TSelf RoundEnvelop(TSelf x) => TSelf.Sign(x) < 0 ? TSelf.Floor(x) : TSelf.Ceiling(x);
+    public static TSelf RoundEnvelop(TSelf x) => TSelf.IsNegative(x) ? TSelf.Floor(x) : TSelf.Ceiling(x);
 
     /// <summary>Common rounding: round down, bias: negative infinity.</summary>
     public static TSelf RoundFloor(TSelf x) => TSelf.Floor(x);
@@ -67,25 +53,23 @@
     #endregion Direct (non-halfway) rounding functions
 
     public static TSelf Round(TSelf x, RoundingMode mode)
-    {
-      return mode switch
+      => mode switch // First, handle the direct rounding strategies.
       {
         RoundingMode.Envelop => RoundEnvelop(x),
         RoundingMode.Ceiling => RoundCeiling(x),
         RoundingMode.Floor => RoundFloor(x),
         RoundingMode.Truncate => RoundTruncate(x),
-        _ => mode switch
+        _ => mode switch  // Second, handle the halfway rounding strategies.
         {
           RoundingMode.HalfAwayFromZero => RoundHalfAwayFromZero(x),
           RoundingMode.HalfTowardZero => RoundHalfTowardZero(x),
-          RoundingMode.HalfToEven => TSelf.CreateChecked(2) is var two && TSelf.CreateChecked(0.5) is var half && TSelf.Floor(x + half) is var pi && !TSelf.IsZero(pi % two) && x - TSelf.Floor(x) == half ? pi - TSelf.One : pi,
+          RoundingMode.HalfToEven => RoundHalfToEven(x),
           RoundingMode.HalfToNegativeInfinity => RoundHalfToNegativeInfinity(x),
-          RoundingMode.HalfToOdd => TSelf.CreateChecked(2) is var two && TSelf.CreateChecked(0.5) is var half && TSelf.Floor(x + half) is var pi && TSelf.IsZero(pi % two) && x - TSelf.Floor(x) == half ? pi - TSelf.One : pi,
+          RoundingMode.HalfToOdd => RoundHalfToOdd(x),
           RoundingMode.HalfToPositiveInfinity => RoundHalfToPositiveInfinity(x),
           _ => throw new System.ArgumentOutOfRangeException(mode.ToString()),
         }
       };
-    }
 
     #endregion Static methods
 

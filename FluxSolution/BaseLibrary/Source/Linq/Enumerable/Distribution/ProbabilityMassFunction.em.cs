@@ -52,9 +52,11 @@ namespace Flux
     }
 
     /// <summary>The PMF is a function that maps from values to probabilities. Uses the specified comparer.</summary>
-    public static double ProbabilityMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value, System.Collections.Generic.IComparer<TValue> comparer)
+    public static double ProbabilityMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
       var countTotal = 0;
       var countLessOrEqual = 0;
@@ -68,9 +70,5 @@ namespace Flux
 
       return (double)countLessOrEqual / (double)countTotal;
     }
-
-    /// <summary>The PMF is a function that maps from values to probabilities. Uses the default comparer.</summary>
-    public static double ProbabilityMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value)
-      => ProbabilityMassFunction(source, value, System.Collections.Generic.Comparer<TValue>.Default);
   }
 }

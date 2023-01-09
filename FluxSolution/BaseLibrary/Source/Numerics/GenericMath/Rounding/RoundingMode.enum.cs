@@ -25,16 +25,16 @@ namespace Flux
     HalfToOdd = 5,
 
     /// <summary>Round to the number that is further/away from zero.</summary>
-    /// <remarks>This is either the typical Math.Floor (if less than zero) or Math.Ceiling (if greater than zero) of the number.</remarks>
-    Envelop = 10 + MidpointRounding.AwayFromZero,
+    /// <remarks>This mode is the opposite of truncating. This means applying either Math.Floor (if less than zero) or Math.Ceiling (if greater than zero) of the number.</remarks>
+    Envelop = 11,
     /// <summary>Round to the number that is closer to/towards zero.</summary>
     /// <remarks>This is the same as Math.Truncate of the number.</remarks>
-    Truncate = 10 + MidpointRounding.ToZero,
+    Truncate = 12,
     /// <summary>Round (down) to the number that is less than.</summary>
     /// <remarks>This is the same as Math.Floor of the number.</remarks>
-    Floor = 10 + MidpointRounding.ToNegativeInfinity,
+    Floor = 13,
     /// <summary>Round (up) to the number that is greater.</summary>
     /// <remarks>This is the same as Math.Ceiling of the number.</remarks>
-    Ceiling = 10 + MidpointRounding.ToPositiveInfinity,
+    Ceiling = 14,
   }
 }

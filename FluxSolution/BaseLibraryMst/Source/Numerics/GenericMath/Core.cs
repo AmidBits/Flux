@@ -27,6 +27,16 @@ namespace GenericMath
     }
 
     [TestMethod]
+    public void Envelop()
+    {
+      Assert.AreEqual(-1, (-0.5).Envelop());
+      Assert.AreEqual(1, (0.5).Envelop());
+
+      Assert.AreEqual(-13, (-12.5).Envelop());
+      Assert.AreEqual(13, (12.5).Envelop());
+    }
+
+    [TestMethod]
     public void Factorial()
     {
       Assert.AreEqual(362880, 9.Factorial());

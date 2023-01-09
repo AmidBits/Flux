@@ -68,9 +68,11 @@ namespace Flux
     }
 
     /// <summary>The CDF is the function that maps values to their percentil rank, in a probability range [0, 1], in a distribution. Uses the specified comparer.</summary>
-    public static double CumulativeMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value, System.Collections.Generic.IComparer<TValue> comparer)
+    public static double CumulativeMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
+
+      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
       var countTotal = 0;
       var countLessOrEqual = 0;
@@ -84,9 +86,5 @@ namespace Flux
 
       return (double)countLessOrEqual / (double)countTotal;
     }
-
-    /// <summary>The CDF is the function that maps values to their percentil rank, in a probability range [0, 1], in a distribution. Uses the default comparer.</summary>
-    public static double CumulativeMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value)
-      => CumulativeMassFunction(source, value, System.Collections.Generic.Comparer<TValue>.Default);
   }
 }

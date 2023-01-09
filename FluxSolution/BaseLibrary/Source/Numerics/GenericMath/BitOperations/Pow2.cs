@@ -65,7 +65,7 @@ namespace Flux
     {
       LocatePow2(value, proper, out pow2TowardsZero, out pow2AwayFromZero);
 
-      return BoundaryRounding<TSelf, TResult>.Round(value, mode, pow2TowardsZero, pow2AwayFromZero);
+      return TResult.CreateChecked(BoundaryRounding<TSelf, TResult>.Round(value, mode, pow2TowardsZero, pow2AwayFromZero));
     }
 
     /// <summary>Find the next power of 2 away from zero.</summary>

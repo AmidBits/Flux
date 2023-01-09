@@ -1,9 +1,9 @@
 ﻿namespace Flux
 {
-  /// <summary>Rounds the <paramref name="x"/> to the nearest integer. The <paramref name="mode"/> specifies the halfway rounding strategy to use if the value is halfway between two integers (e.g. 11.5).</summary>
+  /// <summary>Floating point rounding, rounds the <paramref name="x"/> to the nearest <paramref name="significantDigits"/>. The <paramref name="mode"/> specifies the halfway rounding strategy to use.</summary>
   /// <remarks>var r = Flux.GenericMath.TruncatingRound(99.96535789, 2, HalfwayRounding.ToEven); // = 99.97 (compare with the corresponding TruncatingRound method)</remarks>
   public class PrecisionRounding<TSelf>
-    : INumberRoundable<TSelf, TSelf>
+    : INumberRoundable<TSelf>
     where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
   {
     private readonly int m_significantDigits;
@@ -13,7 +13,7 @@
     public TruncatedPrecisionRounding<TSelf> ToPrecisionTruncatedRounding() => new(m_significantDigits);
 
     #region Static methods
-    /// <summary>Rounds the <paramref name="x"/> to the nearest integer. The <paramref name="mode"/> specifies the halfway rounding strategy to use if the value is halfway between two integers (e.g. 11.5).</summary>
+    /// <summary>Rounds the <paramref name="x"/> to the nearest <paramref name="significantDigits"/>. The <paramref name="mode"/> specifies the halfway rounding strategy to use.</summary>
     /// <remarks>var r = Flux.GenericMath.TruncatingRound(99.96535789, 2, HalfwayRounding.ToEven); // = 99.97 (compare with the corresponding TruncatingRound method)</remarks>
     public static TSelf Round(TSelf x, RoundingMode mode, int significantDigits)
       => significantDigits >= 0 && TSelf.Pow(TSelf.CreateChecked(10), TSelf.CreateChecked(significantDigits)) is var scalar

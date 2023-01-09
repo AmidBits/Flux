@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Creates a new sequence of all pairs that equals the specified sum.</summary>
+    /// <summary>Creates a new sequence of all pair indices for which values when added equals the specified sum.</summary>
     public static System.Collections.Generic.IEnumerable<(TSelf, TSelf)> GetPairsEqualToSum<TSelf>(this System.Collections.Generic.IList<TSelf> collection, TSelf sum)
       where TSelf : System.Numerics.INumber<TSelf>
     {

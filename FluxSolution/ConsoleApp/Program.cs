@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,7 @@ using Flux;
 using Flux.ApproximateEquality;
 using Flux.Geometry;
 using Flux.Interpolation;
+using Flux.Sorting;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -22,14 +24,33 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var value = Flux.Fraction.ApproximateRational(double.Pi);
 
-      var n = double.CreateChecked(value.Numerator);
-      var d = double.CreateChecked(value.Denominator);
 
-      var val = value.Value;
+      var a = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4, -4, 10 };
+      var x = Flux.Metrical.MaximumSumSubarray.Find(a.AsReadOnlySpan(), out var startIndex, out var count);
+      var b = new int[count];
+      System.Array.Copy(a, startIndex, b, 0, count);
+      var iss = Flux.Metrical.SubsetSum.IsSubsetSum(a.AsReadOnlySpan(), 6);
 
-      var pi = Flux.Fraction.Pi;
+      var a1 = new int[] { 3, 4, 5, 2 };
+      var iss1 = Flux.Metrical.SubsetSum.IsSubsetSum(a1.AsReadOnlySpan(), 6);
+
+
+
+      var h = a.Concat(a1).Select(i => double.Abs(i)).ToHistogram((e, i) => e, (e, i) => 1, out var totalFrequency);
+
+      //var v = -1.5;
+      //var c = v.Round(RoundingMode.Ceiling);
+      //var e = v.Round(RoundingMode.Envelop);
+      //var f = v.Round(RoundingMode.Floor);
+      //var t = v.Round(RoundingMode.Truncate);
+      //var hafz = v.Round(RoundingMode.HalfAwayFromZero);
+      //var heven = v.Round(RoundingMode.HalfToEven);
+      //var hninf = v.Round(RoundingMode.HalfToNegativeInfinity);
+      //var hodd = v.Round(RoundingMode.HalfToOdd);
+      //var hpinf = v.Round(RoundingMode.HalfToPositiveInfinity);
+      //var htz = v.Round(RoundingMode.HalfTowardZero);
+
     }
 
     private static void Main(string[] args)
