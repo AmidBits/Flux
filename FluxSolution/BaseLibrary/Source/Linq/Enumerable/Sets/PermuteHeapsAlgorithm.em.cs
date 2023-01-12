@@ -2,8 +2,11 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Heap's algorithm generates all possible permutations of n objects.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Heap%27s_algorithm"/>
+    /// <summary>
+    /// <para>Heap's algorithm generates all possible permutations of n objects.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Heap%27s_algorithm"/>
+    /// </summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TSource[]> PermuteHeapsAlgorithm<TSource>(this System.Collections.Generic.IEnumerable<TSource> source)
     {
       return Permute(source.ToArray());

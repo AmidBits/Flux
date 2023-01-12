@@ -7,6 +7,7 @@ namespace Flux
     /// <param name="tupleWrap">The number of staggered wrap-around tuples to return, beyond the last element in the source sequence.</param>
     /// <param name="resultSelector">Allows the result of each tuple to be processed.</param>
     /// <returns>A sequence of n-tuples staggered by one element, optionally extending the sequence by the specified overflow.</returns>
+    /// <exception cref="System.ArgumentNullException"/>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static TResult AggregateTuple<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int tupleSize, int tupleWrap, System.Func<TAccumulate, System.Collections.Generic.IReadOnlyList<TSource>, int, TAccumulate> accumulator, System.Func<TAccumulate, int, TResult> resultSelector)
     {
@@ -60,6 +61,8 @@ namespace Flux
 
     /// <summary>Creates a sequence of staggered (by one element) 2-tuple elements.</summary>
     /// <returns>A sequence of 2-tuples staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
+    /// <exception cref="System.ArgumentException"/>
+    /// <exception cref="System.ArgumentNullException"/>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static TResult AggregateTuple2<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, bool wrap, System.Func<TAccumulate, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
@@ -94,6 +97,8 @@ namespace Flux
 
     /// <summary>Creates a sequence of staggered (by one element) 3-tuple elements.</summary>
     /// <returns>A sequence of 3-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
+    /// <exception cref="System.ArgumentException"/>
+    /// <exception cref="System.ArgumentNullException"/>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static TResult AggregateTuple3<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {

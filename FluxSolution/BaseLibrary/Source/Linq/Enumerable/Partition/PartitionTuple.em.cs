@@ -2,8 +2,11 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Create a new sequence of 2-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first element.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    /// <summary>
+    /// <para>Create a new sequence of 2-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first element.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Tuple"/>
+    /// </summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple2<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, bool wrap, System.Func<TSource, TSource, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -31,8 +34,11 @@ namespace Flux
       else throw new System.ArgumentException("The sequence has only 1 element.", nameof(source));
     }
 
-    /// <summary>Create a new sequence of 3-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first or the second element.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    /// <summary>
+    /// <para>Create a new sequence of 3-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first or the second element.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Tuple"/>
+    /// </summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple3<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, int, TResult> resultSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -65,12 +71,15 @@ namespace Flux
       else throw new System.ArgumentException("The sequence has only 1 element.", nameof(source));
     }
 
-    /// <summary>Creates a sequence of staggered (by one element) n-tuples.</summary>
+    /// <summary>
+    /// <para>Creates a sequence of staggered (by one element) n-tuples.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Tuple"/>
+    /// </summary>
     /// <param name="tupleSize">The number of elements in each tuple.</param>
     /// <param name="tupleWrap">The number of staggered wrap-around tuples to return, beyond the last element in the source sequence.</param>
     /// <param name="resultSelector">Allows the result of each tuple to be processed.</param>
     /// <returns>A sequence of n-tuples staggered by one element, optionally extending the sequence by the specified overflow.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTupleX<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int tupleSize, int tupleWrap, System.Func<System.Collections.Generic.IReadOnlyList<TSource>, int, TResult> resultSelector)
     {
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));

@@ -9,6 +9,7 @@ namespace Flux
     /// <param name="partitionPredicate">Receives the element, the source index of the element and the partition index.</param>
     /// <param name="resultSelector">Receives a sequence of elements and the partition index if the sequence.</param>
     /// <returns></returns>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionByPredicate<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, int, bool> partitionPredicate, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
     {
       if (partitionPredicate is null) throw new System.ArgumentNullException(nameof(partitionPredicate));

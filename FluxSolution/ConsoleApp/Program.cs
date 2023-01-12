@@ -26,6 +26,11 @@ namespace ConsoleApp
 
       // if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunStatistics(); return; }
 
+      System.Console.WriteLine(Flux.Numerics.BinomialDistribution.ProbabilityMassFunction(4, 6, 0.3));
+
+      System.Console.WriteLine(Flux.Numerics.GeometricDistribution.ProbabilityMassFunction2(0, 0.6));
+      System.Console.WriteLine(Flux.Numerics.GeometricDistribution.ProbabilityMassFunction2(1, 0.6));
+
       var st = new double[] { 6, 7, 15, 36, 39, 40, 41, 42, 43, 47, 49 };
 
       var stq61 = st.EstimateQuantile(0.25, QuantileAlgorithm.R6);

@@ -140,7 +140,7 @@ namespace Flux
       }
     }
 
-    public static System.ReadOnlySpan<char> ToCardinalNumeralCompoundString(System.Numerics.BigInteger number)
+    public static string ToCardinalNumeralCompoundString(System.Numerics.BigInteger number)
       => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
   }
 }

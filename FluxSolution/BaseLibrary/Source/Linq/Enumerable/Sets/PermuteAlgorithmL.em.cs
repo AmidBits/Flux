@@ -2,9 +2,12 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Generates all possible permutations of the elements in the sequence. Uses the specified comparer.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Permutation"/>
-    /// <see cref="https://stackoverflow.com/a/4319074"/>
+    /// <summary>
+    /// <para>Generates all possible permutations of the elements in the sequence. Uses the specified comparer.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Permutation"/>
+    /// <see href="https://stackoverflow.com/a/4319074"/>
+    /// </summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TSource[]> PermuteAlgorithmL<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IComparer<TSource>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<TSource>.Default;

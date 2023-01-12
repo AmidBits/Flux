@@ -5,6 +5,7 @@ namespace Flux
     // http://www.greenteapress.com/thinkstats/thinkstats.pdf
 
     /// <summary>The PMF is a function that maps from values (frequencies) to probabilities.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.SortedDictionary<TKey, double> ProbabilityMassFunction<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector, double factor = 1)
       where TKey : notnull
     {
@@ -34,32 +35,30 @@ namespace Flux
     }
 
     /// <summary>The PMF is a function that maps from values (frequencies) to probabilities.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.SortedDictionary<TKey, double> ProbabilityMassFunction<TKey>(this System.Collections.Generic.IDictionary<TKey, int> source, int? sumOfFrequencies = null, double factor = 1)
       where TKey : notnull
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       var pmf = new System.Collections.Generic.SortedDictionary<TKey, double>();
 
       var sof = sumOfFrequencies ?? source.Values.Sum();
 
-      foreach (var kvp in source)
+      foreach (var kvp in source.ThrowIfNull())
         pmf.Add(kvp.Key, kvp.Value / (double)sof * factor);
 
       return pmf;
     }
 
     /// <summary>The PMF is a function that maps from values to probabilities. Uses the specified comparer.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static double ProbabilityMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
       var countTotal = 0;
       var countLessOrEqual = 0;
 
-      foreach (var item in source)
+      foreach (var item in source.ThrowIfNull())
       {
         countTotal++;
         if (comparer.Compare(item, value) <= 0)

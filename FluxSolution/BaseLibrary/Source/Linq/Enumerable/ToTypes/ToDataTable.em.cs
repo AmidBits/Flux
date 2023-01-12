@@ -31,8 +31,8 @@ namespace Flux
     }
 
     /// <summary>Returns a new data table with the data from the source via an array selector (each call with the ordinal index within the sequence) and the column names/types.</summary>
-    public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, int, object[]> arraySelector, System.Collections.Generic.IList<string> columnNames, System.Collections.Generic.IList<System.Type> columnTypes)
     /// <exception cref="System.ArgumentNullException"/>
+    public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, int, object[]> arraySelector, System.Collections.Generic.IList<string> columnNames, System.Collections.Generic.IList<System.Type> columnTypes)
     {
       if (arraySelector is null) throw new System.ArgumentNullException(nameof(arraySelector));
       if (columnNames is null) throw new System.ArgumentNullException(nameof(columnNames));

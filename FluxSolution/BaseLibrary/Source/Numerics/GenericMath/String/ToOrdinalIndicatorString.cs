@@ -3,7 +3,7 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Gets the ordinal indicator for <paramref name="x"/>. E.g. "st" for 1 and "nd" for 122.</summary>
-    public static System.ReadOnlySpan<char> GetOrdinalIndicator<TSelf>(this TSelf x)
+    public static string GetOrdinalIndicator<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       var nm100 = int.CreateChecked(TSelf.Abs(x) % TSelf.CreateChecked(100));

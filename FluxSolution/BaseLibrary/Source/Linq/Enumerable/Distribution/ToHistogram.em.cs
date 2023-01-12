@@ -3,6 +3,7 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary. This version can be used for semi-aggregate data sources, hence the frequency selector. Uses the specified comparer.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     /// <see cref="https://en.wikipedia.org/wiki/Histogram"/>
     public static System.Collections.Generic.SortedDictionary<TKey, TFrequency> ToHistogram<TSource, TKey, TFrequency>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, TFrequency> frequencySelector, out TFrequency sumOfAllFrequencies, System.Collections.Generic.IComparer<TKey>? comparer = null)
       where TKey : notnull

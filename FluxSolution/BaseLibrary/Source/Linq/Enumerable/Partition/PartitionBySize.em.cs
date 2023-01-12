@@ -4,6 +4,8 @@ namespace Flux
   {
     /// <summary>Partition the sequence into one or more lists of a specified size. The last partition may contain less elements than requested.</summary>
     /// <param name="resultSelector">Receives the elements in the partition and partition index (this is not the element index).</param>
+    /// <exception cref="System.ArgumentNullException"/>
+    /// <exception cref="System.ArgumentOutOfRangeException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionBySize<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int sizeOfEachPartition, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
     {
       if (sizeOfEachPartition <= 0) throw new System.ArgumentOutOfRangeException(nameof(sizeOfEachPartition), $"Must be greater than or equal to 1 ({sizeOfEachPartition}).");

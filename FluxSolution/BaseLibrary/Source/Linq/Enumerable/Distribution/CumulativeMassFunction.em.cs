@@ -6,6 +6,7 @@ namespace Flux
 
     /// <summary>The CDF is the function that maps values to their percentile rank, in a probability range [0, 1], in a distribution.</summary>
     /// <remarks>For consistency, a discrete CDF should be called a cumulative mass function(CMF), but that seems just ignored.</remarks>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.SortedDictionary<TKey, double> CumulativeMassFunction<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector, double factor = 1)
       where TKey : notnull
     {
@@ -42,18 +43,17 @@ namespace Flux
 
     /// <summary>The CDF is the function that maps values to their percentile rank, in a probability range [0, 1], in a distribution.</summary>
     /// <remarks>For consistency, a discrete CDF should be called a cumulative mass function(CMF), but that seems just ignored.</remarks>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.SortedDictionary<TKey, double> CumulativeMassFunction<TKey>(this System.Collections.Generic.IDictionary<TKey, int> source, int? sumOfFrequencies = null, double factor = 1)
       where TKey : notnull
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       var cmf = new System.Collections.Generic.SortedDictionary<TKey, double>();
 
       var sof = sumOfFrequencies ?? source.Values.Sum();
 
       var cumulativeFrequencies = 0;
 
-      foreach (var kvp in source.OrderBy(kvp => kvp.Key))
+      foreach (var kvp in source.ThrowIfNull().OrderBy(kvp => kvp.Key))
       {
         cumulativeFrequencies += kvp.Value;
 
@@ -64,16 +64,15 @@ namespace Flux
     }
 
     /// <summary>The CDF is the function that maps values to their percentil rank, in a probability range [0, 1], in a distribution. Uses the specified comparer.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static double CumulativeMassFunction<TValue>(this System.Collections.Generic.IEnumerable<TValue> source, TValue value, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
       var countTotal = 0;
       var countLessOrEqual = 0;
 
-      foreach (var item in source)
+      foreach (var item in source.ThrowIfNull())
       {
         countTotal++;
         if (comparer.Compare(item, value) <= 0)

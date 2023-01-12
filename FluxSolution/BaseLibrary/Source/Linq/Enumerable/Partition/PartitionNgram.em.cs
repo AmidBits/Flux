@@ -3,7 +3,9 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Partition the sequence as a new sequence of size elements.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/N-gram"/>
+    /// <exception cref="System.ArgumentNullException"/>
+    /// <exception cref="System.ArgumentOutOfRangeException"/>
+    /// <see href="https://en.wikipedia.org/wiki/N-gram"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionNgram<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int size, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
     {
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
