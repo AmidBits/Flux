@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Types
 {

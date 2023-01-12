@@ -3,6 +3,7 @@ namespace Flux
   public static partial class ISet
   {
     /// <summary>Creates a new sequence, a set of all subsets (as lists) of the source set, including the empty set and the source itself.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     /// <see cref="https://en.wikipedia.org/wiki/Power_set"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<T>> PowerSet<T>(this System.Collections.Generic.ISet<T> source)
     {

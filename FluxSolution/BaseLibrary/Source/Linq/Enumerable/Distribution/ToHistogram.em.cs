@@ -8,7 +8,6 @@ namespace Flux
       where TKey : notnull
       where TFrequency : System.Numerics.INumber<TFrequency>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
       if (frequencySelector is null) throw new System.ArgumentNullException(nameof(frequencySelector));
 
@@ -18,7 +17,7 @@ namespace Flux
 
       sumOfAllFrequencies = TFrequency.Zero;
 
-      foreach (var item in source)
+      foreach (var item in source.ThrowIfNull())
       {
         var frequency = frequencySelector(item, index);
 

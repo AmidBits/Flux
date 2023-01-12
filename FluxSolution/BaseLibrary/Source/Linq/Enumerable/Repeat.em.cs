@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class Enumerable
   {
+    /// <summary></summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> Repeat<T>(this System.Collections.Generic.IEnumerable<T> source, int count)
     {
       if (count < 0) throw new System.ArgumentNullException(nameof(count));

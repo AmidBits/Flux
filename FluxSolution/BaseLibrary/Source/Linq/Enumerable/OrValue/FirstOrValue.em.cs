@@ -2,13 +2,13 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Returns the first element in the sequence that satisfies the predicate, or the specified value if no such element is found.</summary>
+    /// <summary>Returns the first element in the sequence that satisfies the predicate, or if none is found, the specified value.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static T FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate, T value)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -26,10 +26,12 @@ namespace Flux
 
       return value;
     }
-    /// <summary>Returns the first element in the sequence that satisfies the predicate, or the specified value if no such element is found.</summary>
+    /// <summary>Returns the first element in the sequence that satisfies the predicate, or if none is found, the specified value.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static T FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate, T value)
       => FirstOrValue(source, (e, i) => predicate(e), value);
-    /// <summary>Returns the first element in the sequence, or the specified value if no elements are found.</summary>
+    /// <summary>Returns the first element in the sequence, or if none is found, the specified value.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static T FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
       => FirstOrValue(source, (e, i) => true, value);
   }

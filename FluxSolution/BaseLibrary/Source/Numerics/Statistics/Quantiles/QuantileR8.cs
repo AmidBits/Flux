@@ -19,9 +19,11 @@ namespace Flux.Numerics
       if (sample is null) throw new System.ArgumentNullException(nameof(sample));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      var h = (TSelf.CreateChecked(sample.Count() + 1.0 / 3.0) * p) + TSelf.CreateChecked(1.0 / 3.0);
+      var oneThird = TSelf.CreateChecked(1) / TSelf.CreateChecked(3);
 
-      return QuantileEdf.Estimate(sample, h);
+      var h = (TSelf.CreateChecked(sample.Count()) + oneThird) * p + oneThird;
+
+      return QuantileEdf.Estimate(sample, h - TSelf.One); // Adjust for 0-based indexing.
     }
   }
 }

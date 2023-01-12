@@ -3,15 +3,14 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Locate the minimum/maximum elements and indices, as evaluated by the <paramref name="keySelector"/>, in <paramref name="source"/>. Uses the specified (default if null) <paramref name="comparer"/>.</summary>
-    /// <exception cref="System.ArgumentNullException">The <paramref name="source"/>/<paramref name="keySelector"/> cannot be null.</exception>
+    /// <exception cref="System.ArgumentNullException"/>
     public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) Extrema<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IComparer<TKey>? comparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
 
       comparer ??= System.Collections.Generic.Comparer<TKey>.Default;
 
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       if (e.MoveNext())
       {

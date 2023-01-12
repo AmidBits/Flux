@@ -3,6 +3,7 @@ namespace Flux
   public static partial class ISet
   {
     /// <summary>Creates a new sequence of elements that are in the source set but not in the specified target set. Uses the specified equality comparer.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> SourceDifference<T>(this System.Collections.Generic.ISet<T> source, System.Collections.Generic.IEnumerable<T> target)
     {
       if (ReferenceEquals(source, target)) // A set minus itself is an empty set.

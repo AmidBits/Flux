@@ -3,13 +3,12 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Run-length encodes a sequence by converting consecutive instances of the same element into a <c>KeyValuePair{T,int}</c> representing the item and its occurrence count. Uses the specified (default if null) <paramref name="equalityComparer"/>.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<T, int>> RunLengthEncode<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       if (e.MoveNext())
       {

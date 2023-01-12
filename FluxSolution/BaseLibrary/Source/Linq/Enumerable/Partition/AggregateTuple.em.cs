@@ -10,14 +10,13 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static TResult AggregateTuple<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int tupleSize, int tupleWrap, System.Func<TAccumulate, System.Collections.Generic.IReadOnlyList<TSource>, int, TAccumulate> accumulator, System.Func<TAccumulate, int, TResult> resultSelector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (accumulator is null) throw new System.ArgumentNullException(nameof(accumulator));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       if (tupleSize < 2) throw new System.ArgumentOutOfRangeException(nameof(tupleSize));
       if (tupleWrap < 0 || tupleWrap >= tupleSize) throw new System.ArgumentException($@"A {tupleSize}-tuple can only wrap up to {tupleSize - 1} elements.");
 
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       var start = new System.Collections.Generic.List<TSource>();
 
@@ -64,11 +63,10 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static TResult AggregateTuple2<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, bool wrap, System.Func<TAccumulate, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       if (e.MoveNext() && e.Current is var item1 && item1 is var back1)
         if (e.MoveNext())
@@ -99,13 +97,12 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
     public static TResult AggregateTuple3<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       if (wrap < 0 || wrap > 2) throw new System.ArgumentException(@"A 3-tuple can only wrap 0, 1 or 2 elements.", nameof(wrap));
 
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       if (e.MoveNext() && e.Current is var item1 && item1 is var back2)
         if (e.MoveNext() && e.Current is var item2 && item2 is var back1)

@@ -3,24 +3,20 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Creates a new sequence by skipping the last elements that satisfies the predicate. This version also passes the source index into the predicate.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
       var buffer = new System.Collections.Generic.Queue<T>();
 
       var counter = 0;
 
-      using var e = source.GetEnumerator();
-
-      while (e.MoveNext())
+      foreach (var item in source)
       {
-        var current = e.Current;
-
-        if (predicate(current, counter++))
+        if (predicate(item, counter++))
         {
-          buffer.Enqueue(current);
+          buffer.Enqueue(item);
         }
         else
         {
@@ -29,7 +25,7 @@ namespace Flux
             yield return buffer.Dequeue();
           }
 
-          yield return current;
+          yield return item;
         }
       }
     }

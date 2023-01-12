@@ -7,14 +7,14 @@ namespace Flux
     /// <param name="tableName">The name of the data table.</param>
     /// <param name="arraySelector">A array selector used to extract the data for each row in the data table.</param>
     /// <param name="columnNames">Optional list of column names, if specified it's used, otherwise the first row is used automatically.</param>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, object[]> arraySelector, System.Collections.Generic.IList<string>? columnNames = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (arraySelector is null) throw new System.ArgumentNullException(nameof(arraySelector));
 
       var dt = new System.Data.DataTable(tableName);
 
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -32,8 +32,8 @@ namespace Flux
 
     /// <summary>Returns a new data table with the data from the source via an array selector (each call with the ordinal index within the sequence) and the column names/types.</summary>
     public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, int, object[]> arraySelector, System.Collections.Generic.IList<string> columnNames, System.Collections.Generic.IList<System.Type> columnTypes)
+    /// <exception cref="System.ArgumentNullException"/>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (arraySelector is null) throw new System.ArgumentNullException(nameof(arraySelector));
       if (columnNames is null) throw new System.ArgumentNullException(nameof(columnNames));
       if (columnTypes is null) throw new System.ArgumentNullException(nameof(columnTypes));
@@ -45,16 +45,16 @@ namespace Flux
 
       var rowIndex = 0;
 
-      foreach (var item in source)
+      foreach (var item in source.ThrowIfNull())
         if (arraySelector(item, rowIndex++) is var itemArray && itemArray is not null)
           dt.Rows.Add(arraySelector(item, rowIndex++));
 
       return dt;
     }
     /// <summary>Returns a new data table with the data from the source via an array selector (each call with the ordinal index within the sequence) and the column names.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, int, object[]> arraySelector, System.Collections.Generic.IList<string> columnNames)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (arraySelector is null) throw new System.ArgumentNullException(nameof(arraySelector));
       if (columnNames is null) throw new System.ArgumentNullException(nameof(columnNames));
 
@@ -65,7 +65,7 @@ namespace Flux
 
       var rowIndex = 0;
 
-      foreach (var item in source)
+      foreach (var item in source.ThrowIfNull())
         dt.Rows.Add(arraySelector(item, rowIndex++));
 
       return dt;

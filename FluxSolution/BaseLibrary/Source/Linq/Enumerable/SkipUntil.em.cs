@@ -3,18 +3,19 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Creates a new sequence by skipping elements in the sequence until the predicate is satisfied, and also skips the first element that satisfies the predicate. This version also passes the source index into the predicate.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TSource> SkipUntil<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, bool> predicate)
     {
-      if (source == null) throw new System.ArgumentNullException(nameof(source));
-      if (predicate == null) throw new System.ArgumentNullException(nameof(predicate));
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       var index = 0;
 
       do
       {
-        if (!e.MoveNext()) yield break;
+        if (!e.MoveNext())
+          yield break;
       }
       while (!predicate(e.Current, index++));
 

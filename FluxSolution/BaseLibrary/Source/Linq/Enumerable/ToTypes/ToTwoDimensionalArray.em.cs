@@ -4,11 +4,10 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Creates a new two-dimensional array with the specified sizes, and then fills the target (from the source) in a 'dimension 0'-major order.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static T[,] ToTwoDimensionalArray<T>(this System.Collections.Generic.IEnumerable<T> source, int length0, int length1)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       var target = new T[length0, length1];
 

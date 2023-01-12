@@ -22,7 +22,7 @@ namespace Flux.Numerics
 
       var h = TSelf.CreateChecked(sample.Count() + 1) * p;
 
-      return QuantileEdf.Estimate(sample, h);
+      return QuantileEdf.Estimate(sample, h - TSelf.One); // Adjust for 0-based indexing.
     }
   }
 }

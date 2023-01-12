@@ -24,20 +24,23 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      // if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunStatistics(); return; }
 
+      var st = new double[] { 6, 7, 15, 36, 39, 40, 41, 42, 43, 47, 49 };
 
-      var a = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4, -4, 10 };
-      var x = Flux.Metrical.MaximumSumSubarray.Find(a.AsReadOnlySpan(), out var startIndex, out var count);
-      var b = new int[count];
-      System.Array.Copy(a, startIndex, b, 0, count);
-      var iss = Flux.Metrical.SubsetSum.IsSubsetSum(a.AsReadOnlySpan(), 6);
+      var stq61 = st.EstimateQuantile(0.25, QuantileAlgorithm.R6);
+      var stq62 = st.EstimateQuantile(0.50, QuantileAlgorithm.R6);
+      var stq63 = st.EstimateQuantile(0.75, QuantileAlgorithm.R6);
 
-      var a1 = new int[] { 3, 4, 5, 2 };
-      var iss1 = Flux.Metrical.SubsetSum.IsSubsetSum(a1.AsReadOnlySpan(), 6);
+      var stq71 = st.EstimateQuantile(0.25, QuantileAlgorithm.R7);
+      var stq72 = st.EstimateQuantile(0.50, QuantileAlgorithm.R7);
+      var stq73 = st.EstimateQuantile(0.75, QuantileAlgorithm.R7);
 
+      var ai = new int[] { 4, 18, 26, 31, 43, 57, 69, 72, 85 };
 
-
-      var h = a.Concat(a1).Select(i => double.Abs(i)).ToHistogram((e, i) => e, (e, i) => 1, out var totalFrequency);
+      var ngram = ai.PartitionNgram(5, (e, i) => e.ToArray()).ToArray();
+      var windowed = ai.PartitionWindowed(5, 1, false, (e) => e.ToArray()).ToArray();
+      var pt2 = ai.PartitionTuple2(false, (e1, e2, i) => (e1, e2)).ToArray();
 
       //var v = -1.5;
       //var c = v.Round(RoundingMode.Ceiling);
@@ -50,7 +53,6 @@ namespace ConsoleApp
       //var hodd = v.Round(RoundingMode.HalfToOdd);
       //var hpinf = v.Round(RoundingMode.HalfToPositiveInfinity);
       //var htz = v.Round(RoundingMode.HalfTowardZero);
-
     }
 
     private static void Main(string[] args)

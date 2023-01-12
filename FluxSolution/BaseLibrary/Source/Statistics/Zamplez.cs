@@ -35,7 +35,7 @@ namespace Flux
       System.Console.WriteLine($"The computed quartiles:");
       System.Console.WriteLine($"Method 1: {new Flux.Numerics.QuartileMethod1().ComputeQuartiles(x)}");
       System.Console.WriteLine($"Method 2: {new Flux.Numerics.QuartileMethod2().ComputeQuartiles(x)}");
-      //System.Console.WriteLine($"Method 3: {new Flux.Numerics.Method3().EstimateQuartiles(x)}");
+      System.Console.WriteLine($"Method 3: {new Flux.Numerics.QuartileMethod3().ComputeQuartiles(x)}");
       System.Console.WriteLine($"Method 4: {new Flux.Numerics.QuartileMethod4().ComputeQuartiles(x)}");
     }
 
@@ -60,7 +60,7 @@ namespace Flux
         };
 
         System.Console.WriteLine($"The estimated quantiles of {p:N2}:");
-        System.Console.WriteLine($"{string.Join(", ", System.Linq.Enumerable.Range(0, values.Length).Select((e, i) => $"R{i + 1} = {values[i]}"))}");
+        System.Console.WriteLine($"{string.Join("\t", System.Linq.Enumerable.Range(0, values.Length).Select((e, i) => $"R{(i + 1)} = {values[i]:N2}"))}");
         System.Console.WriteLine($"(Average: {values.Average()})");
       }
     }

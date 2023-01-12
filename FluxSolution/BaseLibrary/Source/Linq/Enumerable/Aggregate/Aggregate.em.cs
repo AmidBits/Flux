@@ -6,7 +6,6 @@ namespace Flux
     /// <remarks>Unlike the LINQ versions, this one also includes the ordinal index of the element while aggregating.</remarks>
     public static TResult Aggregate<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TAccumulate> initiator, System.Func<TAccumulate, TSource, int, TAccumulate> aggregator, System.Func<TAccumulate, int, TResult> resultSelector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
       if (initiator is null) throw new System.ArgumentNullException(nameof(initiator));
       if (aggregator is null) throw new System.ArgumentNullException(nameof(aggregator));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
@@ -15,7 +14,7 @@ namespace Flux
 
       var aggregate = initiator();
 
-      using var e = source.GetEnumerator();
+      using var e = source.ThrowIfNull().GetEnumerator();
 
       while (e.MoveNext())
       {

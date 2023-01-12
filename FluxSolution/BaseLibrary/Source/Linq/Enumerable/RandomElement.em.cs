@@ -11,26 +11,15 @@ namespace Flux
 
       result = default!;
 
-      if (source is not null)
+      var count = 1;
+
+      foreach (var item in source)
       {
-        using var e = source.GetEnumerator();
-
-        if (e.MoveNext())
-        {
-          var count = 1;
-
-          do
-          {
-            if (rng.Next(count++) == 0)
-              result = e.Current;
-          }
-          while (e.MoveNext());
-
-          return true;
-        }
+        if (rng.Next(count++) == 0)
+          result = item;
       }
 
-      return false;
+      return count > 1;
     }
 
     /// <summary>Returns a random element from the sequence. Uses the specified random number generator.</summary>

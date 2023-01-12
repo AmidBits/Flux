@@ -16,21 +16,16 @@ namespace Flux.Numerics
     public static TSelf Estimate<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
-      if (sample is null) throw new System.ArgumentNullException(nameof(sample));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
       var half = TSelf.One.Divide(2);
 
-      var sourceCount = sample.Count();
+      var h = TSelf.CreateChecked(sample.Count()) * p + half;
 
-      var h = TSelf.CreateChecked(sourceCount) * p + half;
+      var indexLo = System.Convert.ToInt32(TSelf.Ceiling(h - half)); // ceiling(h - 0.5). 
+      var indexHi = System.Convert.ToInt32(TSelf.Floor(h + half)); // floor(h + 0.5).
 
-      var indexLo = System.Convert.ToInt32(TSelf.Ceiling(h - half)) - 1;
-      var indexHi = System.Convert.ToInt32(TSelf.Floor(h + half)) - 1;
-
-      var sourceCountM1 = sourceCount - 1;
-
-      return (sample.ElementAt(System.Math.Clamp(indexLo, 0, sourceCountM1)) + sample.ElementAt(System.Math.Clamp(indexHi, 0, sourceCountM1))).Divide(2);
+      return (sample.ElementAt(indexLo - 1) + sample.ElementAt(indexHi - 1)).Divide(2); // Adjust for 0-based indexing.
     }
   }
 }

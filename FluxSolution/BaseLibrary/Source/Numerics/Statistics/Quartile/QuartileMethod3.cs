@@ -4,19 +4,20 @@ namespace Flux.Numerics
   /// <para>This method is not implemented at this time.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Quartile#Method_3"/></para>
   /// </summary>
+  /// <remarks>Quartile method 3 is equivalent to Quantile R5.</remarks>
   public record class QuartileMethod3
     : IQuartileComputable
   {
     public (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-    {
-      Compute(sample, out var q1, out var q2, out var q3);
+      => Compute(sample);
 
-      return (q1, q2, q3);
-    }
-
-    public static void Compute<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, out TSelf q1, out TSelf q2, out TSelf q3)
+    public static (TSelf q1, TSelf q2, TSelf q3) Compute<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => throw new System.NotImplementedException();
+      => (
+        QuantileR5.Estimate(sample, TSelf.CreateChecked(0.25)),
+        QuantileR5.Estimate(sample, TSelf.CreateChecked(0.50)),
+        QuantileR5.Estimate(sample, TSelf.CreateChecked(0.75))
+      );
   }
 }

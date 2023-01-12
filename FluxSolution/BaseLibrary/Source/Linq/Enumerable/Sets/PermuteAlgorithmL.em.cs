@@ -7,8 +7,6 @@ namespace Flux
     /// <see cref="https://stackoverflow.com/a/4319074"/>
     public static System.Collections.Generic.IEnumerable<TSource[]> PermuteAlgorithmL<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IComparer<TSource>? comparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       comparer ??= System.Collections.Generic.Comparer<TSource>.Default;
 
       return Permute(source.ToArray());

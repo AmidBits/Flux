@@ -16,12 +16,11 @@ namespace Flux.Numerics
     public static TSelf Estimate<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
-      if (sample is null) throw new System.ArgumentNullException(nameof(sample));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
       var h = TSelf.CreateChecked(sample.Count()) * p;
 
-      return QuantileEdf.Estimate(sample, h);
+      return QuantileEdf.Estimate(sample, h - TSelf.One); // Adjust for 0-based indexing.
     }
   }
 }

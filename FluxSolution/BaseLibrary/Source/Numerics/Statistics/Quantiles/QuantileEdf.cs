@@ -22,10 +22,8 @@ namespace Flux.Numerics
       var hf = TSelf.Floor(h); // Floor of h.
       var hc = TSelf.Ceiling(h); // Ceiling of h.
 
-      var sourceCountM1 = sample.Count() - 1;
-
-      var sf = sample.ElementAt(System.Math.Clamp(System.Convert.ToInt32(hf), 0, sourceCountM1)); // Floor of sample value at hf.
-      var sc = sample.ElementAt(System.Math.Clamp(System.Convert.ToInt32(hc), 0, sourceCountM1)); // Ceiling of sample value at hc.
+      var sf = sample.ElementAt(System.Convert.ToInt32(hf)); // Floor of sample value at hf.
+      var sc = sample.ElementAt(System.Convert.ToInt32(hc)); // Ceiling of sample value at hc.
 
       return sf + (h - hf) * (sc - sf); // Linear interpolation.
     }

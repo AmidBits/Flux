@@ -3,6 +3,7 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Returns the sequence rotated right by the specified count. The right rotation has a direct cost (the full sequence is buffered in a list).</summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> RotateRight<T>(this System.Collections.Generic.IEnumerable<T> source, int count)
     {
       if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));

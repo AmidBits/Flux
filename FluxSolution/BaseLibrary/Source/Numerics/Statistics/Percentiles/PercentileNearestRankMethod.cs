@@ -31,7 +31,7 @@ namespace Flux.Numerics
       if (distribution is null) throw new System.ArgumentNullException(nameof(distribution));
       if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      return distribution.ElementAt(System.Convert.ToInt32(PercentRank(p, distribution.Count())));
+      return distribution.ElementAt(System.Convert.ToInt32(PercentRank(p, distribution.Count())) - 1);
     }
   }
 }

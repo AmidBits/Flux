@@ -10,15 +10,13 @@ namespace Flux
     public static System.Collections.Generic.SortedDictionary<TKey, double> PercentRank<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector, double factor = 1)
       where TKey : notnull
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       var keys = new System.Collections.Generic.HashSet<TKey>();
 
       var pr = new System.Collections.Generic.SortedDictionary<TKey, double>();
 
       var sumOfFrequencies = 0;
 
-      foreach (var item in source)
+      foreach (var item in source.ThrowIfNull())
       {
         var key = keySelector(item);
 

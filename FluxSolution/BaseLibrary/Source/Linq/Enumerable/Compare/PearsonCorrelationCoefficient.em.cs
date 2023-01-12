@@ -7,11 +7,8 @@ namespace Flux
     public static (TSelf correlation, TSelf covariance) PearsonCorrelationCoefficient<TValueX, TValueY, TSelf>(this System.Collections.Generic.IEnumerable<TValueX> setX, System.Func<TValueX, TSelf> valueSelectorX, System.Collections.Generic.IEnumerable<TValueY> setY, System.Func<TValueY, TSelf> valueSelectorY)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
     {
-      var ex = setX.GetEnumerator();
-      if (!ex.MoveNext()) throw new System.ArgumentException(@"Sequence is empty.", nameof(setX));
-
-      var ey = setY.GetEnumerator();
-      if (!ey.MoveNext()) throw new System.ArgumentException(@"Sequence is empty.", nameof(setY));
+      var ex = setX.ThrowIfNullOrEmpty().GetEnumerator();
+      var ey = setY.ThrowIfNullOrEmpty().GetEnumerator();
 
       var sumX = TSelf.Zero;
       var sumX2 = TSelf.Zero;
