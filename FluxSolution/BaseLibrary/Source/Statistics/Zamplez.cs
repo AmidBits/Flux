@@ -48,15 +48,15 @@ namespace Flux
       {
         var values = new double[]
         {
-          Numerics.QuantileR1.Estimate(x, p),
-          Numerics.QuantileR2.Estimate(x, p),
-          Numerics.QuantileR3.Estimate(x, p),
-          Numerics.QuantileR4.Estimate(x, p),
-          Numerics.QuantileR5.Estimate(x, p),
-          Numerics.QuantileR6.Estimate(x, p),
-          Numerics.QuantileR7.Estimate(x, p),
-          Numerics.QuantileR8.Estimate(x, p),
-          Numerics.QuantileR9.Estimate(x, p),
+          Numerics.QuantileR1.Default.EstimateQuantileValue(x, p),
+          Numerics.QuantileR2.Default.EstimateQuantileValue(x, p),
+          Numerics.QuantileR3.Default.EstimateQuantileValue(x, p),
+          Numerics.QuantileR4.Default.EstimateQuantileValue(x, p),
+          Numerics.QuantileR5.Default.EstimateQuantileValue(x, p),
+          Numerics.QuantileR6.Default.EstimateQuantileValue(x, p),
+          Numerics.QuantileR7.Default.EstimateQuantileValue(x, p),
+          Numerics.QuantileR8.Default.EstimateQuantileValue(x, p),
+          Numerics.QuantileR9.Default.EstimateQuantileValue(x, p),
         };
 
         System.Console.WriteLine($"The estimated quantiles of {p:N2}:");

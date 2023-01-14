@@ -2,13 +2,25 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static TSelf ComputePercentile<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> distribution, TSelf p, PercentileAlgorithm algorithm)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static TPercent ComputePercentileRank<TCount, TPercent>(this TCount count, TPercent p, PercentileAlgorithm algorithm)
+      where TCount : System.Numerics.IBinaryInteger<TCount>
+      where TPercent : System.Numerics.IFloatingPoint<TPercent>
       => algorithm switch
       {
-        PercentileAlgorithm.ExcelInc => Numerics.PercentileVariant2.PercentValue(distribution, p),
-        PercentileAlgorithm.ExcelExc => Numerics.PercentileVariant3.PercentValue(distribution, p),
-        PercentileAlgorithm.NearestRankMethod => Numerics.PercentileNearestRankMethod.PercentValue(distribution, p),
+        PercentileAlgorithm.ExcelInc => Numerics.PercentileVariant2.PercentileRank(count, p),
+        PercentileAlgorithm.ExcelExc => Numerics.PercentileVariant3.PercentileRank(count, p),
+        PercentileAlgorithm.NearestRankMethod => Numerics.PercentileNearestRank.PercentileRank(count, p),
+        _ => throw new NotImplementedException(),
+      };
+
+    public static TPercent ComputePercentileScore<TScore, TPercent>(this System.Collections.Generic.IEnumerable<TScore> distribution, TPercent p, PercentileAlgorithm algorithm)
+      where TScore : System.Numerics.INumber<TScore>
+      where TPercent : System.Numerics.IFloatingPoint<TPercent>
+      => algorithm switch
+      {
+        PercentileAlgorithm.ExcelInc => Numerics.PercentileVariant2.PercentileScore(distribution, p),
+        PercentileAlgorithm.ExcelExc => Numerics.PercentileVariant3.PercentileScore(distribution, p),
+        PercentileAlgorithm.NearestRankMethod => Numerics.PercentileNearestRank.PercentileScore(distribution, p),
         _ => throw new NotImplementedException(),
       };
 

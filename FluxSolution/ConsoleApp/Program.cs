@@ -24,22 +24,22 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      // if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunStatistics(); return; }
+      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunStatistics(); return; }
 
-      System.Console.WriteLine(Flux.Numerics.BinomialDistribution.ProbabilityMassFunction(4, 6, 0.3));
+      var st = new double[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 };
 
-      System.Console.WriteLine(Flux.Numerics.GeometricDistribution.ProbabilityMassFunction2(0, 0.6));
-      System.Console.WriteLine(Flux.Numerics.GeometricDistribution.ProbabilityMassFunction2(1, 0.6));
+      foreach (QuantileAlgorithm a in System.Enum.GetValues<QuantileAlgorithm>())
+      {
+        var qr = (st.Count().ComputeQuantileRank(0.25, a), st.Count().ComputeQuantileRank(0.50, a), st.Count().ComputeQuantileRank(0.75, a));
+        var qv = (st.EstimateQuantileValue(0.25, a), st.EstimateQuantileValue(0.50, a), st.EstimateQuantileValue(0.75, a));
 
-      var st = new double[] { 6, 7, 15, 36, 39, 40, 41, 42, 43, 47, 49 };
+        System.Console.WriteLine($"{a} : qR = {qr}, qV = {qv}");
+      }
+      return;
 
-      var stq61 = st.EstimateQuantile(0.25, QuantileAlgorithm.R6);
-      var stq62 = st.EstimateQuantile(0.50, QuantileAlgorithm.R6);
-      var stq63 = st.EstimateQuantile(0.75, QuantileAlgorithm.R6);
-
-      var stq71 = st.EstimateQuantile(0.25, QuantileAlgorithm.R7);
-      var stq72 = st.EstimateQuantile(0.50, QuantileAlgorithm.R7);
-      var stq73 = st.EstimateQuantile(0.75, QuantileAlgorithm.R7);
+      var stq71 = st.EstimateQuantileValue(0.25, QuantileAlgorithm.R7);
+      var stq72 = st.EstimateQuantileValue(0.50, QuantileAlgorithm.R7);
+      var stq73 = st.EstimateQuantileValue(0.75, QuantileAlgorithm.R7);
 
       var ai = new int[] { 4, 18, 26, 31, 43, 57, 69, 72, 85 };
 

@@ -15,9 +15,9 @@ namespace Flux.Numerics
     public static (TSelf q1, TSelf q2, TSelf q3) Compute<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (
-        QuantileR5.Estimate(sample, TSelf.CreateChecked(0.25)),
-        QuantileR5.Estimate(sample, TSelf.CreateChecked(0.50)),
-        QuantileR5.Estimate(sample, TSelf.CreateChecked(0.75))
+        QuantileR5.Default.EstimateQuantileValue(sample, TSelf.CreateChecked(0.25)),
+        QuantileR5.Default.EstimateQuantileValue(sample, TSelf.CreateChecked(0.50)),
+        QuantileR5.Default.EstimateQuantileValue(sample, TSelf.CreateChecked(0.75))
       );
   }
 }

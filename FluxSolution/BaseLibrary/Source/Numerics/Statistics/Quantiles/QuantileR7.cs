@@ -6,23 +6,22 @@ namespace Flux.Numerics
   /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class QuantileR7
-    : IQuantileEstimatable
+    : IQuantile
   {
-    public TSelf EstimateQuantile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => Estimate(sample, p);
+    public static IQuantile Default => new QuantileR7();
 
-    /// <summary>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    public static TSelf Estimate<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public TPercent ComputeQuantileRank<TCount, TPercent>(TCount count, TPercent p)
+      where TCount : System.Numerics.IBinaryInteger<TCount>
+      where TPercent : System.Numerics.IFloatingPoint<TPercent>
     {
-      if (sample is null) throw new System.ArgumentNullException(nameof(sample));
-      if (p < TSelf.Zero || p > TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(p));
+      if (TPercent.IsNegative(p) || p > TPercent.One) throw new System.ArgumentOutOfRangeException(nameof(p));
 
-      var h = TSelf.CreateChecked(sample.Count() - 1) * p + TSelf.One;
-
-      return QuantileEdf.Estimate(sample, h - TSelf.One); // Adjust for 0-based indexing.
+      return TPercent.CreateChecked(count - TCount.One) * p + TPercent.One;
     }
+
+    public TPercent EstimateQuantileValue<TValue, TPercent>(System.Collections.Generic.IEnumerable<TValue> ordered, TPercent p)
+      where TValue : System.Numerics.INumber<TValue>
+      where TPercent : System.Numerics.IFloatingPoint<TPercent>
+      => QuantileEdf.Lerp(ordered, ComputeQuantileRank(ordered.Count(), p) - TPercent.One); // Adjust for 0-based indexing.
   }
 }

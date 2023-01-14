@@ -7,9 +7,16 @@ namespace Flux.Numerics
   /// </summary>
   public interface IPercentileComputable
   {
-    /// <summary>Computes a percentile according to the implementation.</summary>
-    /// <returns>The computed percentile.</returns>
-    TSelf ComputePercentile<TSelf>(System.Collections.Generic.IEnumerable<TSelf> distribution, TSelf p)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>;
+    /// <summary>Computes a percentile rank according to the implementation.</summary>
+    /// <returns>The computed percentile rank.</returns>
+    TPercent ComputePercentileRank<TCount, TPercent>(TCount count, TPercent p)
+      where TCount : System.Numerics.IBinaryInteger<TCount>
+      where TPercent : System.Numerics.IFloatingPoint<TPercent>;
+
+    /// <summary>Computes a percentile score according to the implementation.</summary>
+    /// <returns>The computed percentile score.</returns>
+    TPercent ComputePercentileScore<TScore, TPercent>(System.Collections.Generic.IEnumerable<TScore> distribution, TPercent p)
+      where TScore : System.Numerics.INumber<TScore>
+      where TPercent : System.Numerics.IFloatingPoint<TPercent>;
   }
 }
