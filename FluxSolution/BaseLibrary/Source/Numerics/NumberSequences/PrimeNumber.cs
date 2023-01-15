@@ -31,7 +31,7 @@ namespace Flux.NumberSequences
 
     #region Static members
     /// <summary>Creates a new sequence of ascending potential primes, greater than the specified number.</summary>
-    
+
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetAscendingPotentialPrimes(System.Numerics.BigInteger startAt)
     {
       if (startAt <= 2) yield return 2;
@@ -52,11 +52,11 @@ namespace Flux.NumberSequences
     }
     /// <summary>Creates a new sequence ascending prime numbers, greater than the specified number.</summary>
     /// <see cref="https://math.stackexchange.com/questions/164767/prime-number-generator-how-to-make"/>
-    
+
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetAscendingPrimes(System.Numerics.BigInteger startAt)
       => GetAscendingPotentialPrimes(startAt).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
-    
+
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPotentialPrimes(System.Numerics.BigInteger number)
     {
       var quotient = System.Numerics.BigInteger.DivRem(number, 6, out var remainder);
@@ -106,13 +106,13 @@ namespace Flux.NumberSequences
         }
       }
     }
-    
+
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPrimes(System.Numerics.BigInteger number)
       => GetClosestPotentialPrimes(number).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
     /// <summary>Returns a sequence of cousine primes, each of which is a pair of primes that differ by four.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cousin_prime"/>
-    
+
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger, int Index)> GetCousinePrimes()
     {
       var counter = 0;
@@ -135,7 +135,7 @@ namespace Flux.NumberSequences
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Factorization"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Wheel_factorization"/>
-    
+
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPrimeFactors(System.Numerics.BigInteger number)
     {
       if (number < 1) throw new System.ArgumentOutOfRangeException(nameof(number));
@@ -183,13 +183,13 @@ namespace Flux.NumberSequences
     }
 
     /// <summary>Results in an ascending sequence of gaps between prime numbers starting with the specified number.</summary>
-    
+
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPrimeGaps(System.Numerics.BigInteger startAt)
       => GetAscendingPrimes(startAt).PartitionTuple2(false, (leading, trailing, index) => trailing - leading);
 
     /// <summary>Returns a sequence of prime quadruplets, each of which is a set of four primes of the form {p, p+2, p+6, p+8}.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Prime_quadruplet"/>
-    
+
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger, int Index)> GetPrimeQuadruplets()
     {
       var index = 0;
@@ -212,7 +212,7 @@ namespace Flux.NumberSequences
 
     /// <summary>Returns a sequence of prime quintuplets, each of which is a set of four primes of the form {p, p+2, p+6, p+8} and {p-4 or p+12}.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Prime_quadruplet#Prime_quintuplets"/>
-    
+
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger, int Index)> GetPrimeQuintuplets()
     {
       var index = 0;
@@ -237,7 +237,7 @@ namespace Flux.NumberSequences
 
     /// <summary>Returns a sequence of prime sextuplets, each of which is a set of six primes of the form {p-4, p, p+2, p+6, p+8, p+12}.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Prime_quadruplet#Prime_sextuplets"/>
-    
+
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger, int Index)> GetPrimeSextuplets()
     {
       var index = 0;
@@ -260,49 +260,49 @@ namespace Flux.NumberSequences
 
     /// <summary>Returns a sequence of prime triplets, each of which is a set of three prime numbers of the form (p, p + 2, p + 6) or (p, p + 4, p + 6).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Prime_triplet"/>
-    
+
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger)> GetPrimeTriplets()
-      => 0 is var index ? GetAscendingPrimes(SmallestPrime.ToBigInteger()).PartitionTuple3(0, (leading, midling, trailing, index) => (leading, midling, trailing)).Where((t) => t.trailing - t.leading is var gap3to1 && gap3to1 == 6 && t.midling - t.leading is var gap2to1 && (gap2to1 == 2 || gap2to1 == 4)) : throw new System.Exception();
+      => 0 is var index ? GetAscendingPrimes(SmallestPrime.ToType(out System.Numerics.BigInteger _)).PartitionTuple3(0, (leading, midling, trailing, index) => (leading, midling, trailing)).Where((t) => t.trailing - t.leading is var gap3to1 && gap3to1 == 6 && t.midling - t.leading is var gap2to1 && (gap2to1 == 2 || gap2to1 == 4)) : throw new System.Exception();
 
     /// <summary>Returns a sequence of super-primes, which is a subsequence of prime numbers that occupy prime-numbered positions within the sequence of all prime numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Super-prime"/>
-    
+
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSuperPrimes()
-      => GetAscendingPrimes(SmallestPrime.ToBigInteger()).Where((p, i) => IsPrimeNumber(((System.Numerics.BigInteger)i + System.Numerics.BigInteger.One)));
+      => GetAscendingPrimes(SmallestPrime.ToType(out System.Numerics.BigInteger _)).Where((p, i) => IsPrimeNumber(((System.Numerics.BigInteger)i + System.Numerics.BigInteger.One)));
 
     /// <summary>Returns a sequence of teim primes, each of which is a pair of primes that differ by two.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Twin_prime"/>
-    
+
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger)> GetTwinPrimes()
-      => GetAscendingPrimes(SmallestPrime.ToBigInteger()).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Where((t) => t.trailing - t.leading == 2);
+      => GetAscendingPrimes(SmallestPrime.ToType(out System.Numerics.BigInteger _)).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Where((t) => t.trailing - t.leading == 2);
 
     /// <summary>Indicates whether the prime number is also an additive prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/List_of_prime_numbers#Additive_primes"/>
-    
+
     public static bool IsAlsoAdditivePrime(System.Numerics.BigInteger primeNumber)
       => IsPrimeNumber(GenericMath.DigitSum(primeNumber, 10));
     /// <summary>Indicates whether the prime number is also a congruent modulo prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
-    
+
     public static bool IsAlsoCongruentModuloPrime(System.Numerics.BigInteger primeNumber, System.Numerics.BigInteger a, System.Numerics.BigInteger d)
       => (primeNumber % a == d);
     /// <summary>Indicates whether the prime number is also an Eisenstein prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Eisenstein_prime"/>
-    
+
     public static bool IsAlsoEisensteinPrime(System.Numerics.BigInteger primeNumber)
       => IsAlsoCongruentModuloPrime(primeNumber, 3, 2);
     /// <summary>Indicates whether the prime number is also a Gaussian prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Gaussian_integer#Gaussian_primes"/>
-    
+
     public static bool IsAlsoGaussianPrime(System.Numerics.BigInteger primeNumber)
       => IsAlsoCongruentModuloPrime(primeNumber, 4, 3);
     /// <summary>Indicates whether the prime number is also a left truncatable prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Truncatable_prime"/>
-    
+
     public static bool IsAlsoLeftTruncatablePrime(System.Numerics.BigInteger primeNumber)
     {
       var text = primeNumber.ToString(System.Globalization.CultureInfo.InvariantCulture);
@@ -327,34 +327,34 @@ namespace Flux.NumberSequences
     /// <summary>Indicates whether the prime number is also a Pythagorean prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Pythagorean_prime"/>
-    
+
     public static bool IsAlsoPythagoreanPrime(System.Numerics.BigInteger primeNumber)
       => IsAlsoCongruentModuloPrime(primeNumber, 4, 1);
     /// <summary>Indicates whether the prime number is also a safe prime prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Safe_prime"/>
-    
+
     public static bool IsAlsoSafePrime(System.Numerics.BigInteger primeNumber)
       => IsPrimeNumber((primeNumber - 1) / 2);
     /// <summary>Indicates whether the prime number is also a Sophie Germain prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see cref="https://en.wikipedia.org/wiki/Sophie_Germain_prime"/>
-    
+
     public static bool IsAlsoSophieGermainPrime(System.Numerics.BigInteger primeNumber)
       => IsPrimeNumber((primeNumber * 2) + 1);
 
     /// <summary>Returns whether <paramref name="a"/> and <paramref name="b"/> are co-prime.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
-    
+
     public static bool IsCoprime<TSelf>(System.Numerics.BigInteger a, System.Numerics.BigInteger b)
       => GenericMath.GreatestCommonDivisor(a, b) == 1;
 
     /// <summary>Indicates whether a specified number is a prime candidate.</summary>
-    
+
     public static bool IsPrimeCandidate(System.Numerics.BigInteger number)
       => number % 6 is var remainder && (remainder == 5 || remainder == 1);
     /// <summary>Indicates whether a specified number is a prime candidate, and also returns the properties of "6n-1"/"6n+1".</summary>
-    
+
     public static bool IsPrimeCandidate(System.Numerics.BigInteger number, out System.Numerics.BigInteger multiplier, out System.Numerics.BigInteger offset)
     {
       multiplier = System.Numerics.BigInteger.DivRem(number, 6, out offset);
@@ -372,7 +372,7 @@ namespace Flux.NumberSequences
     /// <summary>Indicates whether a specified number is a prime.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Primality_test"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Prime_number"/>
-    
+
     public static bool IsPrimeNumber(System.Numerics.BigInteger number)
     {
       if (number <= long.MaxValue)
@@ -395,7 +395,7 @@ namespace Flux.NumberSequences
     /// <summary>Indicates whether a specified number is a prime.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Primality_test"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Prime_number"/>
-    
+
     public static bool IsPrimeNumber(int source)
     {
       if (source <= 3)
@@ -415,7 +415,7 @@ namespace Flux.NumberSequences
     /// <summary>Indicates whether a specified number is a prime.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Primality_test"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Prime_number"/>
-    
+
     public static bool IsPrimeNumber(long source)
     {
       if (source <= int.MaxValue)
@@ -439,11 +439,11 @@ namespace Flux.NumberSequences
 
     #region Implemented interfaces
     // INumberSequence
-     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence() => GetAscendingPrimes(SmallestPrime);
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence() => GetAscendingPrimes(SmallestPrime);
 
     // IEnumerable<>
-     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator() => GetSequence().GetEnumerator();
-     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator() => GetSequence().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     #endregion Implemented interfaces
   }
 }

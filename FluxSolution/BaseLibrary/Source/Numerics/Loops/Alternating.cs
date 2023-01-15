@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     /// <summary>Creates a new sequence of numbers starting with at the specified mean, how many numbers and step size, with every other number above/below the mean.</summary>
-    public static System.Collections.Generic.IEnumerable<TSelf> LoopAlternating<TSelf>(this TSelf mean, TSelf count, TSelf step, AlternatingDirection direction)
+    public static System.Collections.Generic.IEnumerable<TSelf> LoopAlternating<TSelf>(this TSelf mean, TSelf count, TSelf step, Loops.AlternatingDirection direction)
       where TSelf : System.Numerics.INumber<TSelf>
       => new Loops.Alternating<TSelf>(mean, count, step, direction).GetSequence();
   }
@@ -12,8 +12,8 @@ namespace Flux
   {
     /// <summary>Creates a new sequence.</summary>
     public record class Alternating<TNumber>
-    : NumberSequences.INumericSequence<TNumber>
-    where TNumber : System.Numerics.INumber<TNumber>
+      : NumberSequences.INumericSequence<TNumber>
+      where TNumber : System.Numerics.INumber<TNumber>
     {
       private TNumber m_mean;
       private TNumber m_count;

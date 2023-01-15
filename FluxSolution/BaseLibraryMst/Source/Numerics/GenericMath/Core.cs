@@ -42,15 +42,15 @@ namespace GenericMath
       Assert.AreEqual(362880, 9.Factorial());
 
       Assert.AreEqual(System.Numerics.BigInteger.Parse("36471110918188685288249859096605464427167635314049524593701628500267962436943872000000000000000"), Flux.GenericMath.Factorial(67.ToBigInteger()));
-      Assert.AreEqual(479001600, Flux.GenericMath.Factorial(12.ToBigInteger()));
-      Assert.AreEqual(-479001600, Flux.GenericMath.Factorial(-12.ToBigInteger()));
+      Assert.AreEqual(479001600, Flux.GenericMath.Factorial(12.ToType(out System.Numerics.BigInteger _)));
+      Assert.AreEqual(-479001600, Flux.GenericMath.Factorial(-12.ToType(out System.Numerics.BigInteger _)));
     }
 
     [TestMethod]
     public void ParallelSplitFactorial()
     {
       Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12));
-      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12.ToBigInteger()));
+      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12.ToType(out System.Numerics.BigInteger _)));
     }
 
     [TestMethod]

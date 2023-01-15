@@ -4,14 +4,14 @@ namespace Flux
   {
     /// <summary>Creates a new sequence.</summary>
     public record class CustomSelectors<TSelf, TResult>
-    : NumberSequences.INumericSequence<TResult>
-    where TSelf : System.Numerics.INumber<TSelf>
-    where TResult : System.Numerics.INumber<TResult>
+      : NumberSequences.INumericSequence<TResult>
+      where TSelf : System.Numerics.INumber<TSelf>
+      where TResult : System.Numerics.INumber<TResult>
     {
-      private System.Func<TSelf> m_initializerSelector;
-      private System.Func<TSelf, int, bool> m_conditionSelector;
-      private System.Func<TSelf, int, TSelf> m_iteratorSelector;
-      private System.Func<TSelf, int, TResult> m_resultSelector;
+      private readonly System.Func<TSelf> m_initializerSelector;
+      private readonly System.Func<TSelf, int, bool> m_conditionSelector;
+      private readonly System.Func<TSelf, int, TSelf> m_iteratorSelector;
+      private readonly System.Func<TSelf, int, TResult> m_resultSelector;
 
       public CustomSelectors(System.Func<TSelf> initializerSelector, System.Func<TSelf, int, bool> conditionSelector, System.Func<TSelf, int, TSelf> iteratorSelector, System.Func<TSelf, int, TResult> resultSelector)
       {

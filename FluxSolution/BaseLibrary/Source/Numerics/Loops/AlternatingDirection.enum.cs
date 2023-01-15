@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Loops
 {
   public enum AlternatingDirection
   {

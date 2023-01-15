@@ -48,20 +48,20 @@ namespace Flux.NumberSequences
     {
     }
 
-    
+
     private System.Numerics.BigInteger GetMöbiusNumber(int number)
-      => m_sieve[number].ToBigInteger();
+      => m_sieve[number].ToType(out System.Numerics.BigInteger _);
 
     #region Implemented interfaces
     // INumberSequence
-    
+
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => System.Linq.Enumerable.Range(1, int.MaxValue - 1).Select(i => GetMöbiusNumber(i));
 
-    
+
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces
