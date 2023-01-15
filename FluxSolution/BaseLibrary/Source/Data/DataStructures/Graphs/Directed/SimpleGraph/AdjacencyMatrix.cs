@@ -28,12 +28,10 @@
     { }
 
     /// <summary>Returns the count of vertices within the adjacency matrix.</summary>
-    public int Count
-      => m_matrix.GetLength(0);
+    public int Count => m_matrix.GetLength(0);
 
     /// <summary>Returns the basic adjacency matrix.</summary>
-    public int[,] Matrix
-      => m_matrix;
+    public int[,] Matrix => m_matrix;
 
     /// <summary>Returns the degree of the vertex x. Loops are not counted.</summary>
     public int GetDegree(int x)
@@ -50,6 +48,7 @@
 
       return count;
     }
+
     /// <summary>Lists all vertices y such that there is an edge from the vertex x to the vertex y. Loops are not considered neighbors.</summary>
     public System.Collections.Generic.IEnumerable<int> GetNeighbors(int value)
     {
@@ -59,9 +58,9 @@
         if (m_matrix[value, i] is var m && m == 1)
           yield return i;
     }
+
     /// <summary>Tests whether there is an edge from the vertex x to the vertex y.</summary>
-    public bool IsAdjacent(int x, int y)
-      => VertexExists(x) && VertexExists(y) && m_matrix[x, y] == 1;
+    public bool IsAdjacent(int x, int y) => VertexExists(x) && VertexExists(y) && m_matrix[x, y] == 1;
 
     /// <summary>Adds the vertex x, if it is not there.</summary>
     public bool AddVertex(int x)
@@ -93,9 +92,10 @@
 
       return false;
     }
+
     /// <summary>Tests whether there is a vertex x.</summary>
-    public bool VertexExists(int x)
-      => x >= 0 && x < Count;
+    public bool VertexExists(int x) => x >= 0 && x < Count;
+
     /// <summary>Removes the vertex x, if it is there.</summary>
     public bool RemoveVertex(int x)
     {
@@ -113,14 +113,13 @@
     }
 
     /// <summary>Returns the value associated with the vertex x. A vertex can exists without a value.</summary>
-    public bool TryGetVertexValue(int x, out object value)
-      => m_vertexValues.TryGetValue(x, out value!);
+    public bool TryGetVertexValue(int x, out object value) => m_vertexValues.TryGetValue(x, out value!);
+
     /// <summary>Removes the value for the edge and whether the removal was successful.</summary>
-    public bool RemoveVertexValue(int x)
-      => m_vertexValues.Remove(x);
+    public bool RemoveVertexValue(int x) => m_vertexValues.Remove(x);
+
     /// <summary>Sets the value associated with the vertex x to v.</summary>
-    public void SetVertexValue(int x, object value)
-      => m_vertexValues[x] = value;
+    public void SetVertexValue(int x, object value) => m_vertexValues[x] = value;
 
     /// <summary>Adds the edge from the vertex x to the vertex y, if it is not there.</summary>
     public bool AddEdge(int x, int y)
@@ -146,9 +145,10 @@
 
       return false;
     }
+
     /// <summary>Tests whether there is an edge (x, y) available, either directed or a loop.</summary>
-    public bool EdgeExists(int x, int y)
-      => VertexExists(x) && VertexExists(y) && m_matrix[x, y] > 0;
+    public bool EdgeExists(int x, int y) => VertexExists(x) && VertexExists(y) && m_matrix[x, y] > 0;
+
     /// <summary>Removes the edge from the vertex x to the vertex y, if it is there.</summary>
     public bool RemoveEdge(int x, int y)
     {
@@ -165,14 +165,13 @@
     }
 
     /// <summary>Returns whether the edge value was found and outputs the value associated if found. An edge can exists without a value.</summary>
-    public bool TryGetEdgeValue(int x, int y, out object value)
-      => m_edgeValues.TryGetValue((x, y), out value!);
+    public bool TryGetEdgeValue(int x, int y, out object value) => m_edgeValues.TryGetValue((x, y), out value!);
+
     /// <summary>Removes the value for the edge and returns whether the removal was successful.</summary>
-    public bool RemoveEdgeValue(int x, int y)
-      => m_edgeValues.Remove((x, y));
+    public bool RemoveEdgeValue(int x, int y) => m_edgeValues.Remove((x, y));
+
     /// <summary>Sets the value associated with the edge (x, y) to v.</summary>
-    public void SetEdgeValue(int x, int y, object value)
-      => m_edgeValues[(x, y)] = value;
+    public void SetEdgeValue(int x, int y, object value) => m_edgeValues[(x, y)] = value;
 
     /// <summary>Returns the maximum flow/minimum cost using the Bellman-Ford algorithm.</summary>
     /// <param name="x"></param>
@@ -289,37 +288,37 @@
       }
     }
 
-    /// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
-    /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
-    public System.Collections.Generic.IEnumerable<(int destination, double distance)> GetDijkstraShortestPathTree(int origin, System.Func<object, double> distanceSelector)
-    {
-      var vertices = System.Linq.Enumerable.ToList(GetVertices());
+    ///// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
+    ///// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
+    //public System.Collections.Generic.IEnumerable<(int destination, double distance)> GetDijkstraShortestPathTree(int origin, System.Func<object, double> distanceSelector)
+    //{
+    //  var vertices = System.Linq.Enumerable.ToList(GetVertices());
 
-      var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
+    //  var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
 
-      var edges = System.Linq.Enumerable.ToList(GetEdges()); // Cache edges, because we need it while there are available distances.
+    //  var edges = System.Linq.Enumerable.ToList(GetEdges()); // Cache edges, because we need it while there are available distances.
 
-      while (System.Linq.Enumerable.Any(distances)) // As long as there are nodes available.
-      {
-        var shortest = System.Linq.Enumerable.First(System.Linq.Enumerable.OrderBy(distances, v => v.Value)); // Get the node with the shortest distance.
+    //  while (System.Linq.Enumerable.Any(distances)) // As long as there are nodes available.
+    //  {
+    //    var shortest = System.Linq.Enumerable.First(System.Linq.Enumerable.OrderBy(distances, v => v.Value)); // Get the node with the shortest distance.
 
-        if (shortest.Value < double.PositiveInfinity) // If the distance to the node is less than infinity, it was reachable so it should be returned.
-          yield return (shortest.Key, shortest.Value);
+    //    if (shortest.Value < double.PositiveInfinity) // If the distance to the node is less than infinity, it was reachable so it should be returned.
+    //      yield return (shortest.Key, shortest.Value);
 
-        distances.Remove(shortest.Key); // This node is now final, so remove it.
+    //    distances.Remove(shortest.Key); // This node is now final, so remove it.
 
-        foreach (var (x, y, v) in System.Linq.Enumerable.Where(edges, e => e.x.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
-        {
-          if (distances.TryGetValue(y, out var distanceToEdgeTarget))
-          {
-            var distanceViaShortest = shortest.Value + distanceSelector(v); // Distance via the current node.
+    //    foreach (var (x, y, v) in System.Linq.Enumerable.Where(edges, e => e.x.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
+    //    {
+    //      if (distances.TryGetValue(y, out var distanceToEdgeTarget))
+    //      {
+    //        var distanceViaShortest = shortest.Value + distanceSelector(v); // Distance via the current node.
 
-            if (distanceViaShortest < distanceToEdgeTarget) // If the distance via the current node is shorter than the currently recorded distance, replace it.
-              distances[y] = distanceViaShortest;
-          }
-        }
-      }
-    }
+    //        if (distanceViaShortest < distanceToEdgeTarget) // If the distance via the current node is shorter than the currently recorded distance, replace it.
+    //          distances[y] = distanceViaShortest;
+    //      }
+    //    }
+    //  }
+    //}
 
     public System.Collections.Generic.IEnumerable<(int x, int y, object value)> GetEdges()
     {
@@ -391,8 +390,7 @@
     }
 
     #region Object overrides.
-    public override string ToString()
-      => $"{GetType().Name} {{ Vertices = {Count}, Edges = {System.Linq.Enumerable.Count(GetEdges())} }}";
+    public override string ToString() => $"{GetType().Name} {{ Vertices = {Count}, Edges = {System.Linq.Enumerable.Count(GetEdges())} }}";
     #endregion Object overrides.
   }
 }

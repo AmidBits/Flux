@@ -24,40 +24,48 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunStatistics(); return; }
 
-      var st = new double[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 };
 
-      foreach (QuantileAlgorithm a in System.Enum.GetValues<QuantileAlgorithm>())
+      // Compute quantiles:
       {
-        var qr = (st.Count().ComputeQuantileRank(0.25, a), st.Count().ComputeQuantileRank(0.50, a), st.Count().ComputeQuantileRank(0.75, a));
-        var qv = (st.EstimateQuantileValue(0.25, a), st.EstimateQuantileValue(0.50, a), st.EstimateQuantileValue(0.75, a));
+        var aav = new double[][] { new double[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 }, new double[] { 3, 6, 7, 8, 8, 9, 10, 13, 15, 16, 20 } };
 
-        System.Console.WriteLine($"{a} : qR = {qr}, qV = {qv}");
+        foreach (var av in aav)
+        {
+          System.Console.WriteLine($"Sequence: [{string.Join(", ", av)}]");
+
+          foreach (QuantileAlgorithm a in System.Enum.GetValues<QuantileAlgorithm>())
+          {
+            var ac = av.Count();
+
+            var qr = (ac.ComputeQuantileRank(0.25, a), ac.ComputeQuantileRank(0.50, a), ac.ComputeQuantileRank(0.75, a));
+            var qv = (av.EstimateQuantileValue(0.25, a), av.EstimateQuantileValue(0.50, a), av.EstimateQuantileValue(0.75, a));
+
+            System.Console.WriteLine($"{a} : qR = {qr}, qV = {qv}");
+          }
+
+          System.Console.WriteLine();
+        }
+
+        return;
       }
-      return;
 
-      var stq71 = st.EstimateQuantileValue(0.25, QuantileAlgorithm.R7);
-      var stq72 = st.EstimateQuantileValue(0.50, QuantileAlgorithm.R7);
-      var stq73 = st.EstimateQuantileValue(0.75, QuantileAlgorithm.R7);
 
-      var ai = new int[] { 4, 18, 26, 31, 43, 57, 69, 72, 85 };
 
-      var ngram = ai.PartitionNgram(5, (e, i) => e.ToArray()).ToArray();
-      var windowed = ai.PartitionWindowed(5, 1, false, (e) => e.ToArray()).ToArray();
-      var pt2 = ai.PartitionTuple2(false, (e1, e2, i) => (e1, e2)).ToArray();
-
-      //var v = -1.5;
-      //var c = v.Round(RoundingMode.Ceiling);
-      //var e = v.Round(RoundingMode.Envelop);
-      //var f = v.Round(RoundingMode.Floor);
-      //var t = v.Round(RoundingMode.Truncate);
-      //var hafz = v.Round(RoundingMode.HalfAwayFromZero);
-      //var heven = v.Round(RoundingMode.HalfToEven);
-      //var hninf = v.Round(RoundingMode.HalfToNegativeInfinity);
-      //var hodd = v.Round(RoundingMode.HalfToOdd);
-      //var hpinf = v.Round(RoundingMode.HalfToPositiveInfinity);
-      //var htz = v.Round(RoundingMode.HalfTowardZero);
+      // Compute roundings:
+      {
+        var v = -1.5;
+        var c = v.Round(RoundingMode.Ceiling);
+        var e = v.Round(RoundingMode.Envelop);
+        var f = v.Round(RoundingMode.Floor);
+        var t = v.Round(RoundingMode.Truncate);
+        var hafz = v.Round(RoundingMode.HalfAwayFromZero);
+        var heven = v.Round(RoundingMode.HalfToEven);
+        var hninf = v.Round(RoundingMode.HalfToNegativeInfinity);
+        var hodd = v.Round(RoundingMode.HalfToOdd);
+        var hpinf = v.Round(RoundingMode.HalfToPositiveInfinity);
+        var htz = v.Round(RoundingMode.HalfTowardZero);
+      }
     }
 
     private static void Main(string[] args)

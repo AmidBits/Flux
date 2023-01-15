@@ -45,6 +45,8 @@ namespace Flux
       var mremove = matrix.Remove(1, 1);
       (minLeft, minTop, maxLeft, maxTop) = new string[] { "Remove" }.Concat(mremove.ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
 
+      System.Console.WriteLine();
+
       //System.Console.WriteLine(nameof(matrix));
       //System.Console.WriteLine(matrix.ToConsoleBlock(uniformWidth: true));
       //System.Console.WriteLine();

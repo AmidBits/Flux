@@ -120,13 +120,13 @@ namespace Flux
       IsSame(dane, tea); // 4
       IsSame(green, coffee); // 6
 
-      Flux.AmbOps.IValue<int> dog = Term(nameof(dog)), cat = Term(nameof(cat)), bird = Term(nameof(bird)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
-      IsUnequal(dog, cat, bird, horse, zebra);
+      Flux.AmbOps.IValue<int> dog = Term(nameof(dog)), cat = Term(nameof(cat)), birds = Term(nameof(birds)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
+      IsUnequal(dog, cat, birds, horse, zebra);
       IsSame(swede, dog); // 3
 
       Flux.AmbOps.IValue<int> pallmall = Term(nameof(pallmall)), dunhill = Term(nameof(dunhill)), blend = Term(nameof(blend)), bluemaster = Term(nameof(bluemaster)), prince = Term(nameof(prince));
       IsUnequal(pallmall, dunhill, bluemaster, prince, blend);
-      IsSame(pallmall, bird); // 7
+      IsSame(pallmall, birds); // 7
       IsSame(dunhill, yellow); // 8
       IsNextTo(blend, cat); // 11
       IsNextTo(horse, dunhill); // 12
