@@ -109,11 +109,11 @@ namespace Flux
 
     /// <summary>Creates a new builder from the source.</summary>
     public static SequenceBuilder<T> ToSequenceBuilder<T>(this System.ReadOnlySpan<T> source)
-      => new SequenceBuilder<T>(source);
+      => new(source);
 
     /// <summary>Creates a new builder from the source.</summary>
     public static SequenceBuilder<T> ToSequenceBuilder<T>(this System.Span<T> source)
-      => new SequenceBuilder<T>(source);
+      => new(source);
 
     public static SequenceBuilder<char> ToSequenceBuilderOfChar(this SequenceBuilder<System.Text.Rune> source)
     {
@@ -134,6 +134,12 @@ namespace Flux
 
       return target;
     }
+
+    public static string ToString(this SequenceBuilder<System.Text.Rune> source, int startAt, int count)
+      => source.AsReadOnlySpan().ToString(startAt, count);
+
+    public static string ToString(this SequenceBuilder<char> source, int startAt, int count)
+      => source.AsReadOnlySpan().ToString(startAt, count);
   }
   #endregion Extension methods.
 

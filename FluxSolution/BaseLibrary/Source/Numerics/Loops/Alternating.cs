@@ -15,10 +15,10 @@ namespace Flux
       : NumberSequences.INumericSequence<TNumber>
       where TNumber : System.Numerics.INumber<TNumber>
     {
-      private TNumber m_mean;
-      private TNumber m_count;
-      private TNumber m_step;
-      private AlternatingDirection m_direction;
+      private readonly TNumber m_mean;
+      private readonly TNumber m_count;
+      private readonly TNumber m_step;
+      private readonly AlternatingDirection m_direction;
 
       public Alternating(TNumber mean, TNumber count, TNumber step, AlternatingDirection direction)
       {
@@ -29,7 +29,7 @@ namespace Flux
       }
 
       public static Alternating<TNumber> CreateBetween(TNumber source, TNumber target, TNumber step, AlternatingDirection direction)
-        => new Alternating<TNumber>(source, TNumber.Abs(target - source) / step + TNumber.One, TNumber.Abs(step) is var absStep && source <= target ? absStep : -absStep, direction);
+        => new(source, TNumber.Abs(target - source) / step + TNumber.One, TNumber.Abs(step) is var absStep && source <= target ? absStep : -absStep, direction);
       public static Alternating<TNumber> CreateBetween(TNumber source, TNumber target, AlternatingDirection direction)
         => CreateBetween(source, target, TNumber.One, direction);
 

@@ -12,7 +12,7 @@ namespace Collections.Generic
     [TestMethod]
     public void CumulativeMassFunction()
     {
-      Assert.AreEqual(0.4, d.CumulativeMassFunction(45), nameof(CumulativeMassFunction));
+      Assert.AreEqual(0.7, d.CumulativeMassFunction(4.5), nameof(CumulativeMassFunction));
     }
 
     //[TestMethod]
@@ -32,9 +32,9 @@ namespace Collections.Generic
       Assert.AreEqual(4.75, Flux.Numerics.PercentileVariant2.PercentileScore(d, 0.75), "ComputePercentileScore");
       Assert.AreEqual(5, Flux.Numerics.PercentileVariant3.PercentileScore(d, 0.75), "ComputePercentileScore");
 
-      Assert.AreEqual(7.5, Flux.Numerics.PercentileNearestRank.PercentileRank(d.Count(), 0.75), "ComputePercentileRank");
-      Assert.AreEqual(7.75, Flux.Numerics.PercentileVariant2.PercentileRank(d.Count(), 0.75), "ComputePercentileRank");
-      Assert.AreEqual(8.25, Flux.Numerics.PercentileVariant3.PercentileRank(d.Count(), 0.75), "ComputePercentileRank");
+      Assert.AreEqual(7.5, Flux.Numerics.PercentileNearestRank.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
+      Assert.AreEqual(7.75, Flux.Numerics.PercentileVariant2.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
+      Assert.AreEqual(8.25, Flux.Numerics.PercentileVariant3.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
 
       Assert.AreEqual(4.75, Flux.Numerics.QuantileR7.Default.EstimateQuantileValue(d, 0.75), "QuantileR5");
       Assert.AreEqual(5, Flux.Numerics.QuantileR6.Default.EstimateQuantileValue(d, 0.75), "QuantileR6");
@@ -47,7 +47,7 @@ namespace Collections.Generic
     [TestMethod]
     public void ProbabilityMassFunction()
     {
-      Assert.AreEqual(0.6, d.ProbabilityMassFunction(65), nameof(ProbabilityMassFunction));
+      Assert.AreEqual(0.9, d.ProbabilityMassFunction(6.5), nameof(ProbabilityMassFunction));
     }
   }
 }

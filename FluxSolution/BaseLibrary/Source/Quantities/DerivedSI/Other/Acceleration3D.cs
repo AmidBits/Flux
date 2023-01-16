@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
-    public record struct Acceleration3D
+    public readonly record struct Acceleration3D
     : IUnitQuantifiable<Numerics.CartesianCoordinate3<double>, AccelerationUnit>
     {
       private readonly Numerics.CartesianCoordinate3<double> m_value;

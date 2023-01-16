@@ -132,7 +132,7 @@ namespace Flux
           m_tokenType = IsEndOfStream ? CsvTokenType.EndStream : CsvTokenType.StartLine;
           break;
         case CsvTokenType.EndField:
-          var lastField = (string)m_fieldValues[m_fieldValues.Count - 1];
+          var lastField = (string)m_fieldValues[^1];
 
           //if (lastField == "\n")
           //{
@@ -143,7 +143,7 @@ namespace Flux
           //else
           if (lastField.EndsWith('\n'))
           {
-            m_fieldValues[m_fieldValues.Count - 1] = lastField.Substring(0, lastField.Length - 1);
+            m_fieldValues[^1] = lastField[..^1];
             m_tokenType = CsvTokenType.EndLine;
             break;
           }
@@ -192,7 +192,7 @@ namespace Flux
         case CsvTokenType.EndField:
           if (ReadFieldValue() is var endFieldValue && endFieldValue.EndsWith('\n')) // A single line feed is an end of line.
           {
-            m_fieldValues.Add(endFieldValue.Substring(0, endFieldValue.Length - 1));
+            m_fieldValues.Add(endFieldValue[..^1]);
 
             m_tokenType = CsvTokenType.EndLine;
           }

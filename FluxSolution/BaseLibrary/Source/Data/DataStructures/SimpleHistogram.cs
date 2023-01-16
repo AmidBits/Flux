@@ -123,7 +123,7 @@ namespace Flux.DataStructures.Statistics
 
       if (m_bins[0].CompareTo(value) < 0)
         m_binLessThan.Count++;
-      if (m_bins[m_bins.Count - 1].CompareTo(value) > 0)
+      if (m_bins[^1].CompareTo(value) > 0)
         m_binGreaterThan.Count++;
       return AddBin(new Bin(value, value, 1)); // No bin exists, create one specific for the value.
     }
@@ -187,8 +187,8 @@ namespace Flux.DataStructures.Statistics
 
     public double ProbabilityMassFunction(TKey key)
     {
-      if (m_bins.ContainsKey(key))
-        return (double)m_bins[key] / m_frequencies;
+      if (m_bins.TryGetValue(key, out var value))
+        return (double)value / m_frequencies;
 
       throw new System.ArgumentOutOfRangeException(nameof(key));
     }

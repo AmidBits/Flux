@@ -6,7 +6,7 @@ namespace Flux.DataStructures
   {
     private System.Collections.Generic.IEnumerator<T>? m_enumerator = null;
     private readonly System.Collections.Generic.List<T> m_list = new();
-    private object m_lock = new object();
+    private readonly object m_lock = new();
 
     public BufferedReadOnlyList(System.Collections.Generic.IEnumerable<T> collection)
       => m_enumerator = collection.GetEnumerator();

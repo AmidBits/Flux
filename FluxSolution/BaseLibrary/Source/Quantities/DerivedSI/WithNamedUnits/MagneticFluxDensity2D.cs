@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Magnetic flux density unit of tesla.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
-    public record struct MagneticFluxDensity2D
+    public readonly record struct MagneticFluxDensity2D
     : IUnitQuantifiable<Numerics.CartesianCoordinate2<double>, MagneticFluxDensityUnit>
     {
       private readonly Numerics.CartesianCoordinate2<double> m_value;

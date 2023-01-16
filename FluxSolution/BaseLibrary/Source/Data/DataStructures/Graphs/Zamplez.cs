@@ -8,10 +8,15 @@
       System.Console.WriteLine(nameof(RunDataStructuresGraphs));
       System.Console.WriteLine();
 
+      System.Console.WriteLine();
       AdjacencyList();
+      System.Console.WriteLine();
 
+      System.Console.WriteLine();
       AdjacencyMatrix1();
+      System.Console.WriteLine();
       AdjacencyMatrix2();
+      System.Console.WriteLine();
 
       static void AdjacencyList()
       {
@@ -22,16 +27,49 @@
         gal.AddVertex(2);
         gal.AddVertex(3);
         gal.AddVertex(4);
+        gal.AddVertex(5);
+        gal.AddVertex(6);
+        gal.AddVertex(7);
+        gal.AddVertex(8);
+
+        gal.AddEdge(0, 1, (0, 4));
+        gal.AddEdge(0, 7, (0, 8));
+        gal.AddEdge(1, 0, (0, 4));
+        gal.AddEdge(1, 2, (0, 8));
+        gal.AddEdge(1, 7, (0, 11));
+        gal.AddEdge(2, 1, (0, 8));
+        gal.AddEdge(2, 3, (0, 7));
+        gal.AddEdge(2, 5, (0, 4));
+        gal.AddEdge(2, 8, (0, 2));
+        gal.AddEdge(3, 2, (0, 7));
+        gal.AddEdge(3, 4, (0, 9));
+        gal.AddEdge(3, 5, (0, 14));
+        gal.AddEdge(4, 3, (0, 9));
+        gal.AddEdge(4, 5, (0, 10));
+        gal.AddEdge(5, 2, (0, 4));
+        gal.AddEdge(5, 3, (0, 14));
+        gal.AddEdge(5, 4, (0, 10));
+        gal.AddEdge(5, 6, (0, 2));
+        gal.AddEdge(6, 5, (0, 2));
+        gal.AddEdge(6, 7, (0, 1));
+        gal.AddEdge(6, 8, (0, 6));
+        gal.AddEdge(7, 0, (0, 8));
+        gal.AddEdge(7, 1, (0, 11));
+        gal.AddEdge(7, 6, (0, 1));
+        gal.AddEdge(7, 8, (0, 7));
+        gal.AddEdge(8, 2, (0, 2));
+        gal.AddEdge(8, 6, (0, 6));
+        gal.AddEdge(8, 7, (0, 7));
 
         // 6, 8
-        gal.AddEdge(0, 1, (3, 1));
-        gal.AddEdge(0, 2, (1, 0));
-        gal.AddEdge(0, 4, (3, 2));
-        gal.AddEdge(1, 2, (2, 0));
-        gal.AddEdge(1, 3, (0, 3));
-        gal.AddEdge(2, 3, (1, 0));
-        gal.AddEdge(2, 4, (6, 0));
-        gal.AddEdge(3, 4, (2, 1));
+        //gal.AddEdge(0, 1, (3, 1));
+        //gal.AddEdge(0, 2, (1, 0));
+        //gal.AddEdge(0, 4, (3, 2));
+        //gal.AddEdge(1, 2, (2, 0));
+        //gal.AddEdge(1, 3, (0, 3));
+        //gal.AddEdge(2, 3, (1, 0));
+        //gal.AddEdge(2, 4, (6, 0));
+        //gal.AddEdge(3, 4, (2, 1));
 
         // 10, 1
         //gal.AddEdge(0, 1, (3, 1));
@@ -44,7 +82,8 @@
 
         System.Console.WriteLine(gal.ToConsoleString());
 
-        var spt = gal.GetDijkstraShortestPathTree(0, o => ((System.ValueTuple<int, int>)o).Item2);
+        var spt = gal.GetDijkstraShortestPathTree(0, o => ((System.ValueTuple<int, int>)o).Item2).ToList();
+        System.Console.WriteLine();
         System.Console.WriteLine("Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
         foreach (var (destination, distance) in spt)
           System.Console.WriteLine($"{destination}={distance}");
@@ -86,11 +125,11 @@
         System.Console.WriteLine($"BellmanFord Min-Cost-Max-Flow: {mcmf}");
         System.Console.WriteLine();
 
-        var spt = gam.GetDijkstraShortestPathTree(0, o => ((System.ValueTuple<int, int>)o).Item2);
+        var spt = gam.GetDijkstraShortestPathTree(0, o => ((System.ValueTuple<int, int>)o).Item2).ToList();
         System.Console.WriteLine("Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
         foreach (var (destination, distance) in spt)
           System.Console.WriteLine($"{destination}={distance}");
-        System.Console.WriteLine();
+        System.Console.WriteLine(System.Environment.NewLine);
       }
 
       static void AdjacencyMatrix2()
@@ -151,7 +190,7 @@
         System.Console.WriteLine($"BellmanFord Min-Cost-Max-Flow: {mcmf}");
         System.Console.WriteLine();
 
-        var spt = gam.GetDijkstraShortestPathTree(0, o => (int)o);
+        var spt = gam.GetDijkstraShortestPathTree(0, o => (int)o).ToList();
         System.Console.WriteLine("Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
         foreach (var (destination, distance) in spt)
           System.Console.WriteLine($"{destination}={distance}");

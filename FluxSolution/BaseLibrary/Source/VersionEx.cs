@@ -3,7 +3,7 @@
 namespace Flux
 {
   /// <summary>Represents a general version implementation, similar to the built-in Version, but can handle more parts.</summary>
-  public struct VersionEx
+  public readonly record struct VersionEx
     : System.IComparable<VersionEx>, System.IEquatable<VersionEx>
   {
     public static readonly VersionEx Empty;
@@ -32,11 +32,11 @@ namespace Flux
       set => m_parts[index] = index >= 0 && index < m_parts.Length ? value : throw new System.ArgumentOutOfRangeException(nameof(index));
     }
 
-    
+
     public int Count
       => m_parts.Length;
 
-    
+
     public System.Version ToVersion()
       => Count switch
       {
@@ -47,10 +47,10 @@ namespace Flux
       };
 
     #region Static methods
-    
+
     public static VersionEx FromVersion(System.Version version)
       => version is null ? throw new System.ArgumentNullException(nameof(version)) : new VersionEx(version.Major, version.Minor, version.Build, version.Revision);
-    
+
     public static VersionEx Parse(string version)
     {
       if (version is null) throw new System.ArgumentNullException(nameof(version));
@@ -60,7 +60,7 @@ namespace Flux
       return new(System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select(System.Linq.Enumerable.Where(array, e => !string.IsNullOrWhiteSpace(e)), part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture))));
     }
     //=> new(System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Select((version ?? throw new System.ArgumentNullException(nameof(version))).Split(m_separatorsArray), part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture))));
-    
+
     public static bool TryParse(string version, out VersionEx result)
     {
       try
@@ -76,30 +76,22 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
-    
+
     public static bool operator <(VersionEx a, VersionEx b)
       => a.CompareTo(b) < 0;
-    
+
     public static bool operator <=(VersionEx a, VersionEx b)
       => a.CompareTo(b) <= 0;
-    
+
     public static bool operator >(VersionEx a, VersionEx b)
       => a.CompareTo(b) > 0;
-    
+
     public static bool operator >=(VersionEx a, VersionEx b)
       => a.CompareTo(b) >= 0;
-
-    
-    public static bool operator ==(VersionEx a, VersionEx b)
-      => a.Equals(b);
-    
-    public static bool operator !=(VersionEx a, VersionEx b)
-      => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    
     public int CompareTo(VersionEx other)
     {
       if (m_parts.Length is var pl && other.m_parts.Length is var opl && pl != opl)
@@ -111,37 +103,10 @@ namespace Flux
 
       return 0;
     }
-
-    // IEquatable
-    
-    public bool Equals(VersionEx other)
-    {
-      if (m_parts.Length != other.m_parts.Length)
-        return false;
-
-      for (var index = 0; index < m_parts.Length; index++)
-        if (m_parts[index] != other.m_parts[index])
-          return false;
-
-      return true;
-    }
     #endregion Implemented interfaces
 
     #region Object overrides
-    
-    public override bool Equals(object? obj)
-      => obj is VersionEx o && Equals(o);
-    
-    public override int GetHashCode()
-    {
-      var hc = new System.HashCode();
-      for (var index = m_parts.Length - 1; index >= 0; index--)
-        hc.Add(m_parts[index]);
-      return hc.ToHashCode();
-    }
-    
-    public override string? ToString()
-      => string.Join('.', m_parts);
+    public override string? ToString() => string.Join('.', m_parts);
     #endregion Object overrides
   }
 }

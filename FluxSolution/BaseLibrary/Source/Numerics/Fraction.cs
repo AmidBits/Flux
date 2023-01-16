@@ -141,8 +141,8 @@ namespace Flux
       var Am = (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One);
       var Bm = (System.Numerics.BigInteger.One, System.Numerics.BigInteger.Zero);
 
-      var A = System.Numerics.BigInteger.Zero;
-      var B = System.Numerics.BigInteger.Zero;
+      System.Numerics.BigInteger A;
+      System.Numerics.BigInteger B;
 
       var a = System.Numerics.BigInteger.Zero;
       var b = System.Numerics.BigInteger.Zero;
@@ -450,7 +450,7 @@ namespace Flux
       => a / new Fraction(b);
 
     // System.Numerics.IFloatingPointConstants<>
-    public static Fraction E => new Fraction(System.Numerics.BigInteger.Parse("611070150698522592097"), System.Numerics.BigInteger.Parse("224800145555521536000"), false);
+    public static Fraction E => new(System.Numerics.BigInteger.Parse("611070150698522592097"), System.Numerics.BigInteger.Parse("224800145555521536000"), false);
     public static Fraction Pi => new(System.Numerics.BigInteger.Parse("2646693125139304345"), System.Numerics.BigInteger.Parse("842468587426513207"), false);
     public static Fraction Tau => Pi.Multiply(2);
 

@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Enumerable
@@ -13,13 +11,13 @@ namespace Flux
   {
     // http://dynamicnotions.blogspot.com/2009/05/linear-regression-in-c.html
 
-    public double m_avgX { get; }
-    public double m_avgY { get; }
+    private readonly double m_avgX;
+    private readonly double m_avgY;
 
-    public int m_count { get; }
+    private readonly int m_count;
 
-    public double m_slope { get; }
-    public double m_intercept { get; }
+    private readonly double m_slope;
+    private readonly double m_intercept;
 
     public TrendLine(System.Collections.Generic.IEnumerable<T> series, System.Func<T, double> valueSelector)
     {
@@ -49,21 +47,18 @@ namespace Flux
       m_intercept = m_avgY - m_slope * m_avgX;
     }
 
-    
     public double AvgX
       => m_avgX;
-    
+
     public double AvgY
       => m_avgY;
 
-    
     public int Count
       => m_count;
 
-    
     public double Slope
       => m_slope;
-    
+
     public double Intercept
       => m_intercept;
   }

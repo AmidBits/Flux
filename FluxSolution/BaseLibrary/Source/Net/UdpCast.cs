@@ -83,8 +83,7 @@ namespace Flux.Net
       if (m_thread is not null)
         m_thread = null;
 
-      if (Socket is not null)
-        Socket.Dispose();
+      Socket?.Dispose();
     }
 
     public static void ConsoleChat(System.Net.IPEndPoint multicastAddress)

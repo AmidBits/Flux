@@ -41,10 +41,10 @@ namespace Flux.Numerics
 
     #endregion Static instances
 
-    private TSelf m_referenceValue;
-    private TResult m_lessThan;
-    private TResult m_equalTo;
-    private TResult m_greaterThan;
+    private readonly TSelf m_referenceValue;
+    private readonly TResult m_lessThan;
+    private readonly TResult m_equalTo;
+    private readonly TResult m_greaterThan;
 
     public StepFunction(TSelf referenceValue, TResult lessThan, TResult equalTo, TResult greaterThan)
     {

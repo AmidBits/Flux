@@ -24,7 +24,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-
+      Flux.Zamplez.RunDataStructuresGraphs(); return;
 
       // Compute quantiles:
       {
@@ -36,7 +36,7 @@ namespace ConsoleApp
 
           foreach (QuantileAlgorithm a in System.Enum.GetValues<QuantileAlgorithm>())
           {
-            var ac = av.Count();
+            var ac = av.Length;
 
             var qr = (ac.ComputeQuantileRank(0.25, a), ac.ComputeQuantileRank(0.50, a), ac.ComputeQuantileRank(0.75, a));
             var qv = (av.EstimateQuantileValue(0.25, a), av.EstimateQuantileValue(0.50, a), av.EstimateQuantileValue(0.75, a));

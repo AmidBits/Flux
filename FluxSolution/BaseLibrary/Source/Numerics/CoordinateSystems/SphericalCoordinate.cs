@@ -53,7 +53,7 @@ namespace Flux.Numerics
 
     /// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
     public GeographicCoordinate ToGeographicCoordinate()
-     => new GeographicCoordinate(
+     => new(
        Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(TSelf.Pi - m_inclination - TSelf.Pi.Divide(2))),
        Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(m_azimuth - TSelf.Pi)),
        double.CreateChecked(m_radius)

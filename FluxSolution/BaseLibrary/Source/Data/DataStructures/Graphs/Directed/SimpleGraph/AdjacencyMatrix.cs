@@ -290,6 +290,7 @@
 
     ///// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
     ///// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
+    ///// <see href="https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/"/>
     //public System.Collections.Generic.IEnumerable<(int destination, double distance)> GetDijkstraShortestPathTree(int origin, System.Func<object, double> distanceSelector)
     //{
     //  var vertices = System.Linq.Enumerable.ToList(GetVertices());
@@ -354,7 +355,7 @@
 
     public string ToConsoleString()
     {
-      var sb = new System.Text.StringBuilder();
+      var sb = new System.Text.StringBuilder(System.Environment.NewLine).AppendLine();
 
       sb.AppendLine(ToString());
 
@@ -386,7 +387,7 @@
       sb.AppendLine(@"Edges (x, y, value):");
       sb.AppendJoin(System.Environment.NewLine, GetEdges()).AppendLine();
 
-      return sb.ToString();
+      return sb.AppendLine().ToString();
     }
 
     #region Object overrides.

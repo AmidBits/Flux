@@ -95,11 +95,11 @@ namespace Flux
     bool Contains(double value);
   }
 
-    public class BucketValue
-    : IBucket
+  public class BucketValue
+  : IBucket
   {
     private int m_frequency;
-    private double m_value;
+    private readonly double m_value;
 
     public BucketValue(double value, int frequency)
     {
@@ -121,8 +121,8 @@ namespace Flux
     : IBucket
   {
     private int m_frequency;
-    private double m_valueLeftClosed;
-    private double m_valueRightOpen;
+    private readonly double m_valueLeftClosed;
+    private readonly double m_valueRightOpen;
 
     public BucketClosedOpen(double valueLeftClosed, double valueRightOpen, int frequency)
     {
@@ -145,18 +145,19 @@ namespace Flux
 
   public class HistogramByInterval
   {
-    private System.Collections.Generic.List<BucketClosedOpen> m_buckets;
+    private readonly System.Collections.Generic.List<BucketClosedOpen> m_buckets;
 
     public HistogramByInterval(params double[] binIntervals)
     {
-      m_buckets = new System.Collections.Generic.List<BucketClosedOpen>();
-
-      m_buckets.Add(new BucketClosedOpen(double.NegativeInfinity, binIntervals[0], 0));
+      m_buckets = new System.Collections.Generic.List<BucketClosedOpen>
+      {
+        new BucketClosedOpen(double.NegativeInfinity, binIntervals[0], 0)
+      };
 
       for (var i = 1; i < binIntervals.Length; i++)
         m_buckets.Add(new BucketClosedOpen(binIntervals[i - 1], binIntervals[i], 0));
 
-      m_buckets.Add(new BucketClosedOpen(binIntervals[binIntervals.Length - 1], double.PositiveInfinity, 0));
+      m_buckets.Add(new BucketClosedOpen(binIntervals[^1], double.PositiveInfinity, 0));
     }
     public HistogramByInterval(System.Collections.Generic.IEnumerable<double> binIntervals)
       : this(binIntervals.ToArray()) { }

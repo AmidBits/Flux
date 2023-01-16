@@ -4,7 +4,7 @@ namespace Flux.Resources.DotNet
   public sealed class FxSequence
     : ITabularDataAcquirable
   {
-    private System.Collections.IEnumerable m_sequence;
+    private readonly System.Collections.IEnumerable m_sequence;
     public FxSequence(System.Collections.IEnumerable sequence)
       => m_sequence = sequence;
 

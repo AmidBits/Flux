@@ -50,15 +50,11 @@ namespace Flux
 
       foreach (var name in names)
       {
-        if (m_mapPiNotICommand.ContainsKey(name))
-        {
-          OnPropertiesChanged(m_mapPiNotICommand[name]);
-        }
+        if (m_mapPiNotICommand.TryGetValue(name, out var piNotCommandValue))
+          OnPropertiesChanged(piNotCommandValue);
 
-        if (m_mapMiExplicit.ContainsKey(name))
-        {
-          RunMethods(m_mapMiExplicit[name]);
-        }
+        if (m_mapMiExplicit.TryGetValue(name, out var miExplicitValue))
+          RunMethods(miExplicitValue);
       }
     }
 

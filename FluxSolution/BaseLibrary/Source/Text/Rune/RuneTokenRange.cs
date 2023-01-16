@@ -1,7 +1,7 @@
 /// <summary>A rune is a Unicode code point.</summary>
 namespace Flux.Text
 {
-  public struct RuneTokenRange
+  public readonly record struct RuneTokenRange
     : IToken<System.Text.Rune>
   {
     public int Index { get; }

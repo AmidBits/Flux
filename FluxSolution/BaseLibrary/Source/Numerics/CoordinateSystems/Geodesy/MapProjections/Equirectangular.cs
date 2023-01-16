@@ -1,7 +1,7 @@
 ﻿namespace Flux.Numerics.MapProjections
 {
   // https://en.wikipedia.org/wiki/Equirectangular_projection
-  public record struct EquirectangularProjection
+  public readonly record struct EquirectangularProjection
     : IMapForwardProjectable<double>, IMapReverseProjectable<double>
   {
     public static readonly EquirectangularProjection Default;

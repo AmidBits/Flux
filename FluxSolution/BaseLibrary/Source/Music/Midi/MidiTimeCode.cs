@@ -2,8 +2,8 @@ namespace Flux.Music.Midi
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/MIDI_timecode"/>
-  public struct MidiTimeCode
-    : System.IComparable<MidiTimeCode>, System.IEquatable<MidiTimeCode>
+  public readonly record struct MidiTimeCode
+    : System.IComparable<MidiTimeCode>
   {
     private readonly MidiTimeCodeType m_rateType;
     private readonly byte m_hour;
@@ -20,11 +20,11 @@ namespace Flux.Music.Midi
       m_frame = frame >= 0 && frame < (int)rate ? (byte)frame : throw new System.ArgumentOutOfRangeException(nameof(frame));
     }
 
-     public MidiTimeCodeType Rate => m_rateType;
-     public byte Hour => m_hour;
-     public byte Minute => m_minute;
-     public byte Second => m_second;
-     public byte Frame => m_frame;
+    public MidiTimeCodeType Rate => m_rateType;
+    public byte Hour => m_hour;
+    public byte Minute => m_minute;
+    public byte Second => m_second;
+    public byte Frame => m_frame;
 
     public MidiTimeCode AddHours(int value)
       => System.Math.DivRem(m_hour + value, 24, out var reminder) is var quotient && quotient > 0
@@ -37,10 +37,10 @@ namespace Flux.Music.Midi
     public MidiTimeCode AddFrames(int value)
       => new(m_rateType, m_hour, m_minute, m_second + System.Math.DivRem(m_frame + value, (int)m_rateType, out var reminder), reminder);
 
-    
+
     public byte[] ToFullFrameBytes()
       => Protocol.SystemCommon.MtcFullFrame((int)m_rateType, m_hour, m_minute, m_second, m_frame);
-    
+
     public byte[] ToQuarterFrameBytes(int index)
       => index switch
       {
@@ -56,18 +56,16 @@ namespace Flux.Music.Midi
       };
 
     /// <summary>Converts the MTC to a <see cref="System.TimeSpan"/> where the milliseconds represents the frame. The frame rate type is unknown in the new TimeSpan.</summary>
-    
+
     public System.TimeSpan ToTimeSpan()
       => new(0, m_hour, m_minute, m_second, m_frame);
 
     #region Overloaded operators
-     public static bool operator ==(MidiTimeCode a, MidiTimeCode b) => a.Equals(b);
-     public static bool operator !=(MidiTimeCode a, MidiTimeCode b) => !a.Equals(b);
     #endregion Overloaded operators
 
     #region Implemented interfaces
     // IComparable
-    
+
     public int CompareTo(MidiTimeCode other)
       => m_hour > other.m_hour ? 1
       : m_hour < other.m_hour ? -1
@@ -80,19 +78,12 @@ namespace Flux.Music.Midi
       : m_rateType > other.m_rateType ? -1 // Higher frame rate, means each value is worth less.
       : m_rateType < other.m_rateType ? 1 // Lower frame rate, means each value is worth more.
       : 0;
-
-    // IEquatable
-    
-    public bool Equals(MidiTimeCode other)
-      => m_hour == other.m_hour && m_minute == other.m_minute && m_second == other.m_second && m_frame == other.m_frame && m_rateType == other.m_rateType;
     #endregion Implemented interfaces
 
     #region Object overrides
-     public override bool Equals(object? obj) => obj is MidiTimeCode o && Equals(o);
-     public override int GetHashCode() => System.HashCode.Combine(m_hour, m_minute, m_second, m_frame, m_rateType);
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-     public override string ToString() => $"{GetType().Name} {{ {m_hour}:{m_minute}:{m_second}:{m_frame} ({m_rateType}) }}";
+    public override string ToString() => $"{GetType().Name} {{ {m_hour}:{m_minute}:{m_second}:{m_frame} ({m_rateType}) }}";
     #endregion Object overrides
   }
 }

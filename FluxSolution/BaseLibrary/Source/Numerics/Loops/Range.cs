@@ -37,7 +37,7 @@ namespace Flux
 
       #region Static methods
       public static Range<TSelf> CreateBetween(TSelf source, TSelf target, TSelf step)
-        => new Range<TSelf>(source, TSelf.Abs(target - source) / step + TSelf.One, TSelf.Abs(step) is var absStep && source <= target ? absStep : -absStep);
+        => new(source, TSelf.Abs(target - source) / step + TSelf.One, TSelf.Abs(step) is var absStep && source <= target ? absStep : -absStep);
       public static Range<TSelf> CreateBetween(TSelf source, TSelf target)
         => CreateBetween(source, target, TSelf.One);
       #endregion Static methods

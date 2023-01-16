@@ -2,7 +2,7 @@
 namespace Flux.Text
 {
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
-  public struct RuneTokenizer
+  public readonly record struct RuneTokenizer
     : ITokenizer<IToken<System.Text.Rune>>
   {
     public System.Text.NormalizationForm? NormalizationForm { get; }

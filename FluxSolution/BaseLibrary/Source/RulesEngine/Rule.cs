@@ -3,14 +3,13 @@ using System.Reflection;
 
 namespace Flux.RulesEngine
 {
-  public struct Rule
-    : System.IEquatable<Rule>
+  public readonly record struct Rule
   {
     public static readonly Rule Empty;
 
-    private readonly string m_name { get; }
-    private readonly string m_operator { get; }
-    private readonly object m_value { get; }
+    private readonly string m_name;
+    private readonly string m_operator;
+    private readonly object m_value;
 
     public Rule(string name, string @operator, string value)
     {
@@ -26,7 +25,6 @@ namespace Flux.RulesEngine
       m_value = value;
     }
 
-
     public string Name
       => m_name;
 
@@ -35,7 +33,6 @@ namespace Flux.RulesEngine
 
     public object Value
       => m_value;
-
 
     public System.Func<T, bool> Compile<T>()
       => CompileRule<T>(this);
@@ -73,30 +70,7 @@ namespace Flux.RulesEngine
     }
     #endregion Static methods
 
-    #region Overloaded operators
-
-    public static bool operator ==(Rule a, Rule b)
-      => a.Equals(b);
-
-    public static bool operator !=(Rule a, Rule b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // System.IEquatable<Rule>
-
-    public bool Equals(Rule other)
-      => m_name == other.m_name && m_operator == other.m_operator && m_value == other.m_value;
-    #endregion Implemented interfaces
-
     #region Object overrides
-
-    public override bool Equals(object? obj)
-      => obj is Rule o && Equals(o);
-
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_name, m_operator, m_value);
-
     public override string? ToString()
       => $"{nameof(Rule)} {{ \"{m_name}\" {m_operator} '{m_value}' }}";
     #endregion Object overrides

@@ -2,7 +2,7 @@
 namespace Flux.Text
 {
   /// <summary>An implementation of a demarcated and classified section of a rune.</summary>
-  public struct RuneToken
+  public readonly record struct RuneToken
     : IToken<System.Text.Rune>
   {
     public int Index { get; }
