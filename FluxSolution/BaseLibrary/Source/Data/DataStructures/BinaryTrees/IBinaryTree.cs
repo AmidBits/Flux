@@ -1,4 +1,4 @@
-namespace Flux.DataStructures.Immutable
+namespace Flux.DataStructures
 {
 	public interface IBinaryTree<TValue>
 	{

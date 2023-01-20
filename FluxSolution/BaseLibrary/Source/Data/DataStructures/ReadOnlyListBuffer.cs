@@ -8,8 +8,7 @@ namespace Flux.DataStructures
     private readonly System.Collections.Generic.List<T> m_list = new();
     private readonly object m_lock = new();
 
-    public BufferedReadOnlyList(System.Collections.Generic.IEnumerable<T> collection)
-      => m_enumerator = collection.GetEnumerator();
+    public BufferedReadOnlyList(System.Collections.Generic.IEnumerable<T> collection) => m_enumerator = collection.GetEnumerator();
 
     protected override void DisposeManaged()
     {
@@ -17,8 +16,7 @@ namespace Flux.DataStructures
       m_enumerator = null;
     }
 
-    public void GetAllElements()
-      => TryGetElementAt(int.MaxValue, out var _);
+    public void GetAllElements() => TryGetElementAt(int.MaxValue, out var _);
 
     public bool TryGetElementAt(int index, out T result)
     {
@@ -48,23 +46,18 @@ namespace Flux.DataStructures
 
     #region Implementation of IReadOnlyList<T>
     /// <summary>Indexer for buffered elements currently in the <see cref="IReadOnlyList{T}"/>.</summary>
-    public T this[int index]
-      => m_list[index];
+    public T this[int index] => m_list[index];
 
     /// <summary>The count of buffered elements currently in the <see cref="IReadOnlyList{T}"/>.</summary>
-    public int Count
-      => m_list.Count;
+    public int Count => m_list.Count;
 
     /// <summary>Get an enumerator that enumerates and buffers all elements in the original sequence.</summary>
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-      => new BufferedReadOnlyListEnumerator(this);
+    public System.Collections.Generic.IEnumerator<T> GetEnumerator() => new BufferedReadOnlyListEnumerator(this);
     /// <summary>Get an enumerator that enumerates and buffers all elements in the original sequence.</summary>
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     #endregion Implementation of IReadOnlyList<T>
 
-    public override string ToString()
-      => $"{GetType().Name} {{ Enumerator = {(m_enumerator is null ? "Closed" : "Open")}, Count = {Count} }}";
+    public override string ToString() => $"{GetType().Name} {{ Enumerator = {(m_enumerator is null ? "Closed" : "Open")}, Count = {Count} }}";
 
     private sealed class BufferedReadOnlyListEnumerator
       : System.Collections.Generic.IEnumerator<T>
@@ -80,16 +73,12 @@ namespace Flux.DataStructures
         m_source = source;
       }
 
-      public T Current
-        => m_current;
-      object? System.Collections.IEnumerator.Current
-        => m_current;
+      public T Current => m_current;
+      object? System.Collections.IEnumerator.Current => m_current;
 
-      public bool MoveNext()
-        => m_source.TryGetElementAt(++m_index, out m_current);
+      public bool MoveNext() => m_source.TryGetElementAt(++m_index, out m_current);
 
-      public void Reset()
-        => m_index = -1;
+      public void Reset() => m_index = -1;
 
       public void Dispose() // This class does not yet allocate any resources on its own.
       { }

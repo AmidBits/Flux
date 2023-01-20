@@ -33,6 +33,7 @@ namespace Flux.DataStructures
       : this(1)
     { }
 
+    /// <summary>Determines whether this is a valid binary-search-tree.</summary>
     public bool IsBST(int index, TKey minimumKey, TKey maximumKey)
     {
       if (index >= m_data.Length - 1 || (m_data[index] is var item && item.IsEmpty)) return true;
@@ -40,6 +41,8 @@ namespace Flux.DataStructures
 
       return IsBST(ChildIndexLeft(index), minimumKey, item.Key) && IsBST(ChildIndexRight(index), item.Key, maximumKey);
     }
+
+    /// <summary>Determines whether this is a valid binary-tree.</summary>
     public bool IsBT(int index)
     {
       var item = m_data[index];
@@ -53,12 +56,9 @@ namespace Flux.DataStructures
       return isL && isR;
     }
 
-    public static int ChildIndexLeft(int index)
-      => (index << 1) + 1;
-    public static int ChildIndexRight(int index)
-      => (index << 1) + 2;
-    public static int ParentIndex(int index)
-      => index <= 0 ? -1 : (index - 1) >> 1;
+    public static int ChildIndexLeft(int index) => (index << 1) + 1;
+    public static int ChildIndexRight(int index) => (index << 1) + 2;
+    public static int ParentIndex(int index) => index <= 0 ? -1 : (index - 1) >> 1;
 
     private bool Delete(TKey key, int index)
     {
@@ -81,8 +81,9 @@ namespace Flux.DataStructures
 
       return false;
     }
-    public bool Delete(TKey key)
-      => Delete(key, 0);
+    /// <summary>Deletes the first node with a matching key from the tree.</summary>
+    /// <returns>Whether the key was found and a delete occured.</returns>
+    public bool Delete(TKey key) => Delete(key, 0);
 
     private System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesInOrder(int index)
     {
@@ -102,8 +103,7 @@ namespace Flux.DataStructures
     /// <summary>Depth-first search (DFS), in-order (LNR). In a binary search tree, in-order traversal retrieves data in sorted order.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesInOrder()
-      => GetNodesInOrder(0);
+    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesInOrder() => GetNodesInOrder(0);
 
     private System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPostOrder(int index)
     {
@@ -123,8 +123,7 @@ namespace Flux.DataStructures
     /// <summary>Depth-first search (DFS), post-order (LRN). The trace of a traversal is called a sequentialisation of the tree. The traversal trace is a list of each visited root.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Post-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPostOrder()
-      => GetNodesPostOrder(0);
+    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPostOrder() => GetNodesPostOrder(0);
 
     private System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPreOrder(int index)
     {
@@ -144,8 +143,7 @@ namespace Flux.DataStructures
     /// <summary>Depth-first search (DFS), pre-order (NLR). The pre-order traversal is a topologically sorted one, because a parent node is processed before any of its child nodes is done.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPreOrder()
-      => GetNodesPreOrder(0);
+    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPreOrder() => GetNodesPreOrder(0);
 
     private void Insert(TKey key, TValue value, int index)
     {
@@ -167,8 +165,8 @@ namespace Flux.DataStructures
       else
         Insert(key, value, ChildIndexRight(index));
     }
-    public void Insert(TKey key, TValue value)
-      => Insert(key, value, 0);
+    /// <summary>Creates a new node from the key-value and adds the node into the tree.</summary>
+    public void Insert(TKey key, TValue value) => Insert(key, value, 0);
 
     private int Search(TKey key, int index)
     {
@@ -192,8 +190,8 @@ namespace Flux.DataStructures
 
       return -1;
     }
-    public IBinaryTreeArrayNode<TKey, TValue> Search(TKey key)
-      => Search(key, 0) is var index && index > -1 ? m_data[index] : Empty;
+    /// <summary>Searches the tree for the first node with a matching key.</summary>
+    public IBinaryTreeArrayNode<TKey, TValue> Search(TKey key) => Search(key, 0) is var index && index > -1 ? m_data[index] : Empty;
 
     //public System.Collections.Generic.IEnumerable<(int, IBinaryTreeArrayNode<TKey, TValue>)> TraverseBreadthFirstSearch(int index)
     //{
@@ -250,8 +248,7 @@ namespace Flux.DataStructures
     //  foreach (var itemR in TraverseDepthFirstSearchPreOrder(ChildIndexRight(index))) yield return itemR;
     //}
 
-    public override string ToString()
-      => $"{GetType().Name} {{ Count = {Count} }}";
+    public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";
 
     private sealed class BinaryTreeArrayValue
       : IBinaryTreeArrayNode<TKey, TValue>
@@ -259,18 +256,17 @@ namespace Flux.DataStructures
       private readonly TKey m_key;
       private readonly TValue m_value;
 
-      public bool IsEmpty => false;
-      public TKey Key => m_key;
-      public TValue Value => m_value;
-
       public BinaryTreeArrayValue(TKey key, TValue value)
       {
         m_key = key;
         m_value = value;
       }
 
-      public override string ToString()
-        => $"{nameof(BinaryTreeArrayValue)} {{ Key = \"{m_key}\", Value = \"{m_value}\" }}";
+      public bool IsEmpty => false;
+      public TKey Key => m_key;
+      public TValue Value => m_value;
+
+      public override string ToString() => $"{GetType().Name} {{ Key = \"{m_key}\", Value = \"{m_value}\" }}";
     }
 
     private sealed class BinaryTreeArrayEmpty
@@ -280,8 +276,7 @@ namespace Flux.DataStructures
       public TKey Key => throw new System.InvalidOperationException(nameof(BinaryTreeArrayEmpty));
       public TValue Value => throw new System.InvalidOperationException(nameof(BinaryTreeArrayEmpty));
 
-      public override string ToString()
-        => $"{nameof(BinaryTreeArrayEmpty)}";
+      public override string ToString() => GetType().Name;
     }
   }
 }

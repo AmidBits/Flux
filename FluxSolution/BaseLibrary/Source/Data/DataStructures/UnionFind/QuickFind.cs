@@ -4,35 +4,36 @@
     : IUnionFind<T>
     where T : notnull
   {
+    private int m_friendGroupCount;
+
     private readonly System.Collections.Generic.Dictionary<T, int> m_map = new();
     private readonly int[] m_sets;
     private readonly int[] m_sizes;
-
-    public int FriendGroupCount { get; private set; }
-    public System.Collections.Generic.List<T> Values { get; } = new();
+    private readonly System.Collections.Generic.List<T> m_values;
 
     public QuickFind(System.Collections.Generic.IEnumerable<T> values)
     {
-      Values.AddRange(values);
+      m_values = new(values);
 
-      m_sets = new int[Values.Count];
-      m_sizes = new int[Values.Count];
+      m_sets = new int[m_values.Count];
+      m_sizes = new int[m_values.Count];
 
-      for (var index = 0; index < Values.Count; index++)
+      for (var index = 0; index < m_values.Count; index++)
       {
-        m_map.Add(Values[index], index);
+        m_map.Add(m_values[index], index);
         m_sets[index] = index;
         m_sizes[index] = 1;
       }
 
-      FriendGroupCount = Values.Count;
+      m_friendGroupCount = m_values.Count;
     }
 
-    public bool AreConnected(T value, T otherValue)
-      => m_sets[m_map[value]] == m_sets[m_map[otherValue]];
+    public int FriendGroupCount => m_friendGroupCount;
+    public System.Collections.Generic.IReadOnlyList<T> Values => m_values;
 
-    public int Find(T value)
-      => m_sets[m_map[value]];
+    public bool AreConnected(T value, T otherValue) => m_sets[m_map[value]] == m_sets[m_map[otherValue]];
+
+    public int Find(T value) => m_sets[m_map[value]];
 
     public bool Union(T value, T unionValue)
     {
@@ -45,11 +46,11 @@
       //if (AreConnected(value, unionValue))
       //  return false;
 
-      foreach (T Value in Values)
+      foreach (T Value in m_values)
         if (m_sets[m_map[Value]] == oldSet)
           m_sets[m_map[Value]] = newSet;
 
-      FriendGroupCount--;
+      m_friendGroupCount--;
 
       m_sizes[newSet] += m_sizes[oldSet];
       m_sizes[oldSet] = 0;
@@ -57,7 +58,6 @@
       return true;
     }
 
-    public override string ToString()
-      => $"{GetType().Name}";
+    public override string ToString() => GetType().Name;
   }
 }

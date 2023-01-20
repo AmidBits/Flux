@@ -1,4 +1,4 @@
-namespace Flux.DataStructures.Immutable
+namespace Flux.DataStructures
 {
 	public interface IBinarySearchTree<TKey, TValue>
 		: IBinaryTree<TValue>, IMap<TKey, TValue>

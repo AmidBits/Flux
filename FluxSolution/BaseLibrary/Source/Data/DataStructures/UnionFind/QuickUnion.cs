@@ -6,12 +6,11 @@
   {
     private readonly System.Collections.Generic.Dictionary<T, int> m_map = new();
     private readonly int[] m_parents;
-
-    public System.Collections.Generic.List<T> Values { get; } = new();
+    private readonly System.Collections.Generic.List<T> m_values;
 
     public QuickUnion(System.Collections.Generic.IEnumerable<T> values)
     {
-      Values.AddRange(values);
+      m_values = new(values);
 
       m_parents = new int[Values.Count];
 
@@ -22,8 +21,9 @@
       }
     }
 
-    public bool AreConnected(T value, T otherValue)
-      => Find(value) == Find(otherValue);
+    public System.Collections.Generic.IReadOnlyList<T> Values => m_values;
+
+    public bool AreConnected(T value, T otherValue) => Find(value) == Find(otherValue);
 
     public int Find(T value)
     {
@@ -45,7 +45,6 @@
       return true;
     }
 
-    public override string ToString()
-      => $"{GetType().Name}";
+    public override string ToString() => GetType().Name;
   }
 }

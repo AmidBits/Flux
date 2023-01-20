@@ -76,21 +76,21 @@ namespace Flux
       //  a = new int[] { 15, 20, 35, 40, 50 };
       //a = new Flux.Randomization.Xoshiro256SS().GetRandomInt32s(0, 20).Take(200).OrderBy(k => k).ToArray();
 
-      var hg = new Histogram<int>();
-      foreach (var k in a)
-        hg[k] = hg.TryGetValue(k, out var v) ? v + 1 : 1;
+      //var hg = new Histogram<int>();
+      //foreach (var k in a)
+      //  hg[k] = hg.TryGetValue(k, out var v) ? v + 1 : 1;
 
-      var h = a.ToHistogram((e, i) => e, (e, i) => 1, out var sof, null);
+      var h = a.ToHistogram(e => e, e => 1, out var sof, null);
       System.Console.WriteLine("H:");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, h));
       System.Console.WriteLine();
 
-      var pmf = h.ProbabilityMassFunction(sof);
+      var pmf = h.ToProbabilityMassFunction(1d, sof);
       System.Console.WriteLine("PMF:");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, pmf));
       System.Console.WriteLine();
 
-      var cdf = h.CumulativeMassFunction(sof);
+      var cdf = h.CumulativeMassFunction(kvp => kvp.Key, kvp => kvp.Value, 1.0);
       System.Console.WriteLine("CDF:");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, cdf));
       System.Console.WriteLine();
@@ -100,7 +100,7 @@ namespace Flux
       System.Console.WriteLine(string.Join(System.Environment.NewLine, pr));
       System.Console.WriteLine();
 
-      var pl = h.PercentileRank(sof);
+      var pl = h.CumulativeMassFunction(kvp => kvp.Key, kvp => kvp.Value, 100.0);
       System.Console.WriteLine("PL:");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, pl));
       System.Console.WriteLine();

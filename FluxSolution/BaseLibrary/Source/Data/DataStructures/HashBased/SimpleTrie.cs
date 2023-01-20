@@ -6,16 +6,23 @@ namespace Flux.DataStructures
   public sealed class SimpleTrie<TKey>
     where TKey : notnull
   {
-    private readonly Node m_root = new(false);
+    private int m_count;
+    private readonly Node m_root;
 
-    public int Count { get; private set; }
+    public SimpleTrie()
+    {
+      m_count = 0;
+      m_root = new(false);
+    }
+
+    public int Count => m_count;
 
     /// <summary>Delete an entry set of <typeparamref name="TKey"/>.</summary>
     /// <param name="entry"></param>
     public void Delete(System.ReadOnlySpan<TKey> entry)
     {
       if (DeleteEntryOrToEnd(m_root, 0, entry))
-        Count--;
+        m_count--;
     }
     private bool DeleteEntryOrToEnd(Node root, int index, System.ReadOnlySpan<TKey> array)
     {
@@ -59,7 +66,7 @@ namespace Flux.DataStructures
 
           temp.SubNodes.Add(entry[index], node);
 
-          Count++;
+          m_count++;
 
           temp = node;
         }
@@ -89,24 +96,20 @@ namespace Flux.DataStructures
       return acceptStartsWith;
     }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ Count = {Count} }}";
+    public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";
 
     private sealed class Node
     {
       public bool EndOfEntry;
-
       public readonly System.Collections.Generic.IDictionary<TKey, Node> SubNodes;
 
       public Node(bool endOfEntry)
       {
         EndOfEntry = endOfEntry;
-
         SubNodes = new System.Collections.Generic.Dictionary<TKey, Node>();
       }
 
-      public override string ToString()
-        => $"{GetType().Name} {{ EndOfEntry = {EndOfEntry}, SubNodes = {SubNodes.Count} }}";
+      public override string ToString() => $"{GetType().Name} {{ EndOfEntry = {EndOfEntry}, SubNodes = {SubNodes.Count} }}";
     }
   }
 }

@@ -3,7 +3,7 @@ namespace Flux.DataStructures
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
   public sealed class BinaryHeapMax<T>
-    : IHeap<T>, System.ICloneable
+    : IHeap<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
     where T : System.IComparable<T>
   {
     private readonly System.Collections.Generic.List<T> m_data = new();
@@ -17,40 +17,6 @@ namespace Flux.DataStructures
         Insert(item);
     }
 
-    // IHeap<T>
-    public int Count
-      => m_data.Count;
-    public T Extract()
-    {
-      var min = m_data[0];
-
-      m_data[0] = m_data[^1];
-      m_data.RemoveAt(m_data.Count - 1);
-
-      HeapifyDown(0);
-
-      return min;
-    }
-    public void Insert(T item)
-    {
-      m_data.Add(item);
-
-      HeapifyUp(m_data.Count - 1);
-    }
-    public bool IsEmpty
-      => m_data.Count == 0;
-    public T Peek()
-      => m_data[0];
-
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-      => ((IHeap<T>)Clone()).ExtractAll().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
-
-    // IClonable<T>
-    public object Clone()
-      => new BinaryHeapMax<T>(m_data);
-
     public System.Collections.Generic.IEnumerable<int> GetIndicesOfDescendantsBFS(int index, int maxIndex)
     {
       for (int baseParentIndex = (index << 1) + 1, ordinalLevel = 1; baseParentIndex <= maxIndex; baseParentIndex = (baseParentIndex << 1) + 1, ordinalLevel++)
@@ -60,32 +26,6 @@ namespace Flux.DataStructures
           yield return childIndex;
         }
       }
-    }
-
-    public bool IsConsistent()
-    {
-      if (m_data.Count == 0)
-        return true;
-
-      int m1 = 0, z = 0, p1 = 0;
-
-      foreach (var index in GetIndicesOfDescendantsBFS(1, m_data.Count))
-      {
-        switch (m_data[(index - 1) >> 1].CompareTo(m_data[index]))
-        {
-          case -1:
-            m1++;
-            break;
-          case 0:
-            z++;
-            break;
-          case 1:
-            p1++;
-            break;
-        }
-      }
-
-      return m1 == 0 || p1 == 0;
     }
 
     private void HeapifyDown(int index)
@@ -124,7 +64,61 @@ namespace Flux.DataStructures
       }
     }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ Count = {m_data.Count} }}";
+    public bool IsConsistent()
+    {
+      if (m_data.Count == 0)
+        return true;
+
+      int m1 = 0, z = 0, p1 = 0;
+
+      foreach (var index in GetIndicesOfDescendantsBFS(1, m_data.Count))
+      {
+        switch (m_data[(index - 1) >> 1].CompareTo(m_data[index]))
+        {
+          case -1:
+            m1++;
+            break;
+          case 0:
+            z++;
+            break;
+          case 1:
+            p1++;
+            break;
+        }
+      }
+
+      return m1 == 0 || p1 == 0;
+    }
+
+    // IHeap<T>
+    public bool IsEmpty => m_data.Count == 0;
+    public T Extract()
+    {
+      var min = m_data[0];
+
+      m_data[0] = m_data[^1];
+      m_data.RemoveAt(m_data.Count - 1);
+
+      HeapifyDown(0);
+
+      return min;
+    }
+    public void Insert(T item)
+    {
+      m_data.Add(item);
+
+      HeapifyUp(m_data.Count - 1);
+    }
+    public T Peek() => m_data[0];
+
+    // IClonable<T>
+    public object Clone() => new BinaryHeapMax<T>(m_data);
+
+    // IReadOnlyCollection<>
+    public int Count => m_data.Count;
+    public System.Collections.Generic.IEnumerator<T> GetEnumerator() => ((IHeap<T>)Clone()).ExtractAll().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public override string ToString() => $"{GetType().Name} {{ Count = {m_data.Count} }}";
   }
 }

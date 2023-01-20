@@ -10,37 +10,34 @@ namespace Flux
     public static System.Collections.Generic.SortedDictionary<TKey, double> PercentRank<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, int> frequencySelector, double factor = 1)
       where TKey : notnull
     {
-      var keys = new System.Collections.Generic.HashSet<TKey>();
+      var histogram = new System.Collections.Generic.SortedDictionary<TKey, double>();
 
-      var pr = new System.Collections.Generic.SortedDictionary<TKey, double>();
-
-      var sumOfFrequencies = 0;
+      var totalFrequencies = 0;
 
       foreach (var item in source.ThrowIfNull())
       {
         var key = keySelector(item);
-
-        keys.Add(key);
-
         var frequency = frequencySelector(item);
 
-        sumOfFrequencies += frequency;
+        totalFrequencies += frequency;
 
-        pr[key] = pr.TryGetValue(key, out var currentFrequency) ? currentFrequency + frequency : frequency;
+        histogram[key] = histogram.TryGetValue(key, out var currentFrequency) ? currentFrequency + frequency : frequency;
       }
 
-      var count = 0;
+      var pr = new System.Collections.Generic.SortedDictionary<TKey, double>();
 
-      foreach (var key in keys.OrderBy(k => k))
+      var cumulativeFrequencies = 0;
+
+      foreach (var key in histogram.Keys)
       {
-        var preCount = System.Convert.ToInt32(pr[key]);
+        var preCount = System.Convert.ToInt32(histogram[key]);
 
-        pr[key] = count / (double)(count + (sumOfFrequencies - count - 1)) * factor;
+        pr[key] = cumulativeFrequencies / (double)(cumulativeFrequencies + (totalFrequencies - cumulativeFrequencies - 1)) * factor;
 
-        count += preCount;
+        cumulativeFrequencies += preCount;
       }
 
-      return pr;
+      return histogram;
     }
 
     /// <summary>Returns the rank of the keys in a histogram as a percentage of the histogram.</summary>

@@ -1,6 +1,6 @@
-namespace Flux.DataStructures.Immutable
+namespace Flux.DataStructures
 {
-  public sealed class Deque<TValue>
+  public sealed class ImmutableDeque<TValue>
     : IDeque<TValue>
   {
     public static readonly IDeque<TValue> Empty = new EmptyDeque();
@@ -12,40 +12,40 @@ namespace Flux.DataStructures.Immutable
     public bool IsEmpty => false;
     public IDeque<TValue> EnqueueLeft(TValue value)
     {
-      if (!m_left.Full) return new Deque<TValue>(m_left.EnqueueLeft(value), m_middle, m_right);
-      else return new Deque<TValue>(new Dequelette2(value, m_left.PeekLeft()), m_middle.EnqueueLeft(m_left.DequeueLeft()), m_right);
+      if (!m_left.Full) return new ImmutableDeque<TValue>(m_left.EnqueueLeft(value), m_middle, m_right);
+      else return new ImmutableDeque<TValue>(new Dequelette2(value, m_left.PeekLeft()), m_middle.EnqueueLeft(m_left.DequeueLeft()), m_right);
     }
     public IDeque<TValue> EnqueueRight(TValue value)
     {
-      if (!m_right.Full) return new Deque<TValue>(m_left, m_middle, m_right.EnqueueRight(value));
-      else return new Deque<TValue>(m_left, m_middle.EnqueueRight(m_right.DequeueRight()), new Dequelette2(m_right.PeekRight(), value));
+      if (!m_right.Full) return new ImmutableDeque<TValue>(m_left, m_middle, m_right.EnqueueRight(value));
+      else return new ImmutableDeque<TValue>(m_left, m_middle.EnqueueRight(m_right.DequeueRight()), new Dequelette2(m_right.PeekRight(), value));
     }
     public IDeque<TValue> DequeueLeft()
     {
       if (m_left.Size > 1)
-        return new Deque<TValue>(m_left.DequeueLeft(), m_middle, m_right);
+        return new ImmutableDeque<TValue>(m_left.DequeueLeft(), m_middle, m_right);
       if (!m_middle.IsEmpty)
-        return new Deque<TValue>(m_middle.PeekLeft(), m_middle.DequeueLeft(), m_right);
+        return new ImmutableDeque<TValue>(m_middle.PeekLeft(), m_middle.DequeueLeft(), m_right);
       if (m_right.Size > 1)
-        return new Deque<TValue>(new Dequelette1(m_right.PeekLeft()), m_middle, m_right.DequeueLeft());
+        return new ImmutableDeque<TValue>(new Dequelette1(m_right.PeekLeft()), m_middle, m_right.DequeueLeft());
 
       return new SingleDeque(m_right.PeekLeft());
     }
     public IDeque<TValue> DequeueRight()
     {
       if (m_right.Size > 1)
-        return new Deque<TValue>(m_left, m_middle, m_right.DequeueRight());
+        return new ImmutableDeque<TValue>(m_left, m_middle, m_right.DequeueRight());
       if (!m_middle.IsEmpty)
-        return new Deque<TValue>(m_left, m_middle.DequeueRight(), m_middle.PeekRight());
+        return new ImmutableDeque<TValue>(m_left, m_middle.DequeueRight(), m_middle.PeekRight());
       if (m_left.Size > 1)
-        return new Deque<TValue>(m_left.DequeueRight(), m_middle, new Dequelette1(m_left.PeekRight()));
+        return new ImmutableDeque<TValue>(m_left.DequeueRight(), m_middle, new Dequelette1(m_left.PeekRight()));
 
       return new SingleDeque(m_left.PeekRight());
     }
     public TValue PeekLeft() => m_left.PeekLeft();
     public TValue PeekRight() => m_right.PeekRight();
 
-    private Deque(Dequelette left, IDeque<Dequelette> middle, Dequelette right)
+    private ImmutableDeque(Dequelette left, IDeque<Dequelette> middle, Dequelette right)
     {
       m_left = left;
       m_middle = middle;
@@ -81,8 +81,8 @@ namespace Flux.DataStructures.Immutable
       }
 
       public bool IsEmpty => false;
-      public IDeque<TValue> EnqueueLeft(TValue value) => new Deque<TValue>(new Dequelette1(value), Deque<Dequelette>.Empty, new Dequelette1(item));
-      public IDeque<TValue> EnqueueRight(TValue value) => new Deque<TValue>(new Dequelette1(item), Deque<Dequelette>.Empty, new Dequelette1(value));
+      public IDeque<TValue> EnqueueLeft(TValue value) => new ImmutableDeque<TValue>(new Dequelette1(value), ImmutableDeque<Dequelette>.Empty, new Dequelette1(item));
+      public IDeque<TValue> EnqueueRight(TValue value) => new ImmutableDeque<TValue>(new Dequelette1(item), ImmutableDeque<Dequelette>.Empty, new Dequelette1(value));
       public IDeque<TValue> DequeueLeft() => Empty;
       public IDeque<TValue> DequeueRight() => Empty;
       public TValue PeekLeft() => item;

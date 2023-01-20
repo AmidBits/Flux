@@ -3,7 +3,7 @@ namespace Flux.DataStructures
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
   public sealed class BinaryHeapMin<T>
-    : IHeap<T>, System.ICloneable
+    : IHeap<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
     where T : System.IComparable<T>
   {
     private readonly System.Collections.Generic.List<T> m_data = new();
@@ -16,40 +16,6 @@ namespace Flux.DataStructures
       foreach (var item in collection)
         Insert(item);
     }
-
-    // IHeap<T>
-    public int Count
-      => m_data.Count;
-    public T Extract()
-    {
-      var min = m_data[0];
-
-      m_data[0] = m_data[^1];
-      m_data.RemoveAt(m_data.Count - 1);
-
-      HeapifyDown(0);
-
-      return min;
-    }
-    public void Insert(T item)
-    {
-      m_data.Add(item);
-
-      HeapifyUp(m_data.Count - 1);
-    }
-    public bool IsEmpty
-      => m_data.Count == 0;
-    public T Peek()
-      => m_data[0];
-
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-      => ((IHeap<T>)Clone()).ExtractAll().GetEnumerator();
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
-
-    // IClonable<T>
-    public object Clone()
-      => new BinaryHeapMin<T>(m_data);
 
     public System.Collections.Generic.IEnumerable<int> GetIndicesOfDescendantsBFS(int index, int maxIndex)
     {
@@ -123,6 +89,35 @@ namespace Flux.DataStructures
         index = parentIndex;
       }
     }
+
+    // IHeap<T>
+    public bool IsEmpty => m_data.Count == 0;
+    public T Extract()
+    {
+      var min = m_data[0];
+
+      m_data[0] = m_data[^1];
+      m_data.RemoveAt(m_data.Count - 1);
+
+      HeapifyDown(0);
+
+      return min;
+    }
+    public void Insert(T item)
+    {
+      m_data.Add(item);
+
+      HeapifyUp(m_data.Count - 1);
+    }
+    public T Peek() => m_data[0];
+
+    // IClonable<T>
+    public object Clone() => new BinaryHeapMin<T>(m_data);
+
+    // IReadOnlyCollection<>
+    public int Count => m_data.Count;
+    public System.Collections.Generic.IEnumerator<T> GetEnumerator() => ((IHeap<T>)Clone()).ExtractAll().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
     public override string ToString()
       => $"{GetType().Name} {{ Count = {m_data.Count} }}";

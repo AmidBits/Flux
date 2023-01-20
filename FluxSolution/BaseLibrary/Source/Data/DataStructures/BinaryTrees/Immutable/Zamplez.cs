@@ -15,7 +15,7 @@ namespace Flux
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunAvlTree()
     {
-      var bst = Flux.DataStructures.Immutable.AvlTree<int, string>.Empty;
+      var bst = Flux.DataStructures.ImmutableAvlTree<int, string>.Empty;
 
       for (var index = 0; bst.GetNodeCount() < 16; index++)
       {

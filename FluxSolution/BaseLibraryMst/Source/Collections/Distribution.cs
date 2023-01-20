@@ -12,7 +12,7 @@ namespace Collections.Generic
     [TestMethod]
     public void CumulativeMassFunction()
     {
-      Assert.AreEqual(0.7, d.CumulativeMassFunction(4.5), nameof(CumulativeMassFunction));
+      Assert.AreEqual(0.7, d.CumulativeMassFunction(v => v, 4.5, 1.0), nameof(CumulativeMassFunction));
     }
 
     //[TestMethod]
@@ -47,7 +47,7 @@ namespace Collections.Generic
     [TestMethod]
     public void ProbabilityMassFunction()
     {
-      Assert.AreEqual(0.9, d.ProbabilityMassFunction(6.5), nameof(ProbabilityMassFunction));
+      Assert.AreEqual(0.9, d.ToProbabilityMassFunction(v => v, 6.5, 1d), nameof(ProbabilityMassFunction));
     }
   }
 }

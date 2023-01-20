@@ -4,12 +4,12 @@ namespace Flux
   {
     // https://en.wikipedia.org/wiki/Percentile_rank
 
-    public enum Variant
-    {
-      Matlab,
-      PercentileInc,
-      PercentileExc,
-    }
+    //public enum Variant
+    //{
+    //  Matlab,
+    //  PercentileInc,
+    //  PercentileExc,
+    //}
 
     /// <summary>Matlab percentile value (prctile).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Percentile#First_variant,_C_=_1/2"/>
@@ -105,18 +105,20 @@ namespace Flux
     //  }
     //}
 
-    /// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the specified comparer.</summary>
-    public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Collections.Generic.IComparer<T> comparer)
-      => 100.0 * CumulativeMassFunction(source, value, comparer);
+    ///// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the specified comparer.</summary>
+    //public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Collections.Generic.IComparer<T> comparer)
+    //  where T : System.Numerics.INumber<T>
+    //  => 100.0 * CumulativeMassFunction(source, s => s, value, 1.0);
 
-    /// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the default comparer.</summary>
-    public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
-      => PercentileRank(source, value, System.Collections.Generic.Comparer<T>.Default);
+    ///// <summary>Computes the percentile rank of the specified value within the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it. Uses the default comparer.</summary>
+    //public static double PercentileRank<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
+    //  where T : System.Numerics.INumber<T>
+    //  => PercentileRank(source, value, System.Collections.Generic.Comparer<T>.Default);
 
-    /// <summary>Computes the percentile ranks of all values in the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it.</summary>
-    public static System.Collections.Generic.SortedDictionary<TKey, double> PercentileRank<TKey>(this System.Collections.Generic.IDictionary<TKey, int> source, int sumOfAllFrequencies)
-      where TKey : notnull
-      => CumulativeMassFunction(source, sumOfAllFrequencies, 100);
+    ///// <summary>Computes the percentile ranks of all values in the source distribution. The percentile rank of a score is the percentage of scores in its frequency distribution that are equal to or lower than it.</summary>
+    //public static System.Collections.Generic.SortedDictionary<TKey, double> PercentileRank<TKey>(this System.Collections.Generic.IDictionary<TKey, int> source, int sumOfAllFrequencies)
+    //  where TKey : notnull
+    //  => CumulativeMassFunction(source, kvp => kvp.Key, kvp => double.CreateChecked(kvp.Value), 100d);
 
     ///// <summary>The percentile rank (PR), is the function that maps values to their percentile rank in a distribution.</summary>
     ///// <param name="source">A sequence of System.Collections.Generic.KeyValuePair<TKey, TSource>.</param>

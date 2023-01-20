@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class IBinaryTreeEm
   {
-    public static int GetNodeCount<TValue>(this DataStructures.Immutable.IBinaryTree<TValue> source)
+    public static int GetNodeCount<TValue>(this DataStructures.IBinaryTree<TValue> source)
       => source?.IsEmpty ?? throw new System.ArgumentNullException(nameof(source)) ? 0 : 1 + GetNodeCount(source.Left) + GetNodeCount(source.Right);
 
-    public static int Minimax<TValue>(this DataStructures.Immutable.IBinaryTree<TValue> source, int depth, bool isMax, int maxHeight, System.Func<TValue, int> valueSelector)
+    public static int Minimax<TValue>(this DataStructures.IBinaryTree<TValue> source, int depth, bool isMax, int maxHeight, System.Func<TValue, int> valueSelector)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
       else if (source.IsEmpty) throw new System.ArgumentException(source.GetType().Name);
@@ -42,7 +42,7 @@ namespace Flux
         return valueSelector(source.Value);
     }
 
-    public static System.Text.StringBuilder ToConsoleBlock<TValue>(this DataStructures.Immutable.IBinaryTree<TValue> source)
+    public static System.Text.StringBuilder ToConsoleBlock<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
       const string padUpRight = "\u2514\u2500\u2500";
       const string padVerticalRight = "\u251C\u2500\u2500";
@@ -53,7 +53,7 @@ namespace Flux
       TraversePreOrder(source, string.Empty, string.Empty);
       return sb;
 
-      void TraverseNodes(DataStructures.Immutable.IBinaryTree<TValue> node, string padding, string pointer, bool hasRightSibling)
+      void TraverseNodes(DataStructures.IBinaryTree<TValue> node, string padding, string pointer, bool hasRightSibling)
       {
         if (node.IsEmpty)
           return;
@@ -69,7 +69,7 @@ namespace Flux
         TraverseNodes(node.Right, paddingForBoth, padUpRight, false);
       }
 
-      void TraversePreOrder(DataStructures.Immutable.IBinaryTree<TValue> root, string padding, string pointer)
+      void TraversePreOrder(DataStructures.IBinaryTree<TValue> root, string padding, string pointer)
       {
         if (root.IsEmpty)
           return;
