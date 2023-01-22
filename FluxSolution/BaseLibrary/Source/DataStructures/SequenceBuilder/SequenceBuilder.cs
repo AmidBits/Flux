@@ -1,148 +1,5 @@
 namespace Flux
 {
-  #region Extension methods.
-  public static partial class ExtensionMethods
-  {
-    public static void AppendLine(this SequenceBuilder<char> source, System.ReadOnlySpan<char> value)
-    {
-      source.Append(value);
-      source.Append(System.Environment.NewLine);
-    }
-
-    public static void InsertLine(this SequenceBuilder<char> source, int index, System.ReadOnlySpan<char> value)
-    {
-      source.Insert(index, value);
-      source.Insert(index + value.Length, System.Environment.NewLine);
-    }
-
-    /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.), if the predicate is satisfied.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
-    /// <param name="predicate">The first string is the string up until and including the numeric value, and the second string is the suffix to be affixed.</param>
-    public static void InsertOrdinalIndicatorSuffix(this SequenceBuilder<char> source, System.Func<string, string, bool> predicate)
-    {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-
-      var wasDigit = false;
-
-      for (var index = source.Length - 1; index >= 0; index--)
-      {
-        var c = source[index];
-
-        var isDigit = char.IsDigit(c);
-
-        if (isDigit && !wasDigit)
-        {
-          var isBetweenTenAndTwenty = index > 0 && source[index - 1] == '1';
-
-          var suffix = c switch
-          {
-            '1' when !isBetweenTenAndTwenty => @"st",
-            '2' when !isBetweenTenAndTwenty => @"nd",
-            '3' when !isBetweenTenAndTwenty => @"rd",
-            _ => @"th"
-          };
-
-          if (predicate(source.AsReadOnlySpan().ToString(0, index + 1), suffix))
-            source.Insert(index + 1, suffix);
-        }
-
-        wasDigit = isDigit;
-      }
-    }
-    /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
-    public static void InsertOrdinalIndicatorSuffix(this SequenceBuilder<char> source)
-      => InsertOrdinalIndicatorSuffix(source, (s1, s2) => true);
-
-    /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
-    public static void JoinToCamelCase(this SequenceBuilder<char> source, System.Func<char, bool> predicate)
-    {
-      for (var index = 0; index < source.Length; index++)
-        if (predicate(source[index]))
-        {
-          do { source.Remove(index, 1); }
-          while (predicate(source[index]));
-
-          if (index < source.Length)
-            source[index] = char.ToUpper(source[index]);
-        }
-    }
-    public static void JoinToCamelCase(this SequenceBuilder<char> source)
-      => JoinToCamelCase(source, char.IsWhiteSpace);
-
-    public static void MakeNumbersFixedLength(this SequenceBuilder<char> source, int length)
-    {
-      bool wasDigit = false;
-      var digitCount = 0;
-
-      for (var index = source.Length - 1; index >= 0; index--)
-      {
-        var isDigit = char.IsDigit(source[index]);
-
-        if (!isDigit && wasDigit && digitCount < length)
-          source.Insert(index + digitCount, '0', length - digitCount);
-        else if (isDigit && !wasDigit)
-          digitCount = 1;
-        else
-          digitCount++;
-
-        wasDigit = isDigit;
-      }
-
-      if (wasDigit) source.Insert(0, '0', length - digitCount);
-    }
-
-    /// <summary>Create a new char array with all diacritical (latin) strokes, which are not covered by the normalization forms in NET, replaced. Can be done simplistically because the diacritical latin stroke characters (and replacements) all fit in a single char.</summary>
-    public static void ReplaceDiacriticalLatinStrokes(this SequenceBuilder<char> source)
-    {
-      for (var index = source.Length - 1; index >= 0; index--)
-        source[index] = (char)((System.Text.Rune)source[index]).ReplaceDiacriticalLatinStroke().Value;
-    }
-
-    /// <summary>Inserts a space in front of any single upper case character, except the first one in the string.</summary>
-    public static void SplitFromCamelCase(this SequenceBuilder<char> source)
-    {
-      for (var index = source.Length - 1; index > 0; index--)
-        if (char.IsUpper(source[index]) && (!char.IsUpper(source[index - 1]) || char.IsLower(source[index + 1])))
-          source.Insert(index, ' ');
-    }
-
-    /// <summary>Creates a new builder from the source.</summary>
-    public static SequenceBuilder<T> ToSequenceBuilder<T>(this System.ReadOnlySpan<T> source)
-      => new(source);
-
-    /// <summary>Creates a new builder from the source.</summary>
-    public static SequenceBuilder<T> ToSequenceBuilder<T>(this System.Span<T> source)
-      => new(source);
-
-    public static SequenceBuilder<char> ToSequenceBuilderOfChar(this SequenceBuilder<System.Text.Rune> source)
-    {
-      var target = new SequenceBuilder<char>();
-
-      for (var index = 0; index < source.Length; index++)
-        target.Append(source[index].ToString());
-
-      return target;
-    }
-
-    public static SequenceBuilder<System.Text.Rune> ToSequenceBuilderOfRune(this SequenceBuilder<char> source)
-    {
-      var target = new SequenceBuilder<System.Text.Rune>();
-
-      foreach (var rune in source.AsReadOnlySpan().EnumerateRunes())
-        target.Append(rune);
-
-      return target;
-    }
-
-    public static string ToString(this SequenceBuilder<System.Text.Rune> source, int startAt, int count)
-      => source.AsReadOnlySpan().ToString(startAt, count);
-
-    public static string ToString(this SequenceBuilder<char> source, int startAt, int count)
-      => source.AsReadOnlySpan().ToString(startAt, count);
-  }
-  #endregion Extension methods.
-
   public record class SequenceBuilder<T>
   {
     private const int DefaultBufferSize = 32;
@@ -325,6 +182,92 @@ namespace Flux
       m_tail = m_buffer.Length / 2;
     }
 
+    public SequenceBuilder<T> CopyOver(int fromIndex, int toIndex, int count)
+    {
+      if (fromIndex < 0 || fromIndex > Length - 1) throw new System.ArgumentOutOfRangeException(nameof(fromIndex));
+      if (toIndex < 0 || toIndex > Length - 1) throw new System.ArgumentOutOfRangeException(nameof(fromIndex));
+      if (count < 0 || fromIndex + count > Length || toIndex + count > Length) throw new System.ArgumentOutOfRangeException(nameof(count));
+
+      for (; count > 0; count--)
+        this[toIndex++] = this[fromIndex++];
+
+      return this;
+    }
+
+    //public void CopyTo(int sourceStartIndex, System.Collections.Generic.IList<T> target, int targetStartIndex, int count)
+    //{
+    //  if (sourceStartIndex < 0 || sourceStartIndex >= Length) throw new System.ArgumentOutOfRangeException(nameof(sourceStartIndex));
+    //  if (target is null) throw new System.ArgumentNullException(nameof(target));
+    //  if (targetStartIndex < 0 || targetStartIndex >= Length) throw new System.ArgumentOutOfRangeException(nameof(targetStartIndex));
+    //  if (count <= 0 || (sourceStartIndex + count) > Length || (targetStartIndex + count) > target.Count) throw new System.ArgumentOutOfRangeException(nameof(count));
+
+    //  while (count-- > 0)
+    //    target[targetStartIndex++] = this[sourceStartIndex++];
+    //}
+
+    ///// <summary>Yields the number of characters that the source and the target have in common at the end.</summary>
+    //public int CountEqualAtEnd(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  var sourceIndex = Length;
+    //  var targetIndex = target.Length;
+
+    //  var minLength = System.Math.Min(sourceIndex, targetIndex);
+
+    //  for (var atEnd = 0; --sourceIndex >= 0 && --targetIndex >= 0; atEnd++)
+    //    if (!equalityComparer.Equals(this[sourceIndex], target[targetIndex]))
+    //      return atEnd;
+
+    //  return minLength;
+    //}
+
+    ///// <summary>Yields the number of characters that the source and the target have in common from the start.</summary>
+    //public int CountEqualAtStart(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  var minLength = System.Math.Min(Length, target.Length);
+
+    //  var index = 0;
+    //  while (index < minLength && equalityComparer.Equals(this[index], target[index]))
+    //    index++;
+    //  return index;
+    //}
+
+    ///// <summary>Indicates whether <paramref name="source"/> ends with <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or the default if null.</summary>
+    //public bool EndsWith(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  var sourceIndex = Length;
+    //  var targetIndex = target.Length;
+
+    //  if (sourceIndex < targetIndex)
+    //    return false;
+
+    //  while (--sourceIndex >= 0 && --targetIndex >= 0)
+    //    if (!equalityComparer.Equals(this[sourceIndex], target[targetIndex]))
+    //      return false;
+
+    //  return true;
+    //}
+
+    ///// <summary>Returns whether the specified part of the target is found at the specified index in the string, using the specified comparer.</summary>
+    //public bool EqualsAt(int index, System.ReadOnlySpan<T> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  if (index < 0 || targetIndex < 0 || length <= 0 || index + length > Length || targetIndex + length > target.Length)
+    //    return false;
+
+    //  while (length-- > 0)
+    //    if (!equalityComparer.Equals(this[index++], target[targetIndex++]))
+    //      return false;
+
+    //  return true;
+    //}
+
     /// <summary>Gets the value at the specified index.</summary>
     public T GetValue(int index)
     {
@@ -332,6 +275,30 @@ namespace Flux
 
       return m_buffer[m_head + index];
     }
+
+    ///// <summary>Reports the first index of the specified rune in the string builder, or -1 if not found. Uses the specified comparer.</summary>
+    //public int IndexOf(T target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  for (var index = 0; index < Length; index++)
+    //    if (equalityComparer.Equals(this[index], target))
+    //      return index;
+
+    //  return -1;
+    //}
+
+    ///// <summary>Returns the first index of the specified string in the string builder, or -1 if not found. Uses the specified comparer.</summary>
+    //public int IndexOf(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  for (int index = 0, lastIndex = Length - target.Length; index <= lastIndex; index++)
+    //    if (EqualsAt(index, target, 0, target.Length, equalityComparer))
+    //      return index;
+
+    //  return -1;
+    //}
 
     /// <summary>Inserts the value at the specified index of the builder.</summary>
     public SequenceBuilder<T> Insert(int startAt, T value, int count = 1)
@@ -382,6 +349,49 @@ namespace Flux
 
       return this;
     }
+
+    ///// <summary>Determines whether the sequence is a palindrome.</summary>
+    //public bool IsPalindrome(int startIndex, int endIndex, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  if (startIndex < 0 || startIndex >= Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
+    //  if (endIndex < startIndex || endIndex >= Length) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
+
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  for (int indexL = startIndex, indexR = endIndex; indexL < indexR; indexL++, indexR--)
+    //    if (!equalityComparer.Equals(this[indexL], this[indexR]))
+    //      return false;
+
+    //  return true;
+    //}
+
+    ///// <summary>Reports the last index of the specified rune in the string builder, or -1 if not found. Uses the specified comparer.</summary>
+    //public int LastIndexOf(T target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  for (var index = Length - 1; index >= 0; index--)
+    //    if (equalityComparer.Equals(this[index], target))
+    //      return index;
+
+    //  return -1;
+    //}
+
+    ///// <summary>Reports the last index of the specified string in the string builder. Or -1 if not found. Uses the specified comparer.</summary>
+    //public int LastIndexOf(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  for (var index = Length - target.Length; index >= 0; index--)
+    //    if (EqualsAt(index, target, 0, target.Length, equalityComparer))
+    //      return index;
+
+    //  return -1;
+    //}
+
+    ///// <summary>Returns a string containing the left most specified number of characters, if available, otherwise as many as there are.</summary>
+    //public System.ReadOnlySpan<T> LeftMost(int maxCount)
+    //  => AsReadOnlySpan().Slice(0, System.Math.Min(Length, System.Math.Max(maxCount < 0 ? throw new System.ArgumentOutOfRangeException(nameof(maxCount)) : maxCount, 0)));
 
     /// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the specfied comparer.</summary>
     public SequenceBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
@@ -507,6 +517,32 @@ namespace Flux
       return Remove(totalWidth, Length - totalWidth);
     }
 
+    ///// <summary>The Prefix function for this sequence is an array of length n where the i-th element is equal to the greatest number of elements starting from the position i that coincide with the first elements of source. I.e., z[i] is the length of the longest common prefix between source and the suffix of source starting at i.</summary>
+    //// https://cp-algorithms.com/string/prefix-function.html
+    //public int[] PrefixFunction(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  var sourceLength = Length;
+
+    //  var p = new int[sourceLength];
+
+    //  for (int i = 1; i < sourceLength; i++)
+    //  {
+    //    var j = p[i - 1];
+
+    //    while (j > 0 && !equalityComparer.Equals(this[i], this[j]))
+    //      j = p[j - 1];
+
+    //    if (equalityComparer.Equals(this[i], this[j]))
+    //      j++;
+
+    //    p[i] = j;
+    //  }
+
+    //  return p;
+    //}
+
     /// <summary>Inserts the value at the start of the builder.</summary>
     public SequenceBuilder<T> Prepend(T value)
     {
@@ -579,6 +615,10 @@ namespace Flux
 
       return RemoveAll(t => remove.Contains(t, equalityComparer));
     }
+
+    ///// <summary>Returns a string containing the right most specified number of characters, if available, otherwise as many as there are.</summary>
+    //public System.ReadOnlySpan<T> RightMost(int maxCount)
+    //  => maxCount < 0 ? throw new System.ArgumentOutOfRangeException(nameof(maxCount)) : maxCount < Length ? AsReadOnlySpan().Slice(Length - maxCount, maxCount) : AsReadOnlySpan();
 
     /// <summary>Repears the content of the  the specified number of times.</summary>
     public SequenceBuilder<T> Repeat(int count)
@@ -654,6 +694,48 @@ namespace Flux
       return this;
     }
 
+    ///// <summary>Creates a sequence of substrings, as a split of the StringBuilder content based on the characters in an array. There is no change to the StringBuilder content.</summary>
+    //public System.Collections.Generic.IEnumerable<T[]> Split(System.StringSplitOptions options, System.Collections.Generic.IList<T> separators, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  var startIndex = 0;
+
+    //  var sourceLength = Length;
+
+    //  for (var index = startIndex; index < sourceLength; index++)
+    //  {
+    //    if (separators.Any(c => equalityComparer.Equals(c, this[index])))
+    //    {
+    //      if (index != startIndex || options != System.StringSplitOptions.RemoveEmptyEntries)
+    //        yield return AsReadOnlySpan().Slice(startIndex, index - startIndex).ToArray();
+
+    //      startIndex = index + 1;
+    //    }
+    //  }
+
+    //  if (startIndex < sourceLength)
+    //    yield return AsReadOnlySpan().Slice(startIndex, sourceLength - startIndex).ToArray();
+    //}
+
+    ///// <summary>Indicates whether <paramref name="source"/> starts with <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or the default if null.</summary>
+    //public bool StartsWith(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  var sourceLength = Length;
+    //  var targetLength = target.Length;
+
+    //  if (sourceLength < targetLength)
+    //    return false;
+
+    //  for (var index = targetLength - 1; index >= 0; index--)
+    //    if (!equalityComparer.Equals(this[index], target[index]))
+    //      return false;
+
+    //  return true;
+    //}
+
     /// <summary>Swap two elements by the specified indices.</summary>
     public SequenceBuilder<T> Swap(int indexA, int indexB)
     {
@@ -670,6 +752,34 @@ namespace Flux
 
       return this;
     }
+
+    ///// <summary>The Z-function for this sequence is an array of length n where the i-th element is equal to the greatest number of elements starting from the position i that coincide with the first elements of source. I.e., z[i] is the length of the longest common prefix between source and the suffix of source starting at i.</summary>
+    //// https://cp-algorithms.com/string/z-function.html
+    //public int[] ZFunction(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+    //  var sourceLength = Length;
+
+    //  var z = new int[sourceLength];
+
+    //  for (int i = 1, l = 0, r = 0; i < sourceLength; i++)
+    //  {
+    //    if (i <= r)
+    //      z[i] = System.Math.Min(r - i + 1, z[i - l]);
+
+    //    while (i + z[i] < sourceLength && equalityComparer.Equals(this[z[i]], this[i + z[i]]))
+    //      z[i]++;
+
+    //    if (i + z[i] - 1 > r)
+    //    {
+    //      l = i;
+    //      r = i + z[i] - 1;
+    //    }
+    //  }
+
+    //  return z;
+    //}
 
     #region Object overrides.
     public override string ToString() => AsReadOnlySpan().ToString(0);

@@ -22,14 +22,20 @@ namespace Flux.Numerics
       where TValue : System.Numerics.INumber<TValue>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
     {
-      var h = ComputeQuantileRank(ordered.Count(), p);
+      var count = ordered.Count();
+
+      var h = ComputeQuantileRank(count, p);
 
       var half = TPercent.One.Divide(2);
 
       var indexLo = System.Convert.ToInt32(TPercent.Ceiling(h - half)); // ceiling(h - 0.5).
       var indexHi = System.Convert.ToInt32(TPercent.Floor(h + half)); // floor(h + 0.5).
 
-      return TPercent.CreateChecked(ordered.ElementAt(indexLo - 1) + ordered.ElementAt(indexHi - 1)).Divide(2); // Adjust for 0-based indexing.
+      // Ensure roundings are clamped to quantile rank [1, count] range (variable 'h' on Wikipedia) and then adjust to 0-based index.
+      indexLo = int.Clamp(indexLo, 1, count) - 1;
+      indexHi = int.Clamp(indexHi, 1, count) - 1;
+
+      return TPercent.CreateChecked(ordered.ElementAt(indexLo) + ordered.ElementAt(indexHi)).Divide(2);
     }
   }
 }

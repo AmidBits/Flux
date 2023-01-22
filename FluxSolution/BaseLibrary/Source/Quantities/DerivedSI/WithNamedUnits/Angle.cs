@@ -4,6 +4,7 @@
   {
     public static string GetUnitSpacing(this Quantities.AngleUnit unit, bool preferUnicode, bool useFullName)
       => (unit == Quantities.AngleUnit.Degree && preferUnicode) || unit == Quantities.AngleUnit.Arcminute || unit == Quantities.AngleUnit.Arcsecond ? string.Empty : " ";
+
     public static string GetUnitString(this Quantities.AngleUnit unit, bool preferUnicode, bool useFullName)
       => useFullName ? unit.ToString() : unit switch
       {

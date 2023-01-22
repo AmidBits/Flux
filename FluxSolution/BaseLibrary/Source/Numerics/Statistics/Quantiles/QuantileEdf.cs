@@ -38,8 +38,17 @@ namespace Flux.Numerics
       var hf = TPercent.Floor(h); // Floor of h.
       var hc = TPercent.Ceiling(h); // Ceiling of h.
 
-      var sf = ordered.ElementAt(System.Convert.ToInt32(hf)); // Floor of sample value at hf.
-      var sc = ordered.ElementAt(System.Convert.ToInt32(hc)); // Ceiling of sample value at hc.
+      var indexHf = System.Convert.ToInt32(hf);
+      var indexHc = System.Convert.ToInt32(hc);
+
+      var maxIndex = ordered.Count() - 1;
+
+      // Ensure roundings are clamped to quantile rank [0, maxIndex] range (variable 'h' on Wikipedia). There are no adjustment for 0-based indexing.
+      indexHf = int.Clamp(indexHf, 0, maxIndex);
+      indexHc = int.Clamp(indexHc, 0, maxIndex);
+
+      var sf = ordered.ElementAt(indexHf); // Floor of sample value at hf.
+      var sc = ordered.ElementAt(indexHc); // Ceiling of sample value at hc.
 
       return TPercent.CreateChecked(sf) + (h - hf) * TPercent.CreateChecked(sc - sf); // Linear interpolation.
     }

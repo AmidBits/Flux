@@ -80,30 +80,30 @@ namespace Flux
       //foreach (var k in a)
       //  hg[k] = hg.TryGetValue(k, out var v) ? v + 1 : 1;
 
-      var h = a.ToHistogram(e => e, e => 1, out var sof, null);
+      var h = a.ToHistogram(e => e, e => 1);
       System.Console.WriteLine("H:");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, h));
       System.Console.WriteLine();
 
-      var pmf = h.ToProbabilityMassFunction(1d, sof);
+      var pmf = h.ToProbabilityMassFunction(1d);
       System.Console.WriteLine("PMF:");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, pmf));
       System.Console.WriteLine();
 
-      var cdf = h.CumulativeMassFunction(kvp => kvp.Key, kvp => kvp.Value, 1.0);
+      var cdf = h.ToCumulativeMassFunction(1d);
       System.Console.WriteLine("CDF:");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, cdf));
       System.Console.WriteLine();
 
-      var pr = h.PercentRank(sof);
-      System.Console.WriteLine("PR:");
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, pr));
-      System.Console.WriteLine();
+      //var pr = h.PercentRank(sof);
+      //System.Console.WriteLine("PR:");
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, pr));
+      //System.Console.WriteLine();
 
-      var pl = h.CumulativeMassFunction(kvp => kvp.Key, kvp => kvp.Value, 100.0);
-      System.Console.WriteLine("PL:");
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, pl));
-      System.Console.WriteLine();
+      //var pl = h.CumulativeMassFunction(kvp => kvp.Key, kvp => kvp.Value, 100.0);
+      //System.Console.WriteLine("PL:");
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, pl));
+      //System.Console.WriteLine();
     }
   }
 }

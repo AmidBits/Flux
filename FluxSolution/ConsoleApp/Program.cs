@@ -23,11 +23,8 @@ namespace ConsoleApp
   {
     private static void TimedMain(string[] args)
     {
-      //Flux.DataStructures.IDeque
-
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
-      //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.RunDataStructuresGraphs(); return; }
 
       // Compute quantiles:
       {
@@ -35,34 +32,34 @@ namespace ConsoleApp
 
         foreach (var av in aav)
         {
-          var htt = Flux.Histogram<int, int>.Create(av, k => k, f => 1);
+          System.Console.WriteLine($"Sequence: [{string.Join(", ", av)}]");
 
-          var h = Flux.Histogram<int, int>.Create(av, k => k, v => 1);
+
+
+          var htt = Flux.DataStructures.Histogram<int, int>.Create(av, k => k, f => 1);
+
+          var h = Flux.DataStructures.Histogram<int, int>.Create(av, k => k, v => 1);
           System.Console.WriteLine($"HIST:{System.Environment.NewLine}{h.ToConsoleString()}{System.Environment.NewLine}");
 
-          var pmf = Flux.ProbabilityMassFunction<int, double>.Create(h);
-          System.Console.WriteLine($"PMF:{System.Environment.NewLine}{pmf.ToConsoleString()}{System.Environment.NewLine}");
+          var v = 13;
 
-          var cmf = Flux.CumulativeMassFunction<int, double>.Create(h);
-          System.Console.WriteLine($"CMF:{System.Environment.NewLine}{cmf.ToConsoleString()}{System.Environment.NewLine}");
+          var pmf = Flux.DataStructures.ProbabilityMassFunction<int, double>.Create(h, 1.5d);
+          var pmfv = h.ToPmfProbability(v, 1d);
+          System.Console.WriteLine($"PMF:{System.Environment.NewLine}{pmf.ToConsoleString()}{System.Environment.NewLine}PV={pmfv}");
 
-          //var value = 17;
-          //System.Console.WriteLine($"PMF={value}:{System.Environment.NewLine}{av.ToProbabilityMassFunction(v => v, value, 1d)}{System.Environment.NewLine}");
-          //System.Console.WriteLine($"CMF={value}:{System.Environment.NewLine}{av.CumulativeMassFunction(v => v, value, 1d)}{System.Environment.NewLine}");
+          var cmf = Flux.DataStructures.CumulativeMassFunction<int, double>.Create(h, 1.5d);
+          var cmfv = h.ToCmfPercentRank(v, 1d);
+          System.Console.WriteLine($"CMF:{System.Environment.NewLine}{cmf.ToConsoleString()}{System.Environment.NewLine}CV={cmfv}");
 
-          //System.Console.WriteLine($"PMF:{System.Environment.NewLine}{av.ProbabilityMassFunction(e => e, e => 1, 1d).ToConsoleString()}{System.Environment.NewLine}");
-          //System.Console.WriteLine($"CMF:{System.Environment.NewLine}{av.CumulativeMassFunction(e => e, e => 1, 1d).ToConsoleString()}{System.Environment.NewLine}");
-
-          continue;
-
-          System.Console.WriteLine($"Sequence: [{string.Join(", ", av)}]");
+          //continue;
 
           foreach (QuantileAlgorithm a in System.Enum.GetValues<QuantileAlgorithm>())
           {
             var ac = av.Length;
 
-            var qr = (ac.ComputeQuantileRank(0.25, a), ac.ComputeQuantileRank(0.50, a), ac.ComputeQuantileRank(0.75, a));
-            var qv = (av.EstimateQuantileValue(0.25, a), av.EstimateQuantileValue(0.50, a), av.EstimateQuantileValue(0.75, a));
+            var qr = (ac.ComputeQuantileRank(0d, a), ac.ComputeQuantileRank(0.25, a), ac.ComputeQuantileRank(0.50, a), ac.ComputeQuantileRank(0.75, a), ac.ComputeQuantileRank(1d, a));
+            var qv = (av.EstimateQuantileValue(0d, a), av.EstimateQuantileValue(0.25, a), av.EstimateQuantileValue(0.50, a), av.EstimateQuantileValue(0.75, a), av.EstimateQuantileValue(1d, a));
+            //var qv = (av.EstimateQuantileValue(0.25, a), av.EstimateQuantileValue(0.50, a), av.EstimateQuantileValue(0.75, a));
 
             System.Console.WriteLine($"{a} : qR = {qr}, qV = {qv}");
           }
