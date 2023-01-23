@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsSequenceBuilderT
+  public static partial class ExtensionMethodsSequenceBuilder
   {
     /// <summary>Determines whether the string is a palindrome.</summary>
     public static bool IsPalindrome<T>(this SequenceBuilder<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)

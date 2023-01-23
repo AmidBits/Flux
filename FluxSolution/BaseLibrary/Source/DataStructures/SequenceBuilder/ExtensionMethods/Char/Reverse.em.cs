@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsSequenceBuilderChar
+  public static partial class ExtensionMethodsSequenceBuilder
   {
     /// <summary>Reverse all ranged characters sort of in-place. Handles surrogates.</summary>
     public static SequenceBuilder<char> Reverse(this SequenceBuilder<char> source, int startIndex, int endIndex)

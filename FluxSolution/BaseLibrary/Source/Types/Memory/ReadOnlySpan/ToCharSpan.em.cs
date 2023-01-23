@@ -8,7 +8,7 @@ namespace Flux
       var sb = new SequenceBuilder<char>();
 
       for (var index = 0; index < source.Length; index++)
-        sb.Append(source[index].ToString());
+        sb.Append(source[index].ToString().AsSpan());
 
       return sb.AsReadOnlySpan();
     }

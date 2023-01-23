@@ -20,12 +20,12 @@ namespace Flux
       m_head = m_buffer.Length / 2;
       m_tail = m_buffer.Length / 2;
     }
-
-    public SequenceBuilder(System.ReadOnlySpan<T> collection) : this(collection.Length) => Append(collection);
-
-    public SequenceBuilder(System.Span<T> collection) : this(collection.Length) => Append(collection);
-
     public SequenceBuilder() : this(DefaultBufferSize) { }
+
+    public SequenceBuilder(T value) : this() => Append(value);
+    public SequenceBuilder(System.ReadOnlySpan<T> readOnlySpan) : this(readOnlySpan.Length) => Append(readOnlySpan);
+    public SequenceBuilder(System.Span<T> span) : this(span.Length) => Append(span);
+    public SequenceBuilder(System.Collections.Generic.IEnumerable<T> collection) : this() => Append(collection);
 
     /// <summary>Grows a uniform (left and right) buffer capacity to at least that specified.</summary>
     private void EnsureUniformSpace(int length)
@@ -65,7 +65,6 @@ namespace Flux
         m_tail = newTail;
       }
     }
-
     /// <summary>Grows an append (right) buffer capacity to at least that specified.</summary>
     private void EnsureAppendSpace(int length)
     {
@@ -83,7 +82,6 @@ namespace Flux
         m_buffer = newArray;
       }
     }
-
     /// <summary>Grows a prepend (left) buffer capacity to at least that specified.</summary>
     private void EnsurePrependSpace(int length)
     {
@@ -125,18 +123,14 @@ namespace Flux
     }
 
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
-    public T this[int index]
-    { get => GetValue(index); set => SetValue(index, value); }
+    public T this[int index] { get => GetValue(index); set => SetValue(index, value); }
 
     /// <summary>The current capacity of the builder.</summary>
-    public int Capacity
-      => m_buffer.Length;
-
+    public int Capacity => m_buffer.Length;
     /// <summary>The content length of the builder.</summary>
-    public int Length
-      => m_tail - m_head;
+    public int Length => m_tail - m_head;
 
-    /// <summary>Appends the value to the builder.</summary>
+    /// <summary>Append <paramref name="count"/> of <paramref name="value"/>.</summary>
     public SequenceBuilder<T> Append(T value, int count = 1)
     {
       m_version++;
@@ -148,30 +142,39 @@ namespace Flux
 
       return this;
     }
-
-    /// <summary>Appends the values to the builder.</summary>
-    public SequenceBuilder<T> Append(System.ReadOnlySpan<T> value)
+    /// <summary>Append the <paramref name="values"/>.</summary>
+    public SequenceBuilder<T> Append(System.ReadOnlySpan<T> values)
     {
       m_version++;
 
-      EnsureAppendSpace(value.Length);
+      EnsureAppendSpace(values.Length);
 
-      value.CopyTo(m_buffer, m_tail);
+      values.CopyTo(m_buffer, m_tail);
 
-      m_tail += value.Length;
+      m_tail += values.Length;
+
+      return this;
+    }
+    /// <summary>Append a <paramref name="collection"/>.</summary>
+    public SequenceBuilder<T> Append(System.Collections.Generic.IEnumerable<T> collection)
+    {
+      m_version++;
+
+      foreach (var item in collection)
+        Append(item);
 
       return this;
     }
 
-    /// <summary>Returns a non-allocating readonly span.</summary>
+    /// <summary>Creates a non-allocating <see cref="System.ReadOnlySpan{T}"/>.</summary>
     public System.ReadOnlySpan<T> AsReadOnlySpan()
       => new(m_buffer, m_head, m_tail - m_head);
 
-    /// <summary>Returns a non-allocating span.</summary>
+    /// <summary>Creates a non-allocating <see cref="System.Span{T}"/>.</summary>
     public System.Span<T> AsSpan()
       => new(m_buffer, m_head, m_tail - m_head);
 
-    /// <summary>Removes all items from the builder.</summary>
+    /// <summary>Remove all values from the builder.</summary>
     public void Clear()
     {
       m_version++;
@@ -300,7 +303,7 @@ namespace Flux
     //  return -1;
     //}
 
-    /// <summary>Inserts the value at the specified index of the builder.</summary>
+    /// <summary>Insert <paramref name="count"/> of <paramref name="value"/> starting at <paramref name="startAt"/>.</summary>
     public SequenceBuilder<T> Insert(int startAt, T value, int count = 1)
     {
       m_version++;
@@ -324,28 +327,37 @@ namespace Flux
 
       return this;
     }
-
-    /// <summary>Inserts the values at the specified index of the builder.</summary>
-    public SequenceBuilder<T> Insert(int startAt, System.ReadOnlySpan<T> value)
+    /// <summary>Insert the <paramref name="values"/> starting at <paramref name="startAt"/>.</summary>
+    public SequenceBuilder<T> Insert(int startAt, System.ReadOnlySpan<T> values)
     {
       m_version++;
 
-      EnsureUniformSpace(value.Length);
+      EnsureUniformSpace(values.Length);
 
       startAt += m_head;
 
       if (m_head >= m_buffer.Length - m_tail) // Grow from start.
       {
-        System.Array.Copy(m_buffer, m_head, m_buffer, m_head - value.Length, startAt - m_head);
-        value.CopyTo(m_buffer, startAt - value.Length);
-        m_head -= value.Length;
+        System.Array.Copy(m_buffer, m_head, m_buffer, m_head - values.Length, startAt - m_head);
+        values.CopyTo(m_buffer, startAt - values.Length);
+        m_head -= values.Length;
       }
       else // Otherwise grow from end.
       {
-        System.Array.Copy(m_buffer, startAt, m_buffer, startAt + value.Length, m_tail - startAt);
-        value.CopyTo(m_buffer, startAt);
-        m_tail += value.Length;
+        System.Array.Copy(m_buffer, startAt, m_buffer, startAt + values.Length, m_tail - startAt);
+        values.CopyTo(m_buffer, startAt);
+        m_tail += values.Length;
       }
+
+      return this;
+    }
+    /// <summary>Insert a <paramref name="collection"/> starting at <paramref name="startAt"/>.</summary>
+    public SequenceBuilder<T> Insert(int startAt, System.Collections.Generic.IEnumerable<T> collection)
+    {
+      m_version++;
+
+      foreach (var item in collection)
+        Insert(startAt++, item);
 
       return this;
     }
@@ -393,7 +405,7 @@ namespace Flux
     //public System.ReadOnlySpan<T> LeftMost(int maxCount)
     //  => AsReadOnlySpan().Slice(0, System.Math.Min(Length, System.Math.Max(maxCount < 0 ? throw new System.ArgumentOutOfRangeException(nameof(maxCount)) : maxCount, 0)));
 
-    /// <summary>Creates a new readonlyspan with the specified (or all if none specified) consecutive characters in the string normalized. Uses the specfied comparer.</summary>
+    /// <summary>Normalize the specified (or all if none specified) consecutive <paramref name="values"/> in the string normalized. Uses the specfied <paramref name="equalityComparer"/>, or default if null.</summary>
     public SequenceBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -418,8 +430,8 @@ namespace Flux
       return Remove(targetIndex, Length - targetIndex);
     }
 
-    /// <summary>Creates a new readonlyspan with the predicated characters normalized throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
-    public SequenceBuilder<T> NormalizeAll(T normalizeWith, System.Func<T, bool> predicate)
+    /// <summary>Normalize where the <paramref name="predicate"/> is satisfied using the <paramref name="normalizer"/> throughout the builder. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
+    public SequenceBuilder<T> NormalizeAll(T normalizer, System.Func<T, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
@@ -435,7 +447,7 @@ namespace Flux
 
         if (!(isPrevious && isCurrent))
         {
-          SetValue(normalizedIndex++, isCurrent ? normalizeWith : character);
+          SetValue(normalizedIndex++, isCurrent ? normalizer : character);
 
           isPrevious = isCurrent;
         }
@@ -445,16 +457,15 @@ namespace Flux
 
       return Remove(normalizedIndex, Length - normalizedIndex);
     }
-
-    /// <summary>Creates a new readonlyspan with the predicated characters normalized throughout the string. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
-    public SequenceBuilder<T> NormalizeAll(T normalizeWith, System.Collections.Generic.IList<T> normalize, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    /// <summary>Normalize the <paramref name="normalizeValues"/> using the <paramref name="normalizer"/> throughout the builder. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
+    public SequenceBuilder<T> NormalizeAll(T normalizer, System.Collections.Generic.IList<T> normalizeValues, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      return NormalizeAll(normalizeWith, t => normalize.Contains(t, equalityComparer));
+      return NormalizeAll(normalizer, t => normalizeValues.Contains(t, equalityComparer));
     }
 
-    /// <summary>Pads the StringBuilder evenly on both sides to the specified width by the specified padding characters for left and right respectively.</summary>
+    /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
     public SequenceBuilder<T> PadEven(int totalWidth, T paddingLeft, T paddingRight, bool leftBias = true)
     {
       if (totalWidth > Length)
@@ -469,8 +480,7 @@ namespace Flux
 
       return this;
     }
-
-    /// <summary>Pads the StringBuilder evenly on both sides to the specified width by the specified padding strings for left and right respectively.</summary>
+    /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
     public SequenceBuilder<T> PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
     {
       if (totalWidth > Length)
@@ -486,7 +496,7 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Pads this StringBuilder on the left with the specified padding character.</summary>
+    /// <summary>Pad on the left with the specified <paramref name="padding"/>.</summary>
     public SequenceBuilder<T> PadLeft(int totalWidth, T padding)
     {
       if (Length < totalWidth)
@@ -494,8 +504,7 @@ namespace Flux
 
       return this;
     }
-
-    /// <summary>Pads this StringBuilder on the left with the specified padding string.</summary>
+    /// <summary>Pad on the left with the specified <paramref name="padding"/>.</summary>
     public SequenceBuilder<T> PadLeft(int totalWidth, System.ReadOnlySpan<T> padding)
     {
       while (Length < totalWidth)
@@ -504,11 +513,10 @@ namespace Flux
       return Remove(0, Length - totalWidth);
     }
 
-    /// <summary>Pads this StringBuilder on the right with the specified padding character.</summary>
+    /// <summary>Pad on the right with the specified <paramref name="padding"/>.</summary>
     public SequenceBuilder<T> PadRight(int totalWidth, T padding)
       => Append(padding, totalWidth - Length);
-
-    /// <summary>Pads this StringBuilder on the right with the specified padding string.</summary>
+    /// <summary>Pad on the right with the specified <paramref name="padding"/>.</summary>
     public SequenceBuilder<T> PadRight(int totalWidth, System.ReadOnlySpan<T> padding)
     {
       while (Length < totalWidth)
@@ -543,7 +551,7 @@ namespace Flux
     //  return p;
     //}
 
-    /// <summary>Inserts the value at the start of the builder.</summary>
+    /// <summary>Prepends with a <paramref name="value"/>.</summary>
     public SequenceBuilder<T> Prepend(T value)
     {
       m_version++;
@@ -554,15 +562,14 @@ namespace Flux
 
       return this;
     }
-
-    /// <summary>Inserts the values at the start of the builder.</summary>
-    public SequenceBuilder<T> Prepend(System.ReadOnlySpan<T> value)
+    /// <summary>Prepends with the <paramref name="values"/>.</summary>
+    public SequenceBuilder<T> Prepend(System.ReadOnlySpan<T> values)
     {
       m_version++;
 
-      EnsurePrependSpace(value.Length);
+      EnsurePrependSpace(values.Length);
 
-      value.CopyTo(m_buffer, m_head -= value.Length);
+      values.CopyTo(m_buffer, m_head -= values.Length);
 
       return this;
     }
@@ -590,7 +597,7 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Creates a new readonlyspan with all elements satisfying the predicate removed.</summary>
+    /// <summary>Remove all items where the <paramref name="predicate"/> is satisfied.</summary>
     public SequenceBuilder<T> RemoveAll(System.Func<T, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
@@ -607,31 +614,30 @@ namespace Flux
 
       return Remove(removedIndex, Length - removedIndex);
     }
-
-    /// <summary>Creates a new readonlyspan with all elements satisfying the predicate removed. Uses the specified comparer.</summary>
-    public SequenceBuilder<T> RemoveAll(System.Collections.Generic.IList<T> remove, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    /// <summary>Remove all <paramref name="removeValues"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    public SequenceBuilder<T> RemoveAll(System.Collections.Generic.IList<T> removeValues, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      return RemoveAll(t => remove.Contains(t, equalityComparer));
+      return RemoveAll(t => removeValues.Contains(t, equalityComparer));
     }
 
     ///// <summary>Returns a string containing the right most specified number of characters, if available, otherwise as many as there are.</summary>
     //public System.ReadOnlySpan<T> RightMost(int maxCount)
     //  => maxCount < 0 ? throw new System.ArgumentOutOfRangeException(nameof(maxCount)) : maxCount < Length ? AsReadOnlySpan().Slice(Length - maxCount, maxCount) : AsReadOnlySpan();
 
-    /// <summary>Repears the content of the  the specified number of times.</summary>
+    /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
     public SequenceBuilder<T> Repeat(int count)
     {
       var original = AsReadOnlySpan().ToArray();
 
       while (count-- > 0)
-        Append(original);
+        Append(original.AsReadOnlySpan());
 
       return this;
     }
 
-    /// <summary>Replace (in-place) all characters using the specified replacement selector function.</summary>
+    /// <summary>Replace all values using the specified replacement selector.</summary>
     public SequenceBuilder<T> ReplaceAll(System.Func<T, T> replacementSelector)
     {
       if (replacementSelector is null) throw new System.ArgumentNullException(nameof(replacementSelector));
@@ -641,8 +647,7 @@ namespace Flux
 
       return this;
     }
-
-    /// <summary>Replace (in-place) all characters satisfying the predicate with the specified character.</summary>
+    /// <summary>Replace all values with <paramref name="replacement"/> where the <paramref name="predicate"/> is satisfied.</summary>
     public SequenceBuilder<T> ReplaceAll(T replacement, System.Func<T, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
@@ -653,13 +658,12 @@ namespace Flux
 
       return this;
     }
-
-    /// <summary>Replace (in-place) all specified elements with the specified element. Uses the specified comparer.</summary>
-    public SequenceBuilder<T> ReplaceAll(T replacement, System.Collections.Generic.IList<T> replace, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    /// <summary>Replace all <paramref name="replaceValues"/> with <paramref name="replacement"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    public SequenceBuilder<T> ReplaceAll(T replacement, System.Collections.Generic.IList<T> replaceValues, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      return ReplaceAll(replacement, t => replace.Any(r => equalityComparer.Equals(r, t)));
+      return ReplaceAll(replacement, t => replaceValues.Any(r => equalityComparer.Equals(r, t)));
     }
 
     /// <summary>Reverse all items in the range [startIndex, endIndex], in the builder.</summary>
@@ -683,7 +687,7 @@ namespace Flux
       m_buffer[m_head + index] = value;
     }
 
-    /// <summary>Shuffle all items in the builder. Uses the specified Random, or default if null.</summary>
+    /// <summary>Shuffle all values in the builder. Uses the specified <paramref name="rng"/>, or default if null.</summary>
     public SequenceBuilder<T> Shuffle(System.Random? rng)
     {
       rng ??= new System.Random();
@@ -736,7 +740,7 @@ namespace Flux
     //  return true;
     //}
 
-    /// <summary>Swap two elements by the specified indices.</summary>
+    /// <summary>Swap two values by the specified indices.</summary>
     public SequenceBuilder<T> Swap(int indexA, int indexB)
     {
       if (indexA != indexB)
