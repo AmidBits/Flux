@@ -26,6 +26,17 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+
+
+      var s = "This is the 2 string.";
+      System.Console.WriteLine(s);
+      var sbc = new SequenceBuilder<char>(s.AsSpan());
+      System.Console.WriteLine(sbc.InsertOrdinalIndicatorSuffix());
+      var sbr = new SequenceBuilder<System.Text.Rune>(s.EnumerateRunes());
+      System.Console.WriteLine(sbr.InsertOrdinalIndicatorSuffix());
+
+
+
       // Compute quantiles:
       {
         var aav = new int[][] { new int[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 }, new int[] { 3, 6, 7, 8, 8, 9, 10, 13, 15, 16, 20 } };

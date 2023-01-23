@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethodsSequenceBuilder
   {
-    public static void MakeNumbersFixedLength(this SequenceBuilder<char> source, int length, char padding)
+    public static SequenceBuilder<char> MakeNumbersFixedLength(this SequenceBuilder<char> source, int length, char padding)
     {
       bool wasDigit = false;
       var digitCount = 0;
@@ -22,6 +22,8 @@ namespace Flux
       }
 
       if (wasDigit) source.Insert(0, padding, length - digitCount);
+
+      return source;
     }
   }
 }
