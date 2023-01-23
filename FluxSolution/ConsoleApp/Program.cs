@@ -28,12 +28,18 @@ namespace ConsoleApp
 
 
 
-      var s = "This is the 2 string.";
-      System.Console.WriteLine(s);
-      var sbc = new SequenceBuilder<char>(s.AsSpan());
-      System.Console.WriteLine(sbc.InsertOrdinalIndicatorSuffix());
-      var sbr = new SequenceBuilder<System.Text.Rune>(s.EnumerateRunes());
-      System.Console.WriteLine(sbr.InsertOrdinalIndicatorSuffix());
+      var sb = "This is iñ th\u0247 2 string.".ToSequenceBuilder().ToSequenceBuilderOfRune();
+      System.Console.WriteLine(sb);
+      sb.MakeNumbersFixedLength(10, (System.Text.Rune)'0');
+      System.Console.WriteLine(sb);
+      sb.InsertOrdinalIndicatorSuffix();
+      System.Console.WriteLine(sb);
+      sb.RemoveDiacriticalMarks();
+      System.Console.WriteLine(sb);
+      sb.AsSpan().ReplaceDiacriticalLatinStrokes();
+      System.Console.WriteLine(sb.AsReadOnlySpan().ToString(0));
+
+      return;
 
 
 

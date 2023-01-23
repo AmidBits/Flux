@@ -175,7 +175,7 @@ namespace Flux
       => new(m_buffer, m_head, m_tail - m_head);
 
     /// <summary>Remove all values from the builder.</summary>
-    public void Clear()
+    public SequenceBuilder<T> Clear()
     {
       m_version++;
 
@@ -183,6 +183,8 @@ namespace Flux
 
       m_head = m_buffer.Length / 2;
       m_tail = m_buffer.Length / 2;
+
+      return this;
     }
 
     public SequenceBuilder<T> CopyOver(int fromIndex, int toIndex, int count)
@@ -784,6 +786,9 @@ namespace Flux
 
     //  return z;
     //}
+
+    public string ToString(int startAt) => AsReadOnlySpan().ToString(startAt);
+    public string ToString(int startAt, int count) => AsReadOnlySpan().ToString(startAt, count - startAt);
 
     #region Object overrides.
     public override string ToString() => AsReadOnlySpan().ToString(0);

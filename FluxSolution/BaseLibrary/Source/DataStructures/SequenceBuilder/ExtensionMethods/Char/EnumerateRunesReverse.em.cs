@@ -4,8 +4,6 @@ namespace Flux
   {
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunesReverse(this SequenceBuilder<char> source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-
       for (var index = source.Length - 1; index >= 0; index--)
       {
         var rc2 = source[index];

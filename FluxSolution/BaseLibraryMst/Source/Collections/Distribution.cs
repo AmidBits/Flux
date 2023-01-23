@@ -10,9 +10,9 @@ namespace Collections.Generic
     private readonly double[] d = new double[] { 1, 2, 3, 3, 3, 4, 4, 5, 5, 7 };
 
     [TestMethod]
-    public void CumulativeMassFunction()
+    public void CumulativeMassFunctionPercentRank()
     {
-      Assert.AreEqual(0.7, d.ToHistogram(k => k, f => 1).ToCumulativeMassFunction(1d), nameof(CumulativeMassFunction));
+      Assert.AreEqual(0.7, d.ToHistogram(k => k, f => 1).ToCmfPercentRank(4, 1d), nameof(CumulativeMassFunctionPercentRank));
     }
 
     //[TestMethod]
@@ -47,7 +47,7 @@ namespace Collections.Generic
     [TestMethod]
     public void ProbabilityMassFunction()
     {
-      Assert.AreEqual(0.9, d.ToHistogram(k => k, f => 1).ToProbabilityMassFunction(1d), nameof(ProbabilityMassFunction));
+      Assert.AreEqual(0.2, d.ToHistogram(k => k, f => 1).ToPmfProbability(4, 1d), nameof(ProbabilityMassFunction));
     }
   }
 }

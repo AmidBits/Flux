@@ -1,6 +1,6 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Text
 {

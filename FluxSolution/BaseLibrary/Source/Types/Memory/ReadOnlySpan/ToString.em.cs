@@ -9,7 +9,7 @@ namespace Flux
 
       var sb = new System.Text.StringBuilder();
 
-      for (var index = 0; index < source.Length; index++)
+      for (int index = startAt, maxIndex = startAt + length; index < maxIndex; index++)
         sb.Append(source[index]?.ToString() ?? string.Empty);
 
       return sb.ToString();
