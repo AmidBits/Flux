@@ -30,11 +30,11 @@ namespace ConsoleApp
 
       var sb = "This is iñ th\u0247 2 string.".ToSequenceBuilder().ToSequenceBuilderOfRune();
       System.Console.WriteLine(sb);
-      sb.MakeNumbersFixedLength(10, (System.Text.Rune)'0');
+      sb = sb.MakeNumbersFixedLength(10, (System.Text.Rune)'0');
       System.Console.WriteLine(sb);
-      sb.InsertOrdinalIndicatorSuffix();
+      sb = sb.InsertOrdinalIndicatorSuffix();
       System.Console.WriteLine(sb);
-      sb.RemoveDiacriticalMarks();
+      sb = sb.RemoveDiacriticalMarks();
       System.Console.WriteLine(sb);
       sb.AsSpan().ReplaceDiacriticalLatinStrokes();
       System.Console.WriteLine(sb.AsReadOnlySpan().ToString(0));

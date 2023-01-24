@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethodsReadOnlySpan
   {
     /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer (null for default).</summary>
-    public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
+    public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
