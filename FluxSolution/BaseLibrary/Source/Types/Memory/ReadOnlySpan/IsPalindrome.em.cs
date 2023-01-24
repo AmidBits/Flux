@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsReadOnlySpan
   {
     /// <summary>Determines whether the sequence is a palindrome. Uses the specified comparer.</summary>
     public static bool IsPalindrome<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsReadOnlySpan
   {
     /// <summary>Indicates whether the specified part of the target is found at the specified index in the source, using the specified comparer.</summary>
     public static bool EqualsAt<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.ReadOnlySpan<T> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)

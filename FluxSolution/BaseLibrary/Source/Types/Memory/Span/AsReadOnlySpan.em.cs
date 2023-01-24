@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsSpan
   {
     /// <summary>Flux non-allocating conversion (casting) from <typeparamref name="T"/>[] to <see cref="System.ReadOnlySpan{T}"/>.</summary>
     public static System.ReadOnlySpan<T> AsReadOnlySpan<T>(this T[] source)

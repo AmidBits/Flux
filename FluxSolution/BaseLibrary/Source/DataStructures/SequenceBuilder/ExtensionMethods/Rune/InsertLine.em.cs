@@ -3,8 +3,9 @@ namespace Flux
   public static partial class ExtensionMethodsSequenceBuilder
   {
     public static SequenceBuilder<System.Text.Rune> InsertLine(this SequenceBuilder<System.Text.Rune> source, int index)
-      => source.Insert(index, System.Environment.NewLine.Select(c => (System.Text.Rune)c));
+      => source.Insert(index, System.Environment.NewLine.AsSpan().ToRunes());
+
     public static SequenceBuilder<System.Text.Rune> InsertLine(this SequenceBuilder<System.Text.Rune> source, int index, System.Text.Rune value)
-      => source.Insert(index, new SequenceBuilder<System.Text.Rune>().AppendLine(value).AsReadOnlySpan());
+      => source.InsertLine(index).Insert(index, value);
   }
 }

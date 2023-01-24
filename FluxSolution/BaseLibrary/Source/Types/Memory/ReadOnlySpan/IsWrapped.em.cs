@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsReadOnlySpan
   {
     /// <summary>Indicates whether the source is already wrapped in the specified characters. E.g. in SQL brackets, or parenthesis.</summary>
     public static bool IsWrapped<T>(this System.ReadOnlySpan<T> source, T left, T right)

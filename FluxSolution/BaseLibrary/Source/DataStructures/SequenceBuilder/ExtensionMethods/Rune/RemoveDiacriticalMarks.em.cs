@@ -25,7 +25,7 @@ namespace Flux
         }
       }
 
-      return source.Clear().Append(sb.AsReadOnlySpan());
+      return source.Clear().Append(sb);
     }
   }
 }

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsReadOnlySpan
   {
     /// <summary>Reports the last index of any of the specified targets in the source. Or -1 if none were found. Uses the specified comparer (null for default).</summary>
     public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] values)

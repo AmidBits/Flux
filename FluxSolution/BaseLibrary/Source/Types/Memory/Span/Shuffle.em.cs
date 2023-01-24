@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanEm
+  public static partial class ExtensionMethodsSpan
   {
     /// <summary>In-place shuffle (randomized) of the span. Uses the specified rng.</summary>
     public static System.Span<T> Shuffle<T>(this System.Span<T> source, System.Random rng)

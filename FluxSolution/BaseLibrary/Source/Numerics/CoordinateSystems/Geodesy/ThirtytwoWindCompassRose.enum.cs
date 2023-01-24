@@ -22,7 +22,7 @@ namespace Flux
 
         foreach (var word in words)
           if (word.StartsWith(c.ToString(), StringComparison.CurrentCultureIgnoreCase))
-            sb.Append(word.AsSpan());
+            sb.Append(word);
       }
 
       return sb.AsReadOnlySpan().ToString(0);

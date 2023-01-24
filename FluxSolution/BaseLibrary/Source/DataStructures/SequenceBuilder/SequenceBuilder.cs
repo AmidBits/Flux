@@ -1,6 +1,7 @@
 namespace Flux
 {
   public record class SequenceBuilder<T>
+    : System.Collections.Generic.IEnumerable<T>
   {
     private const int DefaultBufferSize = 32;
 
@@ -142,16 +143,19 @@ namespace Flux
 
       return this;
     }
-    /// <summary>Append the <paramref name="values"/>.</summary>
-    public SequenceBuilder<T> Append(System.ReadOnlySpan<T> values)
+    /// <summary>Append <paramref name="count"/> of <paramref name="values"/>.</summary>
+    public SequenceBuilder<T> Append(System.ReadOnlySpan<T> values, int count = 1)
     {
       m_version++;
 
       EnsureAppendSpace(values.Length);
 
-      values.CopyTo(m_buffer, m_tail);
+      while (count-- > 0)
+      {
+        values.CopyTo(m_buffer, m_tail);
 
-      m_tail += values.Length;
+        m_tail += values.Length;
+      }
 
       return this;
     }
@@ -554,24 +558,26 @@ namespace Flux
     //}
 
     /// <summary>Prepends with a <paramref name="value"/>.</summary>
-    public SequenceBuilder<T> Prepend(T value)
+    public SequenceBuilder<T> Prepend(T value, int count = 1)
     {
       m_version++;
 
       EnsurePrependSpace(1);
 
-      m_buffer[--m_head] = value;
+      while (count-- > 0)
+        m_buffer[--m_head] = value;
 
       return this;
     }
     /// <summary>Prepends with the <paramref name="values"/>.</summary>
-    public SequenceBuilder<T> Prepend(System.ReadOnlySpan<T> values)
+    public SequenceBuilder<T> Prepend(System.ReadOnlySpan<T> values, int count = 1)
     {
       m_version++;
 
       EnsurePrependSpace(values.Length);
 
-      values.CopyTo(m_buffer, m_head -= values.Length);
+      while (count-- > 0)
+        values.CopyTo(m_buffer, m_head -= values.Length);
 
       return this;
     }
@@ -634,7 +640,7 @@ namespace Flux
       var original = AsReadOnlySpan().ToArray();
 
       while (count-- > 0)
-        Append(original.AsReadOnlySpan());
+        Append(original);
 
       return this;
     }
@@ -786,6 +792,13 @@ namespace Flux
 
     //  return z;
     //}
+
+    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+    {
+      for (var index = 0; index < Length; index++)
+        yield return GetValue(index);
+    }
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
     public string ToString(int startAt) => AsReadOnlySpan().ToString(startAt);
     public string ToString(int startAt, int count) => AsReadOnlySpan().ToString(startAt, count - startAt);

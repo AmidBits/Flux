@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsSequenceBuilder
+  public static partial class ExtensionMethodsSpan
   {
     /// <summary>Convert all characters, in the specified range, to upper case. Uses the specified culture, or the current culture if null.</summary>
     public static void ToUpperCase(this System.Span<char> source, int startIndex, int length, System.Globalization.CultureInfo? culture = null)

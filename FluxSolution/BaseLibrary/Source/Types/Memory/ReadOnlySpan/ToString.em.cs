@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsReadOnlySpan
   {
     public static string ToString<T>(this System.ReadOnlySpan<T> source, int startAt, int length)
     {

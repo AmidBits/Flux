@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanEm
+  public static partial class ExtensionMethodsSpan
   {
     /// <summary>Replace (in-place) diacritical (latin) strokes which are not covered by the normalization forms in NET. Can be done in-place because the diacritical latin stroke characters (and replacements) all fit in a single char.</summary>
     public static void ReplaceDiacriticalLatinStrokes(this System.Span<char> source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsReadOnlySpan
   {
     /// <summary>Creates a new list from the specified array that is satisfying the specified predicate.</summary>
     public static System.Collections.Generic.List<TResult> ToList<TValue, TResult>(this System.ReadOnlySpan<TValue> source, System.Func<TValue, int, bool> predicate, System.Func<TValue, int, TResult> resultSelector)

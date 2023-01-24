@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsSequenceBuilder
+  public static partial class ExtensionMethodsSpan
   {
     /// <summary>Convert all runes, in the specified range, to lower case. Uses the specified culture, or the current culture if null.</summary>
     public static void ToLowerCase(this System.Span<char> source, int startIndex, int length, System.Globalization.CultureInfo? culture = null)
