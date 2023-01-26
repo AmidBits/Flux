@@ -45,15 +45,11 @@ namespace Flux
           yield return new System.Collections.Generic.KeyValuePair<TKey, TValue>(m_listOfKeys[index], m_listOfValues[index]);
       }
 
-      public int GetIndex(TKey key)
-        => m_listOfKeys.IndexOf(key);
-      public int GetIndex(TValue value)
-        => m_listOfValues.IndexOf(value);
+      public int GetIndex(TKey key) => m_listOfKeys.IndexOf(key);
+      public int GetIndex(TValue value) => m_listOfValues.IndexOf(value);
 
-      public TKey GetKey(int index)
-        => m_listOfKeys[index];
-      public TKey GetKey(TValue value)
-        => m_listOfKeys[m_listOfValues.IndexOf(value)];
+      public TKey GetKey(int index) => m_listOfKeys[index];
+      public TKey GetKey(TValue value) => m_listOfKeys[m_listOfValues.IndexOf(value)];
 
       public void Insert(int index, TKey key, TValue value)
       {
@@ -65,8 +61,7 @@ namespace Flux
       }
 
       // ICollection<>
-      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> item)
-        => m_dictionary.ContainsKey(item.Key) && System.Collections.Generic.EqualityComparer<TValue>.Default.Equals(m_dictionary[item.Key], item.Value);
+      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => m_dictionary.ContainsKey(item.Key) && System.Collections.Generic.EqualityComparer<TValue>.Default.Equals(m_dictionary[item.Key], item.Value);
 
       // IDictionary<>
       public TValue this[int index]
@@ -94,8 +89,7 @@ namespace Flux
         m_listOfKeys.Add(key);
         m_listOfValues.Add(value);
       }
-      public void Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item)
-        => Add(item.Key, item.Value);
+      public void Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => Add(item.Key, item.Value);
 
       public void Clear()
       {
@@ -104,8 +98,7 @@ namespace Flux
         m_listOfValues.Clear();
       }
 
-      public bool ContainsKey(TKey key)
-        => m_dictionary.ContainsKey(key);
+      public bool ContainsKey(TKey key) => m_dictionary.ContainsKey(key);
 
       public void CopyTo(System.Collections.Generic.KeyValuePair<TKey, TValue>[] array, int arrayIndex)
       {
@@ -113,14 +106,11 @@ namespace Flux
           array[arrayIndex++] = new System.Collections.Generic.KeyValuePair<TKey, TValue>(m_listOfKeys[i], m_listOfValues[i]);
       }
 
-      public int Count
-        => m_dictionary.Count;
+      public int Count => m_dictionary.Count;
 
-      public bool IsReadOnly
-        => false;
+      public bool IsReadOnly => false;
 
-      public System.Collections.Generic.ICollection<TKey> Keys
-        => m_listOfKeys;
+      public System.Collections.Generic.ICollection<TKey> Keys => m_listOfKeys;
 
       public bool Remove(TKey key)
       {
@@ -136,23 +126,17 @@ namespace Flux
 
         return false;
       }
-      public bool Remove(System.Collections.Generic.KeyValuePair<TKey, TValue> item)
-        => Remove(item.Key);
+      public bool Remove(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => Remove(item.Key);
 
-      public bool TryGetValue(TKey key, out TValue value)
-        => m_dictionary.TryGetValue(key, out value!);
+      public bool TryGetValue(TKey key, out TValue value) => m_dictionary.TryGetValue(key, out value!);
 
-      public System.Collections.Generic.ICollection<TValue> Values
-        => m_listOfValues;
+      public System.Collections.Generic.ICollection<TValue> Values => m_listOfValues;
 
-      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        => CreateKeyValuePairs().GetEnumerator();
-      System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>.GetEnumerator()
-        => CreateKeyValuePairs().GetEnumerator();
+      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => CreateKeyValuePairs().GetEnumerator();
+      System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>.GetEnumerator() => CreateKeyValuePairs().GetEnumerator();
       #endregion Implemented interfaces
 
-      public override string ToString()
-        => $"{GetType().Name} {{ Count = {Count} }}";
+      public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";
     }
   }
 }

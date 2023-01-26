@@ -45,6 +45,7 @@ namespace Flux.DataStructures
     }
 
     #region Implementation of IReadOnlyList<T>
+
     /// <summary>Indexer for buffered elements currently in the <see cref="IReadOnlyList{T}"/>.</summary>
     public T this[int index] => m_list[index];
 
@@ -52,36 +53,44 @@ namespace Flux.DataStructures
     public int Count => m_list.Count;
 
     /// <summary>Get an enumerator that enumerates and buffers all elements in the original sequence.</summary>
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator() => new BufferedReadOnlyListEnumerator(this);
+    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+    //=> new BufferedReadOnlyListEnumerator(this);
+    {
+      for (var index = 0; index < m_list.Count; index++)
+        if (TryGetElementAt(index, out var item))
+          yield return item;
+        else
+          yield break;
+    }
     /// <summary>Get an enumerator that enumerates and buffers all elements in the original sequence.</summary>
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+
     #endregion Implementation of IReadOnlyList<T>
 
     public override string ToString() => $"{GetType().Name} {{ Enumerator = {(m_enumerator is null ? "Closed" : "Open")}, Count = {Count} }}";
 
-    private sealed class BufferedReadOnlyListEnumerator
-      : System.Collections.Generic.IEnumerator<T>
-    {
-      private T m_current;
-      private int m_index;
-      private readonly BufferedReadOnlyList<T> m_source;
+    //private sealed class BufferedReadOnlyListEnumerator
+    //  : System.Collections.Generic.IEnumerator<T>
+    //{
+    //  private T m_current;
+    //  private int m_index;
+    //  private readonly BufferedReadOnlyList<T> m_source;
 
-      public BufferedReadOnlyListEnumerator(BufferedReadOnlyList<T> source)
-      {
-        m_current = default!;
-        m_index = -1;
-        m_source = source;
-      }
+    //  public BufferedReadOnlyListEnumerator(BufferedReadOnlyList<T> source)
+    //  {
+    //    m_current = default!;
+    //    m_index = -1;
+    //    m_source = source;
+    //  }
 
-      public T Current => m_current;
-      object? System.Collections.IEnumerator.Current => m_current;
+    //  public T Current => m_current;
+    //  object? System.Collections.IEnumerator.Current => m_current;
 
-      public bool MoveNext() => m_source.TryGetElementAt(++m_index, out m_current);
+    //  public bool MoveNext() => m_source.TryGetElementAt(++m_index, out m_current);
 
-      public void Reset() => m_index = -1;
+    //  public void Reset() => m_index = -1;
 
-      public void Dispose() // This class does not yet allocate any resources on its own.
-      { }
-    }
+    //  public void Dispose() { } // This class does not yet allocate any resources on its own.
+    //}
   }
 }

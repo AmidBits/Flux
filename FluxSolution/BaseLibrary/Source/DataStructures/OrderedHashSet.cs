@@ -18,11 +18,9 @@
       : System.Collections.ObjectModel.KeyedCollection<TItemAndKeyInOne, TItemAndKeyInOne>
       where TItemAndKeyInOne : notnull
     {
-      protected override TItemAndKeyInOne GetKeyForItem(TItemAndKeyInOne item)
-        => item;
+      protected override TItemAndKeyInOne GetKeyForItem(TItemAndKeyInOne item) => item;
 
-      public override string ToString()
-        => $"{GetType().Name} {{ Count = {Count} }}";
+      public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";
     }
   }
 }

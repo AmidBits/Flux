@@ -26,7 +26,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-
+      var rune = '\u0378';
+      var ur = rune.GetUnicodeRange();
+      System.Console.WriteLine(ur);
+      return;
 
       var sb = "This is iñ th\u0247 2 string.".ToSequenceBuilder().ToSequenceBuilderOfRune();
       System.Console.WriteLine(sb);
@@ -37,7 +40,7 @@ namespace ConsoleApp
       sb = sb.RemoveDiacriticalMarks();
       System.Console.WriteLine(sb);
       sb.AsSpan().ReplaceDiacriticalLatinStrokes();
-      System.Console.WriteLine(sb.AsReadOnlySpan().ToString(0));
+      System.Console.WriteLine(sb.ToString(0));
 
       return;
 

@@ -8,6 +8,57 @@ namespace Flux.Text
       => new Flux.Text.TextElementEnumerator(source);
   }
 
+  public ref struct RefStruct
+  {
+    public IEnumerator<int> GetEnumerator()
+    {
+      return Foo();
+
+      IEnumerator<int> Foo()
+      {
+        yield return 1;
+      }
+    }
+  }
+
+  public ref struct CharSpanEnumerator
+  {
+    private readonly System.ReadOnlySpan<char> m_characters;
+
+    public CharSpanEnumerator(System.ReadOnlySpan<char> characters) => m_characters = characters;
+
+    public CharSpanIterator GetEnumerator() => new CharSpanIterator();
+
+    public ref struct CharSpanIterator
+    {
+      private CharSpanEnumerator m_enumerator;
+      private int m_index;
+
+      public CharSpanIterator(CharSpanEnumerator enumerator)
+      {
+        m_enumerator = enumerator;
+        m_index = -1;
+      }
+
+      public bool MoveNext()
+      {
+        if (m_index < m_enumerator.m_characters.Length)
+        {
+          m_index++;
+
+          return true;
+        }
+
+        return false;
+      }
+
+      public void Reset()
+      {
+        m_index = -1;
+      }
+    }
+  }
+
   public sealed class TextElementEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<TextElementCluster>
   {

@@ -1,5 +1,16 @@
-﻿namespace Flux
+﻿using System.Collections;
+
+namespace Flux
 {
+  public static partial class ExtensionMethodsBitArray
+  {
+    public static System.Collections.Generic.IEnumerable<bool> Enumerate(this BitArray source)
+    {
+      for (var index = 0; index < source.Length; index++)
+        yield return source[index];
+    }
+  }
+
   public sealed class BitArray
     : System.Collections.Generic.IEnumerable<bool>
   {
@@ -135,61 +146,14 @@
       return bytes;
     }
 
-    public System.Collections.IEnumerator GetEnumerator()
-      => new BitArrayExEnumerator(this);
-    System.Collections.Generic.IEnumerator<bool> System.Collections.Generic.IEnumerable<bool>.GetEnumerator()
-      => new BitArrayExEnumerator(this);
+    public System.Collections.Generic.IEnumerator<bool> GetEnumerator()
+    {
+      for (var index = 0L; index < m_bitLength; index++)
+        yield return GetBit(index);
+    }
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     public override string ToString()
       => $"{GetType().Name} {{ Length = {Length} }}";
-
-    private sealed class BitArrayExEnumerator
-      : Disposable, System.ICloneable, System.Collections.Generic.IEnumerator<bool>
-    {
-      private readonly BitArray m_bitArray;
-
-      private long m_index;
-
-      private bool m_current;
-
-      internal BitArrayExEnumerator(BitArray bitArray)
-      {
-        m_bitArray = bitArray;
-
-        m_index = -1;
-      }
-
-      protected override void DisposeManaged()
-        => base.DisposeManaged();
-
-      // IClone
-      public object Clone()
-        => MemberwiseClone();
-
-      // IEnumerator
-      public object Current
-        => Current;
-      public bool MoveNext()
-      {
-        if (m_index < (m_bitArray.m_bitLength - 1))
-        {
-          m_current = m_bitArray[++m_index];
-
-          return true;
-        }
-        else
-        {
-          m_index = m_bitArray.m_bitLength;
-
-          return false;
-        }
-      }
-      public void Reset()
-        => m_index = -1;
-
-      // IEnumerator, IEnumerator<bool>
-      bool System.Collections.Generic.IEnumerator<bool>.Current
-        => m_current;
-    }
   }
 }

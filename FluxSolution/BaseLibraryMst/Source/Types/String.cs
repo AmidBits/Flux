@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Types
 {
@@ -15,8 +14,8 @@ namespace Types
     [TestMethod]
     public void IsBalanced()
     {
-      Assert.AreEqual(true, s1.IsBalanced('<', '>'));
-      Assert.AreEqual(false, s2.IsBalanced('<', '>'));
+      Assert.AreEqual(true, s1.AsSpan().IsBalanced('<', '>'));
+      Assert.AreEqual(false, s2.AsSpan().IsBalanced('<', '>'));
     }
 
     [TestMethod]

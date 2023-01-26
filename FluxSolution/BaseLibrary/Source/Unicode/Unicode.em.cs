@@ -23,7 +23,7 @@ namespace Flux
             yield return new System.Text.Rune(i);
     }
 
-    /// <summary>Translates a System.Globalization.UnicodeCategory enum value into a MajorLabel enum value.</summary>
+    /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajor"/> enum value.</summary>
     /// <example>var allCharactersByCategoryMajorLabel = Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
     public static UnicodeCategoryMajor ToUnicodeCategoryMajor(this System.Globalization.UnicodeCategory unicodeCategory)
       => unicodeCategory switch
@@ -38,6 +38,7 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unicodeCategory)),
       };
 
+    /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajorMinor"/> enum value.</summary>
     public static UnicodeCategoryMajorMinor ToUnicodeCategoryMajorMinor(this System.Globalization.UnicodeCategory unicodeCategory)
       => (UnicodeCategoryMajorMinor)unicodeCategory;
 
@@ -61,7 +62,7 @@ namespace Flux
       return false;
     }
 
-    /// <summary>Translates a System.Globalization.UnicodeCategory enum value into a MajorLabel enum value.</summary>
+    /// <summary>Translates the <see cref="UnicodeCategoryMajorMinor"/> enum value (<paramref name="majorMinor"/>) into a <see cref="UnicodeCategoryMajor"/> enum value.</summary>
     /// <example>var allCharactersByCategoryMajorLabel = Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
     public static UnicodeCategoryMajor ToUnicodeCategoryMajor(this UnicodeCategoryMajorMinor majorMinor)
       => ((System.Globalization.UnicodeCategory)majorMinor).ToUnicodeCategoryMajor();
@@ -72,7 +73,7 @@ namespace Flux
 
     /// <summary>Parses two characters as representing Unicode category major and minor.</summary>
     public static UnicodeCategoryMajorMinor ParseUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor)
-      => ((UnicodeCategoryMajorMinor)System.Enum.Parse(typeof(UnicodeCategoryMajorMinor), $"{unicodeCategoryMajor}{unicodeCategoryMinor}"));
+      => ((UnicodeCategoryMajorMinor)System.Enum.Parse(typeof(UnicodeCategoryMajorMinor), $"{unicodeCategoryMajor}{unicodeCategoryMinor}", true));
 
     /// <summary>Tries to parse the beginning of a string as Unicode category major and minor.</summary>
     public static bool TryParseUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor, out UnicodeCategoryMajorMinor result)
@@ -88,7 +89,7 @@ namespace Flux
       return false;
     }
 
-    /// <summary>Converts a MajorMinorCode enum to a UnicodeCategory enum.</summary>
+    /// <summary>Translates a <see cref="UnicodeCategoryMajorMinor"/> enum value (<paramref name="unicodeCategoryMajorMinor"/>) into a <see cref="System.Globalization.UnicodeCategory"/> enum value.</summary>
     public static System.Globalization.UnicodeCategory ToUnicodeCategory(this UnicodeCategoryMajorMinor unicodeCategoryMajorMinor)
       => (System.Globalization.UnicodeCategory)unicodeCategoryMajorMinor;
 
@@ -96,15 +97,27 @@ namespace Flux
 
     #region UnicodeRange
 
-    public static System.Collections.Generic.List<System.Text.Rune> GetRunes(this System.Text.Unicode.UnicodeRange unicodeRange)
+    /// <summary>Creates a new sequence with all runes in the <paramref name="unicodeRange"/>.</summary>
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetRunes(this System.Text.Unicode.UnicodeRange unicodeRange)
     {
-      var collection = new System.Collections.Generic.List<System.Text.Rune>(unicodeRange.Length);
-
       for (int codePoint = unicodeRange.FirstCodePoint, length = unicodeRange.Length; length > 0; codePoint++, length--)
         if (System.Text.Rune.IsValid(codePoint))
-          collection.Add(new System.Text.Rune(codePoint));
+          yield return new System.Text.Rune(codePoint);
+    }
 
-      return collection;
+    /// <summary>Locates the Unicode range and block name of the <paramref name="character"/>.</summary>
+    public static (string name, System.Text.Unicode.UnicodeRange range) GetUnicodeRange(this char character)
+      => GetUnicodeRange((System.Text.Rune)character);
+
+    /// <summary>Locates the Unicode range and block name of the <paramref name="rune"/>.</summary>
+    public static (string name, System.Text.Unicode.UnicodeRange range) GetUnicodeRange(this System.Text.Rune rune)
+    {
+      foreach (var pi in Flux.Reflection.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges)).Where(pi => pi.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && pi.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
+        if (pi.GetValue(null, null) is System.Text.Unicode.UnicodeRange ur)
+          if (rune.Value >= ur.FirstCodePoint && rune.Value < ur.FirstCodePoint + ur.Length)
+            return (pi.Name, ur);
+
+      return (nameof(System.Text.Unicode.UnicodeRanges.None), System.Text.Unicode.UnicodeRanges.None);
     }
 
     #endregion // UnicodeRange
@@ -128,6 +141,10 @@ namespace Flux
       result = default!;
       return false;
     }
+
+    /// <summary>Convert the character to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</summary>
+    public static string ToUnicodeUnotationString(this char character)
+      => ToUnicodeUnotationString((System.Text.Rune)character);
 
     /// <summary>Convert the Unicode codepoint to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</summary>
     public static string ToUnicodeUnotationString(this System.Text.Rune rune)
@@ -154,6 +171,10 @@ namespace Flux
       result = default!;
       return false;
     }
+
+    /// <summary>Convert the character to a string literal format, i.e. "\uhhhh" (four hex characters, for UTF-16 size), "\U00HHHHHH" (eight hex characters, for UTF-32 size), or "\x[H][H][H][H].</summary>
+    public static string ToUnicodeCsEscapeSequenceString(this char character, Unicode.CsEscapeSequenceFormat format)
+      => ToUnicodeCsEscapeSequenceString((System.Text.Rune)character, format);
 
     /// <summary>Convert the Unicode codepoint to a string literal format, i.e. "\uhhhh" (four hex characters, for UTF-16 size), "\U00HHHHHH" (eight hex characters, for UTF-32 size), or "\x[H][H][H][H].</summary>
     public static string ToUnicodeCsEscapeSequenceString(this System.Text.Rune rune, Unicode.CsEscapeSequenceFormat format)

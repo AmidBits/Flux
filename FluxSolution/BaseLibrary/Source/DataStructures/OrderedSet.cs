@@ -44,8 +44,7 @@
         set => m_values[index] = value;
       }
 
-      public int GetIndex(T value)
-        => m_dictionary[value];
+      public int GetIndex(T value) => m_dictionary[value];
 
       public void Insert(int index, T value)
       {
@@ -77,11 +76,9 @@
       }
 
       // ISet<>
-      public int Count
-        => m_dictionary.Count;
+      public int Count => m_dictionary.Count;
 
-      public bool IsReadOnly
-        => m_dictionary.IsReadOnly;
+      public bool IsReadOnly => m_dictionary.IsReadOnly;
 
       public bool Add(T item)
       {
@@ -93,8 +90,7 @@
         m_dictionary.Add(item, node);
         return true;
       }
-      void System.Collections.Generic.ICollection<T>.Add(T item)
-        => Add(item);
+      void System.Collections.Generic.ICollection<T>.Add(T item) => Add(item);
       public int AddRange(System.Collections.Generic.IEnumerable<T> collection)
       {
         var count = 0;
@@ -112,15 +108,12 @@
         m_dictionary.Clear();
       }
 
-      public bool Contains(T item)
-        => m_dictionary.ContainsKey(item);
+      public bool Contains(T item) => m_dictionary.ContainsKey(item);
 
-      public void CopyTo(T[] array, int arrayIndex)
-          => m_values.CopyTo(array, arrayIndex);
+      public void CopyTo(T[] array, int arrayIndex) => m_values.CopyTo(array, arrayIndex);
 
       /// <summary>Removes all elements in the specified collection from the current set.</summary>
-      public void ExceptWith(System.Collections.Generic.IEnumerable<T> other)
-        => RemoveRange(other);
+      public void ExceptWith(System.Collections.Generic.IEnumerable<T> other) => RemoveRange(other);
 
       public bool Remove(T item)
       {
@@ -157,12 +150,10 @@
 
       public bool IsSubsetOf(System.Collections.Generic.IEnumerable<T> other)
         => this.SetCounts(other, false) is var (unfoundCount, uniqueCount) && unfoundCount >= 0 && uniqueCount == Count;
-      public bool IsSupersetOf(System.Collections.Generic.IEnumerable<T> other)
-        => this.ContainsAll(other);
+      public bool IsSupersetOf(System.Collections.Generic.IEnumerable<T> other) => this.ContainsAll(other);
 
       /// <summary>Determines whether the current set overlaps with the specified collection.</summary>
-      public bool Overlaps(System.Collections.Generic.IEnumerable<T> other)
-        => this.ContainsAny(other);
+      public bool Overlaps(System.Collections.Generic.IEnumerable<T> other) => this.ContainsAny(other);
 
       public bool SetEquals(System.Collections.Generic.IEnumerable<T> other)
         => this.SetCounts(other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == Count;
@@ -182,17 +173,13 @@
       }
 
       /// <summary>Modifies the current set so that it contains all elements that are present in the current set, in the specified collection, or in both.</summary>
-      public void UnionWith(System.Collections.Generic.IEnumerable<T> other)
-        => AddRange(other);
+      public void UnionWith(System.Collections.Generic.IEnumerable<T> other) => AddRange(other);
 
-      public System.Collections.Generic.IEnumerator<T> GetEnumerator()
-        => m_values.GetEnumerator();
-      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        => GetEnumerator();
+      public System.Collections.Generic.IEnumerator<T> GetEnumerator() => m_values.GetEnumerator();
+      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
       #endregion Implemented interfaces
 
-      public override string ToString()
-        => $"{GetType().Name} {{ Count = {Count} }}";
+      public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";
     }
   }
 }
