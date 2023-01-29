@@ -1,9 +1,8 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsCultureInfo
   {
-    /// <summary>Indicates whether the word in the string can be considered of slavo/germanic origin.</summary>
-    public static bool IsSlavoGermanic(this System.Globalization.CultureInfo source, string text)
-      => text.AsSpan().IndexOfAny(new Flux.StringComparerEx(source, true), @"w", @"k", @"cz", @"witz") > -1;
+    /// <summary>Indicates whether the content of the string is possibly of slavo/germanic origin.</summary>
+    public static bool IsSlavoGermanic(this System.Globalization.CultureInfo source, string text) => text.AsSpan().IndexOfAny(new Flux.StringComparerEx(source, true), "w", "k", "cz", "witz") > -1;
   }
 }

@@ -152,7 +152,7 @@ namespace Text
     [TestMethod]
     public void IsPalindrome()
     {
-      var palindrome = @"Poor Dan is in a droop".ToStringBuilder().RemoveAll(char.IsWhiteSpace).ToLowerCaseInvariant();
+      var palindrome = @"Poor Dan is in a droop".ToStringBuilder().RemoveAll(char.IsWhiteSpace).ToLowerCase();
       var expected = true;
       var actual = palindrome.IsPalindrome();
       Assert.AreEqual(expected, actual);
@@ -309,7 +309,7 @@ namespace Text
     public void ToLowerCase()
     {
       var expected = @"robert hugo";
-      var actual = new System.Text.StringBuilder(@"Robert Hugo").ToLowerCaseInvariant().ToString();
+      var actual = new System.Text.StringBuilder(@"Robert Hugo").ToLowerCase().ToString();
       Assert.AreEqual(expected, actual);
     }
 
@@ -317,7 +317,7 @@ namespace Text
     public void ToUpperCase()
     {
       var expected = @"ROBERT HUGO";
-      var actual = new System.Text.StringBuilder(@"Robert Hugo").ToUpperCaseInvariant().ToString();
+      var actual = new System.Text.StringBuilder(@"Robert Hugo").ToUpperCase().ToString();
       Assert.AreEqual(expected, actual);
     }
   }

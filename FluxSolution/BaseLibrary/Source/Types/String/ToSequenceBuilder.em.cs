@@ -4,6 +4,8 @@ namespace Flux
   {
     public static SequenceBuilder<char> ToSequenceBuilder(this string source)
       => new(source.AsSpan());
+    public static SequenceBuilder<char> ToSequenceBuilder(this string source, int startIndex)
+      => new(source.AsSpan().Slice(startIndex));
     public static SequenceBuilder<char> ToSequenceBuilder(this string source, int startIndex, int length)
       => new(source.AsSpan().Slice(startIndex, length));
   }

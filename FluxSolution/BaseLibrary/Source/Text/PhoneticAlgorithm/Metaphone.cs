@@ -20,7 +20,7 @@
 		{
 			_output = new System.Text.StringBuilder();
 
-			__text = string.Concat(expression.ToString().RemoveDiacriticalMarks(c => (char)((System.Text.Rune)c).ReplaceDiacriticalLatinStroke().Value).Where(c => char.IsLetter(c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
+			__text = string.Concat(expression.ToString().RemoveUnicodeMarks().ReplaceUnicodeLatinStrokes().ToUpperCase(System.Globalization.CultureInfo.CurrentCulture).ToString().Where(c => char.IsLetter(c)));
 			__pos = 0;
 
 			// Special handling of some string prefixes: PN, KN, GN, AE, WR, WH and X

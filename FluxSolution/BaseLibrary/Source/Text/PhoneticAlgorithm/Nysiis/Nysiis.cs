@@ -4,6 +4,8 @@
   public sealed class Nysiis
     : IPhoneticAlgorithmEncoder
   {
+    public System.Globalization.CultureInfo Culture { get; set; } = System.Globalization.CultureInfo.InvariantCulture;
+
     public int MaxCodeLength { get; set; } = 8;
 
     //private static System.Text.StringBuilder ReplaceEqualAt(System.Text.StringBuilder text, int startAt, System.ReadOnlySpan<char> key, System.ReadOnlySpan<char> value)
@@ -42,9 +44,9 @@
     }
 
     /// <summary>Ensure valid characters for nysiis code generation.</summary>
-    public static string GetValidCharacters(string text)
+    public string GetValidCharacters(string text)
     {
-      return string.Concat(text.RemoveDiacriticalMarks(c => (char)((System.Text.Rune)c).ReplaceDiacriticalLatinStroke().Value).Where(c => Flux.ExtensionMethods.IsEnglishLetter((System.Text.Rune)c)).Select(c => char.ToUpper(c, System.Globalization.CultureInfo.CurrentCulture)));
+      return text.RemoveUnicodeMarks().ReplaceUnicodeLatinStrokes().RemoveNonLanguageLetters(Culture).ToUpperCase(Culture).ToString();
     }
   }
 }

@@ -18,10 +18,10 @@ namespace Flux.Text.PhoneticAlgorithm
 
         if (index > 0)
         {
-          if (Flux.ExtensionMethods.IsEnglishVowel(currentRune, false))
+          if (!currentRune.IsLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(currentRune))
             continue;
 
-          if (Flux.ExtensionMethods.IsEnglishVowel(currentRune, true) && currentRune == previousRune)
+          if (System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(currentRune) && currentRune == previousRune)
             continue;
         }
 
