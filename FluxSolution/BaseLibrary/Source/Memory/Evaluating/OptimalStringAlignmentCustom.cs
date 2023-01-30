@@ -1,8 +1,10 @@
 namespace Flux.Metrical
 {
-  /// <summary>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</summary>
-  /// <seealso cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
-  /// <seealso cref="https://en.wikipedia.org/wiki/Edit_distance"/>
+  /// <summary>
+  /// <para>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</para>
+  /// <para><seealso href="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/></para>
+  /// <para><seealso href="https://en.wikipedia.org/wiki/Edit_distance"/></para>
+  /// </summary>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class OptimalStringAlignmentCustom<T>
     : IEditDistanceCustomEquatable<T>, IEditDistanceOptimizable<T>
@@ -56,7 +58,6 @@ namespace Flux.Metrical
 
       return ldg;
     }
-
 
     public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {

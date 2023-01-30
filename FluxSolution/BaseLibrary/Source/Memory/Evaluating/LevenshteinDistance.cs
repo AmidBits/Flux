@@ -1,7 +1,9 @@
 namespace Flux.Metrical
 {
-  /// <summary>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</summary>
-  /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
+  /// <summary>
+  /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
+  /// </summary>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class LevenshteinDistance<T>
     : IEditDistanceDynamicProgrammable<T>, IEditDistanceEquatable<T>, IEditDistanceOptimizable<T>, ISimpleMatchingCoefficient<T>, ISimpleMatchingDistance<T>
@@ -14,7 +16,6 @@ namespace Flux.Metrical
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-
     public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var sourceLength = source.Length;
@@ -63,7 +64,6 @@ namespace Flux.Metrical
 
     //  return ldg;
     //}
-
 
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
@@ -155,10 +155,8 @@ namespace Flux.Metrical
       #endregion Another optimized version with one vector and temp variables this time, not yet tested!
     }
 
-
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1.0 - GetSimpleMatchingDistance(source, target);
-
 
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetEditDistance(source, target) / (double)System.Math.Max(source.Length, target.Length);

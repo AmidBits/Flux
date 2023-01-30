@@ -17,7 +17,6 @@ namespace Flux.Metrical
     public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
     /// <summary></summary>
-    
     public int[,] GetDpMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       var lcsg = new int[source.Length + 1, target.Length + 1];
@@ -35,7 +34,7 @@ namespace Flux.Metrical
     }
 
     /// <summary>Returns the items comprising the longest sub-sequence.</summary>
-    
+
     public System.Collections.Generic.IList<T> GetSubsequence(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix)
     {
       matrix = GetDpMatrix(source, target);
@@ -63,11 +62,9 @@ namespace Flux.Metrical
       return lcs;
     }
 
-    
     public int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => source.Length + target.Length - 2 * GetLengthMetric(source, target);
 
-    
     public int GetLengthMetric(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
       ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var equalAtStart, out var equalAtEnd);
@@ -86,11 +83,9 @@ namespace Flux.Metrical
       return v0[0] + equalAtStart + equalAtEnd;
     }
 
-    
     public double GetSimpleMatchingCoefficient(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => (double)GetLengthMetric(source, target) / (double)System.Math.Max(source.Length, target.Length);
 
-    
     public double GetSimpleMatchingDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
       => 1.0 - GetSimpleMatchingCoefficient(source, target);
   }

@@ -1,7 +1,9 @@
 namespace Flux.Metrical
 {
-  /// <summary>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</summary>
-  /// <see cref = "https://en.wikipedia.org/wiki/Levenshtein_distance" />
+  /// <summary>
+  /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
+  /// </summary>
   /// <remarks>Implemented based on the Wiki article.</remarks>
   public sealed class LevenshteinDistanceCustom<T>
     : IEditDistanceCustomEquatable<T>, IEditDistanceOptimizable<T>
@@ -43,7 +45,6 @@ namespace Flux.Metrical
 
       return ldg;
     }
-
 
     public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {

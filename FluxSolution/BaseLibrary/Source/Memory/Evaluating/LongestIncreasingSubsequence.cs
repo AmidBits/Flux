@@ -38,7 +38,6 @@
 
       public System.Collections.Generic.IComparer<T> Comparer { get; private set; }
 
-
       public int[,] GetMatrix(System.ReadOnlySpan<T> source, out int length)
       {
         length = 0; // Length is returned in the matrix[0, 0].
@@ -74,7 +73,6 @@
         return matrix;
       }
 
-
       public T[] GetSubsequence(System.ReadOnlySpan<T> source, out int[,] matrix)
       {
         matrix = GetMatrix(source, out var length);
@@ -84,7 +82,6 @@
           result[i] = source[k];
         return result;
       }
-
 
       public int GetLengthMeasure(System.ReadOnlySpan<T> source)
       {

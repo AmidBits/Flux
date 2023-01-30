@@ -13,5 +13,8 @@ namespace Flux
     /// <returns>A metric that represents the edit distance of equality between two sets.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Edit_distance"/>
     int GetEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target);
+
+    double GetDerivedSMC(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target) => 1d - GetDerivedSMD(source, target);
+    double GetDerivedSMD(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target) => (double)GetEditDistance(source, target) / (double)int.Max(source.Length, target.Length);
   }
 }

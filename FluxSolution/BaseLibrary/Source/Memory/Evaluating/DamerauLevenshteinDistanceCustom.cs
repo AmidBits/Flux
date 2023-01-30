@@ -1,10 +1,11 @@
 namespace Flux.Metrical
 {
-  /// <summary>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</summary>
-  /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary.</remarks>
-  /// <see cref="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/>
-  /// <seealso cref="https://en.wikipedia.org/wiki/Triangle_inequality"/>
-  /// <remarks>Implemented based on the Wiki article.</remarks>
+  /// <summary>
+  /// <para>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/></para>
+  /// <para><seealso href="https://en.wikipedia.org/wiki/Triangle_inequality"/></para>
+  /// </summary>
+  /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
   public sealed class DamerauLevenshteinDistanceCustom<T>
     : IEditDistanceCustomEquatable<T>, IEditDistanceOptimizable<T>
     where T : notnull
@@ -87,7 +88,6 @@ namespace Flux.Metrical
 
       return ldg;
     }
-
 
     public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
