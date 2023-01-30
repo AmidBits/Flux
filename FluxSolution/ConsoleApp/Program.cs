@@ -10,7 +10,6 @@ using Flux;
 using Flux.ApproximateEquality;
 using Flux.Geometry;
 using Flux.Interpolation;
-using Flux.Sorting;
 
 // C# Interactive commands:
 // #r "System.Runtime"

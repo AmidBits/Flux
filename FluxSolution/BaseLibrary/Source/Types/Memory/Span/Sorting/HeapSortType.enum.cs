@@ -1,4 +1,4 @@
-namespace Flux.Sorting
+namespace Flux
 {
   public enum HeapSortType
   {
