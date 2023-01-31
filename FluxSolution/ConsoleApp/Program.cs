@@ -25,38 +25,6 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var s1 = "GCATGCG".AsSpan();
-      var s2 = "GATTACA".AsSpan();
-
-      s1.Leng
-
-      var str = "This is iñ thɇ 2 string.";
-      var ros = str.AsSpan();
-      var spn = ros.AsSpan();
-
-      spn.ReplaceUnicodeLatinStrokes();
-
-
-      var rune = '\u0378';
-      var ur = rune.GetUnicodeRange();
-      System.Console.WriteLine(ur);
-      return;
-
-      var sb = "This is iñ th\u0247 2 string.".ToSequenceBuilder().ToSequenceBuilderOfRune();
-      System.Console.WriteLine(sb);
-      sb = sb.MakeNumbersFixedLength(10, (System.Text.Rune)'0');
-      System.Console.WriteLine(sb);
-      sb = sb.InsertOrdinalIndicatorSuffix();
-      System.Console.WriteLine(sb);
-      //sb = sb.RemoveUnicodeMarks();
-      System.Console.WriteLine(sb);
-      sb.AsSpan().ReplaceUnicodeLatinStrokes();
-      System.Console.WriteLine(sb.ToString(0));
-
-      return;
-
-
-
       // Compute quantiles:
       {
         var aav = new int[][] { new int[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 }, new int[] { 3, 6, 7, 8, 8, 9, 10, 13, 15, 16, 20 } };

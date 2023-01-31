@@ -1,3 +1,6 @@
+
+// This is all questionable and more to show the Enumerator class than useful. String.Split and RegEx.Split is more useful, IMO.
+
 namespace Flux
 {
   public static partial class ExtensionMethods
@@ -36,7 +39,7 @@ namespace Flux
       if (m_span.Length == 0) // Span is empty.
         return false;
 
-      if (m_span.IndexOf(m_separator, System.Collections.Generic.EqualityComparer<T>.Default) is var index && index > -1) // Separator found.
+      if (m_span.IndexOf(m_separator) is var index && index > -1) // Separator found.
       {
         Current = new SplitEntry<T>(m_span[..index], m_span.Slice(index, m_separator.Length));
         m_span = m_span[(index + m_separator.Length)..];
