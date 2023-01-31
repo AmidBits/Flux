@@ -1,11 +1,13 @@
-namespace Flux.Metrical
+namespace Flux
 {
-  /// <summary>In computer science, the maximum sum subarray problem, also known as the maximum segment sum problem, is the task of finding a contiguous subarray with the largest sum, within a given one-dimensional array of numbers.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Maximum_subarray_problem"/>
-  public static class MaximumSumSubarray
+  public static partial class ExtensionMethodsReadOnlySpan
   {
-    /// <summary>Find the maximum sum subarray in <paramref name="source"/>.</summary>
-    public static TValue Find<TValue>(System.ReadOnlySpan<TValue> source, out int startIndex, out int count)
+    /// <summary>
+    /// <para>Find the maximum sum subarray in <paramref name="source"/>, at <paramref name="startIndex"/> and <paramref name="count"/> values.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Maximum_subarray_problem"/>
+    /// </summary>
+    /// <remarks>In computer science, the maximum sum subarray problem, also known as the maximum segment sum problem, is the task of finding a contiguous subarray with the largest sum, within a given one-dimensional array of numbers.</remarks>
+    public static TValue MaximumSumSubarray<TValue>(this System.ReadOnlySpan<TValue> source, out int startIndex, out int count)
       where TValue : System.Numerics.INumber<TValue>
     {
       var bestSum = -TValue.One;

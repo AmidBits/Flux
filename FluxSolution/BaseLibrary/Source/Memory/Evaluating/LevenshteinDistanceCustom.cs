@@ -1,139 +1,83 @@
-namespace Flux.Metrical
-{
-  /// <summary>
-  /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
-  /// </summary>
-  /// <remarks>Implemented based on the Wiki article.</remarks>
-  public sealed class LevenshteinDistanceCustom<T>
-    : IEditDistanceCustomEquatable<T>, IEditDistanceOptimizable<T>
-  {
-    public double CostOfDeletion { get; set; } = 1;
-    public double CostOfInsertion { get; set; } = 1;
-    public double CostOfSubstitution { get; set; } = 1;
+//namespace Flux.Metrical
+//{
+//  /// <summary>
+//  /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
+//  /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
+//  /// </summary>
+//  /// <remarks>Implemented based on the Wiki article.</remarks>
+//  public sealed class LevenshteinDistanceCustom<T>
+//    : IEditDistanceCustomEquatable<T>, IEditDistanceOptimizable<T>
+//  {
+//    public double CostOfDeletion { get; set; } = 1;
+//    public double CostOfInsertion { get; set; } = 1;
+//    public double CostOfSubstitution { get; set; } = 1;
 
-    public LevenshteinDistanceCustom(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
-    public LevenshteinDistanceCustom()
-      => EqualityComparer = System.Collections.Generic.EqualityComparer<T>.Default;
+//    public LevenshteinDistanceCustom(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+//      => EqualityComparer = equalityComparer ?? throw new System.ArgumentNullException(nameof(equalityComparer));
+//    public LevenshteinDistanceCustom()
+//      => EqualityComparer = System.Collections.Generic.EqualityComparer<T>.Default;
 
-    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
+//    public System.Collections.Generic.IEqualityComparer<T> EqualityComparer { get; }
 
-    /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
+//    /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
 
-    public double[,] GetCustomMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-    {
-      var sourceLength = source.Length;
-      var targetLength = target.Length;
+//    public double[,] GetCustomMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+//    {
+//      var sourceLength = source.Length;
+//      var targetLength = target.Length;
 
-      var ldg = new double[sourceLength + 1, targetLength + 1];
+//      var ldg = new double[sourceLength + 1, targetLength + 1];
 
-      for (var si = 1; si <= sourceLength; si++)
-        ldg[si, 0] = si * CostOfInsertion;
-      for (var ti = 1; ti <= targetLength; ti++)
-        ldg[0, ti] = ti * CostOfInsertion;
+//      for (var si = 1; si <= sourceLength; si++)
+//        ldg[si, 0] = si * CostOfInsertion;
+//      for (var ti = 1; ti <= targetLength; ti++)
+//        ldg[0, ti] = ti * CostOfInsertion;
 
-      for (var si = 1; si <= sourceLength; si++)
-        for (var ti = 1; ti <= targetLength; ti++)
-          ldg[si, ti] = double.Min(
-            ldg[si - 1, ti] + CostOfDeletion,
-            double.Min(
-              ldg[si, ti - 1] + CostOfInsertion,
-              EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + CostOfSubstitution
-            )
-          );
+//      for (var si = 1; si <= sourceLength; si++)
+//        for (var ti = 1; ti <= targetLength; ti++)
+//          ldg[si, ti] = double.Min(
+//            ldg[si - 1, ti] + CostOfDeletion,
+//            double.Min(
+//              ldg[si, ti - 1] + CostOfInsertion,
+//              EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + CostOfSubstitution
+//            )
+//          );
 
-      return ldg;
-    }
+//      return ldg;
+//    }
 
-    public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
-    {
-      ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
+//    public double GetCustomEditDistance(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
+//    {
+//      ((IEditDistanceOptimizable<T>)this).OptimizeEnds(source, target, out source, out target, out var sourceCount, out var targetCount, out var _, out var _);
 
-      if (sourceCount == 0) return targetCount;
-      else if (targetCount == 0) return sourceCount;
+//      if (sourceCount == 0) return targetCount;
+//      else if (targetCount == 0) return sourceCount;
 
-      var v1 = new double[targetCount + 1]; // Row of costs, one row back (previous row).
-      var v0 = new double[targetCount + 1]; // Row of costs, current row.
+//      var v1 = new double[targetCount + 1]; // Row of costs, one row back (previous row).
+//      var v0 = new double[targetCount + 1]; // Row of costs, current row.
 
-      for (var j = 0; j <= targetCount; j++)
-        v0[j] = j * CostOfInsertion; // Initialize the 'previous' (swapped to 'v1' in loop) row.
+//      for (var j = 0; j <= targetCount; j++)
+//        v0[j] = j * CostOfInsertion; // Initialize the 'previous' (swapped to 'v1' in loop) row.
 
-      for (var i = 0; i < sourceCount; i++)
-      {
-        (v0, v1) = (v1, v0);
+//      for (var i = 0; i < sourceCount; i++)
+//      {
+//        (v0, v1) = (v1, v0);
 
-        v0[0] = i + CostOfDeletion; // The first element is delete (i + 1) chars from source to match empty target.
+//        v0[0] = i + CostOfDeletion; // The first element is delete (i + 1) chars from source to match empty target.
 
-        for (var j = 0; j < targetCount; j++)
-        {
-          v0[j + 1] = double.Min(
-            v1[j + 1] + CostOfDeletion, // Deletion.
-            double.Min(
-              v0[j] + CostOfInsertion, // Insertion.
-              EqualityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + CostOfSubstitution // Substitution.
-            )
-          );
-        }
-      }
+//        for (var j = 0; j < targetCount; j++)
+//        {
+//          v0[j + 1] = double.Min(
+//            v1[j + 1] + CostOfDeletion, // Deletion.
+//            double.Min(
+//              v0[j] + CostOfInsertion, // Insertion.
+//              EqualityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + CostOfSubstitution // Substitution.
+//            )
+//          );
+//        }
+//      }
 
-      return v0[targetCount];
-
-      #region Optimized version with only one vector and variables for prior costs, not yet tested!
-      //var v = new int[target.Length]; // Current row of costs.
-
-      //for (var ti = 0; ti < target.Length; ti++) 
-      //  v[ti] = ti + 1; // Initialize v1 (the previous row of costs) to an edit distance for an empty source, i.e. the the number of characters to delete from target.
-
-      //var current = 0;
-
-      //for (var si = 0; si < source.Length; si++)
-      //{
-      //  current = si;
-
-      //  for (int ti = 0, left = si; ti < target.Length; ti++)
-      //  {
-      //    var above = current;
-      //    current = left; // cost on diagonal (substitution)
-      //    left = v[ti];
-
-      //    if (!EqualityComparer.Equals(source[si], target[ti]))
-      //    {
-      //      current = Maths.Min(above + 1, left + 1, current + 1);
-      //    }
-
-      //    v[ti] = current;
-      //  }
-      //}
-
-      //return v[target.Length - 1];
-      #endregion Optimized version with only one vector and variables for prior costs, not yet tested!
-
-      #region Another optimized version with one vector and temp variables this time, not yet tested!
-      //var v = new int[target.Length + 1]; // Current row of costs.
-
-      //for (var ti = 0; ti < target.Length; ti++)
-      //  v[ti] = ti;
-
-      //for (var si = 0; si < source.Length; si++)
-      //{
-      //  v[0] = si; // initialize with zero cost
-
-      //  for (int ti = 0, lastDiagonal = si; ti < target.Length; ti++)
-      //  {
-      //    var substitute = lastDiagonal + (EqualityComparer.Equals(source[si], target[ti]) ? 0 : 1); // last diagonal cost + possible inequality cost
-
-      //    lastDiagonal = v[ti + 1]; // remember the cost of the last diagonal stripe
-
-      //    var insert = v[ti] + 1;
-      //    var delete = lastDiagonal + 1; // reuse the recently cached last diagonal in order to reduce use of indexer
-
-      //    v[ti + 1] = Maths.Min(substitute, insert, delete);
-      //  }
-      //}
-
-      //return v[target.Length];
-      #endregion Another optimized version with one vector and temp variables this time, not yet tested!
-    }
-  }
-}
+//      return v0[targetCount];
+//    }
+//  }
+//}

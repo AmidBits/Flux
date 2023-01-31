@@ -25,6 +25,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var s1 = "GCATGCG".AsSpan();
+      var s2 = "GATTACA".AsSpan();
+
+      s1.Leng
+
       var str = "This is iñ thɇ 2 string.";
       var ros = str.AsSpan();
       var spn = ros.AsSpan();

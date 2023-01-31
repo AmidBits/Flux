@@ -1,7 +1,7 @@
+using System;
+using Flux;
 using Flux.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
-using Flux;
 
 namespace Text
 {
@@ -19,7 +19,7 @@ namespace Text
     public void DamerauLevenstein_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>().GetEditDistance(source, target);
+      var actual = source.AsSpan().GetDamerauLevenshteinDistanceMetric(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -27,7 +27,7 @@ namespace Text
     public void DamerauLevenstein_IgnoreCase()
     {
       var expected = 1;
-      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>(comparerIgnoreCase).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetDamerauLevenshteinDistanceMetric(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -35,7 +35,7 @@ namespace Text
     public void DamerauLevenstein_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>(comparerIgnoreNonSpace).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetDamerauLevenshteinDistanceMetric(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -43,7 +43,7 @@ namespace Text
     public void DamerauLevenstein_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.DamerauLevenshteinDistance<char>(comparerNone).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetDamerauLevenshteinDistanceMetric(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -51,7 +51,7 @@ namespace Text
     public void HammingDistance_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.HammingDistance<char>(comparerNone).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetHammingEditDistance(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -59,7 +59,7 @@ namespace Text
     public void HammingDistance_IgnoreCase()
     {
       var expected = 1;
-      var actual = new Flux.Metrical.HammingDistance<char>(comparerIgnoreCase).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetHammingEditDistance(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -67,7 +67,7 @@ namespace Text
     public void HammingDistance_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = new Flux.Metrical.HammingDistance<char>(comparerIgnoreNonSpace).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetHammingEditDistance(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -75,7 +75,7 @@ namespace Text
     public void HammingDistance_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.HammingDistance<char>(comparerNone).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetHammingEditDistance(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -83,7 +83,7 @@ namespace Text
     public void JaroWinklerSimilarity_Default()
     {
       var expected = 0.7999999999999999;
-      var actual = new Flux.Metrical.JaroWinklerDistance<char>().GetNormalizedSimilarity(source, target);
+      var actual = source.AsSpan().GetJaroWinklerSimilarity(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -91,7 +91,7 @@ namespace Text
     public void JaroWinklerSimilarity_IgnoreCase()
     {
       var expected = 0.9466666666666665;
-      var actual = new Flux.Metrical.JaroWinklerDistance<char>(comparerIgnoreCase).GetNormalizedSimilarity(source, target);
+      var actual = source.AsSpan().GetJaroWinklerSimilarity(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -99,7 +99,7 @@ namespace Text
     public void JaroWinklerSimilarity_IgnoreNonSpace()
     {
       var expected = 0.8666666666666667;
-      var actual = new Flux.Metrical.JaroWinklerDistance<char>(comparerIgnoreNonSpace).GetNormalizedSimilarity(source, target);
+      var actual = source.AsSpan().GetJaroWinklerSimilarity(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -107,7 +107,7 @@ namespace Text
     public void JaroWinklerSimilarity_None()
     {
       var expected = 0.7999999999999999;
-      var actual = new Flux.Metrical.JaroWinklerDistance<char>(comparerNone).GetNormalizedSimilarity(source, target);
+      var actual = source.AsSpan().GetJaroWinklerSimilarity(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -115,7 +115,7 @@ namespace Text
     public void LevenshteinDistance_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.LevenshteinDistance<char>().GetEditDistance(source, target);
+      var actual = source.AsSpan().GetLevenshteinDistanceMetric(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -123,7 +123,7 @@ namespace Text
     public void LevenshteinDistance_IgnoreCase()
     {
       var expected = 1;
-      var actual = new Flux.Metrical.LevenshteinDistance<char>(comparerIgnoreCase).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetLevenshteinDistanceMetric(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -131,7 +131,7 @@ namespace Text
     public void LevenshteinDistance_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = new Flux.Metrical.LevenshteinDistance<char>(comparerIgnoreNonSpace).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetLevenshteinDistanceMetric(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -139,7 +139,7 @@ namespace Text
     public void LevenshteinDistance_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.LevenshteinDistance<char>(comparerNone).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetLevenshteinDistanceMetric(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -147,7 +147,7 @@ namespace Text
     public void LongestCommonSubsequence_Default()
     {
       var expected = 7;
-      var actual = new Flux.Metrical.LongestCommonSubsequence<char>().GetLengthMetric(source, target);
+      var actual = source.AsSpan().GetLongestCommonSubsequenceLength(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -155,7 +155,7 @@ namespace Text
     public void LongestCommonSubsequence_IgnoreCase()
     {
       var expected = 9;
-      var actual = new Flux.Metrical.LongestCommonSubsequence<char>(comparerIgnoreCase).GetLengthMetric(source, target);
+      var actual = source.AsSpan().GetLongestCommonSubsequenceLength(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -163,7 +163,7 @@ namespace Text
     public void LongestCommonSubsequence_IgnoreNonSpace()
     {
       var expected = 8;
-      var actual = new Flux.Metrical.LongestCommonSubsequence<char>(comparerIgnoreNonSpace).GetLengthMetric(source, target);
+      var actual = source.AsSpan().GetLongestCommonSubsequenceLength(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -171,7 +171,7 @@ namespace Text
     public void LongestCommonSubsequence_None()
     {
       var expected = 7;
-      var actual = new Flux.Metrical.LongestCommonSubsequence<char>(comparerNone).GetLengthMetric(source, target);
+      var actual = source.AsSpan().GetLongestCommonSubsequenceLength(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -179,7 +179,7 @@ namespace Text
     public void LongestCommonSubstring_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.LongestCommonSubstring<char>().GetLengthMeasure(source, target);
+      var actual = source.AsSpan().GetLongestCommonSubstringLength(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -187,7 +187,7 @@ namespace Text
     public void LongestCommonSubstring_IgnoreCase()
     {
       var expected = 7;
-      var actual = new Flux.Metrical.LongestCommonSubstring<char>(comparerIgnoreCase).GetLengthMeasure(source, target);
+      var actual = source.AsSpan().GetLongestCommonSubstringLength(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -195,7 +195,7 @@ namespace Text
     public void LongestCommonSubstring_IgnoreNonSpace()
     {
       var expected = 5;
-      var actual = new Flux.Metrical.LongestCommonSubstring<char>(comparerIgnoreNonSpace).GetLengthMeasure(source, target);
+      var actual = source.AsSpan().GetLongestCommonSubstringLength(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -203,7 +203,7 @@ namespace Text
     public void LongestCommonSubstring_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.LongestCommonSubstring<char>(comparerNone).GetLengthMeasure(source, target);
+      var actual = source.AsSpan().GetLongestCommonSubstringLength(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -243,7 +243,7 @@ namespace Text
     public void OptimalStringAlignment_Default()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.OptimalStringAlignment<char>().GetEditDistance(source, target);
+      var actual = source.AsSpan().GetOptimalStringAlignmentMetric(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -251,7 +251,7 @@ namespace Text
     public void OptimalStringAlignment_IgnoreCase()
     {
       var expected = 1;
-      var actual = new Flux.Metrical.OptimalStringAlignment<char>(comparerIgnoreCase).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetOptimalStringAlignmentMetric(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -259,7 +259,7 @@ namespace Text
     public void OptimalStringAlignment_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = new Flux.Metrical.OptimalStringAlignment<char>(comparerIgnoreNonSpace).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetOptimalStringAlignmentMetric(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -267,7 +267,7 @@ namespace Text
     public void OptimalStringAlignment_None()
     {
       var expected = 3;
-      var actual = new Flux.Metrical.OptimalStringAlignment<char>(comparerNone).GetEditDistance(source, target);
+      var actual = source.AsSpan().GetOptimalStringAlignmentMetric(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
   }

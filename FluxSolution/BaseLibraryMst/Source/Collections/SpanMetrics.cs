@@ -1,6 +1,7 @@
-﻿using Flux.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
 using Flux;
+using Flux.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Collections.Generic
 {
@@ -30,104 +31,104 @@ namespace Collections.Generic
     [TestMethod]
     public void DamerauLevenshteinDistance()
     {
-      Assert.AreEqual(2, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text1a, m_text1b));
-      Assert.AreEqual(2, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text1a, m_text1b));
+      Assert.AreEqual(2, m_text1a.AsSpan().GetDamerauLevenshteinDistanceMetric(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(2, m_text1a.AsSpan().GetDamerauLevenshteinDistanceMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(0, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text2a, m_text2b));
-      Assert.AreEqual(60, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparerDoNotIgnoreCase).GetEditDistance(m_text2a, m_text2b));
+      Assert.AreEqual(0, m_text2a.AsSpan().GetDamerauLevenshteinDistanceMetric(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().GetDamerauLevenshteinDistanceMetric(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(5, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text3a, m_text3b));
-      Assert.AreEqual(3, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text3a, m_text3b));
+      Assert.AreEqual(5, m_text3a.AsSpan().GetDamerauLevenshteinDistanceMetric(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(3, m_text3a.AsSpan().GetDamerauLevenshteinDistanceMetric(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(1, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text4a, m_text4b));
-      Assert.AreEqual(1, new Flux.Metrical.DamerauLevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, m_text4a.AsSpan().GetDamerauLevenshteinDistanceMetric(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text4a.AsSpan().GetDamerauLevenshteinDistanceMetric(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]
     public void HammingDistance()
     {
-      Assert.AreEqual(0, new Flux.Metrical.HammingDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text2a, m_text2b));
-      Assert.AreEqual(60, new Flux.Metrical.HammingDistance<char>(m_comparerDoNotIgnoreCase).GetEditDistance(m_text2a, m_text2b));
+      Assert.AreEqual(0, m_text2a.AsSpan().GetHammingEditDistance(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().GetHammingEditDistance(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(6, new Flux.Metrical.HammingDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text3a, m_text3b));
-      Assert.AreEqual(4, new Flux.Metrical.HammingDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text3a, m_text3b));
+      Assert.AreEqual(6, m_text3a.AsSpan().GetHammingEditDistance(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(4, m_text3a.AsSpan().GetHammingEditDistance(m_text3b, m_comparableIgnoreNonSpace));
     }
 
     [TestMethod]
     public void JaroWinklerDistance()
     {
-      Assert.AreEqual(0, new Flux.Metrical.JaroWinklerDistance<char>(m_comparisonOrdinal).GetNormalizedSimilarity(m_text1a, m_text1b));
-      Assert.AreEqual(0, new Flux.Metrical.JaroWinklerDistance<char>(m_comparisonOrdinalIgnoreCase).GetNormalizedSimilarity(m_text1a, m_text1b));
+      Assert.AreEqual(0, m_text1a.AsSpan().GetJaroWinklerSimilarity(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(0, m_text1a.AsSpan().GetJaroWinklerSimilarity(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(1, new Flux.Metrical.JaroWinklerDistance<char>(m_comparableIgnoreNonSpace).GetNormalizedSimilarity(m_text2a, m_text2b));
-      Assert.AreEqual(0.625, 1 - new Flux.Metrical.JaroWinklerDistance<char>(m_comparerDoNotIgnoreCase).GetNormalizedSimilarity(m_text2a, m_text2b));
+      Assert.AreEqual(1, m_text2a.AsSpan().GetJaroWinklerSimilarity(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(0.625, 1 - m_text2a.AsSpan().GetJaroWinklerSimilarity(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(0.362962962962963, 1 - new Flux.Metrical.JaroWinklerDistance<char>(m_comparisonOrdinal).GetNormalizedSimilarity(m_text3a, m_text3b), 1e15);
-      Assert.AreEqual(0.222222222222222, 1 - new Flux.Metrical.JaroWinklerDistance<char>(m_comparableIgnoreNonSpace).GetNormalizedSimilarity(m_text3a, m_text3b), 1e15);
+      Assert.AreEqual(0.362962962962963, 1 - m_text3a.AsSpan().GetJaroWinklerSimilarity(m_text3b, m_comparisonOrdinal), 1e15);
+      Assert.AreEqual(0.222222222222222, 1 - m_text3a.AsSpan().GetJaroWinklerSimilarity(m_text3b, m_comparableIgnoreNonSpace), 1e15);
     }
 
     [TestMethod]
     public void LevenshteinDistance()
     {
-      Assert.AreEqual(3, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text1a, m_text1b));
-      Assert.AreEqual(3, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text1a, m_text1b));
+      Assert.AreEqual(3, m_text1a.AsSpan().GetLevenshteinDistanceMetric(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(3, m_text1a.AsSpan().GetLevenshteinDistanceMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(0, new Flux.Metrical.LevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text2a, m_text2b));
-      Assert.AreEqual(60, new Flux.Metrical.LevenshteinDistance<char>(m_comparerDoNotIgnoreCase).GetEditDistance(m_text2a, m_text2b));
+      Assert.AreEqual(0, m_text2a.AsSpan().GetLevenshteinDistanceMetric(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().GetLevenshteinDistanceMetric(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(6, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text3a, m_text3b));
-      Assert.AreEqual(4, new Flux.Metrical.LevenshteinDistance<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text3a, m_text3b));
+      Assert.AreEqual(6, m_text3a.AsSpan().GetLevenshteinDistanceMetric(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(4, m_text3a.AsSpan().GetLevenshteinDistanceMetric(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(1, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinal).GetEditDistance(m_text4a, m_text4b));
-      Assert.AreEqual(1, new Flux.Metrical.LevenshteinDistance<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, m_text4a.AsSpan().GetLevenshteinDistanceMetric(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text4a.AsSpan().GetLevenshteinDistanceMetric(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]
     public void LongestCommonSubsequence()
     {
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetLengthMetric(m_text1a, m_text1b));
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinalIgnoreCase).GetLengthMetric(m_text1a, m_text1b));
+      Assert.AreEqual(1, m_text1a.AsSpan().GetLongestCommonSubsequenceLength(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text1a.AsSpan().GetLongestCommonSubsequenceLength(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(64, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparableIgnoreNonSpace).GetLengthMetric(m_text2a, m_text2b));
-      Assert.AreEqual(4, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparerDoNotIgnoreCase).GetLengthMetric(m_text2a, m_text2b));
+      Assert.AreEqual(64, m_text2a.AsSpan().GetLongestCommonSubsequenceLength(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(4, m_text2a.AsSpan().GetLongestCommonSubsequenceLength(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(5, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetLengthMetric(m_text3a, m_text3b));
-      Assert.AreEqual(7, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparableIgnoreNonSpace).GetLengthMetric(m_text3a, m_text3b));
+      Assert.AreEqual(5, m_text3a.AsSpan().GetLongestCommonSubsequenceLength(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(7, m_text3a.AsSpan().GetLongestCommonSubsequenceLength(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinal).GetLengthMetric(m_text4a, m_text4b));
-      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubsequence<char>(m_comparisonOrdinalIgnoreCase).GetLengthMetric(m_text4a, m_text4b));
+      Assert.AreEqual(9, m_text4a.AsSpan().GetLongestCommonSubsequenceLength(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(9, m_text4a.AsSpan().GetLongestCommonSubsequenceLength(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]
     public void LongestCommonSubstring()
     {
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinal).GetLengthMeasure(m_text1a, m_text1b));
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinalIgnoreCase).GetLengthMeasure(m_text1a, m_text1b));
+      Assert.AreEqual(1, m_text1a.AsSpan().GetLongestCommonSubstringLength(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text1a.AsSpan().GetLongestCommonSubstringLength(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(64, new Flux.Metrical.LongestCommonSubstring<char>(m_comparableIgnoreNonSpace).GetLengthMeasure(m_text2a, m_text2b));
-      Assert.AreEqual(1, new Flux.Metrical.LongestCommonSubstring<char>(m_comparerDoNotIgnoreCase).GetLengthMeasure(m_text2a, m_text2b));
+      Assert.AreEqual(64, m_text2a.AsSpan().GetLongestCommonSubstringLength(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(1, m_text2a.AsSpan().GetLongestCommonSubstringLength(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(3, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinal).GetLengthMeasure(m_text3a, m_text3b));
-      Assert.AreEqual(4, new Flux.Metrical.LongestCommonSubstring<char>(m_comparableIgnoreNonSpace).GetLengthMeasure(m_text3a, m_text3b));
+      Assert.AreEqual(3, m_text3a.AsSpan().GetLongestCommonSubstringLength(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(4, m_text3a.AsSpan().GetLongestCommonSubstringLength(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinal).GetLengthMeasure(m_text4a, m_text4b));
-      Assert.AreEqual(9, new Flux.Metrical.LongestCommonSubstring<char>(m_comparisonOrdinalIgnoreCase).GetLengthMeasure(m_text4a, m_text4b));
+      Assert.AreEqual(9, m_text4a.AsSpan().GetLongestCommonSubstringLength(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(9, m_text4a.AsSpan().GetLongestCommonSubstringLength(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]
     public void OptimalStringAlignment()
     {
-      Assert.AreEqual(3, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinal).GetEditDistance(m_text1a, m_text1b));
-      Assert.AreEqual(3, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text1a, m_text1b));
+      Assert.AreEqual(3, m_text1a.AsSpan().GetOptimalStringAlignmentMetric(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(3, m_text1a.AsSpan().GetOptimalStringAlignmentMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(0, new Flux.Metrical.OptimalStringAlignment<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text2a, m_text2b));
-      Assert.AreEqual(60, new Flux.Metrical.OptimalStringAlignment<char>(m_comparerDoNotIgnoreCase).GetEditDistance(m_text2a, m_text2b));
+      Assert.AreEqual(0, m_text2a.AsSpan().GetOptimalStringAlignmentMetric(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().GetOptimalStringAlignmentMetric(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(5, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinal).GetEditDistance(m_text3a, m_text3b));
-      Assert.AreEqual(3, new Flux.Metrical.OptimalStringAlignment<char>(m_comparableIgnoreNonSpace).GetEditDistance(m_text3a, m_text3b));
+      Assert.AreEqual(5, m_text3a.AsSpan().GetOptimalStringAlignmentMetric(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(3, m_text3a.AsSpan().GetOptimalStringAlignmentMetric(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(1, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinal).GetEditDistance(m_text4a, m_text4b));
-      Assert.AreEqual(1, new Flux.Metrical.OptimalStringAlignment<char>(m_comparisonOrdinalIgnoreCase).GetEditDistance(m_text4a, m_text4b));
+      Assert.AreEqual(1, m_text4a.AsSpan().GetOptimalStringAlignmentMetric(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text4a.AsSpan().GetOptimalStringAlignmentMetric(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
   }
 }
