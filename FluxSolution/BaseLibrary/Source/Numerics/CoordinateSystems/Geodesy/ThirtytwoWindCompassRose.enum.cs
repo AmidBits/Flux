@@ -25,7 +25,7 @@ namespace Flux
             sb.Append(word);
       }
 
-      return sb.AsReadOnlySpan().ToString(0);
+      return sb.ToString();
     }
   }
 

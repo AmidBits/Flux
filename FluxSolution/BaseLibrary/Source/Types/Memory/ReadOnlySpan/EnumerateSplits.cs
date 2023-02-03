@@ -3,7 +3,7 @@
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsReadOnlySpan
   {
     public static SplitEnumerator<char> EnumerateSplits(this string source, string separator)
       => new(source.AsSpan(), separator.AsSpan());

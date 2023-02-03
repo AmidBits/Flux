@@ -29,7 +29,7 @@ namespace Text
       var tokens = tokenizer.GetTokens(s).ToArray();
 
       var expected = new string[] { "3", "×", "(", "\U0001F92D", "9", "−", "6", ")" };
-      var actual = tokens.Select(t => t.Value.Chars).ToArray();
+      var actual = tokens.Select(t => t.Value.ToString()).ToArray();
 
       CollectionAssert.AreEqual(expected, actual);
     }

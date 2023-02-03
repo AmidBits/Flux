@@ -3,9 +3,9 @@ namespace Flux.Text
 {
   /// <summary>An implementation of a tokenization engine to demarcate and classify sections of an input string.</summary>
   public sealed class TextElementTokenizer
-    : ITokenizer<IToken<TextElementCluster>>
+    : ITokenizer<IToken<TextElement>>
   {
-    public System.Collections.Generic.IEnumerable<IToken<TextElementCluster>> GetTokens(string expression)
+    public System.Collections.Generic.IEnumerable<IToken<TextElement>> GetTokens(string expression)
     {
       using var sr = new System.IO.StringReader(expression);
       using var tee = new TextElementEnumerator(sr);
@@ -22,9 +22,9 @@ namespace Flux.Text
 
       foreach (var te in tee)
       {
-        if (te.Chars.Length == 1 && te.Runes.Count == 1)
+        if (te.ListChar.Count == 1 && te.ListRune.Count == 1)
         {
-          switch (System.Text.Rune.GetUnicodeCategory(te.Runes[0]))
+          switch (System.Text.Rune.GetUnicodeCategory(te.ListRune[0]))
           {
             case System.Globalization.UnicodeCategory.OpenPunctuation:
               punctuationBracketGroups.Push(++punctuationBracketGroup);
@@ -48,7 +48,7 @@ namespace Flux.Text
         else
           yield return new TextElementToken(index, te);
 
-        index += te.Chars.Length;
+        index += te.ListChar.Count;
       }
     }
   }

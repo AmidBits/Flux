@@ -7,127 +7,234 @@ namespace Flux
 
     private int m_version;
 
-    private T[] m_buffer;
+    private T[] m_array;
 
     private int m_head; // Start of buffer data.
     private int m_tail; // End of buffer data.
 
     private SequenceBuilder(int capacity)
     {
-      var powerOf2Capacity = capacity.Pow2AwayFromZero(false, out int _);
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(capacity.Pow2AwayFromZero(false, out int _)) : System.Array.Empty<T>();
 
-      m_buffer = System.Buffers.ArrayPool<T>.Shared.Rent(powerOf2Capacity);
-
-      m_head = m_buffer.Length / 2;
-      m_tail = m_buffer.Length / 2;
+      m_head = m_array.Length / 2;
+      m_tail = m_array.Length / 2;
     }
     public SequenceBuilder() : this(DefaultBufferSize) { }
 
-    public SequenceBuilder(T value) : this() => Append(value);
-    public SequenceBuilder(System.ReadOnlySpan<T> readOnlySpan) : this(readOnlySpan.Length) => Append(readOnlySpan);
-    public SequenceBuilder(System.Span<T> span) : this(span.Length) => Append(span);
-    public SequenceBuilder(System.Collections.Generic.IEnumerable<T> collection) : this() => Append(collection);
+    public SequenceBuilder(T value, int count = 1) : this() => Append(value, count);
+    public SequenceBuilder(System.Collections.Generic.ICollection<T> collection, int count = 1) : this(collection.Count * count) => Append(collection, count);
+    //public SequenceBuilder(System.ReadOnlySpan<T> readOnlySpan, int count = 1) : this(readOnlySpan.Length * count) => Append(readOnlySpan, count);
+    public SequenceBuilder(System.ReadOnlySpan<T> readOnlySpan, int count = 1) : this(0) => Append(readOnlySpan, count);
 
-    /// <summary>Grows a uniform (left and right) buffer capacity to at least that specified.</summary>
-    private void EnsureUniformSpace(int length)
+    private int AppendCapacity => m_array.Length - m_tail;
+    private int PrependCapacity => m_head;
+
+    /// <summary>Grows a uniform (i.e. both left and right satisfies) buffer capacity to at least that specified.</summary>
+    private void EnsureUniformCapacity(int sideCapacity)
     {
-      if (Length + length + length < Capacity) // We got space, just need to make sure we have it on both sides.
+      var totalCapacity = int.Max(DefaultBufferSize, sideCapacity + Length + sideCapacity);
+
+      if (totalCapacity < Capacity) // We got overall capacity, just need to make sure we have it on both sides.
       {
-        var newHead = (m_buffer.Length - Length) / 2;
-        var newTail = newHead + Length;
+        if (PrependCapacity < sideCapacity || AppendCapacity < sideCapacity) // If any one side is below capacity, we center the content to ensure uniform capacity.
+        {
+          var head = (Capacity - Length) / 2; // Center content.
+          var tail = head + Length;
 
-        System.Array.Copy(m_buffer, m_head, m_buffer, newHead, Length);
+          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content.
 
-        if (newHead > m_head)
-          System.Array.Clear(m_buffer, m_head, newHead - m_head);
-        else if (newHead < m_head)
-          System.Array.Clear(m_buffer, newTail, m_head - newHead);
-
-        m_head = newHead;
-        m_tail = newTail;
+          m_head = head;
+          m_tail = tail;
+        }
       }
-      else if (m_head < length || m_tail + length > Capacity) // Not enough uniform space available.
+      else // Not enough uniform capacity available.
       {
-        var allocateLength = BitOps.Pow2AwayFromZero(length * 2, false, out int _);
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
 
-        var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
-        System.Array.Clear(newArray);
+        var head = (array.Length - Length) / 2;
+        var tail = head + Length;
 
-        var newHead = (newArray.Length - Length) / 2;
-        var newTail = newHead + Length;
+        System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
 
-        System.Array.Copy(m_buffer, m_head, newArray, newHead, Length);
+        System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
 
-        System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
+        m_array = array;
 
-        m_buffer = newArray;
-
-        m_head = newHead;
-        m_tail = newTail;
+        m_head = head;
+        m_tail = tail;
       }
     }
     /// <summary>Grows an append (right) buffer capacity to at least that specified.</summary>
-    private void EnsureAppendSpace(int length)
+    private void EnsureAppendCapacity(int appendCapacity)
     {
-      if (m_tail + length > Capacity) // Not enough append space available.
+      if (AppendCapacity < appendCapacity) // Not enough append capacity.
       {
-        var allocateLength = BitOps.Pow2AwayFromZero(length, false, out int _);
+        var totalCapacity = int.Max(DefaultBufferSize, PrependCapacity + Length + appendCapacity);
 
-        var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
-        System.Array.Clear(newArray);
+        if (Capacity <= totalCapacity) // Not enough total capacity.
+        {
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
 
-        System.Array.Copy(m_buffer, m_head, newArray, m_head, Length);
+          var head = (array.Length - Length - appendCapacity) / 2;
+          var tail = head + Length;
 
-        System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
+          System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
 
-        m_buffer = newArray;
+          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
+
+          m_array = array;
+
+          m_head = head;
+          m_tail = tail;
+        }
+        else if (AppendCapacity < appendCapacity) // Enough capacity, center content if needed.
+        {
+          var head = (Capacity - Length) / 2;
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content within itself.
+
+          m_head = head;
+          m_tail = tail;
+        }
       }
     }
     /// <summary>Grows a prepend (left) buffer capacity to at least that specified.</summary>
-    private void EnsurePrependSpace(int length)
+    private void EnsurePrependCapacity(int prependCapacity)
     {
-      if (m_head < length) // Not enough prepend space available.
+      if (PrependCapacity < prependCapacity) // Not enough prepend capacity.
       {
-        if (Capacity - Length < length) // Not enough prepend space to shift.
+        var totalCapacity = int.Max(DefaultBufferSize, prependCapacity + Length + AppendCapacity);
+
+        if (Capacity < totalCapacity) // Not enough total capacity, allocate new array.
         {
-          var allocateLength = BitOps.Pow2AwayFromZero(length, false, out int _);
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
 
-          var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
-          System.Array.Clear(newArray);
+          var head = (array.Length - Length + prependCapacity) / 2;
+          var tail = head + Length;
 
-          var newHead = m_head + allocateLength;
-          var newTail = m_tail + allocateLength;
+          System.Array.Copy(m_array, m_head, array, head, Length); // Copy content.
 
-          System.Array.Copy(m_buffer, m_head, newArray, newHead, Length);
+          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
 
-          System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
+          m_array = array;
 
-          m_buffer = newArray;
-
-          m_head = newHead;
-          m_tail = newTail;
+          m_head = head;
+          m_tail = tail;
         }
-        else if (Length > 0) // Enough space to shift existing content.
+        else if (PrependCapacity < prependCapacity) // Enough total capacity, center content if needed.
         {
-          System.Array.Copy(m_buffer, m_head, m_buffer, m_head + length, Length); // Enough prepend space, so utilize by moving content.
-          System.Array.Clear(m_buffer, m_head, length); // Clear prepend space.
+          var head = (Capacity - Length) / 2;
+          var tail = head + Length;
 
-          m_head += length;
-          m_tail += length;
-        }
-        else // Enough space to alter head/tail.
-        {
-          m_head = length;
-          m_tail = length;
+          System.Array.Copy(m_array, m_head, m_array, head, Length); // Enough prepend space, so utilize by moving content.
+
+          m_head = head;
+          m_tail = tail;
         }
       }
     }
+
+    ///// <summary>Grows a uniform (left and right) buffer capacity to at least that specified.</summary>
+    //private void EnsureUniformCapacity(int length)
+    //{
+    //  if (Length + length + length < Capacity) // We got space, just need to make sure we have it on both sides.
+    //  {
+    //    var newHead = (m_buffer.Length - Length) / 2;
+    //    var newTail = newHead + Length;
+
+    //    System.Array.Copy(m_buffer, m_head, m_buffer, newHead, Length);
+
+    //    if (newHead > m_head)
+    //      System.Array.Clear(m_buffer, m_head, newHead - m_head);
+    //    else if (newHead < m_head)
+    //      System.Array.Clear(m_buffer, newTail, m_head - newHead);
+
+    //    m_head = newHead;
+    //    m_tail = newTail;
+    //  }
+    //  else if (m_head < length || m_tail + length > Capacity) // Not enough uniform space available.
+    //  {
+    //    var allocateLength = BitOps.Pow2AwayFromZero(length * 2, false, out int _);
+
+    //    var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
+    //    System.Array.Clear(newArray);
+
+    //    var newHead = (newArray.Length - Length) / 2;
+    //    var newTail = newHead + Length;
+
+    //    System.Array.Copy(m_buffer, m_head, newArray, newHead, Length);
+
+    //    System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
+
+    //    m_buffer = newArray;
+
+    //    m_head = newHead;
+    //    m_tail = newTail;
+    //  }
+    //}
+    ///// <summary>Grows an append (right) buffer capacity to at least that specified.</summary>
+    //private void EnsureAppendCapacity(int length)
+    //{
+    //  if (m_tail + length > Capacity) // Not enough append space available.
+    //  {
+    //    var allocateLength = BitOps.Pow2AwayFromZero(length, false, out int _);
+
+    //    var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
+    //    System.Array.Clear(newArray);
+
+    //    System.Array.Copy(m_buffer, m_head, newArray, m_head, Length);
+
+    //    System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
+
+    //    m_buffer = newArray;
+    //  }
+    //}
+    ///// <summary>Grows a prepend (left) buffer capacity to at least that specified.</summary>
+    //private void EnsurePrependCapacity(int length)
+    //{
+    //  if (m_head < length) // Not enough prepend space available.
+    //  {
+    //    if (Capacity - Length < length) // Not enough prepend space to shift.
+    //    {
+    //      var allocateLength = BitOps.Pow2AwayFromZero(length, false, out int _);
+
+    //      var newArray = System.Buffers.ArrayPool<T>.Shared.Rent(allocateLength + Capacity);
+    //      System.Array.Clear(newArray);
+
+    //      var newHead = m_head + allocateLength;
+    //      var newTail = m_tail + allocateLength;
+
+    //      System.Array.Copy(m_buffer, m_head, newArray, newHead, Length);
+
+    //      System.Buffers.ArrayPool<T>.Shared.Return(m_buffer);
+
+    //      m_buffer = newArray;
+
+    //      m_head = newHead;
+    //      m_tail = newTail;
+    //    }
+    //    else if (Length > 0) // Enough space to shift existing content.
+    //    {
+    //      System.Array.Copy(m_buffer, m_head, m_buffer, m_head + length, Length); // Enough prepend space, so utilize by moving content.
+    //      System.Array.Clear(m_buffer, m_head, length); // Clear prepend space.
+
+    //      m_head += length;
+    //      m_tail += length;
+    //    }
+    //    else // Enough space to alter head/tail.
+    //    {
+    //      m_head = length;
+    //      m_tail = length;
+    //    }
+    //  }
+    //}
 
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
     public T this[int index] { get => GetValue(index); set => SetValue(index, value); }
 
     /// <summary>The current capacity of the builder.</summary>
-    public int Capacity => m_buffer.Length;
+    public int Capacity => m_array.Length;
     /// <summary>The content length of the builder.</summary>
     public int Length => m_tail - m_head;
 
@@ -136,10 +243,26 @@ namespace Flux
     {
       m_version++;
 
-      EnsureAppendSpace(count);
+      EnsureAppendCapacity(count);
 
       while (count-- > 0)
-        m_buffer[m_tail++] = value;
+        m_array[m_tail++] = value;
+
+      return this;
+    }
+    /// <summary>Append a <paramref name="collection"/>, <paramref name="count"/> times.</summary>
+    public SequenceBuilder<T> Append(System.Collections.Generic.ICollection<T> collection, int count = 1)
+    {
+      m_version++;
+
+      EnsureAppendCapacity(collection.Count * count);
+
+      while (count-- > 0)
+      {
+        collection.CopyTo(m_array, m_tail);
+
+        m_tail += collection.Count;
+      }
 
       return this;
     }
@@ -148,45 +271,35 @@ namespace Flux
     {
       m_version++;
 
-      EnsureAppendSpace(values.Length);
+      EnsureAppendCapacity(values.Length * count);
 
       while (count-- > 0)
       {
-        values.CopyTo(m_buffer, m_tail);
+        values.CopyTo(m_array, m_tail);
 
         m_tail += values.Length;
       }
 
       return this;
     }
-    /// <summary>Append a <paramref name="collection"/>.</summary>
-    public SequenceBuilder<T> Append(System.Collections.Generic.IEnumerable<T> collection)
-    {
-      m_version++;
-
-      foreach (var item in collection)
-        Append(item);
-
-      return this;
-    }
 
     /// <summary>Creates a non-allocating <see cref="System.ReadOnlySpan{T}"/>.</summary>
     public System.ReadOnlySpan<T> AsReadOnlySpan()
-      => new(m_buffer, m_head, m_tail - m_head);
+      => new(m_array, m_head, m_tail - m_head);
 
     /// <summary>Creates a non-allocating <see cref="System.Span{T}"/>.</summary>
     public System.Span<T> AsSpan()
-      => new(m_buffer, m_head, m_tail - m_head);
+      => new(m_array, m_head, m_tail - m_head);
 
     /// <summary>Remove all values from the builder.</summary>
     public SequenceBuilder<T> Clear()
     {
       m_version++;
 
-      System.Array.Clear(m_buffer);
+      System.Array.Clear(m_array);
 
-      m_head = m_buffer.Length / 2;
-      m_tail = m_buffer.Length / 2;
+      m_head = m_array.Length / 2;
+      m_tail = m_array.Length / 2;
 
       return this;
     }
@@ -238,7 +351,7 @@ namespace Flux
     {
       if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
 
-      return m_buffer[m_head + index];
+      return m_array[m_head + index];
     }
 
     /// <summary>Insert <paramref name="count"/> of <paramref name="value"/> starting at <paramref name="startAt"/>.</summary>
@@ -246,56 +359,54 @@ namespace Flux
     {
       m_version++;
 
-      EnsureUniformSpace(count);
+      EnsureUniformCapacity(count);
+
+      System.Array.Copy(m_array, m_head, m_array, m_head - count, startAt); // Copy left portion of content.
 
       startAt += m_head;
 
-      if (m_head >= m_buffer.Length - m_tail) // Grow from start.
-      {
-        System.Array.Copy(m_buffer, m_head, m_buffer, m_head - count, startAt - m_head);
-        System.Array.Fill(m_buffer, value, startAt - count, count);
-        m_head -= count;
-      }
-      else // Otherwise grow from end.
-      {
-        System.Array.Copy(m_buffer, startAt, m_buffer, startAt + count, m_tail - startAt);
-        System.Array.Fill(m_buffer, value, startAt, count);
-        m_tail += count;
-      }
+      System.Array.Fill(m_array, value, startAt - count, count);
+
+      m_head -= count;
 
       return this;
     }
-    /// <summary>Insert the <paramref name="values"/> starting at <paramref name="startAt"/>.</summary>
-    public SequenceBuilder<T> Insert(int startAt, System.ReadOnlySpan<T> values)
+    /// <summary>Insert <paramref name="count"/> of <paramref name="collection"/> starting at <paramref name="startAt"/>.</summary>
+    public SequenceBuilder<T> Insert(int startAt, System.Collections.Generic.ICollection<T> collection, int count = 1)
     {
       m_version++;
 
-      EnsureUniformSpace(values.Length);
+      var totalLength = collection.Count * count;
+
+      EnsureUniformCapacity(totalLength);
+
+      System.Array.Copy(m_array, m_head, m_array, m_head - totalLength, startAt); // Copy left portion of content.
+
+      startAt += m_head;
+      m_head -= totalLength;
+
+      while (count-- > 0)
+        collection.CopyTo(m_array, startAt -= collection.Count);
+
+      return this;
+    }
+    /// <summary>Insert <paramref name="count"/> of <paramref name="readOnlySpan"/> starting at <paramref name="startAt"/>.</summary>
+    public SequenceBuilder<T> Insert(int startAt, System.ReadOnlySpan<T> readOnlySpan, int count = 1)
+    {
+      m_version++;
+
+      var totalLength = readOnlySpan.Length * count;
+
+      EnsureUniformCapacity(totalLength);
+
+      System.Array.Copy(m_array, m_head, m_array, m_head - totalLength, startAt); // Copy left portion of content.
 
       startAt += m_head;
 
-      if (m_head >= m_buffer.Length - m_tail) // Grow from start.
-      {
-        System.Array.Copy(m_buffer, m_head, m_buffer, m_head - values.Length, startAt - m_head);
-        values.CopyTo(m_buffer, startAt - values.Length);
-        m_head -= values.Length;
-      }
-      else // Otherwise grow from end.
-      {
-        System.Array.Copy(m_buffer, startAt, m_buffer, startAt + values.Length, m_tail - startAt);
-        values.CopyTo(m_buffer, startAt);
-        m_tail += values.Length;
-      }
+      while (count-- > 0)
+        readOnlySpan.CopyTo(m_array, startAt -= readOnlySpan.Length);
 
-      return this;
-    }
-    /// <summary>Insert a <paramref name="collection"/> starting at <paramref name="startAt"/>.</summary>
-    public SequenceBuilder<T> Insert(int startAt, System.Collections.Generic.IEnumerable<T> collection)
-    {
-      m_version++;
-
-      foreach (var item in collection)
-        Insert(startAt++, item);
+      m_head -= totalLength;
 
       return this;
     }
@@ -432,27 +543,39 @@ namespace Flux
       return Remove(totalWidth, Length - totalWidth);
     }
 
-    /// <summary>Prepends with a <paramref name="value"/>.</summary>
+    /// <summary>Prepends with a <paramref name="value"/>, <paramref name="count"/> times.</summary>
     public SequenceBuilder<T> Prepend(T value, int count = 1)
     {
       m_version++;
 
-      EnsurePrependSpace(1);
+      EnsurePrependCapacity(count);
 
       while (count-- > 0)
-        m_buffer[--m_head] = value;
+        m_array[--m_head] = value;
 
       return this;
     }
-    /// <summary>Prepends with the <paramref name="values"/>.</summary>
-    public SequenceBuilder<T> Prepend(System.ReadOnlySpan<T> values, int count = 1)
+    /// <summary>Prepends with the <paramref name="collection"/>, <paramref name="count"/> times.</summary>
+    public SequenceBuilder<T> Prepend(System.Collections.Generic.ICollection<T> collection, int count = 1)
     {
       m_version++;
 
-      EnsurePrependSpace(values.Length);
+      EnsurePrependCapacity(collection.Count);
 
       while (count-- > 0)
-        values.CopyTo(m_buffer, m_head -= values.Length);
+        collection.CopyTo(m_array, m_head -= collection.Count);
+
+      return this;
+    }
+    /// <summary>Prepends with the <paramref name="readOnlySpan"/>, <paramref name="count"/> times.</summary>
+    public SequenceBuilder<T> Prepend(System.ReadOnlySpan<T> readOnlySpan, int count = 1)
+    {
+      m_version++;
+
+      EnsurePrependCapacity(readOnlySpan.Length * count);
+
+      while (count-- > 0)
+        readOnlySpan.CopyTo(m_array, m_head -= readOnlySpan.Length);
 
       return this;
     }
@@ -464,17 +587,17 @@ namespace Flux
 
       startAt += m_head;
 
-      if (m_head <= m_buffer.Length - m_tail) // Shrink from start.
+      if (m_head <= m_array.Length - m_tail) // Shrink from start.
       {
-        System.Array.Copy(m_buffer, m_head, m_buffer, m_head + count, startAt - m_head);
-        System.Array.Fill(m_buffer, default, m_head, count);
+        System.Array.Copy(m_array, m_head, m_array, m_head + count, startAt - m_head);
+        System.Array.Fill(m_array, default, m_head, count);
         m_head += count;
       }
       else // Otherwise shrink from end.
       {
-        System.Array.Copy(m_buffer, startAt + count, m_buffer, startAt, m_tail - startAt - count);
+        System.Array.Copy(m_array, startAt + count, m_array, startAt, m_tail - startAt - count);
         m_tail -= count;
-        System.Array.Fill(m_buffer, default, m_tail, count);
+        System.Array.Fill(m_array, default, m_tail, count);
       }
 
       return this;
@@ -508,10 +631,9 @@ namespace Flux
     /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
     public SequenceBuilder<T> Repeat(int count)
     {
-      var original = AsReadOnlySpan().ToArray();
+      m_version++;
 
-      while (count-- > 0)
-        Append(original);
+      Append(new SequenceBuilder<T>().Append(AsReadOnlySpan(), count).AsSpan());
 
       return this;
     }
@@ -576,7 +698,7 @@ namespace Flux
 
       m_version++;
 
-      m_buffer[m_head + index] = value;
+      m_array[m_head + index] = value;
     }
 
     /// <summary>Shuffle all values in the builder. Uses the specified <paramref name="rng"/>, or default if null.</summary>
@@ -636,23 +758,23 @@ namespace Flux
     }
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public string ToString(int startAt) => AsReadOnlySpan().ToString(startAt);
-    public string ToString(int startAt, int count) => AsReadOnlySpan().ToString(startAt, count - startAt);
+    //public string ToString(int startAt) => AsReadOnlySpan().ToString(startAt);
+    //public string ToString(int startAt, int count) => AsReadOnlySpan().ToString(startAt, count - startAt);
 
-    public System.Text.StringBuilder ToStringBuilder(int startAt, int count)
-    {
-      var sb = new System.Text.StringBuilder(count);
+    //public System.Text.StringBuilder ToStringBuilder(int startAt, int count)
+    //{
+    //  var sb = new System.Text.StringBuilder(count);
 
-      for (var index = startAt; count > 0; index++)
-        sb.Append(this[index]);
+    //  for (var index = startAt; count > 0; index++)
+    //    sb.Append(this[index]);
 
-      return sb;
-    }
-    public System.Text.StringBuilder ToStringBuilder(int startAt) => ToStringBuilder(startAt, Length);
-    public System.Text.StringBuilder ToStringBuilder() => ToStringBuilder(0, Length);
+    //  return sb;
+    //}
+    //public System.Text.StringBuilder ToStringBuilder(int startAt) => ToStringBuilder(startAt, Length);
+    //public System.Text.StringBuilder ToStringBuilder() => ToStringBuilder(0, Length);
 
     #region Object overrides.
-    public override string ToString() => AsReadOnlySpan().ToString(0);
+    public override string ToString() => AsReadOnlySpan().ToString(0, Length);
     #endregion Object overrides.
   }
 }

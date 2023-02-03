@@ -19,10 +19,10 @@ namespace Flux
         {
           var isBetweenTenAndTwenty = index > 0 && source[index - 1] == (System.Text.Rune)'1';
 
-          var suffix = (r == (System.Text.Rune)'1' && !isBetweenTenAndTwenty) ? "st".AsSpan().ToReadOnlySpanOfRune()
-            : (r == (System.Text.Rune)'2' && !isBetweenTenAndTwenty) ? "nd".AsSpan().ToReadOnlySpanOfRune()
-            : (r == (System.Text.Rune)'3' && !isBetweenTenAndTwenty) ? "rd".AsSpan().ToReadOnlySpanOfRune()
-            : "th".AsSpan().ToReadOnlySpanOfRune();
+          var suffix = (r == (System.Text.Rune)'1' && !isBetweenTenAndTwenty) ? "st".AsSpan().ToSpanRune()
+            : (r == (System.Text.Rune)'2' && !isBetweenTenAndTwenty) ? "nd".AsSpan().ToSpanRune()
+            : (r == (System.Text.Rune)'3' && !isBetweenTenAndTwenty) ? "rd".AsSpan().ToSpanRune()
+            : "th".AsSpan().ToSpanRune();
 
           source.Insert(index + 1, suffix);
         }

@@ -120,12 +120,6 @@ namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
       => $"{GetType().Name} {{ {ToUnitString()} }}";
 
     public string ToUnitString()
-    {
-      var sb = $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSequenceBuilder();
-
-      sb.NormalizeAll(' ', char.IsWhiteSpace);
-
-      return sb.AsReadOnlySpan().ToString(0);
-    }
+      => $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSequenceBuilder().NormalizeAll(' ', char.IsWhiteSpace).ToString();
   }
 }

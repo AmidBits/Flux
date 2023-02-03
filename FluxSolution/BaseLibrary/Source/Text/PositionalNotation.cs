@@ -10,7 +10,7 @@ namespace Flux
     public static string ToRadixString<TSelf, TRadix>(this TSelf number, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => Text.PositionalNotation.ForRadix(int.CreateChecked(GenericMath.AssertRadix(radix))).NumberToText(number).AsReadOnlySpan().ToString(0);
+      => Text.PositionalNotation.ForRadix(int.CreateChecked(GenericMath.AssertRadix(radix))).NumberToText(number).ToString();
 
     /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static string ToRadixString<TSelf, TRadix>(this TSelf number, TRadix radix, int minimumLength)
@@ -109,7 +109,7 @@ namespace Flux
       }
       /// <summary>Convert a positional notation text string into a number.</summary>
       public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)
-        => TextToNumber(number.ToRunes());
+        => TextToNumber(number.ToSpanRune());
 
       /// <summary>Convert a positional notation text string into a number.</summary>
       public bool TryTextToNumber(System.ReadOnlySpan<System.Text.Rune> number, out System.Numerics.BigInteger result)
@@ -126,7 +126,7 @@ namespace Flux
       }
       /// <summary>Convert a positional notation text string into a number.</summary>
       public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result)
-        => TryTextToNumber(number.ToRunes(), out result);
+        => TryTextToNumber(number.ToSpanRune(), out result);
 
       /// <summary>Custom instance based on Base62 which results in traditional radix conversions.</summary>
       public static PositionalNotation ForRadix(int radix)

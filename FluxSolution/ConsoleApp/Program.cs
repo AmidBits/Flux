@@ -25,6 +25,32 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var x = new Flux.SequenceBuilder<char>("HelloWorld");
+      x.Insert(5, " There, ");
+      x.Append(", Dear Something Something Something");
+      x.Append(". ");
+      x.Prepend(" \U0001F469\U0001F3FD\u200D\U0001F692 ");
+      var y = x.ToSequenceBuilderOfRune();
+
+      var s = " \U0001F469\U0001F3FD\u200D\U0001F692 ";
+      var sc = s.AsSpan();
+      var sr = sc.ToSpanRune();
+      var ste = sc.ToSpanTextElement();
+      var sr1 = ste.ToSpanRune();
+      var sc1 = sr.ToSpanChar();
+
+      var sb = new Flux.SequenceBuilder<char>();
+      for (var i = 0; i < 1000; i++)
+        sb.Append(s);
+
+      //var e = rosr.EnumerateChars();
+
+      //foreach (var t in e)
+      //  System.Console.WriteLine(t);
+
+      //System.Console.WriteLine();
+      return;
+
       // Compute quantiles:
       {
         var aav = new int[][] { new int[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 }, new int[] { 3, 6, 7, 8, 8, 9, 10, 13, 15, 16, 20 } };
@@ -71,20 +97,20 @@ namespace ConsoleApp
 
 
 
-      // Compute roundings:
-      {
-        var v = -1.5;
-        var c = v.Round(RoundingMode.Ceiling);
-        var e = v.Round(RoundingMode.Envelop);
-        var f = v.Round(RoundingMode.Floor);
-        var t = v.Round(RoundingMode.Truncate);
-        var hafz = v.Round(RoundingMode.HalfAwayFromZero);
-        var heven = v.Round(RoundingMode.HalfToEven);
-        var hninf = v.Round(RoundingMode.HalfToNegativeInfinity);
-        var hodd = v.Round(RoundingMode.HalfToOdd);
-        var hpinf = v.Round(RoundingMode.HalfToPositiveInfinity);
-        var htz = v.Round(RoundingMode.HalfTowardZero);
-      }
+      //// Compute roundings:
+      //{
+      //  var v = -1.5;
+      //  var c = v.Round(RoundingMode.Ceiling);
+      //  var e = v.Round(RoundingMode.Envelop);
+      //  var f = v.Round(RoundingMode.Floor);
+      //  var t = v.Round(RoundingMode.Truncate);
+      //  var hafz = v.Round(RoundingMode.HalfAwayFromZero);
+      //  var heven = v.Round(RoundingMode.HalfToEven);
+      //  var hninf = v.Round(RoundingMode.HalfToNegativeInfinity);
+      //  var hodd = v.Round(RoundingMode.HalfToOdd);
+      //  var hpinf = v.Round(RoundingMode.HalfToPositiveInfinity);
+      //  var htz = v.Round(RoundingMode.HalfTowardZero);
+      //}
     }
 
     private static void Main(string[] args)

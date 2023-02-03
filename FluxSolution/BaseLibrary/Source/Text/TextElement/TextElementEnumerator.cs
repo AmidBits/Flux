@@ -2,65 +2,14 @@ namespace Flux.Text
 {
   public static partial class ExtensionMethods
   {
-    public static System.Collections.Generic.IEnumerable<Text.TextElementCluster> EnumerateTextElements(this System.IO.Stream source, System.Text.Encoding encoding)
+    public static System.Collections.Generic.IEnumerable<Text.TextElement> EnumerateTextElements(this System.IO.Stream source, System.Text.Encoding encoding)
       => new Flux.Text.TextElementEnumerator(source, encoding);
-    public static System.Collections.Generic.IEnumerable<Text.TextElementCluster> EnumerateTextElements(this System.IO.TextReader source)
+    public static System.Collections.Generic.IEnumerable<Text.TextElement> EnumerateTextElements(this System.IO.TextReader source)
       => new Flux.Text.TextElementEnumerator(source);
   }
 
-  public ref struct RefStruct
-  {
-    public IEnumerator<int> GetEnumerator()
-    {
-      return Foo();
-
-      IEnumerator<int> Foo()
-      {
-        yield return 1;
-      }
-    }
-  }
-
-  public ref struct CharSpanEnumerator
-  {
-    private readonly System.ReadOnlySpan<char> m_characters;
-
-    public CharSpanEnumerator(System.ReadOnlySpan<char> characters) => m_characters = characters;
-
-    public CharSpanIterator GetEnumerator() => new CharSpanIterator();
-
-    public ref struct CharSpanIterator
-    {
-      private CharSpanEnumerator m_enumerator;
-      private int m_index;
-
-      public CharSpanIterator(CharSpanEnumerator enumerator)
-      {
-        m_enumerator = enumerator;
-        m_index = -1;
-      }
-
-      public bool MoveNext()
-      {
-        if (m_index < m_enumerator.m_characters.Length)
-        {
-          m_index++;
-
-          return true;
-        }
-
-        return false;
-      }
-
-      public void Reset()
-      {
-        m_index = -1;
-      }
-    }
-  }
-
   public sealed class TextElementEnumerator
-    : Disposable, System.Collections.Generic.IEnumerable<TextElementCluster>
+    : Disposable, System.Collections.Generic.IEnumerable<TextElement>
   {
     internal readonly System.IO.TextReader m_textReader;
     internal readonly int m_bufferSize;
@@ -77,7 +26,7 @@ namespace Flux.Text
       : this(new System.IO.StreamReader(stream, encoding), bufferSize)
     { }
 
-    public System.Collections.Generic.IEnumerator<TextElementCluster> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<TextElement> GetEnumerator()
       => new TextElementIterator(this);
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
@@ -86,7 +35,7 @@ namespace Flux.Text
       => m_textReader.Dispose();
 
     private sealed class TextElementIterator
-      : System.Collections.Generic.IEnumerator<TextElementCluster>
+      : System.Collections.Generic.IEnumerator<TextElement>
     {
       private readonly TextElementEnumerator m_enumerator;
 
@@ -94,7 +43,7 @@ namespace Flux.Text
       private int m_bufferIndex;
       private int m_bufferCount;
 
-      private TextElementCluster m_current;
+      private TextElement m_current;
 
       private readonly System.Globalization.StringInfo m_stringInfo;
 
@@ -119,7 +68,7 @@ namespace Flux.Text
 
       private int m_overallIndex = 0;
 
-      public TextElementCluster Current
+      public TextElement Current
         => m_current;
       object System.Collections.IEnumerator.Current
         => m_current!;
@@ -148,7 +97,7 @@ namespace Flux.Text
 
           m_bufferIndex += textElement.Length; // Adjust the buffer index by the number of characters in the text element.
 
-          m_current = new TextElementCluster(textElement, m_overallIndex); // Set current to the text element.
+          m_current = new TextElement(textElement, m_overallIndex); // Set current to the text element.
 
           m_overallIndex += textElement.Length;
 
