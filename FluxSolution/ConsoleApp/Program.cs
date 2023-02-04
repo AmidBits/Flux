@@ -26,6 +26,7 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       var x = new Flux.SequenceBuilder<char>("HelloWorld");
+      x.Reverse();
       x.Insert(5, " There, ");
       x.Append(", Dear Something Something Something");
       x.Append(". ");
