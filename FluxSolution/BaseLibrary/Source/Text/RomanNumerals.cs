@@ -71,7 +71,7 @@ namespace Flux.Text
     {
       var div = number.PowOfTowardZero(10, false);
 
-      var sb = new Flux.SequenceBuilder<string>();
+      var sb = new SpanBuilder<string>();
 
       while (number > 0)
       {

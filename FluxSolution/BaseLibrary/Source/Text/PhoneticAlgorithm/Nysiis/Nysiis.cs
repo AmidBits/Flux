@@ -46,7 +46,7 @@
     /// <summary>Ensure valid characters for nysiis code generation.</summary>
     public string GetValidCharacters(string text)
     {
-      return text.RemoveUnicodeMarks().ReplaceUnicodeLatinStrokes().RemoveNonLanguageLetters(Culture).ToUpperCase(Culture).ToString();
+      return text.RemoveUnicodeMarks().ReplaceUnicodeLatinStrokes().RemoveNonLanguageLetters(Culture).AsSpan().ToUpperCase(Culture).ToString();
     }
   }
 }

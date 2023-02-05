@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Flux.Dsp.WaveGenerator;
 
 namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
 {
@@ -120,6 +121,12 @@ namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
       => $"{GetType().Name} {{ {ToUnitString()} }}";
 
     public string ToUnitString()
-      => $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSequenceBuilder().NormalizeAll(' ', char.IsWhiteSpace).ToString();
+    {
+      var sb = $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSpanBuilder();
+
+      sb.NormalizeAll(' ', char.IsWhiteSpace);
+
+      return sb.ToString();
+    }
   }
 }

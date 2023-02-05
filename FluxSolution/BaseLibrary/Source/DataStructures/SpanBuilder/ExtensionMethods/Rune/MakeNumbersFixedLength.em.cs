@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethodsSequenceBuilder
   {
-    public static SpanBuilder<System.Text.Rune> MakeNumbersFixedLength(this SpanBuilder<System.Text.Rune> source, int length, System.Text.Rune padding)
+    public static SpanBuilder<System.Text.Rune> MakeNumbersFixedLength(ref this SpanBuilder<System.Text.Rune> source, int length, System.Text.Rune padding)
     {
       bool wasDigit = false;
       var digitCount = 0;

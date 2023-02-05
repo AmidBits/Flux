@@ -18,7 +18,7 @@ namespace Flux.Formatting
         {
           if (TryFormat(raw, RadixNumerals.Take((int)radix).ToArray(), out var newBase))
           {
-            return newBase?.ToString() ?? string.Empty;
+            return newBase;
           }
         }
       }
@@ -26,17 +26,16 @@ namespace Flux.Formatting
       return HandleOtherFormats(format, arg);
     }
 
-    public static bool TryFormat(System.Numerics.BigInteger number, System.Text.Rune[] radixNumerals, out Flux.SequenceBuilder<System.Text.Rune>? result)
+    public static bool TryFormat(System.Numerics.BigInteger number, System.Text.Rune[] radixNumerals, out string result)
     {
       try
       {
-        var pn = new Text.PositionalNotation(radixNumerals);
-        result = pn.NumberToText(number);
+        result = new Text.PositionalNotation(radixNumerals).NumberToText(number).ToString();
         return true;
       }
       catch { }
 
-      result = default;
+      result = string.Empty;
       return false;
     }
   }
