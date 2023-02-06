@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethodsSpanBuilder
   {
     /// <summary>Inserts a space in front of any single upper case character, except the first one in the string.</summary>
-    public static System.Span<char> FromCamelCase(this System.Span<char> source, System.Func<char, bool> predicate, System.Globalization.CultureInfo? culture = null)
+    public static SpanBuilder<char> ExpandFromCamelCase(ref this SpanBuilder<char> source, char separator = ' ', System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
@@ -14,13 +14,18 @@ namespace Flux
         var c = source[index];
 
         if (wasPredicate && char.IsLetter(c) && char.IsUpper(c))
+        {
           source[index] = char.ToLower(c, culture);
 
-        wasPredicate = predicate(c);
+          if (index > 0)
+            source.Insert(index++, separator);
+        }
+
+        wasPredicate = char.IsLetter(c) && char.IsLower(c);
       }
 
       return source;
     }
-    public static System.Span<char> FromCamelCase(this System.Span<char> source) => FromCamelCase(source, char.IsWhiteSpace);
+    public static SpanBuilder<char> ExpandFromCamelCase(ref this SpanBuilder<char> source) => ExpandFromCamelCase(ref source, ' ');
   }
 }

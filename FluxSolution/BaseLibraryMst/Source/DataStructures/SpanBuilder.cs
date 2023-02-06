@@ -62,8 +62,9 @@ namespace Text
     public void Duplicate1()
     {
       var expected = "RoobeertRoobeertRoobeertRoobeert";
-      var actual = new Flux.SpanBuilder<char>("Roobeert".AsSpan()).Repeat(3).ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>("Roobeert".AsSpan());
+      actual.Repeat(3);
+      Assert.AreEqual(expected, actual.ToString());
     }
 
     //[TestMethod]
@@ -223,32 +224,36 @@ namespace Text
     public void PadEven()
     {
       var expected = @"---101----";
-      var actual = new Flux.SpanBuilder<char>(@"101".AsSpan()).PadEven(10, '-', '-', false).ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>(@"101".AsSpan());
+      actual.PadEven(10, '-', '-', false);
+      Assert.AreEqual(expected, actual.ToString());
     }
 
     [TestMethod]
     public void PadLeft()
     {
       var expected = @"00000006";
-      var actual = new Flux.SpanBuilder<char>(@"6".AsSpan()).PadLeft(8, '0').ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>(@"6".AsSpan());
+      actual.PadLeft(8, '0');
+      Assert.AreEqual(expected, actual.ToString());
     }
 
     [TestMethod]
     public void PadRight()
     {
       var expected = @"60000000";
-      var actual = new Flux.SpanBuilder<char>(@"6".AsSpan()).PadRight(8, '0').ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>(@"6".AsSpan());
+      actual.PadRight(8, '0');
+      Assert.AreEqual(expected, actual.ToString());
     }
 
     [TestMethod]
     public void RemoveAll()
     {
       var expected = @" There  is  a  new  neat  little  thing  that  eats  soup.";
-      var actual = new Flux.SpanBuilder<char>(@"1 There 2 is 3 a 4 new 5 neat 6 little 7 thing 8 that 9 eats 0 soup.".AsSpan()).RemoveAll(char.IsDigit).ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>(@"1 There 2 is 3 a 4 new 5 neat 6 little 7 thing 8 that 9 eats 0 soup.".AsSpan());
+      actual.RemoveAll(char.IsDigit);
+      Assert.AreEqual(expected, actual.ToString());
     }
 
     //[TestMethod]

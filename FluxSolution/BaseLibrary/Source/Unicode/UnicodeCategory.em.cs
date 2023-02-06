@@ -39,5 +39,22 @@ namespace Flux
     /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajorMinor"/> enum value.</summary>
     public static UnicodeCategoryMajorMinor ToUnicodeCategoryMajorMinor(this System.Globalization.UnicodeCategory unicodeCategory)
       => (UnicodeCategoryMajorMinor)unicodeCategory;
+
+    /// <summary>Creates a new string in a more readable format, e.g. "DecimalDigitNumber" becomes "decimal digit" (i.e. drop the ending Unicode category major, make lower case and add word spacing).</summary>
+    public static string ToUnicodeCategoryMinorFriendlyString(this System.Globalization.UnicodeCategory source)
+    {
+      var ucsb = (source == System.Globalization.UnicodeCategory.OtherNotAssigned ? source.ToString().Substring(5) : source.ToString()).ToSpanBuilder();
+      var ucms = source.ToUnicodeCategoryMajor().ToString();
+
+      if (ucsb.AsReadOnlySpan().EndsWith(ucms)) ucsb.Remove(ucsb.Length - ucms.Length); // Either fix the unicode category that ends with its own category major.
+      else if (ucsb.AsReadOnlySpan().StartsWith(ucms)) ucsb.Remove(ucms.Length); // Or fix the unicode category that starts with its own category major.
+
+      ucsb.ExpandFromCamelCase();
+
+      if (source == System.Globalization.UnicodeCategory.NonSpacingMark) ucsb.RemoveAll(e => e == ' '); // Fix "non spacing" to "nonspacing".
+      if (source == System.Globalization.UnicodeCategory.PrivateUse) ucsb.AsSpan().ReplaceAll(e => e == ' ' ? '-' : e); // Fix "private use" to "private-use".
+
+      return ucsb.ToString();
+    }
   }
 }

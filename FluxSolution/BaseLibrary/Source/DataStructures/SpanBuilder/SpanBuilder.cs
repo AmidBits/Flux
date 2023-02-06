@@ -22,122 +22,18 @@ namespace Flux
     public SpanBuilder(System.Collections.Generic.ICollection<T> collection, int count = 1) : this(collection.Count * count) => Append(collection, count);
     public SpanBuilder(System.ReadOnlySpan<T> readOnlySpan, int count = 1) : this(0) => Append(readOnlySpan, count);
 
-    private int AppendCapacity => m_array.Length - m_tail;
-    private int PrependCapacity => m_head;
-
-    /// <summary>Grows a uniform (i.e. both left and right satisfies) buffer capacity to at least that specified.</summary>
-    private void EnsureUniformCapacity(int sideCapacity)
-    {
-      var totalCapacity = int.Max(DefaultBufferSize, sideCapacity + Length + sideCapacity);
-
-      if (totalCapacity < Capacity) // We got overall capacity, just need to make sure we have it on both sides.
-      {
-        if (PrependCapacity < sideCapacity || AppendCapacity < sideCapacity) // If any one side is below capacity, we center the content to ensure uniform capacity.
-        {
-          var head = (Capacity - Length) / 2; // Center content.
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content.
-
-          m_head = head;
-          m_tail = tail;
-        }
-      }
-      else // Not enough uniform capacity available.
-      {
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
-
-        var head = (array.Length - Length) / 2;
-        var tail = head + Length;
-
-        System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
-
-        System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
-
-        m_array = array;
-
-        m_head = head;
-        m_tail = tail;
-      }
-    }
-
-    /// <summary>Grows an append (right) buffer capacity to at least that specified.</summary>
-    private void EnsureAppendCapacity(int appendCapacity)
-    {
-      if (AppendCapacity < appendCapacity) // Not enough append capacity.
-      {
-        var totalCapacity = int.Max(DefaultBufferSize, PrependCapacity + Length + appendCapacity);
-
-        if (Capacity <= totalCapacity) // Not enough total capacity.
-        {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
-
-          var head = (array.Length - Length - appendCapacity) / 2;
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
-
-          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
-
-          m_array = array;
-
-          m_head = head;
-          m_tail = tail;
-        }
-        else if (AppendCapacity < appendCapacity) // Enough capacity, center content if needed.
-        {
-          var head = (Capacity - Length) / 2;
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content within itself.
-
-          m_head = head;
-          m_tail = tail;
-        }
-      }
-    }
-
-    /// <summary>Grows a prepend (left) buffer capacity to at least that specified.</summary>
-    private void EnsurePrependCapacity(int prependCapacity)
-    {
-      if (PrependCapacity < prependCapacity) // Not enough prepend capacity.
-      {
-        var totalCapacity = int.Max(DefaultBufferSize, prependCapacity + Length + AppendCapacity);
-
-        if (Capacity < totalCapacity) // Not enough total capacity, allocate new array.
-        {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
-
-          var head = (array.Length - Length + prependCapacity) / 2;
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, array, head, Length); // Copy content.
-
-          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
-
-          m_array = array;
-
-          m_head = head;
-          m_tail = tail;
-        }
-        else if (PrependCapacity < prependCapacity) // Enough total capacity, center content if needed.
-        {
-          var head = (Capacity - Length) / 2;
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, m_array, head, Length); // Enough prepend space, so utilize by moving content.
-
-          m_head = head;
-          m_tail = tail;
-        }
-      }
-    }
-
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
     public T this[int index] { get => GetValue(index); set => SetValue(index, value); }
 
-    /// <summary>The current capacity of the builder.</summary>
+    /// <summary>The current total capacity of the builder buffer.</summary>
     public int Capacity => m_array.Length;
+
+    /// <summary>The current partial capacity of the builder buffer right-side (append).</summary>
+    private int CapacityAppend => m_array.Length - m_tail;
+
+    /// <summary>The current partial capacity of the builder buffer left-side (prepend).</summary>
+    private int CapacityPrepend => m_head;
+
     /// <summary>The current content length of the builder.</summary>
     public int Length => m_tail - m_head;
 
@@ -237,6 +133,114 @@ namespace Flux
       }
 
       return this;
+    }
+
+    /// <summary>Grows a uniform (i.e. both left and right satisfies) buffer capacity to at least that specified.</summary>
+    private void EnsureUniformCapacity(int sideCapacity)
+    {
+      var totalCapacity = int.Max(DefaultBufferSize, sideCapacity + Length + sideCapacity);
+
+      if (totalCapacity < Capacity) // We got overall capacity, just need to make sure we have it on both sides.
+      {
+        if (CapacityPrepend < sideCapacity || CapacityAppend < sideCapacity) // If any one side is below capacity, we center the content to ensure uniform capacity.
+        {
+          var head = (Capacity - Length) / 2; // Center content.
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content.
+
+          m_head = head;
+          m_tail = tail;
+        }
+      }
+      else // Not enough uniform capacity available.
+      {
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
+
+        var head = (array.Length - Length) / 2;
+        var tail = head + Length;
+
+        System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
+
+        System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
+
+        m_array = array;
+
+        m_head = head;
+        m_tail = tail;
+      }
+    }
+
+    /// <summary>Grows an append (right) buffer capacity to at least that specified.</summary>
+    private void EnsureAppendCapacity(int appendCapacity)
+    {
+      if (CapacityAppend < appendCapacity) // Not enough append capacity.
+      {
+        var totalCapacity = int.Max(DefaultBufferSize, CapacityPrepend + Length + appendCapacity);
+
+        if (Capacity <= totalCapacity) // Not enough total capacity.
+        {
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
+
+          var head = (array.Length - Length - appendCapacity) / 2;
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
+
+          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
+
+          m_array = array;
+
+          m_head = head;
+          m_tail = tail;
+        }
+        else if (CapacityAppend < appendCapacity) // Enough capacity, center content if needed.
+        {
+          var head = (Capacity - Length) / 2;
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content within itself.
+
+          m_head = head;
+          m_tail = tail;
+        }
+      }
+    }
+
+    /// <summary>Grows a prepend (left) buffer capacity to at least that specified.</summary>
+    private void EnsurePrependCapacity(int prependCapacity)
+    {
+      if (CapacityPrepend < prependCapacity) // Not enough prepend capacity.
+      {
+        var totalCapacity = int.Max(DefaultBufferSize, prependCapacity + Length + CapacityAppend);
+
+        if (Capacity < totalCapacity) // Not enough total capacity, allocate new array.
+        {
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
+
+          var head = (array.Length - Length + prependCapacity) / 2;
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, array, head, Length); // Copy content.
+
+          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
+
+          m_array = array;
+
+          m_head = head;
+          m_tail = tail;
+        }
+        else if (CapacityPrepend < prependCapacity) // Enough total capacity, center content if needed.
+        {
+          var head = (Capacity - Length) / 2;
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, m_array, head, Length); // Enough prepend space, so utilize by moving content.
+
+          m_head = head;
+          m_tail = tail;
+        }
+      }
     }
 
     /// <summary>Gets the value at the specified index.</summary>
@@ -469,6 +473,9 @@ namespace Flux
 
       return this;
     }
+
+    /// <summary>Removes the specified range of values from the builder.</summary>
+    public SpanBuilder<T> Remove(int startIndex) => Remove(startIndex, Length - startIndex);
 
     /// <summary>Remove all items where the <paramref name="predicate"/> is satisfied.</summary>
     public SpanBuilder<T> RemoveAll(System.Func<T, bool> predicate)

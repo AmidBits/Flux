@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethodsSpanBuilder
   {
     /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
-    public static System.Span<char> ToCamelCase(this System.Span<char> source, System.Func<char, bool> predicate, System.Globalization.CultureInfo? culture = null)
+    public static SpanBuilder<char> CollapseToCamelCase(ref this SpanBuilder<char> source, char separator = ' ', System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
@@ -14,13 +14,18 @@ namespace Flux
         var c = source[index];
 
         if (wasPredicate && char.IsLetter(c) && char.IsLower(c))
+        {
           source[index] = char.ToUpper(c, culture);
 
-        wasPredicate = predicate(c);
+          if (index > 0)
+            source.Remove(--index, 1);
+        }
+
+        wasPredicate = c == separator;
       }
 
       return source;
     }
-    public static System.Span<char> ToCamelCase(this System.Span<char> source) => ToCamelCase(source, char.IsWhiteSpace);
+    public static SpanBuilder<char> CollapseToCamelCase(ref this SpanBuilder<char> source) => CollapseToCamelCase(ref source, ' ');
   }
 }

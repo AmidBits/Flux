@@ -26,6 +26,16 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      foreach (System.Globalization.UnicodeCategory uc in System.Enum.GetValues<System.Globalization.UnicodeCategory>())
+        System.Console.WriteLine($"{uc} : {uc.ToUnicodeCategoryMajor()} = {uc.ToUnicodeCategoryMinorFriendlyString()}");
+      return;
+
+      var t1 = Flux.ExtensionMethodsChar.GetOrdinalIndicatorSuffix('3', '0');
+      var t1c = '3'.ToStringEx();
+      System.Console.WriteLine(t1c);
+      var t1r = ((System.Text.Rune)'3').ToStringEx();
+      System.Console.WriteLine(t1r);
+
       var sbc = new Flux.SpanBuilder<char>();
       sbc.Append("hé\u0142\u0142ö");
       sbc.Append(" 35 \U0001F469\U0001F3FD\u200D\U0001F692 ");

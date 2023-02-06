@@ -12,6 +12,8 @@ namespace Flux
 
       return source;
     }
+    /// <summary>Replace all values in <paramref name="source"/> using the specified <paramref name="replacementSelector"/>.</summary>
+    public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, System.Func<T, T> replacementSelector) => ReplaceAll(source, (e, i) => replacementSelector(e));
 
     /// <summary>Replace all values in <paramref name="source"/> that satisfies the <paramref name="predicate"/> with the specified <paramref name="replacementValue"/>.</summary>
     public static System.Span<T> ReplaceAll<T>(this System.Span<T> source, T replacementValue, System.Func<T, int, bool> predicate)
