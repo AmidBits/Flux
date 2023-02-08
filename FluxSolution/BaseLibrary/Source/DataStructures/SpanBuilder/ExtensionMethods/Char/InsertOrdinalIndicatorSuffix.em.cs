@@ -29,7 +29,7 @@ namespace Flux
             _ => @"th"
           };
 
-          if (predicate(source.AsReadOnlySpan().ToString(0, index + 1), suffix))
+          if (predicate(source.AsReadOnlySpan().Slice(0, index + 1).ToString(), suffix))
             source.Insert(index + 1, suffix.AsSpan());
         }
 

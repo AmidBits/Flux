@@ -101,7 +101,7 @@ namespace Flux.Text
         div /= 10;
       }
 
-      return sb.AsReadOnlySpan().ToString(0, sb.Length);
+      return sb.AsReadOnlySpan().ToString();
     }
 
     public static int TextToNumber(System.ReadOnlySpan<char> number)

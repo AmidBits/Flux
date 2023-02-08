@@ -25,6 +25,8 @@ namespace Flux
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
     public T this[int index] { get => GetValue(index); set => SetValue(index, value); }
 
+    public T[] Array => new System.ArraySegment<T>(m_array, m_head, m_tail - m_head).Array!;
+
     /// <summary>The current total capacity of the builder buffer.</summary>
     public int Capacity => m_array.Length;
 
@@ -555,8 +557,19 @@ namespace Flux
       return this;
     }
 
+    public string ToString(int startIndex, int count)
+    {
+      var sb = new System.Text.StringBuilder();
+
+      for (var index = m_head + startIndex; count > 0; index++, count--)
+        sb.Append(GetValue(index)?.ToString() ?? string.Empty);
+
+      return sb.ToString();
+    }
+    public string ToString(int startIndex) => ToString(startIndex, Length);
+
     #region Object overrides.
-    public override string ToString() => AsReadOnlySpan().ToString(0, Length);
+    public override string ToString() => ToString(0, Length);
     #endregion Object overrides.
   }
 }

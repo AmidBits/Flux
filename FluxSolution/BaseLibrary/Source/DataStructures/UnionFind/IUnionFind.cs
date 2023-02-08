@@ -1,9 +1,9 @@
 ﻿namespace Flux.DataStructures.UnionFind
 {
-  public interface IUnionFind<T>
+  public interface IUnionFind<TKey>
   {
-    bool AreConnected(T value, T otherValue);
-    int Find(T value);
-    bool Union(T value, T otherValue);
+    bool AreConnected(TKey value, TKey otherValue);
+    int Find(TKey value);
+    bool Union(TKey value, TKey otherValue);
   }
 }
