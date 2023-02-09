@@ -84,6 +84,6 @@ namespace Flux.Text.PhoneticAlgorithm
 
     /// <summary>Ensure valid characters for nysiis code generation.</summary>
     public static string GetValidCharacters(string text)
-      => text.RemoveUnicodeMarks().ReplaceUnicodeLatinStrokes().RemoveNonLanguageLetters().ToUpperCase(System.Globalization.CultureInfo.CurrentCulture).ToString();
+      => text.RemoveUnicodeMarks().ReplaceUnicodeLatinStrokes().RemoveNonLanguageLetters().AsSpan().ToUpperCase(System.Globalization.CultureInfo.CurrentCulture).ToString();
   }
 }

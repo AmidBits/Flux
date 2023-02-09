@@ -6,10 +6,12 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Schema;
 using Flux;
 using Flux.ApproximateEquality;
 using Flux.Geometry;
 using Flux.Interpolation;
+using Flux.Quantities;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -25,24 +27,51 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var x = new Flux.SequenceBuilder<char>("HelloWorld");
-      x.Reverse();
-      x.Insert(5, " There, ");
-      x.Append(", Dear Something Something Something");
-      x.Append(". ");
-      x.Prepend(" \U0001F469\U0001F3FD\u200D\U0001F692 ");
-      var y = x.ToSequenceBuilderOfRune();
+      var ros = new char[] { 'a', 'b', 'c' }.AsSpan().AsReadOnlySpan();
 
-      var s = " \U0001F469\U0001F3FD\u200D\U0001F692 ";
-      var sc = s.AsSpan();
-      var sr = sc.ToSpanRune();
-      var ste = sc.ToSpanTextElement();
-      var sr1 = ste.ToSpanRune();
-      var sc1 = sr.ToSpanChar();
+      var sb = new Flux.SpanBuilder<char>();
 
-      var sb = new Flux.SequenceBuilder<char>();
-      for (var i = 0; i < 1000; i++)
-        sb.Append(s);
+      for (var i = 15; i > 0; i--)
+        sb.Prepend(ros);
+
+
+
+      var s = sb.ToString();
+
+      System.Console.Write(s);
+
+      return;
+
+      //var t1 = Flux.ExtensionMethodsChar.GetOrdinalIndicatorSuffix('3', '0');
+      //var t1c = '3'.ToStringEx();
+      //System.Console.WriteLine(t1c);
+      //var t1r = ((System.Text.Rune)'3').ToStringEx();
+      //System.Console.WriteLine(t1r);
+
+      //var sbc = new Flux.SpanBuilder<char>();
+      //sbc.Append("hé\u0142\u0142ö");
+      //sbc.Append(" 35 \U0001F469\U0001F3FD\u200D\U0001F692 ");
+      //sbc.Append("wø\u024D\u0142\u0111");
+      //sbc.Append('.');
+      //sbc.AsSpan().ToCamelCase();
+      //sbc.AsSpan().FromCamelCase();
+      //sbc.InsertOrdinalIndicatorSuffix();
+      //sbc.MakeNumbersFixedLength(10, '0');
+      //var sbr = sbc.ToSpanBuilderRune();
+      //var s = sbr.ToString();
+      //var s1 = s.RemoveUnicodeMarks();
+      //var s2 = s1.AsSpan().ReplaceUnicodeLatinStrokes();
+      //var sh = s2.Shuffle(null);
+
+      //var sc = s.AsSpan();
+      //var sr = sc.ToSpanRune();
+      //var ste = sc.ToSpanTextElement();
+      //var sr1 = ste.ToSpanRune();
+      //var sc1 = sr.ToSpanChar();
+
+      //var sb = new Flux.SpanBuilder<char>();
+      //for (var i = 0; i < 1000; i++)
+      //  sbc.Append(s);
 
       //var e = rosr.EnumerateChars();
 

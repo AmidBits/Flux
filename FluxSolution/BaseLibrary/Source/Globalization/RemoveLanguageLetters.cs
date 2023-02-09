@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static SequenceBuilder<char> RemoveNonLanguageLetters(this SequenceBuilder<char> source, System.Globalization.CultureInfo? culture = null)
+    public static SpanBuilder<char> RemoveNonLanguageLetters(this SpanBuilder<char> source, System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
@@ -13,7 +13,7 @@ namespace Flux
       return source;
     }
 
-    public static SequenceBuilder<System.Text.Rune> RemoveNonLanguageLetters(this SequenceBuilder<System.Text.Rune> source, System.Globalization.CultureInfo? culture = null)
+    public static SpanBuilder<System.Text.Rune> RemoveNonLanguageLetters(this SpanBuilder<System.Text.Rune> source, System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 

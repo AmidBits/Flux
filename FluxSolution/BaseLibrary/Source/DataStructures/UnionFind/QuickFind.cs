@@ -1,17 +1,17 @@
 ﻿namespace Flux.DataStructures.UnionFind
 {
-  public sealed class QuickFind<T>
-    : IUnionFind<T>
-    where T : notnull
+  public sealed class QuickFind<TKey>
+    : IUnionFind<TKey>
+    where TKey : notnull
   {
     private int m_friendGroupCount;
 
-    private readonly System.Collections.Generic.Dictionary<T, int> m_map = new();
+    private readonly System.Collections.Generic.Dictionary<TKey, int> m_map = new();
     private readonly int[] m_sets;
     private readonly int[] m_sizes;
-    private readonly System.Collections.Generic.List<T> m_values;
+    private readonly System.Collections.Generic.List<TKey> m_values;
 
-    public QuickFind(System.Collections.Generic.IEnumerable<T> values)
+    public QuickFind(System.Collections.Generic.IEnumerable<TKey> values)
     {
       m_values = new(values);
 
@@ -29,13 +29,13 @@
     }
 
     public int FriendGroupCount => m_friendGroupCount;
-    public System.Collections.Generic.IReadOnlyList<T> Values => m_values;
+    public System.Collections.Generic.IReadOnlyList<TKey> Values => m_values;
 
-    public bool AreConnected(T value, T otherValue) => m_sets[m_map[value]] == m_sets[m_map[otherValue]];
+    public bool AreConnected(TKey value, TKey otherValue) => m_sets[m_map[value]] == m_sets[m_map[otherValue]];
 
-    public int Find(T value) => m_sets[m_map[value]];
+    public int Find(TKey value) => m_sets[m_map[value]];
 
-    public bool Union(T value, T unionValue)
+    public bool Union(TKey value, TKey unionValue)
     {
       int newSet = m_sets[m_map[value]];
       int oldSet = m_sets[m_map[unionValue]];
@@ -46,7 +46,7 @@
       //if (AreConnected(value, unionValue))
       //  return false;
 
-      foreach (T Value in m_values)
+      foreach (TKey Value in m_values)
         if (m_sets[m_map[Value]] == oldSet)
           m_sets[m_map[Value]] = newSet;
 

@@ -71,7 +71,7 @@ namespace Flux.Text
     {
       var div = number.PowOfTowardZero(10, false);
 
-      var sb = new Flux.SequenceBuilder<string>();
+      var sb = new SpanBuilder<string>();
 
       while (number > 0)
       {
@@ -101,7 +101,7 @@ namespace Flux.Text
         div /= 10;
       }
 
-      return sb.AsReadOnlySpan().ToString(0, sb.Length);
+      return sb.AsReadOnlySpan().ToString();
     }
 
     public static int TextToNumber(System.ReadOnlySpan<char> number)

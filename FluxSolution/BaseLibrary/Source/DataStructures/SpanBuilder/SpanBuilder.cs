@@ -22,122 +22,20 @@ namespace Flux
     public SpanBuilder(System.Collections.Generic.ICollection<T> collection, int count = 1) : this(collection.Count * count) => Append(collection, count);
     public SpanBuilder(System.ReadOnlySpan<T> readOnlySpan, int count = 1) : this(0) => Append(readOnlySpan, count);
 
-    private int AppendCapacity => m_array.Length - m_tail;
-    private int PrependCapacity => m_head;
-
-    /// <summary>Grows a uniform (i.e. both left and right satisfies) buffer capacity to at least that specified.</summary>
-    private void EnsureUniformCapacity(int sideCapacity)
-    {
-      var totalCapacity = int.Max(DefaultBufferSize, sideCapacity + Length + sideCapacity);
-
-      if (totalCapacity < Capacity) // We got overall capacity, just need to make sure we have it on both sides.
-      {
-        if (PrependCapacity < sideCapacity || AppendCapacity < sideCapacity) // If any one side is below capacity, we center the content to ensure uniform capacity.
-        {
-          var head = (Capacity - Length) / 2; // Center content.
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content.
-
-          m_head = head;
-          m_tail = tail;
-        }
-      }
-      else // Not enough uniform capacity available.
-      {
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
-
-        var head = (array.Length - Length) / 2;
-        var tail = head + Length;
-
-        System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
-
-        System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
-
-        m_array = array;
-
-        m_head = head;
-        m_tail = tail;
-      }
-    }
-
-    /// <summary>Grows an append (right) buffer capacity to at least that specified.</summary>
-    private void EnsureAppendCapacity(int appendCapacity)
-    {
-      if (AppendCapacity < appendCapacity) // Not enough append capacity.
-      {
-        var totalCapacity = int.Max(DefaultBufferSize, PrependCapacity + Length + appendCapacity);
-
-        if (Capacity <= totalCapacity) // Not enough total capacity.
-        {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
-
-          var head = (array.Length - Length - appendCapacity) / 2;
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
-
-          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
-
-          m_array = array;
-
-          m_head = head;
-          m_tail = tail;
-        }
-        else if (AppendCapacity < appendCapacity) // Enough capacity, center content if needed.
-        {
-          var head = (Capacity - Length) / 2;
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content within itself.
-
-          m_head = head;
-          m_tail = tail;
-        }
-      }
-    }
-
-    /// <summary>Grows a prepend (left) buffer capacity to at least that specified.</summary>
-    private void EnsurePrependCapacity(int prependCapacity)
-    {
-      if (PrependCapacity < prependCapacity) // Not enough prepend capacity.
-      {
-        var totalCapacity = int.Max(DefaultBufferSize, prependCapacity + Length + AppendCapacity);
-
-        if (Capacity < totalCapacity) // Not enough total capacity, allocate new array.
-        {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
-
-          var head = (array.Length - Length + prependCapacity) / 2;
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, array, head, Length); // Copy content.
-
-          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
-
-          m_array = array;
-
-          m_head = head;
-          m_tail = tail;
-        }
-        else if (PrependCapacity < prependCapacity) // Enough total capacity, center content if needed.
-        {
-          var head = (Capacity - Length) / 2;
-          var tail = head + Length;
-
-          System.Array.Copy(m_array, m_head, m_array, head, Length); // Enough prepend space, so utilize by moving content.
-
-          m_head = head;
-          m_tail = tail;
-        }
-      }
-    }
-
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
     public T this[int index] { get => GetValue(index); set => SetValue(index, value); }
 
-    /// <summary>The current capacity of the builder.</summary>
+    public T[] Array => new System.ArraySegment<T>(m_array, m_head, m_tail - m_head).Array!;
+
+    /// <summary>The current total capacity of the builder buffer.</summary>
     public int Capacity => m_array.Length;
+
+    /// <summary>The current partial capacity of the builder buffer right-side (append).</summary>
+    private int CapacityAppend => m_array.Length - m_tail;
+
+    /// <summary>The current partial capacity of the builder buffer left-side (prepend).</summary>
+    private int CapacityPrepend => m_head;
+
     /// <summary>The current content length of the builder.</summary>
     public int Length => m_tail - m_head;
 
@@ -220,6 +118,133 @@ namespace Flux
         target[targetIndex++] = GetValue(sourceIndex++);
     }
 
+    /// <summary>Returns the <paramref name="source"/> with the specified <paramref name="values"/> duplicated by the specified <paramref name="count"/> throughout. If no values are specified, all characters are replicated. If the string builder is empty, nothing is replicated. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
+    public SpanBuilder<T> Duplicate(System.ReadOnlySpan<T> values, int count, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      for (var index = 0; index < Length; index++)
+      {
+        var sourceValue = GetValue(index);
+
+        if (values.Length == 0 || values.IndexOf(sourceValue, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default) > -1)
+        {
+          Insert(index, sourceValue, count);
+
+          index += count;
+        }
+      }
+
+      return this;
+    }
+
+    /// <summary>Grows a uniform (i.e. both left and right satisfies) buffer capacity to at least that specified.</summary>
+    private void EnsureUniformCapacity(int sideCapacity)
+    {
+      var totalCapacity = int.Max(DefaultBufferSize, sideCapacity + Length + sideCapacity);
+
+      if (totalCapacity < Capacity) // We got overall capacity, just need to make sure we have it on both sides.
+      {
+        if (CapacityPrepend < sideCapacity || CapacityAppend < sideCapacity) // If any one side is below capacity, we center the content to ensure uniform capacity.
+        {
+          var head = (Capacity - Length) / 2; // Center content.
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content.
+
+          m_head = head;
+          m_tail = tail;
+        }
+      }
+      else // Not enough uniform capacity available.
+      {
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
+
+        var head = (array.Length - Length) / 2;
+        var tail = head + Length;
+
+        System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
+
+        System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
+
+        m_array = array;
+
+        m_head = head;
+        m_tail = tail;
+      }
+    }
+
+    /// <summary>Grows an append (right) buffer capacity to at least that specified.</summary>
+    private void EnsureAppendCapacity(int appendCapacity)
+    {
+      if (CapacityAppend < appendCapacity) // Not enough append capacity.
+      {
+        var totalCapacity = int.Max(DefaultBufferSize, CapacityPrepend + Length + appendCapacity);
+
+        if (Capacity <= totalCapacity) // Not enough total capacity.
+        {
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
+
+          var head = (array.Length - Length - appendCapacity) / 2;
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
+
+          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
+
+          m_array = array;
+
+          m_head = head;
+          m_tail = tail;
+        }
+        else if (CapacityAppend < appendCapacity) // Enough capacity, center content if needed.
+        {
+          var head = (Capacity - Length) / 2;
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, m_array, head, Length); // Copy content within itself.
+
+          m_head = head;
+          m_tail = tail;
+        }
+      }
+    }
+
+    /// <summary>Grows a prepend (left) buffer capacity to at least that specified.</summary>
+    private void EnsurePrependCapacity(int prependCapacity)
+    {
+      if (CapacityPrepend < prependCapacity) // Not enough prepend capacity.
+      {
+        var totalCapacity = int.Max(DefaultBufferSize, prependCapacity + Length + CapacityAppend);
+
+        if (Capacity < totalCapacity) // Not enough total capacity, allocate new array.
+        {
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
+
+          var head = (array.Length - Length + prependCapacity) / 2;
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, array, head, Length); // Copy content.
+
+          System.Buffers.ArrayPool<T>.Shared.Return(m_array); // Recycle the old array.
+
+          m_array = array;
+
+          m_head = head;
+          m_tail = tail;
+        }
+        else if (CapacityPrepend < prependCapacity) // Enough total capacity, center content if needed.
+        {
+          var head = (Capacity - Length) / 2;
+          var tail = head + Length;
+
+          System.Array.Copy(m_array, m_head, m_array, head, Length); // Enough prepend space, so utilize by moving content.
+
+          m_head = head;
+          m_tail = tail;
+        }
+      }
+    }
+
     /// <summary>Gets the value at the specified index.</summary>
     public T GetValue(int index) => (index >= 0 && index < Length) ? m_array[m_head + index] : throw new System.ArgumentOutOfRangeException(nameof(index));
 
@@ -273,6 +298,128 @@ namespace Flux
         span.CopyTo(m_array, startIndex -= span.Length);
 
       return this;
+    }
+
+    /// <summary>Normalize the specified (or all if none specified) consecutive <paramref name="values"/> in the string normalized. Uses the specfied <paramref name="equalityComparer"/>, or default if null.</summary>
+    public SpanBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      var targetIndex = 0;
+      var previous = default(T);
+
+      for (var sourceIndex = 0; sourceIndex < Length; sourceIndex++)
+      {
+        var current = GetValue(sourceIndex);
+
+        if (!equalityComparer.Equals(current, previous) || (values.Count > 0 && !values.Contains(current, equalityComparer)))
+        {
+          SetValue(targetIndex++, current);
+
+          previous = current;
+        }
+      }
+
+      return Remove(targetIndex, Length - targetIndex);
+    }
+
+    /// <summary>Normalize where the <paramref name="predicate"/> is satisfied using the <paramref name="normalizedValue"/> throughout the builder. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
+    public SpanBuilder<T> NormalizeAll(T normalizedValue, System.Func<T, bool> predicate)
+    {
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
+      var normalizedIndex = 0;
+
+      var isPrevious = true; // Set to true in order for trimming to occur on the left.
+
+      for (var index = 0; index < Length; index++)
+      {
+        var character = GetValue(index);
+
+        var isCurrent = predicate(character);
+
+        if (!(isPrevious && isCurrent))
+        {
+          SetValue(normalizedIndex++, isCurrent ? normalizedValue : character);
+
+          isPrevious = isCurrent;
+        }
+      }
+
+      if (isPrevious) normalizedIndex--;
+
+      return Remove(normalizedIndex, Length - normalizedIndex);
+    }
+
+    /// <summary>Normalize the <paramref name="normalizeValues"/> using the <paramref name="normalizedValue"/> throughout the builder. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
+    public SpanBuilder<T> NormalizeAll(T normalizedValue, System.Collections.Generic.IList<T> normalizeValues, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      return NormalizeAll(normalizedValue, t => normalizeValues.Contains(t, equalityComparer));
+    }
+
+    /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
+    public SpanBuilder<T> PadEven(int totalWidth, T paddingLeft, T paddingRight, bool leftBias = true)
+    {
+      if (totalWidth > Length)
+      {
+        var quotient = System.Math.DivRem(totalWidth - Length, 2, out var remainder);
+
+        PadLeft(Length + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
+        // The two lines below are the original right biased (always) which works great.
+        //PadLeft(Length + (totalWidth - Length) / 2, paddingLeft);
+        PadRight(totalWidth, paddingRight);
+      }
+
+      return this;
+    }
+
+    /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
+    public SpanBuilder<T> PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
+    {
+      if (totalWidth > Length)
+      {
+        var quotient = System.Math.DivRem(totalWidth - Length, 2, out var remainder);
+
+        PadLeft(Length + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
+        // The two lines below are the original right biased (always) which works great.
+        //PadLeft(Length + (totalWidth - Length) / 2, paddingLeft);
+        PadRight(totalWidth, paddingRight);
+      }
+
+      return this;
+    }
+
+    /// <summary>Pad on the left with the specified <paramref name="padding"/>.</summary>
+    public SpanBuilder<T> PadLeft(int totalWidth, T padding)
+    {
+      if (Length < totalWidth)
+        Insert(0, padding, totalWidth - Length);
+
+      return this;
+    }
+
+    /// <summary>Pad on the left with the specified <paramref name="padding"/>.</summary>
+    public SpanBuilder<T> PadLeft(int totalWidth, System.ReadOnlySpan<T> padding)
+    {
+      while (Length < totalWidth)
+        Insert(0, padding);
+
+      return Remove(0, Length - totalWidth);
+    }
+
+    /// <summary>Pad on the right with the specified <paramref name="padding"/>.</summary>
+    public SpanBuilder<T> PadRight(int totalWidth, T padding)
+      => Append(padding, totalWidth - Length);
+
+    /// <summary>Pad on the right with the specified <paramref name="padding"/>.</summary>
+    public SpanBuilder<T> PadRight(int totalWidth, System.ReadOnlySpan<T> padding)
+    {
+      while (Length < totalWidth)
+        Append(padding);
+
+      return Remove(totalWidth, Length - totalWidth);
     }
 
     /// <summary>Prepends with a <paramref name="value"/>, <paramref name="count"/> times.</summary>
@@ -329,6 +476,51 @@ namespace Flux
       return this;
     }
 
+    /// <summary>Removes the specified range of values from the builder.</summary>
+    public SpanBuilder<T> Remove(int startIndex) => Remove(startIndex, Length - startIndex);
+
+    /// <summary>Remove all items where the <paramref name="predicate"/> is satisfied.</summary>
+    public SpanBuilder<T> RemoveAll(System.Func<T, bool> predicate)
+    {
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+
+      var removedIndex = 0;
+
+      for (var index = 0; index < Length; index++)
+      {
+        var value = GetValue(index);
+
+        if (!predicate(value))
+          SetValue(removedIndex++, value);
+      }
+
+      return Remove(removedIndex, Length - removedIndex);
+    }
+
+    /// <summary>Remove all <paramref name="removeValues"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    public SpanBuilder<T> RemoveAll(System.Collections.Generic.IList<T> removeValues, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      return RemoveAll(t => removeValues.Contains(t, equalityComparer));
+    }
+
+    /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
+    public SpanBuilder<T> Repeat(int count) => Append(new SpanBuilder<T>(AsReadOnlySpan(), count).AsSpan());
+
+    /// <summary>Replace <paramref name="key"/> with <paramref name="value"/> if it exists at <paramref name="startAt"/> in <paramref name="source"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    /// <exception cref="System.ArgumentNullException"></exception>
+    public SpanBuilder<T> ReplaceIfEqualAt(int startAt, System.ReadOnlySpan<T> key, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      if (AsReadOnlySpan().EqualsAt(startAt, key, 0, key.Length, equalityComparer))
+      {
+        Remove(startAt, key.Length);
+        Insert(startAt, value);
+      }
+
+      return this;
+    }
+
     /// <summary>Reverse all items in the range [startIndex, endIndex], in the builder.</summary>
     public SpanBuilder<T> Reverse(int startIndex, int endIndex)
     {
@@ -344,6 +536,8 @@ namespace Flux
 
       return this;
     }
+
+    public SpanBuilder<T> Reverse() => Reverse(0, Length - 1);
 
     public void SetValue(int index, T value) => m_array[m_head + index] = (index >= 0 && index < Length) ? value : throw new System.ArgumentOutOfRangeException(nameof(index));
 
@@ -363,8 +557,19 @@ namespace Flux
       return this;
     }
 
+    public string ToString(int startIndex, int count)
+    {
+      var sb = new System.Text.StringBuilder();
+
+      for (var index = m_head + startIndex; count > 0; index++, count--)
+        sb.Append(GetValue(index)?.ToString() ?? string.Empty);
+
+      return sb.ToString();
+    }
+    public string ToString(int startIndex) => ToString(startIndex, Length);
+
     #region Object overrides.
-    public override string ToString() => AsReadOnlySpan().ToString(0, Length);
+    public override string ToString() => ToString(0, Length);
     #endregion Object overrides.
   }
 }

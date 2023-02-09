@@ -1,14 +1,14 @@
 ﻿namespace Flux.DataStructures.UnionFind
 {
-  public sealed class QuickUnion<T>
-    : IUnionFind<T>
-    where T : notnull
+  public sealed class QuickUnion<TKey>
+    : IUnionFind<TKey>
+    where TKey : notnull
   {
-    private readonly System.Collections.Generic.Dictionary<T, int> m_map = new();
+    private readonly System.Collections.Generic.Dictionary<TKey, int> m_map = new();
     private readonly int[] m_parents;
-    private readonly System.Collections.Generic.List<T> m_values;
+    private readonly System.Collections.Generic.List<TKey> m_values;
 
-    public QuickUnion(System.Collections.Generic.IEnumerable<T> values)
+    public QuickUnion(System.Collections.Generic.IEnumerable<TKey> values)
     {
       m_values = new(values);
 
@@ -21,11 +21,11 @@
       }
     }
 
-    public System.Collections.Generic.IReadOnlyList<T> Values => m_values;
+    public System.Collections.Generic.IReadOnlyList<TKey> Values => m_values;
 
-    public bool AreConnected(T value, T otherValue) => Find(value) == Find(otherValue);
+    public bool AreConnected(TKey value, TKey otherValue) => Find(value) == Find(otherValue);
 
-    public int Find(T value)
+    public int Find(TKey value)
     {
       int currentValue = m_map[value];
 
@@ -35,7 +35,7 @@
       return currentValue;
     }
 
-    public bool Union(T value, T oldValue)
+    public bool Union(TKey value, TKey oldValue)
     {
       if (AreConnected(value, oldValue))
         return false;

@@ -5,10 +5,11 @@ namespace Flux.DataStructures
     : Disposable, System.Collections.Generic.IReadOnlyList<T>
   {
     private System.Collections.Generic.IEnumerator<T>? m_enumerator = null;
-    private readonly System.Collections.Generic.List<T> m_list = new();
+    private readonly System.Collections.Generic.List<T> m_buffer = new();
     private readonly object m_lock = new();
 
-    public BufferedReadOnlyList(System.Collections.Generic.IEnumerable<T> collection) => m_enumerator = collection.GetEnumerator();
+    public BufferedReadOnlyList(System.Collections.Generic.IEnumerator<T> collection) => m_enumerator = collection;
+    public BufferedReadOnlyList(System.Collections.Generic.IEnumerable<T> collection) : this(collection.GetEnumerator()) { }
 
     protected override void DisposeManaged()
     {
@@ -16,53 +17,55 @@ namespace Flux.DataStructures
       m_enumerator = null;
     }
 
-    public void GetAllElements() => TryGetElementAt(int.MaxValue, out var _);
+    /// <summary>Exhausts the source of all its elements into the <see cref="BufferedReadOnlyList{T}"/> for consumption as a whole.</summary>
+    /// <remarks>It could be costly not to exploit the initial enumeration.</remarks>
+    public void ExhaustSource() => TryGetElementAt(int.MaxValue, out var _);
 
+    /// <summary>Return the element at <paramref name="index"/> in out parameter <paramref name="result"/>.</summary>
+    /// <remarks>If the index is not already in buffer, then buffer all elements up to <paramref name="index"/>.</remarks>
     public bool TryGetElementAt(int index, out T result)
     {
-      lock (m_lock)
-      {
-        while (index >= m_list.Count)
+      if (index >= 0) // Skip negative indices.
+        lock (m_lock)
         {
-          if (!(m_enumerator?.MoveNext() ?? false))
+          if (m_enumerator is not null) // Skip if exhausted.
+            while (index >= m_buffer.Count) // As long as there are elements in source, buffer up to index.
+            {
+              if (!(m_enumerator?.MoveNext() ?? false))
+              {
+                DisposeManaged(); // If we reach the end of the source, dispose of the source.
+                break;
+              }
+
+              m_buffer.Add(m_enumerator.Current);
+            }
+
+          if (index < m_buffer.Count) // If the index is occupied in buffer.
           {
-            DisposeManaged();
-            break;
+            result = m_buffer[index];
+            return true;
           }
-
-          m_list.Add(m_enumerator.Current);
         }
 
-        if (index < m_list.Count)
-        {
-          result = m_list[index];
-          return true;
-        }
-
-        result = default!;
-        return false;
-      }
+      result = default!;
+      return false;
     }
 
     #region Implementation of IReadOnlyList<T>
 
-    /// <summary>Indexer for buffered elements currently in the <see cref="IReadOnlyList{T}"/>.</summary>
-    public T this[int index] => m_list[index];
+    public T this[int index] => m_buffer[index];
 
-    /// <summary>The count of buffered elements currently in the <see cref="IReadOnlyList{T}"/>.</summary>
-    public int Count => m_list.Count;
+    public int Count => m_buffer.Count;
 
-    /// <summary>Get an enumerator that enumerates and buffers all elements in the original sequence.</summary>
     public System.Collections.Generic.IEnumerator<T> GetEnumerator()
     //=> new BufferedReadOnlyListEnumerator(this);
     {
-      for (var index = 0; index < m_list.Count; index++)
+      for (var index = 0; index < m_buffer.Count; index++)
         if (TryGetElementAt(index, out var item))
           yield return item;
         else
           yield break;
     }
-    /// <summary>Get an enumerator that enumerates and buffers all elements in the original sequence.</summary>
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion Implementation of IReadOnlyList<T>

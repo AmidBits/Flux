@@ -55,10 +55,10 @@ namespace Flux
       }
 
       /// <summary>Converts a number into a positional notation text string.</summary>
-      public Flux.SequenceBuilder<System.Text.Rune> NumberToText<TSelf>(TSelf number)
+      public SpanBuilder<System.Text.Rune> NumberToText<TSelf>(TSelf number)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
-        var sb = new Flux.SequenceBuilder<System.Text.Rune>();
+        var sb = new SpanBuilder<System.Text.Rune>();
 
         if (TSelf.IsZero(number))
           sb.Append((System.Text.Rune)'0');
@@ -77,19 +77,19 @@ namespace Flux
         return sb;
       }
 
-      /// <summary>Tries to convert a number into a positional notation text string.</summary>
-      public bool TryNumberToText(System.Numerics.BigInteger number, out Flux.SequenceBuilder<System.Text.Rune>? result)
-      {
-        try
-        {
-          result = NumberToText(number);
-          return true;
-        }
-        catch { }
+      ///// <summary>Tries to convert a number into a positional notation text string.</summary>
+      //public bool TryNumberToText(System.Numerics.BigInteger number, out SpanBuilder<System.Text.Rune>? result)
+      //{
+      //  try
+      //  {
+      //    result = NumberToText(number);
+      //    return true;
+      //  }
+      //  catch { }
 
-        result = default;
-        return false;
-      }
+      //  result = default;
+      //  return false;
+      //}
 
       /// <summary>Convert a positional notation text string into a number.</summary>
       public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<System.Text.Rune> number)
@@ -139,11 +139,11 @@ namespace Flux
           _ => PositionalNotation.ForRadix(radix)
         };
 
-      public static System.Collections.Generic.Dictionary<int, Flux.SequenceBuilder<System.Text.Rune>> ToStringRadices(System.Numerics.BigInteger number)
+      public static System.Collections.Generic.Dictionary<int, string> ToStringRadices(System.Numerics.BigInteger number)
       {
-        var dictionary = new System.Collections.Generic.Dictionary<int, Flux.SequenceBuilder<System.Text.Rune>>();
+        var dictionary = new System.Collections.Generic.Dictionary<int, string>();
         for (var radix = 2; radix <= MaxRadix; radix++)
-          dictionary.Add(radix, ForRadix(radix).NumberToText(number));
+          dictionary.Add(radix, ForRadix(radix).NumberToText(number).ToString());
         return dictionary;
       }
     }

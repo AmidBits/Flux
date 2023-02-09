@@ -7,7 +7,7 @@ namespace Flux
       => new(11.25 * (int)source);
     public static string ToStringOfWords(this ThirtytwoWindCompassRose source)
     {
-      var sb = new SequenceBuilder<char>();
+      var sb = new SpanBuilder<char>();
 
       var s = source.ToString();
 

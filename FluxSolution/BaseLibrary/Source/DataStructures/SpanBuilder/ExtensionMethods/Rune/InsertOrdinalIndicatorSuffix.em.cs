@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.), if the predicate is satisfied.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
     /// <param name="predicate">The first string is the string up until and including the numeric value, and the second string is the suffix to be affixed.</param>
-    public static SpanBuilder<System.Text.Rune> InsertOrdinalIndicatorSuffix(this SpanBuilder<System.Text.Rune> source)
+    public static SpanBuilder<System.Text.Rune> InsertOrdinalIndicatorSuffix(ref this SpanBuilder<System.Text.Rune> source)
     {
       var wasDigit = false;
 

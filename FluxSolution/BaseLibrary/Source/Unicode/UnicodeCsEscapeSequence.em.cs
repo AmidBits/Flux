@@ -41,7 +41,7 @@ namespace Flux
       {
         Unicode.CsEscapeSequenceFormat.UTF16 => $@"\u{rune.Value:X4}",
         Unicode.CsEscapeSequenceFormat.UTF32 => $@"\U{rune.Value:X8}",
-        Unicode.CsEscapeSequenceFormat.Variable => $@"\x{rune.Value:X1}",
+        Unicode.CsEscapeSequenceFormat.Variable => $@"\x{rune.Value:X2}",
         _ => throw new NotImplementedException(),
       };
   }

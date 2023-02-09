@@ -52,8 +52,7 @@ namespace Flux.DataStructures
       m_right = right;
     }
 
-    public override string ToString()
-      => $"{GetType().Name}";
+    public override string ToString() => $"{GetType().Name}";
 
     private sealed class EmptyDeque
       : IDeque<TValue>
@@ -66,8 +65,7 @@ namespace Flux.DataStructures
       public TValue PeekLeft() => throw new System.Exception(nameof(EmptyDeque));
       public TValue PeekRight() => throw new System.Exception(nameof(EmptyDeque));
 
-      public override string ToString()
-        => $"{GetType().Name}";
+      public override string ToString() => $"{GetType().Name}";
     }
 
     private sealed class SingleDeque
@@ -88,8 +86,7 @@ namespace Flux.DataStructures
       public TValue PeekLeft() => item;
       public TValue PeekRight() => item;
 
-      public override string ToString()
-        => $"{GetType().Name} {{ IsEmpty = {IsEmpty} }}";
+      public override string ToString() => $"{GetType().Name} {{ IsEmpty = {IsEmpty} }}";
     }
 
     private abstract class Dequelette
@@ -103,8 +100,7 @@ namespace Flux.DataStructures
       public abstract Dequelette DequeueLeft();
       public abstract Dequelette DequeueRight();
 
-      public override string ToString()
-        => $"{GetType().Name} {{ Size = {Size}, Full = {Full} }}";
+      public override string ToString() => $"{GetType().Name} {{ Size = {Size}, Full = {Full} }}";
     }
 
     private sealed class Dequelette1
