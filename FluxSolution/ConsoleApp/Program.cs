@@ -27,6 +27,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var d1 = 1.1;
+      var d2 = 2.1;
+      var d3 = double.Pow(d1, d2);
+
+      var a1 = new Flux.Fraction(3, 5);
+      var b1 = new Flux.Fraction(1, 2);
+
+      var c1 = a1 % b1;
+
+      System.Console.WriteLine(System.Numerics.BigInteger.One << 128);
+      System.Console.WriteLine(System.UInt128.MaxValue);
+
       var ros = new char[] { 'a', 'b', 'c' }.AsSpan().AsReadOnlySpan();
 
       var sb = new Flux.SpanBuilder<char>();
