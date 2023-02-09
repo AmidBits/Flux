@@ -21,13 +21,13 @@ namespace Flux
 
       var (quotient, remainder) = TSelf.DivRem(x, groupCount);
 
-      var list = new System.Collections.Generic.List<Flux.Loops.Range<TSelf>>();
+      var list = new System.Collections.Generic.List<Flux.Loops.RangeLoop<TSelf>>();
 
       for (var index = TSelf.Zero; index < groupCount; index++)
-        list.Add(new Flux.Loops.Range<TSelf>(index * quotient + TSelf.One, quotient, TSelf.One));
+        list.Add(new Flux.Loops.RangeLoop<TSelf>(index * quotient + TSelf.One, quotient, TSelf.One));
 
       if (remainder > TSelf.Zero)
-        list.Add(new Flux.Loops.Range<TSelf>(groupCount * quotient + TSelf.One, remainder, TSelf.One));
+        list.Add(new Flux.Loops.RangeLoop<TSelf>(groupCount * quotient + TSelf.One, remainder, TSelf.One));
 
       foreach (var range in list)
         System.Console.WriteLine($"{string.Join(',', range)} = {range.Aggregate(TSelf.One, (a, b) => a * b)}");

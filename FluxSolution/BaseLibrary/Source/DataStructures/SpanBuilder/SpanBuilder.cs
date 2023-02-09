@@ -561,8 +561,8 @@ namespace Flux
     {
       var sb = new System.Text.StringBuilder();
 
-      for (var index = m_head + startIndex; count > 0; index++, count--)
-        sb.Append(GetValue(index)?.ToString() ?? string.Empty);
+      while (count-- > 0)
+        sb.Append(GetValue(startIndex)?.ToString() ?? string.Empty);
 
       return sb.ToString();
     }

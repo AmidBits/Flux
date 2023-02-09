@@ -27,6 +27,15 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var l = new Flux.Loops.AlternatingLoop<int>(7, 11, -1, Flux.Loops.AlternatingLoopDirection.AwayFromMean);
+      //var l = new Flux.Loops.AlternatingLoop<int>(7, 11, 1, Flux.Loops.AlternatingLoopDirection.TowardsMean);
+      //var l = new Flux.Loops.RangeLoop<int>(10, 3, -3);
+
+      foreach (var i in l)
+        System.Console.WriteLine(i);
+
+      return;
+
       var d1 = 1.1;
       var d2 = 2.1;
       var d3 = double.Pow(d1, d2);

@@ -5,13 +5,13 @@ namespace Flux
     /// <summary>Creates a new sequence of numbers with the specified <paramref name="startNumber"/>, <paramref name="count"/> (iterations) and <paramref name="stepSize"/>.</summary>
     public static System.Collections.Generic.IEnumerable<TSelf> LoopRange<TSelf>(this TSelf startNumber, TSelf count, TSelf stepSize)
       where TSelf : System.Numerics.INumber<TSelf>
-      => new Loops.Range<TSelf>(startNumber, count, stepSize).GetSequence();
+      => new Loops.RangeLoop<TSelf>(startNumber, count, stepSize).GetSequence();
   }
 
   namespace Loops
   {
     /// <summary>Creates a new sequence based on the range properties.</summary>
-    public record class Range<TSelf>
+    public record class RangeLoop<TSelf>
       : NumberSequences.INumericSequence<TSelf>
       where TSelf : System.Numerics.INumber<TSelf>
     {
@@ -19,7 +19,7 @@ namespace Flux
       private readonly TSelf m_count;
       private readonly TSelf m_stepSize;
 
-      public Range(TSelf startNumber, TSelf count, TSelf stepSize)
+      public RangeLoop(TSelf startNumber, TSelf count, TSelf stepSize)
       {
         if (TSelf.IsNegative(count)) throw new System.ArgumentOutOfRangeException(nameof(count));
 
@@ -36,15 +36,15 @@ namespace Flux
       public TSelf StepSize { get => m_stepSize; init => m_stepSize = value; }
 
       #region Static methods
-      public static Range<TSelf> CreateBetween(TSelf source, TSelf target, TSelf step)
+      public static RangeLoop<TSelf> CreateBetween(TSelf source, TSelf target, TSelf step)
         => new(source, TSelf.Abs(target - source) / step + TSelf.One, TSelf.Abs(step) is var absStep && source <= target ? absStep : -absStep);
-      public static Range<TSelf> CreateBetween(TSelf source, TSelf target)
+      public static RangeLoop<TSelf> CreateBetween(TSelf source, TSelf target)
         => CreateBetween(source, target, TSelf.One);
       #endregion Static methods
 
       #region Implemented interfaces
-      // INumberSequence
 
+      // INumberSequence
       public System.Collections.Generic.IEnumerable<TSelf> GetSequence()
       {
         for (TSelf n = m_startNumber, c = m_count - TSelf.One; c >= TSelf.Zero; n += m_stepSize, c--)
@@ -54,6 +54,7 @@ namespace Flux
       // IEnumerable<>
       public System.Collections.Generic.IEnumerator<TSelf> GetEnumerator() => GetSequence().GetEnumerator();
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+
       #endregion Implemented interfaces
     }
   }
