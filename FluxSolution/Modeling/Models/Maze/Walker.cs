@@ -9,9 +9,9 @@ namespace Flux.Model.Maze
     {
       if (grid is null) throw new System.ArgumentNullException(nameof(grid));
 
-      var counter = grid.Size.Width * grid.Size.Height / RemovalCount;
+      var counter = grid.Size.X * grid.Size.Y / RemovalCount;
 
-      var current = grid[grid.Size.Width / 2, grid.Size.Height / 2];
+      var current = grid[grid.Size.X / 2, grid.Size.Y / 2];
 
       while (counter > 0)
       {

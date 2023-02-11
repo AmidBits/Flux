@@ -16,11 +16,11 @@ namespace Flux.Model.Maze
 
       var run = new System.Collections.Generic.List<Cell>();
 
-      for (int r = 0; r < grid.Size.Height; r++)
+      for (int r = 0; r < grid.Size.Y; r++)
       {
         run.Clear();
 
-        foreach (var cell in grid.GetValues().Skip(r * grid.Size.Width).Take(grid.Size.Width))
+        foreach (var cell in grid.GetValues().Skip(r * grid.Size.X).Take(grid.Size.X))
         {
           run.Add(cell);
 
@@ -29,8 +29,8 @@ namespace Flux.Model.Maze
 
           if (atBoundary2 || (!atBoundary1 && RandomNumberGenerator.Next(2) == 0)) // should close out
           {
-            if (run.AsSpan().AsReadOnlySpan().TryRandomElement(out var member, RandomNumberGenerator) && member.Edges.ContainsKey(direction1))
-              member.ConnectPath(member.Edges[direction1], true);
+            if (run.AsSpan().AsReadOnlySpan().TryRandomElement(out var member, RandomNumberGenerator) && member.Edges.TryGetValue(direction1, out var edgeCell))
+              member.ConnectPath(edgeCell, true);
 
             run.Clear();
           }

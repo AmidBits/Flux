@@ -25,7 +25,7 @@ namespace WpfApp
     {
       InitializeComponent();
 
-      var size = new Flux.Numerics.Size2<int>(60, 60);
+      var size = new Flux.Numerics.CartesianCoordinate2<int>(60, 60);
 
       m_grid = new Flux.Model.Maze.MazeGrid(size);
     }
@@ -55,14 +55,14 @@ namespace WpfApp
 
       var minSize = (int)System.Math.Min(canvas.ActualWidth, canvas.ActualHeight);
 
-      var width = minSize / m_grid.Size.Width;// (int)(canvas.ActualWidth / m_grid.Size.Width);
-      var height = minSize / m_grid.Size.Height;// (int)(canvas.ActualHeight / m_grid.Size.Height);
+      var width = minSize / m_grid.Size.X;// (int)(canvas.ActualWidth / m_grid.Size.Width);
+      var height = minSize / m_grid.Size.Y;// (int)(canvas.ActualHeight / m_grid.Size.Height);
 
       canvas.Children.Clear();
 
-      for (var row = 0; row < m_grid.Size.Height; row++)
+      for (var row = 0; row < m_grid.Size.Y; row++)
       {
-        for (var column = 0; column < m_grid.Size.Width; column++)
+        for (var column = 0; column < m_grid.Size.X; column++)
         {
           var cell = m_grid[row, column];
 

@@ -3,11 +3,11 @@ namespace Flux.Model.Maze
   public sealed class MazeGrid
     : Grid<Cell>, System.ICloneable
   {
-    public MazeGrid(Numerics.Size2<int> size)
-      : base(size.Height, size.Width)
+    public MazeGrid(Numerics.CartesianCoordinate2<int> size)
+      : base(size.Y, size.X)
     {
-      for (var h = size.Height - 1; h >= 0; h--)
-        for (var w = size.Width - 1; w >= 0; w--)
+      for (var h = size.Y - 1; h >= 0; h--)
+        for (var w = size.X - 1; w >= 0; w--)
           this[h, w] = new Cell();
       // Instantiate each cell?
     }
@@ -19,17 +19,17 @@ namespace Flux.Model.Maze
     /// <summary>Reset edges with one optional 4-way N,E,S,W and/or one 4-way NE,SE,SW,NW.</summary>
     public void ResetEdges(bool orthogonal, bool diagonal)
     {
-      for (var y = 0; y < Size.Height; y++) // 
+      for (var y = 0; y < Size.Y; y++) // 
       {
-        for (var x = 0; x < Size.Width; x++)
+        for (var x = 0; x < Size.X; x++)
         {
           var cell = this[y, x];
 
           cell.Edges.Clear();
 
           var n = (y > 0); // North (positive vertical axis).
-          var e = (x < (Size.Width - 1)); // East (negative horizontal axis).
-          var s = (y < (Size.Height - 1)); // South (negative vertical axis).
+          var e = (x < (Size.X - 1)); // East (negative horizontal axis).
+          var s = (y < (Size.Y - 1)); // South (negative vertical axis).
           var w = (x > 0); // West (positive horizontal axis).
 
           if (orthogonal)
