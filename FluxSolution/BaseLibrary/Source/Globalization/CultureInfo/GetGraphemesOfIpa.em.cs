@@ -2,70 +2,47 @@ namespace Flux
 {
   public static partial class ExtensionMethodsCultureInfo
   {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="ipaCode"></param>
-    /// <returns></returns>
+    /// <summary>Contains all English graphemes from the 'main system' and the rest including the minor patterns and oddities.</summary>
+    public static readonly string[][][] Graphemes_enUS = new string[][][]
+    {
+      new string[][] { new string[] { "a", "a.e", "ai", "air", "ar", "are", "au", "aw", "ay", }, new string[] { "aa", "aar", "ach", "ae", "aer", "ah", "aigh", "aire", "ais", "ait", "al", "alf", "anc", "ao", "aoh", "aow", "arr", "arre", "arrh", "as", "at", "augh", "aul", "aur", "awe", "aye", "ayer", "ayor", }, },
+      new string[][] { new string[] { "b", "bb", }, new string[] { "bh", "bd", "bp", "bt", "bu", "bv", }, },
+      new string[][] { new string[] { "c", "ce", "ch", "ci", "ck", }, new string[] { "cc", "cch", "che", "chs", "ckgu", "cq", "cqu", "ct", "cu", "cz", }, },
+      new string[][] { new string[] { "d", "dd", "dg", "dge", }, new string[] { "de", "ddh", "dh", "ddh", "di", "dj", "dne", "dt", }, },
+      new string[][] { new string[] { "e", "ea", "ear", "ed", "ee", "e.e", "eer", "er", "ere", "ew", }, new string[] { "eah", "eau", "e'er", "ei", "eigh", "eir", "eo", "e're", "err", "erre", "es", "et", "eu", "eur", "ewe", "ey", "eye", "eyr", "ey're", "ez", }, },
+      new string[][] { new string[] { "f", "ff", }, new string[] { "fe", "ffe", "ft" }, },
+      new string[][] { new string[] { "g", "ge", "gg", }, new string[] { "gh", "gi", "gm", "gn", "gne", "gu", "gue", }, },
+      new string[][] { new string[] { "h" }, new string[] { "hea", "heir", "ho", "hour", "hu", }, },
+      new string[][] { new string[] { "i", "ie", "i.e", "igh", "ir", }, new string[] { "ia", "ier", "ieu", "io", "ire", "irr", "is", "it", }, },
+      new string[][] { new string[] { "j", }, new string[] { "jj" }, },
+      new string[][] { new string[] { "k", }, new string[] { "ke", "kh", "kk", "kn", }, },
+      new string[][] { new string[] { "l", "le", "ll", }, new string[] { "lh", "lle" }, },
+      new string[][] { new string[] { "m", "mm", }, new string[] { "mb", "mbe", "me", "mme", "mn", }, },
+      new string[][] { new string[] { "n", "ng", "nn", }, new string[] { "nc", "nd", "ne", "ngh", "ngu", "ngue", "nne", "nt", "nw", }, },
+      new string[][] { new string[] { "o", "o. e", "oi", "oo", "or", "ore", "ou", "ow", "oy", }, new string[] { "oa", "oar", "oat", "oe", "oer", "oeu", "oh", "oir", "oire", "ois", "ol", "olo", "ooh", "oor", "orp", "orps", "orr", "ort", "os", "ot", "oue", "ough", "oul", "oup", "our", "ou're", "ous", "out", "oux", "owe", }, },
+      new string[][] { new string[] { "p", "ph", "pp", }, new string[] { "pb", "pe", "phth", "pn", "ppe", "pph", "ps", "pt", }, },
+      new string[][] { new string[] { "q", }, new string[] { "qu", "que" }, },
+      new string[][] { new string[] { "r", "rr", }, new string[] { "re", "rh", "rrh" }, },
+      new string[][] { new string[] { "s", "se", "sh", "si", "ss", "ssi", }, new string[] { "sc", "sce", "sch", "sci", "sj", "sse", "st", "sth", "sw", }, },
+      new string[][] { new string[] { "t", "tch", "th", "ti", "tt", }, new string[] { "te", "the", "ts", "tsch", "tte", "tw", }, },
+      new string[][] { new string[] { "u", "ue", "u. e", "ur", }, new string[] { "ua", "ui", "ure", "urr", "ut", "uu", }, },
+      new string[][] { new string[] { "v", "ve", }, new string[] { "vv" }, },
+      new string[][] { new string[] { "w", "wh", }, new string[] { "wi", "wr", "ww" }, },
+      new string[][] { new string[] { "x", }, new string[] { "xe", "xh", "xi" }, },
+      new string[][] { new string[] { "y", }, new string[] { "ye", "y.e", "yr", "yre", "yrrh", }, },
+      new string[][] { new string[] { "z", "zz", }, new string[] { "ze", "zi" }, },
+    };
+
+    /// <summary>Returns all graphemes.</summary>
     /// <see href="https://en.wikipedia.org/wiki/IPA_Extensions"/>
     /// <see href="https://en.wikipedia.org/wiki/English_phonology"/>
     /// <seealso href="https://www.dyslexia-reading-well.com/44-phonemes-in-english.html"/>
-    /// // https://books.openedition.org/obp/2190
-    public static string[] GetGraphemesOfIpa(this System.Globalization.CultureInfo source, string ipaCode)
-      // ADD CHECK FOR en-US!!!
-      => ipaCode switch
+    /// <seealso href="https://books.openedition.org/obp/2190"/>
+    public static System.Collections.Generic.IList<string> GetGraphemesOf(this System.Globalization.CultureInfo source)
+      => source.TwoLetterISOLanguageName switch
       {
-        // Consonants:
-        "\u0062" => new string[] { "b", "bb" }, // b
-        "\u0064" => new string[] { "d", "dd", "ed" }, // d
-        "\u0066" => new string[] { "f", "ff", "ph", "gh", "lf", "ft" }, // f
-        "\u0068" => new string[] { "h", "wh" }, // h
-        "\u006A" => new string[] { "y", "i", "j" }, // j
-        "\u006B" => new string[] { "k", "c", "ch", "cc", "lk", "qu", "ck", "x" }, // k
-        "\u006C" => new string[] { "l", "ll" }, // l
-        "\u006D" => new string[] { "m", "mm", "mb", "mn", "lm" }, // m
-        "\u006E" => new string[] { "n", "nn", "kn", "gn", "pn", "mn" }, // n
-        "\u0070" => new string[] { "p", "pp" }, // p
-        "\u0073" => new string[] { "s", "ss", "c", "sc", "ps", "st", "ce", "se" }, // s
-        "\u0074" => new string[] { "t", "tt", "th", "ed" }, // t
-        "\u0076" => new string[] { "v", "f", "ph", "ve" }, // v
-        "\u0077" => new string[] { "w", "wh", "u", "o" }, // w
-        "\u007A" => new string[] { "z", "zz", "s", "ss", "x", "ze", "se" }, // z
-        "\u00f0" => new string[] { "th" },
-        "\u014B" => new string[] { "ng", "n", "ngue" },
-        "\u0261" => new string[] { "g", "gg", "gh", "gu", "gue" }, // g
-        "\u0279" => new string[] { "r", "rr", "wr", "rh" },
-        "\u0283" => new string[] { "sh", "ce", "s", "ci", "si", "ch", "sci", "ti" },
-        "\u0292" => new string[] { "s", "si", "z" },
-        "\u02A4" => new string[] { "j", "ge", "g", "dge", "di", "gg" },
-        "\u02A7" => new string[] { "ch", "tch", "tu", "te" },
-        "\u03B8" => new string[] { "th" },
-        // Vowels:
-        "\u0065" => new string[] { "a", "ai", "eigh", "aigh", "ay", "er", "et", "ei", "au", "ea", "ey" },
-        "\u0069" => new string[] { "e", "ee", "ea", "y", "ey", "oe", "ie", "i", "ei", "eo", "ay" },
-        "\u006F\u031E" => new string[] { "o", "oa", "oe", "ow", "ough", "eau", "oo", "ew" }, // o+omega
-        "\u00E6" => new string[] { "a", "ai", "au" },
-        "\u0250" => new string[] { "u", "o", "oo", "ou" },
-
-        "\u0254" => new string[] { "a", "ho", "au", "aw", "ough" },
-        "\u025B" => new string[] { "e", "ea", "u", "ie", "ai", "a", "eo", "ei", "ae" },
-        "\u026A" => new string[] { "i", "e", "o", "u", "ui", "y", "ie" },
-        "\u0289" => new string[] { "o", "oo", "ew", "ue", "oe", "ough", "ui", "oew", "ou" }, // u+colon
-        "\u028A" => new string[] { "o", "oo", "u", "ou" }, // [flipped-omega]
-        "\u0061\u028A" => new string[] { "ow", "ou", "ough" }, // a+[flipped-omega]
-
-        // VOWELS ARE NOT COMPLETED YET!
-        //'\u0259' => new string[] { "a, er, i, ar, our, ur" },
-        //'\u0' => new string[] { "air, are, ear, ere, eir, ayer" },
-        //'\u0251' => new string[] { "a" },
-        //'\u0' => new string[] { "ir, er, ur, ear, or, our, yr" },
-        //'\u0' => new string[] { "aw, a, or, oor, ore, oar, our, augh, ar, ough, au" },
-        //'\u0' => new string[] { "ear, eer, ere, ier" },
-        //'\u0' => new string[] { "ure, our" },
-        _ => System.Array.Empty<string>()
+        "en" => Graphemes_enUS.SelectMany(aa => aa.SelectMany(a => a)).ToList(),
+        _ => throw new System.NotImplementedException(nameof(source))
       };
-
-    public static string[] GetGraphemesOfIpa(this System.Globalization.CultureInfo source, System.Text.Rune ipaRune) => GetGraphemesOfIpa(source, ipaRune.ToString());
   }
 }

@@ -27,8 +27,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      foreach (var g in "egg".EnumerateTextElements())
-        System.Console.WriteLine(g);
+      var count = 0;
+      foreach (var g in Flux.ExtensionMethodsCultureInfo.Graphemes_enUS.SelectMany(aa => aa[1]))
+        System.Console.WriteLine($"{++count:D3} = {g}");
 
       return;
 
