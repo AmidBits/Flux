@@ -16,15 +16,11 @@ namespace Flux
         buffer[length++] = c;
 
         if (length == buffer.Length)
-        {
           yield return getGrapheme();
-        }
       }
 
       while (length > 0)
-      {
         yield return getGrapheme();
-      }
 
       string getGrapheme()
       {

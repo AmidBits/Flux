@@ -75,7 +75,7 @@ namespace Flux.Text
 
       public bool MoveNext()
       {
-        if (m_textElementCount - m_textElementIndex <= 8) // If one or less available text elements, then 'top off' the buffer and reset the content of stringInfo.
+        if (m_textElementCount - m_textElementIndex <= 8) // If eight or less available text elements, then 'top off' the buffer and reset the content of stringInfo.
         {
           m_bufferCount -= m_bufferIndex; // Adjust to any remaining char count.
 

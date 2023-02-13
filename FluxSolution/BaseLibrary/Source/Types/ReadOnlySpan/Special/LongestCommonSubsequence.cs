@@ -33,7 +33,7 @@ namespace Flux
 
     /// <summary>Returns the items comprising the longest sub-sequence.</summary>
 
-    public static System.Collections.Generic.IList<T> GetLongestCommonSubsequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static System.Collections.Generic.List<T> GetLongestCommonSubsequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

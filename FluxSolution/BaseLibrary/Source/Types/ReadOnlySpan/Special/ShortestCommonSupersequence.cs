@@ -38,7 +38,7 @@ namespace Flux
     /// <para><seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/></para>
     /// <para><see cref="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
     /// </summary>
-    public static System.Collections.Generic.IList<T> GetShortestCommonSupersequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static System.Collections.Generic.List<T> GetShortestCommonSupersequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

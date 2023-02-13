@@ -109,7 +109,7 @@ namespace Flux
       }
       /// <summary>Convert a positional notation text string into a number.</summary>
       public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)
-        => TextToNumber(number.ToSpanRune());
+        => TextToNumber(number.ToListRune().AsReadOnlySpan());
 
       /// <summary>Convert a positional notation text string into a number.</summary>
       public bool TryTextToNumber(System.ReadOnlySpan<System.Text.Rune> number, out System.Numerics.BigInteger result)
@@ -126,7 +126,7 @@ namespace Flux
       }
       /// <summary>Convert a positional notation text string into a number.</summary>
       public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result)
-        => TryTextToNumber(number.ToSpanRune(), out result);
+        => TryTextToNumber(number.ToListRune().AsReadOnlySpan(), out result);
 
       /// <summary>Custom instance based on Base62 which results in traditional radix conversions.</summary>
       public static PositionalNotation ForRadix(int radix)
