@@ -19,8 +19,8 @@ namespace Flux
 
     /// <summary>Turbidity, unit of NTU (nephelometric turbidity units).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Turbidity"/>
-    public readonly struct Turbidity
-      : System.IComparable, System.IComparable<Turbidity>, System.IConvertible, System.IEquatable<Turbidity>, System.IFormattable, IUnitQuantifiable<double, TurbidityUnit>
+    public readonly record struct Turbidity
+      : System.IComparable, System.IComparable<Turbidity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, TurbidityUnit>
     {
       public const TurbidityUnit DefaultUnit = TurbidityUnit.NephelometricTurbidityUnits;
 
@@ -47,9 +47,6 @@ namespace Flux
       public static bool operator <=(Turbidity a, Turbidity b) => a.CompareTo(b) <= 0;
       public static bool operator >(Turbidity a, Turbidity b) => a.CompareTo(b) > 0;
       public static bool operator >=(Turbidity a, Turbidity b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(Turbidity a, Turbidity b) => a.Equals(b);
-      public static bool operator !=(Turbidity a, Turbidity b) => !a.Equals(b);
 
       public static Turbidity operator -(Turbidity v) => new(-v.m_value);
       public static Turbidity operator +(Turbidity a, double b) => new(a.m_value + b);
@@ -90,9 +87,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Turbidity other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -116,8 +110,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Turbidity o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name}  {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

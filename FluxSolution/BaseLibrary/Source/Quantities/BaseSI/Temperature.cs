@@ -26,8 +26,8 @@ namespace Flux
 
     /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
-    public readonly struct Temperature
-      : System.IComparable, System.IComparable<Temperature>, System.IConvertible, System.IEquatable<Temperature>, System.IFormattable, IUnitQuantifiable<double, TemperatureUnit>
+    public readonly record struct Temperature
+      : System.IComparable, System.IComparable<Temperature>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, TemperatureUnit>
     {
       public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
@@ -95,9 +95,6 @@ namespace Flux
       public static bool operator >(Temperature a, Temperature b) => a.CompareTo(b) > 0;
       public static bool operator >=(Temperature a, Temperature b) => a.CompareTo(b) >= 0;
 
-      public static bool operator ==(Temperature a, Temperature b) => a.Equals(b);
-      public static bool operator !=(Temperature a, Temperature b) => !a.Equals(b);
-
       public static Temperature operator -(Temperature v) => new(-v.m_value);
       public static Temperature operator +(Temperature a, double b) => new(a.m_value + b);
       public static Temperature operator +(Temperature a, Temperature b) => a + b.m_value;
@@ -137,9 +134,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Temperature other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -163,8 +157,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Temperature o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

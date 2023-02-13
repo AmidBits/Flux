@@ -20,8 +20,8 @@ namespace Flux
 
     /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
-    public readonly struct Frequency
-      : System.IComparable, System.IComparable<Frequency>, System.IConvertible, System.IEquatable<Frequency>, System.IFormattable, IUnitQuantifiable<double, FrequencyUnit>
+    public readonly record struct Frequency
+      : System.IComparable, System.IComparable<Frequency>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, FrequencyUnit>
     {
       public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
 
@@ -102,9 +102,6 @@ namespace Flux
       public static bool operator >(Frequency a, Frequency b) => a.CompareTo(b) > 0;
       public static bool operator >=(Frequency a, Frequency b) => a.CompareTo(b) >= 0;
 
-      public static bool operator ==(Frequency a, Frequency b) => a.Equals(b);
-      public static bool operator !=(Frequency a, Frequency b) => !a.Equals(b);
-
       public static Frequency operator -(Frequency v) => new(-v.m_hertz);
       public static Frequency operator +(Frequency a, double b) => new(a.m_hertz + b);
       public static Frequency operator +(Frequency a, Frequency b) => a + b.m_hertz;
@@ -144,9 +141,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_hertz);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Frequency other) => m_hertz == other.m_hertz;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_hertz.ToString(format, formatProvider);
 
@@ -170,8 +164,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Frequency o && Equals(o);
-      public override int GetHashCode() => m_hertz.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

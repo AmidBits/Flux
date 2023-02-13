@@ -19,8 +19,8 @@ namespace Flux
 
     /// <summary>Amplitude ratio unit of decibel volt, defined as twenty times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one volt RMS. A.k.a. logarithmic root-power ratio.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
-    public readonly struct AmplitudeRatio
-      : System.IComparable, System.IComparable<AmplitudeRatio>, System.IConvertible, System.IEquatable<AmplitudeRatio>, System.IFormattable, IUnitQuantifiable<double, AmplitudeRatioUnit>
+    public readonly record struct AmplitudeRatio
+      : System.IComparable, System.IComparable<AmplitudeRatio>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AmplitudeRatioUnit>
     {
       public const AmplitudeRatioUnit DefaultUnit = AmplitudeRatioUnit.DecibelVolt;
 
@@ -60,9 +60,6 @@ namespace Flux
       public static bool operator >(AmplitudeRatio a, AmplitudeRatio b) => a.CompareTo(b) > 0;
       public static bool operator >=(AmplitudeRatio a, AmplitudeRatio b) => a.CompareTo(b) >= 0;
 
-      public static bool operator ==(AmplitudeRatio a, AmplitudeRatio b) => a.Equals(b);
-      public static bool operator !=(AmplitudeRatio a, AmplitudeRatio b) => !a.Equals(b);
-
       public static AmplitudeRatio operator -(AmplitudeRatio v) => new(-v.m_value);
       public static AmplitudeRatio operator +(AmplitudeRatio a, double b) => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) + System.Math.Pow(10, b / ScalingFactor)));
       public static AmplitudeRatio operator +(AmplitudeRatio a, AmplitudeRatio b) => a + b.m_value;
@@ -100,9 +97,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(AmplitudeRatio other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -126,8 +120,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is AmplitudeRatio o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

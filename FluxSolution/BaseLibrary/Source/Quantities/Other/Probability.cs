@@ -4,8 +4,8 @@ namespace Flux
   {
     /// <summary>Probability is a ratio, represented as a range [0, 1] of values where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
-    public readonly struct Probability
-    : System.IComparable, System.IComparable<Probability>, System.IConvertible, System.IEquatable<Probability>, System.IFormattable, IQuantifiable<double>
+    public readonly record struct Probability
+      : System.IComparable, System.IComparable<Probability>, System.IConvertible, System.IFormattable, IQuantifiable<double>
     {
       public const double MaxValue = 1;
       public const double MinValue = 0;
@@ -18,7 +18,6 @@ namespace Flux
       #region Static methods
       /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
       /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
-
       public static double Expit(double x)
         => 1 / (System.Math.Exp(-x) + 1);
 
@@ -26,7 +25,7 @@ namespace Flux
       /// <param name="rng"></param>
       /// <returns></returns>
       public static Probability FromRandom(System.Random rng)
-        => new((double)rng.Next() / (double)int.MaxValue);
+        => new(rng.Next() / (double)int.MaxValue);
 
       /// <summary>A logistic function or logistic curve is a common "S" shape (sigmoid curve).</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Logistic_function"/>
@@ -36,7 +35,6 @@ namespace Flux
       /// <param name="k">The logistic growth rate or steepness of the curve (k).</param>
       /// <param name="x0">The x-value of the sigmoid's midpoint (x0).</param>
       /// <param name="L">The curve's maximum value (L).</param>
-
       public static double Logistic(double x, double k = 1, double x0 = 0, double L = 1)
         => L / (System.Math.Exp(-(k * (x - x0))) + 1);
 
@@ -46,7 +44,6 @@ namespace Flux
       /// <returns>The ratio of population to max possible population in the next generation (Xn + 1)</returns>
       /// <see cref="https://en.wikipedia.org/wiki/Logistic_map"/>
       /// <seealso cref="RickerModel(double, double, double)"/>
-
       public static double LogisticMap(double Xn, double r)
         => r * Xn * (1 - Xn);
 
@@ -54,7 +51,6 @@ namespace Flux
       /// <see cref="https://en.wikipedia.org/wiki/Logit"/>
       /// <param name="probability">The probability in the range [0, 1].</param>
       /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
-
       public static double Logit(double probability)
         => System.Math.Log(OddsRatio(probability));
 
@@ -62,7 +58,6 @@ namespace Flux
       /// <see cref="https://en.wikipedia.org/wiki/Logit"/>
       /// <param name="probability">The probability in the range [0, 1].</param>
       /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
-
       public static double OddsRatio(double probability)
         => probability / (1 - probability);
 
@@ -70,7 +65,6 @@ namespace Flux
       /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
       /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
       /// <returns>The probability, which is in the range [0, 1].</returns>
-
       public static Probability OfNoDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount)
       {
         var accumulation = 1d;
@@ -78,17 +72,16 @@ namespace Flux
           accumulation *= (double)index / (double)ofTotalCount;
         return new(accumulation);
       }
+
       /// <summary>Returns the probability that at least 2 events are equal. This is computation P(A), which is the complement to P(A') computed in (<see cref="OfNoDuplicates(System.Numerics.BigInteger, System.Numerics.BigInteger)"/>).</summary>
       /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
       /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
       /// <returns>The probability, which is in the range [0, 1].</returns>
-
       public static Probability OfDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount)
         => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_probability);
 
       /// <summary>Computes the odds (p / (1 - p)) ratio of the probability.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Odds"/>
-
       public Ratio ToOdds()
         => new(m_probability, 1 - m_probability);
       #endregion Static methods
@@ -101,9 +94,6 @@ namespace Flux
       public static bool operator <=(Probability a, Probability b) => a.CompareTo(b) <= 0;
       public static bool operator >(Probability a, Probability b) => a.CompareTo(b) > 0;
       public static bool operator >=(Probability a, Probability b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(Probability a, Probability b) => a.Equals(b);
-      public static bool operator !=(Probability a, Probability b) => !a.Equals(b);
 
       public static Probability operator -(Probability v) => new(-v.m_probability);
       public static Probability operator +(Probability a, double b) => new(a.m_probability + b);
@@ -144,9 +134,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_probability);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Probability other) => m_probability == other.m_probability;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_probability.ToString(format, formatProvider);
 
@@ -158,8 +145,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Probability o && Equals(o);
-      public override int GetHashCode() => m_probability.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

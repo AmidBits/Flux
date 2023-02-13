@@ -38,8 +38,8 @@ namespace Flux
 
     /// <summary>Time. SI unit of second. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Time"/>
-    public readonly struct Time
-      : System.IComparable, System.IComparable<Time>, System.IConvertible, System.IEquatable<Time>, System.IFormattable, IUnitQuantifiable<double, TimeUnit>
+    public readonly record struct Time
+      : System.IComparable, System.IComparable<Time>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, TimeUnit>
     {
       public const TimeUnit DefaultUnit = TimeUnit.Second;
 
@@ -82,9 +82,6 @@ namespace Flux
       public static bool operator >(Time a, Time b) => a.CompareTo(b) > 0;
       public static bool operator >=(Time a, Time b) => a.CompareTo(b) >= 0;
 
-      public static bool operator ==(Time a, Time b) => a.Equals(b);
-      public static bool operator !=(Time a, Time b) => !a.Equals(b);
-
       public static Time operator -(Time v) => new(-v.m_value);
       public static Time operator +(Time a, double b) => new(a.m_value + b);
       public static Time operator +(Time a, Time b) => a + b.m_value;
@@ -124,9 +121,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<T>
-      public bool Equals(Time other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -157,8 +151,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Time o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

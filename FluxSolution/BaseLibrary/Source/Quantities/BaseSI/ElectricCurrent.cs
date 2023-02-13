@@ -22,8 +22,8 @@ namespace Flux
 
     /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Electric_current"/>
-    public readonly struct ElectricCurrent
-      : System.IComparable, System.IComparable<ElectricCurrent>, System.IConvertible, System.IEquatable<ElectricCurrent>, System.IFormattable, IUnitQuantifiable<double, ElectricCurrentUnit>
+    public readonly record struct ElectricCurrent
+      : System.IComparable, System.IComparable<ElectricCurrent>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ElectricCurrentUnit>
     {
       public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
 
@@ -57,9 +57,6 @@ namespace Flux
       public static bool operator >(ElectricCurrent a, ElectricCurrent b) => a.CompareTo(b) > 0;
       public static bool operator >=(ElectricCurrent a, ElectricCurrent b) => a.CompareTo(b) >= 0;
 
-      public static bool operator ==(ElectricCurrent a, ElectricCurrent b) => a.Equals(b);
-      public static bool operator !=(ElectricCurrent a, ElectricCurrent b) => !a.Equals(b);
-
       public static ElectricCurrent operator -(ElectricCurrent v) => new(-v.m_value);
       public static ElectricCurrent operator +(ElectricCurrent a, double b) => new(a.m_value + b);
       public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b) => a + b.m_value;
@@ -75,11 +72,9 @@ namespace Flux
 
       #region Implemented interfaces
       // IComparable<>
-
       public int CompareTo(ElectricCurrent other)
         => m_value.CompareTo(other.m_value);
       // IComparable
-
       public int CompareTo(object? other)
         => other is not null && other is ElectricCurrent o ? CompareTo(o) : -1;
 
@@ -103,13 +98,7 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<>
-
-      public bool Equals(ElectricCurrent other)
-        => m_value == other.m_value;
-
       // IFormattable
-
       public string ToString(string? format, IFormatProvider? formatProvider)
         => m_value.ToString(format, formatProvider);
 
@@ -118,8 +107,8 @@ namespace Flux
         => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
 
       public double Value { get => m_value; init => m_value = value; }
-      // IUnitQuantifiable<>
 
+      // IUnitQuantifiable<>
       public string ToUnitString(ElectricCurrentUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -133,8 +122,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is ElectricCurrent o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

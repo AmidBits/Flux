@@ -5,11 +5,11 @@ namespace Flux.Numerics
   /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class QuantileR2
-    : IQuantile
+    : IQuantileEstimable
   {
-    public static IQuantile Default => new QuantileR2();
+    public static IQuantileEstimable Default => new QuantileR2();
 
-    public TPercent ComputeQuantileRank<TCount, TPercent>(TCount count, TPercent p)
+    public TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
     {
@@ -24,7 +24,7 @@ namespace Flux.Numerics
     {
       var count = ordered.Count();
 
-      var h = ComputeQuantileRank(count, p);
+      var h = EstimateQuantileRank(count, p);
 
       var half = TPercent.One.Divide(2);
 

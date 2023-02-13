@@ -46,8 +46,8 @@ namespace Flux
 
     /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Length"/>
-    public readonly struct Length
-      : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IEquatable<Length>, System.IFormattable, IUnitQuantifiable<double, LengthUnit>
+    public readonly record struct Length
+      : System.IComparable, System.IComparable<Length>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, LengthUnit>
     {
       public const double PiParsecsInMeters = 96939420213600000;
       public const double OneParsecInMeters = PiParsecsInMeters / System.Math.PI;
@@ -103,9 +103,6 @@ namespace Flux
       public static bool operator >(Length a, Length b) => a.CompareTo(b) > 0;
       public static bool operator >=(Length a, Length b) => a.CompareTo(b) >= 0;
 
-      public static bool operator ==(Length a, Length b) => a.Equals(b);
-      public static bool operator !=(Length a, Length b) => !a.Equals(b);
-
       public static Length operator -(Length v) => new(-v.m_value);
       public static Length operator +(Length a, double b) => new(a.m_value + b);
       public static Length operator +(Length a, Length b) => a + b.m_value;
@@ -145,9 +142,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Length other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -183,8 +177,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Length o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{nameof(Length)} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

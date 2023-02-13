@@ -82,8 +82,8 @@ namespace Flux
 
     /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Metric_prefix"/>
-    public readonly struct MetricMultiplicative
-      : System.IComparable, System.IComparable<MetricMultiplicative>, System.IConvertible, System.IEquatable<MetricMultiplicative>, System.IFormattable, IUnitQuantifiable<double, MetricMultiplicativePrefix>
+    public readonly record struct MetricMultiplicative
+      : System.IComparable, System.IComparable<MetricMultiplicative>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, MetricMultiplicativePrefix>
     {
       private readonly double m_value;
 
@@ -101,9 +101,6 @@ namespace Flux
       public static bool operator <=(MetricMultiplicative a, MetricMultiplicative b) => a.CompareTo(b) <= 0;
       public static bool operator >(MetricMultiplicative a, MetricMultiplicative b) => a.CompareTo(b) > 0;
       public static bool operator >=(MetricMultiplicative a, MetricMultiplicative b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(MetricMultiplicative a, MetricMultiplicative b) => a.Equals(b);
-      public static bool operator !=(MetricMultiplicative a, MetricMultiplicative b) => !a.Equals(b);
 
       public static MetricMultiplicative operator -(MetricMultiplicative v) => new(-v.m_value, MetricMultiplicativePrefix.One);
       public static MetricMultiplicative operator +(MetricMultiplicative a, double b) => new(a.m_value + b, MetricMultiplicativePrefix.One);
@@ -144,9 +141,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(MetricMultiplicative other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -157,7 +151,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":format")}}}", ToUnitValue(multiplicativePrefix))}{(multiplicativePrefix.GetUnitString(preferUnicode, useFullName) is var prefix && prefix.Length > 0 ? $" {prefix}" : string.Empty)}";
 
@@ -166,8 +159,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is MetricMultiplicative o && Equals(o);
-      public override int GetHashCode() => System.HashCode.Combine(m_value);
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

@@ -31,8 +31,8 @@ namespace Flux
 
     /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
-    public readonly struct Mass
-      : System.IComparable, System.IComparable<Mass>, System.IConvertible, System.IEquatable<Mass>, System.IFormattable, IUnitQuantifiable<double, MassUnit>
+    public readonly record struct Mass
+      : System.IComparable, System.IComparable<Mass>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, MassUnit>
     {
       public const MassUnit DefaultUnit = MassUnit.Kilogram;
 
@@ -64,9 +64,6 @@ namespace Flux
       public static bool operator <=(Mass a, Mass b) => a.CompareTo(b) <= 0;
       public static bool operator >(Mass a, Mass b) => a.CompareTo(b) > 0;
       public static bool operator >=(Mass a, Mass b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(Mass a, Mass b) => a.Equals(b);
-      public static bool operator !=(Mass a, Mass b) => !a.Equals(b);
 
       public static Mass operator -(Mass v) => new(-v.m_value);
       public static Mass operator +(Mass a, double b) => new(a.m_value + b);
@@ -107,9 +104,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<T>
-      public bool Equals(Mass other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -136,8 +130,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Mass o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

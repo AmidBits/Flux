@@ -3,8 +3,8 @@ namespace Flux.Music
   /// <summary>Cent, unit of itself. Musical interval equal to one hundredth of one semitone.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cent_(music)"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
-  public readonly struct Cent
-    : System.IComparable<Cent>, System.IConvertible, System.IEquatable<Cent>, Quantities.IQuantifiable<int>
+  public readonly record struct Cent
+    : System.IComparable<Cent>, System.IConvertible, Quantities.IQuantifiable<int>
   {
     public const double FrequencyRatio = 1.0005777895065548592967925757932;
 
@@ -40,9 +40,6 @@ namespace Flux.Music
     public static bool operator <=(Cent a, Cent b) => a.CompareTo(b) <= 0;
     public static bool operator >(Cent a, Cent b) => a.CompareTo(b) > 0;
     public static bool operator >=(Cent a, Cent b) => a.CompareTo(b) >= 0;
-
-    public static bool operator ==(Cent a, Cent b) => a.Equals(b);
-    public static bool operator !=(Cent a, Cent b) => !a.Equals(b);
 
     public static Cent operator -(Cent v) => new(-v.m_value);
     public static Cent operator +(Cent a, int b) => new(a.m_value + b);
@@ -83,9 +80,6 @@ namespace Flux.Music
     [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable<>
-    public bool Equals(Cent other) => m_value == other.m_value;
-
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
       => $"{m_value} cent{(m_value == 1 ? string.Empty : 's'.ToString())}";
@@ -95,8 +89,6 @@ namespace Flux.Music
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj) => obj is Cent o && Equals(o);
-    public override int GetHashCode() => m_value.GetHashCode();
     public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
     #endregion Object overrides
   }

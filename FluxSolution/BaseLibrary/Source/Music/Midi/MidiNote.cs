@@ -3,8 +3,8 @@ namespace Flux.Music.Midi
   /// <summary>MIDI note unit of byte [0, 127], is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-  public readonly struct MidiNote
-    : System.IComparable<MidiNote>, System.IConvertible, System.IEquatable<MidiNote>, Quantities.IQuantifiable<int>
+  public readonly record struct MidiNote
+    : System.IComparable<MidiNote>, System.IConvertible, Quantities.IQuantifiable<int>
   {
     public const byte MaxValue = 127;
     public const byte MinValue = 0;
@@ -124,9 +124,6 @@ namespace Flux.Music.Midi
     public static bool operator >(MidiNote a, MidiNote b) => a.CompareTo(b) > 0;
     public static bool operator >=(MidiNote a, MidiNote b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(MidiNote a, MidiNote b) => a.Equals(b);
-    public static bool operator !=(MidiNote a, MidiNote b) => !a.Equals(b);
-
     public static MidiNote operator -(MidiNote v) => new(-v.m_number);
     public static MidiNote operator +(MidiNote a, int b) => new(a.m_number + b);
     public static MidiNote operator +(MidiNote a, MidiNote b) => a + b.m_number;
@@ -166,9 +163,6 @@ namespace Flux.Music.Midi
     [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_number);
     #endregion IConvertible
 
-    // IEquatable<>
-    public bool Equals(MidiNote other) => m_number == other.m_number;
-
     // IQuantifiable<>
     public string ToQuantityString(string? format, bool preferUnicode = false, bool useFullName = false)
       => $"{GetScientificPitchNotationLabel(preferUnicode)}{GetOctave()}";
@@ -178,8 +172,6 @@ namespace Flux.Music.Midi
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj) => obj is MidiNote o && Equals(o);
-    public override int GetHashCode() => m_number.GetHashCode();
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public override string ToString() => $"{GetType().Name} {{ {ToQuantityString(null, false, false)} (#{m_number}) }}";

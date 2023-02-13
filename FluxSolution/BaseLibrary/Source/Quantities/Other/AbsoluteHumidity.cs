@@ -21,8 +21,8 @@ namespace Flux
 
     /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
-    public readonly struct AbsoluteHumidity
-      : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IEquatable<AbsoluteHumidity>, System.IFormattable, IUnitQuantifiable<double, AbsoluteHumidityUnit>
+    public readonly record struct AbsoluteHumidity
+      : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AbsoluteHumidityUnit>
     {
       public const AbsoluteHumidityUnit DefaultUnit = AbsoluteHumidityUnit.GramsPerCubicMeter;
 
@@ -51,9 +51,6 @@ namespace Flux
       public static bool operator <=(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) <= 0;
       public static bool operator >(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) > 0;
       public static bool operator >=(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(AbsoluteHumidity a, AbsoluteHumidity b) => a.Equals(b);
-      public static bool operator !=(AbsoluteHumidity a, AbsoluteHumidity b) => !a.Equals(b);
 
       public static AbsoluteHumidity operator -(AbsoluteHumidity v) => new(-v.m_value);
       public static AbsoluteHumidity operator +(AbsoluteHumidity a, double b) => new(a.m_value + b);
@@ -94,9 +91,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(AbsoluteHumidity other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -121,8 +115,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is AbsoluteHumidity o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }
