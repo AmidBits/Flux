@@ -6,9 +6,14 @@ namespace Flux
     /// <see href="https://github.com/open-dict-data/ipa-dict/tree/master/"/>
     public static System.Collections.Generic.SortedDictionary<string, string> GetIpaDictionaryOf(this System.Globalization.CultureInfo source, System.Collections.Generic.IComparer<string>? comparer = null)
     {
+      const string filePath = @"file://\Resources\Dictionaries\Ipa\{0}.txt";
+
       comparer ??= System.Collections.Generic.Comparer<string>.Default;
 
-      using var s = new System.Uri(@$"file://\Resources\IpaDictionaries\{source.Name.Replace('_', '-')}.txt").GetStream();
+      if (!new System.Uri(string.Format(filePath, source.Name)).TryGetFileSystemInfo(out var fsi, new System.Uri(string.Format(filePath, source.Name[..source.Name.IndexOf('-')]))))
+        throw new System.NotImplementedException(nameof(source));
+
+      using var s = new System.Uri(fsi.FullName).GetStream();
       using var sr = new System.IO.StreamReader(s, System.Text.Encoding.UTF8);
 
       var dictionary = new System.Collections.Generic.SortedDictionary<string, string>(comparer);

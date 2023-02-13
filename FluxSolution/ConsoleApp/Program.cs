@@ -12,6 +12,7 @@ using Flux.ApproximateEquality;
 using Flux.Geometry;
 using Flux.Interpolation;
 using Flux.Quantities;
+using Microsoft.VisualBasic.FileIO;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -28,114 +29,7 @@ namespace ConsoleApp
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
       var ipad = System.Globalization.CultureInfo.GetCultureInfo("en-US").GetIpaDictionaryOf();
-      var wl = System.Globalization.CultureInfo.GetCultureInfo("en").GetWordlistOf();
-      var saa = new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(new System.Uri(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.LocalFile));
-      var saat = saa.AcquireDataTable("SynonymsAndAntonymsSamuelFallows");
-
-      var antonymDictionary = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.HashSet<string>>();
-      var synonymDictionary = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.HashSet<string>>();
-
-      foreach (System.Data.DataRow row in saat.Rows)
-      {
-        var keyword = row["Keywords"].ToString();
-
-        var antonymSecondary = row["Antonyms"].ToString().Split(',').Where(w => !w.StartsWith('[') && !w.EndsWith(']'));
-        var synonymSecondary = row["Synonyms"].ToString().Split(',').Where(w => !w.StartsWith('[') && !w.EndsWith(']'));
-
-        if (antonymDictionary.TryGetValue(keyword, out var antonymPrimary))
-          antonymPrimary.UnionWith(antonymSecondary);
-        else
-          antonymDictionary[keyword] = new System.Collections.Generic.HashSet<string>(antonymSecondary);
-
-        if (synonymDictionary.TryGetValue(keyword, out var synonymPrimary))
-          synonymPrimary.UnionWith(synonymSecondary);
-        else
-          synonymDictionary[keyword] = new System.Collections.Generic.HashSet<string>(synonymSecondary);
-      }
-
-      foreach (var word in wl)
-      {
-        System.Console.WriteLine(ipad.TryGetValue(word, out var ipa) ? $"{word} ({ipa})" : word);
-      }
-
-      return;
-
-      //ipad.TryGetValue("iceberg", out var ipa);
-
-      foreach (var kvp in ipad.Where(kvp => kvp.Key == "storhetsvansinne"))
-      {
-        var c = kvp.Key.Normalize(System.Text.NormalizationForm.FormC).EnumerateTextElements().ToArray();
-        var d = kvp.Key.Normalize(System.Text.NormalizationForm.FormD).EnumerateTextElements().ToArray();
-
-        //if (a.Any(ss => ss.Length > 1))
-        System.Console.WriteLine($"{kvp.Key} ({kvp.Value})");
-        System.Console.WriteLine($"{string.Join(" | ", c)}");
-        System.Console.WriteLine($"{string.Join(" | ", d)}");
-        System.Console.WriteLine();
-      }
-
-      return;
-
-      // Compute quantiles:
-      {
-        var aav = new int[][] { new int[] { 3, 6, 7, 8, 8, 10, 13, 15, 16, 20 }, new int[] { 3, 6, 7, 8, 8, 9, 10, 13, 15, 16, 20 } };
-
-        foreach (var av in aav)
-        {
-          System.Console.WriteLine($"Sequence: [{string.Join(", ", av)}]");
-
-
-
-          var htt = Flux.DataStructures.Histogram<int, int>.Create(av, k => k, f => 1);
-
-          var h = Flux.DataStructures.Histogram<int, int>.Create(av, k => k, v => 1);
-          System.Console.WriteLine($"HIST:{System.Environment.NewLine}{h.ToConsoleString()}{System.Environment.NewLine}");
-
-          var v = 13;
-
-          var pmf = Flux.DataStructures.ProbabilityMassFunction<int, double>.Create(h, 1.5d);
-          var pmfv = h.ToPmfProbability(v, 1d);
-          System.Console.WriteLine($"PMF:{System.Environment.NewLine}{pmf.ToConsoleString()}{System.Environment.NewLine}PV={pmfv}");
-
-          var cmf = Flux.DataStructures.CumulativeMassFunction<int, double>.Create(h, 1.5d);
-          var cmfv = h.ToCmfPercentRank(v, 1d);
-          System.Console.WriteLine($"CMF:{System.Environment.NewLine}{cmf.ToConsoleString()}{System.Environment.NewLine}CV={cmfv}");
-
-          //continue;
-
-          foreach (QuantileAlgorithm a in System.Enum.GetValues<QuantileAlgorithm>())
-          {
-            var ac = av.Length;
-
-            var qr = (ac.ComputeQuantileRank(0d, a), ac.ComputeQuantileRank(0.25, a), ac.ComputeQuantileRank(0.50, a), ac.ComputeQuantileRank(0.75, a), ac.ComputeQuantileRank(1d, a));
-            var qv = (av.EstimateQuantileValue(0d, a), av.EstimateQuantileValue(0.25, a), av.EstimateQuantileValue(0.50, a), av.EstimateQuantileValue(0.75, a), av.EstimateQuantileValue(1d, a));
-            //var qv = (av.EstimateQuantileValue(0.25, a), av.EstimateQuantileValue(0.50, a), av.EstimateQuantileValue(0.75, a));
-
-            System.Console.WriteLine($"{a} : qR = {qr}, qV = {qv}");
-          }
-
-          System.Console.WriteLine();
-        }
-
-        return;
-      }
-
-
-
-      //// Compute roundings:
-      //{
-      //  var v = -1.5;
-      //  var c = v.Round(RoundingMode.Ceiling);
-      //  var e = v.Round(RoundingMode.Envelop);
-      //  var f = v.Round(RoundingMode.Floor);
-      //  var t = v.Round(RoundingMode.Truncate);
-      //  var hafz = v.Round(RoundingMode.HalfAwayFromZero);
-      //  var heven = v.Round(RoundingMode.HalfToEven);
-      //  var hninf = v.Round(RoundingMode.HalfToNegativeInfinity);
-      //  var hodd = v.Round(RoundingMode.HalfToOdd);
-      //  var hpinf = v.Round(RoundingMode.HalfToPositiveInfinity);
-      //  var htz = v.Round(RoundingMode.HalfTowardZero);
-      //}
+      var wl = System.Globalization.CultureInfo.GetCultureInfo("en").GetLexiconOf();
     }
 
     private static void Main(string[] args)
