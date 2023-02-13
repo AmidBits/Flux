@@ -8,11 +8,12 @@ namespace Flux
     {
       comparer ??= System.Collections.Generic.Comparer<string>.Default;
 
-      using var s = new System.Uri(@$"file://\Resources\IpaDictionaries\{source.Name.Replace('-', '_')}.txt").GetStream();
+      using var s = new System.Uri(@$"file://\Resources\IpaDictionaries\{source.Name.Replace('_', '-')}.txt").GetStream();
       using var sr = new System.IO.StreamReader(s, System.Text.Encoding.UTF8);
 
       var dictionary = new System.Collections.Generic.SortedDictionary<string, string>(comparer);
-      foreach (var a in sr.ReadLines(false).Select(line => line.Split('\t')).DistinctBy(a => a[0])) dictionary.Add(a[0].Trim(), a[1].Trim());
+      foreach (var a in sr.ReadLines(false).Select(line => line.Split('\t')).DistinctBy(a => a[0].Trim()))
+        dictionary.Add(a[0].Trim(), a[1].Trim());
       return dictionary;
     }
   }

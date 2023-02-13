@@ -12,7 +12,8 @@ namespace Flux
       using var sr = new System.IO.StreamReader(s, System.Text.Encoding.UTF8);
 
       var hashSet = new System.Collections.Generic.HashSet<string>(equalityComparer);
-      foreach (var line in sr.ReadLines(false).Distinct()) hashSet.Add(line.Trim());
+      foreach (var line in sr.ReadLines(false).Distinct())
+        hashSet.Add(line.Trim());
       return hashSet;
     }
   }
