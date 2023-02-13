@@ -83,8 +83,8 @@
 
     /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
-    public readonly struct Angle
-      : System.IComparable, System.IComparable<Angle>, System.IConvertible, System.IEquatable<Angle>, IUnitQuantifiable<double, AngleUnit>
+    public readonly record struct Angle
+      : System.IComparable, System.IComparable<Angle>, System.IConvertible, IUnitQuantifiable<double, AngleUnit>
     {
       public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
@@ -445,9 +445,6 @@
       public static explicit operator Angle(double value) => new(value);
       public static explicit operator double(Angle value) => value.m_radAngle;
 
-      public static bool operator ==(Angle a, Angle b) => a.Equals(b);
-      public static bool operator !=(Angle a, Angle b) => !a.Equals(b);
-
       public static bool operator <(Angle a, Angle b) => a.CompareTo(b) < 0;
       public static bool operator <=(Angle a, Angle b) => a.CompareTo(b) <= 0;
       public static bool operator >(Angle a, Angle b) => a.CompareTo(b) > 0;
@@ -492,9 +489,6 @@
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Angle other) => m_radAngle == other.m_radAngle;
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{ToUnitString(DefaultUnit)}";
@@ -521,8 +515,6 @@
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Angle o && Equals(o);
-      public override int GetHashCode() => m_radAngle.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} ({ToUnitString(AngleUnit.Degree, @"N2")}) }}";
       #endregion Object overrides
     }

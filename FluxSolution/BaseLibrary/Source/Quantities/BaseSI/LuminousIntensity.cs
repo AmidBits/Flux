@@ -19,8 +19,8 @@ namespace Flux
 
     /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Luminous_intensity"/>
-    public readonly struct LuminousIntensity
-      : System.IComparable, System.IComparable<LuminousIntensity>, System.IConvertible, System.IEquatable<LuminousIntensity>, System.IFormattable, IUnitQuantifiable<double, LuminousIntensityUnit>
+    public readonly record struct LuminousIntensity
+      : System.IComparable, System.IComparable<LuminousIntensity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, LuminousIntensityUnit>
     {
       public const LuminousIntensityUnit DefaultUnit = LuminousIntensityUnit.Candela;
 
@@ -44,9 +44,6 @@ namespace Flux
       public static bool operator <=(LuminousIntensity a, LuminousIntensity b) => a.CompareTo(b) <= 0;
       public static bool operator >(LuminousIntensity a, LuminousIntensity b) => a.CompareTo(b) > 0;
       public static bool operator >=(LuminousIntensity a, LuminousIntensity b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(LuminousIntensity a, LuminousIntensity b) => a.Equals(b);
-      public static bool operator !=(LuminousIntensity a, LuminousIntensity b) => !a.Equals(b);
 
       public static LuminousIntensity operator -(LuminousIntensity v) => new(-v.m_value);
       public static LuminousIntensity operator +(LuminousIntensity a, double b) => new(a.m_value + b);
@@ -87,9 +84,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(LuminousIntensity other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -111,8 +105,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is LuminousIntensity o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

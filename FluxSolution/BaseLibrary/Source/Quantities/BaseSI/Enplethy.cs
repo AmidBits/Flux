@@ -19,8 +19,8 @@ namespace Flux
 
     /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Amount_of_substance"/>
-    public readonly struct Enplethy
-      : System.IComparable, System.IComparable<Enplethy>, System.IConvertible, System.IEquatable<Enplethy>, System.IFormattable, IUnitQuantifiable<double, EnplethyUnit>
+    public readonly record struct Enplethy
+      : System.IComparable, System.IComparable<Enplethy>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, EnplethyUnit>
     {
       /// <summary>The number of atoms contained in 1 mol of carbon-12 (which has the molar mass of 12 g) is called the Avogadro number. The Avogadro constant is the proportionality factor that relates the number of constituent particles (usually molecules, atoms or ions) in a sample with the amount of substance in that sample. It's unit is the reciprocal mole (or per mole). I.e. any 1 mol of any substance contains this amount of fundamental units. A fundamental unit can be atoms (e.g. iron, Fe), molecules (e.g. oxygen, O2) or formula units (e.g. water, H2O).</summary>
       public const double AvagadrosNumber = 6.02214076e23;
@@ -48,9 +48,6 @@ namespace Flux
       public static bool operator >(Enplethy a, Enplethy b) => a.CompareTo(b) > 0;
       public static bool operator >=(Enplethy a, Enplethy b) => a.CompareTo(b) >= 0;
 
-      public static bool operator ==(Enplethy a, Enplethy b) => a.Equals(b);
-      public static bool operator !=(Enplethy a, Enplethy b) => !a.Equals(b);
-
       public static Enplethy operator -(Enplethy v) => new(-v.Value);
       public static Enplethy operator +(Enplethy a, double b) => new(a.m_value + b);
       public static Enplethy operator +(Enplethy a, Enplethy b) => a + b.m_value;
@@ -66,11 +63,9 @@ namespace Flux
 
       #region Implemented interfaces
       // IComparable<>
-
       public int CompareTo(Enplethy other)
         => m_value.CompareTo(other.m_value);
       // IComparable
-
       public int CompareTo(object? other)
         => other is not null && other is Enplethy o ? CompareTo(o) : -1;
 
@@ -94,9 +89,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Enplethy other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -119,8 +111,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Enplethy o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

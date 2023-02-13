@@ -4,14 +4,13 @@ namespace Flux
   {
     /// <summary>UV index, unit of itself.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ultraviolet_index"/>
-    public readonly struct UvIndex
-    : System.IComparable, System.IComparable<UvIndex>, System.IConvertible, System.IEquatable<UvIndex>, System.IFormattable, IQuantifiable<double>
+    public readonly record struct UvIndex
+      : System.IComparable, System.IComparable<UvIndex>, System.IConvertible, System.IFormattable, IQuantifiable<double>
     {
       private readonly double m_value;
 
       public UvIndex(double value)
         => m_value = value > 0 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
-
 
       public string ToString(string? format = null)
         => string.Format($"UV Index {{0:{format ?? "N1"}}}", m_value);
@@ -27,9 +26,6 @@ namespace Flux
       public static bool operator <=(UvIndex a, UvIndex b) => a.CompareTo(b) <= 0;
       public static bool operator >(UvIndex a, UvIndex b) => a.CompareTo(b) > 0;
       public static bool operator >=(UvIndex a, UvIndex b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(UvIndex a, UvIndex b) => a.Equals(b);
-      public static bool operator !=(UvIndex a, UvIndex b) => !a.Equals(b);
 
       public static UvIndex operator -(UvIndex v) => new(-v.m_value);
       public static UvIndex operator +(UvIndex a, double b) => new(a.m_value + b);
@@ -70,9 +66,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(UvIndex other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -84,8 +77,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is UvIndex o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToString()} }}";
       #endregion Object overrides
     }

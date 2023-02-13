@@ -7,16 +7,16 @@ namespace Flux
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
       => algorithm switch
       {
-        QuantileAlgorithm.EDF => Numerics.QuantileEdf.Default.ComputeQuantileRank(count, p),
-        QuantileAlgorithm.R1 => Numerics.QuantileR1.Default.ComputeQuantileRank(count, p),
-        QuantileAlgorithm.R2 => Numerics.QuantileR2.Default.ComputeQuantileRank(count, p),
-        QuantileAlgorithm.R3 => Numerics.QuantileR3.Default.ComputeQuantileRank(count, p),
-        QuantileAlgorithm.R4 => Numerics.QuantileR4.Default.ComputeQuantileRank(count, p),
-        QuantileAlgorithm.R5 => Numerics.QuantileR5.Default.ComputeQuantileRank(count, p),
-        QuantileAlgorithm.R6 => Numerics.QuantileR6.Default.ComputeQuantileRank(count, p),
-        QuantileAlgorithm.R7 => Numerics.QuantileR7.Default.ComputeQuantileRank(count, p),
-        QuantileAlgorithm.R8 => Numerics.QuantileR8.Default.ComputeQuantileRank(count, p),
-        QuantileAlgorithm.R9 => Numerics.QuantileR9.Default.ComputeQuantileRank(count, p),
+        QuantileAlgorithm.EDF => Numerics.QuantileEdf.Default.EstimateQuantileRank(count, p),
+        QuantileAlgorithm.R1 => Numerics.QuantileR1.Default.EstimateQuantileRank(count, p),
+        QuantileAlgorithm.R2 => Numerics.QuantileR2.Default.EstimateQuantileRank(count, p),
+        QuantileAlgorithm.R3 => Numerics.QuantileR3.Default.EstimateQuantileRank(count, p),
+        QuantileAlgorithm.R4 => Numerics.QuantileR4.Default.EstimateQuantileRank(count, p),
+        QuantileAlgorithm.R5 => Numerics.QuantileR5.Default.EstimateQuantileRank(count, p),
+        QuantileAlgorithm.R6 => Numerics.QuantileR6.Default.EstimateQuantileRank(count, p),
+        QuantileAlgorithm.R7 => Numerics.QuantileR7.Default.EstimateQuantileRank(count, p),
+        QuantileAlgorithm.R8 => Numerics.QuantileR8.Default.EstimateQuantileRank(count, p),
+        QuantileAlgorithm.R9 => Numerics.QuantileR9.Default.EstimateQuantileRank(count, p),
         _ => throw new NotImplementedException(),
       };
 

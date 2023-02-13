@@ -19,8 +19,8 @@ namespace Flux
 
     /// <summary>Power ratio unit of decibel watts, defined as ten times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one watt. A.k.a. logarithmic power ratio.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Decibel"/>
-    public readonly struct PowerRatio
-      : System.IComparable, System.IComparable<PowerRatio>, System.IConvertible, System.IEquatable<PowerRatio>, System.IFormattable, IUnitQuantifiable<double, PowerRatioUnit>
+    public readonly record struct PowerRatio
+      : System.IComparable, System.IComparable<PowerRatio>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, PowerRatioUnit>
     {
       public const PowerRatioUnit DefaultUnit = PowerRatioUnit.DecibelWatt;
 
@@ -65,11 +65,6 @@ namespace Flux
         => a.CompareTo(b) > 0;
       public static bool operator >=(PowerRatio a, PowerRatio b)
         => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(PowerRatio a, PowerRatio b)
-        => a.Equals(b);
-      public static bool operator !=(PowerRatio a, PowerRatio b)
-        => !a.Equals(b);
 
       public static PowerRatio operator -(PowerRatio v)
         => new(-v.m_value);
@@ -117,21 +112,16 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(PowerRatio other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
 
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(PowerRatioUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -144,8 +134,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is PowerRatio o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

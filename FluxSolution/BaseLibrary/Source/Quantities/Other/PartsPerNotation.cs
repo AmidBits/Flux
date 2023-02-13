@@ -48,8 +48,8 @@ namespace Flux
 
     /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Parts-per_notation"/>
-    public readonly struct PartsPerNotation
-      : System.IComparable, System.IComparable<PartsPerNotation>, System.IConvertible, System.IEquatable<PartsPerNotation>, IUnitQuantifiable<double, PartsPerNotationUnit>
+    public readonly record struct PartsPerNotation
+      : System.IComparable, System.IComparable<PartsPerNotation>, System.IConvertible, IUnitQuantifiable<double, PartsPerNotationUnit>
     {
       public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Percent;
 
@@ -88,9 +88,6 @@ namespace Flux
       public static bool operator <=(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) <= 0;
       public static bool operator >(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) > 0;
       public static bool operator >=(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(PartsPerNotation a, PartsPerNotation b) => a.Equals(b);
-      public static bool operator !=(PartsPerNotation a, PartsPerNotation b) => !a.Equals(b);
 
       public static PartsPerNotation operator -(PartsPerNotation v) => new(-v.m_parts);
       public static PartsPerNotation operator +(PartsPerNotation a, double b) => new(a.m_parts + b);
@@ -131,9 +128,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(PartsPerNotation other) => m_parts == other.m_parts;
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
@@ -141,7 +135,6 @@ namespace Flux
       public double Value { get => m_parts; init => m_parts = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(PartsPerNotationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -162,8 +155,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is PartsPerNotation o && Equals(o);
-      public override int GetHashCode() => System.HashCode.Combine(m_parts);
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

@@ -3,8 +3,8 @@ namespace Flux.Music
   /// <summary>Semitone, unit of itself. A musical interval equal to one hundred cents.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Semitone"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
-  public readonly struct Semitone
-    : System.IComparable<Semitone>, System.IConvertible, System.IEquatable<Semitone>, Quantities.IQuantifiable<int>
+  public readonly record struct Semitone
+    : System.IComparable<Semitone>, System.IConvertible, Quantities.IQuantifiable<int>
   {
     public const double FrequencyRatio = 1.0594630943592952645618252949463;
 
@@ -60,9 +60,6 @@ namespace Flux.Music
     public static bool operator >(Semitone a, Semitone b) => a.CompareTo(b) > 0;
     public static bool operator >=(Semitone a, Semitone b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(Semitone a, Semitone b) => a.Equals(b);
-    public static bool operator !=(Semitone a, Semitone b) => !a.Equals(b);
-
     public static Semitone operator -(Semitone v) => new(-v.m_value);
     public static Semitone operator +(Semitone a, int b) => new(a.m_value + b);
     public static Semitone operator +(Semitone a, Semitone b) => a + b.m_value;
@@ -102,9 +99,6 @@ namespace Flux.Music
     [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable<>
-    public bool Equals(Semitone other) => m_value == other.m_value;
-
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
       => $"{m_value} semitone{(m_value == 1 ? string.Empty : 's'.ToString())}";
@@ -114,8 +108,6 @@ namespace Flux.Music
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj) => obj is Semitone o && Equals(o);
-    public override int GetHashCode() => m_value.GetHashCode();
     public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
     #endregion Object overrides
   }

@@ -5,11 +5,11 @@ namespace Flux.Numerics
   /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class QuantileR9
-    : IQuantile
+    : IQuantileEstimable
   {
-    public static IQuantile Default => new QuantileR9();
+    public static IQuantileEstimable Default => new QuantileR9();
 
-    public TPercent ComputeQuantileRank<TCount, TPercent>(TCount count, TPercent p)
+    public TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
     {
@@ -24,6 +24,6 @@ namespace Flux.Numerics
     public TPercent EstimateQuantileValue<TValue, TPercent>(System.Collections.Generic.IEnumerable<TValue> ordered, TPercent p)
       where TValue : System.Numerics.INumber<TValue>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      => QuantileEdf.Lerp(ordered, ComputeQuantileRank(ordered.Count(), p) - TPercent.One); // Adjust for 0-based indexing.
+      => QuantileEdf.Lerp(ordered, EstimateQuantileRank(ordered.Count(), p) - TPercent.One); // Adjust for 0-based indexing.
   }
 }
