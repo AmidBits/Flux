@@ -4,7 +4,7 @@ namespace Flux.Numerics
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record struct GeographicCoordinate
+  public readonly record struct GeographicCoordinate
     : IGeographicCoordinate<double>
   {
     public const double MaxAltitudeInMeters = 1500000000;

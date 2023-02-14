@@ -1,11 +1,6 @@
-using System;
-using System.Linq;
-using Flux.Dsp.WaveGenerator;
-
-namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
+namespace Flux.Globalization.EnUs.Az.PimaCounty
 {
-  public struct PimaCountyStreetAddress
-    : System.IEquatable<PimaCountyStreetAddress>
+  public readonly record struct PimaCountyStreetAddress
   {
     public static readonly PimaCountyStreetAddress Empty;
 
@@ -52,15 +47,31 @@ namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
       { @"WY", new string[] { @"Way" } },
     };
 
-    public string Number { get; private set; }
-    public string Direction { get; private set; }
-    public string Intersection { get; private set; }
-    public string Name { get; private set; }
-    public string Type { get; private set; }
-    public string Unit { get; private set; }
+    private readonly string m_number;
+    private readonly string m_direction;
+    private readonly string m_intersection;
+    private readonly string m_name;
+    private readonly string m_type;
+    private readonly string m_unit;
 
-    public bool IsValid
-      => Regex.IsMatch(ToString()!);
+    private PimaCountyStreetAddress(string number, string direction, string intersection, string name, string type, string unit)
+    {
+      m_number = number;
+      m_direction = direction;
+      m_intersection = intersection;
+      m_name = name;
+      m_type = type;
+      m_unit = unit;
+    }
+
+    public string Number => m_number;
+    public string Direction => m_direction;
+    public string Intersection => m_intersection;
+    public string Name => m_name;
+    public string Type => m_type;
+    public string Unit => m_unit;
+
+    public bool IsValid => Regex.IsMatch(ToString()!);
 
     public static PimaCountyStreetAddress Parse(string text)
     {
@@ -68,23 +79,20 @@ namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
 
       if (re.Match(text) is var match && match.Success)
       {
-        var sa = new PimaCountyStreetAddress
-        {
-          Number = match.Groups[nameof(Number)].Value,
-          Direction = match.Groups[nameof(Direction)].Value,
-          Intersection = match.Groups[nameof(Intersection)].Value,
-          Name = match.Groups[nameof(Name)].Value,
-          Type = match.Groups[nameof(Type)].Value,
-          Unit = match.Groups[nameof(Unit)].Value
-        };
+        var number = match.Groups[nameof(Number)].Value;
+        var direction = match.Groups[nameof(Direction)].Value;
+        var intersection = match.Groups[nameof(Intersection)].Value;
+        var name = match.Groups[nameof(Name)].Value;
+        var type = match.Groups[nameof(Type)].Value;
+        var unit = match.Groups[nameof(Unit)].Value;
 
-        if (!DirectionAliases.ContainsKey(sa.Direction) && sa.Direction.Any())
-          sa.Direction = DirectionAliases.First(kvp => kvp.Value.Contains(sa.Direction, System.StringComparer.InvariantCultureIgnoreCase)).Key;
+        if (!DirectionAliases.ContainsKey(direction) && direction.Any())
+          direction = DirectionAliases.First(kvp => kvp.Value.Contains(direction, System.StringComparer.InvariantCultureIgnoreCase)).Key;
 
-        if (!TypeAliases.ContainsKey(sa.Type) && sa.Type.Any())
-          sa.Type = TypeAliases.First(kvp => kvp.Value.Contains(sa.Type, System.StringComparer.InvariantCultureIgnoreCase)).Key;
+        if (!TypeAliases.ContainsKey(type) && type.Any())
+          type = TypeAliases.First(kvp => kvp.Value.Contains(type, System.StringComparer.InvariantCultureIgnoreCase)).Key;
 
-        return sa;
+        return new PimaCountyStreetAddress(number, direction, intersection, name, type, unit);
       }
 
       throw new System.InvalidOperationException();
@@ -102,25 +110,7 @@ namespace Flux.Globalization.EnUs.StateOfArizona.PimaCounty
       return false;
     }
 
-    // Operators
-    public static bool operator ==(PimaCountyStreetAddress a, PimaCountyStreetAddress b)
-      => a.Equals(b);
-    public static bool operator !=(PimaCountyStreetAddress a, PimaCountyStreetAddress b)
-      => !a.Equals(b);
-
-    // IEquatable
-    public bool Equals(PimaCountyStreetAddress other)
-      => Number == other.Number && Direction == other.Direction && Intersection == other.Intersection && Name == other.Name && Type == other.Type && Unit == other.Unit;
-
-    // Object (overrides)
-    public override bool Equals(object? obj)
-      => obj is PimaCountyStreetAddress o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(Number, Direction, Intersection, Name, Type, Unit);
     public override string? ToString()
-      => $"{GetType().Name} {{ {ToUnitString()} }}";
-
-    public string ToUnitString()
     {
       var sb = $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSpanBuilder();
 

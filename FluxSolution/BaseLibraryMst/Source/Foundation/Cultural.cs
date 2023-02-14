@@ -34,9 +34,9 @@ namespace Foundation.Cultural
     [TestMethod]
     public void PimaCounty_StreetAddress()
     {
-      var parsed = Flux.Globalization.EnUs.StateOfArizona.PimaCounty.PimaCountyStreetAddress.Parse("10250 North Krauswood Lane");
+      var parsed = Flux.Globalization.EnUs.Az.PimaCounty.PimaCountyStreetAddress.Parse("10250 North Krauswood Lane");
 
-      Assert.AreEqual(@"10250 N Krauswood LN", parsed.ToUnitString());
+      Assert.AreEqual(@"10250 N Krauswood LN", parsed.ToString());
     }
   }
 }

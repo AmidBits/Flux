@@ -1,12 +1,12 @@
-namespace Flux.Globalization.EnUs
+namespace Flux
 {
-  public static partial class Holiday
+  public static partial class ExtensionMethodsEnUs
   {
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.DateTime>> Get(System.DateTime source, HolidayScope scope)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.DateTime>> GetHolidays(this System.DateTime source, Globalization.EnUs.HolidayScope scope)
     {
       switch (scope)
       {
-        case HolidayScope.Federal:
+        case Globalization.EnUs.HolidayScope.Federal:
           yield return System.Collections.Generic.KeyValuePair.Create(@"New Year's Day", new System.DateTime(source.Year, 1, 1));
           yield return System.Collections.Generic.KeyValuePair.Create(@"Birthday of Martin Luther King, Jr", new System.DateTime(source.Year, 1, 1).NextDayOfWeek(System.DayOfWeek.Monday, true).AddDays(14));
           yield return System.Collections.Generic.KeyValuePair.Create(@"Washington's Birthday", new System.DateTime(source.Year, 2, 1).NextDayOfWeek(System.DayOfWeek.Monday, true).AddDays(14));
