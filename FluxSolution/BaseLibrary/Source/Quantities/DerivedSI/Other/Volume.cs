@@ -49,8 +49,8 @@ namespace Flux
 
     /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
-    public readonly struct Volume
-      : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IEquatable<Volume>, System.IFormattable, IUnitQuantifiable<double, VolumeUnit>
+    public readonly record struct Volume
+      : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, VolumeUnit>
     {
       public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
 
@@ -94,9 +94,6 @@ namespace Flux
       public static bool operator >(Volume a, Volume b) => a.CompareTo(b) > 0;
       public static bool operator >=(Volume a, Volume b) => a.CompareTo(b) >= 0;
 
-      public static bool operator ==(Volume a, Volume b) => a.Equals(b);
-      public static bool operator !=(Volume a, Volume b) => !a.Equals(b);
-
       public static Volume operator -(Volume v) => new(-v.m_value);
       public static Volume operator +(Volume a, double b) => new(a.m_value + b);
       public static Volume operator +(Volume a, Volume b) => a + b.m_value;
@@ -136,9 +133,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Volume other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -149,7 +143,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(VolumeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -174,8 +167,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Volume o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

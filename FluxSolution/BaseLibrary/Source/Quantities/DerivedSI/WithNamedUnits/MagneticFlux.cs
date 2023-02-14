@@ -20,8 +20,8 @@ namespace Flux
 
     /// <summary>Magnetic flux unit of weber.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux"/>
-    public readonly struct MagneticFlux
-      : System.IComparable, System.IComparable<MagneticFlux>, System.IConvertible, System.IEquatable<MagneticFlux>, System.IFormattable, IUnitQuantifiable<double, MagneticFluxUnit>
+    public readonly record struct MagneticFlux
+      : System.IComparable, System.IComparable<MagneticFlux>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, MagneticFluxUnit>
     {
       public const MagneticFluxUnit DefaultUnit = MagneticFluxUnit.Weber;
 
@@ -42,9 +42,6 @@ namespace Flux
       public static bool operator <=(MagneticFlux a, MagneticFlux b) => a.CompareTo(b) <= 0;
       public static bool operator >(MagneticFlux a, MagneticFlux b) => a.CompareTo(b) > 0;
       public static bool operator >=(MagneticFlux a, MagneticFlux b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(MagneticFlux a, MagneticFlux b) => a.Equals(b);
-      public static bool operator !=(MagneticFlux a, MagneticFlux b) => !a.Equals(b);
 
       public static MagneticFlux operator -(MagneticFlux v) => new(-v.m_value);
       public static MagneticFlux operator +(MagneticFlux a, double b) => new(a.m_value + b);
@@ -85,9 +82,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(MagneticFlux other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -111,8 +105,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is MagneticFlux o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

@@ -19,8 +19,8 @@ namespace Flux
 
     /// <summary>Surface density, unit of kilograms per square meter.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
-    public readonly struct AreaDensity
-      : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IEquatable<AreaDensity>, System.IFormattable, IUnitQuantifiable<double, AreaDensityUnit>
+    public readonly record struct AreaDensity
+      : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AreaDensityUnit>
     {
       public const AreaDensityUnit DefaultUnit = AreaDensityUnit.KilogramPerSquareMeter;
 
@@ -47,9 +47,6 @@ namespace Flux
       public static bool operator <=(AreaDensity a, AreaDensity b) => a.CompareTo(b) <= 0;
       public static bool operator >(AreaDensity a, AreaDensity b) => a.CompareTo(b) > 0;
       public static bool operator >=(AreaDensity a, AreaDensity b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(AreaDensity a, AreaDensity b) => a.Equals(b);
-      public static bool operator !=(AreaDensity a, AreaDensity b) => !a.Equals(b);
 
       public static AreaDensity operator -(AreaDensity v) => new(-v.m_value);
       public static AreaDensity operator +(AreaDensity a, double b) => new(a.m_value + b);
@@ -90,9 +87,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(AreaDensity other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -103,7 +97,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(AreaDensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -116,8 +109,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is AreaDensity o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

@@ -11,7 +11,7 @@ namespace Flux
   }
 
   /// <summary>A moment is a specific point in time down to the millisecond.</summary>
-  public readonly struct MomentUtc
+  public readonly record struct MomentUtc
     : System.IComparable<MomentUtc>, System.IEquatable<MomentUtc>
   {
     public static readonly MomentUtc Empty;
@@ -41,103 +41,70 @@ namespace Flux
       : this(year, month, day, 0, 0, 0, 0)
     { }
 
-    
-    public int Year
-      => m_year;
-    
-    public int Month
-      => m_month;
-    
-    public int Day
-      => m_day;
-    
-    public int Hour
-      => m_hour;
-    
-    public int Minute
-      => m_minute;
-    
-    public int Second
-      => m_second;
-    
-    public int Millisecond
-      => m_millisecond;
+    public int Year => m_year;
+    public int Month => m_month;
+    public int Day => m_day;
+    public int Hour => m_hour;
+    public int Minute => m_minute;
+    public int Second => m_second;
+    public int Millisecond => m_millisecond;
 
-    
     public ConversionCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_year, m_month, m_day) ? ConversionCalendar.GregorianCalendar : IsJulianCalendar(m_year, m_month, m_day) ? ConversionCalendar.JulianCalendar : throw new System.NotImplementedException(@"Not a Julian/Gregorian Calendar date.");
 
 #if NET6_0_OR_GREATER
     /// <summary>Creates a new <see cref="System.DateOnly"/> from the date components in this instance.</summary>
-    
-    public System.DateOnly ToDateOnly()
-      => new(m_year, m_month, m_day);
+    public System.DateOnly ToDateOnly() => new(m_year, m_month, m_day);
 #endif
 
     /// <summary>Creates a new <see cref="System.DateTime"/> from all components in this instance.</summary>
-    
-    public System.DateTime ToDateTime()
-      => new(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
+    public System.DateTime ToDateTime() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
 
 #if NET6_0_OR_GREATER
     /// <summary>Creates a new <see cref="System.TimeOnly"/> from the time components in this instance.</summary>
-    
-    public System.TimeOnly ToTimeOnly()
-      => new(m_hour, m_minute, m_second, m_millisecond);
+    public System.TimeOnly ToTimeOnly() => new(m_hour, m_minute, m_second, m_millisecond);
 #endif
 
     /// <summary>Creates a new <see cref="System.TimeSpan"/> from the day and all time components in this instance.</summary>
-    
-    public System.TimeSpan ToTimeSpan()
-      => new(m_day, m_hour, m_minute, m_second, m_millisecond);
+    public System.TimeSpan ToTimeSpan() => new(m_day, m_hour, m_minute, m_second, m_millisecond);
 
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the specified conversion calendar.</summary>
-    
-    public JulianDate ToJulianDate(ConversionCalendar calendar)
-      => new(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar);
+    public JulianDate ToJulianDate(ConversionCalendar calendar) => new(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond, calendar);
+
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the default conversion calendar.</summary>
-    
-    public JulianDate ToJulianDate()
-      => ToJulianDate(GetConversionCalendar());
+    public JulianDate ToJulianDate() => ToJulianDate(GetConversionCalendar());
 
     /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance. Uses the specified conversion calendar.</summary>
-    
-    public JulianDayNumber ToJulianDayNumber(ConversionCalendar calendar)
-      => new(m_year, m_month, m_day, calendar);
+    public JulianDayNumber ToJulianDayNumber(ConversionCalendar calendar) => new(m_year, m_month, m_day, calendar);
+
     /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance. Uses the default conversion calendar.</summary>
-    
-    public JulianDayNumber ToJulianDayNumber()
-      => ToJulianDayNumber(GetConversionCalendar());
+    public JulianDayNumber ToJulianDayNumber() => ToJulianDayNumber(GetConversionCalendar());
 
     #region Static methods
+
     /// <summary>Returns whether the date is considered to be in the modern Gregorian Calendar.</summary>
-    
     public static bool IsGregorianCalendar(int year, int month, int day)
       => year > 1582 || (year == 1582 && (month > 10 || (month == 10 && day >= 15)));
+
     /// <summary>Returns whether the date is considered to be in the traditional Julian Calendar.</summary>
-    
     public static bool IsJulianCalendar(int year, int month, int day)
       => year >= -4712 && year < 1582 || (year == 1582 && (month < 10 || (month == 10 && day <= 4)));
 
     /// <summary>Returns whether the date is a valid date in the Gregorian calendar.</summary>
-    
     public static bool IsValidGregorianCalendarDate(int year, int month, int day)
-      => IsGregorianCalendar(year, month, day) && month >= 1 && month <= 12 && day >= 1 && day <= System.DateTime.DaysInMonth(year, month);
+       => IsGregorianCalendar(year, month, day) && month >= 1 && month <= 12 && day >= 1 && day <= System.DateTime.DaysInMonth(year, month);
     #endregion Static methods
 
     #region Overloaded operators
-     public static bool operator <(MomentUtc a, MomentUtc b) => a.CompareTo(b) < 0;
-     public static bool operator <=(MomentUtc a, MomentUtc b) => a.CompareTo(b) <= 0;
-     public static bool operator >(MomentUtc a, MomentUtc b) => a.CompareTo(b) > 0;
-     public static bool operator >=(MomentUtc a, MomentUtc b) => a.CompareTo(b) >= 0;
-
-     public static bool operator ==(MomentUtc a, MomentUtc b) => a.Equals(b);
-     public static bool operator !=(MomentUtc a, MomentUtc b) => !a.Equals(b);
+    public static bool operator <(MomentUtc a, MomentUtc b) => a.CompareTo(b) < 0;
+    public static bool operator <=(MomentUtc a, MomentUtc b) => a.CompareTo(b) <= 0;
+    public static bool operator >(MomentUtc a, MomentUtc b) => a.CompareTo(b) > 0;
+    public static bool operator >=(MomentUtc a, MomentUtc b) => a.CompareTo(b) >= 0;
     #endregion Overloaded operators
 
     #region Implemented interfaces
+
     // IComparable<>
-    
     public int CompareTo(MomentUtc other)
       => m_year < other.m_year ? -1 : m_year > other.m_year ? 1
       : m_month < other.m_month ? -1 : m_month > other.m_month ? 1
@@ -148,22 +115,10 @@ namespace Flux
       : m_millisecond < other.m_millisecond ? -1 : m_millisecond > other.m_millisecond ? 1
       : 0; // This means this instance is equal to the other.
 
-    // IEquatable<>
-    
-    public bool Equals(MomentUtc other)
-      => m_year == other.m_year
-      && m_month == other.m_month
-      && m_day == other.m_day
-      && m_hour == other.m_hour
-      && m_minute == other.m_minute
-      && m_second == other.m_second
-      && m_millisecond == other.m_millisecond;
     #endregion Implemented interfaces
 
     #region Object overrides
-     public override bool Equals(object? obj) => obj is MomentUtc o && Equals(o);
-     public override int GetHashCode() => System.HashCode.Combine(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
-     public override string? ToString() => $"{GetType().Name} {{ {m_year:D4}-{m_month:D2}-{m_day:D2} {m_hour:D2}:{m_minute:D2}:{m_second:D2}.{m_millisecond:D3} }}";
+    public override string? ToString() => $"{GetType().Name} {{ {m_year:D4}-{m_month:D2}-{m_day:D2} {m_hour:D2}:{m_minute:D2}:{m_second:D2}.{m_millisecond:D3} }}";
     #endregion Object overrides
   }
 }

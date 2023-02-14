@@ -20,8 +20,8 @@ namespace Flux
 
     /// <summary>Electric charge unit of Coulomb.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
-    public readonly struct ElectricCharge
-      : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IEquatable<ElectricCharge>, System.IFormattable, IUnitQuantifiable<double, ElectricChargeUnit>
+    public readonly record struct ElectricCharge
+      : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ElectricChargeUnit>
     {
       public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 
@@ -45,9 +45,6 @@ namespace Flux
       public static bool operator <=(ElectricCharge a, ElectricCharge b) => a.CompareTo(b) <= 0;
       public static bool operator >(ElectricCharge a, ElectricCharge b) => a.CompareTo(b) > 0;
       public static bool operator >=(ElectricCharge a, ElectricCharge b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(ElectricCharge a, ElectricCharge b) => a.Equals(b);
-      public static bool operator !=(ElectricCharge a, ElectricCharge b) => !a.Equals(b);
 
       public static ElectricCharge operator -(ElectricCharge v) => new(-v.m_value);
       public static ElectricCharge operator +(ElectricCharge a, double b) => new(a.m_value + b);
@@ -88,9 +85,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(ElectricCharge other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -101,7 +95,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(ElectricChargeUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -114,8 +107,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is ElectricCharge o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

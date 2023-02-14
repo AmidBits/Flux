@@ -20,8 +20,8 @@ namespace Flux
 
     /// <summary>Activity, unit of becquerel.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Specific_activity"/>
-    public readonly struct Activity
-      : System.IComparable, System.IComparable<Activity>, System.IConvertible, System.IEquatable<Activity>, System.IFormattable, IUnitQuantifiable<double, ActivityUnit>
+    public readonly record struct Activity
+      : System.IComparable, System.IComparable<Activity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ActivityUnit>
     {
       public const ActivityUnit DefaultUnit = ActivityUnit.Becquerel;
 
@@ -42,9 +42,6 @@ namespace Flux
       public static bool operator <=(Activity a, Activity b) => a.CompareTo(b) <= 0;
       public static bool operator >(Activity a, Activity b) => a.CompareTo(b) > 0;
       public static bool operator >=(Activity a, Activity b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(Activity a, Activity b) => a.Equals(b);
-      public static bool operator !=(Activity a, Activity b) => !a.Equals(b);
 
       public static Activity operator -(Activity v) => new(-v.m_value);
       public static Activity operator +(Activity a, double b) => new(a.m_value + b);
@@ -85,9 +82,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Activity other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -98,7 +92,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(ActivityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -111,8 +104,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Activity o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

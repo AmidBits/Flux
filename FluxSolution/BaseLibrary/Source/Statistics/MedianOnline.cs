@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary></summary>
   /// <see cref="https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers"/>
-  public sealed class MedianOnline
+  public sealed record class MedianOnline
   {
     private readonly DataStructures.IHeap<double> m_maxHeap = new DataStructures.BinaryHeapMax<double>();
     private readonly DataStructures.IHeap<double> m_minHeap = new DataStructures.BinaryHeapMin<double>();
@@ -43,13 +43,13 @@ namespace Flux
         }
       }
     }
+
     public void AddRange(params double[] values)
     {
       foreach (var value in values)
         Add(value);
     }
 
-    
     public double EffectiveMedian()
     {
       var maxHeapCount = m_maxHeap.Count;
@@ -65,7 +65,6 @@ namespace Flux
         return (maxHeapPeek + minHeapPeek) / 2.0;
     }
 
-    
     public override string ToString()
       => $"{GetType().Name} {{ {EffectiveMedian()} [{m_minHeap.Count}:{m_maxHeap.Count}] }}";
   }

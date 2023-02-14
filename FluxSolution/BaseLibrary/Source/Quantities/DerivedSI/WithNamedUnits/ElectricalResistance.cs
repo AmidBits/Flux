@@ -20,8 +20,8 @@ namespace Flux
 
     /// <summary>Electric resistance, unit of Ohm.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
-    public readonly struct ElectricalResistance
-      : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, System.IEquatable<ElectricalResistance>, System.IFormattable, IUnitQuantifiable<double, ElectricalResistanceUnit>
+    public readonly record struct ElectricalResistance
+      : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ElectricalResistanceUnit>
     {
       public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
 
@@ -37,7 +37,6 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-
       public ElectricalConductance ToElectricalConductance()
         => new(1 / m_value);
 
@@ -45,11 +44,10 @@ namespace Flux
       /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>
       /// <param name="voltage"></param>
       /// <param name="current"></param>
-
       public static ElectricalResistance From(Voltage voltage, ElectricCurrent current)
         => new(voltage.Value / current.Value);
-      /// <summary>Converts resistor values as if in parallel configuration.</summary>
 
+      /// <summary>Converts resistor values as if in parallel configuration.</summary>
       public static ElectricalResistance FromParallelResistors(params double[] resistors)
       {
         var sum = 0.0;
@@ -57,8 +55,8 @@ namespace Flux
           sum += 1 / resistor;
         return (ElectricalResistance)(1 / sum);
       }
-      /// <summary>Converts resistor values as if in serial configuration.</summary>
 
+      /// <summary>Converts resistor values as if in serial configuration.</summary>
       public static ElectricalResistance FromSerialResistors(params double[] resistors)
       {
         var sum = 0.0;
@@ -76,9 +74,6 @@ namespace Flux
       public static bool operator <=(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) <= 0;
       public static bool operator >(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) > 0;
       public static bool operator >=(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(ElectricalResistance a, ElectricalResistance b) => a.Equals(b);
-      public static bool operator !=(ElectricalResistance a, ElectricalResistance b) => !a.Equals(b);
 
       public static ElectricalResistance operator -(ElectricalResistance v) => new(-v.m_value);
       public static ElectricalResistance operator +(ElectricalResistance a, double b) => new(a.m_value + b);
@@ -119,9 +114,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(ElectricalResistance other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -132,7 +124,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(ElectricalResistanceUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -145,8 +136,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is ElectricalResistance o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

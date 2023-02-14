@@ -9,8 +9,8 @@ namespace Flux
   /// <summary>Julian Date unit of days with time of day fraction. The Julian Date struct can also be used to handle Julian Day Fraction, which is the number of days, hours, minutes and seconds since the beginning of the year.</summary>
   /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
-  public readonly struct JulianDate
-    : System.IComparable<JulianDate>, System.IConvertible, System.IEquatable<JulianDate>, Quantities.IQuantifiable<double>
+  public readonly record struct JulianDate
+    : System.IComparable<JulianDate>, System.IConvertible, Quantities.IQuantifiable<double>
   {
     public readonly static JulianDate Zero;
 
@@ -24,29 +24,15 @@ namespace Flux
       : this(JulianDayNumber.ConvertFromDateParts(year, month, day, calendar) + ConvertFromTimeParts(hour, minute, second, millisecond))
     { }
 
-
-    public JulianDate AddWeeks(int weeks)
-      => this + (weeks * 7);
-
-    public JulianDate AddDays(int days)
-      => this + days;
-
-    public JulianDate AddHours(int hours)
-      => this + (hours / 24d);
-
-    public JulianDate AddMinutes(int minutes)
-      => this + (minutes / 1440d);
-
-    public JulianDate AddSeconds(int seconds)
-      => this + (seconds / 86400d);
-
-    public JulianDate AddMilliseconds(int milliseconds)
-      => this + (milliseconds / 1000d / 86400d);
-
+    public JulianDate AddWeeks(int weeks) => this + (weeks * 7);
+    public JulianDate AddDays(int days) => this + days;
+    public JulianDate AddHours(int hours) => this + (hours / 24d);
+    public JulianDate AddMinutes(int minutes) => this + (minutes / 1440d);
+    public JulianDate AddSeconds(int seconds) => this + (seconds / 86400d);
+    public JulianDate AddMilliseconds(int milliseconds) => this + (milliseconds / 1000d / 86400d);
 
     public ConversionCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
-
 
     public void GetParts(ConversionCalendar calendar, out int year, out int month, out int day, out int hour, out int minute, out int second, out int millisecond)
     {
@@ -54,10 +40,7 @@ namespace Flux
       ConvertToTimeParts(m_value, out hour, out minute, out second, out millisecond);
     }
 
-
-    public JulianDayNumber ToJulianDayNumber()
-      => new((int)(m_value + 0.5));
-
+    public JulianDayNumber ToJulianDayNumber() => new((int)(m_value + 0.5));
 
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
@@ -66,7 +49,6 @@ namespace Flux
 
       return new(year, month, day, hour, minute, second, millisecond);
     }
-
 
     public string ToTimeString()
       => System.TimeSpan.FromSeconds(System.Convert.ToDouble(43200 + GetTimeSinceNoon(m_value))).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
@@ -132,9 +114,6 @@ namespace Flux
     public static bool operator >(JulianDate a, JulianDate b) => a.CompareTo(b) > 0;
     public static bool operator >=(JulianDate a, JulianDate b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(JulianDate a, JulianDate b) => a.Equals(b);
-    public static bool operator !=(JulianDate a, JulianDate b) => !a.Equals(b);
-
     public static JulianDate operator -(JulianDate jd) => new(-jd.m_value);
     public static double operator -(JulianDate a, JulianDate b) => a.m_value - b.m_value;
 
@@ -183,9 +162,6 @@ namespace Flux
     [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable<>
-    public bool Equals(JulianDate other) => m_value == other.m_value;
-
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
       => $"{m_value}";
@@ -194,13 +170,6 @@ namespace Flux
     #endregion Implemented interfaces
 
     #region Object overrides
-
-    public override bool Equals(object? obj)
-      => obj is JulianDate o && Equals(o);
-
-    public override int GetHashCode()
-      => m_value.GetHashCode();
-
     public override string? ToString()
       => $"{GetType().Name} {{ {ToQuantityString()} ({ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}) }}";
     #endregion Object overrides

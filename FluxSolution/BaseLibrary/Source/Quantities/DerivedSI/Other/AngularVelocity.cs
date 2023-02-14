@@ -19,8 +19,8 @@ namespace Flux
 
     /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
-    public readonly struct AngularVelocity
-      : System.IComparable, System.IComparable<AngularVelocity>, System.IConvertible, System.IEquatable<AngularVelocity>, System.IFormattable, IUnitQuantifiable<double, AngularVelocityUnit>
+    public readonly record struct AngularVelocity
+      : System.IComparable, System.IComparable<AngularVelocity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AngularVelocityUnit>
     {
       public const AngularVelocityUnit DefaultUnit = AngularVelocityUnit.RadianPerSecond;
 
@@ -38,15 +38,12 @@ namespace Flux
 
       #region Static methods
       /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
-
       public static double ConvertAngularVelocityToRotationalSpeed(double radPerSecond)
         => radPerSecond / GenericMath.PiX2;
 
       /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
-
       public static double ConvertRotationalSpeedToAngularVelocity(double revolutionPerMinute)
         => revolutionPerMinute / 60;
-
 
       public static AngularVelocity From(Angle angle, Time time)
         => new(angle.Value / time.Value);
@@ -54,7 +51,6 @@ namespace Flux
       /// <summary>Creates a new <see cref="AngularVelocity"/> instance from <see cref="LinearVelocity">tangential/linear speed</see> and <see cref="Length">radius</see></summary>
       /// <param name="tangentialSpeed"></param>
       /// <param name="radius"></param>
-
       public static AngularVelocity From(LinearVelocity tangentialSpeed, Length radius)
         => new(tangentialSpeed.Value / radius.Value);
       #endregion Static methods
@@ -67,9 +63,6 @@ namespace Flux
       public static bool operator <=(AngularVelocity a, AngularVelocity b) => a.CompareTo(b) <= 0;
       public static bool operator >(AngularVelocity a, AngularVelocity b) => a.CompareTo(b) > 0;
       public static bool operator >=(AngularVelocity a, AngularVelocity b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(AngularVelocity a, AngularVelocity b) => a.Equals(b);
-      public static bool operator !=(AngularVelocity a, AngularVelocity b) => !a.Equals(b);
 
       public static AngularVelocity operator -(AngularVelocity v) => new(-v.m_value);
       public static AngularVelocity operator +(AngularVelocity a, AngularVelocity b) => new(a.m_value + b.m_value);
@@ -111,9 +104,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(AngularVelocity other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -124,7 +114,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(AngularVelocityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -137,8 +126,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is AngularVelocity o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

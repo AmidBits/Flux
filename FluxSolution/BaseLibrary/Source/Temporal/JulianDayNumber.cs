@@ -9,7 +9,7 @@ namespace Flux
   /// <summary>Julian Day Number unit of days.</summary>
   /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
-  public readonly struct JulianDayNumber
+  public readonly record struct JulianDayNumber
     : System.IComparable<JulianDayNumber>, System.IConvertible, System.IEquatable<JulianDayNumber>, Quantities.IQuantifiable<int>
   {
     public static readonly JulianDayNumber Zero;
@@ -25,31 +25,22 @@ namespace Flux
     { }
 
     /// <summary>Returns a <see cref="System.DayOfWeek"/> from the Julian Day Number.</summary>
-
     public System.DayOfWeek DayOfWeek
       => (System.DayOfWeek)(GetDayOfWeekISO8601(m_value) % 7);
     /// <summary>Returns a day of week [1 (Monday), 7 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday. For US day-of-week numbering, simply do "ComputeDayOfWeekIso(JDN) % 7".</summary>
-
     public int DayOfWeekISO8601
       => GetDayOfWeekISO8601(m_value);
 
-
-    public JulianDayNumber AddWeeks(int weeks)
-      => this + (weeks * 7);
-
-    public JulianDayNumber AddDays(int days)
-      => this + days;
-
+    public JulianDayNumber AddWeeks(int weeks) => this + (weeks * 7);
+    public JulianDayNumber AddDays(int days) => this + days;
 
     public ConversionCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
-
 
     public void GetDateParts(ConversionCalendar calendar, out int year, out int month, out int day)
       => ConvertToDateParts(m_value, calendar, out year, out month, out day);
 
     /// <summary>Creates a new string from this instance.</summary>
-
     public string ToDateString(ConversionCalendar calendar)
     {
       var sb = new System.Text.StringBuilder();
@@ -92,12 +83,9 @@ namespace Flux
     }
 
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
-
-    public JulianDate ToJulianDate()
-      => new(m_value);
+    public JulianDate ToJulianDate() => new(m_value);
 
     /// <summary>Creates a new <see cref="MomentUtc"/> from this instance.</summary>
-
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
       ConvertToDateParts((int)(m_value + 0.5), calendar, out var year, out var month, out var day);
@@ -161,9 +149,6 @@ namespace Flux
     public static bool operator >(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) > 0;
     public static bool operator >=(JulianDayNumber a, JulianDayNumber b) => a.CompareTo(b) >= 0;
 
-    public static bool operator ==(JulianDayNumber a, JulianDayNumber b) => a.Equals(b);
-    public static bool operator !=(JulianDayNumber a, JulianDayNumber b) => !a.Equals(b);
-
     public static JulianDayNumber operator -(JulianDayNumber jd) => new(-jd.m_value);
     public static double operator -(JulianDayNumber a, JulianDayNumber b) => a.m_value - b.m_value;
 
@@ -200,9 +185,6 @@ namespace Flux
     [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
     #endregion IConvertible
 
-    // IEquatable<>
-    public bool Equals(JulianDayNumber other) => m_value == other.m_value;
-
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
       => $"{m_value}";
@@ -211,8 +193,6 @@ namespace Flux
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override bool Equals(object? obj) => obj is JulianDayNumber o && Equals(o);
-    public override int GetHashCode() => m_value.GetHashCode();
     public override string? ToString() => $"{GetType().Name} {{ {ToQuantityString()} ({ToDateString(GetConversionCalendar())}) }}";
     #endregion Object overrides
   }

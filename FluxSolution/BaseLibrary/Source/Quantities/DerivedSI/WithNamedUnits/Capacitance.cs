@@ -20,8 +20,8 @@ namespace Flux
 
     /// <summary>Electrical capacitance unit of Farad.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
-    public readonly struct Capacitance
-      : System.IComparable, System.IComparable<Capacitance>, System.IConvertible, System.IEquatable<Capacitance>, System.IFormattable, IUnitQuantifiable<double, CapacitanceUnit>
+    public readonly record struct Capacitance
+      : System.IComparable, System.IComparable<Capacitance>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, CapacitanceUnit>
     {
       public const CapacitanceUnit DefaultUnit = CapacitanceUnit.Farad;
 
@@ -42,9 +42,6 @@ namespace Flux
       public static bool operator <=(Capacitance a, Capacitance b) => a.CompareTo(b) <= 0;
       public static bool operator >(Capacitance a, Capacitance b) => a.CompareTo(b) > 0;
       public static bool operator >=(Capacitance a, Capacitance b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(Capacitance a, Capacitance b) => a.Equals(b);
-      public static bool operator !=(Capacitance a, Capacitance b) => !a.Equals(b);
 
       public static Capacitance operator -(Capacitance v) => new(-v.m_value);
       public static Capacitance operator +(Capacitance a, double b) => new(a.m_value + b);
@@ -85,9 +82,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Capacitance other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -98,7 +92,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(CapacitanceUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -111,8 +104,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Capacitance o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{  {ToQuantityString()} }}";
       #endregion Object overrides
     }

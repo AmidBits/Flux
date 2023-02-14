@@ -19,8 +19,8 @@ namespace Flux
 
     /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
-    public readonly struct AngularAcceleration
-      : System.IComparable, System.IComparable<AngularAcceleration>, System.IConvertible, System.IEquatable<AngularAcceleration>, System.IFormattable, IUnitQuantifiable<double, AngularAccelerationUnit>
+    public readonly record struct AngularAcceleration
+      : System.IComparable, System.IComparable<AngularAcceleration>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AngularAccelerationUnit>
     {
       public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquared;
 
@@ -41,9 +41,6 @@ namespace Flux
       public static bool operator <=(AngularAcceleration a, AngularAcceleration b) => a.CompareTo(b) <= 0;
       public static bool operator >(AngularAcceleration a, AngularAcceleration b) => a.CompareTo(b) > 0;
       public static bool operator >=(AngularAcceleration a, AngularAcceleration b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(AngularAcceleration a, AngularAcceleration b) => a.Equals(b);
-      public static bool operator !=(AngularAcceleration a, AngularAcceleration b) => !a.Equals(b);
 
       public static AngularAcceleration operator -(AngularAcceleration v) => new(-v.m_value);
       public static AngularAcceleration operator +(AngularAcceleration a, double b) => new(a.m_value + b);
@@ -84,9 +81,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(AngularAcceleration other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -97,7 +91,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(AngularAccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -110,8 +103,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is AngularAcceleration o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

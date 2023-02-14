@@ -22,8 +22,8 @@ namespace Flux
 
     /// <summary>Magnetic flux density unit of tesla.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
-    public readonly struct MagneticFluxDensity
-      : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IConvertible, System.IEquatable<MagneticFluxDensity>, System.IFormattable, IUnitQuantifiable<double, MagneticFluxDensityUnit>
+    public readonly record struct MagneticFluxDensity
+      : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, MagneticFluxDensityUnit>
     {
       public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
 
@@ -48,9 +48,6 @@ namespace Flux
       public static bool operator <=(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) <= 0;
       public static bool operator >(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) > 0;
       public static bool operator >=(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(MagneticFluxDensity a, MagneticFluxDensity b) => a.Equals(b);
-      public static bool operator !=(MagneticFluxDensity a, MagneticFluxDensity b) => !a.Equals(b);
 
       public static MagneticFluxDensity operator -(MagneticFluxDensity v) => new(-v.m_value);
       public static MagneticFluxDensity operator +(MagneticFluxDensity a, double b) => new(a.m_value + b);
@@ -91,9 +88,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(MagneticFluxDensity other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -117,8 +111,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is MagneticFluxDensity o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

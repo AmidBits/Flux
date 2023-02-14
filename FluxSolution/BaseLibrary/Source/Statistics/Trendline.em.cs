@@ -7,7 +7,7 @@ namespace Flux
   }
 
   /// <summary>Computes slope and trending data on a sequence.</summary>
-  public sealed class TrendLine<T>
+  public sealed record class TrendLine<T>
   {
     // http://dynamicnotions.blogspot.com/2009/05/linear-regression-in-c.html
 
@@ -47,19 +47,14 @@ namespace Flux
       m_intercept = m_avgY - m_slope * m_avgX;
     }
 
-    public double AvgX
-      => m_avgX;
+    public double AvgX => m_avgX;
 
-    public double AvgY
-      => m_avgY;
+    public double AvgY => m_avgY;
 
-    public int Count
-      => m_count;
+    public int Count => m_count;
 
-    public double Slope
-      => m_slope;
+    public double Slope => m_slope;
 
-    public double Intercept
-      => m_intercept;
+    public double Intercept => m_intercept;
   }
 }

@@ -20,7 +20,7 @@ namespace Flux
 
     /// <summary>Power unit of watt.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Power"/>
-    public readonly struct Power
+    public readonly record struct Power
       : System.IComparable, System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, System.IFormattable, IUnitQuantifiable<double, PowerUnit>
     {
       public const PowerUnit DefaultUnit = PowerUnit.Watt;
@@ -51,9 +51,6 @@ namespace Flux
       public static bool operator <=(Power a, Power b) => a.CompareTo(b) <= 0;
       public static bool operator >(Power a, Power b) => a.CompareTo(b) > 0;
       public static bool operator >=(Power a, Power b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(Power a, Power b) => a.Equals(b);
-      public static bool operator !=(Power a, Power b) => !a.Equals(b);
 
       public static Power operator -(Power v) => new(-v.m_value);
       public static Power operator +(Power a, double b) => new(a.m_value + b);
@@ -94,9 +91,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(Power other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -120,8 +114,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is Power o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name}  {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }

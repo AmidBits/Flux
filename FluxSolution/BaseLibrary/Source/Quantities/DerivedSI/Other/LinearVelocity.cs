@@ -27,8 +27,8 @@ namespace Flux
 
     /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
-    public readonly struct LinearVelocity
-      : System.IComparable, System.IComparable<LinearVelocity>, System.IConvertible, System.IEquatable<LinearVelocity>, System.IFormattable, IUnitQuantifiable<double, LinearVelocityUnit>
+    public readonly record struct LinearVelocity
+      : System.IComparable, System.IComparable<LinearVelocity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, LinearVelocityUnit>
     {
       public const LinearVelocityUnit DefaultUnit = LinearVelocityUnit.MeterPerSecond;
 
@@ -56,21 +56,18 @@ namespace Flux
       /// <see cref="https://en.wikipedia.org/wiki/Phase_velocity"/>
       /// <param name="frequency"></param>
       /// <param name="wavelength"></param>
-
       public static LinearVelocity ComputePhaseVelocity(Frequency frequency, Length wavelength)
         => new(frequency.Value * wavelength.Value);
 
       /// <summary>Creates a new Speed instance from the specified length and time.</summary>
       /// <param name="length"></param>
       /// <param name="time"></param>
-
       public static LinearVelocity From(Length length, Time time)
         => new(length.Value / time.Value);
 
       /// <summary>Creates a new <see cref="LinearVelocity">tangential/linear speed</see> instance from the specified <see cref="AngularVelocity"/> and <see cref="Length">Radius</see>.</summary>
       /// <param name="angularVelocity"></param>
       /// <param name="radius"></param>
-
       public static LinearVelocity From(AngularVelocity angularVelocity, Length radius)
         => new(angularVelocity.Value * radius.Value);
       #endregion Static methods
@@ -83,9 +80,6 @@ namespace Flux
       public static bool operator <=(LinearVelocity a, LinearVelocity b) => a.CompareTo(b) <= 0;
       public static bool operator >(LinearVelocity a, LinearVelocity b) => a.CompareTo(b) > 0;
       public static bool operator >=(LinearVelocity a, LinearVelocity b) => a.CompareTo(b) >= 0;
-
-      public static bool operator ==(LinearVelocity a, LinearVelocity b) => a.Equals(b);
-      public static bool operator !=(LinearVelocity a, LinearVelocity b) => !a.Equals(b);
 
       public static LinearVelocity operator -(LinearVelocity v) => new(-v.m_value);
       public static LinearVelocity operator +(LinearVelocity a, double b) => new(a.m_value + b);
@@ -126,9 +120,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(LinearVelocity other) => m_value == other.m_value;
-
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
@@ -139,7 +130,6 @@ namespace Flux
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-
       public string ToUnitString(LinearVelocityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
 
@@ -156,8 +146,6 @@ namespace Flux
       #endregion Implemented interfaces
 
       #region Object overrides
-      public override bool Equals(object? obj) => obj is LinearVelocity o && Equals(o);
-      public override int GetHashCode() => m_value.GetHashCode();
       public override string ToString() => $"{GetType().Name}  {{ {ToQuantityString()} }}";
       #endregion Object overrides
     }
