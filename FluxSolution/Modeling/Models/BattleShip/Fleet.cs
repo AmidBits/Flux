@@ -3,9 +3,9 @@
   public record class Fleet
   {
     private readonly int[] m_shipSizes;
-    private readonly Numerics.Size2<int> m_seaSize;
+    private readonly Numerics.CartesianCoordinate2<int> m_seaSize;
 
-    public Fleet(int[] shipSizes, Numerics.Size2<int> seaSize)
+    public Fleet(int[] shipSizes, Numerics.CartesianCoordinate2<int> seaSize)
     {
       if (shipSizes.Length < 1) throw new System.ArgumentOutOfRangeException(nameof(shipSizes));
 
@@ -15,7 +15,7 @@
 
     public System.Collections.Generic.IReadOnlyList<int> ShipSizes
       => m_shipSizes;
-    public Numerics.Size2<int> SeaSize
+    public Numerics.CartesianCoordinate2<int> SeaSize
       => m_seaSize;
 
     public bool IsValid(Vessel vessel)
@@ -25,12 +25,12 @@
 
       if (vessel.Orientation == VesselOrientation.Horizontal)
       {
-        if (vessel.Locations[0].Y >= m_seaSize.Height || vessel.Locations[0].X + vessel.Locations.Count > m_seaSize.Width)
+        if (vessel.Locations[0].Y >= m_seaSize.Y || vessel.Locations[0].X + vessel.Locations.Count > m_seaSize.X)
           return false;
       }
       else
       {
-        if (vessel.Locations[0].X >= m_seaSize.Width || vessel.Locations[0].Y + vessel.Locations.Count > m_seaSize.Height)
+        if (vessel.Locations[0].X >= m_seaSize.X || vessel.Locations[0].Y + vessel.Locations.Count > m_seaSize.Y)
           return false;
       }
 
@@ -47,7 +47,7 @@
 
         do
         {
-          ship = new Vessel(size, new Numerics.CartesianCoordinate2<int>(Random.NumberGenerators.Crypto.Next(m_seaSize.Width), Random.NumberGenerators.Crypto.Next(m_seaSize.Height)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
+          ship = new Vessel(size, new Numerics.CartesianCoordinate2<int>(Random.NumberGenerators.Crypto.Next(m_seaSize.X), Random.NumberGenerators.Crypto.Next(m_seaSize.Y)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
         }
         while (!ship.IsValid(m_seaSize) || ships.Any(s => Vessel.Intersects(ship, s)));
 

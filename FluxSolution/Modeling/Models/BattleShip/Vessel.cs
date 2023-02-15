@@ -4,7 +4,7 @@ namespace Flux
 {
   public static partial class VesselEm
   {
-    public static string ToConsoleString(this System.Collections.Generic.IList<Model.BattleShip.Vessel> ships, Numerics.Size2<int> size, int screenPositionLeft, int screenPositionTop)
+    public static string ToConsoleString(this System.Collections.Generic.IList<Model.BattleShip.Vessel> ships, Numerics.CartesianCoordinate2<int> size, int screenPositionLeft, int screenPositionTop)
     {
       if (ships is null) throw new System.ArgumentNullException(nameof(ships));
 
@@ -25,9 +25,9 @@ namespace Flux
         }
       }
 
-      var placement = new char[size.Height, size.Width];
-      for (int x = 0; x < size.Width; x++)
-        for (int y = 0; y < size.Height; y++)
+      var placement = new char[size.Y, size.X];
+      for (int x = 0; x < size.X; x++)
+        for (int y = 0; y < size.Y; y++)
           placement[y, x] = '.';
 
       foreach (Model.BattleShip.Vessel s in ships)
@@ -74,19 +74,19 @@ namespace Flux
       public VesselOrientation Orientation
         => m_orientation;
 
-      public bool IsValid(Numerics.Size2<int> boardSize)
+      public bool IsValid(Numerics.CartesianCoordinate2<int> boardSize)
       {
         if (m_positions[0].X < 0 || m_positions[0].Y < 0)
           return false;
 
         if (m_orientation == VesselOrientation.Horizontal)
         {
-          if (m_positions[0].Y >= boardSize.Height || m_positions[0].X + m_positions.Count > boardSize.Width)
+          if (m_positions[0].Y >= boardSize.Y || m_positions[0].X + m_positions.Count > boardSize.X)
             return false;
         }
         else
         {
-          if (m_positions[0].X >= boardSize.Width || m_positions[0].Y + m_positions.Count > boardSize.Height)
+          if (m_positions[0].X >= boardSize.X || m_positions[0].Y + m_positions.Count > boardSize.Y)
             return false;
         }
 
@@ -144,7 +144,7 @@ namespace Flux
       public static double ProximityProbabilities(int proximity) // Max length of 9, could leave wide open.
         => proximity >= 0 && proximity <= 9 ? 1.0 / (proximity + 1) : throw new System.ArgumentOutOfRangeException(nameof(proximity));
 
-      public static System.Collections.Generic.List<Vessel> StageFleet(Numerics.Size2<int> gridSize, params int[] shipSizes)
+      public static System.Collections.Generic.List<Vessel> StageFleet(Numerics.CartesianCoordinate2<int> gridSize, params int[] shipSizes)
       {
         var ships = new System.Collections.Generic.List<Vessel>();
 
@@ -154,7 +154,7 @@ namespace Flux
 
           do
           {
-            ship = new Vessel(size, new Numerics.CartesianCoordinate2<int>(Random.NumberGenerators.Crypto.Next(gridSize.Width), Random.NumberGenerators.Crypto.Next(gridSize.Height)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
+            ship = new Vessel(size, new Numerics.CartesianCoordinate2<int>(Random.NumberGenerators.Crypto.Next(gridSize.X), Random.NumberGenerators.Crypto.Next(gridSize.Y)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
           }
           while (!ship.IsValid(gridSize) || ships.Any(s => Intersects(ship, s)));
 

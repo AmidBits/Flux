@@ -8,7 +8,7 @@
 
     void NewMatch(string opponent);
 
-    void NewGame(Numerics.Size2<int> size, System.TimeSpan timeSpan, int[] shipSizes);
+    void NewGame(Numerics.CartesianCoordinate2<int> size, System.TimeSpan timeSpan, int[] shipSizes);
 
     System.Collections.Generic.List<Vessel> PlaceShips();
 

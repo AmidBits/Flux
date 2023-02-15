@@ -40,6 +40,7 @@ namespace Flux.Numerics
     ///// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256"/> with the cartesian values as vector elements [X, Y, X, Y], i.e. the values are duplicated.</summary>
     //public System.Runtime.Intrinsics.Vector256<TSelf> ToVector256() => ToVector256(m_x, m_y);
 
+    #region Static methods
 
     /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
     /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a <paramref name="gridWidth"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
@@ -53,6 +54,15 @@ namespace Flux.Numerics
     /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a <paramref name="gridWidth"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>
     public static TSelf ConvertToUniqueIndex(TSelf x, TSelf y, TSelf gridWidth)
       => x + (y * gridWidth);
+
+    public static Flux.Numerics.CartesianCoordinate2<double> FromDiagonalAndRatioOfXY(double diagonal, double a, double b)
+    {
+      var m = double.Sqrt(a * a + b * b);
+
+      return new(diagonal * a / m, diagonal * b / m);
+    }
+    public static Flux.Numerics.CartesianCoordinate2<double> FromDiagonalAndRatioOfXY(double diagonal, double ratio)
+      => FromDiagonalAndRatioOfXY(diagonal, ratio, 1);
 
     [System.Text.RegularExpressions.GeneratedRegex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$", System.Text.RegularExpressions.RegexOptions.Compiled)]
     private static partial System.Text.RegularExpressions.Regex ParsingRegex();
@@ -74,6 +84,7 @@ namespace Flux.Numerics
       }
     }
 
+    #endregion Static methods
 
     #region Implemented interfaces
 

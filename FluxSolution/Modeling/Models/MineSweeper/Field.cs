@@ -3,9 +3,9 @@ namespace Flux.Model.MineSweeper
 {
   public sealed class Field
   {
-    public Numerics.Size2<int> Size { get; }
+    public Numerics.CartesianCoordinate2<int> Size { get; }
 
-    public Field(Numerics.Size2<int> size)
+    public Field(Numerics.CartesianCoordinate2<int> size)
       => Size = size;
 
     public System.Collections.Generic.IEnumerable<Numerics.CartesianCoordinate2<int>> GetNeighbours(Numerics.CartesianCoordinate2<int> point)
@@ -29,7 +29,7 @@ namespace Flux.Model.MineSweeper
     }
 
     public bool IsInRange(Numerics.CartesianCoordinate2<int> point)
-      => point.X >= 0 && point.Y >= 0 && point.X < Size.Width && point.Y < Size.Height;
+      => point.X >= 0 && point.Y >= 0 && point.X < Size.X && point.Y < Size.Y;
 
     public static bool IsEmptyAt(Mines mines, Warnings warnings, Numerics.CartesianCoordinate2<int> point)
       => !(mines?.HasMineAt(point) ?? false) && !(warnings?.HasWarningAt(point) ?? false);

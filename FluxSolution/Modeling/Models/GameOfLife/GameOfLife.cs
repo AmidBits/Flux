@@ -7,44 +7,44 @@ namespace Flux.Model
   {
     private System.Collections.BitArray m_deadOrAlive;
     private readonly bool m_canLifeLogicWrapAroundEdges;
-    private readonly Numerics.Size2<int> m_cellGrid;
+    private readonly Numerics.CartesianCoordinate2<int> m_cellGrid;
 
-    public GameOfLife(Numerics.Size2<int> cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
+    public GameOfLife(Numerics.CartesianCoordinate2<int> cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
     {
-      m_deadOrAlive = new System.Collections.BitArray(cellGrid.Height * cellGrid.Width);
+      m_deadOrAlive = new System.Collections.BitArray(cellGrid.Y * cellGrid.X);
       m_canLifeLogicWrapAroundEdges = canLifeLogicWrapAroundEdges;
       m_cellGrid = cellGrid;
 
       var random = new Flux.Random.Xoshiro256SS();
 
-      for (var r = m_cellGrid.Height - 1; r >= 0; r--)
+      for (var r = m_cellGrid.Y - 1; r >= 0; r--)
       {
-        for (var c = m_cellGrid.Width - 1; c >= 0; c--)
+        for (var c = m_cellGrid.X - 1; c >= 0; c--)
         {
-          var index = (int)Numerics.CartesianCoordinate2<int>.ConvertToUniqueIndex(c, r, m_cellGrid.Width);
+          var index = (int)Numerics.CartesianCoordinate2<int>.ConvertToUniqueIndex(c, r, m_cellGrid.X);
 
           m_deadOrAlive[index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
         }
       }
     }
     public GameOfLife()
-      : this(new Numerics.Size2<int>(40, 20), true, 0.25)
+      : this(new Numerics.CartesianCoordinate2<int>(40, 20), true, 0.25)
     {
     }
 
-    public Numerics.Size2<int> CellGrid
+    public Numerics.CartesianCoordinate2<int> CellGrid
       => m_cellGrid;
 
     /// <summary>Moves the board to the next state based on Conway's rules.</summary>
     public void Update()
     {
-      var array = new System.Collections.BitArray(m_cellGrid.Height * m_cellGrid.Width);
+      var array = new System.Collections.BitArray(m_cellGrid.Y * m_cellGrid.X);
 
-      for (var r = m_cellGrid.Height - 1; r >= 0; r--)
+      for (var r = m_cellGrid.Y - 1; r >= 0; r--)
       {
-        for (var c = m_cellGrid.Width - 1; c >= 0; c--)
+        for (var c = m_cellGrid.X - 1; c >= 0; c--)
         {
-          var index = Flux.Convert.Cartesian2ToMapIndex(c, r, m_cellGrid.Width);
+          var index = Flux.Convert.Cartesian2ToMapIndex(c, r, m_cellGrid.X);
 
           var state = m_deadOrAlive[index];
 
@@ -65,25 +65,25 @@ namespace Flux.Model
 
       for (var r = -1; r <= 1; r++) // Loop "rows".
       {
-        if (!m_canLifeLogicWrapAroundEdges && (y + r < 0 || y + r >= m_cellGrid.Height))
+        if (!m_canLifeLogicWrapAroundEdges && (y + r < 0 || y + r >= m_cellGrid.Y))
           continue;
 
-        var y1 = (y + r + m_cellGrid.Height) % m_cellGrid.Height; // Loop around the edges if y+j is off the board.
+        var y1 = (y + r + m_cellGrid.Y) % m_cellGrid.Y; // Loop around the edges if y+j is off the board.
 
         for (var c = -1; c <= 1; c++) // Loop "columns".
         {
-          if (!m_canLifeLogicWrapAroundEdges && (x + c < 0 || x + c >= m_cellGrid.Width))
+          if (!m_canLifeLogicWrapAroundEdges && (x + c < 0 || x + c >= m_cellGrid.X))
             continue;
 
-          var x1 = (x + c + m_cellGrid.Width) % m_cellGrid.Width; // Loop around the edges if x+i is off the board.
+          var x1 = (x + c + m_cellGrid.X) % m_cellGrid.X; // Loop around the edges if x+i is off the board.
 
-          var pointIndex = (int)Numerics.CartesianCoordinate2<int>.ConvertToUniqueIndex(x1, y1, m_cellGrid.Width);
+          var pointIndex = (int)Numerics.CartesianCoordinate2<int>.ConvertToUniqueIndex(x1, y1, m_cellGrid.X);
 
           cn += m_deadOrAlive[pointIndex] ? 1 : 0;
         }
       }
 
-      var positionIndex = Flux.Convert.Cartesian2ToMapIndex(x, y, m_cellGrid.Width);
+      var positionIndex = Flux.Convert.Cartesian2ToMapIndex(x, y, m_cellGrid.X);
 
       cn -= m_deadOrAlive[positionIndex] ? 1 : 0;
 
@@ -92,13 +92,13 @@ namespace Flux.Model
 
     public System.Collections.Generic.IEnumerable<string> ToConsoleStrings()
     {
-      for (var y = 0; y < m_cellGrid.Height; y++)
+      for (var y = 0; y < m_cellGrid.Y; y++)
       {
         var sb = new System.Text.StringBuilder();
 
-        for (var x = 0; x < m_cellGrid.Width; x++)
+        for (var x = 0; x < m_cellGrid.X; x++)
         {
-          var index = (int)Numerics.CartesianCoordinate2<int>.ConvertToUniqueIndex(x, y, m_cellGrid.Width);
+          var index = (int)Numerics.CartesianCoordinate2<int>.ConvertToUniqueIndex(x, y, m_cellGrid.X);
 
           var c = m_deadOrAlive[index] ? '\u2588' : ' ';
 
@@ -132,8 +132,8 @@ namespace Flux.Model
 
         // Pad +1 to prevent scrolling when drawing the board.
 
-        var width = 2 * System.Math.Max(CellGrid.Width, 8) + 1; // Multiply by 2 for a symmetrical double-width for each cell.
-        var height = System.Math.Max(CellGrid.Height, 8) + 1;
+        var width = 2 * System.Math.Max(CellGrid.X, 8) + 1; // Multiply by 2 for a symmetrical double-width for each cell.
+        var height = System.Math.Max(CellGrid.Y, 8) + 1;
 
         if (System.OperatingSystem.IsWindows())
         {

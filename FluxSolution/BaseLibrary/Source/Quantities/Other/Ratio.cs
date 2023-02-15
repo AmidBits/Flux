@@ -8,7 +8,7 @@ namespace Flux
       AcolonB,
     }
 
-    /// <summary>A ratio indicates how many times one number contains another. It is two related quantities measured with the same unit (here System.Double), and is a dimensionless number (value). This struct stores both constituting numbers of the ratio (numerator and denominator) and returns the quotient as a value.</summary>
+    /// <summary>A ratio indicates how many times one number contains another. It is two related quantities measured with the same unit, it is a dimensionless number (value). This struct stores both constituting numbers of the ratio (numerator and denominator) and returns the quotient as a value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ratio"/>
     public readonly record struct Ratio
       : System.IConvertible, IQuantifiable<double>
@@ -21,11 +21,22 @@ namespace Flux
         m_numerator = numerator;
         m_denominator = denominator;
       }
+      /// <summary>Use a pre-computed ratio. This is less accurate because losses may already have been accumulated, and the ratio is no longer the original numerator and denominator.</summary>
+      public Ratio(double ratio)
+        : this(ratio, 1)
+      { }
 
       public double Numerator
         => m_numerator;
       public double Denominator
         => m_denominator;
+
+      public Flux.Numerics.CartesianCoordinate2<double> ProportionalWidthAndHeight(double diagonalLength)
+      {
+        var m = double.Sqrt(m_numerator * m_numerator + m_denominator * m_denominator);
+
+        return new(diagonalLength * m_numerator / m, diagonalLength * m_denominator / m);
+      }
 
       public string ToRatioString(RatioFormat format)
         => format switch
@@ -34,6 +45,15 @@ namespace Flux
           RatioFormat.AtoB => $"{m_numerator} to {m_denominator}",
           _ => throw new System.ArgumentOutOfRangeException(nameof(format))
         };
+
+      #region Static methods
+      //public static Flux.Numerics.CartesianCoordinate2<double> FromDiagonalAndRatioOfXY(double diagonal, double a, double b)
+      //{
+      //  var m = double.Sqrt(a * a + b * b);
+
+      //  return new(diagonal * a / m, diagonal * b / m);
+      //}
+      #endregion // Static methods
 
       #region Overloaded operators
       public static explicit operator double(Ratio v) => v.Value;

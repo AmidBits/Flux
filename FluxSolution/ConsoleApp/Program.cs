@@ -28,6 +28,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var m = 16.0;
+      var n = 9.0;
+      var d = 65.0;
+
+      var r2 = Flux.Numerics.CartesianCoordinate2<double>.FromDiagonalAndRatioOfXY(d, m, n);
+      var r1 = Flux.Numerics.CartesianCoordinate2<double>.FromDiagonalAndRatioOfXY(d, m / n);
+
+      var x = double.Sqrt(r2.X * r2.X + r2.Y * r2.Y);
+      var y = double.Sqrt(r1.X * r1.X + r1.Y * r1.Y);
+
+      return;
+
       var ipad = System.Globalization.CultureInfo.GetCultureInfo("en-US").GetIpaDictionaryOf();
       var wl = System.Globalization.CultureInfo.GetCultureInfo("en").GetLexiconOf();
     }

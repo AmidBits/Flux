@@ -10,12 +10,12 @@ namespace Flux.Model.MineSweeper
       if (gameState is null) throw new System.ArgumentNullException(nameof(gameState));
       if (mineField is null) throw new System.ArgumentNullException(nameof(mineField));
 
-      var charField = new char[mineField.Field.Size.Height, mineField.Field.Size.Width];
+      var charField = new char[mineField.Field.Size.Y, mineField.Field.Size.X];
       var covers = gameState.Covers();
 
-      for (var i = 0; i < mineField.Field.Size.Height; i++)
+      for (var i = 0; i < mineField.Field.Size.Y; i++)
       {
-        for (var j = 0; j < mineField.Field.Size.Width; j++)
+        for (var j = 0; j < mineField.Field.Size.X; j++)
         {
           var p = new Numerics.CartesianCoordinate2<int>(i, j);
 
@@ -36,15 +36,15 @@ namespace Flux.Model.MineSweeper
 
       System.Console.Clear();
       System.Console.WriteLine(Formatting.ArrayFormatter.Separated.TwoToConsoleString(charField, (e, i) => e.ToString()));
-      for (var i = 0; i < mineField.Field.Size.Height; i++)
-        for (var j = 0; j < mineField.Field.Size.Width; j++)
+      for (var i = 0; i < mineField.Field.Size.Y; i++)
+        for (var j = 0; j < mineField.Field.Size.X; j++)
           if (charField[i, j] == 'M')
             System.Console.WriteLine($"Boom, a mine found at [{i}, {j}]! Game over.");
     }
 
     public static void PlayInConsole()
     {
-      var mineField = new Model.MineSweeper.MineField(new Numerics.Size2<int>(10, 10), 10);
+      var mineField = new Model.MineSweeper.MineField(new Numerics.CartesianCoordinate2<int>(10, 10), 10);
       var gameState = Model.MineSweeper.Game.Start(mineField);
       //var gameResult = gameState.Evaluate(mineField.Mines);
 

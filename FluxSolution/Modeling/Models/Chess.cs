@@ -38,7 +38,7 @@ namespace Flux.Model
     public static readonly string[] Files = new string[] { "a", "b", "c", "d", "e", "f", "g", "h" };
     public static readonly string[] Ranks = new string[] { "8", "7", "6", "5", "4", "3", "2", "1" };
 
-    public static readonly Numerics.Size2<int> BoardSize = new(Files.Length, Ranks.Length);
+    public static readonly Numerics.CartesianCoordinate2<int> BoardSize = new(Files.Length, Ranks.Length);
 
     public static readonly System.Collections.Generic.List<string> Labels = Ranks.SelectMany(rl => Files.Select(cl => $"{cl}{rl}")).ToList();
 
@@ -51,26 +51,26 @@ namespace Flux.Model
 
     public static (string column, string row) IndexToLabel(int index)
     {
-      var p = Numerics.CartesianCoordinate2<int>.ConvertFromUniqueIndex(index, BoardSize.Width);
+      var p = Numerics.CartesianCoordinate2<int>.ConvertFromUniqueIndex(index, BoardSize.X);
 
       return (Files[p.X], Ranks[p.Y]);
     }
 
     public static Numerics.CartesianCoordinate2<int> IndexToVector(int index)
-      => Numerics.CartesianCoordinate2<int>.ConvertFromUniqueIndex(index, BoardSize.Width);
+      => Numerics.CartesianCoordinate2<int>.ConvertFromUniqueIndex(index, BoardSize.X);
 
     public static int LabelToIndex(string column, string row)
     {
       var p = new Numerics.CartesianCoordinate2<int>(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
-      return Flux.Convert.Cartesian2ToMapIndex(p.X, p.Y, BoardSize.Width);
+      return Flux.Convert.Cartesian2ToMapIndex(p.X, p.Y, BoardSize.X);
     }
 
     public static Numerics.CartesianCoordinate2<int> LabelToVector(string column, string row)
       => new(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
     public static int VectorToIndex(Numerics.CartesianCoordinate2<int> vector)
-      => Flux.Convert.Cartesian2ToMapIndex(vector.X, vector.Y, BoardSize.Width);
+      => Flux.Convert.Cartesian2ToMapIndex(vector.X, vector.Y, BoardSize.X);
     public static (string column, string row) VectorToLabel(Numerics.CartesianCoordinate2<int> vector)
       => (Files[vector.X], Ranks[vector.Y]);
 
