@@ -5,6 +5,6 @@ namespace Flux.Checksum
     /// <summary>The current checksum.</summary>
     int Checksum32 { get; }
     /// <summary>Continue generating a checksum.</summary>
-    int GenerateChecksum32(byte[] bytes, int startAt, int count);
+    int GenerateChecksum32(byte[] bytes, int offset, int count);
   }
 }

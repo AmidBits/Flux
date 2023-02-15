@@ -4,8 +4,7 @@ namespace Flux.Checksum.Special
 {
   /// <summary>Luhn is a specific purpose checksum algorithm.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Luhn_algorithm"/>
-  public struct Luhn
-    : System.IEquatable<Luhn>
+  public record struct Luhn
   {
     public static readonly Luhn Empty;
 
@@ -40,28 +39,8 @@ namespace Flux.Checksum.Special
     public static bool Verify(System.Collections.Generic.IEnumerable<char> numberSequence)
       => Verify(numberSequence.Select(c => c - '0'));
 
-    // Operators
-    public static bool operator ==(Luhn a, Luhn b)
-       => a.Equals(b);
-    public static bool operator !=(Luhn a, Luhn b)
-      => !a.Equals(b);
-
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Luhn other)
-      => m_checkDigit == other.m_checkDigit;
-
-    // Object (overrides)
-    public override bool Equals(object? obj)
-      => obj is Luhn o && Equals(o);
-    public override int GetHashCode()
-    {
-      var hc = new System.HashCode();
-      for (var index = m_sequence.Length - 1; index >= 0; index--)
-        hc.Add(m_sequence[index]);
-      hc.Add(m_checkDigit);
-      return hc.ToHashCode();
-    }
-    public override string ToString()
-      => $"{GetType().Name} {{ {string.Concat(m_sequence.Select(i => (char)(i + '0')))}{m_checkDigit} }}";
+    #region Object overrides.
+    public override string ToString() => $"{GetType().Name} {{ {string.Concat(m_sequence.Select(i => (char)(i + '0')))}{m_checkDigit} }}";
+    #endregion Object overrides.
   }
 }

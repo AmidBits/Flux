@@ -2,8 +2,8 @@ namespace Flux.Checksum
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fletcher%27s_checksum"/>
-  public struct Fletcher32
-    : IChecksumGenerator32, System.IEquatable<Fletcher32>
+  public record struct Fletcher32
+    : IChecksumGenerator32
   {
     public static readonly Fletcher32 Empty;
 
@@ -13,7 +13,7 @@ namespace Flux.Checksum
 
     public Fletcher32(int hash = 0) => m_hash = unchecked((uint)hash);
 
-    public int GenerateChecksum32(byte[] bytes, int startAt, int count)
+    public int GenerateChecksum32(byte[] bytes, int offset, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
@@ -21,7 +21,7 @@ namespace Flux.Checksum
 
       unchecked
       {
-        for (int index = startAt, maxIndex = startAt + count; index < maxIndex; index++)
+        for (int index = offset, maxIndex = offset + count; index < maxIndex; index++)
         {
           sum1 = (sum1 + bytes[index]) % 65535;
           sum2 = (sum2 + sum1) % 65535;
@@ -33,27 +33,8 @@ namespace Flux.Checksum
       }
     }
 
-    // Operators
-    
-    public static bool operator ==(Fletcher32 a, Fletcher32 b)
-      => a.Equals(b);
-    
-    public static bool operator !=(Fletcher32 a, Fletcher32 b)
-      => !a.Equals(b);
-
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Fletcher32 other)
-      => m_hash == other.m_hash;
-
-    // Object (overrides)
-    
-    public override bool Equals(object? obj)
-      => obj is Fletcher32 o && Equals(o);
-    
-    public override int GetHashCode()
-      => m_hash.GetHashCode();
-    
-    public override string ToString()
-       => $"{nameof(Fletcher32)} {{ CheckSum = {m_hash} }}";
+    #region Object overrides.
+    public override string ToString() => $"{nameof(Fletcher32)} {{ CheckSum = {m_hash} }}";
+    #endregion Object overrides.
   }
 }

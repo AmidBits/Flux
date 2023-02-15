@@ -3,7 +3,7 @@
   public record class RunningStatistics
     : System.IEquatable<RunningStatistics>, System.IFormattable
   {
-    public static readonly RunningStatistics Empty;
+    public static readonly RunningStatistics Empty = new();
 
     private long m_count;
 

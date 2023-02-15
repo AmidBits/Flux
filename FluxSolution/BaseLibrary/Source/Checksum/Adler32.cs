@@ -2,8 +2,8 @@ namespace Flux.Checksum
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Adler-32"/>
-  public struct Adler32
-    : IChecksumGenerator32, System.IEquatable<Adler32>
+  public record struct Adler32
+    : IChecksumGenerator32
   {
     public static readonly Adler32 Empty;
 
@@ -13,7 +13,7 @@ namespace Flux.Checksum
 
     public Adler32(int hash = 1) => m_hash = unchecked((uint)hash);
 
-    public int GenerateChecksum32(byte[] bytes, int startAt, int count)
+    public int GenerateChecksum32(byte[] bytes, int offset, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
@@ -26,7 +26,7 @@ namespace Flux.Checksum
         {
           for (int counter = 0; counter < maxCount; counter++)
           {
-            a += bytes[startAt++];
+            a += bytes[offset++];
             b += a;
           }
 
@@ -40,28 +40,8 @@ namespace Flux.Checksum
       return Checksum32;
     }
 
-    // Operators
-    
-    public static bool operator ==(Adler32 a, Adler32 b)
-      => a.Equals(b);
-    
-    public static bool operator !=(Adler32 a, Adler32 b)
-      => !a.Equals(b);
-
-    // IEquatable
-    
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Adler32 other)
-      => m_hash == other.m_hash;
-
-    // Object (overrides)
-    
-    public override bool Equals(object? obj)
-      => obj is Adler32 o && Equals(o);
-    
-    public override int GetHashCode()
-      => m_hash.GetHashCode();
-    
-    public override string ToString()
-      => $"{nameof(Adler32)} {{ CheckSum = {m_hash} }}";
+    #region Object overrides.
+    public override string ToString() => $"{nameof(Adler32)} {{ CheckSum = {m_hash} }}";
+    #endregion Object overrides.
   }
 }
