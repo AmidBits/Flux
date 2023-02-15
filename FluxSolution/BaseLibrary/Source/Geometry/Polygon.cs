@@ -2,8 +2,7 @@ namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct Polygon
-    : System.IEquatable<Polygon>
-  //, I2DSurfaceArea, /*I2DSurfaceCentroid,*/ I2DSurfacePerimeter
+    //, I2DSurfaceArea, /*I2DSurfaceCentroid,*/ I2DSurfacePerimeter
   {
     public static readonly Polygon Empty;
 

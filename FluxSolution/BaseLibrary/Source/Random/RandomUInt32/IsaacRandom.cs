@@ -4,7 +4,7 @@ namespace Flux.Random
   /// <see cref="https://en.wikipedia.org/wiki/ISAAC_(cipher)"/>
   /// <seealso cref="http://burtleburtle.net/bob/rand/isaacafa.html"/>
   /// <seealso cref="http://rosettacode.org/wiki/The_ISAAC_Cipher#C.23"/>
-  public class IsaacRandom
+  public sealed class IsaacRandom
     : ARandomUInt32
   {
     //public static System.Random Default

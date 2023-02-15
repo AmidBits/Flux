@@ -20,8 +20,7 @@ namespace Flux.Data
       => ansi ? (source.IsWrapped('"', '"') ? source.Unwrap('"', '"') : source) : (source.IsWrapped('[', ']') ? source.Unwrap('[', ']') : source);
   }
 
-  public struct TsqlName
-    : System.IEquatable<TsqlName>
+  public record struct TsqlName
   {
     public const string CsApplicationName = @"Application Name";
     public const string CsDatabase = @"Database";
@@ -173,26 +172,8 @@ namespace Flux.Data
     }
     #endregion Static methods
 
-    #region Overloaded operators
-    public static bool operator ==(TsqlName left, TsqlName right)
-      => left.Equals(right);
-    public static bool operator !=(TsqlName left, TsqlName right)
-      => !left.Equals(right);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // System.IEquatable<SqlName>
-    public bool Equals(TsqlName other)
-      => ToString() == other.ToString();
-    #endregion Implemented interfaces
-
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is TsqlName o && Equals(o);
-    public override int GetHashCode()
-      => ToString().GetHashCode(System.StringComparison.Ordinal);
-    public override string ToString()
-      => $"{GetType().Name} {{ Name = {QualifiedNameQuoted(4)} }}";
+    public override string ToString() => $"{GetType().Name} {{ Name = {QualifiedNameQuoted(4)} }}";
     #endregion Object overrides
   }
 }

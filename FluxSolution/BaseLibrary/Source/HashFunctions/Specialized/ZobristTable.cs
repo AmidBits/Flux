@@ -1,7 +1,7 @@
 namespace Flux.Hashing
 {
   // https://en.wikipedia.org/wiki/Zobrist_hashing
-  public sealed class ZobristTable
+  public readonly record struct ZobristTable
   {
     private readonly ulong[,,] m_table;
 
@@ -52,7 +52,6 @@ namespace Flux.Hashing
       return (long)hash;
     }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ D0 = {m_table.GetLength(0)}, D1 = {m_table.GetLength(1)}, D2 = {m_table.GetLength(2)} }}";
+    public override string ToString() => $"{GetType().Name} {{ D0 = {m_table.GetLength(0)}, D1 = {m_table.GetLength(1)}, D2 = {m_table.GetLength(2)} }}";
   }
 }

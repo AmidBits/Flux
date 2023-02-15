@@ -4,8 +4,8 @@ namespace Flux.Checksum
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"/>
-  public struct Crc32
-    : IChecksumGenerator32, System.IEquatable<Crc32>
+  public record struct Crc32
+    : IChecksumGenerator32
   {
     public static readonly Crc32 Empty;
 
@@ -32,13 +32,13 @@ namespace Flux.Checksum
       m_lookupTable = lookupTable.Select(i => (uint)i).ToArray();
     }
 
-    public int GenerateChecksum32(byte[] bytes, int startAt, int count)
+    public int GenerateChecksum32(byte[] bytes, int offset, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
       unchecked
       {
-        for (int index = startAt, maxIndex = startAt + count; index < maxIndex; index++)
+        for (int index = offset, maxIndex = offset + count; index < maxIndex; index++)
         {
           var lookupIndex = (m_hash ^ bytes[index]) & 0xFF;
 
@@ -49,28 +49,8 @@ namespace Flux.Checksum
       return Checksum32;
     }
 
-    // Operators
-    
-    public static bool operator ==(Crc32 a, Crc32 b)
-      => a.Equals(b);
-    
-    public static bool operator !=(Crc32 a, Crc32 b)
-      => !a.Equals(b);
-
-    // IEquatable
-    
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Crc32 other)
-      => m_hash == other.m_hash;
-
-    // Object (overrides)
-    
-    public override bool Equals(object? obj)
-      => obj is Crc32 o && Equals(o);
-    
-    public override int GetHashCode()
-      => m_hash.GetHashCode();
-    
-    public override string ToString()
-      => $"{nameof(Crc32)} {{ Checksum = {m_hash} }}";
+    #region Object overrides.
+    public override string ToString() => $"{nameof(Crc32)} {{ Checksum = {m_hash} }}";
+    #endregion Object overrides.
   }
 }

@@ -2,8 +2,8 @@ namespace Flux.Hashing
 {
   /// <summary></summary>
   /// <see cref="https://en.wikipedia.org/wiki/Jenkins_hash_function"/>
-  public struct Oat
-    : ISimpleHashGenerator32, System.IEquatable<Oat>
+  public record struct Oat
+    : ISimpleHashGenerator32
   {
     public static readonly Oat Empty;
 
@@ -13,13 +13,13 @@ namespace Flux.Hashing
 
     public Oat(int hash = 0) => m_hash = unchecked((uint)hash);
 
-    public int GenerateSimpleHash32(byte[] bytes, int startAt, int count)
+    public int GenerateSimpleHash32(byte[] bytes, int offset, int count)
     {
       if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
 
       unchecked
       {
-        for (int index = startAt, maxIndex = startAt + count; index < maxIndex; index++)
+        for (int index = offset, maxIndex = offset + count; index < maxIndex; index++)
         {
           m_hash += bytes[index];
           m_hash += m_hash << 10;
@@ -34,28 +34,8 @@ namespace Flux.Hashing
       return SimpleHash32;
     }
 
-    // Operators
-    
-    public static bool operator ==(Oat a, Oat b)
-      => a.Equals(b);
-    
-    public static bool operator !=(Oat a, Oat b)
-      => !a.Equals(b);
-
-    // IEquatable
-    
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Oat other)
-      => m_hash == other.m_hash;
-
-    // Object (overrides)
-    
-    public override bool Equals(object? obj)
-      => obj is Oat o && Equals(o);
-    
-    public override int GetHashCode()
-      => m_hash.GetHashCode();
-    
-    public override string ToString()
-      => $"{nameof(Oat)} {{ HashCode = {m_hash} }}";
+    #region Object overrides.
+    public override string ToString() => $"{nameof(Oat)} {{ HashCode = {m_hash} }}";
+    #endregion Object overrides.
   }
 }

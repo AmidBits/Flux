@@ -1,7 +1,7 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public record class HexLayout
+  public readonly record struct HexLayout
   {
     private readonly Numerics.Size2<int> m_size;
     private readonly Numerics.CartesianCoordinate2<int> m_origin;
