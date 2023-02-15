@@ -2,6 +2,14 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
+    #region 3D vector (non-collection) computations
+
+    public static Numerics.CartesianCoordinate3<TResult> ToCartesianCoordinate3<TResult>(this System.Numerics.Vector3 source)
+      where TResult : System.Numerics.IFloatingPoint<TResult>
+      => new(TResult.CreateChecked(source.X), TResult.CreateChecked(source.Y), TResult.CreateChecked(source.Z));
+
+    #endregion 3D vector (non-collection) computations
+
     //    /// <summary>Creates a new sequence with the midpoints added in-between the vertices in the sequence.</summary>
     //    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> AddMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
     //    {
@@ -359,12 +367,9 @@ namespace Flux
     //    //  }
     //    //}
 
-    public static Numerics.CartesianCoordinate3<TResult> ToCartesianCoordinate3<TResult>(this System.Numerics.Vector3 source)
-      where TResult : System.Numerics.INumber<TResult>
-      => new(TResult.CreateChecked(source.X), TResult.CreateChecked(source.Y), TResult.CreateChecked(source.Z));
-    public static System.Numerics.Vector3 ToVector3<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => new(float.CreateChecked(source.X), float.CreateChecked(source.Y), float.CreateChecked(source.Z));
+    //public static System.Numerics.Vector3 ToVector3<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //  => new(float.CreateChecked(source.X), float.CreateChecked(source.Y), float.CreateChecked(source.Z));
 
   }
 }

@@ -2,7 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    #region 2D Vector (Non-Collection) Computations.
+    #region 2D vector (non-collection) computations
+
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 before, System.Numerics.Vector2 after)
       => AngleTo(before - source, after - source);
@@ -90,15 +91,13 @@ namespace Flux
     //  => new Geometry.Ellipse(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
 
     public static Numerics.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TResult>(this System.Numerics.Vector2 source)
-      where TResult : System.Numerics.INumber<TResult>
+      where TResult : System.Numerics.IFloatingPoint<TResult>
       => new(TResult.CreateChecked(source.X), TResult.CreateChecked(source.Y));
-    public static System.Numerics.Vector2 ToVector2<TSelf>(this Numerics.CartesianCoordinate2<TSelf> source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => new(float.CreateChecked(source.X), float.CreateChecked(source.Y));
 
-    #endregion 2D Vector (Non-Collection) Computations.
+    #endregion // 2D vector (non-collection) computations
 
-    #region 2D Vector Collection (Shape) Algorithms
+    #region 2D vector collection (shape) algorithms
+
     ///// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
     ///// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     //public static double ChebyshevDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b, float edgeLength = 1)
@@ -365,6 +364,7 @@ namespace Flux
         yield return new System.Numerics.Vector2[] { vertex, source[i % source.Count], source[(i + 1) % source.Count] };
       }
     }
-    #endregion 2D Vector Collection (Shape) Algorithms
+
+    #endregion // 2D vector collection (shape) algorithms
   }
 }

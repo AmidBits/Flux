@@ -204,6 +204,21 @@
     //public static Vector4 ToVector4<TSelf>(this ICartesianCoordinate3<TSelf> source, double w = 0)
     //  where TSelf : System.Numerics.INumber<TSelf>
     //  => new(double.CreateChecked(source.X), double.CreateChecked(source.Y), double.CreateChecked(source.Z), w);
+
+    /// <summary>Converts the <see cref="Point3"/> to a <see cref="System.Numerics.Vector3"/>.</summary>
+    public static System.Numerics.Vector3 ToVector3<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(float.CreateChecked(source.X), float.CreateChecked(source.Y), float.CreateChecked(source.Z));
+
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256{double}"/> with the cartesian values as vector elements [X, Y, Z, <paramref name="w"/>].</summary>
+    public static System.Runtime.Intrinsics.Vector256<double> ToVector256<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source, TSelf w)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => System.Runtime.Intrinsics.Vector256.Create(double.CreateChecked(source.X), double.CreateChecked(source.Y), double.CreateChecked(source.Z), double.CreateChecked(w));
+
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256{double}"/> with the cartesian values as vector elements [X, Y, Z, 0].</summary>
+    public static System.Runtime.Intrinsics.Vector256<double> ToVector256<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => source.ToVector256(TSelf.Zero);
   }
   #endregion ExtensionMethods
 

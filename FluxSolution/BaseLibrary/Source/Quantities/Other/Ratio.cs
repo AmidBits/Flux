@@ -31,12 +31,11 @@ namespace Flux
       public double Denominator
         => m_denominator;
 
-      public Flux.Numerics.CartesianCoordinate2<double> ProportionalWidthAndHeight(double diagonalLength)
-      {
-        var m = double.Sqrt(m_numerator * m_numerator + m_denominator * m_denominator);
-
-        return new(diagonalLength * m_numerator / m, diagonalLength * m_denominator / m);
-      }
+      /// <summary>If a diagonal length is known, the proportional width and height can be computed using the Pythagorean theorem.</summary>
+      /// <param name="diagonalLength">The length of the known diagonal.</param>
+      /// <returns>The proportional (to the arguments passed) lengths of width and height.</returns>
+      public Flux.Numerics.CartesianCoordinate2<double> ToSize(double diagonalLength)
+        => (Numerics.CartesianCoordinate2<double>)ToSize(diagonalLength, m_numerator, m_denominator);
 
       public string ToRatioString(RatioFormat format)
         => format switch
@@ -47,12 +46,24 @@ namespace Flux
         };
 
       #region Static methods
-      //public static Flux.Numerics.CartesianCoordinate2<double> FromDiagonalAndRatioOfXY(double diagonal, double a, double b)
-      //{
-      //  var m = double.Sqrt(a * a + b * b);
 
-      //  return new(diagonal * a / m, diagonal * b / m);
-      //}
+      /// <summary>When the diagonal length and side-to-side ratio is known, the proportional width and height can be computed using the Pythagorean theorem. E.g. A diagonal of 65" and a ratio of 16:9.</summary>
+      /// <param name="diagonalLength">The length of the known diagonal. E.g. 65.</param>
+      /// <param name="ratioX">The x-axis portion of a ratio, which corresponds to width in the result. E.g. 16.</param>
+      /// <param name="ratioY">The y-axis portion of a ratio, which corresponds to height in the result. E.g. 9.</param>
+      /// <returns>The proportional (to the arguments passed) lengths of width (e.g. 56.6524099130957) and height (e.g. 31.866980576116333).</returns>
+      public static (double width, double height) ToSize(double diagonalLength, double ratioX, double ratioY)
+      {
+        var m = double.Sqrt(ratioX * ratioX + ratioY * ratioY);
+
+        return new(diagonalLength * ratioX / m, diagonalLength * ratioY / m);
+      }
+      /// <summary>When the diagonal length and side-to-side ratio is known, the proportional width and height can be computed using the Pythagorean theorem. E.g. A diagonal of 65" and a ratio of 16:9.</summary>
+      /// <param name="diagonalLength">The length of the known diagonal. E.g. 65.</param>
+      /// <param name="ratio">The pre-computed ratio, e.g. if the two parts of a ratio is unknown, which then corresponds to width AND height in the result. E.g. 1.777777777777778 (16/9).</param>
+      /// <returns>The proportional (to the arguments passed) lengths of width and height.</returns>
+      public static (double width, double height) ToSize(double diagonalLength, double ratio) => ToSize(diagonalLength, ratio, 1);
+
       #endregion // Static methods
 
       #region Overloaded operators

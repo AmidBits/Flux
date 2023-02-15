@@ -3,6 +3,7 @@ namespace Flux.Numerics
   /// <summary>Kepler elements for computing orbits.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Orbital_elements"/>
   /// <see cref="https://www.amsat.org/keplerian-elements-tutorial/"/>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct TwoLineElementSet2<TSelf>
     where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
   {

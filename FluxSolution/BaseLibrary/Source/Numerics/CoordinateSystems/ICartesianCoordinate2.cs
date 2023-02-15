@@ -138,6 +138,26 @@
     //public static Vector4 ToVector4<TSelf>(this ICartesianCoordinate2<TSelf> source, double z = 0, double w = 0)
     //  where TSelf : System.Numerics.INumber<TSelf>
     //  => new(double.CreateChecked(source.X), double.CreateChecked(source.Y), z, w);
+
+    /// <summary>Converts the <see cref="Numerics.CartesianCoordinate2{TSelf}"/> to a <see cref="System.Numerics.Vector2"/>.</summary>
+    public static System.Numerics.Vector2 ToVector2<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => new(float.CreateChecked(source.X), float.CreateChecked(source.Y));
+
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector128{double}"/> with the cartesian values as vector elements [X, Y].</summary>
+    public static System.Runtime.Intrinsics.Vector128<double> ToVector128<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => System.Runtime.Intrinsics.Vector128.Create(double.CreateChecked(source.X), double.CreateChecked(source.Y));
+
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256{double}"/> with the cartesian values as vector elements [X, Y, <paramref name="z"/>, <paramref name="w"/>].</summary>
+    public static System.Runtime.Intrinsics.Vector256<double> ToVector256<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source, TSelf z, TSelf w)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => System.Runtime.Intrinsics.Vector256.Create(double.CreateChecked(source.X), double.CreateChecked(source.Y), double.CreateChecked(z), double.CreateChecked(w));
+
+    /// <summary>Creates a new intrinsic vector <see cref="System.Runtime.Intrinsics.Vector256{double}"/> with the cartesian values as vector elements [X, Y, 0, 0].</summary>
+    public static System.Runtime.Intrinsics.Vector256<double> ToVector256<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => source.ToVector256(TSelf.Zero, TSelf.Zero);
   }
   #endregion ExtensionMethods
 

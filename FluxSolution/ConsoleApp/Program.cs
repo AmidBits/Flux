@@ -32,11 +32,14 @@ namespace ConsoleApp
       var n = 9.0;
       var d = 65.0;
 
-      var r2 = Flux.Numerics.CartesianCoordinate2<double>.FromDiagonalAndRatioOfXY(d, m, n);
-      var r1 = Flux.Numerics.CartesianCoordinate2<double>.FromDiagonalAndRatioOfXY(d, m / n);
+      var r3 = new Flux.Quantities.Ratio(m, n).ToSize(d);
 
-      var x = double.Sqrt(r2.X * r2.X + r2.Y * r2.Y);
-      var y = double.Sqrt(r1.X * r1.X + r1.Y * r1.Y);
+      var r2 = Flux.Quantities.Ratio.ToSize(d, m, n);
+      var r1 = Flux.Quantities.Ratio.ToSize(d, m / n);
+
+      var s3 = double.Sqrt(r3.X * r3.X + r3.Y * r3.Y);
+      var s2 = double.Sqrt(r2.width * r2.width + r2.height * r2.height);
+      var s1 = double.Sqrt(r1.width * r1.width + r1.height * r1.height);
 
       return;
 

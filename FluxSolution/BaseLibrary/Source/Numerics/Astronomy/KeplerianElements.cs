@@ -12,8 +12,9 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion"/></para>
     /// <para><see href="https://www.amsat.org/keplerian-elements-tutorial/"/></para>
     /// </summary>
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct KeplerianElements<TSelf>
-    where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+     where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       public static readonly TSelf TheObliquityOfTheEclipticInDegrees = TSelf.CreateChecked(23.4);
 
