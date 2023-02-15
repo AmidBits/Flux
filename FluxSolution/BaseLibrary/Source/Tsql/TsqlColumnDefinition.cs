@@ -1,9 +1,6 @@
-using System.Linq;
-
 namespace Flux.Data
 {
-  public struct TsqlColumnDefinition
-    : System.IEquatable<TsqlColumnDefinition>
+  public record struct TsqlColumnDefinition
   {
     public static readonly TsqlColumnDefinition Empty;
 
@@ -79,26 +76,8 @@ namespace Flux.Data
     }
     #endregion Static methods
 
-    #region Overloaded operators
-    public static bool operator ==(TsqlColumnDefinition left, TsqlColumnDefinition right)
-      => left.Equals(right);
-    public static bool operator !=(TsqlColumnDefinition left, TsqlColumnDefinition right)
-      => !left.Equals(right);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals(TsqlColumnDefinition other)
-      => ColumnName == other.ColumnName && DataTypeName == other.DataTypeName && DataTypeArguments == other.DataTypeArguments && Nullability == other.Nullability;
-    #endregion Implemented interfaces
-
     #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is TsqlColumnDefinition o && Equals(o);
-    public override int GetHashCode()
-      => ToString().GetHashCode(System.StringComparison.Ordinal);
-    public override string ToString()
-      => ToString(false);
+    public override string ToString() => ToString(false);
     #endregion Object overrides
 
     //public static void Validate(string columnName, string dataTypeName, int[] dataTypeArguments, bool isNullable)
