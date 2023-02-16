@@ -1,4 +1,4 @@
-﻿namespace Flux
+﻿namespace Flux.Numerics
 {
   /// <summary>
   /// <para>Body relative directions (a.k.a. egocentric-coordinates) are geometrical orientations relative to a body, such as a human person's.</para>

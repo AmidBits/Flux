@@ -27,6 +27,8 @@ namespace Flux
 
       public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
 
+      public static readonly Enplethy AvagadrosConstant = new(1 / AvagadrosNumber);
+
       private readonly double m_value;
 
       public Enplethy(double value, EnplethyUnit unit = DefaultUnit)

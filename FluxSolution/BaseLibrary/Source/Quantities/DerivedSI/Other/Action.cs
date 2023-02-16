@@ -24,6 +24,8 @@ namespace Flux
     {
       public const ActionUnit DefaultUnit = ActionUnit.JouleSecond;
 
+      public static readonly Action PlanckConstant = new(6.62607015e-34);
+
       private readonly double m_value;
 
       public Action(double value, ActionUnit unit = DefaultUnit)

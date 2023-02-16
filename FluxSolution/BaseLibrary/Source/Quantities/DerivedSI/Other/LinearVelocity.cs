@@ -32,11 +32,10 @@ namespace Flux
     {
       public const LinearVelocityUnit DefaultUnit = LinearVelocityUnit.MeterPerSecond;
 
-      public static LinearVelocity SpeedOfLightInVacuum => new(299792458);
-      public static LinearVelocity ApproximateSpeedOfSoundInAir => new(343);
-      public static LinearVelocity ApproximateSpeedOfSoundInDiamond => new(12000);
-      public static LinearVelocity ApproximateSpeedOfSoundInIron => new(5120);
-      public static LinearVelocity ApproximateSpeedOfSoundInWater => new(1481);
+      /// <summary>The speed of light in vacuum.</summary>
+      public static LinearVelocity SpeedOfLight => new(299792458);
+      /// <summary>The speed of sound in air.</summary>
+      public static LinearVelocity SpeedOfSound => new(343);
 
       private readonly double m_value;
 

@@ -25,7 +25,7 @@ namespace Flux
     {
       public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
 
-      public static Frequency HyperfineTransitionFrequencyOfCs133 => new(9192631770);
+      public static Frequency HyperfineTransitionFrequencyOfCs => new(9192631770);
 
       private readonly double m_hertz;
 

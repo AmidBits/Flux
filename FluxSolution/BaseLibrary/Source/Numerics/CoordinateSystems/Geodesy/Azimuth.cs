@@ -1,15 +1,17 @@
 namespace Flux.Quantities
 {
-  /// <summary>Azimuth unit of degree. The internal unit here is defined in the range [0, +360]. Values are always wrapped within that range.</summary>
-  /// <remarks>It may seem unreasonable to perform arithmetic with what could be perceived as a compass quantity, but this really is just another angle quantity hardcoded to degrees and a range of [0, +360].</remarks>
+  /// <summary>Azimuth, unit of degree. The internal unit here is defined in the range [0, +360). Values are always wrapped within that range.</summary>
+  /// <remarks>It may seem unreasonable to perform arithmetic with what could be perceived as a compass quantity, but this really is just another angle quantity hardcoded to degrees and a range of [0, +360).</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public readonly record struct Azimuth
     : System.IComparable<Azimuth>, System.IConvertible, IQuantifiable<double>
   {
+    /// <summary>MaxValue is the open (excluded) endpoint.</summary>
     public const double MaxValue = 360;
+    /// <summary>MinValue is the closed (included) endpoint.</summary>
     public const double MinValue = 0;
 
-    public static Azimuth Zero => new();
+    public readonly static Azimuth Zero;
 
     private readonly double m_degAzimuth;
 
@@ -32,9 +34,7 @@ namespace Flux.Quantities
     public static Azimuth FromAbbreviation(string compassPointAbbreviated)
       => System.Enum.TryParse<ThirtytwoWindCompassRose>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
 
-
-    private static string[] Words
-      => new string[] { "North", "East", "South", "West", "By" };
+    private static string[] Words => new string[] { "North", "East", "South", "West", "By" };
 
     public static Azimuth FromRadians(double radAzimuth)
       => new(Quantities.Angle.ConvertRadianToDegree(radAzimuth));
@@ -73,7 +73,6 @@ namespace Flux.Quantities
     }
 
     /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
-
     public static int LatchNeedle(double degAzimuth, int positions)
       => (int)System.Math.Round(WrapAzimuth(degAzimuth) / (360d / positions) % positions);
 

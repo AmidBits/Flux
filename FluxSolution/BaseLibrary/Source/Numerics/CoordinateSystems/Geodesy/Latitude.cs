@@ -8,7 +8,7 @@ namespace Flux.Quantities
     public const double MaxValue = +90;
     public const double MinValue = -90;
 
-    public static Latitude Zero => new();
+    public readonly static Latitude Zero;
 
     public static Latitude TropicOfCancer => new(23.43648);
     public static Latitude TropicOfCapricorn => new(-23.43648);
@@ -67,17 +67,14 @@ namespace Flux.Quantities
     public static double FoldLatitude(double degLatitude)
       => degLatitude.Fold(MinValue, MaxValue);
 
-
     public static Latitude FromRadians(double radLatitude)
       => new(Quantities.Angle.ConvertRadianToDegree(radLatitude) % MaxValue);
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
-
     public static double GetApproximateLatitudinalHeight(double radLatitude)
       => 111132.954 + -559.822 * System.Math.Cos(2 * radLatitude) + 1.175 * System.Math.Cos(4 * radLatitude) + -0.0023 * System.Math.Cos(6 * radLatitude);
 
     /// <summary>Computes the approximate length in meters per degree of longitudinal at the specified latitude.</summary>
-
     public static double GetApproximateLongitudinalWidth(double radLatitude)
       => 111412.84 * System.Math.Cos(radLatitude) + -93.5 * System.Math.Cos(3 * radLatitude) + 0.118 * System.Math.Cos(5 * radLatitude);
 

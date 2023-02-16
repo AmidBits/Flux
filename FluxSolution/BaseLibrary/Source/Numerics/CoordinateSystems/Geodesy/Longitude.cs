@@ -8,7 +8,7 @@ namespace Flux.Quantities
     public const double MaxValue = +180;
     public const double MinValue = -180;
 
-    public static Longitude Zero => new();
+    public readonly static Longitude Zero;
 
     private readonly double m_degLongitude;
 

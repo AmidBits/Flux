@@ -25,8 +25,7 @@ namespace Flux
     {
       public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 
-      public static ElectricCharge ElementaryCharge
-        => new(1.602176634e-19);
+      public static ElectricCharge ElementaryCharge => new(1.602176634e-19);
 
       private readonly double m_value;
 

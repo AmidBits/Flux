@@ -23,10 +23,33 @@ namespace ConsoleApp
 {
   public class Program
   {
+    // https://en.wikipedia.org/wiki/Azimuth
+    public static void Test(double lat1, double lon1, double lat2, double lon2, double flattening = 1 / 298.257223563, double eccentricity = 0.0167086)
+    {
+      var e2 = flattening * (2 - flattening);
+
+      var inve2 = 1 - e2;
+
+      var tlat2 = double.Tan(lat2);
+      var tlat1 = double.Tan(lat1);
+
+      var delta = inve2 * (tlat2 / tlat1) + e2 * double.Sqrt((1 + inve2 * double.Pow(tlat2, 2)) / (1 + inve2 * double.Pow(tlat1, 2)));
+
+      var L = double.Abs(lon2 - lon1);
+
+      var tanLat = double.Sin(L) / ((delta - double.Cos(L)) * tlat2);
+
+      var atanLat = double.Atan(tanLat);
+
+      var lat = Angle.ConvertRadianToDegree(atanLat);
+    }
+
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+
+      //Test(Angle.ConvertDegreeToRadian(-37.814167), Angle.ConvertDegreeToRadian(144.963056), Angle.ConvertDegreeToRadian(-33.925278), Angle.ConvertDegreeToRadian(18.423889));
 
       var m = 16.0;
       var n = 9.0;
