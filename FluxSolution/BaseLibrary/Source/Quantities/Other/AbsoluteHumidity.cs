@@ -114,9 +114,7 @@ namespace Flux
         };
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

@@ -36,6 +36,8 @@ namespace Flux
   {
     public enum MetricMultiplicativePrefix
     {
+      Quetta = 30,
+      Ronna = 27,
       /// <summary>A.k.a. septillion/quadrillion.</summary>
       Yotta = 24,
       /// <summary>A.k.a. sextillion/trilliard.</summary>
@@ -78,6 +80,8 @@ namespace Flux
       Zepto = -21,
       /// <summary>A.k.a. septillionth/quadrillionth.</summary>
       Yocto = -24,
+      Ronto = -27,
+      Quecto = -30,
     }
 
     /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
@@ -91,7 +95,30 @@ namespace Flux
       /// <param name="value">The value to represent.</param>
       /// <param name="multiplicativePrefix">The metric multiplicative prefix of the specified value.</param>
       public MetricMultiplicative(double value, MetricMultiplicativePrefix multiplicativePrefix)
-        => m_value = value / multiplicativePrefix.GetUnitFactor();
+        => m_value = value * multiplicativePrefix.GetUnitFactor();
+
+      #region Static methods
+
+      public static MetricMultiplicativePrefix FindMetricMultiplicativePrefix(double value, out double outValue, MetricMultiplicativePrefix prefix = MetricMultiplicativePrefix.One)
+      {
+        var valuePrefix = System.Int32.CreateChecked(System.Numerics.BigInteger.CreateChecked(double.Truncate(value)).DigitCount(10) / 3 * 3);
+
+        var diffPrefix = valuePrefix + (int)prefix;
+
+        var sourceFactor = (int)prefix;
+        var target = (MetricMultiplicativePrefix)System.Int32.CreateChecked(System.Numerics.BigInteger.CreateChecked(double.Truncate(value)).DigitCount(10) / 3 * 3 + sourceFactor);
+        var targetFactor = (int)target;
+
+        var differFactor = targetFactor - sourceFactor;
+
+        var factor = double.Pow(10, differFactor);
+
+        outValue = value / factor;
+
+        return target;
+      }
+
+      #endregion // Static methods
 
       #region Overloaded operators
       public static explicit operator double(MetricMultiplicative v) => v.Value;
@@ -158,9 +185,7 @@ namespace Flux
         => m_value / multiplicativePrefix.GetUnitFactor();
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Dose equivalent, unit of sievert.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Equivalent_dose"/>
     public readonly record struct EquivalentDose
-      : System.IComparable, System.IComparable<EquivalentDose>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, EquivalentDoseUnit>
+      : System.IComparable, System.IComparable<EquivalentDose>, System.IConvertible, IUnitQuantifiable<double, EquivalentDoseUnit>
     {
       public const EquivalentDoseUnit DefaultUnit = EquivalentDoseUnit.Sievert;
 
@@ -103,9 +103,7 @@ namespace Flux
         };
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

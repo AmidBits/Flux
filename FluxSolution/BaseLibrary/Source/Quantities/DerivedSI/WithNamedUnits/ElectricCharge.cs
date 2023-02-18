@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Electric charge unit of Coulomb.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
     public readonly record struct ElectricCharge
-      : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ElectricChargeUnit>
+      : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, IUnitQuantifiable<double, ElectricChargeUnit>
     {
       public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 
@@ -84,9 +84,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
@@ -105,9 +102,7 @@ namespace Flux
         };
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

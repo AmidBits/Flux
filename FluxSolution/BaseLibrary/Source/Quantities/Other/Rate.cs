@@ -5,7 +5,6 @@ namespace Flux
     /// <summary>A rate is the ratio between two related quantities that are measured with different units.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rate_(mathematics)"/>
     public readonly record struct Rate<TNumerator, TDenominator>
-    : System.IEquatable<Rate<TNumerator, TDenominator>>
     where TNumerator : IQuantifiable<double>
     where TDenominator : IQuantifiable<double>
     {
@@ -27,13 +26,7 @@ namespace Flux
       public double InverseRatio
         => m_denominator.Value / m_numerator.Value;
 
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{Ratio}";
-
-      #region Object overrides
-      public override string ToString()
-        => $"{GetType().Name} {{ {ToQuantityString()} ({m_numerator.ToQuantityString(null, false, false)} / {m_denominator.ToQuantityString(null, false, false)}, Inverse = {InverseRatio}) }}";
-      #endregion Object overrides
+      public override string ToString() => $"{m_numerator.ToQuantityString(null, false, false)} / {m_denominator.ToQuantityString(null, false, false)}";
     }
   }
 }

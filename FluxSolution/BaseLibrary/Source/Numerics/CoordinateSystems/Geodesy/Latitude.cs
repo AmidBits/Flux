@@ -23,23 +23,6 @@ namespace Flux.Quantities
       : this(latitude.ToUnitValue(Quantities.AngleUnit.Degree)) // Call base to ensure value is between min/max.
     { }
 
-    /// <summary>Computes the approximate length in meters per degree of latitudinal height at the specified latitude.</summary>
-
-    public Quantities.Length ApproximateLatitudinalHeight
-      => new(GetApproximateLatitudinalHeight(ToRadians()));
-
-    /// <summary>Computes the approximate length in meters per degree of longitudinal width at the specified latitude.</summary>
-
-    public Quantities.Length ApproximateLongitudinalWidth
-      => new(GetApproximateLongitudinalWidth(ToRadians()));
-
-    /// <summary>Determines an approximate radius in meters at the specified latitude.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
-    /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
-
-    public Quantities.Length ApproximateRadius
-      => new(GetApproximateRadius(ToRadians()));
-
     public string SexagesimalDegreeString => ToSexagesimalDegreeString();
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
@@ -50,56 +33,49 @@ namespace Flux.Quantities
       => System.Math.Clamp(System.Math.Log((System.Math.Tan(GenericMath.PiOver4 + ToRadians() / 2))), -System.Math.PI, System.Math.PI);
 
 
-    public Quantities.Angle ToAngle()
-      => new(m_degLatitude, Quantities.AngleUnit.Degree);
+    public Quantities.Angle ToAngle() => new(m_degLatitude, Quantities.AngleUnit.Degree);
 
-
-    public double ToRadians()
-      => Quantities.Angle.ConvertDegreeToRadian(m_degLatitude);
-
+    public double ToRadians() => Quantities.Angle.ConvertDegreeToRadian(m_degLatitude);
 
     public string ToSexagesimalDegreeString(Quantities.SexagesimalDegreeFormat format = Quantities.SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
       => ToAngle().ToSexagesimalDegreeString(format, Quantities.SexagesimalDegreeDirection.NorthSouth, -1, useSpaces, preferUnicode);
 
     #region Static methods
+
     /// <summary>A latitude is folded over the range [-90, +90].</summary>
+    public static double FoldLatitude(double degLatitude) => degLatitude.Fold(MinValue, MaxValue);
 
-    public static double FoldLatitude(double degLatitude)
-      => degLatitude.Fold(MinValue, MaxValue);
-
-    public static Latitude FromRadians(double radLatitude)
-      => new(Quantities.Angle.ConvertRadianToDegree(radLatitude) % MaxValue);
+    public static Latitude FromRadians(double radLatitude) => new(Quantities.Angle.ConvertRadianToDegree(radLatitude) % MaxValue);
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     public static double GetApproximateLatitudinalHeight(double radLatitude)
-      => 111132.954 + -559.822 * System.Math.Cos(2 * radLatitude) + 1.175 * System.Math.Cos(4 * radLatitude) + -0.0023 * System.Math.Cos(6 * radLatitude);
+      => 111132.954 + -559.822 * double.Cos(2 * radLatitude) + 1.175 * double.Cos(4 * radLatitude) + -0.0023 * double.Cos(6 * radLatitude);
 
     /// <summary>Computes the approximate length in meters per degree of longitudinal at the specified latitude.</summary>
     public static double GetApproximateLongitudinalWidth(double radLatitude)
-      => 111412.84 * System.Math.Cos(radLatitude) + -93.5 * System.Math.Cos(3 * radLatitude) + 0.118 * System.Math.Cos(5 * radLatitude);
+      => 111412.84 * double.Cos(radLatitude) + -93.5 * double.Cos(3 * radLatitude) + 0.118 * double.Cos(5 * radLatitude);
 
     /// <summary>Determines an approximate radius in meters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
-
-    public static double GetApproximateRadius(double radLatitude)
+    public static double GetApproximateRadius(double radLatitude, EllipsoidReference ellipsoidReference)
     {
-      var cos = System.Math.Cos(radLatitude);
-      var sin = System.Math.Sin(radLatitude);
+      var cos = double.Cos(radLatitude);
+      var sin = double.Sin(radLatitude);
 
-      var numerator = System.Math.Pow(System.Math.Pow(EarthWgs84.EquatorialRadius.Value, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(EarthWgs84.PolarRadius.Value, 2) * sin, 2);
-      var denominator = System.Math.Pow(EarthWgs84.EquatorialRadius.Value * cos, 2) + System.Math.Pow(EarthWgs84.PolarRadius.Value * sin, 2);
+      var numerator = double.Pow(double.Pow(ellipsoidReference.EquatorialRadius.Value, 2) * cos, 2) + double.Pow(double.Pow(ellipsoidReference.PolarRadius.Value, 2) * sin, 2);
+      var denominator = double.Pow(ellipsoidReference.EquatorialRadius.Value * cos, 2) + double.Pow(ellipsoidReference.PolarRadius.Value * sin, 2);
 
-      return System.Math.Sqrt(numerator / denominator);
+      return double.Sqrt(numerator / denominator);
     }
 
     /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
+    public static double GetMaximumLatitude(double radLatitude, double radAzimuth) => double.Acos(double.Abs(double.Sin(radAzimuth) * double.Cos(radLatitude)));
 
-    public static double GetMaximumLatitude(double radLatitude, double radAzimuth)
-      => System.Math.Acos(System.Math.Abs(System.Math.Sin(radAzimuth) * System.Math.Cos(radLatitude)));
     #endregion Static methods
 
     #region Overloaded operators
+
     public static explicit operator double(Latitude v) => v.m_degLatitude;
     public static explicit operator Latitude(double v) => new(v);
 
@@ -152,11 +128,9 @@ namespace Flux.Quantities
       => new Angle(m_degLatitude, AngleUnit.Degree).ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
 
     public double Value { get => m_degLatitude; init => m_degLatitude = value; }
+
     #endregion Implemented interfaces
 
-    #region Object overrides
-    public override string ToString()
-      => $"{GetType().Name} {{ {ToQuantityString()}, {ToSexagesimalDegreeString()} }}";
-    #endregion Object overrides
+    public override string ToString() => ToSexagesimalDegreeString();
   }
 }

@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Activity, unit of becquerel.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Specific_activity"/>
     public readonly record struct Activity
-      : System.IComparable, System.IComparable<Activity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ActivityUnit>
+      : System.IComparable, System.IComparable<Activity>, System.IConvertible, IUnitQuantifiable<double, ActivityUnit>
     {
       public const ActivityUnit DefaultUnit = ActivityUnit.Becquerel;
 
@@ -82,9 +82,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
@@ -103,9 +100,7 @@ namespace Flux
         };
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

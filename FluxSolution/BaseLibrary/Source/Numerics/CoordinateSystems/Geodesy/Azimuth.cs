@@ -19,15 +19,24 @@ namespace Flux.Quantities
     public Azimuth(double degAzimuth)
       => m_degAzimuth = WrapAzimuth(degAzimuth);
 
-    public Quantities.Angle ToAngle()
-      => new(m_degAzimuth, Quantities.AngleUnit.Degree);
+    public Quantities.Angle ToAngle() => new(m_degAzimuth, Quantities.AngleUnit.Degree);
 
-    public double ToRadians()
-      => Quantities.Angle.ConvertDegreeToRadian(m_degAzimuth);
+    public double ToRadians() => Quantities.Angle.ConvertDegreeToRadian(m_degAzimuth);
 
     #region Static methods
-    /// <summary>Finding the angle between two bearings.</summary>
+    /// <summary>Compass point (to given precision) for specified bearing.</summary>
+    /// <remarks>Precision = max length of compass point, 1 = the four cardinal directions, 2 = ; it could be extended to 4 for quarter-winds (eg NEbN), but I think they are little used.</remarks>
+    /// <param name="degAzimuth">The direction in radians.</param>
+    /// <param name="precision">4 = the four cardinal directions, 8 = the four cardinals and four intercardinal together (a.k.a. the eight principal winds) form the 8-wind compass rose, 16 = the eight principal winds and the eight half-winds together form the 16-wind compass rose, 32 = the eight principal winds, eight half-winds and sixteen quarter-winds form the 32-wind compass rose.</param>
+    /// <returns></returns>
+    public static ThirtytwoWindCompassRose CompassPoint(double degAzimuth, PointsOfTheCompass precision, out double notch)
+    {
+      notch = System.Math.Round(degAzimuth.Wrap(MinValue, MaxValue) / (MaxValue / (int)precision) % (int)precision);
 
+      return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
+    }
+
+    /// <summary>Finding the angle between two bearings.</summary>
     public static double DeltaBearing(double degAzimuth1, double degAzimuth2)
       => (degAzimuth2 - degAzimuth1).Wrap(MinValue, MaxValue);
 
@@ -164,8 +173,7 @@ namespace Flux.Quantities
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override string ToString()
-      => $"{GetType().Name} {{ {ToQuantityString()} }}";
+    public override string ToString() => ToQuantityString();
     #endregion Object overrides
   }
 }

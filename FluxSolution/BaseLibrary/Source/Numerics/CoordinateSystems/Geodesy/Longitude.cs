@@ -119,8 +119,7 @@ namespace Flux.Quantities
     #endregion Implemented interfaces
 
     #region Object overrides
-    public override string ToString()
-      => $"{GetType().Name} {{ {ToQuantityString()}, {ToSexagesimalDegreeString()} }}";
+    public override string ToString() => ToSexagesimalDegreeString();
     #endregion Object overrides
   }
 }

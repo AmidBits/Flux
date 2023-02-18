@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Force"/>
     public readonly record struct Force
-      : System.IComparable, System.IComparable<Force>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ForceUnit>
+      : System.IComparable, System.IComparable<Force>, System.IConvertible, IUnitQuantifiable<double, ForceUnit>
     {
       public const ForceUnit DefaultUnit = ForceUnit.Newton;
 
@@ -82,9 +82,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
@@ -103,9 +100,7 @@ namespace Flux
         };
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

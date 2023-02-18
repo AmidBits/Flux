@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Electric resistance, unit of Ohm.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
     public readonly record struct ElectricalResistance
-      : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ElectricalResistanceUnit>
+      : System.IComparable, System.IComparable<ElectricalResistance>, System.IConvertible, IUnitQuantifiable<double, ElectricalResistanceUnit>
     {
       public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
 
@@ -114,9 +114,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
@@ -135,9 +132,7 @@ namespace Flux
         };
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

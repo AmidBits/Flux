@@ -132,6 +132,9 @@
       public Longitude ToLongitude()
         => new(ToUnitValue(AngleUnit.Degree));
 
+      /// <summary></summary>
+      /// <see href="https://en.wikipedia.org/wiki/ISO_6709"/>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format, SexagesimalDegreeDirection direction, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)
       {
         var (decimalDegrees, degrees, decimalMinutes, minutes, decimalSeconds) = ConvertDecimalDegreeToSexagesimalDegree(ConvertRadianToDegree(m_radAngle));
@@ -142,9 +145,9 @@
 
         return format switch
         {
-          SexagesimalDegreeFormat.DecimalDegrees => new Angle(System.Math.Abs(decimalDegrees), AngleUnit.Degree).ToUnitString(AngleUnit.Degree, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}", true) + directional, // Show as decimal degrees.
-          SexagesimalDegreeFormat.DegreesDecimalMinutes => new Angle(System.Math.Abs(degrees), AngleUnit.Degree).ToUnitString(AngleUnit.Degree, "N0", true) + spacing + new Angle(decimalMinutes, AngleUnit.Arcminute).ToUnitString(AngleUnit.Arcminute, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}", preferUnicode) + directional, // Show as degrees and decimal minutes.
-          SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds => new Angle(System.Math.Abs(degrees), AngleUnit.Degree).ToUnitString(AngleUnit.Degree, "N0", true) + spacing + new Angle(System.Math.Abs(minutes), AngleUnit.Arcminute).ToUnitString(AngleUnit.Arcminute, "N0", preferUnicode) + spacing + new Angle(decimalSeconds, AngleUnit.Arcsecond).ToUnitString(AngleUnit.Arcsecond, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}", preferUnicode) + directional, // Show as degrees, minutes and decimal seconds.
+          SexagesimalDegreeFormat.DecimalDegrees => new Angle(double.Abs(decimalDegrees), AngleUnit.Degree).ToUnitString(AngleUnit.Degree, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}", true) + directional, // Show as decimal degrees.
+          SexagesimalDegreeFormat.DegreesDecimalMinutes => new Angle(double.Abs(degrees), AngleUnit.Degree).ToUnitString(AngleUnit.Degree, "N0", true) + spacing + new Angle(decimalMinutes, AngleUnit.Arcminute).ToUnitString(AngleUnit.Arcminute, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}", preferUnicode) + directional, // Show as degrees and decimal minutes.
+          SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds => new Angle(double.Abs(degrees), AngleUnit.Degree).ToUnitString(AngleUnit.Degree, "N0", true) + spacing + new Angle(double.Abs(minutes), AngleUnit.Arcminute).ToUnitString(AngleUnit.Arcminute, "N0", preferUnicode).PadLeft(3, '0') + spacing + new Angle(decimalSeconds, AngleUnit.Arcsecond).ToUnitString(AngleUnit.Arcsecond, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}", preferUnicode) + directional, // Show as degrees, minutes and decimal seconds.
           _ => throw new System.ArgumentOutOfRangeException(nameof(format)),
         };
       }
@@ -514,9 +517,7 @@
         };
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} ({ToUnitString(AngleUnit.Degree, @"N2")}) }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

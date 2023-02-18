@@ -5,15 +5,12 @@ namespace Flux
     /// <summary>UV index, unit of itself.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ultraviolet_index"/>
     public readonly record struct UvIndex
-      : System.IComparable, System.IComparable<UvIndex>, System.IConvertible, System.IFormattable, IQuantifiable<double>
+      : System.IComparable, System.IComparable<UvIndex>, System.IConvertible, IQuantifiable<double>
     {
       private readonly double m_value;
 
       public UvIndex(double value)
         => m_value = value > 0 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
-
-      public string ToString(string? format = null)
-        => string.Format($"UV Index {{0:{format ?? "N1"}}}", m_value);
 
       #region Static methods
       #endregion Static methods
@@ -66,19 +63,14 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{m_value}";
+        => string.Format($"UV Index {{0:{format ?? "N1"}}}", m_value);
 
       public double Value { get => m_value; init => m_value = value; }
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

@@ -45,7 +45,7 @@ namespace Flux
     /// </summary>
     public static System.Collections.Generic.IEnumerable<TResult> CreateCircularArcPoints<TResult>(double numberOfPoints, double radiusX, double radiusY, System.Func<double, double, TResult> resultSelector, double offsetRadians = 0, double maxRandomVariation = 0)
     {
-      var circularArc = GenericMath.PiX2 / numberOfPoints;
+      var circularArc = double.Tau / numberOfPoints;
 
       for (var segment = 0; segment < numberOfPoints; segment++)
       {
@@ -62,38 +62,38 @@ namespace Flux
 
     /// <summary>Returns the eccentricity of the ellipse. The order of radii does not matter.</summary>
     public static double Eccentricity(double a, double b)
-      => System.Math.Sqrt(1 - System.Math.Pow(System.Math.Min(a, b) / System.Math.Max(a, b), 2));
+      => double.Sqrt(1 - double.Pow(double.Min(a, b) / double.Max(a, b), 2));
 
     /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
     public static EllipseGeometry FromCartesian(double x, double y)
       => new(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
     public static Numerics.CartesianCoordinate2<double> ToCartesianCoordinate2(double semiMajorAxis, double semiMinorAxis, double angle)
       => new(
-        System.Math.Cos(angle) * semiMajorAxis,
-        System.Math.Sin(angle) * semiMinorAxis
+        double.Cos(angle) * semiMajorAxis,
+        double.Sin(angle) * semiMinorAxis
       );
 
     /// <summary>This seem to be a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses.</summary>
     public static double H(double a, double b)
-      => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
+      => double.Pow(a - b, 2) / double.Pow(a + b, 2);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
     public static double SurfaceArea(double a, double b)
-      => System.Math.PI * a * b;
+      => double.Pi * a * b;
     /// <summary>Returns whether the point is inside a potentially tilted ellipse.</summary>
     public static bool SurfaceContains(double pointX, double pointY, double radiusX, double radiusY, double angle)
-      => System.Math.Cos(angle) is var cos && System.Math.Sin(angle) is var sin && System.Math.Pow(cos * pointX + sin * pointY, 2) / (radiusX * radiusX) + System.Math.Pow(sin * pointX - cos * pointY, 2) / (radiusY * radiusY) <= 1;
-    /// <summary>Returns the circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
+      => double.Cos(angle) is var cos && double.Sin(angle) is var sin && double.Pow(cos * pointX + sin * pointY, 2) / (radiusX * radiusX) + double.Pow(sin * pointX - cos * pointY, 2) / (radiusY * radiusY) <= 1;
+    /// <summary>Returns the approxate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
     public static double SurfacePerimeter(double a, double b)
     {
-      var circle = System.Math.PI * (a + b);
+      var circle = double.Pi * (a + b);
 
       if (a == b) // For a circle, use (PI * diameter);
         return circle;
 
-      var h3 = H(a, b) * 3;
+      var h3 = 3 * H(a, b);
 
-      return circle * (1.0 + h3 / (10.0 + System.Math.Sqrt(4.0 - h3)));
+      return circle * (1.0 + h3 / (10.0 + double.Sqrt(4.0 - h3)));
     }
     #endregion Static methods
 

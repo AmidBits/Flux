@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Luminous flux unit of lumen.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Luminous_flux"/>
     public readonly record struct LuminousFlux
-      : System.IComparable, System.IComparable<LuminousFlux>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, LuminousFluxUnit>
+      : System.IComparable, System.IComparable<LuminousFlux>, System.IConvertible, IUnitQuantifiable<double, LuminousFluxUnit>
     {
       public const LuminousFluxUnit DefaultUnit = LuminousFluxUnit.Lumen;
 
@@ -82,9 +82,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
       #endregion IConvertible
 
-      // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
@@ -103,9 +100,7 @@ namespace Flux
         };
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }

@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Xml.Schema;
 using Flux;
 using Flux.ApproximateEquality;
+using Flux.Formatting;
 using Flux.Geometry;
 using Flux.Interpolation;
 using Flux.Quantities;
@@ -24,7 +25,7 @@ namespace ConsoleApp
   public class Program
   {
     // https://en.wikipedia.org/wiki/Azimuth
-    public static void Test(double lat1, double lon1, double lat2, double lon2, double flattening = 1 / 298.257223563, double eccentricity = 0.0167086)
+    public static void FindAzimuth(double lat1, double lon1, double lat2, double lon2, double flattening = 1 / 298.257223563, double eccentricity = 0.0167086)
     {
       var e2 = flattening * (2 - flattening);
 
@@ -44,30 +45,32 @@ namespace ConsoleApp
       var lat = Angle.ConvertRadianToDegree(atanLat);
     }
 
+    private static int DecimalDigits(double number)
+    {
+      var fractionalPart = number.GetFraction();
+
+      var count = 0;
+
+      while (fractionalPart.GetFraction() > 0)
+      {
+        count++;
+
+        fractionalPart *= 10;
+      }
+
+      return count;
+    }
+
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      //Test(Angle.ConvertDegreeToRadian(-37.814167), Angle.ConvertDegreeToRadian(144.963056), Angle.ConvertDegreeToRadian(-33.925278), Angle.ConvertDegreeToRadian(18.423889));
+      foreach (var pi in Flux.Reflection.GetPropertyInfos(typeof(EllipsoidReference), BindingFlags.Instance | BindingFlags.Public))
+        System.Console.WriteLine($"{pi.Name} = \"{pi.GetValue(EllipsoidReference.Etrs89).ToString()}\"");
 
-      var m = 16.0;
-      var n = 9.0;
-      var d = 65.0;
-
-      var r3 = new Flux.Quantities.Ratio(m, n).ToSize(d);
-
-      var r2 = Flux.Quantities.Ratio.ToSize(d, m, n);
-      var r1 = Flux.Quantities.Ratio.ToSize(d, m / n);
-
-      var s3 = double.Sqrt(r3.X * r3.X + r3.Y * r3.Y);
-      var s2 = double.Sqrt(r2.width * r2.width + r2.height * r2.height);
-      var s1 = double.Sqrt(r1.width * r1.width + r1.height * r1.height);
-
-      return;
-
-      var ipad = System.Globalization.CultureInfo.GetCultureInfo("en-US").GetIpaDictionaryOf();
-      var wl = System.Globalization.CultureInfo.GetCultureInfo("en").GetLexiconOf();
+      foreach (var pi in Flux.Reflection.GetPropertyInfos(typeof(EllipsoidReference), BindingFlags.Instance | BindingFlags.Public))
+        System.Console.WriteLine($"{pi.Name} = \"{pi.GetValue(EllipsoidReference.Wgs84).ToString()}\"");
     }
 
     private static void Main(string[] args)

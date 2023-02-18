@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
     public readonly record struct Frequency
-      : System.IComparable, System.IComparable<Frequency>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, FrequencyUnit>
+      : System.IComparable, System.IComparable<Frequency>, System.IConvertible, IUnitQuantifiable<double, FrequencyUnit>
     {
       public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
 
@@ -141,9 +141,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_hertz);
       #endregion IConvertible
 
-      // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_hertz.ToString(format, formatProvider);
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
@@ -163,9 +160,7 @@ namespace Flux
         };
       #endregion Implemented interfaces
 
-      #region Object overrides
-      public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-      #endregion Object overrides
+      public override string ToString() => ToQuantityString();
     }
   }
 }
