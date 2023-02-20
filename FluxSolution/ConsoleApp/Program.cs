@@ -45,13 +45,13 @@ namespace ConsoleApp
       var lat = Angle.ConvertRadianToDegree(atanLat);
     }
 
-    private static int DecimalDigits(double number)
+    private static int DecimalDigits(decimal number)
     {
-      var fractionalPart = number.GetFraction();
+      var fractionalPart = number - decimal.Truncate(number);
 
       var count = 0;
 
-      while (fractionalPart.GetFraction() > 0)
+      while (fractionalPart.GetFraction(out int _) > 0)
       {
         count++;
 
@@ -60,17 +60,15 @@ namespace ConsoleApp
 
       return count;
     }
+    private static int DecimalDigits(double number)
+      => DecimalDigits(System.Convert.ToDecimal(number));
+
 
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      foreach (var pi in Flux.Reflection.GetPropertyInfos(typeof(EllipsoidReference), BindingFlags.Instance | BindingFlags.Public))
-        System.Console.WriteLine($"{pi.Name} = \"{pi.GetValue(EllipsoidReference.Etrs89).ToString()}\"");
-
-      foreach (var pi in Flux.Reflection.GetPropertyInfos(typeof(EllipsoidReference), BindingFlags.Instance | BindingFlags.Public))
-        System.Console.WriteLine($"{pi.Name} = \"{pi.GetValue(EllipsoidReference.Wgs84).ToString()}\"");
     }
 
     private static void Main(string[] args)

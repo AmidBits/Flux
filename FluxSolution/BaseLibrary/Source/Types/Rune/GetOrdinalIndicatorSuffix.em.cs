@@ -2,9 +2,9 @@ namespace Flux
 {
   public static partial class ExtensionMethodsRune
   {
-    public static string GetOrdinalIndicatorSuffix(this System.Text.Rune onesDigit, bool tensDigitExistsAndIs1)
+    public static string GetOrdinalIndicatorSuffix(this System.Text.Rune onesDigit, System.Text.Rune tensDigit)
     {
-      if (!tensDigitExistsAndIs1)
+      if (!System.Text.Rune.IsDigit(tensDigit) || tensDigit != (System.Text.Rune)'1')
       {
         if (onesDigit == (System.Text.Rune)'1')
           return "st";
@@ -16,7 +16,5 @@ namespace Flux
 
       return "th";
     }
-    public static string GetOrdinalIndicatorSuffix(this System.Text.Rune onesDigit, System.Text.Rune tensDigit)
-      => System.Text.Rune.IsDigit(onesDigit) ? GetOrdinalIndicatorSuffix(onesDigit, System.Text.Rune.IsDigit(tensDigit) && tensDigit == (System.Text.Rune)'1') : string.Empty;
   }
 }

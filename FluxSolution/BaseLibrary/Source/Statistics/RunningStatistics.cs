@@ -1,7 +1,7 @@
 ﻿namespace Flux
 {
   public record class RunningStatistics
-    : System.IEquatable<RunningStatistics>, System.IFormattable
+    : System.IEquatable<RunningStatistics>
   {
     public static readonly RunningStatistics Empty = new();
 
@@ -90,9 +90,6 @@
       m_reciprocalSum += 1.0 / value;
       m_sum += value;
     }
-    /// <summary>Update the running statistics by adding observed samples (in-place).</summary>
-    public void Add(params double[] values)
-      => AddRange(values);
 
     /// <summary>Update the running statistics by adding a sequence of observed sample (in-place).</summary>
     public void AddRange(System.Collections.Generic.IEnumerable<double> values)
@@ -104,8 +101,8 @@
     }
 
     #region Static members
-    /// <summary>Create a new running statistics over the combined samples of two existing running statistics.</summary>
 
+    /// <summary>Create a new running statistics over the combined samples of two existing running statistics.</summary>
     public static RunningStatistics Combine(RunningStatistics a, RunningStatistics b)
     {
       if (a.m_count == 0) return b;
@@ -141,7 +138,6 @@
       };
     }
 
-
     public static RunningStatistics Create()
     {
       return new RunningStatistics()
@@ -165,22 +161,13 @@
       rs.AddRange(values);
       return rs;
     }
+
     #endregion Static members
 
     #region Overloaded operators
-    public static RunningStatistics operator +(RunningStatistics a, RunningStatistics b)
-      => Combine(a, b);
+    public static RunningStatistics operator +(RunningStatistics a, RunningStatistics b) => Combine(a, b);
     #endregion Overloaded operators
 
-    #region Implemented interfaces
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"{GetType().Name} {{ Count = {m_count}, M = [{m_m1}, {m_m2}, {m_m3}, {m_m4}], Min/Max = [{m_min}, {m_max}], Product = {m_product}, Sum = {m_sum} }}";
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override string? ToString()
-      => ToString(null, null);
-    #endregion Object overrides
+    public override string? ToString() => $"{GetType().Name} {{ Count = {m_count}, M = [{m_m1}, {m_m2}, {m_m3}, {m_m4}], Min/Max = [{m_min}, {m_max}], Product = {m_product}, Sum = {m_sum} }}";
   }
 }
