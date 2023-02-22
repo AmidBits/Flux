@@ -5,8 +5,7 @@ namespace Flux.Numerics
   {
     private uint[] m_bits = new uint[4];
 
-    public DecimalParts(decimal value)
-      => decimal.GetBits(value, (int[])(object)m_bits);
+    public DecimalParts(decimal value) => Decimal = value;
     public DecimalParts(System.Int128 integerNumber, int scalingFactor, int signBit)
     {
       SignBit = signBit;
@@ -28,8 +27,8 @@ namespace Flux.Numerics
         m_bits[0] = (uint)(value);
       }
     }
-    public int ScalingFactor { get => (int)((m_bits[3] >> 16) & 0x1F); set => m_bits[3] = (m_bits[3] & 0xFFE0FFFF) | ((uint)AssertScalingFactor(value)) << 16; }
-    public int SignBit { get => (int)(m_bits[3] >> 31); set => m_bits[3] = (m_bits[3] & 0x7FFFFFFF) | ((uint)AssertSignBit(value)) << 31; }
+    public int ScalingFactor { get => (int)((m_bits[3] >> 16) & 0x1F); set => m_bits[3] = (m_bits[3] & 0xFFE0_FFFF) | ((uint)AssertScalingFactor(value)) << 16; }
+    public int SignBit { get => (int)(m_bits[3] >> 31); set => m_bits[3] = (m_bits[3] & 0x7FFF_FFFF) | ((uint)AssertSignBit(value)) << 31; }
 
     public static System.Int128 AssertIntegerNumber(System.Int128 integerNumber) => integerNumber >= 0 && integerNumber <= ((System.Int128.One << 96) - 1) ? integerNumber : throw new System.ArgumentOutOfRangeException(nameof(integerNumber), "An absolute 96-bit value is required.");
     public static int AssertScalingFactor(int scalingFactor) => scalingFactor >= 0 && scalingFactor <= 28 ? scalingFactor : throw new System.ArgumentOutOfRangeException(nameof(scalingFactor), "A value between 0 and 28 is required.");
