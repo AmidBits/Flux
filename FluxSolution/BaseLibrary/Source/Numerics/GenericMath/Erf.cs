@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Implementation see reference.</summary>
     /// <see cref="https://www.johndcook.com/blog/2009/01/19/stand-alone-error-function-erf/"/>
-    public static TSelf Erf<TSelf>(TSelf x)
+    public static TSelf Erf<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IExponentialFunctions<TSelf>
     {
       var a1 = TSelf.CreateChecked(0.254829592);

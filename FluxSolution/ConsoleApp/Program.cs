@@ -24,12 +24,20 @@ namespace ConsoleApp
 {
   public class Program
   {
+
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var radix = 10.ToBigInteger();
 
+      for (var number = -3.ToBigInteger(); number > -100; number--)
+      {
+        var sqrt = (number).IntegerSqrt();
+
+        System.Console.WriteLine($"{number} : {sqrt}");
+      }
     }
 
     private static void Main(string[] args)

@@ -87,8 +87,8 @@ namespace GenericMath
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, 100.IsPow(10));
-      Assert.AreEqual(true, 100.IsPow(10));
+      Assert.AreEqual(true, 100.IsIntegerPow(10));
+      Assert.AreEqual(false, 101.IsIntegerPow(10));
     }
 
     [TestMethod]

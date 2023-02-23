@@ -3,8 +3,7 @@
   public static partial class GenericMath
   {
     /// <summary>Returns the the largest integer less than or equal to the <paramref name="n"/>th root of <paramref name="y"/>.</summary>
-    /// <remarks>This is slow.</remarks>
-    public static TSelf IntegerNRoot<TSelf>(this TSelf y, TSelf n)
+    public static TSelf IntegerRootN<TSelf>(this TSelf y, TSelf n)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertNonNegative(y, nameof(y));
@@ -78,17 +77,17 @@
     /// <param name="n"></param>
     /// <param name="x"></param>
     /// <returns></returns>
-    public static bool IsPerfectIntegerNRoot<TSelf>(TSelf y, TSelf n, TSelf x)
+    public static bool IsPerfectIntegerRootN<TSelf>(TSelf y, TSelf n, TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => y == IntegerPow(x, n);
 
     /// <summary>Attempts to compute the (floor) <paramref name="n"/>th root of <paramref name="y"/> into the out parameter <paramref name="x"/>.</summary>
-    public static bool TryIntegerNRoot<TSelf>(TSelf y, TSelf n, out TSelf x)
+    public static bool TryIntegerRootN<TSelf>(TSelf y, TSelf n, out TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       try
       {
-        x = IntegerNRoot(y, n);
+        x = IntegerRootN(y, n);
 
         return true;
       }

@@ -69,7 +69,7 @@ namespace Flux.Text
     /// <seealso href="https://www.geeksforgeeks.org/python-program-to-convert-integer-to-roman/"/>
     public static System.ReadOnlySpan<char> NumberToText(int number)
     {
-      var div = number.PowOfTowardZero(10, false);
+      var div = number.LocateIntegerPowTz(10, false);
 
       var sb = new SpanBuilder<string>();
 

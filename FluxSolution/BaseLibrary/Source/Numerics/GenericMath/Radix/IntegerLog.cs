@@ -4,14 +4,14 @@ namespace Flux
   {
     /// <summary>Computes the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static void LocateILog<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogTowardsZero, out TResult ilogAwayFromZero)
+    public static void LocateIntegerLog<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogTowardsZero, out TResult ilogAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       if (TSelf.IsNegative(value))
       {
-        LocateILog(TSelf.Abs(value), radix, out ilogTowardsZero, out ilogAwayFromZero);
+        LocateIntegerLog(TSelf.Abs(value), radix, out ilogTowardsZero, out ilogAwayFromZero);
 
         ilogTowardsZero = -ilogTowardsZero;
         ilogAwayFromZero = -ilogAwayFromZero;
@@ -27,7 +27,7 @@ namespace Flux
 
           if (!TSelf.IsZero(value))
           {
-            if (!IsPow(value, radix))
+            if (!IsIntegerPow(value, radix))
               ilogAwayFromZero++;
 
             while (value >= tradix)
@@ -42,19 +42,9 @@ namespace Flux
       }
     }
 
-    //public static TSelf NearestIntegerLog<TSelf, TRadix, TResult>(this TSelf number, TRadix radix, RoundingMode mode, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //  where TRadix : System.Numerics.IBinaryInteger<TRadix>
-    //  where TResult : System.Numerics.IBinaryInteger<TResult>
-    //{
-    //  LocateILog(number, radix, out nearestTowardsZero, out nearestAwayFromZero);
-
-    //  return BoundaryRounding<TSelf, TSelf>.Round(number, TSelf.CreateChecked(nearestTowardsZero), TSelf.CreateChecked(nearestAwayFromZero), mode);
-    //}
-
     /// <summary>Computes the integer log ceiling of x using base b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TResult ILogAwayFromZero<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogAwayFromZero)
+    public static TResult LocateIntegerLogAfz<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TResult : System.Numerics.IBinaryInteger<TResult>
@@ -66,7 +56,7 @@ namespace Flux
 
       if (!TSelf.IsZero(value))
       {
-        if (!IsPow(value, radix))
+        if (!IsIntegerPow(value, radix))
           ilogAwayFromZero++;
 
         while (value >= tradix)
@@ -82,7 +72,7 @@ namespace Flux
 
     /// <summary>Computes the integer log floor of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TResult ILogTowardsZero<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogTowardsZero)
+    public static TResult LocateIntegerLogTz<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogTowardsZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TResult : System.Numerics.IBinaryInteger<TResult>
@@ -103,16 +93,26 @@ namespace Flux
       return ilogTowardsZero;
     }
 
+    //public static TSelf NearestIntegerLog<TSelf, TRadix, TResult>(this TSelf number, TRadix radix, RoundingMode mode, out TResult nearestTowardsZero, out TResult nearestAwayFromZero)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  where TRadix : System.Numerics.IBinaryInteger<TRadix>
+    //  where TResult : System.Numerics.IBinaryInteger<TResult>
+    //{
+    //  LocateILog(number, radix, out nearestTowardsZero, out nearestAwayFromZero);
+
+    //  return BoundaryRounding<TSelf, TSelf>.Round(number, TSelf.CreateChecked(nearestTowardsZero), TSelf.CreateChecked(nearestAwayFromZero), mode);
+    //}
+
     /// <summary>Attempt to compute the integer log floor and ceiling of <paramref name="value"/> using base <paramref name="radix"/> into the out parameters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static bool TryLocateILog<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogTowardsZero, out TResult ilogAwayFromZero)
+    public static bool TryLocateIntegerLog<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogTowardsZero, out TResult ilogAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       try
       {
-        LocateILog(value, radix, out ilogTowardsZero, out ilogAwayFromZero);
+        LocateIntegerLog(value, radix, out ilogTowardsZero, out ilogAwayFromZero);
 
         return true;
       }

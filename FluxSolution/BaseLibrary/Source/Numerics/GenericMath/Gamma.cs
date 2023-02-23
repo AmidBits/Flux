@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary></summary>
     /// <param name="x">Any positive value.</param>
-    public static TSelf Gamma<TSelf>(TSelf x)
+    public static TSelf Gamma<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       if (x <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(x), @"Must be positive.");
@@ -102,7 +102,7 @@ namespace Flux
 
     /// <summary></summary>
     /// <param name="x">Any positive value.</param>
-    public static TSelf LogGamma<TSelf>(TSelf x)
+    public static TSelf LogGamma<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       if (x <= TSelf.Zero)

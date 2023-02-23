@@ -265,7 +265,7 @@ namespace Flux
       public static CartesianCoordinate3<TSelf> CreateChecked<TOther>(TOther o)
         where TOther : System.Numerics.INumberBase<TOther>
       {
-        if (o.IsINumber())
+        if (o.ImplementsNumber())
         {
           var v = TSelf.CreateChecked(o);
           return new(v, v, v);
@@ -278,7 +278,7 @@ namespace Flux
       public static CartesianCoordinate3<TSelf> CreateSaturating<TOther>(TOther o)
         where TOther : System.Numerics.INumberBase<TOther>
       {
-        if (o.IsINumber())
+        if (o.ImplementsNumber())
         {
           var v = TSelf.CreateSaturating(o);
           return new(v, v, v);
@@ -291,7 +291,7 @@ namespace Flux
       public static CartesianCoordinate3<TSelf> CreateTruncating<TOther>(TOther o)
         where TOther : System.Numerics.INumberBase<TOther>
       {
-        if (o.IsINumber())
+        if (o.ImplementsNumber())
         {
           var v = TSelf.CreateTruncating(o);
           return new(v, v, v);

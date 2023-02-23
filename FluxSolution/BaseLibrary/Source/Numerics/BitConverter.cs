@@ -47,6 +47,53 @@ namespace Flux
     }
 
     #region CopyBytes From Types
+
+#if !NOTHAPPENINGNOW
+    public void CopyBytesBool(bool value, byte[] buffer, int startAt)
+      => buffer[startAt] = value ? (byte)1 : (byte)0;
+    public int CopyBytesBinaryInteger<TSelf>(TSelf value, byte[] buffer, int startAt)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      switch (m_endianess)
+      {
+        case Endianess.BigEndian:
+          value.WriteBigEndian(buffer, startAt);
+          break;
+        case Endianess.LittleEndian:
+          value.WriteLittleEndian(buffer, startAt);
+          break;
+        default:
+          throw new System.ArgumentException(nameof(m_endianess));
+      }
+
+      return value.GetByteCount();
+    }
+    public int CopyBytesFloatingPoint<TSelf>(TSelf value, byte[] buffer, int startAt)
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    {
+      var boolCount = 1;
+      var exponentCount = value.GetExponentByteCount();
+      var significandCount = value.GetSignificandByteCount();
+
+      switch (m_endianess)
+      {
+        case Endianess.BigEndian:
+          CopyBytesBool(TSelf.IsNegative(value), buffer, startAt);
+          value.WriteExponentBigEndian(buffer, startAt + boolCount);
+          value.WriteSignificandBigEndian(buffer, startAt + boolCount + exponentCount);
+          break;
+        case Endianess.LittleEndian:
+          CopyBytesBool(TSelf.IsNegative(value), buffer, startAt);
+          value.WriteExponentLittleEndian(buffer, startAt + boolCount);
+          value.WriteSignificandLittleEndian(buffer, startAt + boolCount + exponentCount);
+          break;
+        default:
+          throw new System.ArgumentException(nameof(m_endianess));
+      }
+
+      return boolCount + exponentCount + significandCount;
+    }
+#endif
     /// <summary>Copies the specified boolean value into the specified byte array, beginning at the specified index.</summary>
     public void CopyBytes(bool value, byte[] buffer, int startAt)
       => CopyBytes(value ? 1 : 0, 1, buffer, startAt);
