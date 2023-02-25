@@ -1,5 +1,22 @@
 namespace Flux
 {
+  //** A rational number (commonly called a fraction) is a ratio
+  //** between two integers.  For example (3/6) = (2/4) = (1/2)
+  //**
+  //** Arithmetic
+  //** ----------
+  //** a/b = c/d, iff ad = bc
+  //** -(a/b)     == (-a)/b
+  //** (a/b)^(-1) == b/a, if a != 0
+  //**
+  //** Reduction Algorithm
+  //** ------------------------
+  //** Euclid's algorithm is used to simplify the fraction.
+  //** Calculating the greatest common divisor of two n-digit
+  //** numbers can be found in
+  //**
+  //** O(n(log n)^5 (log log n)) steps as n -> +infinity
+
   /// <summary>Simple fraction, unit of rational number, i.e. in the form of numerator and denominator.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Fraction#Simple,_common,_or_vulgar_fractions"/>
   public readonly record struct Rational
@@ -17,17 +34,19 @@ namespace Flux
     , System.Numerics.IMultiplyOperators<Rational, Rational, Rational>, System.Numerics.IMultiplyOperators<Rational, System.Numerics.BigInteger, Rational>
     , System.Numerics.INumber<Rational>
     , System.Numerics.INumberBase<Rational>
-    //, System.Numerics.IPowerFunctions<Fraction>
+    , System.Numerics.IPowerFunctions<Rational>
     , System.Numerics.IRootFunctions<Rational>
     , System.Numerics.ISignedNumber<Rational>
     , System.Numerics.ISubtractionOperators<Rational, Rational, Rational>, System.Numerics.ISubtractionOperators<Rational, System.Numerics.BigInteger, Rational>
     , System.Numerics.IUnaryNegationOperators<Rational, Rational>
     , System.Numerics.IUnaryPlusOperators<Rational, Rational>
   {
-    public static readonly Rational EpsilonLikeSingle = new(1, 1000000);
-    public static readonly Rational EpsilonLikeDouble = new(1, 1000000000000000);
+    public const char FractionSlash = '\u2044';
 
-    /// <summary>Represents a fraction of the Golden Ratio.</summary>
+    public static readonly Rational EpsilonLikeSingle = new(1, 1_000_000);
+    public static readonly Rational EpsilonLikeDouble = new(1, 1_000_000_000_000_000);
+
+    /// <summary>Represents an approximate fraction of the irrational Golden Ratio.</summary>
     public static readonly Rational GoldenRatio = new(7540113804746346429L, 4660046610375530309L, false);
 
     private readonly System.Numerics.BigInteger m_numerator;
@@ -69,49 +88,17 @@ namespace Flux
     public System.Numerics.BigInteger Denominator => m_denominator;
 
     /// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
-    public bool IsProper => m_numerator < m_denominator;
+    public bool IsProper => System.Numerics.BigInteger.Abs(m_numerator) < m_denominator;
+
+    public bool IsMixedFraction(out System.Numerics.BigInteger quotient, out System.Numerics.BigInteger remainder)
+    {
+      (quotient, remainder) = System.Numerics.BigInteger.DivRem(m_numerator, m_denominator);
+
+      return System.Numerics.BigInteger.Abs(remainder) > System.Numerics.BigInteger.Zero;
+    }
 
     /// <summary>A fraction is a unit fraction if its numerator is equal to 1.</summary>
     public bool IsUnitFraction => m_numerator == System.Numerics.BigInteger.One;
-
-    /// <summary>Returns the integer quotient and an out variable containing the remainder.</summary>
-    public System.Numerics.BigInteger ToDivRem(out System.Numerics.BigInteger remainder)
-    {
-      remainder = m_numerator % m_denominator;
-
-      return m_numerator / m_denominator;
-    }
-
-    /// <summary>Yields a string with the fraction in improper (if applicable) fractional notation.</summary>
-    public string ToImproperString()
-    {
-      var sb = new System.Text.StringBuilder();
-
-      if (IsProper)
-        return ToProperString();
-      else
-      {
-        sb.Append(ToDivRem(out var remainder));
-
-        if (remainder > System.Numerics.BigInteger.Zero)
-        {
-          sb.Append(' ');
-          sb.Append(remainder);
-          sb.Append('\u2044');
-          sb.Append(m_denominator);
-        }
-      }
-
-      return sb.ToString();
-    }
-
-    /// <summary>Yields a string with the fraction in proper fractional notation.</summary>
-    public string ToProperString()
-      => $"{m_numerator}\u2044{m_denominator}";
-
-    /// <summary>Returns the quotient result from division of numerator / denominator.</summary>
-    public double ToQuotient()
-      => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);
 
     #region Static methods
 
@@ -235,35 +222,35 @@ namespace Flux
       => new(a.m_numerator + b.m_numerator, a.m_denominator + b.m_denominator, false);
 
     /// <summary>Returns the nth root of the value.</summary>
-    private static Rational NthRoot(Rational value, int n, Rational maxError)
+    private static Rational NthRoot(Rational value, int nth, Rational maxError)
     {
-      if (n < 0)
-        return NthRoot(Reciprocal(value), -n, maxError);
+      if (nth < 0)
+        return NthRoot(Reciprocal(value), -nth, maxError);
 
-      if (n == 0) throw new System.DivideByZeroException("Zeroth root is not defined.");
-      if (n == int.MinValue) throw new System.OverflowException("Value cannot be negated.");
+      if (nth == 0) throw new System.DivideByZeroException("Zeroth root is not defined.");
+      if (nth == int.MinValue) throw new System.OverflowException("Value cannot be negated.");
 
 
       if (IsNegative(value))
       {
-        if ((n & 1) == 0) throw new System.ArithmeticException("Cannot compute even root of a negative number.");
+        if ((nth & 1) == 0) throw new System.ArithmeticException("Cannot compute even root of a negative number.");
 
-        return -NthRoot(-value, n, maxError);
+        return -NthRoot(-value, nth, maxError);
       }
 
       if (IsNegative(maxError) || IsZero(maxError)) throw new System.ArgumentOutOfRangeException(nameof(maxError), "Epsilon must be positive");
 
       if (value == Zero)
         return Zero;
-      if (n == 1)
+      if (nth == 1)
         return value;
       if (value == One)
         return value;
 
       // First, get the closest integer to the root of the numerator and the denominator as an initial guess.
 
-      var guessNumerator = IntegerNthRoot(value.Numerator, n);
-      var guessDenominator = IntegerNthRoot(value.Denominator, n);
+      var guessNumerator = IntegerNthRoot(value.Numerator, nth);
+      var guessDenominator = IntegerNthRoot(value.Denominator, nth);
 
       var initialGuess = new Rational(guessNumerator.value, guessDenominator.value);
 
@@ -278,7 +265,7 @@ namespace Flux
 
       while (true)
       {
-        var diff = (value / Pow(x, n - 1) - x) / System.Numerics.BigInteger.CreateChecked(n);
+        var diff = (value / Pow(x, nth - 1) - x) / System.Numerics.BigInteger.CreateChecked(nth);
 
         x += diff;
 
@@ -288,7 +275,7 @@ namespace Flux
 
       return x;
 
-      static (System.Numerics.BigInteger value, bool isExact) IntegerNthRoot(System.Numerics.BigInteger a, int n)
+      static (System.Numerics.BigInteger value, bool isExact) IntegerNthRoot(System.Numerics.BigInteger a, System.Numerics.BigInteger n)
       {
         if (a.IsZero)
           return (System.Numerics.BigInteger.Zero, true);
@@ -348,6 +335,10 @@ namespace Flux
         return (a - lowerPow).CompareTo(upperPow - a) < 0 ? (lowerX, false) : (upperX, false);
       }
     }
+    private static Rational NthRoot(Rational value, System.Numerics.BigInteger nth, Rational maxError)
+      => nth >= int.MinValue && nth <= int.MaxValue
+      ? NthRoot(value, int.CreateChecked(nth), maxError)
+      : throw new System.ArgumentOutOfRangeException(nameof(nth));
 
     /// <summary>Returns this^exponent. Note: 0^0 will return 1/1.</summary>
     public static Rational Pow(Rational value, int exponent)
@@ -355,15 +346,19 @@ namespace Flux
       if (exponent < 0)
       {
         if (IsZero(value)) throw new System.DivideByZeroException(@"Raising zero to negative exponent.");
-        else if (exponent == int.MinValue) throw new System.OverflowException(@"Exponent cannot be negated."); // edge case: because we negate the exponent if it's negative, we would get into an infinite loop because -MIN_VALUE == MIN_VALUE
-        else return new(value.Denominator.IntegerPow(-exponent), value.Numerator.IntegerPow(-exponent), true);
+        else if (exponent == int.MinValue) throw new System.OverflowException(@"Exponent cannot be negated."); // Edge case: because we negate the exponent if it's negative, we would get into an infinite loop because -MIN_VALUE == MIN_VALUE.
+        else return Pow(value, -exponent); // new(System.Numerics.BigInteger.Pow(value.Denominator, -exponent), System.Numerics.BigInteger.Pow(value.Numerator, -exponent), true);
       }
 
       if (exponent == 0) return One;
       else if (IsZero(value)) return Zero;
       else if (exponent == 1) return value;
-      else return new(value.Numerator.IntegerPow(exponent), value.Denominator.IntegerPow(exponent), true);
+      else return new(System.Numerics.BigInteger.Pow(value.Numerator, exponent), System.Numerics.BigInteger.Pow(value.Denominator, exponent), true);
     }
+    private static Rational Pow(Rational value, System.Numerics.BigInteger exponent)
+      => exponent >= int.MinValue && exponent <= int.MaxValue
+      ? Pow(value, int.CreateChecked(exponent))
+      : throw new System.ArgumentOutOfRangeException(nameof(exponent));
 
     /// <summary>Returns the reciprocal of a value.</summary>
     public static Rational Reciprocal(Rational value)
@@ -384,16 +379,9 @@ namespace Flux
     #region Implemented interfaces
 
     // System.Numerics.IAdditionOperators<>
-    public static Rational operator +(Rational a, Rational b)
-    {
-      var lcm = GenericMath.LeastCommonMultiple(a.m_denominator, b.m_denominator);
-
-      var an = lcm / a.m_denominator * a.m_numerator;
-      var bn = lcm / b.m_denominator * b.m_numerator;
-
-      return new(an + bn, lcm);
-    }
-    public static Rational operator +(Rational a, System.Numerics.BigInteger b) => a + new Rational(b);
+    // a/b + c/d == (ad + bc)/bd
+    public static Rational operator +(Rational a, Rational b) => new(a.m_numerator * b.m_denominator + a.m_denominator * b.m_numerator, a.m_denominator * b.m_denominator, true);
+    public static Rational operator +(Rational a, System.Numerics.BigInteger b) => new(a.m_numerator + a.m_denominator * b, a.m_denominator, true);
 
     // System.Numerics.IAdditiveIdentity<>
     public static Rational AdditiveIdentity => Zero;
@@ -408,8 +396,9 @@ namespace Flux
     public static Rational operator --(Rational f) => f - System.Numerics.BigInteger.One;
 
     // System.Numerics.IDivisionOperators<>
-    public static Rational operator /(Rational a, Rational b) => new(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator);
-    public static Rational operator /(Rational a, System.Numerics.BigInteger b) => a / new Rational(b);
+    // a/b / c/d == (ad)/(bc)
+    public static Rational operator /(Rational a, Rational b) => new(a.m_numerator * b.m_denominator, a.m_denominator * b.m_numerator, true);
+    public static Rational operator /(Rational a, System.Numerics.BigInteger b) => new(a.m_numerator, a.m_denominator * b, true);
 
     // System.Numerics.IFloatingPointConstants<>
     public static Rational E => new(System.Numerics.BigInteger.Parse("611070150698522592097"), System.Numerics.BigInteger.Parse("224800145555521536000"), false);
@@ -420,25 +409,23 @@ namespace Flux
     public static Rational operator ++(Rational f) => f + System.Numerics.BigInteger.One;
 
     // System.Numerics.IModulusOperators<>
-    public static Rational operator %(Rational a, Rational b)
-    {
-      var numerator = a.m_numerator * b.m_denominator;
-      var denominator = a.m_denominator * b.m_numerator;
-
-      return new(numerator - (numerator / denominator * denominator), denominator);
-    }
-
-    public static Rational operator %(Rational a, System.Numerics.BigInteger b) => a % new Rational(b);
+    // a/b % c/d == (ad % bc)/bd
+    public static Rational operator %(Rational a, Rational b) => new((a.m_numerator * b.m_denominator) % (a.m_denominator * b.m_numerator), a.m_denominator * b.m_denominator, true);
+    public static Rational operator %(Rational a, System.Numerics.BigInteger b) => new(a.m_numerator % (a.m_denominator * b), a.m_denominator, true);
 
     // System.Numerics.IMultiplicativeIdentity<>
     public static Rational MultiplicativeIdentity => One;
 
     // System.Numerics.IMultiplyOperators<>
-    public static Rational operator *(Rational a, Rational b) => new(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator);
-    public static Rational operator *(Rational a, System.Numerics.BigInteger b) => a * new Rational(b);
+    // a/b * c/d == (ac)/(bd)
+    public static Rational operator *(Rational a, Rational b) => new(a.m_numerator * b.m_numerator, a.m_denominator * b.m_denominator, true);
+    public static Rational operator *(Rational a, System.Numerics.BigInteger b) => new(a.m_numerator * b, a.m_denominator, true);
 
     // System.Numerics.INumber<>
     // Implicitly implemented because all interface methods are virtual.
+
+    // System.Numerics.IRootFunctions<>
+    public static Rational Pow(Rational value, Rational exponent) => Pow(NthRoot(value, exponent.m_denominator, EpsilonLikeDouble), exponent.m_numerator);
 
     // System.Numerics.IRootFunctions<>
     public static Rational Cbrt(Rational value) => NthRoot(value, 3, EpsilonLikeDouble);
@@ -447,50 +434,43 @@ namespace Flux
     public static Rational Sqrt(Rational value) => NthRoot(value, 2, EpsilonLikeDouble);
 
     // System.Numerics.ISignedNumber<>
-    public static Rational NegativeOne => -One;
+    public static Rational NegativeOne => new(System.Numerics.BigInteger.MinusOne);
 
     // System.Numerics.ISubtractionOperators<>
-    public static Rational operator -(Rational a, Rational b)
-    {
-      var lcm = GenericMath.LeastCommonMultiple(a.m_denominator, b.m_denominator);
-
-      var an = lcm / a.m_denominator * a.m_numerator;
-      var bn = lcm / b.m_denominator * b.m_numerator;
-
-      return new(an - bn, lcm);
-    }
-    public static Rational operator -(Rational a, System.Numerics.BigInteger b) => a - new Rational(b);
+    // a/b - c/d == (ad - bc)/bd
+    public static Rational operator -(Rational a, Rational b) => new(a.m_numerator * b.m_denominator - a.m_denominator * b.m_numerator, a.m_denominator * b.m_denominator, true);
+    public static Rational operator -(Rational a, System.Numerics.BigInteger b) => new(a.m_numerator - a.m_denominator * b, a.m_denominator, true);
 
     // System.Numerics.IUnaryNegationOperators<>
-    public static Rational operator -(Rational f) => new(f.m_numerator, -f.m_denominator, false);
+    public static Rational operator -(Rational f) => new(-f.m_numerator, f.m_denominator, false);
 
     // System.Numerics.IUnaryPlusOperators<>
     public static Rational operator +(Rational f) => new(f.m_numerator, f.m_denominator, false);
 
     #region System.Numerics.INumberBase<>
 
-    public static Rational One => new(System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, false);
+    public static Rational One => new(System.Numerics.BigInteger.One);
     public static int Radix => 2;
-    public static Rational Zero => new(System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One, false);
+    public static Rational Zero => new(System.Numerics.BigInteger.Zero);
     public static Rational Abs(Rational value) => new(System.Numerics.BigInteger.Abs(value.m_numerator), System.Numerics.BigInteger.Abs(value.m_denominator));
     public static bool IsCanonical(Rational f) => true;
     public static bool IsComplexNumber(Rational f) => false;
-    public static bool IsEvenInteger(Rational f) => f.m_numerator.IsEven && IsInteger(f);
+    public static bool IsEvenInteger(Rational f) => f.m_numerator.IsEven && IsInteger(f); // When the numerator is even and the denominator is one.
     public static bool IsFinite(Rational f) => true;
     public static bool IsImaginaryNumber(Rational f) => false;
     public static bool IsInfinity(Rational f) => false;
-    public static bool IsInteger(Rational f) => f.m_denominator == System.Numerics.BigInteger.One;
+    public static bool IsInteger(Rational f) => f.m_denominator == System.Numerics.BigInteger.One; // In order to be an integer, the denominator must be one.
     public static bool IsNaN(Rational f) => false;
-    public static bool IsNegative(Rational f) => System.Numerics.BigInteger.IsNegative(f.m_numerator);
+    public static bool IsNegative(Rational f) => System.Numerics.BigInteger.IsNegative(f.m_numerator); // The denominator will not be negative, see constructor.
     public static bool IsNegativeInfinity(Rational f) => false;
     public static bool IsNormal(Rational f) => !IsZero(f);
-    public static bool IsOddInteger(Rational f) => !f.m_numerator.IsEven && IsInteger(f);
-    public static bool IsPositive(Rational f) => System.Numerics.BigInteger.IsPositive(f.m_numerator);
+    public static bool IsOddInteger(Rational f) => !f.m_numerator.IsEven && IsInteger(f); // When the numerator is odd and the denominator is one.
+    public static bool IsPositive(Rational f) => System.Numerics.BigInteger.IsPositive(f.m_numerator); // If the rational is negative it would only be via the numerator, see constructor.
     public static bool IsPositiveInfinity(Rational f) => false;
     public static bool IsRealNumber(Rational f) => !IsNaN(f);
     public static bool IsReducible(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger gcd) => (gcd = GenericMath.GreatestCommonDivisor(numerator, denominator)) > System.Numerics.BigInteger.One;
     public static bool IsSubnormal(Rational f) => false;
-    public static bool IsZero(Rational f) => f.m_numerator.IsZero;
+    public static bool IsZero(Rational f) => f.m_numerator.IsZero; // When the numerator is zero (a zero denominator results in divide-by-zero exception).
     public static Rational MaxMagnitude(Rational a, Rational b) => a >= b ? a : b;
     public static Rational MaxMagnitudeNumber(Rational a, Rational b) => a >= b ? a : b;
     public static Rational MinMagnitude(Rational a, Rational b) => a <= b ? a : b;
@@ -608,33 +588,16 @@ namespace Flux
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-    {
-      var sb = new System.Text.StringBuilder();
+      => IsProper
+      ? $"{m_numerator}{FractionSlash}{m_denominator}"
+      : IsMixedFraction(out var quotient, out var remainder)
+      ? $"{quotient} {System.Numerics.BigInteger.Abs(remainder)}{FractionSlash}{m_denominator}"
+      : quotient.ToString(); // It is a whole number and we return a simple integer string.
 
-      sb.Append(GetType().Name);
-      sb.Append(" { ");
-
-      sb.Append(ToProperString());
-
-      var mixedString = ToImproperString();
-      if (!sb.EndsWith(mixedString))
-      {
-        sb.Append(" = ");
-        sb.Append(mixedString);
-      }
-
-      sb.Append(" = ");
-      sb.Append(ToQuotient());
-      sb.Append(" } ");
-
-      return sb.ToString();
-    }
-    public double Value => ToQuotient();
+    public double Value => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);
 
     #endregion Implemented interfaces
 
-    #region Object overrides
     public override string ToString() => ToQuantityString();
-    #endregion Object overrides
   }
 }
