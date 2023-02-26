@@ -8,17 +8,14 @@ namespace Flux
     public const double DaysInYearJulianCalendar = 365.25;
 
     /// <summary>Average amount of time in one Gregorian calendar year.</summary>
-    public static readonly Quantities.Time TimeInYearGregorianCalendar = new(DaysInYearGregorianCalendar * 86400);
+    public static readonly Quantities.Time TimeInYearGregorianCalendar = Quantities.Time.Day * DaysInYearGregorianCalendar;
     /// <summary>Average amount of time in one Gregorian calendar month.</summary>
-    public static readonly Quantities.Time TimeInMonthGregorianCalendar = new(DaysInYearGregorianCalendar * 86400 / 12);
+    public static readonly Quantities.Time TimeInMonthGregorianCalendar = TimeInYearGregorianCalendar / 12;
 
     /// <summary>Average amount of time in one Julian calendar year.</summary>
-    public static readonly Quantities.Time TimeInYearJulianCalendar = new(DaysInYearJulianCalendar * 86400);
+    public static readonly Quantities.Time TimeInYearJulianCalendar = Quantities.Time.Day * DaysInYearJulianCalendar;
     /// <summary>Average amount of time in one Julian calendar month.</summary>
-    public static readonly Quantities.Time TimeInMonthJulianCalendar = new(DaysInYearJulianCalendar * 86400 / 12);
-
-    /// <summary>Amount of time in one day (24-hours).</summary>
-    public static readonly Quantities.Time TimeInDay = new(86400);
+    public static readonly Quantities.Time TimeInMonthJulianCalendar = TimeInYearJulianCalendar / 12;
 
     private const double Lg = 6.969290134e-10;
     /// <summary></summary>

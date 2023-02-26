@@ -12,7 +12,7 @@ namespace Flux
 
   /// <summary>A moment is a specific point in time down to the millisecond.</summary>
   public readonly record struct MomentUtc
-    : System.IComparable<MomentUtc>, System.IEquatable<MomentUtc>
+    : System.IComparable<MomentUtc>
   {
     public static readonly MomentUtc Empty;
 
@@ -117,8 +117,6 @@ namespace Flux
 
     #endregion Implemented interfaces
 
-    #region Object overrides
     public override string? ToString() => $"{GetType().Name} {{ {m_year:D4}-{m_month:D2}-{m_day:D2} {m_hour:D2}:{m_minute:D2}:{m_second:D2}.{m_millisecond:D3} }}";
-    #endregion Object overrides
   }
 }

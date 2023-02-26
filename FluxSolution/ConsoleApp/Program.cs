@@ -30,60 +30,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      static Flux.Numerics.CartesianCoordinate2<double> Poap(Flux.Numerics.CartesianCoordinate2<double> p, Flux.Numerics.CartesianCoordinate2<double> o, double r)
-      {
-        var po = p * o;
-        var abspo = Flux.Numerics.CartesianCoordinate2<double>.Abs(po);
-        var powabspo = abspo * abspo;
-        var subpowabspo = powabspo - r;
-        return subpowabspo;
-      }
 
-      var p = new Flux.Numerics.CartesianCoordinate2<double>(0.5, 2);
-      var o = new Flux.Numerics.CartesianCoordinate2<double>(1, 1);
-      var r = 6;
-
-      var pp = Poap(p, o, r);
-
-      var pi = Flux.Rational.Pi;
-      var tau = Flux.Rational.Tau;
-      var e = Flux.Rational.E;
-      var t = new Flux.Rational(11) * new Flux.Rational(-12);
-
-      var a = 10.5;
-      var b = 2.5;
-      var abm = a % b;
-      var ab = a + b;
-
-      var ar = Rational.ApproximateRational(a);
-      var br = Rational.ApproximateRational(b);
-      var abr = ar + br;
-
-      var am3 = abr - new Rational(1, 5);
-
-      var c = double.Pow(a, b);
-
-      ar = -ar;
-
-      var ars = ar.ToString();
-
-      abr /= 2;
-
-      ars = abr.ToString();
-
-      var x = new Flux.Rational(3, 2);
-      var y = new Flux.Rational(5, 2);
-      var z = Flux.Rational.Pow(x, y); // new Flux.Rational(System.Numerics.BigInteger.Pow(x.Numerator, int.CreateChecked(y.Numerator)), System.Numerics.BigInteger.Pow(x.Denominator, int.CreateChecked(y.Denominator)), true);
-
-
-      //var radix = 10.ToBigInteger();
-
-      //for (var number = -3.ToBigInteger(); number > -100; number--)
-      //{
-      //  var sqrt = (number).IntegerSqrt();
-
-      //  System.Console.WriteLine($"{number} : {sqrt}");
-      //}
     }
 
     private static void Main(string[] args)
