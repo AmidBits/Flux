@@ -12,7 +12,7 @@ namespace Collections.Generic
     [TestMethod]
     public void CumulativeMassFunctionPercentRank()
     {
-      Assert.AreEqual(0.7, d.ToHistogram(k => k, f => 1).ToCmfPercentRank(4, 1d), nameof(CumulativeMassFunctionPercentRank));
+      Assert.AreEqual(0.7, d.ToHistogram(k => k, f => 1).ComputeCdfPercentRank(4, 1d), nameof(CumulativeMassFunctionPercentRank));
     }
 
     //[TestMethod]
@@ -47,7 +47,7 @@ namespace Collections.Generic
     [TestMethod]
     public void ProbabilityMassFunction()
     {
-      Assert.AreEqual(0.2, d.ToHistogram(k => k, f => 1).ToPmfProbability(4, 1d), nameof(ProbabilityMassFunction));
+      Assert.AreEqual(0.2, d.ToHistogram(k => k, f => 1).ComputePmfProbability(4, 1d), nameof(ProbabilityMassFunction));
     }
   }
 }

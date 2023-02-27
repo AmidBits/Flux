@@ -42,7 +42,7 @@ namespace Types
     [TestMethod]
     public void PercentileRank75th()
     {
-      Assert.AreEqual(60, (int)d.ToHistogram(k => k, f => 1).ToCmfPercentRank(75, 100.0), nameof(PercentileRank75th));
+      Assert.AreEqual(60, (int)d.ToHistogram(k => k, f => 1).ComputeCdfPercentRank(75, 100.0), nameof(PercentileRank75th));
     }
 
     //[TestMethod]

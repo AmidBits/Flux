@@ -24,13 +24,41 @@ namespace ConsoleApp
 {
   public class Program
   {
-
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var h = new int[] { 1, 2, 2, 3, 5 }.ToHistogram(i => i, i => 1);
 
+      var h2 = h[2];
+      var h4 = h[4];
+
+      var hv = h.Keys;
+
+      var pmf = h.ToProbabilityMassFunction(1.0);
+
+      var hp2 = h.ComputePmfProbability(2, 1.0);
+      var hp4 = h.ComputePmfProbability(4, 1.0);
+
+      var p2 = pmf[2];
+      var p4 = pmf[4];
+
+      var cdf = h.ToCumulativeDistributionFunction(1.0);
+
+      var hc0 = h.ComputeCdfPercentRank(0, 1.0);
+      var hc1 = h.ComputeCdfPercentRank(1, 1.0);
+      var hc2 = h.ComputeCdfPercentRank(2, 1.0);
+      var hc3 = h.ComputeCdfPercentRank(3, 1.0);
+      var hc4 = h.ComputeCdfPercentRank(4, 1.0);
+      var hc5 = h.ComputeCdfPercentRank(5, 1.0);
+
+      var c0 = cdf[0];
+      var c1 = cdf[1];
+      var c2 = cdf[2];
+      var c3 = cdf[3];
+      var c4 = cdf[4];
+      var c5 = cdf[5];
     }
 
     private static void Main(string[] args)

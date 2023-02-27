@@ -1,5 +1,16 @@
 namespace Flux
 {
+  public static partial class ExtensionMethodsTemporal
+  {
+    public static double AverageDaysInYear(this ConversionCalendar source)
+      => source switch
+      {
+        ConversionCalendar.GregorianCalendar => 365.2425,
+        ConversionCalendar.JulianCalendar => 365.25,
+        _ => throw new System.NotImplementedException(),
+      };
+  }
+
   /// <summary>Conversion calendar enum for Julian Date (JD) and MomentUtc conversions.</summary>
   public enum ConversionCalendar
   {

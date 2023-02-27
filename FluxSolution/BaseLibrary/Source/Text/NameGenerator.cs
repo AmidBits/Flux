@@ -22,16 +22,16 @@ namespace Flux.Text
       foreach (var n in list)
         m_nameLengthCounts[n.Length] = m_nameLengthCounts.TryGetValue(n.Length, out var count) ? count + 1 : count;
 
-      var lengths = list.ToHistogram(k => k.Length, f => 1).ToCumulativeMassFunction(1.0);
+      var lengths = list.ToHistogram(k => k.Length, f => 1).ToCumulativeDistributionFunction(1.0);
 
       var maxLength = lengths.Keys.Max();
 
-      var cpl = new System.Collections.Generic.SortedDictionary<int, DataStructures.CumulativeMassFunction<char, double>>();
+      var cpl = new System.Collections.Generic.SortedDictionary<int, DataStructures.CumulativeDistributionFunction<char, double>>();
 
       var rl = new Flux.Loops.RangeLoop<int>(0, maxLength, 1);
 
       foreach (var i in rl)
-        cpl[i + 1] = list.Where(n => i < n.Length).ToHistogram(k => k[i], f => System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(f[i]) ? 1 : 1).ToCumulativeMassFunction(1.0);
+        cpl[i + 1] = list.Where(n => i < n.Length).ToHistogram(k => k[i], f => System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(f[i]) ? 1 : 1).ToCumulativeDistributionFunction(1.0);
 
       var p1 = m_rng.NextDouble();
       var length = lengths.OrderBy(kvp => kvp.Key).First(kvp => p1 <= kvp.Value);

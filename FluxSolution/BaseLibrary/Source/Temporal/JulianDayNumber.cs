@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ExtensionMethods
   {
     public static JulianDayNumber ToJulianDayNumber(this System.DateTime source, ConversionCalendar calendar)
-      => source.ToMomentUtc().ToJulianDayNumber(calendar);
+      => new(source.Year, source.Month, source.Day, calendar);
   }
 
   /// <summary>Julian Day Number unit of days.</summary>
@@ -37,8 +37,8 @@ namespace Flux
     public ConversionCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
 
-    public void GetDateParts(ConversionCalendar calendar, out int year, out int month, out int day)
-      => ConvertToDateParts(m_value, calendar, out year, out month, out day);
+    public (int year, int month, int day) GetDateParts(ConversionCalendar calendar)
+      => ConvertToDateParts(m_value, calendar);
 
     /// <summary>Creates a new string from this instance.</summary>
     public string ToDateString(ConversionCalendar calendar)
@@ -64,7 +64,7 @@ namespace Flux
         sb.Append(@", ");
       }
 
-      ConvertToDateParts(m_value, calendar, out var year, out var month, out var day); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
+      var (year, month, day) = ConvertToDateParts(m_value, calendar); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
 
       sb.Append(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
       sb.Append(' ');
@@ -88,14 +88,14 @@ namespace Flux
     /// <summary>Creates a new <see cref="MomentUtc"/> from this instance.</summary>
     public MomentUtc ToMomentUtc(ConversionCalendar calendar)
     {
-      ConvertToDateParts((int)(m_value + 0.5), calendar, out var year, out var month, out var day);
+      var (year, month, day) = ConvertToDateParts((int)(m_value + 0.5), calendar);
 
       return new MomentUtc(year, month, day);
     }
 
     #region Static methods
-    /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
 
+    /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
     public static int ConvertFromDateParts(int year, int month, int day, ConversionCalendar calendar)
       => calendar switch
       {
@@ -103,9 +103,9 @@ namespace Flux
         ConversionCalendar.JulianCalendar => 367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777,// The algorithm is valid for all (possibly proleptic) Julian calendar years >= -4712, that is, for all JDN >= 0. Divisions are integer divisions, fractional parts are ignored.
         _ => throw new System.ArgumentOutOfRangeException(nameof(calendar)),
       };
-    /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
 
-    public static void ConvertToDateParts(int julianDayNumber, ConversionCalendar calendar, out int year, out int month, out int day)
+    /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
+    public static (int year, int month, int day) ConvertToDateParts(int julianDayNumber, ConversionCalendar calendar)
     {
       // This is an algorithm by Edward Graham Richards to convert a Julian Day Number, J, to a date in the Gregorian calendar (proleptic, when applicable).
       // Richards states the algorithm is valid for Julian day numbers greater than or equal to 0.
@@ -119,13 +119,14 @@ namespace Flux
       var eq = System.Math.DivRem(4 * f + 3, 1461, out var er);
       var hq = System.Math.DivRem(5 * (er / 4) + 2, 153, out var hr);
 
-      day = hr / 5 + 1;
-      month = ((hq + 2) % 12) + 1;
-      year = eq - 4716 + (14 - month) / 12;
+      var day = hr / 5 + 1;
+      var month = ((hq + 2) % 12) + 1;
+      var year = eq - 4716 + (14 - month) / 12;
+
+      return (year, month, day);
     }
 
     /// <summary>Returns the ISO day of the week from the Julian Day Number. The US day of the week can be determined by: GetDayOfWeekISO(JDN) % 7.</summary>
-
     public static int GetDayOfWeekISO8601(int julianDayNumber)
       => (julianDayNumber % 7 is var dow && dow < 0 ? dow + 7 : dow) + 1;
 
@@ -133,14 +134,13 @@ namespace Flux
     /// <param name="solarCycle">That year's position in the 28-year solar cycle.</param>
     /// <param name="lunarCycle">That year's position in the 19-year lunar cycle.</param>
     /// <param name="indictionCycle">That year's position in the 15-year indiction cycle.</param>
-
     public static int GetJulianPeriod(int solarCycle, int lunarCycle, int indictionCycle)
       => (indictionCycle * 6916 + lunarCycle * 4200 + solarCycle * 4845) % (15 * 19 * 28) is var year && year > 4713 ? year - 4713 : year < 4714 ? -(4714 - year) : year;
 
     /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
-
     public static bool IsGregorianCalendar(int julianDayNumber)
       => julianDayNumber >= 2299161;
+
     #endregion Static methods
 
     #region Overloaded operators
@@ -192,8 +192,6 @@ namespace Flux
     public int Value { get => m_value; init => m_value = value; }
     #endregion Implemented interfaces
 
-    #region Object overrides
-    public override string? ToString() => $"{GetType().Name} {{ {ToQuantityString()} ({ToDateString(GetConversionCalendar())}) }}";
-    #endregion Object overrides
+    public override string? ToString() => $"{ToQuantityString()} ({ToDateString(GetConversionCalendar())})";
   }
 }

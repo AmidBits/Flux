@@ -90,7 +90,7 @@ namespace Flux
       System.Console.WriteLine(string.Join(System.Environment.NewLine, pmf));
       System.Console.WriteLine();
 
-      var cdf = h.ToCumulativeMassFunction(1d);
+      var cdf = h.ToCumulativeDistributionFunction(1d);
       System.Console.WriteLine("CDF:");
       System.Console.WriteLine(string.Join(System.Environment.NewLine, cdf));
       System.Console.WriteLine();

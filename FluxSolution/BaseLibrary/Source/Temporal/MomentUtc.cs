@@ -34,12 +34,8 @@ namespace Flux
       m_second = second >= 0 && second <= 59 ? (byte)second : throw new System.ArgumentOutOfRangeException(nameof(second));
       m_millisecond = millisecond >= 0 && millisecond <= 999 ? millisecond : throw new System.ArgumentOutOfRangeException(nameof(millisecond));
     }
-    public MomentUtc(int year, int month, int day, int hour, int minute, int second)
-      : this(year, month, day, hour, minute, second, 0)
-    { }
-    public MomentUtc(int year, int month, int day)
-      : this(year, month, day, 0, 0, 0, 0)
-    { }
+    public MomentUtc(int year, int month, int day, int hour, int minute, int second) : this(year, month, day, hour, minute, second, 0) { }
+    public MomentUtc(int year, int month, int day) : this(year, month, day, 0, 0, 0, 0) { }
 
     public int Year => m_year;
     public int Month => m_month;
