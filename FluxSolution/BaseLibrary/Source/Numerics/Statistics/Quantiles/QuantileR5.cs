@@ -4,6 +4,7 @@ namespace Flux.Numerics
   /// <para>Piecewise linear function where the knots are the values midway through the steps of the empirical distribution function.</para>
   /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
+  /// <remarks>This quantile is equivalent to <see cref="QuartileMethod3"/></remarks>
   public record class QuantileR5
     : IQuantileEstimable
   {

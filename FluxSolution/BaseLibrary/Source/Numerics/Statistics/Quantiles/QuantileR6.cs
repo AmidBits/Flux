@@ -5,6 +5,7 @@ namespace Flux.Numerics
   /// <para><remarks>Equivalent to Excel's PERCENTILE.EXC and Python's default "exclusive" method</remarks></para>
   /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
+  /// <remarks>This quantile is equivalent to <see cref="QuartileMethod4"/>.</remarks>
   public record class QuantileR6
     : IQuantileEstimable
   {

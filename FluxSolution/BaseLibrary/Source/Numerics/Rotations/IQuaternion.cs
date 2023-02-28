@@ -210,7 +210,7 @@
       TSelf W { get; init; }
 
       /// <summary>Calculates the dot product of two Quaternions.</summary>
-      public static TSelf DotProduct(IQuaternion<TSelf> q1, IQuaternion<TSelf> q2)
+      public static TSelf Dot(IQuaternion<TSelf> q1, IQuaternion<TSelf> q2)
         => q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)

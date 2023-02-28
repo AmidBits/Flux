@@ -6,7 +6,7 @@ namespace Flux.Numerics
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct Quaternion<TSelf>
     : IQuaternion<TSelf>
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
   {
     /// <summary>Returns a Quaternion representing no rotation.</summary>
     public static Quaternion<TSelf> Identity
@@ -36,8 +36,29 @@ namespace Flux.Numerics
     public TSelf W { get => m_w; init => m_w = value; }
 
     /// <summary>Returns whether the Quaternion is the identity Quaternion.</summary>
-    public bool IsIdentity
-      => Equals(Identity);
+    public bool IsIdentity => Equals(Identity);
+
+    /// <summary>Creates the conjugate of the quaternion.</summary>
+    public Quaternion<TSelf> Conjugate() => new(-m_x, -m_y, -m_z, m_w);
+
+    /// <summary>Returns the inverse of the Quaternion.</summary>
+    //  -1   (       a              -v       )
+    // q   = ( -------------   ------------- )
+    //       (  a^2 + |v|^2  ,  a^2 + |v|^2  )
+    public Quaternion<TSelf> Inverse()
+    {
+      var inverseNormal = TSelf.One / LengthSquared();
+
+      return new(
+        -m_x * inverseNormal,
+        -m_y * inverseNormal,
+        -m_z * inverseNormal,
+        m_w * inverseNormal
+      );
+    }
+
+    /// <summary>Returns the length squared of the Quaternion.</summary>
+    public TSelf LengthSquared() => m_x * m_x + m_y * m_y + m_z * m_z + m_w * m_w;
 
     #region Static methods
 
@@ -145,30 +166,172 @@ namespace Flux.Numerics
     //  );
     //}
 
+    /// <summary>
+    /// Concatenates two Quaternions; the result represents the value1 rotation followed by the value2 rotation.
+    /// </summary>
+    /// <param name="q1">The first Quaternion rotation in the series.</param>
+    /// <param name="q2">The second Quaternion rotation in the series.</param>
+    /// <returns>A new Quaternion representing the concatenation of the value1 rotation followed by the value2 rotation.</returns>
+    public static Quaternion<TSelf> Concatenate(Quaternion<TSelf> q1, Quaternion<TSelf> q2)
+    {
+      // Concatenate rotation is actually q2 * q1 instead of q1 * q2.
+      // So that's why q2 goes q1 and q1 goes q2.
+
+      var q1x = q2.X;
+      var q1y = q2.Y;
+      var q1z = q2.Z;
+      var q1w = q2.W;
+
+      var q2x = q1.X;
+      var q2y = q1.Y;
+      var q2z = q1.Z;
+      var q2w = q1.W;
+
+      // cross(av, bv)
+      var cx = q1y * q2z - q1z * q2y;
+      var cy = q1z * q2x - q1x * q2z;
+      var cz = q1x * q2y - q1y * q2x;
+
+      var dot = q1x * q2x + q1y * q2y + q1z * q2z;
+
+      return new(
+        q1x * q2w + q2x * q1w + cx,
+        q1y * q2w + q2y * q1w + cy,
+        q1z * q2w + q2z * q1w + cz,
+        q1w * q2w - dot
+      );
+    }
+
     /// <summary>Calculates the dot product of two Quaternions.</summary>
-    public static TSelf DotProduct(IQuaternion<TSelf> q1, IQuaternion<TSelf> q2)
-      => q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
+    public static TSelf Dot(IQuaternion<TSelf> q1, IQuaternion<TSelf> q2) => q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
+
+    /// <summary>Linearly interpolates between two quaternions.</summary>
+    public static Quaternion<TSelf> Lerp(Quaternion<TSelf> q1, Quaternion<TSelf> q2, TSelf mu)
+    {
+      var t = mu;
+      var t1 = TSelf.One - t;
+
+      var dot = Dot(q1, q2);
+
+      var r = (dot >= TSelf.Zero)
+      ? new Quaternion<TSelf>(
+        t1 * q1.X + t * q2.X,
+        t1 * q1.Y + t * q2.Y,
+        t1 * q1.Z + t * q2.Z,
+        t1 * q1.W + t * q2.W
+      )
+      : new Quaternion<TSelf>(
+        t1 * q1.X - t * q2.X,
+        t1 * q1.Y - t * q2.Y,
+        t1 * q1.Z - t * q2.Z,
+        t1 * q1.W - t * q2.W
+      );
+
+      var inverseNormal = TSelf.One / TSelf.Sqrt(r.LengthSquared());
+
+      return new(
+        r.X * inverseNormal,
+        r.Y * inverseNormal,
+        r.Z * inverseNormal,
+        r.W * inverseNormal
+      );
+    }
+
+    /// <summary>
+    /// Interpolates between two quaternions, using spherical linear interpolation.
+    /// </summary>
+    /// <param name="q1">The first source Quaternion.</param>
+    /// <param name="q2">The second source Quaternion.</param>
+    /// <param name="mu">The relative weight of the second source Quaternion in the interpolation.</param>
+    /// <returns>The interpolated Quaternion.</returns>
+    public static Quaternion<TSelf> Slerp(Quaternion<TSelf> q1, Quaternion<TSelf> q2, TSelf mu)
+    {
+      var epsilon = TSelf.CreateChecked(1E-6);
+
+      var t = mu;
+      var t1 = TSelf.One - t;
+
+      var cosOmega = Dot(q1, q2);
+
+      bool flip = false;
+
+      if (cosOmega < TSelf.Zero)
+      {
+        flip = true;
+        cosOmega = -cosOmega;
+      }
+
+      TSelf s1, s2;
+
+      if (cosOmega > (TSelf.One - epsilon))
+      {
+        // Too close, do straight linear interpolation.
+        s1 = t1;
+        s2 = flip ? -t : t;
+      }
+      else
+      {
+        var omega = TSelf.Acos(cosOmega);
+        var invSinOmega = TSelf.One / TSelf.Sin(omega);
+
+        s1 = TSelf.Sin(t1 * omega) * invSinOmega;
+        s2 = flip ? -TSelf.Sin(t * omega) * invSinOmega : TSelf.Sin(t * omega) * invSinOmega;
+      }
+
+      return new Quaternion<TSelf>(
+        s1 * q1.X + s2 * q2.X,
+        s1 * q1.Y + s2 * q2.Y,
+        s1 * q1.Z + s2 * q2.Z,
+        s1 * q1.W + s2 * q2.W
+      );
+    }
 
     #endregion Static methods
 
     #region Operator overloads
-    public static implicit operator Quaternion<TSelf>(TSelf value)
-      => new(TSelf.Zero, TSelf.Zero, TSelf.Zero, value);
 
-    public static explicit operator Quaternion<TSelf>(System.ValueTuple<TSelf, TSelf, TSelf, TSelf> xyzw)
-      => new(xyzw.Item1, xyzw.Item2, xyzw.Item3, xyzw.Item4);
+    public static implicit operator Quaternion<TSelf>(TSelf value) => new(TSelf.Zero, TSelf.Zero, TSelf.Zero, value);
+
+    public static explicit operator Quaternion<TSelf>(System.ValueTuple<TSelf, TSelf, TSelf, TSelf> xyzw) => new(xyzw.Item1, xyzw.Item2, xyzw.Item3, xyzw.Item4);
 
     /// <summary>Flips the sign of each component of the quaternion.</summary>
-    public static Quaternion<TSelf> operator -(Quaternion<TSelf> q)
-      => new(-q.m_x, -q.m_y, -q.m_z, -q.m_w);
+    public static Quaternion<TSelf> operator -(Quaternion<TSelf> q) => new(-q.m_x, -q.m_y, -q.m_z, -q.m_w);
 
     /// <summary>Adds two Quaternions element-by-element.</summary>
-    public static Quaternion<TSelf> operator +(Quaternion<TSelf> q1, Quaternion<TSelf> q2)
-      => new(q1.m_x + q2.m_x, q1.m_y + q2.m_y, q1.m_z + q2.m_z, q1.m_w + q2.m_w);
+    public static Quaternion<TSelf> operator +(Quaternion<TSelf> q1, Quaternion<TSelf> q2) => new(q1.m_x + q2.m_x, q1.m_y + q2.m_y, q1.m_z + q2.m_z, q1.m_w + q2.m_w);
+
+    /// <summary>Divides one Quaternion by another.</summary>
+    public static Quaternion<TSelf> operator /(Quaternion<TSelf> q1, Quaternion<TSelf> q2)
+    {
+      var q1x = q1.X;
+      var q1y = q1.Y;
+      var q1z = q1.Z;
+      var q1w = q1.W;
+
+      var inverseNormal = TSelf.One / q2.LengthSquared();
+
+      var q2x = -q2.X * inverseNormal;
+      var q2y = -q2.Y * inverseNormal;
+      var q2z = -q2.Z * inverseNormal;
+      var q2w = q2.W * inverseNormal;
+
+      // cross(av, bv)
+      var cx = q1y * q2z - q1z * q2y;
+      var cy = q1z * q2x - q1x * q2z;
+      var cz = q1x * q2y - q1y * q2x;
+
+      var dot = q1x * q2x + q1y * q2y + q1z * q2z;
+
+      return new(
+        q1x * q2w + q2x * q1w + cx,
+        q1y * q2w + q2y * q1w + cy,
+        q1z * q2w + q2z * q1w + cz,
+        q1w * q2w - dot
+      );
+    }
 
     /// <summary>Subtracts one Quaternion from another.</summary>
-    public static Quaternion<TSelf> operator -(Quaternion<TSelf> q1, Quaternion<TSelf> q2)
-      => new(q1.m_x - q2.m_x, q1.m_y - q2.m_y, q1.m_z - q2.m_z, q1.m_w - q2.m_w);
+    public static Quaternion<TSelf> operator -(Quaternion<TSelf> q1, Quaternion<TSelf> q2) => new(q1.m_x - q2.m_x, q1.m_y - q2.m_y, q1.m_z - q2.m_z, q1.m_w - q2.m_w);
 
     /// <summary>Multiplies two Quaternions together.</summary>
     public static Quaternion<TSelf> operator *(Quaternion<TSelf> q1, Quaternion<TSelf> q2)
@@ -178,12 +341,12 @@ namespace Flux.Numerics
         q1.m_z * q2.m_w + q2.m_z * q1.m_w + (q1.m_x * q2.m_y - q1.m_y * q2.m_x),
         q1.m_w * q2.m_w - (q1.m_x * q2.m_x + q1.m_y * q2.m_y + q1.m_z * q2.m_z)
       );
-    public static Quaternion<TSelf> operator *(Quaternion<TSelf> q, TSelf scalar)
-  => new(q.m_x * scalar, q.m_y * scalar, q.m_z * scalar, q.m_w * scalar);
 
-    ///// <summary>Divides a Quaternion by another Quaternion.</summary>
-    //public static IQuaternion<TSelf> operator /(Quaternion<TSelf> q1, Quaternion<TSelf> q2)
-    //  => q1 * q2.Inverse();
+    /// <summary>Multiplies a Quaternion with a scalar value.</summary>
+    public static Quaternion<TSelf> operator *(Quaternion<TSelf> q, TSelf scalar) => new(q.m_x * scalar, q.m_y * scalar, q.m_z * scalar, q.m_w * scalar);
+
     #endregion Operator overloads
+
+    public override string ToString() => $"{{ X: {m_x}, Y: {m_y}, Z: {m_z}, W: {m_w} }}";
   }
 }

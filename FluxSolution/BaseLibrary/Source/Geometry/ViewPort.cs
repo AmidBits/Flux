@@ -3,7 +3,7 @@ namespace Flux.Geometry
   /// <summary></summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct ViewPort<TSelf>
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
   {
     public static readonly ViewPort<TSelf> Empty;
 
