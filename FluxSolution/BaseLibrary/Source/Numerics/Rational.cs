@@ -84,6 +84,8 @@ namespace Flux
     public Rational(System.Numerics.BigInteger value) : this(value, System.Numerics.BigInteger.One, false) { }
     public Rational(System.Numerics.BigInteger whole, System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator) : this(whole * denominator + numerator, denominator, true) { }
 
+    public void Deconstruct(out System.Numerics.BigInteger numerator, out System.Numerics.BigInteger denominator) { numerator = m_numerator; denominator = m_denominator; }
+
     public System.Numerics.BigInteger Numerator => m_numerator;
     public System.Numerics.BigInteger Denominator => m_denominator;
 

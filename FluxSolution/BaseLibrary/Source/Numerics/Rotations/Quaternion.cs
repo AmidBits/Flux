@@ -26,6 +26,8 @@ namespace Flux.Numerics
       m_w = w;
     }
 
+    public void Deconstruct(out TSelf x, out TSelf y, out TSelf z, out TSelf w) { x = m_x; y = m_y; z = m_z; w = m_w; }
+
     /// <summary>Specifies the X-value of the vector component of the Quaternion.</summary>
     public TSelf X { get => m_x; init => m_x = value; }
     /// <summary>Specifies the Y-value of the vector component of the Quaternion.</summary>

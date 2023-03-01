@@ -25,6 +25,8 @@ namespace Flux.Numerics
       : this(q, r, -q - r)
     { }
 
+    public void Deconstruct(out TSelf q, out TSelf r, out TSelf s) { q = m_q; r = m_r; s = m_s; }
+
     public TSelf Q { get => m_q; init => m_q = value; }
     public TSelf R { get => m_r; init => m_r = value; }
     public TSelf S { get => m_s; init => m_s = value; }
@@ -35,5 +37,7 @@ namespace Flux.Numerics
     public static HexCoordinate<TSelf> operator /(HexCoordinate<TSelf> h, TSelf scalar) => TSelf.IsZero(scalar) ? throw new System.DivideByZeroException() : new(h.m_q / scalar, h.m_r / scalar, h.m_s / scalar);
     public static HexCoordinate<TSelf> operator -(HexCoordinate<TSelf> a, IHexCoordinate<TSelf> b) => new(a.m_q - b.Q, a.m_r - b.R, a.m_s - b.S);
     #endregion Overloaded operators
+
+    public override string ToString() => ((IHexCoordinate<TSelf>)this).ToString(null, null);
   }
 }

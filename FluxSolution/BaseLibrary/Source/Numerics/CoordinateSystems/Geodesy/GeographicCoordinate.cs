@@ -37,6 +37,8 @@ namespace Flux.Numerics
       m_radLongitude = Quantities.Angle.ConvertDegreeToRadian(degLongitude);
     }
 
+    public void Deconstruct(out double altitude, out double latitude, out double longitude) { altitude = m_altitude; latitude = Latitude; longitude = Longitude; }
+
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public double Altitude { get => m_altitude; init => m_altitude = value; }
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>

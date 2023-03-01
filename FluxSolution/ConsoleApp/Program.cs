@@ -29,6 +29,22 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
+      var v4a = new System.Numerics.Vector4(1, 2, 3, 4.1f);
+
+      System.Console.WriteLine(v4a.ToString());
+
+      var v3 = new Flux.Numerics.CartesianCoordinate3<double>(1, 2, 3.1);
+      System.Console.WriteLine(v3.ToString());
+
+      var sc = v3.ToSphericalCoordinate();
+      System.Console.WriteLine(sc.ToString());
+
+
+      var s = new Flux.Numerics.CartesianCoordinate2<double>(2, 3);
+      var t = new Flux.Numerics.CartesianCoordinate2<double>(9, 10);
+
+      var (mx, my) = Flux.Numerics.CartesianCoordinate2<double>.Slope(s, t);
+
       var a = new int[] { 1, 2, 2, 3, 5 };
       var b = new int[] { 1, 2, 2, 3, 5 };
 

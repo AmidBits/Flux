@@ -18,6 +18,8 @@ namespace Flux.Numerics
       m_azimuth = azimuth;
     }
 
+    public void Deconstruct(out TSelf radius, out TSelf azimuth) { radius = m_radius; azimuth = m_azimuth; }
+
     public TSelf Radius { get => m_radius; init => m_radius = value; }
     public TSelf Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
@@ -44,5 +46,7 @@ namespace Flux.Numerics
     //    TSelf.CreateChecked(azimuth.ToRadians())
     //  );
     //#endregion Static methods
+
+    public override string ToString() => ((IPolarCoordinate<TSelf>)this).ToString(null, null);
   }
 }

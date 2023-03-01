@@ -147,6 +147,8 @@ namespace Flux
         m_roll = roll;
       }
 
+      public void Deconstruct(out TSelf yaw, out TSelf pitch, out TSelf roll) { yaw = m_yaw; pitch = m_pitch; roll = m_roll; }
+
       /// <summary>The horizontal directional (left/right) angle, in radians. A.k.a. Azimuth, Bearing and Heading.</summary>
       public TSelf Yaw { get => m_yaw; init => m_yaw = value; }
       /// <summary>The vertical directional (up/down) angle, in radians. A.k.a. Attitude, Elevation and Inclination.</summary>

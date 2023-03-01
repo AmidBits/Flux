@@ -4,6 +4,7 @@ namespace Flux.Numerics
   /// <see href="https://en.wikipedia.org/wiki/Hexagonal_Efficient_Coordinate_System"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct HecsCoordinate
+    : System.IFormattable
   {
     public static readonly HecsCoordinate Zero;
 
@@ -17,6 +18,8 @@ namespace Flux.Numerics
       m_r = r;
       m_c = c;
     }
+
+    public void Deconstruct(out int a, out int r, out int c) { a = m_a; r = m_r; c = m_c; }
 
     public int A { get => m_a; init => m_a = value; }
     public int R { get => m_r; init => m_r = value; }
@@ -160,5 +163,10 @@ namespace Flux.Numerics
     //public static Hecs operator -(Hecs h1, Hecs h2)
     //  => Subtract(h1, h2);
     #endregion Overloaded operators
+
+    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+      => $"{GetType().GetNameEx()} {{ A = {string.Format($"{{0:{format ?? "N6"}}}", A)}, R = {string.Format($"{{0:{format ?? "N6"}}}", R)}, C = {string.Format($"{{0:{format ?? "N6"}}}", C)} }}";
+
+    public override string ToString() => ((System.IFormattable)this).ToString(null, null);
   }
 }

@@ -372,7 +372,7 @@ namespace Flux.Numerics
     /// <returns>A new matrix expressing the reflection.</returns>
     public static Matrix4<TSelf> CreateReflection(Plane<TSelf> value)
     {
-      value = Plane<TSelf>.Normalize(value);
+      value = value.Normalize();
 
       var a = value.X;
       var b = value.Y;

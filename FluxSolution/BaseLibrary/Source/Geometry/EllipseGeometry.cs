@@ -16,6 +16,8 @@ namespace Flux
       m_y = y;
     }
 
+    public void Deconstruct(out double x, out double y) { x = m_x; y = m_y; }
+
     /// <summary>The x-axis (width) of the ellipse.</summary>
     public double X => m_x;
     /// <summary>The y-axis (height) of the ellipse.</summary>

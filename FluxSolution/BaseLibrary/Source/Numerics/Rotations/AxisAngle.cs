@@ -91,6 +91,8 @@ namespace Flux
         m_angle = angle;
       }
 
+      public void Deconstruct(out TSelf x, out TSelf y, out TSelf z, out TSelf angle) { x = m_x; y = m_y; z = m_z; angle = m_angle; }
+
       public TSelf X => m_x;
       public TSelf Y => m_y;
       public TSelf Z => m_z;

@@ -42,6 +42,8 @@ namespace Flux.Numerics
     {
     }
 
+    public void Deconstruct(out TSelf x, out TSelf y, out TSelf z, out TSelf distance) { x = m_x; y = m_y; z = m_z; distance = m_distance; }
+
     /// <summary>The normal vector X of the Plane.</summary>
     public TSelf X { get => m_x; init => m_x = value; }
     /// <summary>The normal vector Y of the Plane.</summary>
@@ -52,7 +54,23 @@ namespace Flux.Numerics
     /// <summary>The distance of the Plane along its normal from the origin.</summary>
     public TSelf Distance { get => m_distance; init => m_distance = value; }
 
+    public TSelf LengthSquared() => m_x * m_x + m_y * m_y + m_z * m_z;
+
+    /// <summary>Creates a new Plane whose normal vector is the source Plane's normal vector normalized.</summary>
+    public Plane<TSelf> Normalize()
+    {
+      var ls = LengthSquared();
+
+      if (TSelf.Abs(ls - TSelf.One) < NormalizeEpsilon)
+        return this; // It already normalized, so we don't need to further process.
+
+      var invLen = TSelf.One / TSelf.Sqrt(ls);
+
+      return new Plane<TSelf>(m_x * invLen, m_y * invLen, m_z * invLen, m_distance * invLen);
+    }
+
     #region Static methods
+
     /// <summary>Creates a Plane that contains the three given points.</summary>
     public static Plane<TSelf> CreateFromVertices(Numerics.CartesianCoordinate4 point1, Numerics.CartesianCoordinate4 point2, Numerics.CartesianCoordinate4 point3)
     {
@@ -80,27 +98,19 @@ namespace Flux.Numerics
 
       //return new(normal, -(normal.X * point1.X + normal.Y * point1.Y + normal.Z * point1.Z));
     }
+
     /// <summary>Calculates the dot product of a Plane and Vector4.</summary>
     public static TSelf Dot(Plane<TSelf> plane, Numerics.CartesianCoordinate4 value)
       => DotCoordinate(plane, value) * TSelf.CreateChecked(value.W);
+
     /// <summary>Returns the dot product of a specified Vector4 and the normal vector of this Plane plus the distance (D) value of the Plane.</summary>
     public static TSelf DotCoordinate(Plane<TSelf> plane, Numerics.CartesianCoordinate4 value)
       => DotNormal(plane, value) + plane.m_distance;
+
     /// <summary>Returns the dot product of a specified Vector4 and the Normal vector of this Plane.</summary>
     public static TSelf DotNormal(Plane<TSelf> plane, Numerics.CartesianCoordinate4 value)
       => plane.m_x * TSelf.CreateChecked(value.X) + plane.m_y * TSelf.CreateChecked(value.Y) + plane.m_z * TSelf.CreateChecked(value.Z);
-    /// <summary>Creates a new Plane whose normal vector is the source Plane's normal vector normalized.</summary>
-    public static Plane<TSelf> Normalize(Plane<TSelf> value)
-    {
-      var s = value.m_x * value.m_x + value.m_y * value.m_y + value.m_z * value.m_z;
 
-      if (TSelf.Abs(s - TSelf.One) < NormalizeEpsilon)
-        return value; // It already normalized, so we don't need to further process.
-
-      var Inv = TSelf.One / TSelf.Sqrt(s);
-
-      return new Plane<TSelf>(value.m_x * Inv, value.m_y * Inv, value.m_z * Inv, value.m_distance * Inv);
-    }
     /// <summary>Transforms a normalized Plane by a Matrix.</summary>
     /// <param name="plane"> The normalized Plane to transform. This Plane must already be normalized, so that its Normal vector is of unit length, before this method is called.</param>
     /// <param name="matrix">The transformation matrix to apply to the Plane.</param>
@@ -119,6 +129,7 @@ namespace Flux.Numerics
           x * m.M31 + y * m.M32 + z * m.M33 + w * m.M34,
           x * m.M41 + y * m.M42 + z * m.M43 + w * m.M44);
     }
+
     /// <summary>Transforms a normalized Plane by a Quaternion rotation.</summary>
     /// <param name="plane"> The normalized Plane to transform. This Plane must already be normalized, so that its Normal vector is of unit length, before this method is called.</param>
     /// <param name="rotation">The Quaternion rotation to apply to the Plane.</param>
@@ -161,6 +172,7 @@ namespace Flux.Numerics
           x * m13 + y * m23 + z * m33,
           plane.m_distance);
     }
+
     #endregion Static methods
   }
 }

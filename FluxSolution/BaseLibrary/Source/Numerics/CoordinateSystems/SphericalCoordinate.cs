@@ -20,6 +20,8 @@ namespace Flux.Numerics
       m_azimuth = azimuth;
     }
 
+    public void Deconstruct(out TSelf radius, out TSelf inclination, out TSelf azimuth) { radius = m_radius; inclination = m_inclination; azimuth = m_azimuth; }
+
     public TSelf Radius { get => m_radius; init => m_radius = value; }
     public TSelf Inclination { get => m_inclination; init => m_inclination = value; }
     public TSelf Azimuth { get => m_azimuth; init => m_azimuth = value; }
@@ -80,5 +82,7 @@ namespace Flux.Numerics
     //  );
 
     #endregion Static methods
+
+    public override string ToString() => ((ISphericalCoordinate<TSelf>)this).ToString(null, null);
   }
 }

@@ -1,6 +1,7 @@
 namespace Flux.Numerics
 {
-  /// <summary>A 2D cartesian coordinate using integers.</summary>
+  /// <summary>A 2-dimensional cartesian coordinate.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly partial record struct CartesianCoordinate2<TSelf>
     : System.Numerics.INumberBase<CartesianCoordinate2<TSelf>>, ICartesianCoordinate2<TSelf>
@@ -27,6 +28,8 @@ namespace Flux.Numerics
     //  m_x = array[startIndex++];
     //  m_y = array[startIndex];
     //}
+
+    public void Deconstruct(out TSelf x, out TSelf y) { x = m_x; y = m_y; }
 
     public TSelf X { get => m_x; init => m_x = value; }
     public TSelf Y { get => m_y; init => m_y = value; }
@@ -64,6 +67,21 @@ namespace Flux.Numerics
         point = default!;
         return false;
       }
+    }
+
+    /// <summary>
+    /// <para>A slope or gradient of a line is a number that describes both the direction and the steepness of the line (in this case from <paramref name="a"/> to <paramref name="b"/>).</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Slope"/></para>
+    /// </summary>
+    /// <param name="a">The cartesian source point.</param>
+    /// <param name="b">The cartesian target point.</param>
+    /// <returns>The slopes for both rise-over-run and run-over-rise.</returns>
+    public static (TSelf mx, TSelf my) Slope(CartesianCoordinate2<TSelf> a, CartesianCoordinate2<TSelf> b)
+    {
+      var dx = b.m_x - a.m_x;
+      var dy = b.m_y - a.m_y;
+
+      return TSelf.IsZero(dx) || TSelf.IsZero(dy) ? (TSelf.Zero, TSelf.Zero) : (dx / dy, dy / dx);
     }
 
     #endregion Static methods
@@ -293,6 +311,6 @@ namespace Flux.Numerics
 
     #endregion Implemented interfaces
 
-    public override string ToString() => ((ICartesianCoordinate2<TSelf>)this).ToString(string.Empty, null);
+    public override string ToString() => ((ICartesianCoordinate2<TSelf>)this).ToString(null, null);
   }
 }

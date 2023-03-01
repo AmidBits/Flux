@@ -166,7 +166,8 @@
     /// <summary>A hex cube/axial coordinate system.</summary>
     /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
     public interface IHexCoordinate<TSelf>
-    where TSelf : System.Numerics.INumber<TSelf>
+      : System.IFormattable
+      where TSelf : System.Numerics.INumber<TSelf>
     {
       /// <summary>The first component or coordinate.</summary>
       TSelf Q { get; }
@@ -230,6 +231,9 @@
 
       ///// <summary>Returns the length of the coordinate.</summary>
       //public static TSelf CubeLength(TSelf q, TSelf r, TSelf s) => (TSelf.Abs(q) + TSelf.Abs(r) + TSelf.Abs(s)).Divide(2);
+
+      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+        => $"{GetType().GetNameEx()} {{ Q = {string.Format($"{{0:{format ?? "N6"}}}", Q)}, R = {string.Format($"{{0:{format ?? "N6"}}}", R)}, S = {string.Format($"{{0:{format ?? "N6"}}}", S)} }}";
     }
   }
 }

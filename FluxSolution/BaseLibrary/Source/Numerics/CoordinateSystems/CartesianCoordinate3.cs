@@ -211,7 +211,7 @@ namespace Flux
 
   namespace Numerics
   {
-    /// <summary>Cartesian coordinate.</summary>
+    /// <summary>A 3-dimensional cartesian coordinate.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct CartesianCoordinate3<TSelf>
@@ -228,6 +228,8 @@ namespace Flux
         m_y = y;
         m_z = z;
       }
+
+      public void Deconstruct(out TSelf x, out TSelf y, out TSelf z) { x = m_x; y = m_y; z = m_z; }
 
       public TSelf X { get => m_x; init => m_x = value; }
       public TSelf Y { get => m_y; init => m_y = value; }
@@ -474,7 +476,7 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ((ICartesianCoordinate3<TSelf>)this).ToString(string.Empty, null);
+      public override string ToString() => ((ICartesianCoordinate3<TSelf>)this).ToString(null, null);
     }
   }
 }

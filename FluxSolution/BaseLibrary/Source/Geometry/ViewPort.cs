@@ -27,6 +27,8 @@ namespace Flux.Geometry
       : this(TSelf.CreateChecked(2), TSelf.CreateChecked(2), TSelf.CreateChecked(1920), TSelf.CreateChecked(1024), worldToCamera)
     { }
 
+    public void Deconstruct(out TSelf canvasWidth, out TSelf canvasHeight, out TSelf rasterWidth, out TSelf rasterHeight, out Numerics.Quaternion<TSelf> worldToCamera) { canvasWidth = m_canvasWidth; canvasHeight = m_canvasHeight; rasterWidth = m_rasterWidth; rasterHeight = m_rasterHeight; worldToCamera = m_worldToCamera; }
+
     public TSelf CanvasHeight { get => m_canvasHeight; init => m_canvasHeight = value; }
     public TSelf CanvasWidth { get => m_canvasWidth; init => m_canvasWidth = value; }
 

@@ -48,6 +48,8 @@ namespace Flux.Numerics
     {
     }
 
+    public void Deconstruct(out double x, out double y, out double z, out double w) { x = X; y = Y; z = Z; w = W; }
+
     /// <summary>The X component of the vector.</summary>
     public double X
       => m_v256d.GetElement(0);
@@ -255,5 +257,7 @@ namespace Flux.Numerics
     public static CartesianCoordinate4 operator /(in CartesianCoordinate4 v, double divisor)
       => (CartesianCoordinate4)v.m_v256d.Add(divisor);
     #endregion Operator overloads
+
+    public override string ToString() => ((ICartesianCoordinate4<double>)this).ToString(null, null);
   }
 }

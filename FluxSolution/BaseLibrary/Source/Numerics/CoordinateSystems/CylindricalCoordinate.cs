@@ -20,6 +20,8 @@ namespace Flux.Numerics
       m_height = height;
     }
 
+    public void Deconstruct(out TSelf radius, out TSelf azimuth, out TSelf height) { radius = m_radius; azimuth = m_azimuth; height = m_height; }
+
     public TSelf Radius { get => m_radius; init => m_radius = value; }
     public TSelf Azimuth { get => m_azimuth; init => m_azimuth = value; }
     public TSelf Height { get => m_height; init => m_height = value; }
@@ -60,5 +62,7 @@ namespace Flux.Numerics
     //    TSelf.CreateChecked(height.Value)
     //  );
     //#endregion Static methods
+
+    public override string ToString() => ((ICylindricalCoordinate<TSelf>)this).ToString(null, null);
   }
 }
