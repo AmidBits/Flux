@@ -8,15 +8,16 @@ namespace Flux.Resources.DotNet
     public FxSequence(System.Collections.IEnumerable sequence)
       => m_sequence = sequence;
 
-    public string[] FieldNames
-      => m_sequence.GetType().GenericTypeArguments[0].GetProperties().Select(pi => pi.Name).ToArray();
-    public System.Type[] FieldTypes
-      => m_sequence.GetType().GenericTypeArguments[0].GetProperties().Select(pi => pi.PropertyType).ToArray();
+    private object GetFirstItemOnly() => m_sequence.GetEnumerator() is var e && e.MoveNext() ? e.Current : throw new System.NotSupportedException();
+
+    public string[] FieldNames => GetFirstItemOnly().GetPropertyInfos().Select(pi => pi.Name).ToArray();
+
+    public System.Type[] FieldTypes => GetFirstItemOnly().GetPropertyInfos().Select(pi => pi.PropertyType).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
     {
       foreach (var item in m_sequence)
-        yield return Flux.Reflection.GetPropertyInfos(item).Select(pi => pi.GetValue(item)!).ToArray();
+        yield return item.GetPropertyInfos().Select(pi => pi.GetValue(item)!).ToArray();
     }
   }
 }

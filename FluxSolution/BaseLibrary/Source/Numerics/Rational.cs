@@ -98,6 +98,14 @@ namespace Flux
 
     public bool IsMixedFraction(out System.Numerics.BigInteger quotient, out System.Numerics.BigInteger remainder)
     {
+      if (m_denominator == 0)
+      {
+        quotient = default;
+        remainder = default;
+
+        return false;
+      }
+
       (quotient, remainder) = System.Numerics.BigInteger.DivRem(m_numerator, m_denominator);
 
       return System.Numerics.BigInteger.Abs(remainder) > System.Numerics.BigInteger.Zero;

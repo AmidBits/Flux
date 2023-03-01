@@ -4,7 +4,7 @@
   public sealed class Nysiis
     : IPhoneticAlgorithmEncoder
   {
-    public System.Globalization.CultureInfo Culture { get; set; } = System.Globalization.CultureInfo.InvariantCulture;
+    public System.Globalization.CultureInfo Culture { get; set; } = System.Globalization.CultureInfo.CurrentCulture;
 
     public int MaxCodeLength { get; set; } = 8;
 
