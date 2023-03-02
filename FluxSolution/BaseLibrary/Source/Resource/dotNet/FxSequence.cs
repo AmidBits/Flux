@@ -4,20 +4,20 @@ namespace Flux.Resources.DotNet
   public sealed class FxSequence
     : ITabularDataAcquirable
   {
-    private readonly System.Collections.IEnumerable m_sequence;
-    public FxSequence(System.Collections.IEnumerable sequence)
-      => m_sequence = sequence;
+    private readonly System.Collections.IEnumerable m_collection;
 
-    private object GetFirstItemOnly() => m_sequence.GetEnumerator() is var e && e.MoveNext() ? e.Current : throw new System.NotSupportedException();
+    public FxSequence(System.Collections.IEnumerable collection) => m_collection = collection;
 
-    public string[] FieldNames => GetFirstItemOnly().GetPropertyInfos().Select(pi => pi.Name).ToArray();
-
-    public System.Type[] FieldTypes => GetFirstItemOnly().GetPropertyInfos().Select(pi => pi.PropertyType).ToArray();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+    private System.Collections.Generic.IEnumerable<object> GetCollection()
     {
-      foreach (var item in m_sequence)
-        yield return item.GetPropertyInfos().Select(pi => pi.GetValue(item)!).ToArray();
+      foreach (var item in m_collection)
+        yield return item;
     }
+
+    public string[] FieldNames => GetCollection().First().GetPropertyInfos().Select(pi => pi.Name).ToArray();
+
+    public System.Type[] FieldTypes => GetCollection().First().GetPropertyInfos().Select(pi => pi.PropertyType).ToArray();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetCollection().Select(e => e.GetPropertyInfos().Select(pi => pi.GetValue(e)!).ToArray());
   }
 }
