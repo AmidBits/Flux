@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct PowerRatio
       : System.IComparable, System.IComparable<PowerRatio>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, PowerRatioUnit>
     {
+      public static readonly PowerRatio Zero;
+
       public const PowerRatioUnit DefaultUnit = PowerRatioUnit.DecibelWatt;
 
       public const double ScalingFactor = 10;

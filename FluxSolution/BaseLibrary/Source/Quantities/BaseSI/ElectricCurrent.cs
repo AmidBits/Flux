@@ -25,6 +25,8 @@ namespace Flux
     public readonly record struct ElectricCurrent
       : System.IComparable, System.IComparable<ElectricCurrent>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ElectricCurrentUnit>
     {
+      public static readonly ElectricCurrent Zero;
+
       public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
 
       private readonly double m_value;

@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct Flow
       : System.IComparable, System.IComparable<Flow>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, FlowUnit>
     {
+      public static readonly Flow Zero;
+
       public const FlowUnit DefaultUnit = FlowUnit.CubicMeterPerSecond;
 
       private readonly double m_value;

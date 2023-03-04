@@ -25,6 +25,8 @@ namespace Flux
     public readonly record struct MagneticFluxDensity
       : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, MagneticFluxDensityUnit>
     {
+      public static readonly MagneticFluxDensity Zero;
+
       public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
 
       private readonly double m_value;

@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct Impulse
       : System.IComparable, System.IComparable<Impulse>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ImpulseUnit>
     {
+      public static readonly Impulse Zero;
+
       public const ImpulseUnit DefaultUnit = ImpulseUnit.NewtonSecond;
 
       private readonly double m_value;

@@ -30,6 +30,8 @@ namespace Flux
     public readonly record struct LinearVelocity
       : System.IComparable, System.IComparable<LinearVelocity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, LinearVelocityUnit>
     {
+      public static readonly LinearVelocity Zero;
+
       public const LinearVelocityUnit DefaultUnit = LinearVelocityUnit.MeterPerSecond;
 
       /// <summary>The speed of light in vacuum.</summary>

@@ -7,6 +7,8 @@ namespace Flux
     public readonly record struct Acceleration3D
     : IUnitQuantifiable<Numerics.CartesianCoordinate3<double>, AccelerationUnit>
     {
+      public static readonly Acceleration3D Zero;
+
       private readonly Numerics.CartesianCoordinate3<double> m_value;
 
       public Acceleration3D(Numerics.CartesianCoordinate3<double> value, AccelerationUnit unit = Acceleration.DefaultUnit)

@@ -7,6 +7,8 @@ namespace Flux
     public readonly record struct Probability
       : System.IComparable, System.IComparable<Probability>, System.IConvertible, System.IFormattable, IQuantifiable<double>
     {
+      public static readonly Probability Zero;
+
       public const double MaxValue = 1;
       public const double MinValue = 0;
 

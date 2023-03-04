@@ -23,6 +23,8 @@ namespace Flux
     public readonly record struct Illuminance
       : System.IComparable, System.IComparable<Illuminance>, System.IConvertible, IUnitQuantifiable<double, IlluminanceUnit>
     {
+      public static readonly Illuminance Zero;
+
       public const IlluminanceUnit DefaultUnit = IlluminanceUnit.Lux;
 
       private readonly double m_value;

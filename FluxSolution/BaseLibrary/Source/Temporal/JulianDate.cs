@@ -12,6 +12,8 @@ namespace Flux
   public readonly record struct JulianDate
     : System.IComparable<JulianDate>, System.IConvertible, Quantities.IQuantifiable<double>
   {
+    public static readonly JulianDate Empty;
+
     private readonly double m_value;
 
     /// <summary>Create a Julian Date (JD) from the specified <paramref name="value"/> value.</summary>

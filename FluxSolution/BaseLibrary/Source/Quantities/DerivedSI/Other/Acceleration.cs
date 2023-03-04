@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct Acceleration
       : System.IComparable, System.IComparable<Acceleration>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AccelerationUnit>
     {
+      public static readonly Acceleration Zero;
+
       public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquared;
 
       public static Acceleration StandardAccelerationOfGravity

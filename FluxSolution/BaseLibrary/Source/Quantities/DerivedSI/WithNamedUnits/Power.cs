@@ -23,6 +23,8 @@ namespace Flux
     public readonly record struct Power
       : System.IComparable, System.IComparable<Power>, System.IConvertible, System.IEquatable<Power>, System.IFormattable, IUnitQuantifiable<double, PowerUnit>
     {
+      public static readonly Power Zero;
+
       public const PowerUnit DefaultUnit = PowerUnit.Watt;
 
       private readonly double m_value;

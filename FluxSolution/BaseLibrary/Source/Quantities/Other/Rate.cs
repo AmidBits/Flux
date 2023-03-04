@@ -8,6 +8,8 @@ namespace Flux
     where TNumerator : IQuantifiable<double>
     where TDenominator : IQuantifiable<double>
     {
+      public static readonly Rate<TNumerator, TDenominator> Zero;
+
       private readonly TNumerator m_numerator;
       private readonly TDenominator m_denominator;
 
@@ -20,11 +22,9 @@ namespace Flux
       public TNumerator Numerator { get => m_numerator; init => m_numerator = value; }
       public TDenominator Denominator { get => m_denominator; init => m_denominator = value; }
 
-      public double Ratio
-        => m_numerator.Value / m_denominator.Value;
+      public double Ratio => m_numerator.Value / m_denominator.Value;
 
-      public double InverseRatio
-        => m_denominator.Value / m_numerator.Value;
+      public double InverseRatio => m_denominator.Value / m_numerator.Value;
 
       public override string ToString() => $"{m_numerator.ToQuantityString(null, false, false)} / {m_denominator.ToQuantityString(null, false, false)}";
     }

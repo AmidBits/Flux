@@ -13,6 +13,22 @@ namespace Flux
 
   public static partial class ExtensionMethodsUnicode
   {
+    /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
+    private static System.Collections.Generic.IList<(string name, System.Text.Unicode.UnicodeRange range)> GetUnicodeNamesAndRanges()
+    {
+      var list = new System.Collections.Generic.List<(string name, System.Text.Unicode.UnicodeRange range)>();
+
+      foreach (var pi in Flux.Reflection.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges)).Where(pi => pi.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && pi.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
+        if (pi.GetValue(null, null) is System.Text.Unicode.UnicodeRange ur)
+          list.Add((pi.Name, ur));
+
+      return list;
+    }
+
+    /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
+    public static readonly System.Collections.Generic.IReadOnlyList<(string name, System.Text.Unicode.UnicodeRange range)> UnicodeNamesAndRanges
+      = (System.Collections.Generic.IReadOnlyList<(string name, System.Text.Unicode.UnicodeRange range)>)GetUnicodeNamesAndRanges();
+
     /// <summary>Creates a new sequence with all runes in the <paramref name="unicodeRange"/>.</summary>
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetRunes(this System.Text.Unicode.UnicodeRange unicodeRange)
     {
@@ -28,10 +44,9 @@ namespace Flux
     /// <summary>Locates the Unicode range and block name of the <paramref name="rune"/>.</summary>
     public static (string name, System.Text.Unicode.UnicodeRange range) GetUnicodeRange(this System.Text.Rune rune)
     {
-      foreach (var pi in Flux.Reflection.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges)).Where(pi => pi.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && pi.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
-        if (pi.GetValue(null, null) is System.Text.Unicode.UnicodeRange ur)
-          if (rune.Value >= ur.FirstCodePoint && rune.Value < ur.FirstCodePoint + ur.Length)
-            return (pi.Name, ur);
+      for (var index = 0; index < UnicodeNamesAndRanges.Count; index++)
+        if (UnicodeNamesAndRanges[index] is var unar && unar.range is var ur && rune.Value >= ur.FirstCodePoint && rune.Value < ur.FirstCodePoint + ur.Length)
+          return unar;
 
       return (nameof(System.Text.Unicode.UnicodeRanges.None), System.Text.Unicode.UnicodeRanges.None);
     }

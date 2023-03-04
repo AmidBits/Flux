@@ -24,6 +24,8 @@ namespace Flux
     public readonly record struct AbsoluteHumidity
       : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AbsoluteHumidityUnit>
     {
+      public static readonly AbsoluteHumidity Zero;
+
       public const AbsoluteHumidityUnit DefaultUnit = AbsoluteHumidityUnit.GramsPerCubicMeter;
 
       private readonly double m_value;

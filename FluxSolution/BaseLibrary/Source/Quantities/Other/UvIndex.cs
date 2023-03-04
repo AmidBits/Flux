@@ -7,13 +7,11 @@ namespace Flux
     public readonly record struct UvIndex
       : System.IComparable, System.IComparable<UvIndex>, System.IConvertible, IQuantifiable<double>
     {
+      public static readonly UvIndex Zero;
+
       private readonly double m_value;
 
-      public UvIndex(double value)
-        => m_value = value > 0 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
-
-      #region Static methods
-      #endregion Static methods
+      public UvIndex(double value) => m_value = value > 0 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
 
       #region Overloaded operators
       public static explicit operator double(UvIndex v) => v.m_value;
@@ -64,8 +62,7 @@ namespace Flux
       #endregion IConvertible
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => string.Format($"UV Index {{0:{format ?? "N1"}}}", m_value);
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => string.Format($"UV Index {{0:{format ?? "N1"}}}", m_value);
 
       public double Value { get => m_value; init => m_value = value; }
       #endregion Implemented interfaces

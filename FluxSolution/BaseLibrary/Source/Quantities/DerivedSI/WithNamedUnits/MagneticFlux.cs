@@ -23,6 +23,8 @@ namespace Flux
     public readonly record struct MagneticFlux
       : System.IComparable, System.IComparable<MagneticFlux>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, MagneticFluxUnit>
     {
+      public static readonly MagneticFlux Zero;
+
       public const MagneticFluxUnit DefaultUnit = MagneticFluxUnit.Weber;
 
       private readonly double m_value;

@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct SurfaceTension
       : System.IComparable, System.IComparable<SurfaceTension>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, SurfaceTensionUnit>
     {
+      public static readonly SurfaceTension Zero;
+
       public const SurfaceTensionUnit DefaultUnit = SurfaceTensionUnit.NewtonPerMeter;
 
       private readonly double m_value;

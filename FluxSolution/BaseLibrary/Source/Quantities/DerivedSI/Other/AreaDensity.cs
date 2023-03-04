@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct AreaDensity
       : System.IComparable, System.IComparable<AreaDensity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AreaDensityUnit>
     {
+      public static readonly AreaDensity Zero;
+
       public const AreaDensityUnit DefaultUnit = AreaDensityUnit.KilogramPerSquareMeter;
 
       private readonly double m_value;

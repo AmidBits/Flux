@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct Action
       : System.IComparable, System.IComparable<Action>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, ActionUnit>
     {
+      public static readonly Action Zero;
+
       public const ActionUnit DefaultUnit = ActionUnit.JouleSecond;
 
       public static readonly Action PlanckConstant = new(6.62607015e-34);

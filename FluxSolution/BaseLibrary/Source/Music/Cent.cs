@@ -6,12 +6,13 @@ namespace Flux.Music
   public readonly record struct Cent
     : System.IComparable<Cent>, System.IConvertible, Quantities.IQuantifiable<int>
   {
+    public static readonly Cent Zero;
+
     public const double FrequencyRatio = 1.0005777895065548592967925757932;
 
     private readonly int m_value;
 
-    public Cent(int cents)
-      => m_value = cents;
+    public Cent(int cents) => m_value = cents;
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
     public Quantities.Frequency ShiftPitch(Quantities.Frequency frequency) => new(PitchShift(frequency.Value, m_value));
@@ -88,8 +89,6 @@ namespace Flux.Music
       => m_value;
     #endregion Implemented interfaces
 
-    #region Object overrides
     public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-    #endregion Object overrides
   }
 }

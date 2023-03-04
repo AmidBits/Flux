@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct AmplitudeRatio
       : System.IComparable, System.IComparable<AmplitudeRatio>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AmplitudeRatioUnit>
     {
+      public static readonly AmplitudeRatio Zero;
+
       public const AmplitudeRatioUnit DefaultUnit = AmplitudeRatioUnit.DecibelVolt;
 
       public const double ScalingFactor = 20;

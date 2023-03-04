@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct Density
       : System.IComparable, System.IComparable<Density>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, DensityUnit>
     {
+      public static readonly Density Zero;
+
       public const DensityUnit DefaultUnit = DensityUnit.KilogramPerCubicMeter;
 
       private readonly double m_value;

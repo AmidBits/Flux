@@ -3,6 +3,7 @@ namespace Flux.Numerics
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
+  /// <remarks>Abbreviated angles are in radians, and full names are in degrees.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct GeographicCoordinate
     : IGeographicCoordinate<double>
@@ -26,74 +27,46 @@ namespace Flux.Numerics
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     private readonly double m_altitude;
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    private readonly double m_radLatitude;
+    private readonly double m_lat;
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    private readonly double m_radLongitude;
+    private readonly double m_lon;
 
-    public GeographicCoordinate(double degLatitude, double degLongitude, double meterAltitude = 1.0)
+    /// <summary></summary>
+    /// <param name="latitude">The latitude in degrees.</param>
+    /// <param name="longitude">The longitude in degrees.</param>
+    /// <param name="altitude">The altitude in meters.</param>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public GeographicCoordinate(double latitude, double longitude, double altitude = 1.0)
     {
-      m_altitude = meterAltitude >= MinAltitudeInMeters && meterAltitude <= MaxAltitudeInMeters ? meterAltitude : throw new System.ArgumentOutOfRangeException(nameof(meterAltitude));
-      m_radLatitude = Quantities.Angle.ConvertDegreeToRadian(degLatitude);
-      m_radLongitude = Quantities.Angle.ConvertDegreeToRadian(degLongitude);
+      m_altitude = altitude >= MinAltitudeInMeters && altitude <= MaxAltitudeInMeters ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
+      m_lat = new Quantities.Latitude(latitude).ToRadians();
+      m_lon = new Quantities.Longitude(longitude).ToRadians();
     }
 
-    public void Deconstruct(out double altitude, out double latitude, out double longitude) { altitude = m_altitude; latitude = Latitude; longitude = Longitude; }
+    /// <summary></summary>
+    /// <param name="altitude">The altitude in meters.</param>
+    /// <param name="latitude">The latitude in degrees.</param>
+    /// <param name="longitude">The longitude in degrees.</param>
+    public void Deconstruct(out double altitude, out double latitude, out double longitude)
+    {
+      altitude = m_altitude;
+      latitude = Latitude;
+      longitude = Longitude;
+    }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public double Altitude { get => m_altitude; init => m_altitude = value; }
+
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => Quantities.Angle.ConvertRadianToDegree(m_radLatitude); init => m_radLatitude = Quantities.Angle.ConvertDegreeToRadian(value); }
+    public double Latitude { get => Quantities.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Quantities.Latitude(value).ToRadians(); }
+
+    public double LatitudeInRadius => m_lat;
+
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => Quantities.Angle.ConvertRadianToDegree(m_radLongitude); init => m_radLongitude = Quantities.Angle.ConvertDegreeToRadian(value); }
+    public double Longitude { get => Quantities.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Quantities.Longitude(value).ToRadians(); }
 
-    ///// <summary>The distance along the specified track (from its starting point) where this position is the closest to the track.</summary>
-    ///// <param name="trackStart"></param>
-    ///// <param name="trackEnd"></param>
-    ///// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
-    ///// <returns>The distance from trackStart along the course towards trackEnd to a point abeam the position.</returns>
-    //public double AlongTrackDistance(Geopoint trackStart, Geopoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
-    //  => earthRadius * AlongTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
+    public double LongitudeInRadius => m_lon;
 
-    ///// <summary>The shortest distance of this position from the specified track.</summary>
-    ///// <remarks>The cross track error, i.e. the distance off course.</remarks>
-    //public double CrossTrackError(Geopoint trackStart, Geopoint trackEnd, double earthRadius = EarthRadii.MeanInMeters)
-    //  => earthRadius * CrossTrackCentralAngle(trackStart.Latitude.Angle.Radian, trackStart.Longitude.Angle.Radian, trackEnd.Latitude.Angle.Radian, trackEnd.Longitude.Angle.Radian, Latitude.Angle.Radian, Longitude.Angle.Radian, out var _);
-
-    //// <summary>Given a start point, initial bearing, and distance in meters, this will calculate the destination point and final bearing travelling along a (shortest distance) great circle arc.</summary>
-    ///// <param name="bearingDegrees"></param>
-    ///// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
-    //public Geopoint DestinationPointAt(double bearingDegrees, double angularDistance)
-    //{
-    //  EndPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, Quantity.Angle.ConvertDegreeToRadian(bearingDegrees), angularDistance, out var lat2, out var lon2);
-
-    //  return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat2), Maths.Wrap(Quantity.Angle.ConvertRadianToDegree(lon2), -180, +180), Height.Value);
-    //}
-
-    ///// <summary>The distance from the point to the specified target.</summary>
-    ///// <param name="targetPoint"></param>
-    ///// <param name="earthRadius">This can be used to control the unit of measurement for the distance, e.g. Meters.</param>
-    ///// <returns></returns>
-    //public double DistanceTo(Geopoint targetPoint, double earthRadius = EarthRadii.MeanInMeters)
-    //  => earthRadius * CentralAngleVincentyFormula(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian);
-
-    //public double InitialBearingTo(Geopoint targetPoint)
-    //  => Quantity.Angle.ConvertRadianToDegree(InitialBearing(Latitude.Angle.Radian, Longitude.Angle.Radian, targetPoint.Latitude.Angle.Radian, targetPoint.Longitude.Angle.Radian));
-
-    ///// <summary>A point that is between 0.0 (at start) to 1.0 (at end) along the track.</summary>
-    //public Geopoint IntermediaryPointTo(Geopoint target, double unitInterval)
-    //{
-    //  IntermediaryPoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, unitInterval, out var lat, out var lon);
-
-    //  return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
-    //}
-
-    ///// <summary>The midpoint between this point and the specified target.</summary>
-    //public Geopoint MidpointTo(Geopoint target)
-    //{
-    //  Midpoint(Latitude.Angle.Radian, Longitude.Angle.Radian, target.Latitude.Angle.Radian, target.Longitude.Angle.Radian, out var lat, out var lon);
-
-    //  return new Geopoint(Quantity.Angle.ConvertRadianToDegree(lat), Quantity.Angle.ConvertRadianToDegree(lon), Height.Value);
-    //}
 
     #region Static members
 
@@ -105,145 +78,199 @@ namespace Flux.Numerics
     //    longitude.Value
     //  );
 
-    /// <summary>The along-track distance, from the start point to the closest point on the path to the third point.</summary>
+    /// <summary>The along-track distance, from the start point to the closest point on the path (lat/lon 1 to lat/lon 3) to the second point.</summary>
+    /// <param name="lat1">The source latitude in radians.</param>
+    /// <param name="lon1">The source longitude in radians.</param>
+    /// <param name="lat2">The query latitude in radians.</param>
+    /// <param name="lon2">The query longitude in radians.</param>
+    /// <param name="lat3">The target latitude in radians.</param>
+    /// <param name="lon3">The target longitude in radians.</param>
+    /// <param name="crossTrackCentralAngle">The query longitude in radians.</param>
     /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>
-    public static double GetAlongTrackCentralAngle(double latitude1, double longitude1, double latitude2, double longitude2, double latitude3, double longitude3, out double crossTrackCentralAngle)
+    public static double GetAlongTrackCentralAngle(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3, out double crossTrackCentralAngle)
     {
-      crossTrackCentralAngle = GetCrossTrackCentralAngle(latitude1, longitude1, latitude2, longitude2, latitude3, longitude3, out var trackCentralAngle13);
+      crossTrackCentralAngle = GetCrossTrackCentralAngle(lat1, lon1, lat2, lon2, lat3, lon3, out var trackCentralAngle13);
 
       return System.Math.Acos(System.Math.Cos(trackCentralAngle13) / System.Math.Cos(crossTrackCentralAngle));
     }
 
     /// <summary>Returns a bounding box for the specified lat/lon (both in radians) and box radius.</summary>
-    public static bool GetBoundingBox(double radLatitude, double radLongitude, double metersBoxRadius, out double latitudeMin, out double longitudeMin, out double latitudeMax, out double longitudeMax, EllipsoidReference ellipsoidReference)
+    public static bool GetBoundingBox(double lat, double lon, double metersBoxRadius, out double latMin, out double lonMin, out double latMax, out double lonMax, EllipsoidReference ellipsoidReference)
     {
       metersBoxRadius = System.Math.Max(metersBoxRadius, 1);
 
       var angularDistance = metersBoxRadius / ellipsoidReference.EquatorialRadius.Value;
 
-      var longitudeDelta = System.Math.Asin(System.Math.Sin(angularDistance) / System.Math.Cos(radLatitude));
+      var longitudeDelta = System.Math.Asin(System.Math.Sin(angularDistance) / System.Math.Cos(lat));
 
-      latitudeMin = radLatitude - angularDistance;
-      latitudeMax = radLatitude + angularDistance;
+      latMin = lat - angularDistance;
+      latMax = lat + angularDistance;
 
-      if (latitudeMin <= -GenericMath.PiOver2 || latitudeMax >= GenericMath.PiOver2) // A pole is within the given distance.
+      if (latMin <= -GenericMath.PiOver2 || latMax >= GenericMath.PiOver2) // A pole is within the given distance.
       {
-        latitudeMin = System.Math.Max(latitudeMin, -GenericMath.PiOver2);
-        longitudeMin = -System.Math.PI;
-        latitudeMax = System.Math.Min(latitudeMax, GenericMath.PiOver2);
-        longitudeMax = System.Math.PI;
+        latMin = System.Math.Max(latMin, -GenericMath.PiOver2);
+        lonMin = -System.Math.PI;
+        latMax = System.Math.Min(latMax, GenericMath.PiOver2);
+        lonMax = System.Math.PI;
 
         return false;
       }
 
-      longitudeMin = radLongitude - longitudeDelta;
-      longitudeMax = radLongitude + longitudeDelta;
+      lonMin = lon - longitudeDelta;
+      lonMax = lon + longitudeDelta;
 
-      if (longitudeMin < -System.Math.PI)
-        longitudeMin += GenericMath.PiX2;
-      if (longitudeMax > System.Math.PI)
-        longitudeMax -= GenericMath.PiX2;
+      if (lonMin < -System.Math.PI)
+        lonMin += GenericMath.PiX2;
+      if (lonMax > System.Math.PI)
+        lonMax -= GenericMath.PiX2;
 
       return true;
     }
 
-    /// <summary>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Haversine_formula"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Central_angle"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Great-circle_distance"/>
-    /// <remarks>The haversine formula is numerically better-conditioned for small distances. Although this formula is accurate for most distances on a sphere, it too suffers from rounding errors for the special (and somewhat unusual) case of antipodal points (on opposite ends of the sphere).</remarks>
-    /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>
-    public static double GetCentralAngleHaversineFormula(double latitude1, double longitude1, double latitude2, double longitude2)
-      => Quantities.Angle.Ahvsin(Quantities.Angle.Hvsin(latitude2 - latitude1) + System.Math.Cos(latitude1) * System.Math.Cos(latitude2) * Quantities.Angle.Hvsin(longitude2 - longitude1));
+    /// <summary>
+    /// <para>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Haversine_formula"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Central_angle"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Great-circle_distance"/></para>
+    /// </summary>
+    /// <param name="lat1">The source latitude in radians.</param>
+    /// <param name="lon1">The source longitude in radians.</param>
+    /// <param name="lat2">The target latitude in radians.</param>
+    /// <param name="lon2">The target longitude in radians.</param>
+    /// <remarks>
+    /// <para>The haversine formula is numerically better-conditioned for small distances. Although this formula is accurate for most distances on a sphere, it too suffers from rounding errors for the special (and somewhat unusual) case of antipodal points (on opposite ends of the sphere).</para>
+    /// <para>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</para>
+    /// </remarks>
+    public static double GetCentralAngleHaversineFormula(double lat1, double lon1, double lat2, double lon2)
+      => Quantities.Angle.Ahvsin(Quantities.Angle.Hvsin(lat2 - lat1) + System.Math.Cos(lat1) * System.Math.Cos(lat2) * Quantities.Angle.Hvsin(lon2 - lon1));
 
-    /// <summary>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Vincenty%27s_formulae"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Central_angle"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Great-circle_distance"/>
-    /// <remarks>A more complicated formula that is accurate for all distances is the following special case of the Vincenty formula for an ellipsoid with equal major and minor axes.</remarks>
-    /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>
-    public static double GetCentralAngleVincentyFormula(double latitude1, double longitude1, double latitude2, double longitude2)
+    /// <summary>
+    /// <para>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Vincenty%27s_formulae"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Central_angle"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Great-circle_distance"/></para>
+    /// </summary>
+    /// <param name="lat1">The source latitude in radians.</param>
+    /// <param name="lon1">The source longitude in radians.</param>
+    /// <param name="lat2">The target latitude in radians.</param>
+    /// <param name="lon2">The target longitude in radians.</param>
+    /// <remarks>
+    /// <para>A more complicated formula that is accurate for all distances is the following special case of the Vincenty formula for an ellipsoid with equal major and minor axes.</para>
+    /// <para>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</para>
+    /// </remarks>
+    public static double GetCentralAngleVincentyFormula(double lat1, double lon1, double lat2, double lon2)
     {
-      var cosLat1 = System.Math.Cos(latitude1);
-      var cosLat2 = System.Math.Cos(latitude2);
-      var sinLat1 = System.Math.Sin(latitude1);
-      var sinLat2 = System.Math.Sin(latitude2);
+      var cosLat1 = System.Math.Cos(lat1);
+      var cosLat2 = System.Math.Cos(lat2);
+      var sinLat1 = System.Math.Sin(lat1);
+      var sinLat2 = System.Math.Sin(lat2);
 
-      var lonD = longitude2 - longitude1;
+      var lonD = lon2 - lon1;
 
       var cosLat2LonD = cosLat2 * System.Math.Cos(lonD);
 
       return System.Math.Atan2(System.Math.Sqrt(System.Math.Pow(cosLat2 * System.Math.Sin(lonD), 2) + System.Math.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2LonD, 2)), sinLat1 * sinLat2 + cosLat1 * cosLat2LonD);
     }
 
-    /// <summary>The distance of a point from a great-circle path (sometimes called cross track error). The sign of the result tells which side of the path the third point is on.</summary>
+    /// <summary>The distance of a point from a great-circle path (sometimes called cross track error). The sign of the result tells which side of the path (lat/lon 1 to lat/lon 3) the second point is on.</summary>
+    /// <param name="lat1">The source latitude in radians.</param>
+    /// <param name="lon1">The source longitude in radians.</param>
+    /// <param name="lat2">The query latitude in radians.</param>
+    /// <param name="lon2">The query longitude in radians.</param>
+    /// <param name="lat3">The target latitude in radians.</param>
+    /// <param name="lon3">The target longitude in radians.</param>
+    /// <param name="trackCentralAngle13">The query longitude in radians.</param>
     /// <remarks>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</remarks>
-    public static double GetCrossTrackCentralAngle(double latitude1, double longitude1, double latitude2, double longitude2, double latitude3, double longitude3, out double trackCentralAngle13)
+    public static double GetCrossTrackCentralAngle(double lat1, double lon1, double lat2, double lon2, double lat3, double lon3, out double trackCentralAngle13)
     {
-      trackCentralAngle13 = GetCentralAngleVincentyFormula(latitude1, longitude1, latitude3, longitude3);
+      trackCentralAngle13 = GetCentralAngleVincentyFormula(lat1, lon1, lat3, lon3);
 
-      var course13 = GetInitialCourse(latitude1, longitude1, latitude3, longitude3);
-      var course12 = GetInitialCourse(latitude1, longitude1, latitude2, longitude2);
+      var course13 = GetInitialCourse(lat1, lon1, lat3, lon3);
+      var course12 = GetInitialCourse(lat1, lon1, lat2, lon2);
 
       return System.Math.Asin(System.Math.Sin(trackCentralAngle13) * System.Math.Sin(course13 - course12));
     }
 
     /// <summary>Given a start point, initial bearing, and angularDistance, this will calculate the destination point and final bearing travelling along a (shortest distance) great circle arc.</summary>
-    /// <param name="radAzimuth">Bearing is the direction or course.</param>
-    /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
     /// <remarks>The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</remarks>
-    public static void GetDestination(double radLatitude, double radLongitude, double radAzimuth, double angularDistance, out double latitudeOut, out double longitudeOut)
+    /// <param name="lat">The latitude in radians.</param>
+    /// <param name="lon">The longitude in radians.</param>
+    /// <param name="brg">Bearing is the direction or course.</param>
+    /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
+    /// <param name="latOut">The resulting latitude in radians.</param>
+    /// <param name="lonOut">The resulting longitude in radians.</param>
+    public static void GetDestination(double lat, double lon, double brg, double angularDistance, out double latOut, out double lonOut)
     {
-      var cosLat = System.Math.Cos(radLatitude);
-      var sinLat = System.Math.Sin(radLatitude);
+      var cosLat = System.Math.Cos(lat);
+      var sinLat = System.Math.Sin(lat);
 
       var cosAd = System.Math.Cos(angularDistance);
       var sinAd = System.Math.Sin(angularDistance);
 
-      latitudeOut = System.Math.Asin(sinLat * cosAd + cosLat * sinAd * System.Math.Cos(radAzimuth));
-      longitudeOut = radLongitude + System.Math.Atan2(System.Math.Sin(radAzimuth) * sinAd * cosLat, cosAd - sinLat * System.Math.Sin(radLatitude));
+      latOut = System.Math.Asin(sinLat * cosAd + cosLat * sinAd * System.Math.Cos(brg));
+      lonOut = lon + System.Math.Atan2(System.Math.Sin(brg) * sinAd * cosLat, cosAd - sinLat * System.Math.Sin(lat));
     }
 
     /// <summary>Computes the distance between the two lat/lon coordinates in whatever the unit is specified for Earths radius.</summary>
-    public static double GetDistance(double latitude1, double longitude1, double latitude2, double longitude2, double earthsRadius)
-      => earthsRadius * GetCentralAngleVincentyFormula(latitude1, longitude1, latitude2, longitude2);
+    /// <param name="lat1">The source latitude in radians.</param>
+    /// <param name="lon1">The source longitude in radians.</param>
+    /// <param name="lat2">The target latitude in radians.</param>
+    /// <param name="lon2">The target longitude in radians.</param>
+    /// <param name="earthsRadius"></param>
+    /// <returns></returns>
+    public static double GetDistance(double lat1, double lon1, double lat2, double lon2, double earthsRadius)
+      => earthsRadius * GetCentralAngleVincentyFormula(lat1, lon1, lat2, lon2);
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
+    /// <param name="lat1">The source latitude in radians.</param>
+    /// <param name="lon1">The source longitude in radians.</param>
+    /// <param name="lat2">The target latitude in radians.</param>
+    /// <param name="lon2">The target longitude in radians.</param>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
-    public static double GetFinalCourse(double latitude1, double longitude1, double latitude2, double longitude2)
-      => (GetInitialCourse(latitude2, longitude2, latitude1, longitude1) + System.Math.PI) % GenericMath.PiX2;
+    public static double GetFinalCourse(double lat1, double lon1, double lat2, double lon2)
+      => (GetInitialCourse(lat2, lon2, lat1, lon1) + System.Math.PI) % GenericMath.PiX2;
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
+    /// <param name="lat1">The source latitude in radians.</param>
+    /// <param name="lon1">The source longitude in radians.</param>
+    /// <param name="lat2">The target latitude in radians.</param>
+    /// <param name="lon2">The target longitude in radians.</param>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
-    public static double GetInitialCourse(double latitude1, double longitude1, double latitude2, double longitude2)
+    public static double GetInitialCourse(double lat1, double lon1, double lat2, double lon2)
     {
-      var cosLat2 = System.Math.Cos(latitude2);
-      var lonD = longitude2 - longitude1;
+      var cosLat2 = System.Math.Cos(lat2);
+      var lonD = lon2 - lon1;
 
       var y = System.Math.Sin(lonD) * cosLat2;
-      var x = System.Math.Cos(latitude1) * System.Math.Sin(latitude2) - System.Math.Sin(latitude1) * cosLat2 * System.Math.Cos(lonD);
+      var x = System.Math.Cos(lat1) * System.Math.Sin(lat2) - System.Math.Sin(lat1) * cosLat2 * System.Math.Cos(lonD);
 
       return (System.Math.Atan2(y, x) + GenericMath.PiX2) % GenericMath.PiX2; // Atan2 returns values in the range [-π, +π] radians (i.e. -180 - +180 degrees), shift to [0, 2PI] radians (i.e. 0 - 360 degrees).
     }
 
     /// <summary>An intermediate point at any fraction along the great circle path between two points can also be calculated.</summary>
+    /// <param name="lat1">The source latitude in radians.</param>
+    /// <param name="lon1">The source longitude in radians.</param>
+    /// <param name="lat2">The target latitude in radians.</param>
+    /// <param name="lon2">The target longitude in radians.</param>
     /// <param name="mu">Unit interval is a fraction along great circle route (0=Latitude1,Longitude1, 1=Latitude2,Longitude2)</param>
-    public static void GetIntermediaryPoint(double latitude1, double longitude1, double latitude2, double longitude2, double mu, out double latitudeOut, out double longitudeOut)
+    /// <param name="latOut">The resulting latitude in radians.</param>
+    /// <param name="lonOut">The resulting longitude in radians.</param>
+    public static void GetIntermediaryPoint(double lat1, double lon1, double lat2, double lon2, double mu, out double latOut, out double lonOut)
     {
-      var centralAngle = GetCentralAngleVincentyFormula(latitude1, longitude1, latitude2, longitude2);
+      var centralAngle = GetCentralAngleVincentyFormula(lat1, lon1, lat2, lon2);
 
       var a = System.Math.Sin((1.0 - mu) * centralAngle) / System.Math.Sin(centralAngle);
       var b = System.Math.Sin(mu * centralAngle) / System.Math.Sin(centralAngle);
 
-      var cosLat1 = System.Math.Cos(latitude1);
-      var cosLat2 = System.Math.Cos(latitude2);
+      var cosLat1 = System.Math.Cos(lat1);
+      var cosLat2 = System.Math.Cos(lat2);
 
-      var x = a * cosLat1 * System.Math.Cos(longitude1) + b * cosLat2 * System.Math.Cos(longitude2);
-      var y = a * cosLat1 * System.Math.Sin(longitude1) + b * cosLat2 * System.Math.Sin(longitude2);
-      var z = a * System.Math.Sin(latitude1) + b * System.Math.Sin(latitude2);
+      var x = a * cosLat1 * System.Math.Cos(lon1) + b * cosLat2 * System.Math.Cos(lon2);
+      var y = a * cosLat1 * System.Math.Sin(lon1) + b * cosLat2 * System.Math.Sin(lon2);
+      var z = a * System.Math.Sin(lat1) + b * System.Math.Sin(lat2);
 
-      latitudeOut = System.Math.Atan2(z, System.Math.Sqrt(x * x + y * y));
-      longitudeOut = System.Math.Atan2(y, x);
+      latOut = System.Math.Atan2(z, System.Math.Sqrt(x * x + y * y));
+      lonOut = System.Math.Atan2(y, x);
     }
 
     //// https://en.wikipedia.org/wiki/Great-circle_navigation
@@ -298,16 +325,26 @@ namespace Flux.Numerics
     //  var az = (Quantity.Angle)System.Math.Atan2(System.Math.Tan(a0b.Value), System.Math.Cos(q));
 
     //}
-    public static void GetIntersectionOfPaths(double latitude1, double longitude1, double bearing1, double latitude2, double longitude2, double bearing2, out double latitudeOut, out double longitudeOut)
+
+    /// <summary></summary>
+    /// <param name="lat1">The first path latitude in radians.</param>
+    /// <param name="lon1">The first path longitude in radians.</param>
+    /// <param name="brg1">The first path bearing in radians.</param>
+    /// <param name="lat2">The second path latitude in radians.</param>
+    /// <param name="lon2">The second path longitude in radians.</param>
+    /// <param name="brg2">The second path bearing in radians.</param>
+    /// <param name="latOut">The resulting latitude in radians.</param>
+    /// <param name="lonOut">The resulting longitude in radians.</param>
+    public static void GetIntersectionOfPaths(double lat1, double lon1, double brg1, double lat2, double lon2, double brg2, out double latOut, out double lonOut)
     {
-      var latD = latitude2 - latitude1;
-      var lonD = longitude2 - longitude1;
+      var latD = lat2 - lat1;
+      var lonD = lon2 - lon1;
       var sinlonD = System.Math.Sin(lonD);
 
-      var cosLat1 = System.Math.Cos(latitude1);
-      var cosLat2 = System.Math.Cos(latitude2);
-      var sinLat1 = System.Math.Sin(latitude1);
-      var sinLat2 = System.Math.Sin(latitude2);
+      var cosLat1 = System.Math.Cos(lat1);
+      var cosLat2 = System.Math.Cos(lat2);
+      var sinLat1 = System.Math.Sin(lat1);
+      var sinLat2 = System.Math.Sin(lat2);
 
       var d12 = 2 * System.Math.Asin(System.Math.Sqrt(System.Math.Pow(System.Math.Sin(latD / 2), 2) + cosLat1 * cosLat2 * System.Math.Pow(System.Math.Sin(lonD / 2), 2)));
       var cosd12 = System.Math.Cos(d12);
@@ -319,11 +356,11 @@ namespace Flux.Numerics
       var bearing12 = sinlonD > 0 ? φ1 : GenericMath.PiX2 - φ1;
       var bearing21 = sinlonD > 0 ? GenericMath.PiX2 - φ2 : φ2;
 
-      var α1 = (bearing1 - bearing12 + System.Math.PI) % GenericMath.PiX2 - System.Math.PI;
+      var α1 = (brg1 - bearing12 + System.Math.PI) % GenericMath.PiX2 - System.Math.PI;
       var α1cos = System.Math.Cos(α1);
       var α1sin = System.Math.Sin(α1);
 
-      var α2 = (bearing21 - bearing2 + System.Math.PI) % GenericMath.PiX2 - System.Math.PI;
+      var α2 = (bearing21 - brg2 + System.Math.PI) % GenericMath.PiX2 - System.Math.PI;
       var α2cos = System.Math.Cos(α2);
       var α2sin = System.Math.Sin(α2);
 
@@ -333,30 +370,38 @@ namespace Flux.Numerics
       var d13cos = System.Math.Cos(d13);
       var d13sin = System.Math.Sin(d13);
 
-      latitudeOut = System.Math.Asin(sinLat1 * d13cos + cosLat1 * d13sin * System.Math.Cos(bearing1));
+      latOut = System.Math.Asin(sinLat1 * d13cos + cosLat1 * d13sin * System.Math.Cos(brg1));
 
-      var dLon13 = System.Math.Atan2(System.Math.Sin(bearing1) * d13sin * cosLat1, d13cos - sinLat1 * System.Math.Sin(latitudeOut));
+      var dLon13 = System.Math.Atan2(System.Math.Sin(brg1) * d13sin * cosLat1, d13cos - sinLat1 * System.Math.Sin(latOut));
 
-      longitudeOut = (longitude1 + dLon13 + System.Math.PI) % GenericMath.PiX2 - System.Math.PI;
+      lonOut = (lon1 + dLon13 + System.Math.PI) % GenericMath.PiX2 - System.Math.PI;
     }
 
     /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
-    public static double GetMaximumLatitude(double radLatitude, double radAzimuth)
-      => System.Math.Acos(System.Math.Abs(System.Math.Sin(radAzimuth) * System.Math.Cos(radLatitude)));
+    /// <param name="lat">The latitude in radians.</param>
+    /// <param name="brg">The bearing in radians.</param>
+    public static double GetMaximumLatitude(double lat, double brg)
+      => System.Math.Acos(System.Math.Abs(System.Math.Sin(brg) * System.Math.Cos(lat)));
 
     /// <summary>This is the halfway point along a great circle path between the two points.</summary>
-    public static void GetMidpoint(double latitude1, double longitude1, double latitude2, double longitude2, out double latitudeOut, out double longitudeOut)
+    /// <param name="lat1">The first path latitude in radians.</param>
+    /// <param name="lon1">The first path longitude in radians.</param>
+    /// <param name="lat2">The second path latitude in radians.</param>
+    /// <param name="lon2">The second path longitude in radians.</param>
+    /// <param name="latOut">The resulting latitude in radians.</param>
+    /// <param name="lonOut">The resulting longitude in radians.</param>
+    public static void GetMidpoint(double lat1, double lon1, double lat2, double lon2, out double latOut, out double lonOut)
     {
-      var lonD = longitude2 - longitude1;
+      var lonD = lon2 - lon1;
 
-      var cosLat1 = System.Math.Cos(latitude1);
-      var cosLat2 = System.Math.Cos(latitude2);
+      var cosLat1 = System.Math.Cos(lat1);
+      var cosLat2 = System.Math.Cos(lat2);
 
       var Bx = cosLat2 * System.Math.Cos(lonD);
       var By = cosLat2 * System.Math.Sin(lonD);
 
-      latitudeOut = System.Math.Atan2(System.Math.Sin(latitude1) + System.Math.Sin(latitude2), System.Math.Sqrt(System.Math.Pow(cosLat1 + Bx, 2) + By * By));
-      longitudeOut = longitude1 + System.Math.Atan2(By, cosLat1 + Bx);
+      latOut = System.Math.Atan2(System.Math.Sin(lat1) + System.Math.Sin(lat2), System.Math.Sqrt(System.Math.Pow(cosLat1 + Bx, 2) + By * By));
+      lonOut = lon1 + System.Math.Atan2(By, cosLat1 + Bx);
     }
 
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
@@ -374,9 +419,6 @@ namespace Flux.Numerics
 
     #endregion Static members
 
-    #region Object overrides
-    public override string ToString()
-      => $"{new Quantities.Latitude(Latitude)} {new Quantities.Longitude(Longitude)} {new Quantities.Length(Altitude).ToUnitString(Quantities.Length.DefaultUnit, format: "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
-    #endregion // Object overrides
+    public override string ToString() => $"{new Quantities.Latitude(Latitude)} {new Quantities.Longitude(Longitude)} {new Quantities.Length(Altitude).ToUnitString(Quantities.Length.DefaultUnit, "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
   }
 }

@@ -23,6 +23,8 @@ namespace Flux
     public readonly record struct ElectricCharge
       : System.IComparable, System.IComparable<ElectricCharge>, System.IConvertible, IUnitQuantifiable<double, ElectricChargeUnit>
     {
+      public static readonly ElectricCharge Zero;
+
       public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 
       public static ElectricCharge ElementaryCharge => new(1.602176634e-19);

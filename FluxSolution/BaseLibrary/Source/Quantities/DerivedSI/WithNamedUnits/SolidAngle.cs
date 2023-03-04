@@ -23,6 +23,8 @@ namespace Flux
     public readonly record struct SolidAngle
       : System.IComparable, System.IComparable<SolidAngle>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, SolidAngleUnit>
     {
+      public static readonly SolidAngle Zero;
+
       public const SolidAngleUnit DefaultUnit = SolidAngleUnit.Steradian;
 
       private readonly double m_value;

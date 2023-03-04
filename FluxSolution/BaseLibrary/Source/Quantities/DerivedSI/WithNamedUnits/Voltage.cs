@@ -23,6 +23,8 @@ namespace Flux
     public readonly record struct Voltage
       : System.IComparable, System.IComparable<Voltage>, System.IConvertible, IUnitQuantifiable<double, VoltageUnit>
     {
+      public static readonly Voltage Zero;
+
       public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
 
       private readonly double m_value;

@@ -11,20 +11,21 @@ namespace Flux.Text
   public sealed class RuneEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<System.Text.Rune>
   {
+    const int DefaultBufferSize = 4096;
+    const int DefaultMinLength = 16;
+
     internal readonly System.IO.TextReader m_textReader;
-    internal readonly int m_bufferSize;
+    internal readonly int m_bufferSize; // The size of the total buffer.
+    internal readonly int m_minLength; // The minimum length of buffer content.
 
-    public RuneEnumerator(System.IO.TextReader textReader, int bufferSize = 8192)
+    public RuneEnumerator(System.IO.TextReader textReader, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
     {
-      if (textReader is null) throw new System.ArgumentNullException(nameof(textReader));
-      if (bufferSize < 8) throw new System.ArgumentOutOfRangeException(nameof(bufferSize));
-
-      m_textReader = textReader;
-      m_bufferSize = bufferSize;
+      m_textReader = textReader ?? throw new System.ArgumentNullException(nameof(textReader));
+      m_bufferSize = bufferSize >= 128 ? bufferSize : throw new System.ArgumentOutOfRangeException(nameof(bufferSize));
+      m_minLength = minLength >= 8 ? minLength : throw new System.ArgumentOutOfRangeException(nameof(minLength));
     }
-    public RuneEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = 8192)
-     : this(new System.IO.StreamReader(stream, encoding), bufferSize)
-    { }
+    public RuneEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
+     : this(new System.IO.StreamReader(stream, encoding), bufferSize, minLength) { }
 
     public System.Collections.Generic.IEnumerator<System.Text.Rune> GetEnumerator()
       => new RuneIterator(this);
@@ -67,7 +68,7 @@ namespace Flux.Text
 
       public bool MoveNext()
       {
-        if (m_bufferCount - m_bufferIndex <= 1) // If one or less available chars, then 'top off' the buffer.
+        if (m_bufferCount - m_bufferIndex <= m_enumerator.m_minLength) // If one or less available chars, then 'top off' the buffer.
         {
           m_bufferCount -= m_bufferIndex; // Adjust to any remaining char count.
 

@@ -23,6 +23,8 @@ namespace Flux
     public readonly record struct Activity
       : System.IComparable, System.IComparable<Activity>, System.IConvertible, IUnitQuantifiable<double, ActivityUnit>
     {
+      public static readonly Activity Zero;
+
       public const ActivityUnit DefaultUnit = ActivityUnit.Becquerel;
 
       private readonly double m_value;

@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct LuminousIntensity
       : System.IComparable, System.IComparable<LuminousIntensity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, LuminousIntensityUnit>
     {
+      public static readonly LuminousIntensity Zero;
+
       public const LuminousIntensityUnit DefaultUnit = LuminousIntensityUnit.Candela;
 
       private readonly double m_value;

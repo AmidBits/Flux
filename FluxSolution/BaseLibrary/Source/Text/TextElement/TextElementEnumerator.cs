@@ -8,31 +8,30 @@ namespace Flux.Text
       => new Flux.Text.TextElementEnumerator(source);
   }
 
+  /// <summary>The <see cref="TextElementEnumerator"/> can be used for larger text segments by utilizing a text reader (stream).</summary>
   public sealed class TextElementEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<TextElement>
   {
+    const int DefaultBufferSize = 4096;
+    const int DefaultMinLength = 16;
+
     internal readonly System.IO.TextReader m_textReader;
-    internal readonly int m_bufferSize;
+    internal readonly int m_bufferSize; // The size of the total buffer.
+    internal readonly int m_minLength; // The minimum length of buffer content.
 
-    public TextElementEnumerator(System.IO.TextReader textReader, int bufferSize = 8192)
+    public TextElementEnumerator(System.IO.TextReader textReader, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
     {
-      if (textReader is null) throw new System.ArgumentNullException(nameof(textReader));
-      if (bufferSize < 128) throw new System.ArgumentOutOfRangeException(nameof(bufferSize));
-
-      m_textReader = textReader;
-      m_bufferSize = bufferSize;
+      m_textReader = textReader ?? throw new System.ArgumentNullException(nameof(textReader));
+      m_bufferSize = bufferSize >= 128 ? bufferSize : throw new System.ArgumentOutOfRangeException(nameof(bufferSize));
+      m_minLength = minLength >= 8 ? minLength : throw new System.ArgumentOutOfRangeException(nameof(minLength));
     }
-    public TextElementEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = 8192)
-      : this(new System.IO.StreamReader(stream, encoding), bufferSize)
-    { }
+    public TextElementEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
+      : this(new System.IO.StreamReader(stream, encoding), bufferSize, minLength) { }
 
-    public System.Collections.Generic.IEnumerator<TextElement> GetEnumerator()
-      => new TextElementIterator(this);
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-      => GetEnumerator();
+    public System.Collections.Generic.IEnumerator<TextElement> GetEnumerator() => new TextElementIterator(this);
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
-    protected override void DisposeManaged()
-      => m_textReader.Dispose();
+    protected override void DisposeManaged() => m_textReader.Dispose();
 
     private sealed class TextElementIterator
       : System.Collections.Generic.IEnumerator<TextElement>
@@ -75,7 +74,7 @@ namespace Flux.Text
 
       public bool MoveNext()
       {
-        if (m_textElementCount - m_textElementIndex <= 8) // If eight or less available text elements, then 'top off' the buffer and reset the content of stringInfo.
+        if (m_textElementCount - m_textElementIndex <= m_enumerator.m_minLength) // If available text elements is less or equal to low buffer, then 'top off' the buffer and reset the content of stringInfo.
         {
           m_bufferCount -= m_bufferIndex; // Adjust to any remaining char count.
 

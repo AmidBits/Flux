@@ -22,6 +22,8 @@ namespace Flux
     public readonly record struct AngularVelocity
       : System.IComparable, System.IComparable<AngularVelocity>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, AngularVelocityUnit>
     {
+      public static readonly AngularVelocity Zero;
+
       public const AngularVelocityUnit DefaultUnit = AngularVelocityUnit.RadianPerSecond;
 
       private readonly double m_value;

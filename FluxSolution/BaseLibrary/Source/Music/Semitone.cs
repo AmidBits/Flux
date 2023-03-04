@@ -6,24 +6,20 @@ namespace Flux.Music
   public readonly record struct Semitone
     : System.IComparable<Semitone>, System.IConvertible, Quantities.IQuantifiable<int>
   {
+    public static readonly Semitone Zero;
+
     public const double FrequencyRatio = 1.0594630943592952645618252949463;
 
     private readonly int m_value;
 
-    public Semitone(int semitones)
-      => m_value = semitones;
+    public Semitone(int semitones) => m_value = semitones;
 
     /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
+    public Quantities.Frequency ShiftPitch(Quantities.Frequency frequency) => new(PitchShift(frequency.Value, m_value));
 
-    public Quantities.Frequency ShiftPitch(Quantities.Frequency frequency)
-      => new(PitchShift(frequency.Value, m_value));
+    public Cent ToCent() => new(ConvertSemitoneToCent(m_value));
 
-
-    public Cent ToCent()
-      => new(ConvertSemitoneToCent(m_value));
-
-    public double ToFrequencyRatio()
-      => ConvertSemitoneToFrequencyRatio(m_value);
+    public double ToFrequencyRatio() => ConvertSemitoneToFrequencyRatio(m_value);
 
     #region Static methods
     /// <summary>Convert a specified interval ratio to a number of semitones.</summary>
@@ -107,8 +103,6 @@ namespace Flux.Music
       => m_value;
     #endregion Implemented interfaces
 
-    #region Object overrides
     public override string ToString() => $"{GetType().Name} {{ {ToQuantityString()} }}";
-    #endregion Object overrides
   }
 }

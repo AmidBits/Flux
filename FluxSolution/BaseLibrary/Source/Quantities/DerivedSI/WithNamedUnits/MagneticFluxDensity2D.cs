@@ -7,6 +7,8 @@ namespace Flux
     public readonly record struct MagneticFluxDensity2D
     : IUnitQuantifiable<Numerics.CartesianCoordinate2<double>, MagneticFluxDensityUnit>
     {
+      public static readonly MagneticFluxDensity2D Zero;
+
       private readonly Numerics.CartesianCoordinate2<double> m_value;
 
       public MagneticFluxDensity2D(Numerics.CartesianCoordinate2<double> value, MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)

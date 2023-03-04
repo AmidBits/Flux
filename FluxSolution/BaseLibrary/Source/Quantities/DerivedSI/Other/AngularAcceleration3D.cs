@@ -7,6 +7,8 @@ namespace Flux
     public readonly record struct AngularAcceleration3D
     : IUnitQuantifiable<Numerics.CartesianCoordinate3<double>, AngularAccelerationUnit>
     {
+      public static readonly AngularAcceleration3D Zero;
+
       private readonly Numerics.CartesianCoordinate3<double> m_value;
 
       public AngularAcceleration3D(Numerics.CartesianCoordinate3<double> value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)

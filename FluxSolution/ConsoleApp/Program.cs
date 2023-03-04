@@ -13,6 +13,7 @@ using Flux.Formatting;
 using Flux.Geometry;
 using Flux.Interpolation;
 using Flux.Quantities;
+using Flux.Text;
 using Microsoft.VisualBasic.FileIO;
 
 // C# Interactive commands:
@@ -28,6 +29,23 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
+
+      var ur = ((System.Text.Rune)'\0').GetUnicodeRange();
+
+      return;
+
+      var text = "Some things never change 😀123👨‍👩‍👧‍👦.";
+
+      var rt = new Flux.Text.RuneTokenizer().GetTokens(text);
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, rt));
+      var tet = new Flux.Text.TextElementTokenizer().GetTokens(text);
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, tet));
+
+      foreach (var te in text.EnumerateTextElements())
+        System.Console.WriteLine(te);
+
+
+      return;
 
       var v4a = new System.Numerics.Vector4(1, 2, 3, 4.1f);
 

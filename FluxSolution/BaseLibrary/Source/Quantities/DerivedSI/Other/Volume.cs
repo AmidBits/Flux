@@ -52,6 +52,8 @@ namespace Flux
     public readonly record struct Volume
       : System.IComparable, System.IComparable<Volume>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, VolumeUnit>
     {
+      public static readonly Volume Zero;
+
       public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
 
       private readonly double m_value;

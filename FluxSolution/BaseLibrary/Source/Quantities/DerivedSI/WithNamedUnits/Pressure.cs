@@ -32,6 +32,8 @@ namespace Flux
     public readonly record struct Pressure
       : System.IComparable, System.IComparable<Pressure>, System.IConvertible, System.IFormattable, IUnitQuantifiable<double, PressureUnit>
     {
+      public static readonly Pressure Zero;
+
       public const PressureUnit DefaultUnit = PressureUnit.Pascal;
 
       public static Pressure StandardAtmosphere => new(101325);

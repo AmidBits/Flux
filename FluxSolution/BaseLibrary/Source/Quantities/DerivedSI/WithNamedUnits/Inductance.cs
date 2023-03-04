@@ -23,6 +23,8 @@ namespace Flux
     public readonly record struct Inductance
       : System.IComparable, System.IComparable<Inductance>, System.IConvertible, IUnitQuantifiable<double, InductanceUnit>
     {
+      public static readonly Inductance Zero;
+
       public const InductanceUnit DefaultUnit = InductanceUnit.Henry;
 
       private readonly double m_value;

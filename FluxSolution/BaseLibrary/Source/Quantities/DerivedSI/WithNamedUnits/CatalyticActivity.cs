@@ -23,6 +23,8 @@ namespace Flux
     public readonly record struct CatalyticActivity
       : System.IComparable, System.IComparable<CatalyticActivity>, System.IConvertible, IUnitQuantifiable<double, CatalyticActivityUnit>
     {
+      public static readonly CatalyticActivity Zero;
+
       public const CatalyticActivityUnit DefaultUnit = CatalyticActivityUnit.Katal;
 
       private readonly double m_value;
