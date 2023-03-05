@@ -3,7 +3,8 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Implementation see reference.</summary>
-    /// <see cref="https://www.johndcook.com/blog/2009/01/19/stand-alone-error-function-erf/"/>
+    /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
+    /// <see href="https://www.johndcook.com/blog/2009/01/19/stand-alone-error-function-erf/"/>
     public static TSelf Erf<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IExponentialFunctions<TSelf>
     {
@@ -15,11 +16,11 @@ namespace Flux
 
       var p = TSelf.CreateChecked(0.3275911);
 
-      var absX = TSelf.Abs(x);
+      var absx = TSelf.Abs(x);
 
       // A&S formula 7.1.26
-      var t = TSelf.One / (TSelf.One + p * absX);
-      var y = TSelf.One - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * TSelf.Exp(-absX * absX);
+      var t = TSelf.One / (TSelf.One + p * absx);
+      var y = TSelf.One - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * TSelf.Exp(-absx * absx);
 
       return TSelf.CopySign(y, x);
     }

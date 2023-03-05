@@ -2,11 +2,11 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    public static double DoubleEpsilonNegative => ComputeNegativeEpsilon<double>();
-    public static double DoubleEpsilonPositive => ComputePositiveEpsilon<double>();
+    public static double DoubleEpsilonNegative = ComputeNegativeEpsilon<double>();
+    public static double DoubleEpsilonPositive = ComputePositiveEpsilon<double>();
 
-    public static float SingleEpsilonNegative => ComputeNegativeEpsilon<float>();
-    public static float SingleEpsilonPositive => ComputePositiveEpsilon<float>();
+    public static float SingleEpsilonNegative = ComputeNegativeEpsilon<float>();
+    public static float SingleEpsilonPositive = ComputePositiveEpsilon<float>();
 
     ///// <summary>The 'machine' epsilon, constant for System.Single, from the 32-bit float CPP definition of epsilon.</summary>
     //public const float EpsilonCpp32 = 1.1920929E-07F; // System.Math.Exp(-23 * System.Math.Log(2)); System.Math.Pow(2, -23);

@@ -94,7 +94,7 @@ namespace Flux
     public static TSelf PolynomialUnivariate<TSelf>(this TSelf x, params TSelf[] coefficients)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IPowerFunctions<TSelf>
     {
-      if (coefficients.Length < 2) throw new System.ArgumentOutOfRangeException(nameof(coefficients));
+      if (coefficients.Length <= 1) throw new System.ArgumentOutOfRangeException(nameof(coefficients)); // Must have at least 2 coefficients.
 
       var index = coefficients.Length - 1;
 
