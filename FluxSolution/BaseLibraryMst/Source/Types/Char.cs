@@ -49,7 +49,7 @@ namespace Types
     public void IsEnglishVowel()
     {
       Assert.AreEqual(false, System.Globalization.CultureInfo.CurrentCulture.IsVowelOf((System.Text.Rune)'ñ'));
-      Assert.AreEqual(false, !((System.Text.Rune)'y').IsLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf((System.Text.Rune)'y'));
+      Assert.AreEqual(false, !((System.Text.Rune)'y').IsBasicLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf((System.Text.Rune)'y'));
       Assert.AreEqual(true, System.Globalization.CultureInfo.CurrentCulture.IsVowelOf((System.Text.Rune)'y'));
       Assert.AreEqual(true, System.Globalization.CultureInfo.CurrentCulture.IsVowelOf((System.Text.Rune)'A'));
     }

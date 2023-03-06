@@ -18,7 +18,7 @@ namespace Flux.Text.PhoneticAlgorithm
       {
         // Modified NYSIIS implementation as follows:
 
-        var firstCharVowel = !code[0].IsLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(code[0]) ? code[0] : '\0'; // 1, if the first character of the name is a vowel, remember it.
+        var firstCharVowel = !code[0].IsBasicLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(code[0]) ? code[0] : '\0'; // 1, if the first character of the name is a vowel, remember it.
 
         code = System.Text.RegularExpressions.Regex.Replace(code, @"[SZ]+$", string.Empty); // 2, remove all 'S' and 'Z' chars from the end of the name.
 
@@ -72,7 +72,7 @@ namespace Flux.Text.PhoneticAlgorithm
         code = System.Text.RegularExpressions.Regex.Replace(code, @"([A-Z])\1+", @"$1"); // 24. collapse all strings of repeated characters.
 
         // 25. if first character of original name is a vowel, prepend to code(or replace first transcoded 'A')
-        if (!firstCharVowel.IsLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(firstCharVowel))
+        if (!firstCharVowel.IsBasicLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(firstCharVowel))
           code = firstCharVowel + code;
 
         if (MaxCodeLength < code.Length)

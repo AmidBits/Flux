@@ -18,7 +18,7 @@ namespace Flux.Text.PhoneticAlgorithm
 
         if (index > 0)
         {
-          if (!currentRune.IsLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(currentRune))
+          if (!currentRune.IsBasicLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(currentRune))
             continue;
 
           if (System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(currentRune) && currentRune == previousRune)
