@@ -8,9 +8,9 @@ namespace Flux
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       var digits = GetDigits(number, radix);
-      var chars = new char[digits.Length];
+      var chars = new char[digits.Count];
 
-      for (var index = digits.Length - 1; index >= 0; index--)
+      for (var index = digits.Count - 1; index >= 0; index--)
         chars[index] = digits[index] switch
         {
           0 => (char)0x2070,

@@ -74,7 +74,7 @@ namespace GenericMath
     {
       var expected = new int[] { 2, 10, 500 };
       var actual = 512.GetPlaceValues(10);
-      Assert.AreEqual(expected.Length, actual.Length);
+      Assert.AreEqual(expected.Length, actual.Count);
       for (var i = expected.Length - 1; i >= 0; i--)
         Assert.AreEqual(expected[i], actual[i], $"{nameof(GetPlaceValues)} index {i}, expected {expected[i]} != actual {expected[i]}");
     }

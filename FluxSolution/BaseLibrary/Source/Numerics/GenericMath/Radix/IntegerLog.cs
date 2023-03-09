@@ -18,7 +18,7 @@ namespace Flux
       }
       else // The value is greater than or equal to zero here.
       {
-        var tradix = TSelf.CreateChecked(AssertRadix(radix));
+        var rdx = TSelf.CreateChecked(AssertRadix(radix));
 
         checked
         {
@@ -30,9 +30,9 @@ namespace Flux
             if (!IsIntegerPow(value, radix))
               ilogAwayFromZero++;
 
-            while (value >= tradix)
+            while (value >= rdx)
             {
-              value /= tradix;
+              value /= rdx;
 
               ilogTowardsZero++;
               ilogAwayFromZero++;
@@ -50,7 +50,7 @@ namespace Flux
       where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       AssertNonNegative(value);
-      var tradix = TSelf.CreateChecked(AssertRadix(radix));
+      var rdx = TSelf.CreateChecked(AssertRadix(radix));
 
       ilogAwayFromZero = TResult.Zero;
 
@@ -59,9 +59,9 @@ namespace Flux
         if (!IsIntegerPow(value, radix))
           ilogAwayFromZero++;
 
-        while (value >= tradix)
+        while (value >= rdx)
         {
-          value /= tradix;
+          value /= rdx;
 
           ilogAwayFromZero++;
         }
@@ -78,14 +78,14 @@ namespace Flux
       where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       AssertNonNegative(value);
-      var tradix = TSelf.CreateChecked(AssertRadix(radix));
+      var rdx = TSelf.CreateChecked(AssertRadix(radix));
 
       ilogTowardsZero = TResult.Zero;
 
       if (!TSelf.IsZero(value))
-        while (value >= tradix)
+        while (value >= rdx)
         {
-          value /= tradix;
+          value /= rdx;
 
           ilogTowardsZero++;
         }

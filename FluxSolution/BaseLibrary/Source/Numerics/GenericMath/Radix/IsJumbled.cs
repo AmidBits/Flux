@@ -8,17 +8,17 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var tradix = TSelf.CreateChecked(AssertRadix(radix));
+      var rdx = TSelf.CreateChecked(AssertRadix(radix));
 
       while (!TSelf.IsZero(number))
       {
-        var remainder = number % tradix;
+        var remainder = number % rdx;
 
-        number /= tradix;
+        number /= rdx;
 
         if (TSelf.IsZero(number))
           break;
-        else if (TSelf.Abs((number % tradix) - remainder) > TSelf.One) // If the difference to the digit is greater than 1, then the number cannot jumbled.
+        else if (TSelf.Abs((number % rdx) - remainder) > TSelf.One) // If the difference to the digit is greater than 1, then the number cannot jumbled.
           return false;
       }
 

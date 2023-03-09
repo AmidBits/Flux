@@ -7,7 +7,7 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var radixTSelf = TSelf.CreateChecked(AssertRadix(radix));
+      var rdx = TSelf.CreateChecked(AssertRadix(radix));
 
       var count = TSelf.Zero;
 
@@ -15,7 +15,7 @@ namespace Flux
       {
         count++;
 
-        number /= radixTSelf;
+        number /= rdx;
       }
 
       return count;

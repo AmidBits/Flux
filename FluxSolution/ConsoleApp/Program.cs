@@ -32,7 +32,10 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
+      var n = -2039;
 
+      var text = Flux.Text.PositionalNotation.Base8.NumberToText(n);
+      var number = Flux.Text.PositionalNotation.Base8.TextToNumber(text.AsSpan());
     }
 
     private static void Main(string[] args)

@@ -1,3 +1,5 @@
+using System.Text.Encodings.Web;
+
 namespace Flux
 {
   public static partial class ExtensionMethods
@@ -38,10 +40,10 @@ namespace Flux
     {
       public const int MaxRadix = 62;
 
-      public static PositionalNotation Base2 => new(RuneSequences.Base62[..2]);
-      public static PositionalNotation Base8 => new(RuneSequences.Base62[..8]);
-      public static PositionalNotation Base10 => new(RuneSequences.Base62[..10]);
-      public static PositionalNotation Base16 => new(RuneSequences.Base62[..16]);
+      public static PositionalNotation Base2 => new(RuneSequences.Base62.Take(2).ToArray());
+      public static PositionalNotation Base8 => new(RuneSequences.Base62.Take(8).ToArray());
+      public static PositionalNotation Base10 => new(RuneSequences.Base62.Take(10).ToArray());
+      public static PositionalNotation Base16 => new(RuneSequences.Base62.Take(16).ToArray());
 
       public System.ReadOnlySpan<System.Text.Rune> Symbols { get; }
 
@@ -58,19 +60,17 @@ namespace Flux
       public SpanBuilder<System.Text.Rune> NumberToText<TSelf>(TSelf number)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
-        var sb = new SpanBuilder<System.Text.Rune>();
+        if (TSelf.IsNegative(number))
+          return NumberToText(-number).Insert(0, (System.Text.Rune)'-');
 
         if (TSelf.IsZero(number))
-          sb.Append((System.Text.Rune)'0');
-        else if (number < TSelf.Zero) // Needs a REAL solution for negative numbers.
-          return NumberToText(-number).Insert(0, (System.Text.Rune)'-');
+          return new SpanBuilder<System.Text.Rune>((System.Text.Rune)'0');
+
+        var sb = new SpanBuilder<System.Text.Rune>();
 
         while (number > TSelf.Zero)
         {
-          var (quotient, remainder) = TSelf.DivRem(number, TSelf.CreateChecked(Symbols.Length));
-
-          number = quotient;
-
+          (number, var remainder) = TSelf.DivRem(number, TSelf.CreateChecked(Symbols.Length));
           sb.Insert(0, Symbols[int.CreateChecked(remainder)]);
         }
 
@@ -94,22 +94,20 @@ namespace Flux
       /// <summary>Convert a positional notation text string into a number.</summary>
       public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<System.Text.Rune> number)
       {
+        var isNegative = number[0] == (System.Text.Rune)'-';
+
         var bi = System.Numerics.BigInteger.Zero;
 
-        for (var index = 0; index < number.Length; index++)
+        for (var index = isNegative ? 1 : 0; index < number.Length; index++)
         {
           bi *= Symbols.Length;
-
-          var position = MemoryExtensions.IndexOf(Symbols, number[index]);
-
-          bi += position > -1 ? position : throw new System.InvalidOperationException();
+          bi += MemoryExtensions.IndexOf(Symbols, number[index]) is var position && position >= 0 ? position : throw new System.InvalidOperationException();
         }
 
-        return bi;
+        return isNegative ? -bi : bi;
       }
       /// <summary>Convert a positional notation text string into a number.</summary>
-      public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)
-        => TextToNumber(number.ToListRune().AsReadOnlySpan());
+      public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number) => TextToNumber(number.ToListRune().AsReadOnlySpan());
 
       /// <summary>Convert a positional notation text string into a number.</summary>
       public bool TryTextToNumber(System.ReadOnlySpan<System.Text.Rune> number, out System.Numerics.BigInteger result)
@@ -125,8 +123,7 @@ namespace Flux
         return false;
       }
       /// <summary>Convert a positional notation text string into a number.</summary>
-      public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result)
-        => TryTextToNumber(number.ToListRune().AsReadOnlySpan(), out result);
+      public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result) => TryTextToNumber(number.ToListRune().AsReadOnlySpan(), out result);
 
       /// <summary>Custom instance based on Base62 which results in traditional radix conversions.</summary>
       public static PositionalNotation ForRadix(int radix)

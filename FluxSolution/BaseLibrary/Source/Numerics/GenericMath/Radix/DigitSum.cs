@@ -8,15 +8,15 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var tradix = TSelf.CreateChecked(AssertRadix(radix));
+      var rdx = TSelf.CreateChecked(AssertRadix(radix));
 
       var sum = TSelf.Zero;
 
       while (!TSelf.IsZero(number))
       {
-        sum += number % tradix;
+        sum += number % rdx;
 
-        number /= tradix;
+        number /= rdx;
       }
 
       return sum;

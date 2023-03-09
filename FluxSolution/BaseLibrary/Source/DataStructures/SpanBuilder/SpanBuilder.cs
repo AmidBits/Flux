@@ -2,7 +2,7 @@ namespace Flux
 {
   public ref struct SpanBuilder<T>
   {
-    private const int DefaultBufferSize = 32;
+    private const int DefaultBufferSize = 16;
 
     private T[] m_array;
 
