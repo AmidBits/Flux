@@ -30,91 +30,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Flux.Zamplez.IsSupported) { Flux.Zamplez.Run(); return; }
 
-      var ur = ((System.Text.Rune)'\0').GetUnicodeRange();
-
-      return;
-
-      var text = "Some things never change 😀123👨‍👩‍👧‍👦.";
-
-      var rt = new Flux.Text.RuneTokenizer().GetTokens(text);
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, rt));
-      var tet = new Flux.Text.TextElementTokenizer().GetTokens(text);
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, tet));
-
-      foreach (var te in text.EnumerateTextElements())
-        System.Console.WriteLine(te);
+      // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
 
-      return;
-
-      var v4a = new System.Numerics.Vector4(1, 2, 3, 4.1f);
-
-      System.Console.WriteLine(v4a.ToString());
-
-      var v3 = new Flux.Numerics.CartesianCoordinate3<double>(1, 2, 3.1);
-      System.Console.WriteLine(v3.ToString());
-
-      var sc = v3.ToSphericalCoordinate();
-      System.Console.WriteLine(sc.ToString());
-
-
-      var s = new Flux.Numerics.CartesianCoordinate2<double>(2, 3);
-      var t = new Flux.Numerics.CartesianCoordinate2<double>(9, 10);
-
-      var (mx, my) = Flux.Numerics.CartesianCoordinate2<double>.Slope(s, t);
-
-      var a = new int[] { 1, 2, 2, 3, 5 };
-      var b = new int[] { 1, 2, 2, 3, 5 };
-
-      var ha = a.ToHistogram(i => i, i => 1);
-      var hb = b.ToHistogram(i => i, i => 1);
-
-      var hab = new Flux.DataStructures.Histogram<int, int>();
-      hab.AddRange(ha);
-      hab.Add(2, 1);
-      hab.AddRange(hb);
-
-      var ccdfpr = hab.ComputeCdfPercentRank(2, 1.0);
-      var cpmfp = hab.ComputePmfProbability(2, 1.0);
-
-      var h2 = ha[2];
-      var h4 = ha[4];
-
-      var hv = ha.Keys;
-
-      var pmf = ha.ToProbabilityMassFunction(1.0);
-
-      var hp2 = ha.ComputePmfProbability(2, 1.0);
-      var hp4 = ha.ComputePmfProbability(4, 1.0);
-
-      var isnb = pmf.IsNormalized();
-
-      pmf.Add(4, .2 / (.8));
-
-      var isna = pmf.IsNormalized();
-
-      pmf.Normalize();
-
-      var pTotal = pmf.Total;
-
-      var p2 = pmf.Pmf(2);
-      var p4 = pmf.Pmf(4);
-
-      var cdf = ha.ToCumulativeDistributionFunction(1.0);
-
-      var hc0 = ha.ComputeCdfPercentRank(0, 1.0);
-      var hc1 = ha.ComputeCdfPercentRank(1, 1.0);
-      var hc2 = ha.ComputeCdfPercentRank(2, 1.0);
-      var hc3 = ha.ComputeCdfPercentRank(3, 1.0);
-      var hc4 = ha.ComputeCdfPercentRank(4, 1.0);
-      var hc5 = ha.ComputeCdfPercentRank(5, 1.0);
-
-      var c0 = cdf.Cdf(0);
-      var c1 = cdf.Cdf(1);
-      var c2 = cdf.Cdf(2);
-      var c3 = cdf.Cdf(3);
-      var c4 = cdf.Cdf(4);
-      var c5 = cdf.Cdf(5);
     }
 
     private static void Main(string[] args)

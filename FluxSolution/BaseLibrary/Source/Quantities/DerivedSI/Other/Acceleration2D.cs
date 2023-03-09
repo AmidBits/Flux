@@ -44,22 +44,20 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
-      // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => ToUnitString(Acceleration.DefaultUnit, format, preferUnicode, useFullName);
 
+      // IQuantifiable<>
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(Acceleration.DefaultUnit, format, preferUnicode, useFullName);
       public Numerics.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-      public string ToUnitString(AccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{Value.ToString()} {unit.GetUnitString(preferUnicode, useFullName)}";
-
+      public string ToUnitString(AccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{Value.ToString()} {unit.GetUnitString(preferUnicode, useFullName)}";
       public Numerics.CartesianCoordinate2<double> ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
         => unit switch
         {
           AccelerationUnit.MeterPerSecondSquared => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
+
       #endregion Implemented interfaces
 
       public override string ToString() => ToQuantityString();

@@ -36,10 +36,12 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
-      // IComparable<>
-      public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
+
       // IComparable
       public int CompareTo(object? other) => other is not null && other is UvIndex o ? CompareTo(o) : -1;
+
+      // IComparable<>
+      public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
 
       #region IConvertible
       public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -63,8 +65,8 @@ namespace Flux
 
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => string.Format($"UV Index {{0:{format ?? "N1"}}}", m_value);
-
       public double Value { get => m_value; init => m_value = value; }
+
       #endregion Implemented interfaces
 
       public override string ToString() => ToQuantityString();

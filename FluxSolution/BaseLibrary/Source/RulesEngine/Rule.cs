@@ -25,17 +25,11 @@ namespace Flux.RulesEngine
       m_value = value;
     }
 
-    public string Name
-      => m_name;
+    public string Name => m_name;
+    public string Operator => m_operator;
+    public object Value => m_value;
 
-    public string Operator
-      => m_operator;
-
-    public object Value
-      => m_value;
-
-    public System.Func<T, bool> Compile<T>()
-      => CompileRule<T>(this);
+    public System.Func<T, bool> Compile<T>() => CompileRule<T>(this);
 
     #region Static methods
 
@@ -70,9 +64,6 @@ namespace Flux.RulesEngine
     }
     #endregion Static methods
 
-    #region Object overrides
-    public override string? ToString()
-      => $"{nameof(Rule)} {{ \"{m_name}\" {m_operator} '{m_value}' }}";
-    #endregion Object overrides
+    public override string? ToString() => $"{nameof(Rule)} {{ \"{m_name}\" {m_operator} '{m_value}' }}";
   }
 }

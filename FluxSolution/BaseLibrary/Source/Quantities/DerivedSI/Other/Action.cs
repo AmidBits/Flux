@@ -60,10 +60,12 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
-      // IComparable<>
-      public int CompareTo(Action other) => m_value.CompareTo(other.m_value);
+
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Action o ? CompareTo(o) : -1;
+
+      // IComparable<>
+      public int CompareTo(Action other) => m_value.CompareTo(other.m_value);
 
       #region IConvertible
       public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -89,21 +91,19 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
       public string ToUnitString(ActionUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-
       public double ToUnitValue(ActionUnit unit = DefaultUnit)
         => unit switch
         {
           ActionUnit.JouleSecond => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
+
       #endregion Implemented interfaces
 
       public override string ToString() => ToQuantityString();

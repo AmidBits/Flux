@@ -1,9 +1,32 @@
 namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static string ToCardinalNumeralCompoundString<TSelf>(this TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => string.Join(' ', NumeralComposition.GetCardinalNumerals(NumeralComposition.GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
+  }
+
+  /// <summary>Supporting class for breaking down and translating numbers to strings.</summary>
   public static partial class NumeralComposition
   {
-    /// <summary>Breaks a number down into parts that can be transformed into numerals.</summary>
-    /// <remarks>The first number is the sign, i.e. -1, 0 or 1.</remarks>
+    /// <summary>This is step two. It translates <paramref name="compoundNumbers"/> into cardinal numerals.</summary>
+    public static System.Collections.Generic.List<string> GetCardinalNumerals(System.Collections.Generic.List<System.Numerics.BigInteger> compoundNumbers)
+    {
+      var list = new System.Collections.Generic.List<string>();
+
+      var isNegative = !compoundNumbers.First().IsNonNegative();
+
+      if (isNegative)
+        list.Add("Negative");
+
+      list.AddRange(compoundNumbers.Skip(int.Abs(int.CreateChecked(compoundNumbers.First()))).Select(on => NumeralComposition.ShortScaleDictionary[on]));
+
+      return list;
+    }
+
+    /// <summary>This is step one. It breaks a <paramref name="number"/> down into parts (compound numbers) that can be translated into cardinal numerals. The first compound number is the sign of <paramref name="number"/>.</summary>
+    /// <remarks>The first number in the list is the sign, i.e. -1, 0 or 1. If the sign is 0, there are no more numbers in the list.</remarks>
     public static System.Collections.Generic.List<System.Numerics.BigInteger> GetCompoundNumbers(System.Numerics.BigInteger number)
     {
       var list = new System.Collections.Generic.List<System.Numerics.BigInteger>
@@ -11,18 +34,12 @@ namespace Flux
         number.Sign
       };
 
-      if (number.IsZero)
-        list.Add(0);
-      else // We have something but zero.
-        list.AddRange(RecursiveProcess(number)); // Ensure we pass an absolute number.
+      list.AddRange(RecursiveProcess(System.Numerics.BigInteger.Abs(number))); // Ensure we pass an absolute number.
 
       return list;
 
       static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> RecursiveProcess(System.Numerics.BigInteger number)
       {
-        if (System.Numerics.BigInteger.IsNegative(number))
-          number = -number;
-
         var list = new System.Collections.Generic.List<System.Numerics.BigInteger>();
 
         if (number >= 100) // If the number is GTE 100, do it.
@@ -54,6 +71,7 @@ namespace Flux
       }
     }
 
+    /// <summary>Contains the short scale table of number to word translations.</summary>
     public static System.Collections.Generic.IReadOnlyDictionary<System.Numerics.BigInteger, string> ShortScaleDictionary
       => new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string>()
       {
@@ -128,19 +146,5 @@ namespace Flux
         { 1, "One" },
         { 0, "Zero" },
       };
-
-    public static System.Collections.Generic.IEnumerable<string> GetCardinalNumerals(System.Collections.Generic.List<System.Numerics.BigInteger> ordinalNumbers)
-    {
-      if (!ordinalNumbers.First().IsNonNegative())
-        yield return "Negative";
-
-      foreach (var ordinalNumber in ordinalNumbers.Skip(1))
-      {
-        yield return NumeralComposition.ShortScaleDictionary[ordinalNumber];
-      }
-    }
-
-    public static string ToCardinalNumeralCompoundString(System.Numerics.BigInteger number)
-      => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
   }
 }

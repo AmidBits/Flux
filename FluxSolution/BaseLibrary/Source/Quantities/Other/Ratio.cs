@@ -90,10 +90,9 @@ namespace Flux
       #endregion IConvertible
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{m_numerator} / {m_denominator} ({Value})";
-
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{m_numerator} / {m_denominator} ({Value})";
       public double Value => m_numerator / m_denominator;
+
       #endregion Implemented interfaces
 
       public override string ToString() => ToQuantityString();

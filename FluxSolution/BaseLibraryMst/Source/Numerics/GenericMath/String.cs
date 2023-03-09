@@ -11,7 +11,7 @@ namespace GenericMath
     [TestMethod]
     public void ToNamedGroupingString()
     {
-      Assert.AreEqual("Five Hundred Twelve", 512.ToType(out System.Numerics.BigInteger _).ToCompoundStringCardinalNumerals().ToString());
+      Assert.AreEqual("Five Hundred Twelve", 512.ToType(out System.Numerics.BigInteger _).ToCardinalNumeralCompoundString().ToString());
     }
 
     [TestMethod]

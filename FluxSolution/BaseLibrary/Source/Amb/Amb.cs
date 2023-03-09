@@ -35,8 +35,7 @@
 
       return false;
     }
-    public bool Disambiguate()
-      => Disambiguate(0, 0);
+    public bool Disambiguate() => Disambiguate(0, 0);
     //{
     //  try
     //  {
@@ -50,8 +49,7 @@
     //  }
     //}
 
-    public void Require(System.Func<bool> predicate)
-      => m_constraints.Add(new Constraint(predicate, m_choices.Count));
+    public void Require(System.Func<bool> predicate) => m_constraints.Add(new Constraint(predicate, m_choices.Count));
 
     public bool RequireFinal(System.Func<bool> predicate)
     {

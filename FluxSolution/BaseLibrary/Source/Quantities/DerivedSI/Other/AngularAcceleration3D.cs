@@ -45,21 +45,19 @@ namespace Flux
 
       #region Implemented interfaces
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => ToUnitString(AngularAcceleration.DefaultUnit, format, preferUnicode, useFullName);
-
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(AngularAcceleration.DefaultUnit, format, preferUnicode, useFullName);
       public Numerics.CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
       public string ToUnitString(AngularAccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{Value.ToString()} {unit.GetUnitString(preferUnicode, useFullName)}";
-
       public Numerics.CartesianCoordinate3<double> ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
         => unit switch
         {
           AngularAccelerationUnit.RadianPerSecondSquared => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
+
       #endregion Implemented interfaces
 
       public override string ToString() => ToQuantityString();

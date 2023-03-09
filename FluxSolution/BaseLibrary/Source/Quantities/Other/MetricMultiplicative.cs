@@ -145,10 +145,12 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
-      // IComparable<>
-      public int CompareTo(MetricMultiplicative other) => m_value.CompareTo(other.m_value);
+
       // IComparable
       public int CompareTo(object? other) => other is not null && other is MetricMultiplicative o ? CompareTo(o) : -1;
+
+      // IComparable<>
+      public int CompareTo(MetricMultiplicative other) => m_value.CompareTo(other.m_value);
 
       #region IConvertible
       public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -174,17 +176,14 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => ToUnitString(MetricMultiplicativePrefix.One, format, preferUnicode, useFullName);
-
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(MetricMultiplicativePrefix.One, format, preferUnicode, useFullName);
       public double Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
       public string ToUnitString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":format")}}}", ToUnitValue(multiplicativePrefix))}{(multiplicativePrefix.GetUnitString(preferUnicode, useFullName) is var prefix && prefix.Length > 0 ? $" {prefix}" : string.Empty)}";
+      public double ToUnitValue(MetricMultiplicativePrefix multiplicativePrefix) => m_value / multiplicativePrefix.GetUnitFactor();
 
-      public double ToUnitValue(MetricMultiplicativePrefix multiplicativePrefix)
-        => m_value / multiplicativePrefix.GetUnitFactor();
       #endregion Implemented interfaces
 
       public override string ToString() => ToQuantityString();

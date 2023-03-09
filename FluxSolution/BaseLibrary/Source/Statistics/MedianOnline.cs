@@ -2,26 +2,18 @@ namespace Flux
 {
   /// <summary></summary>
   /// <see cref="https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers"/>
-  public sealed record class MedianOnline
+  public sealed record class MedianOnline<TSelf>
+    where TSelf : System.Numerics.INumber<TSelf>
   {
-    private readonly DataStructures.IHeap<double> m_maxHeap = new DataStructures.BinaryHeapMax<double>();
-    private readonly DataStructures.IHeap<double> m_minHeap = new DataStructures.BinaryHeapMin<double>();
+    private readonly DataStructures.IHeap<TSelf> m_maxHeap = new DataStructures.BinaryHeapMax<TSelf>();
+    private readonly DataStructures.IHeap<TSelf> m_minHeap = new DataStructures.BinaryHeapMin<TSelf>();
 
-    //public int MaxCount
-    //	=> m_maxHeap.Count;
-    //public int MinCount
-    //	=> m_minHeap.Count;
-
-    public void Add(double value)
+    public void Add(TSelf value)
     {
       if (m_minHeap.Count is var minCount && minCount == 0)
-      {
         m_minHeap.Insert(value);
-      }
       else if (m_maxHeap.Count is var maxCount && maxCount == 0)
-      {
         m_maxHeap.Insert(value);
-      }
       else if (m_maxHeap.Peek() is var maxRoot && value < maxRoot)
       {
         m_maxHeap.Insert(value);
@@ -44,7 +36,7 @@ namespace Flux
       }
     }
 
-    public void AddRange(params double[] values)
+    public void AddRange(System.Collections.Generic.IEnumerable<TSelf> values)
     {
       foreach (var value in values)
         Add(value);
@@ -57,15 +49,14 @@ namespace Flux
 
       if (maxHeapCount == 0 && minHeapCount == 0)
         return 0;
-      else if (m_maxHeap.Peek() is var maxHeapPeek && maxHeapCount > minHeapCount)
-        return maxHeapPeek;
-      else if (m_minHeap.Peek() is var minHeapPeek && minHeapCount > maxHeapCount)
-        return minHeapPeek;
-      else // Counts are equal and not zero.
-        return (maxHeapPeek + minHeapPeek) / 2.0;
+      else if (m_maxHeap.Peek() is var maxHeapPeek && maxHeapCount > minHeapCount) // Favor MaxHeap.
+        return double.CreateChecked(maxHeapPeek);
+      else if (m_minHeap.Peek() is var minHeapPeek && minHeapCount > maxHeapCount) // Favor MinHeap.
+        return double.CreateChecked(minHeapPeek);
+      else // Counts are equal and not zero. It's a tie with numbers available.
+        return double.CreateChecked(maxHeapPeek + minHeapPeek) / 2.0;
     }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ {EffectiveMedian()} [{m_minHeap.Count}:{m_maxHeap.Count}] }}";
+    public override string ToString() => EffectiveMedian().ToString();
   }
 }

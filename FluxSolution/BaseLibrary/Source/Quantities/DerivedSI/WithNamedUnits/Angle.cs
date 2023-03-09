@@ -469,10 +469,12 @@
       #endregion Overloaded operators
 
       #region Implemented interfaces
-      // IComparable<>
-      public int CompareTo(Angle other) => m_radAngle.CompareTo(other.m_radAngle);
+
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Angle o ? CompareTo(o) : -1;
+
+      // IComparable<>
+      public int CompareTo(Angle other) => m_radAngle.CompareTo(other.m_radAngle);
 
       #region IConvertible
       public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -495,15 +497,12 @@
       #endregion IConvertible
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{ToUnitString(DefaultUnit)}";
-
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{ToUnitString(DefaultUnit)}";
       public double Value { get => m_radAngle; init => m_radAngle = value; }
-      // IUnitQuantifiable<>
 
+      // IUnitQuantifiable<>
       public string ToUnitString(AngleUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))}{unit.GetUnitSpacing(preferUnicode, useFullName)}{unit.GetUnitString(preferUnicode, useFullName)}";
-
       public double ToUnitValue(AngleUnit unit = DefaultUnit)
         => unit switch
         {

@@ -13,13 +13,12 @@
     }
 
     #region Implemented interfaces
+
     // IConstraint
-    
-    public int AppliesForItems
-      => m_appliesForItems;
-    
-    public bool Invoke()
-      => m_predicate?.Invoke() ?? default;
+    public int AppliesForItems => m_appliesForItems;
+
+    public bool Invoke() => m_predicate?.Invoke() ?? default;
+
     #endregion Implemented interfaces
   }
 }

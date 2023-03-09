@@ -81,10 +81,12 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
-      // IComparable<T>
-      public int CompareTo(Mass other) => m_value.CompareTo(other.m_value);
+
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Mass o ? CompareTo(o) : -1;
+
+      // IComparable<T>
+      public int CompareTo(Mass other) => m_value.CompareTo(other.m_value);
 
       #region IConvertible
       public System.TypeCode GetTypeCode() => System.TypeCode.Object;
@@ -110,14 +112,12 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
       public double Value { get => m_value; init => m_value = value; }
+
       // IUnitQuantifiable<>
       public string ToUnitString(MassUnit unit, string? valueFormat = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-
       public double ToUnitValue(MassUnit unit = DefaultUnit)
         => unit switch
         {
@@ -129,6 +129,7 @@ namespace Flux
           MassUnit.Tonne => m_value / 1000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
+
       #endregion Implemented interfaces
 
       public override string ToString() => ToQuantityString();
