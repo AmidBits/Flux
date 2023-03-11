@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.DataStructures
 {
   public sealed class ImmutableAvlTree<TKey, TValue>

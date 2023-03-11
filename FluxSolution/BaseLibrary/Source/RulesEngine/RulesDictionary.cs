@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.RulesEngine
 {
   public sealed class RulesDictionary

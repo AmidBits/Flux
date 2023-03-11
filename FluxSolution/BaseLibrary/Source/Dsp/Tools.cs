@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Dsp
 {
   // https://github.com/safchain/sa_dsp/blob/master/jni/dsp/limit/SimpleLimit.cpp
@@ -20,6 +18,6 @@ namespace Flux.Dsp
     /// <summary>Compute the root mean square (RMS) of the samples in the sequence.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Root_mean_square"/>
     public static SampleMono ComputeRms(System.Collections.Generic.IEnumerable<SampleMono> sampleBuffer)
-      => new(System.Math.Sqrt(sampleBuffer.Average(sample => sample.FrontCenter * sample.FrontCenter)));
+      => new(System.Math.Sqrt(System.Linq.Enumerable.Average(sampleBuffer, sample => sample.FrontCenter * sample.FrontCenter)));
   }
 }

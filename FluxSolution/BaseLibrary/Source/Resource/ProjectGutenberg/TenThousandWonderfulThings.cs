@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.ProjectGutenberg
 {
   public sealed class TenThousandWonderfulThings

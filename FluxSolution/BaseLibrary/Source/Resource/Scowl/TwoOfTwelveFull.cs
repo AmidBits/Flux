@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.Scowl
 {
   /// <summary>The records from 2Of12Full word list.</summary>

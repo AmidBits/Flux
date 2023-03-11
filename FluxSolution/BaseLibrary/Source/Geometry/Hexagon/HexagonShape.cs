@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Geometry
 {
   // https://en.wikipedia.org/wiki/Centered_hexagonal_number

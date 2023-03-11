@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.Ucd
 {
   /// <summary>The Unicode character database.</summary>

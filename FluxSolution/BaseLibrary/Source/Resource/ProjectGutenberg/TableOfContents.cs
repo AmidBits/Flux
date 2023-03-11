@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</summary>

@@ -5,6 +5,7 @@ namespace Flux
     /// <summary>Returns the file name (without extension) of the process executable.</summary>
     public static string AppDomainName
       => System.AppDomain.CurrentDomain.FriendlyName;
+
     /// <summary>Returns the file path of the process executable.</summary>
     public static System.Uri AppDomainPath
       => new(System.AppDomain.CurrentDomain.RelativeSearchPath ?? System.AppDomain.CurrentDomain.BaseDirectory ?? typeof(Locale).Module.FullyQualifiedName);
@@ -15,7 +16,7 @@ namespace Flux
 
     /// <summary>Returns the DNS primary host name of the computer. Includes the fully qualified domain, if the computer is registered in a domain.</summary>
     public static string ComputerDnsPrimaryHostName
-      => System.Net.Dns.GetHostEntry(@"LocalHost").HostName;
+      => System.Net.Dns.GetHostEntry("LocalHost").HostName;
 
     /// <summary>Returns the descriptive text of the current platform identifier.</summary>
     public static string EnvironmentOsTitle
@@ -54,13 +55,13 @@ namespace Flux
     }
 
     /// <summary>Returns the version of the hosting framework.</summary>
-    public static VersionEx FrameworkVersion
+    public static Version FrameworkVersion
     {
       get
       {
         var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
 
-        if (VersionEx.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
+        if (Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
           return version;
 
         return new();
@@ -82,6 +83,7 @@ namespace Flux
     /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static string RuntimeOsArchitecture
       => System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString();
+
     /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static string RuntimeOsTitle
     {
@@ -116,8 +118,13 @@ namespace Flux
 
         var ec = new System.ComponentModel.EnumConverter(typeof(System.Environment.SpecialFolder));
 
-        foreach (var name in System.Linq.Enumerable.OrderBy(System.Enum.GetNames(typeof(System.Environment.SpecialFolder)), n => n))
+        var names = System.Enum.GetNames(typeof(System.Environment.SpecialFolder));
+        System.Array.Sort(names);
+
+        for (var index = 0; index < names.Length; index++)
         {
+          var name = names[index];
+
           var ev = (System.Environment.SpecialFolder?)ec.ConvertFromString(name);
 
           var fp = System.Environment.GetFolderPath(ev ?? throw new System.NullReferenceException());
@@ -135,15 +142,16 @@ namespace Flux
     {
       get
       {
-        var platforms = new string[] { @"Android", @"Browser", @"FreeBSD", @"iOS", @"Linux", @"macOS", @"tvOS", @"watchOS", @"Windows" };
+        var platformStrings = new string[] { @"Android", @"Browser", @"FreeBSD", @"iOS", @"Linux", @"macOS", @"tvOS", @"watchOS", @"Windows" };
 
-        for (var index = platforms.Length - 1; index >= 0; index--)
-          if (System.OperatingSystem.IsOSPlatform(platforms[index]))
-            return platforms[index];
+        for (var index = platformStrings.Length - 1; index >= 0; index--)
+          if (platformStrings[index] is var platformString && System.OperatingSystem.IsOSPlatform(platformString))
+            return platformString;
 
         return string.Empty;
       }
     }
+
     /// <summary>Returns the enumerated operating system platform version found in <see cref="System.OperatingSystem"/>. If no version can be determined, 0.0.0.0 is returned.</summary>
     public static System.Version SystemOsVersion
     {
@@ -174,6 +182,7 @@ namespace Flux
     /// <summary>Returns the number of ticks in the timer mechanism from <see cref="System.Diagnostics.Stopwatch"/>.</summary>
     public static long TimerTickCounter
       => System.Diagnostics.Stopwatch.GetTimestamp();
+
     /// <summary>Returns the number of ticks per seconds of the timer mechanism from <see cref="System.Diagnostics.Stopwatch"/>.</summary>
     public static long TimerTickResolution
       => System.Diagnostics.Stopwatch.Frequency;

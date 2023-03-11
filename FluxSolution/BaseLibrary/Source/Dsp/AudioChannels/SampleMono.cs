@@ -43,7 +43,7 @@
 
     }
     public static SampleMono Mix(params SampleMono[] mono)
-      => Mix(mono.AsEnumerable());
+      => Mix(System.Linq.Enumerable.AsEnumerable(mono));
     #endregion Static methods
 
     #region Overloaded operators

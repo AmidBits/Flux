@@ -10,6 +10,6 @@ namespace Flux
     /// <summary>Converts a sequence of <see cref="System.Collections.Generic.KeyValuePair{TKey, TValue}"/> into strings.</summary>
     public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> source, char horizontalSeparator = '\u003D')
       where TKey : notnull
-      => source.Select(kvp => $"{kvp.Key}{horizontalSeparator}{kvp.Value}");
+      => System.Linq.Enumerable.Select(source, kvp => $"{kvp.Key}{horizontalSeparator}{kvp.Value}");
   }
 }

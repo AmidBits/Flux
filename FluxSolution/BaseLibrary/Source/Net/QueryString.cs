@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Net
 {
   public static class QueryString

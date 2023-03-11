@@ -1,19 +1,5 @@
 ﻿using System;
-using System.Buffers;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using System.Xml.Schema;
 using Flux;
-using Flux.ApproximateEquality;
-using Flux.Formatting;
-using Flux.Geometry;
-using Flux.Interpolation;
-using Flux.Quantities;
-using Flux.Text;
 using Microsoft.VisualBasic.FileIO;
 
 // C# Interactive commands:

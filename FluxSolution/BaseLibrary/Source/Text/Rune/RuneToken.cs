@@ -1,3 +1,5 @@
+using System.Linq;
+
 /// <summary>A rune is a Unicode code point.</summary>
 namespace Flux.Text
 {

@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Net
 {
   /// <summary>Event arguments for when data is received.</summary>

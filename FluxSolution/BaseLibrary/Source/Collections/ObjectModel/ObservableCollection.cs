@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   /// <summary>An ObservableCollection class with added functionality for items PropertyChanged causing OnCollectionChanged to be fired when item fields/properties are changed.</summary>
@@ -39,11 +37,11 @@ namespace Flux
       if (e is null) throw new System.ArgumentNullException(nameof(e));
 
       if (e.OldItems != null)
-        foreach (T item in e.OldItems.Cast<T>())
+        foreach (T item in System.Linq.Enumerable.Cast<T>(e.OldItems))
           item.PropertyChanged -= OnItemPropertyChanged;
 
       if (e.NewItems != null)
-        foreach (T item in e.NewItems.Cast<T>())
+        foreach (T item in System.Linq.Enumerable.Cast<T>(e.NewItems))
           item.PropertyChanged += OnItemPropertyChanged;
 
       if (!_suppressOnCollectionChanged)

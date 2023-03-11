@@ -1,4 +1,6 @@
-﻿namespace Flux
+﻿using System.Linq;
+
+namespace Flux
 {
   public static partial class BitArrayEm
   {

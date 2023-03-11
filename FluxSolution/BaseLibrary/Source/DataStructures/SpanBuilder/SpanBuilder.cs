@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux
 {
   public ref struct SpanBuilder<T>
@@ -528,11 +530,7 @@ namespace Flux
       if (endIndex < startIndex || endIndex >= Length) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
 
       for (startIndex += m_head, endIndex += m_head; startIndex < endIndex; startIndex++, endIndex--)
-      {
-        var tmp = m_array[startIndex];
-        m_array[startIndex] = m_array[endIndex];
-        m_array[endIndex] = tmp;
-      }
+        (m_array[endIndex], m_array[startIndex]) = (m_array[startIndex], m_array[endIndex]);
 
       return this;
     }

@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux
 {
   public static partial class ExtensionMethodsReadOnlySpan
@@ -11,7 +13,7 @@ namespace Flux
 
       var intersection = new System.Collections.Generic.List<T>();
 
-      var set = new HashSet<T>(equalityComparer);
+      var set = new System.Collections.Generic.HashSet<T>(equalityComparer);
 
       foreach (var element in target)
         set.Add(element);

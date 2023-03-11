@@ -1,4 +1,6 @@
 ﻿#if ZAMPLEZ
+using System.Linq;
+
 namespace Flux
 {
   public static partial class Zamplez

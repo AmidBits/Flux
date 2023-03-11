@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Convert
@@ -26,7 +24,7 @@ namespace Flux
       return false;
     }
 
-    private static readonly System.Reflection.MethodInfo m_changeTypeOfT = typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Single(mi => mi.IsGenericMethod && mi.Name.Equals(nameof(ChangeType), System.StringComparison.Ordinal) && mi.GetParameters().Length == 2);
+    private static readonly System.Reflection.MethodInfo m_changeTypeOfT = System.Linq.Enumerable.Single(typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static), mi => mi.IsGenericMethod && mi.Name.Equals(nameof(ChangeType), System.StringComparison.Ordinal) && mi.GetParameters().Length == 2);
 
     /// <summary>Complement the built-in System.IConvertible functionality with a sequential conversion chain.</summary>
     [System.CLSCompliant(false)]

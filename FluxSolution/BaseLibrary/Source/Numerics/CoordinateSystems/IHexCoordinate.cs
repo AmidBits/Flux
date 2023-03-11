@@ -1,4 +1,6 @@
-﻿namespace Flux
+﻿using System.Linq;
+
+namespace Flux
 {
   #region ExtensionMethods
   public static partial class ExtensionMethods

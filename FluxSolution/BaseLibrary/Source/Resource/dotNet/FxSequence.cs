@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.DotNet
 {
   /// <summary>.NET time zones.</summary>

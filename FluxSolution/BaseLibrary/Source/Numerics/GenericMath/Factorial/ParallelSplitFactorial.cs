@@ -9,13 +9,13 @@ namespace Flux
       return task.Result;
     }
 
-    public static async Task<System.Numerics.BigInteger> ComputeFactorialAsync(this System.Numerics.BigInteger number)
+    public static async System.Threading.Tasks.Task<System.Numerics.BigInteger> ComputeFactorialAsync(this System.Numerics.BigInteger number)
     {
       if (number < 0) throw new ArgumentOutOfRangeException(nameof(number));
       else if (number == 0) return 1;
       else if (number <= 2) return number;
 
-      var tasks = new List<Task<System.Numerics.BigInteger>>(128);
+      var tasks = new System.Collections.Generic.List<System.Threading.Tasks.Task<System.Numerics.BigInteger>>(128);
 
       System.Numerics.BigInteger high = number, low = number >> 1, shift = low;
 
@@ -28,7 +28,7 @@ namespace Flux
         shift += low;
       }
 
-      await Task.WhenAll(tasks).ConfigureAwait(false);
+      await System.Threading.Tasks.Task.WhenAll(tasks).ConfigureAwait(false);
 
       var r = System.Numerics.BigInteger.One;
       var p = System.Numerics.BigInteger.One;
@@ -44,7 +44,7 @@ namespace Flux
 
       return r * p << (int)shift;
 
-      static async Task<System.Numerics.BigInteger> Product(System.Numerics.BigInteger n, System.Numerics.BigInteger m)
+      static async System.Threading.Tasks.Task<System.Numerics.BigInteger> Product(System.Numerics.BigInteger n, System.Numerics.BigInteger m)
       {
         n |= 1; // Round n up to the next odd number
         m = m - 1 | 1; // Round m down to the next odd number

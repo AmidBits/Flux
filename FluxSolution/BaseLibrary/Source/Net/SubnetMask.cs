@@ -1,4 +1,6 @@
-﻿namespace Flux.Net
+﻿using System.Linq;
+
+namespace Flux.Net
 {
   /// <summary>Is this API really needed with IPv6 around anyways?</summary>
   public static class SubnetMask

@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Text
 {
   /// <summary>NameGenerator based on Markov chains.</summary>

@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Text
 {
   public static class RuneSequences

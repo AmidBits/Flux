@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux
 {
   public static partial class ExtensionMethodsSpan

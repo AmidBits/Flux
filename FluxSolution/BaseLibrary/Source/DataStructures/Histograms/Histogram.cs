@@ -26,7 +26,7 @@ namespace Flux
       where TKey : notnull
       where TFrequency : System.Numerics.IBinaryInteger<TFrequency>
     {
-      private System.Collections.Generic.SortedDictionary<TKey, TFrequency> m_data = new System.Collections.Generic.SortedDictionary<TKey, TFrequency>();
+      private readonly System.Collections.Generic.SortedDictionary<TKey, TFrequency> m_data = new();
 
       private TFrequency m_totalFrequency = TFrequency.Zero;
 
@@ -147,7 +147,7 @@ namespace Flux
         m_totalFrequency = TFrequency.Zero;
       }
 
-      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, TFrequency> kvp) => m_data.Contains(kvp);
+      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, TFrequency> kvp) => m_data.TryGetValue(kvp.Key, out var frequency) && kvp.Value == frequency;
 
       public bool ContainsKey(TKey key) => m_data.ContainsKey(key);
 
@@ -168,11 +168,11 @@ namespace Flux
         return false;
       }
 
-      public bool Remove(System.Collections.Generic.KeyValuePair<TKey, TFrequency> kvp) => m_data.Contains(kvp) ? Remove(kvp.Key) : false;
+      public bool Remove(System.Collections.Generic.KeyValuePair<TKey, TFrequency> kvp) => Contains(kvp) && Remove(kvp.Key);
 
       public bool TryGetValue(TKey key, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out TFrequency value) => m_data.TryGetValue(key, out value);
 
-      public System.Collections.Generic.IEnumerator<KeyValuePair<TKey, TFrequency>> GetEnumerator() => m_data.GetEnumerator();
+      public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TFrequency>> GetEnumerator() => m_data.GetEnumerator();
 
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 

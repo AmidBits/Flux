@@ -3,17 +3,17 @@ namespace Flux.Compression
   public interface ICompression
   {
     /// <summary>Compress the source stream to the specified stream using deflate.</summary>
-    abstract void Compress(Stream input, Stream output);
+    abstract void Compress(System.IO.Stream input, System.IO.Stream output);
     /// <summary>Decompress the source stream to the specified stream using deflate.</summary>
-    abstract void Decompress(Stream input, Stream output);
+    abstract void Decompress(System.IO.Stream input, System.IO.Stream output);
 
     /// <summary>Attempts to compress the source byte array to new byte array using deflate.</summary>
     bool TryCompress(byte[] data, out byte[] result)
     {
       try
       {
-        using var input = new MemoryStream(data);
-        using var output = new MemoryStream();
+        using var input = new System.IO.MemoryStream(data);
+        using var output = new System.IO.MemoryStream();
         Compress(input, output);
         result = output.ToArray();
         return true;
@@ -40,8 +40,8 @@ namespace Flux.Compression
     {
       try
       {
-        using var input = new MemoryStream(data);
-        using var output = new MemoryStream();
+        using var input = new System.IO.MemoryStream(data);
+        using var output = new System.IO.MemoryStream();
         Decompress(input, output);
         result = output.ToArray();
         return true;

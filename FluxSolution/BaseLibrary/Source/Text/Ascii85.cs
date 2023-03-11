@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Text
 {
   /// <see cref="https://en.wikipedia.org/wiki/Ascii85"/>

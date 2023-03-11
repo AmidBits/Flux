@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.W3c
 {
   /// <summary>The character reference names that are supported by HTML, and the code points to which they refer.</summary>

@@ -50,7 +50,7 @@
       else throw new System.ArgumentException(@"The sequence is empty.");
     }
     public static SampleStereo Mix(params SampleStereo[] stereo)
-      => Mix(stereo.AsEnumerable());
+      => Mix(System.Linq.Enumerable.AsEnumerable(stereo));
     #endregion Static methods
   }
 }

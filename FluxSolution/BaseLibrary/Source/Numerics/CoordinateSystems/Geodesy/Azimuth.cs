@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Quantities
 {
   /// <summary>Azimuth, unit of degree. The internal unit here is defined in the range [0, +360). Values are always wrapped within that range.</summary>

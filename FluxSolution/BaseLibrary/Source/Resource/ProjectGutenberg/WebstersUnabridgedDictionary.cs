@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>Get the lines of Webster's Unabridged Dictionary (from gutenberg.com</summary>

@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>A Complete Dictionary of Synonyms and Antonyms by Samuel Fallows (Acdsasf).</summary>

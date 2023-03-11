@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Flux.Resources.Census
 {
   /// <summary>Census all data.</summary>

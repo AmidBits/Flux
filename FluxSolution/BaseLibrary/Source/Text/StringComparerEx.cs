@@ -4,8 +4,8 @@ namespace Flux
   /// <remarks>There is an obvious performance penalty in that the type char is compared using char.ToString() and so proxied as strings.</remarks>
   public sealed class StringComparerEx
     : StringComparer // Inherited IComparer<string> and IEqualityComparer<string>.
-    , IComparer<char>
-    , IEqualityComparer<char>
+    , System.Collections.Generic.IComparer<char>
+    , System.Collections.Generic.IEqualityComparer<char>
   {
     /// <summary>Performs a case-sensitive comparison using the word comparison rules of the current culture.</summary>
     public new static StringComparerEx CurrentCulture { get; } = new StringComparerEx(StringComparer.CurrentCulture);
@@ -41,21 +41,21 @@ namespace Flux
 
     #region Implemented interfaces
     // IComparer<string>
-     public override int Compare(string? x, string? y) => m_stringComparer.Compare(x, y);
+    public override int Compare(string? x, string? y) => m_stringComparer.Compare(x, y);
     // IComparer<char>
-     public int Compare(char x, char y) => m_stringComparer.Compare(x.ToString(), y.ToString());
+    public int Compare(char x, char y) => m_stringComparer.Compare(x.ToString(), y.ToString());
 
     // IEqualityComparer<string>
-     public override bool Equals(string? x, string? y) => m_stringComparer.Equals(x, y);
+    public override bool Equals(string? x, string? y) => m_stringComparer.Equals(x, y);
     // IEqualityComparer<char>
-     public bool Equals(char x, char y) => m_stringComparer.Equals(x.ToString(), y.ToString());
+    public bool Equals(char x, char y) => m_stringComparer.Equals(x.ToString(), y.ToString());
     #endregion Implemented interfaces
 
     #region Object overrides
-     public override int GetHashCode(string s) => m_stringComparer.GetHashCode(s);
-     public int GetHashCode(char c) => m_stringComparer.GetHashCode(c.ToString());
+    public override int GetHashCode(string s) => m_stringComparer.GetHashCode(s);
+    public int GetHashCode(char c) => m_stringComparer.GetHashCode(c.ToString());
 
-     public override string ToString() => $"{GetType().Name} {{ {m_stringComparer} }}";
+    public override string ToString() => $"{GetType().Name} {{ {m_stringComparer} }}";
     #endregion Object overrides
   }
 }

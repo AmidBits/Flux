@@ -1,3 +1,5 @@
+using System.Linq;
+
 /// <summary>A grapheme is a text element in dot NET.</summary>
 namespace Flux.Text
 {

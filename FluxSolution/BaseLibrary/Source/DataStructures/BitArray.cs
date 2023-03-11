@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace Flux
+﻿namespace Flux
 {
   public static partial class ExtensionMethodsBitArray
   {
@@ -47,8 +45,8 @@ namespace Flux
     [System.CLSCompliant(false)] public uint GetUInt32(long index) => (uint)((m_bitArray[index >> 1] >> (int)((index % 2) << 5)) & 0xFFFFFFFFU);
     [System.CLSCompliant(false)] public ulong GetUInt64(long index) => m_bitArray[index];
 
-    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse() => System.Linq.Enumerable.Cast<bool>(this).GetElementsAndIndicesInt64((e, i) => !e).Select(e => e.index);
-    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue() => System.Linq.Enumerable.Cast<bool>(this).GetElementsAndIndicesInt64((e, i) => e).Select(e => e.index);
+    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse() => System.Linq.Enumerable.Select(System.Linq.Enumerable.Cast<bool>(this).GetElementsAndIndicesInt64((e, i) => !e), e => e.index);
+    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue() => System.Linq.Enumerable.Select(System.Linq.Enumerable.Cast<bool>(this).GetElementsAndIndicesInt64((e, i) => e), e => e.index);
 
     [System.CLSCompliant(false)] public void SetAll(ulong value) => System.Array.Fill(m_bitArray, value);
     public void SetAll(bool value) => SetAll(value ? 0xFFFFFFFFFFFFFFFF : 0UL);
@@ -115,7 +113,7 @@ namespace Flux
       for (var index = 0L; index < m_bitLength; index++)
         yield return GetBit(index);
     }
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
     public override string ToString() => $"{GetType().Name} {{ Length = {Length} }}";
   }

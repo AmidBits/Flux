@@ -5,13 +5,13 @@ namespace Flux
   {
     public static readonly System.Text.RegularExpressions.Regex ParseRegex = new(@"(?<=&#)\d+(?=;)", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
 
-    public static IEnumerable<System.Text.Rune> Parse(string text)
-      => ParseRegex.Matches(text).Where(m => m.Success).Select(m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.Number, null)));
-    public static bool TryParse(string text, out List<System.Text.Rune> result)
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> Parse(string text)
+      => System.Linq.Enumerable.Select(System.Linq.Enumerable.Where(ParseRegex.Matches(text), m => m.Success), m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.Number, null)));
+    public static bool TryParse(string text, out System.Collections.Generic.List<System.Text.Rune> result)
     {
       try
       {
-        result = Parse(text).ToList();
+        result = System.Linq.Enumerable.ToList(Parse(text));
         return true;
       }
       catch { }
