@@ -74,7 +74,7 @@ namespace Flux
         if (maxRandomVariation > GenericMath.Epsilon1E7)
           angle += Random.NumberGenerators.Crypto.NextDouble(0, circularArc * maxRandomVariation);
 
-        var (x, y) = Flux.Convert.RotationAngleToCartesian2Ex(angle);
+        var (x, y) = Convert.RotationAngleToCartesian2Ex(angle);
 
         yield return resultSelector(x * m_x, y * m_y);
       }

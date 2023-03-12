@@ -10,32 +10,32 @@ namespace Flux
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => source.Select(v => TSelf.Abs(v - center)).Sum() / mean;
 
-    /// <summary>The average absolute deviation, or mean absolute deviation (MAD), of a data set is the average of the absolute deviations from a central point.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>
-    public static TSelf AverageAbsoluteDeviationFromMean<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> source)
+
+    public static (TSelf fromMean, TSelf fromMedian, TSelf fromMode) AverageAbsoluteDeviationFrom<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
-      Mean(source, out System.Collections.Generic.List<TSelf> values, out var _, out TSelf mean);
+      var list = source.ToList();
 
-      return AverageAbsoluteDeviation(values, mean, mean);
-    }
-    /// <summary>The average absolute deviation, or mean absolute deviation (MAD), of a data set is the average of the absolute deviations from a central point.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>
-    public static TSelf AverageAbsoluteDeviationFromMedian<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-    {
-      Mean(source, out System.Collections.Generic.List<TSelf> values, out var _, out TSelf mean);
+      Mean(list, out var _, out var _, out TSelf mean);
+      var median = Median(list, out var _);
+      var mode = Mode(list).First().Key;
 
-      return AverageAbsoluteDeviation(values, mean, Median(values));
-    }
-    /// <summary>The average absolute deviation, or mean absolute deviation (MAD), of a data set is the average of the absolute deviations from a central point.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>
-    public static TSelf AverageAbsoluteDeviationFromMode<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-    {
-      Mean(source, out System.Collections.Generic.List<TSelf> values, out var _, out TSelf mean);
+      var fromMean = TSelf.Zero;
+      var fromMedian = TSelf.Zero;
+      var fromMode = TSelf.Zero;
 
-      return AverageAbsoluteDeviation(values, mean, Mode(values).First().Key);
+      foreach (var value in list)
+      {
+        fromMean += TSelf.Abs(value - mean);
+        fromMedian += TSelf.Abs(value - median);
+        fromMode += TSelf.Abs(value - mode);
+      }
+
+      fromMean /= mean;
+      fromMedian /= mean;
+      fromMode /= mean;
+
+      return (fromMean, fromMedian, fromMode);
     }
   }
 }

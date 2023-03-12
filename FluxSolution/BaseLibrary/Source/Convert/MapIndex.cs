@@ -2,7 +2,6 @@ namespace Flux
 {
   public static partial class Convert
   {
-
     /// <summary>Converts the <see cref="CartesianCoordinate2{TSelf}"/> to a 'mapped' unique index.</summary>
     /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a grid <paramref name="width"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>
     public static TSelf Cartesian2ToMapIndex<TSelf>(TSelf x, TSelf y, TSelf width)

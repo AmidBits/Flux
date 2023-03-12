@@ -1,5 +1,5 @@
 ﻿using Flux;
-
+using Flux.Quantities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Foundation.Units
@@ -27,7 +27,7 @@ namespace Foundation.Units
     {
       var a = new Flux.Quantities.Angle(1, Flux.Quantities.AngleUnit.Degree);
 
-      var u = a.ToAzimuth();
+      var u = new Azimuth(a.InDegrees);
 
       Assert.AreEqual(a.ToUnitValue(Flux.Quantities.AngleUnit.Degree), u.Value);
     }

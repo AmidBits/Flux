@@ -7,23 +7,32 @@ namespace Types
   [TestClass]
   public class Double
   {
-    double[] d = new double[] { 9d, 27d, 63d, 81d, 90d };
+    private readonly double[] d = new double[] { 9d, 27d, 63d, 81d, 90d };
 
     [TestMethod]
-    public void AverageAbsoluteDeviationFromMean()
+    public void AverageAbsoluteDeviationFrom()
     {
-      Assert.AreEqual(2.6666666666666665, d.AverageAbsoluteDeviationFromMean(), nameof(AverageAbsoluteDeviationFromMean));
+      var (mean, median, mode) = d.AverageAbsoluteDeviationFrom();
+      Assert.AreEqual(2.6666666666666665, mean, "AverageAbsoluteDeviationFrom[mean]");
+      Assert.AreEqual(2.5, median, "AverageAbsoluteDeviationFrom[median]");
+      Assert.AreEqual(4.166666666666667, mode, "AverageAbsoluteDeviationFrom[mode");
     }
-    [TestMethod]
-    public void AverageAbsoluteDeviationFromMedian()
-    {
-      Assert.AreEqual(2.5, d.AverageAbsoluteDeviationFromMedian(), nameof(AverageAbsoluteDeviationFromMedian));
-    }
-    [TestMethod]
-    public void AverageAbsoluteDeviationFromMode()
-    {
-      Assert.AreEqual(4.166666666666667, d.AverageAbsoluteDeviationFromMode(), nameof(AverageAbsoluteDeviationFromMode));
-    }
+
+    //[TestMethod]
+    //public void AverageAbsoluteDeviationFromMean()
+    //{
+    //  Assert.AreEqual(2.6666666666666665, d.AverageAbsoluteDeviationFromMean(), nameof(AverageAbsoluteDeviationFromMean));
+    //}
+    //[TestMethod]
+    //public void AverageAbsoluteDeviationFromMedian()
+    //{
+    //  Assert.AreEqual(2.5, d.AverageAbsoluteDeviationFromMedian(), nameof(AverageAbsoluteDeviationFromMedian));
+    //}
+    //[TestMethod]
+    //public void AverageAbsoluteDeviationFromMode()
+    //{
+    //  Assert.AreEqual(4.166666666666667, d.AverageAbsoluteDeviationFromMode(), nameof(AverageAbsoluteDeviationFromMode));
+    //}
 
     [TestMethod]
     public void Mean()

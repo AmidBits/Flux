@@ -18,16 +18,16 @@ namespace Flux.Quantities
     /// <summary>Creates a new Latitude from the specfied Angle instance. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
     public Latitude(Quantities.Angle angle) : this(angle.ToUnitValue(Quantities.AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
+    public double InRadians => Quantities.Angle.ConvertDegreeToRadian(m_latitude);
+
     public string SexagesimalDegreeString => ToSexagesimalDegreeString();
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
-    public double GetMercatorProjectedY() => System.Math.Clamp(System.Math.Log((System.Math.Tan(GenericMath.PiOver4 + ToRadians() / 2))), -System.Math.PI, System.Math.PI);
+    public double GetMercatorProjectedY() => System.Math.Clamp(System.Math.Log((System.Math.Tan(GenericMath.PiOver4 + InRadians / 2))), -System.Math.PI, System.Math.PI);
 
     public Quantities.Angle ToAngle() => new(m_latitude, Quantities.AngleUnit.Degree);
-
-    public double ToRadians() => Quantities.Angle.ConvertDegreeToRadian(m_latitude);
 
     public string ToSexagesimalDegreeString(Quantities.SexagesimalDegreeFormat format = Quantities.SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
       => ToAngle().ToSexagesimalDegreeString(format, Quantities.SexagesimalDegreeDirection.NorthSouth, -1, useSpaces, preferUnicode);

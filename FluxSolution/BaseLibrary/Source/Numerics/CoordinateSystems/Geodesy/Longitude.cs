@@ -15,6 +15,8 @@ namespace Flux.Quantities
     /// <summary>Creates a new Longitude from the specfied Angle instance. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(Quantities.Angle angle) : this(angle.ToUnitValue(Quantities.AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
+    public double InRadians => Quantities.Angle.ConvertDegreeToRadian(m_longitude);
+
     public string SexagesimalDegreeString => ToSexagesimalDegreeString();
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
@@ -23,11 +25,9 @@ namespace Flux.Quantities
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
-    public double GetMercatorProjectedX() => ToRadians();
+    public double GetMercatorProjectedX() => InRadians;
 
     public Quantities.Angle ToAngle() => new(m_longitude, Quantities.AngleUnit.Degree);
-
-    public double ToRadians() => Quantities.Angle.ConvertDegreeToRadian(m_longitude);
 
     public string ToSexagesimalDegreeString(Quantities.SexagesimalDegreeFormat format = Quantities.SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
       => ToAngle().ToSexagesimalDegreeString(format, Quantities.SexagesimalDegreeDirection.WestEast, -1, useSpaces, preferUnicode);

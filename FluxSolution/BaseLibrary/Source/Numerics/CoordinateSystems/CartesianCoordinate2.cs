@@ -1,3 +1,5 @@
+using Flux.Quantities;
+
 namespace Flux.Numerics
 {
   /// <summary>A 2-dimensional cartesian coordinate.</summary>
@@ -35,19 +37,6 @@ namespace Flux.Numerics
     public TSelf Y { get => m_y; init => m_y = value; }
 
     #region Static methods
-
-    /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
-    /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a <paramref name="gridWidth"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
-    public static CartesianCoordinate2<TSelf> ConvertFromUniqueIndex(TSelf uniqueIndex, TSelf gridWidth)
-      => new(
-        uniqueIndex % gridWidth,
-        uniqueIndex / gridWidth
-      );
-
-    /// <summary>Converts the <see cref="CartesianCoordinate2{TSelf}"/> to a 'mapped' unique index.</summary>
-    /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a <paramref name="gridWidth"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>
-    public static TSelf ConvertToUniqueIndex(TSelf x, TSelf y, TSelf gridWidth)
-      => x + (y * gridWidth);
 
     [System.Text.RegularExpressions.GeneratedRegex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$", System.Text.RegularExpressions.RegexOptions.Compiled)]
     private static partial System.Text.RegularExpressions.Regex ParsingRegex();

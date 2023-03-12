@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.Quantities
 {
-  /// <summary>Azimuth, unit of degree. The internal unit here is defined in the range [0, +360). Values are always wrapped within that range.</summary>
+  /// <summary>Azimuth, a.k.a. bearing, unit of degree. The internal unit here is defined in the range [0, +360). Values are always wrapped within that range.</summary>
   /// <remarks>It may seem unreasonable to perform arithmetic with what could be perceived as a compass quantity, but this really is just another angle quantity hardcoded to degrees and a range of [0, +360).</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public readonly record struct Azimuth
@@ -18,9 +18,9 @@ namespace Flux.Quantities
     /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
     public Azimuth(double azimuth) => m_azimuth = WrapAzimuth(azimuth);
 
-    public Quantities.Angle ToAngle() => new(m_azimuth, Quantities.AngleUnit.Degree);
+    public double InRadians => Quantities.Angle.ConvertDegreeToRadian(m_azimuth);
 
-    public double ToRadians() => Quantities.Angle.ConvertDegreeToRadian(m_azimuth);
+    public Quantities.Angle ToAngle() => new(m_azimuth, Quantities.AngleUnit.Degree);
 
     #region Static methods
 

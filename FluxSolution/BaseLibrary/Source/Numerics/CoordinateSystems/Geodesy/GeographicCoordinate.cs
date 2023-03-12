@@ -39,8 +39,8 @@ namespace Flux.Numerics
     public GeographicCoordinate(double latitude, double longitude, double altitude = 1.0)
     {
       m_altitude = altitude >= MinAltitudeInMeters && altitude <= MaxAltitudeInMeters ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
-      m_lat = new Quantities.Latitude(latitude).ToRadians();
-      m_lon = new Quantities.Longitude(longitude).ToRadians();
+      m_lat = new Quantities.Latitude(latitude).InRadians;
+      m_lon = new Quantities.Longitude(longitude).InRadians;
     }
 
     /// <summary></summary>
@@ -58,15 +58,14 @@ namespace Flux.Numerics
     public double Altitude { get => m_altitude; init => m_altitude = value; }
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => Quantities.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Quantities.Latitude(value).ToRadians(); }
+    public double Latitude { get => Quantities.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Quantities.Latitude(value).InRadians; }
 
-    public double LatitudeInRadius => m_lat;
+    public double LatitudeInRadians => m_lat;
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => Quantities.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Quantities.Longitude(value).ToRadians(); }
+    public double Longitude { get => Quantities.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Quantities.Longitude(value).InRadians; }
 
-    public double LongitudeInRadius => m_lon;
-
+    public double LongitudeInRadians => m_lon;
 
     #region Static members
 
