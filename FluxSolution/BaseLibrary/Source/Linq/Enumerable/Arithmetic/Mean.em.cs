@@ -2,14 +2,14 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethodsNumerics
+  public static partial class Enumerable
   {
     /// <summary>
-    /// <para>Calculate the mean of a sequence, also return the count and the sum of values in the sequence as output parameters.</para>
+    /// <para>Compute the <paramref name="mean"/> of all elements in <paramref name="source"/>, also return the <paramref name="count"/> and the <paramref name="sum"/> of elements as output parameters.</para>
     /// <see href="http://en.wikipedia.org/wiki/Mean"/>
     /// </summary>
     /// <exception cref="System.ArgumentNullException"/>
-    public static void Mean<TValue, TResult>(this System.Collections.Generic.IEnumerable<TValue> source, out int count, out TValue sum, out TResult mean)
+    public static void Mean<TValue, TResult>(this System.Collections.Generic.IEnumerable<TValue> source, out TResult mean, out int count, out TValue sum)
       where TValue : System.Numerics.INumber<TValue>
       where TResult : System.Numerics.IFloatingPoint<TResult>
     {

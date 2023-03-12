@@ -17,7 +17,7 @@
     // IConstraint
     public int AppliesForItems => m_appliesForItems;
 
-    public bool Invoke() => m_predicate?.Invoke() ?? default;
+    public bool Invoke() => m_predicate?.Invoke() ?? throw new System.NotImplementedException(); // NOTE: coalescing used to be "default"!
 
     #endregion Implemented interfaces
   }

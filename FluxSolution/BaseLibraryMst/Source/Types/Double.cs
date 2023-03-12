@@ -12,7 +12,7 @@ namespace Types
     [TestMethod]
     public void AverageAbsoluteDeviationFrom()
     {
-      var (mean, median, mode) = d.AverageAbsoluteDeviationFrom();
+      d.AverageAbsoluteDeviationFrom(out double mean, out double median, out double mode);
       Assert.AreEqual(2.6666666666666665, mean, "AverageAbsoluteDeviationFrom[mean]");
       Assert.AreEqual(2.5, median, "AverageAbsoluteDeviationFrom[median]");
       Assert.AreEqual(4.166666666666667, mode, "AverageAbsoluteDeviationFrom[mode");
@@ -37,7 +37,7 @@ namespace Types
     [TestMethod]
     public void Mean()
     {
-      d.Mean(out int _, out double _, out double result);
+      d.Mean(out double result, out int _, out double _);
 
       Assert.AreEqual(54, result, nameof(Mean));
     }
@@ -45,7 +45,8 @@ namespace Types
     [TestMethod]
     public void Median()
     {
-      Assert.AreEqual(63, d.Median(out var _), nameof(Median));
+      d.Median(out double median, out var _);
+      Assert.AreEqual(63.0, median, nameof(Median));
     }
 
     [TestMethod]

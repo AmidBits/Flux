@@ -4,7 +4,11 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Sum of all System.Numerics.INumber<TSelf> elements.</summary>
+    /// <summary>
+    /// <para>Compute the medoid of <paramref name="source"/>, also return the <paramref name="index"/> and the <paramref name="count"/> of elements as output parameters.</para>
+    /// <see href="http://en.wikipedia.org/wiki/Medoid"/>
+    /// </summary>
+    /// <exception cref="System.ArgumentNullException"/>
     public static TSelf Medoid<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> source, out int index, out int count)
       where TSelf : System.Numerics.INumber<TSelf>
     {

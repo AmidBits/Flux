@@ -326,10 +326,8 @@ namespace Flux
     }
 
     /// <summary>Normalize where the <paramref name="predicate"/> is satisfied using the <paramref name="normalizedValue"/> throughout the builder. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
-    public SpanBuilder<T> NormalizeAll(T normalizedValue, System.Func<T, bool> predicate)
+    public SpanBuilder<T> NormalizeAll(T normalizedValue, System.Func<T, bool>? predicate = null)
     {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-
       var normalizedIndex = 0;
 
       var isPrevious = true; // Set to true in order for trimming to occur on the left.
@@ -338,7 +336,7 @@ namespace Flux
       {
         var character = GetValue(index);
 
-        var isCurrent = predicate(character);
+        var isCurrent = predicate?.Invoke(character) ?? true;
 
         if (!(isPrevious && isCurrent))
         {
@@ -482,17 +480,15 @@ namespace Flux
     public SpanBuilder<T> Remove(int startIndex) => Remove(startIndex, Length - startIndex);
 
     /// <summary>Remove all items where the <paramref name="predicate"/> is satisfied.</summary>
-    public SpanBuilder<T> RemoveAll(System.Func<T, bool> predicate)
+    public SpanBuilder<T> RemoveAll(System.Func<T, bool>? predicate = null)
     {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-
       var removedIndex = 0;
 
       for (var index = 0; index < Length; index++)
       {
         var value = GetValue(index);
 
-        if (!predicate(value))
+        if (!predicate?.Invoke(value) ?? true)
           SetValue(removedIndex++, value);
       }
 

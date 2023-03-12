@@ -10,32 +10,33 @@ namespace Flux
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => source.Select(v => TSelf.Abs(v - center)).Sum() / mean;
 
-
-    public static (TSelf fromMean, TSelf fromMedian, TSelf fromMode) AverageAbsoluteDeviationFrom<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    /// <summary>The average absolute deviation of a data set is the average of the absolute deviations from a central point, in the case of this function: mean, median and mode.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>
+    public static void AverageAbsoluteDeviationFrom<TSelf, TResult>(this System.Collections.Generic.IEnumerable<TSelf> source, out TResult madMean, out TResult madMedian, out TResult madMode)
+      where TSelf : System.Numerics.INumber<TSelf>
+      where TResult : System.Numerics.IFloatingPoint<TResult>
     {
       var list = source.ToList();
 
-      Mean(list, out var _, out var _, out TSelf mean);
-      var median = Median(list, out var _);
-      var mode = Mode(list).First().Key;
+      list.Mean(out TResult mean, out var _, out var _);
+      list.Median(out TResult median, out var _);
+      list.Mode(out var rawMode, out var _); // Mode can be applied on any type of object (not just numerics) and therefor no conversion is performed as in mean and median.
+      var mode = TResult.CreateChecked(rawMode); // We perform our own conversion here.
 
-      var fromMean = TSelf.Zero;
-      var fromMedian = TSelf.Zero;
-      var fromMode = TSelf.Zero;
+      madMean = TResult.Zero;
+      madMedian = TResult.Zero;
+      madMode = TResult.Zero;
 
-      foreach (var value in list)
+      foreach (var value in list.Select(v => TResult.CreateChecked(v)))
       {
-        fromMean += TSelf.Abs(value - mean);
-        fromMedian += TSelf.Abs(value - median);
-        fromMode += TSelf.Abs(value - mode);
+        madMean += TResult.Abs(value - mean);
+        madMedian += TResult.Abs(value - median);
+        madMode += TResult.Abs(value - mode);
       }
 
-      fromMean /= mean;
-      fromMedian /= mean;
-      fromMode /= mean;
-
-      return (fromMean, fromMedian, fromMode);
+      madMean /= mean;
+      madMedian /= mean;
+      madMode /= mean;
     }
   }
 }

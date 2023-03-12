@@ -4,13 +4,15 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Results in a new sequence consisting of 'moded' (i.e. sorted by the most frequent or common) elements in decreasing count of a appearance in the sequence. Uses the specified equality comparer.</summary>
+    /// <summary>Creates a new sequence consisting of 'moded' (i.e. sorted by the most frequent or common) elements in <paramref name="source"/>.</summary>
     /// <see cref="http://en.wikipedia.org/wiki/Mode"/>
-    public static System.Linq.IOrderedEnumerable<System.Collections.Generic.KeyValuePair<TKey, int>> Mode<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey>? equalityComparer = null)
+    public static System.Linq.IOrderedEnumerable<System.Collections.Generic.KeyValuePair<TSource, int>> Mode<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, out TSource mode, out int count)
     {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<TKey>.Default;
+      var sequence = source.GroupBy(t => t).Select(g => new System.Collections.Generic.KeyValuePair<TSource, int>(g.Key, g.Count())).OrderByDescending(kvp => kvp.Value);
 
-      return source.GroupBy(keySelector, equalityComparer).Select(g => new System.Collections.Generic.KeyValuePair<TKey, int>(g.Key, g.Count())).OrderByDescending(kvp => kvp.Value);
+      (mode, count) = sequence.First();
+
+      return sequence;
     }
   }
 }

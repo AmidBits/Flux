@@ -18,10 +18,19 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
+      var nums = new int[] { 2, 2, 3, 4, 14 };
+
+      var cmp1 = nums.CompareCount(2);
+      var cmp2 = nums.CompareCount(14);
+      var cmp3 = nums.CompareCount(5);
+
+      nums.AverageAbsoluteDeviationFrom(out double mean, out double median, out double mode);
+
+
       var n = -2039;
 
-      var text = Flux.Text.PositionalNotation.Base8.NumberToText(n);
-      var number = Flux.Text.PositionalNotation.Base8.TextToNumber(text.AsSpan());
+      var text = Flux.Text.PositionalNotation.Base2.NumberToText(n);
+      var number = Flux.Text.PositionalNotation.Base2.TextToNumber(text.AsSpan());
     }
 
     private static void Main(string[] args)

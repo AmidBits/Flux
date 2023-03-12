@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethodsSpanBuilder
   {
-    /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
+    /// <summary>Makes CamelCase of <paramref name="source"/> words separated by <paramref name="separator"/>. Uses the specified <paramref name="culture"/>.</summary>
     public static SpanBuilder<char> CollapseToCamelCase(ref this SpanBuilder<char> source, char separator = ' ', System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
@@ -26,6 +26,5 @@ namespace Flux
 
       return source;
     }
-    public static SpanBuilder<char> CollapseToCamelCase(ref this SpanBuilder<char> source) => CollapseToCamelCase(ref source, ' ');
   }
 }

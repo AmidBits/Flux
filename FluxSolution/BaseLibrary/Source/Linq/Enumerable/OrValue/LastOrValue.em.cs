@@ -4,10 +4,8 @@ namespace Flux
   {
     /// <summary>Returns the last element in the sequence that satisfies the predicate, or if none is found, the specified value.</summary>
     /// <exception cref="System.ArgumentNullException"/>
-    public static T LastOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate, T value)
+    public static T LastOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, int, bool>? predicate = null)
     {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-
       using var e = source.ThrowIfNull().GetEnumerator();
 
       if (e.MoveNext())
@@ -16,7 +14,7 @@ namespace Flux
 
         do
         {
-          if (e.Current is var current && predicate(current, index))
+          if (e.Current is var current && (predicate?.Invoke(current, index) ?? true))
             value = current;
 
           index++;
@@ -26,13 +24,10 @@ namespace Flux
 
       return value;
     }
+
     /// <summary>Returns the last element in the sequence that satisfies the predicate, or if none is found, the specified value.</summary>
     /// <exception cref="System.ArgumentNullException"/>
-    public static T LastOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate, T value)
-      => LastOrValue(source, (e, i) => predicate(e), value);
-    /// <summary>Returns the last element in the sequence, or if none is found, the specified value.</summary>
-    /// <exception cref="System.ArgumentNullException"/>
-    public static T LastOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
-      => LastOrValue(source, (e, i) => true, value);
+    public static T LastOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, bool>? predicate = null)
+      => LastOrValue(source, value, (e, i) => predicate?.Invoke(e) ?? true);
   }
 }

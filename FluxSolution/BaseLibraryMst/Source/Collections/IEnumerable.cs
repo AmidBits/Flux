@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Collections.Generic
 {
@@ -20,6 +19,14 @@ namespace Collections.Generic
     public void Choose()
     {
       CollectionAssert.AreEqual(new int[] { 17, 23, 57 }, integers.Choose((e, i) => (i & 1) == 1, (e, i) => e).ToArray());
+    }
+
+    [TestMethod]
+    public void CompareCount()
+    {
+      Assert.AreEqual(1, integers.CompareCount(4, (e, i) => true)); // Has more than 4 elements.
+      Assert.AreEqual(-1, integers.CompareCount(4000, (e, i) => true)); // Has less than 4000 elements.
+      Assert.AreEqual(0, integers.CompareCount(3, (e, i) => (i & 1) == 1)); // Has 3 odd elements.
     }
 
     [TestMethod]
@@ -80,18 +87,6 @@ namespace Collections.Generic
     }
 
     [TestMethod]
-    public void IsCountAtLeast()
-    {
-      Assert.IsTrue(integers.IsCountAtLeast(4, (e, i) => true));
-    }
-
-    [TestMethod]
-    public void IsCountAtMost()
-    {
-      Assert.IsTrue(integers.IsCountAtMost(4000, (e, i) => true));
-    }
-
-    [TestMethod]
     public void Medoid()
     {
       var medoid = integers.Medoid(out var index, out int count);
@@ -104,7 +99,9 @@ namespace Collections.Generic
     [TestMethod]
     public void Mode()
     {
-      Assert.AreEqual(new System.Collections.Generic.KeyValuePair<int, int>(17, 2), integers.Mode(v => v).First());
+      integers.Mode(out var mode, out var count);
+
+      Assert.AreEqual((17, 2), (mode, count));
     }
 
     [TestMethod]

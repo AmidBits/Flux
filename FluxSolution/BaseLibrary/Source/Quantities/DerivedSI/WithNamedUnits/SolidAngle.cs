@@ -6,6 +6,7 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.SolidAngleUnit.Steradian => preferUnicode ? "\u33DB" : "sr",
+        Quantities.SolidAngleUnit.Spat => "sp",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -16,6 +17,7 @@ namespace Flux
     {
       /// <summary>Steradian.</summary>
       Steradian,
+      Spat,
     }
 
     /// <summary>Solid angle. Unit of steradian.</summary>
@@ -32,6 +34,7 @@ namespace Flux
       public SolidAngle(double value, SolidAngleUnit unit = DefaultUnit)
         => m_value = unit switch
         {
+          SolidAngleUnit.Spat => value / (double.Tau + double.Tau),
           SolidAngleUnit.Steradian => value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
@@ -99,6 +102,7 @@ namespace Flux
       public double ToUnitValue(SolidAngleUnit unit = DefaultUnit)
         => unit switch
         {
+          SolidAngleUnit.Spat => m_value * (double.Tau + double.Tau),
           SolidAngleUnit.Steradian => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
