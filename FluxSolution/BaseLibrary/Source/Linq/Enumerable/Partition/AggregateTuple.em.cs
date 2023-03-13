@@ -64,7 +64,7 @@ namespace Flux
     /// <exception cref="System.ArgumentException"/>
     /// <exception cref="System.ArgumentNullException"/>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple2<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, bool wrap, System.Func<TAccumulate, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
+    public static TResult AggregateTuple2<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, bool tupleWrap, System.Func<TAccumulate, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
       if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
@@ -86,7 +86,7 @@ namespace Flux
           }
           while (e.MoveNext());
 
-          if (wrap)
+          if (tupleWrap)
             seed = aggregateComputor(seed, back1, item1, index++);
 
           return resultSelector(seed, index);
@@ -100,12 +100,12 @@ namespace Flux
     /// <exception cref="System.ArgumentException"/>
     /// <exception cref="System.ArgumentNullException"/>
     /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
-    public static TResult AggregateTuple3<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
+    public static TResult AggregateTuple3<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int tupleWrap, System.Func<TAccumulate, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
     {
       if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      if (wrap < 0 || wrap > 2) throw new System.ArgumentException(@"A 3-tuple can only wrap 0, 1 or 2 elements.", nameof(wrap));
+      if (tupleWrap < 0 || tupleWrap > 2) throw new System.ArgumentException(@"A 3-tuple can only wrap 0, 1 or 2 elements.", nameof(tupleWrap));
 
       using var e = source.ThrowIfNull().GetEnumerator();
 
@@ -126,9 +126,9 @@ namespace Flux
             }
             while (e.MoveNext());
 
-            if (wrap >= 1)
+            if (tupleWrap >= 1)
               seed = aggregateComputor(seed, back2, back1, item1, index++);
-            if (wrap == 2)
+            if (tupleWrap == 2)
               seed = aggregateComputor(seed, back1, item1, item2, index++);
 
             return resultSelector(seed, index);

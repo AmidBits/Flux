@@ -21,11 +21,11 @@ namespace Flux
       if (targetStartAt > 0)
         return false;
 
-      while (length-- > 0 && se.MoveNext() && te.MoveNext())
+      while (se.MoveNext() && te.MoveNext() && length-- > 0)
         if (!equalityComparer.Equals(se.Current, te.Current))
           return false;
 
-      return true;
+      return length == 0;
     }
   }
 }

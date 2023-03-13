@@ -19,9 +19,7 @@ namespace Flux
         while (e.MoveNext())
         {
           if (equalityComparer.Equals(previous, e.Current))
-          {
             count++;
-          }
           else
           {
             yield return new System.Collections.Generic.KeyValuePair<T, int>(previous, count);

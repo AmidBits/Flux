@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Flux;
 using Microsoft.VisualBasic.FileIO;
 
@@ -19,6 +20,12 @@ namespace ConsoleApp
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
       var nums = new int[] { 2, 2, 3, 4, 14 };
+
+      var nums2 = new int[] { 2, 2, 3, 4 };
+
+      var seq = nums.SliceEquals(2, nums2, 2, 2);
+
+      var numa = nums.PartitionNgram(2, (e, i) => e).ToArray();
 
       var cmp1 = nums.CompareCount(2);
       var cmp2 = nums.CompareCount(14);

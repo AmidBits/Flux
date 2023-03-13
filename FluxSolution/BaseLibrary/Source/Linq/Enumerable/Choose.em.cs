@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Return a new sequence of elements based on the selector (with indexed parameter).</summary>
+    /// <summary>Return a new sequence of elements based on the selector (with pre-indexed parameter).</summary>
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> Choose<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, bool> predicate, System.Func<TSource, int, TResult> resultSelector)
     {

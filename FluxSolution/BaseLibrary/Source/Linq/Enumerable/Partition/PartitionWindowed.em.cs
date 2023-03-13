@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Apportions the sequence into lists of specified size with the specified stepping (or gap) interleave (0 means next in line and a positive number below size means skip that many, from the start of the previous list). Optionally include trailing lists, i.e. lists that could not be filled to size.</summary>
     /// <exception cref="System.ArgumentNullException"/>
     /// <exception cref="System.ArgumentOutOfRangeException"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionWindowed<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int size, int step, bool includeTrailing, System.Func<System.Collections.Generic.IEnumerable<TSource>, TResult> resultSelector)
+    public static System.Collections.Generic.IEnumerable<TResult> PartitionWindowed<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int size, int step, bool includeTrailing, System.Func<System.Collections.Generic.List<TSource>, TResult> resultSelector)
     {
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 

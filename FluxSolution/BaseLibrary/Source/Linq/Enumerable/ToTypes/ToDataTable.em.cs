@@ -5,12 +5,13 @@ namespace Flux
     /// <summary>Create a new data table from the specified sequence.</summary>
     /// <param name="source">The source sequence.</param>
     /// <param name="tableName">The name of the data table.</param>
-    /// <param name="arraySelector">A array selector used to extract the data for each row in the data table.</param>
-    /// <param name="columnNames">Optional list of column names, if specified it's used, otherwise the first row is used automatically.</param>
+    /// <param name="namesSelector">The column names selector to use.</param>
+    /// <param name="typesSelector">The column types selector to use.</param>
+    /// <param name="valuesSelector">A array selector used to extract the data for each row in the data table.</param>
     /// <exception cref="System.ArgumentNullException"/>
-    public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, object[]> arraySelector, System.Collections.Generic.IList<string>? columnNames = null)
+    public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, object[], string[]> namesSelector, System.Func<TSource, object[], System.Type[]> typesSelector, System.Func<TSource, int, object[]> valuesSelector)
     {
-      if (arraySelector is null) throw new System.ArgumentNullException(nameof(arraySelector));
+      if (valuesSelector is null) throw new System.ArgumentNullException(nameof(valuesSelector));
 
       var dt = new System.Data.DataTable(tableName);
 
@@ -18,57 +19,28 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var fieldNames = columnNames is null ? arraySelector(e.Current) : (object[])columnNames;
+        var rowIndex = 0;
 
-        for (var columnIndex = 0; columnIndex < fieldNames.Length; columnIndex++)
-          dt.Columns.Add($"{fieldNames[columnIndex]}");
+        var names = namesSelector(e.Current, valuesSelector(e.Current, rowIndex));
+        var types = typesSelector(e.Current, valuesSelector(e.Current, rowIndex));
 
-        while (e.MoveNext())
-          dt.Rows.Add(arraySelector(e.Current));
+        for (var columnIndex = 0; columnIndex < names.Length; columnIndex++)
+          dt.Columns.Add(names[columnIndex], types[columnIndex]);
+
+        do
+        {
+          var values = valuesSelector(e.Current, rowIndex++);
+
+          if (values is not null)
+            dt.Rows.Add(values);
+        }
+        while (e.MoveNext());
       }
 
       return dt;
     }
+    public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, int columnCount, System.Func<TSource, int, object[]> valuesSelector)
+      => ToDataTable(source, tableName, (e, ia) => System.Linq.Enumerable.Range(1, columnCount).Select(i => $"Column_{i}").ToArray(), (e, ia) => System.Linq.Enumerable.Range(1, columnCount).Select(i => typeof(object)).ToArray(), valuesSelector);
 
-    /// <summary>Returns a new data table with the data from the source via an array selector (each call with the ordinal index within the sequence) and the column names/types.</summary>
-    /// <exception cref="System.ArgumentNullException"/>
-    public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, int, object[]> arraySelector, System.Collections.Generic.IList<string> columnNames, System.Collections.Generic.IList<System.Type> columnTypes)
-    {
-      if (arraySelector is null) throw new System.ArgumentNullException(nameof(arraySelector));
-      if (columnNames is null) throw new System.ArgumentNullException(nameof(columnNames));
-      if (columnTypes is null) throw new System.ArgumentNullException(nameof(columnTypes));
-
-      var dt = new System.Data.DataTable(tableName);
-
-      for (var columnIndex = 0; columnIndex < columnNames.Count; columnIndex++)
-        dt.Columns.Add(columnNames[columnIndex], columnTypes[columnIndex]);
-
-      var rowIndex = 0;
-
-      foreach (var item in source.ThrowIfNull())
-        if (arraySelector(item, rowIndex++) is var itemArray && itemArray is not null)
-          dt.Rows.Add(arraySelector(item, rowIndex++));
-
-      return dt;
-    }
-    /// <summary>Returns a new data table with the data from the source via an array selector (each call with the ordinal index within the sequence) and the column names.</summary>
-    /// <exception cref="System.ArgumentNullException"/>
-    public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, int, object[]> arraySelector, System.Collections.Generic.IList<string> columnNames)
-    {
-      if (arraySelector is null) throw new System.ArgumentNullException(nameof(arraySelector));
-      if (columnNames is null) throw new System.ArgumentNullException(nameof(columnNames));
-
-      var dt = new System.Data.DataTable(tableName);
-
-      for (var columnIndex = 0; columnIndex < columnNames.Count; columnIndex++)
-        dt.Columns.Add(columnNames[columnIndex]);
-
-      var rowIndex = 0;
-
-      foreach (var item in source.ThrowIfNull())
-        dt.Rows.Add(arraySelector(item, rowIndex++));
-
-      return dt;
-    }
   }
 }

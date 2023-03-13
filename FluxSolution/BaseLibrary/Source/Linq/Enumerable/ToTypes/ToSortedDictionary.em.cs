@@ -34,8 +34,6 @@ namespace Flux
       if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
       if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
 
-      comparer ??= System.Collections.Generic.Comparer<TKey>.Default;
-
       return ToSortedDictionary(source, (e, i) => keySelector(e), (e, i) => valueSelector(e), comparer);
     }
   }

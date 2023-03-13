@@ -19,8 +19,7 @@ namespace Flux
 
         while (e.MoveNext())
         {
-          var item = e.Current;
-          var key = keySelector(item);
+          var key = keySelector(e.Current);
 
           if (!equalityComparer.Equals(g.Key, key))
           {
@@ -29,18 +28,7 @@ namespace Flux
             g = new Flux.Grouping<TKey, TSource>(key);
           }
 
-          g.Add(item);
-
-          //if (equalityComparer.Equals(g.Key, key))
-          //{
-          //  g.Add(item);
-          //}
-          //else
-          //{
-          //  yield return g;
-
-          //  g = new Flux.Grouping<TKey, TSource>(key, item);
-          //}
+          g.Add(e.Current);
         }
 
         if (g.Count > 0)

@@ -16,19 +16,19 @@ namespace Flux
 
       var index = 0;
 
-      var ngram = new System.Collections.Generic.Queue<TSource>(size);
+      var ngram = System.Collections.Immutable.ImmutableQueue<TSource>.Empty;
 
-      while (ngram.Count < size && e.MoveNext())
-        ngram.Enqueue(e.Current);
+      while (ngram.Count() < size && e.MoveNext())
+        ngram = ngram.Enqueue(e.Current);
 
-      if (ngram.Count == size)
+      if (ngram.Count() == size)
       {
         yield return resultSelector(ngram, index++);
 
         while (e.MoveNext())
         {
-          ngram.Dequeue();
-          ngram.Enqueue(e.Current);
+          ngram = ngram.Dequeue();
+          ngram = ngram.Enqueue(e.Current);
 
           yield return resultSelector(ngram, index++);
         }

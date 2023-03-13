@@ -13,6 +13,8 @@ namespace Flux
     public Grouping(TKey key) => m_key = key;
     public Grouping(TKey key, TElement source) : this(key) => m_elements.Add(source);
 
+    #region Implemented interfaces
+
     // IGrouping
     public TKey Key => m_key;
 
@@ -32,5 +34,7 @@ namespace Flux
     // IEnumerable
     public System.Collections.Generic.IEnumerator<TElement> GetEnumerator() => m_elements.GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => m_elements.GetEnumerator();
+
+    #endregion // Implemented interfaces
   }
 }

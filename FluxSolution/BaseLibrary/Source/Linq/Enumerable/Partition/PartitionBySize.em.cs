@@ -6,9 +6,9 @@ namespace Flux
     /// <param name="resultSelector">Receives the elements in the partition and partition index (this is not the element index).</param>
     /// <exception cref="System.ArgumentNullException"/>
     /// <exception cref="System.ArgumentOutOfRangeException"/>
-    public static System.Collections.Generic.IEnumerable<TResult> PartitionBySize<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int sizeOfEachPartition, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
+    public static System.Collections.Generic.IEnumerable<TResult> PartitionBySize<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int partitionSize, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
     {
-      if (sizeOfEachPartition <= 0) throw new System.ArgumentOutOfRangeException(nameof(sizeOfEachPartition), $"Must be greater than or equal to 1 ({sizeOfEachPartition}).");
+      if (partitionSize <= 0) throw new System.ArgumentOutOfRangeException(nameof(partitionSize), $"Must be greater than or equal to 1 ({partitionSize}).");
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
       var enumerator = source.ThrowIfNull().GetEnumerator();
@@ -16,7 +16,7 @@ namespace Flux
       var partitionIndex = 0;
 
       while (enumerator.MoveNext())
-        yield return resultSelector(Yield(enumerator, sizeOfEachPartition), partitionIndex);
+        yield return resultSelector(Yield(enumerator, partitionSize), partitionIndex);
 
       /// <summary>Yield count elements from the sequence.</summary>
       static System.Collections.Generic.IEnumerable<TSource> Yield(System.Collections.Generic.IEnumerator<TSource> e, int count)

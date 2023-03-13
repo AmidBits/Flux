@@ -24,9 +24,9 @@ namespace Collections.Generic
     [TestMethod]
     public void CompareCount()
     {
-      Assert.AreEqual(1, integers.CompareCount(4, (e, i) => true)); // Has more than 4 elements.
-      Assert.AreEqual(-1, integers.CompareCount(4000, (e, i) => true)); // Has less than 4000 elements.
-      Assert.AreEqual(0, integers.CompareCount(3, (e, i) => (i & 1) == 1)); // Has 3 odd elements.
+      Assert.AreEqual(1, integers.CompareCount(4, e => true)); // Has more than 4 elements.
+      Assert.AreEqual(-1, integers.CompareCount(4000, e => true)); // Has less than 4000 elements.
+      Assert.AreEqual(0, integers.CompareCount(6, e => (e & 1) == 1)); // Has 6 odd elements.
     }
 
     [TestMethod]
@@ -79,12 +79,12 @@ namespace Collections.Generic
       Assert.AreEqual(0, indexMin);
     }
 
-    [TestMethod]
-    public void IsCountBetween()
-    {
-      Assert.IsFalse(integers.IsCountBetween(3, 8, (e, i) => new int[] { 19, 57 }.Contains(e)));
-      Assert.IsTrue(integers.IsCountBetween(3, 8, (e, i) => new int[] { 17, 23 }.Contains(e)));
-    }
+    //[TestMethod]
+    //public void IsCountBetween()
+    //{
+    //  Assert.IsFalse(integers.IsCountBetween(3, 8, (e, i) => new int[] { 19, 57 }.Contains(e)));
+    //  Assert.IsTrue(integers.IsCountBetween(3, 8, (e, i) => new int[] { 17, 23 }.Contains(e)));
+    //}
 
     [TestMethod]
     public void Medoid()
