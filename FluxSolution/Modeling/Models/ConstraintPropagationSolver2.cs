@@ -131,7 +131,7 @@ namespace Flux
         matrix[5, index] = kf.Pet != EnumPet.Unknown ? kf.Pet.ToString() : string.Empty;
       }
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.ToConsoleStrings(uniformWidth: true, centerContent: true)));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.ToRank2ConsoleStrings(uniformWidth: true, centerContent: true)));
     }
 
     public static void Example()

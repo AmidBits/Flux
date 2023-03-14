@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class DateTimeEm
+  public static partial class ExtensionMethodsDateTime
   {
     /// <summary>Returns the System.DateTime as a string that complies with ISO 8601. The native .ToString("o") is used internally.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/ISO_8601"/>

@@ -103,7 +103,7 @@
     }
 
     public string ToConsoleBlock(System.Func<TValue, object> resultSelector)
-      => string.Join(System.Environment.NewLine, ToArray(resultSelector).ToConsoleStrings('\0', '\0', true, true));
+      => string.Join(System.Environment.NewLine, ToArray(resultSelector).ToRank2ConsoleStrings('\0', '\0', true, true));
     public string ToConsoleBlock()
       => ToConsoleBlock(v => v.Equals(default(TValue)) ? "\u00B7" : "V");
   }

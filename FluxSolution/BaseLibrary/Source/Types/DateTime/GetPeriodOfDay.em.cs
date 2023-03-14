@@ -40,7 +40,7 @@ namespace Flux
     Noon,
   }
 
-  public static partial class DateTimeEm
+  public static partial class ExtensionMethodsDateTime
   {
     public static PeriodOfDay GetPeriodOfDay(this System.DateTime source)
       => IsMidnight(source) ? PeriodOfDay.Midnight

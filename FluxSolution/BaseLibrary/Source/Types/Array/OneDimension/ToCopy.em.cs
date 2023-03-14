@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayRank2
+  public static partial class ArrayRank1
   {
     /// <summary>Creates a new array with data from the source array. Use pre and post arguments to add surrounding space in the array.</summary>
     public static T[] ToCopy<T>(this T[] source, int offset, int count, int preCount, int postCount)

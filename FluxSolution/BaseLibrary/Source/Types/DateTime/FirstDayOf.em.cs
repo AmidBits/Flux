@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class DateTimeEm
+  public static partial class ExtensionMethodsDateTime
   {
     /// <summary>Determines the first day of the month in the source.</summary>
     public static System.DateTime FirstDayOfMonth(this System.DateTime source)

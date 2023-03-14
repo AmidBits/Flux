@@ -22,30 +22,30 @@ namespace Flux
       var padding = 2;
       padding++;
 
-      var (minLeft, minTop, maxLeft, maxTop) = new string[] { "Array-2D" }.Concat(matrix.ToConsoleStrings(uniformWidth: true)).WriteToConsole();
+      var (minLeft, minTop, maxLeft, maxTop) = new string[] { "Array-2D" }.Concat(matrix.ToRank2ConsoleStrings(uniformWidth: true)).WriteToConsole();
 
       var mrotatec = matrix.RotateClockwise();
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CW" }.Concat(mrotatec.ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CW" }.Concat(mrotatec.ToRank2ConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
 
       var mrotatecc = matrix.RotateCounterClockwise();
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CCW" }.Concat(mrotatecc.ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CCW" }.Concat(mrotatecc.ToRank2ConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
 
       var mtranspose = matrix.TransposeToCopy();
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Transposed" }.Concat(mtranspose.ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Transposed" }.Concat(mtranspose.ToRank2ConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
 
       var minsert = matrix.Insert(1, 1, 4, 0);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Inserted" }.Concat(minsert.ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Inserted" }.Concat(minsert.ToRank2ConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
       minsert.Fill(0, 1, 3, 4, 9);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Fill (Inserted)" }.Concat(minsert.ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Fill (Inserted)" }.Concat(minsert.ToRank2ConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
 
       var mflip0 = matrix.FlipToCopy(0);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_0" }.Concat(mflip0.ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_0" }.Concat(mflip0.ToRank2ConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
 
       var mflip1 = matrix.FlipToCopy(1);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_1" }.Concat(mflip1.ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_1" }.Concat(mflip1.ToRank2ConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
 
       var mremove = matrix.Remove(1, 1);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Remove" }.Concat(mremove.ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Remove" }.Concat(mremove.ToRank2ConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
 
       System.Console.WriteLine();
 
