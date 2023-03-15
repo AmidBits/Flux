@@ -10,7 +10,7 @@ namespace Flux.Numerics
     : ICartesianCoordinate4<double>
   {
     /// <summary>Returns the vector (0,0,0,0).</summary>
-    public static CartesianCoordinate4 Zero;
+    public static readonly CartesianCoordinate4 Zero;
 
     /// <summary>Returns the vector (1,1,1,1).</summary>
     public static CartesianCoordinate4 One => new(1, 1, 1, 1);

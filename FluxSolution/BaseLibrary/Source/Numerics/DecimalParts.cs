@@ -3,7 +3,7 @@ namespace Flux.Numerics
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public record class DecimalParts
   {
-    private uint[] m_bits = new uint[4];
+    private readonly uint[] m_bits = new uint[4];
 
     public DecimalParts(decimal value) => Decimal = value;
     public DecimalParts(System.Int128 integerNumber, int scalingFactor, int signBit)
@@ -15,7 +15,7 @@ namespace Flux.Numerics
 
     public System.Span<int> AsSpan() => (int[])(object)m_bits;
 
-    public decimal Decimal { get => new decimal(AsSpan()); set => decimal.GetBits(value, AsSpan()); }
+    public decimal Decimal { get => new(AsSpan()); set => decimal.GetBits(value, AsSpan()); }
 
     public System.Int128 IntegerNumber
     {

@@ -5,7 +5,7 @@ namespace Flux.DataStructures
   public sealed class ImmutableBinaryTree<TValue>
     : IBinaryTree<TValue>
   {
-    public static IBinaryTree<TValue> Empty = new EmptyBinaryTree();
+    public static readonly IBinaryTree<TValue> Empty = new EmptyBinaryTree();
 
     private readonly IBinaryTree<TValue> m_left;
     private readonly IBinaryTree<TValue> m_right;

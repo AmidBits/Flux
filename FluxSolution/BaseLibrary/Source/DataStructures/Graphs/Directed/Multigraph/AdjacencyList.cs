@@ -102,12 +102,14 @@
     /// <summary>Adds the edge from the vertex x to the vertex y with the value ev, if it is not there.</summary>
     public bool AddEdge(int x, int y, object value)
     {
-      if (m_list.ContainsKey(x) && m_list.ContainsKey(y))
+      if (m_list.TryGetValue(x, out var sub) && sub.TryGetValue(y, out var list))
+      //if (m_list.ContainsKey(x) && m_list.ContainsKey(y))
       {
         if (!m_list[x].ContainsKey(y)) // No matching endpoint exists, so we add it.
           m_list[x].Add(y, new System.Collections.Generic.List<object>());
 
-        m_list[x][y].Add(value);
+        list.Add(value);
+        //m_list[x][y].Add(value);
 
         return true;
       }

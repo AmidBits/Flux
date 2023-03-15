@@ -9,8 +9,9 @@ namespace Flux.Numerics
     where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
   {
     /// <summary>Returns a Quaternion representing no rotation.</summary>
-    public static Quaternion<TSelf> Identity
-      => new(TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
+    public static readonly Quaternion<TSelf> Identity = new(TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
+
+    public static readonly TSelf Half = TSelf.CreateChecked(0.5);
 
     private readonly TSelf m_x;
     private readonly TSelf m_y;
@@ -25,6 +26,7 @@ namespace Flux.Numerics
       m_z = z;
       m_w = w;
     }
+    public Quaternion(ICartesianCoordinate3<TSelf> xyz, TSelf w) : this(xyz.X, xyz.Y, xyz.Z, w) { }
 
     public void Deconstruct(out TSelf x, out TSelf y, out TSelf z, out TSelf w) { x = m_x; y = m_y; z = m_z; w = m_w; }
 
@@ -65,108 +67,112 @@ namespace Flux.Numerics
     #region Static methods
 
     /// <summary>Creates a Quaternion from the given rotation matrix.</summary>
-    //public static Quaternion CreateFromRotationMatrix(IMatrix4<TSelf> matrix)
-    //{
-    //  var q = new Quaternion();
+    public static Quaternion<TSelf> CreateFromRotationMatrix(IMatrix4<TSelf> matrix)
+    {
+      if (matrix.M11 + matrix.M22 + matrix.M33 is var trace && trace > TSelf.Zero)
+      {
+        var s = TSelf.Sqrt(trace + TSelf.One);
+        var invS = Half / s;
 
-    //  var trace = matrix.M11 + matrix.M22 + matrix.M33;
+        return new(
+          (matrix.M23 - matrix.M32) * invS,
+          (matrix.M31 - matrix.M13) * invS,
+          (matrix.M12 - matrix.M21) * invS,
+          Half * s
+        );
+      }
+      else
+      {
+        if (matrix.M11 >= matrix.M22 && matrix.M11 >= matrix.M33)
+        {
+          var s = TSelf.Sqrt(TSelf.One + matrix.M11 - matrix.M22 - matrix.M33);
+          var invS = Half / s;
 
-    //  if (trace > 0.0)
-    //  {
-    //    var s = System.Math.Sqrt(trace + 1);
-    //    q.W = s * 0.5;
-    //    s = 0.5 / s;
-    //    q.X = (matrix.M23 - matrix.M32) * s;
-    //    q.Y = (matrix.M31 - matrix.M13) * s;
-    //    q.Z = (matrix.M12 - matrix.M21) * s;
-    //  }
-    //  else
-    //  {
-    //    if (matrix.M11 >= matrix.M22 && matrix.M11 >= matrix.M33)
-    //    {
-    //      var s = System.Math.Sqrt(1 + matrix.M11 - matrix.M22 - matrix.M33);
-    //      var invS = 0.5 / s;
-    //      q.X = 0.5 * s;
-    //      q.Y = (matrix.M12 + matrix.M21) * invS;
-    //      q.Z = (matrix.M13 + matrix.M31) * invS;
-    //      q.W = (matrix.M23 - matrix.M32) * invS;
-    //    }
-    //    else if (matrix.M22 > matrix.M33)
-    //    {
-    //      var s = System.Math.Sqrt(1 + matrix.M22 - matrix.M11 - matrix.M33);
-    //      var invS = 0.5 / s;
-    //      q.X = (matrix.M21 + matrix.M12) * invS;
-    //      q.Y = 0.5 * s;
-    //      q.Z = (matrix.M32 + matrix.M23) * invS;
-    //      q.W = (matrix.M31 - matrix.M13) * invS;
-    //    }
-    //    else
-    //    {
-    //      var s = System.Math.Sqrt(1 + matrix.M33 - matrix.M11 - matrix.M22);
-    //      var invS = 0.5 / s;
-    //      q.X = (matrix.M31 + matrix.M13) * invS;
-    //      q.Y = (matrix.M32 + matrix.M23) * invS;
-    //      q.Z = 0.5 * s;
-    //      q.W = (matrix.M12 - matrix.M21) * invS;
-    //    }
-    //  }
+          return new(
+            Half * s,
+            (matrix.M12 + matrix.M21) * invS,
+            (matrix.M13 + matrix.M31) * invS,
+            (matrix.M23 - matrix.M32) * invS
+          );
+        }
+        else if (matrix.M22 > matrix.M33)
+        {
+          var s = TSelf.Sqrt(TSelf.One + matrix.M22 - matrix.M11 - matrix.M33);
+          var invS = Half / s;
 
-    //  return q;
-    //}
+          return new(
+            (matrix.M21 + matrix.M12) * invS,
+            Half * s,
+            (matrix.M32 + matrix.M23) * invS,
+            (matrix.M31 - matrix.M13) * invS
+          );
+        }
+        else
+        {
+          var s = TSelf.Sqrt(TSelf.One + matrix.M33 - matrix.M11 - matrix.M22);
+          var invS = Half / s;
 
-    ///// <summary>Returns a quaternion from two vectors.
-    ///// <para><see href="http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final"/></para>
-    ///// <para><see href="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/></para>
-    ///// </summary>
-    //public static Quaternion<TSelf> CreateFromTwoVectors(Numerics.ICartesianCoordinate3<TSelf> u, Numerics.ICartesianCoordinate3<TSelf> v)
-    //{
-    //  var norm_u_norm_v = TSelf.Sqrt(Numerics.ICartesianCoordinate3<TSelf>.DotProduct(u, u) * Numerics.ICartesianCoordinate3<TSelf>.DotProduct(v, v));
-    //  var real_part = norm_u_norm_v + Numerics.ICartesianCoordinate3<TSelf>.DotProduct(u, v);
+          return new(
+            (matrix.M31 + matrix.M13) * invS,
+            (matrix.M32 + matrix.M23) * invS,
+            Half * s,
+            (matrix.M12 - matrix.M21) * invS
+          );
+        }
+      }
+    }
 
-    //  Numerics.CartesianCoordinate3<TSelf> w;
+    /// <summary>Returns a quaternion from two vectors.
+    /// <para><see href="http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final"/></para>
+    /// <para><see href="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/></para>
+    /// </summary>
+    public static Quaternion<TSelf> CreateFromTwoVectors(Numerics.ICartesianCoordinate3<TSelf> u, Numerics.ICartesianCoordinate3<TSelf> v)
+    {
+      var norm_uv = TSelf.Sqrt(Numerics.ICartesianCoordinate3<TSelf>.DotProduct(u, u) * Numerics.ICartesianCoordinate3<TSelf>.DotProduct(v, v));
 
-    //  if (real_part < TSelf.CreateChecked(GenericMath.Epsilon1E7) * norm_u_norm_v)
-    //  {
-    //    real_part = TSelf.Zero;
+      var real_part = norm_uv + Numerics.ICartesianCoordinate3<TSelf>.DotProduct(u, v);
 
-    //    // If u and v are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis. Axis normalisation can happen later, when we normalise the quaternion.
-    //    w = TSelf.Abs(u.X) > TSelf.Abs(u.Z) ? new Numerics.CartesianCoordinate3<TSelf>(-u.Y, u.X, TSelf.Zero) : new Numerics.CartesianCoordinate3<TSelf>(TSelf.Zero, -u.Z, u.Y);
-    //  }
-    //  else
-    //  {
-    //    w = Numerics.ICartesianCoordinate3<TSelf>.CrossProduct(u, v);
-    //  }
+      var w = (real_part < TSelf.CreateChecked(GenericMath.Epsilon1E7) * norm_uv)
+        ? new Quaternion<TSelf>(
+            // If u and v are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis. Axis normalisation can happen later, when we normalise the quaternion.
+            TSelf.Abs(u.X) > TSelf.Abs(u.Z) ? new Numerics.CartesianCoordinate3<TSelf>(-u.Y, u.X, TSelf.Zero) : new Numerics.CartesianCoordinate3<TSelf>(TSelf.Zero, -u.Z, u.Y),
+            TSelf.Zero // Eliminate the negligable "real_part" by simply using zero.
+          )
+        : new Quaternion<TSelf>(
+            Numerics.ICartesianCoordinate3<TSelf>.CrossProduct(u, v),
+            real_part
+          );
 
-    //  return new Quaternion<TSelf>(w.X, w.Y, w.Z, real_part).Normalized();
-    //}
+      return w.Normalized();
+    }
 
-    ///// <summary>Creates a new Quaternion from the given yaw, pitch, and roll, in radians.</summary>
-    ///// <param name="yaw">The yaw angle, in radians, around the Y-axis.</param>
-    ///// <param name="pitch">The pitch angle, in radians, around the X-axis.</param>
-    ///// <param name="roll">The roll angle, in radians, around the Z-axis.</param>
-    //public static Quaternion<TSelf> CreateFromYawPitchRoll(TSelf yaw, TSelf pitch, TSelf roll)
-    //{
-    //  //  Roll first, about axis the object is facing, then pitch upward, then yaw to face into the new heading.
+    /// <summary>Creates a new Quaternion from the given yaw, pitch, and roll, in radians.</summary>
+    /// <param name="yaw">The yaw angle, in radians, around the Y-axis.</param>
+    /// <param name="pitch">The pitch angle, in radians, around the X-axis.</param>
+    /// <param name="roll">The roll angle, in radians, around the Z-axis.</param>
+    public static Quaternion<TSelf> CreateFromYawPitchRoll(TSelf yaw, TSelf pitch, TSelf roll)
+    {
+      //  Roll first, about axis the object is facing, then pitch upward, then yaw to face into the new heading.
 
-    //  var halfRoll = roll * TSelf.CreateChecked(0.5);
-    //  var sr = TSelf.Sin(halfRoll);
-    //  var cr = TSelf.Cos(halfRoll);
+      var halfRoll = roll * Half;
+      var sr = TSelf.Sin(halfRoll);
+      var cr = TSelf.Cos(halfRoll);
 
-    //  var halfPitch = pitch * TSelf.CreateChecked(0.5);
-    //  var sp = TSelf.Sin(halfPitch);
-    //  var cp = TSelf.Cos(halfPitch);
+      var halfPitch = pitch * Half;
+      var sp = TSelf.Sin(halfPitch);
+      var cp = TSelf.Cos(halfPitch);
 
-    //  var halfYaw = yaw * TSelf.CreateChecked(0.5);
-    //  var sy = TSelf.Sin(halfYaw);
-    //  var cy = TSelf.Cos(halfYaw);
+      var halfYaw = yaw * Half;
+      var sy = TSelf.Sin(halfYaw);
+      var cy = TSelf.Cos(halfYaw);
 
-    //  return new(
-    //    cy * sp * cr + sy * cp * sr,
-    //    sy * cp * cr - cy * sp * sr,
-    //    cy * cp * sr - sy * sp * cr,
-    //    cy * cp * cr + sy * sp * sr
-    //  );
-    //}
+      return new(
+        cy * sp * cr + sy * cp * sr,
+        sy * cp * cr - cy * sp * sr,
+        cy * cp * sr - sy * sp * cr,
+        cy * cp * cr + sy * sp * sr
+      );
+    }
 
     /// <summary>
     /// Concatenates two Quaternions; the result represents the value1 rotation followed by the value2 rotation.

@@ -24,7 +24,7 @@
     public static double ConvertStereoToMono(double frontLeft, double frontRight)
       => (frontLeft + frontRight) / 2;
 
-    public SampleStereo From(SampleMono mono)
+    public static SampleStereo From(SampleMono mono)
       => new(mono.FrontCenter, mono.FrontCenter);
 
     /// <summary>Mix one or more stereo signals. One stereo signal will be returned as is.</summary>

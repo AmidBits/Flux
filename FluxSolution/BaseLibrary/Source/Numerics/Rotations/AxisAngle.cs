@@ -93,14 +93,22 @@ namespace Flux
 
       public void Deconstruct(out TSelf x, out TSelf y, out TSelf z, out TSelf angle) { x = m_x; y = m_y; z = m_z; angle = m_angle; }
 
+      /// <summary>The x-axis vector component of the rotation.</summary>
       public TSelf X => m_x;
+      /// <summary>The y-axis vector component of the rotation.</summary>
       public TSelf Y => m_y;
+      /// <summary>The z-axis vector component of the rotation.</summary>
       public TSelf Z => m_z;
+      /// <summary>The angle component of the rotation.</summary>
       public TSelf Angle => m_angle;
 
+      /// <summary>Create a <see cref="Quantities.Angle"/> from the angle component of the rotation.</summary>
+      /// <returns>The angle component as an <see cref="Quantities.Angle"/>.</returns>
       public Quantities.Angle ToAngle()
         => new(double.CreateChecked(m_angle));
 
+      /// <summary>Create an <see cref="CartesianCoordinate3{TSelf}"/> from the axis vector components of the rotation.</summary>
+      /// <returns>The axis vector as a <see cref="CartesianCoordinate3{TSelf}"/>.</returns>
       public CartesianCoordinate3<TSelf> ToAxis()
         => new(m_x, m_y, m_z);
     }

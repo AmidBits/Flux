@@ -27,7 +27,7 @@ namespace Flux
             _ => @"th"
           };
 
-          if (predicate?.Invoke(source.AsReadOnlySpan().Slice(0, index + 1).ToString(), suffix) ?? true)
+          if (predicate?.Invoke(source.AsReadOnlySpan()[..(index + 1)].ToString(), suffix) ?? true)
             source.Insert(index + 1, suffix.AsSpan());
         }
 

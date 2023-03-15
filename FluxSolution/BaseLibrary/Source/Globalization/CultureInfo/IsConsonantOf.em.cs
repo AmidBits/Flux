@@ -10,7 +10,7 @@ namespace Flux
     /// <summary></summary>
     /// <exception cref="System.NotImplementedException"/>
     public static bool IsConsonantOf(this System.Globalization.CultureInfo source, char character)
-      => (source ??= System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
+      => (source ?? System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
       {
         "en" => IsConsonantOf_en(character),
         "se" => IsConsonantOf_se(character),
@@ -20,7 +20,7 @@ namespace Flux
     /// <summary></summary>
     /// <exception cref="System.OverflowException"/>
     public static bool IsConsonantOf(this System.Globalization.CultureInfo source, System.Text.Rune rune)
-      => (source ??= System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
+      => (source ?? System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
       {
         "en" => IsConsonantOf_en((char)rune.Value),
         "se" => IsConsonantOf_se((char)rune.Value),
@@ -30,7 +30,7 @@ namespace Flux
     /// <summary></summary>
     /// <exception cref="System.OverflowException"/>
     public static bool IsConsonantOf(this System.Globalization.CultureInfo source, string textElement)
-      => (source ??= System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
+      => (source ?? System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
       {
         "en" => textElement is not null && textElement.Length == 1 && IsConsonantOf_en(textElement[0]),
         "se" => textElement is not null && textElement.Length == 1 && IsConsonantOf_se(textElement[0]),

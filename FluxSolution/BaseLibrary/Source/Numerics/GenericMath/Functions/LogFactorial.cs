@@ -11,7 +11,7 @@ namespace Flux
     {
       if (n < TInput.Zero)
       {
-        throw new ArgumentOutOfRangeException();
+        throw new System.ArgumentOutOfRangeException(nameof(n));
       }
       else if (n > TInput.CreateChecked(254))
       {

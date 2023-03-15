@@ -43,7 +43,7 @@ namespace Flux
     /// <summary>Creates a new string in a more readable format, e.g. "DecimalDigitNumber" becomes "decimal digit" (i.e. drop the ending Unicode category major, make lower case and add word spacing).</summary>
     public static string ToUnicodeCategoryMinorFriendlyString(this System.Globalization.UnicodeCategory source)
     {
-      var ucsb = (source == System.Globalization.UnicodeCategory.OtherNotAssigned ? source.ToString().Substring(5) : source.ToString()).ToSpanBuilder();
+      var ucsb = (source == System.Globalization.UnicodeCategory.OtherNotAssigned ? source.ToString()[5..] : source.ToString()).ToSpanBuilder();
       var ucms = source.ToUnicodeCategoryMajor().ToString();
 
       if (ucsb.AsReadOnlySpan().EndsWith(ucms)) ucsb.Remove(ucsb.Length - ucms.Length); // Either fix the unicode category that ends with its own category major.

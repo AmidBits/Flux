@@ -16,7 +16,7 @@ namespace Flux
       orderedList = source.ToList();
       orderedList.Sort();
 
-      var (quotient, remainder) = int.DivRem(orderedList.Count(), 2);
+      var (quotient, remainder) = int.DivRem(orderedList.Count, 2);
 
       var value = orderedList.ElementAt(quotient);
 

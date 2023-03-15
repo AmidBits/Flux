@@ -2,7 +2,7 @@ namespace Flux.Dsp
 {
   public sealed class Perlin2
   {
-    public double Noise(double x, double y)
+    public static double Noise(double x, double y)
     {
       var x0 = (int)System.Math.Floor(x);
       var x1 = x0 + 1;
