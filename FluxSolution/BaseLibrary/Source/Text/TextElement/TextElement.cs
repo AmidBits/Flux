@@ -8,7 +8,7 @@
   {
     private readonly char[] m_chars;
 
-    private System.Text.Rune[]? m_runes;
+    private System.Collections.Generic.List<System.Text.Rune>? m_runes;
 
     private readonly int m_sourceIndex;
 
@@ -23,32 +23,35 @@
       m_sourceIndex = index;
     }
 
-    private System.Text.Rune[] EnumeratedRunes()
+    /// <summary>Non-allocating <see cref="System.Collections.Generic.IReadOnlyList{T}"/> of <see cref="System.Char"/>. The characters of the TextElement was already populated on init.</summary>
+    public System.Collections.Generic.IReadOnlyList<char> AsReadOnlyListChar => m_chars;
+
+    /// <summary>Non-allocating <see cref="System.ReadOnlySpan{T}"/> of <see cref="System.Char"/>. The characters of the TextElement was already populated on init.</summary>
+    public System.ReadOnlySpan<char> AsReadOnlySpanChar => m_chars;
+
+    public int SourceIndex => m_sourceIndex;
+
+    /// <summary>Creates a one time allocating <see cref="System.Collections.Generic.List{T}"/> of <see cref="System.Text.Rune"/>.</summary>
+    /// <remarks>IMPORTANT! The inital call and any subsequent calls, all receive the same allocated list.</remarks>
+    public System.Collections.Generic.List<System.Text.Rune> ToListRune()
     {
       if (m_runes is null)
       {
-        m_runes = new System.Text.Rune[m_chars.Length];
+        m_runes = new System.Collections.Generic.List<System.Text.Rune>();
 
-        var count = 0;
         foreach (var rune in m_chars.AsSpan().EnumerateRunes())
-          m_runes[count++] = rune;
-
-        System.Array.Resize(ref m_runes, count);
+          m_runes.Add(rune);
       }
 
       return m_runes;
     }
 
-    public System.Collections.Generic.IReadOnlyList<char> ListChar => m_chars;
+    /// <summary>One-time-allocating <see cref="System.Collections.Generic.IReadOnlyList{T}"/> of <see cref="System.Text.Rune"/>. The runes of the TextElement is populated on first use only, therefor subsequent calls are non-allocating.</summary>
+    public System.Collections.Generic.IReadOnlyList<System.Text.Rune> ToReadOnlyListRune() => ToListRune();
 
-    public System.Collections.Generic.IReadOnlyList<System.Text.Rune> ListRune => EnumeratedRunes();
+    /// <summary>One-time-allocating <see cref="System.ReadOnlySpan{T}"/> of <see cref="System.Text.Rune"/>. The runes of the TextElement is populated on first use only, therefor subsequent calls are non-allocating.</summary>
+    public System.ReadOnlySpan<System.Text.Rune> ToReadOnlySpanRune() => ToListRune().AsSpan();
 
-    public int SourceIndex => m_sourceIndex;
-
-    public System.ReadOnlySpan<char> SpanChar => m_chars;
-
-    public System.ReadOnlySpan<System.Text.Rune> SpanRune => EnumeratedRunes();
-
-    public override string ToString() => SpanChar.ToString();
+    public override string ToString() => AsReadOnlySpanChar.ToString();
   }
 }

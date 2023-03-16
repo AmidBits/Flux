@@ -23,6 +23,6 @@ namespace Flux.Text
     }
 
     public override string ToString()
-      => $"{GetType().Name} {{ \"{Value.ListChar}\", Index = {Index}, Chars = {Value.ListChar.Count}:[{string.Join(", ", Value.ListChar.Select(c => $"0x{(int)c:x4}"))}], Runes = {Value.ListRune.Count}:[{string.Join(", ", Value.ListRune.Select(r => r.ToStringEx()))}]{(string.Concat(TextElementToken.GetNormalizationForms(string.Concat(Value.ListChar), false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $", {s}" : string.Empty)}, Depth = {Depth}, Group = {Group} }}";
+      => $"{GetType().Name} {{ \"{Value.AsReadOnlyListChar}\", Index = {Index}, Chars = {Value.AsReadOnlyListChar.Count}:[{string.Join(", ", Value.AsReadOnlyListChar.Select(c => $"0x{(int)c:x4}"))}], Runes = {Value.ToReadOnlyListRune().Count}:[{string.Join(", ", Value.ToReadOnlyListRune().Select(r => r.ToStringEx()))}]{(string.Concat(TextElementToken.GetNormalizationForms(string.Concat(Value.AsReadOnlyListChar), false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $", {s}" : string.Empty)}, Depth = {Depth}, Group = {Group} }}";
   }
 }

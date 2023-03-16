@@ -19,7 +19,11 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      var n = new int[] { 1, 2, 3, 4, 5, 6, 6, 8, 9 };
+      var n = new int[] { 1, 2, 3, 4 };
+
+      var index = 1;
+      foreach (var p in n.PermuteAlgorithmL())
+        System.Console.WriteLine($"{index++:D2} : {string.Join('|', p)}");
 
       //var b = n.IsSequenceConsecutive();
     }

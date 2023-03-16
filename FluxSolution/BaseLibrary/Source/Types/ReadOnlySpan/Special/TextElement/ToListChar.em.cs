@@ -8,7 +8,7 @@ namespace Flux
       var list = new System.Collections.Generic.List<char>();
 
       for (var index = 0; index < source.Length; index++)
-        list.AddRange(source[index].ListChar);
+        list.AddRange(source[index].AsReadOnlyListChar);
 
       return list;
     }

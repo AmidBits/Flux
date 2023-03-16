@@ -22,9 +22,9 @@ namespace Flux.Text
 
       foreach (var te in tee)
       {
-        if (te.ListChar.Count == 1 && te.ListRune.Count == 1)
+        if (te.AsReadOnlyListChar.Count == 1 && te.ToReadOnlyListRune().Count == 1)
         {
-          switch (System.Text.Rune.GetUnicodeCategory(te.ListRune[0]))
+          switch (System.Text.Rune.GetUnicodeCategory(te.ToReadOnlyListRune()[0]))
           {
             case System.Globalization.UnicodeCategory.OpenPunctuation:
               punctuationBracketGroups.Push(++punctuationBracketGroup);
@@ -48,7 +48,7 @@ namespace Flux.Text
         else
           yield return new TextElementToken(index, te);
 
-        index += te.ListChar.Count;
+        index += te.AsReadOnlyListChar.Count;
       }
     }
   }

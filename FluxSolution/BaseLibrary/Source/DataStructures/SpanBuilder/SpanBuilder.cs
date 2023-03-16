@@ -27,7 +27,9 @@ namespace Flux
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
     public T this[int index] { get => GetValue(index); set => SetValue(index, value); }
 
-    public T[] Array => new System.ArraySegment<T>(m_array, m_head, m_tail - m_head).Array!;
+    /// <summary>This provides direct access to the underlying array storage for the SpanBuilder.</summary>
+    /// <remarks>Use with caution!</remarks>
+    public T[] Array { get => m_array; init => m_array = value; }
 
     /// <summary>The current total capacity of the builder buffer.</summary>
     public int Capacity => m_array.Length;
@@ -85,7 +87,8 @@ namespace Flux
     /// <summary>Creates a non-allocating <see cref="System.ReadOnlySpan{T}"/>.</summary>
     public System.ReadOnlySpan<T> AsReadOnlySpan() => new(m_array, m_head, m_tail - m_head);
 
-    /// <summary>Creates a non-allocating <see cref="System.Span{T}"/>.</summary>
+    /// <summary>This provides partial direct access to the underlying array storage for the SpanBuilder via a <see cref="System.Span{T}"/>.</summary>
+    /// <remarks>Use with caution!</remarks>
     public System.Span<T> AsSpan() => new(m_array, m_head, m_tail - m_head);
 
     /// <summary>Remove all values from the builder.</summary>

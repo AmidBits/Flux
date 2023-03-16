@@ -5,7 +5,7 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>
-    /// <para>Generates all possible permutations of the elements in the sequence. Uses the specified comparer.</para>
+    /// <para>Creates a new sequence of all possible permutations, in order, of the elements in <paramref name="source"/>. Uses the specified <paramref name="comparer"/>.</para>
     /// <see href="https://en.wikipedia.org/wiki/Permutation"/>
     /// <see href="https://stackoverflow.com/a/4319074"/>
     /// </summary>

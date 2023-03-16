@@ -6,6 +6,7 @@ namespace Flux
     /// <param name="resultSelector">Receives the elements in the partition and partition index (this is not the element index).</param>
     /// <exception cref="System.ArgumentNullException"/>
     /// <exception cref="System.ArgumentOutOfRangeException"/>
+    [System.Obsolete("Prefer the built-in System.Linq.Enumerable.Chunk()", false)]
     public static System.Collections.Generic.IEnumerable<TResult> PartitionBySize<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int partitionSize, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
     {
       if (partitionSize <= 0) throw new System.ArgumentOutOfRangeException(nameof(partitionSize), $"Must be greater than or equal to 1 ({partitionSize}).");
