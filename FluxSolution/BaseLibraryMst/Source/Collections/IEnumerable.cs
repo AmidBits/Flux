@@ -141,6 +141,12 @@ namespace Collections.Generic
     }
 
     [TestMethod]
+    public void SkipEvery()
+    {
+      CollectionAssert.AreEqual(new int[] { 17, 23, 57 }, integers.SkipEvery(2, Flux.OptionEvery.First).ToArray());
+    }
+
+    [TestMethod]
     public void SkipLastWhile()
     {
       CollectionAssert.AreEqual(new int[] { 17, 17, 19, 23, 23 }, integers.SkipLastWhile((e, i) => (i & 1) == 1).ToArray());
@@ -161,7 +167,7 @@ namespace Collections.Generic
     [TestMethod]
     public void TakeEvery()
     {
-      CollectionAssert.AreEqual(new int[] { 17, 19, 23 }, integers.TakeEvery(2, 0, Flux.OptionTakeEvery.First).ToArray());
+      CollectionAssert.AreEqual(new int[] { 17, 19, 23 }, integers.TakeEvery(2, Flux.OptionEvery.First).ToArray());
     }
 
     [TestMethod]

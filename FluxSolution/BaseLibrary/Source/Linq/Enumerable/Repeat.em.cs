@@ -6,7 +6,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> Repeat<T>(this System.Collections.Generic.IEnumerable<T> source, int count)
     {
-      if (count < 0) throw new System.ArgumentNullException(nameof(count));
+      if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       var list = new System.Collections.Generic.List<T>(source);
 
