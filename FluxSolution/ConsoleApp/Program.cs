@@ -19,6 +19,12 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
+      var i = 1423;
+      var si = i.ToString();
+      var ois = si.AsSpan();
+      var oisd1 = i.GetOrdinalIndicator();
+
+
       var n = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 
       var index = 1;

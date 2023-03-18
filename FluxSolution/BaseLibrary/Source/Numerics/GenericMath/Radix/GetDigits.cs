@@ -13,7 +13,7 @@ namespace Flux
     }
 
     /// <summary>Returns the place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
-    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf, TRadix>(this TSelf number, TRadix radix)
+    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf, TRadix>(this TSelf number, TRadix radix, int count)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
@@ -27,7 +27,7 @@ namespace Flux
       if (TSelf.IsZero(number))
         list.Add(TSelf.Zero);
       else
-        while (!TSelf.IsZero(number))
+        while (!TSelf.IsZero(number) && list.Count < count)
         {
           list.Add(number % rdx);
           number /= rdx;
@@ -35,5 +35,11 @@ namespace Flux
 
       return list;
     }
+
+    /// <summary>Returns the place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
+    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf, TRadix>(this TSelf number, TRadix radix)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      => GetDigitsReversed(number, radix, int.MaxValue);
   }
 }

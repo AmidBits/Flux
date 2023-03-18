@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class StringEm
+	public static partial class ExtensionMethodsString
 	{
 		public const string AllMarkupTags = @"(" + OneMarkupTag + @")+";
 		public const string OneMarkupTag = @"<[^>]+>";

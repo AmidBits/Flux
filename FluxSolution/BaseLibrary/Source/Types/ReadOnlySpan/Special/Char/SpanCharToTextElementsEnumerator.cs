@@ -1,5 +1,10 @@
 namespace Flux
 {
+  public static partial class ExtensionMethodsReadOnlySpan
+  {
+    public static SpanCharToTextElementEnumerator EnumerateTextElements(this System.ReadOnlySpan<char> source) => new(source);
+  }
+
   public ref struct SpanCharToTextElementEnumerator
   {
     private readonly System.ReadOnlySpan<char> m_span;

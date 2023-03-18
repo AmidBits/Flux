@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StringEm
+  public static partial class ExtensionMethodsString
   {
     /// <summary>Reports the last index of any of the targets within the source. or -1 if none is found. Uses the specified comparer.</summary>
     public static int LastIndexOfAny(this System.ReadOnlySpan<char> source, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params string[] values)

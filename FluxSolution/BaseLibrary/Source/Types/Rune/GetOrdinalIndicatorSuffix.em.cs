@@ -6,15 +6,14 @@ namespace Flux
     {
       if (!System.Text.Rune.IsDigit(tensDigit) || tensDigit != (System.Text.Rune)'1')
       {
-        if (onesDigit == (System.Text.Rune)'1')
-          return "st";
-        if (onesDigit == (System.Text.Rune)'2')
-          return "nd";
-        if (onesDigit == (System.Text.Rune)'3')
-          return "rd";
+        if (onesDigit == (System.Text.Rune)'1') return "st";
+        if (onesDigit == (System.Text.Rune)'2') return "nd";
+        if (onesDigit == (System.Text.Rune)'3') return "rd";
       }
 
-      return "th";
+      if (System.Text.Rune.IsDigit(onesDigit)) return "th";
+
+      return string.Empty;
     }
   }
 }
