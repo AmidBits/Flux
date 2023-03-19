@@ -2,24 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string ToRadixString<TSelf>(this TSelf number, int radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => new Text.PositionalNotation(radix).NumberToText(number).ToString();
-
     /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
-    public static string ToRadixString<TSelf>(this TSelf number, int radix, int minLength)
+    public static string ToRadixString<TSelf>(this TSelf number, int radix, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      var sb = new Text.PositionalNotation(radix).NumberToText(number);
-
-      var minusLength = sb[0] == (System.Text.Rune)'-' ? 1 : 0;
-      var digitLength = sb.Length - minusLength;
-
-      if (minLength > digitLength)
-        sb.Insert(minusLength, (System.Text.Rune)'0', minLength - digitLength);
-
-      return sb.ToString();
-    }
+      => new Text.PositionalNotation(radix).NumberToText(number, minLength).ToString();
   }
 
   namespace Text
@@ -47,14 +33,14 @@ namespace Flux
       public PositionalNotation(int radix) : this(RuneSequences.Base62.Take(GenericMath.AssertRadix(radix, MaxRadix)).ToArray()) { }
 
       /// <summary>Converts a number into a positional notation text string.</summary>
-      public SpanBuilder<System.Text.Rune> NumberToText<TSelf>(TSelf number)
+      public string NumberToText<TSelf>(TSelf number, int minLength = 1)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
         if (TSelf.IsNegative(number))
-          return NumberToText(-number).Insert(0, NegativeSign);
+          return NegativeSign.ToString() + NumberToText(-number, minLength);
 
         if (TSelf.IsZero(number))
-          return new SpanBuilder<System.Text.Rune>(Symbols[0]);
+          return Symbols[0].ToString();
 
         var radix = TSelf.CreateChecked(Symbols.Length);
 
@@ -67,15 +53,18 @@ namespace Flux
           sb.Insert(0, Symbols[int.CreateChecked(remainder)]);
         }
 
-        return sb;
+        if (minLength > sb.Length)
+          sb.Insert(0, Symbols[0], minLength - sb.Length);
+
+        return sb.ToString();
       }
 
       /// <summary>Tries to convert a number into a positional notation text string.</summary>
-      public bool TryNumberToText(System.Numerics.BigInteger number, out string result)
+      public bool TryNumberToText(System.Numerics.BigInteger number, out string result, int minLength = 1)
       {
         try
         {
-          result = NumberToText(number).ToString();
+          result = NumberToText(number, minLength);
           return true;
         }
         catch { }
