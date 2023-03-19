@@ -3,9 +3,8 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Returns the individual digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
-    public static System.Collections.Generic.List<TSelf> GetDigits<TSelf, TRadix>(this TSelf number, TRadix radix)
+    public static System.Collections.Generic.List<TSelf> GetDigits<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       var reversed = GetDigitsReversed(number, radix);
       reversed.Reverse();
@@ -13,11 +12,10 @@ namespace Flux
     }
 
     /// <summary>Returns the place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
-    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf, TRadix>(this TSelf number, TRadix radix, int count)
+    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf>(this TSelf number, TSelf radix, int count)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TSelf.CreateChecked(AssertRadix(radix));
+      AssertRadix(radix);
 
       if (TSelf.IsNegative(number))
         number = -number;
@@ -29,17 +27,16 @@ namespace Flux
       else
         while (!TSelf.IsZero(number) && list.Count < count)
         {
-          list.Add(number % rdx);
-          number /= rdx;
+          list.Add(number % radix);
+          number /= radix;
         }
 
       return list;
     }
 
     /// <summary>Returns the place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
-    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf, TRadix>(this TSelf number, TRadix radix)
+    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => GetDigitsReversed(number, radix, int.MaxValue);
   }
 }

@@ -4,10 +4,8 @@ namespace Flux
   {
     /// <summary>Computes the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static void LocateIntegerLog<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogTowardsZero, out TResult ilogAwayFromZero)
+    public static void LocateIntegerLog<TSelf>(this TSelf value, TSelf radix, out TSelf ilogTowardsZero, out TSelf ilogAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       if (TSelf.IsNegative(value))
       {
@@ -18,21 +16,21 @@ namespace Flux
       }
       else // The value is greater than or equal to zero here.
       {
-        var rdx = TSelf.CreateChecked(AssertRadix(radix));
+        AssertRadix(radix);
 
         checked
         {
-          ilogTowardsZero = TResult.Zero;
-          ilogAwayFromZero = TResult.Zero;
+          ilogTowardsZero = TSelf.Zero;
+          ilogAwayFromZero = TSelf.Zero;
 
           if (!TSelf.IsZero(value))
           {
             if (!IsIntegerPow(value, radix))
               ilogAwayFromZero++;
 
-            while (value >= rdx)
+            while (value >= radix)
             {
-              value /= rdx;
+              value /= radix;
 
               ilogTowardsZero++;
               ilogAwayFromZero++;
@@ -44,24 +42,22 @@ namespace Flux
 
     /// <summary>Computes the integer log ceiling of x using base b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TResult LocateIntegerLogAfz<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogAwayFromZero)
+    public static TSelf LocateIntegerLogAfz<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       AssertNonNegative(value);
-      var rdx = TSelf.CreateChecked(AssertRadix(radix));
+      AssertRadix(radix);
 
-      ilogAwayFromZero = TResult.Zero;
+      var ilogAwayFromZero = TSelf.Zero;
 
       if (!TSelf.IsZero(value))
       {
         if (!IsIntegerPow(value, radix))
           ilogAwayFromZero++;
 
-        while (value >= rdx)
+        while (value >= radix)
         {
-          value /= rdx;
+          value /= radix;
 
           ilogAwayFromZero++;
         }
@@ -72,20 +68,18 @@ namespace Flux
 
     /// <summary>Computes the integer log floor of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TResult LocateIntegerLogTz<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogTowardsZero)
+    public static TSelf LocateIntegerLogTz<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       AssertNonNegative(value);
-      var rdx = TSelf.CreateChecked(AssertRadix(radix));
+      AssertRadix(radix);
 
-      ilogTowardsZero = TResult.Zero;
+      var ilogTowardsZero = TSelf.Zero;
 
       if (!TSelf.IsZero(value))
-        while (value >= rdx)
+        while (value >= radix)
         {
-          value /= rdx;
+          value /= radix;
 
           ilogTowardsZero++;
         }
@@ -105,10 +99,8 @@ namespace Flux
 
     /// <summary>Attempt to compute the integer log floor and ceiling of <paramref name="value"/> using base <paramref name="radix"/> into the out parameters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static bool TryLocateIntegerLog<TSelf, TRadix, TResult>(this TSelf value, TRadix radix, out TResult ilogTowardsZero, out TResult ilogAwayFromZero)
+    public static bool TryLocateIntegerLog<TSelf>(this TSelf value, TSelf radix, out TSelf ilogTowardsZero, out TSelf ilogAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      where TResult : System.Numerics.IBinaryInteger<TResult>
     {
       try
       {
@@ -118,8 +110,8 @@ namespace Flux
       }
       catch { }
 
-      ilogTowardsZero = TResult.Zero;
-      ilogAwayFromZero = TResult.Zero;
+      ilogTowardsZero = TSelf.Zero;
+      ilogAwayFromZero = TSelf.Zero;
 
       return false;
     }

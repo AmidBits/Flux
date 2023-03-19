@@ -5,21 +5,20 @@ namespace Flux
     /// <summary>Returns <paramref name="radix"/> raised to the power of <paramref name="exponent"/>, using exponentiation by squaring.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation"/>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
-    public static TSelf IntegerPow<TSelf, TExponent>(this TSelf radix, TExponent exponent)
+    public static TSelf IntegerPow<TSelf>(this TSelf radix, TSelf exponent)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TExponent : System.Numerics.IBinaryInteger<TExponent>
     {
       AssertNonNegative(exponent, nameof(exponent));
 
-      if (TExponent.IsZero(exponent))
+      if (TSelf.IsZero(exponent))
         return TSelf.One;
 
       var result = TSelf.One;
 
-      while (exponent != TExponent.One)
+      while (exponent != TSelf.One)
         checked
         {
-          if (TExponent.IsOddInteger(exponent)) // Only act on set bits in exponent.
+          if (TSelf.IsOddInteger(exponent)) // Only act on set bits in exponent.
             result *= radix; // Multiply by the current corresponding power-of-radix (adjusted in radix below for each iteration).
 
           radix *= radix; // Compute power-of-radix for the next iteration.
@@ -30,12 +29,11 @@ namespace Flux
     }
 
     /// <summary>Returns <paramref name="radix"/> raised to the power of Abs(<paramref name="exponent"/>), using exponentiation by squaring, and also returns the <paramref name="reciprocal"/> of the result (i.e. 1.0 / result) as an out parameter. The reciprocal is the same as specifying a negative exponent to <see cref="System.Math.Pow"/>.</summary>
-    public static TSelf IntegerPowRec<TSelf, TExponent, TReciprocal>(this TSelf radix, TExponent exponent, out TReciprocal reciprocal)
+    public static TSelf IntegerPowRec<TSelf, TReciprocal>(this TSelf radix, TSelf exponent, out TReciprocal reciprocal)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TExponent : System.Numerics.IBinaryInteger<TExponent>
       where TReciprocal : System.Numerics.IFloatingPoint<TReciprocal>
     {
-      var ipow = IntegerPow(radix, TExponent.Abs(exponent));
+      var ipow = IntegerPow(radix, TSelf.Abs(exponent));
 
       reciprocal = TReciprocal.One / TReciprocal.CreateChecked(ipow);
 
@@ -43,23 +41,21 @@ namespace Flux
     }
 
     /// <summary>Determines if <paramref name="value"/> is a power of <paramref name="radix"/>.</summary>
-    public static bool IsIntegerPow<TSelf, TRadix>(this TSelf value, TRadix radix)
+    public static bool IsIntegerPow<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       AssertNonNegative(value);
+      AssertRadix(radix);
 
-      var rdx = TSelf.CreateChecked(AssertRadix(radix));
-
-      if (value == rdx) // If the value is equal to the radix, then it's a power of the radix.
+      if (value == radix) // If the value is equal to the radix, then it's a power of the radix.
         return true;
 
-      if (radix == (TRadix.One + TRadix.One)) // Special case for binary numbers, we can use dedicated IsPow2().
+      if (radix == (TSelf.One + TSelf.One)) // Special case for binary numbers, we can use dedicated IsPow2().
         return TSelf.IsPow2(value);
 
       if (value > TSelf.One)
-        while (TSelf.IsZero(value % rdx))
-          value /= rdx;
+        while (TSelf.IsZero(value % radix))
+          value /= radix;
 
       return value == TSelf.One;
     }
@@ -71,11 +67,10 @@ namespace Flux
     /// <param name="powTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="powAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static void LocateIntegerPow<TSelf, TRadix>(this TSelf value, TRadix radix, bool proper, out TSelf powTowardsZero, out TSelf powAwayFromZero)
+    public static void LocateIntegerPow<TSelf>(this TSelf value, TSelf radix, bool proper, out TSelf powTowardsZero, out TSelf powAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TSelf.CreateChecked(AssertRadix(radix));
+      AssertRadix(radix);
 
       if (TSelf.IsNegative(value))
       {
@@ -86,15 +81,15 @@ namespace Flux
       }
       else  // The value is greater than or equal to zero here.
       {
-        powTowardsZero = IntegerPow(rdx, value.LocateIntegerLogTz(rdx, out TSelf _)) * TSelf.CreateChecked(TSelf.Sign(value));
-        powAwayFromZero = powTowardsZero * rdx;
+        powTowardsZero = IntegerPow(radix, value.LocateIntegerLogTz(radix)) * TSelf.CreateChecked(TSelf.Sign(value));
+        powAwayFromZero = powTowardsZero * radix;
 
         if (proper)
         {
           if (powTowardsZero == value)
-            powTowardsZero /= rdx;
+            powTowardsZero /= radix;
           if (powAwayFromZero == value)
-            powAwayFromZero *= rdx;
+            powAwayFromZero *= radix;
         }
       }
     }
@@ -104,9 +99,8 @@ namespace Flux
     /// <param name="radix">The power of alignment.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
     /// <returns>The the next power of 2 away from zero.</returns>
-    public static TSelf LocateIntegerPowAfz<TSelf, TRadix>(this TSelf value, TRadix radix, bool proper)
+    public static TSelf LocateIntegerPowAfz<TSelf>(this TSelf value, TSelf radix, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       LocateIntegerPow(value, radix, proper, out var _, out var powAwayFromZero);
 
@@ -118,9 +112,8 @@ namespace Flux
     /// <param name="radix">The power of alignment.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
     /// <returns>The the next power of 2 towards zero.</returns>
-    public static TSelf LocateIntegerPowTz<TSelf, TRadix>(this TSelf value, TRadix radix, bool proper)
+    public static TSelf LocateIntegerPowTz<TSelf>(this TSelf value, TSelf radix, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       LocateIntegerPow(value, radix, proper, out var powTowardsZero, out var _);
 
@@ -135,9 +128,8 @@ namespace Flux
     /// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
     /// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
     /// <returns>The nearest of two power-of-<paramref name="radix"/> to <paramref name="value"/>, optionally <paramref name="proper"/>.</returns>
-    public static TSelf NearestIntegerPow<TSelf, TRadix>(this TSelf value, TRadix radix, bool proper, RoundingMode mode, out TSelf powTowardsZero, out TSelf powAwayFromZero)
+    public static TSelf NearestIntegerPow<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powTowardsZero, out TSelf powAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       LocateIntegerPow(value, radix, proper, out powTowardsZero, out powAwayFromZero);
 
@@ -152,9 +144,8 @@ namespace Flux
     /// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
     /// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryNearestIntegerPow<TSelf, TRadix>(this TSelf value, TRadix radix, bool proper, RoundingMode mode, out TSelf powTowardsZero, out TSelf powAwayFromZero, out TSelf nearestPow)
+    public static bool TryNearestIntegerPow<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powTowardsZero, out TSelf powAwayFromZero, out TSelf nearestPow)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       try
       {

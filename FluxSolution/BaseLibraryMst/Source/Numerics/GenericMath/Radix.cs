@@ -91,13 +91,13 @@ namespace GenericMath
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual(3, 512.LocateIntegerLogAfz(10, out int _));
+      Assert.AreEqual(3, 512.LocateIntegerLogAfz(10));
     }
 
     [TestMethod]
     public void IntegerLogFloor()
     {
-      Assert.AreEqual(2, 512.LocateIntegerLogTz(10, out int _));
+      Assert.AreEqual(2, 512.LocateIntegerLogTz(10));
     }
 
     [TestMethod]

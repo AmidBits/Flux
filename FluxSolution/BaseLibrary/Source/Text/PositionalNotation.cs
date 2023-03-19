@@ -1,30 +1,22 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    /// <summary>Converts the number to text using the specified symbols. The count of symbols represents the radix of conversion.</summary>
-    //public static System.Text.StringBuilder ToRadixString<TSelf>(this TSelf number, System.ReadOnlySpan<System.Text.Rune> symbols)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //  => new Text.PositionalNotation(symbols).NumberToText(number);
-
-    public static string ToRadixString<TSelf, TRadix>(this TSelf number, TRadix radix)
+    public static string ToRadixString<TSelf>(this TSelf number, int radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => Text.PositionalNotation.ForRadix(int.CreateChecked(GenericMath.AssertRadix(radix))).NumberToText(number).ToString();
+      => new Text.PositionalNotation(radix).NumberToText(number).ToString();
 
     /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
-    public static string ToRadixString<TSelf, TRadix>(this TSelf number, TRadix radix, int minimumLength)
+    public static string ToRadixString<TSelf>(this TSelf number, int radix, int minLength)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var sb = Text.PositionalNotation.ForRadix(int.CreateChecked(GenericMath.AssertRadix(radix))).NumberToText(number);
+      var sb = new Text.PositionalNotation(radix).NumberToText(number);
 
-      var negative = sb[0] == (System.Text.Rune)'-' ? 1 : 0;
+      var minusLength = sb[0] == (System.Text.Rune)'-' ? 1 : 0;
+      var digitLength = sb.Length - minusLength;
 
-      if (minimumLength > (sb.Length - negative))
-        sb.Insert(negative, (System.Text.Rune)'0', minimumLength - (sb.Length - negative));
+      if (minLength > digitLength)
+        sb.Insert(minusLength, (System.Text.Rune)'0', minLength - digitLength);
 
       return sb.ToString();
     }
@@ -40,67 +32,69 @@ namespace Flux
     {
       public const int MaxRadix = 62;
 
-      public static PositionalNotation Base2 => new(RuneSequences.Base62.Take(2).ToArray());
-      public static PositionalNotation Base8 => new(RuneSequences.Base62.Take(8).ToArray());
-      public static PositionalNotation Base10 => new(RuneSequences.Base62.Take(10).ToArray());
-      public static PositionalNotation Base16 => new(RuneSequences.Base62.Take(16).ToArray());
+      public static PositionalNotation Base2 => new(2);
+      public static PositionalNotation Base8 => new(8);
+      public static PositionalNotation Base10 => new(10);
+      public static PositionalNotation Base16 => new(16);
+
+      public System.Text.Rune NegativeSign { get; init; } = (System.Text.Rune)'-';
 
       public System.ReadOnlySpan<System.Text.Rune> Symbols { get; }
 
       /// <summary>Convert a number into a positional notation text string.</summary>
       /// <param name="symbols">Symbols must be represented as TextElements (i.e. graphemes).</param>
-      public PositionalNotation(System.ReadOnlySpan<System.Text.Rune> symbols)
-      {
-        GenericMath.AssertRadix(symbols.Length, MaxRadix, nameof(symbols));
-
-        Symbols = symbols;
-      }
+      public PositionalNotation(System.ReadOnlySpan<System.Text.Rune> symbols) => Symbols = symbols;
+      public PositionalNotation(int radix) : this(RuneSequences.Base62.Take(GenericMath.AssertRadix(radix, MaxRadix)).ToArray()) { }
 
       /// <summary>Converts a number into a positional notation text string.</summary>
       public SpanBuilder<System.Text.Rune> NumberToText<TSelf>(TSelf number)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
         if (TSelf.IsNegative(number))
-          return NumberToText(-number).Insert(0, (System.Text.Rune)'-');
+          return NumberToText(-number).Insert(0, NegativeSign);
 
         if (TSelf.IsZero(number))
-          return new SpanBuilder<System.Text.Rune>((System.Text.Rune)'0');
+          return new SpanBuilder<System.Text.Rune>(Symbols[0]);
+
+        var radix = TSelf.CreateChecked(Symbols.Length);
 
         var sb = new SpanBuilder<System.Text.Rune>();
 
         while (number > TSelf.Zero)
         {
-          (number, var remainder) = TSelf.DivRem(number, TSelf.CreateChecked(Symbols.Length));
+          (number, var remainder) = TSelf.DivRem(number, radix);
+
           sb.Insert(0, Symbols[int.CreateChecked(remainder)]);
         }
 
         return sb;
       }
 
-      ///// <summary>Tries to convert a number into a positional notation text string.</summary>
-      //public bool TryNumberToText(System.Numerics.BigInteger number, out SpanBuilder<System.Text.Rune>? result)
-      //{
-      //  try
-      //  {
-      //    result = NumberToText(number);
-      //    return true;
-      //  }
-      //  catch { }
+      /// <summary>Tries to convert a number into a positional notation text string.</summary>
+      public bool TryNumberToText(System.Numerics.BigInteger number, out string result)
+      {
+        try
+        {
+          result = NumberToText(number).ToString();
+          return true;
+        }
+        catch { }
 
-      //  result = default;
-      //  return false;
-      //}
+        result = string.Empty;
+        return false;
+      }
 
       /// <summary>Convert a positional notation text string into a number.</summary>
       public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<System.Text.Rune> number)
       {
-        var isNegative = number[0] == (System.Text.Rune)'-';
+        var isNegative = number[0] == NegativeSign;
 
         var bi = System.Numerics.BigInteger.Zero;
 
         for (var index = isNegative ? 1 : 0; index < number.Length; index++)
         {
           bi *= Symbols.Length;
+
           bi += MemoryExtensions.IndexOf(Symbols, number[index]) is var position && position >= 0 ? position : throw new System.InvalidOperationException();
         }
 
@@ -125,22 +119,11 @@ namespace Flux
       /// <summary>Convert a positional notation text string into a number.</summary>
       public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result) => TryTextToNumber(number.ToListRune().AsSpan().AsReadOnlySpan(), out result);
 
-      /// <summary>Custom instance based on Base62 which results in traditional radix conversions.</summary>
-      public static PositionalNotation ForRadix(int radix)
-        => GenericMath.AssertRadix(radix, MaxRadix) switch
-        {
-          2 => Base2,
-          8 => Base8,
-          10 => Base10,
-          16 => Base16,
-          _ => PositionalNotation.ForRadix(radix)
-        };
-
       public static System.Collections.Generic.Dictionary<int, string> ToStringRadices(System.Numerics.BigInteger number)
       {
         var dictionary = new System.Collections.Generic.Dictionary<int, string>();
         for (var radix = 2; radix <= MaxRadix; radix++)
-          dictionary.Add(radix, ForRadix(radix).NumberToText(number).ToString());
+          dictionary.Add(radix, new PositionalNotation(radix).NumberToText(number).ToString());
         return dictionary;
       }
     }
