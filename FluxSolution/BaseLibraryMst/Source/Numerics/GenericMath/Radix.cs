@@ -204,13 +204,13 @@ namespace GenericMath
     [TestMethod]
     public void ToSubscriptString()
     {
-      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToSubscriptString(10).ToString());
+      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToSubscriptString(10));
     }
 
     [TestMethod]
     public void ToSuperscriptString()
     {
-      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToSuperscriptString(10).ToString());
+      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToSuperscriptString(10));
     }
   }
 }
