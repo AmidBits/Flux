@@ -92,7 +92,7 @@
 
       public const double OneFullRotationInDegrees = 360;
       public const double OneFullRotationInGradians = 400;
-      public const double OneFullRotationInRadians = GenericMath.PiX2;
+      public const double OneFullRotationInRadians = double.Tau;
       public const double OneFullRotationInTurns = 1;
 
       private readonly double m_radAngle;
@@ -191,11 +191,11 @@
 
       public static double ConvertRadianToNatoMil(double radAngle) => radAngle * 3200 / System.Math.PI;
 
-      public static double ConvertRadianToTurn(double radAngle) => radAngle / GenericMath.PiX2;
+      public static double ConvertRadianToTurn(double radAngle) => radAngle / double.Tau;
 
       public static double ConvertSexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds) => degrees + minutes / 60 + seconds / 3600;
 
-      public static double ConvertTurnToRadian(double revolutions) => revolutions * GenericMath.PiX2;
+      public static double ConvertTurnToRadian(double revolutions) => revolutions * double.Tau;
 
       public static Angle FromSexagesimalDegrees(double degrees, double minutes, double seconds) => new(ConvertDegreeToRadian(ConvertSexagesimalDegreeToDecimalDegree(degrees, minutes, seconds)));
 

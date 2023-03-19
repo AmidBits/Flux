@@ -123,8 +123,8 @@ namespace Flux
       }
       while (u1 <= double.Epsilon || u2 <= double.Epsilon);
 
-      var z0 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Cos(GenericMath.PiX2 * u2);
-      var z1 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Sin(GenericMath.PiX2 * u2);
+      var z0 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Cos(double.Tau * u2);
+      var z1 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Sin(double.Tau * u2);
 
       return (z0 * stdDev + mean, z1 * stdDev + mean);
     }

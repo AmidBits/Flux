@@ -7,9 +7,9 @@ namespace Flux.Wpf
       /// <summary>Creates a circular polygon with a specified number of sides, radius and an optional offset (in radians).</summary>
       public static System.Collections.Generic.IEnumerable<System.Windows.Point> CreateCircular(double numberOfSides, double radius, double offsetRadians = 0f)
       {
-        var step = GenericMath.PiX2 / numberOfSides;
+        var step = double.Tau / numberOfSides;
 
-        for (var angle = 0.0; angle < GenericMath.PiX2; angle += step)
+        for (var angle = 0.0; angle < double.Tau; angle += step)
           yield return (angle + offsetRadians).AngularRotationToPoint().Multiply(radius);
       }
 
