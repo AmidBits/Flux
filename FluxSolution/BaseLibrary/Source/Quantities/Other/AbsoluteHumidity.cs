@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this Quantities.AbsoluteHumidityUnit unit, bool preferUnicode, bool useFullName = false)
-      => unit switch
+    public static string GetUnitString(this Quantities.AbsoluteHumidityUnit unit, bool preferUnicode, bool useFullName)
+      => useFullName ? unit.ToString() : unit switch
       {
         Quantities.AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
         Quantities.AbsoluteHumidityUnit.KilogramsPerCubicMeter => "kg/m³",

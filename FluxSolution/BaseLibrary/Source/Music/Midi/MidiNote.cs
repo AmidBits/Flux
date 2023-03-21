@@ -3,7 +3,7 @@ namespace Flux.Music.Midi
   /// <summary>MIDI note unit of byte [0, 127], is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-  public readonly record struct MidiNote
+  public readonly partial record struct MidiNote
     : System.IComparable<MidiNote>, System.IConvertible, Quantities.IQuantifiable<int>
   {
     public const byte MaxValue = 127;
@@ -62,7 +62,6 @@ namespace Flux.Music.Midi
       return false;
     }
 
-
     public static string GetFlatSymbolString(bool preferUnicode = false)
       => preferUnicode ? "\u266D" : "b";
 
@@ -78,12 +77,14 @@ namespace Flux.Music.Midi
     public static bool IsMidiNote(int midiNoteNumber)
       => midiNoteNumber >= 0 && midiNoteNumber <= 127;
 
+    [System.Text.RegularExpressions.GeneratedRegex(@"^([^0-9\-]+)([\-0-9]+)$")]
+    private static partial System.Text.RegularExpressions.Regex ScientificPitchNotationRegex();
+
     /// <summary>Parse the specified SPN string into a MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-
     public static MidiNote Parse(string scientificPitchNotation)
     {
-      var m = System.Text.RegularExpressions.Regex.Match(scientificPitchNotation, @"^([^0-9\-]+)([\-0-9]+)$");
+      var m = ScientificPitchNotationRegex().Match(scientificPitchNotation);
 
       if (m.Success && m.Groups is var gc && gc.Count >= 3 && gc[1].Success && gc[2].Success)
       {
@@ -171,10 +172,8 @@ namespace Flux.Music.Midi
       => m_number;
     #endregion Implemented interfaces
 
-    #region Object overrides
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public override string ToString() => $"{GetType().Name} {{ {ToQuantityString(null, false, false)} (#{m_number}) }}";
-    #endregion Object overrides
   }
 }

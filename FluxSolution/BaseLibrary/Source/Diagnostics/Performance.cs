@@ -2,6 +2,9 @@ namespace Flux.Services
 {
   public static partial class Performance
   {
+    [System.Text.RegularExpressions.GeneratedRegex(@"(^Convert\(|value\([^\)]+\)\.|, Object\)$)")]
+    private static partial System.Text.RegularExpressions.Regex ReplacerRegex();
+
     /// <summary></summary>
     public static MeasuredResult Measure(System.Linq.Expressions.Expression<System.Func<object>> expression, int iterations = 1000000, string? name = null)
     {
@@ -43,8 +46,9 @@ namespace Flux.Services
       if (System.OperatingSystem.IsWindows() || System.OperatingSystem.IsLinux())
         System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = processorAffinity;
 
-      return new MeasuredResult(name ?? System.Text.RegularExpressions.Regex.Replace(expression.Body.ToString(), @"(^Convert\(|value\([^\)]+\)\.|, Object\)$)", string.Empty), iterations, lastResult, stopWatch.Elapsed);
+      return new MeasuredResult(name ?? ReplacerRegex().Replace(expression.Body.ToString(), string.Empty), iterations, lastResult, stopWatch.Elapsed);
     }
+
     /// <summary></summary>
     public static MeasuredResult Measure(System.Linq.Expressions.Expression<System.Action> expression, int iterations = 1000000, string? name = null)
     {
@@ -84,7 +88,7 @@ namespace Flux.Services
       if (System.OperatingSystem.IsWindows() || System.OperatingSystem.IsLinux())
         System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity = processorAffinity;
 
-      return new MeasuredResult(name ?? System.Text.RegularExpressions.Regex.Replace(expression.Body.ToString(), @"(^Convert\(|value\([^\)]+\)\.|, Object\)$)", string.Empty), iterations, null, stopWatch.Elapsed);
+      return new MeasuredResult(name ?? ReplacerRegex().Replace(expression.Body.ToString(), string.Empty), iterations, null, stopWatch.Elapsed);
     }
   }
 }

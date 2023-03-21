@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this Quantities.PowerRatioUnit unit, bool preferUnicode, bool useFullName = false)
-      => unit switch
+    public static string GetUnitString(this Quantities.PowerRatioUnit unit, bool preferUnicode, bool useFullName)
+      => useFullName ? unit.ToString() : unit switch
       {
         Quantities.PowerRatioUnit.DecibelWatt => "dBW",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),

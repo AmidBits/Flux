@@ -16,12 +16,18 @@ namespace Flux.Net
     public System.Net.EndPoint Remote { get; }
   }
 
-  public sealed class UdpCast
+  public sealed partial class UdpCast
     : Disposable
   {
+    [System.Text.RegularExpressions.GeneratedRegex(@"255\.255\.255\.255")]
+    private static partial System.Text.RegularExpressions.Regex BroadcastRegex();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}")]
+    private static partial System.Text.RegularExpressions.Regex MulticastRegex();
+
     private static readonly System.Threading.Mutex mutex = new();
-    private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");
-    private static readonly System.Text.RegularExpressions.Regex m_regexBroadcast = new(@"255.255.255.255");
+    //private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");
+    //private static readonly System.Text.RegularExpressions.Regex m_regexBroadcast = new(@"255.255.255.255");
 
     public static System.Net.IPEndPoint MulticastTestEndPoint
       => new(System.Net.IPAddress.Parse(@"224.5.6.7"), 4567);
@@ -43,9 +49,9 @@ namespace Flux.Net
       Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.IP, System.Net.Sockets.SocketOptionName.DontFragment, true);
       Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.IP, System.Net.Sockets.SocketOptionName.IpTimeToLive, 0);
 
-      if (m_regexMulticast.IsMatch(RemoteAddress.Address.ToString()))
+      if (MulticastRegex().IsMatch(RemoteAddress.Address.ToString()))
         Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.IP, System.Net.Sockets.SocketOptionName.AddMembership, new System.Net.Sockets.MulticastOption(RemoteAddress.Address));
-      if (m_regexBroadcast.IsMatch(RemoteAddress.Address.ToString()))
+      if (BroadcastRegex().IsMatch(RemoteAddress.Address.ToString()))
         Socket.SetSocketOption(System.Net.Sockets.SocketOptionLevel.Socket, System.Net.Sockets.SocketOptionName.Broadcast, true);
 
       m_thread = new System.Threading.Thread(Thread_SocketReceiver);

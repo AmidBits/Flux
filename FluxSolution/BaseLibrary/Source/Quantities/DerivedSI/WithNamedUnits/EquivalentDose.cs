@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this Quantities.EquivalentDoseUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        Quantities.EquivalentDoseUnit.Sievert => "Sv",
+        Quantities.EquivalentDoseUnit.Sievert => preferUnicode ? "\u33DC" : "Sv",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this Quantities.ElectricalConductanceUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        Quantities.ElectricalConductanceUnit.Siemens => "S",
+        Quantities.ElectricalConductanceUnit.Siemens => preferUnicode ? "\u2127" : "S",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

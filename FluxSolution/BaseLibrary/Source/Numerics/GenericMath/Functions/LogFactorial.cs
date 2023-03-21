@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Compute log(1+x) without losing precision for small values of x.</summary>
     /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
     /// <see href="https://www.johndcook.com/blog/csharp_log_factorial/"/>
-    static TOutput LogFactorial<TInput, TOutput>(this TInput n)
+    public static TOutput LogFactorial<TInput, TOutput>(this TInput n)
       where TInput : System.Numerics.IBinaryInteger<TInput>
       where TOutput : System.Numerics.IFloatingPoint<TOutput>, System.Numerics.ILogarithmicFunctions<TOutput>
     {

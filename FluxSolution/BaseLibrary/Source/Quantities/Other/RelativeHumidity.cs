@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class ExtensionMethods
   {
-    public static string GetUnitString(this Quantities.RelativeHumidityUnit unit, bool preferUnicode, bool useFullName = false)
-      => unit switch
+    public static string GetUnitString(this Quantities.RelativeHumidityUnit unit, bool preferUnicode, bool useFullName)
+      => useFullName ? unit.ToString() : unit switch
       {
-        Quantities.RelativeHumidityUnit.Percent => "\u0025",
+        Quantities.RelativeHumidityUnit.Percent => preferUnicode ? "\u0025" : "\u0025",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

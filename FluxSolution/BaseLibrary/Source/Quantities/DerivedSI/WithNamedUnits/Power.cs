@@ -6,6 +6,7 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.PowerUnit.Watt => "W",
+        Quantities.PowerUnit.KiloWatt => preferUnicode ? "\u33BE" : "kW",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -16,6 +17,7 @@ namespace Flux
     {
       /// <summary>Watt.</summary>
       Watt,
+      KiloWatt,
     }
 
     /// <summary>Power unit of watt.</summary>
@@ -33,6 +35,7 @@ namespace Flux
         => m_value = unit switch
         {
           PowerUnit.Watt => value,
+          PowerUnit.KiloWatt => value * 1000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
@@ -109,6 +112,7 @@ namespace Flux
         => unit switch
         {
           PowerUnit.Watt => m_value,
+          PowerUnit.KiloWatt => m_value / 1000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 

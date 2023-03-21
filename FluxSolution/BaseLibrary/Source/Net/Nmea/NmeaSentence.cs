@@ -2,9 +2,10 @@ namespace Flux.Net.Nmea
 {
   // http://aprs.gids.nl/nmea/
 
-  public class NmeaSentence
+  public partial class NmeaSentence
   {
-    private static readonly System.Text.RegularExpressions.Regex m_reSentence = new(@"(?<StartOfSentence>\$)?(?<SentenceContent>[A-Z]{5}[^\*]+)(?<EndOfSentence>\*)?(?<SentenceChecksum>[0-9a-fA-F]+)?(?<SentenceTermination>\r\n)?", System.Text.RegularExpressions.RegexOptions.Compiled);
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<StartOfSentence>\$)?(?<SentenceContent>[A-Z]{5}[^\*]+)(?<EndOfSentence>\*)?(?<SentenceChecksum>[0-9a-fA-F]+)?(?<SentenceTermination>\r\n)?")]
+    private static partial System.Text.RegularExpressions.Regex SentenceRegex();
 
     protected readonly string m_raw;
     protected readonly System.Collections.Generic.IDictionary<string, string> m_metaData;
@@ -13,7 +14,7 @@ namespace Flux.Net.Nmea
     public NmeaSentence(string sentence)
     {
       m_raw = sentence;
-      m_metaData = m_reSentence.Match(m_raw).GetNamedGroups();
+      m_metaData = SentenceRegex().Match(m_raw).GetNamedGroups();
       m_values = SentenceContent.Split(',');
 
       SentenceChecksumComputed = ComputeChecksum(SentenceContent);

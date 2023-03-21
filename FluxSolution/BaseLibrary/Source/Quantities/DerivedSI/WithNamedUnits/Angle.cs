@@ -83,7 +83,7 @@
 
     /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
-    public readonly record struct Angle
+    public readonly partial record struct Angle
       : System.IComparable, System.IComparable<Angle>, System.IConvertible, IUnitQuantifiable<double, AngleUnit>
     {
       public static readonly Angle Zero;
@@ -199,13 +199,15 @@
 
       public static Angle FromSexagesimalDegrees(double degrees, double minutes, double seconds) => new(ConvertDegreeToRadian(ConvertSexagesimalDegreeToDecimalDegree(degrees, minutes, seconds)));
 
+      [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?")]
+      private static partial System.Text.RegularExpressions.Regex ParseSexagesimalDegreesRegex();
+
+
       public static Angle ParseSexagesimalDegrees(string dms)
       {
-        var re = new System.Text.RegularExpressions.Regex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
-
         var decimalDegrees = 0.0;
 
-        if (re.Match(dms) is var m && m.Success)
+        if (ParseSexagesimalDegreesRegex().Match(dms) is var m && m.Success)
         {
           if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var degrees))
             decimalDegrees += degrees;
