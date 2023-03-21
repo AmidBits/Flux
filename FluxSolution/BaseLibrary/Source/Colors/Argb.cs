@@ -1,11 +1,9 @@
 namespace Flux.Colors
 {
   /// <summary>Rgba is the same as Rgb with the addition of an alpha channel.</summary>
-  public readonly struct Argb
-    : System.IEquatable<Argb>, IHtmlColorFormattable
+  public readonly record struct Argb
+    : IHtmlColorFormattable
   {
-    public static readonly Argb Empty;
-
     private readonly byte m_alpha;
     private readonly Rgb m_rgb;
 
@@ -153,31 +151,15 @@ namespace Flux.Colors
     #endregion Static methods
 
     #region Overloaded operators
-    
+
     public static explicit operator int(Argb v)
       => (v.Alpha << 24) | (v.RGB.Red << 16) | (v.RGB.Green << 8) | (v.RGB.Blue << 0);
-    
+
     public static explicit operator Argb(int v)
       => unchecked(new Argb((byte)(v >> 24), (byte)(v >> 16), (byte)(v >> 8), (byte)v));
-
-     public static bool operator ==(Argb a, Argb b) => a.Equals(b);
-     public static bool operator !=(Argb a, Argb b) => !a.Equals(b);
     #endregion Overloaded operators
 
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Argb other)
-      => m_alpha == other.m_alpha && RGB.Equals(other.RGB);
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Argb o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_alpha, RGB);
-    public override string ToString()
-      => $"{GetType().Name} {{ {m_alpha}, {RGB.Red}, {RGB.Green}, {RGB.Blue} }}";
-    #endregion Object overrides
+    public override string ToString() => $"{GetType().Name} {{ {m_alpha}, {RGB.Red}, {RGB.Green}, {RGB.Blue} }}";
   }
 
   //internal static class Color

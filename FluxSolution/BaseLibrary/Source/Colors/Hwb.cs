@@ -1,10 +1,7 @@
 namespace Flux.Colors
 {
-  public readonly struct Hwb
-    : System.IEquatable<Hwb>
+  public readonly record struct Hwb
   {
-    public static readonly Hwb Empty;
-
     private readonly double m_hue;
     private readonly double m_white;
     private readonly double m_black;
@@ -81,24 +78,7 @@ namespace Flux.Colors
       : (new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble()));
     #endregion Static member
 
-    #region Overloaded operators
-     public static bool operator ==(Hwb a, Hwb b) => a.Equals(b);
-     public static bool operator !=(Hwb a, Hwb b) => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hwb other)
-      => Hue == other.Hue && White == other.White && Black == other.Black;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Hwb o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(Hue, White, Black);
     public override string ToString()
       => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_white * 100:N1}%, {m_black * 100:N1}% }}";
-    #endregion Object overrides
   }
 }

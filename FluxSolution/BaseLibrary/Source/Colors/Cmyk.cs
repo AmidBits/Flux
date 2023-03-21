@@ -2,11 +2,8 @@ namespace Flux.Colors
 {
   /// <summary>CMYK refers to the four ink plates used in some color printing: Cyan, Magenta, Yellow, and Key (black).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/CMYK_color_model"/>
-  public readonly struct Cmyk
-    : System.IEquatable<Cmyk>
+  public readonly record struct Cmyk
   {
-    public static readonly Cmyk Empty;
-
     private readonly double m_cyan;
     private readonly double m_magenta;
     private readonly double m_yellow;
@@ -44,24 +41,7 @@ namespace Flux.Colors
       : new(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
     #endregion Static members
 
-    #region Overloaded operators
-     public static bool operator ==(Cmyk a, Cmyk b) => a.Equals(b);
-     public static bool operator !=(Cmyk a, Cmyk b) => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Cmyk other)
-      => m_cyan == other.m_cyan && m_magenta == other.m_magenta && m_yellow == other.m_yellow && m_key == other.m_key;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Cmyk o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_cyan, m_magenta, m_yellow, m_key);
     public override string ToString()
       => $"{GetType().Name} {{ {m_cyan * 360:N1}\u00B0, {m_magenta * 360:N1}\u00B0, {m_yellow * 360:N1}\u00B0, {m_key * 360:N1}\u00B0 }}";
-    #endregion Object overrides
   }
 }

@@ -1,11 +1,8 @@
 namespace Flux.Colors
 {
   /// <summary>Hsva is the same as Hsv with the addition of an alpha channel.</summary>
-  public readonly struct Ahsv
-    : System.IEquatable<Ahsv>
+  public readonly record struct Ahsv
   {
-    public static readonly Ahsv Empty;
-
     private readonly double m_alpha;
     private readonly Hsv m_hsv;
 
@@ -35,24 +32,7 @@ namespace Flux.Colors
       : new(rng.NextDouble(), Hsv.FromRandom(rng));
     #endregion Static methods
 
-    #region Overloaded operators
-     public static bool operator ==(Ahsv a, Ahsv b) => a.Equals(b);
-     public static bool operator !=(Ahsv a, Ahsv b) => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Ahsv other)
-      => m_alpha == other.m_alpha && HSV.Equals(other.HSV);
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Ahsv o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_alpha, HSV);
     public override string ToString()
       => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HSV.Hue:N1}\u00B0, {HSV.Saturation * 100:N1}%, {HSV.Value * 100:N1}% }}";
-    #endregion Object overrides
   }
 }

@@ -212,8 +212,6 @@
       return sb.AppendLine().ToString();
     }
 
-    #region Object overrides.
     public override string ToString() => $"{GetType().Name} {{ Vertices = {Count}, Edges = {System.Linq.Enumerable.Count(GetEdges())} }}";
-    #endregion Object overrides.
   }
 }

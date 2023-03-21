@@ -98,7 +98,7 @@ namespace Flux.DataStructures
 
     public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";
 
-    private sealed class Node
+    private sealed record class Node
     {
       public bool EndOfEntry;
       public readonly System.Collections.Generic.IDictionary<TKey, Node> SubNodes;

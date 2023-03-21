@@ -1,10 +1,8 @@
 namespace Flux.Colors
 {
-  public readonly struct Rgb
-    : System.IEquatable<Rgb>, IHtmlColorFormattable
+  public readonly record struct Rgb
+    : IHtmlColorFormattable
   {
-    public static readonly Rgb Empty;
-
     private readonly byte m_blue;
     private readonly byte m_green;
     private readonly byte m_red;
@@ -344,24 +342,6 @@ namespace Flux.Colors
     // Operators
     #endregion Static methods
 
-    #region Overloaded operators
-    public static bool operator ==(Rgb a, Rgb b) => a.Equals(b);
-    public static bool operator !=(Rgb a, Rgb b) => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Rgb other)
-      => m_red == other.m_red && m_green == other.m_green && m_blue == other.m_blue;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Rgb o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_red, m_green, m_blue);
-    public override string ToString()
-      => $"{GetType().Name} {{ {m_red}, {m_green}, {m_blue} }}";
-    #endregion Object overrides
+    public override string ToString() => $"{GetType().Name} {{ {m_red}, {m_green}, {m_blue} }}";
   }
 }

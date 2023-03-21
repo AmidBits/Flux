@@ -1,10 +1,7 @@
 namespace Flux.Colors
 {
-  public readonly struct Hsv
-    : System.IEquatable<Hsv>
+  public readonly record struct Hsv
   {
-    public static readonly Hsv Empty;
-
     private readonly double m_hue;
     private readonly double m_saturation;
     private readonly double m_value;
@@ -88,24 +85,7 @@ namespace Flux.Colors
       : new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble());
     #endregion Static methods
 
-    #region Overloaded operators
-     public static bool operator ==(Hsv a, Hsv b) => a.Equals(b);
-     public static bool operator !=(Hsv a, Hsv b) => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsv other)
-      => m_hue == other.m_hue && m_saturation == other.m_saturation && m_value == other.m_value;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Hsv o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_hue, m_saturation, m_value);
     public override string ToString()
       => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_saturation * 100:N1}%, {m_value * 100:N1}% }}";
-    #endregion Object overrides
   }
 }

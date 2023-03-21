@@ -10,7 +10,7 @@ namespace Flux
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TPercentRank"></typeparam>
-    public class CumulativeDistributionFunction<TKey, TPercentRank>
+    public sealed class CumulativeDistributionFunction<TKey, TPercentRank>
       : System.Collections.Generic.SortedDictionary<TKey, TPercentRank>
       where TKey : notnull
       where TPercentRank : System.Numerics.IFloatingPoint<TPercentRank>

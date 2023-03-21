@@ -1,8 +1,7 @@
 namespace Flux.Colors
 {
   /// <summary>Hsia is the same as Hsi with the addition of an alpha channel.</summary>
-  public readonly struct Ahsi
-    : System.IEquatable<Ahsi>
+  public readonly record struct Ahsi
   {
     public static readonly Ahsi Empty;
 
@@ -32,24 +31,7 @@ namespace Flux.Colors
       : new Ahsi(rng.NextDouble(), Hsi.FromRandom(rng));
     #endregion Static members
 
-    #region Overloaded operators
-     public static bool operator ==(Ahsi a, Ahsi b) => a.Equals(b);
-     public static bool operator !=(Ahsi a, Ahsi b) => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interface
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Ahsi other)
-      => m_alpha == other.m_alpha && HSI.Equals(other.HSI);
-    #endregion Implemented interface
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Ahsi o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_alpha, HSI);
     public override string ToString()
       => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HSI.Hue:N1}\u00B0, {HSI.Saturation * 100:N1}%, {HSI.Intensity * 100:N1}% }}";
-    #endregion Object overrides
   }
 }

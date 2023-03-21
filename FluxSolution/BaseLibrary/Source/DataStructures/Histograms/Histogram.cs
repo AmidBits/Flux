@@ -21,7 +21,7 @@ namespace Flux
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TFrequency"></typeparam>
-    public class Histogram<TKey, TFrequency>
+    public sealed class Histogram<TKey, TFrequency>
       : System.Collections.Generic.IDictionary<TKey, TFrequency>
       where TKey : notnull
       where TFrequency : System.Numerics.IBinaryInteger<TFrequency>

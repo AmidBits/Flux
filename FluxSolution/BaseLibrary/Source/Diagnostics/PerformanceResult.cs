@@ -1,10 +1,7 @@
 namespace Flux.Services
 {
-  public struct MeasuredResult
-    : System.IEquatable<MeasuredResult>
+  public record struct PerformanceResult
   {
-    public static readonly MeasuredResult Empty;
-
     public System.TimeSpan AverageTime
       => new(TotalTime.Ticks / Iterations);
 
@@ -13,7 +10,7 @@ namespace Flux.Services
     public object? LastResult { get; private set; }
     public System.TimeSpan TotalTime { get; private set; }
 
-    public MeasuredResult(string identifier, int iterations, object? lastResult, System.TimeSpan totalTime)
+    public PerformanceResult(string identifier, int iterations, object? lastResult, System.TimeSpan totalTime)
     {
       Identifier = identifier;
       Iterations = iterations;
@@ -55,26 +52,7 @@ namespace Flux.Services
         throw new System.ArgumentException($"Assertion expected less than <{maxTotalTime}> but actual was <{TotalTime}> ({LastResult?.GetType().Name ?? @"null"})", nameof(maxTotalTime));
     }
 
-    #region Overloaded operators
-    public static bool operator ==(MeasuredResult a, MeasuredResult b)
-      => a.Equals(b);
-    public static bool operator !=(MeasuredResult a, MeasuredResult b)
-      => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // System.IEquatable
-    public bool Equals(MeasuredResult other)
-      => Identifier == other.Identifier && Iterations == other.Iterations && LastResult == other.LastResult && TotalTime == other.TotalTime;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is MeasuredResult o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(Identifier, Iterations, LastResult, TotalTime);
     public override string ToString()
       => $"{GetType().Name} {{ {Identifier}, x {Flux.Convert.ToGroupedString(Iterations)}, {TotalTime} (avg {new System.TimeSpan(TotalTime.Ticks / (Iterations > 0 ? Iterations : 1))}) {(LastResult is null ? @"null" : $"{LastResult}[{LastResult.GetType().Name}]")} }}";
-    #endregion Object overrides
   }
 }

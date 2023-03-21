@@ -1,11 +1,8 @@
 namespace Flux.Colors
 {
   /// <summary>Cmyka is the same as Cmyk with the addition of an alpha channel.</summary>
-  public readonly struct Acmyk
-    : System.IEquatable<Acmyk>
+  public readonly record struct Acmyk
   {
-    public static readonly Acmyk Empty;
-
     private readonly double m_alpha;
     private readonly Cmyk m_cmyk;
 
@@ -37,26 +34,11 @@ namespace Flux.Colors
     #endregion Static members
 
     #region Overloaded operators
-     public static explicit operator Acmyk(System.ValueTuple<double, double, double, double, double> v) => new(v.Item1, v.Item2, v.Item3, v.Item4, v.Item5);
-     public static explicit operator Acmyk(double[] v) => new(v[0], v[1], v[2], v[3], v[4]);
-
-     public static bool operator ==(Acmyk a, Acmyk b) => a.Equals(b);
-     public static bool operator !=(Acmyk a, Acmyk b) => !a.Equals(b);
+    public static explicit operator Acmyk(System.ValueTuple<double, double, double, double, double> v) => new(v.Item1, v.Item2, v.Item3, v.Item4, v.Item5);
+    public static explicit operator Acmyk(double[] v) => new(v[0], v[1], v[2], v[3], v[4]);
     #endregion Overloaded operators
 
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Acmyk other)
-      => m_alpha == other.m_alpha && CMYK.Equals(other.CMYK);
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Acmyk o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(CMYK, Alpha);
     public override string ToString()
       => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {CMYK.Cyan * 360:N1}\u00B0, {CMYK.Magenta * 360:N1}\u00B0, {CMYK.Yellow * 360:N1}\u00B0, {CMYK.Key * 360:N1}\u00B0 }}";
-    #endregion Object overrides
   }
 }

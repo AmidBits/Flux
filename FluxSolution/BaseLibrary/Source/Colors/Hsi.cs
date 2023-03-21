@@ -1,10 +1,7 @@
 namespace Flux.Colors
 {
-  public readonly struct Hsi
-    : System.IEquatable<Hsi>
+  public readonly record struct Hsi
   {
-    public static readonly Hsi Empty;
-
     private readonly double m_hue;
     private readonly double m_saturation;
     private readonly double m_intensity;
@@ -78,24 +75,7 @@ namespace Flux.Colors
       : new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble());
     #endregion Static methods
 
-    #region Overloaded operators
-     public static bool operator ==(Hsi a, Hsi b) => a.Equals(b);
-     public static bool operator !=(Hsi a, Hsi b) => !a.Equals(b);
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-    // IEquatable
-    public bool Equals([System.Diagnostics.CodeAnalysis.AllowNull] Hsi other)
-      => m_hue == other.m_hue && m_saturation == other.m_saturation && m_intensity == other.m_intensity;
-    #endregion Implemented interfaces
-
-    #region Object overrides
-    public override bool Equals(object? obj)
-      => obj is Hsi o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(m_hue, m_saturation, m_intensity);
     public override string ToString()
       => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_saturation * 100:N1}%, {m_intensity * 100:N1}% }}";
-    #endregion Object overrides
   }
 }
