@@ -5,7 +5,7 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Returns the least common multiple of all values.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Least_common_multiple"/>
+    /// <see href="https://en.wikipedia.org/wiki/Least_common_multiple"/>
     public static TSelf Lcm<TSelf>(this TSelf[] values)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => values.Length >= 2
@@ -13,7 +13,7 @@ namespace Flux
       : throw new System.ArgumentOutOfRangeException(nameof(values));
 
     /// <summary>Returns the least common multiple of <paramref name="a"/> and <paramref name="b"/>.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Least_common_multiple"/>
+    /// <see href="https://en.wikipedia.org/wiki/Least_common_multiple"/>
     public static TSelf LeastCommonMultiple<TSelf>(this TSelf a, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => a / a.GreatestCommonDivisor(b) * b;

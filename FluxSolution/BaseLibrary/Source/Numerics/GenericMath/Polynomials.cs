@@ -7,7 +7,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Cubic_function"/>
     public static TSelf PolynomialCubic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-        => a * x * x * x + b * x * x + c * x + d;
+      => a * x * x * x + PolynomialQuadratic(x, b, c, d);
 
     /// <summary>A degree one polynomial.</summary>
     /// <param name="a">a != 0</param>
@@ -21,7 +21,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
     public static TSelf PolynomialQuadratic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => a * x * x + b * x + c;
+      => a * x * x + PolynomialLinear(x, b, c);
 
     /// <summary>A univariate quadratic function (factored form), or second-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
@@ -63,28 +63,28 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Quartic_function"/>
     public static TSelf PolynomialQuartic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => a * TSelf.Pow(x, TSelf.CreateChecked(4)) + b * TSelf.Pow(x, TSelf.CreateChecked(3)) + c * x * x + d * x + e;
+      => (a * x * x * x * x) + PolynomialCubic(x, b, c, d, e);
 
     /// <summary>A univariate quintic function, or fifth-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Sextic_function"/>
     public static TSelf PolynomialQuintic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => a * TSelf.Pow(x, TSelf.CreateChecked(5)) + b * TSelf.Pow(x, TSelf.CreateChecked(4)) + c * TSelf.Pow(x, TSelf.CreateChecked(3)) + d * x * x + e * x + f;
+      => (a * x * x * x * x * x) + PolynomialQuartic(x, b, c, d, e, f);
 
     /// <summary>A univariate septic function, or seventh-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Septic_function"/>
     public static TSelf PolynomialSeptic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g, TSelf h)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => a * TSelf.Pow(x, TSelf.CreateChecked(7)) + b * TSelf.Pow(x, TSelf.CreateChecked(6)) + c * TSelf.Pow(x, TSelf.CreateChecked(5)) + d * TSelf.Pow(x, TSelf.CreateChecked(4)) + e * TSelf.Pow(x, TSelf.CreateChecked(3)) + f * x * x + g * x + h;
+      => (a * x * x * x * x * x * x * x) + PolynomialSextic(x, b, c, d, e, f, g, h);
 
     /// <summary>A univariate sextic function, or sixth-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quintic_function"/>
     public static TSelf PolynomialSextic<TSelf>(this TSelf x, TSelf a, TSelf b, TSelf c, TSelf d, TSelf e, TSelf f, TSelf g)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => a * TSelf.Pow(x, TSelf.CreateChecked(6)) + b * TSelf.Pow(x, TSelf.CreateChecked(5)) + c * TSelf.Pow(x, TSelf.CreateChecked(4)) + d * TSelf.Pow(x, TSelf.CreateChecked(3)) + e * x * x + f * x + g;
+      => (a * x * x * x * x * x * x) + PolynomialQuintic(x, b, c, d, e, f, g);
 
     /// <summary>A polynomial in one indeterminate.</summary>
     /// <param name="x"></param>

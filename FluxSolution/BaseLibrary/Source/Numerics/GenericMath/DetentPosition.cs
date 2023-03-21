@@ -6,7 +6,6 @@ namespace Flux
     public static TSelf DetentPosition<TSelf>(this TSelf value, TSelf position, TSelf distance)
       where TSelf : System.Numerics.INumber<TSelf>
       => ApproximateEquality.ByAbsoluteTolerance<TSelf>.IsApproximatelyEqual(position, value, distance)
-      //=> TSelf.Abs(position - value) <= TSelf.Abs(distance)
       ? position // Detent to position.
       : value;
   }

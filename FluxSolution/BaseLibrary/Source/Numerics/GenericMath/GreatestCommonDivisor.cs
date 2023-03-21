@@ -5,7 +5,7 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Returns the greatest common divisor of all values.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
     public static TSelf Gcd<TSelf>(this TSelf[] values)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => values.Length >= 2
@@ -13,7 +13,7 @@ namespace Flux
       : throw new System.ArgumentOutOfRangeException(nameof(values));
 
     /// <summary>Returns the greatest common divisor of <paramref name="a"/> and <paramref name="b"/>.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
     public static TSelf GreatestCommonDivisor<TSelf>(this TSelf a, TSelf b)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -29,8 +29,8 @@ namespace Flux
 
     /// <summary>The extended GCD (or Euclidean algorithm) yields in addition the GCD of <paramref name="a"/> and <paramref name="b"/>, also the addition the coefficients of Bézout's identity.</summary>
     /// <remarks>When a and b are coprime (i.e. GCD equals 1), x is the modular multiplicative inverse of a modulo b, and y is the modular multiplicative inverse of b modulo a.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Bézout%27s_identity"/>
+    /// <see href="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm"/>
+    /// <seealso href="https://en.wikipedia.org/wiki/Bézout%27s_identity"/>
     public static TSelf GreatestCommonDivisorEx<TSelf>(this TSelf a, TSelf b, out TSelf x, out TSelf y)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

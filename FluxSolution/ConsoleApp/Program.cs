@@ -19,19 +19,12 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      var i = 1423;
-      var si = i.ToString();
-      var ois = si.AsSpan();
-      var oisd1 = i.GetOrdinalIndicator();
+      var c1 = new Flux.Numerics.CartesianCoordinate2<double>(5, 15);
+      var c2 = new Flux.Numerics.CartesianCoordinate2<double>(25, 55);
 
+      // var li = Flux.Interpolation.LinearInterpolation<Flux.Numerics.CartesianCoordinate2<double>, double>.Interpolate(c1, c2, 0.5);
 
-      var n = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-
-      var index = 1;
-      foreach (var p in n.PermuteAlgorithmL())
-        System.Console.WriteLine($"{index++:D2} : {string.Join('|', p)}");
-
-      //var b = n.IsSequenceConsecutive();
+      var cc2 = Flux.Numerics.CartesianCoordinate2<double>.CreateChecked(10);
     }
 
     private static void Main(string[] args)
