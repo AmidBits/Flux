@@ -2,6 +2,9 @@ using System.Linq;
 
 namespace Flux.Globalization.EnUs.Az.PimaCounty
 {
+  /// <summary>The usage below was active and working on and before the year 2023. Much of the guidelines for the naming in Pima county was done by Pima Association of Governments (PAG).</summary>
+  /// <see href="https://pagregion.com/"/>
+  /// <remarks>It seems the information that used to be available and where the functionality below was created from, now cost money. So much for paying taxes.</remarks>
   public readonly record struct PimaCountyStreetAddress
   {
     public static readonly PimaCountyStreetAddress Empty;

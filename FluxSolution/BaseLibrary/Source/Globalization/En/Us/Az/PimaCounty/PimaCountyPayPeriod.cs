@@ -1,5 +1,6 @@
 namespace Flux.Globalization.EnUs.Az.PimaCounty
 {
+  /// <summary>The pay period usage of Pima county, as described below, was in use and stable between the years 2014 and 2022.</summary>
   public readonly record struct PimaCountyPayPeriod
     : System.IComparable<PimaCountyPayPeriod>
   {
