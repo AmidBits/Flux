@@ -20,7 +20,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<DefineConstants>TRACE;ZAMPLEZ</DefineConstants>
+		<DefineConstants>TRACE</DefineConstants>
 		<Optimize>false</Optimize>
 		<WarningLevel>5</WarningLevel>
 	</PropertyGroup>

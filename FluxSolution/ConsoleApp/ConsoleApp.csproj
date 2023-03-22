@@ -1,20 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <StartupObject>ConsoleApp.Program</StartupObject>
-	  <EnablePreviewFeatures>True</EnablePreviewFeatures>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<StartupObject>ConsoleApp.Program</StartupObject>
+		<EnablePreviewFeatures>True</EnablePreviewFeatures>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>TRACE</DefineConstants>
+		<DefineConstants>ZAMPLEZ</DefineConstants>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
-	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>TRACE</DefineConstants>
+	</PropertyGroup>
+
 	<!--<PropertyGroup>
 		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
 		<PublishSingleFile>true</PublishSingleFile>
@@ -22,7 +23,7 @@
 	</PropertyGroup>-->
 
 	<ItemGroup>
-    <ProjectReference Include="..\Modeling\Modeling.csproj" />
-  </ItemGroup>
+		<ProjectReference Include="..\Modeling\Modeling.csproj" />
+	</ItemGroup>
 
 </Project>
