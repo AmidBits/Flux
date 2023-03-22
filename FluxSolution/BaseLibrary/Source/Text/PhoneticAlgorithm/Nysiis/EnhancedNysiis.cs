@@ -2,10 +2,42 @@
 
 namespace Flux.Text.PhoneticAlgorithm
 {
-  public sealed class EnhancedNysiis
+  public sealed partial class EnhancedNysiis
     : IPhoneticAlgorithmEncoder
   {
     public int MaxCodeLength { get; set; } = 8;
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"[SZ]+$")] private static partial System.Text.RegularExpressions.Regex RegexStep2();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"^MAC")] private static partial System.Text.RegularExpressions.Regex RegexStep31();
+    [System.Text.RegularExpressions.GeneratedRegex(@"^PF")] private static partial System.Text.RegularExpressions.Regex RegexStep32();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"IX$")] private static partial System.Text.RegularExpressions.Regex RegexStep41();
+    [System.Text.RegularExpressions.GeneratedRegex(@"EX$")] private static partial System.Text.RegularExpressions.Regex RegexStep42();
+    [System.Text.RegularExpressions.GeneratedRegex(@"(YE|EE|IE)$")] private static partial System.Text.RegularExpressions.Regex RegexStep43();
+    [System.Text.RegularExpressions.GeneratedRegex(@"(DT|RT|RD|NT|ND)$")] private static partial System.Text.RegularExpressions.Regex RegexStep44();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)EV")] private static partial System.Text.RegularExpressions.Regex RegexStep5();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<=[AEIOU])W")] private static partial System.Text.RegularExpressions.Regex RegexStep7();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"[AEIOU]+")] private static partial System.Text.RegularExpressions.Regex RegexStep8();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)(AH|HA)")] private static partial System.Text.RegularExpressions.Regex RegexStep12();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)M")] private static partial System.Text.RegularExpressions.Regex RegexStep14();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)Q")] private static partial System.Text.RegularExpressions.Regex RegexStep15();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)Y(?!$)")] private static partial System.Text.RegularExpressions.Regex RegexStep19();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)Z")] private static partial System.Text.RegularExpressions.Regex RegexStep21();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"AY$")] private static partial System.Text.RegularExpressions.Regex RegexStep22();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"[AEIOU]+$")] private static partial System.Text.RegularExpressions.Regex RegexStep23();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"([A-Z])\1+")] private static partial System.Text.RegularExpressions.Regex RegexStep24();
 
     /// <summary>Nysiis is similar in nature to the SOUNDEX phonetic encoder, but does of course produce different results. New York State Identification and Intelligence System (NYSIIS) Phonetic Encoder.</summary>
     /// <see cref="https://xlinux.nist.gov/dads/HTML/nysiis.html"/>
@@ -20,23 +52,23 @@ namespace Flux.Text.PhoneticAlgorithm
 
         var firstCharVowel = !code[0].IsBasicLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(code[0]) ? code[0] : '\0'; // 1, if the first character of the name is a vowel, remember it.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"[SZ]+$", string.Empty); // 2, remove all 'S' and 'Z' chars from the end of the name.
+        code = RegexStep2().Replace(code, string.Empty); // 2, remove all 'S' and 'Z' chars from the end of the name.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"^MAC", @"MC"); // 3.1, transcode first characters of name MAC to MC.
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"^PF", @"F"); // 3.2, transcode first characters of name PF to F.
+        code = RegexStep31().Replace(code, @"MC"); // 3.1, transcode first characters of name MAC to MC.
+        code = RegexStep32().Replace(code, @"F"); // 3.2, transcode first characters of name PF to F.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"IX$", @"IC"); // 4.1, transcode trailing strings IX to IC.
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"EX$", @"EC"); // 4.2, transcode trailing strings EX to EC.
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"(YE|EE|IE)$", @"Y"); // 4.3, transcode trailing strings YE,EE,IE to Y.
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"(DT|RT|RD|NT|ND)$", @"D"); // 4.4, transcode trailing strings DT,RT,RD,NT,ND to D; repeat this last step as necessary.
+        code = RegexStep41().Replace(code, @"IC"); // 4.1, transcode trailing strings IX to IC.
+        code = RegexStep42().Replace(code, @"EC"); // 4.2, transcode trailing strings EX to EC.
+        code = RegexStep43().Replace(code, @"Y"); // 4.3, transcode trailing strings YE,EE,IE to Y.
+        code = RegexStep44().Replace(code, @"D"); // 4.4, transcode trailing strings DT,RT,RD,NT,ND to D; repeat this last step as necessary.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"(?!^)EV", @"EF"); // // 5, transcode 'EV' to 'EF' if not at start of name.
+        code = RegexStep5().Replace(code, @"EF"); // // 5, transcode 'EV' to 'EF' if not at start of name.
 
         //var firstCharOfKey = code[0].ToString(); // 6, use first character of name as first character of key.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"(?<=[AEIOU])W", string.Empty); // 7, remove any 'W' that follows a vowel.
+        code = RegexStep7().Replace(code, string.Empty); // 7, remove any 'W' that follows a vowel.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"[AEIOU]+", @"A"); // 8, replace all vowels with 'A' and collapse all strings of repeated 'A' to one.
+        code = RegexStep8().Replace(code, @"A"); // 8, replace all vowels with 'A' and collapse all strings of repeated 'A' to one.
 
         code = code.Replace(@"GHT", @"GT"); // 9, transcode 'GHT' to 'GT'.
 
@@ -44,14 +76,14 @@ namespace Flux.Text.PhoneticAlgorithm
 
         code = code.Replace(@"PH", @"F"); // 11, transcode 'PH' to 'F'
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"(?!^)(AH|HA)", @"A"); // 12, if not first character, eliminate all 'H' preceded or followed by a vowel
+        code = RegexStep12().Replace(code, @"A"); // 12, if not first character, eliminate all 'H' preceded or followed by a vowel
 
         code = code.Replace(@"KN", @"N"); // 13, change 'KN' to 'N'.
         code = code.Replace(@"K", @"C"); // 13, change 'K' to 'C'.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"(?!^)M", @"N"); // 14, if not first character, change 'M' to 'N'.
+        code = RegexStep14().Replace(code, @"N"); // 14, if not first character, change 'M' to 'N'.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"(?!^)Q", @"G"); // 15, if not first character, change 'Q' to 'G'.
+        code = RegexStep15().Replace(code, @"G"); // 15, if not first character, change 'Q' to 'G'.
 
         code = code.Replace(@"SH", @"S"); // 16, transcode 'SH' to 'S'.
 
@@ -59,17 +91,17 @@ namespace Flux.Text.PhoneticAlgorithm
 
         code = code.Replace(@"YW", @"Y"); // 18, transcode 'YW' to 'Y'.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"(?!^)Y(?!$)", @"A"); // 19, if not first or last character, change 'Y' to 'A'.
+        code = RegexStep19().Replace(code, @"A"); // 19, if not first or last character, change 'Y' to 'A'.
 
         code = code.Replace(@"WR", @"R"); // 20, transcode 'WR' to 'R'.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"(?!^)Z", @"S"); // 21, if not first character, change 'Z' to 'S'.
+        code = RegexStep21().Replace(code, @"S"); // 21, if not first character, change 'Z' to 'S'.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"AY$", @"Y"); // 22, transcode terminal 'AY' to 'Y'.
+        code = RegexStep22().Replace(code, @"Y"); // 22, transcode terminal 'AY' to 'Y'.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"[AEIOU]+$", string.Empty); // 23, remove trailing vowels.
+        code = RegexStep23().Replace(code, string.Empty); // 23, remove trailing vowels.
 
-        code = System.Text.RegularExpressions.Regex.Replace(code, @"([A-Z])\1+", @"$1"); // 24. collapse all strings of repeated characters.
+        code = RegexStep24().Replace(code, @"$1"); // 24. collapse all strings of repeated characters.
 
         // 25. if first character of original name is a vowel, prepend to code(or replace first transcoded 'A')
         if (!firstCharVowel.IsBasicLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(firstCharVowel))

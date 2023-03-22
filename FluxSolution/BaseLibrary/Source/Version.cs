@@ -6,8 +6,7 @@ namespace Flux
   public readonly partial record struct Version
     : IComparable<Version>, IEquatable<Version>
   {
-    [System.Text.RegularExpressions.GeneratedRegex("[^0-9]+")]
-    private static partial System.Text.RegularExpressions.Regex m_reSplit();
+    [System.Text.RegularExpressions.GeneratedRegex("[^0-9]+")] private static partial System.Text.RegularExpressions.Regex RegexSplit();
 
     private readonly int[] m_parts;
 
@@ -40,7 +39,7 @@ namespace Flux
     public static Version Parse(string version)
       => version is null
       ? throw new ArgumentNullException(nameof(version))
-      : new(m_reSplit().Split(version).Where(e => !string.IsNullOrWhiteSpace(e)).Select(part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)).ToArray());
+      : new(RegexSplit().Split(version).Where(e => !string.IsNullOrWhiteSpace(e)).Select(part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)).ToArray());
 
     public static bool TryParse(string version, out Version result)
     {

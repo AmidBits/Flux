@@ -4,7 +4,7 @@ namespace Flux
 {
   public static partial class ExtensionMethodsCultureInfo
   {
-    /// <summary>Returns the IPA dictionary for the <paramref name="source"/>, if available.</summary>
+    /// <summary>Returns the IPA dictionary for the <paramref name="source"/>, if available. Uses the specified <paramref name="comparer"/>, or default if null.</summary>
     /// <see href="https://github.com/open-dict-data/ipa-dict/tree/master/"/>
     public static System.Collections.Generic.SortedDictionary<string, string> GetIpaDictionaryOf(this System.Globalization.CultureInfo source, System.Collections.Generic.IComparer<string>? comparer = null)
     {

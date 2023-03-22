@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this Quantities.TorqueUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        Quantities.TorqueUnit.NewtonMeter => "N\u22C5m",
+        Quantities.TorqueUnit.NewtonMeter => preferUnicode ? "N\u22C5m" : "N·m",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }

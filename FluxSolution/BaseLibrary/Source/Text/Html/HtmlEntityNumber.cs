@@ -1,12 +1,12 @@
 namespace Flux
 {
   /// <summary>The functionality of this class relates to U+xxxxx style formatting.</summary>
-  public static class HtmlEntityNumber
+  public static partial class HtmlEntityNumber
   {
-    public static readonly System.Text.RegularExpressions.Regex ParseRegex = new(@"(?<=&#)\d+(?=;)", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Compiled);
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<=&#)\d+(?=;)", System.Text.RegularExpressions.RegexOptions.IgnoreCase)] private static partial System.Text.RegularExpressions.Regex RegexParse();
 
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> Parse(string text)
-      => System.Linq.Enumerable.Select(System.Linq.Enumerable.Where(ParseRegex.Matches(text), m => m.Success), m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.Number, null)));
+      => System.Linq.Enumerable.Select(System.Linq.Enumerable.Where(RegexParse().Matches(text), m => m.Success), m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.Number, null)));
     public static bool TryParse(string text, out System.Collections.Generic.List<System.Text.Rune> result)
     {
       try

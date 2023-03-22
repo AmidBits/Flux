@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this Quantities.ActionUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        Quantities.ActionUnit.JouleSecond => "J\u22C5s",
+        Quantities.ActionUnit.JouleSecond => preferUnicode ? "J\u22C5s" : "J·s",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
