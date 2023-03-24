@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Flux;
+using Flux.Text;
 using Microsoft.VisualBasic.FileIO;
 
 // C# Interactive commands:
@@ -15,9 +16,41 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
+
+
+      var exp = "2.0*(-2-3)";
+      //exp = "-3";
+
+      var mt = new Flux.Text.MathTokenizer(false);
+
+      var ts = mt.GetTokens(exp).ToList();
+
+      for (var i = 0; i < ts.Count; i++)
+      {
+        if (ts[i] is MathTokenOperator mto && mto.Value == MathTokenOperator.SymbolSubtract)
+        {
+          if ((i == 0 || ts[i - 1] is not MathTokenNumber) && (i <= ts.Count - 1 && ts[i + 1] is MathTokenNumber mtn))
+          {
+            ts[i + 1] = mtn.GetNegated();
+            ts.RemoveAt(i);
+          }
+        }
+      }
+
+      var npn = Flux.Text.MathTokenizer.GetTokensNPN(ts);
+      var enpn = Flux.Text.MathTokenizer.EvaluateNPN(npn);
+
+      var rpn = Flux.Text.MathTokenizer.GetTokensRPN(ts);
+      var erpn = Flux.Text.MathTokenizer.EvaluateRPN(rpn);
+
+      return;
+
+      var sr = new System.IO.StringReader("Hello\u241F\"World,\r\n\"\u241EGoodbye\u241FWorld\u241D");
+
+      var table = Flux.UnicodeData.ReadGroup(sr, out var read);
 
       var c1 = new Flux.Numerics.CartesianCoordinate2<double>(5, 15);
       var c2 = new Flux.Numerics.CartesianCoordinate2<double>(25, 55);

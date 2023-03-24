@@ -93,21 +93,22 @@ namespace Flux.Text
     //  }
     //}
 
-    public System.Collections.Generic.IEnumerable<MathToken> GetTokens(string text)
+    /// <comment>Creates an infix sequence of tokens.</comment>
+    public System.Collections.Generic.IEnumerable<MathToken> GetTokens(string expression)
     {
       var parenthesisDepth = 0;
       var parenthesisGroup = 0;
       var parenthesisGroups = new System.Collections.Generic.Stack<int>();
 
-      text = UnifyExpression(text);
+      expression = UnifyExpression(expression);
 
       var index = 0;
 
-      while (index < text.Length)
+      while (index < expression.Length)
       {
         foreach (var kvp in m_recognized)
         {
-          if (kvp.Value.Match(text, index, text.Length - index) is var match && match.Success)
+          if (kvp.Value.Match(expression, index, expression.Length - index) is var match && match.Success)
           {
             switch (kvp.Key)
             {
@@ -159,15 +160,17 @@ namespace Flux.Text
         var psrmm = psr.Where(p1 => !psl.Where(p2 => p2.Group.Equals(p1.Group)).Any());
 
         foreach (var token in pslmm.Union(psrmm))
-        {
           yield return token;
-        }
       }
     }
 
-    /// <comment>Convert an infix sequence of tokens to prefix (or Normal Polish) notation (NPN), using a Shunting-yard algorithm.</comment>
-    /// <see cref="https://en.wikipedia.org/wiki/Shunting-yard_algorithm"/>
-    /// <see cref="https://en.wikipedia.org/wiki/Polish_notation"/>
+    /// <summary>
+    /// <para>Convert an infix sequence of tokens to prefix notation order (a.k.a. Normal Polish Notation, or NPN), using a Shunting-yard algorithm.</para>
+    /// <para><see cref="https://en.wikipedia.org/wiki/Shunting-yard_algorithm"/></para>
+    /// <para><see cref="https://en.wikipedia.org/wiki/Polish_notation"/></para>
+    /// </summary>
+    /// <param name="tokens"></param>
+    /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<MathToken> GetTokensNPN(System.Collections.Generic.IEnumerable<MathToken> tokens)
     {
       var output = new System.Collections.Generic.List<MathToken>();
@@ -210,9 +213,14 @@ namespace Flux.Text
 
       return output;
     }
-    /// <comment>Convert an infix sequence of tokens to postfix (or Reverse Polish) notation (RPN), using a Shunting-yard algorithm..</comment>
-    /// <see cref="https://en.wikipedia.org/wiki/Shunting-yard_algorithm"/>
-    /// <see cref="https://en.wikipedia.org/wiki/Reverse_Polish_notation"/>
+
+    /// <summary>
+    /// <para>Convert an infix sequence of tokens to postfix notation (a.k.a. Reverse Polish Notation, or RPN), using a Shunting-yard algorithm.</para>
+    /// <para><see cref="https://en.wikipedia.org/wiki/Shunting-yard_algorithm"/></para>
+    /// <para><see cref="https://en.wikipedia.org/wiki/Reverse_Polish_notation"/></para>
+    /// </summary>
+    /// <param name="tokens"></param>
+    /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<MathToken> GetTokensRPN(System.Collections.Generic.IEnumerable<MathToken> tokens)
     {
       var output = new System.Collections.Generic.List<MathToken>();
@@ -254,8 +262,10 @@ namespace Flux.Text
       return output;
     }
 
-    /// <comment>Evaluate a prefix (or Normal Polish) notation sequence to a value.</comment>
+    /// <summary>
+    /// <para>Evaluate a sequence of tokens in prefix notation order (a.k.a. Normal Polish Notation, or NPN), to a value.</para>
     /// <see cref="https://en.wikipedia.org/wiki/Polish_notation"/>
+    /// </summary>
     public static double EvaluateNPN(System.Collections.Generic.IEnumerable<MathToken> tokens)
     {
       var stack = new System.Collections.Generic.Stack<MathToken>();
@@ -277,13 +287,15 @@ namespace Flux.Text
 
       return double.Parse(stack.Pop().Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture);
     }
-    /// <comment>Evaluate a postfix (or Reverse Polish) notation sequence to a value.</comment>
+    /// <summary>
+    /// <para>Evaluate a sequence of tokens in postfix notation order (a.k.a. Reverse Polish Notation, or RPN), to a value.</para>
     /// <see cref="https://en.wikipedia.org/wiki/Reverse_Polish_notation"/>
+    /// </summary>
     public static double EvaluateRPN(System.Collections.Generic.IEnumerable<MathToken> tokens)
     {
       var stack = new System.Collections.Generic.Stack<MathToken>();
 
-      foreach (var token in tokens ?? throw new System.ArgumentNullException(nameof(tokens)))
+      foreach (var token in tokens.ThrowIfNull(nameof(tokens)))
       {
         switch (token)
         {
