@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
     public readonly record struct Frequency
-      : System.IComparable, System.IComparable<Frequency>, System.IConvertible, IUnitQuantifiable<double, FrequencyUnit>
+      : System.IComparable, System.IComparable<Frequency>, IUnitQuantifiable<double, FrequencyUnit>
     {
       public static readonly Frequency Zero;
 
@@ -124,26 +124,6 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(Frequency other) => m_hertz.CompareTo(other.m_hertz);
-
-      #region IConvertible
-      public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-      public bool ToBoolean(System.IFormatProvider? provider) => m_hertz != 0;
-      public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_hertz);
-      public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_hertz);
-      public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_hertz);
-      public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_hertz);
-      public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_hertz);
-      public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_hertz);
-      public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_hertz);
-      public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_hertz);
-      [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_hertz);
-      public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_hertz);
-      public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_hertz);
-      public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_hertz, conversionType, provider);
-      [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_hertz);
-      [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_hertz);
-      [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_hertz);
-      #endregion IConvertible
 
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);

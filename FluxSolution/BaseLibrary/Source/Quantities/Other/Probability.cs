@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Probability is a ratio, represented as a range [0, 1] of values where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
     public readonly record struct Probability
-      : System.IComparable, System.IComparable<Probability>, System.IConvertible, System.IFormattable, IQuantifiable<double>
+      : System.IComparable, System.IComparable<Probability>, System.IFormattable, IQuantifiable<double>
     {
       public static readonly Probability Zero;
 
@@ -111,26 +111,6 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(Probability other) => m_probability.CompareTo(other.m_probability);
-
-      #region IConvertible
-      public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-      public bool ToBoolean(System.IFormatProvider? provider) => m_probability != 0;
-      public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_probability);
-      public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_probability);
-      public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_probability);
-      public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_probability);
-      public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_probability);
-      public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_probability);
-      public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_probability);
-      public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_probability);
-      [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_probability);
-      public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_probability);
-      public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_probability);
-      public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_probability, conversionType, provider);
-      [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_probability);
-      [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_probability);
-      [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_probability);
-      #endregion IConvertible
 
       // IFormattable
       public string ToString(string? format, IFormatProvider? formatProvider) => m_probability.ToString(format, formatProvider);

@@ -215,8 +215,8 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct CartesianCoordinate3<TSelf>
-        : System.Numerics.INumberBase<CartesianCoordinate3<TSelf>>, ICartesianCoordinate3<TSelf>
-        where TSelf : System.Numerics.INumber<TSelf>
+      : System.IFormattable, System.Numerics.INumberBase<CartesianCoordinate3<TSelf>>, ICartesianCoordinate3<TSelf>
+      where TSelf : System.Numerics.INumber<TSelf>
     {
       private readonly TSelf m_x;
       private readonly TSelf m_y;
@@ -474,9 +474,11 @@ namespace Flux
       public static CartesianCoordinate3<TSelf> operator %(CartesianCoordinate3<TSelf> cc, TSelf scalar) => new(cc.X % scalar, cc.Y % scalar, cc.Z % scalar);
       public static CartesianCoordinate3<TSelf> operator %(TSelf scalar, CartesianCoordinate3<TSelf> cc) => new(scalar % cc.X, scalar % cc.Y, scalar % cc.Z);
 
+      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+        => $"{GetType().GetNameEx()} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N6"}}}", Z)} }}";
       #endregion Implemented interfaces
 
-      public override string ToString() => ((ICartesianCoordinate3<TSelf>)this).ToString(null, null);
+      public override string ToString() => $"<{m_x}, {m_y}, {m_z}>";
     }
   }
 }

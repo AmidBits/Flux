@@ -52,7 +52,7 @@ namespace Flux
 
       // IUnitQuantifiable<>
       public string ToUnitString(MagneticFluxDensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{Value} {unit.GetUnitString(preferUnicode, useFullName)}";
+        => $"{Value.ToString()} {unit.GetUnitString(preferUnicode, useFullName)}";
       public Numerics.CartesianCoordinate3<double> ToUnitValue(MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
         => unit switch
         {

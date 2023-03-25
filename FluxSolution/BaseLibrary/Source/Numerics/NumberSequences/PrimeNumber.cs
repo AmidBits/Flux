@@ -58,6 +58,65 @@ namespace Flux.NumberSequences
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetAscendingPrimes(System.Numerics.BigInteger startAt)
       => GetAscendingPotentialPrimes(startAt).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPotentialPrimes2(System.Numerics.BigInteger number)
+    {
+      if (number < 0) throw new System.ArgumentOutOfRangeException(nameof(number));
+
+      var nm = GenericMath.NearestMultiple(number, 6, false, RoundingMode.HalfTowardZero, out var tz, out var afz);
+
+      Flux.BoundaryRounding<System.Numerics.BigInteger, System.Numerics.BigInteger>.MeasureDistanceToBoundaries(number, tz, afz, out System.Numerics.BigInteger dtz, out System.Numerics.BigInteger dafz);
+
+      if (number <= 2)
+      {
+        yield return 2;
+        yield return 3;
+        tz = -6;
+      }
+      else if (number <= 3)
+      {
+        yield return 3;
+        yield return 2;
+        tz = -6;
+      }
+
+      if (nm == afz)
+      {
+        while (true)
+        {
+          //if (tz < 0) break;
+          yield return afz - 1;
+          if (tz >= 6) yield return tz + 1;
+          else if (tz == 0) yield return 3;
+          yield return afz + 1;
+          if (tz >= 6) yield return tz - 1;
+          else if (tz == 0) yield return 2;
+          afz += 6;
+          tz -= 6;
+        }
+      }
+      else // Assumption here.
+      {
+        while (true)
+        {
+          //if (tz < 0) break;
+          if (tz > 0) yield return tz + 1;
+          else if (tz == 0) yield return 3;
+          yield return afz - 1;
+          if (tz > 0) yield return tz - 1;
+          else if (tz == 0) yield return 2;
+          yield return afz + 1;
+          tz -= 6;
+          afz += 6;
+        }
+      }
+
+      while (true)
+      {
+        yield return afz - 1;
+        yield return afz + 1;
+        afz += 6;
+      }
+    }
 
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPotentialPrimes(System.Numerics.BigInteger number)
     {

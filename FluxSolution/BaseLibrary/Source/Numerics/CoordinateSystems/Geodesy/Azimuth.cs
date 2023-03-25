@@ -6,7 +6,7 @@ namespace Flux.Quantities
   /// <remarks>It may seem unreasonable to perform arithmetic with what could be perceived as a compass quantity, but this really is just another angle quantity hardcoded to degrees and a range of [0, +360).</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
   public readonly record struct Azimuth
-    : System.IComparable<Azimuth>, System.IConvertible, IQuantifiable<double>
+    : System.IComparable<Azimuth>, IQuantifiable<double>
   {
     /// <summary>MaxValue is the open (excluded) endpoint.</summary>
     public const double MaxValue = 360;
@@ -147,26 +147,6 @@ namespace Flux.Quantities
     public int CompareTo(Azimuth other) => m_azimuth.CompareTo(other.m_azimuth);
     // IComparable
     public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
-
-    #region IConvertible
-    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-    public bool ToBoolean(System.IFormatProvider? provider) => m_azimuth != 0;
-    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_azimuth);
-    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_azimuth);
-    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_azimuth);
-    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_azimuth);
-    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_azimuth);
-    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_azimuth);
-    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_azimuth);
-    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_azimuth);
-    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_azimuth);
-    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_azimuth);
-    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_azimuth);
-    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_azimuth, conversionType, provider);
-    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_azimuth);
-    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_azimuth);
-    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_azimuth);
-    #endregion IConvertible
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)

@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Electrical conductance, unit of Siemens.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
     public readonly record struct ElectricalConductance
-      : System.IComparable, System.IComparable<ElectricalConductance>, System.IConvertible, IUnitQuantifiable<double, ElectricalConductanceUnit>
+      : System.IComparable, System.IComparable<ElectricalConductance>, IUnitQuantifiable<double, ElectricalConductanceUnit>
     {
       public static readonly ElectricalConductance Zero;
 
@@ -71,26 +71,6 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(ElectricalConductance other) => m_value.CompareTo(other.m_value);
-
-      #region IConvertible
-      public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-      public bool ToBoolean(System.IFormatProvider? provider) => m_value != 0;
-      public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_value);
-      public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_value);
-      public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_value);
-      public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_value);
-      public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_value);
-      public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_value);
-      public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_value);
-      public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_value);
-      [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_value);
-      public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_value);
-      public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_value);
-      public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_value, conversionType, provider);
-      [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_value);
-      [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_value);
-      [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_value);
-      #endregion IConvertible
 
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);

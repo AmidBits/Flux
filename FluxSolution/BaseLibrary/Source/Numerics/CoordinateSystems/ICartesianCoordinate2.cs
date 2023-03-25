@@ -163,9 +163,9 @@
 
   namespace Numerics
   {
-    /// <summary>Cartesian 2D coordinate.</summary>
+    /// <summary>A 2D cartesian coordinate.</summary>
     public interface ICartesianCoordinate2<TSelf>
-      : System.IFormattable
+      : ICartesianCoordinate<TSelf>
       where TSelf : System.Numerics.INumber<TSelf>
     {
       TSelf X { get; }
@@ -176,9 +176,6 @@
 
       /// <summary>Returns the dot product of two normalized 2D vectors.</summary>
       static TSelf DotProduct(ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b) => a.X * b.X + a.Y * b.Y;
-
-      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-       => $"{GetType().GetNameEx()} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)} }}";
     }
   }
 }

@@ -1,12 +1,8 @@
-using Flux.Music;
-
 namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct EllipseGeometry
   {
-    public static readonly EllipseGeometry Empty;
-
     public readonly double m_x;
     public readonly double m_y;
 
@@ -36,7 +32,7 @@ namespace Flux
     {
       get
       {
-        var circle = double.Pi * (m_x + m_y);
+        var circle = double.Pi * (m_x + m_y); // (2 * PI * radius)
 
         if (m_x == m_y) // For a circle, use (PI * diameter);
           return circle;
@@ -47,9 +43,9 @@ namespace Flux
       }
     }
 
-    /// <summary>Returns whether the point (x, y) is inside a potentially tilted ellipse.</summary>
-    public bool Contains(double x, double y, double angled = 0)
-      => double.Cos(angled) is var cos && double.Sin(angled) is var sin && double.Pow(cos * x + sin * y, 2) / (m_x * m_x) + double.Pow(sin * x - cos * y, 2) / (m_y * m_y) <= 1;
+    /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
+    public bool Contains(double x, double y, double rotationAngle = 0)
+      => double.Cos(rotationAngle) is var cos && double.Sin(rotationAngle) is var sin && double.Pow(cos * x + sin * y, 2) / (m_x * m_x) + double.Pow(sin * x - cos * y, 2) / (m_y * m_y) <= 1;
 
     /// <summary>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).
     /// Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, horizontally pointy

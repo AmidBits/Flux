@@ -3,7 +3,7 @@ namespace Flux.Quantities
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public readonly record struct Latitude
-    : System.IComparable<Latitude>, System.IConvertible, IQuantifiable<double>
+    : System.IComparable<Latitude>, IQuantifiable<double>
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;
@@ -102,26 +102,6 @@ namespace Flux.Quantities
     public int CompareTo(Latitude other) => m_latitude.CompareTo(other.m_latitude);
     // IComparable
     public int CompareTo(object? other) => other is not null && other is Latitude o ? CompareTo(o) : -1;
-
-    #region IConvertible
-    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-    public bool ToBoolean(System.IFormatProvider? provider) => m_latitude != 0;
-    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_latitude);
-    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_latitude);
-    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_latitude);
-    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_latitude);
-    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_latitude);
-    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_latitude);
-    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_latitude);
-    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_latitude);
-    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_latitude);
-    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_latitude);
-    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_latitude);
-    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_latitude, conversionType, provider);
-    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_latitude);
-    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_latitude);
-    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_latitude);
-    #endregion IConvertible
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)

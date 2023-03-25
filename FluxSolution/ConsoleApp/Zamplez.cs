@@ -725,18 +725,21 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunReflection));
       System.Console.WriteLine();
 
+      // Write(typeof(System.IConvertible));
+
       Write(typeof(Flux.Quantities.IUnitQuantifiable<,>));
       Write(typeof(Flux.Quantities.IQuantifiable<>), typeof(Flux.Quantities.IUnitQuantifiable<,>));
 
       static void Write(System.Type type, params System.Type[] excludingTypes)
       {
-        var exclusions = excludingTypes.SelectMany(type => type.GetDerivedTypes());
-        var implementations = type.GetDerivedTypes().OrderBy(t => t.Name).Where(t => !exclusions.Contains(t)).ToList();
+        var types = typeof(Flux.Locale).Assembly.DefinedTypes;
+        var exclusions = excludingTypes.SelectMany(type => type.GetDerivedTypes(types));
+        var implementations = type.GetDerivedTypes(types).OrderBy(t => t.Name).Where(t => !exclusions.Contains(t)).ToList();
         System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations.Select(i => i.Name))}");
         System.Console.WriteLine();
       }
 
-      System.Console.WriteLine(string.Join(", ", typeof(Flux.Quantities.IQuantifiable<>).GetDerivedTypes().OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")).Select(q => q.GetDefaultValue()?.ToString() ?? "Null")));
+      System.Console.WriteLine(string.Join(", ", typeof(Flux.Quantities.IQuantifiable<>).GetDerivedTypes().Append(typeof(Flux.Quantities.Rate<Flux.Quantities.Length, Flux.Quantities.Time>)).OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")).Select(q => q.Name + " = " + q.GetDefaultValue()?.ToString() ?? "Null")));
     }
 
     #endregion

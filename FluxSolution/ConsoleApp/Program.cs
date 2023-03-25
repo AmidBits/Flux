@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Flux;
+using Flux.Numerics;
 using Flux.Text;
 using Microsoft.VisualBasic.FileIO;
 
@@ -16,10 +17,21 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
+      Flux.Quantities.Angle x = new(9);
+      System.Convert.ToChar(x.Value);
+
+
+      var value = (15).ToType(out System.Numerics.BigInteger bi);
+
+      var quotient = System.Numerics.BigInteger.DivRem(value, 6, out var remainder);
+
+      var nm = Flux.GenericMath.NearestMultiple(value, 6, false, RoundingMode.HalfTowardZero, out var tz, out var afz);
+      Flux.BoundaryRounding<System.Numerics.BigInteger, System.Numerics.BigInteger>.MeasureDistanceToBoundaries(value, tz, afz, out System.Numerics.BigInteger dtz, out System.Numerics.BigInteger dafz);
+      System.Console.WriteLine(string.Join(", ", Flux.NumberSequences.PrimeNumber.GetClosestPotentialPrimes(value).Take(40)));
 
       var exp = "2.0*(-2-3)";
       //exp = "-3";

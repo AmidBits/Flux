@@ -4,7 +4,7 @@ namespace Flux.Music.Midi
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
   public readonly partial record struct MidiNote
-    : System.IComparable<MidiNote>, System.IConvertible, Quantities.IQuantifiable<int>
+    : System.IComparable<MidiNote>, Quantities.IQuantifiable<int>
   {
     public const byte MaxValue = 127;
     public const byte MinValue = 0;
@@ -144,26 +144,6 @@ namespace Flux.Music.Midi
     // IComparable
     public int CompareTo(object? other) => other is not null && other is MidiNote o ? CompareTo(o) : -1;
 
-    #region IConvertible
-    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-    public bool ToBoolean(System.IFormatProvider? provider) => m_number != 0;
-    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_number);
-    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_number);
-    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_number);
-    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_number);
-    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_number);
-    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_number);
-    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_number);
-    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_number);
-    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_number);
-    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_number);
-    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_number);
-    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_number, conversionType, provider);
-    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_number);
-    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_number);
-    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_number);
-    #endregion IConvertible
-
     // IQuantifiable<>
     public string ToQuantityString(string? format, bool preferUnicode = false, bool useFullName = false)
       => $"{GetScientificPitchNotationLabel(preferUnicode)}{GetOctave()}";
@@ -174,6 +154,6 @@ namespace Flux.Music.Midi
 
     /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-    public override string ToString() => $"{GetType().Name} {{ {ToQuantityString(null, false, false)} (#{m_number}) }}";
+    public override string ToString() => ToQuantityString(null, false, false);
   }
 }

@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
     public readonly record struct Acceleration2D
-    : IUnitQuantifiable<Numerics.CartesianCoordinate2<double>, AccelerationUnit>
+    : System.IFormattable, IUnitQuantifiable<Numerics.CartesianCoordinate2<double>, AccelerationUnit>
     {
       public static readonly Acceleration2D Zero;
 
@@ -45,12 +45,16 @@ namespace Flux
 
       #region Implemented interfaces
 
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToQuantityString(format);
+
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(Acceleration.DefaultUnit, format, preferUnicode, useFullName);
       public Numerics.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
-      public string ToUnitString(AccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{Value} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitString(AccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => $"{Value.ToString()} {unit.GetUnitString(preferUnicode, useFullName)}";
       public Numerics.CartesianCoordinate2<double> ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
         => unit switch
         {

@@ -6,7 +6,7 @@ namespace Flux.Numerics
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly partial record struct CartesianCoordinate2<TSelf>
-    : System.Numerics.INumberBase<CartesianCoordinate2<TSelf>>, ICartesianCoordinate2<TSelf>
+    : System.IFormattable, System.Numerics.INumberBase<CartesianCoordinate2<TSelf>>, ICartesianCoordinate2<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
     private readonly TSelf m_x;
@@ -298,8 +298,10 @@ namespace Flux.Numerics
     public static CartesianCoordinate2<TSelf> operator %(CartesianCoordinate2<TSelf> cc, TSelf scalar) => new(cc.X % scalar, cc.Y % scalar);
     public static CartesianCoordinate2<TSelf> operator %(TSelf scalar, CartesianCoordinate2<TSelf> cc) => new(scalar % cc.X, scalar % cc.Y);
 
+    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+     => $"{GetType().GetNameEx()} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", m_x)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", m_y)} }}";
     #endregion Implemented interfaces
 
-    public override string ToString() => ((ICartesianCoordinate2<TSelf>)this).ToString(null, null);
+    public override string ToString() => $"<{m_x}, {m_y}>";
   }
 }

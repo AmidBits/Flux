@@ -224,9 +224,9 @@
 
   namespace Numerics
   {
-    /// <summary>Cartesian 3D coordinate.</summary>
+    /// <summary>A 3D cartesian coordinate.</summary>
     public interface ICartesianCoordinate3<TSelf>
-      : System.IFormattable
+      : ICartesianCoordinate<TSelf>/*, System.IFormattable*/
       where TSelf : System.Numerics.INumber<TSelf>
     {
       TSelf X { get; }
@@ -247,8 +247,8 @@
       /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
       static CartesianCoordinate3<TSelf> VectorTripleProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b, ICartesianCoordinate3<TSelf> c) => CrossProduct(a, CrossProduct(b, c));
 
-      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-       => $"{GetType().GetNameEx()} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N6"}}}", Z)} }}";
+      //string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+      //  => $"{GetType().GetNameEx()} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N6"}}}", Z)} }}";
     }
   }
 }

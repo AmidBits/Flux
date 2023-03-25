@@ -3,7 +3,7 @@ namespace Flux.Quantities
   /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
   public readonly record struct Longitude
-    : System.IComparable<Longitude>, System.IConvertible, IQuantifiable<double>
+    : System.IComparable<Longitude>, IQuantifiable<double>
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;
@@ -78,26 +78,6 @@ namespace Flux.Quantities
     public int CompareTo(Longitude other) => m_longitude.CompareTo(other.m_longitude);
     // IComparable
     public int CompareTo(object? other) => other is not null && other is Longitude o ? CompareTo(o) : -1;
-
-    #region IConvertible
-    public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-    public bool ToBoolean(System.IFormatProvider? provider) => m_longitude != 0;
-    public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(m_longitude);
-    public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(m_longitude);
-    public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(m_longitude);
-    public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(m_longitude);
-    public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(m_longitude);
-    public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(m_longitude);
-    public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(m_longitude);
-    public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(m_longitude);
-    [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(m_longitude);
-    public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(m_longitude);
-    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", m_longitude);
-    public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(m_longitude, conversionType, provider);
-    [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(m_longitude);
-    [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(m_longitude);
-    [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(m_longitude);
-    #endregion IConvertible
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)

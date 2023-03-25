@@ -2,9 +2,9 @@
 {
   namespace Numerics
   {
-    /// <summary>Cartesian 4D coordinate.</summary>
+    /// <summary>A 4D cartesian coordinate.</summary>
     public interface ICartesianCoordinate4<TSelf>
-    : System.IFormattable
+    : ICartesianCoordinate<TSelf>, System.IFormattable
     where TSelf : System.Numerics.INumber<TSelf>
     {
       TSelf X { get; }

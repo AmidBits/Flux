@@ -5,8 +5,6 @@ namespace Flux
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct CircleGeometry
   {
-    public static readonly CircleGeometry Empty;
-
     /// <summary>The radius of the circle.</summary>
     private readonly double m_radius;
 
@@ -14,13 +12,13 @@ namespace Flux
 
     public double Radius => m_radius;
 
-    /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
-    public double Area => double.Pi * double.Pow(m_radius, 2);
+    /// <summary>Returns the area of circle.</summary>
+    public double Area => double.Pi * m_radius * m_radius;
 
-    /// <summary>Returns the circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
+    /// <summary>Returns the circumference of the circle.</summary>
     public double Circumference => 2 * double.Pi * m_radius;
 
-    /// <summary>Returns whether the point is inside a potentially tilted ellipse.</summary>
+    /// <summary>Returns whether a point is inside the circle.</summary>
     public bool Contains(double x, double y) => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(m_radius, 2);
 
     /// <summary>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).
@@ -51,6 +49,13 @@ namespace Flux
         yield return resultSelector(x * m_radius, y * m_radius);
       }
     }
+
+    /// <summary></summary>
+    public Numerics.CartesianCoordinate2<double> ToCartesianCoordinate2(double rotationAngle = 0)
+      => new(
+        double.Cos(rotationAngle) * m_radius,
+        double.Sin(rotationAngle) * m_radius
+      );
 
     public override string ToString() => $"{GetType().Name} {{ {m_radius} }}";
   }
