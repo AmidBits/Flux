@@ -9,9 +9,9 @@ namespace Flux.Numerics
   /// </summary>
   /// <remarks>This quantile is equivalent to <see cref="QuartileMethod4"/>.</remarks>
   public record class QuantileR6
-    : IQuantileEstimable
+    : IQuantileEstimatable
   {
-    public static IQuantileEstimable Default => new QuantileR6();
+    public static IQuantileEstimatable Default => new QuantileR6();
 
     public TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>

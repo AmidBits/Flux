@@ -7,9 +7,9 @@ namespace Flux.Numerics
   /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
   /// </summary>
   public record class QuantileR1
-    : IQuantileEstimable
+    : IQuantileEstimatable
   {
-    public static IQuantileEstimable Default => new QuantileR1();
+    public static IQuantileEstimatable Default => new QuantileR1();
 
     public TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>

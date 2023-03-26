@@ -8,9 +8,9 @@ namespace Flux.Numerics
   /// <see href="https://en.wikipedia.org/wiki/Empirical_distribution_function"/>
   /// </summary>
   public record class QuantileEdf
-    : IQuantileEstimable
+    : IQuantileEstimatable
   {
-    public static IQuantileEstimable Default => new QuantileEdf();
+    public static IQuantileEstimatable Default => new QuantileEdf();
 
     public TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>
