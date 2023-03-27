@@ -5,8 +5,10 @@ namespace Flux.Text
   public sealed class TextElementTokenizer
     : ITokenizer<IToken<TextElement>>
   {
-    public System.Collections.Generic.IEnumerable<IToken<TextElement>> GetTokens(string expression)
+    public System.Collections.Generic.List<IToken<TextElement>> GetTokens(string expression)
     {
+      var list = new System.Collections.Generic.List<IToken<TextElement>>();
+
       using var sr = new System.IO.StringReader(expression);
       using var tee = new TextElementEnumerator(sr);
 
@@ -28,28 +30,30 @@ namespace Flux.Text
           {
             case System.Globalization.UnicodeCategory.OpenPunctuation:
               punctuationBracketGroups.Push(++punctuationBracketGroup);
-              yield return new TextElementTokenRange(index, te, ++punctuationBracketDepth, punctuationBracketGroups.Peek());
+              list.Add(new TextElementTokenRange(index, te, ++punctuationBracketDepth, punctuationBracketGroups.Peek()));
               break;
             case System.Globalization.UnicodeCategory.InitialQuotePunctuation:
               punctuationQuotationGroups.Push(++punctuationQuotationGroup);
-              yield return new TextElementTokenRange(index, te, ++punctuationQuotationDepth, punctuationQuotationGroups.Peek());
+              list.Add(new TextElementTokenRange(index, te, ++punctuationQuotationDepth, punctuationQuotationGroups.Peek()));
               break;
             case System.Globalization.UnicodeCategory.ClosePunctuation:
-              yield return new TextElementTokenRange(index, te, punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1);
+              list.Add(new TextElementTokenRange(index, te, punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1));
               break;
             case System.Globalization.UnicodeCategory.FinalQuotePunctuation:
-              yield return new TextElementTokenRange(index, te, punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1);
+              list.Add(new TextElementTokenRange(index, te, punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1));
               break;
             default:
-              yield return new TextElementToken(index, te);
+              list.Add(new TextElementToken(index, te));
               break;
           }
         }
         else
-          yield return new TextElementToken(index, te);
+          list.Add(new TextElementToken(index, te));
 
         index += te.AsReadOnlyListChar.Count;
       }
+
+      return list;
     }
   }
 }

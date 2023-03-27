@@ -10,8 +10,10 @@ namespace Flux.Text
     public RuneTokenizer(System.Text.NormalizationForm normalizationForm)
       => NormalizationForm = normalizationForm;
 
-    public System.Collections.Generic.IEnumerable<IToken<System.Text.Rune>> GetTokens(string expression)
+    public System.Collections.Generic.List<IToken<System.Text.Rune>> GetTokens(string expression)
     {
+      var list = new System.Collections.Generic.List<IToken<System.Text.Rune>>();
+
       if (expression is null) throw new System.ArgumentNullException(nameof(expression));
 
       if (NormalizationForm.HasValue)
@@ -33,25 +35,27 @@ namespace Flux.Text
         {
           case System.Globalization.UnicodeCategory.OpenPunctuation:
             punctuationBracketGroups.Push(++punctuationBracketGroup);
-            yield return new RuneTokenRange(index, rune, ++punctuationBracketDepth, punctuationBracketGroups.Peek());
+            list.Add(new RuneTokenRange(index, rune, ++punctuationBracketDepth, punctuationBracketGroups.Peek()));
             break;
           case System.Globalization.UnicodeCategory.InitialQuotePunctuation:
             punctuationQuotationGroups.Push(++punctuationQuotationGroup);
-            yield return new RuneTokenRange(index, rune, ++punctuationQuotationDepth, punctuationQuotationGroups.Peek());
+            list.Add(new RuneTokenRange(index, rune, ++punctuationQuotationDepth, punctuationQuotationGroups.Peek()));
             break;
           case System.Globalization.UnicodeCategory.ClosePunctuation:
-            yield return new RuneTokenRange(index, rune, punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1);
+            list.Add(new RuneTokenRange(index, rune, punctuationBracketDepth--, punctuationBracketGroups.Count > 0 ? punctuationBracketGroups.Pop() : -1));
             break;
           case System.Globalization.UnicodeCategory.FinalQuotePunctuation:
-            yield return new RuneTokenRange(index, rune, punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1);
+            list.Add(new RuneTokenRange(index, rune, punctuationQuotationDepth--, punctuationQuotationGroups.Count > 0 ? punctuationQuotationGroups.Pop() : -1));
             break;
           default:
-            yield return new RuneToken(index, rune);
+            list.Add(new RuneToken(index, rune));
             break;
         }
 
         index += rune.Utf16SequenceLength;
       }
+
+      return list;
     }
   }
 }

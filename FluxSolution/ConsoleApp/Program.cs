@@ -46,24 +46,14 @@ namespace ConsoleApp
 
 
 
-      var exp = "2.0*(-2-3)";
+      var exp = "2.0*(-2--3)";
       //exp = "-3";
 
       var mt = new Flux.Text.MathTokenizer(false);
 
       var ts = mt.GetTokens(exp).ToList();
 
-      for (var i = 0; i < ts.Count; i++)
-      {
-        if (ts[i] is MathTokenOperator mto && mto.Value == MathTokenOperator.SymbolSubtract)
-        {
-          if ((i == 0 || ts[i - 1] is not MathTokenNumber) && (i <= ts.Count - 1 && ts[i + 1] is MathTokenNumber mtn))
-          {
-            ts[i + 1] = mtn.GetNegated();
-            ts.RemoveAt(i);
-          }
-        }
-      }
+      System.Console.WriteLine(string.Join(" ", ts.Select(t => t.Value)));
 
       var npn = Flux.Text.MathTokenizer.GetTokensNPN(ts);
       var enpn = Flux.Text.MathTokenizer.EvaluateNPN(npn);
