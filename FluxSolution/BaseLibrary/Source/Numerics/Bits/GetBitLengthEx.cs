@@ -3,7 +3,7 @@ namespace Flux
   //  // <seealso cref="http://aggregate.org/MAGIC/"/>
   //  // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
 
-  public static partial class BitOps
+  public static partial class Bits
   {
     /// <summary>Returns the count of bits in the minimal two's-complement representation of the number. If the number is negative, the max number of bits, according to GetByteCount(), is returned.</summary>
     /// <remarks>The number of bits needed to represent the number, if value is positive. If value is negative then -1. A value of zero needs 0 bits.</remarks>

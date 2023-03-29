@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsUri
   {
     public static bool TryConnectTo(this System.Uri uri)
     {

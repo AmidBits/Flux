@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsBinaryTrees
+  public static partial class BinaryTreesExtensionMethods
   {
     public static int GetNodeCount<TValue>(this DataStructures.IBinaryTree<TValue> source)
       => source?.IsEmpty ?? throw new System.ArgumentNullException(nameof(source)) ? 0 : 1 + GetNodeCount(source.Left) + GetNodeCount(source.Right);

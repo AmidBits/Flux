@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class BitOps
+  public static partial class Bits
   {
     /// <summary>Get the two integer log-2 nearest to value.</summary>
     /// <param name="value">The value for which the nearest integer log-2 will be found.</param>

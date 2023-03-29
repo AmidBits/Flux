@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class BitOps
+  public static partial class Bits
   {
     /// <summary>Mirror (or reverses) the bits of a byte, i.e. trade place of bit 7 with bit 0 and bit 6 with bit 1 and so on.</summary>
     /// <see href="http://www.inwap.com/pdp10/hbaker/hakmem/hakmem.html"/>

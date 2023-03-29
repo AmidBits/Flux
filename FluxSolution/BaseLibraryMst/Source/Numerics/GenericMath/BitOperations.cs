@@ -143,13 +143,13 @@ namespace GenericMath
     [TestMethod]
     public void ReverseBits()
     {
-      Assert.AreEqual(65536.ToType(out System.Numerics.BigInteger _), Flux.BitOps.ReverseBits(32768.ToType(out System.Numerics.BigInteger _)));
+      Assert.AreEqual(65536.ToType(out System.Numerics.BigInteger _), Flux.Bits.ReverseBits(32768.ToType(out System.Numerics.BigInteger _)));
     }
 
     [TestMethod]
     public void ReverseBytes()
     {
-      Assert.AreEqual(65536.ToType(out System.Numerics.BigInteger _), Flux.BitOps.ReverseBytes(256.ToType(out System.Numerics.BigInteger _)));
+      Assert.AreEqual(65536.ToType(out System.Numerics.BigInteger _), Flux.Bits.ReverseBytes(256.ToType(out System.Numerics.BigInteger _)));
     }
   }
 }

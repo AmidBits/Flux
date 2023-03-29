@@ -1,7 +1,7 @@
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class ExtensionMethods
+  public static partial class NumericsExtensionMethods
   {
     public static Numerics.EulerAngles<TSelf> ToEulerAngles<TSelf>(this Numerics.AxisAngle<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>

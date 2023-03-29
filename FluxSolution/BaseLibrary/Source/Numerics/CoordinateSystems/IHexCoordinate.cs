@@ -3,7 +3,7 @@
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class ExtensionMethods
+  public static partial class NumericsExtensionMethods
   {
     public static void AssertCubeCoordinate<TSelf>(this Numerics.IHexCoordinate<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>

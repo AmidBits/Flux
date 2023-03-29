@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsNumerics
   {
     #region 3D vector (non-collection) computations
 

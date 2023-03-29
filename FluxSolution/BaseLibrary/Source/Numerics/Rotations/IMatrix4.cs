@@ -1,7 +1,7 @@
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class ExtensionMethods
+  public static partial class NumericsExtensionMethods
   {
     /// <summary>Computes the determinant (generally) of the matrix.</summary>
     public static TSelf GetDeterminantGeneral<TSelf>(this Numerics.IMatrix4<TSelf> source)

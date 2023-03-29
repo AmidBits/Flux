@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsSequenceBuilder
+  public static partial class SpanBuilderExtensionMethods
   {
     public static SpanBuilder<char> ToSpanBuilderChar(this SpanBuilder<System.Text.Rune> source)
     {

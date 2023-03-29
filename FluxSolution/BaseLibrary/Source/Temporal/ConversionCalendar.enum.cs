@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsTemporal
+  public static partial class TemporalExtensionMethods
   {
     public static double AverageDaysInYear(this ConversionCalendar source)
       => source switch

@@ -11,7 +11,7 @@ namespace Flux
   ///// <para>A glyph is a visual "image", e.g. in a font, used to represent visual "symbols". One or more glyphs may be used to represent a grapheme.</para>
   ///// </remarks>
 
-  public static partial class ExtensionMethodsUnicode
+  public static partial class UnicodeCategoryExtensionMethods
   {
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetRunes(this System.Globalization.UnicodeCategory unicodeCategory)
     {

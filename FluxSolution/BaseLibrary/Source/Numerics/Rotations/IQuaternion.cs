@@ -1,7 +1,7 @@
 ﻿namespace Flux
 {
   #region ExtensionMethods
-  public static partial class ExtensionMethods
+  public static partial class NumericsExtensionMethods
   {
     /// <summary>Calculates the dot product of two Quaternions.</summary>
     public static TSelf DotProduct<TSelf>(this Numerics.IQuaternion<TSelf> q1, Numerics.IQuaternion<TSelf> q2)

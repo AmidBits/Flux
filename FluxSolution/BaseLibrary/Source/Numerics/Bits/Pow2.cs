@@ -3,7 +3,7 @@ namespace Flux
   // <seealso cref="http://aggregate.org/MAGIC/"/>
   // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
 
-  public static partial class BitOps
+  public static partial class Bits
   {
     /// <summary>Get the two power-of-2 nearest to value.</summary>
     /// <param name="value">The value for which the nearest power-of-2 will be found.</param>

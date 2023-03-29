@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsUri
   {
     public static bool TryGetFileSystemInfo(this System.Uri source, out System.IO.FileSystemInfo fileSystemInfo, params System.Uri[] alternateFiles)
     {

@@ -1,7 +1,7 @@
 ﻿namespace Flux
 {
   #region ExtensionMethods
-  public static partial class ExtensionMethods
+  public static partial class NumericsExtensionMethods
   {
     public static TSelf AbsoluteSum<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>

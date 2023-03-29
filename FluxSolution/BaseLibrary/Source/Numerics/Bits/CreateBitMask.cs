@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class BitOps
+  public static partial class Bits
   {
     /// <summary>Create a bit mask with <paramref name="oneCount"/> bits set to 1 on the LSB (Least Significant Bit) side.</summary>
     public static TResult CreateBitMask<TSelf, TResult>(this TSelf oneCount, out TResult result)

@@ -13,7 +13,7 @@ namespace Flux
   ///// <para>A glyph is a visual "image", e.g. in a font, used to represent visual "symbols". One or more glyphs may be used to represent a grapheme.</para>
   ///// </remarks>
 
-  public static partial class ExtensionMethodsUnicode
+  public static partial class UnicodeExtensionMethods
   {
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<=U\+)[0-9A-F]{4,6}", System.Text.RegularExpressions.RegexOptions.IgnoreCase)]
     private static partial System.Text.RegularExpressions.Regex RegexParseUnicodeUnotation();

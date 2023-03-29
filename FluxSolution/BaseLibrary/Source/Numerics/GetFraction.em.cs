@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsNumerics
+  public static partial class NumericsExtensionMethods
   {
     /// <summary>Strips the integer part of the floating point value, resulting in only the fractional part.</summary>
     public static TSelf GetFraction<TSelf, TInteger>(this TSelf source, out TInteger integer)

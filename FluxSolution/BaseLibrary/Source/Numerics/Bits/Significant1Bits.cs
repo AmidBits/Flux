@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class BitOps
+  public static partial class Bits
   {
     /// <summary>Extracts the lowest numbered element of a bit set. Given a 2's complement binary integer value, this is the least significant 1 bit.</summary>
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>

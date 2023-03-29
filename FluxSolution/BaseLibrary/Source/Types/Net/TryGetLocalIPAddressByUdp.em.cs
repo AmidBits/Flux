@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsNet
   {
     public static bool TryGetLocalIPAddressByUdp(this System.Net.IPEndPoint remote, out System.Net.IPAddress result)
     {

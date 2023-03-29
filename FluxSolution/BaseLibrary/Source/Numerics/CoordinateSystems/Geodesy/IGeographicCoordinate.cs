@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class NumericsExtensionMethods
   {
     /// <summary>Converts the geographic coordinates to spherical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>

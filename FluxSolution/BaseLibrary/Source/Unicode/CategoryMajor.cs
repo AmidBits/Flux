@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsUnicode
+  public static partial class UnicodeExtensionMethods
   {
     public static UnicodeCategoryMajor ParseUnicodeCategoryMajor(this char unicodeCategoryMajor)
       => (UnicodeCategoryMajor)System.Enum.Parse(typeof(UnicodeCategoryMajor), unicodeCategoryMajor.ToString(), true);

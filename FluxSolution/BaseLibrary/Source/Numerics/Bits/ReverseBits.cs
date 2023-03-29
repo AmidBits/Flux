@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class BitOps
+  public static partial class Bits
   {
     /// <summary>
     /// <para>Reverses the bits of an integer. The LSBs (least significant bits) becomes the MSBs (most significant bits) and vice versa, i.e. the bits are mirrored across the integer storage space. It's a reversal of all bits.</para>

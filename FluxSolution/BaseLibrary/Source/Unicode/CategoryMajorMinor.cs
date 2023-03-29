@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsUnicode
+  public static partial class UnicodeExtensionMethods
   {
     /// <summary>Parses two characters as representing Unicode category major and minor.</summary>
     public static UnicodeCategoryMajorMinor ParseUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor)

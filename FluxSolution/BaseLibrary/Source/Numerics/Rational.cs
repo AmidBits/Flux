@@ -22,7 +22,8 @@ namespace Flux
   /// <seealso cref="https://github.com/kiprobinson/BigFraction"/>
   /// <seealso cref="https://github.com/bazzilic/BigFraction"/>
   public readonly record struct Rational
-    : System.IComparable, System.IComparable<Rational>, System.IConvertible, Quantities.IQuantifiable<double>
+    : System.IComparable, System.IComparable<Rational>
+    , System.IConvertible
     , System.Numerics.IAdditiveIdentity<Rational, Rational>
     , System.Numerics.IAdditionOperators<Rational, Rational, Rational>, System.Numerics.IAdditionOperators<Rational, System.Numerics.BigInteger, Rational>
     , System.Numerics.IComparisonOperators<Rational, Rational, bool>
@@ -42,6 +43,7 @@ namespace Flux
     , System.Numerics.ISubtractionOperators<Rational, Rational, Rational>, System.Numerics.ISubtractionOperators<Rational, System.Numerics.BigInteger, Rational>
     , System.Numerics.IUnaryNegationOperators<Rational, Rational>
     , System.Numerics.IUnaryPlusOperators<Rational, Rational>
+    , Quantities.IQuantifiable<double>
   {
     public static readonly Rational EpsilonLikeSingle = new(1, 1_000_000);
     public static readonly Rational EpsilonLikeDouble = new(1, 1_000_000_000_000_000);

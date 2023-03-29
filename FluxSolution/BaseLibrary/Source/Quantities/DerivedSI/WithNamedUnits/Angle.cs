@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class QuantitiesExtensionMethods
   {
     public static string GetUnitSpacing(this Quantities.AngleUnit unit, bool preferUnicode, bool useFullName)
       => (unit == Quantities.AngleUnit.Degree && preferUnicode) || unit == Quantities.AngleUnit.Arcminute || unit == Quantities.AngleUnit.Arcsecond ? string.Empty : " ";
