@@ -1,9 +1,8 @@
 namespace Flux.Interpolation
 {
-  public interface I2NodeInterpolatable<TNode, TMu>
-    where TNode : System.Numerics.INumber<TNode>
-    where TMu : System.Numerics.IFloatingPoint<TMu>
+  public interface I2NodeInterpolatable<TSelf>
+    where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
-    TMu Interpolate2Node(TNode n1, TNode n2, TMu mu);
+    TSelf Interpolate2Node(TSelf y1, TSelf y2, TSelf mu);
   }
 }

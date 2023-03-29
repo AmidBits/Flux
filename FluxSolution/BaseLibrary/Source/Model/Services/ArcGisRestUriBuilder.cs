@@ -59,10 +59,8 @@
       SetPath(host, folder, serviceName, serviceType);
     }
 
-    public System.Uri Uri
-      => new(ToString());
+    public System.Uri Uri => new(ToString());
 
-    public override string ToString()
-      => m_uriBuilder.ToString();
+    public override string ToString() => m_uriBuilder.ToString();
   }
 }

@@ -21,9 +21,9 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      var value = (16).ToType(out System.Numerics.BigInteger bi);
+      var value = (17).ToType(out System.Numerics.BigInteger bi);
 
-      var quotient = System.Numerics.BigInteger.DivRem(value, 6, out var remainder);
+      var nppm = Flux.NumberSequences.PrimeNumber.GetNearestPotentialPrimeMultiple(value, RoundingMode.HalfAwayFromZero, out var nppmo);
 
       var mode = RoundingMode.HalfTowardZero;
 

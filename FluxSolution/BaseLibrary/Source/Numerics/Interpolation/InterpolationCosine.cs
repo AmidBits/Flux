@@ -5,22 +5,21 @@ namespace Flux.Interpolation
   /// <param name="n2">Target point.</param>
   /// <param name="mu">The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points, the mu range is [0, 1]. Values of mu outside the range result in extrapolation.</param>
   /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
-  public record class CosineInterpolation<TNode, TMu>
-    : I2NodeInterpolatable<TNode, TMu>
-    where TNode : System.Numerics.INumber<TNode>
-    where TMu : System.Numerics.IFloatingPoint<TMu>, System.Numerics.IMultiplyOperators<TMu, TNode, TMu>, System.Numerics.ITrigonometricFunctions<TMu>
+  public record class CosineInterpolation<TSelf>
+    : I2NodeInterpolatable<TSelf>
+    where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
   {
     #region Static methods
-    public static TMu Interpolate(TNode n1, TNode n2, TMu mu)
+    public static TSelf Interpolate(TSelf y1, TSelf y2, TSelf mu)
     {
-      var mu2 = (TMu.One - TMu.CosPi(mu)).Divide(2);
+      var mu2 = (TSelf.One - TSelf.CosPi(mu)).Divide(2);
 
-      return (TMu.One - mu2) * n1 + mu2 * n2;
+      return LinearInterpolation<TSelf>.Interpolate(y1, y2, mu2);
     }
     #endregion Static methods
 
     #region Implemented interfaces
-    public TMu Interpolate2Node(TNode n1, TNode n2, TMu mu) => Interpolate(n1, n2, mu);
+    public TSelf Interpolate2Node(TSelf y1, TSelf y2, TSelf mu) => Interpolate(y1, y2, mu);
     #endregion Implemented interfaces
   }
 }

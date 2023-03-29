@@ -118,16 +118,19 @@ namespace Flux.NumberSequences
     //  }
     //}
 
-    /// <summary>Finds the nearest potential prime multiple of <paramref name="number"/>, and if needed, apply the specified rounding <paramref name="mode"/>. Also returns the <paramref name="nearestPotentialPrimeMultipleOffset"/> as an output parameter.</summary>
+    /// <summary>Finds the nearest potential prime multiple (i.e. a multiple of 6) of <paramref name="number"/>, and if needed, apply the specified rounding <paramref name="mode"/>. Also returns the <paramref name="nearestPotentialPrimeMultipleOffset"/> as an output parameter.</summary>
     /// <param name="number">The target number.</param>
     /// <param name="mode">The <see cref="RoundingMode"/> to use if exactly between two multiples.</param>
-    /// <param name="nearestPotentialPrimeMultipleOffset">The offset direction from the returned potential prime multiple: +1 = closer to TZ, -1 = closer to AFZ, 0 = exactly between TZ and AFZ.</param>
+    /// <param name="nearestPotentialPrimeMultipleOffset">The offset direction from the returned potential prime multiple, or the multiple itself: +1 = nearer TZ, -1 = nearer AFZ, 0 = exactly halfway between TZ and AFZ, or <paramref name="number"/> if it is a potential prime multiple.</param>
     /// <returns></returns>
     public static System.Numerics.BigInteger GetNearestPotentialPrimeMultiple(System.Numerics.BigInteger number, RoundingMode mode, out System.Numerics.BigInteger nearestPotentialPrimeMultipleOffset)
     {
       var nm = Flux.GenericMath.NearestMultiple(number, 6, false, mode, out var nmtz, out var nmafz);
 
-      nearestPotentialPrimeMultipleOffset = number - nmtz < 3 ? +1 : nmafz - number < 3 ? -1 : 0;
+      nearestPotentialPrimeMultipleOffset = nmtz == nmafz ? number // If TZ and AFZ are equal (i.e. NearestMultiple(), above, returns number for both TZ and AFZ, if number is a multiple, and 'proper' is false), so number is a multiple.
+        : number - nmtz < 3 ? +1 // The difference between TZ and number is less than 3, therefor closer to TZ.
+        : nmafz - number < 3 ? -1 // The difference between AFZ and number is less than 3, therefor closer to AFZ.
+        : 0; // The difference between either TZ/AFZ and number is exactly 3, therefor number is exactly halfway between TZ and AFZ.
 
       return nm;
     }
