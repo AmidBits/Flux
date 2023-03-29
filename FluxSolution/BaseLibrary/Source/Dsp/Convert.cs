@@ -1,6 +1,6 @@
 namespace Flux.Dsp
 {
-  public static class Convert
+  public static partial class Convert
   {
     public const double Decibel2Logarithm = 0.11512925464970228420089957273422; // System.Math.Log(10.0) / 20.0
     public const double Logarithm2Decibel = 8.6858896380650365530225783783321; // 20.0 / System.Math.Log(10.0)
@@ -11,11 +11,9 @@ namespace Flux.Dsp
     public const double FieldQuantity = 20;
 
     /// <summary>Convert a bipolar [-1, 1] sample to a unipolar [0, 1] sample. The sample is scaled down to fit the smaller range.</summary>
-    public static double BipolarToUnipolar(double sample)
-      => sample / 2 + 0.5;
+    public static double BipolarToUnipolar(double sample) => sample / 2 + 0.5;
     /// <summary>Convert a unipolar [0, 1] sample to a bipolar [-1, 1] sample. The sample is scaled up to match the larger range.</summary>
-    public static double UnipolarToBipolar(double sample)
-      => sample * 2 - 1;
+    public static double UnipolarToBipolar(double sample) => sample * 2 - 1;
 
     /// <summary>Conversion from gain (decibels) to a factor (ratio)</summary>
     /// <param name="dB">The decibel to convert into the factor (ratio).</param>
@@ -35,11 +33,9 @@ namespace Flux.Dsp
       => quantityScalar * System.Math.Log10(ratio / referenceFactor);
 
     /// <summary>Convert a mono sample into a set of stereo samples.</summary>
-    public static SampleStereo MonoToStereo(double sampleM)
-      => new(sampleM, sampleM);
+    public static (double sampleL, double sampleR) MonoToStereo(double sampleM) => (sampleM, sampleM);
     /// <summary>Convert a set of stereo samples into a mono sample.</summary>
-    public static double StereoToMono(double sampleL, double sampleR)
-      => (sampleL + sampleR) / 2;
+    public static double StereoToMono(double sampleL, double sampleR) => (sampleL + sampleR) / 2;
 
     /// <summary>Convert Fl/Fr (stereo) into Fl/Fc/Fr (stereo plus center) signals. This is a stab, not a/the mathematical solution.</summary>
     /// <param name="sampleFl">Front left.</param>
