@@ -18,7 +18,7 @@
 
     public AdjacencyMatrix(int[,] matrix)
     {
-      m_matrix = matrix.IsArraySymmetrical() ? matrix : throw new System.ArgumentOutOfRangeException(nameof(matrix));
+      m_matrix = matrix.IsArrayRankSymmetrical() ? matrix : throw new System.ArgumentOutOfRangeException(nameof(matrix));
 
       m_vertexValues = new System.Collections.Generic.Dictionary<int, object>();
       m_edgeValues = new System.Collections.Generic.Dictionary<(int, int), object>();

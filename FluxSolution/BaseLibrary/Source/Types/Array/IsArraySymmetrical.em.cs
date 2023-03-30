@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class ExtensionMethodsArray
   {
-    public static bool IsArraySymmetrical(this System.Array source)
+    public static bool IsArrayRankSymmetrical(this System.Array source)
     {
       var sourceLength = source.GetLength(0); // Load the first dimensional length.
 

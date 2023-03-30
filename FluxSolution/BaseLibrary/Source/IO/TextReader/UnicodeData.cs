@@ -38,7 +38,7 @@ namespace Flux
 
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<string>> ReadRecords(this System.IO.TextReader source)
     {
-      int read = -1;
+      int read;
 
       do
       {
