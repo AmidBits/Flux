@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ApproximateEqualityExtensionMethods
   {
     /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
     public static bool IsApproximatelyEqualRelative<TValue>(this TValue a, TValue b, double percentTolerance)

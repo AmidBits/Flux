@@ -1,13 +1,5 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
-  {
-    /// <summary>Creates a new sequence of numbers starting with at the specified mean, how many numbers and step size, with every other number above/below the mean.</summary>
-    public static System.Collections.Generic.IEnumerable<TSelf> LoopAlternating<TSelf>(this TSelf mean, TSelf count, TSelf step, Loops.AlternatingLoopDirection direction)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => new Loops.AlternatingLoop<TSelf>(mean, count, step, direction).GetSequence();
-  }
-
   namespace Loops
   {
     /// <summary>Creates a new sequence.</summary>

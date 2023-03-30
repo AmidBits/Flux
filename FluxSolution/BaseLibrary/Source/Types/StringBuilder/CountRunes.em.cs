@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StringBuilderEm
+  public static partial class ExtensionMethodsStringBuilder
   {
     public static int CountRunes(this System.Text.StringBuilder source)
     {

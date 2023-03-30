@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class StringBuilderEm
+	public static partial class ExtensionMethodsStringBuilder
 	{
 		/// <summary>Duplicates this string builder a specified number of times.</summary>
 		public static System.Text.StringBuilder Duplicate(this System.Text.StringBuilder source, int count)

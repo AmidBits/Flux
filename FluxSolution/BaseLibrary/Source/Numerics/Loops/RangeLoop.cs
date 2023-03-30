@@ -1,13 +1,5 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
-  {
-    /// <summary>Creates a new sequence of numbers with the specified <paramref name="startNumber"/>, <paramref name="count"/> (iterations) and <paramref name="stepSize"/>.</summary>
-    public static System.Collections.Generic.IEnumerable<TSelf> LoopRange<TSelf>(this TSelf startNumber, TSelf count, TSelf stepSize)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => new Loops.RangeLoop<TSelf>(startNumber, count, stepSize).GetSequence();
-  }
-
   namespace Loops
   {
     /// <summary>Creates a new sequence based on the range properties.</summary>

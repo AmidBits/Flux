@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class DataStructuresEm
+  public static partial class DataStructuresExtensionMethods
   {
     public static DataStructures.OrderedDictionary<TKey, TValue> ToOrderedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IEqualityComparer<TKey> equalityComparer)
       where TKey : notnull

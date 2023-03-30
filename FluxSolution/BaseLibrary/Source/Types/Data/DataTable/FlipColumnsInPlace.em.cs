@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class DataTableEm
+  public static partial class ExtensionMethodsDataTable
   {
     /// <summary>Reverse the columns of the <see cref="System.Data.DataTable"/> in-line. The process re-orders the columns (using the SetOrdinal() method) within the data table.</summary>
     public static void FlipColumnsInPlace(this System.Data.DataTable source, int startIndex, int count)

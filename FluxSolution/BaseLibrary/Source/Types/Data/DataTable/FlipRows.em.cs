@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class DataTableEm
+  public static partial class ExtensionMethodsDataTable
   {
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data rows reversed (mirrored).</summary>
     public static System.Data.DataTable FlipRows(this System.Data.DataTable source)

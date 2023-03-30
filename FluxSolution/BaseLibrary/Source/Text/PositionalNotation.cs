@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class StringFormattingExtensionMethods
   {
     /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static string ToRadixString<TSelf>(this TSelf number, int radix, int minLength = 1)

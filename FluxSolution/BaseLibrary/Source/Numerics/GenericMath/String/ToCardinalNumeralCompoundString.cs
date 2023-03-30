@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class StringFormattingExtensionMethods
   {
     public static string ToCardinalNumeralCompoundString<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

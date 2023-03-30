@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class DataTableEm
+  public static partial class ExtensionMethodsDataTable
   {
     /// <summary>Returns the data table as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
     public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings(this System.Data.DataTable source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool uniformMaxWidth = false, bool includeColumnNames = true)

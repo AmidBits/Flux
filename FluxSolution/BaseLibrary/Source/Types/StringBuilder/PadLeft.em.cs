@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class StringBuilderEm
+	public static partial class ExtensionMethodsStringBuilder
 	{
 		/// <summary>Pads this StringBuilder on the left with the specified padding character.</summary>
 		public static System.Text.StringBuilder PadLeft(this System.Text.StringBuilder source, int totalWidth, char padding)

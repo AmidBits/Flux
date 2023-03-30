@@ -13,7 +13,7 @@ namespace Flux
       ? -Factorial(-x)
       : x <= TSelf.One
       ? TSelf.One
-      : (TSelf.One + TSelf.One).LoopRange(x - TSelf.One, TSelf.One).AsParallel().Aggregate(TSelf.One, (a, b) => a * b);
+      : new Loops.RangeLoop<TSelf>(TSelf.One + TSelf.One, x - TSelf.One, TSelf.One).AsParallel().Aggregate(TSelf.One, (a, b) => a * b);
 
 
     public static TSelf FactorialEx<TSelf>(this TSelf x)

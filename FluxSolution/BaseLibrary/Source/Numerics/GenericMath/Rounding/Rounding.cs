@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class NumericsExtensionMethods
   {
     public static TSelf Round<TSelf>(this TSelf source, RoundingMode mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>

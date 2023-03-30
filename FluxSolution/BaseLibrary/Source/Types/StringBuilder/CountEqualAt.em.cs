@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StringBuilderEm
+  public static partial class ExtensionMethodsStringBuilder
   {
     /// <summary>Yields the number of characters that the source and the target have in common from the specified respective indices. Uses the specified comparer.</summary>
     public static int CountEqualAt(this System.Text.StringBuilder source, int sourceStartIndex, System.ReadOnlySpan<char> target, int targetStartIndex, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> equalityComparer)

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsSecurity
   {
     public static System.Xml.Linq.XElement IdentityXml(this System.Security.Principal.IIdentity source)
     {

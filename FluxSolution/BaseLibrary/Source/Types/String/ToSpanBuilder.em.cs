@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsString
   {
     public static SpanBuilder<char> ToSpanBuilder(this string source)
       => new(source.AsSpan());

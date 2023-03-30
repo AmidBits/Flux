@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsList
   {
     /// <summary>In-place swap of two elements by the specified indices.</summary>
     /// <exception cref="System.ArgumentNullException"/>

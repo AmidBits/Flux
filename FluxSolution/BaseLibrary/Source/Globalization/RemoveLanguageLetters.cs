@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class SpanBuilderExtensionMethods
   {
     public static SpanBuilder<char> RemoveNonLanguageLetters(this SpanBuilder<char> source, System.Globalization.CultureInfo? culture = null)
     {

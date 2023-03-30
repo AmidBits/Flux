@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ByteEm
+  public static partial class ExtensionMethodsByte
   {
     public static byte[] SetBits(this byte[] source, long startBitIndex, long bitCount, bool state)
     {
@@ -27,12 +27,12 @@ namespace Flux
       }
       else // Or in 2 or more bytes?
       {
-        if (startRemainder > 0) 
+        if (startRemainder > 0)
           source[startQuotient] = (byte)((source[startQuotient] & (~startMask & 0xFF)) | (bitState & startMask));
-        if (endRemainder > 0) 
+        if (endRemainder > 0)
           source[endQuotient] = (byte)((source[endQuotient] & (~endMask & 0xFF)) | (bitState & endMask));
 
-        for (var index = startRemainder > 0 ? startQuotient + 1 : startQuotient; index < endQuotient; index++) 
+        for (var index = startRemainder > 0 ? startQuotient + 1 : startQuotient; index < endQuotient; index++)
           source[index] = bitState; // Set whole bytes if needed.
       }
 

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IntEm
+  public static partial class ExtensionMethodsInt
   {
     public static System.Collections.Generic.List<int> ToOrdinalRange(this System.Collections.Generic.IEnumerable<int> source, int maxNumber)
     {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class StringBuilderEm
+	public static partial class ExtensionMethodsStringBuilder
 	{
 		/// <summary>Returns a string containing the right most specified number of characters, if available, otherwise as many as there are.</summary>
 		public static string RightMost(this System.Text.StringBuilder source, int maxCount)

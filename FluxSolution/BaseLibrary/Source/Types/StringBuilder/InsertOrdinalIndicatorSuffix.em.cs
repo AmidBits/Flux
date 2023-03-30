@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StringBuilderEm
+  public static partial class ExtensionMethodsStringBuilder
   {
     /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.), if the predicate is satisfied.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>

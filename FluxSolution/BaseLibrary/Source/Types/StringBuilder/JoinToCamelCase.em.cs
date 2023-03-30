@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StringBuilderEm
+  public static partial class ExtensionMethodsStringBuilder
   {
     /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
     public static System.Text.StringBuilder MakeCamelCase(this System.Text.StringBuilder source, System.Func<char, bool> predicate)

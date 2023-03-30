@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsDateTime
   {
     public static JulianDayNumber ToJulianDayNumber(this System.DateTime source, ConversionCalendar calendar)
       => new(source.Year, source.Month, source.Day, calendar);

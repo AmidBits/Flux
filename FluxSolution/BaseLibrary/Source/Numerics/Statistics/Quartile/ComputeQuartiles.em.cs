@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class StatisticsExtensionMethods
   {
     public static (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> sample, QuartileAlgorithm algorithm)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>

@@ -11,7 +11,7 @@ namespace Flux
     Temp
   }
 
-  public static partial class ExtensionMethods
+  public static partial class AppDataStoreExtensionMethods
   {
     /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="AppDataStore"/>.</summary>
     public static System.IO.DirectoryInfo GetDirectoryInfo(this AppDataStore store)

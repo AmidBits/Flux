@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ByteEm
+  public static partial class ExtensionMethodsByte
   {
     /// <summary>Performs an in-place bit shift <paramref name="count"/> left on all bytes in the <paramref name="source"/> array. Returns the overflow byte with all bits as it would look if rotated with the array.</summary>
     public static byte BitShiftLeft(this byte[] source, int count)

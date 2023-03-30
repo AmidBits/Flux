@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class StringBuilderEm
+	public static partial class ExtensionMethodsStringBuilder
 	{
 		/// <summary>Returns a string containing the right specified number of characters.</summary>
 		public static string Right(this System.Text.StringBuilder source, int count)

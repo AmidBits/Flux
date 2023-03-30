@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ExtensionMethodsSecurity
   {
     public static System.Xml.Linq.XElement ClaimXml(this System.Security.Claims.Claim source)
     {
@@ -17,7 +17,7 @@ namespace Flux
         xe.SetAttributeValue(nameof(System.Type), source.GetType().Name);
         try { xe.SetAttributeValue(nameof(source.Issuer), source.Issuer); } catch { }
         try { xe.SetAttributeValue(nameof(source.OriginalIssuer), source.Issuer); } catch { }
-//        try { xe.Add(source.Properties.ToPropertiesXml()); } catch { }
+        //        try { xe.Add(source.Properties.ToPropertiesXml()); } catch { }
         // if (source.Subject != null) xe.Add(new System.Xml.Linq.XElement(nameof(source.Subject), IdentityXml(source.Subject))); // This call cause a stackoverflow.
         try { xe.SetAttributeValue(nameof(source.Type), source.Type); } catch { }
         try { xe.SetAttributeValue(nameof(source.Value), source.Value); } catch { }

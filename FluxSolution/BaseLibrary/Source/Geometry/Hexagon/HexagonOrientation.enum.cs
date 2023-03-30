@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class GeometryExtensionMethods
   {
     public static HexOrientation ToOrientation(this HexagonOrientation orientation)
       => orientation switch

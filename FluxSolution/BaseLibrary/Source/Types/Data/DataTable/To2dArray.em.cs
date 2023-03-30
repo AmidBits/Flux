@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class DataTableEm
+  public static partial class ExtensionMethodsDataTable
   {
     public static object[,] To2dArray(this System.Data.DataTable source, int columnStartIndex, int columnCount, int rowStartIndex, int rowCount)
     {
