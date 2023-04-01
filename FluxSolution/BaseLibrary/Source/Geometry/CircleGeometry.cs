@@ -1,3 +1,4 @@
+using Flux.Geometry;
 using Flux.Quantities;
 
 namespace Flux
@@ -21,28 +22,37 @@ namespace Flux
     /// <summary>Returns whether a point is inside the circle.</summary>
     public bool Contains(double x, double y) => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(m_radius, 2);
 
-    /// <summary>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, horizontally pointy
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, Flux.Math.Pi.DivBy6); // triangle, vertically pointy
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, 0); // rectangle, horizontally and vertically pointy
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, Flux.Math.Pi.DivBy4); // rectangle, vertically and horizontally flat
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, 0); // pentagon, horizontally pointy
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, Flux.Math.Pi.DivBy6); // pentagon, vertically pointy
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, 0); // hexagon, vertically flat (or horizontally pointy)
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, Flux.Math.Pi.DivBy6); // hexagon, horizontally flat (or vertically pointy)
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, 0); // octagon, horizontally and vertically pointy
-    /// Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, Flux.Math.Pi.DivBy8); // octagon, vertically and horizontally flat
+    /// <summary>
+    /// <para>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, top pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, double.Tau / 6); // triangle, bottom pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, 0); // rectangle, horizontally and vertically pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, double.Tau / 8); // rectangle, vertically and horizontally flat</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, 0); // pentagon, horizontally pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, double.Tau / 10); // pentagon, vertically pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, 0); // hexagon, vertically flat (or horizontally pointy)</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, double.Tau / 12); // hexagon, horizontally flat (or vertically pointy)</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, 0); // octagon, horizontally and vertically pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, double.Tau / 16); // octagon, vertically and horizontally flat</para>
     /// </summary>
-    public System.Collections.Generic.IEnumerable<TResult> CreateCircularArcPoints<TResult>(double numberOfPoints, System.Func<double, double, TResult> resultSelector, double offsetRadians = 0, double maxRandomVariation = 0)
+    /// <typeparam name="TResult"></typeparam>
+    /// <param name="resultSelector">The selector that determines the result (<typeparamref name="TResult"/>) for each vector.</param>
+    /// <param name="radOffset">The offset in radians to apply to each vector.</param>
+    /// <param name="maxRandomness">The maximum randomness to allow for each vector. Must be in the range [0, 0.5].</param>
+    /// <param name="rng">The random number generator to use, or default if null.</param>
+    /// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
+    public System.Collections.Generic.IEnumerable<TResult> CreateVectors<TResult>(double count, System.Func<double, double, TResult> resultSelector, double radOffset = 0, double maxRandomness = 0, System.Random? rng = null)
     {
-      var circularArc = double.Tau / numberOfPoints;
+      rng ??= Random.NumberGenerators.Crypto;
 
-      for (var segment = 0; segment < numberOfPoints; segment++)
+      var circularArc = double.Tau / count;
+
+      for (var segment = 0; segment < count; segment++)
       {
-        var angle = offsetRadians + segment * circularArc;
+        var angle = radOffset + segment * circularArc;
 
-        if (maxRandomVariation > GenericMath.Epsilon1E7)
-          angle += Random.NumberGenerators.Crypto.NextDouble(0, circularArc * maxRandomVariation);
+        if (maxRandomness > 0)
+          angle += rng.NextDouble(0, circularArc * maxRandomness);
 
         var (x, y) = Convert.RotationAngleToCartesian2Ex(angle);
 
@@ -57,6 +67,6 @@ namespace Flux
         double.Sin(rotationAngle) * m_radius
       );
 
-    public override string ToString() => $"{GetType().Name} {{ {m_radius} }}";
+    public HexagonGeometry ToHexagonGeometry() => new(m_radius);
   }
 }

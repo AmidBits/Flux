@@ -21,6 +21,19 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
+      var x = 1;
+      var y = 2;
+
+      var hgc = Flux.Geometry.HexagonGeometry.FromCircumradius(x);
+      var hgi = Flux.Geometry.HexagonGeometry.FromInradius(x);
+
+      var cg = new Flux.CircleGeometry(x);
+
+      var eg = new Flux.EllipseGeometry(x, y);
+
+      string[][] ja = new string[3][];
+      var jat = ja.GetType();
+
       var value = (17).ToType(out System.Numerics.BigInteger bi);
 
       var nppm = Flux.NumberSequences.PrimeNumber.GetNearestPotentialPrimeMultiple(value, RoundingMode.HalfAwayFromZero, out var nppmo);
@@ -49,30 +62,13 @@ namespace ConsoleApp
       var exp = "2.0*(-2--3)";
       //exp = "-3";
 
-      var mt = new Flux.Text.MathTokenizer(false);
-
-      var ts = mt.GetTokens(exp).ToList();
-
-      System.Console.WriteLine(string.Join(" ", ts.Select(t => t.Value)));
-
-      var npn = Flux.Text.MathTokenizer.GetTokensNPN(ts);
-      var enpn = Flux.Text.MathTokenizer.EvaluateNPN(npn);
-
-      var rpn = Flux.Text.MathTokenizer.GetTokensRPN(ts);
-      var erpn = Flux.Text.MathTokenizer.EvaluateRPN(rpn);
-
-      return;
-
       var sr = new System.IO.StringReader("Hello\u241F\"World,\r\n\"\u241EGoodbye\u241FWorld\u241D");
 
-      var table = Flux.UnicodeData.ReadGroup(sr, out var read);
+      var table = Flux.Unicode.Utility.ReadGroup(sr, out var read);
 
-      var c1 = new Flux.Numerics.CartesianCoordinate2<double>(5, 15);
-      var c2 = new Flux.Numerics.CartesianCoordinate2<double>(25, 55);
+      var text = Flux.Unicode.Utility.WriteGroup(table);
 
-      // var li = Flux.Interpolation.LinearInterpolation<Flux.Numerics.CartesianCoordinate2<double>, double>.Interpolate(c1, c2, 0.5);
-
-      var cc2 = Flux.Numerics.CartesianCoordinate2<double>.CreateChecked(10);
+      var table2 = Flux.Unicode.Utility.ReadGroup(new System.IO.StringReader(text), out var rd);
     }
 
     private static void Main(string[] args)
