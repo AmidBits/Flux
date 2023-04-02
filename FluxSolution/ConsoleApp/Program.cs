@@ -27,12 +27,9 @@ namespace ConsoleApp
       var hgc = Flux.Geometry.HexagonGeometry.FromCircumradius(x);
       var hgi = Flux.Geometry.HexagonGeometry.FromInradius(x);
 
-      var cg = new Flux.CircleGeometry(x);
+      var cg = new Flux.Geometry.CircleGeometry(x);
 
-      var eg = new Flux.EllipseGeometry(x, y);
-
-      string[][] ja = new string[3][];
-      var jat = ja.GetType();
+      var eg = new Flux.Geometry.EllipseGeometry(x, y);
 
       var value = (17).ToType(out System.Numerics.BigInteger bi);
 

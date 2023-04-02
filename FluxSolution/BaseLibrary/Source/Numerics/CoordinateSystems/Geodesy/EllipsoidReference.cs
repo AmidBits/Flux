@@ -13,7 +13,7 @@ namespace Flux
     public static EllipsoidReference Wgs84 => new(298.257223563, 6378137.0, 6356752.314245);
 
     private readonly double m_inverseFlattening;
-    private readonly EllipseGeometry m_ellipseGeometry;
+    private readonly Geometry.EllipseGeometry m_ellipseGeometry;
 
     public EllipsoidReference(double inverseFlattening, double semiMajorAxis, double semiMinorAxis)
     {

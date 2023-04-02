@@ -22,6 +22,7 @@ namespace Flux.Geometry
     public double SideLength => m_sideLength;
 
     public double MaximalRadius => m_sideLength;
+
     public double MinimalRadius => Ratio * m_sideLength;
 
     /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
@@ -57,6 +58,8 @@ namespace Flux.Geometry
 
     public CircleGeometry ToCircleGeometry() => new(m_sideLength);
 
+    public EllipseGeometry ToEllipseGeometry() => new(m_sideLength, m_sideLength);
+
     #region Static methods
 
     /// <summary>Create a hexagon geometry by specifying a <paramref name="circumradius"/>, a.k.a. the maximal radius, or the side length of the hexagon.</summary>
@@ -68,6 +71,42 @@ namespace Flux.Geometry
     /// <param name="inradius">The inradius, or minimal radius, from which to create the hexagon geometry.</param>
     /// <returns></returns>
     public static HexagonGeometry FromInradius(double inradius) => new(inradius * 1 / Ratio);
+
+    /// <summary>
+    /// <para>Returns how many hexagons are with in <paramref name="nth"/> hex "rings".</para>
+    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
+    /// </summary>
+    /// <param name="nth"></param>
+    /// <returns></returns>
+    public static int GetCenteredNumber(int nth)
+      => 3 * nth * (nth - 1) + 1;
+
+    /// <summary>
+    /// <para>Creates a new sequence with the centered hexagonal numbers for each "ring", up to <paramref name="count"/> rings, starting with Nth = 1.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
+    /// </summary>
+    public static System.Collections.Generic.IEnumerable<int> GetCenteredNumbers(int count)
+    {
+      for (var n = 1; n <= count; n++)
+        yield return GetCenteredNumber(n);
+    }
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    public static System.Collections.Generic.IEnumerable<(int centeredRing, int startCenteredNumber, int endCenteredNumber, int count)> GetCenteredRings(int count)
+      => new (int, int, int, int)[] { (0, 1, 1, 1) }.Concat(GetCenteredNumbers(int.MaxValue).Take(count).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Select((n, i) => (i + 1, n.leading + 1, n.trailing, n.trailing - n.leading)));
+
+    /// <summary>
+    /// <para>The inverse of getting the centered hexagonal number, i.e. find the root, or index, of the centered hexagonal number.</para>
+    /// <see cref="https://en.wikipedia.org/wiki/Centered_hexagonal_number#Testing_/_finding_the_root"/>
+    /// </summary>
+    public static int GetCenteredRoot(int centeredHexagonalNumber)
+      => centeredHexagonalNumber >= 1 ? (3 + System.Convert.ToInt32(System.Math.Sqrt(12 * centeredHexagonalNumber - 3))) / 6 : centeredHexagonalNumber == 0 ? 0 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
+
+    /// <summary></summary>
+    public static int GetRingOf(int centeredHexagonalNumber)
+      => (centeredHexagonalNumber > 0) ? GetCenteredRoot(centeredHexagonalNumber - 1) : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
 
     #endregion // Static methods
   }

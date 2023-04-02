@@ -4,18 +4,6 @@ using Flux.Numerics;
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly struct Polygon2<TSelf>
-    where TSelf : System.Numerics.INumber<TSelf>
-  {
-    public readonly CartesianCoordinate2<TSelf>[] m_vertices;
-
-    public Polygon2(System.Collections.Generic.IEnumerable<CartesianCoordinate2<TSelf>> vertices) => m_vertices = vertices.ToArray();
-
-    public System.Collections.Generic.IReadOnlyList<CartesianCoordinate2<TSelf>> Vertices => m_vertices;
-
-  }
-
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly struct Polygon
   //, I2DSurfaceArea, /*I2DSurfaceCentroid,*/ I2DSurfacePerimeter
   {

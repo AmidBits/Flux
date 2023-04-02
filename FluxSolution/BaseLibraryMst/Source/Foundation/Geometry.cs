@@ -30,7 +30,7 @@ namespace Foundation
     [TestMethod]
     public void Ellipse()
     {
-      var geometry = new Flux.EllipseGeometry(5, 7);
+      var geometry = new Flux.Geometry.EllipseGeometry(5, 7);
 
       Assert.AreEqual(5, geometry.SemiMinorAxis);
       Assert.AreEqual(7, geometry.SemiMajorAxis);

@@ -1,7 +1,4 @@
-using Flux.Geometry;
-using Flux.Quantities;
-
-namespace Flux
+namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct CircleGeometry
@@ -68,5 +65,7 @@ namespace Flux
       );
 
     public HexagonGeometry ToHexagonGeometry() => new(m_radius);
+
+    public EllipseGeometry ToEllipseGeometry() => new(m_radius, m_radius);
   }
 }
