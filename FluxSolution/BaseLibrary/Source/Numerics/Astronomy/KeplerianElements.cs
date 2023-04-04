@@ -111,7 +111,9 @@ namespace Flux
         return new(alpha, beta, gamma);
       }
 
+#pragma warning disable IDE0060 // Remove unused parameter
       public static void ToOrbitalElements(TSelf x1, TSelf x2, TSelf x3, TSelf y1, TSelf y2, TSelf y3, TSelf z1, TSelf z2, TSelf z3, out TSelf longitudeOfAscendingNode, out TSelf inclination, out TSelf argumentOfPeriapsis)
+#pragma warning restore IDE0060 // Remove unused parameter
       {
         longitudeOfAscendingNode = TSelf.Atan2(-x2, z1);
         inclination = TSelf.Atan2(z3, TSelf.Sqrt(z1 * z1 + z2 * z2));

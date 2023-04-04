@@ -298,10 +298,11 @@ namespace Flux.Numerics
     public static CartesianCoordinate2<TSelf> operator %(CartesianCoordinate2<TSelf> cc, TSelf scalar) => new(cc.X % scalar, cc.Y % scalar);
     public static CartesianCoordinate2<TSelf> operator %(TSelf scalar, CartesianCoordinate2<TSelf> cc) => new(scalar % cc.X, scalar % cc.Y);
 
-    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-     => $"{GetType().GetNameEx()} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", m_x)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", m_y)} }}";
+    public string ToString(string? format, System.IFormatProvider? provider)
+     => $"<{m_x.ToString(format, null)}, {m_y.ToString(format, null)}>";
+
     #endregion Implemented interfaces
 
-    public override string ToString() => $"<{m_x}, {m_y}>";
+    public override string ToString() => ToString(null, null);
   }
 }

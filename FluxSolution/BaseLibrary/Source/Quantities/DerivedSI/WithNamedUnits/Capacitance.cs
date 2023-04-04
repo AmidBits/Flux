@@ -6,6 +6,9 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.CapacitanceUnit.Farad => "F",
+        Quantities.CapacitanceUnit.MicroFarad => preferUnicode ? "\u338C" : "\u00B5F",
+        Quantities.CapacitanceUnit.NanoFarad => preferUnicode ? "\u338B" : "nF",
+        Quantities.CapacitanceUnit.PicoFarad => preferUnicode ? "\u338A" : "pF",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -16,6 +19,9 @@ namespace Flux
     {
       /// <summary>Farad.</summary>
       Farad,
+      MicroFarad,
+      NanoFarad,
+      PicoFarad,
     }
 
     /// <summary>Electrical capacitance unit of Farad.</summary>
@@ -33,6 +39,9 @@ namespace Flux
         => m_value = unit switch
         {
           CapacitanceUnit.Farad => value,
+          CapacitanceUnit.MicroFarad => value * 1000000,
+          CapacitanceUnit.NanoFarad => value * 1000000000,
+          CapacitanceUnit.PicoFarad => value * 1000000000000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
@@ -77,6 +86,9 @@ namespace Flux
         => unit switch
         {
           CapacitanceUnit.Farad => m_value,
+          CapacitanceUnit.MicroFarad => m_value / 1000000,
+          CapacitanceUnit.NanoFarad => m_value / 1000000000,
+          CapacitanceUnit.PicoFarad => m_value / 1000000000000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 

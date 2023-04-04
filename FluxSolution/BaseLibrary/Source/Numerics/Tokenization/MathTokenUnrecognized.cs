@@ -7,8 +7,6 @@ namespace Flux.Text
   {
     public const string Regex = @"^.";
 
-    public MathTokenUnrecognized(string name, string text, int index)
-      : base(name, text, index)
-    { }
+    public MathTokenUnrecognized(string name, string text, int index) : base(name, text, index) { }
   }
 }

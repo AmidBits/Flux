@@ -7,6 +7,7 @@ namespace Flux
       {
         Quantities.PowerUnit.Watt => "W",
         Quantities.PowerUnit.KiloWatt => preferUnicode ? "\u33BE" : "kW",
+        Quantities.PowerUnit.MegaWatt => preferUnicode ? "\u33BF" : "MW",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -18,6 +19,7 @@ namespace Flux
       /// <summary>Watt.</summary>
       Watt,
       KiloWatt,
+      MegaWatt,
     }
 
     /// <summary>Power unit of watt.</summary>
@@ -36,6 +38,7 @@ namespace Flux
         {
           PowerUnit.Watt => value,
           PowerUnit.KiloWatt => value * 1000,
+          PowerUnit.MegaWatt => value * 1000000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
@@ -93,6 +96,7 @@ namespace Flux
         {
           PowerUnit.Watt => m_value,
           PowerUnit.KiloWatt => m_value / 1000,
+          PowerUnit.MegaWatt => m_value / 1000000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 

@@ -55,8 +55,7 @@ namespace Flux.Text
       };
     }
 
-    public override string ToString()
-      => $"{base.ToString()},{nameof(Associativity)}=\"{Associativity}\",{nameof(Precedence)}=\"{Precedence}\"";
+    public override string ToTokenString() => $"{base.ToString()},{nameof(Associativity)}=\"{Associativity}\",{nameof(Precedence)}=\"{Precedence}\"";
 
     public static string Unify(string expression)
     {
@@ -69,5 +68,7 @@ namespace Flux.Text
 
       return expression;
     }
+
+    public override string ToString() => ToString(null, null);
   }
 }

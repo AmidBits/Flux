@@ -7,8 +7,6 @@ namespace Flux.Text
   {
     public const string Regex = @"^\s+";
 
-    public MathTokenWhitespace(string name, string text, int index)
-      : base(name, text, index)
-    { }
+    public MathTokenWhitespace(string name, string text, int index) : base(name, text, index) { }
   }
 }

@@ -7,7 +7,7 @@ namespace Flux.Numerics
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4_Intrinsics.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct CartesianCoordinate4
-    : ICartesianCoordinate4<double>
+    : IFormattable, ICartesianCoordinate4<double>
   {
     /// <summary>Returns the vector (0,0,0,0).</summary>
     public static readonly CartesianCoordinate4 Zero;
@@ -256,8 +256,12 @@ namespace Flux.Numerics
     /// <summary>Divides the vector by the given scalar.</summary>
     public static CartesianCoordinate4 operator /(in CartesianCoordinate4 v, double divisor)
       => (CartesianCoordinate4)v.m_v256d.Add(divisor);
+
     #endregion Operator overloads
 
-    public override string ToString() => ((ICartesianCoordinate4<double>)this).ToString(null, null);
+    public string ToString(string? format, System.IFormatProvider? provider)
+     => $"<{X.ToString(format, null)}, {Y.ToString(format, null)}, {Z.ToString(format, null)}, {W.ToString(format, null)}>";
+
+    public override string ToString() => ToString(null, null);
   }
 }

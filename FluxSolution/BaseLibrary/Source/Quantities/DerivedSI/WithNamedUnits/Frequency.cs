@@ -6,6 +6,10 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.FrequencyUnit.Hertz => preferUnicode ? "\u3390" : "Hz",
+        Quantities.FrequencyUnit.KiloHertz => preferUnicode ? "\u3391" : "kHz",
+        Quantities.FrequencyUnit.MegaHertz => preferUnicode ? "\u3392" : "MHz",
+        Quantities.FrequencyUnit.GigaHertz => preferUnicode ? "\u3393" : "GHz",
+        Quantities.FrequencyUnit.TeraHertz => preferUnicode ? "\u3394" : "THz",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -16,6 +20,10 @@ namespace Flux
     {
       /// <summary>Hertz.</summary>
       Hertz,
+      KiloHertz,
+      MegaHertz,
+      GigaHertz,
+      TeraHertz,
     }
 
     /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
@@ -35,6 +43,10 @@ namespace Flux
         => m_hertz = unit switch
         {
           FrequencyUnit.Hertz => value,
+          FrequencyUnit.KiloHertz => value * 1000,
+          FrequencyUnit.MegaHertz => value * 1000000,
+          FrequencyUnit.GigaHertz => value * 1000000000,
+          FrequencyUnit.TeraHertz => value * 1000000000000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
@@ -136,6 +148,10 @@ namespace Flux
         => unit switch
         {
           FrequencyUnit.Hertz => m_hertz,
+          FrequencyUnit.KiloHertz => m_hertz / 1000,
+          FrequencyUnit.MegaHertz => m_hertz / 1000000,
+          FrequencyUnit.GigaHertz => m_hertz / 1000000000,
+          FrequencyUnit.TeraHertz => m_hertz / 1000000000000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 

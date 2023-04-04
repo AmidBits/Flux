@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class QuantitiesExtensionMethods
   {
+#pragma warning disable IDE0060 // Remove unused parameter
     public static string GetUnitString(this Quantities.AmplitudeRatioUnit unit, bool preferUnicode, bool useFullName)
+#pragma warning restore IDE0060 // Remove unused parameter
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.AmplitudeRatioUnit.DecibelVolt => "dBV",

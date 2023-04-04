@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class QuantitiesExtensionMethods
   {
+#pragma warning disable IDE0060 // Remove unused parameter
     public static string GetUnitString(this Quantities.IrradianceUnit unit, bool preferUnicode, bool useFullName = false)
+#pragma warning restore IDE0060 // Remove unused parameter
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.IrradianceUnit.WattPerSquareMeter => "W/m²",

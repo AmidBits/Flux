@@ -2,7 +2,9 @@
 {
   public static partial class QuantitiesExtensionMethods
   {
+#pragma warning disable IDE0060 // Remove unused parameter
     public static string GetUnitSpacing(this Quantities.AngleUnit unit, bool preferUnicode, bool useFullName)
+#pragma warning restore IDE0060 // Remove unused parameter
       => (unit == Quantities.AngleUnit.Degree && preferUnicode) || unit == Quantities.AngleUnit.Arcminute || unit == Quantities.AngleUnit.Arcsecond ? string.Empty : " ";
 
     public static string GetUnitString(this Quantities.AngleUnit unit, bool preferUnicode, bool useFullName)

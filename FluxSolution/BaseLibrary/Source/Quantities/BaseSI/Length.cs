@@ -5,6 +5,7 @@ namespace Flux
     public static string GetUnitString(this Quantities.LengthUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
+        Quantities.LengthUnit.Femtometer => preferUnicode ? "\u3399" : "fm",
         Quantities.LengthUnit.Nanometer => preferUnicode ? "\u339A" : "nm",
         Quantities.LengthUnit.Micrometer => preferUnicode ? "\u339B" : "µm",
         Quantities.LengthUnit.Millimeter => preferUnicode ? "\u339C" : "mm",
@@ -29,6 +30,7 @@ namespace Flux
     {
       /// <summary>This is the default unit for length.</summary>
       Meter,
+      Femtometer,
       Nanometer,
       Micrometer,
       Millimeter,
@@ -61,6 +63,7 @@ namespace Flux
       public Length(double value, LengthUnit unit = DefaultUnit)
         => m_value = unit switch
         {
+          LengthUnit.Femtometer => value * 1E-15,
           LengthUnit.Nanometer => value * 1E-9,
           LengthUnit.Micrometer => value * 1E-6,
           LengthUnit.Millimeter => value * 1E-3,
@@ -139,6 +142,7 @@ namespace Flux
       public double ToUnitValue(LengthUnit unit = DefaultUnit)
         => unit switch
         {
+          LengthUnit.Femtometer => m_value * 1E+15,
           LengthUnit.Nanometer => m_value * 1E+9,
           LengthUnit.Micrometer => m_value * 1E+6,
           LengthUnit.Millimeter => m_value * 1E+3,

@@ -474,11 +474,12 @@ namespace Flux
       public static CartesianCoordinate3<TSelf> operator %(CartesianCoordinate3<TSelf> cc, TSelf scalar) => new(cc.X % scalar, cc.Y % scalar, cc.Z % scalar);
       public static CartesianCoordinate3<TSelf> operator %(TSelf scalar, CartesianCoordinate3<TSelf> cc) => new(scalar % cc.X, scalar % cc.Y, scalar % cc.Z);
 
-      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N6"}}}", Z)} }}";
+      public string ToString(string? format, System.IFormatProvider? provider)
+        => $"<{m_x.ToString(format, null)}, {m_y.ToString(format, null)}, {m_z.ToString(format, null)}>";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => $"<{m_x}, {m_y}, {m_z}>";
+      public override string ToString() => ToString(null, null);
     }
   }
 }

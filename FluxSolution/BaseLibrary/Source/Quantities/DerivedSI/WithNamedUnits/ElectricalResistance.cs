@@ -6,6 +6,8 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.ElectricalResistanceUnit.Ohm => preferUnicode ? "\u2126" : "ohm",
+        Quantities.ElectricalResistanceUnit.KiloOhm => preferUnicode ? "\u33C0" : "kiloohm",
+        Quantities.ElectricalResistanceUnit.MegaOhm => preferUnicode ? "\u33C1" : "megaohm",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -16,6 +18,10 @@ namespace Flux
     {
       /// <summary>Ohm.</summary>
       Ohm,
+      /// <summary>Kilo-Ohm.</summary>
+      KiloOhm,
+      /// <summary>Mega-Ohm.</summary>
+      MegaOhm,
     }
 
     /// <summary>Electric resistance, unit of Ohm.</summary>
@@ -36,6 +42,8 @@ namespace Flux
         => m_value = unit switch
         {
           ElectricalResistanceUnit.Ohm => value,
+          ElectricalResistanceUnit.KiloOhm => value * 1000,
+          ElectricalResistanceUnit.MegaOhm => value * 1000000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
@@ -109,6 +117,8 @@ namespace Flux
         => unit switch
         {
           ElectricalResistanceUnit.Ohm => m_value,
+          ElectricalResistanceUnit.KiloOhm => m_value / 1000,
+          ElectricalResistanceUnit.MegaOhm => m_value / 1000000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 

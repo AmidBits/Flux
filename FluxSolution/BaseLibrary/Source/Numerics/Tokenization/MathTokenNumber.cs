@@ -18,6 +18,10 @@ namespace Flux.Text
     /// <returns>A new <see cref="MathTokenNumber"/>.</returns>
     public MathTokenNumber GetNegated(int? index = null) => new(Name, NumericalValue < 0 ? Value[1..] : '-' + Value, index ?? Index - 1);
 
-    public override string ToString() => $"{base.ToString()},{nameof(NumericalValue)}=\"{NumericalValue}\"";
+    public override string ToString(string? format, IFormatProvider? formatProvider) => NumericalValue.ToString(format, formatProvider);
+
+    public override string ToTokenString() => $"{base.ToString()},{nameof(NumericalValue)}=\"{ToString()}\"";
+
+    public override string ToString() => ToString(null, null);
   }
 }

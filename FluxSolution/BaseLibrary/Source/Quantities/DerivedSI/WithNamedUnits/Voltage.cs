@@ -6,6 +6,7 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.VoltageUnit.Volt => "V",
+        Quantities.VoltageUnit.KiloVolt => preferUnicode ? "\u33B8" : "kV",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -16,6 +17,7 @@ namespace Flux
     {
       /// <summary>Volt.</summary>
       Volt,
+      KiloVolt,
     }
 
     /// <summary>Voltage unit of volt.</summary>
@@ -33,6 +35,7 @@ namespace Flux
         => m_value = unit switch
         {
           VoltageUnit.Volt => value,
+          VoltageUnit.KiloVolt => value * 1000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
@@ -92,6 +95,7 @@ namespace Flux
         => unit switch
         {
           VoltageUnit.Volt => m_value,
+          VoltageUnit.KiloVolt => m_value / 1000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 

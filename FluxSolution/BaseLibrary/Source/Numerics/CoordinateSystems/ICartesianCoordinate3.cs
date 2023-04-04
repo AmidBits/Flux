@@ -226,7 +226,7 @@
   {
     /// <summary>A 3D cartesian coordinate.</summary>
     public interface ICartesianCoordinate3<TSelf>
-      : ICartesianCoordinate<TSelf>/*, System.IFormattable*/
+      : ICartesianCoordinate<TSelf>
       where TSelf : System.Numerics.INumber<TSelf>
     {
       TSelf X { get; }
@@ -246,9 +246,6 @@
       /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
       static CartesianCoordinate3<TSelf> VectorTripleProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b, ICartesianCoordinate3<TSelf> c) => CrossProduct(a, CrossProduct(b, c));
-
-      //string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-      //  => $"{GetType().GetNameEx()} {{ X = {string.Format($"{{0:{format ?? "N6"}}}", X)}, Y = {string.Format($"{{0:{format ?? "N6"}}}", Y)}, Z = {string.Format($"{{0:{format ?? "N6"}}}", Z)} }}";
     }
   }
 }

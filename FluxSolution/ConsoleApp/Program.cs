@@ -17,7 +17,7 @@ namespace ConsoleApp
     private static void TimedMain(string[] args)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
@@ -57,14 +57,16 @@ namespace ConsoleApp
 
 
       var exp = "2.0*(-2--3)";
-      //exp = "-3";
+
+      var t = new Flux.Text.MathTokenizer(false);
+      var ts = t.GetTokens(exp);
+      var tss = string.Join(" ", ts);
+
 
       var sr = new System.IO.StringReader("Hello\u241F\"World,\r\n\"\u241EGoodbye\u241FWorld\u241D");
 
       var table = Flux.Unicode.Utility.ReadGroup(sr, out var read);
-
       var text = Flux.Unicode.Utility.WriteGroup(table);
-
       var table2 = Flux.Unicode.Utility.ReadGroup(new System.IO.StringReader(text), out var rd);
     }
 

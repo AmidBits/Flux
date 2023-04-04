@@ -5,7 +5,7 @@ namespace Flux
     public static string GetUnitString(this Quantities.CatalyticActivityUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        Quantities.CatalyticActivityUnit.Katal => "kat",
+        Quantities.CatalyticActivityUnit.Katal => preferUnicode ? "\u33CF" : "kat",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
