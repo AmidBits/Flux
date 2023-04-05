@@ -50,7 +50,7 @@ namespace Flux.Geometry
       {
         HexagonOrientation.PointyTopped => 0,
         HexagonOrientation.FlatTopped => Angle.ConvertDegreeToRadian(90),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(HexagonOrientation))
+        _ => throw new System.ArgumentOutOfRangeException(nameof(orientation))
       };
 
       return new CircleGeometry(m_sideLength).CreateVectors(6, (x, y) => resultSelector(x, y), radOrientationOffset + radOffset, maxRandomness, rng);

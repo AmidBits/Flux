@@ -14,60 +14,24 @@ namespace ConsoleApp
 {
   public class Program
   {
-    private static void TimedMain(string[] args)
+    private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      var x = 1;
-      var y = 2;
 
-      var hgc = Flux.Geometry.HexagonGeometry.FromCircumradius(x);
-      var hgi = Flux.Geometry.HexagonGeometry.FromInradius(x);
 
-      var cg = new Flux.Geometry.CircleGeometry(x);
-
-      var eg = new Flux.Geometry.EllipseGeometry(x, y);
-
-      var value = (17).ToType(out System.Numerics.BigInteger bi);
-
-      var nppm = Flux.NumberSequences.PrimeNumber.GetNearestPotentialPrimeMultiple(value, RoundingMode.HalfAwayFromZero, out var nppmo);
-
-      var mode = RoundingMode.HalfTowardZero;
-
-      var nm = Flux.GenericMath.NearestMultiple(value, 6, false, mode, out var tz, out var afz);
-      var eq = value == nm;
-      var slo = nm == tz;
-      var shi = nm == afz;
-
-      Flux.BoundaryRounding<System.Numerics.BigInteger, System.Numerics.BigInteger>.MeasureDistanceToBoundaries(value, tz, afz, out System.Numerics.BigInteger dtz, out System.Numerics.BigInteger dafz);
-
-      var td = dtz < dafz ? -1 : dafz < dtz ? 1 : 0;
-
-      var tlo = dtz <= 3;
-      var thi = dafz < 3;
-
-      var loop = new Flux.Loops.AlternatingLoop<System.Numerics.BigInteger>(nm, 20, 6, shi ? Flux.Loops.AlternatingLoopDirection.TowardsMean : Flux.Loops.AlternatingLoopDirection.AwayFromMean);
-      System.Console.WriteLine(string.Join(", ", loop.Take(20)));
-      var br = Flux.BoundaryRounding<System.Numerics.BigInteger, System.Numerics.BigInteger>.Round(value, mode, tz, afz);
-      System.Console.WriteLine(string.Join(", ", Flux.NumberSequences.PrimeNumber.GetClosestPotentialPrimes(value).Take(40)));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, new Flux.Text.MathTokenizer(false).GetTokens("2.0*(-2--3)").Select(t => t.ToTokenString())));
 
 
 
-      var exp = "2.0*(-2--3)";
+      //var sr = new System.IO.StringReader("Hello\u241F\"World,\r\n\"\u241EGoodbye\u241FWorld\u241D");
 
-      var t = new Flux.Text.MathTokenizer(false);
-      var ts = t.GetTokens(exp);
-      var tss = string.Join(" ", ts);
-
-
-      var sr = new System.IO.StringReader("Hello\u241F\"World,\r\n\"\u241EGoodbye\u241FWorld\u241D");
-
-      var table = Flux.Unicode.Utility.ReadGroup(sr, out var read);
-      var text = Flux.Unicode.Utility.WriteGroup(table);
-      var table2 = Flux.Unicode.Utility.ReadGroup(new System.IO.StringReader(text), out var rd);
+      //var table = Flux.Unicode.Utility.ReadGroup(sr, out var read);
+      //var text = Flux.Unicode.Utility.WriteGroup(table);
+      //var table2 = Flux.Unicode.Utility.ReadGroup(new System.IO.StringReader(text), out var rd);
     }
 
     private static void Main(string[] args)

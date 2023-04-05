@@ -18,7 +18,7 @@ namespace Flux.Text
 
     public virtual string ToString(string? format, IFormatProvider? formatProvider) => Value;
 
-    public virtual string ToTokenString() => $"{this.GetType().Name}.{Name}=\"{Value}\",#{Index}";
+    public virtual string ToTokenString() => $"{GetType().Name}=\"{Value}\",#{Index}";
 
     public override string ToString() => ToString(null, null);
 

@@ -2,7 +2,10 @@ namespace Flux
 {
   public static partial class GenericMath
   {
-    /// <summary>Modular exponentiation of <paramref name="dividend"/> and <paramref name="divisor"/>.</summary>
+    /// <summary>
+    /// <para>Modular exponentiation of <paramref name="dividend"/> and <paramref name="divisor"/>.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Modular_arithmetic"/>
+    /// </summary>
     public static TSelf PowMod<TSelf>(this TSelf dividend, TSelf divisor, TSelf modulus)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

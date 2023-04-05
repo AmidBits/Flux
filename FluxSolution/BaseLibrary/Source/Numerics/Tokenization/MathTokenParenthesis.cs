@@ -22,7 +22,7 @@ namespace Flux.Text
       Group = group;
     }
 
-    public override string ToTokenString() => $"{base.ToString()},{nameof(Depth)}=\"{Depth}\",{nameof(Group)}=\"{Group}\"";
+    public override string ToTokenString() => $"{base.ToTokenString()},{nameof(Depth)}=\"{Depth}\",{nameof(Group)}=\"{Group}\"";
 
     public override string ToString() => ToString(null, null);
   }

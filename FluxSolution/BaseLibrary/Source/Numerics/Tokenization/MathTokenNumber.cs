@@ -20,7 +20,7 @@ namespace Flux.Text
 
     public override string ToString(string? format, IFormatProvider? formatProvider) => NumericalValue.ToString(format, formatProvider);
 
-    public override string ToTokenString() => $"{base.ToString()},{nameof(NumericalValue)}=\"{ToString()}\"";
+    public override string ToTokenString() => $"{base.ToTokenString()},{nameof(NumericalValue)}=\"{ToString()}\"";
 
     public override string ToString() => ToString(null, null);
   }

@@ -5,15 +5,16 @@ namespace Flux.Text
   public sealed class MathTokenOperator
     : MathToken
   {
-    public const string AssociativityLeft = @"Left";
-    public const string AssociativityRight = @"Right";
+    public const string AssociativityLeft = "Left";
+    public const string AssociativityRight = "Right";
 
-    public const string Regex = @"^[\u002B\u00F7\u00D7\u2212]";
+    public const string Regex = @"^[\u002B\u00F7\u00D7\u2212%]";
 
     public const string SymbolAdd = "\u002B";
     public const string SymbolDivide = "\u00F7";
     public const string SymbolMultiply = "\u00D7";
     public const string SymbolSubtract = "\u2212";
+    public const string SymbolRemainder = "\u0025";
 
     public string Associativity { get; set; }
     public int Precedence { get; set; }
@@ -25,6 +26,7 @@ namespace Flux.Text
       {
         case SymbolDivide:
         case SymbolMultiply:
+        case SymbolRemainder:
           Associativity = MathTokenOperator.AssociativityLeft;
           Precedence = 3;
           break;
@@ -55,7 +57,7 @@ namespace Flux.Text
       };
     }
 
-    public override string ToTokenString() => $"{base.ToString()},{nameof(Associativity)}=\"{Associativity}\",{nameof(Precedence)}=\"{Precedence}\"";
+    public override string ToTokenString() => $"{base.ToTokenString()},{nameof(Associativity)}=\"{Associativity}\",{nameof(Precedence)}=\"{Precedence}\"";
 
     public static string Unify(string expression)
     {
