@@ -739,7 +739,7 @@ namespace ConsoleApp
         System.Console.WriteLine();
       }
 
-      System.Console.WriteLine(string.Join(", ", typeof(Flux.Quantities.IQuantifiable<>).GetDerivedTypes().Append(typeof(Flux.Quantities.Rate<Flux.Quantities.Length, Flux.Quantities.Time>)).OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")).Select(q => q.Name + " = " + q.GetDefaultValue()?.ToString() ?? "Null")));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(Flux.Quantities.IQuantifiable<>).GetDerivedTypes().Append(typeof(Flux.Quantities.Rate<Flux.Quantities.Length, Flux.Quantities.Time>)).OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")).Select(q => q.Name + " = " + q.GetDefaultValue()?.ToString() ?? "Null")));
     }
 
     #endregion

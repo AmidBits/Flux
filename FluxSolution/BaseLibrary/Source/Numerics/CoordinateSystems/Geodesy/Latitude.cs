@@ -29,8 +29,8 @@ namespace Flux.Quantities
 
     public Quantities.Angle ToAngle() => new(m_latitude, Quantities.AngleUnit.Degree);
 
-    public string ToSexagesimalDegreeString(Quantities.SexagesimalDegreeFormat format = Quantities.SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
-      => ToAngle().ToSexagesimalDegreeString(format, Quantities.SexagesimalDegreeDirection.NorthSouth, -1, useSpaces, preferUnicode);
+    public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
+      => format.ToSexagesimalDegreeString(m_latitude, SexagesimalDegreeDirection.NorthSouth, -1, useSpaces, preferUnicode);
 
     #region Static methods
 
@@ -104,13 +104,27 @@ namespace Flux.Quantities
     public int CompareTo(object? other) => other is not null && other is Latitude o ? CompareTo(o) : -1;
 
     // IQuantifiable<>
-    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-      => new Angle(m_latitude, AngleUnit.Degree).ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
+    public string ToQuantityString(string? format = null, bool preferUnicode = true, bool useFullName = false)
+    {
+      if (format is not null)
+      {
+        if (format.StartsWith(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds.GetAcronymString()))
+          return ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, format.EndsWith(' '), preferUnicode);
+        if (format.StartsWith(SexagesimalDegreeFormat.DegreesDecimalMinutes.GetAcronymString()))
+          return ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesDecimalMinutes, format.EndsWith(' '), preferUnicode);
+        if (format.StartsWith(SexagesimalDegreeFormat.DecimalDegrees.GetAcronymString()))
+          return ToSexagesimalDegreeString(SexagesimalDegreeFormat.DecimalDegrees, format.EndsWith(' '), preferUnicode);
+
+        return new Angle(m_latitude, AngleUnit.Degree).ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
+      }
+
+      return ToSexagesimalDegreeString();
+    }
 
     public double Value { get => m_latitude; init => m_latitude = value; }
 
     #endregion Implemented interfaces
 
-    public override string ToString() => ToSexagesimalDegreeString();
+    public override string ToString() => ToQuantityString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds.GetAcronymString());
   }
 }

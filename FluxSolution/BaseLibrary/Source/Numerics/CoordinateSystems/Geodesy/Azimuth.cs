@@ -149,7 +149,7 @@ namespace Flux.Quantities
     public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
     // IQuantifiable<>
-    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+    public string ToQuantityString(string? format = null, bool preferUnicode = true, bool useFullName = false)
       => new Quantities.Angle(m_azimuth, Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format, preferUnicode, useFullName);
 
     public double Value { get => m_azimuth; init => m_azimuth = value; }

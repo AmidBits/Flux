@@ -72,12 +72,12 @@ namespace Flux
       sb.Append(@", ");
       sb.Append(year);
 
-      if (year <= 0)
-      {
-        sb.Append(@" or ");
-        sb.Append(System.Math.Abs(year) + 1);
-        sb.Append(@" BC");
-      }
+      //if (year <= 0)
+      //{
+      //  sb.Append(@" or ");
+      //  sb.Append(System.Math.Abs(year) + 1);
+      //  sb.Append(@" BC");
+      //}
 
       return sb.ToString();
     }
@@ -167,11 +167,14 @@ namespace Flux
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-      => $"{m_value}";
+      => ToDateString(GetConversionCalendar());
+
+    public string ToString(string? format, IFormatProvider? formatProvider)
+      => format is null ? ToQuantityString() : m_value.ToString(format, formatProvider);
 
     public int Value { get => m_value; init => m_value = value; }
     #endregion Implemented interfaces
 
-    public override string? ToString() => $"{ToQuantityString()} ({ToDateString(GetConversionCalendar())})";
+    public override string? ToString() => ToQuantityString();
   }
 }

@@ -6,7 +6,7 @@ namespace Flux.Numerics
   /// <remarks>Abbreviated angles are in radians, and full names are in degrees.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct GeographicCoordinate
-    : IGeographicCoordinate<double>
+    : System.IFormattable, IGeographicCoordinate<double>
   {
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
@@ -418,6 +418,14 @@ namespace Flux.Numerics
 
     #endregion Static members
 
-    public override string ToString() => $"{new Quantities.Latitude(Latitude)} {new Quantities.Longitude(Longitude)} {new Quantities.Length(Altitude).ToUnitString(Quantities.Length.DefaultUnit, "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
+    #region Implemented interfaces
+
+    public string ToString(string? format, IFormatProvider? formatProvider)
+      => $"{new Quantities.Latitude(Latitude).ToQuantityString(format)} {new Quantities.Longitude(Longitude).ToQuantityString(format)} {new Quantities.Length(Altitude).ToUnitString(Quantities.Length.DefaultUnit, "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
+
+    #endregion Implemented interfaces
+
+
+    public override string ToString() => ToString(null, null);
   }
 }

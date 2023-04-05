@@ -7,6 +7,7 @@ namespace Flux
       {
         Quantities.TimeUnit.Picosecond => preferUnicode ? "\u33B0" : "ps",
         Quantities.TimeUnit.Nanosecond => preferUnicode ? "\u33B1" : "ns",
+        Quantities.TimeUnit.Ticks => "ticks",
         Quantities.TimeUnit.Microsecond => preferUnicode ? "\u33B2" : "\u00B5s",
         Quantities.TimeUnit.Millisecond => preferUnicode ? "\u33B3" : "ms",
         Quantities.TimeUnit.Second => "s",
@@ -27,12 +28,15 @@ namespace Flux
       Second,
       Picosecond,
       Nanosecond,
+      /// <summary>The unit of .NET ticks.</summary>
+      Ticks,
       Microsecond,
       Millisecond,
       Minute,
       Hour,
       Day,
       Week,
+      /// <summary>This represents two weeks.</summary>
       Fortnight,
     }
 
@@ -65,6 +69,7 @@ namespace Flux
         {
           TimeUnit.Picosecond => value / 1000000000000,
           TimeUnit.Nanosecond => value / 1000000000,
+          TimeUnit.Ticks => value / 10000000,
           TimeUnit.Microsecond => value / 1000000,
           TimeUnit.Millisecond => value / 1000,
           TimeUnit.Second => value,
@@ -130,6 +135,7 @@ namespace Flux
         {
           TimeUnit.Picosecond => m_value * 1000000000000,
           TimeUnit.Nanosecond => m_value * 1000000000,
+          TimeUnit.Ticks => m_value * 10000000,
           TimeUnit.Microsecond => m_value * 1000000,
           TimeUnit.Millisecond => m_value * 1000,
           TimeUnit.Second => m_value,

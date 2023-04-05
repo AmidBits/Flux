@@ -10,7 +10,7 @@ namespace Flux
   /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public readonly record struct JulianDate
-    : System.IComparable<JulianDate>, Quantities.IQuantifiable<double>
+    : System.IFormattable, System.IComparable<JulianDate>, Quantities.IQuantifiable<double>
   {
     public static readonly JulianDate Empty;
 
@@ -146,11 +146,14 @@ namespace Flux
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-      => $"{m_value}";
+      => $"{ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}";
+
+    public string ToString(string? format, IFormatProvider? formatProvider)
+      => format is null ? ToQuantityString() : m_value.ToString(format, formatProvider);
 
     public double Value { get => m_value; init => m_value = value; }
     #endregion Implemented interfaces
 
-    public override string? ToString() => $"{ToQuantityString()} ({ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()})";
+    public override string? ToString() => ToQuantityString();
   }
 }

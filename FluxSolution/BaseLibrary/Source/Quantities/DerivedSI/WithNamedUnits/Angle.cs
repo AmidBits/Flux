@@ -20,14 +20,6 @@
         Quantities.AngleUnit.Turn => "turns",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
-
-    public static CardinalDirection ToCardinalDirection(this Quantities.SexagesimalDegreeDirection direction, bool isNegative)
-      => direction switch
-      {
-        Quantities.SexagesimalDegreeDirection.WestEast => isNegative ? CardinalDirection.W : CardinalDirection.E,
-        Quantities.SexagesimalDegreeDirection.NorthSouth => isNegative ? CardinalDirection.S : CardinalDirection.N,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(direction))
-      };
   }
 
   namespace Quantities
@@ -51,21 +43,6 @@
       PerigonAngle = 64,
       /// <summary>An angle that is not a multiple of a right angle is called an oblique angle.</summary>
       ObliqueAngle = 128
-    }
-
-    public enum SexagesimalDegreeFormat
-    {
-      DecimalDegrees,
-      DegreesDecimalMinutes,
-      DegreesMinutesDecimalSeconds
-    }
-    public enum SexagesimalDegreeDirection
-    {
-      None,
-      /// <summary>From negative (west) to positive (east).</summary>
-      WestEast,
-      /// <summary>From negative (south) to positive) (north).</summary>
-      NorthSouth
     }
 
     public enum AngleUnit
@@ -114,26 +91,6 @@
         };
 
       public double InDegrees => ConvertRadianToDegree(m_radAngle);
-
-      /// <summary></summary>
-      /// <see href="https://en.wikipedia.org/wiki/ISO_6709"/>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format, SexagesimalDegreeDirection direction, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)
-      {
-        var (decimalDegrees, degrees, decimalMinutes, minutes, decimalSeconds) = ConvertDecimalDegreeToSexagesimalDegree(ConvertRadianToDegree(m_radAngle));
-
-        var spacing = useSpaces ? " " : string.Empty;
-
-        var directional = spacing + direction.ToCardinalDirection(degrees < 0).ToString();
-
-        return format switch
-        {
-          SexagesimalDegreeFormat.DecimalDegrees => new Angle(double.Abs(decimalDegrees), AngleUnit.Degree).ToUnitString(AngleUnit.Degree, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}", true) + directional, // Show as decimal degrees.
-          SexagesimalDegreeFormat.DegreesDecimalMinutes => new Angle(double.Abs(degrees), AngleUnit.Degree).ToUnitString(AngleUnit.Degree, "N0", true) + spacing + new Angle(decimalMinutes, AngleUnit.Arcminute).ToUnitString(AngleUnit.Arcminute, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}", preferUnicode) + directional, // Show as degrees and decimal minutes.
-          SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds => new Angle(double.Abs(degrees), AngleUnit.Degree).ToUnitString(AngleUnit.Degree, "N0", true) + spacing + new Angle(double.Abs(minutes), AngleUnit.Arcminute).ToUnitString(AngleUnit.Arcminute, "N0", preferUnicode).PadLeft(3, '0') + spacing + new Angle(decimalSeconds, AngleUnit.Arcsecond).ToUnitString(AngleUnit.Arcsecond, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}", preferUnicode) + directional, // Show as degrees, minutes and decimal seconds.
-          _ => throw new System.ArgumentOutOfRangeException(nameof(format)),
-        };
-      }
 
       #region Static methods
 
@@ -419,11 +376,11 @@
       public int CompareTo(Angle other) => m_radAngle.CompareTo(other.m_radAngle);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{ToUnitString(DefaultUnit)}";
+      public string ToQuantityString(string? format = null, bool preferUnicode = true, bool useFullName = false) => $"{ToUnitString(DefaultUnit, format, preferUnicode, useFullName)}";
       public double Value { get => m_radAngle; init => m_radAngle = value; }
 
       // IUnitQuantifiable<>
-      public string ToUnitString(AngleUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+      public string ToUnitString(AngleUnit unit, string? format = null, bool preferUnicode = true, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))}{unit.GetUnitSpacing(preferUnicode, useFullName)}{unit.GetUnitString(preferUnicode, useFullName)}";
       public double ToUnitValue(AngleUnit unit = DefaultUnit)
         => unit switch
