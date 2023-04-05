@@ -376,11 +376,11 @@
       public int CompareTo(Angle other) => m_radAngle.CompareTo(other.m_radAngle);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = true, bool useFullName = false) => $"{ToUnitString(DefaultUnit, format, preferUnicode, useFullName)}";
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{ToUnitString(DefaultUnit, format, preferUnicode, useFullName)}";
       public double Value { get => m_radAngle; init => m_radAngle = value; }
 
       // IUnitQuantifiable<>
-      public string ToUnitString(AngleUnit unit, string? format = null, bool preferUnicode = true, bool useFullName = false)
+      public string ToUnitString(AngleUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))}{unit.GetUnitSpacing(preferUnicode, useFullName)}{unit.GetUnitString(preferUnicode, useFullName)}";
       public double ToUnitValue(AngleUnit unit = DefaultUnit)
         => unit switch
