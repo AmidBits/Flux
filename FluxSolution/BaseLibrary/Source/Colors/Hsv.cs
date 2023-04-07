@@ -17,8 +17,7 @@ namespace Flux.Colors
     public double Saturation { get => m_saturation; init => m_saturation = value; }
     public double Value { get => m_value; init => m_value = value; }
 
-    public double GetChroma()
-      => m_value * m_saturation;
+    public double GetChroma() => m_value * m_saturation;
 
     /// <summary>Creates an HSL color corresponding to the HSV instance.</summary>
     public Hsl ToHsl()
@@ -27,9 +26,10 @@ namespace Flux.Colors
 
       return new Hsl(m_hue, lightness == 0 || lightness == 1 ? 0 : (m_value - lightness) / System.Math.Min(lightness, 1 - lightness), lightness);
     }
+
     /// <summary>Converts to a Hwb color.</summary>
-    public Hwb ToHwb()
-      => new(m_hue, (1 - m_saturation) * m_value, 1 - m_value);
+    public Hwb ToHwb() => new(m_hue, (1 - m_saturation) * m_value, 1 - m_value);
+
     /// <summary>Creates an RGB color corresponding to the HSV instance.</summary>
     public Rgb ToRgb()
     {
@@ -78,14 +78,8 @@ namespace Flux.Colors
        );
     }
 
-    #region Static methods
-    public static Hsv FromRandom(System.Random rng)
-      => rng is null
-      ? throw new System.ArgumentNullException(nameof(rng))
-      : new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble());
-    #endregion Static methods
+    public static Hsv FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble()); }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_saturation * 100:N1}%, {m_value * 100:N1}% }}";
+    public override string ToString() => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_saturation * 100:N1}%, {m_value * 100:N1}% }}";
   }
 }

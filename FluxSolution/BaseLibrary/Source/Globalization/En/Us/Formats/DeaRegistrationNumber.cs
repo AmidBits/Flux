@@ -5,8 +5,6 @@ namespace Flux.Globalization.EnUs
   public partial struct DeaRegistrationNumber
     : System.IEquatable<DeaRegistrationNumber>
   {
-    public static readonly DeaRegistrationNumber Empty;
-
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<RegistrantType>[ABCDEFGHJKLMPRSTUX])(?<RegistrantLastNameOr9>[A-Z9])(?<Digits>[0-9]{6})(?<Checksum>[0-9])(\-(?<AffixedID>.+))?", System.Text.RegularExpressions.RegexOptions.Compiled)]
     private static partial System.Text.RegularExpressions.Regex MatchingRegex();
 

@@ -17,8 +17,7 @@ namespace Flux.Colors
     public double Saturation { get => m_saturation; init => m_saturation = value; }
     public double Intensity { get => m_intensity; init => m_intensity = value; }
 
-    public double GetChroma()
-      => 3 * m_intensity * m_saturation / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));
+    public double GetChroma() => 3 * m_intensity * m_saturation / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));
 
     /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
     public Rgb ToRgb()
@@ -68,14 +67,8 @@ namespace Flux.Colors
       );
     }
 
-    #region Static methods
-    public static Hsi FromRandom(System.Random rng)
-      => rng is null
-      ? throw new System.ArgumentNullException(nameof(rng))
-      : new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble());
-    #endregion Static methods
+    public static Hsi FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble()); }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_saturation * 100:N1}%, {m_intensity * 100:N1}% }}";
+    public override string ToString() => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_saturation * 100:N1}%, {m_intensity * 100:N1}% }}";
   }
 }

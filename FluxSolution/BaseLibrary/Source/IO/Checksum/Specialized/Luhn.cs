@@ -6,8 +6,6 @@ namespace Flux.Checksum.Special
   /// <see cref="https://en.wikipedia.org/wiki/Luhn_algorithm"/>
   public record struct Luhn
   {
-    public static readonly Luhn Empty;
-
     private readonly int[] m_sequence;
 
     private uint m_checkDigit;

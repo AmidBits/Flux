@@ -5,8 +5,6 @@ namespace Flux.Checksum
   public record struct Fletcher32
     : IChecksumGenerator32
   {
-    public static readonly Fletcher32 Empty;
-
     private uint m_hash;
 
     public int Checksum32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }

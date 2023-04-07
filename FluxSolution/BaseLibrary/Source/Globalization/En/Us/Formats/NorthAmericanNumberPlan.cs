@@ -5,8 +5,6 @@ namespace Flux.Globalization.EnUs
   public partial struct NorthAmericanNumberingPlan
     : System.IEquatable<NorthAmericanNumberingPlan>
   {
-    public static readonly NorthAmericanNumberingPlan Empty;
-
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<!\d)(?<CC>1)?[\s\-\.]*?(?<NPA>[2-9][0-9]{2})?[\s\-\.]*?(?<NXX>[2-9][0-9]{2})[\s\-\.]*?(?<XXXX>[0-9]{4})(?!\d)", System.Text.RegularExpressions.RegexOptions.Compiled)]
     private static partial System.Text.RegularExpressions.Regex MatchingRegex();
 

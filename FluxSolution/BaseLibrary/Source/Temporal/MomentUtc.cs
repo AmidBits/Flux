@@ -14,8 +14,6 @@ namespace Flux
   public readonly record struct MomentUtc
     : System.IComparable<MomentUtc>
   {
-    public static readonly MomentUtc Empty;
-
     private readonly int m_year;
     private readonly byte m_month;
     private readonly byte m_day;

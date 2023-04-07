@@ -6,8 +6,6 @@ namespace Flux.Music
   public readonly record struct Cent
     : System.IComparable<Cent>, Quantities.IQuantifiable<int>
   {
-    public static readonly Cent Zero;
-
     public const double FrequencyRatio = 1.0005777895065548592967925757932;
 
     private readonly int m_value;

@@ -5,8 +5,6 @@ namespace Flux.Checksum
   public record struct Bsd
     : IChecksumGenerator32
   {
-    public static readonly Bsd Empty;
-
     private uint m_hash;
 
     public int Checksum32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }

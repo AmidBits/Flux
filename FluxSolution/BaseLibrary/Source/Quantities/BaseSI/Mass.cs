@@ -34,8 +34,6 @@ namespace Flux
     public readonly record struct Mass
       : System.IComparable, System.IComparable<Mass>, System.IFormattable, IUnitQuantifiable<double, MassUnit>
     {
-      public static readonly Mass Zero;
-
       public const MassUnit DefaultUnit = MassUnit.Kilogram;
 
       public static Mass ElectronMass

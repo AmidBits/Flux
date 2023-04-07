@@ -24,8 +24,6 @@ namespace Flux
     public readonly record struct Area
       : System.IComparable, System.IComparable<Area>, System.IFormattable, IUnitQuantifiable<double, AreaUnit>
     {
-      public static readonly Area Zero;
-
       public const AreaUnit DefaultUnit = AreaUnit.SquareMeter;
 
       private readonly double m_value;

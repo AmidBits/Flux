@@ -29,8 +29,6 @@ namespace Flux
     public readonly record struct ElectricalResistance
       : System.IComparable, System.IComparable<ElectricalResistance>, IUnitQuantifiable<double, ElectricalResistanceUnit>
     {
-      public static readonly ElectricalResistance Zero;
-
       public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
 
       public static ElectricalResistance VonKlitzing

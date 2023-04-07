@@ -7,8 +7,6 @@ namespace Flux.Globalization.EnUs.Az.PimaCounty
   /// <remarks>It seems the information that used to be available and where the functionality below was created from, now cost money. So much for paying taxes.</remarks>
   public readonly record struct PimaCountyStreetAddress
   {
-    public static readonly PimaCountyStreetAddress Empty;
-
     /// <summary>Regular expression for Pima county street addresses.</summary>
     /// <see cref="http://webcms.pima.gov/cms/One.aspx?pageId=61696"/>
     public static System.Text.RegularExpressions.Regex Regex

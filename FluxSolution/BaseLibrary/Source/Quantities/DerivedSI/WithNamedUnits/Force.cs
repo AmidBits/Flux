@@ -25,8 +25,6 @@ namespace Flux
     public readonly record struct Force
       : System.IComparable, System.IComparable<Force>, IUnitQuantifiable<double, ForceUnit>
     {
-      public static readonly Force Zero;
-
       public const ForceUnit DefaultUnit = ForceUnit.Newton;
 
       private readonly double m_value;

@@ -31,8 +31,6 @@ namespace Flux
     public readonly record struct Frequency
       : System.IComparable, System.IComparable<Frequency>, IUnitQuantifiable<double, FrequencyUnit>
     {
-      public static readonly Frequency Zero;
-
       public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
 
       public static Frequency HyperfineTransitionFrequencyOfCs => new(9192631770);

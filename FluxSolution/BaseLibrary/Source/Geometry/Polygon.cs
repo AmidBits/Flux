@@ -7,8 +7,6 @@ namespace Flux.Geometry
   public readonly struct Polygon
   //, I2DSurfaceArea, /*I2DSurfaceCentroid,*/ I2DSurfacePerimeter
   {
-    public static readonly Polygon Empty;
-
     public System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> Vertices { get; }
 
     public Polygon(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> vertices)

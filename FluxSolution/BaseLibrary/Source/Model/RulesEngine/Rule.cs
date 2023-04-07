@@ -2,8 +2,6 @@ namespace Flux.RulesEngine
 {
   public readonly record struct Rule
   {
-    public static readonly Rule Empty;
-
     private readonly string m_name;
     private readonly string m_operator;
     private readonly object m_value;

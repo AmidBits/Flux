@@ -3,8 +3,6 @@ namespace Flux.Geometry
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct LineSegment
   {
-    public static readonly LineSegment Empty;
-
     private readonly double m_x1;
     private readonly double m_y1;
     private readonly double m_x2;

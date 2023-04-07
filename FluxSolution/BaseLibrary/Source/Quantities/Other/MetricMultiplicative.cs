@@ -89,8 +89,6 @@ namespace Flux
     public readonly record struct MetricMultiplicative
       : System.IComparable, System.IComparable<MetricMultiplicative>, System.IFormattable, IUnitQuantifiable<double, MetricMultiplicativePrefix>
     {
-      public static readonly MetricMultiplicative Zero;
-
       private readonly double m_value;
 
       /// <summary>Creates a new instance of this type.</summary>

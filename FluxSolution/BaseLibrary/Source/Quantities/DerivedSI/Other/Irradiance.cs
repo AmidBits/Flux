@@ -24,8 +24,6 @@ namespace Flux
     public readonly record struct Irradiance
       : System.IComparable, System.IComparable<Irradiance>, System.IFormattable, IUnitQuantifiable<double, IrradianceUnit>
     {
-      public static readonly Irradiance Zero;
-
       public const IrradianceUnit DefaultUnit = IrradianceUnit.WattPerSquareMeter;
 
       private readonly double m_value;

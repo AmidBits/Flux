@@ -51,8 +51,6 @@ namespace Flux
     public readonly record struct PartsPerNotation
       : System.IComparable, System.IComparable<PartsPerNotation>, IUnitQuantifiable<double, PartsPerNotationUnit>
     {
-      public static readonly PartsPerNotation Zero;
-
       public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Percent;
 
       private readonly double m_parts;

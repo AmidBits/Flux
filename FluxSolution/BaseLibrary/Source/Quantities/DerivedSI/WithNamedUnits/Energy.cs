@@ -31,8 +31,6 @@ namespace Flux
     public readonly record struct Energy
       : System.IComparable, System.IComparable<Energy>, IUnitQuantifiable<double, EnergyUnit>
     {
-      public static readonly Energy Zero;
-
       public const EnergyUnit DefaultUnit = EnergyUnit.Joule;
 
       private readonly double m_value;

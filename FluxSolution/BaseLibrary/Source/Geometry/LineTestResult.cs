@@ -3,8 +3,6 @@ namespace Flux.Geometry
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct LineTestResult
   {
-    public static readonly LineTestResult Empty;
-
     public LineTestOutcome Outcome { get; }
 
     private readonly double? m_x;

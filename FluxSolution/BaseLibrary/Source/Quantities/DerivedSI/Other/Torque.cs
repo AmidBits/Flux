@@ -22,8 +22,6 @@ namespace Flux
     public readonly record struct Torque
       : System.IComparable, System.IComparable<Torque>, System.IFormattable, IUnitQuantifiable<double, TorqueUnit>
     {
-      public static readonly Torque Zero;
-
       public const TorqueUnit DefaultUnit = TorqueUnit.NewtonMeter;
 
       private readonly double m_value;

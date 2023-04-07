@@ -356,7 +356,7 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunColors));
       System.Console.WriteLine();
 
-      var argb = new Flux.Colors.Argb(new System.Random().GetRandomBytes(4), 0);
+      var argb = new Flux.Colors.Argb(new System.Random().GetRandomBytes(4));
 
       //rgb = new Flux.Colors.Rgb(0xF0, 0xC8, 0x0E);
       //rgb = new Flux.Colors.Rgb(0xB4, 0x30, 0xE5);

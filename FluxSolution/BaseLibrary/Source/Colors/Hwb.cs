@@ -17,8 +17,7 @@ namespace Flux.Colors
     public double White { get => m_white; init => m_white = value; }
     public double Black { get => m_black; init => m_black = value; }
 
-    public double GetChroma()
-      => 3 * m_black * m_white / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));
+    public double GetChroma() => 3 * m_black * m_white / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));
 
     /// <summary>Converts the Hwb to a corresponding HSV color.</summary>
     public Hsv ToHsv()
@@ -27,6 +26,7 @@ namespace Flux.Colors
 
       return new Hsv(m_hue, v > 0 ? System.Math.Max(1 - (m_white / v), 0) : 0, v);
     }
+
     /// <summary>Converts the Hwb to a corresponding RGB color.</summary>
     public Rgb ToRgb()
     {
@@ -71,14 +71,8 @@ namespace Flux.Colors
       );
     }
 
-    #region Static member
-    public static Hwb FromRandom(System.Random rng)
-      => rng is null
-      ? throw new System.ArgumentNullException(nameof(rng))
-      : (new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble()));
-    #endregion Static member
+    public static Hwb FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return (new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble())); }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_white * 100:N1}%, {m_black * 100:N1}% }}";
+    public override string ToString() => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_white * 100:N1}%, {m_black * 100:N1}% }}";
   }
 }

@@ -8,8 +8,6 @@ namespace Flux
     where TNumerator : IQuantifiable<double>
     where TDenominator : IQuantifiable<double>
     {
-      public static readonly Rate<TNumerator, TDenominator> Zero;
-
       private readonly TNumerator m_numerator;
       private readonly TDenominator m_denominator;
 

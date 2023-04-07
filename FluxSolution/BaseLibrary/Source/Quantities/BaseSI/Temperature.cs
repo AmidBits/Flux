@@ -29,8 +29,6 @@ namespace Flux
     public readonly record struct Temperature
       : System.IComparable, System.IComparable<Temperature>, System.IFormattable, IUnitQuantifiable<double, TemperatureUnit>
     {
-      public static readonly Temperature Zero;
-
       public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
       public const double CelsiusAbsoluteZero = -273.15;

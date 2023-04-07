@@ -5,8 +5,6 @@ namespace Flux.Globalization.EnUs
   public partial struct SocialSecurityNumber
     : System.IEquatable<SocialSecurityNumber>
   {
-    public static readonly SocialSecurityNumber Empty;
-
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<!\d)(?<AAA>(?!(000|666|9\d\d))\d{3}).?(?<GG>(?!00)\d{2}).?(?<SSSS>(?!0000)\d{4})(?!\d)", System.Text.RegularExpressions.RegexOptions.Compiled)]
     private static partial System.Text.RegularExpressions.Regex MatchingRegex();
 

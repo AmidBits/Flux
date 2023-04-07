@@ -27,21 +27,15 @@ namespace Flux.Colors
     {
       var m1key = 1 - m_key;
 
-      byte red = System.Convert.ToByte(255 * (1 - m_cyan) * m1key);
-      byte green = System.Convert.ToByte(255 * (1 - m_magenta) * m1key);
-      byte blue = System.Convert.ToByte(255 * (1 - m_yellow) * m1key);
+      var red = System.Convert.ToByte(255 * (1 - m_cyan) * m1key);
+      var green = System.Convert.ToByte(255 * (1 - m_magenta) * m1key);
+      var blue = System.Convert.ToByte(255 * (1 - m_yellow) * m1key);
 
       return new Rgb(red, green, blue);
     }
 
-    #region Static members
-    public static Cmyk FromRandom(System.Random rng)
-      => rng is null
-      ? throw new System.ArgumentNullException(nameof(rng))
-      : new(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
-    #endregion Static members
+    public static Cmyk FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble()); }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ {m_cyan * 360:N1}\u00B0, {m_magenta * 360:N1}\u00B0, {m_yellow * 360:N1}\u00B0, {m_key * 360:N1}\u00B0 }}";
+    public override string ToString() => $"{GetType().Name} {{ {m_cyan * 360:N1}\u00B0, {m_magenta * 360:N1}\u00B0, {m_yellow * 360:N1}\u00B0, {m_key * 360:N1}\u00B0 }}";
   }
 }

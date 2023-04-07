@@ -33,8 +33,6 @@ namespace Flux.Data
     public const string CsTrustedConnection = @"Trusted_Connection";
     public const string CsWorkstationID = @"Workstation ID";
 
-    public static readonly TsqlName Empty;
-
     private readonly string[] m_parts;
 
     public TsqlName(string serverName, string databaseName, string schemaName, string objectName)

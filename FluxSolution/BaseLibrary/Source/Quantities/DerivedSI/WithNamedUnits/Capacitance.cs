@@ -29,8 +29,6 @@ namespace Flux
     public readonly record struct Capacitance
       : System.IComparable, System.IComparable<Capacitance>, IUnitQuantifiable<double, CapacitanceUnit>
     {
-      public static readonly Capacitance Zero;
-
       public const CapacitanceUnit DefaultUnit = CapacitanceUnit.Farad;
 
       private readonly double m_value;

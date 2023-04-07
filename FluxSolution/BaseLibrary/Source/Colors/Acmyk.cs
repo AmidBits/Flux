@@ -19,23 +19,15 @@ namespace Flux.Colors
     public Cmyk CMYK { get => m_cmyk; init => m_cmyk = value; }
 
     /// <summary>Creates an RGB color corresponding to the CMYK instance.</summary>
-    public Argb ToArgb()
-      => new(System.Convert.ToByte(m_alpha * 255), CMYK.ToRgb());
+    public Argb ToArgb() => new(System.Convert.ToByte(m_alpha * 255), CMYK.ToRgb());
 
-    #region Static members
-    //public static Acmyk FromRandom(System.Random rng)
-    //{
-    //  if (rng is null) throw new System.ArgumentNullException(nameof(rng));
-
-    //  return new Acmyk(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble());
-    //}
-    //public static Acmyk FromRandom()
-    //  => FromRandom(Randomization.NumberGenerator.Crypto);
-    #endregion Static members
+    public static Acmyk FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble(), Cmyk.FromRandom(rng)); }
 
     #region Overloaded operators
+
     public static explicit operator Acmyk(System.ValueTuple<double, double, double, double, double> v) => new(v.Item1, v.Item2, v.Item3, v.Item4, v.Item5);
     public static explicit operator Acmyk(double[] v) => new(v[0], v[1], v[2], v[3], v[4]);
+
     #endregion Overloaded operators
 
     public override string ToString()

@@ -13,21 +13,12 @@ namespace Flux.Colors
       m_green = green >= 0 && green <= 255 ? (byte)green : throw new System.ArgumentOutOfRangeException(nameof(green));
       m_blue = blue >= 0 && blue <= 255 ? (byte)blue : throw new System.ArgumentOutOfRangeException(nameof(blue));
     }
-    public Rgb(int rgb)
-      : this((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb)
-    {
-    }
-    public Rgb(byte[] rgb, int offset)
-      : this(rgb[offset], rgb[offset + 1], rgb[offset + 2])
-    {
-    }
+    public Rgb(int rgb) : this((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb) { }
+    public Rgb(System.ReadOnlySpan<byte> rgb) : this(rgb[0], rgb[1], rgb[2]) { }
 
-    public int Red
-      => m_red;
-    public int Green
-      => m_green;
-    public int Blue
-      => m_blue;
+    public int Red => m_red;
+    public int Green => m_green;
+    public int Blue => m_blue;
 
     /// <summary>Returns the chroma for the RGB value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chrominance"/>
@@ -42,6 +33,7 @@ namespace Flux.Colors
 
       return System.Math.Clamp(max - min, 0, 1);
     }
+
     /// <summary>Returns the hue [0, 360] for the RGB value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Hue"/>
     public double GetHue(out double min, out double max, out double r, out double g, out double b, out double chroma)
@@ -66,6 +58,7 @@ namespace Flux.Colors
 
       return hue;
     }
+
     /// <summary>Returns the luma for the RGB value, using the specified coefficients.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Luma_(video)"/>
     public double GetLuma(double rc, double gc, double bc)
@@ -76,21 +69,22 @@ namespace Flux.Colors
 
       return rc * r + gc * g + bc * b;
     }
+
     /// <summary>Returns the luma for the RGB value, using Rec.601 coefficients.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rec._601"/>
-    public double GetLuma601()
-      => GetLuma(0.2989, 0.5870, 0.1140);
+    public double GetLuma601() => GetLuma(0.2989, 0.5870, 0.1140);
+
     /// <summary>Returns the luma for the RGB value, using Adobe/SMPTE 240M coefficients.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Adobe_RGB_color_space"/>
-    public double GetLuma240()
-      => GetLuma(0.212, 0.701, 0.087);
+    public double GetLuma240() => GetLuma(0.212, 0.701, 0.087);
+
     /// <summary>Returns the luma for the RGB value, using Rec.709 coefficients.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Rec._709"/>
-    public double GetLuma709()
-      => GetLuma(0.2126, 0.7152, 0.0722);
+    public double GetLuma709() => GetLuma(0.2126, 0.7152, 0.0722);
+
     /// <summary>Returns the luma for the RGB value, using Rec.2020 coefficients.</summary>
-    public double GetLuma2020()
-      => GetLuma(0.2627, 0.6780, 0.0593);
+    public double GetLuma2020() => GetLuma(0.2627, 0.6780, 0.0593);
+
     public double GetNormalizedChroma(out double min, out double max, out double r, out double g, out double b)
     {
       r = m_red / 255d;
@@ -102,6 +96,7 @@ namespace Flux.Colors
 
       return max - min;
     }
+
     /// <summary>Returns the chroma and hue [0.0, 360.0] for the RGB value.</summary>
     public void GetSecondaryChromaAndHue(out double chroma2, out double hue2)
     {
@@ -141,6 +136,7 @@ namespace Flux.Colors
       var y = System.Math.Clamp(ki - b, 0, 1) / ki;
       return new(c, m, y, k);
     }
+
     /// <summary>Creates an HSI color corresponding to the RGB instance.</summary>
     public Hsi ToHsi()
     {
@@ -149,6 +145,7 @@ namespace Flux.Colors
       var s = i == 0 ? 0 : 1 - (min / i);
       return new Hsi(h, s, i);
     }
+
     /// <summary>Creates an HSL color corresponding to the RGB instance.</summary>
     public Hsl ToHsl()
     {
@@ -157,22 +154,22 @@ namespace Flux.Colors
       var s = l == 0 || l == 1 ? 0 : System.Math.Clamp(chroma / (1 - System.Math.Abs(2 * l - 1)), 0, 1);
       return new Hsl(h, s, l);
     }
+
     /// <summary>Creates an HSV color corresponding to the RGB instance.</summary>
     public Hsv ToHsv()
-    {
-      var h = GetHue(out _, out var max, out _, out _, out _, out var chroma);
-      var s = max == 0 ? 0 : chroma / max;
-      var v = max;
-      return new Hsv(h, s, v);
-    }
+      => new(
+        GetHue(out _, out var max, out _, out _, out _, out var chroma),
+        max == 0 ? 0 : chroma / max,
+        max
+      );
+
     /// <summary>Creates an HWB color corresponding to the RGB instance.</summary>
     public Hwb ToHwb()
-    {
-      var h = GetHue(out var min, out var max, out _, out _, out _, out _);
-      var w = min;
-      var b = 1 - max;
-      return new(h, w, b);
-    }
+      => new(
+        GetHue(out var min, out var max, out _, out _, out _, out _),
+        min,
+        1 - max
+      );
 
     //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
     // http://alvyray.com/Papers/CG/HWB_JGTv208.pdf#:~:text=HWB%20To%20and%20From%20RGB%20The%20full%20transforms,min%28%20R%20%2C%20G%20%2C%20B%20%29.%20
@@ -196,22 +193,18 @@ namespace Flux.Colors
     //  return new Hwb(i - f / (max - min), min, b, Alpha / 255.0);
     //}
 
-    public int ToInt()
-      => ((Red << 16) & 0x00FF0000) | ((Green << 8) & 0x0000FF00) | (Blue & 0x000000FF);
+    public int ToInt() => ((Red << 16) & 0x00FF0000) | ((Green << 8) & 0x0000FF00) | (Blue & 0x000000FF);
 
-    public string ToHtmlColorString()
-      => $"rgb({Red}, {Green}, {Blue})";
+    public string ToHtmlColorString() => $"rgb({Red}, {Green}, {Blue})";
+
     /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
     /// <param name="color">The Color to convert.</param>
     /// <returns>Returns a string representing the hex value.</returns>
-    public string ToHtmlHexString()
-      => $"#{Red:X2}{Green:X2}{Blue:X2}";
+    public string ToHtmlHexString() => $"#{Red:X2}{Green:X2}{Blue:X2}";
 
     #region Static methods
-    public static Rgb FromRandom(System.Random rng)
-      => rng is null
-      ? throw new System.ArgumentNullException(nameof(rng))
-      : new(rng.GetRandomBytes(3), 0);
+
+    public static Rgb FromRandom(System.Random? rng = null) => new((rng ?? new System.Random()).GetRandomBytes(3));
 
     //public static double GetChroma(byte red, byte green, byte blue, out double r, out double g, out double b, out double min, out double max)
     //{
@@ -339,7 +332,6 @@ namespace Flux.Colors
     //  throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
     //}
 
-    // Operators
     #endregion Static methods
 
     public override string ToString() => $"{GetType().Name} {{ {m_red}, {m_green}, {m_blue} }}";

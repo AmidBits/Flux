@@ -13,8 +13,6 @@ namespace Flux
     public readonly record struct Ratio
       : IQuantifiable<double>
     {
-      public static readonly Ratio Zero;
-
       private readonly double m_numerator;
       private readonly double m_denominator;
 

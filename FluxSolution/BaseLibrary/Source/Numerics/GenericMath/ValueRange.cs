@@ -32,12 +32,12 @@
     #region Static methods
 
     /// <summary>The intersection of A and B, denoted by A ∩ B, is the set of all things that are members of both A and B. If A ∩ B = none, then A and B are said to be disjoint.</summary>
-    
+
     public static ValueRange<T> Intersect(ValueRange<T> a, ValueRange<T> b)
       => IsOverlapping(a, b) ? new ValueRange<T>(LargerMinimum(a, b), SmallerMaximum(a, b)) : Empty;
 
     /// <summary>The relative complement of B in A (also called the set-theoretic difference of A and B), denoted by A \ B (or A − B), is the set of all elements that are members of A, but not members of B.</summary>
-    
+
     public static System.Collections.Generic.IEnumerable<ValueRange<T>> LeftDifference(ValueRange<T> left, ValueRange<T> right)
     {
       if (IsOverlapping(left, right))
@@ -51,7 +51,7 @@
     }
 
     /// <summary>Right different is the set of all elements that are members of B, but not members of A.</summary>
-    
+
     public static System.Collections.Generic.IEnumerable<ValueRange<T>> RightDifference(ValueRange<T> left, ValueRange<T> right)
     {
       if (IsOverlapping(left, right))
@@ -65,7 +65,7 @@
     }
 
     /// <summary>The symmetric difference, an extension of the complement, of two sets A and B, denoted by (A \ B) ∪ (B \ A) or (A - B) ∪ (B - A), is the set of all elements that are members from A, but not members of B union all elements that are members of B but not members of A.</summary>
-    
+
     public static System.Collections.Generic.IEnumerable<ValueRange<T>> SymmetricDifference(ValueRange<T> a, ValueRange<T> b)
     {
       if (IsOverlapping(a, b))
@@ -81,37 +81,37 @@
     }
 
     /// <summary>The union of A and B, denoted by A ∪ B, is the set of all things that are members of A or of B or of both.</summary>
-    
+
     public static ValueRange<T> Union(ValueRange<T> a, ValueRange<T> b)
       => IsOverlapping(a, b) ? new ValueRange<T>(SmallerMinimum(a, b), LargerMaximum(a, b)) : Empty;
 
     /// <summary>The union of A and B, denoted by A ∪ B, is the set of all things that are members of A and B, unconditionally.</summary>
-    
+
     public static ValueRange<T> UnionAll(ValueRange<T> a, ValueRange<T> b)
       => new(SmallerMinimum(a, b), LargerMaximum(a, b));
 
     /// <summary>Returns whether a and b are overlapping.</summary>
-    
+
     public static bool IsOverlapping(ValueRange<T> a, ValueRange<T> b)
       => a.m_min.CompareTo(b.m_max) < 0 && b.m_min.CompareTo(a.m_max) < 0;
 
     /// <summary>Returns the maximum high value of a and b.</summary>
-    
+
     public static T LargerMaximum(ValueRange<T> a, ValueRange<T> b)
       => a.m_max.CompareTo(b.m_max) >= 0 ? a.m_max : b.m_max;
 
     /// <summary>Returns the maximum low value of a and b.</summary>
-    
+
     public static T LargerMinimum(ValueRange<T> a, ValueRange<T> b)
       => a.m_min.CompareTo(b.m_min) >= 0 ? a.m_min : b.m_min;
 
     /// <summary>Returns the minimum high value of a and b.</summary>
-    
+
     public static T SmallerMaximum(ValueRange<T> a, ValueRange<T> b)
       => a.m_max.CompareTo(b.m_max) <= 0 ? a.m_max : b.m_max;
 
     /// <summary>Returns the minimum low value of a and b.</summary>
-    
+
     public static T SmallerMinimum(ValueRange<T> a, ValueRange<T> b)
       => a.m_min.CompareTo(b.m_min) <= 0 ? a.m_min : b.m_min;
 

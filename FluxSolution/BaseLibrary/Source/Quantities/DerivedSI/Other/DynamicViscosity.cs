@@ -22,8 +22,6 @@ namespace Flux
     public readonly record struct DynamicViscosity
       : System.IComparable, System.IComparable<DynamicViscosity>, System.IFormattable, IUnitQuantifiable<double, DynamicViscosityUnit>
     {
-      public static readonly DynamicViscosity Zero;
-
       public const DynamicViscosityUnit DefaultUnit = DynamicViscosityUnit.PascalSecond;
 
       private readonly double m_value;

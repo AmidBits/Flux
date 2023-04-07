@@ -12,31 +12,21 @@ namespace Flux.Colors
       m_alpha = alpha >= 0 && alpha <= 1 ? alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
       m_hsl = hsl;
     }
-    public Ahsl(double alpha, double hue, double saturation, double lightness)
-      : this(alpha, new Hsl(hue, saturation, lightness))
-    { }
+    public Ahsl(double alpha, double hue, double saturation, double lightness) : this(alpha, new Hsl(hue, saturation, lightness)) { }
 
     public double Alpha { get => m_alpha; init => m_alpha = value; }
     public Hsl HSL { get => m_hsl; init => m_hsl = value; }
 
     /// <summary>Creates an HSVA color corresponding to the HSL instance.</summary>
-    public Ahsv ToAhsv()
-      => new(m_alpha, HSL.ToHsv());
+    public Ahsv ToAhsv() => new(m_alpha, HSL.ToHsv());
+
     /// <summary>Creates an RGBA color corresponding to the HSL instance.</summary>
-    public Argb ToArgb()
-      => new(System.Convert.ToByte(255 * m_alpha), HSL.ToRgb());
+    public Argb ToArgb() => new(System.Convert.ToByte(255 * m_alpha), HSL.ToRgb());
 
-    public string ToHtmlColorString()
-      => $"hsla({HSL.Hue}, {HSL.Saturation}%, {HSL.Lightness}%, {m_alpha})";
+    public string ToHtmlColorString() => $"hsla({HSL.Hue}, {HSL.Saturation}%, {HSL.Lightness}%, {m_alpha})";
 
-    #region Static methods
-    public static Ahsl FromRandom(System.Random rng)
-      => rng is null
-      ? throw new System.ArgumentNullException(nameof(rng))
-      : new(rng.NextDouble(), Hsl.FromRandom(rng));
-    #endregion Static methods
+    public static Ahsl FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble(), Hsl.FromRandom(rng)); }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HSL.Hue:N1}\u00B0, {HSL.Saturation * 100:N1}%, {HSL.Lightness * 100:N1}% }}";
+    public override string ToString() => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HSL.Hue:N1}\u00B0, {HSL.Saturation * 100:N1}%, {HSL.Lightness * 100:N1}% }}";
   }
 }

@@ -6,8 +6,6 @@ namespace Flux.Music
   public readonly record struct Semitone
     : System.IComparable<Semitone>, Quantities.IQuantifiable<int>
   {
-    public static readonly Semitone Zero;
-
     public const double FrequencyRatio = 1.0594630943592952645618252949463;
 
     private readonly int m_value;

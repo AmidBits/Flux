@@ -7,8 +7,6 @@ namespace Flux
     public readonly record struct UvIndex
       : System.IComparable, System.IComparable<UvIndex>, IQuantifiable<double>
     {
-      public static readonly UvIndex Zero;
-
       private readonly double m_value;
 
       public UvIndex(double value) => m_value = value > 0 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));

@@ -23,8 +23,6 @@ namespace Flux
     public readonly record struct LuminousFlux
       : System.IComparable, System.IComparable<LuminousFlux>, IUnitQuantifiable<double, LuminousFluxUnit>
     {
-      public static readonly LuminousFlux Zero;
-
       public const LuminousFluxUnit DefaultUnit = LuminousFluxUnit.Lumen;
 
       private readonly double m_value;

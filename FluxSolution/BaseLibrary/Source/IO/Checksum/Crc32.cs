@@ -7,8 +7,6 @@ namespace Flux.Checksum
   public record struct Crc32
     : IChecksumGenerator32
   {
-    public static readonly Crc32 Empty;
-
     private readonly uint[] m_lookupTable;
 
     private uint m_hash;

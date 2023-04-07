@@ -5,8 +5,6 @@ namespace Flux.Checksum
   public record struct Adler32
     : IChecksumGenerator32
   {
-    public static readonly Adler32 Empty;
-
     private uint m_hash;// = 1;
 
     public int Checksum32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }

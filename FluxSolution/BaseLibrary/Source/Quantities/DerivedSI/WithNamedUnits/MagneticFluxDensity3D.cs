@@ -8,8 +8,6 @@ namespace Flux
     public readonly record struct MagneticFluxDensity3D
     : System.IFormattable, IUnitQuantifiable<Numerics.CartesianCoordinate3<double>, MagneticFluxDensityUnit>
     {
-      public static readonly MagneticFluxDensity3D Zero;
-
       private readonly Numerics.CartesianCoordinate3<double> m_value;
 
       public MagneticFluxDensity3D(Numerics.CartesianCoordinate3<double> value, MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)

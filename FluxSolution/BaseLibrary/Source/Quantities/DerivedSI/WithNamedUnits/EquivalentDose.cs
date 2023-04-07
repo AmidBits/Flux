@@ -23,8 +23,6 @@ namespace Flux
     public readonly record struct EquivalentDose
       : System.IComparable, System.IComparable<EquivalentDose>, IUnitQuantifiable<double, EquivalentDoseUnit>
     {
-      public static readonly EquivalentDose Zero;
-
       public const EquivalentDoseUnit DefaultUnit = EquivalentDoseUnit.Sievert;
 
       private readonly double m_value;

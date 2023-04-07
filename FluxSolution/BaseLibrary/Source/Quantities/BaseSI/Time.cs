@@ -45,8 +45,6 @@ namespace Flux
     public readonly record struct Time
       : System.IComparable, System.IComparable<Time>, System.IFormattable, IUnitQuantifiable<double, TimeUnit>
     {
-      public static readonly Time Zero;
-
       public const TimeUnit DefaultUnit = TimeUnit.Second;
 
       /// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>

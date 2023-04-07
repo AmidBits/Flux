@@ -65,8 +65,6 @@
     public readonly partial record struct Angle
       : System.IComparable, System.IComparable<Angle>, IUnitQuantifiable<double, AngleUnit>
     {
-      public static readonly Angle Zero;
-
       public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
       public const double OneFullRotationInDegrees = 360;

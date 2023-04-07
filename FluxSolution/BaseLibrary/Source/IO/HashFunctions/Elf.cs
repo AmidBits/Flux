@@ -5,8 +5,6 @@ namespace Flux.Hashing
   public record struct Elf
     : ISimpleHashGenerator32
   {
-    public static readonly Elf Empty;
-
     private uint m_hash;
 
     public int SimpleHash32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }

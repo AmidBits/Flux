@@ -8,8 +8,6 @@ namespace Flux.Hashing
     [System.CLSCompliant(false)] public const uint DefaultHash = 2166136261U;
     [System.CLSCompliant(false)] public const uint DefaultPrimeMultiplier = 16777619U;
 
-    public static readonly Fnv1a Empty;
-
     private uint m_hash;
 
     public int SimpleHash32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }

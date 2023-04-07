@@ -24,8 +24,6 @@ namespace Flux
     public readonly record struct Turbidity
       : System.IComparable, System.IComparable<Turbidity>, System.IFormattable, IUnitQuantifiable<double, TurbidityUnit>
     {
-      public static readonly Turbidity Zero;
-
       public const TurbidityUnit DefaultUnit = TurbidityUnit.NephelometricTurbidityUnits;
 
       private readonly double m_value;

@@ -3,8 +3,6 @@ namespace Flux.Geometry
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct LineSlope
   {
-    public static readonly LineSlope Zero;
-
     private readonly double m_slope;
 
     public LineSlope(double slope)
@@ -13,8 +11,5 @@ namespace Flux.Geometry
       => m_slope = (y2 - y1) / (x2 - x1);
 
     public double Slope { get => m_slope; init => m_slope = value; }
-
-    #region Static methods
-    #endregion Static methods
   }
 }

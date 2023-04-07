@@ -4,8 +4,6 @@ namespace Flux.Data
 {
   public record struct TsqlColumnDefinition
   {
-    public static readonly TsqlColumnDefinition Empty;
-
     /// <summary>Returns the column name.</summary>
     public string ColumnName { get; private set; }
 

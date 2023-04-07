@@ -11,8 +11,6 @@ namespace Flux.Numerics
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
 
-    public static readonly GeographicCoordinate Empty;
-
     /// <summary>This is a reference coordinate for Madrid, in Spain on Europe, which is antipodal to Takapau, in New Zeeland.</summary>
     public static GeographicCoordinate MadridSpain => new(40.416667, -3.716667, 820);
 
@@ -412,7 +410,7 @@ namespace Flux.Numerics
         return true;
       }
 
-      result = Empty;
+      result = default;
       return false;
     }
 

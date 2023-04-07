@@ -5,8 +5,6 @@ namespace Flux.Geometry
   public readonly record struct ViewPort<TSelf>
     where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
   {
-    public static readonly ViewPort<TSelf> Empty;
-
     private readonly TSelf m_canvasHeight;
     private readonly TSelf m_canvasWidth;
     private readonly TSelf m_rasterHeight;

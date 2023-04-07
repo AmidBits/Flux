@@ -41,8 +41,6 @@ namespace Flux.Data
     public const string Xml = @"xml";
     #endregion DataType Name Constants
 
-    public static readonly TsqlDataType Empty;
-
     public string Name { get; private set; }
     public System.Collections.Generic.IReadOnlyList<string> Arguments { get; private set; }
 

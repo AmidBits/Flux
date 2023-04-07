@@ -10,28 +10,19 @@ namespace Flux.Colors
       m_alpha = alpha >= 0 && alpha <= 1 ? alpha : throw new System.ArgumentOutOfRangeException(nameof(alpha));
       m_hwb = hwb;
     }
-    public Ahwb(double alpha, double hue, double white, double black)
-      : this(alpha, new Hwb(hue, white, black))
-    { }
+    public Ahwb(double alpha, double hue, double white, double black) : this(alpha, new Hwb(hue, white, black)) { }
 
     public double Alpha { get => m_alpha; init => m_alpha = value; }
     public Hwb HWB { get => m_hwb; init => m_hwb = value; }
 
     /// <summary>Converts the Hwb to a corresponding HSV color.</summary>
-    public Ahsv ToAhsv()
-      => new(m_alpha, HWB.ToHsv());
+    public Ahsv ToAhsv() => new(m_alpha, HWB.ToHsv());
+
     /// <summary>Converts the Hwb to a corresponding RGB color.</summary>
-    public Argb ToArgb()
-      => new(System.Convert.ToByte(m_alpha * 255), HWB.ToRgb());
+    public Argb ToArgb() => new(System.Convert.ToByte(m_alpha * 255), HWB.ToRgb());
 
-    #region Static methods
-    public static Ahwb FromRandom(System.Random rng)
-      => rng is null
-      ? throw new System.ArgumentNullException(nameof(rng))
-      : new(rng.NextDouble(), Hwb.FromRandom(rng));
-    #endregion Static methods
+    public static Ahwb FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble(), Hwb.FromRandom(rng)); }
 
-    public override string ToString()
-      => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HWB.Hue:N1}\u00B0, {HWB.White * 100:N1}%, {HWB.Black * 100:N1}% }}";
+    public override string ToString() => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HWB.Hue:N1}\u00B0, {HWB.White * 100:N1}%, {HWB.Black * 100:N1}% }}";
   }
 }
