@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Units
 {
   /// <summary>Azimuth, a.k.a. bearing, unit of degree. The internal unit here is defined in the range [0, +360). Values are always wrapped within that range.</summary>
@@ -23,6 +21,13 @@ namespace Flux.Units
     public Angle ToAngle() => new(m_azimuth, AngleUnit.Degree);
 
     #region Static methods
+
+    public ThirtytwoWindCompassRose ToCompassPoint(PointsOfTheCompass precision, out double notch)
+    {
+      notch = System.Math.Round(m_azimuth / (MaxValue / (int)precision) % (int)precision);
+
+      return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
+    }
 
     /// <summary>Compass point (to given precision) for specified bearing.</summary>
     /// <remarks>Precision = max length of compass point, 1 = the four cardinal directions, 2 = ; it could be extended to 4 for quarter-winds (eg NEbN), but I think they are little used.</remarks>
