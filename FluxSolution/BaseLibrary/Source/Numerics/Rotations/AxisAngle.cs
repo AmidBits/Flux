@@ -40,11 +40,11 @@ namespace Flux
         );
     }
 
-    public static (Numerics.CartesianCoordinate3<TSelf> axis, Quantities.Angle angle) ToQuantities<TSelf>(this Numerics.AxisAngle<TSelf> source)
+    public static (Numerics.CartesianCoordinate3<TSelf> axis, Units.Angle angle) ToQuantities<TSelf>(this Numerics.AxisAngle<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => (
         new Numerics.CartesianCoordinate3<TSelf>(source.X, source.Y, source.Z),
-        new Quantities.Angle(double.CreateChecked(source.Angle))
+        new Units.Angle(double.CreateChecked(source.Angle))
       );
 
     public static Numerics.Quaternion<TSelf> ToQuaternion<TSelf>(this Numerics.AxisAngle<TSelf> source)
@@ -104,7 +104,7 @@ namespace Flux
 
       /// <summary>Create a <see cref="Quantities.Angle"/> from the angle component of the rotation.</summary>
       /// <returns>The angle component as an <see cref="Quantities.Angle"/>.</returns>
-      public Quantities.Angle ToAngle()
+      public Units.Angle ToAngle()
         => new(double.CreateChecked(m_angle));
 
       /// <summary>Create an <see cref="CartesianCoordinate3{TSelf}"/> from the axis vector components of the rotation.</summary>

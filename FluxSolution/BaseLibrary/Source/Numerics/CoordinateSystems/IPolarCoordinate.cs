@@ -25,11 +25,11 @@
         double.CreateChecked(source.Azimuth)
       );
 
-    public static (Quantities.Length radius, Quantities.Angle azimuth) ToQuantities<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
+    public static (Units.Length radius, Units.Angle azimuth) ToQuantities<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
     => (
-      new Quantities.Length(double.CreateChecked(source.Radius)),
-      new Quantities.Angle(double.CreateChecked(source.Azimuth))
+      new Units.Length(double.CreateChecked(source.Radius)),
+      new Units.Angle(double.CreateChecked(source.Azimuth))
     );
   }
   #endregion ExtensionMethods
@@ -49,7 +49,7 @@
       TSelf Azimuth { get; init; }
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Quantities.Angle(double.CreateChecked(Azimuth)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)} }}";
+        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Units.Angle(double.CreateChecked(Azimuth)).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
     }
   }
 }

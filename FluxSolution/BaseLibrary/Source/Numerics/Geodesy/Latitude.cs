@@ -1,4 +1,4 @@
-namespace Flux.Quantities
+namespace Flux.Units
 {
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
@@ -16,9 +16,9 @@ namespace Flux.Quantities
     /// <summary>Creates a new Latitude from the specified number of degrees. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
     public Latitude(double latitude) => m_latitude = FoldLatitude(latitude);
     /// <summary>Creates a new Latitude from the specfied Angle instance. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
-    public Latitude(Quantities.Angle angle) : this(angle.ToUnitValue(Quantities.AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
+    public Latitude(Angle angle) : this(angle.ToUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
-    public double InRadians => Quantities.Angle.ConvertDegreeToRadian(m_latitude);
+    public double InRadians => Angle.ConvertDegreeToRadian(m_latitude);
 
     public string SexagesimalDegreeString => ToSexagesimalDegreeString();
 
@@ -27,7 +27,7 @@ namespace Flux.Quantities
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedY() => System.Math.Clamp(System.Math.Log((System.Math.Tan(GenericMath.PiOver4 + InRadians / 2))), -System.Math.PI, System.Math.PI);
 
-    public Quantities.Angle ToAngle() => new(m_latitude, Quantities.AngleUnit.Degree);
+    public Angle ToAngle() => new(m_latitude, AngleUnit.Degree);
 
     public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
       => format.ToSexagesimalDegreeString(m_latitude, SexagesimalDegreeDirection.NorthSouth, -1, useSpaces, preferUnicode);
@@ -41,7 +41,7 @@ namespace Flux.Quantities
     /// <summary></summary>
     /// <param name="lat">The latitude in radians.</param>
     /// <returns></returns>
-    public static Latitude FromRadians(double lat) => new(Quantities.Angle.ConvertRadianToDegree(lat) % MaxValue);
+    public static Latitude FromRadians(double lat) => new(Angle.ConvertRadianToDegree(lat) % MaxValue);
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     /// <param name="lat">The latitude in radians.</param>

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Quantities
+namespace Flux.Units
 {
   /// <summary>Azimuth, a.k.a. bearing, unit of degree. The internal unit here is defined in the range [0, +360). Values are always wrapped within that range.</summary>
   /// <remarks>It may seem unreasonable to perform arithmetic with what could be perceived as a compass quantity, but this really is just another angle quantity hardcoded to degrees and a range of [0, +360).</remarks>
@@ -18,9 +18,9 @@ namespace Flux.Quantities
     /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
     public Azimuth(double azimuth) => m_azimuth = WrapAzimuth(azimuth);
 
-    public double InRadians => Quantities.Angle.ConvertDegreeToRadian(m_azimuth);
+    public double InRadians => Angle.ConvertDegreeToRadian(m_azimuth);
 
-    public Quantities.Angle ToAngle() => new(m_azimuth, Quantities.AngleUnit.Degree);
+    public Angle ToAngle() => new(m_azimuth, AngleUnit.Degree);
 
     #region Static methods
 
@@ -47,7 +47,7 @@ namespace Flux.Quantities
     /// <summary></summary>
     /// <param name="azm">The azimuth in radians.</param>
     /// <returns></returns>
-    public static Azimuth FromRadians(double azm) => new(Quantities.Angle.ConvertRadianToDegree(azm));
+    public static Azimuth FromRadians(double azm) => new(Angle.ConvertRadianToDegree(azm));
 
     public static Azimuth FromWords(string compassPointInWords)
     {
@@ -150,7 +150,7 @@ namespace Flux.Quantities
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = true, bool useFullName = false)
-      => new Quantities.Angle(m_azimuth, Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, format, preferUnicode, useFullName);
+      => new Angle(m_azimuth, AngleUnit.Degree).ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
 
     public double Value { get => m_azimuth; init => m_azimuth = value; }
 

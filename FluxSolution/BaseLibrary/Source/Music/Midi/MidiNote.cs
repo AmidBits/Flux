@@ -4,7 +4,7 @@ namespace Flux.Music.Midi
   /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
   public readonly partial record struct MidiNote
-    : System.IComparable<MidiNote>, Quantities.IQuantifiable<int>
+    : System.IComparable<MidiNote>, IQuantifiable<int>
   {
     public const byte MaxValue = 127;
     public const byte MinValue = 0;
@@ -23,7 +23,7 @@ namespace Flux.Music.Midi
     public int GetOctave() => (m_number / 12) - 1;
 
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-    public Quantities.Frequency ToFrequency() => new(ConvertToFrequency(m_number));
+    public Units.Frequency ToFrequency() => new(ConvertToFrequency(m_number));
 
     #region Static methods
     /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>
@@ -45,11 +45,11 @@ namespace Flux.Music.Midi
 
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
 
-    public static MidiNote FromFrequency(Quantities.Frequency frequency)
+    public static MidiNote FromFrequency(Units.Frequency frequency)
       => new(ConvertFromFrequency(frequency.Value));
     /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
 
-    public static bool TryFromFrequency(Quantities.Frequency frequency, out MidiNote result)
+    public static bool TryFromFrequency(Units.Frequency frequency, out MidiNote result)
     {
       try
       {

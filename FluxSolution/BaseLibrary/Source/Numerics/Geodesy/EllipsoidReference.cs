@@ -22,31 +22,31 @@ namespace Flux
     }
 
     public double InverseFlattening { get => m_inverseFlattening; init => m_inverseFlattening = value; }
-    public Quantities.Length SemiMajorAxis => new(m_ellipseGeometry.X);
-    public Quantities.Length SemiMinorAxis => new(m_ellipseGeometry.Y);
+    public Units.Length SemiMajorAxis => new(m_ellipseGeometry.X);
+    public Units.Length SemiMinorAxis => new(m_ellipseGeometry.Y);
 
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
-    public Quantities.Length EquatorialCircumference => EquatorialRadius * double.Tau;
+    public Units.Length EquatorialCircumference => EquatorialRadius * double.Tau;
 
     /// <summary>Diameter of Earth's semi-major axis.</summary>
-    public Quantities.Length EquatorialDiameter => EquatorialRadius * 2;
+    public Units.Length EquatorialDiameter => EquatorialRadius * 2;
 
     /// <summary>Radius Earth's semi-major axis.</summary>
-    public Quantities.Length EquatorialRadius => new(m_ellipseGeometry.X);
+    public Units.Length EquatorialRadius => new(m_ellipseGeometry.X);
 
     /// <summary>This is the amount of ellipticity (flattening, oblateness) of the Earth.</summary>
     public double Flattening => 1 / m_inverseFlattening;
 
     /// <summary>The polar circumference equals Cp=4mp, i.e. four times the quarter meridian.</summary>
-    public Quantities.Length PolarCircumference => new(m_ellipseGeometry.Circumference);
+    public Units.Length PolarCircumference => new(m_ellipseGeometry.Circumference);
 
     /// <summary>Diameter of Earth's semi-minor axis.</summary>
-    public Quantities.Length PolarDiameter => PolarRadius * 2;
+    public Units.Length PolarDiameter => PolarRadius * 2;
 
     /// <summary>Radius of Earth's semi-minor axis.</summary>
-    public Quantities.Length PolarRadius => new(m_ellipseGeometry.Y);
+    public Units.Length PolarRadius => new(m_ellipseGeometry.Y);
 
     /// <summary>Approximate volume of the Earth's oblate sphere.</summary>
-    public Quantities.Volume Volume => new(GenericMath.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
+    public Units.Volume Volume => new(GenericMath.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
   }
 }

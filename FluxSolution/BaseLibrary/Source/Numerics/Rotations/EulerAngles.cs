@@ -98,12 +98,12 @@ namespace Flux
       );
     }
 
-    public static (Quantities.Angle yaw, Quantities.Angle pitch, Quantities.Angle roll) ToQuantities<TSelf>(this Numerics.EulerAngles<TSelf> source)
+    public static (Units.Angle yaw, Units.Angle pitch, Units.Angle roll) ToQuantities<TSelf>(this Numerics.EulerAngles<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (
-        new Quantities.Angle(double.CreateChecked(source.Yaw)),
-        new Quantities.Angle(double.CreateChecked(source.Pitch)),
-        new Quantities.Angle(double.CreateChecked(source.Roll))
+        new Units.Angle(double.CreateChecked(source.Yaw)),
+        new Units.Angle(double.CreateChecked(source.Pitch)),
+        new Units.Angle(double.CreateChecked(source.Roll))
       );
 
     public static Numerics.Quaternion<TSelf> ToQuaternion<TSelf>(this Numerics.EulerAngles<TSelf> source)

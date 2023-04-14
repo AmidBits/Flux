@@ -727,8 +727,8 @@ namespace ConsoleApp
 
       // Write(typeof(System.IConvertible));
 
-      Write(typeof(Flux.Quantities.IUnitQuantifiable<,>));
-      Write(typeof(Flux.Quantities.IQuantifiable<>), typeof(Flux.Quantities.IUnitQuantifiable<,>));
+      Write(typeof(IUnitQuantifiable<,>));
+      Write(typeof(IQuantifiable<>), typeof(IUnitQuantifiable<,>));
 
       static void Write(System.Type type, params System.Type[] excludingTypes)
       {
@@ -739,7 +739,7 @@ namespace ConsoleApp
         System.Console.WriteLine();
       }
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(Flux.Quantities.IQuantifiable<>).GetDerivedTypes().Append(typeof(Flux.Quantities.Rate<Flux.Quantities.Length, Flux.Quantities.Time>)).OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")).Select(q => q.Name + " = " + q.GetDefaultValue()?.ToString() ?? "Null")));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(IQuantifiable<>).GetDerivedTypes().Append(typeof(Flux.Units.Rate<Flux.Units.Length, Flux.Units.Time>)).OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")).Select(q => q.Name + " = " + q.GetDefaultValue()?.ToString() ?? "Null")));
     }
 
     #endregion

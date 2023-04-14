@@ -1,5 +1,3 @@
-using Flux.Quantities;
-
 namespace Flux.Numerics
 {
   /// <summary>A 2-dimensional cartesian coordinate.</summary>

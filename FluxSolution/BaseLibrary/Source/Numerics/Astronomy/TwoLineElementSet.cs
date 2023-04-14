@@ -27,15 +27,15 @@ namespace Flux.Numerics
     }
 
     /// <summary>The angle between the equator and the orbit plane. The value provided is the TEME mean inclination. Degrees, in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
-    public TSelf Inclination { get => TSelf.CreateChecked(Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(m_radInclination))); init => m_radInclination = TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
+    public TSelf Inclination { get => TSelf.CreateChecked(Units.Angle.ConvertRadianToDegree(double.CreateChecked(m_radInclination))); init => m_radInclination = TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
     /// <summary>The angle between vernal equinox and the point where the orbit crosses the equatorial plane (going north). The value provided is the TEME mean right ascension of the ascending node. Degrees, in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
-    public TSelf RightAscensionOfAscendingNode { get => TSelf.CreateChecked(Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(m_radRightAscensionOfAscendingNode))); init => m_radRightAscensionOfAscendingNode = TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
+    public TSelf RightAscensionOfAscendingNode { get => TSelf.CreateChecked(Units.Angle.ConvertRadianToDegree(double.CreateChecked(m_radRightAscensionOfAscendingNode))); init => m_radRightAscensionOfAscendingNode = TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
     /// <summary>A constant defining the shape of the orbit (0=circular, Less than 1=elliptical). The value provided is the mean eccentricity.</summary>
     public TSelf Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
     /// <summary>The angle between the ascending node and the orbit's point of closest approach to the earth (perigee). The value provided is the TEME mean argument of perigee. Degrees, in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
-    public TSelf ArgumentOfPerigee { get => TSelf.CreateChecked(Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(m_radArgumentOfPerigee))); init => m_radArgumentOfPerigee = TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
+    public TSelf ArgumentOfPerigee { get => TSelf.CreateChecked(Units.Angle.ConvertRadianToDegree(double.CreateChecked(m_radArgumentOfPerigee))); init => m_radArgumentOfPerigee = TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
     /// <summary>The angle, measured from perigee, of the satellite location in the orbit referenced to a circular orbit with radius equal to the semi-major axis. Degrees.</summary>
-    public TSelf MeanAnomaly { get => TSelf.CreateChecked(Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(m_radMeanAnomaly))); init => m_radMeanAnomaly = TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
+    public TSelf MeanAnomaly { get => TSelf.CreateChecked(Units.Angle.ConvertRadianToDegree(double.CreateChecked(m_radMeanAnomaly))); init => m_radMeanAnomaly = TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
     /// <summary> The value is the mean number of orbits per day the object completes. There are 8 digits after the decimal, leaving no trailing space(s) when the following element exceeds 9999. Revolutions per day.</summary>
     public TSelf MeanMotion { get => m_meanMotion; init => m_meanMotion = value; }
     /// <summary>The orbit number at Epoch Time. This time is chosen very near the time of true ascending node passage as a matter of routine. Revolutions.</summary>
@@ -98,7 +98,7 @@ namespace Flux.Numerics
     #region Object overrides
 
     public override string ToString()
-      => $"{GetType().Name} {{ Inclination = {new Quantities.Angle(double.CreateChecked(m_radInclination)).ToUnitString(Quantities.AngleUnit.Degree)}, RightAscensionOfAscendingNode = {new Quantities.Angle(double.CreateChecked(m_radRightAscensionOfAscendingNode)).ToUnitString(Quantities.AngleUnit.Degree)}, Eccentricity = {m_eccentricity}, ArgumentOfPerigee = {new Quantities.Angle(double.CreateChecked(m_radArgumentOfPerigee)).ToUnitString(Quantities.AngleUnit.Degree)}, MeanAnomaly = {new Quantities.Angle(double.CreateChecked(m_radMeanAnomaly)).ToUnitString(Quantities.AngleUnit.Degree)}, MeanMotion = {m_meanMotion} }}";
+      => $"{GetType().Name} {{ Inclination = {new Units.Angle(double.CreateChecked(m_radInclination)).ToUnitString(Units.AngleUnit.Degree)}, RightAscensionOfAscendingNode = {new Units.Angle(double.CreateChecked(m_radRightAscensionOfAscendingNode)).ToUnitString(Units.AngleUnit.Degree)}, Eccentricity = {m_eccentricity}, ArgumentOfPerigee = {new Units.Angle(double.CreateChecked(m_radArgumentOfPerigee)).ToUnitString(Units.AngleUnit.Degree)}, MeanAnomaly = {new Units.Angle(double.CreateChecked(m_radMeanAnomaly)).ToUnitString(Units.AngleUnit.Degree)}, MeanMotion = {m_meanMotion} }}";
     #endregion Object overrides
   }
 }

@@ -37,8 +37,8 @@ namespace Flux.Numerics
     public GeographicCoordinate(double latitude, double longitude, double altitude = 1.0)
     {
       m_altitude = altitude >= MinAltitudeInMeters && altitude <= MaxAltitudeInMeters ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
-      m_lat = new Quantities.Latitude(latitude).InRadians;
-      m_lon = new Quantities.Longitude(longitude).InRadians;
+      m_lat = new Units.Latitude(latitude).InRadians;
+      m_lon = new Units.Longitude(longitude).InRadians;
     }
 
     /// <summary></summary>
@@ -56,19 +56,19 @@ namespace Flux.Numerics
     public double Altitude { get => m_altitude; init => m_altitude = value; }
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => Quantities.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Quantities.Latitude(value).InRadians; }
+    public double Latitude { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).InRadians; }
 
     public double LatitudeInRadians => m_lat;
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => Quantities.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Quantities.Longitude(value).InRadians; }
+    public double Longitude { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).InRadians; }
 
     public double LongitudeInRadians => m_lon;
 
     #region Static members
 
     ///// <summary>Return the <see cref="IGeographicCoordinate"/> from the specified components.</summary>
-    //static GeographicCoordinate From(Quantities.Length altitude, Latitude latitude, Longitude longitude)
+    //static GeographicCoordinate From(Units.Length altitude, Latitude latitude, Longitude longitude)
     //  => new GeographicCoordinate(
     //    altitude.Value,
     //    latitude.Value,
@@ -139,7 +139,7 @@ namespace Flux.Numerics
     /// <para>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</para>
     /// </remarks>
     public static double GetCentralAngleHaversineFormula(double lat1, double lon1, double lat2, double lon2)
-      => Quantities.Angle.Ahvsin(Quantities.Angle.Hvsin(lat2 - lat1) + System.Math.Cos(lat1) * System.Math.Cos(lat2) * Quantities.Angle.Hvsin(lon2 - lon1));
+      => Units.Angle.Ahvsin(Units.Angle.Hvsin(lat2 - lat1) + System.Math.Cos(lat1) * System.Math.Cos(lat2) * Units.Angle.Hvsin(lon2 - lon1));
 
     /// <summary>
     /// <para>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</para>
@@ -404,9 +404,9 @@ namespace Flux.Numerics
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
     public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoordinate result, double earthRadius)
     {
-      if (Quantities.Angle.TryParseSexagesimalDegrees(latitudeDMS, out var latitude) && Quantities.Angle.TryParseSexagesimalDegrees(longitudeDMS, out var longitude))
+      if (Units.Angle.TryParseSexagesimalDegrees(latitudeDMS, out var latitude) && Units.Angle.TryParseSexagesimalDegrees(longitudeDMS, out var longitude))
       {
-        result = new GeographicCoordinate(latitude.ToUnitValue(Quantities.AngleUnit.Degree), longitude.ToUnitValue(Quantities.AngleUnit.Degree), earthRadius);
+        result = new GeographicCoordinate(latitude.ToUnitValue(Units.AngleUnit.Degree), longitude.ToUnitValue(Units.AngleUnit.Degree), earthRadius);
         return true;
       }
 
@@ -419,7 +419,7 @@ namespace Flux.Numerics
     #region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"{new Quantities.Latitude(Latitude).ToQuantityString(format)} {new Quantities.Longitude(Longitude).ToQuantityString(format)} {new Quantities.Length(Altitude).ToUnitString(Quantities.Length.DefaultUnit, "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
+      => $"{new Units.Latitude(Latitude).ToQuantityString(format)} {new Units.Longitude(Longitude).ToQuantityString(format)} {new Units.Length(Altitude).ToUnitString(Units.Length.DefaultUnit, "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
 
     #endregion Implemented interfaces
 

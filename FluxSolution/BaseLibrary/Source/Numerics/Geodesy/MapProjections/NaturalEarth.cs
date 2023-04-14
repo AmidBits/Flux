@@ -9,8 +9,8 @@
     //#pragma warning disable CA1822 // Mark members as static
     public Numerics.CartesianCoordinate3<double> ProjectForward(Numerics.IGeographicCoordinate<double> project)
     {
-      var lat = Quantities.Angle.ConvertDegreeToRadian(project.Latitude);
-      var lon = Quantities.Angle.ConvertDegreeToRadian(project.Longitude);
+      var lat = Units.Angle.ConvertDegreeToRadian(project.Latitude);
+      var lon = Units.Angle.ConvertDegreeToRadian(project.Longitude);
 
       var latP2 = System.Math.Pow(lat, 2);
       var latP4 = latP2 * latP2;

@@ -40,11 +40,11 @@ namespace Flux
       /// <summary>The amount by which an orbit around another body deviates from a perfect circle.</summary>
       public TSelf Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
       /// <summary>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
-      public TSelf Inclination { get => TSelf.CreateChecked(Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(m_radInclination))); init => m_radInclination = TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
+      public TSelf Inclination { get => TSelf.CreateChecked(Units.Angle.ConvertRadianToDegree(double.CreateChecked(m_radInclination))); init => m_radInclination = TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
       /// <summary>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
-      public TSelf LongitudeOfAscendingNode { get => TSelf.CreateChecked(Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(m_radLongitudeOfAscendingNode))); init => m_radLongitudeOfAscendingNode = TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
+      public TSelf LongitudeOfAscendingNode { get => TSelf.CreateChecked(Units.Angle.ConvertRadianToDegree(double.CreateChecked(m_radLongitudeOfAscendingNode))); init => m_radLongitudeOfAscendingNode = TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
       /// <summary>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
-      public TSelf ArgumentOfPeriapsis { get => TSelf.CreateChecked(Quantities.Angle.ConvertRadianToDegree(double.CreateChecked(m_radArgumentOfPeriapsis))); init => m_radArgumentOfPeriapsis = TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
+      public TSelf ArgumentOfPeriapsis { get => TSelf.CreateChecked(Units.Angle.ConvertRadianToDegree(double.CreateChecked(m_radArgumentOfPeriapsis))); init => m_radArgumentOfPeriapsis = TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(value))); }
       /// <summary>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</summary>
       public TSelf TrueAnomaly { get => m_trueAnomaly; init => m_trueAnomaly = value; }
 
@@ -124,7 +124,7 @@ namespace Flux
       #region Object overrides
 
       public override string ToString()
-        => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {new Quantities.Angle(double.CreateChecked(m_radInclination)).ToUnitString(Quantities.AngleUnit.Degree)}, LongitudeOfAscendingNode = {new Quantities.Angle(double.CreateChecked(m_radLongitudeOfAscendingNode)).ToUnitString(Quantities.AngleUnit.Degree)}, ArgumentOfPeriapsis = {new Quantities.Angle(double.CreateChecked(m_radArgumentOfPeriapsis)).ToUnitString(Quantities.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly} }}";
+        => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {new Units.Angle(double.CreateChecked(m_radInclination)).ToUnitString(Units.AngleUnit.Degree)}, LongitudeOfAscendingNode = {new Units.Angle(double.CreateChecked(m_radLongitudeOfAscendingNode)).ToUnitString(Units.AngleUnit.Degree)}, ArgumentOfPeriapsis = {new Units.Angle(double.CreateChecked(m_radArgumentOfPeriapsis)).ToUnitString(Units.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly} }}";
       #endregion Object overrides
     }
   }

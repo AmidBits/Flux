@@ -24,7 +24,7 @@
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static string ToSexagesimalDegreeString(this SexagesimalDegreeFormat format, double degAngle, SexagesimalDegreeDirection direction, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)
     {
-      var (decimalDegrees, degrees, decimalMinutes, minutes, decimalSeconds) = Quantities.Angle.ConvertDecimalDegreeToSexagesimalDegree(degAngle);
+      var (decimalDegrees, degrees, decimalMinutes, minutes, decimalSeconds) = Units.Angle.ConvertDecimalDegreeToSexagesimalDegree(degAngle);
 
       var spacing = useSpaces ? " " : string.Empty;
 
@@ -33,11 +33,11 @@
       return format switch
       {
         SexagesimalDegreeFormat.DecimalDegrees
-          => new Quantities.Angle(double.Abs(decimalDegrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}", true) + directional, // Show as decimal degrees.
+          => new Units.Angle(double.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitString(Units.AngleUnit.Degree, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}", true) + directional, // Show as decimal degrees.
         SexagesimalDegreeFormat.DegreesDecimalMinutes
-          => new Quantities.Angle(double.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, "N0", true) + spacing + new Quantities.Angle(decimalMinutes, Quantities.AngleUnit.Arcminute).ToUnitString(Quantities.AngleUnit.Arcminute, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}", preferUnicode) + directional, // Show as degrees and decimal minutes.
+          => new Units.Angle(double.Abs(degrees), Units.AngleUnit.Degree).ToUnitString(Units.AngleUnit.Degree, "N0", true) + spacing + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitString(Units.AngleUnit.Arcminute, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}", preferUnicode) + directional, // Show as degrees and decimal minutes.
         SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds
-          => new Quantities.Angle(double.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, "N0", true) + spacing + new Quantities.Angle(double.Abs(minutes), Quantities.AngleUnit.Arcminute).ToUnitString(Quantities.AngleUnit.Arcminute, "N0", preferUnicode).PadLeft(3, '0') + spacing + new Quantities.Angle(decimalSeconds, Quantities.AngleUnit.Arcsecond).ToUnitString(Quantities.AngleUnit.Arcsecond, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}", preferUnicode) + directional, // Show as degrees, minutes and decimal seconds.
+          => new Units.Angle(double.Abs(degrees), Units.AngleUnit.Degree).ToUnitString(Units.AngleUnit.Degree, "N0", true) + spacing + new Units.Angle(double.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitString(Units.AngleUnit.Arcminute, "N0", preferUnicode).PadLeft(3, '0') + spacing + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitString(Units.AngleUnit.Arcsecond, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}", preferUnicode) + directional, // Show as degrees, minutes and decimal seconds.
         _
           => throw new System.ArgumentOutOfRangeException(nameof(format)),
       };

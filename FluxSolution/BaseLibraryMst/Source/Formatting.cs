@@ -19,9 +19,9 @@ namespace Formatting
     [TestMethod]
     public void LatitudeTryParse()
     {
-      Assert.IsTrue(Flux.Quantities.Angle.TryParseSexagesimalDegrees(_dms1, out var dms1tp));
+      Assert.IsTrue(Flux.Units.Angle.TryParseSexagesimalDegrees(_dms1, out var dms1tp));
 
-      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(Flux.Quantities.AngleUnit.Degree));
+      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(Flux.Units.AngleUnit.Degree));
     }
 
     [TestMethod]
@@ -33,9 +33,9 @@ namespace Formatting
     [TestMethod]
     public void LongitudeTryParse()
     {
-      Assert.IsTrue(Flux.Quantities.Angle.TryParseSexagesimalDegrees(_dms1, out var dms1tp));
+      Assert.IsTrue(Flux.Units.Angle.TryParseSexagesimalDegrees(_dms1, out var dms1tp));
 
-      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(Flux.Quantities.AngleUnit.Degree));
+      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(Flux.Units.AngleUnit.Degree));
     }
   }
 

@@ -8,16 +8,16 @@
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
         source.Altitude,
-        TSelf.Pi - (TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(source.Latitude))) + TSelf.Pi.Divide(2)),
-        TSelf.CreateChecked(Quantities.Angle.ConvertDegreeToRadian(double.CreateChecked(source.Longitude))) + TSelf.Pi
+        TSelf.Pi - (TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(source.Latitude))) + TSelf.Pi.Divide(2)),
+        TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(source.Longitude))) + TSelf.Pi
       );
 
-    public static (Quantities.Length altitude, Quantities.Latitude latitude, Quantities.Longitude longitude) ToQuantities<TSelf>(this Numerics.IGeographicCoordinate<TSelf> source)
+    public static (Units.Length altitude, Units.Latitude latitude, Units.Longitude longitude) ToQuantities<TSelf>(this Numerics.IGeographicCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (
-        new Quantities.Length(double.CreateChecked(source.Altitude)),
-        new Quantities.Latitude(double.CreateChecked(source.Latitude)),
-        new Quantities.Longitude(double.CreateChecked(source.Longitude))
+        new Units.Length(double.CreateChecked(source.Altitude)),
+        new Units.Latitude(double.CreateChecked(source.Latitude)),
+        new Units.Longitude(double.CreateChecked(source.Longitude))
       );
   }
 

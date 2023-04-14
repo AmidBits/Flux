@@ -10,7 +10,7 @@ namespace Flux
   /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
   public readonly record struct JulianDate
-    : System.IFormattable, System.IComparable<JulianDate>, Quantities.IQuantifiable<double>
+    : System.IFormattable, System.IComparable<JulianDate>, IQuantifiable<double>
   {
     private readonly double m_value;
 
@@ -129,8 +129,8 @@ namespace Flux
     public static JulianDate operator %(JulianDate a, int b) => new(a.m_value % b);
     public static JulianDate operator -(JulianDate a, int b) => new(a.m_value - b);
 
-    public static JulianDate operator +(JulianDate a, Quantities.Time b) => a + (b.Value / 86400);
-    public static JulianDate operator -(JulianDate a, Quantities.Time b) => a - (b.Value / 86400);
+    public static JulianDate operator +(JulianDate a, Units.Time b) => a + (b.Value / 86400);
+    public static JulianDate operator -(JulianDate a, Units.Time b) => a - (b.Value / 86400);
 
     public static JulianDate operator +(JulianDate a, System.TimeSpan b) => a + (b.TotalSeconds / 86400);
     public static JulianDate operator -(JulianDate a, System.TimeSpan b) => a - (b.TotalSeconds / 86400);

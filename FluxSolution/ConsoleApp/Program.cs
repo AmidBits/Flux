@@ -21,7 +21,15 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
+      var a4 = new Flux.Units.Frequency(440);
 
+      var r = new Flux.Units.Ratio(3, 2);
+
+      var r1200 = Flux.Music.Cent.ConvertCentToFrequencyRatio(700);
+
+      var a5 = Flux.Units.Frequency.PitchShift(a4, new Flux.Music.Cent(700));
+
+      var ar = Flux.Fraction.ApproximateRational(r1200);
 
     }
 

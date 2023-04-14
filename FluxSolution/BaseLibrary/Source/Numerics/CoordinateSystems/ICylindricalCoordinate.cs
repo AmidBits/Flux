@@ -30,12 +30,12 @@
         source.Azimuth
       );
 
-    public static (Quantities.Length radius, Quantities.Angle azimuth, Quantities.Length height) ToQuantities<TSelf>(this Numerics.ICylindricalCoordinate<TSelf> source)
+    public static (Units.Length radius, Units.Angle azimuth, Units.Length height) ToQuantities<TSelf>(this Numerics.ICylindricalCoordinate<TSelf> source)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (
-        new Quantities.Length(double.CreateChecked(source.Radius)),
-        new Quantities.Angle(double.CreateChecked(source.Azimuth)),
-        new Quantities.Length(double.CreateChecked(source.Height))
+        new Units.Length(double.CreateChecked(source.Radius)),
+        new Units.Angle(double.CreateChecked(source.Azimuth)),
+        new Units.Length(double.CreateChecked(source.Height))
       );
 
     /// <summary>Converts the cylindrical coordinates to spherical coordinates.</summary>
@@ -66,7 +66,7 @@
       TSelf Height { get; init; }
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Quantities.Angle(double.CreateChecked(Azimuth)).ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", true)}, Height = {string.Format($"{{0:{format ?? "N1"}}}", Height)} }}";
+        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Units.Angle(double.CreateChecked(Azimuth)).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)}, Height = {string.Format($"{{0:{format ?? "N1"}}}", Height)} }}";
     }
   }
 }

@@ -1,4 +1,4 @@
-namespace Flux.Quantities
+namespace Flux.Units
 {
   /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
@@ -13,9 +13,9 @@ namespace Flux.Quantities
     /// <summary>Creates a new Longitude from the specified number of degrees. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(double longitude) => m_longitude = WrapLongitude(longitude);
     /// <summary>Creates a new Longitude from the specfied Angle instance. The value is wrapped within the degree range [-180, +180].</summary>
-    public Longitude(Quantities.Angle angle) : this(angle.ToUnitValue(Quantities.AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
+    public Longitude(Angle angle) : this(angle.ToUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
-    public double InRadians => Quantities.Angle.ConvertDegreeToRadian(m_longitude);
+    public double InRadians => Angle.ConvertDegreeToRadian(m_longitude);
 
     public string SexagesimalDegreeString => ToSexagesimalDegreeString();
 
@@ -27,7 +27,7 @@ namespace Flux.Quantities
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedX() => InRadians;
 
-    public Quantities.Angle ToAngle() => new(m_longitude, Quantities.AngleUnit.Degree);
+    public Angle ToAngle() => new(m_longitude, AngleUnit.Degree);
 
     public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
       => format.ToSexagesimalDegreeString(m_longitude, SexagesimalDegreeDirection.WestEast, -1, useSpaces, preferUnicode);
@@ -36,7 +36,7 @@ namespace Flux.Quantities
 
     /// <summary></summary>
     /// <param name="lon">The longitude in radians.</param>
-    public static Longitude FromRadians(double lon) => new(Quantities.Angle.ConvertRadianToDegree(lon));
+    public static Longitude FromRadians(double lon) => new(Angle.ConvertRadianToDegree(lon));
 
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
     /// <param name="longitude">The longitude in degrees.</param>
