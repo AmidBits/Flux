@@ -3,7 +3,8 @@
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public record struct BitStruct
   {
-    #region Private fields
+    #region Fields
+
     [System.Runtime.InteropServices.FieldOffset(0)] private byte m_byte0;
     [System.Runtime.InteropServices.FieldOffset(1)] private byte m_byte1;
     [System.Runtime.InteropServices.FieldOffset(2)] private byte m_byte2;
@@ -34,9 +35,11 @@
     [System.Runtime.InteropServices.FieldOffset(0)] private uint m_uint32;
     [System.Runtime.InteropServices.FieldOffset(0)] private ulong m_uint64;
     [System.Runtime.InteropServices.FieldOffset(0)] private UInt128 m_uint128;
-    #endregion Private fields
+
+    #endregion // Fields
 
     #region Constructors
+
     public BitStruct(byte[] bytes, int offset, int count)
     {
       if (bytes is null) throw new ArgumentNullException(nameof(bytes));
@@ -74,9 +77,11 @@
     [CLSCompliant(false)] public BitStruct(uint value) => m_uint32 = value;
     [CLSCompliant(false)] public BitStruct(ulong value) => m_uint64 = value;
     [CLSCompliant(false)] public BitStruct(UInt128 value) => m_uint128 = value;
-    #endregion Constructors
+
+    #endregion // Constructors
 
     #region Properties
+
     public byte Byte0 { get => m_byte0; set => m_byte0 = value; }
     public byte Byte1 { get => m_byte1; set => m_byte1 = value; }
     public byte Byte2 { get => m_byte2; set => m_byte2 = value; }
@@ -107,6 +112,7 @@
     [CLSCompliant(false)] public uint UInt32 { get => m_uint32; set => m_uint32 = value; }
     [CLSCompliant(false)] public ulong UInt64 { get => m_uint64; set => m_uint64 = value; }
     [CLSCompliant(false)] public UInt128 UInt128 { get => m_uint128; set => m_uint128 = value; }
-    #endregion Properties
+
+    #endregion // Properties
   }
 }

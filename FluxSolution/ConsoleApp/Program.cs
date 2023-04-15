@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Flux;
+using Flux.Formatting;
 using Flux.Numerics;
 using Flux.Text;
 using Microsoft.VisualBasic.FileIO;
@@ -20,6 +21,9 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
+
+
+      670530.DigitMeta(2, out var count, out var digits, out var sum);
 
       var a4 = new Flux.Units.Frequency(440);
 

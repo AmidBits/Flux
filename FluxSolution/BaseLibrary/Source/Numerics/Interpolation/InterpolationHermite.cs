@@ -19,6 +19,7 @@ namespace Flux.Interpolation
     public TSelf Tension { get => m_tension; init => m_tension = value; }
 
     #region Static methods
+
     public static TSelf Interpolate(TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu, TSelf tension, TSelf bias)
     {
       var one = TSelf.One;
@@ -41,10 +42,14 @@ namespace Flux.Interpolation
 
       return a0 * y1 + a1 * m0 + a2 * m1 + a3 * y2;
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
-    public TSelf Interpolate4Node(TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu) => Interpolate(y0, y1, y2, y3, mu, m_tension, m_bias);
+
+    public TSelf Interpolate4Node(TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu)
+      => Interpolate(y0, y1, y2, y3, mu, m_tension, m_bias);
+
     #endregion Implemented interfaces
   }
 }

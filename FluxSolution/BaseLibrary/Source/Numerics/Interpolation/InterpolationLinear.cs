@@ -7,11 +7,17 @@ namespace Flux.Interpolation
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
     #region Static methods
-    public static TSelf Interpolate(TSelf y1, TSelf y2, TSelf mu) => (TSelf.One - mu) * y1 + mu * y2;
+
+    public static TSelf Interpolate(TSelf y1, TSelf y2, TSelf mu)
+      => (TSelf.One - mu) * y1 + mu * y2;
+
     #endregion Static methods
 
     #region Implemented interfaces
-    public TSelf Interpolate2Node(TSelf y1, TSelf y2, TSelf mu) => Interpolate(y1, y2, mu);
+
+    public TSelf Interpolate2Node(TSelf y1, TSelf y2, TSelf mu)
+      => Interpolate(y1, y2, mu);
+
     #endregion Implemented interfaces
   }
 }

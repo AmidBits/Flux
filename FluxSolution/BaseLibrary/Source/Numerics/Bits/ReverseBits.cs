@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class Bits
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>
     /// <para>Reverses the bits of an integer. The LSBs (least significant bits) becomes the MSBs (most significant bits) and vice versa, i.e. the bits are mirrored across the integer storage space. It's a reversal of all bits.</para>
     /// See <see cref="ReverseBytes{TSelf}(TSelf)"/> for byte reversal.
@@ -17,5 +19,7 @@ namespace Flux
 
       return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(value.GetType())); // Read as LittleEndian ('right-to-left').
     }
+
+#endif
   }
 }

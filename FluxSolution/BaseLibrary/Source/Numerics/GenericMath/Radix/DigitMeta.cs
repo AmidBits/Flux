@@ -3,7 +3,7 @@ namespace Flux
   public static partial class GenericMath
   {
     /// <summary>Returns the count of all single digits in <paramref name="number"/> using base <paramref name="radix"/>.</summary>
-    public static void AboutDigits<TSelf>(this TSelf number, TSelf radix, out TSelf count, out System.Collections.Generic.List<TSelf> digits, out TSelf sum)
+    public static void DigitMeta<TSelf>(this TSelf number, TSelf radix, out TSelf count, out System.Collections.Generic.List<TSelf> digits, out TSelf sum)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertRadix(radix);
@@ -16,7 +16,7 @@ namespace Flux
       {
         count++;
         var digit = number % radix;
-        digits.Insert(0, digit);
+        digits.Add(digit);
         sum += digit;
 
         number /= radix;

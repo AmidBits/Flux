@@ -7,6 +7,7 @@ namespace Flux.Interpolation
     where TSelf : System.Numerics.IFloatingPoint<TSelf>
   {
     #region Static methods
+
     public static TSelf Interpolate(TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu)
     {
       var two = TSelf.One + TSelf.One;
@@ -22,10 +23,14 @@ namespace Flux.Interpolation
 
       return mu * mu2 * a0 + mu2 * a1 + mu * a2 + a3;
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
-    public TSelf Interpolate4Node(TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu) => Interpolate(y0, y1, y2, y3, mu);
+
+    public TSelf Interpolate4Node(TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu)
+      => Interpolate(y0, y1, y2, y3, mu);
+
     #endregion Implemented interfaces
   }
 }

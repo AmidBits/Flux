@@ -6,16 +6,6 @@ namespace Flux
   public static partial class Bits
   {
 #if NET7_0_OR_GREATER
-    // The fold 'left' (or up towards MSB) function, is the opposite of (<see cref="FoldRight"/>), sets all bits from LS1B and 'up' (or 'left'), to 1.
-    /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
-    /// <returns>All bits set from LSB up, or -1 if the value is less than zero.</returns>
-    public static TSelf BitFoldLeft<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      var tzc = GetTrailingZeroCount(value);
-
-      return BitFoldRight(value << GetLeadingZeroCount(value)) >> tzc << tzc;
-    }
 
     // The fold 'right' (or down towards LSB) function, is the opposite (<see cref="FoldLeft"/>), sets all bits from the MS1B bit 'down' (or 'right'), to 1.
     /// <summary>"Folds" the upper bits into the lower bits, by taking the most significant 1 bit (MS1B) and OR it with (MS1B - 1). The process yields a bit vector with the same most significant 1 as the value, but all 1's below it.</summary>
@@ -27,16 +17,8 @@ namespace Flux
       : TSelf.IsZero(value)
       ? TSelf.Zero
       : (((MostSignificant1Bit(value) - TSelf.One) << 1) | TSelf.One);
-#else
-    // The fold 'left' (or up towards MSB) function, is the opposite of (<see cref="FoldRight"/>), sets all bits from LS1B and 'up' (or 'left'), to 1.
-    /// <summary>Recursively "folds" the lower bits into the upper bits. The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
-    /// <returns>All bits set from LSB up, or -1 if the value is less than zero.</returns>
-    public static System.Numerics.BigInteger BitFoldLeft(this System.Numerics.BigInteger value)
-    {
-      var tzc = GetTrailingZeroCount(value);
 
-      return BitFoldRight(value << GetLeadingZeroCount(value)) >> tzc << tzc;
-    }
+#else
 
     // The fold 'right' (or down towards LSB) function, is the opposite (<see cref="FoldLeft"/>), sets all bits from the MS1B bit 'down' (or 'right'), to 1.
     /// <summary>"Folds" the upper bits into the lower bits, by taking the most significant 1 bit (MS1B) and OR it with (MS1B - 1). The process yields a bit vector with the same most significant 1 as the value, but all 1's below it.</summary>
@@ -46,7 +28,14 @@ namespace Flux
       ? -System.Numerics.BigInteger.One
       : value.IsZero
       ? System.Numerics.BigInteger.Zero
-      : (((MostSignificant1Bit(value) - System.Numerics.BigInteger.One) << 1) | System.Numerics.BigInteger.One);
+      : (((value.MostSignificant1Bit() - System.Numerics.BigInteger.One) << 1) | System.Numerics.BigInteger.One);
+
+    public static int BitFoldRight(this int value) => unchecked((int)((uint)value).BitFoldRight());
+    public static long BitFoldRight(this long value) => unchecked((long)((ulong)value).BitFoldRight());
+
+    [System.CLSCompliant(false)] public static uint BitFoldRight(this uint value) => value == 0 ? 0 : (((MostSignificant1Bit(value) - 1) << 1) | 1);
+    [System.CLSCompliant(false)] public static ulong BitFoldRight(this ulong value) => value == 0 ? 0 : (((MostSignificant1Bit(value) - 1) << 1) | 1);
+
 #endif
   }
 }

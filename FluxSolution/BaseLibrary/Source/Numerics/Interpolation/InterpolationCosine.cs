@@ -10,16 +10,21 @@ namespace Flux.Interpolation
     where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
   {
     #region Static methods
+
     public static TSelf Interpolate(TSelf y1, TSelf y2, TSelf mu)
     {
       var mu2 = (TSelf.One - TSelf.CosPi(mu)).Divide(2);
 
       return LinearInterpolation<TSelf>.Interpolate(y1, y2, mu2);
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
-    public TSelf Interpolate2Node(TSelf y1, TSelf y2, TSelf mu) => Interpolate(y1, y2, mu);
+
+    public TSelf Interpolate2Node(TSelf y1, TSelf y2, TSelf mu)
+      => Interpolate(y1, y2, mu);
+
     #endregion Implemented interfaces
   }
 }
