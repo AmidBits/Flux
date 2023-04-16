@@ -163,6 +163,7 @@
 
   namespace Numerics
   {
+#if NET7_0_OR_GREATER
     /// <summary>A 2D cartesian coordinate.</summary>
     public interface ICartesianCoordinate2<TSelf>
       : ICartesianCoordinate<TSelf>
@@ -177,5 +178,6 @@
       /// <summary>Returns the dot product of two normalized 2D vectors.</summary>
       static TSelf DotProduct(ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b) => a.X * b.X + a.Y * b.Y;
     }
+#endif
   }
 }

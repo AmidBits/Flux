@@ -1,5 +1,7 @@
 ﻿namespace Flux
 {
+#if NET7_0_OR_GREATER
+
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public record struct BitStruct
   {
@@ -115,4 +117,6 @@
 
     #endregion // Properties
   }
+
+#endif
 }

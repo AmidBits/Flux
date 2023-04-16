@@ -2,6 +2,7 @@
 {
   namespace Numerics
   {
+#if NET7_0_OR_GREATER
     /// <summary>A 4D cartesian coordinate.</summary>
     public interface ICartesianCoordinate4<TSelf>
     : ICartesianCoordinate<TSelf>
@@ -12,5 +13,6 @@
       TSelf Z { get; }
       TSelf W { get; }
     }
+#endif
   }
 }

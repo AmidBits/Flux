@@ -224,6 +224,7 @@
 
   namespace Numerics
   {
+#if NET7_0_OR_GREATER
     /// <summary>A 3D cartesian coordinate.</summary>
     public interface ICartesianCoordinate3<TSelf>
       : ICartesianCoordinate<TSelf>
@@ -247,5 +248,6 @@
       /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
       static CartesianCoordinate3<TSelf> VectorTripleProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b, ICartesianCoordinate3<TSelf> c) => CrossProduct(a, CrossProduct(b, c));
     }
+#endif
   }
 }

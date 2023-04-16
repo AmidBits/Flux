@@ -13,9 +13,9 @@ namespace Flux
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
     public static int Log2(this System.Numerics.BigInteger value) => System.Convert.ToInt32(System.Numerics.BigInteger.Log(value, 2));
 
-    public static int Log2(this int value) => unchecked((uint)value).Log2();
+    public static int Log2(this int value) => value >= 0 ? unchecked((uint)value).Log2() : throw new System.ArgumentOutOfRangeException(nameof(value));
 
-    public static int Log2(this long value) => unchecked((ulong)value).Log2();
+    public static int Log2(this long value) => value >= 0 ? unchecked((ulong)value).Log2() : throw new System.ArgumentOutOfRangeException(nameof(value));
 
     [System.CLSCompliant(false)] public static int Log2(this uint value) => System.Numerics.BitOperations.Log2(value);
 

@@ -5,6 +5,8 @@ namespace Flux
 
   public static partial class Bits
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>Get the two power-of-2 nearest to value.</summary>
     /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the two power-of-2 will be LT/GT instead of LTE/GTE.</param>
@@ -120,5 +122,7 @@ namespace Flux
 
       return false;
     }
+
+#endif
   }
 }

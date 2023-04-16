@@ -1,5 +1,7 @@
 namespace Flux
 {
+#if NET7_0_OR_GREATER
+
   public sealed class BitConverter
   {
     public static BitConverter BigEndian
@@ -276,6 +278,8 @@ namespace Flux
       => System.BitConverter.ToString(value, startIndex, length);
     #endregion Static methods
   }
+
+#endif
 }
 
 //namespace Flux

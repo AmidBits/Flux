@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class Bits
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>Get the two integer log-2 nearest to value.</summary>
     /// <param name="value">The value for which the nearest integer log-2 will be found.</param>
     /// <param name="ilog2TowardsZero">Outputs the integer log-2 that is closer to zero.</param>
@@ -84,5 +86,7 @@ namespace Flux
 
       return false;
     }
+
+#endif
   }
 }
