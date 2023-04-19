@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux.Units
 {
   /// <summary>Magnetic flux density unit of tesla.</summary>
@@ -60,3 +61,4 @@ namespace Flux.Units
     public override string ToString() => ToQuantityString();
   }
 }
+#endif

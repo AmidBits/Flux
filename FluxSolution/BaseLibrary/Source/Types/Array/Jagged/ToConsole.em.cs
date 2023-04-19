@@ -12,7 +12,7 @@ namespace Flux
 
       for (var i0 = source.Length - 1; i0 >= 0; i0--)
         for (var i1 = source[i0].Length - 1; i1 >= 0; i1--)
-          maxWidths[i1] = int.Max(maxWidths[i1], (source[i0][i1]?.ToString() ?? string.Empty).Length);
+          maxWidths[i1] = System.Math.Max(maxWidths[i1], (source[i0][i1]?.ToString() ?? string.Empty).Length);
 
       var maxWidth = maxWidths.Max();
 

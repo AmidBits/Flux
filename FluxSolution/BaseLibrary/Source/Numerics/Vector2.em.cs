@@ -92,9 +92,11 @@ namespace Flux
     //public static Geometry.Ellipse ToEllipse(this System.Numerics.Vector2 vector2)
     //  => new Geometry.Ellipse(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
 
+#if NET7_0_OR_GREATER
     public static Numerics.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TResult>(this System.Numerics.Vector2 source)
       where TResult : System.Numerics.IFloatingPoint<TResult>
       => new(TResult.CreateChecked(source.X), TResult.CreateChecked(source.Y));
+#endif
 
     #endregion // 2D vector (non-collection) computations
 
@@ -186,7 +188,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new Flux.ApproximateEquality.ByRelativeTolerance<double>(1E-15);
+      //mode ??= new Flux.ApproximateEquality.ByRelativeTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).Length()).GetEnumerator();
 

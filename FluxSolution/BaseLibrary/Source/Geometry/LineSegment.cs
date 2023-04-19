@@ -1,3 +1,4 @@
+//#if NET7_0_OR_GREATER
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
@@ -28,9 +29,9 @@ namespace Flux.Geometry
     public static (double a, double b, double c) GetLineEquationCoefficients(double aX, double aY, double bX, double bY)
       => (aY - bY, bX - aX, aX * bY - bX * aY);
 
-    /// <summary>Returns an intermediary point between the two specified points. 0 equals a, 0.5 equals the midpoint and 1 equals b.</summary>>
-    public static Numerics.CartesianCoordinate2<double> IntermediaryPoint(Numerics.CartesianCoordinate2<double> a, Numerics.CartesianCoordinate2<double> b, double scalar = 0.5)
-      => (a + b) * scalar;
+    ///// <summary>Returns an intermediary point between the two specified points. 0 equals a, 0.5 equals the midpoint and 1 equals b.</summary>>
+    //public static Numerics.CartesianCoordinate2<double> IntermediaryPoint(Numerics.CartesianCoordinate2<double> a, Numerics.CartesianCoordinate2<double> b, double scalar = 0.5)
+    //  => (a + b) * scalar;
 
     /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
     public static LineTestResult IntersectionTest(double aX1, double aY1, double aX2, double aY2, double bX1, double bY1, double bX2, double bY2)
@@ -100,3 +101,4 @@ namespace Flux.Geometry
     // https://keisan.casio.com/exec/system/1223508685
   }
 }
+//#endif

@@ -4,34 +4,24 @@
   {
     /// <summary>Converts the geographic coordinates to spherical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static Numerics.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this Numerics.IGeographicCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.SphericalCoordinate ToSphericalCoordinate(this Numerics.IGeographicCoordinate source)
       => new(
         source.Altitude,
-        TSelf.Pi - (TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(source.Latitude))) + TSelf.Pi.Divide(2)),
-        TSelf.CreateChecked(Units.Angle.ConvertDegreeToRadian(double.CreateChecked(source.Longitude))) + TSelf.Pi
-      );
-
-    public static (Units.Length altitude, Units.Latitude latitude, Units.Longitude longitude) ToQuantities<TSelf>(this Numerics.IGeographicCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => (
-        new Units.Length(double.CreateChecked(source.Altitude)),
-        new Units.Latitude(double.CreateChecked(source.Latitude)),
-        new Units.Longitude(double.CreateChecked(source.Longitude))
+        System.Math.PI - (Units.Angle.ConvertDegreeToRadian(source.Latitude) + System.Math.PI / 2),
+        Units.Angle.ConvertDegreeToRadian(source.Longitude) + System.Math.PI
       );
   }
 
   namespace Numerics
   {
-    public interface IGeographicCoordinate<TSelf>
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public interface IGeographicCoordinate
     {
       /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-      TSelf Altitude { get; init; }
+      double Altitude { get; init; }
       /// <summary>The latitude component of the geographic position in degrees. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-      TSelf Latitude { get; init; }
+      double Latitude { get; init; }
       /// <summary>The longitude component of the geographic position in degrees. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-      TSelf Longitude { get; init; }
+      double Longitude { get; init; }
     }
   }
 }

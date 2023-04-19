@@ -150,7 +150,7 @@
       if (data is null) throw new System.ArgumentNullException(nameof(data));
 
       var n = data.Length;
-      var m = int.Log2(n);
+      var m = System.Math.Log2(n);
 
       ReorderData(data); // reorder data first
 
@@ -206,7 +206,7 @@
       var k = data.GetLength(0);
       var n = data.GetLength(1);
 
-      if ((!int.IsPow2(k)) || (!int.IsPow2(n)) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
+      if ((!k.IsPow2()) || (!n.IsPow2()) || (k < minLength) || (k > maxLength) || (n < minLength) || (n > maxLength))
       {
         throw new System.ArgumentException("Incorrect data length.");
       }
@@ -322,12 +322,12 @@
       var len = data.Length;
 
       // check data length
-      if ((len < minLength) || (len > maxLength) || (!int.IsPow2(len)))
+      if ((len < minLength) || (len > maxLength) || (!len.IsPow2()))
       {
         throw new System.ArgumentException("Incorrect data length.");
       }
 
-      var rBits = GetReversedBits(int.Log2(len));
+      var rBits = GetReversedBits(len.ILog2());
 
       for (var i = 0; i < len; i++)
       {

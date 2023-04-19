@@ -11,7 +11,7 @@ namespace Flux
     public static double GetLevenshteinDistanceDerivedSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => 1d - GetLevenshteinDistanceDerivedSmd(source, target, equalityComparer);
     public static double GetLevenshteinDistanceDerivedSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)GetLevenshteinDistanceMetric(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
+      => (double)GetLevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public static int[,] GetLevenshteinDistanceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
@@ -27,9 +27,9 @@ namespace Flux
 
       for (var si = 1; si <= source.Length; si++)
         for (var ti = 1; ti <= target.Length; ti++)
-          ldg[si, ti] = int.Min(
+          ldg[si, ti] = System.Math.Min(
             ldg[si - 1, ti] + 1, // Deletion.
-            int.Min(
+            System.Math.Min(
               ldg[si, ti - 1] + 1, // Insertion.
               equalityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1 // Substitution.
             )
@@ -85,9 +85,9 @@ namespace Flux
 
         for (var ti = 0; ti < target.Length; ti++)
         {
-          v0[ti + 1] = int.Min(
+          v0[ti + 1] = System.Math.Min(
             v1[ti + 1] + 1, // Deletion.
-            int.Min(
+            System.Math.Min(
               v0[ti] + 1, // Insertion.
               equalityComparer.Equals(source[si], target[ti]) ? v1[ti] : v1[ti] + 1 // Substitution.
             )
@@ -167,9 +167,9 @@ namespace Flux
 
       for (var si = 1; si <= source.Length; si++)
         for (var ti = 1; ti <= target.Length; ti++)
-          ldg[si, ti] = double.Min(
+          ldg[si, ti] = System.Math.Min(
             ldg[si - 1, ti] + costOfDeletion,
-            double.Min(
+            System.Math.Min(
               ldg[si, ti - 1] + costOfInsertion,
               equalityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution
             )
@@ -201,9 +201,9 @@ namespace Flux
 
         for (var j = 0; j < target.Length; j++)
         {
-          v0[j + 1] = double.Min(
+          v0[j + 1] = System.Math.Min(
             v1[j + 1] + costOfDeletion, // Deletion.
-            double.Min(
+            System.Math.Min(
               v0[j] + costOfInsertion, // Insertion.
               equalityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + costOfSubstitution // Substitution.
             )

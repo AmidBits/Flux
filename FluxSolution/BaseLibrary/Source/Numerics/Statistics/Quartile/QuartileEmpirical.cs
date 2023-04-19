@@ -9,23 +9,20 @@ namespace Flux.Numerics
   public record class QuartileEmpirical
     : IQuartileComputable
   {
-    public (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public (double q1, double q2, double q3) ComputeQuartiles(System.Collections.Generic.IEnumerable<double> sample)
       => Compute(sample);
 
-    public static (TSelf q1, TSelf q2, TSelf q3) Compute<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static (double q1, double q2, double q3) Compute(System.Collections.Generic.IEnumerable<double> sample)
       => (
-        ComputeAt(sample, TSelf.CreateChecked(0.25)),
-        ComputeAt(sample, TSelf.CreateChecked(0.50)),
-        ComputeAt(sample, TSelf.CreateChecked(0.75))
+        ComputeAt(sample, 0.25),
+        ComputeAt(sample, 0.50),
+        ComputeAt(sample, 0.75)
       );
 
-    public static TSelf ComputeAt<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample, TSelf p)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static double ComputeAt(System.Collections.Generic.IEnumerable<double> sample, double p)
     {
-      var a = p * TSelf.CreateChecked(sample.Count() + 1);
-      var k = TSelf.Truncate(a);
+      var a = p * (sample.Count() + 1);
+      var k = System.Math.Truncate(a);
 
       a -= k;
 

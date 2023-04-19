@@ -5,8 +5,12 @@ namespace Flux.Globalization.EnUs
   public partial struct SocialSecurityNumber
     : System.IEquatable<SocialSecurityNumber>
   {
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<!\d)(?<AAA>(?!(000|666|9\d\d))\d{3}).?(?<GG>(?!00)\d{2}).?(?<SSSS>(?!0000)\d{4})(?!\d)", System.Text.RegularExpressions.RegexOptions.Compiled)]
     private static partial System.Text.RegularExpressions.Regex MatchingRegex();
+#else
+    private static System.Text.RegularExpressions.Regex MatchingRegex() => new(@"(?<!\d)(?<AAA>(?!(000|666|9\d\d))\d{3}).?(?<GG>(?!00)\d{2}).?(?<SSSS>(?!0000)\d{4})(?!\d)");
+#endif
 
     public string AAA { get; private set; }
     public string GG { get; private set; }

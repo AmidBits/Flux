@@ -3,7 +3,7 @@ namespace Flux.Model.Maze
   public sealed class MazeGrid
     : Grid<Cell>, System.ICloneable
   {
-    public MazeGrid(Numerics.CartesianCoordinate2<int> size)
+    public MazeGrid(Numerics.ICartesianCoordinate2<int> size)
       : base(size.Y, size.X)
     {
       for (var h = size.Y - 1; h >= 0; h--)

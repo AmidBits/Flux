@@ -13,7 +13,7 @@ namespace Flux
 
     private SpanBuilder(int capacity)
     {
-      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(capacity.Pow2AwayFromZero(false, out int _)) : System.Array.Empty<T>();
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent((int)capacity.Pow2Afz(false)) : System.Array.Empty<T>();
 
       m_head = m_array.Length / 2;
       m_tail = m_array.Length / 2;
@@ -145,7 +145,7 @@ namespace Flux
     /// <summary>Grows a uniform (i.e. both left and right satisfies) buffer capacity to at least that specified.</summary>
     private void EnsureUniformCapacity(int sideCapacity)
     {
-      var totalCapacity = int.Max(DefaultBufferSize, sideCapacity + Length + sideCapacity);
+      var totalCapacity = System.Math.Max(DefaultBufferSize, sideCapacity + Length + sideCapacity);
 
       if (totalCapacity < Capacity) // We got overall capacity, just need to make sure we have it on both sides.
       {
@@ -162,7 +162,7 @@ namespace Flux
       }
       else // Not enough uniform capacity available.
       {
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.Pow2Afz(true));
 
         var head = (array.Length - Length) / 2;
         var tail = head + Length;
@@ -183,11 +183,11 @@ namespace Flux
     {
       if (CapacityAppend < appendCapacity) // Not enough append capacity.
       {
-        var totalCapacity = int.Max(DefaultBufferSize, CapacityPrepend + Length + appendCapacity);
+        var totalCapacity = System.Math.Max(DefaultBufferSize, CapacityPrepend + Length + appendCapacity);
 
         if (Capacity <= totalCapacity) // Not enough total capacity.
         {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.Pow2Afz(true));
 
           var head = (array.Length - Length - appendCapacity) / 2;
           var tail = head + Length;
@@ -219,11 +219,11 @@ namespace Flux
     {
       if (CapacityPrepend < prependCapacity) // Not enough prepend capacity.
       {
-        var totalCapacity = int.Max(DefaultBufferSize, prependCapacity + Length + CapacityAppend);
+        var totalCapacity = System.Math.Max(DefaultBufferSize, prependCapacity + Length + CapacityAppend);
 
         if (Capacity < totalCapacity) // Not enough total capacity, allocate new array.
         {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent(totalCapacity.Pow2AwayFromZero(true, out int _));
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.Pow2Afz(true));
 
           var head = (array.Length - Length + prependCapacity) / 2;
           var tail = head + Length;

@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux.Units
 {
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
@@ -59,3 +60,4 @@ namespace Flux.Units
     public override string ToString() => ToQuantityString();
   }
 }
+#endif

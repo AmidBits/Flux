@@ -1,13 +1,14 @@
-﻿namespace Flux.Numerics.MapProjections
+﻿#if NET7_0_OR_GREATER
+namespace Flux.Numerics.MapProjections
 {
   // https://en.wikipedia.org/wiki/Equal_Earth_projection
   public readonly record struct EqualEarthProjection
-    : IMapForwardProjectable<double>, IMapReverseProjectable<double>
+    : IMapForwardProjectable, IMapReverseProjectable
   {
     public static readonly EqualEarthProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public Numerics.CartesianCoordinate3<double> ProjectForward(Numerics.IGeographicCoordinate<double> location)
+    public Numerics.CartesianCoordinate3<double> ProjectForward(Numerics.IGeographicCoordinate location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -29,7 +30,7 @@
 
       return new(x, y, location.Altitude);
     }
-    public Numerics.IGeographicCoordinate<double> ProjectReverse(Numerics.ICartesianCoordinate3<double> location)
+    public Numerics.IGeographicCoordinate ProjectReverse(Numerics.ICartesianCoordinate3<double> location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -69,3 +70,4 @@
     //#pragma warning restore CA1822 // Mark members as static
   }
 }
+#endif

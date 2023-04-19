@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux.Units
 {
   public enum RatioFormat
@@ -88,3 +89,4 @@ namespace Flux.Units
     public override string ToString() => ToQuantityString();
   }
 }
+#endif

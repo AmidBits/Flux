@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class GenericMath
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>Converts from reflected binary gray code number to a binary number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Gray_code"/>
     public static TSelf BinaryToGray<TSelf>(this TSelf value)
@@ -51,6 +53,8 @@ namespace Flux
         shift = shift + radix - gray[index]; // Subtract from base so shift is positive
       }
     }
+
+#endif
 
     ///// <summary>Adaption from wikipedia.</summary>
     //[System.CLSCompliant(false)]

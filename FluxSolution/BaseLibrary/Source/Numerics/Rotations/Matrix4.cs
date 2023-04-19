@@ -1,55 +1,55 @@
+#if NET7_0_OR_GREATER
 namespace Flux.Numerics
 {
   /// <summary>A matrix of 16 elements (4 rows by 4 columns).</summary>
   /// <remarks>All angles in radians.</remarks>
   /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Matrix4x4.cs"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly record struct Matrix4<TSelf>
-    : IMatrix4<TSelf>
-    where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+  public readonly record struct Matrix4
+    : IMatrix4
   {
     /// <summary>Returns an empty matrix.</summary>
-    public static readonly Matrix4<TSelf> Empty;
+    public static readonly Matrix4 Empty;
 
     /// <summary>Returns the multiplicative identity matrix.</summary>
-    public static Matrix4<TSelf> Identity
+    public static Matrix4 Identity
       => new(
-        TSelf.One, TSelf.Zero, TSelf.Zero, TSelf.Zero,
-        TSelf.Zero, TSelf.One, TSelf.Zero, TSelf.Zero,
-        TSelf.Zero, TSelf.Zero, TSelf.One, TSelf.Zero,
-        TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
       );
 
-    public static Matrix4<TSelf> ChangeOfBasisMatrix
+    public static Matrix4 ChangeOfBasisMatrix
       => new(
-        TSelf.One, TSelf.Zero, TSelf.Zero, TSelf.Zero,
-        TSelf.Zero, TSelf.One, TSelf.Zero, TSelf.Zero,
-        TSelf.Zero, TSelf.Zero, TSelf.One, TSelf.Zero,
-        TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
       );
 
-    private readonly TSelf m_11; // Row 1, 4 columns.
-    private readonly TSelf m_12;
-    private readonly TSelf m_13;
-    private readonly TSelf m_14;
+    private readonly double m_11; // Row 1, 4 columns.
+    private readonly double m_12;
+    private readonly double m_13;
+    private readonly double m_14;
 
-    private readonly TSelf m_21; // Row 2, 4 columns.
-    private readonly TSelf m_22;
-    private readonly TSelf m_23;
-    private readonly TSelf m_24;
+    private readonly double m_21; // Row 2, 4 columns.
+    private readonly double m_22;
+    private readonly double m_23;
+    private readonly double m_24;
 
-    private readonly TSelf m_31; // Row 3, 4 columns.
-    private readonly TSelf m_32;
-    private readonly TSelf m_33;
-    private readonly TSelf m_34;
+    private readonly double m_31; // Row 3, 4 columns.
+    private readonly double m_32;
+    private readonly double m_33;
+    private readonly double m_34;
 
-    private readonly TSelf m_41; // Row 4, 4 columns.
-    private readonly TSelf m_42;
-    private readonly TSelf m_43;
-    private readonly TSelf m_44;
+    private readonly double m_41; // Row 4, 4 columns.
+    private readonly double m_42;
+    private readonly double m_43;
+    private readonly double m_44;
 
     /// <summary>Constructs a Matrix4x4 from the given components.</summary>
-    public Matrix4(TSelf m11, TSelf m12, TSelf m13, TSelf m14, TSelf m21, TSelf m22, TSelf m23, TSelf m24, TSelf m31, TSelf m32, TSelf m33, TSelf m34, TSelf m41, TSelf m42, TSelf m43, TSelf m44)
+    public Matrix4(double m11, double m12, double m13, double m14, double m21, double m22, double m23, double m24, double m31, double m32, double m33, double m34, double m41, double m42, double m43, double m44)
     {
       m_11 = m11;
       m_12 = m12;
@@ -73,37 +73,37 @@ namespace Flux.Numerics
     }
 
     /// <summary>Value at row 1, column 1 of the matrix.</summary>
-    public TSelf M11 => m_11;
+    public double M11 => m_11;
     /// <summary>Value at row 1, column 2 of the matrix.</summary>
-    public TSelf M12 => m_12;
+    public double M12 => m_12;
     /// <summary>Value at row 1, column 3 of the matrix.</summary>
-    public TSelf M13 => m_13;
+    public double M13 => m_13;
     /// <summary>Value at row 1, column 4 of the matrix.</summary>
-    public TSelf M14 => m_14;
+    public double M14 => m_14;
     /// <summary>Value at row 2, column 1 of the matrix.</summary>
-    public TSelf M21 => m_21;
+    public double M21 => m_21;
     /// <summary>Value at row 2, column 2 of the matrix.</summary>
-    public TSelf M22 => m_22;
+    public double M22 => m_22;
     /// <summary>Value at row 2, column 3 of the matrix.</summary>
-    public TSelf M23 => m_23;
+    public double M23 => m_23;
     /// <summary>Value at row 2, column 4 of the matrix.</summary>
-    public TSelf M24 => m_24;
+    public double M24 => m_24;
     /// <summary>Value at row 3, column 1 of the matrix.</summary>
-    public TSelf M31 => m_31;
+    public double M31 => m_31;
     /// <summary>Value at row 3, column 2 of the matrix.</summary>
-    public TSelf M32 => m_32;
+    public double M32 => m_32;
     /// <summary>Value at row 3, column 3 of the matrix.</summary>
-    public TSelf M33 => m_33;
+    public double M33 => m_33;
     /// <summary>Value at row 3, column 4 of the matrix.</summary>
-    public TSelf M34 => m_34;
+    public double M34 => m_34;
     /// <summary>Value at row 4, column 1 of the matrix.</summary>
-    public TSelf M41 => m_41;
+    public double M41 => m_41;
     /// <summary>Value at row 4, column 2 of the matrix.</summary>
-    public TSelf M42 => m_42;
+    public double M42 => m_42;
     /// <summary>Value at row 4, column 3 of the matrix.</summary>
-    public TSelf M43 => m_43;
+    public double M43 => m_43;
     /// <summary>Value at row 4, column 4 of the matrix.</summary>
-    public TSelf M44 => m_44;
+    public double M44 => m_44;
 
     /// <summary>Returns whether the matrix is empty.</summary>
     public bool IsEmpty => Equals(Empty);
@@ -118,7 +118,7 @@ namespace Flux.Numerics
     ///// <param name="cameraUpVector">The up vector of the camera.</param>
     ///// <param name="cameraForwardVector">The forward vector of the camera.</param>
     ///// <returns>The created billboard matrix</returns>
-    //public static Matrix4<TSelf> CreateBillboard(CoordinateSystems.CartesianCoordinate4 objectPosition, CoordinateSystems.CartesianCoordinate4 cameraPosition, CoordinateSystems.CartesianCoordinate4 cameraUpVector, CoordinateSystems.CartesianCoordinate4 cameraForwardVector)
+    //public static Matrix4<double> CreateBillboard(CoordinateSystems.CartesianCoordinate4 objectPosition, CoordinateSystems.CartesianCoordinate4 cameraPosition, CoordinateSystems.CartesianCoordinate4 cameraUpVector, CoordinateSystems.CartesianCoordinate4 cameraForwardVector)
     //{
     //  const double epsilon = 1e-4f;
 
@@ -140,7 +140,7 @@ namespace Flux.Numerics
     ///// <param name="cameraForwardVector">Forward vector of the camera.</param>
     ///// <param name="objectForwardVector">Forward vector of the object.</param>
     ///// <returns>The created billboard matrix.</returns>
-    //public static Matrix4<TSelf> CreateConstrainedBillboard(CoordinateSystems.CartesianCoordinate4 objectPosition, CoordinateSystems.CartesianCoordinate4 cameraPosition, CoordinateSystems.CartesianCoordinate4 rotateAxis, CoordinateSystems.CartesianCoordinate4 cameraForwardVector, CoordinateSystems.CartesianCoordinate4 objectForwardVector)
+    //public static Matrix4<double> CreateConstrainedBillboard(CoordinateSystems.CartesianCoordinate4 objectPosition, CoordinateSystems.CartesianCoordinate4 cameraPosition, CoordinateSystems.CartesianCoordinate4 rotateAxis, CoordinateSystems.CartesianCoordinate4 cameraForwardVector, CoordinateSystems.CartesianCoordinate4 objectForwardVector)
     //{
     //  const double epsilon = 1e-4f;
     //  const double minAngle = 1 - (0.1f * GenericMath.PiOver180); // 0.1 degrees
@@ -179,10 +179,10 @@ namespace Flux.Numerics
     //  }
 
     //  return new(
-    //    TSelf.CreateChecked(xaxis.X), TSelf.CreateChecked(xaxis.Y), TSelf.CreateChecked(xaxis.Z), TSelf.Zero,
-    //    TSelf.CreateChecked(yaxis.X), TSelf.CreateChecked(yaxis.Y), TSelf.CreateChecked(yaxis.Z), TSelf.Zero,
-    //    TSelf.CreateChecked(zaxis.X), TSelf.CreateChecked(zaxis.Y), TSelf.CreateChecked(zaxis.Z), TSelf.Zero,
-    //    TSelf.CreateChecked(objectPosition.X), TSelf.CreateChecked(objectPosition.Y), TSelf.CreateChecked(objectPosition.Z), TSelf.One
+    //    double.CreateChecked(xaxis.X), double.CreateChecked(xaxis.Y), double.CreateChecked(xaxis.Z), 0,
+    //    double.CreateChecked(yaxis.X), double.CreateChecked(yaxis.Y), double.CreateChecked(yaxis.Z), 0,
+    //    double.CreateChecked(zaxis.X), double.CreateChecked(zaxis.Y), double.CreateChecked(zaxis.Z), 0,
+    //    double.CreateChecked(objectPosition.X), double.CreateChecked(objectPosition.Y), double.CreateChecked(objectPosition.Z), 1
     //  );
     //}
     ///// <summary>
@@ -191,7 +191,7 @@ namespace Flux.Numerics
     ///// <param name="axis">The axis to rotate around.</param>
     ///// <param name="angle">The angle to rotate around the given axis, in radians.</param>
     ///// <returns>The rotation matrix.</returns>
-    //public static Matrix4<TSelf> CreateFromAxisAngle(CoordinateSystems.CartesianCoordinate4 axis, TSelf angle)
+    //public static Matrix4<double> CreateFromAxisAngle(CoordinateSystems.CartesianCoordinate4 axis, double angle)
     //{
     //  // a: angle
     //  // x, y, z: unit vector for axis.
@@ -218,16 +218,16 @@ namespace Flux.Numerics
     //  // M = [ xy-cosa*yx+sina*z    yy+cosa(1-yy)  yz-cosa*yz-sina*x ]
     //  //     [ zx-cosa*zx-sina*y zy-cosa*zy+sina*x   zz+cosa*(1-zz)  ]
     //  //
-    //  TSelf x = TSelf.CreateChecked(axis.X), y = TSelf.CreateChecked(axis.Y), z = TSelf.CreateChecked(axis.Z);
-    //  TSelf sa = TSelf.Sin(angle), ca = TSelf.Cos(angle);
-    //  TSelf xx = x * x, yy = y * y, zz = z * z;
-    //  TSelf xy = x * y, xz = x * z, yz = y * z;
+    //  double x = double.CreateChecked(axis.X), y = double.CreateChecked(axis.Y), z = double.CreateChecked(axis.Z);
+    //  double sa = double.Sin(angle), ca = double.Cos(angle);
+    //  double xx = x * x, yy = y * y, zz = z * z;
+    //  double xy = x * y, xz = x * z, yz = y * z;
 
     //  return new(
-    //    xx + ca * (TSelf.One - xx), xy - ca * xy + sa * z, xz - ca * xz - sa * y, TSelf.Zero,
-    //    xy - ca * xy - sa * z, yy + ca * (TSelf.One - yy), yz - ca * yz + sa * x, TSelf.Zero,
-    //    xz - ca * xz + sa * y, yz - ca * yz - sa * x, zz + ca * (TSelf.One - zz), TSelf.Zero,
-    //    TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One
+    //    xx + ca * (1 - xx), xy - ca * xy + sa * z, xz - ca * xz - sa * y, 0,
+    //    xy - ca * xy - sa * z, yy + ca * (1 - yy), yz - ca * yz + sa * x, 0,
+    //    xz - ca * xz + sa * y, yz - ca * yz - sa * x, zz + ca * (1 - zz), 0,
+    //    0, 0, 0, 1
     //  );
     //}
     ///// <summary>
@@ -235,7 +235,7 @@ namespace Flux.Numerics
     ///// </summary>
     ///// <param name="quaternion">The source Quaternion.</param>
     ///// <returns>The rotation matrix.</returns>
-    //public static Matrix4<TSelf> CreateFromQuaternion(Quaternion<TSelf> quaternion)
+    //public static Matrix4<double> CreateFromQuaternion(Quaternion<double> quaternion)
     //{
     //  var xx = quaternion.X * quaternion.X;
     //  var yy = quaternion.Y * quaternion.Y;
@@ -249,10 +249,10 @@ namespace Flux.Numerics
     //  var wx = quaternion.X * quaternion.W;
 
     //  return new(
-    //    TSelf.One - (yy + zz).Multiply(2), (xy + wz).Multiply(2), (xz - wy).Multiply(2), TSelf.Zero,
-    //    (xy - wz).Multiply(2), TSelf.One - (zz + xx).Multiply(2), (yz + wx).Multiply(2), TSelf.Zero,
-    //    (xz + wy).Multiply(2), (yz - wx).Multiply(2), TSelf.One - (yy + xx).Multiply(2), TSelf.Zero,
-    //    TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One
+    //    1 - (yy + zz).Multiply(2), (xy + wz).Multiply(2), (xz - wy).Multiply(2), 0,
+    //    (xy - wz).Multiply(2), 1 - (zz + xx).Multiply(2), (yz + wx).Multiply(2), 0,
+    //    (xz + wy).Multiply(2), (yz - wx).Multiply(2), 1 - (yy + xx).Multiply(2), 0,
+    //    0, 0, 0, 1
     //  );
     //}
     ///// <summary>
@@ -262,8 +262,8 @@ namespace Flux.Numerics
     ///// <param name="pitch">Angle of rotation, in radians, around the X-axis.</param>
     ///// <param name="roll">Angle of rotation, in radians, around the Z-axis.</param>
     ///// <returns>The rotation matrix.</returns>
-    //public static Matrix4<TSelf> CreateFromYawPitchRoll(TSelf yaw, TSelf pitch, TSelf roll)
-    //  => Quaternion<TSelf>.CreateFromYawPitchRoll(yaw, pitch, roll).ToMatrix4();
+    //public static Matrix4<double> CreateFromYawPitchRoll(double yaw, double pitch, double roll)
+    //  => Quaternion<double>.CreateFromYawPitchRoll(yaw, pitch, roll).ToMatrix4();
     ///// <summary>
     ///// Creates a view matrix.
     ///// </summary>
@@ -271,17 +271,17 @@ namespace Flux.Numerics
     ///// <param name="cameraTarget">The target towards which the camera is pointing.</param>
     ///// <param name="cameraUpVector">The direction that is "up" from the camera's point of view.</param>
     ///// <returns>The view matrix.</returns>
-    //public static Matrix4<TSelf> CreateLookAt(CoordinateSystems.CartesianCoordinate4 cameraPosition, CoordinateSystems.CartesianCoordinate4 cameraTarget, CoordinateSystems.CartesianCoordinate4 cameraUpVector)
+    //public static Matrix4<double> CreateLookAt(CoordinateSystems.CartesianCoordinate4 cameraPosition, CoordinateSystems.CartesianCoordinate4 cameraTarget, CoordinateSystems.CartesianCoordinate4 cameraUpVector)
     //{
-    //  var zaxis = TSelf.CreateChecked(CoordinateSystems.CartesianCoordinate4.Normalize(cameraPosition - cameraTarget));
-    //  var xaxis = TSelf.CreateChecked(CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(cameraUpVector, zaxis)));
-    //  var yaxis = TSelf.CreateChecked(CoordinateSystems.CartesianCoordinate4.Cross(zaxis, xaxis));
+    //  var zaxis = double.CreateChecked(CoordinateSystems.CartesianCoordinate4.Normalize(cameraPosition - cameraTarget));
+    //  var xaxis = double.CreateChecked(CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(cameraUpVector, zaxis)));
+    //  var yaxis = double.CreateChecked(CoordinateSystems.CartesianCoordinate4.Cross(zaxis, xaxis));
 
     //  return new(
-    //    xaxis.X, yaxis.X, zaxis.X, TSelf.Zero,
-    //    xaxis.Y, yaxis.Y, zaxis.Y, TSelf.Zero,
-    //    xaxis.Z, yaxis.Z, zaxis.Z, TSelf.Zero,
-    //    TSelf.CreateChecked(-CoordinateSystems.CartesianCoordinate4.Dot(xaxis, cameraPosition)), TSelf.CreateChecked(-CoordinateSystems.CartesianCoordinate4.Dot(yaxis, cameraPosition)), TSelf.CreateChecked(-CoordinateSystems.CartesianCoordinate4.Dot(zaxis, cameraPosition)), TSelf.One
+    //    xaxis.X, yaxis.X, zaxis.X, 0,
+    //    xaxis.Y, yaxis.Y, zaxis.Y, 0,
+    //    xaxis.Z, yaxis.Z, zaxis.Z, 0,
+    //    double.CreateChecked(-CoordinateSystems.CartesianCoordinate4.Dot(xaxis, cameraPosition)), double.CreateChecked(-CoordinateSystems.CartesianCoordinate4.Dot(yaxis, cameraPosition)), double.CreateChecked(-CoordinateSystems.CartesianCoordinate4.Dot(zaxis, cameraPosition)), 1
     //  );
     //}
     /// <summary>
@@ -292,12 +292,12 @@ namespace Flux.Numerics
     /// <param name="zNearPlane">Minimum Z-value of the view volume.</param>
     /// <param name="zFarPlane">Maximum Z-value of the view volume.</param>
     /// <returns>The orthographic projection matrix.</returns>
-    public static Matrix4<TSelf> CreateOrthographic(TSelf width, TSelf height, TSelf zNearPlane, TSelf zFarPlane)
+    public static Matrix4 CreateOrthographic(double width, double height, double zNearPlane, double zFarPlane)
       => new(
-        TSelf.CreateChecked(2) / width, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero,
-        TSelf.CreateChecked(2) / height, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero,
-        TSelf.One / (zNearPlane - zFarPlane), TSelf.Zero,
-        TSelf.Zero, TSelf.Zero, zNearPlane / (zNearPlane - zFarPlane), TSelf.One
+        2 / width, 0, 0, 0, 0,
+        2 / height, 0, 0, 0, 0,
+        1 / (zNearPlane - zFarPlane), 0,
+        0, 0, zNearPlane / (zNearPlane - zFarPlane), 1
       );
     ///// <summary>
     ///// Builds a customized, orthographic projection matrix.
@@ -309,7 +309,7 @@ namespace Flux.Numerics
     ///// <param name="zNearPlane">Minimum Z-value of the view volume.</param>
     ///// <param name="zFarPlane">Maximum Z-value of the view volume.</param>
     ///// <returns>The orthographic projection matrix.</returns>
-    //public static Matrix4<TSelf> CreateOrthographicOffCenter(double left, double right, double bottom, double top, double zNearPlane, double zFarPlane)
+    //public static Matrix4<double> CreateOrthographicOffCenter(double left, double right, double bottom, double top, double zNearPlane, double zFarPlane)
     //  => new(2 / (right - left), 0, 0, 0, 0, 2 / (top - bottom), 0, 0, 0, 0, 1 / (zNearPlane - zFarPlane), 0, (left + right) / (left - right), (top + bottom) / (bottom - top), zNearPlane / (zNearPlane - zFarPlane), 1);
     ///// <summary>
     ///// Creates a perspective projection matrix based on a field of view, aspect ratio, and near and far view plane distances. 
@@ -319,7 +319,7 @@ namespace Flux.Numerics
     ///// <param name="nearPlaneDistance">Distance to the near view plane.</param>
     ///// <param name="farPlaneDistance">Distance to the far view plane.</param>
     ///// <returns>The perspective projection matrix.</returns>
-    //public static Matrix4<TSelf> CreatePerspectiveFieldOfView(double fieldOfView, double aspectRatio, double nearPlaneDistance, double farPlaneDistance)
+    //public static Matrix4<double> CreatePerspectiveFieldOfView(double fieldOfView, double aspectRatio, double nearPlaneDistance, double farPlaneDistance)
     //{
     //  if (fieldOfView <= 0 || fieldOfView >= System.Math.PI) throw new System.ArgumentOutOfRangeException(nameof(fieldOfView));
     //  if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
@@ -339,7 +339,7 @@ namespace Flux.Numerics
     ///// <param name="nearPlaneDistance">Distance to the near view plane.</param>
     ///// <param name="farPlaneDistance">Distance to the far view plane.</param>
     ///// <returns>The perspective projection matrix.</returns>
-    //public static Matrix4<TSelf> CreatePerspective(double width, double height, double nearPlaneDistance, double farPlaneDistance)
+    //public static Matrix4<double> CreatePerspective(double width, double height, double nearPlaneDistance, double farPlaneDistance)
     //{
     //  if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
     //  if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(farPlaneDistance));
@@ -357,7 +357,7 @@ namespace Flux.Numerics
     ///// <param name="nearPlaneDistance">Distance to the near view plane.</param>
     ///// <param name="farPlaneDistance">Distance to of the far view plane.</param>
     ///// <returns>The perspective projection matrix.</returns>
-    //public static Matrix4<TSelf> CreatePerspectiveOffCenter(double left, double right, double bottom, double top, double nearPlaneDistance, double farPlaneDistance)
+    //public static Matrix4<double> CreatePerspectiveOffCenter(double left, double right, double bottom, double top, double nearPlaneDistance, double farPlaneDistance)
     //{
     //  if (nearPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(nearPlaneDistance));
     //  if (farPlaneDistance <= 0) throw new System.ArgumentOutOfRangeException(nameof(farPlaneDistance));
@@ -370,7 +370,7 @@ namespace Flux.Numerics
     /// </summary>
     /// <param name="value">The Plane about which to create a reflection.</param>
     /// <returns>A new matrix expressing the reflection.</returns>
-    public static Matrix4<TSelf> CreateReflection(Plane<TSelf> value)
+    public static Matrix4 CreateReflection(Plane value)
     {
       value = value.Normalize();
 
@@ -378,17 +378,17 @@ namespace Flux.Numerics
       var b = value.Y;
       var c = value.Z;
 
-      var fa = a.Multiply(-2);
-      var fb = b.Multiply(-2);
-      var fc = c.Multiply(-2);
+      var fa = a * -2;
+      var fb = b * -2;
+      var fc = c * -2;
 
       var vd = value.Distance;
 
       return new(
-        fa * a + TSelf.One, fb * a, fc * a, TSelf.Zero,
-        fa * b, fb * b + TSelf.One, fc * b, TSelf.Zero,
-        fa * c, fb * c, fc * c + TSelf.One, TSelf.Zero,
-        fa * vd, fb * vd, fc * vd, TSelf.One
+        fa * a + 1, fb * a, fc * a, 0,
+        fa * b, fb * b + 1, fc * b, 0,
+        fa * c, fb * c, fc * c + 1, 0,
+        fa * vd, fb * vd, fc * vd, 1
       );
     }
     /// <summary>
@@ -396,16 +396,16 @@ namespace Flux.Numerics
     /// </summary>
     /// <param name="radians">The amount, in radians, by which to rotate around the X-axis.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4<TSelf> CreateRotationX(TSelf radians)
+    public static Matrix4 CreateRotationX(double radians)
     {
       // [  1  0  0  0 ]
       // [  0  c  s  0 ]
       // [  0 -s  c  0 ]
       // [  0  0  0  1 ]
 
-      var (s, c) = TSelf.SinCos(radians);
+      var (s, c) = double.SinCos(radians);
 
-      return new(TSelf.One, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, c, s, TSelf.Zero, TSelf.Zero, -s, c, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
+      return new(1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1);
     }
     ///// <summary>
     ///// Creates a matrix for rotating points around the X-axis, from a center point.
@@ -413,36 +413,36 @@ namespace Flux.Numerics
     ///// <param name="radians">The amount, in radians, by which to rotate around the X-axis.</param>
     ///// <param name="centerPoint">The center point.</param>
     ///// <returns>The rotation matrix.</returns>
-    //public static Matrix4<TSelf> CreateRotationX(TSelf radians, CoordinateSystems.CartesianCoordinate4 centerPoint)
+    //public static Matrix4<double> CreateRotationX(double radians, CoordinateSystems.CartesianCoordinate4 centerPoint)
     //{
     //  // [  1  0  0  0 ]
     //  // [  0  c  s  0 ]
     //  // [  0 -s  c  0 ]
     //  // [  0  y  z  1 ]
 
-    //  var c = TSelf.Cos(radians);
-    //  var s = TSelf.Sin(radians);
+    //  var c = double.Cos(radians);
+    //  var s = double.Sin(radians);
 
-    //  var y = centerPoint.Y * (TSelf.One - c) + centerPoint.Z * s;
-    //  var z = centerPoint.Z * (TSelf.One - c) - centerPoint.Y * s;
+    //  var y = centerPoint.Y * (1 - c) + centerPoint.Z * s;
+    //  var z = centerPoint.Z * (1 - c) - centerPoint.Y * s;
 
-    //  return new(TSelf.One, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, c, s, TSelf.Zero, TSelf.Zero, -s, c, TSelf.Zero, TSelf.Zero, y, z, TSelf.One);
+    //  return new(1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, y, z, 1);
     //}
     /// <summary>
     /// Creates a matrix for rotating points around the Y-axis.
     /// </summary>
     /// <param name="radians">The amount, in radians, by which to rotate around the Y-axis.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4<TSelf> CreateRotationY(TSelf radians)
+    public static Matrix4 CreateRotationY(double radians)
     {
       // [  c  0 -s  0 ]
       // [  0  1  0  0 ]
       // [  s  0  c  0 ]
       // [  0  0  0  1 ]
 
-      var (s, c) = TSelf.SinCos(radians);
+      var (s, c) = double.SinCos(radians);
 
-      return new(c, TSelf.Zero, -s, TSelf.Zero, TSelf.Zero, TSelf.One, TSelf.Zero, TSelf.Zero, s, TSelf.Zero, c, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
+      return new(c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1);
     }
     ///// <summary>
     ///// Creates a matrix for rotating points around the Y-axis, from a center point.
@@ -450,36 +450,36 @@ namespace Flux.Numerics
     ///// <param name="radians">The amount, in radians, by which to rotate around the Y-axis.</param>
     ///// <param name="centerPoint">The center point.</param>
     ///// <returns>The rotation matrix.</returns>
-    //public static Matrix4<TSelf> CreateRotationY(TSelf radians, CoordinateSystems.CartesianCoordinate4 centerPoint)
+    //public static Matrix4<double> CreateRotationY(double radians, CoordinateSystems.CartesianCoordinate4 centerPoint)
     //{
     //  // [  c  0 -s  0 ]
     //  // [  0  1  0  0 ]
     //  // [  s  0  c  0 ]
     //  // [  x  0  z  1 ]
 
-    //  var c = TSelf.Cos(radians);
-    //  var s = TSelf.Sin(radians);
+    //  var c = double.Cos(radians);
+    //  var s = double.Sin(radians);
 
-    //  var x = centerPoint.X * (TSelf.One - c) - centerPoint.Z * s;
-    //  var z = centerPoint.Z * (TSelf.One - c) + centerPoint.X * s;
+    //  var x = centerPoint.X * (1 - c) - centerPoint.Z * s;
+    //  var z = centerPoint.Z * (1 - c) + centerPoint.X * s;
 
-    //  return new(c, TSelf.Zero, -s, TSelf.Zero, TSelf.Zero, TSelf.One, TSelf.Zero, TSelf.Zero, s, TSelf.Zero, c, TSelf.Zero, x, TSelf.Zero, z, TSelf.One);
+    //  return new(c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, x, 0, z, 1);
     //}
     /// <summary>
     /// Creates a matrix for rotating points around the Z-axis.
     /// </summary>
     /// <param name="radians">The amount, in radians, by which to rotate around the Z-axis.</param>
     /// <returns>The rotation matrix.</returns>
-    public static Matrix4<TSelf> CreateRotationZ(TSelf radians)
+    public static Matrix4 CreateRotationZ(double radians)
     {
       // [  c  s  0  0 ]
       // [ -s  c  0  0 ]
       // [  0  0  1  0 ]
       // [  0  0  0  1 ]
 
-      var (s, c) = TSelf.SinCos(radians);
+      var (s, c) = double.SinCos(radians);
 
-      return new(c, s, TSelf.Zero, TSelf.Zero, -s, c, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
+      return new(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     }
     ///// <summary>
     ///// Creates a matrix for rotating points around the Z-axis, from a center point.
@@ -487,20 +487,20 @@ namespace Flux.Numerics
     ///// <param name="radians">The amount, in radians, by which to rotate around the Z-axis.</param>
     ///// <param name="centerPoint">The center point.</param>
     ///// <returns>The rotation matrix.</returns>
-    //public static Matrix4<TSelf> CreateRotationZ(TSelf radians, CoordinateSystems.CartesianCoordinate4 centerPoint)
+    //public static Matrix4<double> CreateRotationZ(double radians, CoordinateSystems.CartesianCoordinate4 centerPoint)
     //{
     //  // [  c  s  0  0 ]
     //  // [ -s  c  0  0 ]
     //  // [  0  0  1  0 ]
     //  // [  x  y  0  1 ]
 
-    //  var c = TSelf.Cos(radians);
-    //  var s = TSelf.Sin(radians);
+    //  var c = double.Cos(radians);
+    //  var s = double.Sin(radians);
 
-    //  var x = centerPoint.X * (TSelf.One - c) + centerPoint.Y * s;
-    //  var y = centerPoint.Y * (TSelf.One - c) - centerPoint.X * s;
+    //  var x = centerPoint.X * (1 - c) + centerPoint.Y * s;
+    //  var y = centerPoint.Y * (1 - c) - centerPoint.X * s;
 
-    //  return new(c, s, TSelf.Zero, TSelf.Zero, -s, c, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One, TSelf.Zero, x, y, TSelf.Zero, TSelf.One);
+    //  return new(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, x, y, 0, 1);
     //}
     /// <summary>
     /// Creates a scaling matrix.
@@ -509,8 +509,8 @@ namespace Flux.Numerics
     /// <param name="yScale">Value to scale by on the Y-axis.</param>
     /// <param name="zScale">Value to scale by on the Z-axis.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4<TSelf> CreateScale(TSelf xScale, TSelf yScale, TSelf zScale)
-      => new(xScale, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, yScale, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, zScale, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
+    public static Matrix4 CreateScale(double xScale, double yScale, double zScale)
+      => new(xScale, 0, 0, 0, 0, yScale, 0, 0, 0, 0, zScale, 0, 0, 0, 0, 1);
     ///// <summary>
     ///// Creates a scaling matrix with a center point.
     ///// </summary>
@@ -519,18 +519,18 @@ namespace Flux.Numerics
     ///// <param name="zScale">Value to scale by on the Z-axis.</param>
     ///// <param name="centerPoint">The center point.</param>
     ///// <returns>The scaling matrix.</returns>
-    //public static Matrix4<TSelf> CreateScale(double xScale, double yScale, double zScale, CoordinateSystems.CartesianCoordinate4 centerPoint)
+    //public static Matrix4<double> CreateScale(double xScale, double yScale, double zScale, CoordinateSystems.CartesianCoordinate4 centerPoint)
     //{
-    //  var tx = centerPoint.X * (TSelf.One - xScale);
-    //  var ty = centerPoint.Y * (TSelf.One - yScale);
-    //  var tz = centerPoint.Z * (TSelf.One - zScale);
+    //  var tx = centerPoint.X * (1 - xScale);
+    //  var ty = centerPoint.Y * (1 - yScale);
+    //  var tz = centerPoint.Z * (1 - zScale);
 
-    //  return new(xScale, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, yScale, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, zScale, TSelf.Zero, tx, ty, tz, TSelf.One);
+    //  return new(xScale, 0, 0, 0, 0, yScale, 0, 0, 0, 0, zScale, 0, tx, ty, tz, 1);
     //}
     ///// <summary>Creates a scaling matrix.</summary>
     ///// <param name="scales">The vector containing the amount to scale by on each axis.</param>
     ///// <returns>The scaling matrix.</returns>
-    //public static Matrix4<TSelf> CreateScale(CoordinateSystems.CartesianCoordinate4 scales)
+    //public static Matrix4<double> CreateScale(CoordinateSystems.CartesianCoordinate4 scales)
     //  => new(scales.X, 0, 0, 0, 0, scales.Y, 0, 0, 0, 0, scales.Z, 0, 0, 0, 0, 1);
     ///// <summary>
     ///// Creates a scaling matrix with a center point.
@@ -551,15 +551,15 @@ namespace Flux.Numerics
     /// </summary>
     /// <param name="scale">The uniform scaling factor.</param>
     /// <returns>The scaling matrix.</returns>
-    public static Matrix4<TSelf> CreateScale(TSelf scale)
-      => new(scale, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, scale, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, scale, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One);
+    public static Matrix4 CreateScale(double scale)
+      => new(scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, scale, 0, 0, 0, 0, 1);
     ///// <summary>
     ///// Creates a uniform scaling matrix that scales equally on each axis with a center point.
     ///// </summary>
     ///// <param name="scale">The uniform scaling factor.</param>
     ///// <param name="centerPoint">The center point.</param>
     ///// <returns>The scaling matrix.</returns>
-    //public static Matrix4<TSelf> CreateScale(double scale, CoordinateSystems.CartesianCoordinate4 centerPoint)
+    //public static Matrix4<double> CreateScale(double scale, CoordinateSystems.CartesianCoordinate4 centerPoint)
     //{
     //  var tx = centerPoint.X * (1 - scale);
     //  var ty = centerPoint.Y * (1 - scale);
@@ -573,7 +573,7 @@ namespace Flux.Numerics
     ///// <param name="lightDirection">The direction from which the light that will cast the shadow is coming.</param>
     ///// <param name="plane">The Plane onto which the new matrix should flatten geometry so as to cast a shadow.</param>
     ///// <returns>A new Matrix that can be used to flatten geometry onto the specified plane from the specified direction.</returns>
-    //public static Matrix4<TSelf> CreateShadow(CoordinateSystems.CartesianCoordinate4 lightDirection, Plane plane)
+    //public static Matrix4<double> CreateShadow(CoordinateSystems.CartesianCoordinate4 lightDirection, Plane plane)
     //{
     //  var p = Plane.Normalize(plane);
 
@@ -612,7 +612,7 @@ namespace Flux.Numerics
     ///// </summary>
     ///// <param name="position">The amount to translate in each axis.</param>
     ///// <returns>The translation matrix.</returns>
-    //public static Matrix4<TSelf> CreateTranslation(CoordinateSystems.CartesianCoordinate4 position)
+    //public static Matrix4<double> CreateTranslation(CoordinateSystems.CartesianCoordinate4 position)
     //  => new(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, position.X, position.Y, position.Z, 1);
     /// <summary>
     /// Creates a translation matrix.
@@ -621,12 +621,12 @@ namespace Flux.Numerics
     /// <param name="yPosition">The amount to translate on the Y-axis.</param>
     /// <param name="zPosition">The amount to translate on the Z-axis.</param>
     /// <returns>The translation matrix.</returns>
-    public static Matrix4<TSelf> CreateTranslation(TSelf xPosition, TSelf yPosition, TSelf zPosition)
+    public static Matrix4 CreateTranslation(double xPosition, double yPosition, double zPosition)
       => new(
-        TSelf.One, TSelf.Zero, TSelf.Zero, TSelf.Zero,
-        TSelf.Zero, TSelf.One, TSelf.Zero, TSelf.Zero,
-        TSelf.Zero, TSelf.Zero, TSelf.One, TSelf.Zero,
-        xPosition, yPosition, zPosition, TSelf.One
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        xPosition, yPosition, zPosition, 1
       );
     ///// <summary>
     ///// Creates a world matrix with the specified parameters.
@@ -635,7 +635,7 @@ namespace Flux.Numerics
     ///// <param name="forward">Forward direction of the object.</param>
     ///// <param name="up">Upward direction of the object, usually [0, 1, 0].</param>
     ///// <returns>The world matrix.</returns>
-    //public static Matrix4<TSelf> CreateWorld(CoordinateSystems.CartesianCoordinate4 position, CoordinateSystems.CartesianCoordinate4 forward, CoordinateSystems.CartesianCoordinate4 up)
+    //public static Matrix4<double> CreateWorld(CoordinateSystems.CartesianCoordinate4 position, CoordinateSystems.CartesianCoordinate4 forward, CoordinateSystems.CartesianCoordinate4 up)
     //{
     //  var zaxis = CoordinateSystems.CartesianCoordinate4.Normalize(-forward);
     //  var xaxis = CoordinateSystems.CartesianCoordinate4.Normalize(CoordinateSystems.CartesianCoordinate4.Cross(up, zaxis));
@@ -854,7 +854,7 @@ namespace Flux.Numerics
     /// </summary>
     /// <param name="value">The source matrix.</param>
     /// <returns>The negated matrix.</returns>
-    public static Matrix4<TSelf> operator -(Matrix4<TSelf> value)
+    public static Matrix4 operator -(Matrix4 value)
       => new
       (
         -value.m_11, -value.m_12, -value.m_13, -value.m_14,
@@ -869,7 +869,7 @@ namespace Flux.Numerics
     /// <param name="value1">The first source matrix.</param>
     /// <param name="value2">The second source matrix.</param>
     /// <returns>The resulting matrix.</returns>
-    public static Matrix4<TSelf> operator +(Matrix4<TSelf> value1, Matrix4<TSelf> value2)
+    public static Matrix4 operator +(Matrix4 value1, Matrix4 value2)
       => new
       (
         value1.m_11 + value2.m_11, value1.m_12 + value2.m_12, value1.m_13 + value2.m_13, value1.m_14 + value2.m_14,
@@ -884,7 +884,7 @@ namespace Flux.Numerics
     /// <param name="value1">The first source matrix.</param>
     /// <param name="value2">The second source matrix.</param>
     /// <returns>The result of the subtraction.</returns>
-    public static Matrix4<TSelf> operator -(Matrix4<TSelf> value1, Matrix4<TSelf> value2)
+    public static Matrix4 operator -(Matrix4 value1, Matrix4 value2)
       => new
       (
         value1.m_11 - value2.m_11, value1.m_12 - value2.m_12, value1.m_13 - value2.m_13, value1.m_14 - value2.m_14,
@@ -899,7 +899,7 @@ namespace Flux.Numerics
     /// <param name="value1">The first source matrix.</param>
     /// <param name="value2">The second source matrix.</param>
     /// <returns>The result of the multiplication.</returns>
-    public static Matrix4<TSelf> operator *(Matrix4<TSelf> value1, Matrix4<TSelf> value2)
+    public static Matrix4 operator *(Matrix4 value1, Matrix4 value2)
       => new
       (
         // First row
@@ -930,7 +930,7 @@ namespace Flux.Numerics
     /// <param name="value1">The source matrix.</param>
     /// <param name="value2">The scaling factor.</param>
     /// <returns>The scaled matrix.</returns>
-    public static Matrix4<TSelf> operator *(Matrix4<TSelf> value1, TSelf value2)
+    public static Matrix4 operator *(Matrix4 value1, double value2)
       => new
       (
         value1.m_11 * value2, value1.m_12 * value2, value1.m_13 * value2, value1.m_14 * value2,
@@ -942,3 +942,4 @@ namespace Flux.Numerics
     #endregion Operator overloads
   }
 }
+#endif

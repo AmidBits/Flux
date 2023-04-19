@@ -4,9 +4,8 @@ namespace Flux
 {
   public static partial class StringFormattingExtensionMethods
   {
-    public static string ToCardinalNumeralCompoundString<TSelf>(this TSelf number)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => string.Join(' ', NumeralComposition.GetCardinalNumerals(NumeralComposition.GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
+    public static string ToCardinalNumeralCompoundString(this System.Numerics.BigInteger number)
+      => string.Join(' ', NumeralComposition.GetCardinalNumerals(NumeralComposition.GetCompoundNumbers(number)));
   }
 
   /// <summary>Supporting class for breaking down and translating numbers to strings.</summary>
@@ -22,7 +21,7 @@ namespace Flux
       if (isNegative)
         list.Add("Negative");
 
-      list.AddRange(compoundNumbers.Skip(int.Abs(int.CreateChecked(compoundNumbers.First()))).Select(on => NumeralComposition.ShortScaleDictionary[on]));
+      list.AddRange(compoundNumbers.Skip(System.Math.Abs((int)compoundNumbers.First())).Select(on => NumeralComposition.ShortScaleDictionary[on]));
 
       return list;
     }

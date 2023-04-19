@@ -14,7 +14,6 @@ namespace Flux.Numerics
   {
     /// <summary>Computes the three main quartiles Q1, Q2 and Q3 according to the implementation.</summary>
     /// <returns>A ValueTuple with Q1, Q2 and Q3.</returns>
-    (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>;
+    (double q1, double q2, double q3) ComputeQuartiles(System.Collections.Generic.IEnumerable<double> sample);
   }
 }

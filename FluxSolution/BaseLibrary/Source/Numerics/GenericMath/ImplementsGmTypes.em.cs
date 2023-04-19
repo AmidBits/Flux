@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 using System.Linq;
 
 namespace Flux
@@ -35,3 +36,4 @@ namespace Flux
       => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(System.Numerics.IUnsignedNumber<>));
   }
 }
+#endif

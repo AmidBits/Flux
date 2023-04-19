@@ -17,11 +17,8 @@ namespace Flux
     /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
     public static int TrailingZeroCount(this System.Numerics.BigInteger value) => value > 0 ? Count1Bits((value & -value) - 1) : -1;
 
-    public static int TrailingZeroCount(this int value) => unchecked((uint)value).TrailingZeroCount();
-    public static int TrailingZeroCount(this long value) => unchecked((ulong)value).TrailingZeroCount();
-
-    public static int TrailingZeroCount(this uint value) => System.Numerics.BitOperations.TrailingZeroCount(value);
-    public static int TrailingZeroCount(this ulong value) => System.Numerics.BitOperations.TrailingZeroCount(value);
+    public static int TrailingZeroCount(this int value) => unchecked(System.Numerics.BitOperations.TrailingZeroCount((uint)value));
+    public static int TrailingZeroCount(this long value) => unchecked(System.Numerics.BitOperations.TrailingZeroCount((ulong)value));
 
 #endif
   }

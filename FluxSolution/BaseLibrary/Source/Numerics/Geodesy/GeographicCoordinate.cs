@@ -6,7 +6,7 @@ namespace Flux.Numerics
   /// <remarks>Abbreviated angles are in radians, and full names are in degrees.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct GeographicCoordinate
-    : System.IFormattable, IGeographicCoordinate<double>
+    : System.IFormattable, IGeographicCoordinate
   {
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
@@ -117,9 +117,9 @@ namespace Flux.Numerics
       lonMax = lon + longitudeDelta;
 
       if (lonMin < -System.Math.PI)
-        lonMin += double.Tau;
+        lonMin += System.Math.Tau;
       if (lonMax > System.Math.PI)
-        lonMax -= double.Tau;
+        lonMax -= System.Math.Tau;
 
       return true;
     }
@@ -225,7 +225,7 @@ namespace Flux.Numerics
     /// <param name="lon2">The target longitude in radians.</param>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
     public static double GetFinalCourse(double lat1, double lon1, double lat2, double lon2)
-      => (GetInitialCourse(lat2, lon2, lat1, lon1) + System.Math.PI) % double.Tau;
+      => (GetInitialCourse(lat2, lon2, lat1, lon1) + System.Math.PI) % System.Math.Tau;
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
     /// <param name="lat1">The source latitude in radians.</param>
@@ -241,7 +241,7 @@ namespace Flux.Numerics
       var y = System.Math.Sin(lonD) * cosLat2;
       var x = System.Math.Cos(lat1) * System.Math.Sin(lat2) - System.Math.Sin(lat1) * cosLat2 * System.Math.Cos(lonD);
 
-      return (System.Math.Atan2(y, x) + double.Tau) % double.Tau; // Atan2 returns values in the range [-π, +π] radians (i.e. -180 - +180 degrees), shift to [0, 2PI] radians (i.e. 0 - 360 degrees).
+      return (System.Math.Atan2(y, x) + System.Math.Tau) % System.Math.Tau; // Atan2 returns values in the range [-π, +π] radians (i.e. -180 - +180 degrees), shift to [0, 2PI] radians (i.e. 0 - 360 degrees).
     }
 
     /// <summary>An intermediate point at any fraction along the great circle path between two points can also be calculated.</summary>
@@ -350,14 +350,14 @@ namespace Flux.Numerics
       var φ1 = System.Math.Acos(sinLat2 - sinLat1 * cosd12 / sind12 * cosLat1);
       var φ2 = System.Math.Acos(sinLat1 - sinLat2 * cosd12 / sind12 * cosLat2);
 
-      var bearing12 = sinlonD > 0 ? φ1 : double.Tau - φ1;
-      var bearing21 = sinlonD > 0 ? double.Tau - φ2 : φ2;
+      var bearing12 = sinlonD > 0 ? φ1 : System.Math.Tau - φ1;
+      var bearing21 = sinlonD > 0 ? System.Math.Tau - φ2 : φ2;
 
-      var α1 = (brg1 - bearing12 + System.Math.PI) % double.Tau - System.Math.PI;
+      var α1 = (brg1 - bearing12 + System.Math.PI) % System.Math.Tau - System.Math.PI;
       var α1cos = System.Math.Cos(α1);
       var α1sin = System.Math.Sin(α1);
 
-      var α2 = (bearing21 - brg2 + System.Math.PI) % double.Tau - System.Math.PI;
+      var α2 = (bearing21 - brg2 + System.Math.PI) % System.Math.Tau - System.Math.PI;
       var α2cos = System.Math.Cos(α2);
       var α2sin = System.Math.Sin(α2);
 
@@ -371,7 +371,7 @@ namespace Flux.Numerics
 
       var dLon13 = System.Math.Atan2(System.Math.Sin(brg1) * d13sin * cosLat1, d13cos - sinLat1 * System.Math.Sin(latOut));
 
-      lonOut = (lon1 + dLon13 + System.Math.PI) % double.Tau - System.Math.PI;
+      lonOut = (lon1 + dLon13 + System.Math.PI) % System.Math.Tau - System.Math.PI;
     }
 
     /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
@@ -422,7 +422,6 @@ namespace Flux.Numerics
       => $"{new Units.Latitude(Latitude).ToQuantityString(format)} {new Units.Longitude(Longitude).ToQuantityString(format)} {new Units.Length(Altitude).ToUnitString(Units.Length.DefaultUnit, "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
 
     #endregion Implemented interfaces
-
 
     public override string ToString() => ToString(null, null);
   }

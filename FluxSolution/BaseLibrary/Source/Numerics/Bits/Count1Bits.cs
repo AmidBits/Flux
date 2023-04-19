@@ -26,13 +26,9 @@ namespace Flux
       return -1;
     }
 
-    public static int Count1Bits(this int value) => unchecked((uint)value).Count1Bits();
+    public static int Count1Bits(this int value) => System.Numerics.BitOperations.PopCount(unchecked((uint)value));
 
-    public static int Count1Bits(this long value) => unchecked((ulong)value).Count1Bits();
-
-    [System.CLSCompliant(false)] public static int Count1Bits(this uint value) => System.Numerics.BitOperations.PopCount(value);
-
-    [System.CLSCompliant(false)] public static int Count1Bits(this ulong value) => System.Numerics.BitOperations.PopCount(value);
+    public static int Count1Bits(this long value) => System.Numerics.BitOperations.PopCount(unchecked((ulong)value));
 
 #endif
   }

@@ -18,7 +18,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.Random.NumberGenerators.Crypto.NextBigInteger(i.ToType(out System.Numerics.BigInteger _));
+        var rv = Flux.Random.NumberGenerators.Crypto.NextBigInteger(i.ToBigInteger());
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
@@ -221,7 +221,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToType(out System.Numerics.BigInteger _));
+        var rv = cr.NextBigInteger(i.ToBigInteger());
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
@@ -306,7 +306,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToType(out System.Numerics.BigInteger _));
+        var rv = cr.NextBigInteger(i.ToBigInteger());
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
@@ -391,7 +391,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToType(out System.Numerics.BigInteger _));
+        var rv = cr.NextBigInteger(i.ToBigInteger());
 
         //var rv = cr.NextBigInteger(i.ToBigInteger());
         Assert.IsTrue(rv >= 0 && rv < i);
@@ -477,7 +477,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToType(out System.Numerics.BigInteger _));
+        var rv = cr.NextBigInteger(i.ToBigInteger());
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
@@ -562,7 +562,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToType(out System.Numerics.BigInteger _));
+        var rv = cr.NextBigInteger(i.ToBigInteger());
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }

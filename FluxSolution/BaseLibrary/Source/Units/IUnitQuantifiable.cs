@@ -5,8 +5,10 @@
   /// <typeparam name="TUnit">The unit enum.</typeparam>
   public interface IUnitQuantifiable<TType, TUnit>
     : IQuantifiable<TType>
+#if NET7_0_OR_GREATER
     where TType : System.Numerics.INumberBase<TType>
     where TUnit : System.Enum
+#endif
   {
     //static abstract IUnitQuantifiable<TType, TUnit> FromUnitValue(TType value, TUnit unit);
 

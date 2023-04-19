@@ -15,7 +15,7 @@ namespace Flux.Text
     //System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, double>> m_chain = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, double>>();
 
     private readonly System.Collections.Generic.Dictionary<int, int> m_nameLengthCounts = new();
-    private readonly System.Collections.Generic.Dictionary<int, double> m_nameLengthCountsNormalized = new();
+    //private readonly System.Collections.Generic.Dictionary<int, double> m_nameLengthCountsNormalized = new();
 
     public System.Collections.Generic.Dictionary<string, System.Collections.Generic.Dictionary<string, double>> Construct_Chain(System.Collections.Generic.IList<string> list)
     {
@@ -26,12 +26,12 @@ namespace Flux.Text
 
       var maxLength = lengths.Keys.Max();
 
-      var cpl = new System.Collections.Generic.SortedDictionary<int, DataStructures.CumulativeDistributionFunction<char, double>>();
+      var cpl = new System.Collections.Generic.SortedDictionary<int, DataStructures.CumulativeDistributionFunction<char>>();
 
       var rl = new Flux.Loops.RangeLoop<int>(0, maxLength, 1);
 
       foreach (var i in rl)
-        cpl[i + 1] = list.Where(n => i < n.Length).ToHistogram(k => k[i], f => System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(f[i]) ? 1 : 1).ToCumulativeDistributionFunction(1.0);
+        cpl[(int)i + 1] = list.Where(n => i < n.Length).ToHistogram(k => k[(int)i], f => System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(f[(int)i]) ? 1 : 1).ToCumulativeDistributionFunction(1.0);
 
       var p1 = m_rng.NextDouble();
       var length = lengths.OrderBy(kvp => kvp.Key).First(kvp => p1 <= kvp.Value);

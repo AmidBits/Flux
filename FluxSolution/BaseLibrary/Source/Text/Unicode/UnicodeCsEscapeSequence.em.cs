@@ -15,8 +15,12 @@ namespace Flux
 
   public static partial class UnicodeExtensionMethods
   {
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8}|(?<=\\x)[0-9A-F]{1,8})", System.Text.RegularExpressions.RegexOptions.IgnoreCase)]
     private static partial System.Text.RegularExpressions.Regex RegexParseUnicodeCsEscapeSequence();
+#else
+    private static System.Text.RegularExpressions.Regex RegexParseUnicodeCsEscapeSequence() => new(@"((?<=\\u)[0-9a-f]{4}|(?<=\\U)[0-9A-F]{8}|(?<=\\x)[0-9A-F]{1,8})");
+#endif
 
     public static System.Collections.Generic.IEnumerable<char> ParseUnicodeCsEscapeSequence(this string text)
       => RegexParseUnicodeCsEscapeSequence().Matches(text).Where(m => m.Success).Select(m => (char)int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null));

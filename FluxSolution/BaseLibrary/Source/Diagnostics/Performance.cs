@@ -2,8 +2,12 @@ namespace Flux.Services
 {
   public static partial class Performance
   {
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(^Convert\(|value\([^\)]+\)\.|, Object\)$)")]
     private static partial System.Text.RegularExpressions.Regex ReplacerRegex();
+#else
+    private static System.Text.RegularExpressions.Regex ReplacerRegex() => new(@"(^Convert\(|value\([^\)]+\)\.|, Object\)$)");
+#endif
 
     /// <summary></summary>
     public static PerformanceResult Measure(System.Linq.Expressions.Expression<System.Func<object>> expression, int iterations = 1000000, string? name = null)

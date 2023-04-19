@@ -321,12 +321,12 @@ namespace Flux
     /// <summary>Returns a new vector filled with the maximum value of the components in specified vector.</summary>
     public static Vector256<double> MaxHorizontal(this Vector256<double> source)
       => Vector256.Create(
-        double.Max(
-          double.Max(
+        System.Math.Max(
+          System.Math.Max(
             source.GetElement(0),
             source.GetElement(1)
           ),
-          double.Max(
+          System.Math.Max(
             source.GetElement(2),
             source.GetElement(3)
           )
@@ -350,12 +350,12 @@ namespace Flux
     /// <summary>Returns a new vector filled with the minimum value of the components in specified vector.</summary>
     public static Vector256<double> MinHorizontal(this Vector256<double> source)
       => Vector256.Create(
-        double.Min(
-          double.Min(
+        System.Math.Min(
+          System.Math.Min(
             source.GetElement(0),
             source.GetElement(1)
           ),
-          double.Min(
+          System.Math.Min(
             source.GetElement(2),
             source.GetElement(3)
           )

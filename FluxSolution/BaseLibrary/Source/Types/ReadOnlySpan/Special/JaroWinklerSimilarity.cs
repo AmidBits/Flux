@@ -31,12 +31,12 @@ namespace Flux
       // Step 1: Matches. The match phase is a greedy alignment step of items in the source sequence against the items in the target sequence.
 
       var matches = 0;
-      var searchRange = int.Max(sourceCount, targetCount) / 2 - 1; // The maximum distance at which items may be matched.
+      var searchRange = System.Math.Max(sourceCount, targetCount) / 2 - 1; // The maximum distance at which items may be matched.
 
       for (var i = 0; i < sourceCount; i++)
       {
-        var loLimit = int.Max(0, i - searchRange);
-        var hiLimit = int.Min(i + searchRange + 1, targetCount);
+        var loLimit = System.Math.Max(0, i - searchRange);
+        var hiLimit = System.Math.Min(i + searchRange + 1, targetCount);
 
         for (var j = loLimit; j < hiLimit; j++)
         {
@@ -85,7 +85,7 @@ namespace Flux
       // The second parameter for the Winkler modification is 
       // If the Jaro score is below the boost threshold, or if the prefixCount is zero, the Jaro score is returned unadjusted.
 
-      int prefixCount = 0, maxLength = int.Min(int.Min(prefixSize, sourceCount), targetCount);
+      int prefixCount = 0, maxLength = System.Math.Min(System.Math.Min(prefixSize, sourceCount), targetCount);
       while (prefixCount < maxLength && equalityComparer.Equals(source[prefixCount], target[prefixCount]))
         prefixCount++;
 

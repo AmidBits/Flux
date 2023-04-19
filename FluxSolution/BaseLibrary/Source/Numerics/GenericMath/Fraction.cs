@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux
 {
   //** A rational number (commonly called a fraction) is a ratio
@@ -618,3 +619,4 @@ namespace Flux
     public override string ToString() => ToQuantityString();
   }
 }
+#endif

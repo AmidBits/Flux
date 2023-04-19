@@ -6,77 +6,72 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     /// <see href="https://en.wikipedia.org/wiki/Histogram"/>
     /// <seealso href="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
-    public static DataStructures.Histogram<TKey, TFrequency> ToHistogram<TSource, TKey, TFrequency>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TFrequency> frequencySelector)
+    public static DataStructures.Histogram<TKey> ToHistogram<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, System.Numerics.BigInteger> frequencySelector)
       where TKey : notnull
-      where TFrequency : System.Numerics.IBinaryInteger<TFrequency>
-      => new DataStructures.Histogram<TKey, TFrequency>().AddRange(source, keySelector, frequencySelector);
+      => new DataStructures.Histogram<TKey>().AddRange(source, keySelector, frequencySelector);
   }
 
   namespace DataStructures
   {
     /// <summary>
-    /// <para>A histogram dictionary based on <see cref="SortedDictionary{TKey, TFrequency}"/>.</para>
+    /// <para>A histogram dictionary based on <see cref="SortedDictionary{TKey, System.Numerics.BigInteger}"/>.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Histogram"/></para>
     /// <para><seealso href="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/></para>
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TFrequency"></typeparam>
-    public sealed class Histogram<TKey, TFrequency>
-      : System.Collections.Generic.IDictionary<TKey, TFrequency>
+    public sealed class Histogram<TKey>
+      : System.Collections.Generic.IDictionary<TKey, System.Numerics.BigInteger>
       where TKey : notnull
-      where TFrequency : System.Numerics.IBinaryInteger<TFrequency>
     {
-      private readonly System.Collections.Generic.SortedDictionary<TKey, TFrequency> m_data = new();
+      private readonly System.Collections.Generic.SortedDictionary<TKey, System.Numerics.BigInteger> m_data = new();
 
-      private TFrequency m_totalFrequency = TFrequency.Zero;
+      private System.Numerics.BigInteger m_totalFrequency = System.Numerics.BigInteger.Zero;
 
       public Histogram() { }
       public Histogram(System.Collections.Generic.IEnumerable<TKey> collection) => AddRange(collection);
 
-      public TFrequency TotalFrequency => m_totalFrequency;
+      public System.Numerics.BigInteger TotalFrequency => m_totalFrequency;
 
-      public void Add(TKey key, TFrequency frequency)
+      public void Add(TKey key, System.Numerics.BigInteger frequency)
       {
         if (!m_data.TryGetValue(key, out var storedFrequency))
-          storedFrequency = TFrequency.Zero;
+          storedFrequency = System.Numerics.BigInteger.Zero;
 
         m_data[key] = storedFrequency + frequency;
 
         m_totalFrequency += frequency;
       }
 
-      public Histogram<TKey, TFrequency> AddRange<TSource>(System.Collections.Generic.IEnumerable<TSource> collection, System.Func<TSource, TKey> keySelector, System.Func<TSource, TFrequency> frequencySelector)
+      public Histogram<TKey> AddRange<TSource>(System.Collections.Generic.IEnumerable<TSource> collection, System.Func<TSource, TKey> keySelector, System.Func<TSource, System.Numerics.BigInteger> frequencySelector)
       {
         foreach (var item in collection.ThrowIfNull())
           Add(keySelector(item), frequencySelector(item));
 
         return this;
       }
-      public Histogram<TKey, TFrequency> AddRange(System.Collections.Generic.IEnumerable<TKey> collection) => AddRange(collection, key => key, key => TFrequency.One);
-      public Histogram<TKey, TFrequency> AddRange(Histogram<TKey, TFrequency> histogram) => AddRange(histogram, he => he.Key, he => he.Value);
+      public Histogram<TKey> AddRange(System.Collections.Generic.IEnumerable<TKey> collection) => AddRange(collection, key => key, key => System.Numerics.BigInteger.One);
+      public Histogram<TKey> AddRange(Histogram<TKey> histogram) => AddRange(histogram, he => he.Key, he => he.Value);
 
       /// <summary>Computes the <typeparamref name="TPercentRank"/> [0, 1] of the <paramref name="key"/> in the histogram, and scales the result with <paramref name="factor"/>.</summary>
       /// <exception cref="System.ArgumentNullException"/>
-      public TPercentRank ComputeCdfPercentRank<TPercentRank>(TKey key, TPercentRank factor)
-        where TPercentRank : System.Numerics.IFloatingPoint<TPercentRank>
+      public double ComputeCdfPercentRank(TKey key, double factor)
       {
         var comparer = System.Collections.Generic.Comparer<TKey>.Default;
 
-        var cumulativeFrequency = TFrequency.Zero;
+        var cumulativeFrequency = System.Numerics.BigInteger.Zero;
 
         foreach (var kvp in m_data)
           if (comparer.Compare(kvp.Key, key) <= 0)
             cumulativeFrequency += kvp.Value;
 
-        return TPercentRank.CreateChecked(cumulativeFrequency) / TPercentRank.CreateChecked(m_totalFrequency) * factor;
+        return (double)cumulativeFrequency / (double)m_totalFrequency * factor;
       }
 
       /// <summary>Computes the <typeparamref name="TProbability"/> [0, 1] of the <paramref name="key"/> in the histogram, and scales the result with <paramref name="factor"/>.</summary>
       /// <remarks>This function maps </remarks>
       /// <exception cref="System.ArgumentNullException"/>
-      public TProbability ComputePmfProbability<TProbability>(TKey key, TProbability factor)
-        where TProbability : System.Numerics.IFloatingPoint<TProbability>
-        => m_data.TryGetValue(key, out var frequency) ? TProbability.CreateChecked(frequency) / TProbability.CreateChecked(m_totalFrequency) * factor : TProbability.Zero;
+      public double ComputePmfProbability(TKey key, double factor)
+        => m_data.TryGetValue(key, out var frequency) ? (double)frequency / (double)m_totalFrequency * factor : 0d;
 
       /// <summary>
       /// <para>A cumulative distribution function creates a new CDF dictionary.</para>
@@ -85,20 +80,19 @@ namespace Flux
       /// </summary>
       /// <typeparam name="TPercentRank"></typeparam>
       /// <returns>A new <see cref="CumulativeDistributionFunction{TKey, TPercentRank}"/> (CDF) dictionary.</returns>
-      public CumulativeDistributionFunction<TKey, TPercentRank> ToCumulativeDistributionFunction<TPercentRank>(TPercentRank factor)
-        where TPercentRank : System.Numerics.IFloatingPoint<TPercentRank>
+      public CumulativeDistributionFunction<TKey> ToCumulativeDistributionFunction(double factor)
       {
-        var totalFrequency = TPercentRank.CreateChecked(m_totalFrequency);
+        var totalFrequency = (double)m_totalFrequency;
 
-        var cmf = new CumulativeDistributionFunction<TKey, TPercentRank>();
+        var cmf = new CumulativeDistributionFunction<TKey>();
 
-        var cumulativeFrequency = TPercentRank.Zero;
+        var cumulativeFrequency = System.Numerics.BigInteger.Zero;
 
         foreach (var kvp in m_data)
         {
-          cumulativeFrequency += TPercentRank.CreateChecked(kvp.Value);
+          cumulativeFrequency += kvp.Value;
 
-          cmf[kvp.Key] = cumulativeFrequency / totalFrequency * factor;
+          cmf[kvp.Key] = (double)cumulativeFrequency / totalFrequency * factor;
         }
 
         return cmf;
@@ -112,15 +106,14 @@ namespace Flux
       /// <typeparam name="TProbability"></typeparam>
       /// <remarks>If there's a need to add a key with a POST NORMALIZED probability, divide the probability by the probability remainder, e.g. Add(key, 0.2) is pre-normalized, and Add(key, 0.2 / 0.8) is post-normalized.</remarks>
       /// <returns>A new <see cref="ProbabilityMassFunction{TKey, TProbability}"/> (PMF) dictionary.</returns>
-      public ProbabilityMassFunction<TKey, TProbability> ToProbabilityMassFunction<TProbability>(TProbability factor)
-        where TProbability : System.Numerics.IFloatingPoint<TProbability>
+      public ProbabilityMassFunction<TKey> ToProbabilityMassFunction(double factor)
       {
-        var totalFrequency = TProbability.CreateChecked(m_totalFrequency);
+        var totalFrequency = (double)m_totalFrequency;
 
-        var pmf = new ProbabilityMassFunction<TKey, TProbability>();
+        var pmf = new ProbabilityMassFunction<TKey>();
 
         foreach (var kvp in m_data)
-          pmf[kvp.Key] = TProbability.CreateChecked(kvp.Value) / totalFrequency * factor;
+          pmf[kvp.Key] = (double)kvp.Value / totalFrequency * factor;
 
         return pmf;
       }
@@ -128,7 +121,7 @@ namespace Flux
       #region Implemented interfaces
 
       // IDictionary<>
-      public TFrequency this[TKey key] { get => m_data.TryGetValue(key, out var frequency) ? frequency : TFrequency.Zero; set => m_data[key] = value; }
+      public System.Numerics.BigInteger this[TKey key] { get => m_data.TryGetValue(key, out var frequency) ? frequency : System.Numerics.BigInteger.Zero; set => m_data[key] = value; }
 
       public int Count => m_data.Count;
 
@@ -136,22 +129,22 @@ namespace Flux
 
       public System.Collections.Generic.ICollection<TKey> Keys => m_data.Keys;
 
-      public System.Collections.Generic.ICollection<TFrequency> Values => m_data.Values;
+      public System.Collections.Generic.ICollection<System.Numerics.BigInteger> Values => m_data.Values;
 
-      public void Add(System.Collections.Generic.KeyValuePair<TKey, TFrequency> kvp) => Add(kvp.Key, kvp.Value);
+      public void Add(System.Collections.Generic.KeyValuePair<TKey, System.Numerics.BigInteger> kvp) => Add(kvp.Key, kvp.Value);
 
       public void Clear()
       {
         m_data.Clear();
 
-        m_totalFrequency = TFrequency.Zero;
+        m_totalFrequency = System.Numerics.BigInteger.Zero;
       }
 
-      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, TFrequency> kvp) => m_data.TryGetValue(kvp.Key, out var frequency) && kvp.Value == frequency;
+      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, System.Numerics.BigInteger> kvp) => m_data.TryGetValue(kvp.Key, out var frequency) && kvp.Value == frequency;
 
       public bool ContainsKey(TKey key) => m_data.ContainsKey(key);
 
-      public void CopyTo(System.Collections.Generic.KeyValuePair<TKey, TFrequency>[] array, int index) => m_data.CopyTo(array, index);
+      public void CopyTo(System.Collections.Generic.KeyValuePair<TKey, System.Numerics.BigInteger>[] array, int index) => m_data.CopyTo(array, index);
 
       public bool Remove(TKey key)
       {
@@ -168,11 +161,11 @@ namespace Flux
         return false;
       }
 
-      public bool Remove(System.Collections.Generic.KeyValuePair<TKey, TFrequency> kvp) => Contains(kvp) && Remove(kvp.Key);
+      public bool Remove(System.Collections.Generic.KeyValuePair<TKey, System.Numerics.BigInteger> kvp) => Contains(kvp) && Remove(kvp.Key);
 
-      public bool TryGetValue(TKey key, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out TFrequency value) => m_data.TryGetValue(key, out value);
+      public bool TryGetValue(TKey key, [System.Diagnostics.CodeAnalysis.MaybeNullWhen(false)] out System.Numerics.BigInteger value) => m_data.TryGetValue(key, out value);
 
-      public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TFrequency>> GetEnumerator() => m_data.GetEnumerator();
+      public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, System.Numerics.BigInteger>> GetEnumerator() => m_data.GetEnumerator();
 
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 

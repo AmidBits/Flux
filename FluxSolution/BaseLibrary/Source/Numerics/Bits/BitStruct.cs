@@ -1,7 +1,5 @@
 ﻿namespace Flux
 {
-#if NET7_0_OR_GREATER
-
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public record struct BitStruct
   {
@@ -30,19 +28,24 @@
 
     [System.Runtime.InteropServices.FieldOffset(0)] private int m_int32;
     [System.Runtime.InteropServices.FieldOffset(0)] private long m_int64;
+#if NET7_0_OR_GREATER
     [System.Runtime.InteropServices.FieldOffset(0)] private Int128 m_int128;
+#endif
 
     [System.Runtime.InteropServices.FieldOffset(0)] private float m_single;
 
     [System.Runtime.InteropServices.FieldOffset(0)] private uint m_uint32;
     [System.Runtime.InteropServices.FieldOffset(0)] private ulong m_uint64;
+#if NET7_0_OR_GREATER
     [System.Runtime.InteropServices.FieldOffset(0)] private UInt128 m_uint128;
+#endif
 
     #endregion // Fields
 
     #region Constructors
 
     public BitStruct(byte[] bytes, int offset, int count)
+      : this()
     {
       if (bytes is null) throw new ArgumentNullException(nameof(bytes));
       if (offset < 0 || offset >= bytes.Length) throw new ArgumentNullException(nameof(offset));
@@ -66,19 +69,23 @@
       m_byteF = bytes[offset + 15];
     }
 
-    public BitStruct(decimal value) => m_decimal = value;
+    public BitStruct(decimal value) : this() => m_decimal = value;
 
-    public BitStruct(double value) => m_double = value;
+    public BitStruct(double value) : this() => m_double = value;
 
-    public BitStruct(int value) => m_int32 = value;
-    public BitStruct(long value) => m_int64 = value;
+    public BitStruct(int value) : this() => m_int32 = value;
+    public BitStruct(long value) : this() => m_int64 = value;
+#if NET7_0_OR_GREATER
     public BitStruct(Int128 value) => m_int128 = value;
+#endif
 
-    public BitStruct(float value) => m_single = value;
+    public BitStruct(float value) : this() => m_single = value;
 
-    [CLSCompliant(false)] public BitStruct(uint value) => m_uint32 = value;
-    [CLSCompliant(false)] public BitStruct(ulong value) => m_uint64 = value;
+    [CLSCompliant(false)] public BitStruct(uint value) : this() => m_uint32 = value;
+    [CLSCompliant(false)] public BitStruct(ulong value) : this() => m_uint64 = value;
+#if NET7_0_OR_GREATER
     [CLSCompliant(false)] public BitStruct(UInt128 value) => m_uint128 = value;
+#endif
 
     #endregion // Constructors
 
@@ -107,16 +114,18 @@
 
     public int Int32 { get => m_int32; set => m_int32 = value; }
     public long Int64 { get => m_int64; set => m_int64 = value; }
+#if NET7_0_OR_GREATER
     public Int128 Int128 { get => m_int128; set => m_int128 = value; }
+#endif
 
     public float Single { get => m_single; set => m_single = value; }
 
     [CLSCompliant(false)] public uint UInt32 { get => m_uint32; set => m_uint32 = value; }
     [CLSCompliant(false)] public ulong UInt64 { get => m_uint64; set => m_uint64 = value; }
-    [CLSCompliant(false)] public UInt128 UInt128 { get => m_uint128; set => m_uint128 = value; }
+#if NET7_0_OR_GREATER
+   [CLSCompliant(false)] public UInt128 UInt128 { get => m_uint128; set => m_uint128 = value; }
+#endif
 
     #endregion // Properties
   }
-
-#endif
 }

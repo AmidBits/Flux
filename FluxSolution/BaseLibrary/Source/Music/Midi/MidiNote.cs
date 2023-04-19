@@ -77,8 +77,12 @@ namespace Flux.Music.Midi
     public static bool IsMidiNote(int midiNoteNumber)
       => midiNoteNumber >= 0 && midiNoteNumber <= 127;
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"^([^0-9\-]+)([\-0-9]+)$")]
     private static partial System.Text.RegularExpressions.Regex ScientificPitchNotationRegex();
+#else
+    private static System.Text.RegularExpressions.Regex ScientificPitchNotationRegex() => new(@"^([^0-9\-]+)([\-0-9]+)$");
+#endif
 
     /// <summary>Parse the specified SPN string into a MIDI note.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>

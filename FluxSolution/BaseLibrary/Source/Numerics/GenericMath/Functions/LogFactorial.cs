@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class GenericMath
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>Compute log(1+x) without losing precision for small values of x.</summary>
     /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
     /// <see href="https://www.johndcook.com/blog/csharp_log_factorial/"/>
@@ -285,5 +287,9 @@ namespace Flux
         return TOutput.CreateChecked(lf[int.CreateChecked(n)]);
       }
     }
+
+#else
+
+#endif
   }
 }

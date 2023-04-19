@@ -42,7 +42,7 @@ namespace Flux
       if (maxValue <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxValue), $"Maximum value ({maxValue}) must be greater than 0.");
 
       var maxValueBytes = maxValue.ToByteArrayEx(out var msbIndex, out var msbValue); // Already checked for positive integer, so no padding byte is present.
-      var maxByteBitMask = msbValue.BitFoldRight(); // (byte)((1 << msbValue.GetBitLengthEx()) - 1);
+      var maxByteBitMask = (byte)((uint)msbValue).BitFoldRight(); // (byte)((1 << msbValue.GetBitLengthEx()) - 1);
       var maxIndex = maxValueBytes.Length - 1;
       var hasPaddingByte = msbIndex < maxIndex;
 
@@ -123,8 +123,8 @@ namespace Flux
       }
       while (u1 <= double.Epsilon || u2 <= double.Epsilon);
 
-      var z0 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Cos(double.Tau * u2);
-      var z1 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Sin(double.Tau * u2);
+      var z0 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Cos(System.Math.Tau * u2);
+      var z1 = System.Math.Sqrt(-2 * System.Math.Log(u1)) * System.Math.Sin(System.Math.Tau * u2);
 
       return (z0 * stdDev + mean, z1 * stdDev + mean);
     }

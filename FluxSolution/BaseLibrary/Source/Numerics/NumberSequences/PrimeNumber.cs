@@ -125,14 +125,18 @@ namespace Flux.NumberSequences
     /// <returns></returns>
     public static System.Numerics.BigInteger GetNearestPotentialPrimeMultiple(System.Numerics.BigInteger number, RoundingMode mode, out System.Numerics.BigInteger nearestPotentialPrimeMultipleOffset)
     {
-      var nm = Flux.GenericMath.NearestMultiple(number, 6, false, mode, out var nmtz, out var nmafz);
+      var nm = Flux.GenericMath.NearestMultiple((double)number, 6, false, mode, out var nmtz, out var nmafz);
 
-      nearestPotentialPrimeMultipleOffset = nmtz == nmafz ? number // If TZ and AFZ are equal (i.e. NearestMultiple(), above, returns number for both TZ and AFZ, if number is a multiple, and 'proper' is false), so number is a multiple.
-        : number - nmtz < 3 ? +1 // The difference between TZ and number is less than 3, therefor closer to TZ.
-        : nmafz - number < 3 ? -1 // The difference between AFZ and number is less than 3, therefor closer to AFZ.
+      var binm = new System.Numerics.BigInteger(nm);
+      var binmtz = new System.Numerics.BigInteger(nmtz);
+      var binmafz = new System.Numerics.BigInteger(nmafz);
+
+      nearestPotentialPrimeMultipleOffset = binmtz == binmafz ? number // If TZ and AFZ are equal (i.e. NearestMultiple(), above, returns number for both TZ and AFZ, if number is a multiple, and 'proper' is false), so number is a multiple.
+        : number - binmtz < 3 ? +1 // The difference between TZ and number is less than 3, therefor closer to TZ.
+        : binmafz - number < 3 ? -1 // The difference between AFZ and number is less than 3, therefor closer to AFZ.
         : 0; // The difference between either TZ/AFZ and number is exactly 3, therefor number is exactly halfway between TZ and AFZ.
 
-      return nm;
+      return binm;
     }
 
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPotentialPrimes(System.Numerics.BigInteger number)
@@ -340,19 +344,19 @@ namespace Flux.NumberSequences
     /// <see cref="https://en.wikipedia.org/wiki/Prime_triplet"/>
 
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger, System.Numerics.BigInteger)> GetPrimeTriplets()
-      => 0 is var index ? GetAscendingPrimes(SmallestPrime.ToType(out System.Numerics.BigInteger _)).PartitionTuple3(0, (leading, midling, trailing, index) => (leading, midling, trailing)).Where((t) => t.trailing - t.leading is var gap3to1 && gap3to1 == 6 && t.midling - t.leading is var gap2to1 && (gap2to1 == 2 || gap2to1 == 4)) : throw new System.Exception();
+      => 0 is var index ? GetAscendingPrimes((System.Numerics.BigInteger)SmallestPrime).PartitionTuple3(0, (leading, midling, trailing, index) => (leading, midling, trailing)).Where((t) => t.trailing - t.leading is var gap3to1 && gap3to1 == 6 && t.midling - t.leading is var gap2to1 && (gap2to1 == 2 || gap2to1 == 4)) : throw new System.Exception();
 
     /// <summary>Returns a sequence of super-primes, which is a subsequence of prime numbers that occupy prime-numbered positions within the sequence of all prime numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Super-prime"/>
 
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSuperPrimes()
-      => GetAscendingPrimes(SmallestPrime.ToType(out System.Numerics.BigInteger _)).Where((p, i) => IsPrimeNumber(((System.Numerics.BigInteger)i + System.Numerics.BigInteger.One)));
+      => GetAscendingPrimes((System.Numerics.BigInteger)SmallestPrime).Where((p, i) => IsPrimeNumber(((System.Numerics.BigInteger)i + System.Numerics.BigInteger.One)));
 
     /// <summary>Returns a sequence of teim primes, each of which is a pair of primes that differ by two.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Twin_prime"/>
 
     public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger, System.Numerics.BigInteger)> GetTwinPrimes()
-      => GetAscendingPrimes(SmallestPrime.ToType(out System.Numerics.BigInteger _)).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Where((t) => t.trailing - t.leading == 2);
+      => GetAscendingPrimes((System.Numerics.BigInteger)SmallestPrime).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Where((t) => t.trailing - t.leading == 2);
 
     /// <summary>Indicates whether the prime number is also an additive prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>

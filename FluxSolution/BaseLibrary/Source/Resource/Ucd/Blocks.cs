@@ -44,9 +44,12 @@ namespace Flux.Resources.Ucd
       }
     }
 
-
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture)]
     private static partial System.Text.RegularExpressions.Regex SplitRegex();
+#else
+    private static System.Text.RegularExpressions.Regex SplitRegex() => new(@"(\.\.|; )");
+#endif
 
     /// <summary>Returns Unicode blocks data. No field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetStrings()

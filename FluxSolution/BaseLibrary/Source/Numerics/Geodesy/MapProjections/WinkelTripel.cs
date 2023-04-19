@@ -1,13 +1,14 @@
-﻿namespace Flux.Numerics.MapProjections
+﻿#if NET7_0_OR_GREATER
+namespace Flux.Numerics.MapProjections
 {
   // https://en.wikipedia.org/wiki/Winkel_tripel_projection
   public readonly record struct WinkelTripelProjection
-    : IMapForwardProjectable<double>
+    : IMapForwardProjectable
   {
     public static readonly WinkelTripelProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public Numerics.CartesianCoordinate3<double> ProjectForward(Numerics.IGeographicCoordinate<double> project)
+    public Numerics.CartesianCoordinate3<double> ProjectForward(Numerics.IGeographicCoordinate project)
     {
       var lat = Units.Angle.ConvertDegreeToRadian(project.Latitude);
       var lon = Units.Angle.ConvertDegreeToRadian(project.Longitude);
@@ -25,3 +26,4 @@
   }
 
 }
+#endif

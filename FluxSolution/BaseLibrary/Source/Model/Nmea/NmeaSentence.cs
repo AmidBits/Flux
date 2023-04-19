@@ -4,9 +4,12 @@ namespace Flux.Net.Nmea
 
   public partial class NmeaSentence
   {
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<StartOfSentence>\$)?(?<SentenceContent>[A-Z]{5}[^\*]+)(?<EndOfSentence>\*)?(?<SentenceChecksum>[0-9a-fA-F]+)?(?<SentenceTermination>\r\n)?")]
     private static partial System.Text.RegularExpressions.Regex SentenceRegex();
-
+#else
+    private static System.Text.RegularExpressions.Regex SentenceRegex() => new(@"(?<StartOfSentence>\$)?(?<SentenceContent>[A-Z]{5}[^\*]+)(?<EndOfSentence>\*)?(?<SentenceChecksum>[0-9a-fA-F]+)?(?<SentenceTermination>\r\n)?");
+#endif
     protected readonly string m_raw;
     protected readonly System.Collections.Generic.IDictionary<string, string> m_metaData;
     protected readonly string[] m_values;

@@ -4,6 +4,8 @@ namespace Flux
 {
   public static partial class Enumerable
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>
     /// <para>Compute the <paramref name="median"/> of all elements in <paramref name="source"/>. This version buffers the sequence in <paramref name="orderedList"/>, to avoid multiple passes, available as an output parameter.</para>
     /// <see href="http://en.wikipedia.org/wiki/Median"/>
@@ -29,5 +31,7 @@ namespace Flux
       else
         median = TResult.CreateChecked(value); // Only one element used.
     }
+
+#endif
   }
 }

@@ -22,6 +22,8 @@ namespace Flux
 
       m_spanChar = m_span.Length > 0 ? m_span[0].ToString() : System.ReadOnlySpan<char>.Empty;
       m_spanCharIndex = 0;
+
+      m_current = default;
     }
 
     public char Current => m_current;

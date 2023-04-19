@@ -4,6 +4,8 @@ namespace Flux
 {
   public static partial class Enumerable
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>
     /// <para>Compute the <paramref name="mean"/> of all elements in <paramref name="source"/>, also return the <paramref name="count"/> and the <paramref name="sum"/> of elements as output parameters.</para>
     /// <see href="http://en.wikipedia.org/wiki/Mean"/>
@@ -24,5 +26,7 @@ namespace Flux
 
       mean = count > 0 ? TResult.CreateChecked(sum) / TResult.CreateChecked(count) : TResult.Zero;
     }
+
+#endif
   }
 }

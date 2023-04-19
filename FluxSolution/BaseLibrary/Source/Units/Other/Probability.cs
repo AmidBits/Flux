@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux.Units
 {
   /// <summary>Probability is a ratio, represented as a range [0, 1] of values where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
@@ -120,3 +121,4 @@ namespace Flux.Units
     public override string ToString() => ToQuantityString();
   }
 }
+#endif

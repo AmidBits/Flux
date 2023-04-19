@@ -649,7 +649,7 @@ namespace ConsoleApp
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
 
         if (!bst.Contains(r))
-          bst = bst.Add(r, r.ToCardinalNumeralCompoundString());
+          bst = bst.Add(r, r.ToBigInteger().ToCardinalNumeralCompoundString());
       }
 
       System.Console.WriteLine(bst.ToConsoleBlock());

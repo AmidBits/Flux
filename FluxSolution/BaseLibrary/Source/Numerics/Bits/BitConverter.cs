@@ -1,6 +1,6 @@
 namespace Flux
 {
-#if NET7_0_OR_GREATER
+  //#if NET7_0_OR_GREATER
 
   public sealed class BitConverter
   {
@@ -50,7 +50,7 @@ namespace Flux
 
     #region CopyBytes From Types
 
-#if !NOTHAPPENINGNOW
+#if NOTHAPPENINGNOW
     public void CopyBytesBool(bool value, byte[] buffer, int startAt)
       => buffer[startAt] = value ? (byte)1 : (byte)0;
     public int CopyBytesBinaryInteger<TSelf>(TSelf value, byte[] buffer, int startAt)
@@ -279,7 +279,7 @@ namespace Flux
     #endregion Static methods
   }
 
-#endif
+  //#endif
 }
 
 //namespace Flux

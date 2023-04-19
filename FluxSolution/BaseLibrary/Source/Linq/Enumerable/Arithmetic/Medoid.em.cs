@@ -4,6 +4,8 @@ namespace Flux
 {
   public static partial class Enumerable
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>
     /// <para>Compute the medoid of <paramref name="source"/>, also return the <paramref name="index"/> and the <paramref name="count"/> of elements as output parameters.</para>
     /// <see href="http://en.wikipedia.org/wiki/Medoid"/>
@@ -41,5 +43,7 @@ namespace Flux
           }
       }
     }
+
+#endif
   }
 }

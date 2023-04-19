@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux.Units
 {
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
@@ -63,3 +64,4 @@ namespace Flux.Units
     public override string ToString() => ToQuantityString();
   }
 }
+#endif

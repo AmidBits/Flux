@@ -4,9 +4,11 @@ namespace Flux
   {
     #region 3D vector (non-collection) computations
 
+#if NET7_0_OR_GREATER
     public static Numerics.CartesianCoordinate3<TResult> ToCartesianCoordinate3<TResult>(this System.Numerics.Vector3 source)
       where TResult : System.Numerics.IFloatingPoint<TResult>
       => new(TResult.CreateChecked(source.X), TResult.CreateChecked(source.Y), TResult.CreateChecked(source.Z));
+#endif
 
     #endregion 3D vector (non-collection) computations
 

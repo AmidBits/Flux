@@ -100,7 +100,7 @@ namespace Flux
 
     /// <summary>Compute the time-of-day. I.e. the number of seconds from 12 noon of the Julian Day Number part.</summary>
     public static double GetTimeSinceNoon(double julianDate)
-      => julianDate.GetFraction(out int _) * 86400d;
+      => julianDate.GetFraction(out long _) * 86400d;
 
     /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
     public static bool IsGregorianCalendar(double julianDate)

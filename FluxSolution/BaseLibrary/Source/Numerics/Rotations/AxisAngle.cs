@@ -3,56 +3,55 @@ namespace Flux
   #region ExtensionMethods
   public static partial class NumericsExtensionMethods
   {
-    public static Numerics.EulerAngles<TSelf> ToEulerAngles<TSelf>(this Numerics.AxisAngle<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.EulerAngles ToEulerAngles(this Numerics.AxisAngle source)
     {
-      var (s, c) = TSelf.SinCos(source.Angle);
+      var (s, c) = System.Math.SinCos(source.Angle);
 
-      var t = TSelf.One - c;
+      var t = 1 - c;
 
       var test = source.X * source.Y * t + source.Z * s;
 
-      if (test > TSelf.CreateChecked(0.998)) // North pole singularity detected.
+      if (test > 0.998) // North pole singularity detected.
       {
-        var (sa, ca) = TSelf.SinCos(source.Angle.Divide(2));
+        var (sa, ca) = System.Math.SinCos(source.Angle / 2);
 
         return new(
-          TSelf.Atan2(source.X * sa, ca).Multiply(2),
-          TSelf.Pi.Divide(2),
-          TSelf.Zero
+          System.Math.Atan2(source.X * sa, ca) * 2,
+          System.Math.PI / 2,
+          0
         );
       }
-      else if (test < -TSelf.CreateChecked(0.998)) // South pole singularity detected.
+      else if (test < -0.998) // South pole singularity detected.
       {
-        var (sa, ca) = TSelf.SinCos(source.Angle.Divide(2));
+        var (sa, ca) = System.Math.SinCos(source.Angle / 2);
 
         return new(
-          TSelf.Atan2(source.X * sa, ca).Multiply(-2),
-          -TSelf.Pi.Divide(2),
-          TSelf.Zero
+          System.Math.Atan2(source.X * sa, ca) * -2,
+          -System.Math.PI / 2,
+          0
         );
       }
       else
         return new(
-          TSelf.Atan2(source.Y * s - source.X * source.Z * t, TSelf.One - (source.Y * source.Y + source.Z * source.Z) * t),
-          TSelf.Asin(source.X * source.Y * t + source.Z * s),
-          TSelf.Atan2(source.X * s - source.Y * source.Z * t, TSelf.One - (source.X * source.X + source.Z * source.Z) * t)
+          System.Math.Atan2(source.Y * s - source.X * source.Z * t, 1 - (source.Y * source.Y + source.Z * source.Z) * t),
+          System.Math.Asin(source.X * source.Y * t + source.Z * s),
+          System.Math.Atan2(source.X * s - source.Y * source.Z * t, 1 - (source.X * source.X + source.Z * source.Z) * t)
         );
     }
 
-    public static (Numerics.CartesianCoordinate3<TSelf> axis, Units.Angle angle) ToQuantities<TSelf>(this Numerics.AxisAngle<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+#if NET7_0_OR_GREATER
+
+    public static (Numerics.CartesianCoordinate3<double> axis, Units.Angle angle) ToQuantities(this Numerics.AxisAngle source)
       => (
-        new Numerics.CartesianCoordinate3<TSelf>(source.X, source.Y, source.Z),
+        new Numerics.CartesianCoordinate3<double>(source.X, source.Y, source.Z),
         new Units.Angle(double.CreateChecked(source.Angle))
       );
 
-    public static Numerics.Quaternion<TSelf> ToQuaternion<TSelf>(this Numerics.AxisAngle<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Quaternion ToQuaternion(this Numerics.AxisAngle source)
     {
       var h = source.Angle.Divide(2);
 
-      var (s, w) = TSelf.SinCos(h);
+      var (s, w) = System.Math.SinCos(h);
 
       var x = source.X * s;
       var y = source.Y * s;
@@ -60,7 +59,10 @@ namespace Flux
 
       return new(x, y, z, w);
     }
+#endif
+
   }
+
   #endregion ExtensionMethods
 
   namespace Numerics
@@ -69,19 +71,18 @@ namespace Flux
     /// <remarks>All angles in radians.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Axis-angle_representation"/>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public readonly record struct AxisAngle<TSelf>
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public readonly record struct AxisAngle
     {
-      private readonly TSelf m_x;
-      private readonly TSelf m_y;
-      private readonly TSelf m_z;
-      private readonly TSelf m_angle;
+      private readonly double m_x;
+      private readonly double m_y;
+      private readonly double m_z;
+      private readonly double m_angle;
 
-      public AxisAngle(TSelf x, TSelf y, TSelf z, TSelf angle)
+      public AxisAngle(double x, double y, double z, double angle)
       {
-        var magnitude = TSelf.Sqrt(x * x + y * y + z * z);
+        var magnitude = System.Math.Sqrt(x * x + y * y + z * z);
 
-        if (magnitude == TSelf.Zero)
+        if (magnitude == 0)
           throw new ArithmeticException("Invalid axis (magnitude = 0).");
 
         m_x = x /= magnitude;
@@ -91,26 +92,28 @@ namespace Flux
         m_angle = angle;
       }
 
-      public void Deconstruct(out TSelf x, out TSelf y, out TSelf z, out TSelf angle) { x = m_x; y = m_y; z = m_z; angle = m_angle; }
+      public void Deconstruct(out double x, out double y, out double z, out double angle) { x = m_x; y = m_y; z = m_z; angle = m_angle; }
 
       /// <summary>The x-axis vector component of the rotation.</summary>
-      public TSelf X => m_x;
+      public double X => m_x;
       /// <summary>The y-axis vector component of the rotation.</summary>
-      public TSelf Y => m_y;
+      public double Y => m_y;
       /// <summary>The z-axis vector component of the rotation.</summary>
-      public TSelf Z => m_z;
+      public double Z => m_z;
       /// <summary>The angle component of the rotation.</summary>
-      public TSelf Angle => m_angle;
+      public double Angle => m_angle;
 
       /// <summary>Create a <see cref="Quantities.Angle"/> from the angle component of the rotation.</summary>
       /// <returns>The angle component as an <see cref="Quantities.Angle"/>.</returns>
       public Units.Angle ToAngle()
-        => new(double.CreateChecked(m_angle));
+        => new(m_angle);
 
-      /// <summary>Create an <see cref="CartesianCoordinate3{TSelf}"/> from the axis vector components of the rotation.</summary>
-      /// <returns>The axis vector as a <see cref="CartesianCoordinate3{TSelf}"/>.</returns>
-      public CartesianCoordinate3<TSelf> ToAxis()
+#if NET7_0_OR_GREATER
+      /// <summary>Create an <see cref="CartesianCoordinate3{double}"/> from the axis vector components of the rotation.</summary>
+      /// <returns>The axis vector as a <see cref="CartesianCoordinate3{double}"/>.</returns>
+      public CartesianCoordinate3<double> ToAxis()
         => new(m_x, m_y, m_z);
+#endif
     }
   }
 }

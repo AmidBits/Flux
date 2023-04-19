@@ -5,11 +5,11 @@
   {
     /// <summary>Converts the spherical coordinates to cartesian 3D coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static Numerics.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.CartesianCoordinate3<double> ToCartesianCoordinate3(this Numerics.ISphericalCoordinate source)
     {
-      var (si, ci) = TSelf.SinCos(source.Inclination);
-      var (sa, ca) = TSelf.SinCos(source.Azimuth);
+
+      var (si, ci) = System.Math.SinCos(source.Inclination);
+      var (sa, ca) = System.Math.SinCos(source.Azimuth);
 
       return new(
         source.Radius * si * ca,
@@ -20,10 +20,9 @@
 
     /// <summary>Converts the spherical coordinates to cylindrical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static Numerics.CylindricalCoordinate<TSelf> ToCylindricalCoordinates<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.CylindricalCoordinate ToCylindricalCoordinate(this Numerics.ISphericalCoordinate source)
     {
-      var (si, ci) = TSelf.SinCos(source.Inclination);
+      var (si, ci) = System.Math.SinCos(source.Inclination);
 
       return new(
         source.Radius * si,
@@ -34,20 +33,11 @@
 
     /// <summary>Converts the spherical coordinates to a geographic coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static Numerics.GeographicCoordinate ToGeographicCoordinates<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.GeographicCoordinate ToGeographicCoordinate(this Numerics.ISphericalCoordinate source)
       => new(
-        Units.Angle.ConvertRadianToDegree(double.CreateChecked(TSelf.Pi - source.Inclination - TSelf.Pi.Divide(2))),
-        Units.Angle.ConvertRadianToDegree(double.CreateChecked(source.Azimuth - TSelf.Pi)),
-        double.CreateChecked(source.Radius)
-      );
-
-    public static (Units.Length radius, Units.Angle inclination, Units.Angle azimuth) ToQuantities<TSelf>(this Numerics.ISphericalCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => (
-        new Units.Length(double.CreateChecked(source.Radius)),
-        new Units.Angle(double.CreateChecked(source.Inclination)),
-        new Units.Angle(double.CreateChecked(source.Azimuth))
+        Units.Angle.ConvertRadianToDegree(System.Math.PI - source.Inclination - System.Math.PI / 2),
+        Units.Angle.ConvertRadianToDegree(source.Azimuth - System.Math.PI),
+        source.Radius
       );
   }
   #endregion ExtensionMethods
@@ -56,25 +46,24 @@
   {
     /// <summary>Spherical coordinate.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
-    public interface ISphericalCoordinate<TSelf>
-    : System.IFormattable
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public interface ISphericalCoordinate
+      : System.IFormattable
     {
       /// <summary>Radius. A.k.a. radial distance, radial coordinate.</summary>
       /// <remarks>If the radius is zero, both azimuth and inclination are arbitrary.</remarks>
-      TSelf Radius { get; init; }
+      double Radius { get; init; }
       /// <summary>The inclination angle in radians. A.k.a. polar angle, colatitude, zenith angle, normal angle.</summary>
       /// <remarks>If the inclination is zero or 180 degrees (π radians), the azimuth is arbitrary.</remarks>
-      TSelf Inclination { get; init; }
+      double Inclination { get; init; }
       /// <summary>The azimuthal angle in radians.</summary>
-      TSelf Azimuth { get; init; }
+      double Azimuth { get; init; }
 
       /// <summary>The elevation angle in radians. This is an option/alternative to <see cref="Inclination"/>.</summary>
       /// <remarks>The elevation angle is 90 degrees (π/2 radians) minus the <see cref="Inclination"/> angle.</remarks>
-      TSelf Elevation { get; init; }
+      double Elevation { get; init; }
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Inclination = {new Units.Angle(double.CreateChecked(Inclination)).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} (Elevation = {new Units.Angle(double.CreateChecked(Elevation)).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)}), Azimuth = {new Units.Angle(double.CreateChecked(Azimuth)).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
+        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Inclination = {new Units.Angle(Inclination).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} (Elevation = {new Units.Angle(Elevation).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)}), Azimuth = {new Units.Angle(Azimuth).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
     }
   }
 }

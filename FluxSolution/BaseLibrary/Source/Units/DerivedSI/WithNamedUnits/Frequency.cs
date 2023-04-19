@@ -53,7 +53,7 @@ namespace Flux.Units
     /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
 
     public AngularVelocity ToAngularVelocity()
-      => new(double.Tau * m_hertz);
+      => new(System.Math.Tau * m_hertz);
 
     /// <summary>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</summary>
 

@@ -6,7 +6,11 @@ namespace Flux
   public readonly partial record struct Version
     : IComparable<Version>, IEquatable<Version>
   {
-    [System.Text.RegularExpressions.GeneratedRegex("[^0-9]+")] private static partial System.Text.RegularExpressions.Regex RegexSplit();
+#if NET7_0_OR_GREATER
+    [System.Text.RegularExpressions.GeneratedRegex(@"[^0-9]+")] private static partial System.Text.RegularExpressions.Regex RegexSplit();
+#else
+    private static System.Text.RegularExpressions.Regex RegexSplit() => new(@"[^0-9]+");
+#endif
 
     private readonly int[] m_parts;
 
@@ -73,7 +77,7 @@ namespace Flux
       var sl = m_parts.Length;
       var tl = other.m_parts.Length;
 
-      var minLength = int.Min(sl, tl);
+      var minLength = System.Math.Min(sl, tl);
 
       for (var index = 0; index < minLength; index++)
         if (m_parts[index] is var sv && other.m_parts[index] is var tv && sv != tv)

@@ -13,6 +13,6 @@ namespace Flux
     /// <see cref="https://www.regular-expressions.info/balancing.html"/>
     /// <example>See below for balanced parenthesis.</example>
     public static bool IsBalancedConstruct(this System.ReadOnlySpan<char> source, string open, string match, string close)
-      => System.Text.RegularExpressions.Regex.IsMatch(source, CreateBalancedExpression(open, match, close));
+      => System.Text.RegularExpressions.Regex.IsMatch(source.ToString(), CreateBalancedExpression(open, match, close));
   }
 }

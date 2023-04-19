@@ -45,11 +45,11 @@ namespace Flux.Units
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     /// <param name="lat">The latitude in radians.</param>
-    public static double GetApproximateLatitudinalHeight(double lat) => 111132.954 + -559.822 * double.Cos(2 * lat) + 1.175 * double.Cos(4 * lat) + -0.0023 * double.Cos(6 * lat);
+    public static double GetApproximateLatitudinalHeight(double lat) => 111132.954 + -559.822 * System.Math.Cos(2 * lat) + 1.175 * System.Math.Cos(4 * lat) + -0.0023 * System.Math.Cos(6 * lat);
 
     /// <summary>Computes the approximate length in meters per degree of longitudinal at the specified latitude.</summary>
     /// <param name="lat">The latitude in radians.</param>
-    public static double GetApproximateLongitudinalWidth(double lat) => 111412.84 * double.Cos(lat) + -93.5 * double.Cos(3 * lat) + 0.118 * double.Cos(5 * lat);
+    public static double GetApproximateLongitudinalWidth(double lat) => 111412.84 * System.Math.Cos(lat) + -93.5 * System.Math.Cos(3 * lat) + 0.118 * System.Math.Cos(5 * lat);
 
     /// <summary>Determines an approximate radius in meters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
@@ -57,20 +57,20 @@ namespace Flux.Units
     /// <param name="lat">The latitude in radians.</param>
     public static double GetApproximateRadius(double lat, EllipsoidReference ellipsoidReference)
     {
-      var cos = double.Cos(lat);
-      var sin = double.Sin(lat);
+      var cos = System.Math.Cos(lat);
+      var sin = System.Math.Sin(lat);
 
-      var numerator = double.Pow(double.Pow(ellipsoidReference.EquatorialRadius.Value, 2) * cos, 2) + double.Pow(double.Pow(ellipsoidReference.PolarRadius.Value, 2) * sin, 2);
-      var denominator = double.Pow(ellipsoidReference.EquatorialRadius.Value * cos, 2) + double.Pow(ellipsoidReference.PolarRadius.Value * sin, 2);
+      var numerator = System.Math.Pow(System.Math.Pow(ellipsoidReference.EquatorialRadius.Value, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(ellipsoidReference.PolarRadius.Value, 2) * sin, 2);
+      var denominator = System.Math.Pow(ellipsoidReference.EquatorialRadius.Value * cos, 2) + System.Math.Pow(ellipsoidReference.PolarRadius.Value * sin, 2);
 
-      return double.Sqrt(numerator / denominator);
+      return System.Math.Sqrt(numerator / denominator);
     }
 
     /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
     /// <param name="lat">The latitude in radians.</param>
     /// <param name="azm">The azimuth in radians.</param>
     /// <returns></returns>
-    public static double GetMaximumLatitude(double lat, double azm) => double.Acos(double.Abs(double.Sin(azm) * double.Cos(lat)));
+    public static double GetMaximumLatitude(double lat, double azm) => System.Math.Acos(System.Math.Abs(System.Math.Sin(azm) * System.Math.Cos(lat)));
 
     #endregion Static methods
 

@@ -7,7 +7,7 @@ namespace Flux
       => 1d - GetDamerauLevenshteinDistanceDerivedSmd(source, target, equalityComparer);
     public static double GetDamerauLevenshteinDistanceDerivedSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
-      => (double)GetDamerauLevenshteinDistanceMetric(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
+      => (double)GetDamerauLevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
     /// <summary>
     /// <para>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</para>
@@ -60,12 +60,12 @@ namespace Flux
 
           var isEqual = equalityComparer.Equals(sourceItem, targetItem);
 
-          ldg[si + 1, ti + 1] = int.Min(
-            int.Min(
+          ldg[si + 1, ti + 1] = System.Math.Min(
+            System.Math.Min(
               ldg[si, ti + 1] + 1, // Deletion.
               ldg[si + 1, ti] + 1 // Insertion
             ),
-            int.Min(
+            System.Math.Min(
               isEqual ? ldg[si, ti] : ldg[si, ti] + 1, // Substitution.
               ldg[lsi, ltim] + (si - lsi - 1) + 1 + (ti - ltim - 1) // Transposition.
             )
@@ -154,12 +154,12 @@ namespace Flux
 
           var isEqual = equalityComparer.Equals(sourceItem, targetItem);
 
-          ldg[si + 1, ti + 1] = double.Min(
-            double.Min(
+          ldg[si + 1, ti + 1] = System.Math.Min(
+            System.Math.Min(
               ldg[si, ti + 1] + costOfDeletion,
               ldg[si + 1, ti] + costOfInsertion
             ),
-            double.Min(
+            System.Math.Min(
               isEqual ? ldg[si, ti] : ldg[si, ti] + costOfSubstitution,
               ldg[lsi, ltim] + (si - lsi - 1) + costOfTransposition + (ti - ltim - 1)
             )

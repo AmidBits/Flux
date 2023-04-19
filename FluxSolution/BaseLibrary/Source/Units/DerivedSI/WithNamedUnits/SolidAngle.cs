@@ -33,7 +33,7 @@ namespace Flux.Units
     public SolidAngle(double value, SolidAngleUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        SolidAngleUnit.Spat => value / (double.Tau + double.Tau),
+        SolidAngleUnit.Spat => value / (System.Math.Tau + System.Math.Tau),
         SolidAngleUnit.Steradian => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -81,7 +81,7 @@ namespace Flux.Units
     public double ToUnitValue(SolidAngleUnit unit = DefaultUnit)
       => unit switch
       {
-        SolidAngleUnit.Spat => m_value * (double.Tau + double.Tau),
+        SolidAngleUnit.Spat => m_value * (System.Math.Tau + System.Math.Tau),
         SolidAngleUnit.Steradian => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };

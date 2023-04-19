@@ -19,11 +19,8 @@ namespace Flux
     /// <remarks>BitLength(value) is equal to 1 + Log2(value).</remarks>
     public static int BitLength(this System.Numerics.BigInteger value) => (int)value.GetBitLength();
 
-    public static int BitLength(this int value) => unchecked((uint)value).BitLength();
-    public static int BitLength(this long value) => unchecked((ulong)value).BitLength();
-
-    [System.CLSCompliant(false)] public static int BitLength(this uint value) => 1 + System.Numerics.BitOperations.Log2(value);
-    [System.CLSCompliant(false)] public static int BitLength(this ulong value) => 1 + System.Numerics.BitOperations.Log2(value);
+    public static int BitLength(this int value) => 1 + System.Numerics.BitOperations.Log2(unchecked((uint)value));
+    public static int BitLength(this long value) => 1 + System.Numerics.BitOperations.Log2(unchecked((ulong)value));
 
 #endif
   }

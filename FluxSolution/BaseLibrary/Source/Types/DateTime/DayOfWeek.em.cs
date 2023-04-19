@@ -11,7 +11,7 @@ namespace Flux
     {
       LocateNearestDayOfWeek(source, dayOfWeek, proper, out nearestPrevious, out nearestNext);
 
-      return new System.DateTime(BoundaryRounding<long, long>.Round(source.Ticks, mode, nearestPrevious.Ticks, nearestNext.Ticks));
+      return new System.DateTime(System.Convert.ToInt64(BoundaryRounding<long, long>.Round(source.Ticks, mode, nearestPrevious.Ticks, nearestNext.Ticks)));
     }
 
 

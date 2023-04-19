@@ -7,6 +7,6 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Overlap_coefficient"/>
     /// </summary>
     public static double OverlapCoefficient<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)source.Intersect(target, equalityComparer).Length / (double)int.Min(source.Length, target.Length);
+      => (double)source.Intersect(target, equalityComparer).Length / (double)System.Math.Min(source.Length, target.Length);
   }
 }

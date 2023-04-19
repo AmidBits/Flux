@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux.Numerics
 {
   /// <summary>A cube hex coordinate system.</summary>
@@ -41,3 +42,4 @@ namespace Flux.Numerics
     public override string ToString() => ((IHexCoordinate<TSelf>)this).ToString(null, null);
   }
 }
+#endif

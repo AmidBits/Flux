@@ -1,5 +1,6 @@
 ﻿namespace Flux
 {
+#if NET7_0_OR_GREATER
   #region ExtensionMethods
   public static partial class NumericsExtensionMethods
   {
@@ -144,12 +145,12 @@
       => new(double.CreateChecked(source.X), double.CreateChecked(source.Y), double.CreateChecked(source.Z), w);
 
     /// <summary>Creates a new <see cref="Numerics.CylindricalCoordinate{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static Numerics.CylindricalCoordinate<TSelf> ToCylindricalCoordinate<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
+    public static Numerics.CylindricalCoordinate ToCylindricalCoordinate<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
-        TSelf.Sqrt(source.X * source.X + source.Y * source.Y),
-        (TSelf.Atan2(source.Y, source.X) + TSelf.Tau) % TSelf.Tau,
-        source.Z
+        double.CreateChecked(TSelf.Sqrt(source.X * source.X + source.Y * source.Y)),
+        double.CreateChecked((TSelf.Atan2(source.Y, source.X) + TSelf.Tau) % TSelf.Tau),
+        double.CreateChecked(source.Z)
       );
 
     /// <summary>Creates a new <see cref="Numerics.HexCoordinate{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/>.</summary>
@@ -165,39 +166,38 @@
     /// <para><see href="http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final"/></para>
     /// <para><see href="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/></para>
     /// </summary>
-    public static Numerics.Quaternion<TSelf> ToQuaternion<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source, Numerics.ICartesianCoordinate3<TSelf> target)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Quaternion ToQuaternion(this Numerics.ICartesianCoordinate3<double> source, Numerics.ICartesianCoordinate3<double> target)
     {
-      var norm_u_norm_v = TSelf.Sqrt(Numerics.ICartesianCoordinate3<TSelf>.DotProduct(source, source) * Numerics.ICartesianCoordinate3<TSelf>.DotProduct(target, target));
-      var real_part = norm_u_norm_v + Numerics.ICartesianCoordinate3<TSelf>.DotProduct(source, target);
+      var norm_u_norm_v = System.Math.Sqrt(Numerics.ICartesianCoordinate3<double>.DotProduct(source, source) * Numerics.ICartesianCoordinate3<double>.DotProduct(target, target));
+      var real_part = norm_u_norm_v + Numerics.ICartesianCoordinate3<double>.DotProduct(source, target);
 
-      Numerics.CartesianCoordinate3<TSelf> w;
+      Numerics.ICartesianCoordinate3<double> w;
 
-      if (real_part < TSelf.CreateChecked(GenericMath.Epsilon1E7) * norm_u_norm_v)
+      if (real_part < GenericMath.Epsilon1E7 * norm_u_norm_v)
       {
-        real_part = TSelf.Zero;
+        real_part = 0;
 
         // If u and v are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis. Axis normalisation can happen later, when we normalise the quaternion.
-        w = TSelf.Abs(source.X) > TSelf.Abs(source.Z) ? new Numerics.CartesianCoordinate3<TSelf>(-source.Y, source.X, TSelf.Zero) : new Numerics.CartesianCoordinate3<TSelf>(TSelf.Zero, -source.Z, source.Y);
+        w = System.Math.Abs(source.X) > System.Math.Abs(source.Z) ? new Numerics.CartesianCoordinate3<double>(-source.Y, source.X, 0) : new Numerics.CartesianCoordinate3<double>(0, -source.Z, source.Y);
       }
       else
       {
-        w = Numerics.ICartesianCoordinate3<TSelf>.CrossProduct(source, target);
+        w = Numerics.ICartesianCoordinate3<double>.CrossProduct(source, target);
       }
 
-      return new Numerics.Quaternion<TSelf>(w.X, w.Y, w.Z, real_part).Normalized();
+      return new Numerics.Quaternion(w.X, w.Y, w.Z, real_part).Normalized();
     }
 
     /// <summary>Creates a new <see cref="Numerics.SphericalCoordinate{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static Numerics.SphericalCoordinate<TSelf> ToSphericalCoordinate<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
+    public static Numerics.SphericalCoordinate ToSphericalCoordinate<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
       var x2y2 = source.X * source.X + source.Y * source.Y;
 
       return new(
-        TSelf.Sqrt(x2y2 + source.Z * source.Z),
-        TSelf.Atan2(TSelf.Sqrt(x2y2), source.Z) + TSelf.Pi,
-        TSelf.Atan2(source.Y, source.X) + TSelf.Pi
+        double.CreateChecked(TSelf.Sqrt(x2y2 + source.Z * source.Z)),
+        double.CreateChecked(TSelf.Atan2(TSelf.Sqrt(x2y2), source.Z) + TSelf.Pi),
+        double.CreateChecked(TSelf.Atan2(source.Y, source.X) + TSelf.Pi)
       );
     }
 
@@ -221,21 +221,24 @@
       => source.ToVector256(TSelf.Zero);
   }
   #endregion ExtensionMethods
+#endif
 
   namespace Numerics
   {
-#if NET7_0_OR_GREATER
     /// <summary>A 3D cartesian coordinate.</summary>
     public interface ICartesianCoordinate3<TSelf>
       : ICartesianCoordinate<TSelf>
+#if NET7_0_OR_GREATER
       where TSelf : System.Numerics.INumber<TSelf>
+#endif
     {
       TSelf X { get; }
       TSelf Y { get; }
       TSelf Z { get; }
 
+#if NET7_0_OR_GREATER
       /// <summary>Returns the cross product of two 3D vectors as out variables.</summary>
-      static CartesianCoordinate3<TSelf> CrossProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b) => new(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
+      static ICartesianCoordinate3<TSelf> CrossProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b) => new CartesianCoordinate3<TSelf>(a.Y * b.Z - a.Z * b.Y, a.Z * b.X - a.X * b.Z, a.X * b.Y - a.Y * b.X);
 
       /// <summary>Returns the dot product of two normalized 3D vectors.</summary>
       static TSelf DotProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b) => a.X * b.X + a.Y * b.Y + a.Z * b.Z;
@@ -246,8 +249,8 @@
 
       /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
-      static CartesianCoordinate3<TSelf> VectorTripleProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b, ICartesianCoordinate3<TSelf> c) => CrossProduct(a, CrossProduct(b, c));
-    }
+      static ICartesianCoordinate3<TSelf> VectorTripleProduct(ICartesianCoordinate3<TSelf> a, ICartesianCoordinate3<TSelf> b, ICartesianCoordinate3<TSelf> c) => CrossProduct(a, CrossProduct(b, c));
 #endif
+    }
   }
 }

@@ -25,6 +25,8 @@ namespace Flux.Numerics
 
     public static int AssertExponent(int exponent) => exponent >= 0 && exponent <= 2047 ? exponent : throw new System.ArgumentOutOfRangeException(nameof(exponent), "A value between 0 and 2047 is required.");
     public static int AssertSignBit(int signBit) => signBit >= 0 && signBit <= 1 ? signBit : throw new System.ArgumentOutOfRangeException(nameof(signBit), "A value of 0 or 1 is required.");
+#if NET7_0_OR_GREATER
     public static System.Int128 AssertSignificandPrecision(long significandPrecision) => significandPrecision >= 0 && significandPrecision <= ((System.Int128.One << 52) - 1) ? significandPrecision : throw new System.ArgumentOutOfRangeException(nameof(significandPrecision), "An absolute 52-bit value is required.");
+#endif
   }
 }

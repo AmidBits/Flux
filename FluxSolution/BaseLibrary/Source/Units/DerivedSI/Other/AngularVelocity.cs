@@ -35,12 +35,12 @@ namespace Flux.Units
       };
 
     public Frequency ToFrequency()
-      => new(m_value / double.Tau);
+      => new(m_value / System.Math.Tau);
 
     #region Static methods
     /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
     public static double ConvertAngularVelocityToRotationalSpeed(double radPerSecond)
-      => radPerSecond / double.Tau;
+      => radPerSecond / System.Math.Tau;
 
     /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
     public static double ConvertRotationalSpeedToAngularVelocity(double revolutionPerMinute)

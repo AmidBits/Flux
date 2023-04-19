@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class GenericMath
@@ -13,3 +14,4 @@ namespace Flux
     public static TNumber Subtract<TNumber, TScalar>(this TNumber value, TScalar scalar) where TNumber : System.Numerics.INumberBase<TNumber> where TScalar : System.Numerics.INumberBase<TScalar> => value - TNumber.CreateChecked(scalar);
   }
 }
+#endif

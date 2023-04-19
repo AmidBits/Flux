@@ -1,16 +1,15 @@
+#if NET7_0_OR_GREATER
 namespace Flux
 {
   #region ExtensionMethods
   public static partial class NumericsExtensionMethods
   {
     /// <summary>Computes the determinant (generally) of the matrix.</summary>
-    public static TSelf GetDeterminantGeneral<TSelf>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static double GetDeterminantGeneral(this Numerics.IMatrix4 source)
       => source.M14 * source.M23 * source.M32 * source.M41 - source.M13 * source.M24 * source.M32 * source.M41 - source.M14 * source.M22 * source.M33 * source.M41 + source.M12 * source.M24 * source.M33 * source.M41 + source.M13 * source.M22 * source.M34 * source.M41 - source.M12 * source.M23 * source.M34 * source.M41 - source.M14 * source.M23 * source.M31 * source.M42 + source.M13 * source.M24 * source.M31 * source.M42 + source.M14 * source.M21 * source.M33 * source.M42 - source.M11 * source.M24 * source.M33 * source.M42 - source.M13 * source.M21 * source.M34 * source.M42 + source.M11 * source.M23 * source.M34 * source.M42 + source.M14 * source.M22 * source.M31 * source.M43 - source.M12 * source.M24 * source.M31 * source.M43 - source.M14 * source.M21 * source.M32 * source.M43 + source.M11 * source.M24 * source.M32 * source.M43 + source.M12 * source.M21 * source.M34 * source.M43 - source.M11 * source.M22 * source.M34 * source.M43 - source.M13 * source.M22 * source.M31 * source.M44 + source.M12 * source.M23 * source.M31 * source.M44 + source.M13 * source.M21 * source.M32 * source.M44 - source.M11 * source.M23 * source.M32 * source.M44 - source.M12 * source.M21 * source.M33 * source.M44 + source.M11 * source.M22 * source.M33 * source.M44;
 
     /// <summary>Computes the determinant (optimized) of the matrix.</summary>
-    public static TSelf GetDeterminantOptimized<TSelf>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static double GetDeterminantOptimized(this Numerics.IMatrix4 source)
     {
       // | a b c d |     | f g h |     | e g h |     | e f h |     | e f g |
       // | e f g h | = a | j k l | - b | i k l | + c | i j l | - d | i j k |
@@ -39,10 +38,10 @@ namespace Flux
       // add: 6 + 8 + 3 = 17
       // mul: 12 + 16 = 28
 
-      TSelf a = source.M11, b = source.M12, c = source.M13, d = source.M14;
-      TSelf e = source.M21, f = source.M22, g = source.M23, h = source.M24;
-      TSelf i = source.M31, j = source.M32, k = source.M33, l = source.M34;
-      TSelf m = source.M41, n = source.M42, o = source.M43, p = source.M44;
+      double a = source.M11, b = source.M12, c = source.M13, d = source.M14;
+      double e = source.M21, f = source.M22, g = source.M23, h = source.M24;
+      double i = source.M31, j = source.M32, k = source.M33, l = source.M34;
+      double m = source.M41, n = source.M42, o = source.M43, p = source.M44;
 
       var kp_lo = k * p - l * o;
       var jp_ln = j * p - l * n;
@@ -58,10 +57,9 @@ namespace Flux
     }
 
     /// <summary>Computes the general inverse of the matrix.</summary>
-    public static Numerics.Matrix4<TSelf> GetInverseGeneral<TSelf>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Matrix4 GetInverseGeneral<TSelf>(this Numerics.IMatrix4 source)
     {
-      var det = TSelf.One / source.GetDeterminantGeneral();
+      var det = 1 / source.GetDeterminantGeneral();
 
       return new(
         (source.M23 * source.M34 * source.M42 - source.M24 * source.M33 * source.M42 + source.M24 * source.M32 * source.M43 - source.M22 * source.M34 * source.M43 - source.M23 * source.M32 * source.M44 + source.M22 * source.M33 * source.M44) * det,
@@ -88,8 +86,7 @@ namespace Flux
 
     /// <summary>Linearly interpolates between the corresponding values of two matrices.</summary>
     /// <param name="amount">The relative weight of the second source matrix.</param>
-    public static Numerics.Matrix4<TSelf> Lerp<TSelf>(this Numerics.IMatrix4<TSelf> m1, Numerics.IMatrix4<TSelf> m2, TSelf amount)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Matrix4 Lerp(this Numerics.IMatrix4 m1, Numerics.IMatrix4 m2, double amount)
       => new(
         // First row
         m1.M11 + (m2.M11 - m1.M11) * amount,
@@ -114,8 +111,7 @@ namespace Flux
       );
 
     /// <summary>Creates a new matrix with the elements negated.</summary>
-    public static Numerics.Matrix4<TSelf> Negate<TSelf>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Matrix4 Negate(this Numerics.IMatrix4 source)
       => new(-source.M11, -source.M12, -source.M13, -source.M14, -source.M21, -source.M22, -source.M23, -source.M24, -source.M31, -source.M32, -source.M33, -source.M34, -source.M41, -source.M42, -source.M43, -source.M44);
 
     /// <summary>Calculates the determinant of the matrix.</summary>
@@ -332,9 +328,8 @@ namespace Flux
     //  return true;
     //}
 
-    public static TSelf[,] ToArray<TSelf>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => new TSelf[,]
+    public static double[,] ToArray(this Numerics.IMatrix4 source)
+      => new double[,]
       {
         { source.M11, source.M12, source.M13, source.M14 },
         { source.M21, source.M22, source.M23, source.M24 },
@@ -342,43 +337,29 @@ namespace Flux
         { source.M41, source.M42, source.M43, source.M44 }
       };
 
-    public static Numerics.EulerAngles<TSelf> ToEulerAnglesTaitBryanZYX<TSelf>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.EulerAngles ToEulerAnglesTaitBryanZYX(this Numerics.IMatrix4 source)
       => new(
-        TSelf.Atan2(source.M11, source.M21),
-        TSelf.Atan2(TSelf.Sqrt(TSelf.One - source.M31 * source.M31), -source.M31),
-        TSelf.Atan2(source.M33, source.M32)
+        System.Math.Atan2(source.M11, source.M21),
+        System.Math.Atan2(System.Math.Sqrt(1 - source.M31 * source.M31), -source.M31),
+        System.Math.Atan2(source.M33, source.M32)
       );
 
-    public static Numerics.EulerAngles<TSelf> ToEulerAnglesProperEulerZXZ<TSelf>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.EulerAngles ToEulerAnglesProperEulerZXZ(this Numerics.IMatrix4 source)
       => new(
-        TSelf.Atan2(-source.M23, source.M13),
-        TSelf.Atan2(source.M33, TSelf.Sqrt(TSelf.One - source.M33 * source.M33)),
-        TSelf.Atan2(source.M32, source.M31)
+        System.Math.Atan2(-source.M23, source.M13),
+        System.Math.Atan2(source.M33, System.Math.Sqrt(1 - source.M33 * source.M33)),
+        System.Math.Atan2(source.M32, source.M31)
       );
 
-    public static System.Numerics.Matrix4x4 ToMatrix4x4<TSelf>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static System.Numerics.Matrix4x4 ToMatrix4x4(this Numerics.IMatrix4 source)
       => new(
-        float.CreateChecked(source.M11), float.CreateChecked(source.M12), float.CreateChecked(source.M13), float.CreateChecked(source.M14),
-        float.CreateChecked(source.M21), float.CreateChecked(source.M22), float.CreateChecked(source.M23), float.CreateChecked(source.M24),
-        float.CreateChecked(source.M31), float.CreateChecked(source.M32), float.CreateChecked(source.M33), float.CreateChecked(source.M34),
-        float.CreateChecked(source.M41), float.CreateChecked(source.M42), float.CreateChecked(source.M43), float.CreateChecked(source.M44)
+        (float)source.M11, (float)source.M12, (float)source.M13, (float)source.M14,
+        (float)source.M21, (float)source.M22, (float)source.M23, (float)source.M24,
+        (float)source.M31, (float)source.M32, (float)source.M33, (float)source.M34,
+        (float)source.M41, (float)source.M42, (float)source.M43, (float)source.M44
       );
 
-    public static Numerics.Matrix4<TResult> ToMatrix4<TSelf, TResult>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      where TResult : System.Numerics.IFloatingPointIeee754<TResult>
-      => new(
-        TResult.CreateChecked(source.M11), TResult.CreateChecked(source.M12), TResult.CreateChecked(source.M13), TResult.CreateChecked(source.M14),
-        TResult.CreateChecked(source.M21), TResult.CreateChecked(source.M22), TResult.CreateChecked(source.M23), TResult.CreateChecked(source.M24),
-        TResult.CreateChecked(source.M31), TResult.CreateChecked(source.M32), TResult.CreateChecked(source.M33), TResult.CreateChecked(source.M34),
-        TResult.CreateChecked(source.M41), TResult.CreateChecked(source.M42), TResult.CreateChecked(source.M43), TResult.CreateChecked(source.M44)
-      );
-
-    public static Numerics.CartesianCoordinate3<TSelf> Transform<TSelf>(this Numerics.IMatrix4<TSelf> source, Numerics.ICartesianCoordinate3<TSelf> vector)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.CartesianCoordinate3<double> Transform(this Numerics.IMatrix4 source, Numerics.ICartesianCoordinate3<double> vector)
       => new(
         vector.X * source.M11 + vector.Y * source.M12 + vector.Z * source.M13,
         vector.X * source.M21 + vector.Y * source.M22 + vector.Z * source.M23,
@@ -388,8 +369,7 @@ namespace Flux
     /// <summary>Transforms the given matrix by applying the given Quaternion rotation.</summary>
     /// <param name="source">The source matrix to transform.</param>
     /// <param name="rotation">The rotation to apply.</param>
-    public static Numerics.Matrix4<TSelf> Transform<TSelf>(this Numerics.IMatrix4<TSelf> source, Numerics.IQuaternion<TSelf> rotation)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Matrix4 Transform(this Numerics.IMatrix4 source, Numerics.IQuaternion rotation)
     {
       // Compute rotation matrix.
       var x2 = rotation.X + rotation.X;
@@ -406,17 +386,17 @@ namespace Flux
       var yz2 = rotation.Y * z2;
       var zz2 = rotation.Z * z2;
 
-      var q11 = TSelf.One - yy2 - zz2;
+      var q11 = 1 - yy2 - zz2;
       var q21 = xy2 - wz2;
       var q31 = xz2 + wy2;
 
       var q12 = xy2 + wz2;
-      var q22 = TSelf.One - xx2 - zz2;
+      var q22 = 1 - xx2 - zz2;
       var q32 = yz2 - wx2;
 
       var q13 = xz2 - wy2;
       var q23 = yz2 + wx2;
-      var q33 = TSelf.One - xx2 - yy2;
+      var q33 = 1 - xx2 - yy2;
 
       return new
       (
@@ -444,16 +424,14 @@ namespace Flux
     }
 
     /// <summary>Creates a new matrix with the rows and columns transposed.</summary>
-    public static Numerics.Matrix4<TSelf> Transpose<TSelf>(this Numerics.IMatrix4<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Matrix4 Transpose(this Numerics.IMatrix4 source)
       => new(source.M11, source.M21, source.M31, source.M41, source.M12, source.M22, source.M32, source.M42, source.M13, source.M23, source.M33, source.M43, source.M14, source.M24, source.M34, source.M44);
 
     /// <summary>Attempts to calculate the inverse of the given matrix. If successful, result will contain the inverted matrix.</summary>
     /// <param name="matrix">The source matrix to invert.</param>
     /// <param name="result">If successful, contains the inverted matrix.</param>
     /// <returns>True if the source matrix could be inverted; False otherwise.</returns>
-    public static bool TryGetInverseOptimized<TSelf>(this Numerics.IMatrix4<TSelf> source, out Numerics.Matrix4<TSelf> result)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static bool TryGetInverseOptimized(this Numerics.IMatrix4 source, out Numerics.Matrix4 result)
     {
       //                                       -1
       // If you have matrix M, inverse Matrix M   can compute
@@ -547,10 +525,10 @@ namespace Flux
       //
       // Cost of operation
       // 53 adds, 104 muls, and 1 div.
-      TSelf a = source.M11, b = source.M12, c = source.M13, d = source.M14;
-      TSelf e = source.M21, f = source.M22, g = source.M23, h = source.M24;
-      TSelf i = source.M31, j = source.M32, k = source.M33, l = source.M34;
-      TSelf m = source.M41, n = source.M42, o = source.M43, p = source.M44;
+      double a = source.M11, b = source.M12, c = source.M13, d = source.M14;
+      double e = source.M21, f = source.M22, g = source.M23, h = source.M24;
+      double i = source.M31, j = source.M32, k = source.M33, l = source.M34;
+      double m = source.M41, n = source.M42, o = source.M43, p = source.M44;
 
       var kp_lo = k * p - l * o;
       var jp_ln = j * p - l * n;
@@ -566,14 +544,14 @@ namespace Flux
 
       var det = a * a11 + b * a12 + c * a13 + d * a14;
 
-      if (TSelf.Abs(det) < TSelf.Epsilon)
+      if (double.Abs(det) < double.Epsilon)
       {
-        result = new(TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN, TSelf.NaN);
+        result = new(double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, double.NaN);
 
         return false;
       }
 
-      TSelf invDet = TSelf.One / det;
+      var invDet = 1 / det;
 
       var m11 = a11 * invDet;
       var m21 = a12 * invDet;
@@ -618,41 +596,41 @@ namespace Flux
 
   namespace Numerics
   {
-    public interface IMatrix4<TSelf>
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public interface IMatrix4
     {
       /// <summary>Value at row 1, column 1 of the matrix.</summary>
-      public TSelf M11 { get; }
+      public double M11 { get; }
       /// <summary>Value at row 1, column 2 of the matrix.</summary>
-      public TSelf M12 { get; }
+      public double M12 { get; }
       /// <summary>Value at row 1, column 3 of the matrix.</summary>
-      public TSelf M13 { get; }
+      public double M13 { get; }
       /// <summary>Value at row 1, column 4 of the matrix.</summary>
-      public TSelf M14 { get; }
+      public double M14 { get; }
       /// <summary>Value at row 2, column 1 of the matrix.</summary>
-      public TSelf M21 { get; }
+      public double M21 { get; }
       /// <summary>Value at row 2, column 2 of the matrix.</summary>
-      public TSelf M22 { get; }
+      public double M22 { get; }
       /// <summary>Value at row 2, column 3 of the matrix.</summary>
-      public TSelf M23 { get; }
+      public double M23 { get; }
       /// <summary>Value at row 2, column 4 of the matrix.</summary>
-      public TSelf M24 { get; }
+      public double M24 { get; }
       /// <summary>Value at row 3, column 1 of the matrix.</summary>
-      public TSelf M31 { get; }
+      public double M31 { get; }
       /// <summary>Value at row 3, column 2 of the matrix.</summary>
-      public TSelf M32 { get; }
+      public double M32 { get; }
       /// <summary>Value at row 3, column 3 of the matrix.</summary>
-      public TSelf M33 { get; }
+      public double M33 { get; }
       /// <summary>Value at row 3, column 4 of the matrix.</summary>
-      public TSelf M34 { get; }
+      public double M34 { get; }
       /// <summary>Value at row 4, column 1 of the matrix.</summary>
-      public TSelf M41 { get; }
+      public double M41 { get; }
       /// <summary>Value at row 4, column 2 of the matrix.</summary>
-      public TSelf M42 { get; }
+      public double M42 { get; }
       /// <summary>Value at row 4, column 3 of the matrix.</summary>
-      public TSelf M43 { get; }
+      public double M43 { get; }
       /// <summary>Value at row 4, column 4 of the matrix.</summary>
-      public TSelf M44 { get; }
+      public double M44 { get; }
     }
   }
 }
+#endif

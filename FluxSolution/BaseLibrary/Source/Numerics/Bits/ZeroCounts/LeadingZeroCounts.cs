@@ -29,11 +29,8 @@ namespace Flux
       else return -1;
     }
 
-    public static int LeadingZeroCount(this int value) => unchecked((uint)value).LeadingZeroCount();
-    public static int LeadingZeroCount(this long value) => unchecked((ulong)value).LeadingZeroCount();
-
-    public static int LeadingZeroCount(this uint value) => System.Numerics.BitOperations.LeadingZeroCount(value);
-    public static int LeadingZeroCount(this ulong value) => System.Numerics.BitOperations.LeadingZeroCount(value);
+    public static int LeadingZeroCount(this int value) => System.Numerics.BitOperations.LeadingZeroCount(unchecked((uint)value));
+    public static int LeadingZeroCount(this long value) => System.Numerics.BitOperations.LeadingZeroCount(unchecked((ulong)value));
 
 #endif
   }

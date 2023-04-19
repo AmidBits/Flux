@@ -6,9 +6,10 @@ namespace Flux
   {
     /// <summary>The average absolute deviation, or mean absolute deviation (MAD), of a data set is the average of the absolute deviations from a central point.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>
-    public static TSelf AverageAbsoluteDeviation<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> source, TSelf mean, TSelf center)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => source.Select(v => TSelf.Abs(v - center)).Sum() / mean;
+    public static double AverageAbsoluteDeviation<TSelf>(this System.Collections.Generic.IEnumerable<double> source, double mean, double center)
+      => source.Select(v => System.Math.Abs(v - center)).Sum() / mean;
+
+#if NET7_0_OR_GREATER
 
     /// <summary>The average absolute deviation of a data set is the average of the absolute deviations from a central point, in the case of this function: mean, median and mode.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>
@@ -38,5 +39,7 @@ namespace Flux
       madMedian /= mean;
       madMode /= mean;
     }
+
+#endif
   }
 }

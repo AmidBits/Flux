@@ -5,7 +5,7 @@ namespace Flux
     public static double GetLongestCommonSubsequenceDerivedSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => 1d - GetLongestCommonSubsequenceDerivedSmd(source, target, equalityComparer);
     public static double GetLongestCommonSubsequenceDerivedSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)GetLongestCommonSubsequenceEditDistance(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
+      => (double)GetLongestCommonSubsequenceEditDistance(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
     /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/> 

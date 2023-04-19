@@ -7,6 +7,8 @@ namespace Flux.Numerics
   /// </summary>
   public interface IPercentileComputable
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>Computes a percentile rank according to the implementation.</summary>
     /// <returns>The computed percentile rank.</returns>
     TPercent ComputePercentileRank<TCount, TPercent>(TCount count, TPercent p)
@@ -18,5 +20,17 @@ namespace Flux.Numerics
     TPercent ComputePercentileScore<TScore, TPercent>(System.Collections.Generic.IEnumerable<TScore> distribution, TPercent p)
       where TScore : System.Numerics.INumber<TScore>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>;
+
+#else
+
+    /// <summary>Computes a percentile rank according to the implementation.</summary>
+    /// <returns>The computed percentile rank.</returns>
+    double ComputePercentileRank(double count, double p);
+
+    /// <summary>Computes a percentile score according to the implementation.</summary>
+    /// <returns>The computed percentile score.</returns>
+    double ComputePercentileScore(System.Collections.Generic.IEnumerable<double> distribution, double p);
+
+#endif
   }
 }

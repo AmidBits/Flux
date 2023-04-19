@@ -27,24 +27,15 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void LocateILog2()
+    public void FLog2()
     {
-      (88.5).LocateILog2(out int nearestTowardsZero, out int nearestAwayFromZero);
-
-      Assert.AreEqual(6, nearestTowardsZero);
-      Assert.AreEqual(7, nearestAwayFromZero);
+      Assert.AreEqual(6.467605550082998, (88.5).Log2F());
     }
 
     [TestMethod]
-    public void ILog2AwayFromZero()
+    public void ILog2()
     {
-      Assert.AreEqual(7, 88.ToType(out System.Numerics.BigInteger _).ILog2AwayFromZero(out int _));
-    }
-
-    [TestMethod]
-    public void ILog2TowardsZero()
-    {
-      Assert.AreEqual(6, 88.ToType(out System.Numerics.BigInteger _).ILog2TowardsZero(out int _));
+      Assert.AreEqual(6, 88.ILog2());
     }
 
     [TestMethod]
@@ -65,14 +56,14 @@ namespace GenericMath
     //  Assert.AreEqual(false, 88.ToType(out System.Numerics.BigInteger _).IsPow2Ex());
     //}
 
-    [TestMethod]
-    public void LocatePow2()
-    {
-      88.LocatePow2(false, out int towardsZero, out int awayFromZero);
+    //[TestMethod]
+    //public void LocatePow2()
+    //{
+    //  88.LocatePow2(false, out var towardsZero, out var awayFromZero);
 
-      Assert.AreEqual(64, towardsZero);
-      Assert.AreEqual(128, awayFromZero);
-    }
+    //  Assert.AreEqual(64.ToBigInteger(), towardsZero);
+    //  Assert.AreEqual(128.ToBigInteger(), awayFromZero);
+    //}
 
     [TestMethod]
     public void NearestPow2()
@@ -99,7 +90,7 @@ namespace GenericMath
     [TestMethod]
     public void Pow2AwayFromZero()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2AwayFromZero(false, out System.Numerics.BigInteger _);
+      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2Afz(false);
 
       Assert.AreEqual(128.ToType(out System.Numerics.BigInteger _), actual);
     }
@@ -107,7 +98,7 @@ namespace GenericMath
     [TestMethod]
     public void Pow2AwayFromZeroProper()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2AwayFromZero(true, out System.Numerics.BigInteger _);
+      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2Afz(true);
 
       Assert.AreEqual(128.ToType(out System.Numerics.BigInteger _), actual);
     }
@@ -115,7 +106,7 @@ namespace GenericMath
     [TestMethod]
     public void Pow2TowardsZero()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2TowardZero(false, out System.Numerics.BigInteger _);
+      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2Tz(false);
 
       Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), actual);
     }
@@ -123,7 +114,7 @@ namespace GenericMath
     [TestMethod]
     public void Pow2TowardsZeroProper()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2TowardZero(true, out System.Numerics.BigInteger _);
+      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2Tz(true);
 
       Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), actual);
     }

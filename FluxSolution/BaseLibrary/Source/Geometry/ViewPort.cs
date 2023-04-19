@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux.Geometry
 {
   /// <summary></summary>
@@ -9,9 +10,9 @@ namespace Flux.Geometry
     private readonly TSelf m_canvasWidth;
     private readonly TSelf m_rasterHeight;
     private readonly TSelf m_rasterWidth;
-    private readonly Numerics.Quaternion<TSelf> m_worldToCamera;
+    private readonly Numerics.Quaternion m_worldToCamera;
 
-    public ViewPort(TSelf canvasWidth, TSelf canvasHeight, TSelf rasterWidth, TSelf rasterHeight, Numerics.Quaternion<TSelf> worldToCamera)
+    public ViewPort(TSelf canvasWidth, TSelf canvasHeight, TSelf rasterWidth, TSelf rasterHeight, Numerics.Quaternion worldToCamera)
     {
       m_canvasHeight = canvasHeight;
       m_canvasWidth = canvasWidth;
@@ -21,11 +22,11 @@ namespace Flux.Geometry
 
       m_worldToCamera = worldToCamera;
     }
-    public ViewPort(Numerics.Quaternion<TSelf> worldToCamera)
+    public ViewPort(Numerics.Quaternion worldToCamera)
       : this(TSelf.CreateChecked(2), TSelf.CreateChecked(2), TSelf.CreateChecked(1920), TSelf.CreateChecked(1024), worldToCamera)
     { }
 
-    public void Deconstruct(out TSelf canvasWidth, out TSelf canvasHeight, out TSelf rasterWidth, out TSelf rasterHeight, out Numerics.Quaternion<TSelf> worldToCamera) { canvasWidth = m_canvasWidth; canvasHeight = m_canvasHeight; rasterWidth = m_rasterWidth; rasterHeight = m_rasterHeight; worldToCamera = m_worldToCamera; }
+    public void Deconstruct(out TSelf canvasWidth, out TSelf canvasHeight, out TSelf rasterWidth, out TSelf rasterHeight, out Numerics.Quaternion worldToCamera) { canvasWidth = m_canvasWidth; canvasHeight = m_canvasHeight; rasterWidth = m_rasterWidth; rasterHeight = m_rasterHeight; worldToCamera = m_worldToCamera; }
 
     public TSelf CanvasHeight { get => m_canvasHeight; init => m_canvasHeight = value; }
     public TSelf CanvasWidth { get => m_canvasWidth; init => m_canvasWidth = value; }
@@ -33,7 +34,7 @@ namespace Flux.Geometry
     public TSelf RasterHeight { get => m_rasterHeight; init => m_rasterHeight = value; }
     public TSelf RasterWidth { get => m_rasterWidth; init => m_rasterWidth = value; }
 
-    public Numerics.Quaternion<TSelf> WorldToCamera { get => m_worldToCamera; init => m_worldToCamera = value; }
+    public Numerics.Quaternion WorldToCamera { get => m_worldToCamera; init => m_worldToCamera = value; }
 
     /// <summary>Transform the 3D point from world space to camera space.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
@@ -65,3 +66,4 @@ namespace Flux.Geometry
       => new(ndc.X * m_rasterWidth, (TSelf.One - ndc.Y) * m_rasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
   }
 }
+#endif

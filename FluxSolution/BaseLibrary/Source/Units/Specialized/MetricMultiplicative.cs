@@ -107,12 +107,12 @@ namespace Flux.Units
       // var diffPrefix = valuePrefix + (int)prefix; // Cannot remember what this was for. ;)
 
       var sourceFactor = (int)prefix;
-      var target = (MetricMultiplicativePrefix)System.Int32.CreateChecked(System.Numerics.BigInteger.CreateChecked(double.Truncate(value)).DigitCount(10) / 3 * 3 + sourceFactor);
+      var target = (MetricMultiplicativePrefix)System.Convert.ToInt32(new System.Numerics.BigInteger(System.Math.Truncate(value)).DigitCount(10) / 3 * 3 + sourceFactor);
       var targetFactor = (int)target;
 
       var differFactor = targetFactor - sourceFactor;
 
-      var factor = double.Pow(10, differFactor);
+      var factor = System.Math.Pow(10, differFactor);
 
       outValue = value / factor;
 

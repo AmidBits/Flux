@@ -102,7 +102,7 @@ namespace Flux.NumberSequences
     /// <see cref="https://www.geeksforgeeks.org/segmented-sieve/"/>
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPrimesParallel(System.Numerics.BigInteger number, int segmentSize)
     {
-      var primes = new SieveOfEratosthenes(segmentSize).Select(i => i.ToType(out System.Numerics.BigInteger _)).ToList();
+      var primes = new SieveOfEratosthenes(segmentSize).Select(i => (System.Numerics.BigInteger)i).ToList();
 
       var segmentCount = (int)System.Numerics.BigInteger.DivRem(number, segmentSize, out var remainder) + (remainder > 0 ? 0 : -1);
 

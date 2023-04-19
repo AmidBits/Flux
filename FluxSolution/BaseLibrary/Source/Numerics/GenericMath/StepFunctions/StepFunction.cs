@@ -1,3 +1,4 @@
+#if NET7_0_OR_GREATER
 namespace Flux.Numerics
 {
   public record class StepFunction<TSelf, TResult>
@@ -63,3 +64,4 @@ namespace Flux.Numerics
       => (x < m_referenceValue) ? m_lessThan : (x > m_referenceValue) ? m_greaterThan : m_equalTo;
   }
 }
+#endif

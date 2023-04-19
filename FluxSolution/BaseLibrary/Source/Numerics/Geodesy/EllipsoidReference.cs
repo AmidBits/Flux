@@ -26,7 +26,7 @@ namespace Flux
     public Units.Length SemiMinorAxis => new(m_ellipseGeometry.Y);
 
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
-    public Units.Length EquatorialCircumference => EquatorialRadius * double.Tau;
+    public Units.Length EquatorialCircumference => EquatorialRadius * System.Math.Tau;
 
     /// <summary>Diameter of Earth's semi-major axis.</summary>
     public Units.Length EquatorialDiameter => EquatorialRadius * 2;

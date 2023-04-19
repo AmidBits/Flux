@@ -39,30 +39,30 @@ namespace GenericMath
     [TestMethod]
     public void Factorial()
     {
-      Assert.AreEqual(362880, 9.Factorial());
+      Assert.AreEqual(362880, 9.ToBigInteger().Factorial());
 
       Assert.AreEqual(System.Numerics.BigInteger.Parse("36471110918188685288249859096605464427167635314049524593701628500267962436943872000000000000000"), Flux.GenericMath.Factorial(67.ToBigInteger()));
-      Assert.AreEqual(479001600, Flux.GenericMath.Factorial(12.ToType(out System.Numerics.BigInteger _)));
-      Assert.AreEqual(-479001600, Flux.GenericMath.Factorial(-12.ToType(out System.Numerics.BigInteger _)));
+      Assert.AreEqual(479001600, Flux.GenericMath.Factorial(12.ToBigInteger()));
+      Assert.AreEqual(-479001600, Flux.GenericMath.Factorial(-12.ToBigInteger()));
     }
 
     [TestMethod]
     public void ParallelSplitFactorial()
     {
       Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12));
-      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12.ToType(out System.Numerics.BigInteger _)));
+      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12.ToBigInteger()));
     }
 
     [TestMethod]
     public void GreatestCommonDivisor()
     {
-      Assert.AreEqual(3, 21.GreatestCommonDivisor(6));
+      Assert.AreEqual(3, 21.ToBigInteger().GreatestCommonDivisor(6));
     }
 
     [TestMethod]
     public void IntegerSqrt()
     {
-      Assert.AreEqual(4, 21.IntegerSqrt());
+      Assert.AreEqual(4, 21.ToBigInteger().IntegerSqrt());
     }
 
     [TestMethod]
@@ -74,27 +74,27 @@ namespace GenericMath
     [TestMethod]
     public void IntegerPow()
     {
-      Assert.AreEqual(7766279631452241920, 100L.IntegerPow(10));
+      Assert.AreEqual(10000000000.ToBigInteger(), 10L.ToBigInteger().IntegerPow(10));
     }
 
     [TestMethod]
     public void IntegerPowRec()
     {
-      Assert.AreEqual(7766279631452241920, 100L.IntegerPowRec(10, out double reciprocal));
-      Assert.AreEqual(1.2876178137472069E-19, reciprocal);
+      Assert.AreEqual(10000000000, 10L.ToBigInteger().IntegerPowRec(10, out double reciprocal));
+      Assert.AreEqual(1E-10, reciprocal);
     }
 
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, 100.IsIntegerPow(10));
-      Assert.AreEqual(false, 101.IsIntegerPow(10));
+      Assert.AreEqual(true, 100.ToBigInteger().IsIntegerPow(10));
+      Assert.AreEqual(false, 101.ToBigInteger().IsIntegerPow(10));
     }
 
     [TestMethod]
     public void IsIntegerSqrt()
     {
-      var v = 15;
+      var v = 15.ToBigInteger();
 
       var iq = v.IntegerSqrt();
 
@@ -106,7 +106,7 @@ namespace GenericMath
     [TestMethod]
     public void IsPerfectIntegerSqrt()
     {
-      var v = 15;
+      var v = 15.ToBigInteger();
 
       var iq = v.IntegerSqrt();
 
@@ -118,14 +118,14 @@ namespace GenericMath
     [TestMethod]
     public void LeastCommonMultiple()
     {
-      Assert.AreEqual(42, 21.LeastCommonMultiple(6));
+      Assert.AreEqual(42, 21.ToBigInteger().LeastCommonMultiple(6));
     }
 
     [TestMethod]
     public void ModInv()
     {
-      Assert.AreEqual(2, 4.ModInv(7));
-      Assert.AreEqual(7, 8.ModInv(11));
+      Assert.AreEqual(2, 4.ToBigInteger().ModInv(7));
+      Assert.AreEqual(7, 8.ToBigInteger().ModInv(11));
     }
 
     [TestMethod]

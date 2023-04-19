@@ -1,5 +1,6 @@
 ﻿namespace Flux
 {
+#if NET7_0_OR_GREATER
   #region ExtensionMethods
   public static partial class NumericsExtensionMethods
   {
@@ -128,11 +129,11 @@
       => result = new(TResult.CreateChecked(Rounding<TSelf>.Round(source.X, mode)), TResult.CreateChecked(Rounding<TSelf>.Round(source.Y, mode)));
 
     /// <summary>Creates a new <see cref="Numerics.PolarCoordinate{TSelf}"/> from a <see cref=" Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static Numerics.PolarCoordinate<TSelf> ToPolarCoordinate<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
+    public static Numerics.PolarCoordinate ToPolarCoordinate<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
       => new(
-        TSelf.Sqrt(source.X * source.X + source.Y * source.Y),
-        TSelf.Atan2(source.Y, source.X)
+        double.CreateChecked(TSelf.Sqrt(source.X * source.X + source.Y * source.Y)),
+        double.CreateChecked(TSelf.Atan2(source.Y, source.X))
       );
 
     //public static Vector4 ToVector4<TSelf>(this ICartesianCoordinate2<TSelf> source, double z = 0, double w = 0)
@@ -160,24 +161,27 @@
       => source.ToVector256(TSelf.Zero, TSelf.Zero);
   }
   #endregion ExtensionMethods
+#endif
 
   namespace Numerics
   {
-#if NET7_0_OR_GREATER
     /// <summary>A 2D cartesian coordinate.</summary>
     public interface ICartesianCoordinate2<TSelf>
       : ICartesianCoordinate<TSelf>
+#if NET7_0_OR_GREATER
       where TSelf : System.Numerics.INumber<TSelf>
+#endif
     {
       TSelf X { get; }
       TSelf Y { get; }
 
+#if NET7_0_OR_GREATER
       /// <summary>For 2D vectors, the cross product of two vectors, is equivalent to DotProduct(a, CrossProduct(b)), which is consistent with the notion of a "perpendicular dot product", which this is known as.</summary>
       static TSelf CrossProduct(ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b) => a.X * b.Y - a.Y * b.X;
 
       /// <summary>Returns the dot product of two normalized 2D vectors.</summary>
       static TSelf DotProduct(ICartesianCoordinate2<TSelf> a, ICartesianCoordinate2<TSelf> b) => a.X * b.X + a.Y * b.Y;
-    }
 #endif
+    }
   }
 }

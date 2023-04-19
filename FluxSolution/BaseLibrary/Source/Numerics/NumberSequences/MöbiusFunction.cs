@@ -52,7 +52,7 @@ namespace Flux.NumberSequences
 
 
     private System.Numerics.BigInteger GetMöbiusNumber(int number)
-      => m_sieve[number].ToType(out System.Numerics.BigInteger _);
+      => m_sieve[number].ToBigInteger();
 
     #region Implemented interfaces
     // INumberSequence

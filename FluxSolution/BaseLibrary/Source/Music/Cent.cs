@@ -28,9 +28,11 @@ namespace Flux.Music
     /// <param name="frequencyRatio"></param>
     public static Cent FromFrequencyRatio(double frequencyRatio) => new((int)ConvertFrequencyRatioToCent(frequencyRatio));
 
+#if NET7_0_OR_GREATER
     /// <summary>Creates a new Cent instance from the specified ratio.</summary>
     /// <param name="ratio"></param>
     public static Cent FromRatio(Units.Ratio ratio) => FromFrequencyRatio(ratio.Value);
+#endif
 
     /// <summary>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
     public static double PitchShift(double frequency, int cents) => frequency * ConvertCentToFrequencyRatio(cents);

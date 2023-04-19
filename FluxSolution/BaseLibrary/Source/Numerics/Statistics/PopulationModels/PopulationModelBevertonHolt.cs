@@ -7,15 +7,14 @@ namespace Flux.Numerics
   /// <returns>The number of individuals at time Nt+1.</returns>
   /// <see cref="https://en.wikipedia.org/wiki/Beverton%E2%80%93Holt_model"/>
   /// <seealso cref="RickerModel(double, double, double)" />
-  public record class PopulationModelBevertonHolt<TSelf>
-    : IPopulationModelable<TSelf>
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
+  public record class PopulationModelBevertonHolt
+    : IPopulationModelable
   {
-    public TSelf m_population;
-    public TSelf m_growthRate;
-    public TSelf m_carryingCapacity;
+    public double m_population;
+    public double m_growthRate;
+    public double m_carryingCapacity;
 
-    public PopulationModelBevertonHolt(TSelf population, TSelf growthRate, TSelf carryingCapacity)
+    public PopulationModelBevertonHolt(double population, double growthRate, double carryingCapacity)
     {
       m_population = population;
       m_growthRate = growthRate;
@@ -23,17 +22,17 @@ namespace Flux.Numerics
     }
 
     /// <summary>The number of individuals at time t (Nt).</summary>
-    public TSelf Population { get => m_population; init => m_population = value; }
+    public double Population { get => m_population; init => m_population = value; }
 
     /// <summary>The proliferation rate per generation (R0).</summary>
-    public TSelf GrowthRate { get => m_growthRate; init => m_growthRate = value; }
+    public double GrowthRate { get => m_growthRate; init => m_growthRate = value; }
 
     /// <summary>The carrying capacity in the environment (M).</summary>
-    public TSelf CarryingCapacity { get => m_carryingCapacity; init => m_carryingCapacity = value; }
+    public double CarryingCapacity { get => m_carryingCapacity; init => m_carryingCapacity = value; }
 
     /// <returns>The number of individuals at time Nt+1.</returns>
-    public IPopulationModelable<TSelf> ModelPopulation()
-      => new PopulationModelBevertonHolt<TSelf>(Compute(m_population, m_growthRate, m_carryingCapacity), m_growthRate, m_carryingCapacity);
+    public IPopulationModelable ModelPopulation()
+      => new PopulationModelBevertonHolt(Compute(m_population, m_growthRate, m_carryingCapacity), m_growthRate, m_carryingCapacity);
 
     /// <summary>A classic discrete-time population model which gives the expected number Nt+1 (or density) of individuals in generation t+1 as a function of the number of individuals in the previous generation.</summary>
     /// <param name="population">The number of individuals at time t (Nt).</param>
@@ -42,7 +41,7 @@ namespace Flux.Numerics
     /// <returns>The number of individuals at time Nt+1.</returns>
     /// <see cref="https://en.wikipedia.org/wiki/Beverton%E2%80%93Holt_model"/>
     /// <seealso cref="RickerModel(double, double, double)" />
-    public static TSelf Compute(TSelf population, TSelf growthRate, TSelf carryingCapacity)
-      => (growthRate * population) / (TSelf.One + population / carryingCapacity);
+    public static double Compute(double population, double growthRate, double carryingCapacity)
+      => (growthRate * population) / (1 + population / carryingCapacity);
   }
 }

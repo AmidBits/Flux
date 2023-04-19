@@ -11,7 +11,7 @@ namespace Flux.Geometry
   public record class HexagonGeometry
   {
     /// <summary>This is the ratio relashionship of maxima to minima.</summary>
-    private static readonly double Ratio = double.Sqrt(3) / 2;
+    private static readonly double Ratio = System.Math.Sqrt(3) / 2;
 
     private readonly double m_sideLength;
 

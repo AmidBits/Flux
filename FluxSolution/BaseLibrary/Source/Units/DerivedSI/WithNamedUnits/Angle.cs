@@ -70,7 +70,7 @@ namespace Flux.Units
 
     public const double OneFullRotationInDegrees = 360;
     public const double OneFullRotationInGradians = 400;
-    public const double OneFullRotationInRadians = double.Tau;
+    public const double OneFullRotationInRadians = System.Math.Tau;
     public const double OneFullRotationInTurns = 1;
 
     private readonly double m_radAngle;
@@ -149,16 +149,20 @@ namespace Flux.Units
 
     public static double ConvertRadianToNatoMil(double radAngle) => radAngle * 3200 / System.Math.PI;
 
-    public static double ConvertRadianToTurn(double radAngle) => radAngle / double.Tau;
+    public static double ConvertRadianToTurn(double radAngle) => radAngle / System.Math.Tau;
 
     public static double ConvertSexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds) => degrees + minutes / 60 + seconds / 3600;
 
-    public static double ConvertTurnToRadian(double revolutions) => revolutions * double.Tau;
+    public static double ConvertTurnToRadian(double revolutions) => revolutions * System.Math.Tau;
 
     public static Angle FromSexagesimalDegrees(double degrees, double minutes, double seconds) => new(ConvertDegreeToRadian(ConvertSexagesimalDegreeToDecimalDegree(degrees, minutes, seconds)));
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?")]
     private static partial System.Text.RegularExpressions.Regex ParseSexagesimalDegreesRegex();
+#else
+    private static System.Text.RegularExpressions.Regex ParseSexagesimalDegreesRegex() => new(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
+#endif
 
     public static Angle ParseSexagesimalDegrees(string dms)
     {

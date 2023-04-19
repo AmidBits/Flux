@@ -4,8 +4,12 @@ namespace Flux.Numerics
   /// <see cref="https://en.wikipedia.org/wiki/Cartesian_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly partial record struct CartesianCoordinate2<TSelf>
-    : System.IFormattable, System.Numerics.INumberBase<CartesianCoordinate2<TSelf>>, ICartesianCoordinate2<TSelf>
+    : ICartesianCoordinate2<TSelf>
+#if NET7_0_OR_GREATER
+    , System.IFormattable
+    , System.Numerics.INumberBase<CartesianCoordinate2<TSelf>>
     where TSelf : System.Numerics.INumber<TSelf>
+#endif
   {
     private readonly TSelf m_x;
     private readonly TSelf m_y;
@@ -36,8 +40,14 @@ namespace Flux.Numerics
 
     #region Static methods
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$", System.Text.RegularExpressions.RegexOptions.Compiled)]
     private static partial System.Text.RegularExpressions.Regex ParsingRegex();
+#else
+    private static System.Text.RegularExpressions.Regex ParsingRegex() => new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
+#endif
+
+#if NET7_0_OR_GREATER
     public static CartesianCoordinate2<TSelf> Parse(string pointAsString)
       => ParsingRegex().Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && TSelf.TryParse(gX.Value, System.Globalization.NumberStyles.Number, null, out var x) && m.Groups["Y"] is var gY && gY.Success && TSelf.TryParse(gY.Value, System.Globalization.NumberStyles.Number, null, out var y)
       ? new CartesianCoordinate2<TSelf>(x, y)
@@ -70,6 +80,7 @@ namespace Flux.Numerics
 
       return TSelf.IsZero(dx) || TSelf.IsZero(dy) ? (TSelf.Zero, TSelf.Zero) : (dx / dy, dy / dx);
     }
+#endif
 
     #endregion Static methods
 
@@ -80,6 +91,8 @@ namespace Flux.Numerics
 
     public static explicit operator CartesianCoordinate2<TSelf>(TSelf[] v) => new(v[0], v[1]);
     public static explicit operator TSelf[](CartesianCoordinate2<TSelf> v) => new TSelf[] { v.m_x, v.m_y };
+
+#if NET7_0_OR_GREATER
 
     // System.Numerics.INumberBase<>
     public static CartesianCoordinate2<TSelf> Zero => new(TSelf.Zero, TSelf.Zero);
@@ -299,8 +312,12 @@ namespace Flux.Numerics
     public string ToString(string? format, System.IFormatProvider? provider)
      => $"<{m_x.ToString(format, null)}, {m_y.ToString(format, null)}>";
 
+#endif
+
     #endregion Implemented interfaces
 
+#if NET7_0_OR_GREATER
     public override string ToString() => ToString(null, null);
+#endif
   }
 }

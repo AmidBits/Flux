@@ -5,7 +5,7 @@ namespace Flux
     public static double GetOptimalStringAlignmentDerivedSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => 1d - GetOptimalStringAlignmentDerivedSmd(source, target, equalityComparer);
     public static double GetOptimalStringAlignmentDerivedSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)GetOptimalStringAlignmentMetric(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
+      => (double)GetOptimalStringAlignmentMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
     /// <summary>
     /// <para>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</para>
@@ -36,12 +36,12 @@ namespace Flux
         {
           var targetItem = target[ti - 1];
 
-          ldg[si, ti] = ldg[si, ti] = int.Min(
-            int.Min(
+          ldg[si, ti] = ldg[si, ti] = System.Math.Min(
+            System.Math.Min(
               ldg[si - 1, ti] + 1, // Deletion.
               ldg[si, ti - 1] + 1 // Insertion.
             ),
-            int.Min(
+            System.Math.Min(
               equalityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1, // Substitution.
               si > 1 && ti > 1 && equalityComparer.Equals(sourceItem, target[ti - 2]) && equalityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + 1 : int.MaxValue // Transposition.
             )
@@ -79,12 +79,12 @@ namespace Flux
         {
           var targetItem = target[ti - 1];
 
-          v0[ti] = int.Min(
-            int.Min(
+          v0[ti] = System.Math.Min(
+            System.Math.Min(
               v1[ti] + 1, // Deletion.
               v0[ti - 1] + 1 // Insertion.
             ),
-            int.Min(
+            System.Math.Min(
               equalityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + 1, // Substitution.
               si > 1 && ti > 1 && equalityComparer.Equals(sourceItem, target[ti - 2]) && equalityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + 1 : int.MaxValue // Transposition.
             )
@@ -124,12 +124,12 @@ namespace Flux
         {
           var targetItem = target[ti - 1];
 
-          ldg[si, ti] = ldg[si, ti] = double.Min(
-            double.Min(
+          ldg[si, ti] = ldg[si, ti] = System.Math.Min(
+            System.Math.Min(
               ldg[si - 1, ti] + costOfDeletion,
               ldg[si, ti - 1] + costOfInsertion
             ),
-            double.Min(
+            System.Math.Min(
               equalityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution,
               si > 1 && ti > 1 && equalityComparer.Equals(sourceItem, target[ti - 2]) && equalityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + costOfTransposition : double.MaxValue
             )
@@ -167,12 +167,12 @@ namespace Flux
         {
           var targetItem = target[ti - 1];
 
-          v0[ti] = double.Min(
-            double.Min(
+          v0[ti] = System.Math.Min(
+            System.Math.Min(
               v1[ti] + costOfDeletion, // Deletion.
               v0[ti - 1] + costOfInsertion // Insertion.
             ),
-            double.Min(
+            System.Math.Min(
               equalityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + costOfSubstitution, // Substitution.
               si > 1 && ti > 1 && equalityComparer.Equals(sourceItem, target[ti - 2]) && equalityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + costOfTransposition : double.MaxValue // Transposition.
             )

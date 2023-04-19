@@ -20,9 +20,9 @@ namespace Flux
     public static long MostSignificant1Bit(this long x) => unchecked((long)((ulong)x).MostSignificant1Bit());
 
     /// <summary>Extracts the highest numbered element of a bit set. Given a 2's complement binary integer value, this is the most significant 1 bit.</summary>
-    public static uint MostSignificant1Bit(this uint x) => x == 0U ? x : (1U << (BitLength(x) - 1));
+    [System.CLSCompliant(false)] public static uint MostSignificant1Bit(this uint x) => x == 0U ? x : (1U << (BitLength(x) - 1));
     /// <summary>Extracts the highest numbered element of a bit set. Given a 2's complement binary integer value, this is the most significant 1 bit.</summary>
-    public static ulong MostSignificant1Bit(this ulong x) => x == 0UL ? x : (1UL << (BitLength(x) - 1));
+    [System.CLSCompliant(false)] public static ulong MostSignificant1Bit(this ulong x) => x == 0UL ? x : (1UL << (BitLength(x) - 1));
 
 #endif
   }

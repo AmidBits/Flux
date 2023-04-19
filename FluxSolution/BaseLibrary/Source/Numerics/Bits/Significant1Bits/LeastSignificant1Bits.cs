@@ -25,10 +25,10 @@ namespace Flux
 
     /// <summary>Extracts the lowest numbered element of a bit set. Given a 2's complement binary integer value, this is the least significant 1 bit.</summary>
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-    public static uint LeastSignificant1Bit(this uint x) => x & ((~x) + 1U);
+    [System.CLSCompliant(false)] public static uint LeastSignificant1Bit(this uint x) => x & ((~x) + 1U);
     /// <summary>Extracts the lowest numbered element of a bit set. Given a 2's complement binary integer value, this is the least significant 1 bit.</summary>
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-    public static ulong LeastSignificant1Bit(this ulong x) => x & ((~x) + 1UL);
+    [System.CLSCompliant(false)] public static ulong LeastSignificant1Bit(this ulong x) => x & ((~x) + 1UL);
 
 #endif
   }

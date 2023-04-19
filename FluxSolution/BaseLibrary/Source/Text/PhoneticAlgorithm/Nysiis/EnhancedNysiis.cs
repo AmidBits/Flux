@@ -7,37 +7,109 @@ namespace Flux.Text.PhoneticAlgorithm
   {
     public int MaxCodeLength { get; set; } = 8;
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"[SZ]+$")] private static partial System.Text.RegularExpressions.Regex RegexStep2();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep2() => new(@"[SZ]+$");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"^MAC")] private static partial System.Text.RegularExpressions.Regex RegexStep31();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep31() => new(@"^MAC");
+#endif
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"^PF")] private static partial System.Text.RegularExpressions.Regex RegexStep32();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep32() => new(@"^PF");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"IX$")] private static partial System.Text.RegularExpressions.Regex RegexStep41();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep41() => new(@"IX$");
+#endif
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"EX$")] private static partial System.Text.RegularExpressions.Regex RegexStep42();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep42() => new(@"EX$");
+#endif
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(YE|EE|IE)$")] private static partial System.Text.RegularExpressions.Regex RegexStep43();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep43() => new(@"(YE|EE|IE)$");
+#endif
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(DT|RT|RD|NT|ND)$")] private static partial System.Text.RegularExpressions.Regex RegexStep44();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep44() => new(@"(DT|RT|RD|NT|ND)$");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)EV")] private static partial System.Text.RegularExpressions.Regex RegexStep5();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep5() => new(@"(?<=[AEIOU])W");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<=[AEIOU])W")] private static partial System.Text.RegularExpressions.Regex RegexStep7();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep7() => new(@"(?<=[AEIOU])W");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"[AEIOU]+")] private static partial System.Text.RegularExpressions.Regex RegexStep8();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep8() => new(@"[AEIOU]+");
+#endif
 
-    [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)(AH|HA)")] private static partial System.Text.RegularExpressions.Regex RegexStep12();
+#if NET7_0_OR_GREATER
+   [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)(AH|HA)")] private static partial System.Text.RegularExpressions.Regex RegexStep12();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep12() => new(@"(?!^)(AH|HA)");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)M")] private static partial System.Text.RegularExpressions.Regex RegexStep14();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep14() => new(@"(?!^)M");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)Q")] private static partial System.Text.RegularExpressions.Regex RegexStep15();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep15() => new(@"(?!^)Q");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)Y(?!$)")] private static partial System.Text.RegularExpressions.Regex RegexStep19();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep19() => new(@"(?!^)Y(?!$)");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)Z")] private static partial System.Text.RegularExpressions.Regex RegexStep21();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep21() => new(@"(?!^)Z");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"AY$")] private static partial System.Text.RegularExpressions.Regex RegexStep22();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep22() => new(@"AY$");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"[AEIOU]+$")] private static partial System.Text.RegularExpressions.Regex RegexStep23();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep23() => new(@"[AEIOU]+$");
+#endif
 
+#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"([A-Z])\1+")] private static partial System.Text.RegularExpressions.Regex RegexStep24();
+#else
+    private static System.Text.RegularExpressions.Regex RegexStep24() => new(@"([A-Z])\1+");
+#endif
 
     /// <summary>Nysiis is similar in nature to the SOUNDEX phonetic encoder, but does of course produce different results. New York State Identification and Intelligence System (NYSIIS) Phonetic Encoder.</summary>
     /// <see cref="https://xlinux.nist.gov/dads/HTML/nysiis.html"/>

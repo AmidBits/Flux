@@ -2,8 +2,7 @@ namespace Flux
 {
   public static partial class StatisticsExtensionMethods
   {
-    public static (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(this System.Collections.Generic.IEnumerable<TSelf> sample, QuartileAlgorithm algorithm)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static (double q1, double q2, double q3) ComputeQuartiles<TSelf>(this System.Collections.Generic.IEnumerable<double> sample, QuartileAlgorithm algorithm)
       => algorithm switch
       {
         QuartileAlgorithm.Empirical => Numerics.QuartileEmpirical.Compute(sample),

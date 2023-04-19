@@ -5,10 +5,9 @@
   {
     /// <summary>Converts the polar coordinates to cartesian 2D coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static Numerics.CartesianCoordinate2<TSelf> ToCartesianCoordinate2<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.CartesianCoordinate2<double> ToCartesianCoordinate2(this Numerics.IPolarCoordinate source)
     {
-      var (sa, ca) = TSelf.SinCos(source.Azimuth);
+      var (sa, ca) = System.Math.SinCos(source.Azimuth);
 
       return new(
         source.Radius * ca,
@@ -18,19 +17,11 @@
 
     /// <summary>Converts the polar coordinates to a complex number.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public static System.Numerics.Complex ToComplex<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static System.Numerics.Complex ToComplex(this Numerics.IPolarCoordinate source)
       => System.Numerics.Complex.FromPolarCoordinates(
-        double.CreateChecked(source.Radius),
-        double.CreateChecked(source.Azimuth)
+        source.Radius,
+        source.Azimuth
       );
-
-    public static (Units.Length radius, Units.Angle azimuth) ToQuantities<TSelf>(this Numerics.IPolarCoordinate<TSelf> source)
-    where TSelf : System.Numerics.IFloatingPoint<TSelf>
-    => (
-      new Units.Length(double.CreateChecked(source.Radius)),
-      new Units.Angle(double.CreateChecked(source.Azimuth))
-    );
   }
   #endregion ExtensionMethods
 
@@ -38,18 +29,17 @@
   {
     /// <summary>The polar coordinate system is a two-dimensional coordinate system in which each point on a plane is determined by a distance from a reference point and an angle from a reference direction.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
-    public interface IPolarCoordinate<TSelf>
+    public interface IPolarCoordinate
       : System.IFormattable
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       /// <summary>Radius. A.k.a. radial coordinate, or radial distance.</summary>
-      TSelf Radius { get; init; }
+      double Radius { get; init; }
       /// <summary>The azimuth angle in radians. A.k.a. angular coordinate, or polar angle.</summary>
       /// <remarks>The angle φ is defined to start at 0° from a reference direction, and to increase for rotations in either clockwise (cw) or counterclockwise (ccw) orientation.</remarks>
-      TSelf Azimuth { get; init; }
+      double Azimuth { get; init; }
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Units.Angle(double.CreateChecked(Azimuth)).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
+        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Units.Angle(Azimuth).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
     }
   }
 }

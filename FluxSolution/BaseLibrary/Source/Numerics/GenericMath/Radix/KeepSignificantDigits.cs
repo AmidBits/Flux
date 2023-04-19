@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class GenericMath
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>Retreive <paramref name="count"/> least significant digits of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
     public static TSelf KeepLeastSignificantDigit<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -16,5 +18,7 @@ namespace Flux
     public static TSelf KeepMostSignificantDigits<TSelf>(this TSelf number, TSelf radix, TSelf count)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => number / IntegerPow(radix, DigitCount(number, radix) - count);
+
+#endif
   }
 }

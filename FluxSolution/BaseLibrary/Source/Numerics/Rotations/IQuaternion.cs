@@ -1,52 +1,47 @@
-﻿namespace Flux
+﻿#if NET7_0_OR_GREATER
+namespace Flux
 {
   #region ExtensionMethods
   public static partial class NumericsExtensionMethods
   {
     /// <summary>Calculates the dot product of two Quaternions.</summary>
-    public static TSelf DotProduct<TSelf>(this Numerics.IQuaternion<TSelf> q1, Numerics.IQuaternion<TSelf> q2)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static double DotProduct(this Numerics.IQuaternion q1, Numerics.IQuaternion q2)
       => q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
 
     /// <summary>Returns the inverse of a Quaternion.</summary>
     //  -1   (       a              -v       )
     // q   = ( -------------   ------------- )
     //       (  a^2 + |v|^2  ,  a^2 + |v|^2  )
-    public static Numerics.Quaternion<TSelf> Inverse<TSelf>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => source.Conjugate().Multiply(TSelf.One / source.LengthSquared());
+    public static Numerics.Quaternion Inverse(this Numerics.IQuaternion source)
+      => source.Conjugate().Multiply(1 / source.LengthSquared());
 
     /// <summary>Creates the conjugate of a specified Quaternion.</summary>
-    public static Numerics.Quaternion<TSelf> Conjugate<TSelf>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Quaternion Conjugate(this Numerics.IQuaternion source)
       => new(-source.X, -source.Y, -source.Z, source.W);
 
     /// <summary>Calculates the length of the Quaternion.</summary>
-    public static TSelf Length<TSelf>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => TSelf.Sqrt(source.LengthSquared());
+    public static double Length(this Numerics.IQuaternion source)
+      => System.Math.Sqrt(source.LengthSquared());
 
     /// <summary>Calculates the length squared of the Quaternion. This operation is cheaper than Length().</summary>
-    public static TSelf LengthSquared<TSelf>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static double LengthSquared(this Numerics.IQuaternion source)
       => source.X * source.X + source.Y * source.Y + source.Z * source.Z + source.W * source.W;
 
     /// <summary>Linearly interpolates between two quaternions.</summary>
     /// <param name="mu">The relative weight of the second source Quaternion in the interpolation.</param>
-    public static Numerics.Quaternion<TSelf> Lerp<TSelf>(this Numerics.IQuaternion<TSelf> q1, Numerics.IQuaternion<TSelf> q2, TSelf mu)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Quaternion Lerp<TSelf>(this Numerics.IQuaternion q1, Numerics.IQuaternion q2, double mu)
     {
-      var um = TSelf.One - mu;
+      var um = 1 - mu;
 
-      if (q1.DotProduct(q2) >= TSelf.Zero)
-        return new Numerics.Quaternion<TSelf>(
+      if (q1.DotProduct(q2) >= 0)
+        return new Numerics.Quaternion(
           um * q1.X + mu * q2.X,
           um * q1.Y + mu * q2.Y,
           um * q1.Z + mu * q2.Z,
           um * q1.W + mu * q2.W
         ).Normalized();
       else
-        return new Numerics.Quaternion<TSelf>(
+        return new Numerics.Quaternion(
           um * q1.X - mu * q2.X,
           um * q1.Y - mu * q2.Y,
           um * q1.Z - mu * q2.Z,
@@ -55,51 +50,47 @@
     }
 
     /// <summary>Multiplies a set of Quaternion components by a scalar value.</summary>
-    private static Numerics.Quaternion<TSelf> Multiply<TSelf>(this Numerics.IQuaternion<TSelf> source, TSelf scalar)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    private static Numerics.Quaternion Multiply(this Numerics.IQuaternion source, double scalar)
       => new(source.X * scalar, source.Y * scalar, source.Z * scalar, source.W * scalar);
 
     /// <summary>Flips the sign of each component of the quaternion.</summary>
-    public static Numerics.Quaternion<TSelf> Negate<TSelf>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Quaternion Negate(this Numerics.IQuaternion source)
       => new(-source.X, -source.Y, -source.Z, -source.W);
 
     /// <summary>Divides each component of the Quaternion by the length of the Quaternion.</summary>
-    public static Numerics.Quaternion<TSelf> Normalized<TSelf>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-      => source.Multiply(TSelf.One / source.LengthSquared());
+    public static Numerics.Quaternion Normalized(this Numerics.IQuaternion source)
+      => source.Multiply(1 / source.LengthSquared());
 
     /// <summary>Interpolates between two quaternions, using spherical linear interpolation.</summary>
     /// <param name="mu">The relative weight of the second source Quaternion in the interpolation.</param>
-    public static Numerics.Quaternion<TSelf> Slerp<TSelf>(this Numerics.IQuaternion<TSelf> q1, Numerics.IQuaternion<TSelf> q2, TSelf mu)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Quaternion Slerp(this Numerics.IQuaternion q1, Numerics.IQuaternion q2, double mu)
     {
       var dot = q1.DotProduct(q2);
 
       var flip = false;
 
-      if (dot < TSelf.Zero)
+      if (dot < 0)
       {
         flip = true;
         dot = -dot;
       }
 
-      TSelf s1, s2;
+      double s1, s2;
 
-      if (dot > (TSelf.CreateChecked(1 - 1E-6)))
+      if (dot > (1d - 1E-6))
       {
         // Too close, do straight linear interpolation.
 
-        s1 = TSelf.One - mu;
+        s1 = 1 - mu;
         s2 = flip ? -mu : mu;
       }
       else
       {
-        var angle = TSelf.Acos(dot);
-        var invSinAngle = TSelf.One / TSelf.Sin(angle);
+        var angle = System.Math.Acos(dot);
+        var invSinAngle = 1 / System.Math.Sin(angle);
 
-        s1 = TSelf.Sin((TSelf.One - mu) * angle) * invSinAngle;
-        s2 = flip ? -TSelf.Sin(mu * angle) * invSinAngle : TSelf.Sin(mu * angle) * invSinAngle;
+        s1 = System.Math.Sin((1 - mu) * angle) * invSinAngle;
+        s2 = flip ? -System.Math.Sin(mu * angle) * invSinAngle : System.Math.Sin(mu * angle) * invSinAngle;
       }
 
       return new(s1 * q1.X + s2 * q2.X, s1 * q1.Y + s2 * q2.Y, s1 * q1.Z + s2 * q2.Z, s1 * q1.W + s2 * q2.W);
@@ -107,25 +98,23 @@
 
     /// <summary></summary>
     /// <remarks>The quaternion must be normalized.</remarks>
-    public static Numerics.AxisAngle<TSelf> ToAxisAngle<TSelf>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.AxisAngle ToAxisAngle(this Numerics.IQuaternion source)
     {
       var n = source.Normalized(); // If w>1 acos and sqrt will produce errors, this will not happen if quaternion is normalized.
 
       var w = n.W;
 
-      var angle = TSelf.Acos(w).Multiply(2);
+      var angle = System.Math.Acos(w).Multiply(2);
 
-      var s = TSelf.Sqrt(TSelf.One - w * w); // Assuming quaternion normalized then w is less than 1, so term always positive.
+      var s = System.Math.Sqrt(1 - w * w); // Assuming quaternion normalized then w is less than 1, so term always positive.
 
-      if (s < TSelf.CreateChecked(0.001)) // Test to avoid divide by zero. If s close to zero then direction of axis not important.
-        return new(TSelf.One, TSelf.Zero, TSelf.Zero, angle); // If it is important that axis is normalised then replace with x=1; y=z=0;
+      if (s < 0.001) // Test to avoid divide by zero. If s close to zero then direction of axis not important.
+        return new(1, 0, 0, angle); // If it is important that axis is normalised then replace with x=1; y=z=0;
 
       return new(n.X / s, n.Y / s, n.Z / s, angle);
     }
 
-    public static Numerics.EulerAngles<TSelf> ToEulerAngles<TSelf>(this Numerics.IQuaternion<TSelf> source) // yaw (Z), pitch (Y), roll (X)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.EulerAngles ToEulerAngles(this Numerics.IQuaternion source) // yaw (Z), pitch (Y), roll (X)
     {
       var x = source.X;
       var y = source.Y;
@@ -140,21 +129,20 @@
       var unit = sqx + sqy + sqz + sqw; // If unit = 1 then normalized, otherwise unit is correction factor.
       var test = x * y + z * w;
 
-      if (test > TSelf.CreateChecked(0.499) * unit) // Singularity at north pole when pitch approaches +90.
-        return new(TSelf.Atan2(x, w).Multiply(2), TSelf.Pi.Divide(2), TSelf.Zero);
+      if (test > 0.499 * unit) // Singularity at north pole when pitch approaches +90.
+        return new(double.CreateChecked(System.Math.Atan2(x, w).Multiply(2)), System.Math.PI / 2, 0);
 
-      if (test < -TSelf.CreateChecked(0.499) * unit) // Singularity at south pole when pitch approaches -90.
-        return new(TSelf.Atan2(x, w).Multiply(-2), -TSelf.Pi.Divide(2), TSelf.Zero);
+      if (test < -0.499 * unit) // Singularity at south pole when pitch approaches -90.
+        return new(double.CreateChecked(System.Math.Atan2(x, w).Multiply(-2)), -System.Math.PI / 2, 0);
 
-      var h = TSelf.Atan2(y.Multiply(2) * w - x.Multiply(2) * z, sqx - sqy - sqz + sqw);
-      var a = TSelf.Asin(test.Multiply(2) / unit);
-      var b = TSelf.Atan2(x.Multiply(2) * w - y.Multiply(2) * z, -sqx + sqy - sqz + sqw);
+      var h = System.Math.Atan2(y.Multiply(2) * w - x.Multiply(2) * z, sqx - sqy - sqz + sqw);
+      var a = System.Math.Asin(test.Multiply(2) / unit);
+      var b = System.Math.Atan2(x.Multiply(2) * w - y.Multiply(2) * z, -sqx + sqy - sqz + sqw);
 
-      return new(h, a, b);
+      return new(double.CreateChecked(h), double.CreateChecked(a), double.CreateChecked(b));
     }
 
-    public static Numerics.Matrix4<TSelf> ToMatrix4<TSelf>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+    public static Numerics.Matrix4 ToMatrix4<TSelf>(this Numerics.IQuaternion source)
     {
       var xx = source.X * source.X;
       var yy = source.Y * source.Y;
@@ -168,30 +156,27 @@
       var wx = source.X * source.W;
 
       return new(
-        TSelf.One - (yy + zz).Multiply(2), (xy + wz).Multiply(2), (xz - wy).Multiply(2), TSelf.Zero,
-        (xy - wz).Multiply(2), TSelf.One - (zz + xx).Multiply(2), (yz + wx).Multiply(2), TSelf.Zero,
-        (xz + wy).Multiply(2), (yz - wx).Multiply(2), TSelf.One - (yy + xx).Multiply(2), TSelf.Zero,
-        TSelf.Zero, TSelf.Zero, TSelf.Zero, TSelf.One
+        1 - (yy + zz) * 2, (xy + wz) * 2, (xz - wy) * 2, 0,
+        (xy - wz) * 2, 1 - (zz + xx) * 2, (yz + wx) * 2, 0,
+        (xz + wy) * 2, (yz - wx) * 2, 1 - (yy + xx) * 2, 0,
+        0, 0, 0, 1
       );
     }
 
-    public static Numerics.Quaternion<TResult> ToQuaternion<TSelf, TResult>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      where TResult : System.Numerics.IFloatingPointIeee754<TResult>
+    public static Numerics.Quaternion ToQuaternion(this Numerics.IQuaternion source)
       => new(
-        TResult.CreateChecked(source.X),
-        TResult.CreateChecked(source.Y),
-        TResult.CreateChecked(source.Z),
-        TResult.CreateChecked(source.W)
+        source.X,
+        source.Y,
+        source.Z,
+        source.W
       );
 
-    public static System.Numerics.Quaternion ToQuaternion<TSelf>(this Numerics.IQuaternion<TSelf> source)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static System.Numerics.Quaternion ToQuaternion(this Numerics.Quaternion source)
       => new(
-        float.CreateChecked(source.X),
-        float.CreateChecked(source.Y),
-        float.CreateChecked(source.Z),
-        float.CreateChecked(source.W)
+        (float)source.X,
+        (float)source.Y,
+        (float)source.Z,
+        (float)source.W
       );
   }
   #endregion ExtensionMethods
@@ -200,17 +185,16 @@
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
   namespace Numerics
   {
-    public interface IQuaternion<TSelf>
+    public interface IQuaternion
       : System.IFormattable
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
-      TSelf X { get; init; }
-      TSelf Y { get; init; }
-      TSelf Z { get; init; }
-      TSelf W { get; init; }
+      double X { get; init; }
+      double Y { get; init; }
+      double Z { get; init; }
+      double W { get; init; }
 
       /// <summary>Calculates the dot product of two Quaternions.</summary>
-      public static TSelf Dot(IQuaternion<TSelf> q1, IQuaternion<TSelf> q2)
+      public static double Dot(IQuaternion q1, IQuaternion q2)
         => q1.X * q2.X + q1.Y * q2.Y + q1.Z * q2.Z + q1.W * q2.W;
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
@@ -218,3 +202,4 @@
     }
   }
 }
+#endif

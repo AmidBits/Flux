@@ -8,16 +8,14 @@ namespace Flux.Numerics
   public record class QuartileMethod3
     : IQuartileComputable
   {
-    public (TSelf q1, TSelf q2, TSelf q3) ComputeQuartiles<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public (double q1, double q2, double q3) ComputeQuartiles(System.Collections.Generic.IEnumerable<double> sample)
       => Compute(sample);
 
-    public static (TSelf q1, TSelf q2, TSelf q3) Compute<TSelf>(System.Collections.Generic.IEnumerable<TSelf> sample)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static (double q1, double q2, double q3) Compute(System.Collections.Generic.IEnumerable<double> sample)
       => (
-        QuantileR5.Default.EstimateQuantileValue(sample, TSelf.CreateChecked(0.25)),
-        QuantileR5.Default.EstimateQuantileValue(sample, TSelf.CreateChecked(0.50)),
-        QuantileR5.Default.EstimateQuantileValue(sample, TSelf.CreateChecked(0.75))
+        QuantileR5.Default.EstimateQuantileValue(sample, 0.25),
+        QuantileR5.Default.EstimateQuantileValue(sample, 0.50),
+        QuantileR5.Default.EstimateQuantileValue(sample, 0.75)
       );
   }
 }

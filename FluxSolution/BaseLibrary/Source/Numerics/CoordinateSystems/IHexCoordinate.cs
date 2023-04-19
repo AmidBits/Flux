@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿#if NET7_0_OR_GREATER
+using System.Linq;
 
 namespace Flux
 {
@@ -239,3 +240,4 @@ namespace Flux
     }
   }
 }
+#endif

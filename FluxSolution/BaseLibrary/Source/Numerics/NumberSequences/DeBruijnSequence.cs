@@ -80,8 +80,7 @@ namespace Flux.NumberSequences
   }
 
   public record class DeBruijnSequence<T>
-    : INumericSequence<T>
-    where T : System.Numerics.INumber<T>
+    : INumericSequence<System.Numerics.BigInteger>
   {
     public int OrderN { get; }
     public int SizeK { get; }
@@ -98,17 +97,17 @@ namespace Flux.NumberSequences
 
     /// <summary>Creates a new sequence with the code indices expanded.</summary>
 
-    public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<T>> GetExpandedSequence()
+    public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.BigInteger>> GetExpandedSequence()
       => GetSequence().PartitionNgram(OrderN, (e, i) => e.ToList());
 
     // INumberSequence
 
-    public System.Collections.Generic.IEnumerable<T> GetSequence()
-      => DeBruijnSequence.GetDeBruijnSequence(SizeK, OrderN, (System.Collections.Generic.IList<T>)Alphabet);
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
+      => DeBruijnSequence.GetDeBruijnSequence(SizeK, OrderN, (System.Collections.Generic.IList<System.Numerics.BigInteger>)Alphabet);
 
     // IEnumerable
 
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator()
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
 
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

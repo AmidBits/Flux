@@ -13,7 +13,9 @@
   /// <summary>An interface representing a quantifiable value.</summary>
   /// <typeparam name="TType">The value type.</typeparam>
   public interface IQuantifiable<TType>
+#if NET7_0_OR_GREATER
     where TType : System.Numerics.INumberBase<TType>
+#endif
   {
     /// <summary>Create a string representing a standard, typical, or common format of the quantity.</summary>
     /// <param name="format">The format for the unit value.</param>

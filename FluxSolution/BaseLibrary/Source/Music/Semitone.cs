@@ -34,9 +34,11 @@ namespace Flux.Music
     /// <param name="frequencyRatio"></param>
     public static Semitone FromFrequencyRatio(double frequencyRatio) => new((int)ConvertFrequencyRatioToSemitone(frequencyRatio));
 
+#if NET7_0_OR_GREATER
     /// <summary>Creates a new Cent instance from the specified ratio.</summary>
     /// <param name="ratio"></param>
     public static Semitone FromRatio(Units.Ratio ratio) => FromFrequencyRatio(ratio.Value);
+#endif
 
     /// <summary>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
     public static double PitchShift(double frequency, int semitones) => frequency * ConvertSemitoneToFrequencyRatio(semitones);
