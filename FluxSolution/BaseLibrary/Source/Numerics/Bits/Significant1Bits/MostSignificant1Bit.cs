@@ -7,7 +7,7 @@ namespace Flux
     /// <summary>Extracts the highest numbered element of a bit set. Given a 2's complement binary integer value, this is the most significant 1 bit.</summary>
     public static TSelf MostSignificant1Bit<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsZero(x) ? x : (TSelf.One << (x.GetShortestBitLength() - 1));
+      => TSelf.IsZero(x) ? x : (TSelf.One << (x.BitLengthN() - 1));
 
 #else
 

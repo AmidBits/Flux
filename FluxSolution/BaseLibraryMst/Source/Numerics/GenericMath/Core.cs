@@ -62,7 +62,7 @@ namespace GenericMath
     [TestMethod]
     public void IntegerSqrt()
     {
-      Assert.AreEqual(4, 21.ToBigInteger().IntegerSqrt());
+      Assert.AreEqual(4, 21.ToBigInteger().ISqrt());
     }
 
     [TestMethod]
@@ -74,21 +74,21 @@ namespace GenericMath
     [TestMethod]
     public void IntegerPow()
     {
-      Assert.AreEqual(10000000000.ToBigInteger(), 10L.ToBigInteger().IntegerPow(10));
+      Assert.AreEqual(10000000000.ToBigInteger(), 10L.ToBigInteger().IPow(10));
     }
 
     [TestMethod]
     public void IntegerPowRec()
     {
-      Assert.AreEqual(10000000000, 10L.ToBigInteger().IntegerPowRec(10, out double reciprocal));
+      Assert.AreEqual(10000000000, 10L.ToBigInteger().IPowRec(10, out double reciprocal));
       Assert.AreEqual(1E-10, reciprocal);
     }
 
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, 100.ToBigInteger().IsIntegerPow(10));
-      Assert.AreEqual(false, 101.ToBigInteger().IsIntegerPow(10));
+      Assert.AreEqual(true, 100.ToBigInteger().IsPowOf(10));
+      Assert.AreEqual(false, 101.ToBigInteger().IsPowOf(10));
     }
 
     [TestMethod]
@@ -96,9 +96,9 @@ namespace GenericMath
     {
       var v = 15.ToBigInteger();
 
-      var iq = v.IntegerSqrt();
+      var iq = v.ISqrt();
 
-      var isiq = v.IsIntegerSqrt(iq);
+      var isiq = v.IsISqrt(iq);
 
       Assert.IsTrue(isiq);
     }
@@ -108,9 +108,9 @@ namespace GenericMath
     {
       var v = 15.ToBigInteger();
 
-      var iq = v.IntegerSqrt();
+      var iq = v.ISqrt();
 
-      var ispiq = v.IsPerfectIntegerSqrt(iq);
+      var ispiq = v.IsPerfectISqrt(iq);
 
       Assert.IsFalse(ispiq);
     }
@@ -131,7 +131,7 @@ namespace GenericMath
     [TestMethod]
     public void NearestMultiple()
     {
-      var nearestMultiple = 512.NearestMultiple(20, false, RoundingMode.HalfTowardZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+      var nearestMultiple = 512.NearestMultipleOf(20, false, RoundingMode.HalfTowardZero, out var nearestTowardsZero, out var nearestAwayFromZero);
 
       Assert.AreEqual(520, nearestMultiple);
 

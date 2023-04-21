@@ -8,7 +8,7 @@ namespace Flux
     public static TSelf DetentInterval<TSelf>(this TSelf value, TSelf interval, TSelf distance, RoundingMode mode)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      LocateMultiple(value, interval, false, out var multipleTowardsZero, out var multipleAwayFromZero);
+      LocateMultipleOf(value, interval, false, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       BoundaryRounding<TSelf, TSelf>.MeasureDistanceToBoundaries(value, multipleTowardsZero, multipleAwayFromZero, out TSelf distanceTowardsZero, out TSelf distanceAwayFromZero);
 

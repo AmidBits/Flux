@@ -19,7 +19,7 @@ namespace GenericMath
     [TestMethod]
     public void NearestMultiple()
     {
-      Assert.AreEqual(1.8, Flux.GenericMath.NearestMultiple<double>(1.75, 0.45, false, Flux.RoundingMode.HalfAwayFromZero, out var _, out var _), $"{nameof(Flux.GenericMath.NearestMultiple)} {Flux.RoundingMode.HalfAwayFromZero}");
+      Assert.AreEqual(1.8, Flux.GenericMath.NearestMultipleOf<double>(1.75, 0.45, false, Flux.RoundingMode.HalfAwayFromZero, out var _, out var _), $"{nameof(Flux.GenericMath.NearestMultipleOf)} {Flux.RoundingMode.HalfAwayFromZero}");
     }
 
     [TestMethod]

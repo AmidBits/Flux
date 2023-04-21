@@ -6,12 +6,12 @@ namespace Flux
 
     /// <summary>Computes the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static void LocateIntegerLog<TSelf>(this TSelf value, TSelf radix, out TSelf ilogTowardsZero, out TSelf ilogAwayFromZero)
+    public static void LocateILog<TSelf>(this TSelf value, TSelf radix, out TSelf ilogTowardsZero, out TSelf ilogAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (TSelf.IsNegative(value))
       {
-        LocateIntegerLog(TSelf.Abs(value), radix, out ilogTowardsZero, out ilogAwayFromZero);
+        LocateILog(TSelf.Abs(value), radix, out ilogTowardsZero, out ilogAwayFromZero);
 
         ilogTowardsZero = -ilogTowardsZero;
         ilogAwayFromZero = -ilogAwayFromZero;
@@ -27,7 +27,7 @@ namespace Flux
 
           if (!TSelf.IsZero(value))
           {
-            if (!IsIntegerPow(value, radix))
+            if (!IsPowOf(value, radix))
               ilogAwayFromZero++;
 
             while (value >= radix)
@@ -44,7 +44,7 @@ namespace Flux
 
     /// <summary>Computes the integer log ceiling of x using base b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TSelf LocateIntegerLogAfz<TSelf>(this TSelf value, TSelf radix)
+    public static TSelf LocateILogAfz<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertNonNegative(value);
@@ -54,7 +54,7 @@ namespace Flux
 
       if (!TSelf.IsZero(value))
       {
-        if (!IsIntegerPow(value, radix))
+        if (!IsPowOf(value, radix))
           ilogAwayFromZero++;
 
         while (value >= radix)
@@ -70,7 +70,7 @@ namespace Flux
 
     /// <summary>Computes the integer log floor of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static TSelf LocateIntegerLogTz<TSelf>(this TSelf value, TSelf radix)
+    public static TSelf LocateILogTz<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertNonNegative(value);
@@ -101,12 +101,12 @@ namespace Flux
 
     /// <summary>Attempt to compute the integer log floor and ceiling of <paramref name="value"/> using base <paramref name="radix"/> into the out parameters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static bool TryLocateIntegerLog<TSelf>(this TSelf value, TSelf radix, out TSelf ilogTowardsZero, out TSelf ilogAwayFromZero)
+    public static bool TryLocateILog<TSelf>(this TSelf value, TSelf radix, out TSelf ilogTowardsZero, out TSelf ilogAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       try
       {
-        LocateIntegerLog(value, radix, out ilogTowardsZero, out ilogAwayFromZero);
+        LocateILog(value, radix, out ilogTowardsZero, out ilogAwayFromZero);
 
         return true;
       }
@@ -123,11 +123,11 @@ namespace Flux
 
     /// <summary>Computes the integer log floor and ceiling of <paramref name="x"/> using base <paramref name="b"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static void LocateIntegerLog(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, out System.Numerics.BigInteger ilogTowardsZero, out System.Numerics.BigInteger ilogAwayFromZero)
+    public static void LocateILog(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, out System.Numerics.BigInteger ilogTowardsZero, out System.Numerics.BigInteger ilogAwayFromZero)
     {
       if (value < 0)
       {
-        LocateIntegerLog(System.Numerics.BigInteger.Abs(value), radix, out ilogTowardsZero, out ilogAwayFromZero);
+        LocateILog(System.Numerics.BigInteger.Abs(value), radix, out ilogTowardsZero, out ilogAwayFromZero);
 
         ilogTowardsZero = -ilogTowardsZero;
         ilogAwayFromZero = -ilogAwayFromZero;
@@ -143,7 +143,7 @@ namespace Flux
 
           if (!value.IsZero)
           {
-            if (!IsIntegerPow(value, radix))
+            if (!IsIPowOf(value, radix))
               ilogAwayFromZero++;
 
             while (value >= radix)
@@ -160,7 +160,7 @@ namespace Flux
 
     /// <summary>Computes the integer log ceiling of x using base b.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static System.Numerics.BigInteger LocateIntegerLogAfz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
+    public static System.Numerics.BigInteger LocateILogAfz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
     {
       AssertNonNegative(value);
       AssertRadix(radix);
@@ -169,7 +169,7 @@ namespace Flux
 
       if (!value.IsZero)
       {
-        if (!IsIntegerPow(value, radix))
+        if (!IsIPowOf(value, radix))
           ilogAwayFromZero++;
 
         while (value >= radix)
@@ -185,7 +185,7 @@ namespace Flux
 
     /// <summary>Computes the integer log floor of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static System.Numerics.BigInteger LocateIntegerLogTz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
+    public static System.Numerics.BigInteger LocateILogTz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
     {
       AssertNonNegative(value);
       AssertRadix(radix);
@@ -215,11 +215,11 @@ namespace Flux
 
     /// <summary>Attempt to compute the integer log floor and ceiling of <paramref name="value"/> using base <paramref name="radix"/> into the out parameters.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static bool TryLocateIntegerLog(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, out System.Numerics.BigInteger ilogTowardsZero, out System.Numerics.BigInteger ilogAwayFromZero)
+    public static bool TryLocateILog(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, out System.Numerics.BigInteger ilogTowardsZero, out System.Numerics.BigInteger ilogAwayFromZero)
     {
       try
       {
-        LocateIntegerLog(value, radix, out ilogTowardsZero, out ilogAwayFromZero);
+        LocateILog(value, radix, out ilogTowardsZero, out ilogAwayFromZero);
 
         return true;
       }

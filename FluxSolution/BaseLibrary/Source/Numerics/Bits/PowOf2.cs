@@ -10,10 +10,10 @@ namespace Flux
     /// <summary>Get the power-of-2 nearest to value, toward zero (TZ).</summary>
     /// <param name="value">The value for which the nearest power-of-2 towards zero will be found.</param>
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be toward zero and never equal to value.</param>
-    public static System.Numerics.BigInteger Pow2Tz<TSelf>(this TSelf value, bool proper)
+    public static System.Numerics.BigInteger PowOf2Tz<TSelf>(this TSelf value, bool proper)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.IsNegative(value)
-      ? -Pow2Tz(TSelf.Abs(value), proper)
+      ? -PowOf2Tz(TSelf.Abs(value), proper)
       // The value is positive/greater-than-or-equal-to-zero.
       : (System.Numerics.BigInteger.CreateChecked(value.TruncMod(TSelf.One, out var remainder)) is var quotient && System.Numerics.BigInteger.IsPow2(quotient))
       ? (proper && TSelf.IsZero(remainder) ? quotient >> 1 : quotient)
@@ -23,10 +23,10 @@ namespace Flux
     /// <summary>Get the power-of-2 nearest to value, away from zero (AFZ).</summary>
     /// <param name="value">The value for which the nearest power-of-2 away from zero will be found.</param>
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be away from zero and never equal to value.</param>
-    public static System.Numerics.BigInteger Pow2Afz<TSelf>(this TSelf value, bool proper)
+    public static System.Numerics.BigInteger PowOf2Afz<TSelf>(this TSelf value, bool proper)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.IsNegative(value)
-      ? -Pow2Afz(TSelf.Abs(value), proper)
+      ? -PowOf2Afz(TSelf.Abs(value), proper)
       // The value is positive/greater-than-or-equal-to-zero.
       : (System.Numerics.BigInteger.CreateChecked(value.TruncMod(TSelf.One, out var remainder)) is var quotient && System.Numerics.BigInteger.IsPow2(quotient))
       ? (proper ? quotient << 1 : quotient)
@@ -40,12 +40,12 @@ namespace Flux
     /// <param name="pow2TowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="pow2AwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value.</returns>
-    public static System.Numerics.BigInteger NearestPow2<TSelf>(this TSelf value, bool proper, RoundingMode mode, out System.Numerics.BigInteger pow2TowardsZero, out System.Numerics.BigInteger pow2AwayFromZero)
+    public static System.Numerics.BigInteger NearestPowOf2<TSelf>(this TSelf value, bool proper, RoundingMode mode, out System.Numerics.BigInteger pow2TowardsZero, out System.Numerics.BigInteger pow2AwayFromZero)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       if (TSelf.IsNegative(value))
       {
-        var pow2Nearest = NearestPow2(TSelf.Abs(value), proper, mode, out pow2TowardsZero, out pow2AwayFromZero);
+        var pow2Nearest = NearestPowOf2(TSelf.Abs(value), proper, mode, out pow2TowardsZero, out pow2AwayFromZero);
 
         pow2TowardsZero = -pow2TowardsZero;
         pow2AwayFromZero = -pow2AwayFromZero;
@@ -84,34 +84,34 @@ namespace Flux
     /// <summary>Get the power-of-2 nearest to value, toward zero.</summary>
     /// <param name="value">The value for which the nearest power-of-2 towards zero will be found.</param>
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be toward zero and never equal to value.</param>
-    public static System.Numerics.BigInteger Pow2Tz(this System.Numerics.BigInteger value, bool proper)
+    public static System.Numerics.BigInteger PowOf2Tz(this System.Numerics.BigInteger value, bool proper)
       => value < 0
-      ? -Pow2Tz(-value, proper)
+      ? -PowOf2Tz(-value, proper)
       : value.MostSignificant1Bit() is var ms1b && value == ms1b
       ? (proper ? value >> 1 : value)
       : value.MostSignificant1Bit();
 
-    public static int Pow2Tz(this int value, bool proper)
-      => (int)Pow2Tz((System.Numerics.BigInteger)value, proper);
+    public static int PowOf2Tz(this int value, bool proper)
+      => (int)PowOf2Tz((System.Numerics.BigInteger)value, proper);
 
-    public static long Pow2Tz(this long value, bool proper)
-      => (long)Pow2Tz((System.Numerics.BigInteger)value, proper);
+    public static long PowerOf2Tz(this long value, bool proper)
+      => (long)PowOf2Tz((System.Numerics.BigInteger)value, proper);
 
     /// <summary>Get the power-of-2 nearest to value, away from zero.</summary>
     /// <param name="value">The value for which the nearest power-of-2 away from zero will be found.</param>
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be away from zero and never equal to value.</param>
-    public static System.Numerics.BigInteger Pow2Afz(this System.Numerics.BigInteger value, bool proper)
+    public static System.Numerics.BigInteger PowOf2Afz(this System.Numerics.BigInteger value, bool proper)
       => value < 0
-      ? -Pow2Afz(-value, proper)
+      ? -PowOf2Afz(-value, proper)
       : value.MostSignificant1Bit() is var ms1b && value == ms1b
       ? (proper ? value << 1 : value)
       : value.MostSignificant1Bit() << 1;
 
-    public static int Pow2Afz(this int value, bool proper)
-      => (int)Pow2Afz((System.Numerics.BigInteger)value, proper);
+    public static int PowOf2Afz(this int value, bool proper)
+      => (int)PowOf2Afz((System.Numerics.BigInteger)value, proper);
 
-    public static long Pow2Afz(this long value, bool proper)
-      => (long)Pow2Afz((System.Numerics.BigInteger)value, proper);
+    public static long PowOf2Afz(this long value, bool proper)
+      => (long)PowOf2Afz((System.Numerics.BigInteger)value, proper);
 
 #endif
   }

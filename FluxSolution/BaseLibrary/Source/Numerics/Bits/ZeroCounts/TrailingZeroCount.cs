@@ -7,7 +7,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
+    /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit. In other words, the number of least significant 0 bits.</summary>
     public static int TrailingZeroCount<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => int.CreateChecked(TSelf.TrailingZeroCount(value));

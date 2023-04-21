@@ -12,7 +12,7 @@ namespace Flux
 
       for (int index = list.Count - 1; index > 0; index--) // Skip index == 0, because it's the 'ones' column.
         if (!TSelf.IsZero(list[index]) || !skipZeroes)
-          list[index] *= IntegerPow(radix, TSelf.CreateChecked(index));
+          list[index] *= IPow(radix, TSelf.CreateChecked(index));
 
       return list;
     }

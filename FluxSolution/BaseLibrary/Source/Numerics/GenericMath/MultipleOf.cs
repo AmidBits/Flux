@@ -11,7 +11,7 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static void LocateMultiple<TSelf>(this TSelf value, TSelf multiple, bool proper, out TSelf multipleTowardsZero, out TSelf multipleAwayFromZero)
+    public static void LocateMultipleOf<TSelf>(this TSelf value, TSelf multiple, bool proper, out TSelf multipleTowardsZero, out TSelf multipleAwayFromZero)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       AssertNonNegative(multiple, nameof(multiple));
@@ -33,10 +33,10 @@
     /// <param name="multiple">The multiple to which the results will align.</param>
     /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
     /// <returns>The nearest multiple to <paramref name="value"/> away from zero.</returns>
-    public static TSelf LocateMultipleAfz<TSelf>(this TSelf value, TSelf multiple, bool proper)
+    public static TSelf LocateMultipleOfAfz<TSelf>(this TSelf value, TSelf multiple, bool proper)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      LocateMultiple(value, multiple, proper, out var _, out var multipleAwayFromZero);
+      LocateMultipleOf(value, multiple, proper, out var _, out var multipleAwayFromZero);
 
       return multipleAwayFromZero;
     }
@@ -46,10 +46,10 @@
     /// <param name="multiple">The multiple to which the results will align.</param>
     /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
     /// <returns>The nearest multiple to <paramref name="value"/> towards zero.</returns>
-    public static TSelf LocateMultipleTz<TSelf>(this TSelf value, TSelf multiple, bool proper)
+    public static TSelf LocateMultipleOfTz<TSelf>(this TSelf value, TSelf multiple, bool proper)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      LocateMultiple(value, multiple, proper, out var multipleTowardsZero, out var _);
+      LocateMultipleOf(value, multiple, proper, out var multipleTowardsZero, out var _);
 
       return multipleTowardsZero;
     }
@@ -62,10 +62,10 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value.</returns>
-    public static TSelf NearestMultiple<TSelf>(this TSelf value, TSelf multiple, bool proper, RoundingMode mode, out TSelf multipleTowardsZero, out TSelf multipleAwayFromZero)
+    public static TSelf NearestMultipleOf<TSelf>(this TSelf value, TSelf multiple, bool proper, RoundingMode mode, out TSelf multipleTowardsZero, out TSelf multipleAwayFromZero)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      LocateMultiple(value, multiple, proper, out multipleTowardsZero, out multipleAwayFromZero);
+      LocateMultipleOf(value, multiple, proper, out multipleTowardsZero, out multipleAwayFromZero);
 
       return BoundaryRounding<TSelf, TSelf>.Round(value, mode, multipleTowardsZero, multipleAwayFromZero);
     }
@@ -77,12 +77,12 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryNearestMultiple<TSelf>(this TSelf value, TSelf multiple, bool proper, RoundingMode mode, out TSelf multipleTowardsZero, out TSelf multipleAwayFromZero, out TSelf nearestMultiple)
+    public static bool TryNearestMultipleOf<TSelf>(this TSelf value, TSelf multiple, bool proper, RoundingMode mode, out TSelf multipleTowardsZero, out TSelf multipleAwayFromZero, out TSelf nearestMultiple)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       try
       {
-        nearestMultiple = NearestMultiple(value, multiple, proper, mode, out multipleTowardsZero, out multipleAwayFromZero);
+        nearestMultiple = NearestMultipleOf(value, multiple, proper, mode, out multipleTowardsZero, out multipleAwayFromZero);
 
         return true;
       }
@@ -105,7 +105,7 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static void LocateMultiple(this double value, double multiple, bool proper, out double multipleTowardsZero, out double multipleAwayFromZero)
+    public static void LocateMultipleOf(this double value, double multiple, bool proper, out double multipleTowardsZero, out double multipleAwayFromZero)
     {
       if (multiple < 0) throw new System.ArgumentOutOfRangeException(nameof(multiple)); // AssertNonNegative(multiple, nameof(multiple));
 
@@ -126,9 +126,9 @@
     /// <param name="multiple">The multiple to which the results will align.</param>
     /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
     /// <returns>The nearest multiple to <paramref name="value"/> away from zero.</returns>
-    public static double LocateMultipleAfz<TSelf>(this double value, double multiple, bool proper)
+    public static double LocateMultipleOfAfz<TSelf>(this double value, double multiple, bool proper)
     {
-      LocateMultiple(value, multiple, proper, out var _, out var multipleAwayFromZero);
+      LocateMultipleOf(value, multiple, proper, out var _, out var multipleAwayFromZero);
 
       return multipleAwayFromZero;
     }
@@ -138,9 +138,9 @@
     /// <param name="multiple">The multiple to which the results will align.</param>
     /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly nearest (but not the same), or LT/GT rather than LTE/GTE.</param>
     /// <returns>The nearest multiple to <paramref name="value"/> towards zero.</returns>
-    public static double LocateMultipleTz(this double value, double multiple, bool proper)
+    public static double LocateMultipleOfTz(this double value, double multiple, bool proper)
     {
-      LocateMultiple(value, multiple, proper, out var multipleTowardsZero, out var _);
+      LocateMultipleOf(value, multiple, proper, out var multipleTowardsZero, out var _);
 
       return multipleTowardsZero;
     }
@@ -153,9 +153,9 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value.</returns>
-    public static double NearestMultiple(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero)
+    public static double NearestMultipleOf(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero)
     {
-      LocateMultiple(value, multiple, proper, out multipleTowardsZero, out multipleAwayFromZero);
+      LocateMultipleOf(value, multiple, proper, out multipleTowardsZero, out multipleAwayFromZero);
 
       return BoundaryRounding.Round(value, mode, multipleTowardsZero, multipleAwayFromZero);
     }
@@ -167,11 +167,11 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryNearestMultiple(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero, out double nearestMultiple)
+    public static bool TryNearestMultipleOf(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero, out double nearestMultiple)
     {
       try
       {
-        nearestMultiple = NearestMultiple(value, multiple, proper, mode, out multipleTowardsZero, out multipleAwayFromZero);
+        nearestMultiple = NearestMultipleOf(value, multiple, proper, mode, out multipleTowardsZero, out multipleAwayFromZero);
 
         return true;
       }

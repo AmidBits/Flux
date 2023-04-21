@@ -68,7 +68,7 @@ namespace GenericMath
     [TestMethod]
     public void NearestPow2()
     {
-      var nearest = 88.ToType(out System.Numerics.BigInteger _).NearestPow2(false, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
+      var nearest = 88.ToType(out System.Numerics.BigInteger _).NearestPowOf2(false, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
 
       Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), nearest);
 
@@ -79,7 +79,7 @@ namespace GenericMath
     [TestMethod]
     public void NearestPow2Proper()
     {
-      var nearest = 88.ToType(out System.Numerics.BigInteger _).NearestPow2(true, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
+      var nearest = 88.ToType(out System.Numerics.BigInteger _).NearestPowOf2(true, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
 
       Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), nearest);
 
@@ -90,7 +90,7 @@ namespace GenericMath
     [TestMethod]
     public void Pow2AwayFromZero()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2Afz(false);
+      var actual = 88.ToType(out System.Numerics.BigInteger _).PowOf2Afz(false);
 
       Assert.AreEqual(128.ToType(out System.Numerics.BigInteger _), actual);
     }
@@ -98,7 +98,7 @@ namespace GenericMath
     [TestMethod]
     public void Pow2AwayFromZeroProper()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2Afz(true);
+      var actual = 88.ToType(out System.Numerics.BigInteger _).PowOf2Afz(true);
 
       Assert.AreEqual(128.ToType(out System.Numerics.BigInteger _), actual);
     }
@@ -106,7 +106,7 @@ namespace GenericMath
     [TestMethod]
     public void Pow2TowardsZero()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2Tz(false);
+      var actual = 88.ToType(out System.Numerics.BigInteger _).PowOf2Tz(false);
 
       Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), actual);
     }
@@ -114,7 +114,7 @@ namespace GenericMath
     [TestMethod]
     public void Pow2TowardsZeroProper()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).Pow2Tz(true);
+      var actual = 88.ToType(out System.Numerics.BigInteger _).PowOf2Tz(true);
 
       Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), actual);
     }

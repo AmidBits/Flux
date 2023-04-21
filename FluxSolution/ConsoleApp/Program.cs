@@ -23,50 +23,22 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
+      var r = 12;
+      var rbfl = r.BitFoldLeft();
+      var rbfr = r.BitFoldRight();
+      var rls1b = r.LeastSignificant1Bit();
+      var rms1b = r.MostSignificant1Bit();
+      var rlzc = r.LeadingZeroCount();
+      var rtzc = r.TrailingZeroCount();
+      var rbl = r.BitLength();
+      var rc1b = r.Count1Bits();
+      var ril2 = r.ILog2();
+      var rmb = r.ReverseBits();
+      var ripo2 = r.IsPowOf2();
 
 
-      var ilog2 = (8.1).Log2F();
 
-      for (var i = -5; i < 20; i++)
-      {
-        var tz = i.Pow2Tz(false);
-        var afz = i.Pow2Afz(false);
-        var ptz = i.Pow2Tz(true);
-        var pafz = i.Pow2Afz(true);
-
-        System.Console.WriteLine($"{i.ToString().PadLeft(3)} : {tz.ToString().PadLeft(3)} ({ptz.ToString().PadLeft(3)}) : {afz.ToString().PadLeft(3)} ({pafz.ToString().PadLeft(3)})");
-      }
       return;
-
-      var proper = true;
-
-      var n = 8.ToBigInteger();
-
-      var ms1b = n.MostSignificant1Bit();
-      var ms1bp = ms1b == n ? ms1b : ms1b << 1;
-
-      var pow2tz = proper && ms1b == n ? ms1b >> 1 : ms1b;
-
-      var pow2afz = proper && ms1bp == n ? ms1bp << 1 : ms1bp;
-      // need to use the above two lightweight functions. 
-
-      var afz1 = n.Pow2Afz(false);
-      var afz2 = n.Pow2Afz(true);
-
-      var tz1 = n.Pow2Tz(false);
-      var tz2 = n.Pow2Tz(true);
-
-      670530.ToBigInteger().DigitMeta(2, out var count, out var digits, out var sum);
-
-      var a4 = new Flux.Units.Frequency(440);
-
-      var r = new Flux.Units.Ratio(3, 2);
-
-      var r1200 = Flux.Music.Cent.ConvertCentToFrequencyRatio(700);
-
-      var a5 = Flux.Units.Frequency.PitchShift(a4, new Flux.Music.Cent(700));
-
-      var ar = Flux.Fraction.ApproximateRational(r1200);
 
     }
 

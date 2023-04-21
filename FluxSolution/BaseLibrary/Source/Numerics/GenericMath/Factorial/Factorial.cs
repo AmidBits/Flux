@@ -21,7 +21,7 @@ namespace Flux
     public static TSelf FactorialEx<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var groupCount = TSelf.Min(x.IntegerSqrt(), TSelf.CreateChecked(int.Max(1, System.Environment.ProcessorCount - 2))); // Minimum of square root of x and the number of processors on the system, minus 2 of them, and at least 1 :).
+      var groupCount = TSelf.Min(x.ISqrt(), TSelf.CreateChecked(int.Max(1, System.Environment.ProcessorCount - 2))); // Minimum of square root of x and the number of processors on the system, minus 2 of them, and at least 1 :).
 
       var (quotient, remainder) = TSelf.DivRem(x, groupCount);
 
@@ -54,7 +54,7 @@ namespace Flux
 
     public static System.Numerics.BigInteger FactorialEx(this System.Numerics.BigInteger x)
     {
-      var groupCount = System.Numerics.BigInteger.Min(x.IntegerSqrt(), System.Numerics.BigInteger.Max(1, System.Environment.ProcessorCount - 2)); // Minimum of square root of x and the number of processors on the system, minus 2 of them, and at least 1 :).
+      var groupCount = System.Numerics.BigInteger.Min(x.ISqrt(), System.Numerics.BigInteger.Max(1, System.Environment.ProcessorCount - 2)); // Minimum of square root of x and the number of processors on the system, minus 2 of them, and at least 1 :).
 
       var quotient = System.Numerics.BigInteger.DivRem(x, groupCount, out var remainder);
 
