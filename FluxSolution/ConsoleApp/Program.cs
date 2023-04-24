@@ -15,6 +15,73 @@ namespace ConsoleApp
 {
   public class Program
   {
+    /// <summary>
+    /// Permutation indices of algorithm 515.
+    /// <para><see href="https://github.com/sleeepyjack/alg515"/></para>
+    /// <para><seealso href="https://stackoverflow.com/questions/561/how-to-use-combinations-of-sets-as-test-data#794"/></para>
+    /// </summary>
+    /// <param name="n"></param>
+    /// <param name="p"></param>
+    /// <param name="l"></param>
+    /// <returns></returns>
+    public static int[] PermuteAlgorithm515(int n, int p, int l)
+    {
+      var c = new int[p];
+      var x = 1;
+      var r = Binom(n - x, p - 1);
+      var k = r;
+
+      while (k <= l)
+      {
+        x++;
+        r = Binom(n - x, p - 1);
+        k += r;
+      }
+
+      k -= r;
+      c[0] = x - 1;
+
+      for (var i = 2; i < p; i++)
+      {
+        x++;
+        r = Binom(n - x, p - i);
+        k += r;
+
+        while (k <= l)
+        {
+          x++;
+          r = Binom(n - x, p - i);
+          k += r;
+        }
+
+        k -= r;
+
+        c[i - 1] = x - 1;
+      }
+
+      c[p - 1] = x + l - k;
+
+      return c;
+    }
+
+    public static int Binom(int n, int k)
+    {
+      var k1 = k;
+      var p = n - k1;
+
+      if (k1 < p)
+      {
+        p = k1;
+        k1 = n - p;
+      }
+
+      var r = p == 0 ? 1 : k1 + 1;
+
+      for (var i = 2; i <= p; i++)
+        r = (r * (k1 + i)) / i;
+
+      return r;
+    }
 
     private static void TimedMain(string[] _)
     {
@@ -23,21 +90,35 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      var r = 256;
-      var rbfl = r.BitFoldLeft();
-      var rbfr = r.BitFoldRight();
-      var rls1b = r.LeastSignificant1Bit();
-      var rms1b = r.MostSignificant1Bit();
-      var rlzc = r.LeadingZeroCount();
-      var rtzc = r.TrailingZeroCount();
-      var rbl = r.BitLength();
-      var rc1b = r.Count1Bits();
-      var ril2 = r.ILog2();
-      var rmb = r.MirrorBits();
-      var ripo2 = r.IsPowOf2();
-      var ripo10 = r.IsPowOf(10);
-      var ripo12 = r.IsPowOf(12);
-      var ripo16 = r.IsPowOf(16);
+      int n = 5, r = 3;
+
+      var nCr = Binom(n, r);
+
+      System.Console.WriteLine($"n ={n}, r ={r}, nCr ={nCr}");
+
+      for (var i = 0; i < nCr; i++)
+      {
+        var c = PermuteAlgorithm515(n, r, i);
+        System.Console.WriteLine(string.Join(", ", c));
+      }
+
+      return;
+
+      //var r = 256;
+      //var rbfl = r.BitFoldLeft();
+      //var rbfr = r.BitFoldRight();
+      //var rls1b = r.LeastSignificant1Bit();
+      //var rms1b = r.MostSignificant1Bit();
+      //var rlzc = r.LeadingZeroCount();
+      //var rtzc = r.TrailingZeroCount();
+      //var rbl = r.BitLength();
+      //var rc1b = r.Count1Bits();
+      //var ril2 = r.ILog2();
+      //var rmb = r.MirrorBits();
+      //var ripo2 = r.IsPowOf2();
+      //var ripo10 = r.IsPowOf(10);
+      //var ripo12 = r.IsPowOf(12);
+      //var ripo16 = r.IsPowOf(16);
 
 
       return;
