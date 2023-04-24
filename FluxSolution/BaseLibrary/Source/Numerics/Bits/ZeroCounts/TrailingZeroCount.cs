@@ -14,10 +14,13 @@ namespace Flux
 
 #else
 
-    /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit.</summary>
+    /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit. In other words, the number of least significant 0 bits.</summary>
     public static int TrailingZeroCount(this System.Numerics.BigInteger value) => value > 0 ? Count1Bits((value & -value) - 1) : -1;
 
+    /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit. In other words, the number of least significant 0 bits.</summary>
     public static int TrailingZeroCount(this int value) => unchecked(System.Numerics.BitOperations.TrailingZeroCount((uint)value));
+ 
+    /// <summary>Count Trailing Zeros (ctz) counts the number of zero bits succeeding the least significant one bit. In other words, the number of least significant 0 bits.</summary>
     public static int TrailingZeroCount(this long value) => unchecked(System.Numerics.BitOperations.TrailingZeroCount((ulong)value));
 
 #endif

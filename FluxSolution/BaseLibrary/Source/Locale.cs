@@ -125,9 +125,7 @@ namespace Flux
         {
           var name = names[index];
 
-          var ev = (System.Environment.SpecialFolder?)ec.ConvertFromString(name);
-
-          var fp = System.Environment.GetFolderPath(ev ?? throw new System.NullReferenceException());
+          var fp = System.Environment.GetFolderPath((System.Environment.SpecialFolder?)ec.ConvertFromString(name) ?? throw new System.NullReferenceException());
 
           if (!string.IsNullOrEmpty(fp))
             dictionary.Add(name, new System.IO.DirectoryInfo(fp));
@@ -137,15 +135,15 @@ namespace Flux
       }
     }
 
+    private static string[] m_platformStrings = new string[] { @"Android", @"Browser", @"FreeBSD", @"iOS", @"Linux", @"tvOS", @"watchOS", @"Windows" };
+
     /// <summary>Returns the enumerated operating system platform found in <see cref="System.OperatingSystem"/>. If no title can be determined, an empty string is returned.</summary>
     public static string SystemOsTitle
     {
       get
       {
-        var platformStrings = new string[] { @"Android", @"Browser", @"FreeBSD", @"iOS", @"Linux", @"macOS", @"tvOS", @"watchOS", @"Windows" };
-
-        for (var index = platformStrings.Length - 1; index >= 0; index--)
-          if (platformStrings[index] is var platformString && System.OperatingSystem.IsOSPlatform(platformString))
+        for (var index = m_platformStrings.Length - 1; index >= 0; index--)
+          if (m_platformStrings[index] is var platformString && System.OperatingSystem.IsOSPlatform(platformString))
             return platformString;
 
         return string.Empty;

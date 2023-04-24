@@ -37,7 +37,7 @@ namespace Flux.Interpolation
   /// <summary>Cosine interpolation is a smoother and perhaps simplest function. A suitable orientated piece of a cosine function serves to provide a smooth transition between adjacent segments.</summary>
   /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
   public record class CubicInterpolation
-    : I4NodeInterpolatable
+    : I4NodeInterpolatable<double>
   {
     #region Static methods
 

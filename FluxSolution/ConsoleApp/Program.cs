@@ -23,7 +23,7 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      var r = 12;
+      var r = 256;
       var rbfl = r.BitFoldLeft();
       var rbfr = r.BitFoldRight();
       var rls1b = r.LeastSignificant1Bit();
@@ -33,9 +33,11 @@ namespace ConsoleApp
       var rbl = r.BitLength();
       var rc1b = r.Count1Bits();
       var ril2 = r.ILog2();
-      var rmb = r.ReverseBits();
+      var rmb = r.MirrorBits();
       var ripo2 = r.IsPowOf2();
-
+      var ripo10 = r.IsPowOf(10);
+      var ripo12 = r.IsPowOf(12);
+      var ripo16 = r.IsPowOf(16);
 
 
       return;

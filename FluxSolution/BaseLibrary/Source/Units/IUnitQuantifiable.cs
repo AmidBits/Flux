@@ -7,8 +7,8 @@
     : IQuantifiable<TType>
 #if NET7_0_OR_GREATER
     where TType : System.Numerics.INumberBase<TType>
-    where TUnit : System.Enum
 #endif
+    where TUnit : System.Enum
   {
     //static abstract IUnitQuantifiable<TType, TUnit> FromUnitValue(TType value, TUnit unit);
 
