@@ -15,74 +15,6 @@ namespace ConsoleApp
 {
   public class Program
   {
-    /// <summary>
-    /// Permutation indices of algorithm 515.
-    /// <para><see href="https://github.com/sleeepyjack/alg515"/></para>
-    /// <para><seealso href="https://stackoverflow.com/questions/561/how-to-use-combinations-of-sets-as-test-data#794"/></para>
-    /// </summary>
-    /// <param name="n"></param>
-    /// <param name="p"></param>
-    /// <param name="l"></param>
-    /// <returns></returns>
-    public static int[] PermuteAlgorithm515(int n, int p, int l)
-    {
-      var c = new int[p];
-      var x = 1;
-      var r = Binom(n - x, p - 1);
-      var k = r;
-
-      while (k <= l)
-      {
-        x++;
-        r = Binom(n - x, p - 1);
-        k += r;
-      }
-
-      k -= r;
-      c[0] = x - 1;
-
-      for (var i = 2; i < p; i++)
-      {
-        x++;
-        r = Binom(n - x, p - i);
-        k += r;
-
-        while (k <= l)
-        {
-          x++;
-          r = Binom(n - x, p - i);
-          k += r;
-        }
-
-        k -= r;
-
-        c[i - 1] = x - 1;
-      }
-
-      c[p - 1] = x + l - k;
-
-      return c;
-    }
-
-    public static int Binom(int n, int k)
-    {
-      var k1 = k;
-      var p = n - k1;
-
-      if (k1 < p)
-      {
-        p = k1;
-        k1 = n - p;
-      }
-
-      var r = p == 0 ? 1 : k1 + 1;
-
-      for (var i = 2; i <= p; i++)
-        r = (r * (k1 + i)) / i;
-
-      return r;
-    }
-
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
@@ -90,17 +22,25 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      int n = 5, r = 3;
+      var f = 369.ToBigInteger();
+      var i = 1;
 
-      var nCr = Binom(n, r);
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => f.SplitFactorial(), i));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => f.Factorial(), i));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => f.FactorialParallel(), i));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => f.GroupedFactorial(8), i));
 
-      System.Console.WriteLine($"n ={n}, r ={r}, nCr ={nCr}");
+      //int n = 4, r = 2;
 
-      for (var i = 0; i < nCr; i++)
-      {
-        var c = PermuteAlgorithm515(n, r, i);
-        System.Console.WriteLine(string.Join(", ", c));
-      }
+      //var nCr = GenericMath.BinomialCoefficient(n, r);
+
+      //System.Console.WriteLine($"n ={n}, r ={r}, nCr ={nCr}");
+
+      //for (var i = 0; i < nCr; i++)
+      //{
+      //  var c = GenericMath.PermuteAlgorithm515(n, r, i);
+      //  System.Console.WriteLine(string.Join(", ", c));
+      //}
 
       return;
 
