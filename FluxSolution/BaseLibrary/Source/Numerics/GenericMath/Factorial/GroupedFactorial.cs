@@ -71,18 +71,30 @@ namespace Flux
 
       var quotient = System.Numerics.BigInteger.DivRem(x, groupCount, out var remainder);
 
-      var list = new System.Collections.Generic.List<Flux.Loops.RangeLoop>();
+      var list = new System.Collections.Generic.List<System.Threading.Tasks.Task<System.Numerics.BigInteger>>();
 
       for (var index = System.Numerics.BigInteger.Zero; index < groupCount; index++)
-        list.Add(new Flux.Loops.RangeLoop(index * quotient + System.Numerics.BigInteger.One, quotient, System.Numerics.BigInteger.One));
+        list.Add(PartialFactorialAsync(index * quotient + System.Numerics.BigInteger.One, index * quotient + quotient));
 
       if (remainder > System.Numerics.BigInteger.Zero)
-        list.Add(new Flux.Loops.RangeLoop(groupCount * quotient + System.Numerics.BigInteger.One, remainder, System.Numerics.BigInteger.One));
+        list.Add(PartialFactorialAsync(groupCount * quotient + System.Numerics.BigInteger.One, groupCount * quotient + remainder));
 
-      //foreach (var range in list)
-      //  System.Console.WriteLine($"{string.Join(',', range)} = {range.Aggregate(System.Numerics.BigInteger.One, (a, b) => a * b)}");
+      System.Threading.Tasks.Task.Run(() => { System.Threading.Tasks.Task.WhenAll(list).ConfigureAwait(false); }).ConfigureAwait(false);
 
-      return list.AsParallel().Select(l => l.Aggregate(System.Numerics.BigInteger.One, (a, b) => a * b)).Aggregate(System.Numerics.BigInteger.One, (a, b) => a * b);
+      return list.AsParallel().Aggregate(System.Numerics.BigInteger.One, (acc, task) => acc * task.Result);
+    }
+
+    public static async System.Threading.Tasks.Task<System.Numerics.BigInteger> PartialFactorialAsync(System.Numerics.BigInteger loValue, System.Numerics.BigInteger hiValue)
+    {
+      var f = loValue;
+
+      await System.Threading.Tasks.Task.Run(() =>
+      {
+        for (var i = loValue + System.Numerics.BigInteger.One; i <= hiValue; i++)
+          f *= i;
+      });
+
+      return f;
     }
 
 #endif

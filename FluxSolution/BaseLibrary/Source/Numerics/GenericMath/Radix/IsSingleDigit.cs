@@ -16,16 +16,28 @@ namespace Flux
 #else
 
     /// <summary>Indicates whether the instance is single digit, i.e. in the range [-9, 9].</summary>
-    public static bool IsSingleDigit(this System.Numerics.BigInteger value)
-      => value >= -9 && value <= 9;
+    public static bool IsSingleDigit(this System.Numerics.BigInteger number, System.Numerics.BigInteger radix)
+    {
+      AssertRadix(radix);
+
+      return (number == 0 || (number >= 0 && number < radix) || (number < 0 && number > -radix));
+    }
 
     /// <summary>Indicates whether the instance is single digit, i.e. in the range [-9, 9].</summary>
-    public static bool IsSingleDigit(this int value)
-      => value >= -9 && value <= 9;
+    public static bool IsSingleDigit(this int number, int radix)
+    {
+      AssertRadix(radix);
+
+      return (number == 0 || (number >= 0 && number < radix) || (number < 0 && number > -radix));
+    }
 
     /// <summary>Indicates whether the instance is single digit, i.e. in the range [-9, 9].</summary>
-    public static bool IsSingleDigit(this long value)
-      => value >= -9 && value <= 9;
+    public static bool IsSingleDigit(this long number, long radix)
+    {
+      AssertRadix(radix);
+
+      return (number == 0 || (number >= 0 && number < radix) || (number < 0 && number > -radix));
+    }
 
 #endif
   }

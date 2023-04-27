@@ -35,7 +35,7 @@ namespace Flux
   namespace ApproximateEquality
   {
     /// <summary>Perform a comparison where the tolerance is fixed, regardless of how small or large the numbers being compared.</summary>
-    public record class ByAbsoluteToleranceI
+    public record class ByAbsoluteToleranceI<Bogus>
       : IEqualityApproximatable<System.Numerics.BigInteger>
     {
       private readonly System.Numerics.BigInteger m_absoluteTolerance;
@@ -52,7 +52,7 @@ namespace Flux
     }
 
     /// <summary>Perform a comparison where the tolerance is fixed, regardless of how small or large the numbers being compared.</summary>
-    public record class ByAbsoluteToleranceF
+    public record class ByAbsoluteToleranceF<Bogus>
       : IEqualityApproximatable<double>
     {
       private readonly double m_absoluteTolerance;

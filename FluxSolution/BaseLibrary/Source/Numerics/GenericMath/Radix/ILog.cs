@@ -27,7 +27,7 @@ namespace Flux
 
           if (!TSelf.IsZero(value))
           {
-            if (!IsPowOf(value, radix))
+            if (!IsIPowOf(value, radix))
               ilogAwayFromZero++;
 
             while (value >= radix)
@@ -54,7 +54,7 @@ namespace Flux
 
       if (!TSelf.IsZero(value))
       {
-        if (!IsPowOf(value, radix))
+        if (!IsIPowOf(value, radix))
           ilogAwayFromZero++;
 
         while (value >= radix)

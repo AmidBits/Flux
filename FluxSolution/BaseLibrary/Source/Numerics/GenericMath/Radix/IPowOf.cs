@@ -5,7 +5,7 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>Determines if <paramref name="value"/> is a power of <paramref name="radix"/>.</summary>
-    public static bool IsPowOf<TSelf>(this TSelf value, TSelf radix)
+    public static bool IsIPowOf<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertNonNegative(value);
@@ -31,14 +31,14 @@ namespace Flux
     /// <param name="powTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="powAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static void LocatePowOf<TSelf>(this TSelf value, TSelf radix, bool proper, out TSelf powTowardsZero, out TSelf powAwayFromZero)
+    public static void LocateIPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, out TSelf powTowardsZero, out TSelf powAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertRadix(radix);
 
       if (TSelf.IsNegative(value))
       {
-        LocatePowOf(TSelf.Abs(value), radix, proper, out powTowardsZero, out powAwayFromZero);
+        LocateIPowOf(TSelf.Abs(value), radix, proper, out powTowardsZero, out powAwayFromZero);
 
         powAwayFromZero = -powAwayFromZero;
         powTowardsZero = -powTowardsZero;
@@ -63,10 +63,10 @@ namespace Flux
     /// <param name="radix">The power of alignment.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
     /// <returns>The the next power of 2 away from zero.</returns>
-    public static TSelf LocatePowOfAfz<TSelf>(this TSelf value, TSelf radix, bool proper)
+    public static TSelf LocateIPowOfAfz<TSelf>(this TSelf value, TSelf radix, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      LocatePowOf(value, radix, proper, out var _, out var powAwayFromZero);
+      LocateIPowOf(value, radix, proper, out var _, out var powAwayFromZero);
 
       return powAwayFromZero;
     }
@@ -76,10 +76,10 @@ namespace Flux
     /// <param name="radix">The power of alignment.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
     /// <returns>The the next power of 2 towards zero.</returns>
-    public static TSelf LocatePowOfTz<TSelf>(this TSelf value, TSelf radix, bool proper)
+    public static TSelf LocateIPowOfTz<TSelf>(this TSelf value, TSelf radix, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      LocatePowOf(value, radix, proper, out var powTowardsZero, out var _);
+      LocateIPowOf(value, radix, proper, out var powTowardsZero, out var _);
 
       return powTowardsZero;
     }
@@ -92,10 +92,10 @@ namespace Flux
     /// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
     /// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
     /// <returns>The nearest of two power-of-<paramref name="radix"/> to <paramref name="value"/>, optionally <paramref name="proper"/>.</returns>
-    public static TSelf NearestPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powTowardsZero, out TSelf powAwayFromZero)
+    public static TSelf NearestIPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powTowardsZero, out TSelf powAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      LocatePowOf(value, radix, proper, out powTowardsZero, out powAwayFromZero);
+      LocateIPowOf(value, radix, proper, out powTowardsZero, out powAwayFromZero);
 
       return BoundaryRounding<TSelf, TSelf>.Round(value, mode, powTowardsZero, powAwayFromZero);
     }
@@ -108,12 +108,12 @@ namespace Flux
     /// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
     /// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryNearestPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powTowardsZero, out TSelf powAwayFromZero, out TSelf nearestPow)
+    public static bool TryNearestIPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powTowardsZero, out TSelf powAwayFromZero, out TSelf nearestPow)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       try
       {
-        nearestPow = NearestPowOf(value, radix, proper, mode, out powTowardsZero, out powAwayFromZero);
+        nearestPow = NearestIPowOf(value, radix, proper, mode, out powTowardsZero, out powAwayFromZero);
 
         return true;
       }
@@ -130,7 +130,7 @@ namespace Flux
 #else
 
     /// <summary>Determines if <paramref name="value"/> is a power of <paramref name="radix"/>.</summary>
-    public static bool IsPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
+    public static bool IsIPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
     {
       AssertNonNegative(value);
       AssertRadix(radix);
@@ -155,13 +155,13 @@ namespace Flux
     /// <param name="powTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="powAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static void LocatePowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero)
+    public static void LocateIPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero)
     {
       AssertRadix(radix);
 
       if (value < 0)
       {
-        LocatePowOf(System.Numerics.BigInteger.Abs(value), radix, proper, out powTowardsZero, out powAwayFromZero);
+        LocateIPowOf(System.Numerics.BigInteger.Abs(value), radix, proper, out powTowardsZero, out powAwayFromZero);
 
         powAwayFromZero = -powAwayFromZero;
         powTowardsZero = -powTowardsZero;
@@ -186,9 +186,9 @@ namespace Flux
     /// <param name="radix">The power of alignment.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
     /// <returns>The the next power of 2 away from zero.</returns>
-    public static System.Numerics.BigInteger LocatePowOfAfz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
+    public static System.Numerics.BigInteger LocateIPowOfAfz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
     {
-      LocatePowOf(value, radix, proper, out var _, out var powAwayFromZero);
+      LocateIPowOf(value, radix, proper, out var _, out var powAwayFromZero);
 
       return powAwayFromZero;
     }
@@ -198,9 +198,9 @@ namespace Flux
     /// <param name="radix">The power of alignment.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
     /// <returns>The the next power of 2 towards zero.</returns>
-    public static System.Numerics.BigInteger LocatePowOfTz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
+    public static System.Numerics.BigInteger LocateIPowOfTz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
     {
-      LocatePowOf(value, radix, proper, out var powTowardsZero, out var _);
+      LocateIPowOf(value, radix, proper, out var powTowardsZero, out var _);
 
       return powTowardsZero;
     }
@@ -213,11 +213,11 @@ namespace Flux
     /// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
     /// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
     /// <returns>The nearest of two power-of-<paramref name="radix"/> to <paramref name="value"/>, optionally <paramref name="proper"/>.</returns>
-    public static System.Numerics.BigInteger NearestPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero)
+    public static System.Numerics.BigInteger NearestIPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero)
     {
-      LocatePowOf(value, radix, proper, out powTowardsZero, out powAwayFromZero);
+      LocateIPowOf(value, radix, proper, out powTowardsZero, out powAwayFromZero);
 
-      return (System.Numerics.BigInteger)BoundaryRounding.Round((double)value, mode, (double)powTowardsZero, (double)powAwayFromZero);
+      return (System.Numerics.BigInteger)BoundaryRounding<double, System.Numerics.BigInteger>.Round((double)value, mode, (double)powTowardsZero, (double)powAwayFromZero);
     }
 
     /// <summary>Attempt to get two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>, using the specified <see cref="RoundingMode"/> to resolve any halfway conflict, in out parameters <paramref name="powTowardsZero"/> and <paramref name="powAwayFromZero"/>.</summary>
@@ -228,11 +228,11 @@ namespace Flux
     /// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
     /// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryNearestPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero, out System.Numerics.BigInteger nearestPow)
+    public static bool TryNearestIPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero, out System.Numerics.BigInteger nearestPow)
     {
       try
       {
-        nearestPow = NearestPowOf(value, radix, proper, mode, out powTowardsZero, out powAwayFromZero);
+        nearestPow = NearestIPowOf(value, radix, proper, mode, out powTowardsZero, out powAwayFromZero);
 
         return true;
       }

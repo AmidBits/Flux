@@ -55,7 +55,7 @@ namespace Flux
 #else
 
     /// <summary>Creates a new sequence based on the range properties.</summary>
-    public record class RangeLoop
+    public record class RangeLoop<Bogus>
       : NumberSequences.INumericSequence<System.Numerics.BigInteger>
     {
       private readonly System.Numerics.BigInteger m_startNumber;
@@ -79,9 +79,9 @@ namespace Flux
       public System.Numerics.BigInteger StepSize { get => m_stepSize; init => m_stepSize = value; }
 
       #region Static methods
-      public static RangeLoop CreateBetween(System.Numerics.BigInteger source, System.Numerics.BigInteger target, System.Numerics.BigInteger step)
+      public static RangeLoop<Bogus> CreateBetween(System.Numerics.BigInteger source, System.Numerics.BigInteger target, System.Numerics.BigInteger step)
         => new(source, System.Numerics.BigInteger.Abs(target - source) / step + System.Numerics.BigInteger.One, System.Numerics.BigInteger.Abs(step) is var absStep && source <= target ? absStep : -absStep);
-      public static RangeLoop CreateBetween(System.Numerics.BigInteger source, System.Numerics.BigInteger target)
+      public static RangeLoop<Bogus> CreateBetween(System.Numerics.BigInteger source, System.Numerics.BigInteger target)
         => CreateBetween(source, target, System.Numerics.BigInteger.One);
       #endregion Static methods
 

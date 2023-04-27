@@ -35,15 +35,15 @@ namespace Flux
 
     /// <summary>Drop the leading digit of the number.</summary>
     public static System.Numerics.BigInteger DropMostSignificantDigits(this System.Numerics.BigInteger source, int radix)
-      => IsSingleDigit(source) ? 0 : source % System.Numerics.BigInteger.Pow(radix, DigitCount(source, radix) - 1);
+      => IsSingleDigit(source, radix) ? 0 : source % System.Numerics.BigInteger.Pow(radix, DigitCount(source, radix) - 1);
 
     /// <summary>Drop the leading digit of the number.</summary>
     public static int DropMostSignificantDigits(this int source, int radix)
-      => IsSingleDigit(source) ? 0 : source % System.Convert.ToInt32(System.Math.Pow(radix, DigitCount(source, radix) - 1));
+      => IsSingleDigit(source, radix) ? 0 : source % System.Convert.ToInt32(System.Math.Pow(radix, DigitCount(source, radix) - 1));
 
     /// <summary>Drop the leading digit of the number.</summary>
     public static long DropMostSignificantDigits(this long source, int radix)
-      => IsSingleDigit(source) ? 0 : source % System.Convert.ToInt64(System.Math.Pow(radix, DigitCount(source, radix) - 1));
+      => IsSingleDigit(source, radix) ? 0 : source % System.Convert.ToInt64(System.Math.Pow(radix, DigitCount(source, radix) - 1));
 
 #endif
   }

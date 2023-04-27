@@ -84,8 +84,8 @@ namespace GenericMath
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, 100.ToBigInteger().IsPowOf(10));
-      Assert.AreEqual(false, 101.ToBigInteger().IsPowOf(10));
+      Assert.AreEqual(true, 100.ToBigInteger().IsIPowOf(10));
+      Assert.AreEqual(false, 101.ToBigInteger().IsIPowOf(10));
     }
 
     [TestMethod]

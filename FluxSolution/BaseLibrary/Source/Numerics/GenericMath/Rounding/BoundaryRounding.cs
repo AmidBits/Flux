@@ -81,7 +81,7 @@
 #else
 
   /// <summary>Rounds a value to the nearest boundary. The mode specifies how to round when halfway between two boundaries.</summary>
-  public class BoundaryRounding
+  public class BoundaryRounding<Bogus1, Bogus2>
     : INumberRoundable
   {
     private readonly double m_boundaryTowardsZero;

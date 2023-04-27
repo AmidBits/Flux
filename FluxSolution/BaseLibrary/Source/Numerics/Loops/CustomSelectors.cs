@@ -42,7 +42,7 @@ namespace Flux
 #else
 
     /// <summary>Creates a new sequence.</summary>
-    public record class CustomSelectors
+    public record class CustomSelectors<Bogus1, Bogus2>
       : NumberSequences.INumericSequence<System.Numerics.BigInteger>
     {
       private readonly System.Func<System.Numerics.BigInteger> m_initializerSelector;

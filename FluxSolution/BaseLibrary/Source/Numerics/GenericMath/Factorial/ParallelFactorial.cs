@@ -31,7 +31,7 @@ namespace Flux
       ? -ComputeFactorial(-x)
       : x <= System.Numerics.BigInteger.One
       ? System.Numerics.BigInteger.One
-      : new Loops.RangeLoop(System.Numerics.BigInteger.One + System.Numerics.BigInteger.One, x - System.Numerics.BigInteger.One, System.Numerics.BigInteger.One).AsParallel().Aggregate(System.Numerics.BigInteger.One, (a, b) => a * b);
+      : new Loops.RangeLoop<System.Numerics.BigInteger>(System.Numerics.BigInteger.One + System.Numerics.BigInteger.One, x - System.Numerics.BigInteger.One, System.Numerics.BigInteger.One).AsParallel().Aggregate(System.Numerics.BigInteger.One, (a, b) => a * b);
 
 #endif
   }

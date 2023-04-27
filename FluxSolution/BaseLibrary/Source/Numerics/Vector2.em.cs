@@ -166,7 +166,7 @@ namespace Flux
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      mode ??= new Flux.ApproximateEquality.ByAbsoluteTolerance<double>(1E-15);
+      //mode ??= new Flux.ApproximateEquality.ByAbsoluteTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 

@@ -18,6 +18,19 @@ namespace Flux
     public static TSelf KeepMostSignificantDigits<TSelf>(this TSelf number, TSelf radix, TSelf count)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => number / IPow(radix, DigitCount(number, radix) - count);
+#else
+
+    /// <summary>Retreive <paramref name="count"/> least significant digits of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
+    public static System.Numerics.BigInteger KeepLeastSignificantDigit(this System.Numerics.BigInteger number, int radix)
+      => number % AssertRadix(radix);
+
+    /// <summary>Retreive <paramref name="count"/> least significant digits of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
+    public static System.Numerics.BigInteger KeepLeastSignificantDigits(this System.Numerics.BigInteger number, int radix, int count)
+      => number % IPow(AssertRadix(radix), count);
+
+    /// <summary>Drop the leading digit of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
+    public static System.Numerics.BigInteger KeepMostSignificantDigits(this System.Numerics.BigInteger number, int radix, int count)
+      => number / IPow(radix, DigitCount(number, radix) - count);
 
 #endif
   }
