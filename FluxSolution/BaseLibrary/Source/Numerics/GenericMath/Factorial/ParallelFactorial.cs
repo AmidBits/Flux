@@ -1,11 +1,11 @@
 namespace Flux
 {
 #if NET7_0_OR_GREATER
-  public class Factorial<TSelf>
+  public class ParallelFactorial<TSelf>
     : IFactorialComputable<TSelf>
     where TSelf : System.Numerics.IBinaryInteger<TSelf>
 #else
-  public class Factorial
+  public class ParallelFactorial
     : IFactorialComputable<System.Numerics.BigInteger>
 #endif
   {
@@ -15,20 +15,11 @@ namespace Flux
     /// <remarks>These implementations have been extended to accomodate negative integers, which are simply computed with the sign removed and then re-applied.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Factorial"/>
     public TSelf ComputeFactorial(TSelf x)
-    {
-      if (TSelf.IsNegative(x))
-        return -ComputeFactorial(-x);
-
-      if (x <= TSelf.One)
-        return TSelf.One;
-
-      var f = TSelf.One;
-
-      for (var i = TSelf.One + TSelf.One; i <= x; i++)
-        f *= i;
-
-      return f;
-    }
+      => TSelf.IsNegative(x)
+      ? -ComputeFactorial(-x)
+      : x <= TSelf.One
+      ? TSelf.One
+      : new Loops.RangeLoop<TSelf>(TSelf.One + TSelf.One, x - TSelf.One, TSelf.One).AsParallel().Aggregate(TSelf.One, (a, b) => a * b);
 
 #else
 
@@ -36,20 +27,11 @@ namespace Flux
     /// <remarks>These implementations have been extended to accomodate negative integers, which are simply computed with the sign removed and then re-applied.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Factorial"/>
     public System.Numerics.BigInteger ComputeFactorial(System.Numerics.BigInteger x)
-    {
-      if (x < System.Numerics.BigInteger.Zero)
-        return -ComputeFactorial(-x);
-
-      if (x <= System.Numerics.BigInteger.One)
-        return System.Numerics.BigInteger.One;
-
-      var f = System.Numerics.BigInteger.One;
-
-      for (var i = System.Numerics.BigInteger.One + System.Numerics.BigInteger.One; i <= x; i++)
-        f *= i;
-
-      return f;
-    }
+      => x < System.Numerics.BigInteger.Zero
+      ? -ComputeFactorial(-x)
+      : x <= System.Numerics.BigInteger.One
+      ? System.Numerics.BigInteger.One
+      : new Loops.RangeLoop(System.Numerics.BigInteger.One + System.Numerics.BigInteger.One, x - System.Numerics.BigInteger.One, System.Numerics.BigInteger.One).AsParallel().Aggregate(System.Numerics.BigInteger.One, (a, b) => a * b);
 
 #endif
   }

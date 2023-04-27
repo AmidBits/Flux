@@ -4,9 +4,9 @@ namespace Flux.NumberSequences
     : INumberSubset<System.Numerics.BigInteger>
   {
     #region Static methods
+
     /// <summary>Results in a sequence of prime factors for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPrimeFactors(System.Numerics.BigInteger number)
     {
       foreach (var prime in NumberSequences.PrimeNumber.GetAscendingPrimes(2))
@@ -20,13 +20,14 @@ namespace Flux.NumberSequences
             yield break;
         }
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
+
     // INumberSequence
-    
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSubset(System.Numerics.BigInteger number)
-      => GetPrimeFactors(number);
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSubset(System.Numerics.BigInteger number) => GetPrimeFactors(number);
+
     #endregion Implemented interfaces
   }
 }

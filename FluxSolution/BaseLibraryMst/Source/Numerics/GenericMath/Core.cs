@@ -1,5 +1,5 @@
 ﻿#if NET7_0_OR_GREATER
-using System;
+using System.Linq;
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -39,18 +39,15 @@ namespace GenericMath
     [TestMethod]
     public void Factorial()
     {
-      Assert.AreEqual(362880, 9.ToBigInteger().Factorial());
+      var factorials = typeof(Flux.IFactorialComputable<>).GetDerivedTypes(typeof(Flux.IFactorialComputable<>).Assembly.DefinedTypes).Select(t => (Flux.IFactorialComputable<System.Numerics.BigInteger>)(t.IsGenericType ? t.CreateGenericInstance(typeof(System.Numerics.BigInteger)) : t.CreateInstance())).ToList<Flux.IFactorialComputable<System.Numerics.BigInteger>>();
 
-      Assert.AreEqual(System.Numerics.BigInteger.Parse("36471110918188685288249859096605464427167635314049524593701628500267962436943872000000000000000"), Flux.GenericMath.Factorial(67.ToBigInteger()));
-      Assert.AreEqual(479001600, Flux.GenericMath.Factorial(12.ToBigInteger()));
-      Assert.AreEqual(-479001600, Flux.GenericMath.Factorial(-12.ToBigInteger()));
-    }
-
-    [TestMethod]
-    public void ParallelSplitFactorial()
-    {
-      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12));
-      Assert.AreEqual(479001600, Flux.ParallelSplitFactorial.ComputeFactorial(12.ToBigInteger()));
+      foreach (var factorial in factorials)
+      {
+        Assert.AreEqual(362880, factorial.ComputeFactorial(9), factorial.GetType().Name);
+        Assert.AreEqual(System.Numerics.BigInteger.Parse("36471110918188685288249859096605464427167635314049524593701628500267962436943872000000000000000"), factorial.ComputeFactorial(67), factorial.GetType().Name);
+        Assert.AreEqual(479001600, factorial.ComputeFactorial(12), factorial.GetType().Name);
+        Assert.AreEqual(-479001600, factorial.ComputeFactorial(-12), factorial.GetType().Name);
+      }
     }
 
     [TestMethod]

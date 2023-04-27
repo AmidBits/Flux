@@ -20,29 +20,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+
+
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
-
-      var f = 369.ToBigInteger();
-      var i = 1;
-
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => f.SplitFactorial(), i));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => f.Factorial(), i));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => f.FactorialParallel(), i));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => f.GroupedFactorial(8), i));
-
-      //int n = 4, r = 2;
-
-      //var nCr = GenericMath.BinomialCoefficient(n, r);
-
-      //System.Console.WriteLine($"n ={n}, r ={r}, nCr ={nCr}");
-
-      //for (var i = 0; i < nCr; i++)
-      //{
-      //  var c = GenericMath.PermuteAlgorithm515(n, r, i);
-      //  System.Console.WriteLine(string.Join(", ", c));
-      //}
-
-      return;
 
       //var r = 256;
       //var rbfl = r.BitFoldLeft();
@@ -59,9 +39,6 @@ namespace ConsoleApp
       //var ripo10 = r.IsPowOf(10);
       //var ripo12 = r.IsPowOf(12);
       //var ripo16 = r.IsPowOf(16);
-
-
-      return;
 
     }
 

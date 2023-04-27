@@ -1,15 +1,18 @@
 namespace Flux
 {
-  public static class ParallelSplitFactorial
+  public class ParallelSplitFactorial
+    : IFactorialComputable<System.Numerics.BigInteger>
   {
-    public static System.Numerics.BigInteger ComputeFactorial(this System.Numerics.BigInteger number)
+    public System.Numerics.BigInteger ComputeFactorial(System.Numerics.BigInteger number)
     {
+      if (number < 0) return -ComputeFactorial(System.Numerics.BigInteger.Abs(number));
+
       var task = ComputeFactorialAsync(number);
       task.Wait();
       return task.Result;
     }
 
-    public static async System.Threading.Tasks.Task<System.Numerics.BigInteger> ComputeFactorialAsync(this System.Numerics.BigInteger number)
+    public async System.Threading.Tasks.Task<System.Numerics.BigInteger> ComputeFactorialAsync(System.Numerics.BigInteger number)
     {
       if (number < 0) throw new ArgumentOutOfRangeException(nameof(number));
       else if (number == 0) return 1;
