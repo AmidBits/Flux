@@ -161,12 +161,10 @@ namespace Flux
     }
 
     /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
-    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, IEqualityApproximatable<double> mode)
+    public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, System.Func<double, double, bool> equalityPredicate)
     //=> source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).AllEqual(out _);
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      //mode ??= new Flux.ApproximateEquality.ByAbsoluteTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 
@@ -175,7 +173,7 @@ namespace Flux
         var initialAngle = e.Current;
 
         while (e.MoveNext())
-          if (!mode.IsApproximatelyEqual(initialAngle, e.Current))
+          if (!equalityPredicate(initialAngle, e.Current))
             return false;
       }
 
@@ -183,12 +181,10 @@ namespace Flux
     }
 
     /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
-    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, IEqualityApproximatable<double> mode)
+    public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, System.Func<float, float, bool> equalityPredicate)
     //=> source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).Length()).AllEqual(out _);
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
-
-      //mode ??= new Flux.ApproximateEquality.ByRelativeTolerance<double>(1E-15);
 
       using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).Length()).GetEnumerator();
 
@@ -197,7 +193,7 @@ namespace Flux
         var initialLength = e.Current;
 
         while (e.MoveNext())
-          if (!mode.IsApproximatelyEqual(initialLength, e.Current))
+          if (!equalityPredicate(initialLength, e.Current))
             return false;
       }
 

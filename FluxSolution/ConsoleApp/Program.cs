@@ -20,7 +20,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var rhafz = (5.5).RoundHalfAwayFromZero();
+      var rhte = (5.5).RoundHalfToEven();
+      var rhtni = (5.5).RoundHalfToNegativeInfinity();
+      var rhto = (5.5).RoundHalfToOdd();
+      var rhtpi = (5.5).RoundHalfToPositiveInfinity();
+      var rhtz = (5.5).RoundHalfTowardZero();
+      var ringc = (5.5).RoundingCeiling();
+      var ringe = (5.5).RoundingEnvelop();
+      var ringf = (5.5).RoundingFloor();
+      var ringt = (5.5).RoundingTruncate();
 
+      var di = (5).DetentInterval(10, 4, RoundingMode.HalfTowardZero);
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 

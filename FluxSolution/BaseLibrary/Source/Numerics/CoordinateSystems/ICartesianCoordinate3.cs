@@ -137,7 +137,7 @@
     public static Numerics.CartesianCoordinate3<TResult> ToCartesianCoordinate3<TSelf, TResult>(this Numerics.ICartesianCoordinate3<TSelf> source, RoundingMode mode, out Numerics.CartesianCoordinate3<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
-      => result = new(TResult.CreateChecked(Rounding<TSelf>.Round(source.X, mode)), TResult.CreateChecked(Rounding<TSelf>.Round(source.Y, mode)), TResult.CreateChecked(Rounding<TSelf>.Round(source.Z, mode)));
+      => result = new(TResult.CreateChecked(source.X.Round(mode)), TResult.CreateChecked(source.Y.Round(mode)), TResult.CreateChecked(source.Z.Round(mode)));
 
     /// <summary>Creates a new <see cref="Numerics.CartesianCoordinate3{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/>.</summary>
     public static Numerics.CartesianCoordinate4 ToCartesianCoordinate4<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source, double w)

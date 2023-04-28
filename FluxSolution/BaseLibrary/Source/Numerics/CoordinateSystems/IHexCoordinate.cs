@@ -115,9 +115,9 @@ namespace Flux
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
     {
-      var rQ = Rounding<TSelf>.Round(source.Q, mode);
-      var rR = Rounding<TSelf>.Round(source.R, mode);
-      var rS = Rounding<TSelf>.Round(source.S, mode);
+      var rQ = source.Q.Round(mode);
+      var rR = source.R.Round(mode);
+      var rS = source.S.Round(mode);
 
       var aQ = TSelf.Abs(rQ - source.Q);
       var aR = TSelf.Abs(rR - source.R);

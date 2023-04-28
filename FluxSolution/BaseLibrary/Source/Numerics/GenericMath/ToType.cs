@@ -14,7 +14,7 @@ namespace Flux
     public static TResult ToType<TSelf, TResult>(this TSelf number, out TResult result, RoundingMode mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
-      => result = TResult.CreateChecked(Rounding<TSelf>.Round(number, mode));
+      => result = TResult.CreateChecked(number.Round(mode));
 
 #endif
   }

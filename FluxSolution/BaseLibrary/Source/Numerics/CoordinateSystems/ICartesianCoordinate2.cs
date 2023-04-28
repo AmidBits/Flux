@@ -126,7 +126,7 @@
     public static Numerics.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TSelf, TResult>(this Numerics.ICartesianCoordinate2<TSelf> source, RoundingMode mode, out Numerics.CartesianCoordinate2<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.IBinaryInteger<TResult>
-      => result = new(TResult.CreateChecked(Rounding<TSelf>.Round(source.X, mode)), TResult.CreateChecked(Rounding<TSelf>.Round(source.Y, mode)));
+      => result = new(TResult.CreateChecked(source.X.Round(mode)), TResult.CreateChecked(source.Y.Round(mode)));
 
     /// <summary>Creates a new <see cref="Numerics.PolarCoordinate{TSelf}"/> from a <see cref=" Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
     public static Numerics.PolarCoordinate ToPolarCoordinate<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)

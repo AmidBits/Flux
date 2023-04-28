@@ -11,7 +11,7 @@ namespace GenericMath
     [TestMethod]
     public void BoundaryRounding()
     {
-      var actual = Flux.BoundaryRounding<int, int>.Round(11, RoundingMode.HalfAwayFromZero, 7, 17);
+      var actual = (11).RoundToBoundary(RoundingMode.HalfAwayFromZero, 7, 17);
 
       Assert.AreEqual(7, actual);
     }
@@ -25,7 +25,7 @@ namespace GenericMath
     [TestMethod]
     public void PrecisionRounding()
     {
-      var actual = Flux.PrecisionRounding<double>.Round(99.96535789, Flux.RoundingMode.HalfToEven, 2);
+      var actual = (99.96535789).RoundToPrecision(Flux.RoundingMode.HalfToEven, 2);
 
       Assert.AreEqual(99.97, actual);
     }
@@ -33,7 +33,7 @@ namespace GenericMath
     [TestMethod]
     public void PrecisionTruncatedRounding()
     {
-      var actual = Flux.TruncatedPrecisionRounding<double>.Round(99.96535789, Flux.RoundingMode.HalfToEven, 2);
+      var actual = (99.96535789).RoundToTruncatedPrecision(Flux.RoundingMode.HalfToEven, 2);
 
       Assert.AreEqual(99.96, actual);
     }
@@ -41,7 +41,7 @@ namespace GenericMath
     [TestMethod]
     public void RoundingCore()
     {
-      var actual = Flux.Rounding<double>.Round(11.5, RoundingMode.HalfAwayFromZero);
+      var actual = (11.5).Round(RoundingMode.HalfAwayFromZero);
 
       Assert.AreEqual(12, actual);
     }

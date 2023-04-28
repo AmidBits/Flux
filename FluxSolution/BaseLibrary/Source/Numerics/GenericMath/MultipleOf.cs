@@ -67,7 +67,7 @@
     {
       LocateMultipleOf(value, multiple, proper, out multipleTowardsZero, out multipleAwayFromZero);
 
-      return BoundaryRounding<TSelf, TSelf>.Round(value, mode, multipleTowardsZero, multipleAwayFromZero);
+      return value.RoundToBoundary(mode, multipleTowardsZero, multipleAwayFromZero);
     }
 
     /// <summary>Attempt to get the two multiples nearest to value. Negative <paramref name="value"/> resilient.</summary>

@@ -76,7 +76,7 @@ namespace Flux
         }
       }
 
-      return BoundaryRounding<TSelf, System.Numerics.BigInteger>.Round(value, mode, pow2TowardsZero, pow2AwayFromZero);
+      return value.RoundToBoundary(mode, pow2TowardsZero, pow2AwayFromZero);
     }
 
 #else
