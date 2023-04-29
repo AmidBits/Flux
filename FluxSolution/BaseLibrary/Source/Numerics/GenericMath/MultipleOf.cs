@@ -153,11 +153,11 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value.</returns>
-    public static double NearestMultipleOf(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero)
+    public static double NearestMultipleOf<Bogus>(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero)
     {
       LocateMultipleOf(value, multiple, proper, out multipleTowardsZero, out multipleAwayFromZero);
 
-      return BoundaryRounding<double, double>.Round(value, mode, multipleTowardsZero, multipleAwayFromZero);
+      return RoundToBoundary(value, mode, multipleTowardsZero, multipleAwayFromZero);
     }
 
     /// <summary>Attempt to get the two multiples nearest to value. Negative <paramref name="value"/> resilient.</summary>
@@ -167,11 +167,11 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryNearestMultipleOf(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero, out double nearestMultiple)
+    public static bool TryNearestMultipleOf<Bogus>(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero, out double nearestMultiple)
     {
       try
       {
-        nearestMultiple = NearestMultipleOf(value, multiple, proper, mode, out multipleTowardsZero, out multipleAwayFromZero);
+        nearestMultiple = NearestMultipleOf<Bogus>(value, multiple, proper, mode, out multipleTowardsZero, out multipleAwayFromZero);
 
         return true;
       }

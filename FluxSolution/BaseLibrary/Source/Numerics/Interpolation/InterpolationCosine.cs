@@ -46,7 +46,7 @@ namespace Flux.Interpolation
     {
       var mu2 = (1 - System.Math.Cos(mu * System.Math.PI)) / 2;
 
-      return LinearInterpolation.Interpolate(y1, y2, mu2);
+      return LinearInterpolation<Bogus>.Interpolate(y1, y2, mu2);
     }
 
     #endregion Static methods

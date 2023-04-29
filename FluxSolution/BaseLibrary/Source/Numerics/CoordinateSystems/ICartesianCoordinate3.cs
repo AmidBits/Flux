@@ -1,9 +1,11 @@
-﻿namespace Flux
+﻿using System.Net.Http.Headers;
+
+namespace Flux
 {
-#if NET7_0_OR_GREATER
   #region ExtensionMethods
   public static partial class NumericsExtensionMethods
   {
+#if NET7_0_OR_GREATER
     public static TSelf AbsoluteSum<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.Abs(source.X) + TSelf.Abs(source.Y) + TSelf.Abs(source.Z);
@@ -219,9 +221,24 @@
     public static System.Runtime.Intrinsics.Vector256<double> ToVector256<TSelf>(this Numerics.ICartesianCoordinate3<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => source.ToVector256(TSelf.Zero);
+
+#else
+
+    /// <summary>Creates a new <see cref="Numerics.CartesianCoordinate2{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/> using the X and Y.</summary>
+    public static Numerics.ICartesianCoordinate2<TValue> ToCartesianCoordinate2XY<TValue>(this Numerics.ICartesianCoordinate3<TValue> source)
+      => new Numerics.CartesianCoordinate2<TValue>(source.X, source.Y);
+
+    /// <summary>Creates a new <see cref="Numerics.CylindricalCoordinate{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/>.</summary>
+    public static Numerics.CylindricalCoordinate ToCylindricalCoordinate(this Numerics.ICartesianCoordinate3<double> source)
+      => new(
+        System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
+        (System.Math.Atan2(source.Y, source.X) + System.Math.Tau) % System.Math.Tau,
+        source.Z
+      );
+
+#endif
   }
   #endregion ExtensionMethods
-#endif
 
   namespace Numerics
   {

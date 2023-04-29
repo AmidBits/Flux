@@ -12,7 +12,7 @@ namespace Types
     [TestMethod]
     public void AverageAbsoluteDeviationFrom()
     {
-      d.AverageAbsoluteDeviationFrom(out double mean, out double median, out double mode);
+      d.AverageAbsoluteDeviationFrom<double, double>(out double mean, out double median, out double mode);
       Assert.AreEqual(2.6666666666666665, mean, "AverageAbsoluteDeviationFrom[mean]");
       Assert.AreEqual(2.5, median, "AverageAbsoluteDeviationFrom[median]");
       Assert.AreEqual(4.166666666666667, mode, "AverageAbsoluteDeviationFrom[mode");

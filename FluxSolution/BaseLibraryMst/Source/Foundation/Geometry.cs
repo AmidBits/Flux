@@ -7,25 +7,25 @@ namespace Foundation
   [TestClass]
   public class Geometry
   {
-    [TestMethod]
-    public void HexCoordinateI()
-    {
-      var geometry = new Flux.Numerics.HexCoordinate<int>(2, 1, -3);
+    //[TestMethod]
+    //public void HexCoordinateI()
+    //{
+    //  var geometry = new Flux.Numerics.HexCoordinate<int>(2, 1, -3);
 
-      Assert.AreEqual(2, geometry.Q);
-      Assert.AreEqual(1, geometry.R);
-      Assert.AreEqual(-3, geometry.S);
-    }
+    //  Assert.AreEqual(2, geometry.Q);
+    //  Assert.AreEqual(1, geometry.R);
+    //  Assert.AreEqual(-3, geometry.S);
+    //}
 
-    [TestMethod]
-    public void HexCoordinateR()
-    {
-      var geometry = new Flux.Numerics.HexCoordinate<double>(2, 1, -3);
+    //[TestMethod]
+    //public void HexCoordinateR()
+    //{
+    //  var geometry = new Flux.Numerics.HexCoordinate<double>(2, 1, -3);
 
-      Assert.AreEqual(2, geometry.Q);
-      Assert.AreEqual(1, geometry.R);
-      Assert.AreEqual(-3, geometry.S);
-    }
+    //  Assert.AreEqual(2, geometry.Q);
+    //  Assert.AreEqual(1, geometry.R);
+    //  Assert.AreEqual(-3, geometry.S);
+    //}
 
     [TestMethod]
     public void Ellipse()

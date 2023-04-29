@@ -1,9 +1,10 @@
 ﻿namespace Flux
 {
-#if NET7_0_OR_GREATER
   #region ExtensionMethods
   public static partial class NumericsExtensionMethods
   {
+#if NET7_0_OR_GREATER
+
     public static TSelf AbsoluteSum<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => TSelf.Abs(source.X) + TSelf.Abs(source.Y);
@@ -159,9 +160,18 @@
     public static System.Runtime.Intrinsics.Vector256<double> ToVector256<TSelf>(this Numerics.ICartesianCoordinate2<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
       => source.ToVector256(TSelf.Zero, TSelf.Zero);
+#else
+
+    /// <summary>Creates a new <see cref="Numerics.PolarCoordinate{TSelf}"/> from a <see cref=" Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
+    public static Numerics.IPolarCoordinate ToPolarCoordinate(this Numerics.ICartesianCoordinate2<double> source)
+      => new Numerics.PolarCoordinate(
+        System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
+        System.Math.Atan2(source.Y, source.X)
+      );
+
+#endif
   }
   #endregion ExtensionMethods
-#endif
 
   namespace Numerics
   {

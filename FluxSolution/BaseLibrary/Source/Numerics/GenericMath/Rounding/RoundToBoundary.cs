@@ -1,9 +1,9 @@
 ﻿namespace Flux
 {
-#if NET7_0_OR_GREATER
-
   public static partial class GenericMath
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>Rounds a value to the nearest boundary. The mode specifies how to round when halfway between two boundaries.</summary>
     public static TBound RoundToBoundary<TValue, TBound, TDistance>(this TValue value, RoundingMode mode, TBound boundaryTowardsZero, TBound boundaryAwayFromZero, TDistance distanceTowardsZero, TDistance distanceAwayFromZero)
       where TValue : System.Numerics.INumber<TValue>
@@ -59,26 +59,8 @@
       distanceTowardsZero = TDistance.Abs(origin - TDistance.CreateChecked(boundaryTowardsZero)); // Distance from value to the boundary towardsZero.
       distanceAwayFromZero = TDistance.Abs(TDistance.CreateChecked(boundaryAwayFromZero) - origin); // Distance from value to the boundary awayFromZero;
     }
-  }
 
 #else
-
-  /// <summary>Rounds a value to the nearest boundary. The mode specifies how to round when halfway between two boundaries.</summary>
-  public class BoundaryRounding<Bogus1, Bogus2>
-    : INumberRoundable
-  {
-    private readonly double m_boundaryTowardsZero;
-    private readonly double m_boundaryAwayFromZero;
-
-    public BoundaryRounding(double boundaryTowardsZero, double boundaryAwayFromZero)
-    {
-      m_boundaryTowardsZero = boundaryTowardsZero;
-      m_boundaryAwayFromZero = boundaryAwayFromZero;
-    }
-
-    #region Static methods
-    public static bool IsWithinDistanceToBoundaries(double distanceTowardsZero, double distanceAwayFromZero, double maxDistanceToBoundaries)
-      => maxDistanceToBoundaries <= 0 || distanceTowardsZero <= maxDistanceToBoundaries || distanceAwayFromZero <= maxDistanceToBoundaries;
 
     /// <summary></summary>
     /// <param name="x">The value to consider, in relation to the boundaries.</param>
@@ -88,7 +70,7 @@
     /// <param name="distanceAwayFromZero">Out parameter with the distance between <paramref name="x"/> to <paramref name="boundaryAwayFromZero"/>.</param>
     /// <param name="maxDistanceToBoundaries">The maximum distance considered to be within range of one or both of the boundaries. The indicator is returned by the method.</param>
     /// <returns>Whether <paramref name="distanceTowardsZero"/> or <paramref name="distanceAwayFromZero"/> are within <paramref name="maxDistanceToBoundaries"/>.</returns>
-    public static void MeasureDistanceToBoundaries(double x, double boundaryTowardsZero, double boundaryAwayFromZero, out double distanceTowardsZero, out double distanceAwayFromZero)
+    public static void RoundToBoundaryDistances(this double x, double boundaryTowardsZero, double boundaryAwayFromZero, out double distanceTowardsZero, out double distanceAwayFromZero)
     {
       var origin = x;
 
@@ -97,7 +79,7 @@
     }
 
     /// <summary>Rounds a value to the nearest boundary. The distance computation is a slight optimization for special cases, e.g. when rounding to multiple of. The mode specifies how to round when between two intervals.</summary>
-    public static double Round(double x, RoundingMode mode, double boundaryTowardsZero, double boundaryAwayFromZero, double distanceTowardsZero, double distanceAwayFromZero)
+    public static double RoundToBoundary(this double x, RoundingMode mode, double boundaryTowardsZero, double boundaryAwayFromZero, double distanceTowardsZero, double distanceAwayFromZero)
       => mode switch
       {
         // First we take care of the direct rounding cases.
@@ -121,19 +103,13 @@
       };
 
     /// <summary>Rounds a value to the nearest boundary. Computes the distance to both boundaries and then calls the alternate <see cref="Round(TSelf, TSelf, TSelf, RoundingMode, TSelf, TSelf)"/>.</summary>
-    public static double Round(double x, RoundingMode mode, double boundaryTowardsZero, double boundaryAwayFromZero)
+    public static double RoundToBoundary(this double x, RoundingMode mode, double boundaryTowardsZero, double boundaryAwayFromZero)
     {
-      MeasureDistanceToBoundaries(x, boundaryTowardsZero, boundaryAwayFromZero, out double distanceTowardsZero, out double distanceAwayFromZero);
+      RoundToBoundaryDistances(x, boundaryTowardsZero, boundaryAwayFromZero, out double distanceTowardsZero, out double distanceAwayFromZero);
 
-      return Round(x, mode, boundaryTowardsZero, boundaryAwayFromZero, distanceTowardsZero, distanceAwayFromZero);
+      return RoundToBoundary(x, mode, boundaryTowardsZero, boundaryAwayFromZero, distanceTowardsZero, distanceAwayFromZero);
     }
 
-    #endregion Static methods
-
-    #region Implemented interfaces
-    public double RoundNumber(double x, RoundingMode mode) => Round(x, mode, m_boundaryTowardsZero, m_boundaryAwayFromZero);
-    #endregion Implemented interfaces
-  }
-
 #endif
+  }
 }

@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Units
 {
   public enum RatioFormat
@@ -30,11 +29,13 @@ namespace Flux.Units
     public double Numerator => m_numerator;
     public double Denominator => m_denominator;
 
+#if NET7_0_OR_GREATER
     /// <summary>Convert the ratio to a fraction. If numerator and/or denominator are not integers, the fraction is approximated.</summary>
     public Fraction ToFraction()
       => double.IsInteger(m_numerator) && double.IsInteger(m_denominator)
       ? new(System.Numerics.BigInteger.CreateChecked(m_numerator), System.Numerics.BigInteger.CreateChecked(m_denominator))
       : Fraction.ApproximateRational(Value);
+#endif
 
     /// <summary>If a diagonal length is known, the proportional width and height can be computed using the Pythagorean theorem.</summary>
     /// <param name="diagonalLength">The length of the known diagonal.</param>
@@ -59,7 +60,7 @@ namespace Flux.Units
     /// <returns>The proportional (to the arguments passed) lengths of width (e.g. 56.6524099130957) and height (e.g. 31.866980576116333).</returns>
     public static (double width, double height) ToSize(double diagonalLength, double ratioX, double ratioY)
     {
-      var m = double.Sqrt(ratioX * ratioX + ratioY * ratioY);
+      var m = System.Math.Sqrt(ratioX * ratioX + ratioY * ratioY);
 
       return new(diagonalLength * ratioX / m, diagonalLength * ratioY / m);
     }
@@ -89,4 +90,3 @@ namespace Flux.Units
     public override string ToString() => ToQuantityString();
   }
 }
-#endif

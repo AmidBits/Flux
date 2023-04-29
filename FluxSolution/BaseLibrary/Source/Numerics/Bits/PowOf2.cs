@@ -113,6 +113,51 @@ namespace Flux
     public static long PowerOf2Tz(this long value, bool proper)
       => (long)PowOf2Tz((System.Numerics.BigInteger)value, proper);
 
+    /// <summary>Find the nearest (to <paramref name="value"/>) of two power-of-2, using the specified <see cref="RoundingMode"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
+    /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
+    /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
+    /// <param name="mode">The halfway rounding mode to use, when halfway between two values.</param>
+    /// <param name="pow2TowardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="pow2AwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <returns>The nearest two power-of-2 to value.</returns>
+    public static System.Numerics.BigInteger NearestPowOf2(this System.Numerics.BigInteger value, bool proper, RoundingMode mode, out System.Numerics.BigInteger pow2TowardsZero, out System.Numerics.BigInteger pow2AwayFromZero)
+    {
+      if (value < 0)
+      {
+        var pow2Nearest = NearestPowOf2(System.Numerics.BigInteger.Abs(value), proper, mode, out pow2TowardsZero, out pow2AwayFromZero);
+
+        pow2TowardsZero = -pow2TowardsZero;
+        pow2AwayFromZero = -pow2AwayFromZero;
+
+        return -pow2Nearest;
+      }
+      else // The value is positive/greater-than-zero.
+      {
+        var quotient = value.TruncMod(System.Numerics.BigInteger.One, out var remainder);
+
+        if ((quotient).IsPowOf2())
+        {
+          if (proper)
+          {
+            pow2TowardsZero = remainder.IsZero ? quotient >> 1 : quotient;
+            pow2AwayFromZero = quotient << 1;
+          }
+          else
+          {
+            pow2TowardsZero = quotient;
+            pow2AwayFromZero = remainder.IsZero ? quotient : quotient << 1;
+          }
+        }
+        else // It's a positive non-power-of-two number.
+        {
+          pow2TowardsZero = MostSignificant1Bit(quotient); // Use the MS1B for power-of-two closer to zero.
+          pow2AwayFromZero = pow2TowardsZero << 1; // Use the next greater MS1B for power-of-two farther from zero.
+        }
+      }
+
+      return new System.Numerics.BigInteger(((double)value).RoundToBoundary(mode, (double)pow2TowardsZero, (double)pow2AwayFromZero));
+    }
+
 #endif
   }
 }

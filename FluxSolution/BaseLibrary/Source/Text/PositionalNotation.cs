@@ -11,9 +11,9 @@ namespace Flux
 
 #else
 
-    ///// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
-    //public static string ToRadixString(this System.Numerics.BigInteger number, int radix, int minLength = 1)
-    //  => new Text.PositionalNotation(radix).NumberToText(number, minLength).ToString();
+    /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
+    public static string ToRadixString(this System.Numerics.BigInteger number, int radix, int minLength = 1)
+      => new Text.PositionalNotation(radix).NumberToText(number, minLength).ToString();
 
 #endif
   }

@@ -9,6 +9,12 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => new Text.PositionalNotation(Text.RuneSequences.SubscriptDecimalDigitRunes.AsSpan()[..AssertRadix(radix, Text.RuneSequences.SubscriptDecimalDigitRunes.Length)]).NumberToText(number).ToString();
 
+#else
+
+    /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
+    public static string ToSubscriptString(this System.Numerics.BigInteger number, int radix)
+      => new Text.PositionalNotation(Text.RuneSequences.SubscriptDecimalDigitRunes.AsSpan()[..AssertRadix(radix, Text.RuneSequences.SubscriptDecimalDigitRunes.Length)]).NumberToText(number).ToString();
+
 #endif
   }
 }

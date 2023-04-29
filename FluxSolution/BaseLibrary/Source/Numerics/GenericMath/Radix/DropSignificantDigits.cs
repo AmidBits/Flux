@@ -33,17 +33,29 @@ namespace Flux
     public static long DropLeastSignificantDigit(this long source, int radix)
       => source / AssertRadix(radix);
 
-    /// <summary>Drop the leading digit of the number.</summary>
-    public static System.Numerics.BigInteger DropMostSignificantDigits(this System.Numerics.BigInteger source, int radix)
-      => IsSingleDigit(source, radix) ? 0 : source % System.Numerics.BigInteger.Pow(radix, DigitCount(source, radix) - 1);
+    /// <summary>Drop the trailing digit of the number.</summary>
+    public static System.Numerics.BigInteger DropLeastSignificantDigits(this System.Numerics.BigInteger source, int radix, int count)
+      => source / System.Numerics.BigInteger.Pow(AssertRadix(radix), count);
+
+    /// <summary>Drop the trailing digit of the number.</summary>
+    public static int DropLeastSignificantDigits(this int source, int radix, int count)
+      => source / (int)IPow(AssertRadix(radix), count);
+
+    /// <summary>Drop the trailing digit of the number.</summary>
+    public static long DropLeastSignificantDigits(this long source, int radix, int count)
+      => source / (long)IPow(AssertRadix(radix), count);
 
     /// <summary>Drop the leading digit of the number.</summary>
-    public static int DropMostSignificantDigits(this int source, int radix)
-      => IsSingleDigit(source, radix) ? 0 : source % System.Convert.ToInt32(System.Math.Pow(radix, DigitCount(source, radix) - 1));
+    public static System.Numerics.BigInteger DropMostSignificantDigits(this System.Numerics.BigInteger source, int radix, int count)
+      => IsSingleDigit(source, radix) ? 0 : source % System.Numerics.BigInteger.Pow(radix, DigitCount(source, radix) - count);
 
     /// <summary>Drop the leading digit of the number.</summary>
-    public static long DropMostSignificantDigits(this long source, int radix)
-      => IsSingleDigit(source, radix) ? 0 : source % System.Convert.ToInt64(System.Math.Pow(radix, DigitCount(source, radix) - 1));
+    public static int DropMostSignificantDigits(this int source, int radix, int count)
+      => IsSingleDigit(source, radix) ? 0 : source % (int)IPow(radix, DigitCount(source, radix) - count);
+
+    /// <summary>Drop the leading digit of the number.</summary>
+    public static long DropMostSignificantDigits(this long source, int radix, int count)
+      => IsSingleDigit(source, radix) ? 0 : source % (long)IPow(radix, DigitCount(source, radix) - count);
 
 #endif
   }

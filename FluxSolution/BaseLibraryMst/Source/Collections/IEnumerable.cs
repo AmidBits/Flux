@@ -89,7 +89,7 @@ namespace Collections.Generic
     [TestMethod]
     public void Medoid()
     {
-      var medoid = integers.Medoid(out var index, out int count);
+      var medoid = integers.Select(i => (System.Numerics.BigInteger)i).Medoid(out var index, out int count);
 
       Assert.AreEqual(19, medoid, nameof(medoid));
       Assert.AreEqual(2, index, nameof(index));

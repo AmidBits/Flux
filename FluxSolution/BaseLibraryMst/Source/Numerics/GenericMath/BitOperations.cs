@@ -22,8 +22,8 @@ namespace GenericMath
     [TestMethod]
     public void GetBitLengthEx()
     {
-      Assert.AreEqual(7, 88.ToType(out System.Numerics.BigInteger _).BitLength());
-      Assert.AreEqual(7, 88.ToType(out System.Numerics.BigInteger _).BitLength());
+      Assert.AreEqual(7, 88.ToBigInteger().BitLength());
+      Assert.AreEqual(7, 88.ToBigInteger().BitLength());
     }
 
     [TestMethod]
@@ -41,19 +41,19 @@ namespace GenericMath
     [TestMethod]
     public void GetLeadingZeroCount()
     {
-      Assert.AreEqual(25, 88.ToType(out System.Numerics.BigInteger _).LeadingZeroCount());
+      Assert.AreEqual(25, 88.ToBigInteger().LeadingZeroCount());
     }
 
     [TestMethod]
     public void GetTrailingZeroCount()
     {
-      Assert.AreEqual(3, 88.ToType(out System.Numerics.BigInteger _).TrailingZeroCount());
+      Assert.AreEqual(3, 88.ToBigInteger().TrailingZeroCount());
     }
 
     //[TestMethod]
     //public void IsPow2Ex()
     //{
-    //  Assert.AreEqual(false, 88.ToType(out System.Numerics.BigInteger _).IsPow2Ex());
+    //  Assert.AreEqual(false, 88.ToBigInteger().IsPow2Ex());
     //}
 
     //[TestMethod]
@@ -68,79 +68,79 @@ namespace GenericMath
     [TestMethod]
     public void NearestPow2()
     {
-      var nearest = 88.ToType(out System.Numerics.BigInteger _).NearestPowOf2(false, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
+      var nearest = 88.ToBigInteger().NearestPowOf2(false, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
 
-      Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), nearest);
+      Assert.AreEqual(64.ToBigInteger(), nearest);
 
-      Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), towardsZero);
-      Assert.AreEqual(128.ToType(out System.Numerics.BigInteger _), awayFromZero);
+      Assert.AreEqual(64.ToBigInteger(), towardsZero);
+      Assert.AreEqual(128.ToBigInteger(), awayFromZero);
     }
 
     [TestMethod]
     public void NearestPow2Proper()
     {
-      var nearest = 88.ToType(out System.Numerics.BigInteger _).NearestPowOf2(true, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
+      var nearest = 88.ToBigInteger().NearestPowOf2(true, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
 
-      Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), nearest);
+      Assert.AreEqual(64.ToBigInteger(), nearest);
 
-      Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), towardsZero);
-      Assert.AreEqual(128.ToType(out System.Numerics.BigInteger _), awayFromZero);
+      Assert.AreEqual(64.ToBigInteger(), towardsZero);
+      Assert.AreEqual(128.ToBigInteger(), awayFromZero);
     }
 
     [TestMethod]
     public void Pow2AwayFromZero()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).PowOf2Afz(false);
+      var actual = 88.ToBigInteger().PowOf2Afz(false);
 
-      Assert.AreEqual(128.ToType(out System.Numerics.BigInteger _), actual);
+      Assert.AreEqual(128.ToBigInteger(), actual);
     }
 
     [TestMethod]
     public void Pow2AwayFromZeroProper()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).PowOf2Afz(true);
+      var actual = 88.ToBigInteger().PowOf2Afz(true);
 
-      Assert.AreEqual(128.ToType(out System.Numerics.BigInteger _), actual);
+      Assert.AreEqual(128.ToBigInteger(), actual);
     }
 
     [TestMethod]
     public void Pow2TowardsZero()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).PowOf2Tz(false);
+      var actual = 88.ToBigInteger().PowOf2Tz(false);
 
-      Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), actual);
+      Assert.AreEqual(64.ToBigInteger(), actual);
     }
 
     [TestMethod]
     public void Pow2TowardsZeroProper()
     {
-      var actual = 88.ToType(out System.Numerics.BigInteger _).PowOf2Tz(true);
+      var actual = 88.ToBigInteger().PowOf2Tz(true);
 
-      Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), actual);
+      Assert.AreEqual(64.ToBigInteger(), actual);
     }
 
     [TestMethod]
     public void LeastSignificant1Bit()
     {
-      Assert.AreEqual(8.ToType(out System.Numerics.BigInteger _), 88.ToType(out System.Numerics.BigInteger _).LeastSignificant1Bit());
+      Assert.AreEqual(8.ToBigInteger(), 88.ToBigInteger().LeastSignificant1Bit());
     }
 
     [TestMethod]
     public void MostSignificant1Bit()
     {
-      Assert.AreEqual(64.ToType(out System.Numerics.BigInteger _), 88.ToType(out System.Numerics.BigInteger _).MostSignificant1Bit());
+      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().MostSignificant1Bit());
     }
 
     [TestMethod]
     public void ReverseBits()
     {
-      Assert.AreEqual(65536.ToType(out System.Numerics.BigInteger _), Flux.Bits.ReverseBits(32768.ToType(out System.Numerics.BigInteger _)));
+      Assert.AreEqual(65536.ToBigInteger(), Flux.Bits.ReverseBits(32768.ToBigInteger()));
     }
 
     [TestMethod]
     public void ReverseBytes()
     {
-      Assert.AreEqual(65536.ToType(out System.Numerics.BigInteger _), Flux.Bits.ReverseBytes(256.ToType(out System.Numerics.BigInteger _)));
+      Assert.AreEqual(65536, Flux.Bits.ReverseBytes(256));
     }
   }
 }

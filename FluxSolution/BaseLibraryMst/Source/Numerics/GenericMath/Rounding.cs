@@ -11,7 +11,7 @@ namespace GenericMath
     [TestMethod]
     public void BoundaryRounding()
     {
-      var actual = (11).RoundToBoundary(RoundingMode.HalfAwayFromZero, 7, 17);
+      var actual = (11d).RoundToBoundary(RoundingMode.HalfAwayFromZero, 7, 17);
 
       Assert.AreEqual(7, actual);
     }

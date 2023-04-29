@@ -22,7 +22,7 @@ namespace GenericMath
     [TestMethod]
     public void DropLeastSignificantDigit()
     {
-      Assert.AreEqual(123456.ToBigInteger(), 1234567.ToBigInteger().DropLeastSignificantDigit(10));
+      Assert.AreEqual(123456, 1234567.DropLeastSignificantDigit(10));
     }
 
     [TestMethod]
@@ -74,7 +74,7 @@ namespace GenericMath
     {
       var expected = new int[] { 2, 10, 500 };
       var actual = 512.GetPlaceValues(10);
-      Assert.AreEqual(expected.Length, actual.Count);
+      Assert.AreEqual(expected.Length, actual.Count());
       for (var i = expected.Length - 1; i >= 0; i--)
         Assert.AreEqual(expected[i], actual[i], $"{nameof(GetPlaceValues)} index {i}, expected {expected[i]} != actual {expected[i]}");
     }
@@ -82,31 +82,31 @@ namespace GenericMath
     [TestMethod]
     public void IntegerLog()
     {
-      512.LocateILog(10, out int logFloor, out int logCeiling);
+      512.ToBigInteger().LocateILog(10, out var logFloor, out var logCeiling);
 
-      Assert.AreEqual(2, logFloor);
-      Assert.AreEqual(3, logCeiling);
+      Assert.AreEqual(2.ToBigInteger(), logFloor);
+      Assert.AreEqual(3.ToBigInteger(), logCeiling);
     }
 
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual(3, 512.LocateILogAfz(10));
+      Assert.AreEqual(3, 512.ToBigInteger().LocateILogAfz(10));
     }
 
     [TestMethod]
     public void IntegerLogFloor()
     {
-      Assert.AreEqual(2, 512.LocateILogTz(10));
+      Assert.AreEqual(2, 512.ToBigInteger().LocateILogTz(10));
     }
 
     [TestMethod]
     public void TryIntegerLog()
     {
-      512.TryLocateILog(10, out int logFloor, out int logCeiling);
+      512.ToBigInteger().TryLocateILog(10, out var logFloor, out var logCeiling);
 
-      Assert.AreEqual(2, logFloor);
-      Assert.AreEqual(3, logCeiling);
+      Assert.AreEqual(2.ToBigInteger(), logFloor);
+      Assert.AreEqual(3.ToBigInteger(), logCeiling);
     }
 
     [TestMethod]
@@ -198,19 +198,19 @@ namespace GenericMath
     [TestMethod]
     public void ToRadixString()
     {
-      Assert.AreEqual("1234567", 1234567.ToRadixString(10).ToString());
+      Assert.AreEqual("1234567", 1234567.ToBigInteger().ToRadixString(10).ToString());
     }
 
     [TestMethod]
     public void ToSubscriptString()
     {
-      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToSubscriptString(10));
+      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToBigInteger().ToSubscriptString(10));
     }
 
     [TestMethod]
     public void ToSuperscriptString()
     {
-      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToSuperscriptString(10));
+      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToBigInteger().ToSuperscriptString(10));
     }
   }
 }

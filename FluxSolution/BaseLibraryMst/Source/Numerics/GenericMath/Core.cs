@@ -11,7 +11,7 @@ namespace GenericMath
     [TestMethod]
     public void DetentInterval()
     {
-      Assert.AreEqual(520, 515.DetentInterval(20, 5, RoundingMode.HalfAwayFromZero));
+      Assert.AreEqual(520, 515.DetentInterval(20, 5));
     }
 
     [TestMethod]
@@ -128,7 +128,7 @@ namespace GenericMath
     [TestMethod]
     public void NearestMultiple()
     {
-      var nearestMultiple = 512.NearestMultipleOf(20, false, RoundingMode.HalfTowardZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+      var nearestMultiple = 512d.NearestMultipleOf<double>(20, false, RoundingMode.HalfTowardZero, out var nearestTowardsZero, out var nearestAwayFromZero);
 
       Assert.AreEqual(520, nearestMultiple);
 

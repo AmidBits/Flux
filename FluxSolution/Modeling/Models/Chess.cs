@@ -53,25 +53,29 @@ namespace Flux.Model
     {
       var (x, y) = Convert.MapIndexToCartesian2(index, BoardSize.X);
 
-      return (Files[x], Ranks[y]);
+      return (Files[(int)x], Ranks[(int)y]);
     }
 
     public static Numerics.CartesianCoordinate2<int> IndexToVector(int index)
-      => (Numerics.CartesianCoordinate2<int>)Convert.MapIndexToCartesian2(index, BoardSize.X);
+    {
+      var (x, y) = Convert.MapIndexToCartesian2(index, BoardSize.X);
+
+      return new Numerics.CartesianCoordinate2<int>((int)x, (int)y);
+    }
 
     public static int LabelToIndex(string column, string row)
     {
       var x = System.Array.IndexOf(Files, column);
       var y = System.Array.IndexOf(Ranks, row);
 
-      return Convert.Cartesian2ToMapIndex(x, y, BoardSize.X);
+      return (int)Convert.Cartesian2ToMapIndex(x, y, BoardSize.X);
     }
 
     public static Numerics.CartesianCoordinate2<int> LabelToVector(string column, string row)
       => new(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
     public static int VectorToIndex(Numerics.CartesianCoordinate2<int> vector)
-      => Convert.Cartesian2ToMapIndex(vector.X, vector.Y, BoardSize.X);
+      => (int)Convert.Cartesian2ToMapIndex(vector.X, vector.Y, BoardSize.X);
     public static (string column, string row) VectorToLabel(Numerics.CartesianCoordinate2<int> vector)
       => (Files[vector.X], Ranks[vector.Y]);
 

@@ -30,7 +30,7 @@ namespace GenericMath
     [TestMethod]
     public void Mod()
     {
-      var remainder = (9).Mod(6);
+      var remainder = (9.ToBigInteger()).Mod(6);
 
       Assert.AreEqual(3, remainder);
     }

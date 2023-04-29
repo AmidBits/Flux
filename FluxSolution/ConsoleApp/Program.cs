@@ -31,7 +31,7 @@ namespace ConsoleApp
       var ringf = (5.5).RoundingFloor();
       var ringt = (5.5).RoundingTruncate();
 
-      var di = (5).DetentInterval(10, 4, RoundingMode.HalfTowardZero);
+      var di = (5).DetentInterval(10, 4);
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 

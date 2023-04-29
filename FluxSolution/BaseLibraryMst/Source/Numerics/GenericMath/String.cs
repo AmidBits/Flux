@@ -11,21 +11,21 @@ namespace GenericMath
     [TestMethod]
     public void ToNamedGroupingString()
     {
-      Assert.AreEqual("Five Hundred Twelve", 512.ToType(out System.Numerics.BigInteger _).ToCardinalNumeralCompoundString().ToString());
+      Assert.AreEqual("Five Hundred Twelve", 512.ToBigInteger().ToCardinalNumeralCompoundString().ToString());
     }
 
     [TestMethod]
     public void ToOrdinalIndicatorString()
     {
-      Assert.AreEqual("512th", 512.ToType(out System.Numerics.BigInteger _).ToOrdinalIndicatorString().ToString());
+      Assert.AreEqual("512th", 512.ToBigInteger().ToOrdinalIndicatorString().ToString());
     }
 
     [TestMethod]
     public void ToRadixString()
     {
-      Assert.AreEqual("1000000000", 512.ToType(out System.Numerics.BigInteger _).ToRadixString(2).ToString());
-      Assert.AreEqual("512", 512.ToType(out System.Numerics.BigInteger _).ToRadixString(10).ToString());
-      Assert.AreEqual("200", 512.ToType(out System.Numerics.BigInteger _).ToRadixString(16).ToString());
+      Assert.AreEqual("1000000000", 512.ToBigInteger().ToRadixString(2).ToString());
+      Assert.AreEqual("512", 512.ToBigInteger().ToRadixString(10).ToString());
+      Assert.AreEqual("200", 512.ToBigInteger().ToRadixString(16).ToString());
     }
   }
 }

@@ -44,7 +44,7 @@ namespace Flux
 #else
 
     /// <summary>Returns the digits (as numbers) of a value.</summary>
-    public static System.Span<System.Numerics.BigInteger> GetDigits(this System.Numerics.BigInteger value, int radix)
+    public static System.Collections.Generic.List<System.Numerics.BigInteger> GetDigits(this System.Numerics.BigInteger value, int radix)
     {
       var span = GetDigitsReversed(value, radix);
       span.Reverse();
@@ -52,7 +52,7 @@ namespace Flux
     }
 
     /// <summary>Returns the digits (as numbers) of a value.</summary>
-    public static System.Span<int> GetDigits(this int value, int radix)
+    public static System.Collections.Generic.List<int> GetDigits(this int value, int radix)
     {
       var span = GetDigitsReversed(value, radix);
       span.Reverse();
@@ -60,7 +60,7 @@ namespace Flux
     }
 
     /// <summary>Returns the digits (as numbers) of a value.</summary>
-    public static System.Span<long> GetDigits(this long value, int radix)
+    public static System.Collections.Generic.List<long> GetDigits(this long value, int radix)
     {
       var span = GetDigitsReversed(value, radix);
       span.Reverse();
@@ -68,7 +68,7 @@ namespace Flux
     }
 
     /// <summary>Returns the place value digits (as numbers) of a value, in reverse order.</summary>
-    public static System.Span<System.Numerics.BigInteger> GetDigitsReversed(this System.Numerics.BigInteger value, int radix)
+    public static System.Collections.Generic.List<System.Numerics.BigInteger> GetDigitsReversed(this System.Numerics.BigInteger value, int radix)
     {
       AssertRadix(radix);
 
@@ -80,11 +80,11 @@ namespace Flux
         value /= radix;
       }
 
-      return System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+      return list;
     }
 
     /// <summary>Returns the place value digits (as numbers) of a value, in reverse order.</summary>
-    public static System.Span<int> GetDigitsReversed(this int value, int radix)
+    public static System.Collections.Generic.List<int> GetDigitsReversed(this int value, int radix)
     {
       AssertRadix(radix);
 
@@ -96,11 +96,11 @@ namespace Flux
         value /= radix;
       }
 
-      return System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+      return list;
     }
 
     /// <summary>Returns the place value digits (as numbers) of a value, in reverse order.</summary>
-    public static System.Span<long> GetDigitsReversed(this long value, int radix)
+    public static System.Collections.Generic.List<long> GetDigitsReversed(this long value, int radix)
     {
       AssertRadix(radix);
 
@@ -112,7 +112,7 @@ namespace Flux
         value /= radix;
       }
 
-      return System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+      return list;
     }
 
 #endif

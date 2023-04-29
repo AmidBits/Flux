@@ -217,7 +217,7 @@ namespace Flux
     {
       LocateIPowOf(value, radix, proper, out powTowardsZero, out powAwayFromZero);
 
-      return (System.Numerics.BigInteger)BoundaryRounding<double, System.Numerics.BigInteger>.Round((double)value, mode, (double)powTowardsZero, (double)powAwayFromZero);
+      return (System.Numerics.BigInteger)RoundToBoundary((double)value, mode, (double)powTowardsZero, (double)powAwayFromZero);
     }
 
     /// <summary>Attempt to get two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>, using the specified <see cref="RoundingMode"/> to resolve any halfway conflict, in out parameters <paramref name="powTowardsZero"/> and <paramref name="powAwayFromZero"/>.</summary>
