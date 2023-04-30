@@ -20,37 +20,37 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var rhafz = (5.5).RoundHalfAwayFromZero();
-      var rhte = (5.5).RoundHalfToEven();
-      var rhtni = (5.5).RoundHalfToNegativeInfinity();
-      var rhto = (5.5).RoundHalfToOdd();
-      var rhtpi = (5.5).RoundHalfToPositiveInfinity();
-      var rhtz = (5.5).RoundHalfTowardZero();
-      var ringc = (5.5).RoundingCeiling();
-      var ringe = (5.5).RoundingEnvelop();
-      var ringf = (5.5).RoundingFloor();
-      var ringt = (5.5).RoundingTruncate();
-
-      var di = (5).DetentInterval(10, 4);
-
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      //var r = 256;
-      //var rbfl = r.BitFoldLeft();
-      //var rbfr = r.BitFoldRight();
-      //var rls1b = r.LeastSignificant1Bit();
-      //var rms1b = r.MostSignificant1Bit();
-      //var rlzc = r.LeadingZeroCount();
-      //var rtzc = r.TrailingZeroCount();
-      //var rbl = r.BitLength();
-      //var rc1b = r.Count1Bits();
-      //var ril2 = r.ILog2();
-      //var rmb = r.MirrorBits();
-      //var ripo2 = r.IsPowOf2();
-      //var ripo10 = r.IsPowOf(10);
-      //var ripo12 = r.IsPowOf(12);
-      //var ripo16 = r.IsPowOf(16);
+      var fp = 5.5;
 
+      var raafz = fp.RoundAllAwayFromZero();
+      var ratpi = fp.RoundAllToPositiveInfinity();
+      var ratni = fp.RoundAllToNegativeInfinity();
+      var ratz = fp.RoundAllTowardZero();
+      var rhafz = fp.RoundHalfAwayFromZero();
+      var rhte = fp.RoundHalfToEven();
+      var rhtni = fp.RoundHalfToNegativeInfinity();
+      var rhto = fp.RoundHalfToOdd();
+      var rhtpi = fp.RoundHalfToPositiveInfinity();
+      var rhtz = fp.RoundHalfTowardZero();
+
+      var i = 256;
+
+      var bfl = i.BitFoldLeft();
+      var bfr = i.BitFoldRight();
+      var ls1b = i.LeastSignificant1Bit();
+      var ms1b = i.MostSignificant1Bit();
+      var lzc = i.LeadingZeroCount();
+      var tzc = i.TrailingZeroCount();
+      var bl = i.BitLength();
+      var c1b = i.Count1Bits();
+      var il2 = i.ILog2();
+      var mb = i.MirrorBits();
+      var ipo2 = i.IsPowOf2();
+      var ipo10 = i.IsIPowOf(10);
+      var ipo12 = i.IsIPowOf(12);
+      var ipo16 = i.IsIPowOf(16);
     }
 
     private static void Main(string[] args)

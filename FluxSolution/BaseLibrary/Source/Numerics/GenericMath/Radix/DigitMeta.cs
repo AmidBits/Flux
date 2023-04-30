@@ -4,7 +4,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Returns the count of all single digits in <paramref name="number"/> using base <paramref name="radix"/>.</summary>
+    /// <summary>Returns all single digits in <paramref name="number"/>, as well as the count and sum of them, using base <paramref name="radix"/>.</summary>
     public static void DigitMeta<TSelf>(this TSelf number, TSelf radix, out TSelf count, out System.Collections.Generic.List<TSelf> digits, out TSelf sum)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

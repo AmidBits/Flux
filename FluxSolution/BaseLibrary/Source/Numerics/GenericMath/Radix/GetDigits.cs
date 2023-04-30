@@ -13,7 +13,7 @@ namespace Flux
       return reversed;
     }
 
-    /// <summary>Returns the place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
+    /// <summary>Returns <paramref name="count"/> place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
     public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf>(this TSelf number, TSelf radix, int count)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
