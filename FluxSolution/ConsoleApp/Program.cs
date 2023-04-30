@@ -48,9 +48,9 @@ namespace ConsoleApp
       var il2 = i.ILog2();
       var mb = i.MirrorBits();
       var ipo2 = i.IsPowOf2();
-      var ipo10 = i.IsIPowOf(10);
-      var ipo12 = i.IsIPowOf(12);
-      var ipo16 = i.IsIPowOf(16);
+      var ipo10 = i.ToBigInteger().IsPowOf(10);
+      var ipo12 = i.ToBigInteger().IsPowOf(12);
+      var ipo16 = i.ToBigInteger().IsPowOf(16);
     }
 
     private static void Main(string[] args)

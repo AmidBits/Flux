@@ -12,7 +12,7 @@ namespace Flux
     /// <para>IsApproximatelyEqual(1334.261, 1235.272, -2);</para>
     /// </remarks>
     public static bool IsApproximatelyEqualPrecision<TValue>(this TValue a, TValue b, int significantDigits, int radix = 10)
-      where TValue : System.Numerics.INumber<TValue>, System.Numerics.IPowerFunctions<TValue>
+      where TValue : System.Numerics.INumber<TValue>
       => a == b || (double.CreateChecked(TValue.Abs(a - b)) <= IPow(AssertRadix(radix), -significantDigits));
 
 #else
