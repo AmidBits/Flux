@@ -32,6 +32,14 @@ namespace Flux
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
     public static int BitLength(this long value) => value < 0 ? BitLength(System.Math.Abs(value)) : 1 + System.Numerics.BitOperations.Log2(unchecked((ulong)value));
 
+    /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
+    /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
+    [System.CLSCompliant(false)] public static int BitLength(this uint value) => 1 + System.Numerics.BitOperations.Log2(value);
+
+    /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
+    /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
+    [System.CLSCompliant(false)] public static int BitLength(this ulong value) => 1 + System.Numerics.BitOperations.Log2(value);
+
     /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns (<paramref name="value"/>.GetByteCount() * 8) instead.</summary>
     public static int BitLengthN(this System.Numerics.BigInteger value) => value < 0 ? value.GetByteCount() * 8 : (int)value.GetBitLength();
 
@@ -40,6 +48,12 @@ namespace Flux
 
     /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns 64 instead.</summary>
     public static int BitLengthN(this long value) => value < 0 ? 64 : 1 + System.Numerics.BitOperations.Log2(unchecked((ulong)value));
+
+    /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns 32 instead.</summary>
+    [System.CLSCompliant(false)] public static int BitLengthN(this uint value) => 1 + System.Numerics.BitOperations.Log2(value);
+
+    /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns 64 instead.</summary>
+    [System.CLSCompliant(false)] public static int BitLengthN(this ulong value) => 1 + System.Numerics.BitOperations.Log2(value);
 
 #endif
   }

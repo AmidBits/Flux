@@ -125,11 +125,13 @@ namespace Flux.NumberSequences
     /// <returns></returns>
     public static System.Numerics.BigInteger GetNearestPotentialPrimeMultiple(System.Numerics.BigInteger number, RoundingMode mode, out System.Numerics.BigInteger nearestPotentialPrimeMultipleOffset)
     {
-      var nm = Flux.GenericMath.NearestMultipleOf<double>((double)number, 6, false, mode, out var nmtz, out var nmafz);
+      number.LocateMultiplesOf(6, false, out var multipleTowardsZero, out var multipleAwayFromZero);
+
+      var nm = ((double)number).RoundToBoundaries(mode, (double)multipleTowardsZero, (double)multipleAwayFromZero);
 
       var binm = new System.Numerics.BigInteger(nm);
-      var binmtz = new System.Numerics.BigInteger(nmtz);
-      var binmafz = new System.Numerics.BigInteger(nmafz);
+      var binmtz = multipleTowardsZero;
+      var binmafz = multipleAwayFromZero;
 
       nearestPotentialPrimeMultipleOffset = binmtz == binmafz ? number // If TZ and AFZ are equal (i.e. NearestMultiple(), above, returns number for both TZ and AFZ, if number is a multiple, and 'proper' is false), so number is a multiple.
         : number - binmtz < 3 ? +1 // The difference between TZ and number is less than 3, therefor closer to TZ.

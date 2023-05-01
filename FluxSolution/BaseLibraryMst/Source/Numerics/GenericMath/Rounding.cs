@@ -9,41 +9,48 @@ namespace GenericMath
   public class Rounding
   {
     [TestMethod]
-    public void BoundaryRounding()
+    public void Round()
     {
-      var actual = (11d).RoundToBoundary(RoundingMode.HalfAwayFromZero, 7, 17);
-
-      Assert.AreEqual(7, actual);
+      Assert.AreEqual(6, (5.5).RoundAllAwayFromZero());
+      Assert.AreEqual(5, (5.5).RoundAllTowardZero());
+      Assert.AreEqual(5, (5.5).RoundAllToNegativeInfinity());
+      Assert.AreEqual(6, (5.5).RoundAllToPositiveInfinity());
+      Assert.AreEqual(5, (5.5).RoundHalfToOdd());
+      Assert.AreEqual(6, (5.5).RoundHalfToEven());
+      Assert.AreEqual(6, (5.5).RoundHalfAwayFromZero());
+      Assert.AreEqual(5, (5.5).RoundHalfTowardZero());
+      Assert.AreEqual(5, (5.5).RoundHalfToNegativeInfinity());
+      Assert.AreEqual(6, (5.5).RoundHalfToPositiveInfinity());
     }
 
     [TestMethod]
-    public void NearestMultiple()
+    public void RoundToBoundary()
     {
-      Assert.AreEqual(1.8, Flux.GenericMath.NearestMultipleOf<double>(1.75, 0.45, false, Flux.RoundingMode.HalfAwayFromZero, out var _, out var _), $"{nameof(Flux.GenericMath.NearestMultipleOf)} {Flux.RoundingMode.HalfAwayFromZero}");
+      Assert.AreEqual(17, (12.ToBigInteger()).RoundToBoundaries(RoundingMode.HalfAwayFromZero, 7, 17), RoundingMode.HalfAwayFromZero.ToString());
+      Assert.AreEqual(7, (12.ToBigInteger()).RoundToBoundaries(RoundingMode.HalfTowardZero, 7, 17), RoundingMode.HalfTowardZero.ToString());
     }
 
     [TestMethod]
-    public void PrecisionRounding()
+    public void RoundToPrecision()
     {
-      var actual = (99.96535789).RoundToPrecision(Flux.RoundingMode.HalfToEven, 2);
-
-      Assert.AreEqual(99.97, actual);
+      Assert.AreEqual(99.97, (99.96535789).RoundToPrecision(Flux.RoundingMode.HalfToEven, 2));
     }
 
     [TestMethod]
-    public void PrecisionTruncatedRounding()
+    public void RoundToTruncatedPrecision()
     {
-      var actual = (99.96535789).RoundToTruncatedPrecision(Flux.RoundingMode.HalfToEven, 2);
-
-      Assert.AreEqual(99.96, actual);
+      Assert.AreEqual(99.96, (99.96535789).RoundToTruncatedPrecision(Flux.RoundingMode.HalfToEven, 2));
     }
 
     [TestMethod]
-    public void RoundingCore()
+    public void LocateMultiplesOfAndRoundToBoundaries()
     {
-      var actual = (11.5).Round(RoundingMode.HalfAwayFromZero);
+      var n = 1.75;
+      var m = 0.45;
 
-      Assert.AreEqual(12, actual);
+      n.LocateMultiplesOf(m, false, out var multipleTowardsZero, out var multipleAwayFromZero);
+
+      Assert.AreEqual(1.8, n.RoundToBoundaries(Flux.RoundingMode.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(LocateMultiplesOfAndRoundToBoundaries)} {Flux.RoundingMode.HalfAwayFromZero}");
     }
   }
 }

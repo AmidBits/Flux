@@ -9,7 +9,7 @@ using Microsoft.VisualBasic.FileIO;
 // C# Interactive commands:
 // #r "System.Runtime"
 // #r "System.Runtime.Numerics"
-// #r "C:\Users\Rob\source\repos\Flux\FluxSolution\BaseLibrary\bin\Debug\net5.0\BaseLibrary.dll"
+// #r "C:\Users\Rob\source\repos\AmidBits\Flux\FluxSolution\BaseLibrary\bin\Debug\net6.0\BaseLibrary.dll"
 
 namespace ConsoleApp
 {
@@ -21,6 +21,8 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
+
+      12d.LocateMultiplesOf(3.5, true, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       var fp = 5.5;
 
@@ -35,7 +37,7 @@ namespace ConsoleApp
       var rhtpi = fp.RoundHalfToPositiveInfinity();
       var rhtz = fp.RoundHalfTowardZero();
 
-      var i = 256;
+      var i = 5;
 
       var bfl = i.BitFoldLeft();
       var bfr = i.BitFoldRight();
@@ -46,11 +48,15 @@ namespace ConsoleApp
       var bl = i.BitLength();
       var c1b = i.Count1Bits();
       var il2 = i.ILog2();
-      var mb = i.MirrorBits();
+      var rb = i.ReverseBits();
       var ipo2 = i.IsPowOf2();
       var ipo10 = i.ToBigInteger().IsPowOf(10);
       var ipo12 = i.ToBigInteger().IsPowOf(12);
       var ipo16 = i.ToBigInteger().IsPowOf(16);
+
+      var iaea = fp.EqualsWithinAbsoluteTolerance(i, 0.4);
+      var iaer = fp.EqualsWithinRelativeTolerance(i, 0.05);
+      var iaep = fp.EqualsWithinSignificantDigits(i, 1, 10);
     }
 
     private static void Main(string[] args)

@@ -34,9 +34,17 @@ namespace Flux
       }
     }
 
+    /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit. In other words, the number of most significant 0 bits.</summary>
     public static int LeadingZeroCount(this int value) => System.Numerics.BitOperations.LeadingZeroCount(unchecked((uint)value));
 
+    /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit. In other words, the number of most significant 0 bits.</summary>
     public static int LeadingZeroCount(this long value) => System.Numerics.BitOperations.LeadingZeroCount(unchecked((ulong)value));
+
+    /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit. In other words, the number of most significant 0 bits.</summary>
+    [System.CLSCompliant(false)] public static int LeadingZeroCount(this uint value) => System.Numerics.BitOperations.LeadingZeroCount(value);
+
+    /// <summary>Often called 'Count Leading Zeros' (clz), counts the number of zero bits preceding the most significant one bit. In other words, the number of most significant 0 bits.</summary>
+    [System.CLSCompliant(false)] public static int LeadingZeroCount(this ulong value) => System.Numerics.BitOperations.LeadingZeroCount(value);
 
 #endif
   }

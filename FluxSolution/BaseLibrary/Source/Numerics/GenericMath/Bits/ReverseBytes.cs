@@ -12,8 +12,8 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       var bytes = new byte[value.GetByteCount()]; // Retrieve the byte size of the number, which will be the basis for the byte reversal.
-      value.WriteLittleEndian(bytes);
-      System.Array.Reverse(bytes, 0, bytes.Length); // Reverse all bytes.
+
+      value.WriteBigEndian(bytes);
 
       return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(value.GetType()));
     }

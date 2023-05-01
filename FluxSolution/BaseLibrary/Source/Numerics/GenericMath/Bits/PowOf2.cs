@@ -76,7 +76,7 @@ namespace Flux
         }
       }
 
-      return value.RoundToBoundary(mode, pow2TowardsZero, pow2AwayFromZero);
+      return value.RoundToBoundaries(mode, pow2TowardsZero, pow2AwayFromZero);
     }
 
 #else
@@ -155,7 +155,7 @@ namespace Flux
         }
       }
 
-      return new System.Numerics.BigInteger(((double)value).RoundToBoundary(mode, (double)pow2TowardsZero, (double)pow2AwayFromZero));
+      return new System.Numerics.BigInteger(((double)value).RoundToBoundaries(mode, (double)pow2TowardsZero, (double)pow2AwayFromZero));
     }
 
 #endif

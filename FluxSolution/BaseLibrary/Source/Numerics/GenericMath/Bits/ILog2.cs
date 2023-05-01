@@ -10,7 +10,7 @@ namespace Flux
 
 #else
 
-    public static int ILog2(this System.Numerics.BigInteger value) => System.Convert.ToInt32(System.Numerics.BigInteger.Log(value, 2));
+    public static int ILog2(this System.Numerics.BigInteger value) => (int)System.Numerics.BigInteger.Log(value, 2);
 
     public static int ILog2(this int value) => value >= 0 ? System.Numerics.BitOperations.Log2(unchecked((uint)value)) : throw new System.ArgumentOutOfRangeException(nameof(value));
 

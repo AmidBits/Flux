@@ -41,7 +41,7 @@ namespace GenericMath
     [TestMethod]
     public void GetLeadingZeroCount()
     {
-      Assert.AreEqual(25, 88.ToBigInteger().LeadingZeroCount());
+      Assert.AreEqual(25, 88.LeadingZeroCount());
     }
 
     [TestMethod]
@@ -134,7 +134,11 @@ namespace GenericMath
     [TestMethod]
     public void ReverseBits()
     {
-      Assert.AreEqual(65536.ToBigInteger(), Flux.Bits.ReverseBits(32768.ToBigInteger()));
+      // Somehow BigInteger must differ between .NET version 6 and 7. 
+
+      Assert.AreEqual(65536.ToBigInteger(), Flux.Bits.ReverseBits(32768.ToBigInteger())); // This works on .NET 7, but not on .NET 6.
+      Assert.AreEqual(65536, Flux.Bits.ReverseBits(32768)); // This works on .NET 7, but not on .NET 6.
+      //Assert.AreEqual(16.ToBigInteger(), Flux.Bits.ReverseBits(8.ToBigInteger())); // This works on .NET 6, but not on .NET 7.
     }
 
     [TestMethod]
@@ -142,6 +146,24 @@ namespace GenericMath
     {
       Assert.AreEqual(65536, Flux.Bits.ReverseBytes(256));
     }
+
+    //public static void Test()
+    //{
+
+    //  //var bi = unchecked((int)0x800081c3); // {-1014956031} (v7 & v6)
+    //  //var bi = 0x800081c3; // {-1014956031} (v7 & v6)
+    //  //var bi = 0x3c180008;//.ToBigInteger(); // {268441660} (v6)
+    //  var bi = 0x03060c18;
+
+    //  var ry1 = bi.ReverseBytes();
+    //  var ry2 = ry1.ReverseBytes();
+    //  var ry3 = ry2.ReverseBytes();
+
+    //  var ri1 = bi.ReverseBits();
+    //  var ri2 = ri1.ReverseBits();
+    //  var ri3 = ri2.ReverseBits();
+    //}
+
   }
 }
 #endif

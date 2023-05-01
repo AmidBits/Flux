@@ -33,8 +33,20 @@ namespace Flux
     public static int BitFoldLeft(this int value) => unchecked((int)((uint)value).BitFoldLeft());
     public static long BitFoldLeft(this long value) => unchecked((long)((ulong)value).BitFoldLeft());
 
-    [System.CLSCompliant(false)] public static uint BitFoldLeft(this uint value) => value == 0 ? 0 : (((MostSignificant1Bit(value) - 1) << 1) | 1);
-    [System.CLSCompliant(false)] public static ulong BitFoldLeft(this ulong value) => value == 0 ? 0 : (((MostSignificant1Bit(value) - 1) << 1) | 1);
+    [System.CLSCompliant(false)]
+    public static uint BitFoldLeft(this uint value)
+    {
+      var tzc = value.TrailingZeroCount();
+
+      return (value << value.LeadingZeroCount()).BitFoldRight() >> tzc << tzc;
+    }
+    [System.CLSCompliant(false)]
+    public static ulong BitFoldLeft(this ulong value)
+    {
+      var tzc = value.TrailingZeroCount();
+
+      return (value << value.LeadingZeroCount()).BitFoldRight() >> tzc << tzc;
+    }
 
 #endif
   }
