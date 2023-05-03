@@ -125,7 +125,7 @@ namespace Flux.NumberSequences
     /// <returns></returns>
     public static System.Numerics.BigInteger GetNearestPotentialPrimeMultiple(System.Numerics.BigInteger number, RoundingMode mode, out System.Numerics.BigInteger nearestPotentialPrimeMultipleOffset)
     {
-      number.LocateMultiplesOf(6, false, out var multipleTowardsZero, out var multipleAwayFromZero);
+      number.MultipleOf(6, false, RoundingMode.HalfTowardZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       var nm = ((double)number).RoundToBoundaries(mode, (double)multipleTowardsZero, (double)multipleAwayFromZero);
 
@@ -468,7 +468,7 @@ namespace Flux.NumberSequences
       if (number % 2 == 0 || number % 3 == 0)
         return false;
 
-      var limit = number.ISqrt();
+      var limit = number.IntegerSqrt();
 
       for (var k = 5; k <= limit; k += 6)
         if ((number % k) == 0 || (number % (k + 2)) == 0)

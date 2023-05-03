@@ -103,7 +103,7 @@ namespace Flux.NumberSequences
     {
       if (number > 0)
       {
-        var sqrt = GenericMath.ISqrt(number);
+        var sqrt = GenericMath.IntegerSqrt(number);
 
         for (var counter = 1; counter <= sqrt; counter++)
           if (number % counter == 0)

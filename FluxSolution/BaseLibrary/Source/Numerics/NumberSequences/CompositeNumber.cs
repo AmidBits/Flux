@@ -16,7 +16,7 @@ namespace Flux.NumberSequences
       if (value % 2 == 0 || value % 3 == 0)
         return true;
 
-      var limit = value.ISqrt();
+      var limit = value.IntegerSqrt();
 
       for (var k = 5; k <= limit; k += 6)
         if ((value % k) == 0 || (value % (k + 2)) == 0)

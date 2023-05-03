@@ -29,11 +29,11 @@ namespace GenericMath
     [TestMethod]
     public void Envelop()
     {
-      Assert.AreEqual(-1, (-0.5).Envelop());
-      Assert.AreEqual(1, (0.5).Envelop());
+      Assert.AreEqual(-1, (-0.5).RoundAwayFromZero());
+      Assert.AreEqual(1, (0.5).RoundAwayFromZero());
 
-      Assert.AreEqual(-13, (-12.5).Envelop());
-      Assert.AreEqual(13, (12.5).Envelop());
+      Assert.AreEqual(-13, (-12.5).RoundAwayFromZero());
+      Assert.AreEqual(13, (12.5).RoundAwayFromZero());
     }
 
     [TestMethod]
@@ -59,7 +59,7 @@ namespace GenericMath
     [TestMethod]
     public void IntegerSqrt()
     {
-      Assert.AreEqual(4, 21.ToBigInteger().ISqrt());
+      Assert.AreEqual(4, 21.ToBigInteger().IntegerSqrt());
     }
 
     [TestMethod]
@@ -71,13 +71,13 @@ namespace GenericMath
     [TestMethod]
     public void IntegerPow()
     {
-      Assert.AreEqual(10000000000.ToBigInteger(), 10L.ToBigInteger().IPow(10));
+      Assert.AreEqual(10000000000.ToBigInteger(), 10L.ToBigInteger().IntegerPow(10));
     }
 
     [TestMethod]
     public void IntegerPowRec()
     {
-      Assert.AreEqual(10000000000, 10L.ToBigInteger().IPowRec(10, out double reciprocal));
+      Assert.AreEqual(10000000000, 10L.ToBigInteger().IntegerPowRec(10, out double reciprocal));
       Assert.AreEqual(1E-10, reciprocal);
     }
 
@@ -93,9 +93,9 @@ namespace GenericMath
     {
       var v = 15.ToBigInteger();
 
-      var iq = v.ISqrt();
+      var iq = v.IntegerSqrt();
 
-      var isiq = v.IsISqrt(iq);
+      var isiq = v.IsIntegerSqrt(iq);
 
       Assert.IsTrue(isiq);
     }
@@ -105,9 +105,9 @@ namespace GenericMath
     {
       var v = 15.ToBigInteger();
 
-      var iq = v.ISqrt();
+      var iq = v.IntegerSqrt();
 
-      var ispiq = v.IsPerfectISqrt(iq);
+      var ispiq = v.IsPerfectIntegerSqrt(iq);
 
       Assert.IsFalse(ispiq);
     }
@@ -131,7 +131,7 @@ namespace GenericMath
       var n = 512d;
       var m = 20;
 
-      n.LocateMultiplesOf(m, false, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.MultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       var nearestMultiple = n.RoundToBoundaries(RoundingMode.HalfTowardZero, multipleTowardsZero, multipleAwayFromZero);
 

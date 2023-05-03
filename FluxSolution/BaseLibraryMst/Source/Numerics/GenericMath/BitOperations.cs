@@ -35,7 +35,7 @@ namespace GenericMath
     [TestMethod]
     public void ILog2()
     {
-      Assert.AreEqual(6, 88.ILog2());
+      Assert.AreEqual(6, 88.IntegerLog2());
     }
 
     [TestMethod]
@@ -66,55 +66,42 @@ namespace GenericMath
     //}
 
     [TestMethod]
-    public void NearestPow2()
+    public void PowOf2()
     {
-      var nearest = 88.ToBigInteger().NearestPowOf2(false, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
-
-      Assert.AreEqual(64.ToBigInteger(), nearest);
+      88.ToBigInteger().PowOf2(false, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
 
       Assert.AreEqual(64.ToBigInteger(), towardsZero);
       Assert.AreEqual(128.ToBigInteger(), awayFromZero);
     }
 
     [TestMethod]
-    public void NearestPow2Proper()
+    public void RoundToPowOf2AwayFromZero()
     {
-      var nearest = 88.ToBigInteger().NearestPowOf2(true, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
-
-      Assert.AreEqual(64.ToBigInteger(), nearest);
-
-      Assert.AreEqual(64.ToBigInteger(), towardsZero);
-      Assert.AreEqual(128.ToBigInteger(), awayFromZero);
-    }
-
-    [TestMethod]
-    public void Pow2AwayFromZero()
-    {
-      var actual = 88.ToBigInteger().PowOf2Afz(false);
+      var actual = 88.ToBigInteger().RoundToPowOf2AwayFromZero(false);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
 
     [TestMethod]
-    public void Pow2AwayFromZeroProper()
+    public void RoundToPowOf2AwayFromZeroProper()
     {
-      var actual = 88.ToBigInteger().PowOf2Afz(true);
+      var actual = 88.ToBigInteger().RoundToPowOf2AwayFromZero(true);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
 
     [TestMethod]
-    public void Pow2TowardsZero()
+    public void RoundToPowOf2TowardZero()
     {
-      var actual = 88.ToBigInteger().PowOf2Tz(false);
+      var actual = 88.ToBigInteger().RoundToPowOf2TowardZero(false);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }
 
     [TestMethod]
-    public void Pow2TowardsZeroProper()
+    public void RoundToPowOf2TowardZeroProper()
     {
-      var actual = 88.ToBigInteger().PowOf2Tz(true);
+      var actual = 88.ToBigInteger().RoundToPowOf2TowardZero(true);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }
@@ -136,9 +123,8 @@ namespace GenericMath
     {
       // Somehow BigInteger must differ between .NET version 6 and 7. 
 
-      Assert.AreEqual(65536.ToBigInteger(), Flux.Bits.ReverseBits(32768.ToBigInteger())); // This works on .NET 7, but not on .NET 6.
       Assert.AreEqual(65536, Flux.Bits.ReverseBits(32768)); // This works on .NET 7, but not on .NET 6.
-      //Assert.AreEqual(16.ToBigInteger(), Flux.Bits.ReverseBits(8.ToBigInteger())); // This works on .NET 6, but not on .NET 7.
+      Assert.AreEqual(268435456, Flux.Bits.ReverseBits(8)); // This works on .NET 6, but not on .NET 7.
     }
 
     [TestMethod]

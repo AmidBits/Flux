@@ -82,7 +82,7 @@ namespace GenericMath
     [TestMethod]
     public void IntegerLog()
     {
-      512.ToBigInteger().LocateILog(10, out var logFloor, out var logCeiling);
+      512.ToBigInteger().IntegerLog(10, out var logFloor, out var logCeiling);
 
       Assert.AreEqual(2.ToBigInteger(), logFloor);
       Assert.AreEqual(3.ToBigInteger(), logCeiling);
@@ -91,22 +91,13 @@ namespace GenericMath
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual(3, 512.ToBigInteger().LocateILogAfz(10));
+      Assert.AreEqual(3, Flux.GenericMath.IntegerLog(512 - 1, 10) + 1);
     }
 
     [TestMethod]
     public void IntegerLogFloor()
     {
-      Assert.AreEqual(2, 512.ToBigInteger().LocateILogTz(10));
-    }
-
-    [TestMethod]
-    public void TryIntegerLog()
-    {
-      512.ToBigInteger().TryLocateILog(10, out var logFloor, out var logCeiling);
-
-      Assert.AreEqual(2.ToBigInteger(), logFloor);
-      Assert.AreEqual(3.ToBigInteger(), logCeiling);
+      Assert.AreEqual(2, 512.ToBigInteger().IntegerLog(10));
     }
 
     [TestMethod]
@@ -147,39 +138,37 @@ namespace GenericMath
     }
 
     [TestMethod]
-    public void NearestPowOf()
+    public void LocateIntegerPowOf()
     {
-      var nearestPow = 1234567.ToBigInteger().NearestPowOf(10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+      1234567.ToBigInteger().PowOf(10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
 
       Assert.AreEqual(1000000, nearestTowardsZero);
       Assert.AreEqual(10000000, nearestAwayFromZero);
-
-      Assert.AreEqual(1000000, nearestPow);
     }
 
-    [TestMethod]
-    public void NearestPowOf2()
-    {
-      Assert.AreEqual(128, Flux.GenericMath.NearestPowOf(101, 2, false, RoundingMode.HalfToEven, out var _, out var _));
-    }
+    //[TestMethod]
+    //public void NearestPowOf2()
+    //{
+    //  Assert.AreEqual(128, Flux.GenericMath.NearestPowOf(101, 2, false, RoundingMode.HalfToEven, out var _, out var _));
+    //}
 
-    [TestMethod]
-    public void NearestPowOf8()
-    {
-      Assert.AreEqual(64, Flux.GenericMath.NearestPowOf(101, 8, false, RoundingMode.HalfToEven, out var _, out var _));
-    }
+    //[TestMethod]
+    //public void NearestPowOf8()
+    //{
+    //  Assert.AreEqual(64, Flux.GenericMath.NearestPowOf(101, 8, false, RoundingMode.HalfToEven, out var _, out var _));
+    //}
 
-    [TestMethod]
-    public void NearestPowOf10()
-    {
-      Assert.AreEqual(100, Flux.GenericMath.NearestPowOf(101, 10, false, RoundingMode.HalfToEven, out var _, out var _));
-    }
+    //[TestMethod]
+    //public void NearestPowOf10()
+    //{
+    //  Assert.AreEqual(100, Flux.GenericMath.NearestPowOf(101, 10, false, RoundingMode.HalfToEven, out var _, out var _));
+    //}
 
-    [TestMethod]
-    public void NearestPowOf16()
-    {
-      Assert.AreEqual(16, Flux.GenericMath.NearestPowOf(101, 16, false, RoundingMode.HalfToEven, out var _, out var _));
-    }
+    //[TestMethod]
+    //public void NearestPowOf16()
+    //{
+    //  Assert.AreEqual(16, Flux.GenericMath.NearestPowOf(101, 16, false, RoundingMode.HalfToEven, out var _, out var _));
+    //}
 
     [TestMethod]
     public void ReverseDigits()

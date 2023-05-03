@@ -313,14 +313,14 @@ namespace Flux
         var lowerPow = System.Numerics.BigInteger.One;
 
         var upperX = System.Numerics.BigInteger.CreateChecked(2);
-        var upperPow = upperX.IPow(n);
+        var upperPow = upperX.IntegerPow(n);
 
         while (upperPow.CompareTo(a) < 0)
         {
           lowerX = upperX;
           lowerPow = upperPow;
           upperX = lowerX.Multiply(2);
-          upperPow = upperX.IPow(n);
+          upperPow = upperX.IntegerPow(n);
         }
 
         if (upperPow.Equals(a))
@@ -336,7 +336,7 @@ namespace Flux
           if (testX.Equals(lowerX) || testX.Equals(upperX))
             break;
 
-          var testPow = testX.IPow(n);
+          var testPow = testX.IntegerPow(n);
 
           if (testPow.Equals(a))
             return (testX, true); // We found an exact answer.

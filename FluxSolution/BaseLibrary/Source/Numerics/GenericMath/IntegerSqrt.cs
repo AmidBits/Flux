@@ -4,9 +4,13 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Returns the (floor) square root of the <paramref name="y"/>, using Newton's method.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
-    public static TSelf ISqrt<TSelf>(this TSelf y)
+    /// <summary>
+    /// <para>Returns the (floor) square root of the <paramref name="y"/>, using Newton's method.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Square_root"/>
+    /// </summary>
+    /// <returns>Returns the integer (i.e. floor) square root of <paramref name="y"/>.</returns>
+    /// <remarks>The ceiling square root is <see cref="IntegerSqrt"/>() + 1.</remarks>
+    public static TSelf IntegerSqrt<TSelf>(this TSelf y)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertNonNegative(y);
@@ -28,24 +32,24 @@ namespace Flux
     }
 
     /// <summary>Returns whether <paramref name="y"/> is the integer (not necessarily perfect) square of <paramref name="x"/>.</summary>
-    public static bool IsISqrt<TSelf>(this TSelf y, TSelf x)
+    public static bool IsIntegerSqrt<TSelf>(this TSelf y, TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => y >= (x * x) && (x + TSelf.One) is var x1 && y < (x1 * x1);
 
     /// <summary>Returns whether <paramref name="y"/> is a perfect square of <paramref name="x"/>.</summary>
-    public static bool IsPerfectISqrt<TSelf>(this TSelf y, TSelf x)
+    public static bool IsPerfectIntegerSqrt<TSelf>(this TSelf y, TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => y / x == x && y % x == TSelf.Zero; // Not using "y == checked(x * x)" because risk of overflow.
 
     /// <summary>Attempts to compute the (floor) square root of <paramref name="y"/> into the out parameter <paramref name="x"/>, using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
-    public static bool TryISqrt<TSelf>(this TSelf y, out TSelf x)
+    public static bool TryIntegerSqrt<TSelf>(this TSelf y, out TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       try
       {
-        x = ISqrt(y);
+        x = IntegerSqrt(y);
 
         return true;
       }
@@ -60,7 +64,7 @@ namespace Flux
 
     /// <summary>Returns the (floor) square root of the <paramref name="y"/>, using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
-    public static System.Numerics.BigInteger ISqrt(this System.Numerics.BigInteger y)
+    public static System.Numerics.BigInteger IntegerSqrt(this System.Numerics.BigInteger y)
     {
       AssertNonNegative(y);
 
@@ -81,21 +85,21 @@ namespace Flux
     }
 
     /// <summary>Returns whether <paramref name="y"/> is the integer (not necessarily perfect) square of <paramref name="x"/>.</summary>
-    public static bool IsISqrt(this System.Numerics.BigInteger y, System.Numerics.BigInteger x)
+    public static bool IsIntegerSqrt(this System.Numerics.BigInteger y, System.Numerics.BigInteger x)
       => y >= (x * x) && (x + System.Numerics.BigInteger.One) is var x1 && y < (x1 * x1);
 
     /// <summary>Returns whether <paramref name="y"/> is a perfect square of <paramref name="x"/>.</summary>
-    public static bool IsPerfectISqrt(this System.Numerics.BigInteger y, System.Numerics.BigInteger x)
+    public static bool IsPerfectIntegerSqrt(this System.Numerics.BigInteger y, System.Numerics.BigInteger x)
       => y / x == x && y % x == System.Numerics.BigInteger.Zero; // Not using "y == checked(x * x)" because risk of overflow.
 
     /// <summary>Attempts to compute the (floor) square root of <paramref name="y"/> into the out parameter <paramref name="x"/>, using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
-    public static bool TryISqrt(this System.Numerics.BigInteger y, out System.Numerics.BigInteger x)
+    public static bool TryIntegerSqrt(this System.Numerics.BigInteger y, out System.Numerics.BigInteger x)
     {
       try
       {
-        x = ISqrt(y);
+        x = IntegerSqrt(y);
 
         return true;
       }

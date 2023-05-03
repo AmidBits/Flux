@@ -13,10 +13,10 @@ namespace Flux
     public static TSelf ModInv<TSelf>(this TSelf a, TSelf modulus)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (modulus < TSelf.Zero)
+      if (TSelf.IsNegative(modulus))
         modulus = -modulus;
 
-      if (a < TSelf.Zero)
+      if (TSelf.IsNegative(a))
         a = modulus - (-a % modulus);
 
       var t = TSelf.Zero;
@@ -35,7 +35,7 @@ namespace Flux
       if (r > TSelf.One)
         return -TSelf.One; // No inverse.
 
-      if (t < TSelf.Zero)
+      if (TSelf.IsNegative(t))
         t += modulus;
 
       return t;

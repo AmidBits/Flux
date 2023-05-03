@@ -15,8 +15,8 @@ namespace Flux
 
       var m = dividend % divisor;
 
-      if (m < TSelf.Zero)
-        return divisor < TSelf.Zero ? m - divisor : m + divisor;
+      if (TSelf.IsNegative(m))
+        return TSelf.IsNegative(divisor) ? m - divisor : m + divisor;
 
       return m;
     }

@@ -12,10 +12,10 @@
       => mode switch
       {
         // First we take care of the direct rounding cases.
-        RoundingMode.AllAwayFromZero => boundaryAwayFromZero,
-        RoundingMode.AllTowardZero => boundaryTowardsZero,
-        RoundingMode.AllToNegativeInfinity => TValue.IsNegative(value) ? boundaryAwayFromZero : boundaryTowardsZero,
-        RoundingMode.AllToPositiveInfinity => TValue.IsNegative(value) ? boundaryTowardsZero : boundaryAwayFromZero,
+        RoundingMode.AwayFromZero => boundaryAwayFromZero,
+        RoundingMode.TowardZero => boundaryTowardsZero,
+        RoundingMode.ToNegativeInfinity => TValue.IsNegative(value) ? boundaryAwayFromZero : boundaryTowardsZero,
+        RoundingMode.ToPositiveInfinity => TValue.IsNegative(value) ? boundaryTowardsZero : boundaryAwayFromZero,
         // If not applicable, and since we're comparing a value against two boundaries, if the distances from the value to the two boundaries are not equal, we can avoid halfway checks.
         _ => (distanceTowardsZero < distanceAwayFromZero) ? boundaryTowardsZero // A clear win for towards-zero.
           : (distanceTowardsZero > distanceAwayFromZero) ? boundaryAwayFromZero // A clear win for away-from-zero.
@@ -83,10 +83,10 @@
       => mode switch
       {
         // First we take care of the direct rounding cases.
-        RoundingMode.AllAwayFromZero => boundaryAwayFromZero,
-        RoundingMode.AllTowardZero => boundaryTowardsZero,
-        RoundingMode.AllToNegativeInfinity => x < 0 ? boundaryAwayFromZero : boundaryTowardsZero,
-        RoundingMode.AllToPositiveInfinity => x < 0 ? boundaryTowardsZero : boundaryAwayFromZero,
+        RoundingMode.AwayFromZero => boundaryAwayFromZero,
+        RoundingMode.TowardZero => boundaryTowardsZero,
+        RoundingMode.ToNegativeInfinity => x < 0 ? boundaryAwayFromZero : boundaryTowardsZero,
+        RoundingMode.ToPositiveInfinity => x < 0 ? boundaryTowardsZero : boundaryAwayFromZero,
         // If not applicable, and since we're comparing a value against two boundaries, if the distances from the value to the two boundaries are not equal, we can avoid halfway checks.
         _ => (distanceTowardsZero < distanceAwayFromZero) ? boundaryTowardsZero // A clear win for towards-zero.
           : (distanceTowardsZero > distanceAwayFromZero) ? boundaryAwayFromZero // A clear win for away-from-zero.
@@ -131,10 +131,10 @@
       => mode switch
       {
         // First we take care of the direct rounding cases.
-        RoundingMode.AllAwayFromZero => boundaryAwayFromZero,
-        RoundingMode.AllTowardZero => boundaryTowardsZero,
-        RoundingMode.AllToNegativeInfinity => x < 0 ? boundaryAwayFromZero : boundaryTowardsZero,
-        RoundingMode.AllToPositiveInfinity => x < 0 ? boundaryTowardsZero : boundaryAwayFromZero,
+        RoundingMode.AwayFromZero => boundaryAwayFromZero,
+        RoundingMode.TowardZero => boundaryTowardsZero,
+        RoundingMode.ToNegativeInfinity => x < 0 ? boundaryAwayFromZero : boundaryTowardsZero,
+        RoundingMode.ToPositiveInfinity => x < 0 ? boundaryTowardsZero : boundaryAwayFromZero,
         // If not applicable, and since we're comparing a value against two boundaries, if the distances from the value to the two boundaries are not equal, we can avoid halfway checks.
         _ => (distanceTowardsZero < distanceAwayFromZero) ? boundaryTowardsZero // A clear win for towards-zero.
           : (distanceTowardsZero > distanceAwayFromZero) ? boundaryAwayFromZero // A clear win for away-from-zero.

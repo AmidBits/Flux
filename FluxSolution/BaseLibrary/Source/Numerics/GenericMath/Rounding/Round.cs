@@ -1,4 +1,6 @@
-﻿namespace Flux
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace Flux
 {
   public static partial class GenericMath
   {
@@ -8,10 +10,12 @@
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => mode switch // First, handle the direct rounding strategies.
       {
-        RoundingMode.AllAwayFromZero => RoundAllAwayFromZero(source),
-        RoundingMode.AllToPositiveInfinity => RoundAllToPositiveInfinity(source),
-        RoundingMode.AllToNegativeInfinity => RoundAllToNegativeInfinity(source),
-        RoundingMode.AllTowardZero => RoundAllTowardZero(source),
+        RoundingMode.AwayFromZero => RoundAwayFromZero(source),
+        RoundingMode.TowardZero => RoundTowardZero(source),
+        RoundingMode.ToPositiveInfinity => RoundToPositiveInfinity(source),
+        RoundingMode.ToNegativeInfinity => RoundToNegativeInfinity(source),
+        //RoundingMode.ToPowOf2AwayFromZero => TSelf.CreateChecked(RoundToPowOf2AwayFromZero(source)),
+        //RoundingMode.ToPowOf2TowardZero => TSelf.CreateChecked(RoundToPowOf2TowardZero(source)),
         _ => mode switch  // Second, handle the halfway rounding strategies.
         {
           RoundingMode.HalfAwayFromZero => RoundHalfAwayFromZero(source),
@@ -67,26 +71,26 @@
     #region Unconditional rounding functions
 
     /// <summary>Symmetric rounding: round up, bias: away from zero.</summary>
-    /// <remarks>Equivalent to the opposite effect of the Truncate() function (also <see cref="RoundAllTowardZero{TSelf}(TSelf)"/>).</remarks>
-    public static TSelf RoundAllAwayFromZero<TSelf>(this TSelf x)
+    /// <remarks>Equivalent to the opposite effect of the Truncate() function (also <see cref="RoundTowardZero{TSelf}(TSelf)"/>).</remarks>
+    public static TSelf RoundAwayFromZero<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.IsNegative(x) ? TSelf.Floor(x) : TSelf.Ceiling(x);
 
     /// <summary>Symmetric rounding: round down, bias: towards zero.</summary>
     /// <remarks>Equivalent to the Truncate() function.</remarks>
-    public static TSelf RoundAllTowardZero<TSelf>(this TSelf x)
+    public static TSelf RoundTowardZero<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Truncate(x);
 
     /// <summary>Common rounding: round down, bias: negative infinity.</summary>
     /// <remarks>Equivalent to the Floor() function.</remarks>
-    public static TSelf RoundAllToNegativeInfinity<TSelf>(this TSelf x)
+    public static TSelf RoundToNegativeInfinity<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Floor(x);
 
     /// <summary>Common rounding: round up, bias: positive infinity.</summary>
     /// <remarks>Equivalent to the ceil()/Ceiling() function.</remarks>
-    public static TSelf RoundAllToPositiveInfinity<TSelf>(this TSelf x)
+    public static TSelf RoundToPositiveInfinity<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Ceiling(x);
 
@@ -97,10 +101,12 @@
     public static double Round(this double x, RoundingMode mode)
     => mode switch // First, handle the direct rounding strategies.
     {
-      RoundingMode.AllAwayFromZero => RoundAllAwayFromZero(x),
-      RoundingMode.AllToPositiveInfinity => RoundAllToPositiveInfinity(x),
-      RoundingMode.AllToNegativeInfinity => RoundAllToNegativeInfinity(x),
-      RoundingMode.AllTowardZero => RoundAllTowardZero(x),
+      RoundingMode.AwayFromZero => RoundAwayFromZero(x),
+      RoundingMode.TowardZero => RoundTowardZero(x),
+      RoundingMode.ToPositiveInfinity => RoundToPositiveInfinity(x),
+      RoundingMode.ToNegativeInfinity => RoundToNegativeInfinity(x),
+      //RoundingMode.ToPowOf2AwayFromZero => (double)(RoundToPowOf2AwayFromZero(source)),
+      //RoundingMode.ToPowOf2TowardZero => (double)(RoundToPowOf2TowardZero(source)),
       _ => mode switch  // Second, handle the halfway rounding strategies.
       {
         RoundingMode.HalfAwayFromZero => RoundHalfAwayFromZero(x),
@@ -138,16 +144,28 @@
     #region Direct (non-halfway) rounding functions
 
     /// <summary>Symmetric rounding: round up, bias: away from zero.</summary>
-    public static double RoundAllAwayFromZero(this double x) => x < 0 ? System.Math.Floor(x) : System.Math.Ceiling(x);
+    public static double RoundAwayFromZero(this double x) => x < 0 ? System.Math.Floor(x) : System.Math.Ceiling(x);
 
     /// <summary>Symmetric rounding: round down, bias: towards zero.</summary>
-    public static double RoundAllTowardZero(this double x) => System.Math.Truncate(x);
+    public static double RoundTowardZero(this double x) => System.Math.Truncate(x);
 
     /// <summary>Common rounding: round down, bias: negative infinity.</summary>
-    public static double RoundAllToNegativeInfinity(this double x) => System.Math.Floor(x);
+    public static double RoundToNegativeInfinity(this double x) => System.Math.Floor(x);
 
     /// <summary>Common rounding: round up, bias: positive infinity.</summary>
-    public static double RoundAllToPositiveInfinity(this double x) => System.Math.Ceiling(x);
+    public static double RoundToPositiveInfinity(this double x) => System.Math.Ceiling(x);
+
+    /// <summary>Get the power-of-2 nearest to value, away from zero (AFZ).</summary>
+    /// <param name="value">The value for which the nearest power-of-2 away from zero will be found.</param>
+    /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be away from zero and never equal to value.</param>
+    public static System.Numerics.BigInteger RoundToPowOf2AwayFromZero(this double value)
+      => RoundToPowOf2TowardZero(value) is var ms1b && (double)(ms1b) < value ? (ms1b == 0 ? 1 : ms1b << 1) : ms1b;
+
+    /// <summary>Get the power-of-2 nearest to value, toward zero (TZ).</summary>
+    /// <param name="value">The value for which the nearest power-of-2 towards zero will be found.</param>
+    /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be toward zero and never equal to value.</param>
+    public static System.Numerics.BigInteger RoundToPowOf2TowardZero(this double value)
+      => new System.Numerics.BigInteger((value < 0 ? throw new System.ArgumentOutOfRangeException(nameof(value)) : value).TruncMod(1, out var _)).MostSignificant1Bit();
 
     #endregion Direct (non-halfway) rounding functions
 

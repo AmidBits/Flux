@@ -5,7 +5,7 @@
 #if NET7_0_OR_GREATER
 
     /// <summary>Returns the the largest integer less than or equal to the <paramref name="n"/>th root of <paramref name="y"/>.</summary>
-    public static TSelf IRootN<TSelf>(this TSelf y, TSelf n)
+    public static TSelf IntegerRootN<TSelf>(this TSelf y, TSelf n)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertNonNegative(y, nameof(y));
@@ -14,13 +14,13 @@
       var nM1 = n - TSelf.One;
       var c = TSelf.One;
       var d = (nM1 + y) / n;
-      var e = (nM1 * d + y / IPow(d, nM1)) / n;
+      var e = (nM1 * d + y / IntegerPow(d, nM1)) / n;
 
       while (c != d && c != e)
       {
         c = d;
         d = e;
-        e = (nM1 * d + y / IPow(d, nM1)) / n;
+        e = (nM1 * d + y / IntegerPow(d, nM1)) / n;
       }
 
       return d < e ? d : e;
@@ -79,17 +79,17 @@
     /// <param name="n"></param>
     /// <param name="x"></param>
     /// <returns></returns>
-    public static bool IsPerfectIRootN<TSelf>(TSelf y, TSelf n, TSelf x)
+    public static bool IsPerfectIntegerRootN<TSelf>(TSelf y, TSelf n, TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => y == IPow(x, n);
+      => y == IntegerPow(x, n);
 
     /// <summary>Attempts to compute the (floor) <paramref name="n"/>th root of <paramref name="y"/> into the out parameter <paramref name="x"/>.</summary>
-    public static bool TryIRootN<TSelf>(TSelf y, TSelf n, out TSelf x)
+    public static bool TryIntegerRootN<TSelf>(TSelf y, TSelf n, out TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       try
       {
-        x = IRootN(y, n);
+        x = IntegerRootN(y, n);
 
         return true;
       }
@@ -113,13 +113,13 @@
       var nM1 = n - System.Numerics.BigInteger.One;
       var c = System.Numerics.BigInteger.One;
       var d = (nM1 + y) / n;
-      var e = (nM1 * d + y / IPow(d, nM1)) / n;
+      var e = (nM1 * d + y / IntegerPow(d, nM1)) / n;
 
       while (c != d && c != e)
       {
         c = d;
         d = e;
-        e = (nM1 * d + y / IPow(d, nM1)) / n;
+        e = (nM1 * d + y / IntegerPow(d, nM1)) / n;
       }
 
       return d < e ? d : e;
@@ -179,7 +179,7 @@
     /// <param name="x"></param>
     /// <returns></returns>
     public static bool IsPerfectIRootN(System.Numerics.BigInteger y, System.Numerics.BigInteger n, System.Numerics.BigInteger x)
-      => y == IPow(x, n);
+      => y == IntegerPow(x, n);
 
     /// <summary>Attempts to compute the (floor) <paramref name="n"/>th root of <paramref name="y"/> into the out parameter <paramref name="x"/>.</summary>
     public static bool TryIRootN(System.Numerics.BigInteger y, System.Numerics.BigInteger n, out System.Numerics.BigInteger x)

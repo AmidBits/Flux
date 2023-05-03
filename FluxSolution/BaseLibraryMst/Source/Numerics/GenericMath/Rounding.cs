@@ -11,10 +11,10 @@ namespace GenericMath
     [TestMethod]
     public void Round()
     {
-      Assert.AreEqual(6, (5.5).RoundAllAwayFromZero());
-      Assert.AreEqual(5, (5.5).RoundAllTowardZero());
-      Assert.AreEqual(5, (5.5).RoundAllToNegativeInfinity());
-      Assert.AreEqual(6, (5.5).RoundAllToPositiveInfinity());
+      Assert.AreEqual(6, (5.5).RoundAwayFromZero());
+      Assert.AreEqual(5, (5.5).RoundTowardZero());
+      Assert.AreEqual(5, (5.5).RoundToNegativeInfinity());
+      Assert.AreEqual(6, (5.5).RoundToPositiveInfinity());
       Assert.AreEqual(5, (5.5).RoundHalfToOdd());
       Assert.AreEqual(6, (5.5).RoundHalfToEven());
       Assert.AreEqual(6, (5.5).RoundHalfAwayFromZero());
@@ -48,7 +48,7 @@ namespace GenericMath
       var n = 1.75;
       var m = 0.45;
 
-      n.LocateMultiplesOf(m, false, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.MultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       Assert.AreEqual(1.8, n.RoundToBoundaries(Flux.RoundingMode.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(LocateMultiplesOfAndRoundToBoundaries)} {Flux.RoundingMode.HalfAwayFromZero}");
     }

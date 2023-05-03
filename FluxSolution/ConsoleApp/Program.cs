@@ -22,14 +22,27 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      12d.LocateMultiplesOf(3.5, true, out var multipleTowardsZero, out var multipleAwayFromZero);
+      var radix = 10;
+      for (var index = 0; index < 123; index += 1)
+      {
+
+        //System.Console.WriteLine($" {index.RoundToPowOf2TowardZero(true)} : {index} : {index.RoundToPowOf2AwayFromZero(true)}");
+        //System.Console.WriteLine($" {index.IntegerLog2()} : {index:D2} : {(index > 0 ? (index - 1).IntegerLog2() + 1 : 0)}");
+        System.Console.WriteLine($">{index.IntegerLog(radix)} : {index} : {(index >= 1 ? (index - 1).IntegerLog(radix) + 1 : 0)}");
+        //System.Console.WriteLine();
+      }
+
+      return;
+
+      //var ilog2 = (17).IntegerLogTz(2);
+      //(17).LocateIntegerLog(2, out var ilogTowardZero, out var ilogAwayFromZero);
 
       var fp = 5.5;
 
-      var raafz = fp.RoundAllAwayFromZero();
-      var ratpi = fp.RoundAllToPositiveInfinity();
-      var ratni = fp.RoundAllToNegativeInfinity();
-      var ratz = fp.RoundAllTowardZero();
+      var raafz = fp.RoundAwayFromZero();
+      var ratpi = fp.RoundToPositiveInfinity();
+      var ratni = fp.RoundToNegativeInfinity();
+      var ratz = fp.RoundTowardZero();
       var rhafz = fp.RoundHalfAwayFromZero();
       var rhte = fp.RoundHalfToEven();
       var rhtni = fp.RoundHalfToNegativeInfinity();
@@ -47,7 +60,7 @@ namespace ConsoleApp
       var tzc = i.TrailingZeroCount();
       var bl = i.BitLength();
       var c1b = i.Count1Bits();
-      var il2 = i.ILog2();
+      var il2 = i.IntegerLog2();
       var rb = i.ReverseBits();
       var ipo2 = i.IsPowOf2();
       var ipo10 = i.ToBigInteger().IsPowOf(10);
