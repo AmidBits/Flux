@@ -57,16 +57,18 @@ namespace Flux
     /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static void PowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, out System.Numerics.BigInteger powofTowardsZero, out System.Numerics.BigInteger powofAwayFromZero)
+    public static System.Numerics.BigInteger PowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powofTowardsZero, out System.Numerics.BigInteger powofAwayFromZero)
     {
       AssertRadix(radix);
 
       if (value < 0)
       {
-        PowOf(System.Numerics.BigInteger.Abs(value), radix, proper, out powofTowardsZero, out powofAwayFromZero);
+        var nearest = PowOf(System.Numerics.BigInteger.Abs(value), radix, proper, mode, out powofTowardsZero, out powofAwayFromZero);
 
         powofAwayFromZero = -powofAwayFromZero;
         powofTowardsZero = -powofTowardsZero;
+
+        return nearest;
       }
       else  // The value is greater than or equal to zero here.
       {
@@ -80,6 +82,8 @@ namespace Flux
             powofAwayFromZero *= radix;
         }
       }
+
+      return value.RoundToBoundaries(mode, powofTowardsZero, powofAwayFromZero);
     }
 
     /// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
@@ -88,7 +92,7 @@ namespace Flux
     /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
     /// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
     public static System.Numerics.BigInteger PowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
-       => IntegerPow(radix, IntegerLogFloor(value, radix));
+       => IntegerPow(radix, IntegerLog(value, radix));
 
     ///// <summary>Find the power-of-<paramref name="radix"/> nearest <paramref name="value"/> away from zero, optionally <paramref name="proper"/>.</summary>
     ///// <param name="value">The reference value.</param>

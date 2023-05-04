@@ -51,20 +51,15 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static void IntegerLog(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, out System.Numerics.BigInteger ilogTowardZero, out System.Numerics.BigInteger ilogAwayFromZero)
     {
-      ilogAwayFromZero = ilogTowardZero = IntegerLogFloor(value, radix);
+      ilogAwayFromZero = ilogTowardZero = IntegerLog(value, radix);
 
       if (!IsPowOf(value, radix))
         ilogAwayFromZero++;
     }
 
-    /// <summary>Computes the integer log ceiling of x using base b.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static System.Numerics.BigInteger IntegerLogCeiling(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
-      => AssertNonNegative(value) < radix ? 0 : IntegerLogFloor(value - 1, radix) + 1;
-
     /// <summary>Computes the integer log floor of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static System.Numerics.BigInteger IntegerLogFloor(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
+    public static System.Numerics.BigInteger IntegerLog(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
     {
       AssertNonNegative(value);
       AssertRadix(radix);
@@ -87,20 +82,15 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
     public static void IntegerLog(this int value, int radix, out int ilogTowardZero, out int ilogAwayFromZero)
     {
-      ilogAwayFromZero = ilogTowardZero = IntegerLogFloor(value, radix);
+      ilogAwayFromZero = ilogTowardZero = IntegerLog(value, radix);
 
       if (!IsPowOf(value, radix))
         ilogAwayFromZero++;
     }
 
-    /// <summary>Computes the integer log ceiling of x using base b.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static int IntegerLogCeiling(this int value, int radix)
-      => AssertNonNegative(value) < radix ? 0 : IntegerLogFloor(value - 1, radix) + 1;
-
     /// <summary>Computes the integer log floor of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Logarithm"/>
-    public static int IntegerLogFloor(this int value, int radix)
+    public static int IntegerLog(this int value, int radix)
     {
       AssertNonNegative(value);
       AssertRadix(radix);

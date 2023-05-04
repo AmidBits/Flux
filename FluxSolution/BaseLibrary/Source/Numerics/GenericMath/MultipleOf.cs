@@ -115,7 +115,7 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static void LocateMultiplesOf(this double value, double multiple, bool proper, out double multipleTowardsZero, out double multipleAwayFromZero)
+    public static double MultipleOf(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero)
     {
       if (multiple < 0) throw new System.ArgumentOutOfRangeException(nameof(multiple)); // AssertNonNegative(multiple, nameof(multiple));
 
@@ -129,6 +129,8 @@
         if (multipleAwayFromZero == value)
           multipleAwayFromZero += System.Math.CopySign(multiple, value);
       }
+
+      return value.RoundToBoundaries(mode, multipleTowardsZero, multipleAwayFromZero);
     }
 
     /// <summary>Get the two multiples nearest to value. Negative <paramref name="value"/> resilient.</summary>
@@ -138,7 +140,7 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static void LocateMultiplesOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger multiple, bool proper, out System.Numerics.BigInteger multipleTowardsZero, out System.Numerics.BigInteger multipleAwayFromZero)
+    public static System.Numerics.BigInteger MultipleOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger multiple, bool proper, RoundingMode mode, out System.Numerics.BigInteger multipleTowardsZero, out System.Numerics.BigInteger multipleAwayFromZero)
     {
       AssertNonNegative(multiple, nameof(multiple));
 
@@ -152,6 +154,8 @@
         if (multipleAwayFromZero == value)
           multipleAwayFromZero += multiple * value.Sign;
       }
+
+      return value.RoundToBoundaries(mode, multipleTowardsZero, multipleAwayFromZero);
     }
 
     ///// <summary>Find the nearest (to <paramref name="value"/>) multiple away from zero (round-up). Negative <paramref name="value"/> resilient.</summary>

@@ -91,7 +91,7 @@ namespace GenericMath
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual(3, Flux.GenericMath.IntegerLog(512 - 1, 10) + 1);
+      Assert.AreEqual(3, Flux.GenericMath.IntegerLog(512.ToBigInteger() - 1, 10) + 1);
     }
 
     [TestMethod]
