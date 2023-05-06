@@ -22,54 +22,24 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
-      var radix = 10;
-      for (var index = 0; index < 123; index += 1)
-      {
+      var a = (byte)0x55;
+      var b = (byte)0xAA;
+      var z = a.MortonNumber(b);
 
-        //System.Console.WriteLine($" {index.RoundToPowOf2TowardZero(true)} : {index} : {index.RoundToPowOf2AwayFromZero(true)}");
-        //System.Console.WriteLine($" {index.IntegerLog2()} : {index:D2} : {(index > 0 ? (index - 1).IntegerLog2() + 1 : 0)}");
-        System.Console.WriteLine($">{index.IntegerLog(radix)} : {index} : {(index >= 1 ? (index - 1).IntegerLog(radix) + 1 : 0)}");
-        //System.Console.WriteLine();
-      }
+      var n = -6235854;
 
+      var nlpo2 = n.NextLargestPowerOf2();
+      var bi = n.ToBigInteger();
+      var bis = bi.ToString("X8");
+      var bl = bi.BitLength();
+      var bln = bi.BitLengthN();
+      var l2 = bi.IntegerLog2();
+      var ms1b = bi.MostSignificant1Bit();
+      var bmr = bi.BitMaskRight();
+      var bmrs = bmr.ToString("X8");
+      var bml = bi.BitMaskLeft();
+      var bmls = bml.ToString("X8");
       return;
-
-      //var ilog2 = (17).IntegerLogTz(2);
-      //(17).LocateIntegerLog(2, out var ilogTowardZero, out var ilogAwayFromZero);
-
-      var fp = 5.5;
-
-      var raafz = fp.RoundAwayFromZero();
-      var ratpi = fp.RoundToPositiveInfinity();
-      var ratni = fp.RoundToNegativeInfinity();
-      var ratz = fp.RoundTowardZero();
-      var rhafz = fp.RoundHalfAwayFromZero();
-      var rhte = fp.RoundHalfToEven();
-      var rhtni = fp.RoundHalfToNegativeInfinity();
-      var rhto = fp.RoundHalfToOdd();
-      var rhtpi = fp.RoundHalfToPositiveInfinity();
-      var rhtz = fp.RoundHalfTowardZero();
-
-      var i = 5;
-
-      var bfl = i.BitFoldLeft();
-      var bfr = i.BitFoldRight();
-      var ls1b = i.LeastSignificant1Bit();
-      var ms1b = i.MostSignificant1Bit();
-      var lzc = i.LeadingZeroCount();
-      var tzc = i.TrailingZeroCount();
-      var bl = i.BitLength();
-      var c1b = i.Count1Bits();
-      var il2 = i.IntegerLog2();
-      var rb = i.ReverseBits();
-      var ipo2 = i.IsPowOf2();
-      var ipo10 = i.ToBigInteger().IsPowOf(10);
-      var ipo12 = i.ToBigInteger().IsPowOf(12);
-      var ipo16 = i.ToBigInteger().IsPowOf(16);
-
-      var iaea = fp.EqualsWithinAbsoluteTolerance(i, 0.4);
-      var iaer = fp.EqualsWithinRelativeTolerance(i, 0.05);
-      var iaep = fp.EqualsWithinSignificantDigits(i, 1, 10);
     }
 
     private static void Main(string[] args)

@@ -7,8 +7,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    public static bool IsPowOf2<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static bool IsPowOf2<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsPow2(value);
 
 #else

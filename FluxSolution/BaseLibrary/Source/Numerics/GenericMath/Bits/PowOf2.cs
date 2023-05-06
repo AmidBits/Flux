@@ -12,7 +12,7 @@ namespace Flux
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be away from zero and never equal to value.</param>
     public static System.Numerics.BigInteger RoundToPowOf2AwayFromZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumber<TSelf>
-      => RoundToPowOf2TowardZero(value) is var ms1b && TSelf.CreateChecked(ms1b) < value ? (ms1b.IsZero ? 1 : ms1b << 1) : ms1b;
+      => TruncateToPowOf2(value) is var ms1b && TSelf.CreateChecked(ms1b) < value ? (ms1b.IsZero ? 1 : ms1b << 1) : ms1b;
 
     /// <summary>Get the power-of-2 nearest to value, away from zero (AFZ).</summary>
     /// <param name="value">The value for which the nearest power-of-2 away from zero will be found.</param>
@@ -24,7 +24,7 @@ namespace Flux
     /// <summary>Get the power-of-2 nearest to value, toward zero (TZ).</summary>
     /// <param name="value">The value for which the nearest power-of-2 towards zero will be found.</param>
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be toward zero and never equal to value.</param>
-    public static System.Numerics.BigInteger RoundToPowOf2TowardZero<TSelf>(this TSelf value)
+    public static System.Numerics.BigInteger TruncateToPowOf2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumber<TSelf>
       => System.Numerics.BigInteger.CreateChecked(value.AssertNonNegative().TruncMod(TSelf.One, out var _)).MostSignificant1Bit();
 
@@ -33,7 +33,7 @@ namespace Flux
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be toward zero and never equal to value.</param>
     public static System.Numerics.BigInteger RoundToPowOf2TowardZero<TSelf>(this TSelf value, bool proper)
       where TSelf : System.Numerics.INumber<TSelf>
-      => value.RoundToPowOf2TowardZero() is var po2d && proper && (TSelf.CreateChecked(po2d) == value) ? po2d >> 1 : po2d;
+      => value.TruncateToPowOf2() is var po2d && proper && (TSelf.CreateChecked(po2d) == value) ? po2d >> 1 : po2d;
 
     /// <summary>Find the nearest (to <paramref name="value"/>) of two power-of-2, using the specified <see cref="RoundingMode"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
     /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
