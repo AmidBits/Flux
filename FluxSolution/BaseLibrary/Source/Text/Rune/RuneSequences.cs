@@ -4,10 +4,10 @@ namespace Flux.Text
 {
   public static class RuneSequences
   {
-    /// <summary>The base62 encoding scheme uses 62 characters. The characters consist of the capital letters A-Z, the lower case letters a-z and the numbers 0–9.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Base62"/>
-    public static readonly System.Collections.Generic.IEnumerable<System.Text.Rune> Base62
-      = Loops.RangeLoop<int>.CreateBetween('0', '9').Concat(Loops.RangeLoop<int>.CreateBetween('A', 'Z')).Concat(Loops.RangeLoop<int>.CreateBetween('a', 'z')).Select(c => (System.Text.Rune)(int)c);
+    ///// <summary>The base62 encoding scheme uses 62 characters. The characters consist of the capital letters A-Z, the lower case letters a-z and the numbers 0–9.</summary>
+    ///// <see cref="https://en.wikipedia.org/wiki/Base62"/>
+    //public static readonly System.Collections.Generic.IEnumerable<System.Text.Rune> Base62
+    //  = Loops.RangeLoop<int>.CreateBetween('0', '9').Concat(Loops.RangeLoop<int>.CreateBetween('A', 'Z')).Concat(Loops.RangeLoop<int>.CreateBetween('a', 'z')).Select(c => (System.Text.Rune)(int)c);
 
     /////// <summary>https://en.wikipedia.org/wiki/Base64</summary>
     //public static System.Collections.Generic.IEnumerable<System.Text.Rune> Base64

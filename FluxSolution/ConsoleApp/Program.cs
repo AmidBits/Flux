@@ -22,11 +22,35 @@ namespace ConsoleApp
 
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
 
+      for (var bits = 8; bits <= 64; bits <<= 1)
+        System.Console.WriteLine($"{bits:D4} = {Flux.Convert.BitCountToMaxDigitCount(bits, 10, true)} / {Flux.Convert.BitCountToMaxDigitCount(bits, 10, false)}");
+
+      return;
+
+      var e = 240;
+      System.Console.WriteLine($"  {e.ToOctString()}");
+      System.Console.WriteLine($"  {e.ToHexadecimalString()}");
+
+      var me = -e;
+      System.Console.WriteLine($" -{me.ToBinaryString()}");
+
+      var re = (e.ReverseBits() & -e.ReverseBits()).ReverseBits();
+      System.Console.WriteLine($"re{re.ToBinaryString()}");
+
+      var em1 = e - 1;
+      System.Console.WriteLine($"1-{em1.ToBinaryString()}");
+
+      var ce = ~e;
+      System.Console.WriteLine($" ~{ce.ToBinaryString()}");
+
+      var mce = -~e;
+      System.Console.WriteLine($"-~{mce.ToBinaryString()}");
+
       var a = (byte)0x55;
       var b = (byte)0xAA;
       var z = a.MortonNumber(b);
 
-      var n = -6235854;
+      var n = 6235854;
 
       var nlpo2 = n.NextLargestPowerOf2();
       var bi = n.ToBigInteger();
