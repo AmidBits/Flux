@@ -7,10 +7,13 @@ namespace Flux
     public static string ToBinaryString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => Text.PositionalNotation.Base2.NumberToText(value, value.GetBitCount());
 
+    public static string ToDecimalString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => Text.PositionalNotation.Base10.NumberToText(value, value.GetBitCount());
+
     public static string ToHexadecimalString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => Text.PositionalNotation.Base16.NumberToText(value, value.GetByteCount() << 1);
 
-    public static string ToOctString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static string ToOctalString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => Text.PositionalNotation.Base8.NumberToText(value, int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient);
 
     /// <summary>Creates <paramref name="value"/> to text using base <paramref name="radix"/>.</summary>
@@ -19,6 +22,18 @@ namespace Flux
       => new Text.PositionalNotation(radix).NumberToText(value, minLength).ToString();
 
 #else
+
+    public static string ToBinaryString(this System.Numerics.BigInteger value)
+      => Text.PositionalNotation.Base2.NumberToText(value, value.GetBitCount());
+
+    public static string ToDecimalString(this System.Numerics.BigInteger value)
+      => Text.PositionalNotation.Base10.NumberToText(value, value.GetBitCount());
+
+    public static string ToHexadecimalString(this System.Numerics.BigInteger value)
+      => Text.PositionalNotation.Base16.NumberToText(value, value.GetByteCount() << 1);
+
+    public static string ToOctalString(this System.Numerics.BigInteger value)
+      => Text.PositionalNotation.Base8.NumberToText(value, System.Math.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient);
 
     /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static string ToRadixString(this System.Numerics.BigInteger number, int radix, int minLength = 1)
@@ -43,6 +58,7 @@ namespace Flux
 
       public static PositionalNotation Base2 => new(2);
       public static PositionalNotation Base8 => new(8);
+      public static PositionalNotation Base10 => new(10);
       public static PositionalNotation Base16 => new(16);
 
       public System.Text.Rune NegativeSign { get; init; } = (System.Text.Rune)'-';
@@ -148,7 +164,9 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
     public readonly ref struct PositionalNotation
     {
-      public const int MaxRadix = 62;
+      public const string Base64 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+
+      public const int MaxRadix = 64;
 
       public static PositionalNotation Base2 => new(2);
       public static PositionalNotation Base8 => new(8);
@@ -162,7 +180,7 @@ namespace Flux
       /// <summary>Convert a number into a positional notation text string.</summary>
       /// <param name="symbols">Symbols must be represented as TextElements (i.e. graphemes).</param>
       public PositionalNotation(System.ReadOnlySpan<System.Text.Rune> symbols) => Symbols = symbols;
-      public PositionalNotation(int radix) : this(RuneSequences.Base62.Take(GenericMath.AssertRadix(radix, MaxRadix)).ToArray()) { }
+      public PositionalNotation(int radix) : this(Base64.AsSpan().Slice(0, radix).ToListRune().AsSpan()) { }
 
       /// <summary>Converts a number into a positional notation text string.</summary>
       public string NumberToText(System.Numerics.BigInteger number, int minLength = 1)

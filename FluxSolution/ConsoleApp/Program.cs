@@ -30,18 +30,27 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      //var il2 = (0.0).IgiLog2();
+
+      var ms1bs = ((0.MostSignificant1Bit() - 1) << 1);
+
+      var zbl = (0).ShortestBitLength();
+      var zbln = (0).BitLengthN();
+
+      var ms1b = (-670530).MostSignificant1Bit();
+      var minv = int.MinValue;
       Eliza();
 
       var radix = 10;
       System.Console.WriteLine($"Bits = If_S / If_U");
       System.Console.WriteLine($"---- - ---- - ----");
       for (var bits = 1; bits <= 32; bits++)
-        System.Console.WriteLine($"{bits:D4} = {Flux.Convert.BitCountToMaxDigitCount(bits, radix, true):D4} / {Flux.Convert.BitCountToMaxDigitCount(bits, radix, false):D4}");
+        System.Console.WriteLine($"{bits:D4} = {Flux.Bits.ToMaxDigitCount(bits, radix, true):D4} / {Flux.Bits.ToMaxDigitCount(bits, radix, false):D4}");
 
       return;
 
-      var e = 240;
-      System.Console.WriteLine($"  {e.ToOctString()}");
+      var e = 240.ToBigInteger();
+      System.Console.WriteLine($"  {e.ToOctalString()}");
       System.Console.WriteLine($"  {e.ToHexadecimalString()}");
 
       var me = -e;
@@ -65,17 +74,17 @@ namespace ConsoleApp
 
       var n = 6235854;
 
-      var nlpo2 = n.NextLargestPowerOf2();
-      var bi = n.ToBigInteger();
-      var bis = bi.ToString("X8");
-      var bl = bi.BitLength();
-      var bln = bi.BitLengthN();
-      var l2 = bi.IntegerLog2();
-      var ms1b = bi.MostSignificant1Bit();
-      var bmr = bi.BitMaskRight();
-      var bmrs = bmr.ToString("X8");
-      var bml = bi.BitMaskLeft();
-      var bmls = bml.ToString("X8");
+      //var nlpo2 = n.NextLargerPowerOf2();
+      //var bi = n.ToBigInteger();
+      //var bis = bi.ToString("X8");
+      //var bl = bi.ShortestBitLength();
+      //var bln = bi.BitLengthN();
+      //var l2 = bi.IntegerLog2();
+      //var ms1b = bi.MostSignificant1Bit();
+      //var bmr = bi.BitMaskRight();
+      //var bmrs = bmr.ToString("X8");
+      //var bml = bi.BitMaskLeft();
+      //var bmls = bml.ToString("X8");
       return;
     }
 

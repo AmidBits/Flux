@@ -22,8 +22,8 @@ namespace GenericMath
     [TestMethod]
     public void GetBitLengthEx()
     {
-      Assert.AreEqual(7, 88.ToBigInteger().BitLength());
-      Assert.AreEqual(7, 88.ToBigInteger().BitLength());
+      Assert.AreEqual(7, 88.ToBigInteger().ShortestBitLength());
+      Assert.AreEqual(7, 88.ToBigInteger().ShortestBitLength());
     }
 
     [TestMethod]
@@ -77,7 +77,7 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPowOf2AwayFromZero()
     {
-      var actual = 88.ToBigInteger().RoundToPowOf2AwayFromZero(false);
+      var actual = 88.ToBigInteger().RoundToPowOf2Afz(false);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -85,7 +85,7 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPowOf2AwayFromZeroProper()
     {
-      var actual = 88.ToBigInteger().RoundToPowOf2AwayFromZero(true);
+      var actual = 88.ToBigInteger().RoundToPowOf2Afz(true);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -93,7 +93,7 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPowOf2TowardZero()
     {
-      var actual = 88.ToBigInteger().RoundToPowOf2TowardZero(false);
+      var actual = 88.ToBigInteger().RoundToPowOf2Tz(false);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }
@@ -101,7 +101,7 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPowOf2TowardZeroProper()
     {
-      var actual = 88.ToBigInteger().RoundToPowOf2TowardZero(true);
+      var actual = 88.ToBigInteger().RoundToPowOf2Tz(true);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }

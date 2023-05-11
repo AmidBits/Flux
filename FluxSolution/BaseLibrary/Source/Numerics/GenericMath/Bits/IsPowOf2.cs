@@ -18,10 +18,6 @@ namespace Flux
 
     public static bool IsPowOf2(this long value) => System.Numerics.BitOperations.IsPow2(value);
 
-    [System.CLSCompliant(false)] public static bool IsPowOf2(this uint value) => System.Numerics.BitOperations.IsPow2(value);
-
-    [System.CLSCompliant(false)] public static bool IsPowOf2(this ulong value) => System.Numerics.BitOperations.IsPow2(value);
-
 #endif
   }
 }

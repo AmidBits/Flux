@@ -29,6 +29,27 @@ namespace Flux
     // http://aggregate.org/MAGIC/
     // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan
 
+    private static System.Collections.Generic.IReadOnlyList<byte>? m_byteReverseBits;
+    public static System.Collections.Generic.IReadOnlyList<byte> ByteReverseBits
+      => m_byteReverseBits ??= System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 256), n => (byte)(ReverseBits((uint)n) >> 24)));
+
+    /// <summary>Computes the reverse bit mask of a value.</summary>
+    public static System.Numerics.BigInteger ReverseBits(this System.Numerics.BigInteger value)
+    {
+      if (value >= 0 && value <= 255)
+        return ByteReverseBits[(int)value];
+
+      var sourceArray = value.ToByteArrayEx(out var sourceIndex, out var _);
+
+      var targetBytes = new byte[sourceIndex + 1];
+      var targetIndex = 0;
+
+      while (sourceIndex >= 0)
+        targetBytes[targetIndex++] = ByteReverseBits[sourceArray[sourceIndex--]];
+
+      return new System.Numerics.BigInteger(targetBytes);
+    }
+
     /// <summary>Computes the reverse bit mask of a value.</summary>
     public static int ReverseBits(this int value)
       => unchecked((int)ReverseBits((uint)value));

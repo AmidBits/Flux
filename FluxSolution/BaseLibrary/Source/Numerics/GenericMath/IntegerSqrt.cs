@@ -68,7 +68,7 @@ namespace Flux
     {
       AssertNonNegative(y);
 
-      var x0 = System.Numerics.BigInteger.One << (y.BitLength() / 2 + 1); // The least power of two bigger than the square number.
+      var x0 = System.Numerics.BigInteger.One << (y.ShortestBitLength() / 2 + 1); // The least power of two bigger than the square number.
 
       if (!x0.IsZero)
       {

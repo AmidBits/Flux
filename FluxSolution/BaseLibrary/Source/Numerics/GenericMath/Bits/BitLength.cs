@@ -9,10 +9,10 @@ namespace Flux
 
     /// <summary>Gets the length, in bits, of the shortest two's-complement representation of <paramref name="value"/>. The bit-length also serves as the bit position of a power-of-2 <paramref name="value"/>.</summary>
     /// <remarks>This is using the .NET built-in functionality without modifications to the result.</remarks>
-    public static int BitLength<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static int ShortestBitLength<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => value.GetShortestBitLength();
 
-    /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> for positive values, but for negative values it returns <see cref="GetBitCount{TSelf}(TSelf)"/>. This also serves as the bit position of a power-of-2 <paramref name="value"/>.</summary>
+    /// <summary>This version of bit-length is the same as <see cref="ShortestBitLength{TSelf}(TSelf)"/> for positive values, but for negative values it returns <see cref="GetBitCount{TSelf}(TSelf)"/>. This also serves as the bit position of a power-of-2 <paramref name="value"/>.</summary>
     public static int BitLengthN<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsNegative(value) ? GetBitCount(value) : value.GetShortestBitLength();
 
@@ -20,23 +20,23 @@ namespace Flux
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    public static int BitLength(this System.Numerics.BigInteger value) => (int)value.GetBitLength();
+    public static int ShortestBitLength(this System.Numerics.BigInteger value) => (int)value.GetBitLength();
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    public static int BitLength(this int value) => unchecked(((uint)value).BitLength());
+    public static int ShortestBitLength(this int value) => unchecked(((uint)value).ShortestBitLength());
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    public static int BitLength(this long value) => unchecked(((ulong)value).BitLength());
+    public static int ShortestBitLength(this long value) => unchecked(((ulong)value).ShortestBitLength());
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    [System.CLSCompliant(false)] public static int BitLength(this uint value) => 1 + System.Numerics.BitOperations.Log2(value);
+    [System.CLSCompliant(false)] public static int ShortestBitLength(this uint value) => 1 + System.Numerics.BitOperations.Log2(value);
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    [System.CLSCompliant(false)] public static int BitLength(this ulong value) => 1 + System.Numerics.BitOperations.Log2(value);
+    [System.CLSCompliant(false)] public static int ShortestBitLength(this ulong value) => 1 + System.Numerics.BitOperations.Log2(value);
 
     /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns (<paramref name="value"/>.GetByteCount() * 8) instead.</summary>
     public static int BitLengthN(this System.Numerics.BigInteger value) => value < 0 ? value.GetByteCount() * 8 : (int)value.GetBitLength();
