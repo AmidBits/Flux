@@ -60,25 +60,25 @@ namespace Flux
     //    //public static double ChebyshevDistanceTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b, float edgeLength = 1)
     //    //  => Maths.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength, (b.Z - a.Z) / edgeLength);
 
-    //    ///// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
-    //    //public static double ComputeAreaSigned(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
-    //    //  => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e1.X * e2.Y - e2.X * e1.Y), (a, i) => a / 2);
-    //    ///// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
-    //    //public static double ComputeArea(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
-    //    //  => System.Math.Abs(ComputeAreaSigned(source));
+    /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
+    public static double ComputeAreaSigned(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e1.X * e2.Y - e2.X * e1.Y), (a, i) => a / 2);
+    /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
+    public static double ComputeArea(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
+      => System.Math.Abs(ComputeAreaSigned(source));
 
-    //    /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
-    //    public static System.Numerics.Vector3 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    //      => source.Aggregate(System.Numerics.Vector3.Zero, (a, e, i) => a + e, (a, count) => a / count);
+    /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
+    public static System.Numerics.Vector3 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => source.Aggregate(() => System.Numerics.Vector3.Zero, (a, e, i) => a + e, (a, count) => a / count);
 
     //    ///// <summary>Compute the surface normal of the polygon, which is simply the cross product of three vertices (as in a subtriangle of the polygon). (2D/3D)</summary>
     //    ////  Modified from http://www.fullonsoftware.co.uk/snippets/content/Math_-_Calculating_Face_Normals.pdf
     //    //public static System.Numerics.Vector3 ComputeNormal(this System.Collections.Generic.IReadOnlyList<System.Numerics.Vector3> source)
     //    //  => source is null ? throw new System.ArgumentNullException(nameof(source)) : (source.Count >= 3 ? System.Numerics.Vector3.Cross(source[1] - source[0], source[2] - source[0]) : throw new System.ArgumentOutOfRangeException(nameof(source)));
 
-    //    ///// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
-    //    //public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-    //    //  => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e2 - e1).Length(), (a, i) => a);
+    /// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
+    public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
+      => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e2 - e1).Length(), (a, i) => a);
 
     //    //public static double EuclideanDistanceSquaredTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
     //    //  => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y) + (a.Z - b.Z) * (a.Z - b.Z);

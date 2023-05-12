@@ -1,6 +1,6 @@
 ﻿namespace Flux.DataStructures.Graphs
 {
-  /// <summary>Represents a graph using an adjacency matrix. Unlimited edge combinations and types.</summary>
+  /// <summary>Represents a graph using an adjacency list. Unlimited edge combinations and types.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
