@@ -2,24 +2,21 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Returns the sequence rotated left by the specified count. The left rotation has a proportional cost (the rotation count directly affects the sequence buffer use).</summary>
+    /// <summary>Returns the sequence rotated left by the specified count.</summary>
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> RotateLeft<T>(this System.Collections.Generic.IEnumerable<T> source, int count)
     {
-      var buffer = new System.Collections.Generic.Queue<T>(count);
+      if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      using var e = source.ThrowIfNull().GetEnumerator();
+      var items = source.ToList();
 
-      while (e.MoveNext())
-      {
-        if (buffer.Count < count)
-          buffer.Enqueue(e.Current);
-        else
-          yield return e.Current;
-      }
+      var index = (items.Count < count ? (count % items.Count) : count);
 
-      while (buffer.Count > 0)
-        yield return buffer.Dequeue();
+      for (var i = index; i < items.Count; i++)
+        yield return items[i];
+
+      for (var i = 0; i < index; i++)
+        yield return items[i];
     }
   }
 }

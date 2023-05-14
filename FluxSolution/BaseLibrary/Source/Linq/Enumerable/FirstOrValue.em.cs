@@ -6,7 +6,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static T FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, int, bool>? predicate = null)
     {
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       if (e.MoveNext())
       {

@@ -14,7 +14,7 @@ namespace Flux
 
       var aggregate = initiator();
 
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       while (e.MoveNext())
       {

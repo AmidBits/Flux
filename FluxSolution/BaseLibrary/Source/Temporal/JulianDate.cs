@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ExtensionMethodsDateTime
   {
-    public static JulianDate ToJulianDate(this System.DateTime source, ConversionCalendar calendar)
+    public static JulianDate ToJulianDate(this System.DateTime source, TemporalCalendar calendar)
       => new(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond, calendar);
   }
 
@@ -17,8 +17,9 @@ namespace Flux
     /// <summary>Create a Julian Date (JD) from the specified <paramref name="value"/> value.</summary>
     public JulianDate(double value)
       => m_value = value;
+
     /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
-    public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, ConversionCalendar calendar)
+    public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, TemporalCalendar calendar)
       : this(JulianDayNumber.ConvertFromDateParts(year, month, day, calendar) + ConvertFromTimeParts(hour, minute, second, millisecond))
     { }
 
@@ -29,10 +30,10 @@ namespace Flux
     public JulianDate AddSeconds(int seconds) => this + (seconds / 86400d);
     public JulianDate AddMilliseconds(int milliseconds) => this + (milliseconds / 1000d / 86400d);
 
-    public ConversionCalendar GetConversionCalendar()
-      => IsGregorianCalendar(m_value) ? ConversionCalendar.GregorianCalendar : ConversionCalendar.JulianCalendar;
+    public TemporalCalendar GetConversionCalendar()
+      => IsGregorianCalendar(m_value) ? TemporalCalendar.GregorianCalendar : TemporalCalendar.JulianCalendar;
 
-    public void GetParts(ConversionCalendar calendar, out int year, out int month, out int day, out int hour, out int minute, out int second, out int millisecond)
+    public void GetParts(TemporalCalendar calendar, out int year, out int month, out int day, out int hour, out int minute, out int second, out int millisecond)
     {
       (year, month, day) = ToJulianDayNumber().GetDateParts(calendar);
 
@@ -41,7 +42,7 @@ namespace Flux
 
     public JulianDayNumber ToJulianDayNumber() => new((int)(m_value + 0.5));
 
-    public MomentUtc ToMomentUtc(ConversionCalendar calendar)
+    public MomentUtc ToMomentUtc(TemporalCalendar calendar)
     {
       var (year, month, day) = ToJulianDayNumber().GetDateParts(calendar);
       var (hour, minute, second, millisecond) = ConvertToTimeParts(m_value);
@@ -100,7 +101,7 @@ namespace Flux
 
     /// <summary>Compute the time-of-day. I.e. the number of seconds from 12 noon of the Julian Day Number part.</summary>
     public static double GetTimeSinceNoon(double julianDate)
-      => julianDate.GetFraction(out System.Numerics.BigInteger _) * 86400d;
+      => (julianDate - System.Math.Truncate(julianDate)) * 86400d;
 
     /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
     public static bool IsGregorianCalendar(double julianDate)
@@ -109,6 +110,7 @@ namespace Flux
     #endregion Static methods
 
     #region Overloaded operators
+
     public static bool operator <(JulianDate a, JulianDate b) => a.CompareTo(b) < 0;
     public static bool operator <=(JulianDate a, JulianDate b) => a.CompareTo(b) <= 0;
     public static bool operator >(JulianDate a, JulianDate b) => a.CompareTo(b) > 0;
@@ -134,22 +136,25 @@ namespace Flux
 
     public static JulianDate operator +(JulianDate a, System.TimeSpan b) => a + (b.TotalSeconds / 86400);
     public static JulianDate operator -(JulianDate a, System.TimeSpan b) => a - (b.TotalSeconds / 86400);
+
     #endregion Overloaded operators
 
     #region Implemented interfaces
+
     // IComparable<>
     public int CompareTo(JulianDate other) => m_value < other.m_value ? -1 : m_value > other.m_value ? 1 : 0;
+
     // IComparable
     public int CompareTo(object? other) => other is not null && other is JulianDate o ? CompareTo(o) : -1;
 
-    // IQuantifiable<>
-    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-      => $"{ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}";
+    // IFormattable
+    public string ToString(string? format, IFormatProvider? formatProvider) => format is null ? ToQuantityString() : m_value.ToString(format, formatProvider);
 
-    public string ToString(string? format, IFormatProvider? formatProvider)
-      => format is null ? ToQuantityString() : m_value.ToString(format, formatProvider);
+    // IQuantifiable<>
+    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}";
 
     public double Value { get => m_value; init => m_value = value; }
+
     #endregion Implemented interfaces
 
     public override string? ToString() => ToQuantityString();

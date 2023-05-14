@@ -1,3 +1,5 @@
+using System.Data.Common;
+
 namespace Flux
 {
   public static partial class Enumerable
@@ -6,7 +8,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static T LastOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, int, bool>? predicate = null)
     {
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       if (e.MoveNext())
       {

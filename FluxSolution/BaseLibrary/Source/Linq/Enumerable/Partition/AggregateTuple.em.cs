@@ -17,7 +17,7 @@ namespace Flux
       if (tupleSize < 2) throw new System.ArgumentOutOfRangeException(nameof(tupleSize));
       if (tupleWrap < 0 || tupleWrap >= tupleSize) throw new System.ArgumentException($@"A {tupleSize}-tuple can only wrap up to {tupleSize - 1} elements.");
 
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       var start = new System.Collections.Generic.List<TSource>();
 
@@ -69,7 +69,7 @@ namespace Flux
       if (aggregateComputor is null) throw new System.ArgumentNullException(nameof(aggregateComputor));
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       if (e.MoveNext() && e.Current is var item1 && item1 is var back1)
         if (e.MoveNext())
@@ -107,7 +107,7 @@ namespace Flux
 
       if (tupleWrap < 0 || tupleWrap > 2) throw new System.ArgumentException(@"A 3-tuple can only wrap 0, 1 or 2 elements.", nameof(tupleWrap));
 
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       if (e.MoveNext() && e.Current is var item1 && item1 is var back2)
         if (e.MoveNext() && e.Current is var item2 && item2 is var back1)

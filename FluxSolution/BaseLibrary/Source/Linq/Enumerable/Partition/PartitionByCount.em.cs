@@ -12,7 +12,7 @@ namespace Flux
       if (partitionsCount <= 0) throw new System.ArgumentOutOfRangeException(nameof(partitionsCount), $"Must be greater than or equal to 1 ({partitionsCount}).");
       if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
 
-      var quotient = System.Math.DivRem(source.ThrowIfNull().Count(), partitionsCount, out var remainder);
+      var quotient = System.Math.DivRem(source.ThrowOnNull().Count(), partitionsCount, out var remainder);
 
       return source.PartitionBySize(quotient + System.Math.Sign(remainder), resultSelector);
     }

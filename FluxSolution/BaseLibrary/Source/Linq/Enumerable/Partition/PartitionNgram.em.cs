@@ -12,7 +12,7 @@ namespace Flux
 
       if (size < 1) throw new System.ArgumentOutOfRangeException(nameof(size), $"Must be greater than or equal to 1 ({size}).");
 
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       var index = 0;
 

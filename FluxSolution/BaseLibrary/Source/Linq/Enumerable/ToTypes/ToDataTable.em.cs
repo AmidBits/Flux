@@ -15,7 +15,7 @@ namespace Flux
 
       var dt = new System.Data.DataTable(tableName);
 
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       if (e.MoveNext())
       {

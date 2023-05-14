@@ -14,7 +14,7 @@ namespace Flux
 
       var queue = new System.Collections.Generic.Queue<System.Collections.Generic.List<TSource>>();
 
-      var e = source.ThrowIfNull().GetEnumerator();
+      var e = source.ThrowOnNull().GetEnumerator();
 
       var index = step;
 

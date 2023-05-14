@@ -15,7 +15,7 @@ namespace Flux.DataStructures
     public DarityHeapMin(int arity, System.Collections.Generic.IEnumerable<T> collection)
       : this(arity)
     {
-      foreach (var t in collection.ThrowIfNull())
+      foreach (var t in collection.ThrowOnNull())
         Insert(t);
     }
 

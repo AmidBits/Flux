@@ -10,7 +10,7 @@ namespace Flux
 
       var hsUnique = new System.Collections.Generic.HashSet<T>();
 
-      using var e = target.ThrowIfNull().GetEnumerator();
+      using var e = target.ThrowOnNull().GetEnumerator();
 
       while (e.MoveNext())
       {

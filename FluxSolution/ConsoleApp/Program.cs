@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using Flux;
 using Flux.Formatting;
 using Flux.Numerics;
@@ -29,6 +31,32 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      int[] ints = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+      var ints2 = ints.ValuesOnNullOrEmpty(4, 5, 6);
+
+      var ints3 = ints2;//.ThrowOnNullOrEmpty();
+      var ints4 = ints3.ToArray();
+      var dt = System.TimeZoneInfo.GetSystemTimeZones().ToDataTable(() => "Time-Zones");
+      dt.DefaultView.Sort = "StandardName ASC";
+      dt.DefaultView.RowFilter = "DisplayName Like '*Sw*'";
+      System.Console.WriteLine(dt.DefaultView.ToConsoleString());
+
+      //foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
+      //{
+      //  // For a Console App
+      //  System.Console.WriteLine(tz.GetCustomAbbreviation() + "\t" + tz.Id + "\t" + tz.BaseUtcOffset + "\t" + tz.StandardName + "\t" + tz.DisplayName + "\t" + tz.DaylightName);
+      //}
+      return;
+
+
+      //System.Numerics.BitOperations.IsPow2
+      //System.Numerics.BitOperations.LeadingZeroCount
+      //System.Numerics.BitOperations.Log2
+      //System.Numerics.BitOperations.PopCount
+      //System.Numerics.BitOperations.RoundUpToPowerOf2
+      //System.Numerics.BitOperations.TrailingZeroCount
 
       //var il2 = (0.0).IgiLog2();
 

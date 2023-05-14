@@ -18,7 +18,7 @@ namespace Flux
       count = 0;
       sum = TValue.Zero;
 
-      foreach (var item in source.ThrowIfNull())
+      foreach (var item in source.ThrowOnNull())
       {
         count++;
         sum += item;

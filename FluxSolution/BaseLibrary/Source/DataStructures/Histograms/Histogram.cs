@@ -44,7 +44,7 @@ namespace Flux
 
       public Histogram<TKey> AddRange<TSource>(System.Collections.Generic.IEnumerable<TSource> collection, System.Func<TSource, TKey> keySelector, System.Func<TSource, System.Numerics.BigInteger> frequencySelector)
       {
-        foreach (var item in collection.ThrowIfNull())
+        foreach (var item in collection.ThrowOnNull())
           Add(keySelector(item), frequencySelector(item));
 
         return this;

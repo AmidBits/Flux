@@ -122,7 +122,7 @@ namespace Flux.Text
     {
       var stack = new System.Collections.Generic.Stack<MathToken>();
 
-      foreach (var token in tokens.ThrowIfNull(nameof(tokens)))
+      foreach (var token in tokens.ThrowOnNull(nameof(tokens)))
       {
         switch (token)
         {

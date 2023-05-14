@@ -7,7 +7,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static T[,] ToTwoDimensionalArray<T>(this System.Collections.Generic.IEnumerable<T> source, int length0, int length1)
     {
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       var target = new T[length0, length1];
 

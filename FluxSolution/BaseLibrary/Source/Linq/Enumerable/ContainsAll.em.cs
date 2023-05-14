@@ -10,17 +10,17 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      if ((target is System.Collections.Generic.ICollection<T> tc && !tc.Any()) || target is null)
-        return true; // If target is empty (or null), all is included, the result is true.
+      if ((target is System.Collections.Generic.ICollection<T> tct && tct.Count == 0) || (target is System.Collections.ICollection tc && tc.Count == 0) || target is null) // If target is empty (or null), all is included, the result is true.
+        return true;
 
-      var shs = source is System.Collections.Generic.HashSet<T> hsTemporary
-        ? hsTemporary
-        : new System.Collections.Generic.HashSet<T>(source, equalityComparer);
+      var shs = source is System.Collections.Generic.ISet<T> hsTemporary // For speed...
+        ? hsTemporary // Re-use the ISet<T> if available.
+        : new System.Collections.Generic.HashSet<T>(source, equalityComparer); // Otherwise, create a HashSet<T>.
 
-      if (!shs.Any()) // If source is empty, it cannot contain anything, the result is false.
+      if (shs.Count == 0) // If source is empty, it cannot contain anything, the result is false.
         return false;
 
-      return target.All(t => shs.Contains(t));
+      return target.All(shs.Contains);
     }
   }
 }

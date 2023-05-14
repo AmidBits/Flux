@@ -16,7 +16,7 @@ namespace Foundation
       var m = new Flux.MomentUtc(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second, now.Millisecond);
 
       var expected = 2455876.9660996643518518518519;
-      var actual = new Flux.JulianDate(m.Year, m.Month, m.Day, m.Hour, m.Minute, m.Second, m.Millisecond, ConversionCalendar.GregorianCalendar);
+      var actual = new Flux.JulianDate(m.Year, m.Month, m.Day, m.Hour, m.Minute, m.Second, m.Millisecond, TemporalCalendar.GregorianCalendar);
 
       Assert.AreEqual(expected, actual.Value, 1E-6);
     }
@@ -26,7 +26,7 @@ namespace Foundation
       var m = new Flux.MomentUtc(-4712, 1, 13, 12, 13, 14);
 
       var expected = 12.009189814814814814814814815;
-      var actual = new Flux.JulianDate(m.Year, m.Month, m.Day, m.Hour, m.Minute, m.Second, m.Millisecond, ConversionCalendar.JulianCalendar);
+      var actual = new Flux.JulianDate(m.Year, m.Month, m.Day, m.Hour, m.Minute, m.Second, m.Millisecond, TemporalCalendar.JulianCalendar);
 
       Assert.AreEqual(expected, actual.Value, 1E-6);
     }
@@ -44,14 +44,14 @@ namespace Foundation
 
       var m = new Flux.MomentUtc(now.Year, now.Month, now.Day);
 
-      Assert.AreEqual(2455877, Flux.JulianDayNumber.ConvertFromDateParts(m.Year, m.Month, m.Day, ConversionCalendar.GregorianCalendar));
+      Assert.AreEqual(2455877, Flux.JulianDayNumber.ConvertFromDateParts(m.Year, m.Month, m.Day, TemporalCalendar.GregorianCalendar));
     }
     [TestMethod]
     public void ComputeJulianDayNumberJC()
     {
       var m = new Flux.MomentUtc(-4712, 1, 13);
 
-      Assert.AreEqual(12, Flux.JulianDayNumber.ConvertFromDateParts(m.Year, m.Month, m.Day, ConversionCalendar.JulianCalendar));
+      Assert.AreEqual(12, Flux.JulianDayNumber.ConvertFromDateParts(m.Year, m.Month, m.Day, TemporalCalendar.JulianCalendar));
     }
 
     [TestMethod]
@@ -94,19 +94,19 @@ namespace Foundation
     [TestMethod]
     public void ToJulianDateGC()
     {
-      var jd1 = new Flux.MomentUtc(1858, 11, 16, 12, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
+      var jd1 = new Flux.MomentUtc(1858, 11, 16, 12, 0, 0).ToJulianDate(TemporalCalendar.GregorianCalendar);
       Assert.AreEqual(2400000, jd1.Value);
     }
     [TestMethod]
     public void ToJulianDateProlepticGC()
     {
-      var jd1 = new Flux.MomentUtc(-423, 10, 4, 12, 0, 0).ToJulianDate(ConversionCalendar.GregorianCalendar);
+      var jd1 = new Flux.MomentUtc(-423, 10, 4, 12, 0, 0).ToJulianDate(TemporalCalendar.GregorianCalendar);
       Assert.AreEqual(1566839, jd1.Value);
     }
     [TestMethod]
     public void ToJulianDateJC()
     {
-      var jd1 = new Flux.MomentUtc(-763, 3, 23, 12, 0, 0).ToJulianDate(ConversionCalendar.JulianCalendar);
+      var jd1 = new Flux.MomentUtc(-763, 3, 23, 12, 0, 0).ToJulianDate(TemporalCalendar.JulianCalendar);
       Assert.AreEqual(1442454, jd1.Value);
     }
   }

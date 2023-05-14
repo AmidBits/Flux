@@ -10,7 +10,7 @@ namespace Flux
 
       comparer ??= System.Collections.Generic.Comparer<TKey>.Default;
 
-      using var e = source.ThrowIfNull().GetEnumerator();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
       if (e.MoveNext())
       {

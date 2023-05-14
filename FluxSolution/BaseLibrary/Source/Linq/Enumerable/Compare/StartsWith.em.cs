@@ -10,7 +10,7 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      using var se = source.ThrowIfNull().GetEnumerator();
+      using var se = source.ThrowOnNull().GetEnumerator();
 
       return target.All(t => se.MoveNext() && equalityComparer.Equals(t, se.Current));
     }

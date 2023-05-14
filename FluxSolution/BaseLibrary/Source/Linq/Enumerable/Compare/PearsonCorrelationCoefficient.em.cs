@@ -10,8 +10,8 @@ namespace Flux
     public static (TSelf correlation, TSelf covariance) PearsonCorrelationCoefficient<TValueX, TValueY, TSelf>(this System.Collections.Generic.IEnumerable<TValueX> setX, System.Func<TValueX, TSelf> valueSelectorX, System.Collections.Generic.IEnumerable<TValueY> setY, System.Func<TValueY, TSelf> valueSelectorY)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
     {
-      var ex = setX.ThrowIfNullOrEmpty().GetEnumerator();
-      var ey = setY.ThrowIfNullOrEmpty().GetEnumerator();
+      var ex = setX.ThrowOnNullOrEmpty().GetEnumerator();
+      var ey = setY.ThrowOnNullOrEmpty().GetEnumerator();
 
       var sumX = TSelf.Zero;
       var sumX2 = TSelf.Zero;

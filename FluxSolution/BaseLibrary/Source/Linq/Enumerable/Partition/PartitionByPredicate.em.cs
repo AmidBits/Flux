@@ -18,7 +18,7 @@ namespace Flux
       var partitionIndex = 0;
       var elementIndex = 0;
 
-      var enumerator = source.ThrowIfNull().GetEnumerator();
+      var enumerator = source.ThrowOnNull().GetEnumerator();
 
       while (enumerator.MoveNext())
       {
