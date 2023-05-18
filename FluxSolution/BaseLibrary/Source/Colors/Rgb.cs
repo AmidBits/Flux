@@ -15,6 +15,7 @@ namespace Flux.Colors
     }
     public Rgb(int rgb) : this((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb) { }
     public Rgb(System.ReadOnlySpan<byte> rgb) : this(rgb[0], rgb[1], rgb[2]) { }
+    public Rgb(System.Random rng) : this((rng ?? new System.Random()).GetRandomBytes(3)) { }
 
     public int Red => m_red;
     public int Green => m_green;
@@ -195,16 +196,7 @@ namespace Flux.Colors
 
     public int ToInt() => ((Red << 16) & 0x00FF0000) | ((Green << 8) & 0x0000FF00) | (Blue & 0x000000FF);
 
-    public string ToHtmlColorString() => $"rgb({Red}, {Green}, {Blue})";
-
-    /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
-    /// <param name="color">The Color to convert.</param>
-    /// <returns>Returns a string representing the hex value.</returns>
-    public string ToHtmlHexString() => $"#{Red:X2}{Green:X2}{Blue:X2}";
-
     #region Static methods
-
-    public static Rgb FromRandom(System.Random? rng = null) => new((rng ?? new System.Random()).GetRandomBytes(3));
 
     //public static double GetChroma(byte red, byte green, byte blue, out double r, out double g, out double b, out double min, out double max)
     //{
@@ -332,8 +324,16 @@ namespace Flux.Colors
     //  throw new System.FormatException($"The {colorString} string passed in the colorString argument is not a recognized Color.");
     //}
 
-    #endregion Static methods
+    #endregion // Static methods
 
-    public override string ToString() => $"{GetType().Name} {{ {m_red}, {m_green}, {m_blue} }}";
+    #region Implemented interfaces
+
+    public string ToHtmlColorString() => $"rgb({Red}, {Green}, {Blue})";
+
+    public string ToHtmlHexString() => $"#{Red:X2}{Green:X2}{Blue:X2}";
+
+    #endregion // Implemented interfaces
+
+    public override string ToString() => $"{GetType().Name} {{ Red = {m_red}, Green = {m_green}, Blue = {m_blue} }}";
   }
 }

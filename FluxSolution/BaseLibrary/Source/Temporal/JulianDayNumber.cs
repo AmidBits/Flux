@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsDateTime
+  public static partial class TemporalExtensionMethods
   {
     public static JulianDayNumber ToJulianDayNumber(this System.DateTime source, TemporalCalendar calendar)
       => new(source.Year, source.Month, source.Day, calendar);
@@ -96,8 +96,8 @@ namespace Flux
     public static int ConvertFromDateParts(int year, int month, int day, TemporalCalendar calendar)
       => calendar switch
       {
-        TemporalCalendar.GregorianCalendar => (1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075,// The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713. Divisions are integer divisions towards zero, fractional parts are ignored.
-        TemporalCalendar.JulianCalendar => 367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777,// The algorithm is valid for all (possibly proleptic) Julian calendar years >= -4712, that is, for all JDN >= 0. Divisions are integer divisions, fractional parts are ignored.
+        TemporalCalendar.GregorianCalendar => (1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075, // The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713. Divisions are integer divisions towards zero, fractional parts are ignored.
+        TemporalCalendar.JulianCalendar => 367 * year - (7 * (year + 5001 + (month - 9) / 7)) / 4 + (275 * month) / 9 + day + 1729777, // The algorithm is valid for all (possibly proleptic) Julian calendar years >= -4712, that is, for all JDN >= 0. Divisions are integer divisions, fractional parts are ignored.
         _ => throw new System.ArgumentOutOfRangeException(nameof(calendar)),
       };
 
@@ -138,7 +138,7 @@ namespace Flux
     public static bool IsGregorianCalendar(int julianDayNumber)
       => julianDayNumber >= 2299161;
 
-    #endregion Static methods
+    #endregion // Static methods
 
     #region Overloaded operators
 
@@ -156,7 +156,7 @@ namespace Flux
     public static JulianDayNumber operator %(JulianDayNumber a, int b) => new(a.m_value % b);
     public static JulianDayNumber operator -(JulianDayNumber a, int b) => new(a.m_value - b);
 
-    #endregion Overloaded operators
+    #endregion // Overloaded operators
 
     #region Implemented interfaces
 
@@ -174,7 +174,7 @@ namespace Flux
 
     public int Value { get => m_value; init => m_value = value; }
 
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string? ToString() => ToQuantityString();
   }

@@ -15,6 +15,7 @@ namespace Flux.Colors
     public Argb(int alpha, int red, int green, int blue) : this(alpha, new Rgb(red, green, blue)) { }
     public Argb(int argb) : this((byte)(argb >> 24), (byte)((argb >> 16) & 0xFF), (byte)((argb >> 8) & 0xFF), (byte)(argb & 0xFF)) { }
     public Argb(System.ReadOnlySpan<byte> argb) : this(argb[0], argb[1], argb[2], argb[3]) { }
+    public Argb(System.Random rng) : this((rng ?? new System.Random()).GetRandomBytes(4)) { }
 
     public byte Alpha { get => m_alpha; init => m_alpha = value; }
     public Rgb RGB { get => m_rgb; init => m_rgb = value; }
@@ -39,21 +40,7 @@ namespace Flux.Colors
 
     public int ToInt() => (m_alpha << 24) | RGB.ToInt();
 
-    /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
-    public string ToHtmlHexString() => $"#{m_alpha:X2}{RGB.Red:X2}{RGB.Green:X2}{RGB.Blue:X2}";
-
-    /// <summary>Converts a Color value to a string representation of the value in decimal.</summary>
-    public string ToHtmlColorString() => $"rgba({RGB.Red}, {RGB.Green}, {RGB.Blue}, {m_alpha / 255.0})";
-
-    /// <summary>Converts a Color value to a scRGB string representation of the value.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/ScRGB"/>
-    /// <param name="color">The Color to convert.</param>
-    /// <returns>Returns a string representing the hex value.</returns>
-    public string ToHtmlScString() => $"sc#{m_alpha / 255F}{RGB.Red / 255F}{RGB.Green / 255F}{RGB.Blue / 255F}";
-
     #region Static methods
-
-    public static Argb FromRandom(System.Random? rng = null) => new((rng ?? new System.Random()).GetRandomBytes(4));
 
     /// <summary>Creates a new RGBA color by parsing the specified string.</summary>
     /// <param name="colorString">The color string. Any format used in XAML should work.</param>
@@ -114,6 +101,22 @@ namespace Flux.Colors
 
     #endregion Overloaded operators
 
-    public override string ToString() => $"{GetType().Name} {{ {m_alpha}, {RGB.Red}, {RGB.Green}, {RGB.Blue} }}";
+    #region Implemented interfaces
+
+    /// <summary>Converts a Color value to a string representation of the value in hexadecimal.</summary>
+    public string ToHtmlHexString() => $"#{m_alpha:X2}{RGB.Red:X2}{RGB.Green:X2}{RGB.Blue:X2}";
+
+    /// <summary>Converts a Color value to a string representation of the value in decimal.</summary>
+    public string ToHtmlColorString() => $"rgba({RGB.Red}, {RGB.Green}, {RGB.Blue}, {m_alpha / 255.0})";
+
+    /// <summary>Converts a Color value to a scRGB string representation of the value.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/ScRGB"/>
+    /// <param name="color">The Color to convert.</param>
+    /// <returns>Returns a string representing the hex value.</returns>
+    public string ToHtmlScString() => $"sc#{m_alpha / 255F}{RGB.Red / 255F}{RGB.Green / 255F}{RGB.Blue / 255F}";
+
+    #endregion // Implemented interfaces
+
+    public override string ToString() => $"{GetType().Name} {{ Alpha = {m_alpha}, Red = {RGB.Red}, Green = {RGB.Green}, Blue = {RGB.Blue} }}";
   }
 }

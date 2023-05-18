@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class MomentUtcExtensionMethods
+  public static partial class TemporalExtensionMethods
   {
     /// <summary>Returns the approximate number of computed seconds for the instance pro-rata rate. This is by not an exact measurement and used only to compare two instances.</summary>
     public static double GetTotalApproximateSeconds(this MomentUtc source)
@@ -42,6 +42,17 @@ namespace Flux
     public int Minute => m_minute;
     public int Second => m_second;
     public int Millisecond => m_millisecond;
+
+    public void Deconstruct(out int year, out int month, out int day, out int hour, out int minute, out int second, out int millisecond)
+    {
+      year = m_year;
+      month = m_month;
+      day = m_day;
+      hour = m_hour;
+      minute = m_minute;
+      second = m_second;
+      millisecond = m_millisecond;
+    }
 
     public TemporalCalendar GetConversionCalendar()
       => IsGregorianCalendar(m_year, m_month, m_day) ? TemporalCalendar.GregorianCalendar : IsJulianCalendar(m_year, m_month, m_day) ? TemporalCalendar.JulianCalendar : throw new System.NotImplementedException(@"Not a Julian/Gregorian Calendar date.");
@@ -87,14 +98,17 @@ namespace Flux
     /// <summary>Returns whether the date is a valid date in the Gregorian calendar.</summary>
     public static bool IsValidGregorianCalendarDate(int year, int month, int day)
        => IsGregorianCalendar(year, month, day) && month >= 1 && month <= 12 && day >= 1 && day <= System.DateTime.DaysInMonth(year, month);
-    #endregion Static methods
+
+    #endregion // Static methods
 
     #region Overloaded operators
+
     public static bool operator <(MomentUtc a, MomentUtc b) => a.CompareTo(b) < 0;
     public static bool operator <=(MomentUtc a, MomentUtc b) => a.CompareTo(b) <= 0;
     public static bool operator >(MomentUtc a, MomentUtc b) => a.CompareTo(b) > 0;
     public static bool operator >=(MomentUtc a, MomentUtc b) => a.CompareTo(b) >= 0;
-    #endregion Overloaded operators
+
+    #endregion // Overloaded operators
 
     #region Implemented interfaces
 
@@ -109,7 +123,7 @@ namespace Flux
       : m_millisecond < other.m_millisecond ? -1 : m_millisecond > other.m_millisecond ? 1
       : 0; // This means this instance is equal to the other.
 
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string? ToString() => $"{GetType().Name} {{ {m_year:D4}-{m_month:D2}-{m_day:D2} {m_hour:D2}:{m_minute:D2}:{m_second:D2}.{m_millisecond:D3} }}";
   }

@@ -4,7 +4,7 @@ namespace Flux.Numerics
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct SphericalCoordinate
-    : ISphericalCoordinate
+    : System.IFormattable, ISphericalCoordinate
   {
     public static readonly SphericalCoordinate Zero;
 
@@ -82,6 +82,9 @@ namespace Flux.Numerics
 
     #endregion Static methods
 
-    public override string ToString() => ((ISphericalCoordinate)this).ToString(null, null);
+    public string ToString(string? format, System.IFormatProvider? provider)
+      => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Inclination = {new Units.Angle(Inclination).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} (Elevation = {new Units.Angle(Elevation).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)}), Azimuth = {new Units.Angle(Azimuth).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
+
+    public override string ToString() => ToString(null, null);
   }
 }

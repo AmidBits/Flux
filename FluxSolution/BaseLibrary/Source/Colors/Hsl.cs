@@ -27,6 +27,7 @@ namespace Flux.Colors
 
       return new Hsv(m_hue, value == 0 ? 0 : 2 * (1 - m_lightness / value), value);
     }
+
     /// <summary>Creates an RGB color corresponding to the HSL instance.</summary>
     public Rgb ToRgb()
     {

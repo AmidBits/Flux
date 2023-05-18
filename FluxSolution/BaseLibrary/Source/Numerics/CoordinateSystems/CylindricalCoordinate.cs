@@ -4,7 +4,7 @@ namespace Flux.Numerics
   /// <see cref="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct CylindricalCoordinate
-    : ICylindricalCoordinate
+    : System.IFormattable, ICylindricalCoordinate
   {
     public static readonly CylindricalCoordinate Zero;
 
@@ -62,6 +62,9 @@ namespace Flux.Numerics
     //  );
     //#endregion Static methods
 
-    public override string ToString() => ((ICylindricalCoordinate)this).ToString(null, null);
+    public string ToString(string? format, System.IFormatProvider? provider)
+      => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Units.Angle(Azimuth).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)}, Height = {string.Format($"{{0:{format ?? "N1"}}}", Height)} }}";
+
+    public override string ToString() => ToString(null, null);
   }
 }

@@ -5,7 +5,7 @@ namespace Flux.Numerics
   /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct HexCoordinate<TSelf>
-    : IHexCoordinate<TSelf>
+    : System.IFormattable, IHexCoordinate<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
     public static readonly HexCoordinate<TSelf> Zero;
@@ -33,13 +33,18 @@ namespace Flux.Numerics
     public TSelf S { get => m_s; init => m_s = value; }
 
     #region Overloaded operators
+
     public static HexCoordinate<TSelf> operator +(HexCoordinate<TSelf> a, IHexCoordinate<TSelf> b) => new(a.m_q + b.Q, a.m_r + b.R, a.m_s + b.S);
     public static HexCoordinate<TSelf> operator *(HexCoordinate<TSelf> h, TSelf scalar) => new(h.m_q * scalar, h.m_r * scalar, h.m_s * scalar);
     public static HexCoordinate<TSelf> operator /(HexCoordinate<TSelf> h, TSelf scalar) => TSelf.IsZero(scalar) ? throw new System.DivideByZeroException() : new(h.m_q / scalar, h.m_r / scalar, h.m_s / scalar);
     public static HexCoordinate<TSelf> operator -(HexCoordinate<TSelf> a, IHexCoordinate<TSelf> b) => new(a.m_q - b.Q, a.m_r - b.R, a.m_s - b.S);
+
     #endregion Overloaded operators
 
-    public override string ToString() => ((IHexCoordinate<TSelf>)this).ToString(null, null);
+    public string ToString(string? format, System.IFormatProvider? provider)
+      => $"{GetType().GetNameEx()} {{ Q = {string.Format(provider, $"{{0:{format ?? "N6"}}}", Q)}, R = {string.Format(provider, $"{{0:{format ?? "N6"}}}", R)}, S = {string.Format(provider, $"{{0:{format ?? "N6"}}}", S)} }}";
+
+    public override string ToString() => ToString(null, null);
   }
 }
 #endif

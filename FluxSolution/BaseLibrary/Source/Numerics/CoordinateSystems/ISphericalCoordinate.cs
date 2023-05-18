@@ -47,7 +47,6 @@
     /// <summary>Spherical coordinate.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
     public interface ISphericalCoordinate
-      : System.IFormattable
     {
       /// <summary>Radius. A.k.a. radial distance, radial coordinate.</summary>
       /// <remarks>If the radius is zero, both azimuth and inclination are arbitrary.</remarks>
@@ -61,9 +60,6 @@
       /// <summary>The elevation angle in radians. This is an option/alternative to <see cref="Inclination"/>.</summary>
       /// <remarks>The elevation angle is 90 degrees (π/2 radians) minus the <see cref="Inclination"/> angle.</remarks>
       double Elevation { get; init; }
-
-      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Inclination = {new Units.Angle(Inclination).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} (Elevation = {new Units.Angle(Elevation).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)}), Azimuth = {new Units.Angle(Azimuth).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
     }
   }
 }

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsDateTime
+  public static partial class TemporalExtensionMethods
   {
     public static JulianDate ToJulianDate(this System.DateTime source, TemporalCalendar calendar)
       => new(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond, calendar);
@@ -107,7 +107,7 @@ namespace Flux
     public static bool IsGregorianCalendar(double julianDate)
       => julianDate >= 2299160.5;
 
-    #endregion Static methods
+    #endregion // Static methods
 
     #region Overloaded operators
 
@@ -137,7 +137,7 @@ namespace Flux
     public static JulianDate operator +(JulianDate a, System.TimeSpan b) => a + (b.TotalSeconds / 86400);
     public static JulianDate operator -(JulianDate a, System.TimeSpan b) => a - (b.TotalSeconds / 86400);
 
-    #endregion Overloaded operators
+    #endregion // Overloaded operators
 
     #region Implemented interfaces
 
@@ -155,7 +155,7 @@ namespace Flux
 
     public double Value { get => m_value; init => m_value = value; }
 
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string? ToString() => ToQuantityString();
   }

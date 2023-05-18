@@ -32,6 +32,12 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var jdn = System.DateTime.UtcNow.ToJulianDayNumber(TemporalCalendar.GregorianCalendar);
+      var jd = System.DateTime.UtcNow.ToJulianDate(TemporalCalendar.GregorianCalendar);
+
+      var hci = new Flux.Numerics.HexCoordinate<int>();
+      var hcf = new Flux.Numerics.HexCoordinate<double>();
+
       int[] ints = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
       var ints2 = ints.ValuesOnNullOrEmpty(4, 5, 6);

@@ -4,7 +4,7 @@ namespace Flux.Numerics
   /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct PolarCoordinate
-    : IPolarCoordinate
+    : System.IFormattable, IPolarCoordinate
   {
     public static readonly PolarCoordinate Zero;
 
@@ -45,9 +45,9 @@ namespace Flux.Numerics
     //  );
     //#endregion // Static methods
 
-    string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
+    public string ToString(string? format, System.IFormatProvider? provider)
       => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Units.Angle(Azimuth).ToUnitString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
 
-    public override string ToString() => ((IPolarCoordinate)this).ToString(null, null);
+    public override string ToString() => ToString(null, null);
   }
 }

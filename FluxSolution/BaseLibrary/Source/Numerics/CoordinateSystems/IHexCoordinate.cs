@@ -169,7 +169,7 @@ namespace Flux
     /// <summary>A hex cube/axial coordinate system.</summary>
     /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
     public interface IHexCoordinate<TSelf>
-      : System.IFormattable
+      //: System.IFormattable
       where TSelf : System.Numerics.INumber<TSelf>
     {
       /// <summary>The first component or coordinate.</summary>
@@ -200,12 +200,12 @@ namespace Flux
       /// <summary>Diagonals in counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry), in the range [0, 5].</summary>
       public static Numerics.HexCoordinate<TSelf>[] Diagonals
         => new Numerics.HexCoordinate<TSelf>[] {
-        new(TSelf.CreateChecked(2), -TSelf.One, -TSelf.One),
-        new(TSelf.One, -TSelf.CreateChecked(2), TSelf.One),
-        new(-TSelf.One, -TSelf.One, TSelf.CreateChecked(2)),
-        new(-TSelf.CreateChecked(2), TSelf.One, TSelf.One),
-        new(-TSelf.One, TSelf.CreateChecked(2), -TSelf.One),
-        new(TSelf.One, TSelf.One, -TSelf.CreateChecked(2))
+          new(TSelf.CreateChecked(2), -TSelf.One, -TSelf.One),
+          new(TSelf.One, -TSelf.CreateChecked(2), TSelf.One),
+          new(-TSelf.One, -TSelf.One, TSelf.CreateChecked(2)),
+          new(-TSelf.CreateChecked(2), TSelf.One, TSelf.One),
+          new(-TSelf.One, TSelf.CreateChecked(2), -TSelf.One),
+          new(TSelf.One, TSelf.One, -TSelf.CreateChecked(2))
         };
 
       /// <summary>Directions in counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry), specified in the range [0, 5].</summary>
@@ -221,12 +221,12 @@ namespace Flux
       /// <summary>Directions in counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry), in the range [0, 5].</summary>
       public static Numerics.HexCoordinate<TSelf>[] Directions
         => new Numerics.HexCoordinate<TSelf>[] {
-        new(TSelf.One, TSelf.Zero, -TSelf.One),
-        new(TSelf.One, -TSelf.One, TSelf.Zero),
-        new(TSelf.Zero, -TSelf.One, TSelf.One),
-        new(-TSelf.One, TSelf.Zero, TSelf.One),
-        new(-TSelf.One, TSelf.One, TSelf.Zero),
-        new(TSelf.Zero, TSelf.One, -TSelf.One),
+          new(TSelf.One, TSelf.Zero, -TSelf.One),
+          new(TSelf.One, -TSelf.One, TSelf.Zero),
+          new(TSelf.Zero, -TSelf.One, TSelf.One),
+          new(-TSelf.One, TSelf.Zero, TSelf.One),
+          new(-TSelf.One, TSelf.One, TSelf.Zero),
+          new(TSelf.Zero, TSelf.One, -TSelf.One),
         };
 
       ///// <summary>Returns whether the coordinate make up a valid cube hex, i.e. it satisfies the required cube constraint.</summary>
@@ -234,9 +234,6 @@ namespace Flux
 
       ///// <summary>Returns the length of the coordinate.</summary>
       //public static TSelf CubeLength(TSelf q, TSelf r, TSelf s) => (TSelf.Abs(q) + TSelf.Abs(r) + TSelf.Abs(s)).Divide(2);
-
-      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Q = {string.Format($"{{0:{format ?? "N6"}}}", Q)}, R = {string.Format($"{{0:{format ?? "N6"}}}", R)}, S = {string.Format($"{{0:{format ?? "N6"}}}", S)} }}";
     }
   }
 }
