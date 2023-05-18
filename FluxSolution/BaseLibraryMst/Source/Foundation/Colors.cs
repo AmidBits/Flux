@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Foundation
 {
@@ -301,7 +300,7 @@ namespace Foundation
     {
       var rgb = new Flux.Colors.Rgb(67, 137, 207);
       var s = rgb.ToString();
-      Assert.AreEqual(@"Rgb { 67, 137, 207 }", s);
+      Assert.AreEqual(@"Rgb { Red = 67, Green = 137, Blue = 207 }", s);
     }
 
     [TestMethod]
