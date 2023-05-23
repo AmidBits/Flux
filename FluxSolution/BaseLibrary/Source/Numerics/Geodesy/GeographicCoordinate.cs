@@ -404,9 +404,9 @@ namespace Flux.Numerics
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
     public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoordinate result, double earthRadius)
     {
-      if (Units.Angle.TryParseSexagesimalDegrees(latitudeDMS, out var latitude) && Units.Angle.TryParseSexagesimalDegrees(longitudeDMS, out var longitude))
+      if (SexagesimalDegree.TryParse(latitudeDMS, out var latitude) && SexagesimalDegree.TryParse(longitudeDMS, out var longitude))
       {
-        result = new GeographicCoordinate(latitude.ToUnitValue(Units.AngleUnit.Degree), longitude.ToUnitValue(Units.AngleUnit.Degree), earthRadius);
+        result = new GeographicCoordinate(latitude.Value, longitude.Value, earthRadius);
         return true;
       }
 

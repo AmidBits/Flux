@@ -34,24 +34,25 @@ namespace Flux.Resources.Census
       }).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetObjects();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
     {
-      using var e = GetStrings().GetEnumerator();
-
-      while (e.MoveNext())
+      return GetStrings().Select(strings =>
       {
-        var objectArray = new object[e.Current.Length];
+        var objects = new object[strings.Length];
 
-        for (var i = objectArray.Length - 1; i >= 0; i--)
+        for (var i = strings.Length - 1; i >= 0; i--)
         {
-          objectArray[i] = i switch
+          objects[i] = i switch
           {
-            //var ic when ic >= 5 => System.Int32.Parse(e.Current[i], System.Globalization.NumberStyles.Integer, null),
-            _ => e.Current[i],
+            //var ic when ic >= 5 => System.Int32.Parse(strings[i], System.Globalization.NumberStyles.Integer, null),
+            _ => strings[i],
           };
         }
 
-        yield return objectArray;
-      }
+        return objects;
+      });
     }
 
     /// <summary>Returns counties all data with the first line being field names.</summary>

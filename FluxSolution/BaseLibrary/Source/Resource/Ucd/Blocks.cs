@@ -24,24 +24,25 @@ namespace Flux.Resources.Ucd
       => new System.Type[] { typeof(int), typeof(int), typeof(string) };
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetObjects();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
     {
-      using var e = GetStrings().GetEnumerator();
-
-      while (e.MoveNext())
+      return GetStrings().Select(strings =>
       {
-        var objects = new object[e.Current.Length];
+        var objects = new object[strings.Length];
 
-        for (var index = objects.Length - 1; index >= 0; index--)
+        for (var index = strings.Length - 1; index >= 0; index--)
         {
           objects[index] = index switch
           {
-            0 or 1 => int.TryParse(e.Current[index], System.Globalization.NumberStyles.HexNumber, null, out var intValue) ? intValue : System.DBNull.Value,
-            _ => e.Current[index],
+            0 or 1 => int.TryParse(strings[index], System.Globalization.NumberStyles.HexNumber, null, out var intValue) ? intValue : System.DBNull.Value,
+            _ => strings[index],
           };
         }
 
-        yield return objects;
-      }
+        return objects;
+      });
     }
 
 #if NET7_0_OR_GREATER

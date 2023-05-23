@@ -26,7 +26,11 @@ namespace Flux
 
       public System.Type[] FieldTypes => GetCollection().First().GetPropertyInfos().Select(pi => pi.PropertyType).ToArray();
 
-      public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetCollection().Select(e => e.GetPropertyInfos().Select(pi => pi.GetValue(e)!).ToArray());
+      public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetObjects();
+
+      public System.Collections.Generic.IEnumerable<object[]> GetObjects() => GetCollection().Select(e => e.GetPropertyInfos().Select(pi => pi.GetValue(e)!).ToArray());
+
+      public System.Collections.Generic.IEnumerable<string[]> GetStrings() => GetCollection().Select(e => e.GetPropertyInfos().Select(pi => $"{pi.GetValue(e)}").ToArray());
     }
   }
 }

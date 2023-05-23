@@ -22,6 +22,9 @@ namespace Flux.Resources.ProjectGutenberg
       => FieldNames.Select(s => typeof(string)).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetObjects();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
       => GetStrings();
 
     /// <summary>Returns project Gutenberg's table of contents data. No field names.</summary>

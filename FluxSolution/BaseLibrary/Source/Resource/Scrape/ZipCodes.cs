@@ -35,25 +35,26 @@ namespace Flux.Resources.Scrape
       }).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetObjects();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
     {
-      using var e = GetStrings().Skip(1).GetEnumerator();
-
-      while (e.MoveNext())
+      return GetStrings().Select(strings =>
       {
-        var objects = new object[e.Current.Length];
+        var objects = new object[strings.Length];
 
-        for (var index = objects.Length - 1; index >= 0; index--)
+        for (var index = strings.Length - 1; index >= 0; index--)
         {
           objects[index] = index switch
           {
-            0 or 16 or 17 or 18 => int.TryParse(e.Current[index], System.Globalization.NumberStyles.Integer, null, out var intValue) ? intValue : System.DBNull.Value,
-            6 or 7 or 8 or 9 or 10 => double.TryParse(e.Current[index], System.Globalization.NumberStyles.Float, null, out var doubleValue) ? doubleValue : System.DBNull.Value,
-            _ => e.Current[index],
+            0 or 16 or 17 or 18 => int.TryParse(strings[index], System.Globalization.NumberStyles.Integer, null, out var intValue) ? intValue : System.DBNull.Value,
+            6 or 7 or 8 or 9 or 10 => double.TryParse(strings[index], System.Globalization.NumberStyles.Float, null, out var doubleValue) ? doubleValue : System.DBNull.Value,
+            _ => strings[index],
           };
         }
 
-        yield return objects;
-      }
+        return objects;
+      });
     }
 
     /// <summary>Returns zip codes with the first line being field names.</summary>

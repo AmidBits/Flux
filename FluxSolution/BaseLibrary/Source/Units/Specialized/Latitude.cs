@@ -30,7 +30,7 @@ namespace Flux.Units
     public Angle ToAngle() => new(m_latitude, AngleUnit.Degree);
 
     public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
-      => format.ToSexagesimalDegreeString(m_latitude, SexagesimalDegreeDirection.NorthSouth, -1, useSpaces, preferUnicode);
+      => SexagesimalDegree.ToSexagesimalString(m_latitude, format, SexagesimalDegreeDirection.NorthSouth, -1, useSpaces, preferUnicode);
 
     #region Static methods
 

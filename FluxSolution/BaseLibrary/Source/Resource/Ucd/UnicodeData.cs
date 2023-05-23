@@ -34,30 +34,26 @@ namespace Flux.Resources.Ucd
       }).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetObjects();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
     {
-      using var e = GetStrings().GetEnumerator();
-
-      if (e.MoveNext())
+      return GetStrings().Select(strings =>
       {
-        yield return e.Current;
+        var objects = new object[strings.Length];
 
-        while (e.MoveNext())
+        for (var index = strings.Length - 1; index >= 0; index--)
         {
-          var objects = new object[e.Current.Length];
-
-          for (var index = objects.Length - 1; index >= 0; index--)
+          objects[index] = index switch
           {
-            objects[index] = index switch
-            {
-              0 => int.TryParse(e.Current[index], System.Globalization.NumberStyles.HexNumber, null, out var value) ? value : System.DBNull.Value,
-              2 => e.Current[index][0].TryParseUnicodeCategoryMajorMinor(e.Current[index][1], out var value) ? value.ToUnicodeCategory() : System.DBNull.Value,
-              _ => e.Current[index],
-            };
-          }
-
-          yield return objects;
+            0 => int.TryParse(strings[index], System.Globalization.NumberStyles.HexNumber, null, out var value) ? value : System.DBNull.Value,
+            2 => strings[index][0].TryParseUnicodeCategoryMajorMinor(strings[index][1], out var value) ? value.ToUnicodeCategory() : System.DBNull.Value,
+            _ => strings[index],
+          };
         }
-      }
+
+        return objects;
+      });
     }
 
     /// <summary>Returns Unicode data. No field names.</summary>

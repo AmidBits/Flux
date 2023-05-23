@@ -37,10 +37,10 @@ namespace Flux.Units
       : Fraction.ApproximateRational(Value);
 #endif
 
-    /// <summary>If a diagonal length is known, the proportional width and height can be computed using the Pythagorean theorem.</summary>
-    /// <param name="diagonalLength">The length of the known diagonal.</param>
-    /// <returns>The proportional (to the arguments passed) lengths of width and height.</returns>
-    public Flux.Numerics.CartesianCoordinate2<double> ToSize(double diagonalLength) => (Numerics.CartesianCoordinate2<double>)ToSize(diagonalLength, m_numerator, m_denominator);
+    ///// <summary>If a diagonal length is known, the proportional width and height can be computed using the Pythagorean theorem.</summary>
+    ///// <param name="diagonalLength">The length of the known diagonal.</param>
+    ///// <returns>The proportional (to the arguments passed) lengths of width and height.</returns>
+    //public Flux.Numerics.CartesianCoordinate2<double> ToSize(double diagonalLength) => (Numerics.CartesianCoordinate2<double>)ToSize(diagonalLength, m_numerator, m_denominator);
 
     public string ToRatioString(RatioFormat format)
       => format switch

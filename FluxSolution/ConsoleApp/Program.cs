@@ -6,6 +6,7 @@ using Flux;
 using Flux.Formatting;
 using Flux.Numerics;
 using Flux.Text;
+using Flux.Unicode;
 using Microsoft.VisualBasic.FileIO;
 
 // C# Interactive commands:
@@ -32,22 +33,55 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var jdn = System.DateTime.UtcNow.ToJulianDayNumber(TemporalCalendar.GregorianCalendar);
-      var jd = System.DateTime.UtcNow.ToJulianDate(TemporalCalendar.GregorianCalendar);
+      var v1str = Flux.Numerics.GeographicCoordinate.TucsonAzUsa.ToString();
+      var v1lat = Flux.SexagesimalDegree.ConvertDecimalDegreesToSexagesimalDMS(Flux.Numerics.GeographicCoordinate.TucsonAzUsa.Latitude, out var _);
+      var v1lats = new Flux.SexagesimalDegree(Flux.Numerics.GeographicCoordinate.TucsonAzUsa.Latitude);
+      var v1lon = Flux.SexagesimalDegree.ConvertDecimalDegreesToSexagesimalDMS(Flux.Numerics.GeographicCoordinate.TucsonAzUsa.Longitude, out var _);
+      var v1lons = new Flux.SexagesimalDegree(Flux.Numerics.GeographicCoordinate.TucsonAzUsa.Longitude);
+      //var v1lonx = v1lon.ToDecimalDegrees();
 
-      var hci = new Flux.Numerics.HexCoordinate<int>();
-      var hcf = new Flux.Numerics.HexCoordinate<double>();
+      //var v2lat = new Flux.SexagesimalDegree(+40, 26.767);
+      //var v2latx = v2lat.ToDecimalDegrees();
+      //var v2lon = new Flux.SexagesimalDegree(-79, 58.933);
+      //var v2lonx = v2lon.ToDecimalDegrees();
 
-      int[] ints = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      var jao = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile)).GetStrings().ToArray();
 
-      var ints2 = ints.ValuesOnNullOrEmpty(4, 5, 6);
+      var fp = @"C:\tmp\test.utt";
 
-      var ints3 = ints2;//.ThrowOnNullOrEmpty();
-      var ints4 = ints3.ToArray();
-      var dt = System.TimeZoneInfo.GetSystemTimeZones().ToDataTable(() => "Time-Zones");
-      dt.DefaultView.Sort = "StandardName ASC";
-      dt.DefaultView.RowFilter = "DisplayName Like '*Sw*'";
-      System.Console.WriteLine(dt.DefaultView.ToConsoleString());
+      using var fso = new System.IO.FileStream(fp, System.IO.FileMode.Create);
+      using var two = new System.IO.StreamWriter(fso, System.Text.Encoding.UTF8);
+
+      var usw = new Flux.IO.UnicodeStructuredWriter(two) { UseSymbolsInsteadOfControl = true };
+      usw.WriteUnicodeGroup(jao);
+
+      two.Close();
+      fso.Close();
+
+      using var fsi = new System.IO.FileStream(fp, System.IO.FileMode.Open);
+      using var twi = new System.IO.StreamReader(fsi, System.Text.Encoding.UTF8);
+
+      var usr = new Flux.IO.UnicodeStructuredReader(twi);
+      var jai = usr.ReadUnicodeGroup();
+
+      return;
+
+      //var jdn = System.DateTime.UtcNow.ToJulianDayNumber(TemporalCalendar.GregorianCalendar);
+      //var jd = System.DateTime.UtcNow.ToJulianDate(TemporalCalendar.GregorianCalendar);
+
+      //var hci = new Flux.Numerics.HexCoordinate<int>();
+      //var hcf = new Flux.Numerics.HexCoordinate<double>();
+
+      //int[] ints = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+      //var ints2 = ints.ValuesOnNullOrEmpty(4, 5, 6);
+
+      //var ints3 = ints2;//.ThrowOnNullOrEmpty();
+      //var ints4 = ints3.ToArray();
+      //var dt = System.TimeZoneInfo.GetSystemTimeZones().ToDataTable(() => "Time-Zones");
+      //dt.DefaultView.Sort = "StandardName ASC";
+      //dt.DefaultView.RowFilter = "DisplayName Like '*Sw*'";
+      //System.Console.WriteLine(dt.DefaultView.ToConsoleString());
 
       //foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
       //{

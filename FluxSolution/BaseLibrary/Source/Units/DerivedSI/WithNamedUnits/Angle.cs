@@ -93,25 +93,35 @@ namespace Flux.Units
 
     #region Static methods
 
+    #region Conversion methods
+
     /// <summary>Convert the angle specified in arcminutes to radians.</summary>
     public static double ConvertArcminuteToRadian(double arcminAngle) => arcminAngle / 3437.746771;
 
     /// <summary>Convert the angle specified in arcseconds to radians.</summary>
     public static double ConvertArcsecondToRadian(double arcsecAngle) => arcsecAngle / 206264.806247;
 
-    public static (double decimalDegrees, double degrees, double decimalMinutes, double minutes, double decimalSeconds) ConvertDecimalDegreeToSexagesimalDegree(double decimalDegrees)
-    {
-      var absDegrees = System.Math.Abs(decimalDegrees);
-      var floorAbsDegrees = System.Math.Floor(absDegrees);
-      var fractionAbsDegrees = absDegrees - floorAbsDegrees;
+    /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+    public static double ConvertCartesian2ToRotationAngle(double x, double y) => System.Math.Atan2(y, x) is var atan2 && atan2 < 0 ? System.Math.Tau + atan2 : atan2;
 
-      var degrees = System.Math.Sign(decimalDegrees) * floorAbsDegrees;
-      var decimalMinutes = 60 * fractionAbsDegrees;
-      var minutes = System.Math.Floor(decimalMinutes);
-      var decimalSeconds = 3600 * fractionAbsDegrees - 60 * minutes;
+    /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+    public static double ConvertCartesian2ToRotationAngleEx(double x, double y) => System.Math.Tau - ConvertCartesian2ToRotationAngle(y, -x);
 
-      return (decimalDegrees, System.Convert.ToInt32(degrees), decimalMinutes, System.Convert.ToInt32(minutes), decimalSeconds);
-    }
+    //public static (double decimalDegrees, double degrees, double decimalMinutes, double minutes, double decimalSeconds) ConvertDecimalDegreeToSexagesimalDegree(double decimalDegrees)
+    //{
+    //  var absDegrees = System.Math.Abs(decimalDegrees);
+    //  var floorAbsDegrees = System.Math.Floor(absDegrees);
+    //  var fractionAbsDegrees = absDegrees - floorAbsDegrees;
+
+    //  var degrees = System.Math.Sign(decimalDegrees) * floorAbsDegrees;
+    //  var decimalMinutes = 60 * fractionAbsDegrees;
+    //  var minutes = System.Math.Floor(decimalMinutes);
+    //  var decimalSeconds = 3600 * fractionAbsDegrees - 60 * minutes;
+
+    //  return (decimalDegrees, System.Convert.ToInt32(degrees), decimalMinutes, System.Convert.ToInt32(minutes), decimalSeconds);
+    //}
 
     /// <summary>Convert the angle specified in degrees to gradians (grads).</summary>
     public static double ConvertDegreeToGradian(double degAngle) => degAngle * (10.0 / 9.0);
@@ -151,55 +161,67 @@ namespace Flux.Units
 
     public static double ConvertRadianToTurn(double radAngle) => radAngle / System.Math.Tau;
 
-    public static double ConvertSexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds) => degrees + minutes / 60 + seconds / 3600;
+    /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (i.e. radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+
+    public static (double x, double y) ConvertRotationAngleToCartesian2(double radAngle) => (System.Math.Cos(radAngle), System.Math.Sin(radAngle));
+
+    /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (i.e. radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+
+    public static (double x, double y) ConvertRotationAngleToCartesian2Ex(double radAngle) => ConvertRotationAngleToCartesian2(System.Math.Tau - (radAngle % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2);
+
+    //public static double ConvertSexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds) => degrees + minutes / 60 + seconds / 3600;
 
     public static double ConvertTurnToRadian(double revolutions) => revolutions * System.Math.Tau;
 
-    public static Angle FromSexagesimalDegrees(double degrees, double minutes, double seconds) => new(ConvertDegreeToRadian(ConvertSexagesimalDegreeToDecimalDegree(degrees, minutes, seconds)));
+    #endregion // Conversion methods
 
-#if NET7_0_OR_GREATER
-    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?")]
-    private static partial System.Text.RegularExpressions.Regex ParseSexagesimalDegreesRegex();
-#else
-    private static System.Text.RegularExpressions.Regex ParseSexagesimalDegreesRegex() => new(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
-#endif
+    //    public static Angle FromSexagesimalDegrees(double degrees, double minutes, double seconds) => new(ConvertDegreeToRadian(ConvertSexagesimalDegreeToDecimalDegree(degrees, minutes, seconds)));
 
-    public static Angle ParseSexagesimalDegrees(string dms)
-    {
-      var decimalDegrees = 0.0;
+    //#if NET7_0_OR_GREATER
+    //    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?")]
+    //    private static partial System.Text.RegularExpressions.Regex ParseSexagesimalDegreesRegex();
+    //#else
+    //    private static System.Text.RegularExpressions.Regex ParseSexagesimalDegreesRegex() => new(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
+    //#endif
 
-      if (ParseSexagesimalDegreesRegex().Match(dms) is var m && m.Success)
-      {
-        if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var degrees))
-          decimalDegrees += degrees;
+    //    public static Angle ParseSexagesimalDegrees(string dms)
+    //    {
+    //      var decimalDegrees = 0.0;
 
-        if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var minutes))
-          decimalDegrees += minutes / 60;
+    //      if (ParseSexagesimalDegreesRegex().Match(dms) is var m && m.Success)
+    //      {
+    //        if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var degrees))
+    //          decimalDegrees += degrees;
 
-        if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var seconds))
-          decimalDegrees += seconds / 3600;
+    //        if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var minutes))
+    //          decimalDegrees += minutes / 60;
 
-        if (m.Groups["Direction"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
-          decimalDegrees = -decimalDegrees;
-      }
-      else throw new System.ArgumentOutOfRangeException(nameof(dms));
+    //        if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var seconds))
+    //          decimalDegrees += seconds / 3600;
 
-      return new(ConvertDegreeToRadian(decimalDegrees));
-    }
+    //        if (m.Groups["Direction"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
+    //          decimalDegrees = -decimalDegrees;
+    //      }
+    //      else throw new System.ArgumentOutOfRangeException(nameof(dms));
 
-    public static bool TryParseSexagesimalDegrees(string dms, out Angle result)
-    {
-      try
-      {
-        result = ParseSexagesimalDegrees(dms);
-        return true;
-      }
-      catch
-      {
-        result = default;
-        return false;
-      }
-    }
+    //      return new(ConvertDegreeToRadian(decimalDegrees));
+    //    }
+
+    //    public static bool TryParseSexagesimalDegrees(string dms, out Angle result)
+    //    {
+    //      try
+    //      {
+    //        result = ParseSexagesimalDegrees(dms);
+    //        return true;
+    //      }
+    //      catch
+    //      {
+    //        result = default;
+    //        return false;
+    //      }
+    //    }
 
     #endregion Static methods
 

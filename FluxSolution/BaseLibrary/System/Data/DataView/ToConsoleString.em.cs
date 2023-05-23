@@ -4,6 +4,14 @@ namespace Flux
 {
   public static partial class ExtensionMethodsDataView
   {
+    public static System.Data.DataColumnCollection GetDataColumnCollection(this System.Data.DataView source)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (source.Table is null) throw new System.ArgumentException("The Table in the DataView is null.");
+
+      return source.Table.Columns;
+    }
+
     public static int[] MaxColumnWidths(this System.Data.DataView source, bool includeColumnNames, bool uniformWidths)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

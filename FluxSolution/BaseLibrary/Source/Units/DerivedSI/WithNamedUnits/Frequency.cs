@@ -75,28 +75,30 @@ namespace Flux.Units
 
     /// <summary>Computes the normalized frequency (a.k.a. cycles/sample) of the specified frequency and sample rate. The normalized frequency represents a fractional part of the cycle, per sample.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
-
     public static double NormalizedFrequency(double frequency, double sampleRate)
       => frequency / sampleRate;
 
-    /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in cents.</summary>
-    /// <param name="frequency"></param>
-    /// <param name="cent"></param>
+    ///// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in cents.</summary>
+    ///// <param name="frequency"></param>
+    ///// <param name="cent"></param>
+    //public static Frequency PitchShift(Frequency frequency, Music.Cent cent)
+    //  => new(frequency.Value * Music.Cent.ConvertCentToFrequencyRatio(cent.Value));
 
-    public static Frequency PitchShift(Frequency frequency, Music.Cent cent)
-      => new(frequency.Value * Music.Cent.ConvertCentToFrequencyRatio(cent.Value));
-
-    /// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in semitones.</summary>
-    /// <param name="frequency"></param>
-    /// <param name="semitone"></param>
-
-    public static Frequency PitchShift(Frequency frequency, Music.Semitone semitone)
-      => new(frequency.Value * Music.Semitone.ConvertSemitoneToFrequencyRatio(semitone.Value));
+    ///// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in semitones.</summary>
+    ///// <param name="frequency"></param>
+    ///// <param name="semitone"></param>
+    //public static Frequency PitchShift(Frequency frequency, Music.Semitone semitone)
+    //  => new(frequency.Value * Music.Semitone.ConvertSemitoneToFrequencyRatio(semitone.Value));
 
     /// <summary>Computes the number of samples per cycle at the specified frequency and sample rate.</summary>
-
     public static double SamplesPerCycle(double frequency, double sampleRate)
       => sampleRate / frequency;
+
+    /// <summary>Returns the <paramref name="frequency"/> pitch shifted by the <paramref name="frequencyRatio"/> (positive or negative).</summary>
+    /// <param name="frequency"></param>
+    /// <param name="frequencyRatio"></param>
+    public static double ShiftPitch(double frequency, double frequencyRatio)
+      => frequency * frequencyRatio;
 
     /// <summary>Creates a new Frequency instance from the specified acoustic properties of sound velocity and wavelength.</summary>
     /// <param name="soundVelocity"></param>

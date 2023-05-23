@@ -26,6 +26,9 @@ namespace Flux.Resources.Scowl
       => FieldNames.Select(s => typeof(string)).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetObjects();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
       => GetStrings();
 
     /// <summary>Returns two of twelve full data. No field names.</summary>

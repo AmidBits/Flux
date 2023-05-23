@@ -21,10 +21,13 @@ namespace Flux.Resources.W3c
       => FieldNames.Select(s => typeof(string)).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
+      => GetObjects();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
       => GetStrings();
 
     /// <summary>Returns W3c named character reference data. No field names.</summary>
-    public System.Collections.Generic.IEnumerable<object[]> GetStrings()
+    public System.Collections.Generic.IEnumerable<string[]> GetStrings()
     {
       var m_reMatchUnicodeNotation = new System.Text.RegularExpressions.Regex(@"\\u([0-9a-fA-F]{4})|\\U([0-9a-fA-F]{8})", System.Text.RegularExpressions.RegexOptions.Compiled);
 
