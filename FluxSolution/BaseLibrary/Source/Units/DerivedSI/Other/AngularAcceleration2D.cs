@@ -4,11 +4,11 @@ namespace Flux.Units
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
   public readonly record struct AngularAcceleration2D
-  : IUnitQuantifiable<Numerics.CartesianCoordinate2<double>, AngularAccelerationUnit>
+  : IUnitQuantifiable<Geometry.CartesianCoordinate2<double>, AngularAccelerationUnit>
   {
-    private readonly Numerics.CartesianCoordinate2<double> m_value;
+    private readonly Geometry.CartesianCoordinate2<double> m_value;
 
-    public AngularAcceleration2D(Numerics.CartesianCoordinate2<double> value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+    public AngularAcceleration2D(Geometry.CartesianCoordinate2<double> value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
       => m_value = unit switch
       {
         AngularAccelerationUnit.RadianPerSecondSquared => value,
@@ -44,12 +44,12 @@ namespace Flux.Units
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(AngularAcceleration.DefaultUnit, format, preferUnicode, useFullName);
-    public Numerics.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
+    public Geometry.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
 
     // IUnitQuantifiable<>
     public string ToUnitString(AngularAccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
       => $"{Value.ToString(format, null)} {unit.GetUnitString(preferUnicode, useFullName)}";
-    public Numerics.CartesianCoordinate2<double> ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+    public Geometry.CartesianCoordinate2<double> ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
       => unit switch
       {
         AngularAccelerationUnit.RadianPerSecondSquared => m_value,

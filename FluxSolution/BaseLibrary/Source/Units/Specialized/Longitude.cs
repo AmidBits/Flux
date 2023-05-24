@@ -29,8 +29,8 @@ namespace Flux.Units
 
     public Angle ToAngle() => new(m_longitude, AngleUnit.Degree);
 
-    public string ToSexagesimalDegreeString(SexagesimalDegreeFormat format = SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
-      => SexagesimalDegree.ToSexagesimalString(m_longitude, format, SexagesimalDegreeDirection.WestEast, -1, useSpaces, preferUnicode);
+    public string ToSexagesimalDegreeString(SexagesimalDegree.Format format = SexagesimalDegree.Format.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
+      => SexagesimalDegree.ToString(m_longitude, format, CardinalAxis.EastWest, -1, useSpaces, preferUnicode);
 
     #region Static methods
 
@@ -84,12 +84,12 @@ namespace Flux.Units
     {
       if (format is not null)
       {
-        if (format.StartsWith(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds.GetAcronymString()))
-          return ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds, format.EndsWith(' '), preferUnicode);
-        if (format.StartsWith(SexagesimalDegreeFormat.DegreesDecimalMinutes.GetAcronymString()))
-          return ToSexagesimalDegreeString(SexagesimalDegreeFormat.DegreesDecimalMinutes, format.EndsWith(' '), preferUnicode);
-        if (format.StartsWith(SexagesimalDegreeFormat.DecimalDegrees.GetAcronymString()))
-          return ToSexagesimalDegreeString(SexagesimalDegreeFormat.DecimalDegrees, format.EndsWith(' '), preferUnicode);
+        if (format.StartsWith(SexagesimalDegree.Format.DegreesMinutesDecimalSeconds.GetAcronymString()))
+          return ToSexagesimalDegreeString(SexagesimalDegree.Format.DegreesMinutesDecimalSeconds, format.EndsWith(' '), preferUnicode);
+        if (format.StartsWith(SexagesimalDegree.Format.DegreesDecimalMinutes.GetAcronymString()))
+          return ToSexagesimalDegreeString(SexagesimalDegree.Format.DegreesDecimalMinutes, format.EndsWith(' '), preferUnicode);
+        if (format.StartsWith(SexagesimalDegree.Format.DecimalDegrees.GetAcronymString()))
+          return ToSexagesimalDegreeString(SexagesimalDegree.Format.DecimalDegrees, format.EndsWith(' '), preferUnicode);
 
         return new Angle(m_longitude, AngleUnit.Degree).ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
       }
@@ -101,6 +101,6 @@ namespace Flux.Units
 
     #endregion Implemented interfaces
 
-    public override string ToString() => ToQuantityString(SexagesimalDegreeFormat.DegreesMinutesDecimalSeconds.GetAcronymString());
+    public override string ToString() => ToQuantityString(SexagesimalDegree.Format.DegreesMinutesDecimalSeconds.GetAcronymString());
   }
 }

@@ -1,4 +1,4 @@
-﻿using Flux.Numerics;
+﻿using Flux.Maths;
 
 namespace Flux.Model
 {
@@ -7,9 +7,9 @@ namespace Flux.Model
   {
     private System.Collections.BitArray m_deadOrAlive;
     private readonly bool m_canLifeLogicWrapAroundEdges;
-    private readonly Numerics.CartesianCoordinate2<int> m_cellGrid;
+    private readonly Geometry.CartesianCoordinate2<int> m_cellGrid;
 
-    public GameOfLife(Numerics.CartesianCoordinate2<int> cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
+    public GameOfLife(Geometry.CartesianCoordinate2<int> cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
     {
       m_deadOrAlive = new System.Collections.BitArray(cellGrid.Y * cellGrid.X);
       m_canLifeLogicWrapAroundEdges = canLifeLogicWrapAroundEdges;
@@ -28,11 +28,11 @@ namespace Flux.Model
       }
     }
     public GameOfLife()
-      : this(new Numerics.CartesianCoordinate2<int>(40, 20), true, 0.25)
+      : this(new Geometry.CartesianCoordinate2<int>(40, 20), true, 0.25)
     {
     }
 
-    public Numerics.CartesianCoordinate2<int> CellGrid
+    public Geometry.CartesianCoordinate2<int> CellGrid
       => m_cellGrid;
 
     /// <summary>Moves the board to the next state based on Conway's rules.</summary>

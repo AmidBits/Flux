@@ -394,12 +394,12 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunCoordinateSystems));
       System.Console.WriteLine();
 
-      Draw(Flux.Numerics.GeographicCoordinate.MadridSpain, nameof(Flux.Numerics.GeographicCoordinate.MadridSpain));
-      Draw(Flux.Numerics.GeographicCoordinate.PhoenixAzUsa, nameof(Flux.Numerics.GeographicCoordinate.PhoenixAzUsa));
-      Draw(Flux.Numerics.GeographicCoordinate.TakapauNewZealand, nameof(Flux.Numerics.GeographicCoordinate.TakapauNewZealand));
-      Draw(Flux.Numerics.GeographicCoordinate.TucsonAzUsa, nameof(Flux.Numerics.GeographicCoordinate.TucsonAzUsa));
+      Draw(Flux.Geometry.GeographicCoordinate.MadridSpain, nameof(Flux.Geometry.GeographicCoordinate.MadridSpain));
+      Draw(Flux.Geometry.GeographicCoordinate.PhoenixAzUsa, nameof(Flux.Geometry.GeographicCoordinate.PhoenixAzUsa));
+      Draw(Flux.Geometry.GeographicCoordinate.TakapauNewZealand, nameof(Flux.Geometry.GeographicCoordinate.TakapauNewZealand));
+      Draw(Flux.Geometry.GeographicCoordinate.TucsonAzUsa, nameof(Flux.Geometry.GeographicCoordinate.TucsonAzUsa));
 
-      static void Draw(Flux.Numerics.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
+      static void Draw(Flux.Geometry.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
       {
         Flux.Console.WriteInformationLine($"{label.ToString()}:");
 
@@ -931,10 +931,10 @@ namespace ConsoleApp
     static void RunQuartiles(System.Collections.Generic.List<double> x)
     {
       System.Console.WriteLine($"The computed quartiles:");
-      System.Console.WriteLine($"Method 1: {new Flux.Numerics.QuartileMethod1().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 2: {new Flux.Numerics.QuartileMethod2().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 3: {new Flux.Numerics.QuartileMethod3().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 4: {new Flux.Numerics.QuartileMethod4().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 1: {new Flux.Maths.QuartileMethod1().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 2: {new Flux.Maths.QuartileMethod2().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 3: {new Flux.Maths.QuartileMethod3().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 4: {new Flux.Maths.QuartileMethod4().ComputeQuartiles(x)}");
     }
 
     static void RunQuantiles(System.Collections.Generic.List<double> x)
@@ -946,15 +946,15 @@ namespace ConsoleApp
       {
         var values = new double[]
         {
-          Flux.Numerics.QuantileR1.Default.EstimateQuantileValue(x, p),
-          Flux.Numerics.QuantileR2.Default.EstimateQuantileValue(x, p),
-          Flux.Numerics.QuantileR3.Default.EstimateQuantileValue(x, p),
-          Flux.Numerics.QuantileR4.Default.EstimateQuantileValue(x, p),
-          Flux.Numerics.QuantileR5.Default.EstimateQuantileValue(x, p),
-          Flux.Numerics.QuantileR6.Default.EstimateQuantileValue(x, p),
-          Flux.Numerics.QuantileR7.Default.EstimateQuantileValue(x, p),
-          Flux.Numerics.QuantileR8.Default.EstimateQuantileValue(x, p),
-          Flux.Numerics.QuantileR9.Default.EstimateQuantileValue(x, p),
+          Flux.Maths.QuantileR1.Default.EstimateQuantileValue(x, p),
+          Flux.Maths.QuantileR2.Default.EstimateQuantileValue(x, p),
+          Flux.Maths.QuantileR3.Default.EstimateQuantileValue(x, p),
+          Flux.Maths.QuantileR4.Default.EstimateQuantileValue(x, p),
+          Flux.Maths.QuantileR5.Default.EstimateQuantileValue(x, p),
+          Flux.Maths.QuantileR6.Default.EstimateQuantileValue(x, p),
+          Flux.Maths.QuantileR7.Default.EstimateQuantileValue(x, p),
+          Flux.Maths.QuantileR8.Default.EstimateQuantileValue(x, p),
+          Flux.Maths.QuantileR9.Default.EstimateQuantileValue(x, p),
         };
 
         System.Console.WriteLine($"The estimated quantiles of {p:N2}:");

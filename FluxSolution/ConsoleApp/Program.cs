@@ -4,7 +4,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using Flux;
 using Flux.Formatting;
-using Flux.Numerics;
+using Flux.Maths;
 using Flux.Text;
 using Flux.Unicode;
 using Microsoft.VisualBasic.FileIO;
@@ -33,17 +33,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var v1str = Flux.Numerics.GeographicCoordinate.TucsonAzUsa.ToString();
-      var v1lat = Flux.SexagesimalDegree.ConvertDecimalDegreesToSexagesimalDMS(Flux.Numerics.GeographicCoordinate.TucsonAzUsa.Latitude, out var _);
-      var v1lats = new Flux.SexagesimalDegree(Flux.Numerics.GeographicCoordinate.TucsonAzUsa.Latitude);
-      var v1lon = Flux.SexagesimalDegree.ConvertDecimalDegreesToSexagesimalDMS(Flux.Numerics.GeographicCoordinate.TucsonAzUsa.Longitude, out var _);
-      var v1lons = new Flux.SexagesimalDegree(Flux.Numerics.GeographicCoordinate.TucsonAzUsa.Longitude);
-      //var v1lonx = v1lon.ToDecimalDegrees();
-
-      //var v2lat = new Flux.SexagesimalDegree(+40, 26.767);
-      //var v2latx = v2lat.ToDecimalDegrees();
-      //var v2lon = new Flux.SexagesimalDegree(-79, 58.933);
-      //var v2lonx = v2lon.ToDecimalDegrees();
+      var v1str = Flux.Geometry.GeographicCoordinate.TucsonAzUsa.ToString();
+      var v1lat = Flux.SexagesimalDegree.ConvertDecimalDegreesToSexagesimalDMS(Flux.Geometry.GeographicCoordinate.TucsonAzUsa.Latitude, out var _);
+      var v1lats = new Flux.SexagesimalDegree(Flux.Geometry.GeographicCoordinate.TucsonAzUsa.Latitude);
+      var v1lon = Flux.SexagesimalDegree.ConvertDecimalDegreesToSexagesimalDMS(Flux.Geometry.GeographicCoordinate.TucsonAzUsa.Longitude, out var _);
+      var v1lons = new Flux.SexagesimalDegree(Flux.Geometry.GeographicCoordinate.TucsonAzUsa.Longitude);
 
       var jao = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile)).GetStrings().ToArray();
 

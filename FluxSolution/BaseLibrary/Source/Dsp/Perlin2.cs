@@ -1,4 +1,4 @@
-using Flux.Numerics;
+using Flux.Maths;
 
 namespace Flux.Dsp
 {
@@ -30,7 +30,7 @@ namespace Flux.Dsp
     }
 
     #region Static methods
-    public static Numerics.ICartesianCoordinate2<double> RandomGradient(int ix, int iy)
+    public static Geometry.ICartesianCoordinate2<double> RandomGradient(int ix, int iy)
     {
       // No precomputed gradients mean this works for any number of grid coordinates
       const int w = 8 * 4;
@@ -45,7 +45,7 @@ namespace Flux.Dsp
 
       var random = a * (3.14159265 / ~(~0u >> 1)); // in [0, 2*Pi]
 
-      return new CartesianCoordinate2<double>(System.Math.Cos(random), System.Math.Sin(random));
+      return new Geometry.CartesianCoordinate2<double>(System.Math.Cos(random), System.Math.Sin(random));
     }
     public static double DotGridGradient(int ix, int iy, double x, double y)
     {

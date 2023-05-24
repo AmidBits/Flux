@@ -28,16 +28,16 @@ namespace Collections.Generic
     {
       //Assert.AreEqual(60, d.PercentileRank(65.0), nameof(PercentileRank));
       //Assert.AreEqual(60, Flux.Numerics.PercentileVariant3.PercentScore(0.75, d.Count()), "ComputePercentileScore");
-      Assert.AreEqual(5, Flux.Numerics.PercentileNearestRank.PercentileScore(d, 0.75), "ComputePercentileScore");
-      Assert.AreEqual(4.75, Flux.Numerics.PercentileVariant2.PercentileScore(d, 0.75), "ComputePercentileScore");
-      Assert.AreEqual(5, Flux.Numerics.PercentileVariant3.PercentileScore(d, 0.75), "ComputePercentileScore");
+      Assert.AreEqual(5, Flux.Maths.PercentileNearestRank.PercentileScore(d, 0.75), "ComputePercentileScore");
+      Assert.AreEqual(4.75, Flux.Maths.PercentileVariant2.PercentileScore(d, 0.75), "ComputePercentileScore");
+      Assert.AreEqual(5, Flux.Maths.PercentileVariant3.PercentileScore(d, 0.75), "ComputePercentileScore");
 
-      Assert.AreEqual(7.5, Flux.Numerics.PercentileNearestRank.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
-      Assert.AreEqual(7.75, Flux.Numerics.PercentileVariant2.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
-      Assert.AreEqual(8.25, Flux.Numerics.PercentileVariant3.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
+      Assert.AreEqual(7.5, Flux.Maths.PercentileNearestRank.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
+      Assert.AreEqual(7.75, Flux.Maths.PercentileVariant2.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
+      Assert.AreEqual(8.25, Flux.Maths.PercentileVariant3.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
 
-      Assert.AreEqual(4.75, Flux.Numerics.QuantileR7.Default.EstimateQuantileValue(d, 0.75), "QuantileR5");
-      Assert.AreEqual(5, Flux.Numerics.QuantileR6.Default.EstimateQuantileValue(d, 0.75), "QuantileR6");
+      Assert.AreEqual(4.75, Flux.Maths.QuantileR7.Default.EstimateQuantileValue(d, 0.75), "QuantileR5");
+      Assert.AreEqual(5, Flux.Maths.QuantileR6.Default.EstimateQuantileValue(d, 0.75), "QuantileR6");
 
 
 

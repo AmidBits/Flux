@@ -27,7 +27,7 @@ namespace WpfApp
 
       var scale = 4;
 
-      var size = new Flux.Numerics.CartesianCoordinate2<int>(System.Convert.ToInt32(16d * scale), System.Convert.ToInt32(9d * scale));
+      var size = new Flux.Geometry.CartesianCoordinate2<int>(System.Convert.ToInt32(16d * scale), System.Convert.ToInt32(9d * scale));
 
       m_grid = new Flux.Model.Maze.MazeGrid(size);
     }

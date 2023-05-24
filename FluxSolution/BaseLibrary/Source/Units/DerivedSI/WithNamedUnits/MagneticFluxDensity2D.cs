@@ -4,11 +4,11 @@ namespace Flux.Units
   /// <summary>Magnetic flux density unit of tesla.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   public readonly record struct MagneticFluxDensity2D
-  : IUnitQuantifiable<Numerics.CartesianCoordinate2<double>, MagneticFluxDensityUnit>
+  : IUnitQuantifiable<Geometry.CartesianCoordinate2<double>, MagneticFluxDensityUnit>
   {
-    private readonly Numerics.CartesianCoordinate2<double> m_value;
+    private readonly Geometry.CartesianCoordinate2<double> m_value;
 
-    public MagneticFluxDensity2D(Numerics.CartesianCoordinate2<double> value, MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
+    public MagneticFluxDensity2D(Geometry.CartesianCoordinate2<double> value, MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
       => m_value = unit switch
       {
         MagneticFluxDensityUnit.Tesla => value,
@@ -44,12 +44,12 @@ namespace Flux.Units
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(MagneticFluxDensity.DefaultUnit, format, preferUnicode, useFullName);
-    public Numerics.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
+    public Geometry.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
 
     // IUnitQuantifiable<>
     public string ToUnitString(MagneticFluxDensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
       => $"{Value.ToString(format, null)} {unit.GetUnitString(preferUnicode, useFullName)}";
-    public Numerics.CartesianCoordinate2<double> ToUnitValue(MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
+    public Geometry.CartesianCoordinate2<double> ToUnitValue(MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
       => unit switch
       {
         MagneticFluxDensityUnit.Tesla => m_value,

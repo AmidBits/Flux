@@ -4,11 +4,11 @@ namespace Flux.Units
   /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
   public readonly record struct Acceleration3D
-  : IUnitQuantifiable<Numerics.CartesianCoordinate3<double>, AccelerationUnit>
+  : IUnitQuantifiable<Geometry.CartesianCoordinate3<double>, AccelerationUnit>
   {
-    private readonly Numerics.CartesianCoordinate3<double> m_value;
+    private readonly Geometry.CartesianCoordinate3<double> m_value;
 
-    public Acceleration3D(Numerics.CartesianCoordinate3<double> value, AccelerationUnit unit = Acceleration.DefaultUnit)
+    public Acceleration3D(Geometry.CartesianCoordinate3<double> value, AccelerationUnit unit = Acceleration.DefaultUnit)
       => m_value = unit switch
       {
         AccelerationUnit.MeterPerSecondSquared => value,
@@ -44,12 +44,12 @@ namespace Flux.Units
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(Acceleration.DefaultUnit, format, preferUnicode, useFullName);
-    public Numerics.CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
+    public Geometry.CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
 
     // IUnitQuantifiable<>
     public string ToUnitString(AccelerationUnit unit = Acceleration.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
       => $"{Value.ToString(format, null)} {unit.GetUnitString(preferUnicode, useFullName)}";
-    public Numerics.CartesianCoordinate3<double> ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
+    public Geometry.CartesianCoordinate3<double> ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
       => unit switch
       {
         AccelerationUnit.MeterPerSecondSquared => m_value,
