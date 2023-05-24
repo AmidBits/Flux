@@ -2,7 +2,7 @@
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class CoordinateSystemsExtensionMethods
+  public static partial class ExtensionMethodsCoordinateSystems
   {
     /// <summary>Computes the determinant (generally) of the matrix.</summary>
     public static double GetDeterminantGeneral(this Geometry.IMatrix4 source)
