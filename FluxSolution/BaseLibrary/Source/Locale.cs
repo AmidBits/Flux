@@ -20,53 +20,19 @@ namespace Flux
 
     /// <summary>Returns the descriptive text of the current platform identifier.</summary>
     public static string EnvironmentOsTitle
-    {
-      get
-      {
-        var s = System.Environment.OSVersion.ToString();
-
-        return s[..s.Trim().LastIndexOf(' ')];
-      }
-    }
+      => System.Environment.OSVersion.ToString() is var s ? s[..s.Trim().LastIndexOf(' ')] : string.Empty;
 
     /// <summary>Returns the version of the current platform identifier.</summary>
     public static System.Version EnvironmentOsVersion
-    {
-      get
-      {
-        var s = System.Environment.OSVersion.ToString();
-
-        if (System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
-          return version;
-
-        throw new System.NotSupportedException();
-      }
-    }
+      => System.Environment.OSVersion.ToString() is var s && System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version) ? version : throw new System.NotSupportedException();
 
     /// <summary>Returns the descriptive text of the hosting framework.</summary>
     public static string FrameworkTitle
-    {
-      get
-      {
-        var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
-
-        return s[..s.Trim().LastIndexOf(' ')];
-      }
-    }
+      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription is var s ? s[..s.Trim().LastIndexOf(' ')] : string.Empty;
 
     /// <summary>Returns the version of the hosting framework.</summary>
-    public static Version FrameworkVersion
-    {
-      get
-      {
-        var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
-
-        if (Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
-          return version;
-
-        return new();
-      }
-    }
+    public static System.Version FrameworkVersion
+      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription is var s && System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version) ? version : new();
 
     /// <summary>Returns the computer name from <see cref="System.Environment"/>.</summary>
     public static string MachineName
@@ -86,28 +52,11 @@ namespace Flux
 
     /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static string RuntimeOsTitle
-    {
-      get
-      {
-        var s = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
-
-        return s[..s.Trim().LastIndexOf(' ')];
-      }
-    }
+      => System.Runtime.InteropServices.RuntimeInformation.OSDescription is var s ? s[..s.Trim().LastIndexOf(' ')] : string.Empty;
 
     /// <summary>Returns the version of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static System.Version RuntimeOsVersion
-    {
-      get
-      {
-        var s = System.Runtime.InteropServices.RuntimeInformation.OSDescription;
-
-        if (System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version))
-          return version;
-
-        throw new System.NotSupportedException();
-      }
-    }
+      => System.Runtime.InteropServices.RuntimeInformation.OSDescription is var s && System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version) ? version : throw new System.NotSupportedException();
 
     /// <summary>Returns a dictionary of special folder names and they respective directory info paths.</summary>
     public static System.Collections.IDictionary SpecialFolders

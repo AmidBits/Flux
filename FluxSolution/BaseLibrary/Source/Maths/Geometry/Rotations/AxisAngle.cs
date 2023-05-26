@@ -47,7 +47,7 @@ namespace Flux
         new Units.Angle(double.CreateChecked(source.Angle))
       );
 
-    public static Geometry.Quaternion ToQuaternion(this Geometry.AxisAngle source)
+    public static System.Numerics.Quaternion ToQuaternion(this Geometry.AxisAngle source)
     {
       var h = source.Angle.Divide(2);
 
@@ -57,7 +57,7 @@ namespace Flux
       var y = source.Y * s;
       var z = source.Z * s;
 
-      return new(x, y, z, w);
+      return new((float)x, (float)y, (float)z, (float)w);
     }
 #endif
 

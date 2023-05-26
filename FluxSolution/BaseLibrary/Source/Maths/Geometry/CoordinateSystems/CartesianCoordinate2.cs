@@ -83,20 +83,6 @@ namespace Flux
         }
       }
 
-      /// <summary>
-      /// <para>A slope or gradient of a line is a number that describes both the direction and the steepness of the line (in this case from <paramref name="a"/> to <paramref name="b"/>).</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Slope"/></para>
-      /// </summary>
-      /// <param name="a">The cartesian source point.</param>
-      /// <param name="b">The cartesian target point.</param>
-      /// <returns>The slopes for both rise-over-run and run-over-rise.</returns>
-      public static (TSelf mx, TSelf my) Slope(CartesianCoordinate2<TSelf> a, CartesianCoordinate2<TSelf> b)
-      {
-        var dx = b.m_x - a.m_x;
-        var dy = b.m_y - a.m_y;
-
-        return TSelf.IsZero(dx) || TSelf.IsZero(dy) ? (TSelf.Zero, TSelf.Zero) : (dx / dy, dy / dx);
-      }
 #endif
 
       #endregion Static methods
@@ -326,10 +312,10 @@ namespace Flux
       public static CartesianCoordinate2<TSelf> operator %(CartesianCoordinate2<TSelf> cc, TSelf scalar) => new(cc.X % scalar, cc.Y % scalar);
       public static CartesianCoordinate2<TSelf> operator %(TSelf scalar, CartesianCoordinate2<TSelf> cc) => new(scalar % cc.X, scalar % cc.Y);
 
+#endif
+
       public string ToString(string? format, System.IFormatProvider? provider)
        => $"<{m_x.ToString(format, null)}, {m_y.ToString(format, null)}>";
-
-#endif
 
       #endregion Implemented interfaces
 

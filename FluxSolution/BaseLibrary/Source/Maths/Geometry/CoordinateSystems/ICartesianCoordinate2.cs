@@ -123,6 +123,22 @@
       return new(source.X * cos + (target.X - source.X) * dp * sin, source.Y * cos + (target.Y - source.Y) * dp * sin);
     }
 
+    /// <summary>
+    /// <para>A slope or gradient of a line is a number that describes both the direction and the steepness of the line (in this case from <paramref name="a"/> to <paramref name="b"/>).</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Slope"/></para>
+    /// </summary>
+    /// <param name="a">The cartesian source point.</param>
+    /// <param name="b">The cartesian target point.</param>
+    /// <returns>The slopes for both rise-over-run and run-over-rise.</returns>
+    public static (TSelf mx, TSelf my) Slope<TSelf>(Geometry.CartesianCoordinate2<TSelf> a, Geometry.CartesianCoordinate2<TSelf> b)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    {
+      var dx = b.X - a.X;
+      var dy = b.Y - a.Y;
+
+      return TSelf.IsZero(dx) || TSelf.IsZero(dy) ? (TSelf.Zero, TSelf.Zero) : (dx / dy, dy / dx);
+    }
+
     /// <summary>Creates a new <see cref="CartesianCoordinate2{TSelf}"/> from a <see cref="Maths.ICartesianCoordinate2{TResult}"/>.</summary>
     public static Geometry.CartesianCoordinate2<TResult> ToCartesianCoordinate2<TSelf, TResult>(this Geometry.ICartesianCoordinate2<TSelf> source, RoundingMode mode, out Geometry.CartesianCoordinate2<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>

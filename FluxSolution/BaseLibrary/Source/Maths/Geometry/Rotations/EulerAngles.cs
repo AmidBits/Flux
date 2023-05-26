@@ -40,58 +40,58 @@ namespace Flux
 
 #if NET7_0_OR_GREATER
 
-    public static Geometry.Matrix4 ToMatrixTaitBryanXYZ(this Geometry.EulerAngles source)
+    public static System.Numerics.Matrix4x4 ToMatrixTaitBryanXYZ(this Geometry.EulerAngles source)
     {
       var (s1, c1) = System.Math.SinCos(source.Yaw);
       var (s2, c2) = System.Math.SinCos(source.Pitch);
       var (s3, c3) = System.Math.SinCos(source.Roll);
 
       return new(
-        c2 * c3, -s2, c2 * s3, 0,
-        s1 * s3 + c1 * c3 * s2, c1 * s2, c1 * s2 * s3 - c3 * s1, 0,
-        c3 * s1 * s2 - c1 * s3, c2 * s1, c1 * c3 + s1 * s2 * s3, 0,
+        (float)(c2 * c3), (float)-s2, (float)(c2 * s3), 0,
+        (float)(s1 * s3 + c1 * c3 * s2), (float)(c1 * s2), (float)(c1 * s2 * s3 - c3 * s1), 0,
+        (float)(c3 * s1 * s2 - c1 * s3), (float)(c2 * s1), (float)(c1 * c3 + s1 * s2 * s3), 0,
         0, 0, 0, 1
       );
     }
 
-    public static Geometry.Matrix4 ToMatrixLhTaitBryanYXZ(this Geometry.EulerAngles source)
+    public static System.Numerics.Matrix4x4 ToMatrixLhTaitBryanYXZ(this Geometry.EulerAngles source)
     {
       var (s1, c1) = System.Math.SinCos(source.Yaw);
       var (s2, c2) = System.Math.SinCos(source.Pitch);
       var (s3, c3) = System.Math.SinCos(source.Roll);
 
       return new(
-        c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3, c2 * s1, 0,
-        c2 * s3, c2 * c3, -s2, 0,
-        c1 * s2 * s3 - c3 * s1, c1 * c3 * s2 + s1 * s3, c1 * c2, 0,
+        (float)(c1 * c3 + s1 * s2 * s3), (float)(c3 * s1 * s2 - c1 * s3), (float)(c2 * s1), 0,
+        (float)(c2 * s3), (float)(c2 * c3), (float)-s2, 0,
+        (float)(c1 * s2 * s3 - c3 * s1), (float)(c1 * c3 * s2 + s1 * s3), (float)(c1 * c2), 0,
         0, 0, 0, 1
       );
     }
 
-    public static Geometry.Matrix4 ToMatrixLhTaitBryanZYX(this Geometry.EulerAngles source)
+    public static System.Numerics.Matrix4x4 ToMatrixLhTaitBryanZYX(this Geometry.EulerAngles source)
     {
       var (s3, c3) = System.Math.SinCos(source.Yaw);
       var (s2, c2) = System.Math.SinCos(source.Pitch);
       var (s1, c1) = System.Math.SinCos(source.Roll);
 
       return new(
-        c1 * c2, c1 * s2 * s3 - c3 * s1, s1 * s3 + c1 * c3 * s2, 0,
-        c2 * s1, c1 * c3 + s1 * s2 * s3, c3 * s1 * s2 - c1 * s3, 0,
-        -s2, c2 * s3, c2 * c3, 0,
+        (float)(c1 * c2), (float)(c1 * s2 * s3 - c3 * s1), (float)(s1 * s3 + c1 * c3 * s2), 0,
+        (float)(c2 * s1), (float)(c1 * c3 + s1 * s2 * s3), (float)(c3 * s1 * s2 - c1 * s3), 0,
+        (float)-s2, (float)(c2 * s3), (float)(c2 * c3), 0,
         0, 0, 0, 1
       );
     }
 
-    public static Geometry.Matrix4 ToMatrixLhProperEulerZXZ(this Geometry.EulerAngles source)
+    public static System.Numerics.Matrix4x4 ToMatrixLhProperEulerZXZ(this Geometry.EulerAngles source)
     {
       var (s1, c1) = System.Math.SinCos(source.Yaw);
       var (s2, c2) = System.Math.SinCos(source.Pitch);
       var (s3, c3) = System.Math.SinCos(source.Roll);
 
       return new(
-        c1 * c3 - c2 * s1 * s3, -c1 * s3 - c2 * c3 * s1, s1 * s2, 0,
-        c3 * s1 + c1 * c2 * s3, c1 * c2 * c3 - s1 * s3, -c1 * s2, 0,
-        s2 * s3, c3 * s2, c2, 0,
+        (float)(c1 * c3 - c2 * s1 * s3), (float)(-c1 * s3 - c2 * c3 * s1), (float)(s1 * s2), 0,
+        (float)(c3 * s1 + c1 * c2 * s3), (float)(c1 * c2 * c3 - s1 * s3), (float)(-c1 * s2), 0,
+        (float)(s2 * s3), (float)(c3 * s2), (float)c2, 0,
         0, 0, 0, 1
       );
     }
@@ -103,7 +103,7 @@ namespace Flux
         new Units.Angle(double.CreateChecked(source.Roll))
       );
 
-    public static Geometry.Quaternion ToQuaternion(this Geometry.EulerAngles source)
+    public static System.Numerics.Quaternion ToQuaternion(this Geometry.EulerAngles source)
     {
       var halfYaw = source.Yaw.Divide(2);
       var halfPitch = source.Pitch.Divide(2);
@@ -114,10 +114,10 @@ namespace Flux
       var (sr, cr) = System.Math.SinCos(halfRoll);
 
       return new(
-        sr * cp * cy - cr * sp * sy,
-        cr * sp * cy + sr * cp * sy,
-        cr * cp * sy - sr * sp * cy,
-        cr * cp * cy + sr * sp * sy
+        (float)(sr * cp * cy - cr * sp * sy),
+        (float)(cr * sp * cy + sr * cp * sy),
+        (float)(cr * cp * sy - sr * sp * cy),
+        (float)(cr * cp * cy + sr * sp * sy)
       );
     }
 

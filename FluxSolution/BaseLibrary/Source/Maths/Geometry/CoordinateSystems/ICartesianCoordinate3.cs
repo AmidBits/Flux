@@ -168,7 +168,7 @@ namespace Flux
     /// <para><see href="http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final"/></para>
     /// <para><see href="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/></para>
     /// </summary>
-    public static Geometry.Quaternion ToQuaternion(this Geometry.ICartesianCoordinate3<double> source, Geometry.ICartesianCoordinate3<double> target)
+    public static System.Numerics.Quaternion ToQuaternion(this Geometry.ICartesianCoordinate3<double> source, Geometry.ICartesianCoordinate3<double> target)
     {
       var norm_u_norm_v = System.Math.Sqrt(Geometry.ICartesianCoordinate3<double>.DotProduct(source, source) * Geometry.ICartesianCoordinate3<double>.DotProduct(target, target));
       var real_part = norm_u_norm_v + Geometry.ICartesianCoordinate3<double>.DotProduct(source, target);
@@ -187,7 +187,7 @@ namespace Flux
         w = Geometry.ICartesianCoordinate3<double>.CrossProduct(source, target);
       }
 
-      return new Geometry.Quaternion(w.X, w.Y, w.Z, real_part).Normalized();
+      return System.Numerics.Quaternion.Normalize(new System.Numerics.Quaternion((float)w.X, (float)w.Y, (float)w.Z, (float)real_part));
     }
 
     /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate{TSelf}"/> from a <see cref="Geometry.ICartesianCoordinate3{TSelf}"/>.</summary>

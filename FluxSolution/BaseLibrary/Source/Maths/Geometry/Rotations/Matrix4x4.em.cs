@@ -11,16 +11,18 @@ namespace Flux
         { source.M41, source.M42, source.M43, source.M44 }
       };
 
-#if NET7_0_OR_GREATER
-
-    public static Geometry.Matrix4 ToMatrix4(this System.Numerics.Matrix4x4 source)
+    public static Geometry.EulerAngles ToEulerAnglesTaitBryanZYX(this System.Numerics.Matrix4x4 source)
       => new(
-        source.M11, source.M12, source.M13, source.M14,
-        source.M21, source.M22, source.M23, source.M24,
-        source.M31, source.M32, source.M33, source.M34,
-        source.M41, source.M42, source.M43, source.M44
+        System.Math.Atan2(source.M11, source.M21),
+        System.Math.Atan2(System.Math.Sqrt(1 - source.M31 * source.M31), -source.M31),
+        System.Math.Atan2(source.M33, source.M32)
       );
 
-#endif
+    public static Geometry.EulerAngles ToEulerAnglesProperEulerZXZ(this System.Numerics.Matrix4x4 source)
+      => new(
+        System.Math.Atan2(-source.M23, source.M13),
+        System.Math.Atan2(source.M33, System.Math.Sqrt(1 - source.M33 * source.M33)),
+        System.Math.Atan2(source.M32, source.M31)
+      );
   }
 }

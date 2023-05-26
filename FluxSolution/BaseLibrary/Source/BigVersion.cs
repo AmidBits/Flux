@@ -3,8 +3,8 @@ using System.Linq;
 namespace Flux
 {
   /// <summary>Represents a general version implementation, similar to the built-in Version, but can handle more parts.</summary>
-  public readonly partial record struct Version
-    : IComparable<Version>, IEquatable<Version>
+  public readonly partial record struct BigVersion
+    : IComparable<BigVersion>, IEquatable<BigVersion>
   {
 #if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"[^0-9]+")] private static partial System.Text.RegularExpressions.Regex RegexSplit();
@@ -12,11 +12,11 @@ namespace Flux
     private static System.Text.RegularExpressions.Regex RegexSplit() => new(@"[^0-9]+");
 #endif
 
-    private readonly int[] m_parts;
+    private readonly int[] m_parts = System.Array.Empty<int>();
 
-    public Version(int countOfParts) => m_parts = new int[countOfParts];
-    public Version(params int[] parts) => m_parts = parts ?? throw new ArgumentNullException(nameof(parts));
-    public Version(System.Version version)
+    public BigVersion(int countOfParts) => m_parts = new int[countOfParts];
+    public BigVersion(params int[] parts) => m_parts = parts ?? throw new ArgumentNullException(nameof(parts));
+    public BigVersion(System.Version version)
       => m_parts = version is null
       ? throw new ArgumentNullException(nameof(version))
       : new int[] { version.Major, version.Minor, version.Build, version.Revision };
@@ -40,12 +40,12 @@ namespace Flux
 
     #region Static methods
 
-    public static Version Parse(string version)
+    public static BigVersion Parse(string version)
       => version is null
       ? throw new ArgumentNullException(nameof(version))
       : new(RegexSplit().Split(version).Where(e => !string.IsNullOrWhiteSpace(e)).Select(part => int.Parse(part, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)).ToArray());
 
-    public static bool TryParse(string version, out Version result)
+    public static bool TryParse(string version, out BigVersion result)
     {
       try
       {
@@ -62,17 +62,17 @@ namespace Flux
 
     #region Overloaded operators
 
-    public static bool operator <(Version a, Version b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Version a, Version b) => a.CompareTo(b) <= 0;
-    public static bool operator >(Version a, Version b) => a.CompareTo(b) > 0;
-    public static bool operator >=(Version a, Version b) => a.CompareTo(b) >= 0;
+    public static bool operator <(BigVersion a, BigVersion b) => a.CompareTo(b) < 0;
+    public static bool operator <=(BigVersion a, BigVersion b) => a.CompareTo(b) <= 0;
+    public static bool operator >(BigVersion a, BigVersion b) => a.CompareTo(b) > 0;
+    public static bool operator >=(BigVersion a, BigVersion b) => a.CompareTo(b) >= 0;
 
     #endregion Overloaded operators
 
     #region Implemented interfaces
 
     // IComparable
-    public int CompareTo(Version other)
+    public int CompareTo(BigVersion other)
     {
       var sl = m_parts.Length;
       var tl = other.m_parts.Length;

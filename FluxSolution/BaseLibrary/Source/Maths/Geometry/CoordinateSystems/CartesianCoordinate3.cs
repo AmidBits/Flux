@@ -488,10 +488,10 @@ namespace Flux
       public static CartesianCoordinate3<TSelf> operator %(CartesianCoordinate3<TSelf> cc, TSelf scalar) => new(cc.X % scalar, cc.Y % scalar, cc.Z % scalar);
       public static CartesianCoordinate3<TSelf> operator %(TSelf scalar, CartesianCoordinate3<TSelf> cc) => new(scalar % cc.X, scalar % cc.Y, scalar % cc.Z);
 
+#endif
+
       public string ToString(string? format, System.IFormatProvider? provider)
         => $"<{m_x.ToString(format, null)}, {m_y.ToString(format, null)}, {m_z.ToString(format, null)}>";
-
-#endif
 
       #endregion Implemented interfaces
 

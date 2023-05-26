@@ -387,6 +387,17 @@ namespace ConsoleApp
 
     #region RunCoordinateSystems
 
+    /// <summary>This is a reference coordinate for Madrid, in Spain on Europe, which is antipodal to Takapau, in New Zeeland.</summary>
+    public static Flux.Geometry.GeographicCoordinate MadridSpain => new(40.416944, -3.703333, 650);
+
+    /// <summary>This is a reference coordinate for Takapau, in New Zeeland, which is antipodal to Madrid, in Spain on Europe.</summary>
+    public static Flux.Geometry.GeographicCoordinate TakapauNewZealand => new(-40.033333, 176.35, 235);
+
+    /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
+    public static Flux.Geometry.GeographicCoordinate PhoenixAzUsa => new(33.448333, -112.073889, 331);
+    /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
+    public static Flux.Geometry.GeographicCoordinate TucsonAzUsa => new(32.221667, -110.926389, 728);
+
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
     {
@@ -394,10 +405,10 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunCoordinateSystems));
       System.Console.WriteLine();
 
-      Draw(Flux.Geometry.GeographicCoordinate.MadridSpain, nameof(Flux.Geometry.GeographicCoordinate.MadridSpain));
-      Draw(Flux.Geometry.GeographicCoordinate.PhoenixAzUsa, nameof(Flux.Geometry.GeographicCoordinate.PhoenixAzUsa));
-      Draw(Flux.Geometry.GeographicCoordinate.TakapauNewZealand, nameof(Flux.Geometry.GeographicCoordinate.TakapauNewZealand));
-      Draw(Flux.Geometry.GeographicCoordinate.TucsonAzUsa, nameof(Flux.Geometry.GeographicCoordinate.TucsonAzUsa));
+      Draw(MadridSpain, nameof(MadridSpain));
+      Draw(PhoenixAzUsa, nameof(PhoenixAzUsa));
+      Draw(TakapauNewZealand, nameof(TakapauNewZealand));
+      Draw(TucsonAzUsa, nameof(TucsonAzUsa));
 
       static void Draw(Flux.Geometry.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
       {

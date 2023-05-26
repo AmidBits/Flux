@@ -10,9 +10,9 @@ namespace Flux.Geometry
     private readonly TSelf m_canvasWidth;
     private readonly TSelf m_rasterHeight;
     private readonly TSelf m_rasterWidth;
-    private readonly Quaternion m_worldToCamera;
+    private readonly System.Numerics.Quaternion m_worldToCamera;
 
-    public ViewPort(TSelf canvasWidth, TSelf canvasHeight, TSelf rasterWidth, TSelf rasterHeight, Quaternion worldToCamera)
+    public ViewPort(TSelf canvasWidth, TSelf canvasHeight, TSelf rasterWidth, TSelf rasterHeight, System.Numerics.Quaternion worldToCamera)
     {
       m_canvasHeight = canvasHeight;
       m_canvasWidth = canvasWidth;
@@ -22,11 +22,11 @@ namespace Flux.Geometry
 
       m_worldToCamera = worldToCamera;
     }
-    public ViewPort(Quaternion worldToCamera)
+    public ViewPort(System.Numerics.Quaternion worldToCamera)
       : this(TSelf.CreateChecked(2), TSelf.CreateChecked(2), TSelf.CreateChecked(1920), TSelf.CreateChecked(1024), worldToCamera)
     { }
 
-    public void Deconstruct(out TSelf canvasWidth, out TSelf canvasHeight, out TSelf rasterWidth, out TSelf rasterHeight, out Quaternion worldToCamera) { canvasWidth = m_canvasWidth; canvasHeight = m_canvasHeight; rasterWidth = m_rasterWidth; rasterHeight = m_rasterHeight; worldToCamera = m_worldToCamera; }
+    public void Deconstruct(out TSelf canvasWidth, out TSelf canvasHeight, out TSelf rasterWidth, out TSelf rasterHeight, out System.Numerics.Quaternion worldToCamera) { canvasWidth = m_canvasWidth; canvasHeight = m_canvasHeight; rasterWidth = m_rasterWidth; rasterHeight = m_rasterHeight; worldToCamera = m_worldToCamera; }
 
     public TSelf CanvasHeight { get => m_canvasHeight; init => m_canvasHeight = value; }
     public TSelf CanvasWidth { get => m_canvasWidth; init => m_canvasWidth = value; }
@@ -34,12 +34,12 @@ namespace Flux.Geometry
     public TSelf RasterHeight { get => m_rasterHeight; init => m_rasterHeight = value; }
     public TSelf RasterWidth { get => m_rasterWidth; init => m_rasterWidth = value; }
 
-    public Quaternion WorldToCamera { get => m_worldToCamera; init => m_worldToCamera = value; }
+    public System.Numerics.Quaternion WorldToCamera { get => m_worldToCamera; init => m_worldToCamera = value; }
 
     /// <summary>Transform the 3D point from world space to camera space.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
     public CartesianCoordinate3<TSelf> TransformWorldToCamera(CartesianCoordinate3<TSelf> source)
-      => System.Numerics.Vector3.Transform(source.ToVector3<TSelf>(), m_worldToCamera.ToQuaternion()).ToCartesianCoordinate3<TSelf>();
+      => System.Numerics.Vector3.Transform(source.ToVector3<TSelf>(), m_worldToCamera).ToCartesianCoordinate3<TSelf>();
 
     /// <summary>Transform from camera space to vector on the canvas. Use perspective projection.</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>

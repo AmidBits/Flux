@@ -11,16 +11,7 @@ namespace Flux.Geometry
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
 
-    /// <summary>This is a reference coordinate for Madrid, in Spain on Europe, which is antipodal to Takapau, in New Zeeland.</summary>
-    public static GeographicCoordinate MadridSpain => new(40.416667, -3.716667, 820);
-
-    /// <summary>This is a reference coordinate for Takapau, in New Zeeland, which is antipodal to Madrid, in Spain on Europe.</summary>
-    public static GeographicCoordinate TakapauNewZealand => new(-40.033333, 176.35, 221);
-
-    /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static GeographicCoordinate PhoenixAzUsa => new(33.448333, -112.073889, 331);
-    /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static GeographicCoordinate TucsonAzUsa => new(32.221667, -110.926389, 728);
+    public readonly static GeographicCoordinate GreenwichMeridian = new(51.477811, -0.001475);
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     private readonly double m_altitude;
@@ -54,6 +45,9 @@ namespace Flux.Geometry
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public double Altitude { get => m_altitude; init => m_altitude = value; }
+
+    /// <summary>The diametrical opposite of the <see cref="GeographicCoordinate"/>, i.e. the opposite side of Earth's surface. This is a plain mathematical antipode.</summary>
+    public GeographicCoordinate Antipode => new(0 - Latitude, Longitude - 180, Altitude);
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     public double Latitude { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).InRadians; }
