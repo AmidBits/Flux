@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class ArrayRank2
   {
-    /// <summary>Flip the order of all elements, in-place, along the specified dimension of the two-dimensional array.</summary>
+    /// <summary>Flip the order of the strands, in-place, along the specified <paramref name="dimension"/> in <paramref name="source"/>.</summary>
     public static void FlipInPlace<T>(this T[,] source, int dimension)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

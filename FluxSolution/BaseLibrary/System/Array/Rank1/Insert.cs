@@ -2,8 +2,12 @@ namespace Flux
 {
   public static partial class ArrayRank1
   {
-    private static void InsertImpl<T>(ref T[] source, int index, int count)
+    /// <summary>Modifies <paramref name="source"/> by inserting <paramref name="count"/> of <typeparamref name="T"/> at <paramref name="index"/>.</summary>
+    private static void Insert<T>(ref T[] source, int index, int count)
     {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
+
       var sourceLength = source.Length;
 
       System.Array.Resize(ref source, sourceLength + count);
@@ -12,30 +16,22 @@ namespace Flux
         System.Array.Copy(source, index, source, index + count, moveRight);
     }
 
-    /// <summary>Modifies the <paramref name="source"/> by inserting the specified number (<paramref name="count"/>) of default elements at the <paramref name="index"/>.</summary>
-    public static void Insert<T>(ref T[] source, int index, int count)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      InsertImpl(ref source, index, count);
-      System.Array.Clear(source, index, count);
-    }
-    /// <summary>Modifies the <paramref name="source"/> by inserting the specified number (<paramref name="count"/>) of <paramref name="value"/> elements at the <paramref name="index"/>.</summary>
+    /// <summary>Modifies <paramref name="source"/> by inserting <paramref name="count"/> of <paramref name="value"/> at <paramref name="index"/>.</summary>
     public static void Insert<T>(ref T[] source, int index, int count, T value)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      InsertImpl(ref source, index, count);
+      Insert(ref source, index, count);
+
       System.Array.Fill(source, value, index, count);
     }
-    /// <summary>Modifies the <paramref name="source"/> by inserting the <paramref name="insert"/> array at the <paramref name="index"/>.</summary>
-    public static void Insert<T>(ref T[] source, int index, params T[] insert)
+
+    /// <summary>Modifies <paramref name="source"/> by inserting the elements of <paramref name="values"/> at <paramref name="index"/>.</summary>
+    public static void Insert<T>(ref T[] source, int index, params T[] values)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      if (insert is null) throw new System.ArgumentNullException(nameof(insert));
-      InsertImpl(ref source, index, insert.Length);
-      System.Array.Copy(insert, 0, source, index, insert.Length);
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
+      Insert(ref source, index, values.Length);
+
+      System.Array.Copy(values, 0, source, index, values.Length);
     }
   }
 }

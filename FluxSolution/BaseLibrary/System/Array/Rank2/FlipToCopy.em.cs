@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class ArrayRank2
   {
-    /// <summary>Create a new two-dimensional array from the source, with the order of all elements along the specified dimension flipped.</summary>
+    /// <summary>Create a new two-dimensional array from <paramref name="source"/> with the strands of the specified <paramref name="dimension"/> (rows or columns) flipped.</summary>
     public static T[,] FlipToCopy<T>(this T[,] source, int dimension)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

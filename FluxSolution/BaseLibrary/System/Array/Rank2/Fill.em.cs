@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class ArrayRank2
   {
-    /// <summary>Fill the array with the specified pattern, at the indices and counts.</summary>
+    /// <summary>Fill <paramref name="source"/> with the specified pattern, at the indices and counts.</summary>
     public static void Fill<T>(this T[,] source, int index0, int index1, int count0, int count1, params T[] pattern)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

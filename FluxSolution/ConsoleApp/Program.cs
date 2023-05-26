@@ -33,109 +33,59 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var v1str = Flux.Geometry.GeographicCoordinate.TucsonAzUsa.ToString();
-      var v1lat = Flux.SexagesimalDegree.ConvertDecimalDegreesToSexagesimalDMS(Flux.Geometry.GeographicCoordinate.TucsonAzUsa.Latitude, out var _);
-      var v1lats = new Flux.SexagesimalDegree(Flux.Geometry.GeographicCoordinate.TucsonAzUsa.Latitude);
-      var v1lon = Flux.SexagesimalDegree.ConvertDecimalDegreesToSexagesimalDMS(Flux.Geometry.GeographicCoordinate.TucsonAzUsa.Longitude, out var _);
-      var v1lons = new Flux.SexagesimalDegree(Flux.Geometry.GeographicCoordinate.TucsonAzUsa.Longitude);
+      var ar2 = new object[,] { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }, { 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 }, { 30, 31, 32, 33, 34, 35, 36, 37, 38, 39 }, { 40, 41, 42, 43, 44, 45, 46, 47, 48, 49 }, { 50, 51, 52, 53, 54, 55, 56, 57, 58, 59 }, { 60, 61, 62, 63, 64, 65, 66, 67, 68, 69 }, { 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 }, { 80, 81, 82, 83, 84, 85, 86, 87, 88, 89 }, { 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 } };
 
-      var jao = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile)).GetStrings().ToArray();
+      var aj0 = ar2.ToJaggedArray(0);
+      System.Console.WriteLine(aj0.JaggedToConsoleString());
+      var aj1 = ar2.ToJaggedArray(1);
+      System.Console.WriteLine(aj1.JaggedToConsoleString());
 
-      var fp = @"C:\tmp\test.utt";
-
-      using var fso = new System.IO.FileStream(fp, System.IO.FileMode.Create);
-      using var two = new System.IO.StreamWriter(fso, System.Text.Encoding.UTF8);
-
-      var usw = new Flux.IO.UnicodeStructuredWriter(two) { UseSymbolsInsteadOfControl = true };
-      usw.WriteUnicodeGroup(jao);
-
-      two.Close();
-      fso.Close();
-
-      using var fsi = new System.IO.FileStream(fp, System.IO.FileMode.Open);
-      using var twi = new System.IO.StreamReader(fsi, System.Text.Encoding.UTF8);
-
-      var usr = new Flux.IO.UnicodeStructuredReader(twi);
-      var jai = usr.ReadUnicodeGroup();
-
-      return;
-
-      //var jdn = System.DateTime.UtcNow.ToJulianDayNumber(TemporalCalendar.GregorianCalendar);
-      //var jd = System.DateTime.UtcNow.ToJulianDate(TemporalCalendar.GregorianCalendar);
-
-      //var hci = new Flux.Numerics.HexCoordinate<int>();
-      //var hcf = new Flux.Numerics.HexCoordinate<double>();
-
-      //int[] ints = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-      //var ints2 = ints.ValuesOnNullOrEmpty(4, 5, 6);
-
-      //var ints3 = ints2;//.ThrowOnNullOrEmpty();
-      //var ints4 = ints3.ToArray();
-      //var dt = System.TimeZoneInfo.GetSystemTimeZones().ToDataTable(() => "Time-Zones");
-      //dt.DefaultView.Sort = "StandardName ASC";
-      //dt.DefaultView.RowFilter = "DisplayName Like '*Sw*'";
-      //System.Console.WriteLine(dt.DefaultView.ToConsoleString());
-
-      //foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
-      //{
-      //  // For a Console App
-      //  System.Console.WriteLine(tz.GetCustomAbbreviation() + "\t" + tz.Id + "\t" + tz.BaseUtcOffset + "\t" + tz.StandardName + "\t" + tz.DisplayName + "\t" + tz.DaylightName);
-      //}
-      return;
+      var r20 = aj0.ToTwoDimensionalArray();
+      System.Console.WriteLine(r20.Rank2ToConsoleString());
+      var r21 = aj1.ToTwoDimensionalArray();
+      System.Console.WriteLine(r21.Rank2ToConsoleString());
 
 
-      //System.Numerics.BitOperations.IsPow2
-      //System.Numerics.BitOperations.LeadingZeroCount
-      //System.Numerics.BitOperations.Log2
-      //System.Numerics.BitOperations.PopCount
-      //System.Numerics.BitOperations.RoundUpToPowerOf2
-      //System.Numerics.BitOperations.TrailingZeroCount
 
-      //var il2 = (0.0).IgiLog2();
+      //System.Console.WriteLine(obj2D.ToRank2ConsoleString());
 
-      var ms1bs = ((0.MostSignificant1Bit() - 1) << 1);
+      //var jas = ja.ToJaggedConsoleString(uniformWidth: true, centerContent: true);
 
-      var zbl = (0).ShortestBitLength();
-      var zbln = (0).BitLengthN();
+      //var jagged = obj2D.ToJaggedArray(true);
 
-      var ms1b = (-670530).MostSignificant1Bit();
-      var minv = int.MinValue;
-      Eliza();
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => ar2.ToJaggedArray(0), 1000000));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => ar2.ToJaggedArray(1), 1000000));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => aj0.ToTwoDimensionalArray(10, 10), 1000000));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => aj1.ToTwoDimensionalArray(), 1000000));
 
-      var radix = 10;
-      System.Console.WriteLine($"Bits = If_S / If_U");
-      System.Console.WriteLine($"---- - ---- - ----");
-      for (var bits = 1; bits <= 32; bits++)
-        System.Console.WriteLine($"{bits:D4} = {Flux.Bits.ToMaxDigitCount(bits, radix, true):D4} / {Flux.Bits.ToMaxDigitCount(bits, radix, false):D4}");
+      //var ar1 = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 101 };
 
-      return;
+      //var jas = ar1.ToJaggedArray(true).ToJaggedConsoleString(centerContent: true);
 
-      var e = 240.ToBigInteger();
-      System.Console.WriteLine($"  {e.ToOctalString()}");
-      System.Console.WriteLine($"  {e.ToHexadecimalString()}");
+      //System.Console.WriteLine(jagged.ToJaggedConsoleString());
 
-      var me = -e;
-      System.Console.WriteLine($" -{me.ToBinaryString()}");
+      //var jao = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile)).GetStrings().ToArray();
 
-      var re = (e.ReverseBits() & -e.ReverseBits()).ReverseBits();
-      System.Console.WriteLine($"re{re.ToBinaryString()}");
+      //var fp = @"C:\tmp\test.utt";
 
-      var em1 = e - 1;
-      System.Console.WriteLine($"1-{em1.ToBinaryString()}");
+      //using var fso = new System.IO.FileStream(fp, System.IO.FileMode.Create);
+      //using var two = new System.IO.StreamWriter(fso, System.Text.Encoding.UTF8);
 
-      var ce = ~e;
-      System.Console.WriteLine($" ~{ce.ToBinaryString()}");
+      //var usw = new Flux.IO.UnicodeStructuredWriter(two) { UseSymbolsInsteadOfControl = true };
+      //usw.WriteUnicodeGroup(jao);
 
-      var mce = -~e;
-      System.Console.WriteLine($"-~{mce.ToBinaryString()}");
+      //two.Close();
+      //fso.Close();
 
-      var a = (byte)0x55;
-      var b = (byte)0xAA;
-      var z = a.MortonNumber(b);
+      //using var fsi = new System.IO.FileStream(fp, System.IO.FileMode.Open);
+      //using var twi = new System.IO.StreamReader(fsi, System.Text.Encoding.UTF8);
 
-      var n = 6235854;
+      //var usr = new Flux.IO.UnicodeStructuredReader(twi);
+      //var jai = usr.ReadUnicodeGroup();
 
+      //return;
+
+      //var n = 6235854;
       //var nlpo2 = n.NextLargerPowerOf2();
       //var bi = n.ToBigInteger();
       //var bis = bi.ToString("X8");

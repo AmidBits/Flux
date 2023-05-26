@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class ArrayRank2
   {
-    /// <summary>Create a new two dimensional array from the source, with the elements rotated counter-clockwise.</summary>
+    /// <summary>Create a new two dimensional array from <paramref name="source"/> with the elements rotated counter-clockwise.</summary>
     public static T[,] RotateCounterClockwise<T>(this T[,] source)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

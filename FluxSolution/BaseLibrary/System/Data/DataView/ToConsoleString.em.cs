@@ -22,11 +22,9 @@ namespace Flux
        .Select((e, i) => source.Cast<System.Data.DataRowView>().Max(dr => $"{dr[i]}".Length));
 
       if (includeColumnNames)
-      {
         maxColumnWidths = maxColumnWidths
           .Zip(source.Table.Columns.Cast<System.Data.DataColumn>().Select(c => c.ColumnName.Length))
           .Select(w => includeColumnNames ? System.Math.Max(w.First, w.Second) : w.First);
-      }
 
       var maxColumnWidth = maxColumnWidths.Max();
 
@@ -34,30 +32,39 @@ namespace Flux
     }
 
     /// <summary>Returns the data table as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
-    public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings(this System.Data.DataView source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool includeColumnNames = true, bool uniformWidths = false)
+    public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings(this System.Data.DataView source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool includeColumnNames = true, bool uniformWidth = false, bool centerContent = false)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-      var maxColumnWidths = source.MaxColumnWidths(includeColumnNames, uniformWidths);
+      var horizontalSeparatorString = horizontalSeparator == '\0' ? null : horizontalSeparator.ToString();
 
-      var horizontalLineFormat = string.Join(horizontalSeparator, maxColumnWidths.Select((width, index) => $"{{{index},-{width}}}"));
+      var maxColumnWidths = source.MaxColumnWidths(includeColumnNames, uniformWidth);
 
-      var verticalLine = string.Join(horizontalSeparator, maxColumnWidths.Select((e, i) => new string(verticalSeparator, e)));
+      var verticalLine = verticalSeparator == '\0' ? null : string.Join(horizontalSeparatorString, maxColumnWidths.Select(width => new string(verticalSeparator, width)));
+
+      var horizontalLineFormat = string.Join(horizontalSeparatorString, maxColumnWidths.Select((width, index) => $"{{{index},-{width}}}"));
 
       if (includeColumnNames)
-        yield return string.Format(System.Globalization.CultureInfo.InvariantCulture, horizontalLineFormat, source!.Table!.Columns.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName).ToArray());
+      {
+        yield return string.Format(horizontalLineFormat, source!.Table!.Columns.Cast<System.Data.DataColumn>().Select((e, i) => centerContent ? e.ColumnName.ToStringBuilder().PadEven(maxColumnWidths[i], ' ', ' ').ToString() : e.ColumnName).ToArray());
+
+        if (verticalLine is not null)
+          yield return verticalLine;
+      }
 
       for (var r = 0; r < source.Count; r++)
       {
-        if (verticalSeparator != '\0' && (r > 0 || includeColumnNames))
+        if (verticalLine is not null && r > 0)
           yield return verticalLine;
 
-        yield return string.Format(horizontalLineFormat, source[r].Row.ItemArray);
+        var values = source[r].Row.ItemArray is var array && centerContent ? array.Select((e, i) => $"{e}".ToStringBuilder().PadEven(maxColumnWidths[i], ' ', ' ').ToString()).ToArray() : array;
+
+        yield return string.Format(horizontalLineFormat, values);
       }
     }
 
     /// <summary>Returns the data table as a ready-to-print grid-like formatted string, that can be printed in the console.</summary>
-    public static string ToConsoleString(this System.Data.DataView source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool includeColumnNames = true, bool uniformWidths = false)
-      => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, includeColumnNames, uniformWidths));
+    public static string ToConsoleString(this System.Data.DataView source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool includeColumnNames = true, bool uniformWidth = false, bool centerContent = false)
+      => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, includeColumnNames, uniformWidth));
   }
 }

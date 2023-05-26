@@ -2,10 +2,13 @@ namespace Flux
 {
   public static partial class ArrayRank1
   {
-    private static T[] InsertImpl<T>(this T[] source, int index, int count)
+    /// <summary>Create a new array with all elements from <paramref name="source"/> and <paramref name="count"/> elements inserted at <paramref name="index"/>.</summary>
+    private static T[] Insert<T>(this T[] source, int index, int count)
     {
-      var sourceLength = source.Length;
-      var targetLength = sourceLength + count; // Pre-compute for multi-use.
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+      var targetLength = source.Length + count; // Pre-compute for multi-use.
 
       var target = new T[targetLength];
 
@@ -20,32 +23,20 @@ namespace Flux
       return target;
     }
 
-    /// <summary>Create a new array with the specified number (<paramref name="count"/>) of elements inserted at the <paramref name="index"/>.</summary>
-    public static T[] Insert<T>(this T[] source, int index, int count)
-    {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      var target = InsertImpl(source, index, count);
-      System.Array.Clear(target, index, count);
-      return target;
-    }
-    /// <summary>Create a new array with the specified number (<paramref name="count"/>) of <paramref name="value"/> inserted at the <paramref name="index"/>.</summary>
+    /// <summary>Create a new array with all elements from <paramref name="source"/> and <paramref name="count"/> instances of <paramref name="value"/> inserted at <paramref name="index"/>.</summary>
     public static T[] Insert<T>(this T[] source, int index, int count, T value)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      var target = InsertImpl(source, index, count);
+      var target = Insert(source, index, count);
       System.Array.Fill(target, value, index, count);
       return target;
     }
-    /// <summary>Create a new array with the specified <paramref name="insert"/> array inserted at the <paramref name="index"/>.</summary>
-    public static T[] Insert<T>(this T[] source, int index, params T[] insert)
+    /// <summary>Create a new array with all elements from <paramref name="source"/> and the elements of <paramref name="values"/> inserted at <paramref name="index"/>.</summary>
+    public static T[] Insert<T>(this T[] source, int index, params T[] values)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      if (insert is null) throw new System.ArgumentNullException(nameof(insert));
-      var target = InsertImpl(source, index, insert.Length);
-      System.Array.Copy(insert, 0, target, index, insert.Length);
+      if (values is null) throw new System.ArgumentNullException(nameof(values));
+
+      var target = Insert(source, index, values.Length);
+      System.Array.Copy(values, 0, target, index, values.Length);
       return target;
     }
   }

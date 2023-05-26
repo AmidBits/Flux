@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ArrayRank2
   {
-    /// <summary>Create a new sequence with elements from the specified dimension and index (within the dimension).</summary>
+    /// <summary>Create a new sequence with elements in <paramref name="source"/> from the specified <paramref name="dimension"/> and <paramref name="index"/> (within the <paramref name="dimension"/>).</summary>
     public static System.Collections.Generic.IEnumerable<(int index0, int index1, T item)> GetElements<T>(this T[,] source, int dimension, int index)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

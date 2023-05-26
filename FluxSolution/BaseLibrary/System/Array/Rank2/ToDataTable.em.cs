@@ -3,7 +3,7 @@ namespace Flux
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class ArrayRank2
   {
-    /// <summary>Create a new System.Data.DataTable from the two dimensional array.</summary>
+    /// <summary>Create a new <see cref="System.Data.DataTable"/> from <paramref name="source"/>.</summary>
     public static System.Data.DataTable ToDataTable<T>(this T[,] source, bool sourceHasColumnNames, params string[] customColumnNames)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -16,9 +16,9 @@ namespace Flux
 
       for (var i1 = 0; i1 < sourceLength1; i1++)
         dt.Columns.Add(
-          (customColumnNames.Length > i1 ? customColumnNames[i1] : null) // First choice, use custom column name if there is one.
-          ?? (sourceHasColumnNames ? source[0, i1]?.ToString() : null) // Second choice, if the parameter 'sourceHasColumnNames' is true, use source.
-          ?? $"Column{i1}" // Last resort, use generic name with index.
+          (customColumnNames.Length > i1 ? customColumnNames[i1] : null) // First choice, use custom column name.
+          ?? (sourceHasColumnNames ? source[0, i1]?.ToString() : null) // Second choice, if the parameter 'sourceHasColumnNames' is true, use source value.
+          ?? $"Column{i1}" // Third choice, use generic name with index.
         );
 
       for (var i0 = (sourceHasColumnNames ? 1 : 0); i0 < sourceLength0; i0++)

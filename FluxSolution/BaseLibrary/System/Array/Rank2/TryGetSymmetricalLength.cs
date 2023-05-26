@@ -12,7 +12,8 @@ namespace Flux
         return false;
       }
 
-      return (length = source.GetLength(0)) == source.GetLength(1);
+      length = source.GetLength(1);
+      return System.Linq.Enumerable.Range(0, source.Rank).Select(source.GetLength).ToHashSet().Count == 1;
     }
   }
 }

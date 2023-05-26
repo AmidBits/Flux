@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class ArrayRank1
   {
-    /// <summary>Fill the array with the specified value pattern, at the offset and count.</summary>
+    /// <summary>Fill <paramref name="source"/> with <paramref name="count"/> of <paramref name="pattern"/> at <paramref name="index"/>.</summary>
     public static T[] Fill<T>(this T[] source, int index, int count, params T[] pattern)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));

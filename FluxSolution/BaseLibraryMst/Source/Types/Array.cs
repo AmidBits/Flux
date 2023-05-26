@@ -13,7 +13,7 @@ namespace Types
     [TestMethod]
     public void EmCreate()
     {
-      var actual = original.ToCopy(0, 0, 3, 3, 0, 0, 0, 0);
+      var actual = original.Copy(0, 0, 3, 3, 0, 0, 0, 0);
 
       CollectionAssert.AreEqual(original, actual);
     }
