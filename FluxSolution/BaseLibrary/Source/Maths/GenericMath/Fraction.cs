@@ -54,8 +54,8 @@ namespace Flux
     /// <summary>Represents an approximate fraction of the irrational Golden Ratio.</summary>
     public static readonly Fraction GoldenRatio = new(7540113804746346429L, 4660046610375530309L, false);
 
-    private readonly System.Numerics.BigInteger m_numerator;
-    private readonly System.Numerics.BigInteger m_denominator;
+    private readonly System.Numerics.BigInteger m_numerator; // Can be negative and zero.
+    private readonly System.Numerics.BigInteger m_denominator; // Cannot be negative or zero.
 
     /// <summary>Creates a new simple fraction from the specified numerator and denominator. Optionally the fraction can be reduced, if possible.</summary>
     /// <param name="numerator"></param>
@@ -71,16 +71,22 @@ namespace Flux
         denominator = -denominator;
       }
 
-      if (reduceIfPossible && IsReducible(numerator, denominator, out var gcd))
-      {
-        m_numerator = numerator / gcd;
-        m_denominator = denominator / gcd;
-      }
-      else
-      {
-        m_numerator = numerator;
-        m_denominator = denominator;
-      }
+      //if (reduceIfPossible && IsReducible(numerator, denominator, out var gcd))
+      //{
+      //  m_numerator = numerator / gcd;
+      //  m_denominator = denominator / gcd;
+      //}
+      //else
+      //{
+      //  m_numerator = numerator;
+      //  m_denominator = denominator;
+      //}
+
+      if (reduceIfPossible)
+        TryReduce(numerator, denominator, out numerator, out denominator);
+
+      m_numerator = numerator;
+      m_denominator = denominator;
     }
     /// <summary>Creates a new simple fraction from the specified numerator and denominator. If the fraction can be reduced, it will be.</summary>
     /// <param name="numerator"></param>
@@ -91,33 +97,49 @@ namespace Flux
 
     public void Deconstruct(out System.Numerics.BigInteger numerator, out System.Numerics.BigInteger denominator) { numerator = m_numerator; denominator = m_denominator; }
 
+    /// <summary>The numerator of the fraction. This carries the sign and can also be zero.</summary>
     public System.Numerics.BigInteger Numerator => m_numerator;
+    /// <summary>The denominator of the fraction. It is always positive and non-zero.</summary>
     public System.Numerics.BigInteger Denominator => m_denominator;
 
     public System.Numerics.BigInteger GetWholePart() => System.Numerics.BigInteger.Divide(m_numerator, m_denominator);
 
     public Fraction GetFractionPart() => new(System.Numerics.BigInteger.Remainder(m_numerator, m_denominator), m_denominator);
 
-    /// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
-    public bool IsProper => System.Numerics.BigInteger.Abs(m_numerator) < m_denominator;
+    ///// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
+    //public bool IsProper => System.Numerics.BigInteger.Abs(m_numerator) < m_denominator;
 
-    public bool IsMixedFraction(out System.Numerics.BigInteger quotient, out System.Numerics.BigInteger remainder)
-    {
-      if (m_denominator == 0)
-      {
-        quotient = default;
-        remainder = default;
+    //public bool IsMixed => m_denominator > System.Numerics.BigInteger.One && System.Numerics.BigInteger.Abs(m_numerator) > m_denominator;
 
-        return false;
-      }
+    //public bool IsWhole => m_denominator == System.Numerics.BigInteger.One || m_numerator == m_denominator;
 
-      (quotient, remainder) = System.Numerics.BigInteger.DivRem(m_numerator, m_denominator);
+    //public bool IsMixedFraction(out System.Numerics.BigInteger quotient, out System.Numerics.BigInteger remainder)
+    //{
+    //  if (m_denominator == 0)
+    //  {
+    //    quotient = default;
+    //    remainder = default;
 
-      return System.Numerics.BigInteger.Abs(remainder) > System.Numerics.BigInteger.Zero;
-    }
+    //    return false;
+    //  }
 
-    /// <summary>A fraction is a unit fraction if its numerator is equal to 1.</summary>
-    public bool IsUnitFraction => m_numerator == System.Numerics.BigInteger.One;
+    //  (quotient, remainder) = System.Numerics.BigInteger.DivRem(m_numerator, m_denominator);
+
+    //  return System.Numerics.BigInteger.Abs(remainder) > System.Numerics.BigInteger.Zero;
+    //}
+
+    ///// <summary>A fraction is a unit fraction if its numerator is equal to 1.</summary>
+    //public bool IsUnitFraction => m_numerator == System.Numerics.BigInteger.One;
+
+    //public bool TryGetMixed(out System.Numerics.BigInteger whole, out Fraction part)
+    //{
+    //  var (quotient, remainder) = System.Numerics.BigInteger.DivRem(m_numerator, m_denominator);
+
+    //  whole = quotient;
+    //  part = new Fraction(remainder, m_denominator);
+
+    //  return IsMixed;
+    //}
 
     #region Static methods
 
@@ -212,7 +234,7 @@ namespace Flux
       throw new System.NotSupportedException();
     }
 
-    public static char GetSymbolFractionSlash(bool preferUnicode = false) => preferUnicode ? '\u2044' : '\u002F';
+    public static char GetSymbolFractionSlash(bool preferUnicode = true) => preferUnicode ? '\u2044' : '\u002F';
 
     /// <summary>Returns the greatest common divisor (GCD) of two values.</summary>
     /// <remarks>The result is guaranteed to be a reduced fraction. If you try to further simplify this to: (gcd(a,c) * gcd(b,d)) / (|b*d|), then the result will not be reduced, and the operation actually takes about 60% longer.</remarks>
@@ -228,7 +250,29 @@ namespace Flux
           true
         );
 
-    /// <summary>Returns the least common multiple (LCM) of two values.</summary>
+    /// <summary>Determines whether the <paramref name="numerator"/> / <paramref name="denominator"/> represents a mixed fraction.</summary>
+    public static bool IsMixedFraction(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator)
+      => denominator > System.Numerics.BigInteger.One && System.Numerics.BigInteger.Abs(numerator) > denominator;
+
+    /// <summary>Determines whether the <paramref name="numerator"/> / <paramref name="denominator"/> represents a proper fraction.</summary>
+    /// <remarks>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</remarks>
+    public static bool IsProperFraction(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator)
+      => System.Numerics.BigInteger.Abs(numerator) < denominator;
+
+    /// <summary>Determines whether the <paramref name="numerator"/> / <paramref name="denominator"/> represents a whole numbered fraction.</summary>
+    public static bool IsWholeFraction(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator)
+      => denominator == System.Numerics.BigInteger.One || numerator == denominator;
+
+    /// <summary>Determines whether the <paramref name="numerator"/> / <paramref name="denominator"/> represents a reducible fraction, and if so, returns the <paramref name="greatestCommonDenominator"/> (Greatest Common Denominator) as an out parameter.</summary>
+    public static bool IsReducibleFraction(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger greatestCommonDenominator)
+      => (greatestCommonDenominator = System.Numerics.BigInteger.GreatestCommonDivisor(numerator, denominator)) > System.Numerics.BigInteger.One;
+
+    /// <summary>Determines whether the <paramref name="numerator"/> / <paramref name="denominator"/> represents a unit fraction.</summary>
+    /// <remarks>A fraction is a unit fraction if its <paramref name="numerator"/> is equal to 1.</remarks>
+    public static bool IsUnitFraction(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator)
+      => System.Numerics.BigInteger.IsNegative(denominator) || denominator.IsZero ? throw new System.ArgumentOutOfRangeException(nameof(denominator), "Must be a positive natural number.") : numerator == System.Numerics.BigInteger.One;
+
+    /// <summary>Returns the least common multiple (LCM) of <paramref name="a"/> and <paramref name="b"/>.</summary>
     /// <remarks>The result is guaranteed to be a reduced fraction. If you try to further simplify this to: |a*c| / (gcd(a,c) * gcd(b,d)), then the result will not be reduced, and the operation actually takes about 60% longer.</remarks>
     /// <example>lcm((a/b),(c/d)) = lcm(a,c) / gcd(b,d) = (|a*c| / gcd(a,c)) / gcd(b,d)</example>
     public static Fraction LeastCommonMultiple(Fraction a, Fraction b)
@@ -240,11 +284,11 @@ namespace Flux
           true
         );
 
-    /// <summary>Returns the mediant of two values.</summary>
+    /// <summary>Returns the mediant of <paramref name="a"/> and <paramref name="b"/>.</summary>
     public static Fraction Mediant(Fraction a, Fraction b)
       => new(a.m_numerator + b.m_numerator, a.m_denominator + b.m_denominator, false);
 
-    /// <summary>Returns the nth root of the value.</summary>
+    /// <summary>Returns the nth root of <paramref name="value"/>.</summary>
     private static Fraction NthRoot(Fraction value, int nth, Fraction maxError)
     {
       if (nth < 0)
@@ -383,11 +427,47 @@ namespace Flux
       ? Pow(value, int.CreateChecked(exponent))
       : throw new System.ArgumentOutOfRangeException(nameof(exponent));
 
-    /// <summary>Returns the reciprocal of a value.</summary>
+    /// <summary>Returns the reciprocal of <paramref name="value"/>.</summary>
     public static Fraction Reciprocal(Fraction value)
       => IsZero(value)
-      ? throw new System.DivideByZeroException(@"Reciprocal of the value zero.")
+      ? throw new System.DivideByZeroException(@"Reciprocal of zero.")
       : new(value.m_denominator, value.m_numerator, true);
+
+    public static bool TryGetMixedParts(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger whole, out System.Numerics.BigInteger properNumerator, out System.Numerics.BigInteger properDenominator)
+    {
+      try
+      {
+        if (IsMixedFraction(numerator, denominator))
+        {
+          (whole, properNumerator) = System.Numerics.BigInteger.DivRem(numerator, denominator);
+
+          properDenominator = denominator;
+
+          return true;
+        }
+      }
+      catch { }
+
+      whole = properNumerator = properDenominator = System.Numerics.BigInteger.Zero;
+
+      return false;
+    }
+
+    public static bool TryReduce(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger reducedNumerator, out System.Numerics.BigInteger reducedDenominator)
+    {
+      if (IsReducibleFraction(numerator, denominator, out var greatestCommonDenominator))
+      {
+        reducedNumerator = numerator / greatestCommonDenominator;
+        reducedDenominator = denominator / greatestCommonDenominator;
+
+        return true;
+      }
+
+      reducedNumerator = numerator;
+      reducedDenominator = denominator;
+
+      return false;
+    }
 
     #endregion Static methods
 
@@ -460,20 +540,19 @@ namespace Flux
     public static Fraction Abs(Fraction value) => new(System.Numerics.BigInteger.Abs(value.m_numerator), System.Numerics.BigInteger.Abs(value.m_denominator));
     public static bool IsCanonical(Fraction f) => true;
     public static bool IsComplexNumber(Fraction f) => false;
-    public static bool IsEvenInteger(Fraction f) => f.m_numerator.IsEven && IsInteger(f); // When the numerator is even and the denominator is one.
+    public static bool IsEvenInteger(Fraction f) => f.m_numerator.IsEven && IsInteger(f); // When the numerator is even and the fraction is an integer.
     public static bool IsFinite(Fraction f) => true;
     public static bool IsImaginaryNumber(Fraction f) => false;
     public static bool IsInfinity(Fraction f) => false;
-    public static bool IsInteger(Fraction f) => f.m_denominator == System.Numerics.BigInteger.One; // In order to be an integer, the denominator must be one.
+    public static bool IsInteger(Fraction f) => IsWholeFraction(f.Numerator, f.Denominator); // In order to be an integer, the denominator must be one.
     public static bool IsNaN(Fraction f) => false;
     public static bool IsNegative(Fraction f) => System.Numerics.BigInteger.IsNegative(f.m_numerator); // The denominator will not be negative, see constructor.
     public static bool IsNegativeInfinity(Fraction f) => false;
     public static bool IsNormal(Fraction f) => !IsZero(f);
-    public static bool IsOddInteger(Fraction f) => !f.m_numerator.IsEven && IsInteger(f); // When the numerator is odd and the denominator is one.
+    public static bool IsOddInteger(Fraction f) => !f.m_numerator.IsEven && IsInteger(f); // When the numerator is odd and the fraction is an integer.
     public static bool IsPositive(Fraction f) => System.Numerics.BigInteger.IsPositive(f.m_numerator); // If the rational is negative it would only be via the numerator, see constructor.
     public static bool IsPositiveInfinity(Fraction f) => false;
     public static bool IsRealNumber(Fraction f) => !IsNaN(f);
-    public static bool IsReducible(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger gcd) => (gcd = GenericMath.GreatestCommonDivisor(numerator, denominator)) > System.Numerics.BigInteger.One;
     public static bool IsSubnormal(Fraction f) => false;
     public static bool IsZero(Fraction f) => f.m_numerator.IsZero; // When the numerator is zero (a zero denominator results in divide-by-zero exception).
     public static Fraction MaxMagnitude(Fraction a, Fraction b) => a >= b ? a : b;
@@ -597,7 +676,7 @@ namespace Flux
     public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
     [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
     public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}", Value);
+    public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}\u2044{1}", Value);
     public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
     [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
     [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
@@ -606,11 +685,11 @@ namespace Flux
 
     // IQuantifiable<>
     public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-      => IsProper
-      ? $"{m_numerator}{GetSymbolFractionSlash(preferUnicode)}{m_denominator}"
-      : IsMixedFraction(out var quotient, out var remainder)
-      ? $"{quotient} {System.Numerics.BigInteger.Abs(remainder)}{GetSymbolFractionSlash(preferUnicode)}{m_denominator}"
-      : quotient.ToString(); // It is a whole number and we return a simple integer string.
+      => IsProperFraction(m_numerator, m_denominator)
+      ? $"{m_numerator}\u2044{m_denominator}"
+      : TryGetMixedParts(m_numerator, m_denominator, out var whole, out var properNumerator, out var properDenominator)
+      ? $"{whole} {properNumerator}\u2044{properDenominator}"
+      : m_numerator.ToString(); // It is a whole number and we return a simple integer string.
 
     public double Value => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);
 
