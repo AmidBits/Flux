@@ -5,21 +5,21 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>Returns all single digits in <paramref name="number"/>, as well as the count and sum of them, using base <paramref name="radix"/>.</summary>
-    public static void DigitMeta<TSelf>(this TSelf number, TSelf radix, out TSelf count, out System.Collections.Generic.List<TSelf> digits, out TSelf sum)
+    public static void DigitMeta<TSelf>(this TSelf number, TSelf radix, out TSelf count, out TSelf sum, out System.Collections.Generic.List<TSelf> digits)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertRadix(radix);
 
       count = TSelf.Zero;
-      digits = new System.Collections.Generic.List<TSelf>();
       sum = TSelf.Zero;
+      digits = new System.Collections.Generic.List<TSelf>();
 
       while (!TSelf.IsZero(number))
       {
         count++;
         var digit = number % radix;
-        digits.Add(digit);
         sum += digit;
+        digits.Add(digit);
 
         number /= radix;
       }

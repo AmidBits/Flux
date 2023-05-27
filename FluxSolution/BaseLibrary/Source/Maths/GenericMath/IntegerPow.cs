@@ -18,14 +18,13 @@ namespace Flux
       var result = TSelf.One;
 
       while (exponent != TSelf.One)
-        checked
-        {
-          if (TSelf.IsOddInteger(exponent)) // Only act on set bits in exponent.
-            result *= value; // Multiply by the current corresponding power-of-radix (adjusted in radix below for each iteration).
+      {
+        if (TSelf.IsOddInteger(exponent)) // Only act on set bits in exponent.
+          result *= value; // Multiply by the current corresponding power-of-radix (adjusted in radix below for each iteration).
 
-          value *= value; // Compute power-of-radix for the next iteration.
-          exponent >>= 1; // Half the exponent for the next iteration.
-        }
+        value *= value; // Compute power-of-radix for the next iteration.
+        exponent >>= 1; // Half the exponent for the next iteration.
+      }
 
       return result * value;
     }

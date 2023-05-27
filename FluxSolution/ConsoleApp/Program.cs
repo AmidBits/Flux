@@ -36,6 +36,20 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var rv = 6705302039;
+      var pv = rv.GetPlaceValues(10);
+
+      foreach (var n in pv)
+        System.Console.WriteLine(n);
+      return;
+
+      var keep = 9;
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => rv.KeepLeastSignificantDigits(10, keep)));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => rv.KeepMostSignificantDigits(10, keep)));
+      return;
+
+      var r = rv.GetDigits(16);
+
       var a = Flux.Geometry.GeographicCoordinate.GreenwichMeridian;
       var b = Flux.Geometry.GeographicCoordinate.GreenwichMeridian.Antipode;
 

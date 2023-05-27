@@ -5,14 +5,19 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>Returns the digit place value components of <paramref name="number"/> using base <paramref name="radix"/>. E.g. 1234 return [4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands)].</summary>
-    public static System.Collections.Generic.List<TSelf> GetPlaceValues<TSelf>(this TSelf number, TSelf radix, bool skipZeroes = false)
+    public static System.Collections.Generic.List<TSelf> GetPlaceValues<TSelf>(this TSelf number, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       var list = GetDigitsReversed(number, radix); // Already asserts radix.
 
-      for (int index = list.Count - 1; index > 0; index--) // Skip index == 0, because it's the 'ones' column.
-        if (!TSelf.IsZero(list[index]) || !skipZeroes)
-          list[index] *= IntegerPow(radix, TSelf.CreateChecked(index));
+      var power = TSelf.One;
+
+      for (int index = 0; index < list.Count; index++)
+      {
+        list[index] *= power;
+
+        power *= radix;
+      }
 
       return list;
     }

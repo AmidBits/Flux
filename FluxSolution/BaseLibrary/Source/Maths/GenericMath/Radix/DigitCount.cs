@@ -4,19 +4,19 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Returns the count of all single digits in <paramref name="number"/> using base <paramref name="radix"/>.</summary>
-    public static TSelf DigitCount<TSelf>(this TSelf number, TSelf radix)
+    /// <summary>Returns the count of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
+    public static TSelf DigitCount<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertRadix(radix);
 
       var count = TSelf.Zero;
 
-      while (!TSelf.IsZero(number))
+      while (!TSelf.IsZero(value))
       {
         count++;
 
-        number /= radix;
+        value /= radix;
       }
 
       return count;

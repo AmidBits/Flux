@@ -10,16 +10,16 @@ namespace Flux
     {
       AssertRadix(radix);
 
-      var reverse = TSelf.Zero;
+      var reversed = TSelf.Zero;
 
       while (!TSelf.IsZero(number))
       {
-        reverse = (reverse * radix) + (number % radix);
+        reversed = (reversed * radix) + (number % radix);
 
         number /= radix;
       }
 
-      return reverse;
+      return reversed;
     }
 
 #else

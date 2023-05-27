@@ -5,16 +5,16 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>Returns the individual digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
-    public static System.Collections.Generic.List<TSelf> GetDigits<TSelf>(this TSelf number, TSelf radix)
+    public static System.Collections.Generic.List<TSelf> GetDigits<TSelf>(this TSelf number, TSelf radix, int count = int.MaxValue)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var reversed = GetDigitsReversed(number, radix);
+      var reversed = GetDigitsReversed(number, radix, count);
       reversed.Reverse();
       return reversed;
     }
 
     /// <summary>Returns <paramref name="count"/> place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
-    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf>(this TSelf number, TSelf radix, int count)
+    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf>(this TSelf number, TSelf radix, int count = int.MaxValue)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertRadix(radix);
@@ -35,11 +35,6 @@ namespace Flux
 
       return list;
     }
-
-    /// <summary>Returns the place value digits (as numbers) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
-    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf>(this TSelf number, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => GetDigitsReversed(number, radix, int.MaxValue);
 
 #else
 
