@@ -38,8 +38,6 @@ namespace Flux
       return new(x, y, z, angle);
     }
 
-#if NET7_0_OR_GREATER
-
     public static System.Numerics.Matrix4x4 ToMatrixTaitBryanXYZ(this Geometry.EulerAngles source)
     {
       var (s1, c1) = System.Math.SinCos(source.Yaw);
@@ -120,9 +118,6 @@ namespace Flux
         (float)(cr * cp * cy + sr * sp * sy)
       );
     }
-
-#endif
-
   }
 
   #endregion ExtensionMethods

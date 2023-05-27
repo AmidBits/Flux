@@ -39,8 +39,6 @@ namespace Flux
         );
     }
 
-#if NET7_0_OR_GREATER
-
     public static (Geometry.CartesianCoordinate3<double> axis, Units.Angle angle) ToQuantities(this Geometry.AxisAngle source)
       => (
         new Geometry.CartesianCoordinate3<double>(source.X, source.Y, source.Z),
@@ -49,9 +47,7 @@ namespace Flux
 
     public static System.Numerics.Quaternion ToQuaternion(this Geometry.AxisAngle source)
     {
-      var h = source.Angle.Divide(2);
-
-      var (s, w) = System.Math.SinCos(h);
+      var (s, w) = System.Math.SinCos(source.Angle.Divide(2));
 
       var x = source.X * s;
       var y = source.Y * s;
@@ -59,8 +55,6 @@ namespace Flux
 
       return new((float)x, (float)y, (float)z, (float)w);
     }
-#endif
-
   }
 
   #endregion ExtensionMethods
