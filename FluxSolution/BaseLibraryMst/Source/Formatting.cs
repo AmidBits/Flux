@@ -13,13 +13,13 @@ namespace Formatting
     [TestMethod]
     public void LatitudeFormatter()
     {
-      Assert.AreEqual(SexagesimalDegree.ToString(_dms1tp, SexagesimalDegree.Format.DegreesMinutesDecimalSeconds, CardinalAxis.NorthSouth), _dms1 + 'N');
+      Assert.AreEqual(Flux.Units.Angle.ToDmsString(_dms1tp, Flux.Units.DmsFormat.DegreesMinutesDecimalSeconds, CardinalAxis.NorthSouth), _dms1 + 'N');
     }
 
     [TestMethod]
     public void LatitudeTryParse()
     {
-      Assert.IsTrue(Flux.SexagesimalDegree.TryParse(_dms1, out var dms1tp));
+      Assert.IsTrue(Flux.Units.Angle.TryParseDms(_dms1, out var dms1tp));
 
       Assert.AreEqual(_dms1tp, dms1tp.Value);
     }
@@ -27,13 +27,13 @@ namespace Formatting
     [TestMethod]
     public void LongitudeFormatter()
     {
-      Assert.AreEqual(SexagesimalDegree.ToString(_dms1tp, SexagesimalDegree.Format.DegreesMinutesDecimalSeconds, CardinalAxis.EastWest), _dms1 + 'E');
+      Assert.AreEqual(Flux.Units.Angle.ToDmsString(_dms1tp, Flux.Units.DmsFormat.DegreesMinutesDecimalSeconds, CardinalAxis.EastWest), _dms1 + 'E');
     }
 
     [TestMethod]
     public void LongitudeTryParse()
     {
-      Assert.IsTrue(Flux.SexagesimalDegree.TryParse(_dms1, out var dms1tp));
+      Assert.IsTrue(Flux.Units.Angle.TryParseDms(_dms1, out var dms1tp));
 
       Assert.AreEqual(_dms1tp, dms1tp.Value);
     }

@@ -61,16 +61,6 @@ namespace Flux.Units
     Turn,
   }
 
-  public enum DmsFormat
-  {
-    /// <summary>A.k.a. "D" notation.</summary>
-    DecimalDegrees,
-    /// <summary>A.k.a. "DM" notation.</summary>
-    DegreesDecimalMinutes,
-    /// <summary>A.k.a. "DMS" notation.</summary>
-    DegreesMinutesDecimalSeconds
-  }
-
   /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
   public readonly partial record struct Angle
@@ -165,7 +155,7 @@ namespace Flux.Units
     public static double ConvertDegreeToGradian(double degAngle) => degAngle * (10.0 / 9.0);
 
     /// <summary>Convert the angle specified in degrees to radians.</summary>
-    public static double ConvertDegreeToRadian(double degAngle) => degAngle * GenericMath.PiOver180;
+    public static double ConvertDegreeToRadian(double degAngle) => degAngle * (System.Math.PI / 180);
 
     public static double ConvertDegreeToTurn(double degAngle) => degAngle / 360;
 
@@ -173,7 +163,7 @@ namespace Flux.Units
     public static double ConvertGradianToDegree(double gradAngle) => gradAngle * 0.9;
 
     /// <summary>Convert the angle specified in gradians (grads) to radians.</summary>
-    public static double ConvertGradianToRadian(double gradAngle) => gradAngle * GenericMath.PiOver200;
+    public static double ConvertGradianToRadian(double gradAngle) => gradAngle * (System.Math.PI / 200);
 
     public static double ConvertGradianToTurn(double gradAngle) => gradAngle / 400;
 
@@ -188,10 +178,10 @@ namespace Flux.Units
     public static double ConvertRadianToArcsecond(double radAngle) => radAngle * 206264.806247;
 
     /// <summary>Convert the angle specified in radians to degrees.</summary>
-    public static double ConvertRadianToDegree(double radAngle) => radAngle * GenericMath.PiInto180;
+    public static double ConvertRadianToDegree(double radAngle) => radAngle * (180 / System.Math.PI);
 
     /// <summary>Convert the angle specified in radians to gradians (grads).</summary>
-    public static double ConvertRadianToGradian(double radAngle) => radAngle * GenericMath.PiInto200;
+    public static double ConvertRadianToGradian(double radAngle) => radAngle * (200 / System.Math.PI);
 
     public static double ConvertRadianToMilliradian(double radAngle) => radAngle / 1000;
 

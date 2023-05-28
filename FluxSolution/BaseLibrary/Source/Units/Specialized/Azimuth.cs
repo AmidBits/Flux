@@ -118,7 +118,12 @@ namespace Flux.Units
     }
 
     /// <summary>An azimuth is wrapped over the range [0, 360).</summary>
-    public static double WrapAzimuth(double azimuth) => azimuth.Wrap(MinValue, MaxValue) % MaxValue;
+    public static double WrapAzimuth(double azimuth) //=> azimuth.Wrap(MinValue, MaxValue) % MaxValue;
+      => (azimuth < MinValue
+      ? MaxValue - (MinValue - azimuth) % (MaxValue - MinValue)
+      : azimuth > MaxValue
+      ? MinValue + (azimuth - MinValue) % (MaxValue - MinValue)
+      : azimuth) % MaxValue;
 
     #endregion // Static methods
 
