@@ -36,31 +36,34 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var rv = 6705302039;
-      var pv = rv.GetPlaceValues(10);
+      //var rv = 6705302039;
+      //var pv = rv.GetPlaceValues(10);
 
-      foreach (var n in pv)
-        System.Console.WriteLine(n);
-      return;
+      //foreach (var n in pv)
+      //  System.Console.WriteLine(n);
+      //return;
 
-      var keep = 9;
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => rv.KeepLeastSignificantDigits(10, keep)));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => rv.KeepMostSignificantDigits(10, keep)));
-      return;
+      //var keep = 9;
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => rv.KeepLeastSignificantDigits(10, keep)));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => rv.KeepMostSignificantDigits(10, keep)));
+      //return;
 
-      var r = rv.GetDigits(16);
+      //var r = rv.GetDigits(16);
 
-      var a = Flux.Geometry.GeographicCoordinate.GreenwichMeridian;
-      var b = Flux.Geometry.GeographicCoordinate.GreenwichMeridian.Antipode;
+      //var a = Flux.Geometry.GeographicCoordinate.GreenwichMeridian;
+      //var b = Flux.Geometry.GeographicCoordinate.GreenwichMeridian.Antipode;
 
-      var x = new Flux.Fraction(11, 3);
-      var y = new Flux.Fraction(3, 7);
+      var x = new Flux.Units.BigRational(5, 7);
+      var y = new Flux.Units.BigRational(2, 13);
       var xy = x + y;
       var xys = xy.ToQuantityString();
-      var z = new Flux.Fraction(5, 3);
+      var z = new Flux.Units.BigRational(5, -3);
 
       var xyz = x + y + z;
       var xyzs = xyz.ToQuantityString();
+
+      var list = new System.Collections.Generic.List<Flux.Units.BigRational>() { x, y, xy, z, xyz };
+      list.Sort();
 
       var ar2 = new object[,] { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 }, { 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 }, { 30, 31, 32, 33, 34, 35, 36, 37, 38, 39 }, { 40, 41, 42, 43, 44, 45, 46, 47, 48, 49 }, { 50, 51, 52, 53, 54, 55, 56, 57, 58, 59 }, { 60, 61, 62, 63, 64, 65, 66, 67, 68, 69 }, { 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 }, { 80, 81, 82, 83, 84, 85, 86, 87, 88, 89 }, { 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 } };
 

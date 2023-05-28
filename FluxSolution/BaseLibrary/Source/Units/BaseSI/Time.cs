@@ -41,25 +41,27 @@ namespace Flux.Units
     Fortnight,
   }
 
-  /// <summary>Time. SI unit of second. This is a base quantity.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Time"/>
+  /// <summary>
+  /// <para>Time. SI unit of second. This is a base quantity.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Time"/></para>
+  /// </summary>
   public readonly record struct Time
     : System.IComparable, System.IComparable<Time>, System.IFormattable, IUnitQuantifiable<double, TimeUnit>
   {
     public const TimeUnit DefaultUnit = TimeUnit.Second;
 
-    /// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
-    public static readonly Time Flick = new(1.0 / 705600000.0);
-    /// <summary>Amount of time in one millisecond.</summary>
-    public static readonly Time Millisecond = new(0.001);
-    /// <summary>Amount of time in one second.</summary>
-    public static readonly Time Second = new(1);
-    /// <summary>Amount of time in one minute.</summary>
-    public static readonly Time Minute = new(60);
-    /// <summary>Amount of time in one hour.</summary>
-    public static readonly Time Hour = new(3600);
-    /// <summary>Amount of time in one day.</summary>
-    public static readonly Time Day = new(86400);
+    ///// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
+    //public static readonly Time Flick = new(1.0 / 705600000.0);
+    ///// <summary>Amount of time in one millisecond.</summary>
+    //public static readonly Time Millisecond = new(0.001);
+    ///// <summary>Amount of time in one second.</summary>
+    //public static readonly Time Second = new(1);
+    ///// <summary>Amount of time in one minute.</summary>
+    //public static readonly Time Minute = new(60);
+    ///// <summary>Amount of time in one hour.</summary>
+    //public static readonly Time Hour = new(3600);
+    ///// <summary>Amount of time in one day.</summary>
+    //public static readonly Time Day = new(86400);
 
     private readonly double m_value;
 

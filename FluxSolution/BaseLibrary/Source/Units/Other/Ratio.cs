@@ -26,21 +26,23 @@ namespace Flux.Units
     /// <summary>Use a pre-computed ratio. This is less accurate because losses may already have been accumulated, and the ratio is no longer the original numerator and denominator.</summary>
     public Ratio(double ratio) : this(ratio, 1) { }
 
+    public void Deconstruct(out double numerator, out double denominator) { numerator = m_numerator; denominator = m_denominator; }
+
     public double Numerator => m_numerator;
     public double Denominator => m_denominator;
-
-#if NET7_0_OR_GREATER
-    /// <summary>Convert the ratio to a fraction. If numerator and/or denominator are not integers, the fraction is approximated.</summary>
-    public Fraction ToFraction()
-      => double.IsInteger(m_numerator) && double.IsInteger(m_denominator)
-      ? new(System.Numerics.BigInteger.CreateChecked(m_numerator), System.Numerics.BigInteger.CreateChecked(m_denominator))
-      : Fraction.ApproximateRational(Value);
-#endif
 
     ///// <summary>If a diagonal length is known, the proportional width and height can be computed using the Pythagorean theorem.</summary>
     ///// <param name="diagonalLength">The length of the known diagonal.</param>
     ///// <returns>The proportional (to the arguments passed) lengths of width and height.</returns>
     //public Flux.Numerics.CartesianCoordinate2<double> ToSize(double diagonalLength) => (Numerics.CartesianCoordinate2<double>)ToSize(diagonalLength, m_numerator, m_denominator);
+
+#if NET7_0_OR_GREATER
+    /// <summary>Convert the ratio to a fraction. If numerator and/or denominator are not integers, the fraction is approximated.</summary>
+    public BigRational ToFraction()
+      => double.IsInteger(m_numerator) && double.IsInteger(m_denominator)
+      ? new(System.Numerics.BigInteger.CreateChecked(m_numerator), System.Numerics.BigInteger.CreateChecked(m_denominator))
+      : BigRational.ApproximateRational(Value);
+#endif
 
     public string ToRatioString(RatioFormat format)
       => format switch

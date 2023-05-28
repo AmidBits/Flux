@@ -1026,24 +1026,24 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunTemporal));
       System.Console.WriteLine();
 
-      var dt = new Flux.MomentUtc(1100, 04, 28, 13, 30, 31);
+      var dt = new Flux.Units.MomentUtc(1100, 04, 28, 13, 30, 31);
       System.Console.WriteLine($"{dt}");
 
-      var jdgc = dt.ToJulianDate(Flux.TemporalCalendar.GregorianCalendar);
+      var jdgc = dt.ToJulianDate(Flux.Units.TemporalCalendar.GregorianCalendar);
       System.Console.WriteLine($"{jdgc.ToTimeString()}");
       var jdngc = jdgc.ToJulianDayNumber();
-      System.Console.WriteLine($"{jdngc.ToDateString(Flux.TemporalCalendar.GregorianCalendar)}");
-      var mugc = jdgc.ToMomentUtc(Flux.TemporalCalendar.GregorianCalendar);
+      System.Console.WriteLine($"{jdngc.ToDateString(Flux.Units.TemporalCalendar.GregorianCalendar)}");
+      var mugc = jdgc.ToMomentUtc(Flux.Units.TemporalCalendar.GregorianCalendar);
       //System.Console.WriteLine($"{mugc}, {mugc.ToDateOnly()}, {mugc.ToDateTime()}, {mugc.ToTimeOnly()}, {mugc.ToTimeSpan()}");
       System.Console.WriteLine($"{mugc}, {mugc.ToDateTime()}, {mugc.ToTimeSpan()}");
 
       //var mugc1 = mugc with { Year = Year + 1 };
 
-      var jdjc = dt.ToJulianDate(Flux.TemporalCalendar.JulianCalendar);
+      var jdjc = dt.ToJulianDate(Flux.Units.TemporalCalendar.JulianCalendar);
       System.Console.WriteLine($"{jdjc.ToTimeString()}");
       var jdnjc = jdjc.ToJulianDayNumber();
-      System.Console.WriteLine($"{jdnjc.ToDateString(Flux.TemporalCalendar.JulianCalendar)}");
-      var mujc = jdjc.ToMomentUtc(Flux.TemporalCalendar.JulianCalendar);
+      System.Console.WriteLine($"{jdnjc.ToDateString(Flux.Units.TemporalCalendar.JulianCalendar)}");
+      var mujc = jdjc.ToMomentUtc(Flux.Units.TemporalCalendar.JulianCalendar);
       //System.Console.WriteLine($"{mujc}, {mujc.ToDateOnly()}, {mujc.ToDateTime()}, {mujc.ToTimeOnly()}, {mujc.ToTimeSpan()}");
       System.Console.WriteLine($"{mujc}, {mujc.ToDateTime()}, {mujc.ToTimeSpan()}");
 

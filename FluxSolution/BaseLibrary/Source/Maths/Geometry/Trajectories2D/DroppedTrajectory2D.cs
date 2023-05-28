@@ -17,7 +17,7 @@ namespace Flux.Mechanics
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
     public DroppedTrajectory2D(Units.Length droppedHeight, Units.Angle initialAngle, Units.LinearVelocity initialVelocity)
-      : this(droppedHeight, initialAngle, initialVelocity, Units.Acceleration.StandardAccelerationOfGravity)
+      : this(droppedHeight, initialAngle, initialVelocity, Units.Acceleration.StandardGravity)
     { }
 
     // The height when dropped.

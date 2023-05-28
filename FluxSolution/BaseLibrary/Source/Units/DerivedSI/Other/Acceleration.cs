@@ -25,8 +25,7 @@ namespace Flux.Units
   {
     public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquared;
 
-    public static Acceleration StandardAccelerationOfGravity
-      => new(9.80665);
+    public static Acceleration StandardGravity => new(9.80665);
 
     private readonly double m_value;
 

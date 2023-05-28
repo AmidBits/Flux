@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class MusicExtensionMethods
   {
-    public static double GetFrequencyRatios(this Music.TwelveToneEqualTemperament source)
-      => Music.Semitone.ConvertSemitoneToFrequencyRatio((int)source);
+    public static double GetFrequencyRatios(this Units.TwelveToneEqualTemperament source)
+      => Units.Semitone.ConvertSemitoneToFrequencyRatio((int)source);
 
-    public static int GetCents(this Music.TwelveToneEqualTemperament source)
-      => Music.Semitone.ConvertSemitoneToCent((int)source);
+    public static int GetCents(this Units.TwelveToneEqualTemperament source)
+      => Units.Semitone.ConvertSemitoneToCent((int)source);
   }
 
-  namespace Music
+  namespace Units
   {
     public enum TwelveToneEqualTemperament
     {

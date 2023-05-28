@@ -35,9 +35,6 @@ namespace Flux.Units
   {
     public const PressureUnit DefaultUnit = PressureUnit.Pascal;
 
-    public static Pressure StandardAtmosphere => new(101325);
-    public static Pressure StandardStatePressure => new(100000);
-
     private readonly double m_value;
 
     public Pressure(double value, PressureUnit unit = DefaultUnit)

@@ -32,59 +32,47 @@ namespace Flux.Units
   {
     public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
-    public const double CelsiusAbsoluteZero = -273.15;
-    public const double CelsiusBoilingPoint = 99.9839;
-    public const double CelsiusIcePoint = 0;
-
-    public const double FahrenheitAbsoluteZero = -459.67;
-    public const double FahrenheitBoilingPoint = 211.97102;
-    public const double FahrenheitIcePoint = 32;
-
-    public const double KelvinAbsoluteZero = 0;
-    public const double KelvinBoilingPoint = 373.1339;
-    public const double KelvinIcePoint = 273.15;
-
-    public const double RankineAbsoluteZero = 0;
-    public const double RankineBoilingPoint = 671.64102;
-    public const double RankineIcePoint = 491.67;
+    public static readonly Temperature AbsoluteZero;
 
     private readonly double m_value;
 
     public Temperature(double value, TemperatureUnit unit = DefaultUnit)
       => m_value = unit switch
       {
-        TemperatureUnit.Celsius => value - CelsiusAbsoluteZero,
-        TemperatureUnit.Fahrenheit => (value - FahrenheitAbsoluteZero) / 1.8,
+        TemperatureUnit.Celsius => ConvertCelsiusToKelvin(value),
+        TemperatureUnit.Fahrenheit => ConvertFahrenheitToKelvin(value),
         TemperatureUnit.Kelvin => value,
-        TemperatureUnit.Rankine => value / 1.8,
+        TemperatureUnit.Rankine => ConvertRankineToKelvin(value),
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     #region Static methods
+
     /// <summary>Convert the temperature specified in Celsius to Fahrenheit.</summary>
-    public static double ConvertCelsiusToFahrenheit(double celsius) => celsius * 1.8 + FahrenheitIcePoint;
+    public static double ConvertCelsiusToFahrenheit(double celsius) => celsius * 1.8 + 32;
     /// <summary>Convert the temperature specified in Celsius to Kelvin.</summary>
-    public static double ConvertCelsiusToKelvin(double celsius) => celsius - CelsiusAbsoluteZero;
+    public static double ConvertCelsiusToKelvin(double celsius) => celsius - -273.15;
     /// <summary>Convert the temperature specified in Celsius to Rankine.</summary>
-    public static double ConvertCelsiusToRankine(double celsius) => (celsius - CelsiusAbsoluteZero) * 1.8;
+    public static double ConvertCelsiusToRankine(double celsius) => (celsius - -273.15) * 1.8;
     /// <summary>Convert the temperature specified in Fahrenheit to Celsius.</summary>
-    public static double ConvertFahrenheitToCelsius(double fahrenheit) => (fahrenheit - FahrenheitIcePoint) / 1.8;
+    public static double ConvertFahrenheitToCelsius(double fahrenheit) => (fahrenheit - 32) / 1.8;
     /// <summary>Convert the temperature specified in Fahrenheit to Kelvin.</summary>
-    public static double ConvertFahrenheitToKelvin(double fahrenheit) => (fahrenheit - FahrenheitAbsoluteZero) / 1.8;
+    public static double ConvertFahrenheitToKelvin(double fahrenheit) => (fahrenheit - -459.67) / 1.8;
     /// <summary>Convert the temperature specified in Fahrenheit to Rankine.</summary>
-    public static double ConvertFahrenheitToRankine(double fahrenheit) => fahrenheit - FahrenheitAbsoluteZero;
+    public static double ConvertFahrenheitToRankine(double fahrenheit) => fahrenheit - -459.67;
     /// <summary>Convert the temperature specified in Kelvin to Celsius.</summary>
-    public static double ConvertKelvinToCelsius(double kelvin) => kelvin - KelvinIcePoint;
+    public static double ConvertKelvinToCelsius(double kelvin) => kelvin - 273.15;
     /// <summary>Convert the temperature specified in Kelvin to Fahrenheit.</summary>
-    public static double ConvertKelvinToFahrenheit(double kelvin) => kelvin * 1.8 + FahrenheitAbsoluteZero;
+    public static double ConvertKelvinToFahrenheit(double kelvin) => kelvin * 1.8 + -459.67;
     /// <summary>Convert the temperature specified in Kelvin to Rankine.</summary>
     public static double ConvertKelvinToRankine(double kelvin) => kelvin * 1.8;
     /// <summary>Convert the temperature specified in Rankine to Celsius.</summary>
-    public static double ConvertRankineToCelsius(double rankine) => (rankine - RankineIcePoint) / 1.8;
+    public static double ConvertRankineToCelsius(double rankine) => (rankine - 491.67) / 1.8;
     /// <summary>Convert the temperature specified in Rankine to Kelvin.</summary>
     public static double ConvertRankineToKelvin(double rankine) => rankine / 1.8;
     /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
-    public static double ConvertRankineToFahrenheit(double rankine) => rankine - RankineIcePoint;
+    public static double ConvertRankineToFahrenheit(double rankine) => rankine - 491.67;
+
     #endregion Static methods
 
     #region Overloaded operators
@@ -130,10 +118,10 @@ namespace Flux.Units
     public double ToUnitValue(TemperatureUnit unit = DefaultUnit)
       => unit switch
       {
-        TemperatureUnit.Celsius => m_value - KelvinIcePoint,
-        TemperatureUnit.Fahrenheit => m_value * 1.8 + FahrenheitAbsoluteZero,
+        TemperatureUnit.Celsius => ConvertKelvinToCelsius(m_value),
+        TemperatureUnit.Fahrenheit => ConvertKelvinToFahrenheit(m_value),
         TemperatureUnit.Kelvin => m_value,
-        TemperatureUnit.Rankine => m_value * 1.8,
+        TemperatureUnit.Rankine => ConvertKelvinToRankine(m_value),
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

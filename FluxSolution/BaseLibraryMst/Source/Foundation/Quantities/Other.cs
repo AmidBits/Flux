@@ -35,10 +35,10 @@ namespace Foundation.Units
     [TestMethod]
     public void Cent()
     {
-      var cent = new Flux.Music.Cent(1);
+      var cent = new Flux.Units.Cent(1);
 
       Assert.AreEqual(1, cent.Value);
-      Assert.AreEqual(Flux.Music.Cent.FrequencyRatio, cent.ToFrequencyRatio());
+      Assert.AreEqual(Flux.Units.Cent.FrequencyRatio, cent.ToFrequencyRatio());
     }
 
     [TestMethod]
@@ -64,7 +64,7 @@ namespace Foundation.Units
     [TestMethod]
     public void MidiNote()
     {
-      var u = new Flux.Music.Midi.MidiNote(69);
+      var u = new Flux.Units.MidiNote(69);
 
       Assert.AreEqual(69, u.Value);
       Assert.AreEqual(4, u.GetOctave());
@@ -98,11 +98,11 @@ namespace Foundation.Units
     [TestMethod]
     public void Semitone()
     {
-      var semitone = new Flux.Music.Semitone(1);
+      var semitone = new Flux.Units.Semitone(1);
 
       Assert.AreEqual(1, semitone.Value);
       Assert.AreEqual(100, semitone.ToCent().Value);
-      Assert.AreEqual(Flux.Music.Semitone.FrequencyRatio, semitone.ToFrequencyRatio());
+      Assert.AreEqual(Flux.Units.Semitone.FrequencyRatio, semitone.ToFrequencyRatio());
     }
   }
 }

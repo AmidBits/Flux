@@ -37,8 +37,7 @@ namespace Flux.Units
   {
     public const MassUnit DefaultUnit = MassUnit.Kilogram;
 
-    public static Mass ElectronMass
-      => new(9.1093837015e-31);
+    public static Mass ElectronMass => new(9.1093837015e-31); // new(9.109383701528e-31);
 
     private readonly double m_value;
 
