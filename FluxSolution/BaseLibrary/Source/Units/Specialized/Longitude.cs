@@ -11,7 +11,7 @@ namespace Flux.Units
     private readonly double m_longitude;
 
     /// <summary>Creates a new Longitude from the specified number of degrees. The value is wrapped within the degree range [-180, +180].</summary>
-    public Longitude(double longitude) => m_longitude = WrapLongitude(longitude);
+    public Longitude(double longitude) => m_longitude = WrapExtremum(longitude);
     /// <summary>Creates a new Longitude from the specfied Angle instance. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(Angle angle) : this(angle.ToUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
@@ -44,7 +44,7 @@ namespace Flux.Units
 
     /// <summary>A longitude is wrapped over within the range [-180, +180].</summary>
     /// <param name="longitude">The longitude in degrees.</param>
-    public static double WrapLongitude(double longitude) //=> longitude.Wrap(MinValue, MaxValue) % MaxValue;
+    public static double WrapExtremum(double longitude) //=> longitude.Wrap(MinValue, MaxValue) % MaxValue;
       => (longitude < MinValue
       ? MaxValue - (MinValue - longitude) % (MaxValue - MinValue)
       : longitude > MaxValue

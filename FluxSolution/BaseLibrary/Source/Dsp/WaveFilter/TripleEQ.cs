@@ -53,16 +53,16 @@ namespace Flux.Dsp.WaveFilter
     public double GainLPF { get => m_lowGain; set => m_lowGain = value; }
     public double GainMPF { get => m_midGain; set => m_midGain = value; }
 
-    public double FilterMonoWave(double value)
+    public double FilterMonoWave(double wave)
     {
-      m_lpfPole1 += (m_lpfCutoff * (value - m_lpfPole1)) + vsa;
+      m_lpfPole1 += (m_lpfCutoff * (wave - m_lpfPole1)) + vsa;
       m_lpfPole2 += (m_lpfCutoff * (m_lpfPole1 - m_lpfPole2));
       m_lpfPole3 += (m_lpfCutoff * (m_lpfPole2 - m_lpfPole3));
       m_lpfPole4 += (m_lpfCutoff * (m_lpfPole3 - m_lpfPole4));
 
       double low = m_lpfPole4;
 
-      m_hpfPole1 += (m_hpfCutoff * (value - m_hpfPole1)) + vsa;
+      m_hpfPole1 += (m_hpfCutoff * (wave - m_hpfPole1)) + vsa;
       m_hpfPole2 += (m_hpfCutoff * (m_hpfPole1 - m_hpfPole2));
       m_hpfPole3 += (m_hpfCutoff * (m_hpfPole2 - m_hpfPole3));
       m_hpfPole4 += (m_hpfCutoff * (m_hpfPole3 - m_hpfPole4));
@@ -79,12 +79,13 @@ namespace Flux.Dsp.WaveFilter
       // Shuffle history buffer 
       m_history3 = m_history2;
       m_history2 = m_history1;
-      m_history1 = value;
+      m_history1 = wave;
 
-      return (low + mid + high);
+      return low + mid + high;
     }
 
-    public double ProcessMonoWave(double sample)
-      => (FilterMonoWave(sample));
+    public IWaveMono<double> FilterMonoWave(IWaveMono<double> mono) => (WaveMono<double>)FilterMonoWave(mono.Wave);
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => FilterMonoWave(mono);
   }
 }

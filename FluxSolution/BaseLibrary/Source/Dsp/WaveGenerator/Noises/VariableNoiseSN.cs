@@ -67,9 +67,9 @@
       return (value0);
     }
 
-    public double GenerateMonoWaveUi(double phaseMu)
-      => Sample();
-    public double GenerateMonoWavePi2(double phasePi2)
-      => Sample();
+    public IWaveMono<double> GenerateMonoWaveUi(double phaseMu)
+      => (WaveMono<double>)Sample();
+    public IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
+      => (WaveMono<double>)Sample();
   }
 }

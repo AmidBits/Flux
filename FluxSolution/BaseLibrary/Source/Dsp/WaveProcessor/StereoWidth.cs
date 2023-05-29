@@ -20,13 +20,15 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public SampleStereo ProcessStereoWave(SampleStereo stereo)
+    public (double leftWave, double rightWave) ProcessStereoWave(double leftWave, double rightWave)
     {
-      var m = (stereo.FrontLeft + stereo.FrontRight) / 2;
-      var s = (stereo.FrontRight - stereo.FrontLeft) * m_stereoCoefficient;
+      var m = (leftWave + rightWave) / 2;
+      var s = (rightWave - leftWave) * m_stereoCoefficient;
 
-      return new SampleStereo(m - s, m + s);
+      return (m - s, m + s);
     }
+
+    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo) => (WaveStereo<double>)ProcessStereoWave(stereo.LeftWave, stereo.RightWave);
 
     /// <summary>Apply stereo width to the sample.</summary>
     /// <param name="width">Stereo width in the range[-1, 1], where -1 = mono, <0 = decrease stereo width, 0 = no change, >0 increase stereo width.</param>

@@ -37,15 +37,17 @@ namespace Flux.Dsp.AudioProcessor
       : this(MonoRectifierMode.FullWave, 0.0)
     { }
 
-    public double ProcessMonoWave(double sample)
+    public double ProcessMonoWave(double wave)
       => (Mode switch
       {
-        MonoRectifierMode.NegativeFullWave when sample > m_threshold => System.Math.Max(m_threshold - (sample - m_threshold), -1),
-        MonoRectifierMode.NegativeHalfWave when sample > m_threshold => m_threshold,
-        MonoRectifierMode.FullWave when sample < m_threshold => System.Math.Min(m_threshold + (m_threshold - sample), 1),
-        MonoRectifierMode.HalfWave when sample < m_threshold => m_threshold,
-        _ => sample,
+        MonoRectifierMode.NegativeFullWave when wave > m_threshold => System.Math.Max(m_threshold - (wave - m_threshold), -1),
+        MonoRectifierMode.NegativeHalfWave when wave > m_threshold => m_threshold,
+        MonoRectifierMode.FullWave when wave < m_threshold => System.Math.Min(m_threshold + (m_threshold - wave), 1),
+        MonoRectifierMode.HalfWave when wave < m_threshold => m_threshold,
+        _ => wave,
       });
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => new WaveMono<double>(ProcessMonoWave(mono.Wave));
 
     public static double RectifyFullWave(double sample, double threshold = 0.0)
       => sample < threshold ? System.Math.Min(threshold + (threshold - sample), 1.0) : sample;

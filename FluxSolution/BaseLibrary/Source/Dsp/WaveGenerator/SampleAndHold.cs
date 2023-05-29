@@ -26,10 +26,10 @@ namespace Flux.Dsp.WaveGenerator
       return m_sample;
     }
 
-    public double GenerateMonoWaveUi(double phaseUi)
-      => Sample(phaseUi);
-    public double GenerateMonoWavePi2(double phasePi2)
-      => Sample(phasePi2);
+    public IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
+      => (WaveMono<double>)Sample(phaseUi);
+    public IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
+      => (WaveMono<double>)Sample(phasePi2);
   }
 
   // /// <summary>A sample and hold based on the frequencies corresponding to all MIDI notes, which is a subset of the chromatic scale.</summary>

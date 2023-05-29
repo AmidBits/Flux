@@ -25,7 +25,9 @@ namespace Flux.Dsp.AudioProcessor
       : this(0.75)
     { }
 
-    public double ProcessMonoWave(double sample)
-      => m_amount > GenericMath.EpsilonCpp32 ? m_previousSample = sample.InterpolateCosine(m_previousSample, m_amount) : sample;
+    public double ProcessMonoWave(double wave)
+      => (m_amount > GenericMath.EpsilonCpp32 ? m_previousSample = wave.InterpolateCosine(m_previousSample, m_amount) : wave);
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
   }
 }

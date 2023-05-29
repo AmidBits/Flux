@@ -32,12 +32,14 @@ namespace Flux.Dsp.AudioProcessor
       }
     }
 
-    public SampleStereo ProcessStereoWave(SampleStereo stereo)
+    public (double leftWave, double rightWave) ProcessStereoWave(double leftWave, double rightWave)
       => (m_position > GenericMath.EpsilonCpp32)
-      ? new SampleStereo(stereo.FrontLeft * m_positionInvAbs, stereo.FrontLeft * m_scaledAbs + stereo.FrontRight * m_scaledAbsInv)
+      ? (leftWave * m_positionInvAbs, leftWave * m_scaledAbs + rightWave * m_scaledAbsInv)
       : (m_position < -GenericMath.EpsilonCpp32)
-      ? new SampleStereo(stereo.FrontLeft * m_scaledAbsInv + stereo.FrontRight * m_scaledAbs, stereo.FrontRight * m_positionInvAbs)
-      : stereo;
+      ? (leftWave * m_scaledAbsInv + rightWave * m_scaledAbs, rightWave * m_positionInvAbs)
+      : (leftWave, rightWave);
+
+    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo) => (WaveStereo<double>)ProcessStereoWave(stereo.LeftWave, stereo.RightWave);
 
     /// <summary>Apply stereo pan across the stereo field.</summary>
     /// <param name="position">Pan position in the range [-1, 1], where -1 means more of the stereo to the left, 1 means more of the stereo to the right and 0 means no change.</param>

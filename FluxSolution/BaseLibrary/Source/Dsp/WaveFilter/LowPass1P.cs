@@ -31,10 +31,11 @@ namespace Flux.Dsp.WaveFilter
       m_a0 = 1.0 - m_b1;
     }
 
-    public double FilterMonoWave(double sample)
-      => m_z1 = sample * m_a0 + m_z1 * m_b1; // Note the assignment.
+    public double FilterMonoWave(double wave)
+      => m_z1 = wave * m_a0 + m_z1 * m_b1; // Note the assignment.
 
-    public double ProcessMonoWave(double sample)
-      => FilterMonoWave(sample);
+    public IWaveMono<double> FilterMonoWave(IWaveMono<double> mono) => (WaveMono<double>)FilterMonoWave(mono.Wave);
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => FilterMonoWave(mono);
   }
 }

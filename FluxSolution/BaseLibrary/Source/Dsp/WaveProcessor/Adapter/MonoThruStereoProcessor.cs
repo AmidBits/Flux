@@ -10,7 +10,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       Stereo = stereo;
     }
 
-    public double ProcessMonoWave(double sample)
-      => Stereo.ProcessStereoWave(new SampleStereo(sample, sample)).ToMono().FrontCenter;
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> wave)
+      => Stereo.ProcessStereoWave(wave.ToStereoWave()).ToMonoWave();
   }
 }

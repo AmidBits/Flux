@@ -69,7 +69,8 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
       return v2;
     }
 
-    public double ProcessMonoWave(double sample)
-      => (FilterMonoWave(sample));
+    public IWaveMono<double> FilterMonoWave(IWaveMono<double> mono) => (WaveMono<double>)FilterMonoWave(mono.Wave);
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => FilterMonoWave(mono);
   }
 }

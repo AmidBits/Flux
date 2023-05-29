@@ -104,13 +104,13 @@ namespace Flux.Dsp.Synthesis
     /// <summary>Generates the next sample for the oscillator (all operational components are integrated in ths process).</summary>
     public double Next(double? normalizedFrequency)
     {
-      Current = Generator?.GenerateMonoWaveUi(m_phase) ?? 0;
+      Current = Generator?.GenerateMonoWaveUi(m_phase).Wave ?? 0;
 
       if (InvertPolarity)
         Current = -Current;
 
       foreach (var processor in PreProcessors)
-        Current = processor.ProcessMonoWave(Current);
+        Current = processor.ProcessMonoWave(new WaveMono<double>(Current)).Wave;
 
       if (AmplitudeModulator != null && m_amplitudeModulation > GenericMath.EpsilonCpp32)
       {
@@ -123,7 +123,7 @@ namespace Flux.Dsp.Synthesis
         Current *= RingModulator.NextSample() * m_ringModulation;
 
       foreach (var processor in PostProcessors)
-        Current = processor.ProcessMonoWave(Current);
+        Current = processor.ProcessMonoWave(new WaveMono<double>(Current)).Wave;
 
       if (!normalizedFrequency.HasValue)
         normalizedFrequency = NormalizedFrequency;

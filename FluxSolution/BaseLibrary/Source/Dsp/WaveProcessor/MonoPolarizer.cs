@@ -24,14 +24,16 @@
       : this(MonoPolarizerMode.BipolarToUnipolarPositive)
     { }
 
-    public double ProcessMonoWave(double sample) => (Mode switch
+    public double ProcessMonoWave(double wave) => (Mode switch
     {
-      MonoPolarizerMode.BipolarToUnipolarNegative => sample / 2.0 - 0.5,
-      MonoPolarizerMode.BipolarToUnipolarPositive => sample / 2.0 + 0.5,
-      MonoPolarizerMode.UnipolarNegativeToBipolar => sample < 0.0 ? sample * 2.0 + 1.0 : 0.0,
-      MonoPolarizerMode.UnipolarPositiveToBipolar => sample > 0.0 ? sample * 2.0 - 1.0 : 0.0,
-      _ => sample,
+      MonoPolarizerMode.BipolarToUnipolarNegative => wave / 2.0 - 0.5,
+      MonoPolarizerMode.BipolarToUnipolarPositive => wave / 2.0 + 0.5,
+      MonoPolarizerMode.UnipolarNegativeToBipolar => wave < 0.0 ? wave * 2.0 + 1.0 : 0.0,
+      MonoPolarizerMode.UnipolarPositiveToBipolar => wave > 0.0 ? wave * 2.0 - 1.0 : 0.0,
+      _ => wave,
     });
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
 
     public static double ApplyBipolarToUnipolarNegative(double sample)
       => sample / 2.0 - 0.5;

@@ -5,7 +5,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
   {
     public System.Collections.Generic.IReadOnlyList<IMonoWaveProcessable> Processors { get; } = new System.Collections.Generic.List<IMonoWaveProcessable>();
 
-    public double ProcessMonoWave(double sample)
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> sample)
     {
       foreach (var processor in Processors)
         sample = processor.ProcessMonoWave(sample);

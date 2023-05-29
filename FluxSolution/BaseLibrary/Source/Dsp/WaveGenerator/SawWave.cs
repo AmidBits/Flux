@@ -4,10 +4,10 @@
   public record class SawWave
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
-    public double GenerateMonoWaveUi(double phaseUi)
-      => SampleUi(phaseUi);
-    public double GenerateMonoWavePi2(double phasePi2)
-      => SamplePi2(phasePi2);
+    public IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
+      => (WaveMono<double>)SampleUi(phaseUi);
+    public IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
+      => (WaveMono<double>)SamplePi2(phasePi2);
 
     public static double SampleUi(double phaseUi)
      => 1 - Tools.AbsolutePhaseUi(phaseUi) * 2;

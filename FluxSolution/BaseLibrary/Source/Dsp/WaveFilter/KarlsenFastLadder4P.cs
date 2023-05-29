@@ -46,12 +46,12 @@ namespace Flux.Dsp.WaveFilter
       m_normalizedCutoffFrequency = GenericMath.PiOver2 * (m_cutoffFrequency / m_sampleRate);
     }
 
-    public double FilterMonoWave(double value)
+    public double FilterMonoWave(double wave)
     {
       var resclp = m_buf4 > 1 ? 1 : m_buf4; // Clip resonance buffer, if needed.
 
       // rclp = (-rclp * _resonance) + value; // Asymmetrical clipping (original version by Ove Karlsen).
-      resclp = value - (resclp * m_resonance); // Symmetrical clipping (by Peter Schoffhauzer).
+      resclp = wave - (resclp * m_resonance); // Symmetrical clipping (by Peter Schoffhauzer).
 
       m_buf1 = (resclp - m_buf1) * m_normalizedCutoffFrequency + m_buf1;
       m_buf2 = (m_buf1 - m_buf2) * m_normalizedCutoffFrequency + m_buf2;
@@ -61,7 +61,8 @@ namespace Flux.Dsp.WaveFilter
       return m_buf4;
     }
 
-    public double ProcessMonoWave(double sample)
-      => FilterMonoWave(sample);
+    public IWaveMono<double> FilterMonoWave(IWaveMono<double> mono) => (WaveMono<double>)FilterMonoWave(mono.Wave);
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => FilterMonoWave(mono);
   }
 }

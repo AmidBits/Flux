@@ -88,15 +88,17 @@ namespace Flux.Dsp.AudioProcessor
     //  return sample * (_dryMix + _gainCompensation * _wetMix) + (_gain * bufferSample) * _wetMix;
     //}
 
-    public double ProcessMonoWave(double sample)
+    public double ProcessMonoWave(double wave)
     {
       var bufferSample = m_buffer[m_bufferPosition] * m_gain;
 
-      m_buffer[m_bufferPosition] = (sample + bufferSample * m_feedback) / m_feedbackNormalizer;
+      m_buffer[m_bufferPosition] = (wave + bufferSample * m_feedback) / m_feedbackNormalizer;
 
       m_bufferPosition = (m_bufferPosition + 1) % m_timeIndex;
 
-      return (sample * m_dryMix + bufferSample * m_wetMix) * m_gainCompensation;
+      return ((wave * m_dryMix + bufferSample * m_wetMix) * m_gainCompensation);
     }
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
   }
 }

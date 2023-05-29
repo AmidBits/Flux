@@ -3,34 +3,30 @@
   /// <summary>A bipolar mono floating point sample wave processor in the range [-1.0, 1.0].</summary>
   public interface IMonoWaveProcessable
   {
-    static IMonoWaveProcessable Empty
-      => new EmptyMonoWaveProcessor();
+    public static IMonoWaveProcessable Empty => new EmptyMonoWaveProcessor();
 
     /// <summary>Process the mono sample wave. The range is [-1.0, 1.0].</summary>
-    double ProcessMonoWave(double sample);
+    IWaveMono<double> ProcessMonoWave(IWaveMono<double> wave);
 
     private sealed class EmptyMonoWaveProcessor
       : IMonoWaveProcessable
     {
-      public double ProcessMonoWave(double sample)
-        => throw new System.NotImplementedException(nameof(EmptyMonoWaveProcessor));
+      public IWaveMono<double> ProcessMonoWave(IWaveMono<double> wave) => throw new System.NotImplementedException(nameof(EmptyMonoWaveProcessor));
     }
   }
 
   /// <summary>A bipolar stereo floating point sample wave processor in the range [-1.0, 1.0].</summary>
   public interface IStereoWaveProcessable
   {
-    static IStereoWaveProcessable Empty
-      => new EmptyStereoWaveProcessor();
+    public static IStereoWaveProcessable Empty => new EmptyStereoWaveProcessor();
 
     /// <summary>Process the stereo sample wave. The range is [-1.0, 1.0].</summary>
-    SampleStereo ProcessStereoWave(SampleStereo sample);
+    IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> wave);
 
     private sealed class EmptyStereoWaveProcessor
       : IStereoWaveProcessable
     {
-      public SampleStereo ProcessStereoWave(SampleStereo sample)
-        => throw new System.NotImplementedException(nameof(EmptyStereoWaveProcessor));
+      public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> wave) => throw new System.NotImplementedException(nameof(EmptyStereoWaveProcessor));
     }
   }
 

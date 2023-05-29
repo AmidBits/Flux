@@ -37,9 +37,9 @@
       return ((A0 * m_state0 + A1 * m_state1 + A2 * m_state2) * RMI2 - Offset);
     }
 
-    public double GenerateMonoWaveUi(double phaseMu)
-      => Sample();
-    public double GenerateMonoWavePi2(double phasePi2)
-      => Sample();
+    public IWaveMono<double> GenerateMonoWaveUi(double phaseMu)
+      => (WaveMono<double>)Sample();
+    public IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
+      => (WaveMono<double>)Sample();
   }
 }

@@ -33,22 +33,24 @@ namespace Flux.Dsp.AudioProcessor
 
     public static double Limit(double sample) => System.Math.Clamp(sample, -1.0, 1.0);
 
-    public double ProcessMonoWave(double sample)
+    public double ProcessMonoWave(double wave)
     {
       if (m_autoAttenuation < 1.0)
       {
         m_autoAttenuation = System.Math.Clamp(m_autoAttenuation + m_release, GenericMath.EpsilonCpp32, 1);
       }
 
-      if (sample < -1 || sample > 1)
+      if (wave < -1 || wave > 1)
       {
-        if (1 / System.Math.Abs(sample) is var attenuationRequired && attenuationRequired < m_autoAttenuation)
+        if (1 / System.Math.Abs(wave) is var attenuationRequired && attenuationRequired < m_autoAttenuation)
         {
           m_autoAttenuation = attenuationRequired;
         }
       }
 
-      return (sample * m_autoAttenuation);
+      return (wave * m_autoAttenuation);
     }
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
   }
 }

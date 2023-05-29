@@ -14,10 +14,10 @@
       : this(0.5)
     { }
 
-    public double GenerateMonoWaveUi(double phaseUi)
-      => SampleUi(phaseUi, m_dutyCycle);
-    public double GenerateMonoWavePi2(double phasePi2)
-      => SamplePi2(phasePi2, m_dutyCycle);
+    public IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
+      => (WaveMono<double>)SampleUi(phaseUi, m_dutyCycle);
+    public IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
+      => (WaveMono<double>)SamplePi2(phasePi2, m_dutyCycle);
 
     /// <summary>Generates a pulse wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>
     public static double SampleUi(double phaseUi, double pulseWidthUi)

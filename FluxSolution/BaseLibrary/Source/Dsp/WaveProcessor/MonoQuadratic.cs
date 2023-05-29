@@ -46,15 +46,17 @@ namespace Flux.Dsp.AudioProcessor
       : this(MonoQuadraticMode.Asymmetric, 0)
     { }
 
-    public double ProcessMonoWave(double sample)
+    public double ProcessMonoWave(double wave)
       => (Mode switch
       {
-        MonoQuadraticMode.Asymmetric => System.Math.Pow(sample / 2 + 0.5, m_exponentExpanded) * 2 - 1,
-        MonoQuadraticMode.InvertedAsymmetric => -(System.Math.Pow(-sample / 2 + 0.5, m_exponentExpanded) * 2 - 1),
-        MonoQuadraticMode.Symmetric => 2.0 * ((System.Math.Pow(m_exponent, sample + 1) - 1) / (System.Math.Pow(m_exponent, 2.0) - 1.0)) - 1,
-        MonoQuadraticMode.SymmetricInverse => sample < 0 ? -(2 * ((System.Math.Pow(m_exponent, -sample + 1) - 1) / (System.Math.Pow(m_exponent, 2) - 1.0)) - 1) : 2.0 * ((System.Math.Pow(m_exponent, sample + 1.0) - 1.0) / (System.Math.Pow(m_exponent, 2.0) - 1.0)) - 1,
-        _ => sample,
+        MonoQuadraticMode.Asymmetric => System.Math.Pow(wave / 2 + 0.5, m_exponentExpanded) * 2 - 1,
+        MonoQuadraticMode.InvertedAsymmetric => -(System.Math.Pow(-wave / 2 + 0.5, m_exponentExpanded) * 2 - 1),
+        MonoQuadraticMode.Symmetric => 2.0 * ((System.Math.Pow(m_exponent, wave + 1) - 1) / (System.Math.Pow(m_exponent, 2.0) - 1.0)) - 1,
+        MonoQuadraticMode.SymmetricInverse => wave < 0 ? -(2 * ((System.Math.Pow(m_exponent, -wave + 1) - 1) / (System.Math.Pow(m_exponent, 2) - 1.0)) - 1) : 2.0 * ((System.Math.Pow(m_exponent, wave + 1.0) - 1.0) / (System.Math.Pow(m_exponent, 2.0) - 1.0)) - 1,
+        _ => wave,
       });
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
 
     /// <summary>Introduces concave curvature (i.e. more narrow across the x axis) to the waveform signal in the range [0, 2PI] (0 = no change and the closer to 2PI the more narrow).</summary>
     public static double ApplyConcavity(double sample, double amountPi2)

@@ -25,15 +25,17 @@
       : this(MonoInverterMode.PeekToPeek)
     { }
 
-    public double ProcessMonoWave(double sample) => (Mode switch
+    public double ProcessMonoWave(double wave) => (Mode switch
     {
-      MonoInverterMode.PeekToPeek => -sample,
-      MonoInverterMode.PeeksIndependently when sample < 0 => -sample - 1,
-      MonoInverterMode.NegativePeekOnly when sample < 0 => -sample - 1,
-      MonoInverterMode.PeeksIndependently when sample > 0 => -sample + 1,
-      MonoInverterMode.PositivePeekOnly when sample > 0 => -sample + 1,
-      _ => (sample),
+      MonoInverterMode.PeekToPeek => -wave,
+      MonoInverterMode.PeeksIndependently when wave < 0 => -wave - 1,
+      MonoInverterMode.NegativePeekOnly when wave < 0 => -wave - 1,
+      MonoInverterMode.PeeksIndependently when wave > 0 => -wave + 1,
+      MonoInverterMode.PositivePeekOnly when wave > 0 => -wave + 1,
+      _ => wave,
     });
+
+    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
 
     public static double InvertNegativePeekOnly(double sample)
       => sample < 0.0 ? -sample - 1.0 : sample;

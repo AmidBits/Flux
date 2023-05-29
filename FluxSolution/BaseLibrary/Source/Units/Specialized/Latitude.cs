@@ -14,7 +14,7 @@ namespace Flux.Units
     private readonly double m_latitude;
 
     /// <summary>Creates a new Latitude from the specified number of degrees. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
-    public Latitude(double latitude) => m_latitude = FoldLatitude(latitude);
+    public Latitude(double latitude) => m_latitude = FoldExtremum(latitude);
     /// <summary>Creates a new Latitude from the specfied Angle instance. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
     public Latitude(Angle angle) : this(angle.ToUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
@@ -36,19 +36,15 @@ namespace Flux.Units
 
     /// <summary>A latitude is folded over the range [-90, +90].</summary>
     /// <param name="latitude">The latitude in degrees.</param>
-    public static double FoldLatitude(double latitude) => latitude.Fold(MinValue, MaxValue);
-    //  => (latitude > MaxValue)
-    //  ? double.IsEvenInteger(TruncMod(latitude - MaxValue, MaxValue - MinValue, out var remHi)) ? MaxValue - remHi : MinValue + remHi
-    //  : (latitude < MinValue)
-    //  ? double.IsEvenInteger(TruncMod(MinValue - latitude, MaxValue - MinValue, out var remLo)) ? MinValue + remLo : MaxValue - remLo
-    //  : latitude;
+    public static double FoldExtremum(double latitude)
+      => (latitude > MaxValue)
+      ? IsEvenInteger(TruncMod(latitude - MaxValue, MaxValue - MinValue, out var remHi)) ? MaxValue - remHi : MinValue + remHi
+      : (latitude < MinValue)
+      ? IsEvenInteger(TruncMod(MinValue - latitude, MaxValue - MinValue, out var remLo)) ? MinValue + remLo : MaxValue - remLo
+      : latitude;
 
-    //public static double TruncMod(this double dividend, double divisor, out double remainder)
-    //{
-    //  remainder = dividend % divisor;
-
-    //  return (dividend - remainder) / divisor;
-    //}
+    private static double TruncMod(double dividend, double divisor, out double remainder) => (dividend - (remainder = dividend % divisor)) / divisor;
+    private static bool IsEvenInteger(double value) => System.Convert.ToInt64(value) is var integer && ((integer & 1) == 0) && (integer == value);
 
     /// <summary></summary>
     /// <param name="lat">The latitude in radians.</param>

@@ -33,12 +33,12 @@ namespace Flux.Dsp.AudioProcessor.Adapter
 
     public System.Collections.Generic.List<IMonoWaveProcessable> WaveProcessors { get; } = new System.Collections.Generic.List<IMonoWaveProcessable>();
 
-    public SampleStereo ProcessStereoWave(SampleStereo stereo)
+    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo)
     {
       var left = 0d;
       var right = 0d;
 
-      var mono = Convert.StereoToMono(stereo.FrontLeft, stereo.FrontRight);
+      var mono = stereo.ToMonoWave();
 
       var gapSize = 2.0 / (WaveProcessors.Count - 1); // Compute a distribution gap size spread evenly across the stereo field.
 
@@ -48,7 +48,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
         {
           var sampleM = processor.ProcessMonoWave(mono);
 
-          var (frontLeft, frontRight) = StereoPan.Apply(-1.0 + gapSize * i, sampleM, sampleM);
+          var (frontLeft, frontRight) = StereoPan.Apply(-1.0 + gapSize * i, sampleM.Wave, sampleM.Wave);
 
           left += frontLeft;
           right += frontRight;
@@ -58,7 +58,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       left /= WaveProcessors.Count;
       right /= WaveProcessors.Count;
 
-      return new SampleStereo(stereo.FrontLeft * m_dryMix + left * m_wetMix, stereo.FrontRight * m_dryMix + right * m_wetMix);
+      return new WaveStereo<double>(stereo.LeftWave * m_dryMix + left * m_wetMix, stereo.RightWave * m_dryMix + right * m_wetMix);
     }
   }
 }
