@@ -25,5 +25,27 @@ namespace Flux
 
       return resultSelector(aggregate, index);
     }
+
+    public static TResult Aggregate<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TAccumulate> initiator, System.Func<(TAccumulate cumulative, TSource element, int index), TAccumulate> aggregator, System.Func<(TAccumulate cumulative, int count), TResult> resultSelector)
+    {
+      if (initiator is null) throw new System.ArgumentNullException(nameof(initiator));
+      if (aggregator is null) throw new System.ArgumentNullException(nameof(aggregator));
+      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+
+      var index = 0;
+
+      var aggregate = initiator();
+
+      using var e = source.ThrowOnNull().GetEnumerator();
+
+      while (e.MoveNext())
+      {
+        aggregate = aggregator((aggregate, e.Current, index));
+
+        index++;
+      }
+
+      return resultSelector((aggregate, index));
+    }
   }
 }

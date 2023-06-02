@@ -5,21 +5,20 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     public static string ToBinaryString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Text.PositionalNotation.Base2.NumberToText(value, value.GetBitCount());
+      => Text.PositionalNotation.Base2.NumberToText(value.ToBigInteger(), value.GetBitCount());
 
     public static string ToDecimalString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Text.PositionalNotation.Base10.NumberToText(value, value.GetBitCount());
+      => Text.PositionalNotation.Base10.NumberToText(value.ToBigInteger(), Bits.ToMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
 
     public static string ToHexadecimalString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Text.PositionalNotation.Base16.NumberToText(value, value.GetByteCount() << 1);
+      => Text.PositionalNotation.Base16.NumberToText(value.ToBigInteger(), Bits.ToMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
 
     public static string ToOctalString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Text.PositionalNotation.Base8.NumberToText(value, int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient);
+      => Text.PositionalNotation.Base8.NumberToText(value.ToBigInteger(), Bits.ToMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
 
     /// <summary>Creates <paramref name="value"/> to text using base <paramref name="radix"/>.</summary>
-    public static string ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => new Text.PositionalNotation(radix).NumberToText(value, minLength).ToString();
+    public static string ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1) where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => new Text.PositionalNotation(radix).NumberToText(value.ToBigInteger(), minLength).ToString();
 
 #else
 
@@ -70,23 +69,22 @@ namespace Flux
       public PositionalNotation(System.ReadOnlySpan<System.Text.Rune> symbols) => Symbols = symbols;
       public PositionalNotation(int radix) : this(Base64.AsSpan().Slice(0, radix).ToListRune().AsSpan()) { }
 
-      /// <summary>Converts a number into a positional notation text string.</summary>
-      public string NumberToText<TSelf>(TSelf number, int minLength = 1)
-        where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      /// <summary>Converts <paramref name="number"/> to a positional notation text string with the specified <paramref name="minLength"/>.</summary>
+      public string NumberToText(System.Numerics.BigInteger number, int minLength = 1)
       {
-        if (TSelf.IsNegative(number))
-          return NumberToText(TSelf.Abs(number), minLength);
+        if (System.Numerics.BigInteger.IsNegative(number))
+          return NegativeSign + NumberToText(System.Numerics.BigInteger.Abs(number), minLength);
 
-        if (TSelf.IsZero(number))
+        if (number.IsZero)
           return Symbols[0].ToString();
 
-        var radix = TSelf.CreateChecked(Symbols.Length);
+        var radix = Symbols.Length;
 
         var sb = new SpanBuilder<System.Text.Rune>();
 
-        while (number > TSelf.Zero)
+        while (number > System.Numerics.BigInteger.Zero)
         {
-          (number, var remainder) = TSelf.DivRem(number, radix);
+          (number, var remainder) = System.Numerics.BigInteger.DivRem(number, radix);
 
           sb.Insert(0, Symbols[int.CreateChecked(remainder)]);
         }
@@ -97,61 +95,66 @@ namespace Flux
         return sb.ToString();
       }
 
-      /// <summary>Tries to convert a number into a positional notation text string.</summary>
-      public bool TryNumberToText(System.Numerics.BigInteger number, out string result, int minLength = 1)
+      /// <summary>Try converting <paramref name="number"/> to a positional notation <paramref name="text"/> string (as an out parameter) with the specified <paramref name="minLength"/>.</summary>
+      public bool TryNumberToText(System.Numerics.BigInteger number, out string text, int minLength = 1)
       {
         try
         {
-          result = NumberToText(number, minLength);
+          text = NumberToText(number, minLength);
           return true;
         }
         catch { }
 
-        result = string.Empty;
+        text = string.Empty;
         return false;
       }
 
-      /// <summary>Convert a positional notation text string into a number.</summary>
-      public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<System.Text.Rune> number)
+      /// <summary>Convert a positional notation <paramref name="text"/> string to a number.</summary>
+      public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<System.Text.Rune> text)
       {
-        var isNegative = number[0] == NegativeSign;
+        var isNegative = text[0] == NegativeSign;
 
         var bi = System.Numerics.BigInteger.Zero;
 
-        for (var index = isNegative ? 1 : 0; index < number.Length; index++)
+        for (var index = isNegative ? 1 : 0; index < text.Length; index++)
         {
           bi *= Symbols.Length;
 
-          bi += MemoryExtensions.IndexOf(Symbols, number[index]) is var position && position >= 0 ? position : throw new System.InvalidOperationException();
+          bi += MemoryExtensions.IndexOf(Symbols, text[index]) is var position && position >= 0 ? position : throw new System.InvalidOperationException();
         }
 
         return isNegative ? -bi : bi;
       }
-      /// <summary>Convert a positional notation text string into a number.</summary>
-      public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number) => TextToNumber(number.ToListRune().AsSpan().AsReadOnlySpan());
 
-      /// <summary>Convert a positional notation text string into a number.</summary>
-      public bool TryTextToNumber(System.ReadOnlySpan<System.Text.Rune> number, out System.Numerics.BigInteger result)
+      /// <summary>Convert a positional notation <paramref name="text"/> string to a number.</summary>
+      public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> text) => TextToNumber(text.ToListRune().AsSpan());
+
+      /// <summary>Try converting a positional notation <paramref name="text"/> string to a <paramref name="number"/> (as an out parameter).</summary>
+      public bool TryTextToNumber(System.ReadOnlySpan<System.Text.Rune> text, out System.Numerics.BigInteger number)
       {
         try
         {
-          result = TextToNumber(number);
+          number = TextToNumber(text);
           return true;
         }
         catch { }
 
-        result = default;
+        number = default;
         return false;
       }
-      /// <summary>Convert a positional notation text string into a number.</summary>
-      public bool TryTextToNumber(System.ReadOnlySpan<char> number, out System.Numerics.BigInteger result) => TryTextToNumber(number.ToListRune().AsSpan().AsReadOnlySpan(), out result);
 
-      public static System.Collections.Generic.Dictionary<int, string> ToStringRadices(System.Numerics.BigInteger number)
+      /// <summary>Try converting a positional notation <paramref name="text"/> string to a <paramref name="number"/> (as an out parameter).</summary>
+      public bool TryTextToNumber(System.ReadOnlySpan<char> text, out System.Numerics.BigInteger number)
       {
-        var dictionary = new System.Collections.Generic.Dictionary<int, string>();
-        for (var radix = 2; radix <= MaxRadix; radix++)
-          dictionary.Add(radix, new PositionalNotation(radix).NumberToText(number).ToString());
-        return dictionary;
+        try
+        {
+          number = TextToNumber(text);
+          return true;
+        }
+        catch { }
+
+        number = default;
+        return false;
       }
     }
 

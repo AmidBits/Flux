@@ -4,8 +4,14 @@ namespace Flux
 {
   public static partial class StringFormattingExtensionMethods
   {
+#if NET7_0_OR_GREATER
+    public static string ToCardinalNumeralCompoundString<TSelf>(this TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => string.Join(' ', NumeralComposition.GetCardinalNumerals(NumeralComposition.GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
+#else
     public static string ToCardinalNumeralCompoundString(this System.Numerics.BigInteger number)
       => string.Join(' ', NumeralComposition.GetCardinalNumerals(NumeralComposition.GetCompoundNumbers(number)));
+#endif
   }
 
   /// <summary>Supporting class for breaking down and translating numbers to strings.</summary>
