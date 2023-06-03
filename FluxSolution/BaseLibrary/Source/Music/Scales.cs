@@ -2,7 +2,7 @@ namespace Flux.Music
 {
   /// <summary></summary>
   /// <seealso cref="http://www.angelfire.com/in2/yala/t4scales.htm"/>
-  public static class Scale
+  public static class Scales
   {
     public static readonly int[] Chromatic = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     public static readonly int[] Diminished = new int[] { 0, 2, 3, 5, 6, 8, 9, 11 };

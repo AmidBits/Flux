@@ -5,7 +5,7 @@ namespace Flux.Model.Maze
   public sealed class SidewinderMaze
     : AMaze
   {
-    public InterCardinalDirection Diagonal { get; set; } = InterCardinalDirection.NE;
+    public Units.InterCardinalDirection Diagonal { get; set; } = Units.InterCardinalDirection.NE;
 
     public override void CarveMaze(MazeGrid grid)
     {
@@ -35,7 +35,7 @@ namespace Flux.Model.Maze
             run.Clear();
           }
           else
-            cell.ConnectPath(cell.Edges[(int)CardinalDirection.E], true);
+            cell.ConnectPath(cell.Edges[(int)Units.CardinalDirection.E], true);
         }
       }
     }

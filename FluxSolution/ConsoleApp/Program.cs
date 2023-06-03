@@ -36,6 +36,31 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var slope = new Flux.Units.BigRational(5, 8) + 2;
+      var slopeThird = slope / 3;
+      var slopes = slope.ToImproperString();
+
+      var carportPostHeight = new Flux.Units.Length(12, Flux.Units.LengthUnit.Foot);
+
+      var carportPostHeightIn = carportPostHeight.ToUnitString(Flux.Units.LengthUnit.Inch);
+      var carportPostHeightFt = carportPostHeight.ToUnitString(Flux.Units.LengthUnit.Foot);
+
+      // Frame:
+      var carportPostWidth = new Flux.Units.Length(291, Flux.Units.LengthUnit.Inch);
+      var carportPostDepth = new Flux.Units.Length(288, Flux.Units.LengthUnit.Inch);
+
+      // Posts:
+      //var carportPostWidth = new Flux.Units.Length(279, Flux.Units.LengthUnit.Inch);
+      //var carportPostDepth = new Flux.Units.Length(180, Flux.Units.LengthUnit.Inch);
+
+      var carportCenterPostDiagonalVector = new Flux.Geometry.CartesianCoordinate2<double>(carportPostWidth.Value, carportPostDepth.Value);
+      var carportCenterPostDiagonal = new Flux.Units.Length(carportCenterPostDiagonalVector.EuclideanLength());
+
+      var carportDiagonalIn = carportCenterPostDiagonal.ToUnitString(Flux.Units.LengthUnit.Inch);
+      var carportDiagonalFt = carportCenterPostDiagonal.ToUnitString(Flux.Units.LengthUnit.Foot);
+
+      var carportDiagonalFtBr = carportCenterPostDiagonal.ToUnitValue(Flux.Units.LengthUnit.Foot).ToBigRational(2);
+
       var num = -2039;
       var numtxt = Flux.Text.PositionalNotation.Base10.NumberToText(num);
       var txtnum = Flux.Text.PositionalNotation.Base10.TextToNumber(numtxt);

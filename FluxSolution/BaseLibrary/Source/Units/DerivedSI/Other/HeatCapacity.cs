@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class QuantitiesExtensionMethods
+  public static partial class UnitsExtensionMethods
   {
 #pragma warning disable IDE0060 // Remove unused parameter
     public static string GetUnitString(this Units.HeatCapacityUnit unit, bool preferUnicode, bool useFullName = false)

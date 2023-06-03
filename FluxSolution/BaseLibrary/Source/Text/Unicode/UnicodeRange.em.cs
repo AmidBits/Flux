@@ -13,7 +13,7 @@ namespace Flux
   ///// <para>A glyph is a visual "image", e.g. in a font, used to represent visual "symbols". One or more glyphs may be used to represent a grapheme.</para>
   ///// </remarks>
 
-  public static partial class UnicodeRangeExtensionMethods
+  public static partial class UnicodeExtensionMethods
   {
     /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
     private static System.Collections.Generic.IList<(string name, System.Text.Unicode.UnicodeRange range)> GetUnicodeNamesAndRanges()

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StringFormattingExtensionMethods
+  public static partial class TextExtensionMethods
   {
 #if NET7_0_OR_GREATER
 

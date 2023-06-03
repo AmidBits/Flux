@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class QuantitiesExtensionMethods
+  public static partial class UnitsExtensionMethods
   {
     public static string GetUnitString(this Units.ElectricalResistanceUnit unit, bool preferUnicode = false, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
@@ -11,118 +11,118 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
-}
 
-namespace Flux.Units
-{
-  public enum ElectricalResistanceUnit
+  namespace Units
   {
-    /// <summary>Ohm.</summary>
-    Ohm,
-    /// <summary>Kilo-Ohm.</summary>
-    KiloOhm,
-    /// <summary>Mega-Ohm.</summary>
-    MegaOhm,
-  }
-
-  /// <summary>Electric resistance, unit of Ohm.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
-  public readonly record struct ElectricalResistance
-    : System.IComparable, System.IComparable<ElectricalResistance>, IUnitQuantifiable<double, ElectricalResistanceUnit>
-  {
-    public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
-
-    public static ElectricalResistance VonKlitzing
-      => new(25812.80745); // 25812.80745;
-
-    private readonly double m_value;
-
-    public ElectricalResistance(double value, ElectricalResistanceUnit unit = DefaultUnit)
-      => m_value = unit switch
-      {
-        ElectricalResistanceUnit.Ohm => value,
-        ElectricalResistanceUnit.KiloOhm => value * 1000,
-        ElectricalResistanceUnit.MegaOhm => value * 1000000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    public ElectricalConductance ToElectricalConductance()
-      => new(1 / m_value);
-
-    #region Static methods
-    /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>
-    /// <param name="voltage"></param>
-    /// <param name="current"></param>
-    public static ElectricalResistance From(Voltage voltage, ElectricCurrent current)
-      => new(voltage.Value / current.Value);
-
-    /// <summary>Converts resistor values as if in parallel configuration.</summary>
-    public static ElectricalResistance FromParallelResistors(params double[] resistors)
+    public enum ElectricalResistanceUnit
     {
-      var sum = 0.0;
-      foreach (var resistor in resistors)
-        sum += 1 / resistor;
-      return (ElectricalResistance)(1 / sum);
+      /// <summary>Ohm.</summary>
+      Ohm,
+      /// <summary>Kilo-Ohm.</summary>
+      KiloOhm,
+      /// <summary>Mega-Ohm.</summary>
+      MegaOhm,
     }
 
-    /// <summary>Converts resistor values as if in serial configuration.</summary>
-    public static ElectricalResistance FromSerialResistors(params double[] resistors)
+    /// <summary>Electric resistance, unit of Ohm.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
+    public readonly record struct ElectricalResistance
+      : System.IComparable, System.IComparable<ElectricalResistance>, IUnitQuantifiable<double, ElectricalResistanceUnit>
     {
-      var sum = 0.0;
-      foreach (var resistor in resistors)
-        sum += resistor;
-      return (ElectricalResistance)sum;
-    }
-    #endregion Static methods
+      public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
 
-    #region Overloaded operators
-    public static explicit operator double(ElectricalResistance v) => v.m_value;
-    public static explicit operator ElectricalResistance(double v) => new(v);
+      public static ElectricalResistance VonKlitzing
+        => new(25812.80745); // 25812.80745;
 
-    public static bool operator <(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) <= 0;
-    public static bool operator >(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) > 0;
-    public static bool operator >=(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) >= 0;
+      private readonly double m_value;
 
-    public static ElectricalResistance operator -(ElectricalResistance v) => new(-v.m_value);
-    public static ElectricalResistance operator +(ElectricalResistance a, double b) => new(a.m_value + b);
-    public static ElectricalResistance operator +(ElectricalResistance a, ElectricalResistance b) => a + b.m_value;
-    public static ElectricalResistance operator /(ElectricalResistance a, double b) => new(a.m_value / b);
-    public static ElectricalResistance operator /(ElectricalResistance a, ElectricalResistance b) => a / b.m_value;
-    public static ElectricalResistance operator *(ElectricalResistance a, double b) => new(a.m_value * b);
-    public static ElectricalResistance operator *(ElectricalResistance a, ElectricalResistance b) => a * b.m_value;
-    public static ElectricalResistance operator %(ElectricalResistance a, double b) => new(a.m_value % b);
-    public static ElectricalResistance operator %(ElectricalResistance a, ElectricalResistance b) => a % b.m_value;
-    public static ElectricalResistance operator -(ElectricalResistance a, double b) => new(a.m_value - b);
-    public static ElectricalResistance operator -(ElectricalResistance a, ElectricalResistance b) => a - b.m_value;
-    #endregion Overloaded operators
+      public ElectricalResistance(double value, ElectricalResistanceUnit unit = DefaultUnit)
+        => m_value = unit switch
+        {
+          ElectricalResistanceUnit.Ohm => value,
+          ElectricalResistanceUnit.KiloOhm => value * 1000,
+          ElectricalResistanceUnit.MegaOhm => value * 1000000,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
-    #region Implemented interfaces
+      public ElectricalConductance ToElectricalConductance()
+        => new(1 / m_value);
 
-    // IComparable
-    public int CompareTo(object? other) => other is not null && other is ElectricalResistance o ? CompareTo(o) : -1;
+      #region Static methods
+      /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>
+      /// <param name="voltage"></param>
+      /// <param name="current"></param>
+      public static ElectricalResistance From(Voltage voltage, ElectricCurrent current)
+        => new(voltage.Value / current.Value);
 
-    // IComparable<>
-    public int CompareTo(ElectricalResistance other) => m_value.CompareTo(other.m_value);
-
-    // IQuantifiable<>
-    public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-    public double Value { get => m_value; init => m_value = value; }
-
-    // IUnitQuantifiable<>
-    public string ToUnitString(ElectricalResistanceUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-      => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-    public double ToUnitValue(ElectricalResistanceUnit unit = DefaultUnit)
-      => unit switch
+      /// <summary>Converts resistor values as if in parallel configuration.</summary>
+      public static ElectricalResistance FromParallelResistors(params double[] resistors)
       {
-        ElectricalResistanceUnit.Ohm => m_value,
-        ElectricalResistanceUnit.KiloOhm => m_value / 1000,
-        ElectricalResistanceUnit.MegaOhm => m_value / 1000000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+        var sum = 0.0;
+        foreach (var resistor in resistors)
+          sum += 1 / resistor;
+        return (ElectricalResistance)(1 / sum);
+      }
 
-    #endregion Implemented interfaces
+      /// <summary>Converts resistor values as if in serial configuration.</summary>
+      public static ElectricalResistance FromSerialResistors(params double[] resistors)
+      {
+        var sum = 0.0;
+        foreach (var resistor in resistors)
+          sum += resistor;
+        return (ElectricalResistance)sum;
+      }
+      #endregion Static methods
 
-    public override string ToString() => ToQuantityString();
+      #region Overloaded operators
+      public static explicit operator double(ElectricalResistance v) => v.m_value;
+      public static explicit operator ElectricalResistance(double v) => new(v);
+
+      public static bool operator <(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) < 0;
+      public static bool operator <=(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) <= 0;
+      public static bool operator >(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) > 0;
+      public static bool operator >=(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) >= 0;
+
+      public static ElectricalResistance operator -(ElectricalResistance v) => new(-v.m_value);
+      public static ElectricalResistance operator +(ElectricalResistance a, double b) => new(a.m_value + b);
+      public static ElectricalResistance operator +(ElectricalResistance a, ElectricalResistance b) => a + b.m_value;
+      public static ElectricalResistance operator /(ElectricalResistance a, double b) => new(a.m_value / b);
+      public static ElectricalResistance operator /(ElectricalResistance a, ElectricalResistance b) => a / b.m_value;
+      public static ElectricalResistance operator *(ElectricalResistance a, double b) => new(a.m_value * b);
+      public static ElectricalResistance operator *(ElectricalResistance a, ElectricalResistance b) => a * b.m_value;
+      public static ElectricalResistance operator %(ElectricalResistance a, double b) => new(a.m_value % b);
+      public static ElectricalResistance operator %(ElectricalResistance a, ElectricalResistance b) => a % b.m_value;
+      public static ElectricalResistance operator -(ElectricalResistance a, double b) => new(a.m_value - b);
+      public static ElectricalResistance operator -(ElectricalResistance a, ElectricalResistance b) => a - b.m_value;
+      #endregion Overloaded operators
+
+      #region Implemented interfaces
+
+      // IComparable
+      public int CompareTo(object? other) => other is not null && other is ElectricalResistance o ? CompareTo(o) : -1;
+
+      // IComparable<>
+      public int CompareTo(ElectricalResistance other) => m_value.CompareTo(other.m_value);
+
+      // IQuantifiable<>
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
+      public double Value { get => m_value; init => m_value = value; }
+
+      // IUnitQuantifiable<>
+      public string ToUnitString(ElectricalResistanceUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
+        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public double ToUnitValue(ElectricalResistanceUnit unit = DefaultUnit)
+        => unit switch
+        {
+          ElectricalResistanceUnit.Ohm => m_value,
+          ElectricalResistanceUnit.KiloOhm => m_value / 1000,
+          ElectricalResistanceUnit.MegaOhm => m_value / 1000000,
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
+
+      #endregion Implemented interfaces
+
+      public override string ToString() => ToQuantityString();
+    }
   }
 }

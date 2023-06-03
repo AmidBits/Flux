@@ -13,7 +13,7 @@ namespace Formatting
     [TestMethod]
     public void LatitudeFormatter()
     {
-      Assert.AreEqual(Flux.Units.Angle.ToDmsString(_dms1tp, Flux.Units.DmsFormat.DegreesMinutesDecimalSeconds, CardinalAxis.NorthSouth), _dms1 + 'N');
+      Assert.AreEqual(Flux.Units.Angle.ToDmsString(_dms1tp, Flux.Units.DmsFormat.DegreesMinutesDecimalSeconds, Flux.Units.CardinalAxis.NorthSouth), _dms1 + 'N');
     }
 
     [TestMethod]
@@ -27,7 +27,7 @@ namespace Formatting
     [TestMethod]
     public void LongitudeFormatter()
     {
-      Assert.AreEqual(Flux.Units.Angle.ToDmsString(_dms1tp, Flux.Units.DmsFormat.DegreesMinutesDecimalSeconds, CardinalAxis.EastWest), _dms1 + 'E');
+      Assert.AreEqual(Flux.Units.Angle.ToDmsString(_dms1tp, Flux.Units.DmsFormat.DegreesMinutesDecimalSeconds, Flux.Units.CardinalAxis.EastWest), _dms1 + 'E');
     }
 
     [TestMethod]
