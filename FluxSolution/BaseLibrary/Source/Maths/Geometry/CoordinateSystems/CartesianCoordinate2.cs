@@ -58,13 +58,42 @@ namespace Flux
       #region Static methods
 
 #if NET7_0_OR_GREATER
+      /// <summary>Converts the <see cref="CartesianCoordinate2{TSelf}"/> to a 'mapped' unique index.</summary>
+      /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a grid <paramref name="width"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>
+      public static TInteger ConvertCartesian2ToMapIndex<TInteger>(TInteger x, TInteger y, TInteger width)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+        => x + (y * width);
+
+      /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
+      /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a grid <paramref name="width"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
+      public static (TInteger x, TInteger y) ConvertMapIndexToCartesian2<TInteger>(TInteger index, TInteger width)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+        => (
+          index % width,
+          index / width
+        );
+#endif
+
+      /// <summary>Converts the <see cref="CartesianCoordinate2{TSelf}"/> to a 'mapped' unique index.</summary>
+      /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a grid <paramref name="width"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>
+      public static System.Numerics.BigInteger ConvertCartesian2ToMapIndex(System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger width)
+        => x + (y * width);
+
+      /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
+      /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a grid <paramref name="width"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
+      public static (System.Numerics.BigInteger x, System.Numerics.BigInteger y) ConvertMapIndexToCartesian2(System.Numerics.BigInteger index, System.Numerics.BigInteger width)
+        => (
+          index % width,
+          index / width
+        );
+
+#if NET7_0_OR_GREATER
       [System.Text.RegularExpressions.GeneratedRegex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$", System.Text.RegularExpressions.RegexOptions.Compiled)]
       private static partial System.Text.RegularExpressions.Regex ParsingRegex();
 #else
     private static System.Text.RegularExpressions.Regex ParsingRegex() => new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
 #endif
 
-#if NET7_0_OR_GREATER
       public static CartesianCoordinate2<TSelf> Parse(string pointAsString)
         => ParsingRegex().Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && TSelf.TryParse(gX.Value, System.Globalization.NumberStyles.Number, null, out var x) && m.Groups["Y"] is var gY && gY.Success && TSelf.TryParse(gY.Value, System.Globalization.NumberStyles.Number, null, out var y)
         ? new CartesianCoordinate2<TSelf>(x, y)
@@ -82,8 +111,6 @@ namespace Flux
           return false;
         }
       }
-
-#endif
 
       #endregion Static methods
 

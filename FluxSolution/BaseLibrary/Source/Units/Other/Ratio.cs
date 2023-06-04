@@ -2,17 +2,7 @@ namespace Flux
 {
   namespace Units
   {
-    public enum RatioFormat
-    {
-      /// <summary>As a ratio (colon), e.g. "1:2".</summary>
-      AcolonB,
-      /// <summary>With a ratio slash, e.g. "1/2".</summary>
-      AslashB,
-      /// <summary>As textual "A to B", e.g. "1 to 2".</summary>
-      AtoB,
-    }
-
-    /// <summary>A ratio indicates how many times one number contains another. It is two related quantities measured with the same unit, it is a dimensionless number (value). This struct stores both constituting numbers of the ratio (numerator and denominator) and returns the quotient as a value.</summary>
+    /// <summary>A ratio, using real numbers is an irrational number, indicates how many times one number contains another. It is two related quantities measured with the same unit, it is a dimensionless number (value). This struct stores both constituting numbers of the ratio (numerator and denominator) and returns the quotient as a value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ratio"/>
     public readonly record struct Ratio
       : IQuantifiable<double>
@@ -46,15 +36,6 @@ namespace Flux
         : BigRational.ApproximateRational(Value);
 #endif
 
-      public string ToRatioString(RatioFormat format)
-        => format switch
-        {
-          RatioFormat.AcolonB => $"{m_numerator}\u2236{m_denominator}", // As a ratio (colon).
-          RatioFormat.AslashB => $"{m_numerator}\u2044{m_denominator}", // With a ratio slash.
-          RatioFormat.AtoB => $"{m_numerator} to {m_denominator}", // As textual "A to B".
-          _ => throw new System.ArgumentOutOfRangeException(nameof(format))
-        };
-
       #region Static methods
 
       /// <summary>When the diagonal length and side-to-side ratio is known, the proportional width and height can be computed using the Pythagorean theorem. E.g. A diagonal of 65" and a ratio of 16:9.</summary>
@@ -86,7 +67,7 @@ namespace Flux
       #region Implemented interfaces
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToRatioString(RatioFormat.AcolonB);
+      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => RatioFormat.AcolonB.ToRatioString(m_numerator, m_denominator);
       public double Value => m_numerator / m_denominator;
 
       #endregion Implemented interfaces

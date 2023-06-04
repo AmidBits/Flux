@@ -25,7 +25,7 @@ namespace Flux.Geometry
     public double SemiMinorAxis => System.Math.Min(m_x, m_y);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
-    public double Area => System.Math.PI * SemiMajorAxis * SemiMinorAxis;
+    public double Area => System.Math.PI * m_x * m_y;
 
     /// <summary>Returns the approxate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
     public double Circumference
@@ -39,7 +39,7 @@ namespace Flux.Geometry
 
         var h3 = 3 * H(SemiMajorAxis, SemiMinorAxis);
 
-        return circle * (1.0 + h3 / (10.0 + System.Math.Sqrt(4.0 - h3)));
+        return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
       }
     }
 
@@ -103,8 +103,7 @@ namespace Flux.Geometry
     /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
     /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    public double FirstEccentricity
-      => System.Math.Sqrt(1 - System.Math.Pow(SemiMinorAxis, 2) / System.Math.Pow(SemiMajorAxis, 2));
+    public double FirstEccentricity => System.Math.Sqrt(1 - System.Math.Pow(SemiMinorAxis, 2) / System.Math.Pow(SemiMajorAxis, 2));
 
     /// <summary>
     /// <para>The linear eccentricity of an ellipse or hyperbola, denoted c (or sometimes f or e), is the distance between its center and either of its two foci.</para>
@@ -155,9 +154,14 @@ namespace Flux.Geometry
     /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
     public static EllipseGeometry FromCartesian(double x, double y) => new(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
 
-    /// <summary>This seem to be a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses.</summary>
-    public static double H(double a, double b)
-      => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
+    /// <summary>
+    /// <para>This is a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses. The parameters <paramref name="a"/> and <paramref name="b"/> are the lengths of the semi-major and semi-minor axes, respectively.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Ellipse#Circumference"/></para>
+    /// </summary>
+    /// <param name="a">The semi-major axis.</param>
+    /// <param name="b">The semi-minor axis.</param>
+    /// <returns>pow(a - b, 2) / pow(a + b, 2)</returns>
+    public static double H(double a, double b) => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
 
     #endregion Static methods
   }

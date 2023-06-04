@@ -60,20 +60,20 @@ namespace Flux
       public static PositionalNotation Base10 => new(10);
       public static PositionalNotation Base16 => new(16);
 
-      public System.Text.Rune NegativeSign { get; init; } = (System.Text.Rune)'-';
+      //public System.Text.Rune NegativeSign { get; init; } = (System.Text.Rune)'\u2212';
 
       public System.ReadOnlySpan<System.Text.Rune> Symbols { get; }
 
       /// <summary>Convert a number into a positional notation text string.</summary>
       /// <param name="symbols">Symbols must be represented as TextElements (i.e. graphemes).</param>
       public PositionalNotation(System.ReadOnlySpan<System.Text.Rune> symbols) => Symbols = symbols;
-      public PositionalNotation(int radix) : this(Base64.AsSpan().Slice(0, radix).ToListRune().AsSpan()) { }
+      public PositionalNotation(int radix) : this(Base64.AsSpan()[..radix].ToListRune().AsSpan()) { }
 
       /// <summary>Converts <paramref name="number"/> to a positional notation text string with the specified <paramref name="minLength"/>.</summary>
       public string NumberToText(System.Numerics.BigInteger number, int minLength = 1)
       {
         if (System.Numerics.BigInteger.IsNegative(number))
-          return NegativeSign + NumberToText(System.Numerics.BigInteger.Abs(number), minLength);
+          return $"{Flux.UnicodeCodepoint.MinusSign}{NumberToText(System.Numerics.BigInteger.Abs(number), minLength)}";
 
         if (number.IsZero)
           return Symbols[0].ToString();
@@ -112,7 +112,7 @@ namespace Flux
       /// <summary>Convert a positional notation <paramref name="text"/> string to a number.</summary>
       public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<System.Text.Rune> text)
       {
-        var isNegative = text[0] == NegativeSign;
+        var isNegative = (text[0] == (System.Text.Rune)(int)UnicodeCodepoint.MinusSign | text[0] == (System.Text.Rune)(int)UnicodeCodepoint.HyphenMinus);
 
         var bi = System.Numerics.BigInteger.Zero;
 

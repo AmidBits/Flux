@@ -494,8 +494,6 @@ namespace Flux
         ? throw new System.DivideByZeroException(@"Reciprocal of zero.")
         : new(value.m_denominator, value.m_numerator, true);
 
-
-
       public static bool TryGetMixedParts(BigRational value, out System.Numerics.BigInteger wholeNumber, out System.Numerics.BigInteger properNumerator, out System.Numerics.BigInteger properDenominator)
       {
         try
@@ -742,7 +740,7 @@ namespace Flux
       public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
       [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
       public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-      public string ToString(System.IFormatProvider? provider) => string.Format(provider, "{0}\u2044{1}", Value);
+      public string ToString(System.IFormatProvider? provider) => RatioFormat.AslashB.ToRatioString(m_numerator, m_denominator);
       public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
       [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
       [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
@@ -757,9 +755,9 @@ namespace Flux
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => IsProper
-        ? $"{m_numerator}\u2044{m_denominator}"
+        ? RatioFormat.AslashB.ToRatioString(m_numerator, m_denominator)
         : TryGetMixedParts(this, out var wholeNumber, out var properNumerator, out var properDenominator)
-        ? $"{wholeNumber} {properNumerator}\u2044{properDenominator}"
+        ? $"{wholeNumber} {RatioFormat.AslashB.ToRatioString(properNumerator, properDenominator)}"
         : m_numerator.ToString(); // It is a whole number and we return a simple integer string.
 
       public double Value => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);

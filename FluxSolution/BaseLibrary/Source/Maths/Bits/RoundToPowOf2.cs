@@ -26,7 +26,7 @@ namespace Flux
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be toward zero and never equal to value.</param>
     public static System.Numerics.BigInteger RoundToPowOf2Tz<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumber<TSelf>
-      => System.Numerics.BigInteger.CreateChecked(value.AssertNonNegative().TruncMod(TSelf.One, out var _)).MostSignificant1Bit();
+      => System.Numerics.BigInteger.CreateChecked(value.AssertNonNegative().TruncMod(TSelf.One, out TSelf _)).MostSignificant1Bit();
 
     /// <summary>Get the power-of-2 nearest to value, toward zero.</summary>
     /// <param name="value">The value for which the nearest power-of-2 towards zero will be found.</param>

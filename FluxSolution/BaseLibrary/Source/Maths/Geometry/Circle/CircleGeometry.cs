@@ -57,17 +57,17 @@ namespace Flux.Geometry
       }
     }
 
-#if NET7_0_OR_GREATER
     /// <summary></summary>
-    public CartesianCoordinate2<double> ToCartesianCoordinate2(double rotationAngle = 0)
-      => new(
+    public ICartesianCoordinate2<double> ToCartesianCoordinate2(double rotationAngle = 0)
+      => new CartesianCoordinate2<double>(
         System.Math.Cos(rotationAngle) * m_radius,
         System.Math.Sin(rotationAngle) * m_radius
       );
-#endif
 
-    public HexagonGeometry ToHexagonGeometry() => new(m_radius);
+    public HexagonGeometry ToHexagonGeometry()
+      => new(m_radius);
 
-    public EllipseGeometry ToEllipseGeometry() => new(m_radius, m_radius);
+    public EllipseGeometry ToEllipseGeometry()
+      => new(m_radius, m_radius);
   }
 }

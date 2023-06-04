@@ -53,6 +53,9 @@ namespace ConsoleApp
       //var carportPostWidth = new Flux.Units.Length(279, Flux.Units.LengthUnit.Inch);
       //var carportPostDepth = new Flux.Units.Length(180, Flux.Units.LengthUnit.Inch);
 
+      System.Int32 six = 6;
+      var alsosix = six;
+
       var carportCenterPostDiagonalVector = new Flux.Geometry.CartesianCoordinate2<double>(carportPostWidth.Value, carportPostDepth.Value);
       var carportCenterPostDiagonal = new Flux.Units.Length(carportCenterPostDiagonalVector.EuclideanLength());
 
@@ -62,6 +65,7 @@ namespace ConsoleApp
       var carportDiagonalFtBr = carportCenterPostDiagonal.ToUnitValue(Flux.Units.LengthUnit.Foot).ToBigRational(2);
 
       var num = -2039;
+      var str = num.ToBinaryString();
       var numtxt = Flux.Text.PositionalNotation.Base10.NumberToText(num);
       var txtnum = Flux.Text.PositionalNotation.Base10.TextToNumber(numtxt);
 
