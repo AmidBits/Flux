@@ -78,7 +78,7 @@ namespace Flux.Geometry
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, circularArc * maxRandomness);
 
-        var (x, y) = Convert.RotationAngleToCartesian2Ex(angle);
+        var (x, y) = Units.Angle.ConvertRotationAngleToCartesian2Ex(angle);
 
         yield return resultSelector(x * m_a, y * m_b);
       }

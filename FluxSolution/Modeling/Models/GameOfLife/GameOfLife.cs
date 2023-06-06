@@ -21,7 +21,7 @@ namespace Flux.Model
       {
         for (var c = m_cellGrid.X - 1; c >= 0; c--)
         {
-          var index = (int)Convert.Cartesian2ToGridIndex(c, r, m_cellGrid.X);
+          var index = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(c, r, m_cellGrid.X);
 
           m_deadOrAlive[index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
         }
@@ -44,7 +44,7 @@ namespace Flux.Model
       {
         for (var c = m_cellGrid.X - 1; c >= 0; c--)
         {
-          var index = (int)Convert.Cartesian2ToGridIndex(c, r, m_cellGrid.X);
+          var index = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(c, r, m_cellGrid.X);
 
           var state = m_deadOrAlive[index];
 
@@ -77,13 +77,13 @@ namespace Flux.Model
 
           var x1 = (x + c + m_cellGrid.X) % m_cellGrid.X; // Loop around the edges if x+i is off the board.
 
-          var pointIndex = (int)Convert.Cartesian2ToGridIndex(x1, y1, m_cellGrid.X);
+          var pointIndex = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x1, y1, m_cellGrid.X);
 
           cn += m_deadOrAlive[pointIndex] ? 1 : 0;
         }
       }
 
-      var positionIndex = (int)Convert.Cartesian2ToGridIndex(x, y, m_cellGrid.X);
+      var positionIndex = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x, y, m_cellGrid.X);
 
       cn -= m_deadOrAlive[positionIndex] ? 1 : 0;
 
@@ -98,7 +98,7 @@ namespace Flux.Model
 
         for (var x = 0; x < m_cellGrid.X; x++)
         {
-          var index = (int)Convert.Cartesian2ToGridIndex(x, y, m_cellGrid.X);
+          var index = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x, y, m_cellGrid.X);
 
           var c = m_deadOrAlive[index] ? '\u2588' : ' ';
 

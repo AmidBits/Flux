@@ -7,7 +7,7 @@ namespace Flux
       => new(11.25 * (int)source);
     public static string ToStringOfWords(this Units.ThirtytwoWindCompassRose source)
     {
-      var sb = new SpanBuilder<char>();
+      var sb = new System.Text.StringBuilder();
 
       var s = source.ToString();
 
