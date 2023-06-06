@@ -20,7 +20,7 @@ namespace Flux.Geometry
     public bool Contains(double x, double y) => System.Math.Pow(x, 2) + System.Math.Pow(y, 2) <= System.Math.Pow(m_radius, 2);
 
     /// <summary>
-    /// <para>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).</para>
+    /// <para>Creates a circle consisting of <paramref name="count"/> vertices transformed with <paramref name="resultSelector"/> starting at <paramref name="radOffset"/> and optional <paramref name="maxRandomness"/> (using <paramref name="rng"/>) unit interval (toward 0 = no random, toward 1 = total random).</para>
     /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, top pointy</para>
     /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, double.Tau / 6); // triangle, bottom pointy</para>
     /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, 0); // rectangle, horizontally and vertically pointy</para>
@@ -33,6 +33,7 @@ namespace Flux.Geometry
     /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, double.Tau / 16); // octagon, vertically and horizontally flat</para>
     /// </summary>
     /// <typeparam name="TResult"></typeparam>
+    /// <param name="count"></param>
     /// <param name="resultSelector">The selector that determines the result (<typeparamref name="TResult"/>) for each vector.</param>
     /// <param name="radOffset">The offset in radians to apply to each vector.</param>
     /// <param name="maxRandomness">The maximum randomness to allow for each vector. Must be in the range [0, 0.5].</param>
@@ -57,17 +58,21 @@ namespace Flux.Geometry
       }
     }
 
-    /// <summary></summary>
-    public ICartesianCoordinate2<double> ToCartesianCoordinate2(double rotationAngle = 0)
-      => new CartesianCoordinate2<double>(
-        System.Math.Cos(rotationAngle) * m_radius,
-        System.Math.Sin(rotationAngle) * m_radius
-      );
-
     public HexagonGeometry ToHexagonGeometry()
       => new(m_radius);
 
     public EllipseGeometry ToEllipseGeometry()
       => new(m_radius, m_radius);
+
+    #region Static methods
+
+    /// <summary></summary>
+    public static (double x, double y) ConvertCircleToCartesian2(double radius, double rotationAngle = 0)
+      => (
+        System.Math.Cos(rotationAngle) * radius,
+        System.Math.Sin(rotationAngle) * radius
+      );
+
+    #endregion // Static methods
   }
 }

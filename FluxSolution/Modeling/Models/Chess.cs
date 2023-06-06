@@ -1,4 +1,5 @@
 using System.Linq;
+using Flux.Geometry;
 using Flux.Maths;
 
 namespace Flux.Model
@@ -51,14 +52,14 @@ namespace Flux.Model
 
     public static (string column, string row) IndexToLabel(int index)
     {
-      var (x, y) = Convert.MapIndexToCartesian2(index, BoardSize.X);
+      var (x, y) = Convert.GridIndexToCartesian2(index, BoardSize.X);
 
       return (Files[(int)x], Ranks[(int)y]);
     }
 
     public static Geometry.CartesianCoordinate2<int> IndexToVector(int index)
     {
-      var (x, y) = Convert.MapIndexToCartesian2(index, BoardSize.X);
+      var (x, y) = Convert.GridIndexToCartesian2(index, BoardSize.X);
 
       return new Geometry.CartesianCoordinate2<int>((int)x, (int)y);
     }
@@ -68,14 +69,14 @@ namespace Flux.Model
       var x = System.Array.IndexOf(Files, column);
       var y = System.Array.IndexOf(Ranks, row);
 
-      return (int)Convert.Cartesian2ToMapIndex(x, y, BoardSize.X);
+      return (int)Convert.Cartesian2ToGridIndex(x, y, BoardSize.X);
     }
 
     public static Geometry.CartesianCoordinate2<int> LabelToVector(string column, string row)
       => new(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
     public static int VectorToIndex(Geometry.CartesianCoordinate2<int> vector)
-      => (int)Convert.Cartesian2ToMapIndex(vector.X, vector.Y, BoardSize.X);
+      => (int)Convert.Cartesian2ToGridIndex(vector.X, vector.Y, BoardSize.X);
     public static (string column, string row) VectorToLabel(Geometry.CartesianCoordinate2<int> vector)
       => (Files[vector.X], Ranks[vector.Y]);
 

@@ -1,7 +1,10 @@
 namespace Flux.Geometry
 {
-  /// <summary>Polar coordinate. Please note that polar coordinates are two dimensional.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
+  /// <summary>
+  /// <para>Polar coordinate. Please note that polar coordinates are two dimensional.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Polar_coordinate_system"/></para>
+  /// </summary>
+  /// <remarks>All angles in radians, unless noted otherwise.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct PolarCoordinate
     : System.IFormattable, IPolarCoordinate
@@ -9,7 +12,7 @@ namespace Flux.Geometry
     public static readonly PolarCoordinate Zero;
 
     private readonly double m_radius;
-    private readonly double m_azimuth;
+    private readonly double m_azimuth; // In radians.
 
     public PolarCoordinate(double radius, double azimuth)
     {

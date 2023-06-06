@@ -1,7 +1,10 @@
 namespace Flux.Geometry
 {
-  /// <summary>Spherical coordinate.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
+  /// <summary>
+  /// <para>Spherical coordinate.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/></para>
+  /// </summary>
+  /// <remarks>All angles in radians, unless noted otherwise.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct SphericalCoordinate
     : System.IFormattable, ISphericalCoordinate
@@ -9,8 +12,8 @@ namespace Flux.Geometry
     public static readonly SphericalCoordinate Zero;
 
     private readonly double m_radius;
-    private readonly double m_inclination;
-    private readonly double m_azimuth;
+    private readonly double m_inclination; // In radians.
+    private readonly double m_azimuth; // In radians.
 
     public SphericalCoordinate(double radius, double inclination, double azimuth)
     {

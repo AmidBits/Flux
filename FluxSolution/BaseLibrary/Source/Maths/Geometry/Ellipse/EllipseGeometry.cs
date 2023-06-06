@@ -3,38 +3,38 @@ namespace Flux.Geometry
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct EllipseGeometry
   {
-    private readonly double m_x;
-    private readonly double m_y;
+    private readonly double m_a;
+    private readonly double m_b;
 
-    public EllipseGeometry(double x, double y)
+    public EllipseGeometry(double a, double b)
     {
-      m_x = x;
-      m_y = y;
+      m_a = a;
+      m_b = b;
     }
 
-    public void Deconstruct(out double x, out double y) { x = m_x; y = m_y; }
+    public void Deconstruct(out double a, out double b) { a = m_a; b = m_b; }
 
     /// <summary>The x-axis (width) of the ellipse.</summary>
-    public double X => m_x;
+    public double A => m_a;
     /// <summary>The y-axis (height) of the ellipse.</summary>
-    public double Y => m_y;
+    public double B => m_b;
 
     /// <summary>The semimajor axis of the ellipse.</summary>
-    public double SemiMajorAxis => System.Math.Max(m_x, m_y);
+    public double SemiMajorAxis => System.Math.Max(m_a, m_b);
     /// <summary>The semiminor axis of the ellipse.</summary>
-    public double SemiMinorAxis => System.Math.Min(m_x, m_y);
+    public double SemiMinorAxis => System.Math.Min(m_a, m_b);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
-    public double Area => System.Math.PI * m_x * m_y;
+    public double Area => System.Math.PI * m_a * m_b;
 
     /// <summary>Returns the approxate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
     public double Circumference
     {
       get
       {
-        var circle = System.Math.PI * (m_x + m_y); // (2 * PI * radius)
+        var circle = System.Math.PI * (m_a + m_b); // (2 * PI * radius)
 
-        if (m_x == m_y) // For a circle, use (PI * diameter);
+        if (m_a == m_b) // For a circle, use (PI * diameter);
           return circle;
 
         var h3 = 3 * H(SemiMajorAxis, SemiMinorAxis);
@@ -45,7 +45,7 @@ namespace Flux.Geometry
 
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
     public bool Contains(double x, double y, double rotationAngle = 0)
-      => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (m_x * m_x) + System.Math.Pow(sin * x - cos * y, 2) / (m_y * m_y) <= 1;
+      => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (m_a * m_a) + System.Math.Pow(sin * x - cos * y, 2) / (m_b * m_b) <= 1;
 
     /// <summary>
     /// <para>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).</para>
@@ -80,7 +80,7 @@ namespace Flux.Geometry
 
         var (x, y) = Convert.RotationAngleToCartesian2Ex(angle);
 
-        yield return resultSelector(x * m_x, y * m_y);
+        yield return resultSelector(x * m_a, y * m_b);
       }
     }
 
@@ -140,19 +140,21 @@ namespace Flux.Geometry
       }
     }
 
-#if NET7_0_OR_GREATER
-    /// <summary></summary>
-    public CartesianCoordinate2<double> ToCartesianCoordinate2(double rotationAngle = 0)
-      => new(
-        double.Cos(rotationAngle) * m_x,
-        double.Sin(rotationAngle) * m_y
-      );
-#endif
-
     #region Static methods
 
     /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
-    public static EllipseGeometry FromCartesian(double x, double y) => new(System.Math.Sqrt(x * x + y * y), System.Math.Atan2(y, x));
+    public static (double a, double b) ConvertCartesian2ToEllipse(double x, double y)
+      => (
+        System.Math.Sqrt(x * x + y * y),
+        System.Math.Atan2(y, x)
+      );
+
+    /// <summary></summary>
+    public static (double x, double y) ConvertEllipseToCartesian2(double a, double b, double rotationAngle = 0)
+      => (
+        System.Math.Cos(rotationAngle) * a,
+        System.Math.Sin(rotationAngle) * b
+      );
 
     /// <summary>
     /// <para>This is a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses. The parameters <paramref name="a"/> and <paramref name="b"/> are the lengths of the semi-major and semi-minor axes, respectively.</para>

@@ -249,50 +249,49 @@ namespace Flux
 
       #region Static methods
 
-#if NET7_0_OR_GREATER
+      //#if NET7_0_OR_GREATER
 
-      /// <summary>Creates a new 'mapped' unique index from a <see cref="ICartesianCoordinate3{TSelf}"/> using a grid <paramref name="width"/> by <paramref name="height"/>.</summary>
-      /// <remarks>A 3D cartesian coordinate can be uniquely indexed using a <paramref name="width"/> and <paramref name="height"/>. The unique index can also be converted back to a 3D cartesian coordinate with the same grid width and height values.</remarks>
-      public static TInteger Cartesian3ToMapIndex<TInteger>(TInteger x, TInteger y, TInteger z, TInteger width, TInteger height)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => x + (y * width) + (z * width * height);
+      //      /// <summary>Creates a new 'mapped' unique index from a <see cref="ICartesianCoordinate3{TSelf}"/> using a grid <paramref name="width"/> by <paramref name="height"/>.</summary>
+      //      /// <remarks>A 3D cartesian coordinate can be uniquely indexed using a <paramref name="width"/> and <paramref name="height"/>. The unique index can also be converted back to a 3D cartesian coordinate with the same grid width and height values.</remarks>
+      //      public static TInteger Cartesian3ToMapIndex<TInteger>(TInteger x, TInteger y, TInteger z, TInteger width, TInteger height)
+      //        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      //        => x + (y * width) + (z * width * height);
 
-      /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
-      /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a grid <paramref name="width"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
-      public static (TInteger x, TInteger y, TInteger z) ConvertMapIndexToCartesian3<TInteger>(TInteger index, TInteger width, TInteger height)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      {
-        var xy = width * height;
-        var irxy = index % xy;
+      //      /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
+      //      /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a grid <paramref name="width"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
+      //      public static (TInteger x, TInteger y, TInteger z) ConvertMapIndexToCartesian3<TInteger>(TInteger index, TInteger width, TInteger height)
+      //        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      //      {
+      //        var xy = width * height;
+      //        var irxy = index % xy;
 
-        return (
-          irxy % width,
-          irxy / width,
-          index / xy
-        );
-      }
+      //        return (
+      //          irxy % width,
+      //          irxy / width,
+      //          index / xy
+      //        );
+      //      }
 
-#endif
+      //#endif
 
-      /// <summary>Converts the <see cref="CartesianCoordinate2{TSelf}"/> to a 'mapped' unique index.</summary>
-      /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a grid <paramref name="width"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>
-      public static System.Numerics.BigInteger ConvertCartesian3ToMapIndex(System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger z, System.Numerics.BigInteger width, System.Numerics.BigInteger height)
-       => x + (y * width) + (z * width * height);
+      //      /// <summary>Converts the <see cref="CartesianCoordinate2{TSelf}"/> to a 'mapped' unique index.</summary>
+      //      /// <remarks>A 2D cartesian coordinate can be uniquely indexed using a grid <paramref name="width"/>. The unique index can also be converted back to a 2D cartesian coordinate with the same grid width value.</remarks>
+      //      public static System.Numerics.BigInteger ConvertCartesian3ToMapIndex(System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger z, System.Numerics.BigInteger width, System.Numerics.BigInteger height)
+      //       => x + (y * width) + (z * width * height);
 
-      /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
-      /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a grid <paramref name="width"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
-      public static (System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger z) ConvertMapIndexToCartesian3(System.Numerics.BigInteger index, System.Numerics.BigInteger width, System.Numerics.BigInteger height)
-      {
-        var xy = width * height;
-        var irxy = index % xy;
+      //      /// <summary>Convert a 'mapped' unique index to a <see cref="CartesianCoordinate2{TSelf}"/>.</summary>
+      //      /// <remarks>An index can be uniquely mapped to 2D cartesian coordinates using a grid <paramref name="width"/>. The 2D cartesian coordinates can also be converted back to a unique index with the same grid width value.</remarks>
+      //      public static (System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger z) ConvertMapIndexToCartesian3(System.Numerics.BigInteger index, System.Numerics.BigInteger width, System.Numerics.BigInteger height)
+      //      {
+      //        var xy = width * height;
+      //        var irxy = index % xy;
 
-        return (
-          irxy % width,
-          irxy / width,
-          index / xy
-        );
-      }
-
+      //        return (
+      //          irxy % width,
+      //          irxy / width,
+      //          index / xy
+      //        );
+      //      }
 
       //public static CartesianCoordinate3<TSelf> ConvertEclipticToEquatorial(CartesianCoordinate3<TSelf> ecliptic, TSelf obliquityOfTheEcliptic)
       //  => Numerics.Matrix4.Transform(new Flux.Matrix4(1, 0, 0, 0, 0, TSelf.Cos(obliquityOfTheEcliptic), -TSelf.Sin(obliquityOfTheEcliptic), 0, 0, TSelf.Sin(obliquityOfTheEcliptic), TSelf.Cos(obliquityOfTheEcliptic), 0, 0, 0, 0, 1), ecliptic);

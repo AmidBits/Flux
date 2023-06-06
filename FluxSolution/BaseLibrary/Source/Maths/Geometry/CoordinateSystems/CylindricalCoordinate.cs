@@ -1,7 +1,10 @@
 namespace Flux.Geometry
 {
-  /// <summary>Cylindrical coordinate. It is assumed that the reference plane is the Cartesian xy-plane (with equation z/height = 0), and the cylindrical axis is the Cartesian z-axis, i.e. the z-coordinate is the same in both systems, and the correspondence between cylindrical (radius, azimuth, height) and Cartesian (x, y, z) are the same as for polar coordinates.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/>
+  /// <summary>
+  /// <para>Cylindrical coordinate. It is assumed that the reference plane is the Cartesian xy-plane (with equation z/height = 0), and the cylindrical axis is the Cartesian z-axis, i.e. the z-coordinate is the same in both systems, and the correspondence between cylindrical (radius, azimuth, height) and Cartesian (x, y, z) are the same as for polar coordinates.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/></para>
+  /// </summary>
+  /// <remarks>All angles in radians, unless noted otherwise.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct CylindricalCoordinate
     : System.IFormattable, ICylindricalCoordinate
@@ -9,7 +12,7 @@ namespace Flux.Geometry
     public static readonly CylindricalCoordinate Zero;
 
     private readonly double m_radius;
-    private readonly double m_azimuth;
+    private readonly double m_azimuth; // In radians.
     private readonly double m_height;
 
     public CylindricalCoordinate(double radius, double azimuth, double height)

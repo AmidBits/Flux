@@ -22,8 +22,8 @@ namespace Flux
     }
 
     public double InverseFlattening { get => m_inverseFlattening; init => m_inverseFlattening = value; }
-    public Units.Length SemiMajorAxis => new(m_ellipseGeometry.X);
-    public Units.Length SemiMinorAxis => new(m_ellipseGeometry.Y);
+    public Units.Length SemiMajorAxis => new(m_ellipseGeometry.A);
+    public Units.Length SemiMinorAxis => new(m_ellipseGeometry.B);
 
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
     public Units.Length EquatorialCircumference => EquatorialRadius * System.Math.Tau;
@@ -32,7 +32,7 @@ namespace Flux
     public Units.Length EquatorialDiameter => EquatorialRadius * 2;
 
     /// <summary>Radius Earth's semi-major axis.</summary>
-    public Units.Length EquatorialRadius => new(m_ellipseGeometry.X);
+    public Units.Length EquatorialRadius => new(m_ellipseGeometry.A);
 
     /// <summary>This is the amount of ellipticity (flattening, oblateness) of the Earth.</summary>
     public double Flattening => 1 / m_inverseFlattening;
@@ -44,7 +44,7 @@ namespace Flux
     public Units.Length PolarDiameter => PolarRadius * 2;
 
     /// <summary>Radius of Earth's semi-minor axis.</summary>
-    public Units.Length PolarRadius => new(m_ellipseGeometry.Y);
+    public Units.Length PolarRadius => new(m_ellipseGeometry.B);
 
     /// <summary>Approximate volume of the Earth's oblate sphere.</summary>
     public Units.Volume Volume => new(GenericMath.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
