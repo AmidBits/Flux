@@ -16,7 +16,7 @@ namespace Flux
       private readonly double m_azimuth;
 
       /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
-      public Azimuth(double azimuth) => m_azimuth = WrapAzimuth(azimuth);
+      public Azimuth(double azimuth) => m_azimuth = WrapExtremum(azimuth);
 
       public double InRadians => Angle.ConvertDegreeToRadian(m_azimuth);
 
@@ -38,31 +38,30 @@ namespace Flux
       /// <param name="notch">The integer notch that is closest to the <paramref name="azimuth"/> scaled by <paramref name="precision"/>.</param>
       /// <returns></returns>
       public static ThirtytwoWindCompassRose CompassPoint(double azimuth, PointsOfTheCompass precision, out double notch)
-      {
-        notch = System.Math.Round(azimuth.Wrap(MinValue, MaxValue) / (MaxValue / (int)precision) % (int)precision);
-
-        return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
-      }
+        => (ThirtytwoWindCompassRose)(int)((notch = LatchNeedle(azimuth, (int)precision)) * (32 / (int)precision));
 
       /// <summary>Finding the angle between two bearings.</summary>
-      public static double DeltaBearing(double azimuth1, double azimuth2) => (azimuth2 - azimuth1).Wrap(MinValue, MaxValue);
+      public static double DeltaBearing(double azimuth1, double azimuth2)
+        => WrapExtremum(azimuth2 - azimuth1);
 
-      public static Azimuth FromAbbreviation(string compassPointAbbreviated) => System.Enum.TryParse<ThirtytwoWindCompassRose>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
+      public static Azimuth FromAbbreviation(string compassPointAbbreviated)
+        => System.Enum.TryParse<ThirtytwoWindCompassRose>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
 
       private static string[] Words => new string[] { "North", "East", "South", "West", "By" };
 
       /// <summary></summary>
       /// <param name="azm">The azimuth in radians.</param>
       /// <returns></returns>
-      public static Azimuth FromRadians(double azm) => new(Angle.ConvertRadianToDegree(azm));
+      public static Azimuth FromRadians(double azm)
+        => new(Angle.ConvertRadianToDegree(azm));
 
       public static Azimuth FromWords(string compassPointInWords)
       {
         var words = new System.Collections.Generic.List<string>();
 
-        var sb = compassPointInWords.ToSpanBuilder();
+        var sb = new System.Text.StringBuilder(compassPointInWords);
 
-        sb.RemoveAll(char.IsWhiteSpace);
+        sb.Replace(" ", string.Empty);
 
         while (sb.Length > 0)
         {
@@ -72,7 +71,7 @@ namespace Flux
           {
             var word = Words[index];
 
-            if (sb.AsReadOnlySpan().StartsWith(word, System.StringComparison.InvariantCultureIgnoreCase))
+            if (StartsWith(sb, word, System.Collections.Generic.EqualityComparer<char>.Default))
             {
               words.Add(word);
 
@@ -87,10 +86,29 @@ namespace Flux
         }
 
         return FromAbbreviation(string.Concat(words.Select(s => s[0])));
+
+        bool StartsWith(System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
+        {
+          if (source is null) throw new System.ArgumentNullException(nameof(source));
+          if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+
+          var sourceLength = source.Length;
+          var targetLength = target.Length;
+
+          if (sourceLength < targetLength)
+            return false;
+
+          for (var index = targetLength - 1; index >= 0; index--)
+            if (!equalityComparer.Equals(source[index], target[index]))
+              return false;
+
+          return true;
+        }
       }
 
       /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
-      public static int LatchNeedle(double azimuth, int positions) => (int)System.Math.Round(WrapAzimuth(azimuth) / (360d / positions) % positions);
+      public static int LatchNeedle(double azimuth, int positions)
+        => System.Convert.ToInt32(System.Math.Round(WrapExtremum(azimuth) / (MaxValue / positions) % positions));
 
       public static Azimuth Parse(string compassPointInWordsOrAbbreviation)
         => FromAbbreviation(compassPointInWordsOrAbbreviation) is Azimuth fromAbbreviation
@@ -120,7 +138,7 @@ namespace Flux
       }
 
       /// <summary>An azimuth is wrapped over the range [0, 360).</summary>
-      public static double WrapAzimuth(double azimuth) //=> azimuth.Wrap(MinValue, MaxValue) % MaxValue;
+      public static double WrapExtremum(double azimuth) //=> azimuth.Wrap(MinValue, MaxValue) % MaxValue;
         => (azimuth < MinValue
         ? MaxValue - (MinValue - azimuth) % (MaxValue - MinValue)
         : azimuth > MaxValue

@@ -51,7 +51,6 @@ namespace Flux.Units
       ? MinValue + (longitude - MinValue) % (MaxValue - MinValue)
       : longitude) % MaxValue;
 
-
     #endregion Static methods
 
     #region Overloaded operators

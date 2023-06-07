@@ -36,6 +36,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var ntp = new Flux.Net.NetworkTimeProtocol();
+
+      ntp.Request();
+
       var slope = new Flux.Units.BigRational(5, 8) + 2;
       var slopeThird = slope / 3;
       var slopes = slope.ToImproperString();

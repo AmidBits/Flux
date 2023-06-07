@@ -1,46 +1,42 @@
 namespace Flux
 {
-	public static partial class ExtensionMethodsStringBuilder
-	{
-		/// <summary>Returns the last index of any of the specified characters. Or -1 if none were found.</summary>
-		public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
-		{
-			if (source is null) throw new System.ArgumentNullException(nameof(source));
-			if (targets is null) throw new System.ArgumentNullException(nameof(targets));
-			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+  public static partial class ExtensionMethodsStringBuilder
+  {
+    /// <summary>Returns the last index of any of the specified characters. Or -1 if none were found.</summary>
+    public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (targets is null) throw new System.ArgumentNullException(nameof(targets));
 
-			var targetsCount = targets.Count;
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-			for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
-				if (source[sourceIndex] is var sourceChar)
-					for (var targetsIndex = 0; targetsIndex < targetsCount; targetsIndex++) // Favor targets in list order.
-					if (equalityComparer.Equals(sourceChar, targets[targetsIndex]))
-						return sourceIndex;
+      var targetsCount = targets.Count;
 
-			return -1;
-		}
-		/// <summary>Returns the last index of any of the specified characters. Or -1 if none were found.</summary>
-		public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets)
-			=> LastIndexOfAny(source, targets, System.Collections.Generic.EqualityComparer<char>.Default);
+      for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
+        if (source[sourceIndex] is var sourceChar)
+          for (var targetsIndex = 0; targetsIndex < targetsCount; targetsIndex++) // Favor targets in list order.
+            if (equalityComparer.Equals(sourceChar, targets[targetsIndex]))
+              return sourceIndex;
 
-		/// <summary>Returns the last index of any of the specified values. or -1 if none is found.</summary>
-		public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<string> targets, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
-		{
-			if (source is null) throw new System.ArgumentNullException(nameof(source));
-			if (targets is null) throw new System.ArgumentNullException(nameof(targets));
-			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+      return -1;
+    }
 
-			var targetsCount = targets.Count;
+    /// <summary>Returns the last index of any of the specified values. or -1 if none is found.</summary>
+    public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<string> targets, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      if (targets is null) throw new System.ArgumentNullException(nameof(targets));
 
-			for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
-				for (var targetsIndex = 0; targetsIndex < targetsCount; targetsIndex++) // Favor targets in list order.
-					if (EqualsAt(source, sourceIndex, targets[targetsIndex], equalityComparer))
-						return sourceIndex;
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-			return -1;
-		}
-		/// <summary>Returns the last index of any of the specified values. or -1 if none is found.</summary>
-		public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<string> targets)
-			=> LastIndexOfAny(source, targets, System.Collections.Generic.EqualityComparer<char>.Default);
-	}
+      var targetsCount = targets.Count;
+
+      for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
+        for (var targetsIndex = 0; targetsIndex < targetsCount; targetsIndex++) // Favor targets in list order.
+          if (EqualsAt(source, sourceIndex, targets[targetsIndex], equalityComparer))
+            return sourceIndex;
+
+      return -1;
+    }
+  }
 }

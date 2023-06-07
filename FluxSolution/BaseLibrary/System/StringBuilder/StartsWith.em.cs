@@ -1,27 +1,25 @@
 namespace Flux
 {
-	public static partial class ExtensionMethodsStringBuilder
-	{
-		/// <summary>Indicates whether the source starts with value. Uses the specified comparer.</summary>
-		public static bool StartsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
-		{
-			if (source is null) throw new System.ArgumentNullException(nameof(source));
-			if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+  public static partial class ExtensionMethodsStringBuilder
+  {
+    /// <summary>Indicates whether <paramref name="source"/> starts with <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    public static bool StartsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
+    {
+      if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-			var sourceLength = source.Length;
-			var targetLength = target.Length;
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-			if (sourceLength < targetLength)
-				return false;
+      var sourceLength = source.Length;
+      var targetLength = target.Length;
 
-			for (var index = targetLength - 1; index >= 0; index--)
-				if (!equalityComparer.Equals(source[index], target[index]))
-					return false;
+      if (sourceLength < targetLength)
+        return false;
 
-			return true;
-		}
-		/// <summary>Indicates whether the source starts with value. Uses the default comparer.</summary>
-		public static bool StartsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target)
-			 => StartsWith(source, target, System.Collections.Generic.EqualityComparer<char>.Default);
-	}
+      for (var index = targetLength - 1; index >= 0; index--)
+        if (!equalityComparer.Equals(source[index], target[index]))
+          return false;
+
+      return true;
+    }
+  }
 }

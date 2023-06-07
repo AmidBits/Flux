@@ -63,13 +63,12 @@ namespace Flux.Units
     /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     /// <param name="lat">The latitude in radians.</param>
-    public static double GetApproximateRadius(double lat, EllipsoidReference ellipsoidReference)
+    public static double GetApproximateRadius(double lat, double equatorialRadius, double polarRadius)
     {
-      var cos = System.Math.Cos(lat);
-      var sin = System.Math.Sin(lat);
+      var (sin, cos) = System.Math.SinCos(lat);
 
-      var numerator = System.Math.Pow(System.Math.Pow(ellipsoidReference.EquatorialRadius.Value, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(ellipsoidReference.PolarRadius.Value, 2) * sin, 2);
-      var denominator = System.Math.Pow(ellipsoidReference.EquatorialRadius.Value * cos, 2) + System.Math.Pow(ellipsoidReference.PolarRadius.Value * sin, 2);
+      var numerator = System.Math.Pow(System.Math.Pow(equatorialRadius, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(polarRadius, 2) * sin, 2);
+      var denominator = System.Math.Pow(equatorialRadius * cos, 2) + System.Math.Pow(polarRadius * sin, 2);
 
       return System.Math.Sqrt(numerator / denominator);
     }

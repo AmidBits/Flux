@@ -111,7 +111,8 @@
 
     private void Reset()
     {
-      m_data = new byte[48];
+      System.Array.Clear(m_data);
+
       m_data[0] = 0x1B;
     }
 
