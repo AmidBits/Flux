@@ -36,6 +36,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var a = new Flux.Units.Angle(135, Flux.Units.AngleUnit.Degree);
+      var an = a.GetAngleNames();
+
       var ntp = new Flux.Net.NetworkTimeProtocol();
 
       ntp.Request();
