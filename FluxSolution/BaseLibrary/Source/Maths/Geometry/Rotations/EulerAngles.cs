@@ -96,16 +96,16 @@ namespace Flux
 
     public static (Units.Angle yaw, Units.Angle pitch, Units.Angle roll) ToQuantities(this Geometry.EulerAngles source)
       => (
-        new Units.Angle(double.CreateChecked(source.Yaw)),
-        new Units.Angle(double.CreateChecked(source.Pitch)),
-        new Units.Angle(double.CreateChecked(source.Roll))
+        new Units.Angle(source.Yaw),
+        new Units.Angle(source.Pitch),
+        new Units.Angle(source.Roll)
       );
 
     public static System.Numerics.Quaternion ToQuaternion(this Geometry.EulerAngles source)
     {
-      var halfYaw = source.Yaw.Divide(2);
-      var halfPitch = source.Pitch.Divide(2);
-      var halfRoll = source.Roll.Divide(2);
+      var halfYaw = source.Yaw / 2;
+      var halfPitch = source.Pitch / 2;
+      var halfRoll = source.Roll / 2;
 
       var (sy, cy) = System.Math.SinCos(halfYaw);
       var (sp, cp) = System.Math.SinCos(halfPitch);

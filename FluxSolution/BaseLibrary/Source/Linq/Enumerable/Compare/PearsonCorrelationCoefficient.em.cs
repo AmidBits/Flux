@@ -51,8 +51,8 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"/>
     public static (double correlation, double covariance) PearsonCorrelationCoefficient<TValueX, TValueY>(this System.Collections.Generic.IEnumerable<TValueX> setX, System.Func<TValueX, double> valueSelectorX, System.Collections.Generic.IEnumerable<TValueY> setY, System.Func<TValueY, double> valueSelectorY)
     {
-      var ex = setX.ThrowIfNullOrEmpty().GetEnumerator();
-      var ey = setY.ThrowIfNullOrEmpty().GetEnumerator();
+      var ex = setX.ThrowOnNullOrEmpty().GetEnumerator();
+      var ey = setY.ThrowOnNullOrEmpty().GetEnumerator();
 
       var sumX = 0d;
       var sumX2 = 0d;

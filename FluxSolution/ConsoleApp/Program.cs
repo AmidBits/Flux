@@ -43,9 +43,9 @@ namespace ConsoleApp
 
       ntp.Request();
 
-      var slope = new Flux.Units.BigRational(5, 8) + 2;
-      var slopeThird = slope / 3;
-      var slopes = slope.ToImproperString();
+      //var slope = new Flux.Units.BigRational(5, 8) + 2;
+      //var slopeThird = slope / 3;
+      //var slopes = slope.ToImproperString();
 
       var carportPostHeight = new Flux.Units.Length(12, Flux.Units.LengthUnit.Foot);
 
@@ -60,21 +60,21 @@ namespace ConsoleApp
       //var carportPostWidth = new Flux.Units.Length(279, Flux.Units.LengthUnit.Inch);
       //var carportPostDepth = new Flux.Units.Length(180, Flux.Units.LengthUnit.Inch);
 
-      System.Int32 six = 6;
-      var alsosix = six;
+      //System.Int32 six = 6;
+      //var alsosix = six;
 
-      var carportCenterPostDiagonalVector = new Flux.Geometry.CartesianCoordinate2<double>(carportPostWidth.Value, carportPostDepth.Value);
-      var carportCenterPostDiagonal = new Flux.Units.Length(carportCenterPostDiagonalVector.EuclideanLength());
+      //var carportCenterPostDiagonalVector = new Flux.Geometry.CartesianCoordinate2<double>(carportPostWidth.Value, carportPostDepth.Value);
+      //var carportCenterPostDiagonal = new Flux.Units.Length(carportCenterPostDiagonalVector.EuclideanLength());
 
-      var carportDiagonalIn = carportCenterPostDiagonal.ToUnitString(Flux.Units.LengthUnit.Inch);
-      var carportDiagonalFt = carportCenterPostDiagonal.ToUnitString(Flux.Units.LengthUnit.Foot);
+      //var carportDiagonalIn = carportCenterPostDiagonal.ToUnitString(Flux.Units.LengthUnit.Inch);
+      //var carportDiagonalFt = carportCenterPostDiagonal.ToUnitString(Flux.Units.LengthUnit.Foot);
 
-      var carportDiagonalFtBr = carportCenterPostDiagonal.ToUnitValue(Flux.Units.LengthUnit.Foot).ToBigRational(2);
+      //var carportDiagonalFtBr = carportCenterPostDiagonal.ToUnitValue(Flux.Units.LengthUnit.Foot).ToBigRational(2);
 
-      var num = -2039;
-      var str = num.ToBinaryString();
-      var numtxt = Flux.Text.PositionalNotation.Base10.NumberToText(num);
-      var txtnum = Flux.Text.PositionalNotation.Base10.TextToNumber(numtxt);
+      //var num = -2039;
+      //var str = num.ToBinaryString();
+      //var numtxt = Flux.Text.PositionalNotation.Base10.NumberToText(num);
+      //var txtnum = Flux.Text.PositionalNotation.Base10.TextToNumber(numtxt);
 
       for (var index = 1; index < 101; index++)
       {

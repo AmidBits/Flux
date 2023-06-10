@@ -5,7 +5,9 @@
     /// <summary>Stereo (left and right) wave, range [-1, +1].</summary>
     public readonly record struct WaveStereo<TSelf>
       : IWaveStereo<TSelf>
+#if NET7_0_OR_GREATER
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+#endif
     {
       public readonly static IWaveStereo<TSelf> Zero = new WaveStereo<TSelf>();
 

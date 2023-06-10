@@ -69,14 +69,14 @@ namespace Flux.Model
       var x = System.Array.IndexOf(Files, column);
       var y = System.Array.IndexOf(Ranks, row);
 
-      return CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x, y, BoardSize.X);
+      return (int)CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x, y, BoardSize.X);
     }
 
     public static Geometry.CartesianCoordinate2<int> LabelToVector(string column, string row)
       => new(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
     public static int VectorToIndex(Geometry.CartesianCoordinate2<int> vector)
-      => CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(vector.X, vector.Y, BoardSize.X);
+      => (int)CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(vector.X, vector.Y, BoardSize.X);
     public static (string column, string row) VectorToLabel(Geometry.CartesianCoordinate2<int> vector)
       => (Files[vector.X], Ranks[vector.Y]);
 

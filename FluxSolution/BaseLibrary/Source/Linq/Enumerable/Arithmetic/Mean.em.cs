@@ -39,7 +39,7 @@ namespace Flux
       count = 0;
       sum = 0d;
 
-      foreach (var item in source.ThrowIfNull())
+      foreach (var item in source.ThrowOnNull())
       {
         count++;
         sum += item;
@@ -58,7 +58,7 @@ namespace Flux
       count = 0;
       sum = System.Numerics.BigInteger.Zero;
 
-      foreach (var item in source.ThrowIfNull())
+      foreach (var item in source.ThrowOnNull())
       {
         count++;
         sum += item;
@@ -77,7 +77,7 @@ namespace Flux
       count = 0;
       sum = 0;
 
-      foreach (var item in source.ThrowIfNull())
+      foreach (var item in source.ThrowOnNull())
       {
         count++;
         sum += item;
@@ -96,7 +96,7 @@ namespace Flux
       count = 0;
       sum = 0L;
 
-      foreach (var item in source.ThrowIfNull())
+      foreach (var item in source.ThrowOnNull())
       {
         count++;
         sum += item;

@@ -179,8 +179,8 @@
 #else
 
     /// <summary>Creates a new <see cref="Numerics.PolarCoordinate{TSelf}"/> from a <see cref=" Numerics.ICartesianCoordinate2{TSelf}"/>.</summary>
-    public static Numerics.IPolarCoordinate ToPolarCoordinate(this Numerics.ICartesianCoordinate2<double> source)
-      => new Numerics.PolarCoordinate(
+    public static Geometry.IPolarCoordinate ToPolarCoordinate(this Geometry.ICartesianCoordinate2<double> source)
+      => new Geometry.PolarCoordinate(
         System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
         System.Math.Atan2(source.Y, source.X)
       );

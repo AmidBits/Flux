@@ -129,7 +129,7 @@ namespace Flux
       {
         var quotient = value.TruncMod(System.Numerics.BigInteger.One, out var remainder);
 
-        if ((quotient).IsPowOf2())
+        if ((quotient).IsPow2())
         {
           if (proper)
           {

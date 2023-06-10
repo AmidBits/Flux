@@ -225,11 +225,11 @@ namespace Flux
 #else
 
     /// <summary>Creates a new <see cref="Numerics.CartesianCoordinate2{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/> using the X and Y.</summary>
-    public static Numerics.ICartesianCoordinate2<TValue> ToCartesianCoordinate2XY<TValue>(this Numerics.ICartesianCoordinate3<TValue> source)
-      => new Numerics.CartesianCoordinate2<TValue>(source.X, source.Y);
+    public static Geometry.ICartesianCoordinate2<TValue> ToCartesianCoordinate2XY<TValue>(this Geometry.ICartesianCoordinate3<TValue> source)
+      => new Geometry.CartesianCoordinate2<TValue>(source.X, source.Y);
 
     /// <summary>Creates a new <see cref="Numerics.CylindricalCoordinate{TSelf}"/> from a <see cref="Numerics.ICartesianCoordinate3{TSelf}"/>.</summary>
-    public static Numerics.CylindricalCoordinate ToCylindricalCoordinate(this Numerics.ICartesianCoordinate3<double> source)
+    public static Geometry.CylindricalCoordinate ToCylindricalCoordinate(this Geometry.ICartesianCoordinate3<double> source)
       => new(
         System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
         (System.Math.Atan2(source.Y, source.X) + System.Math.Tau) % System.Math.Tau,

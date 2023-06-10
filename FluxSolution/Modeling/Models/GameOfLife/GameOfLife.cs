@@ -23,7 +23,7 @@ namespace Flux.Model
         {
           var index = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(c, r, m_cellGrid.X);
 
-          m_deadOrAlive[index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
+          m_deadOrAlive[(int)index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
         }
       }
     }
@@ -46,12 +46,12 @@ namespace Flux.Model
         {
           var index = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(c, r, m_cellGrid.X);
 
-          var state = m_deadOrAlive[index];
+          var state = m_deadOrAlive[(int)index];
 
           var count = CountLiveNeighbors(c, r);
 
           // A live cell dies unless it has exactly 2 or 3 live neighbors. A dead cell comes to life if it has exactly 3 live neighbors. Otherwise the cell is dead.
-          array[index] = (state && (count == 2 || count == 3)) || (!state && count == 3);
+          array[(int)index] = (state && (count == 2 || count == 3)) || (!state && count == 3);
         }
       }
 
@@ -79,13 +79,13 @@ namespace Flux.Model
 
           var pointIndex = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x1, y1, m_cellGrid.X);
 
-          cn += m_deadOrAlive[pointIndex] ? 1 : 0;
+          cn += m_deadOrAlive[(int)pointIndex] ? 1 : 0;
         }
       }
 
       var positionIndex = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x, y, m_cellGrid.X);
 
-      cn -= m_deadOrAlive[positionIndex] ? 1 : 0;
+      cn -= m_deadOrAlive[(int)positionIndex] ? 1 : 0;
 
       return cn;
     }
@@ -100,7 +100,7 @@ namespace Flux.Model
         {
           var index = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x, y, m_cellGrid.X);
 
-          var c = m_deadOrAlive[index] ? '\u2588' : ' ';
+          var c = m_deadOrAlive[(int)index] ? '\u2588' : ' ';
 
           sb.Append(c);
           sb.Append(c); // Each cell is two characters wide for symmetrical visual.

@@ -42,12 +42,12 @@ namespace Flux
     public static (Geometry.CartesianCoordinate3<double> axis, Units.Angle angle) ToQuantities(this Geometry.AxisAngle source)
       => (
         new Geometry.CartesianCoordinate3<double>(source.X, source.Y, source.Z),
-        new Units.Angle(double.CreateChecked(source.Angle))
+        new Units.Angle(source.Angle)
       );
 
     public static System.Numerics.Quaternion ToQuaternion(this Geometry.AxisAngle source)
     {
-      var (s, w) = System.Math.SinCos(source.Angle.Divide(2));
+      var (s, w) = System.Math.SinCos(source.Angle / 2);
 
       var x = source.X * s;
       var y = source.Y * s;

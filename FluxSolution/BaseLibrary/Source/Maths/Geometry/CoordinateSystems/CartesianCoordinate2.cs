@@ -57,6 +57,7 @@ namespace Flux
 
       #region Static methods
 
+#if NET7_0_OR_GREATER
       /// <summary>Converts a 2D cartesian (<paramref name="x"/>, <paramref name="y"/>) coordinate, to a uniquely mapped index of a grid with the <paramref name="width"/>.</summary>
       public static TSelf ConvertCartesian2ToUniqueIndex(TSelf x, TSelf y, TSelf width)
         => x + (y * width);
@@ -67,14 +68,27 @@ namespace Flux
           index % width,
           index / width
         );
+#else
+      /// <summary>Converts a 2D cartesian (<paramref name="x"/>, <paramref name="y"/>) coordinate, to a uniquely mapped index of a grid with the <paramref name="width"/>.</summary>
+      public static System.Numerics.BigInteger ConvertCartesian2ToUniqueIndex(System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger width)
+        => x + (y * width);
+
+      /// <summary>Converts a uniquely mapped <paramref name="index"/> of a grid with the <paramref name="width"/>, to a 2D cartesian (x, y) coordinate.</summary>
+      public static (System.Numerics.BigInteger x, System.Numerics.BigInteger y) ConvertUniqueIndexToCartesian2(System.Numerics.BigInteger index, System.Numerics.BigInteger width)
+        => (
+          index % width,
+          index / width
+        );
+#endif
 
 #if NET7_0_OR_GREATER
       [System.Text.RegularExpressions.GeneratedRegex(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$", System.Text.RegularExpressions.RegexOptions.Compiled)]
       private static partial System.Text.RegularExpressions.Regex ParsingRegex();
 #else
-    private static System.Text.RegularExpressions.Regex ParsingRegex() => new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
+      private static System.Text.RegularExpressions.Regex ParsingRegex() => new(@"^[^\d]*(?<X>\d+)[^\d]+(?<Y>\d+)[^\d]*$");
 #endif
 
+#if NET7_0_OR_GREATER
       public static CartesianCoordinate2<TSelf> Parse(string pointAsString)
         => ParsingRegex().Match(pointAsString) is var m && m.Success && m.Groups["X"] is var gX && gX.Success && TSelf.TryParse(gX.Value, System.Globalization.NumberStyles.Number, null, out var x) && m.Groups["Y"] is var gY && gY.Success && TSelf.TryParse(gY.Value, System.Globalization.NumberStyles.Number, null, out var y)
         ? new CartesianCoordinate2<TSelf>(x, y)
@@ -92,6 +106,7 @@ namespace Flux
           return false;
         }
       }
+#endif
 
       #endregion Static methods
 
@@ -323,7 +338,11 @@ namespace Flux
 #endif
 
       public string ToString(string? format, System.IFormatProvider? provider)
+#if NET7_0_OR_GREATER
        => $"<{m_x.ToString(format, null)}, {m_y.ToString(format, null)}>";
+#else
+        => $"<{m_x}, {m_y}>";
+#endif
 
       #endregion Implemented interfaces
 

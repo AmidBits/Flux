@@ -22,21 +22,28 @@ namespace Flux
 
 #else
 
-    public static string ToBinaryString(this System.Numerics.BigInteger value)
-      => Text.PositionalNotation.Base2.NumberToText(value, value.GetBitCount());
+    public static string ToBinaryString(this System.Numerics.BigInteger value) => Text.PositionalNotation.Base2.NumberToText(value, value.GetBitCount());
+    public static string ToBinaryString(this int value) => Text.PositionalNotation.Base2.NumberToText(value, value.GetBitCount());
+    public static string ToBinaryString(this long value) => Text.PositionalNotation.Base2.NumberToText(value, value.GetBitCount());
 
-    public static string ToDecimalString(this System.Numerics.BigInteger value)
-      => Text.PositionalNotation.Base10.NumberToText(value, value.GetBitCount());
+    public static string ToDecimalString(this System.Numerics.BigInteger value) => Text.PositionalNotation.Base10.NumberToText(value, value.GetBitCount());
+    public static string ToDecimalString(this int value) => Text.PositionalNotation.Base10.NumberToText(value, value.GetBitCount());
+    public static string ToDecimalString(this long value) => Text.PositionalNotation.Base10.NumberToText(value, value.GetBitCount());
 
-    public static string ToHexadecimalString(this System.Numerics.BigInteger value)
-      => Text.PositionalNotation.Base16.NumberToText(value, value.GetByteCount() << 1);
+    public static string ToHexadecimalString(this System.Numerics.BigInteger value) => Text.PositionalNotation.Base16.NumberToText(value, value.GetByteCount() << 1);
+    public static string ToHexadecimalString(this int value) => Text.PositionalNotation.Base16.NumberToText(value, value.GetByteCount() << 1);
+    public static string ToHexadecimalString(this long value) => Text.PositionalNotation.Base16.NumberToText(value, value.GetByteCount() << 1);
 
-    public static string ToOctalString(this System.Numerics.BigInteger value)
-      => Text.PositionalNotation.Base8.NumberToText(value, System.Math.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient);
+    public static string ToOctalString(this System.Numerics.BigInteger value) => Text.PositionalNotation.Base8.NumberToText(value, System.Math.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient);
+    public static string ToOctalString(this int value) => Text.PositionalNotation.Base8.NumberToText(value, System.Math.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient);
+    public static string ToOctalString(this long value) => Text.PositionalNotation.Base8.NumberToText(value, System.Math.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient);
 
     /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
-    public static string ToRadixString(this System.Numerics.BigInteger number, int radix, int minLength = 1)
-      => new Text.PositionalNotation(radix).NumberToText(number, minLength).ToString();
+    public static string ToRadixString(this System.Numerics.BigInteger number, int radix, int minLength = 1) => new Text.PositionalNotation(radix).NumberToText(number, minLength).ToString();
+    /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
+    public static string ToRadixString(this int number, int radix, int minLength = 1) => new Text.PositionalNotation(radix).NumberToText(number, minLength).ToString();
+    /// <summary>Creates <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
+    public static string ToRadixString(this long number, int radix, int minLength = 1) => new Text.PositionalNotation(radix).NumberToText(number, minLength).ToString();
 
 #endif
   }

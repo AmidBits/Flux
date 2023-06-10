@@ -249,14 +249,13 @@ namespace Flux
 
       #region Static methods
 
+#if NET7_0_OR_GREATER
       /// <summary>Converts a 3D cartesian (<paramref name="x"/>, <paramref name="y"/>, <paramref name="z"/>) coordinate, to a uniquely mapped index of a grid with the <paramref name="width"/> and <paramref name="height"/>.</summary>
-      public static TInteger Cartesian3ToUniqueIndex<TInteger>(TInteger x, TInteger y, TInteger z, TInteger width, TInteger height)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      public static TSelf Cartesian3ToUniqueIndex(TSelf x, TSelf y, TSelf z, TSelf width, TSelf height)
         => x + (y * width) + (z * width * height);
 
       /// <summary>Converts a uniquely mapped <paramref name="index"/> of a cube with the <paramref name="width"/> and <paramref name="height"/>, to a 3D cartesian (x, y, z) coordinate.</summary>
-      public static (TInteger x, TInteger y, TInteger z) ConvertUniqueIndexToCartesian3<TInteger>(TInteger index, TInteger width, TInteger height)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      public static (TSelf x, TSelf y, TSelf z) ConvertUniqueIndexToCartesian3(TSelf index, TSelf width, TSelf height)
       {
         var xy = width * height;
         var irxy = index % xy;
@@ -267,6 +266,24 @@ namespace Flux
           index / xy
         );
       }
+#else
+      /// <summary>Converts a 3D cartesian (<paramref name="x"/>, <paramref name="y"/>, <paramref name="z"/>) coordinate, to a uniquely mapped index of a grid with the <paramref name="width"/> and <paramref name="height"/>.</summary>
+      public static System.Numerics.BigInteger Cartesian3ToUniqueIndex(System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger z, System.Numerics.BigInteger width, System.Numerics.BigInteger height)
+        => x + (y * width) + (z * width * height);
+
+      /// <summary>Converts a uniquely mapped <paramref name="index"/> of a cube with the <paramref name="width"/> and <paramref name="height"/>, to a 3D cartesian (x, y, z) coordinate.</summary>
+      public static (System.Numerics.BigInteger x, System.Numerics.BigInteger y, System.Numerics.BigInteger z) ConvertUniqueIndexToCartesian3(System.Numerics.BigInteger index, System.Numerics.BigInteger width, System.Numerics.BigInteger height)
+      {
+        var xy = width * height;
+        var irxy = index % xy;
+
+        return (
+          irxy % width,
+          irxy / width,
+          index / xy
+        );
+      }
+#endif
 
       //public static CartesianCoordinate3<TSelf> ConvertEclipticToEquatorial(CartesianCoordinate3<TSelf> ecliptic, TSelf obliquityOfTheEcliptic)
       //  => Numerics.Matrix4.Transform(new Flux.Matrix4(1, 0, 0, 0, 0, TSelf.Cos(obliquityOfTheEcliptic), -TSelf.Sin(obliquityOfTheEcliptic), 0, 0, TSelf.Sin(obliquityOfTheEcliptic), TSelf.Cos(obliquityOfTheEcliptic), 0, 0, 0, 0, 1), ecliptic);
@@ -510,7 +527,11 @@ namespace Flux
 #endif
 
       public string ToString(string? format, System.IFormatProvider? provider)
+#if NET7_0_OR_GREATER
         => $"<{m_x.ToString(format, null)}, {m_y.ToString(format, null)}, {m_z.ToString(format, null)}>";
+#else
+       => $"<{m_x}, {m_y}, {m_z}>";
+#endif
 
       #endregion Implemented interfaces
 

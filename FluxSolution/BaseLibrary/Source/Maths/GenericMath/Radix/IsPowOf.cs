@@ -36,7 +36,7 @@ namespace Flux
         return true;
 
       if (radix == 2) // Special case for binary numbers, we can use dedicated IsPow2().
-        return value.IsPowOf2();
+        return value.IsPow2();
 
       if (value > System.Numerics.BigInteger.One)
         while ((value % radix).IsZero)
