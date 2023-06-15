@@ -4,7 +4,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Returns the <paramref name="x"/> indefinitely wrapped (when overflowed) around the closed interval bounds [<paramref name="min"/>, <paramref name="max"/>].</summary>
+    /// <summary>Wraps an out-of-bound <paramref name="x"/> around the closed interval [<paramref name="min"/>, <paramref name="max"/>], until the value is back within range.</summary>
     public static TSelf Wrap<TSelf>(this TSelf x, TSelf min, TSelf max)
       where TSelf : System.Numerics.INumber<TSelf>
       => x < min

@@ -4,7 +4,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Folds an out-of-bound <paramref name="x"/> over across an interval, back and forth, between the closed interval bounds [<paramref name="min"/>, <paramref name="max"/>], until the value is back within range.</summary>
+    /// <summary>Folds an out-of-bound <paramref name="x"/> over (back and forth) the closed interval [<paramref name="min"/>, <paramref name="max"/>], until the value is back within range.</summary>
     public static TSelf Fold<TSelf>(this TSelf x, TSelf min, TSelf max)
       where TSelf : System.Numerics.INumber<TSelf>
       => (x > max)

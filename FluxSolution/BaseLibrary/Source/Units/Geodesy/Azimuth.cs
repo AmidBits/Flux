@@ -47,8 +47,6 @@ namespace Flux
       public static Azimuth FromAbbreviation(string compassPointAbbreviated)
         => System.Enum.TryParse<ThirtytwoWindCompassRose>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
 
-      private static string[] Words => new string[] { "North", "East", "South", "West", "By" };
-
       /// <summary></summary>
       /// <param name="azm">The azimuth in radians.</param>
       /// <returns></returns>
@@ -57,6 +55,8 @@ namespace Flux
 
       public static Azimuth FromWords(string compassPointInWords)
       {
+        var wordsOfTheCompassPoints = System.Enum.GetNames<WordsOfTheCompassPoints>();
+
         var words = new System.Collections.Generic.List<string>();
 
         var sb = new System.Text.StringBuilder(compassPointInWords);
@@ -67,9 +67,9 @@ namespace Flux
         {
           var index = 0;
 
-          for (; index < Words.Length; index++)
+          for (; index < wordsOfTheCompassPoints.Length; index++)
           {
-            var word = Words[index];
+            var word = wordsOfTheCompassPoints[index];
 
             if (StartsWith(sb, word, System.Collections.Generic.EqualityComparer<char>.Default))
             {
@@ -81,7 +81,7 @@ namespace Flux
             }
           }
 
-          if (index == Words.Length)
+          if (index == wordsOfTheCompassPoints.Length)
             sb.Remove(0, 1);
         }
 
@@ -137,13 +137,13 @@ namespace Flux
         return false;
       }
 
-      /// <summary>An azimuth is wrapped over the range [0, 360).</summary>
-      public static double WrapExtremum(double azimuth) //=> azimuth.Wrap(MinValue, MaxValue) % MaxValue;
-        => (azimuth < MinValue
-        ? MaxValue - (MinValue - azimuth) % (MaxValue - MinValue)
-        : azimuth > MaxValue
-        ? MinValue + (azimuth - MinValue) % (MaxValue - MinValue)
-        : azimuth) % MaxValue;
+      /// <summary>An azimuth is wrapped over the half-open interval [<see cref="MinValue"/> = 0, <see cref="MaxValue"/> = 360). I.e. azimuth can be any value between <see cref="MinValue"/> (inclusive) but never <see cref="MaxValue"/> (exclusive).</summary>
+      public static double WrapExtremum(double azimuth) => azimuth.Wrap(MinValue, MaxValue) % MaxValue;
+      //=> (azimuth < MinValue // Closed side, allow MinValue.
+      //? MaxValue - (MinValue - azimuth) % (MaxValue - MinValue)
+      //: azimuth >= MaxValue // Half-open side, disallow MaxValue.
+      //? MinValue + (azimuth - MinValue) % (MaxValue - MinValue)
+      //: azimuth);
 
       #endregion // Static methods
 

@@ -42,14 +42,15 @@ namespace Flux.Units
     /// <param name="longitude">The longitude in degrees.</param>
     public static int GetTheoreticalTimezoneOffset(double longitude) => System.Convert.ToInt32(System.Math.Truncate((longitude + System.Math.CopySign(7.5, longitude)) / 15));
 
-    /// <summary>A longitude is wrapped over within the range [-180, +180].</summary>
+    /// <summary>A longitude is wrapped over within the closed interval (<see cref="MinValue"/> = -180, <see cref="MaxValue"/> = +180).</summary>
     /// <param name="longitude">The longitude in degrees.</param>
-    public static double WrapExtremum(double longitude) //=> longitude.Wrap(MinValue, MaxValue) % MaxValue;
-      => (longitude < MinValue
-      ? MaxValue - (MinValue - longitude) % (MaxValue - MinValue)
-      : longitude > MaxValue
-      ? MinValue + (longitude - MinValue) % (MaxValue - MinValue)
-      : longitude) % MaxValue;
+    /// <remarks>Please note that longitude use a closed interval, so -180 (south pole) and +180 (north pole) are valid values.</remarks>
+    public static double WrapExtremum(double longitude) => longitude.Wrap(MinValue, MaxValue);
+    //=> (longitude < MinValue
+    //? MaxValue - (MinValue - longitude) % (MaxValue - MinValue)
+    //: longitude > MaxValue
+    //? MinValue + (longitude - MinValue) % (MaxValue - MinValue)
+    //: longitude);
 
     #endregion Static methods
 

@@ -2,12 +2,17 @@ namespace Flux
 {
   public static partial class GeometryExtensionMethods
   {
-    public static Units.CardinalDirection ToCardinalDirection(this Units.CardinalAxis direction, bool isNegative)
-      => direction switch
+    /// <summary>Returns an extrapolated Azimuth, i.e. a value in the set [0, 90, 180, 270] (every 90° notch, starting at 0°), from <paramref name="source"/> (<see cref="Units.CardinalAxis"/>) and <paramref name="isNegative"/>, converted into one of the four <see cref="Units.CardinalDirection"/> compass points.</summary>
+    public static Units.Azimuth GetAzimuth(this Units.CardinalAxis source, bool isNegative)
+      => source.ToCardinalDirection(isNegative).GetAzimuth();
+
+    /// <summary>Returns a <see cref="Units.CardinalDirection"/> from <paramref name="source"/> (<see cref="Units.CardinalAxis"/>) and <paramref name="isNegative"/>.</summary>
+    public static Units.CardinalDirection ToCardinalDirection(this Units.CardinalAxis source, bool isNegative)
+      => source switch
       {
         Units.CardinalAxis.EastWest => isNegative ? Units.CardinalDirection.W : Units.CardinalDirection.E,
         Units.CardinalAxis.NorthSouth => isNegative ? Units.CardinalDirection.S : Units.CardinalDirection.N,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(direction))
+        _ => throw new NotImplementedException()
       };
   }
 

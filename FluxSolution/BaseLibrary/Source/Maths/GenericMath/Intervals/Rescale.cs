@@ -4,7 +4,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Proportionally re-scale the <paramref name="x"/> from within the closed source interval [<paramref name="minSource"/>, <paramref name="maxSource"/>] to within a closed target interval [<paramref name="minTarget"/>, <paramref name="maxTarget"/>]. The value retains its interval ratio. E.g. a 5 in the range [0, 10] becomes 50 when rescaled to the range [0, 100].</summary>
+    /// <summary>Proportionally rescale the <paramref name="x"/> value from the closed source interval [<paramref name="minSource"/>, <paramref name="maxSource"/>] to the closed target interval [<paramref name="minTarget"/>, <paramref name="maxTarget"/>]. The value retains its interval ratio. E.g. a 5 in the range [0, 10] becomes 50 when rescaled to the range [0, 100].</summary>
     public static TSelf Rescale<TSelf>(this TSelf x, TSelf minSource, TSelf maxSource, TSelf minTarget, TSelf maxTarget)
       where TSelf : System.Numerics.INumber<TSelf>
       => minTarget + (maxTarget - minTarget) * (x - minSource) / (maxSource - minSource);
