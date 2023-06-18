@@ -18,19 +18,17 @@ namespace Flux.Units
     /// <summary>Creates a new Latitude from the specfied Angle instance. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
     public Latitude(Angle angle) : this(angle.ToUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
-    public double InRadians => Angle.ConvertDegreeToRadian(m_latitude);
-
-    public string SexagesimalDegreeString => ToSexagesimalDegreeString();
+    public double Radians => Angle.ConvertDegreeToRadian(m_latitude);
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
-    public double GetMercatorProjectedY() => System.Math.Clamp(System.Math.Log((System.Math.Tan(System.Math.PI / 4 + InRadians / 2))), -System.Math.PI, System.Math.PI);
+    public double GetMercatorProjectedY() => System.Math.Clamp(System.Math.Log(System.Math.Tan(System.Math.PI / 4 + Radians / 2)), -System.Math.PI, System.Math.PI);
 
     public Angle ToAngle() => new(m_latitude, AngleUnit.Degree);
 
-    public string ToSexagesimalDegreeString(DmsFormat format = DmsFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false, bool preferUnicode = false)
-      => Angle.ToDmsString(m_latitude, format, CardinalAxis.NorthSouth, -1, useSpaces, preferUnicode);
+    public string ToSexagesimalDegreeString(DmsFormat format = DmsFormat.DegreesMinutesDecimalSeconds, bool preferUnicode = true, bool useSpaces = false)
+      => Angle.ToDmsString(m_latitude, format, CardinalAxis.NorthSouth, -1, preferUnicode, useSpaces);
 
     #region Static methods
 
@@ -117,13 +115,13 @@ namespace Flux.Units
       if (format is not null)
       {
         if (format.StartsWith(DmsFormat.DegreesMinutesDecimalSeconds.GetAcronymString()))
-          return ToSexagesimalDegreeString(DmsFormat.DegreesMinutesDecimalSeconds, format.EndsWith(' '), preferUnicode);
+          return ToSexagesimalDegreeString(DmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '));
         if (format.StartsWith(DmsFormat.DegreesDecimalMinutes.GetAcronymString()))
-          return ToSexagesimalDegreeString(DmsFormat.DegreesDecimalMinutes, format.EndsWith(' '), preferUnicode);
+          return ToSexagesimalDegreeString(DmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '));
         if (format.StartsWith(DmsFormat.DecimalDegrees.GetAcronymString()))
-          return ToSexagesimalDegreeString(DmsFormat.DecimalDegrees, format.EndsWith(' '), preferUnicode);
+          return ToSexagesimalDegreeString(DmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '));
 
-        return new Angle(m_latitude, AngleUnit.Degree).ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
+        return ToAngle().ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
       }
 
       return ToSexagesimalDegreeString();
@@ -133,6 +131,6 @@ namespace Flux.Units
 
     #endregion Implemented interfaces
 
-    public override string ToString() => ToQuantityString(DmsFormat.DegreesMinutesDecimalSeconds.GetAcronymString());
+    public override string ToString() => ToQuantityString();
   }
 }

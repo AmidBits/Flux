@@ -68,7 +68,7 @@
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public double InDegrees => ConvertRadianToDegree(m_radAngle);
+      public double Degrees => ConvertRadianToDegree(m_radAngle);
 
       public AngleNames GetAngleNames()
       {
@@ -211,7 +211,7 @@
       /// <summary></summary>
       /// <see href="https://en.wikipedia.org/wiki/ISO_6709"/>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static string ToDmsString(double decimalDegrees, DmsFormat format, CardinalAxis axis, int decimalPoints = -1, bool useSpaces = false, bool preferUnicode = false)
+      public static string ToDmsString(double decimalDegrees, DmsFormat format, CardinalAxis axis, int decimalPoints = -1, bool preferUnicode = false, bool useSpaces = false)
       {
         var (degrees, minutes, decimalSeconds) = ConvertDecimalDegreesToDms(decimalDegrees, out var decimalMinutes);
 

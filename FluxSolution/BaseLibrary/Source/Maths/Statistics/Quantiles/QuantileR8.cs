@@ -9,6 +9,8 @@ namespace Flux.Maths
   public record class QuantileR8
     : IQuantileEstimatable
   {
+    public const double OneThird = 1 / 3;
+
     public static IQuantileEstimatable Default => new QuantileR8();
 
 #if NET7_0_OR_GREATER
@@ -16,13 +18,7 @@ namespace Flux.Maths
     public TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
-    {
-      if (TPercent.IsNegative(p) || p > TPercent.One) throw new System.ArgumentOutOfRangeException(nameof(p));
-
-      var oneThird = TPercent.CreateChecked(1) / TPercent.CreateChecked(3);
-
-      return (TPercent.CreateChecked(count) + oneThird) * p + oneThird;
-    }
+      => (TPercent.CreateChecked(count) + TPercent.CreateChecked(OneThird)) * GenericMath.AssertUnitInterval(p, nameof(p)) + TPercent.CreateChecked(OneThird);
 
     public TPercent EstimateQuantileValue<TValue, TPercent>(System.Collections.Generic.IEnumerable<TValue> ordered, TPercent p)
       where TValue : System.Numerics.INumber<TValue>

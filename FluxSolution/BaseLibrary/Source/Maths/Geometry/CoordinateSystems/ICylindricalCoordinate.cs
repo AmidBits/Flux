@@ -33,7 +33,7 @@
       => new(
         System.Math.Sqrt(source.Radius * source.Radius + source.Height * source.Height),
         System.Math.Atan(source.Radius / source.Height),
-        source.Height
+        source.Azimuth
       );
   }
   #endregion ExtensionMethods

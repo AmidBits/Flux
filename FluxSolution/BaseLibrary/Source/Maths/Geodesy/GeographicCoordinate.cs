@@ -28,8 +28,8 @@ namespace Flux.Geometry
     public GeographicCoordinate(double latitude, double longitude, double altitude = 1.0)
     {
       m_altitude = altitude >= MinAltitudeInMeters && altitude <= MaxAltitudeInMeters ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
-      m_lat = new Units.Latitude(latitude).InRadians;
-      m_lon = new Units.Longitude(longitude).InRadians;
+      m_lat = new Units.Latitude(latitude).Radians;
+      m_lon = new Units.Longitude(longitude).Radians;
     }
 
     /// <summary></summary>
@@ -39,25 +39,25 @@ namespace Flux.Geometry
     public void Deconstruct(out double altitude, out double latitude, out double longitude)
     {
       altitude = m_altitude;
-      latitude = Latitude;
-      longitude = Longitude;
+      latitude = Latitude.Value;
+      longitude = Longitude.Value;
     }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public double Altitude { get => m_altitude; init => m_altitude = value; }
+    public Units.Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
 
     /// <summary>The diametrical opposite of the <see cref="GeographicCoordinate"/>, i.e. the opposite side of Earth's surface. This is a plain mathematical antipode.</summary>
-    public GeographicCoordinate Antipode => new(0 - Latitude, Longitude - 180, Altitude);
+    public GeographicCoordinate Antipode => new(0 - Latitude.Value, Longitude.Value - 180, Altitude.Value);
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).InRadians; }
+    public Units.Latitude Latitude { get => Units.Latitude.FromRadians(m_lat); init => m_lat = value.Radians; } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
 
-    public double LatitudeInRadians => m_lat;
+    //public double LatitudeInRadians => m_lat;
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).InRadians; }
+    public Units.Longitude Longitude { get => Units.Longitude.FromRadians(m_lon); init => m_lon = value.Radians; } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
 
-    public double LongitudeInRadians => m_lon;
+    //public double LongitudeInRadians => m_lon;
 
     #region Static members
 
@@ -413,7 +413,7 @@ namespace Flux.Geometry
     #region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"{new Units.Latitude(Latitude).ToQuantityString(format)} {new Units.Longitude(Longitude).ToQuantityString(format)} {new Units.Length(Altitude).ToUnitString(Units.Length.DefaultUnit, "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
+      => $"{Latitude.ToQuantityString(format)} {Longitude.ToQuantityString(format)} {Altitude.ToUnitString(Units.Length.DefaultUnit, "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
 
     #endregion Implemented interfaces
 

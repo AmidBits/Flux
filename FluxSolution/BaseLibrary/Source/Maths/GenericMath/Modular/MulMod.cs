@@ -11,9 +11,9 @@ namespace Flux
     public static TSelf MulMod<TSelf>(this TSelf dividend, TSelf divisor, TSelf modulus)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (TSelf.IsNegative(dividend)) throw new System.ArgumentOutOfRangeException(nameof(dividend));
-      if (TSelf.IsNegative(divisor)) throw new System.ArgumentOutOfRangeException(nameof(divisor));
-      if (TSelf.IsNegative(modulus)) throw new System.ArgumentOutOfRangeException(nameof(modulus));
+      AssertNonNegative(dividend, nameof(dividend));
+      AssertNonNegative(divisor, nameof(divisor));
+      AssertNonNegative(modulus, nameof(modulus));
 
       if (dividend >= modulus) dividend %= modulus;
       if (divisor >= modulus) divisor %= modulus;

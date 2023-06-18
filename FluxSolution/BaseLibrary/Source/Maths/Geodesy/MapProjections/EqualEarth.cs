@@ -18,8 +18,8 @@ namespace Flux.Geometry.MapProjections
       const double A37 = A3 * 7;
       const double A49 = A4 * 9;
 
-      var lat = Units.Angle.ConvertDegreeToRadian(location.Latitude);
-      var lon = Units.Angle.ConvertDegreeToRadian(location.Longitude);
+      var lat = location.Latitude.Radians;
+      var lon = location.Longitude.Radians;
 
       var M = System.Math.Sqrt(3) / 2;
       var p = System.Math.Asin(M * System.Math.Sin(lat)); // parametric latitude
@@ -28,7 +28,7 @@ namespace Flux.Geometry.MapProjections
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new(x, y, location.Altitude);
+      return new(x, y, location.Altitude.Value);
     }
     public IGeographicCoordinate ProjectReverse(ICartesianCoordinate3<double> location)
     {

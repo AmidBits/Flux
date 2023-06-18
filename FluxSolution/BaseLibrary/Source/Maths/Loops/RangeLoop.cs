@@ -15,7 +15,7 @@ namespace Flux
 
       public RangeLoop(TSelf startNumber, TSelf count, TSelf stepSize)
       {
-        if (TSelf.IsNegative(count)) throw new System.ArgumentOutOfRangeException(nameof(count));
+        GenericMath.AssertNonNegative(count, nameof(count));
 
         m_startNumber = startNumber;
         m_count = count;

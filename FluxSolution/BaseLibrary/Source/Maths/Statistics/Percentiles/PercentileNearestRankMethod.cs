@@ -29,7 +29,7 @@ namespace Flux.Maths
       where TScore : System.Numerics.INumber<TScore>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
     {
-      if (TPercent.IsNegative(p) || p > TPercent.One) throw new System.ArgumentOutOfRangeException(nameof(p));
+      GenericMath.AssertUnitInterval(p, nameof(p));
 
       return TPercent.CreateChecked(distribution.ElementAt(System.Convert.ToInt32(TPercent.Ceiling(PercentileRank(distribution.Count(), p))) - 1));
     }
