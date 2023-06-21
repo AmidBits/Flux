@@ -24,9 +24,7 @@ namespace Flux
         var maxIndex = 0;
         var maxKey = key;
 
-        var index = 1;
-
-        while (e.MoveNext())
+        for (var index = 1; e.MoveNext(); index++)
         {
           key = keySelector(e.Current);
 
@@ -42,8 +40,6 @@ namespace Flux
             maxIndex = index;
             maxKey = key;
           }
-
-          index++;
         }
 
         return (minItem, minIndex, maxItem, maxIndex);

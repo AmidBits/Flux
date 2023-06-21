@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Returns the specified percent of random elements from the sequence. Uses the specified random number generator.</summary>
+    /// <summary>Returns the specified percent (probability) of random elements from the sequence. Uses the specified random number generator (default if null).</summary>
     /// <param name="probability">Probability as a percent value in the range [0, 1].</param>
     /// <param name="rng">The random number generator to use.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"/>
@@ -12,11 +12,11 @@ namespace Flux
 
       rng ??= new System.Random();
 
-      foreach (var item in source)
-      {
+      using var e = source.GetEnumerator();
+
+      while (e.MoveNext())
         if (rng.NextDouble() < probability)
-          yield return item;
-      }
+          yield return e.Current;
     }
   }
 }

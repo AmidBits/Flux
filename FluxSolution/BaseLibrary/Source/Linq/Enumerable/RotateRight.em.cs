@@ -8,15 +8,15 @@ namespace Flux
     {
       if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      var items = source.ToList();
+      var list = source.ToList();
 
-      var index = items.Count - (items.Count < count ? (count % items.Count) : count);
+      var index = list.Count - (list.Count < count ? (count % list.Count) : count);
 
-      for (var i = index; i < items.Count; i++)
-        yield return items[i];
+      for (var i = index; i < list.Count; i++)
+        yield return list[i];
 
       for (var i = 0; i < index; i++)
-        yield return items[i];
+        yield return list[i];
     }
   }
 }

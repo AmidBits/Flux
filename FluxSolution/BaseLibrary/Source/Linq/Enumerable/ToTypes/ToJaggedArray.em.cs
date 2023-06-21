@@ -4,23 +4,29 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Creates a jagged array from the sequence, using the specified selector and column names.</summary>
+    /// <summary>Creates a jagged array <paramref name="source"/> using the specified <paramref name="countSelector"/> which specifies the number of elements (i.e. field/column count) for the next row.</summary>
+    /// <remarks>For each row, a readonly list of all remaining elements is presented for decision on how many elements should appear on the next row.</remarks>
     /// <exception cref="System.ArgumentNullException"/>
-    public static object[][] ToJaggedArray<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, object[]> arraySelector, params string[] columnNames)
+    public static TSource[][] ToJaggedArray<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<System.Collections.Generic.IReadOnlyList<TSource>, int> countSelector)
     {
-      if (arraySelector is null) throw new System.ArgumentNullException(nameof(arraySelector));
+      var sourceList = source.ToList();
+      var targetList = new System.Collections.Generic.List<TSource[]>();
 
-      var list = new System.Collections.Generic.List<object[]>();
+      while (sourceList.Any())
+      {
+        var count = System.Math.Min(countSelector(sourceList), sourceList.Count); // Cannot select more elements than is in the list.
 
-      if (columnNames.Length > 0)
-        list.Add(columnNames);
+        var target = new System.Collections.Generic.List<TSource>();
 
-      var index = 0;
+        for (var index = 0; index < count; index++)
+          target.Add(sourceList[index]);
 
-      foreach (var item in source)
-        list.Add(arraySelector(item, index++));
+        targetList.Add(target.ToArray());
 
-      return list.ToArray();
+        sourceList.RemoveRange(0, count);
+      }
+
+      return targetList.ToArray();
     }
   }
 }

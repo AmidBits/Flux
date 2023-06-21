@@ -22,9 +22,7 @@ namespace Flux
         var gtIndex = -1;
         var gtKey = targetKey;
 
-        var index = 0;
-
-        while (e.MoveNext())
+        for (var index = 0; e.MoveNext(); index++)
         {
           var key = keySelector(e.Current);
           var cmp = comparer.Compare(key, targetKey);
@@ -41,8 +39,6 @@ namespace Flux
             gtIndex = index;
             gtKey = key;
           }
-
-          index++;
         }
 
         return (ltItem, ltIndex, gtItem, gtIndex);

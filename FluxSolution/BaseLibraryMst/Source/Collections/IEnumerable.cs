@@ -24,9 +24,9 @@ namespace Collections.Generic
     [TestMethod]
     public void CompareCount()
     {
-      Assert.AreEqual(1, integers.CompareCount(4, e => true)); // Has more than 4 elements.
-      Assert.AreEqual(-1, integers.CompareCount(4000, e => true)); // Has less than 4000 elements.
-      Assert.AreEqual(0, integers.CompareCount(6, e => (e & 1) == 1)); // Has 6 odd elements.
+      Assert.AreEqual(1, integers.CompareCount(4)); // Has more than 4 elements.
+      Assert.AreEqual(-1, integers.CompareCount(4000)); // Has less than 4000 elements.
+      Assert.AreEqual(0, integers.CompareCount(6, (e, i) => (e & 1) == 1)); // Has 6 odd elements.
     }
 
     [TestMethod]
@@ -123,9 +123,9 @@ namespace Collections.Generic
       var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
       var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
 
-      Assert.IsTrue(a.SequenceContentEqualOrderBy(b));
-      Assert.IsTrue(a.SequenceContentEqualOrderBy(c));
-      Assert.IsTrue(b.SequenceContentEqualOrderBy(c));
+      Assert.IsTrue(a.SequenceEqualWithOrderBy(b, v => v));
+      Assert.IsTrue(a.SequenceEqualWithOrderBy(c, v => v));
+      Assert.IsTrue(b.SequenceEqualWithOrderBy(c, v => v));
     }
 
     [TestMethod]
@@ -135,9 +135,9 @@ namespace Collections.Generic
       var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
       var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
 
-      Assert.IsTrue(a.SequenceContentEqualByXor(b));
-      Assert.IsTrue(a.SequenceContentEqualByXor(c));
-      Assert.IsTrue(b.SequenceContentEqualByXor(c));
+      Assert.IsTrue(a.SequenceEqualHashCodesByXor(b));
+      Assert.IsTrue(a.SequenceEqualHashCodesByXor(c));
+      Assert.IsTrue(b.SequenceEqualHashCodesByXor(c));
     }
 
     [TestMethod]

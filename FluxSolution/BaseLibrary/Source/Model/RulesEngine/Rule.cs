@@ -57,8 +57,10 @@ namespace Flux.RulesEngine
 
       return System.Linq.Expressions.Expression.Lambda<System.Func<T, bool>>(expression, parameterExpression).Compile();
     }
-    #endregion Static methods
 
-    public override string? ToString() => $"{nameof(Rule)} {{ \"{m_name}\" {m_operator} '{m_value}' }}";
+    #endregion // Static methods
+
+    public override string? ToString()
+      => $"{nameof(Rule)} {{ \"{m_name}\" {m_operator} '{m_value}' }}";
   }
 }

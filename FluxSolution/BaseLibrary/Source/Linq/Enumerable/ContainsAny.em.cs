@@ -8,11 +8,9 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static bool ContainsAny<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
       var shs = source is System.Collections.Generic.ISet<T> hsTemporary // For speed...
         ? hsTemporary // Re-use the ISet<T> if available.
-        : new System.Collections.Generic.HashSet<T>(source, equalityComparer); // Otherwise, create a HashSet<T>.
+        : new System.Collections.Generic.HashSet<T>(source, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default); // Otherwise, create a HashSet<T>.
 
       if (
         shs.Count == 0 // If source is empty, it cannot contain any, so the result is false.

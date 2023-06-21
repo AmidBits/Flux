@@ -8,15 +8,20 @@ namespace Flux
     {
       if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      var items = source.ToList();
+      using var e = source.ThrowOnNull().GetEnumerator();
 
-      var index = (items.Count < count ? (count % items.Count) : count);
+      var rotate = new System.Collections.Generic.Queue<T>(count);
 
-      for (var i = index; i < items.Count; i++)
-        yield return items[i];
+      while (e.MoveNext())
+      {
+        if (rotate.Count < count)
+          rotate.Enqueue(e.Current);
+        else
+          yield return e.Current;
+      }
 
-      for (var i = 0; i < index; i++)
-        yield return items[i];
+      while (rotate.Any())
+        yield return rotate.Dequeue();
     }
   }
 }

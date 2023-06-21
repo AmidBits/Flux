@@ -4,7 +4,7 @@ namespace Flux
 {
   public static partial class Enumerable
   {
-    /// <summary>Creates a new sequence by skipping the <paramref name="option"/> at every <paramref name="interval"/> starting at the specified <paramref name="offset"/>.</summary>
+    /// <summary>Creates a new sequence by skipping the <paramref name="option"/> at every <paramref name="interval"/> from <paramref name="source"/>.</summary>
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> SkipEvery<T>(this System.Collections.Generic.IEnumerable<T> source, int interval, OptionEvery option)
     {
