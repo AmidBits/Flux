@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class Maths
   {
     public static readonly double DoubleEpsilonNegative = ComputeNegativeEpsilonDouble();
     public static readonly double DoubleEpsilonPositive = ComputePositiveEpsilonDouble();

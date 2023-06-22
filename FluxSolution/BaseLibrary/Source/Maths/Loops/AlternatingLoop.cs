@@ -62,7 +62,7 @@ namespace Flux
             break;
           case AlternatingLoopDirection.TowardsMean:
             // Setup the inital outer edge value for inward iteration.
-            mean += step * GenericMath.TruncMod(m_count, TNumber.One + TNumber.One, out TNumber _);
+            mean += step * Maths.TruncMod(m_count, TNumber.One + TNumber.One, out TNumber _);
 
             for (var index = m_count - TNumber.One; index >= TNumber.Zero; index--)
             {

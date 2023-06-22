@@ -37,12 +37,12 @@ namespace Flux.Dsp.AudioProcessor
       {
         _mix = System.Math.Clamp(value, -1.0, 1.0);
 
-        if (_mix > GenericMath.EpsilonCpp32)
+        if (_mix > Maths.EpsilonCpp32)
         {
           m_wetMix = 0.5 * (1.0 + _mix);
           m_dryMix = 1.0 - m_wetMix;
         }
-        else if (_mix < -GenericMath.EpsilonCpp32)
+        else if (_mix < -Maths.EpsilonCpp32)
         {
           m_dryMix = 0.5 * (1.0 - _mix);
           m_wetMix = 1.0 - m_dryMix;

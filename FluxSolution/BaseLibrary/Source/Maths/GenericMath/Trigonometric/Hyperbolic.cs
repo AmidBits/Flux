@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class Maths
   {
     #region Hyperbolic with inverse trigonometric functionality.
 

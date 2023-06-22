@@ -365,7 +365,7 @@ namespace Flux.NumberSequences
     /// <see cref="https://en.wikipedia.org/wiki/List_of_prime_numbers#Additive_primes"/>
 
     public static bool IsAlsoAdditivePrime(System.Numerics.BigInteger primeNumber)
-      => IsPrimeNumber(GenericMath.DigitSum(primeNumber, 10));
+      => IsPrimeNumber(Maths.DigitSum(primeNumber, 10));
     /// <summary>Indicates whether the prime number is also a congruent modulo prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
 
@@ -431,7 +431,7 @@ namespace Flux.NumberSequences
     /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
 
     public static bool IsCoprime<TSelf>(System.Numerics.BigInteger a, System.Numerics.BigInteger b)
-      => GenericMath.GreatestCommonDivisor(a, b) == 1;
+      => Maths.GreatestCommonDivisor(a, b) == 1;
 
     /// <summary>Indicates whether a specified number is a prime candidate.</summary>
 

@@ -28,15 +28,15 @@ namespace Foundation.Units
     {
       var u = new Flux.Units.Angle(1);
 
-      var expected = new Flux.Geometry.CartesianCoordinate2<double>(0.5403023058681398, 0.8414709848078965);
-      var actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2(u.Value);
-      Assert.AreEqual(expected.X, actual.x, Flux.GenericMath.Epsilon1E15);
-      Assert.AreEqual(expected.Y, actual.y, Flux.GenericMath.Epsilon1E15);
+      var expected = new Flux.Numerics.CartesianCoordinate2<double>(0.5403023058681398, 0.8414709848078965);
+      var actual = Convert.RotationAngleToCartesian2(u.Value);
+      Assert.AreEqual(expected.X, actual.x, Flux.Maths.Epsilon1E15);
+      Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 
-      expected = new Flux.Geometry.CartesianCoordinate2<double>(0.8414709848078966, 0.5403023058681394);
-      actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2Ex(u.Value);
+      expected = new Flux.Numerics.CartesianCoordinate2<double>(0.8414709848078966, 0.5403023058681394);
+      actual = Convert.RotationAngleToCartesian2Ex(u.Value);
       Assert.AreEqual(expected.X, actual.x);
-      Assert.AreEqual(expected.Y, actual.y, Flux.GenericMath.Epsilon1E15);
+      Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 
       Assert.AreEqual(57.29577951308232, u.ToUnitValue(Flux.Units.AngleUnit.Degree));
       Assert.AreEqual(63.66197723675813, u.ToUnitValue(Flux.Units.AngleUnit.Gradian));

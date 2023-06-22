@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class Maths
   {
     /// <summary>A third-degree polynomial.</summary>
     /// <param name="a">a != 0</param>

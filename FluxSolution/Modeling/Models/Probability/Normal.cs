@@ -18,7 +18,7 @@
     }
 
     // Box-Muller method
-    private static double StandardSample() => System.Math.Sqrt(-2.0 * System.Math.Log(StandardContinuousUniform.Distribution.Sample())) * System.Math.Cos(GenericMath.PiOver2 * StandardContinuousUniform.Distribution.Sample());
+    private static double StandardSample() => System.Math.Sqrt(-2.0 * System.Math.Log(StandardContinuousUniform.Distribution.Sample())) * System.Math.Cos(Maths.PiOver2 * StandardContinuousUniform.Distribution.Sample());
 
     //public double Sample() => μ + σ * StandardSample();
     public double Sample() => Mean + Sigma * StandardSample();

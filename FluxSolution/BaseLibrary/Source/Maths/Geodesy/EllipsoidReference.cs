@@ -47,6 +47,6 @@ namespace Flux
     public Units.Length PolarRadius => new(m_ellipseGeometry.B);
 
     /// <summary>Approximate volume of the Earth's oblate sphere.</summary>
-    public Units.Volume Volume => new(GenericMath.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
+    public Units.Volume Volume => new(Maths.PiTimesFourThirds * System.Math.Pow(EquatorialRadius.Value, 2) * PolarRadius.Value);
   }
 }

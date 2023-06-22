@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class Maths
   {
     public static TValue StepFunction<TValue>(this TValue x, TValue referenceValue, TValue lessThan, TValue equalTo, TValue greaterThan)
       where TValue : System.IComparable<TValue>

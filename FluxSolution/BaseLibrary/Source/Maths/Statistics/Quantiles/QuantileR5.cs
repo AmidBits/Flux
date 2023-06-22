@@ -18,7 +18,7 @@ namespace Flux.Maths
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
     {
-      return TPercent.CreateChecked(count) * GenericMath.AssertUnitInterval(p, nameof(p)) + TPercent.One.Divide(2);
+      return TPercent.CreateChecked(count) * Maths.AssertUnitInterval(p, nameof(p)) + TPercent.One.Divide(2);
     }
 
     public TPercent EstimateQuantileValue<TValue, TPercent>(System.Collections.Generic.IEnumerable<TValue> ordered, TPercent p)

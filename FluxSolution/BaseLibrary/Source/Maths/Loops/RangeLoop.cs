@@ -15,7 +15,7 @@ namespace Flux
 
       public RangeLoop(TSelf startNumber, TSelf count, TSelf stepSize)
       {
-        GenericMath.AssertNonNegative(count, nameof(count));
+        Maths.AssertNonNegative(count, nameof(count));
 
         m_startNumber = startNumber;
         m_count = count;
