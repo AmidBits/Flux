@@ -35,6 +35,11 @@ namespace ConsoleApp
 
       var keywords = new string[] { "CAN YOU", "CAN I", "YOU ARE", "YOURE", "I DONT", "I FEEL", "WHY DONT YOU", "WHY CANT I", "ARE YOU", "I CANT", "I AM", " IM ", "YOU", "I WANT", "WHAT", "HOW", "WHO", "WHERE", "WHEN", "WHY", "NAME", "CAUSE", "SORRY", "DREAM", "HELLO", "HI", "MAYBE", "NO", "YOUR", "ALWAYS", "THINK", "ALIKE", "YES", "FRIEND", "COMPUTER", "NOKEYFOUND" };
 
+      var ja = keywords.ToJaggedArray(list => 8);
+      System.Console.WriteLine(ja.JaggedToConsoleString());
+      var dt = ja.ToDataTable("Table", 8, (e, i) => e);
+      System.Console.WriteLine(dt.DefaultView.ToConsoleString());
+
       var cmp = keywords.CompareCount(37);
 
       var madrid = Zamplez.MadridSpain;
