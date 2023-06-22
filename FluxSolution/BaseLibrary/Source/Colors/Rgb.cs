@@ -106,7 +106,7 @@ namespace Flux.Colors
       var b = m_blue / 255d;
 
       var alpha = (2 * r - g - b) / 2;
-      var beta = (GenericMath.TheodorusConstant / 2) * (g - b);
+      var beta = (Maths.TheodorusConstant / 2) * (g - b);
 
       chroma2 = System.Math.Sqrt(alpha * alpha + beta * beta);
       hue2 = Units.Angle.ConvertRadianToDegree(System.Math.Atan2(beta, alpha)).Wrap(0, 360);

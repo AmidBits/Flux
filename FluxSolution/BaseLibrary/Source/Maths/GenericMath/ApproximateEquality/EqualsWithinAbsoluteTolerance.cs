@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class Maths
   {
 #if NET7_0_OR_GREATER
     /// <summary>Perform a comparison where the tolerance is the same, no matter how small or large the compared numbers.</summary>

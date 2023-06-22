@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class Maths
   {
     /// <summary></summary>
     /// <param name="x">Any positive value.</param>

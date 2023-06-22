@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class Maths
   {
     public static TNumber Add<TNumber, TScalar>(this TNumber value, TScalar scalar) where TNumber : System.Numerics.INumberBase<TNumber> where TScalar : System.Numerics.INumberBase<TScalar> => value + TNumber.CreateChecked(scalar);
 

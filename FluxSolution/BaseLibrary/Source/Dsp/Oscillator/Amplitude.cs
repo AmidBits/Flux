@@ -63,14 +63,14 @@ namespace Flux.Dsp.Synthesis
       if (InvertPolarity)
         sample = -sample;
 
-      if (AmplitudeModulator != null && m_amplitudeModulation > GenericMath.EpsilonCpp32)
+      if (AmplitudeModulator != null && m_amplitudeModulation > Maths.EpsilonCpp32)
       {
         sample *= AmplitudeModulator.NextSample() * m_amplitudeModulation + 1.0;
 
         sample /= m_amplitudeModulation + 1.0; // Reset the amplitude after AM applied.
       }
 
-      if (RingModulator != null && m_ringModulation > GenericMath.EpsilonCpp32)
+      if (RingModulator != null && m_ringModulation > Maths.EpsilonCpp32)
         sample *= RingModulator.NextSample() * m_ringModulation;
 
       return sample;

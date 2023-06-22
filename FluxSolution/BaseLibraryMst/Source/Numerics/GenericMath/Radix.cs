@@ -42,15 +42,15 @@ namespace GenericMath
     {
       var expected = new System.Numerics.BigInteger[] { 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0 };
       var actual = 670530.ToBigInteger().GetDigits(2).ToArray();
-      CollectionAssert.AreEqual(expected, actual, nameof(Flux.GenericMath.GetDigits) + ".Radix=2");
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Maths.GetDigits) + ".Radix=2"));
 
       expected = new System.Numerics.BigInteger[] { 6, 7, 0, 5, 3, 0 };
       actual = 670530.ToBigInteger().GetDigits(10).ToArray();
-      CollectionAssert.AreEqual(expected, actual, nameof(Flux.GenericMath.GetDigits) + ".Radix=10");
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Maths.GetDigits) + ".Radix=10"));
 
       expected = new System.Numerics.BigInteger[] { 10, 3, 11, 4, 2 };
       actual = 670530.ToBigInteger().GetDigits(16).ToArray();
-      CollectionAssert.AreEqual(expected, actual, nameof(Flux.GenericMath.GetDigits) + ".Radix=16");
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Maths.GetDigits) + ".Radix=16"));
     }
 
     [TestMethod]
@@ -58,15 +58,15 @@ namespace GenericMath
     {
       var expected = new System.Numerics.BigInteger[] { 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1 };
       var actual = 670530.ToBigInteger().GetDigitsReversed(2).ToArray();
-      CollectionAssert.AreEqual(expected, actual, nameof(Flux.GenericMath.GetDigits) + ".Radix=2");
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Maths.GetDigits) + ".Radix=2"));
 
       expected = new System.Numerics.BigInteger[] { 0, 3, 5, 0, 7, 6 };
       actual = 670530.ToBigInteger().GetDigitsReversed(10).ToArray();
-      CollectionAssert.AreEqual(expected, actual, nameof(Flux.GenericMath.GetDigits) + ".Radix=10");
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Maths.GetDigits) + ".Radix=10"));
 
       expected = new System.Numerics.BigInteger[] { 2, 4, 11, 3, 10 };
       actual = 670530.ToBigInteger().GetDigitsReversed(16).ToArray();
-      CollectionAssert.AreEqual(expected, actual, nameof(Flux.GenericMath.GetDigits) + ".Radix=16");
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Maths.GetDigits) + ".Radix=16"));
     }
 
     [TestMethod]
@@ -91,7 +91,7 @@ namespace GenericMath
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual(3, Flux.GenericMath.IntegerLog(512.ToBigInteger() - 1, 10) + 1);
+      Assert.AreEqual(3, Flux.Maths.IntegerLog(512.ToBigInteger() - 1, 10) + 1);
     }
 
     [TestMethod]
@@ -180,7 +180,7 @@ namespace GenericMath
     public void SelfNumber()
     {
       var expected = new int[] { 1, 3, 5, 7, 9, 20, 31, 42, 53, 64, 75, 86, 97, 108, 110, 121, 132, 143, 154, 165, 176, 187, 198, 209, 211, 222, 233, 244, 255, 266, 277, 288, 299, 310, 312, 323, 334, 345, 356, 367, 378, 389, 400, 411, 413, 424, 435, 446, 457, 468, 479, 490 };
-      var actual = System.Linq.Enumerable.Range(1, 500).Where(i => Flux.GenericMath.IsSelfNumber(i, 10)).ToArray();
+      var actual = System.Linq.Enumerable.Range(1, 500).Where(i => Flux.Maths.IsSelfNumber(i, 10)).ToArray();
       CollectionAssert.AreEqual(expected, actual);
     }
 

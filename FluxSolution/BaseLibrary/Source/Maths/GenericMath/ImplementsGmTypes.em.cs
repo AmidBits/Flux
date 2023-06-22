@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class Maths
   {
     /// <summary>Returns whether the source is of System.Numerics.IBinaryInteger<>.</summary>
     public static bool ImplementsBinaryInteger<TSelf>(this TSelf source)

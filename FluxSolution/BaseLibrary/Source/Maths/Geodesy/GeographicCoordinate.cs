@@ -97,11 +97,11 @@ namespace Flux.Geometry
       latMin = lat - angularDistance;
       latMax = lat + angularDistance;
 
-      if (latMin <= -GenericMath.PiOver2 || latMax >= GenericMath.PiOver2) // A pole is within the given distance.
+      if (latMin <= -Maths.PiOver2 || latMax >= Maths.PiOver2) // A pole is within the given distance.
       {
-        latMin = System.Math.Max(latMin, -GenericMath.PiOver2);
+        latMin = System.Math.Max(latMin, -Maths.PiOver2);
         lonMin = -System.Math.PI;
-        latMax = System.Math.Min(latMax, GenericMath.PiOver2);
+        latMax = System.Math.Min(latMax, Maths.PiOver2);
         lonMax = System.Math.PI;
 
         return false;

@@ -112,14 +112,14 @@ namespace Flux.Dsp.Synthesis
       foreach (var processor in PreProcessors)
         Current = processor.ProcessMonoWave(new WaveMono<double>(Current)).Wave;
 
-      if (AmplitudeModulator != null && m_amplitudeModulation > GenericMath.EpsilonCpp32)
+      if (AmplitudeModulator != null && m_amplitudeModulation > Maths.EpsilonCpp32)
       {
         Current *= AmplitudeModulator.NextSample() * m_amplitudeModulation + 1;
 
         Current /= m_amplitudeModulation + 1; // Reset the amplitude after AM applied.
       }
 
-      if (RingModulator != null && m_ringModulation > GenericMath.EpsilonCpp32)
+      if (RingModulator != null && m_ringModulation > Maths.EpsilonCpp32)
         Current *= RingModulator.NextSample() * m_ringModulation;
 
       foreach (var processor in PostProcessors)
@@ -130,10 +130,10 @@ namespace Flux.Dsp.Synthesis
 
       var phaseShift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
 
-      if (PhaseModulator != null && m_phaseModulation > GenericMath.EpsilonCpp32)
+      if (PhaseModulator != null && m_phaseModulation > Maths.EpsilonCpp32)
         phaseShift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * m_phaseModulation;
 
-      if (FrequencyModulator != null && m_frequencyModulation > GenericMath.EpsilonCpp32)
+      if (FrequencyModulator != null && m_frequencyModulation > Maths.EpsilonCpp32)
         phaseShift += normalizedFrequency.Value * FrequencyModulator.NextSample() * m_frequencyModulation;
 
       if (ReversePhase)

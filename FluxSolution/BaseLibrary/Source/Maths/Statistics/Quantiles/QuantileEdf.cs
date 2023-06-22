@@ -17,7 +17,7 @@ namespace Flux.Maths
     public TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      => GenericMath.AssertUnitInterval(p, nameof(p)) * TPercent.CreateChecked(count + TCount.One);
+      => Maths.AssertUnitInterval(p, nameof(p)) * TPercent.CreateChecked(count + TCount.One);
 
     public TPercent EstimateQuantileValue<TValue, TPercent>(System.Collections.Generic.IEnumerable<TValue> ordered, TPercent p)
       where TValue : System.Numerics.INumber<TValue>

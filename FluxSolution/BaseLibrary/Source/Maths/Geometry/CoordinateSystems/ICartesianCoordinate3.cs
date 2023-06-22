@@ -175,7 +175,7 @@ namespace Flux
 
       Geometry.ICartesianCoordinate3<double> w;
 
-      if (real_part < GenericMath.Epsilon1E7 * norm_u_norm_v)
+      if (real_part < Maths.Epsilon1E7 * norm_u_norm_v)
       {
         real_part = 0;
 
