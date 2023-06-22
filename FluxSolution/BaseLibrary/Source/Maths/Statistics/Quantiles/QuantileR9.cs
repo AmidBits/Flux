@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>
   /// <para>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</para>

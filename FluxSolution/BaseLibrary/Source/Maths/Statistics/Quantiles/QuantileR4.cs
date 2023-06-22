@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>
   /// <para>Linear interpolation of the empirical distribution function.</para>

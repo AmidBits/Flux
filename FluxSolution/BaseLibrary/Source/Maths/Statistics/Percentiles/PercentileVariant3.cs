@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>
   /// <para>Adopted by Microsoft Excel since 2010 by means of PERCENTIL.EXC function. The primary variant recommended by NIST.</para>

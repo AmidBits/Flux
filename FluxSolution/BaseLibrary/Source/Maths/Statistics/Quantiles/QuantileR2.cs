@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>
   /// <para>The same as R1, but with averaging at discontinuities.</para>

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>
   /// <para>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</para>

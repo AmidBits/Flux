@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>
   /// <para>Piecewise linear function where the knots are the values midway through the steps of the empirical distribution function.</para>

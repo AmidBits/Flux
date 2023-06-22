@@ -1,4 +1,4 @@
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   ///// <summary>
   ///// <para>In probability theory and statistics, the binomial distribution with parameters n and p is the discrete probability distribution of the number of successes in a sequence of n independent experiments, each asking a yes–no question, and each with its own Boolean-valued outcome: success (with probability p) or failure (with probability q=1-p).</para>

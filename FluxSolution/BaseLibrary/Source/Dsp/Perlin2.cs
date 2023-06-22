@@ -1,5 +1,3 @@
-using Flux.Maths;
-
 namespace Flux.Dsp
 {
   public sealed class Perlin2

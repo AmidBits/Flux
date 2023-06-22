@@ -1,6 +1,4 @@
-using System.Linq;
 using Flux.Geometry;
-using Flux.Maths;
 
 namespace Flux.Model
 {

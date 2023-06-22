@@ -1,4 +1,4 @@
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>
   /// <para>This method is not implemented at this time.</para>

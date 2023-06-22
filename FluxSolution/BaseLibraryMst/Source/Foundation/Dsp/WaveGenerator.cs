@@ -30,8 +30,8 @@ namespace Foundation.Dsp
     [TestMethod]
     public void SineWave()
     {
-      Assert.AreEqual(1, m_sineWave.GenerateMonoWaveUi(0.25), Flux.Maths.EpsilonCpp32);
-      Assert.AreEqual(-1, m_sineWave.GenerateMonoWaveUi(0.75), Flux.Maths.EpsilonCpp32);
+      Assert.AreEqual(1, m_sineWave.GenerateMonoWaveUi(0.25).Wave, Flux.Maths.EpsilonCpp32);
+      Assert.AreEqual(-1, m_sineWave.GenerateMonoWaveUi(0.75).Wave, Flux.Maths.EpsilonCpp32);
     }
 
     [TestMethod]

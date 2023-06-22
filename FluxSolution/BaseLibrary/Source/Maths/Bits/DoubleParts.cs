@@ -1,4 +1,4 @@
-namespace Flux.Maths
+namespace Flux
 {
   /// <summary>Deconstructs the decimal number into its basic components as a named ValueType for use.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Double-precision_floating-point_format"/>

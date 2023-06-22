@@ -1,4 +1,4 @@
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>A classic discrete population model which gives the expected number N t+1 (or density) of individuals in generation t + 1 as a function of the number of individuals in the previous generation.</summary>
   /// <param name="population">The number of individuals in the previous generation (Nt).</param>

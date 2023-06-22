@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Statistics
 {
   public enum PercentileAlgorithm
   {

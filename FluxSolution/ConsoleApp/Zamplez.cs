@@ -942,10 +942,10 @@ namespace ConsoleApp
     static void RunQuartiles(System.Collections.Generic.List<double> x)
     {
       System.Console.WriteLine($"The computed quartiles:");
-      System.Console.WriteLine($"Method 1: {new Flux.Maths.QuartileMethod1().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 2: {new Flux.Maths.QuartileMethod2().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 3: {new Flux.Maths.QuartileMethod3().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 4: {new Flux.Maths.QuartileMethod4().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 1: {new Flux.Statistics.QuartileMethod1().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 2: {new Flux.Statistics.QuartileMethod2().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 3: {new Flux.Statistics.QuartileMethod3().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 4: {new Flux.Statistics.QuartileMethod4().ComputeQuartiles(x)}");
     }
 
     static void RunQuantiles(System.Collections.Generic.List<double> x)
@@ -957,15 +957,15 @@ namespace ConsoleApp
       {
         var values = new double[]
         {
-          Flux.Maths.QuantileR1.Default.EstimateQuantileValue(x, p),
-          Flux.Maths.QuantileR2.Default.EstimateQuantileValue(x, p),
-          Flux.Maths.QuantileR3.Default.EstimateQuantileValue(x, p),
-          Flux.Maths.QuantileR4.Default.EstimateQuantileValue(x, p),
-          Flux.Maths.QuantileR5.Default.EstimateQuantileValue(x, p),
-          Flux.Maths.QuantileR6.Default.EstimateQuantileValue(x, p),
-          Flux.Maths.QuantileR7.Default.EstimateQuantileValue(x, p),
-          Flux.Maths.QuantileR8.Default.EstimateQuantileValue(x, p),
-          Flux.Maths.QuantileR9.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.QuantileR1.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.QuantileR2.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.QuantileR3.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.QuantileR4.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.QuantileR5.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.QuantileR6.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.QuantileR7.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.QuantileR8.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.QuantileR9.Default.EstimateQuantileValue(x, p),
         };
 
         System.Console.WriteLine($"The estimated quantiles of {p:N2}:");

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>
   /// <para>This rule is employed by the TI-83 calculator boxplot and "1-Var Stats" functions.</para>

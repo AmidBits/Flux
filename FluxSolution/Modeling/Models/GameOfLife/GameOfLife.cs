@@ -1,6 +1,4 @@
-﻿using Flux.Maths;
-
-namespace Flux.Model
+﻿namespace Flux.Model
 {
   /// <summary>Plays Conway's Game of Life on the console with a random initial state.</summary>
   public sealed class GameOfLife

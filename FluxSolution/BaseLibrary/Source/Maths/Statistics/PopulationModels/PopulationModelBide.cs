@@ -1,4 +1,4 @@
-namespace Flux.Maths
+namespace Flux.Statistics
 {
   /// <summary>Although BIDE models are conceptually simple, reliable estimates of the 5 variables contained therein (N, B, D, I and E) are often difficult to obtain.</summary>
   public record class PopulationModelBide

@@ -1,4 +1,4 @@
-namespace Flux.Maths
+namespace Flux
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public record class DecimalParts

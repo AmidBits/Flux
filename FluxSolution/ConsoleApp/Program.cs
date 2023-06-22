@@ -4,7 +4,6 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using Flux;
 using Flux.Formatting;
-using Flux.Maths;
 using Flux.Text;
 using Flux.Unicode;
 using Microsoft.VisualBasic.FileIO;
