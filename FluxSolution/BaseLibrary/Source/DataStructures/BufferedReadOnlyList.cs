@@ -1,6 +1,6 @@
 namespace Flux.DataStructures
 {
-  /// <summary>Enumerates a sequence once. It is an <see cref="IReadOnlyList{T}"/> that grows as elements from the specified sequence are enumerated. The <see cref="IReadOnlyList{T}"/> property Count and the indexer only reflect elements buffered "so far". The TryGetElementAt(index) can be used manuallly, with an index greater than or equal to Count in order to dynamically buffer more elements. The process is all automatic when using the GetEnumerator() method.</summary>
+  /// <summary>Enumerates a sequence only once, or as far as the original sequence is enumerated. It is an <see cref="IReadOnlyList{T}"/> that grows as elements from the specified sequence are enumerated. The <see cref="IReadOnlyList{T}"/> property Count and the indexer only reflect elements buffered "so far". The TryGetElementAt(index) can be used manuallly, with an index greater than or equal to Count in order to dynamically buffer more elements. The process is all automatic when using the GetEnumerator() method.</summary>
   public sealed class BufferedReadOnlyList<T>
     : Disposable, System.Collections.Generic.IReadOnlyList<T>
   {
