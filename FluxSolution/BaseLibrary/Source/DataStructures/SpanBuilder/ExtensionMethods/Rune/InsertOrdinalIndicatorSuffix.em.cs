@@ -9,7 +9,7 @@ namespace Flux
     {
       var wasDigit = false;
 
-      for (var index = source.Length - 1; index >= 0; index--)
+      for (var index = source.Count - 1; index >= 0; index--)
       {
         var r = source[index];
 
@@ -24,7 +24,7 @@ namespace Flux
             : (r == (System.Text.Rune)'3' && !isBetweenTenAndTwenty) ? "rd".AsSpan().ToListRune().AsSpan()
             : "th".AsSpan().ToListRune().AsSpan();
 
-          source.Insert(index + 1, suffix);
+          source.Insert(index + 1, suffix, 1);
         }
 
         wasDigit = isDigit;

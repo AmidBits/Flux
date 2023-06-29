@@ -18,7 +18,7 @@ namespace Flux
           case System.Globalization.UnicodeCategory.EnclosingMark:
             break;
           default:
-            sb.Append(c);
+            sb.Append(c, 1);
             break;
         }
       }
@@ -42,7 +42,7 @@ namespace Flux
           case System.Globalization.UnicodeCategory.EnclosingMark:
             break;
           default:
-            sb.Append(rune);
+            sb.Append(rune, 1);
             break;
         }
       }

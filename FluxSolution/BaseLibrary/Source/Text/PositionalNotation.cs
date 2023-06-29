@@ -96,8 +96,8 @@ namespace Flux
           sb.Insert(0, Symbols[int.CreateChecked(remainder)]);
         }
 
-        if (minLength > sb.Length)
-          sb.Insert(0, Symbols[0], minLength - sb.Length);
+        if (minLength > sb.Count)
+          sb.Insert(0, Symbols[0], minLength - sb.Count);
 
         return sb.ToString();
       }

@@ -9,7 +9,7 @@ namespace Flux
 
       var wasPredicate = true;
 
-      for (var index = 0; index < source.Length; index++)
+      for (var index = 0; index < source.Count; index++)
       {
         var c = source[index];
 
@@ -26,6 +26,8 @@ namespace Flux
 
       return source;
     }
-    public static SpanBuilder<System.Text.Rune> ExpandFromCamelCase(ref this SpanBuilder<System.Text.Rune> source, System.Globalization.CultureInfo? culture = null) => ExpandFromCamelCase(ref source, (System.Text.Rune)' ', culture);
+
+    public static SpanBuilder<System.Text.Rune> ExpandFromCamelCase(ref this SpanBuilder<System.Text.Rune> source, System.Globalization.CultureInfo? culture = null)
+      => ExpandFromCamelCase(ref source, (System.Text.Rune)' ', culture);
   }
 }

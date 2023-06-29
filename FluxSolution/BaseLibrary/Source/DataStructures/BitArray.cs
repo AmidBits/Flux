@@ -45,8 +45,10 @@
     [System.CLSCompliant(false)] public uint GetUInt32(long index) => (uint)((m_bitArray[index >> 1] >> (int)((index % 2) << 5)) & 0xFFFFFFFFU);
     [System.CLSCompliant(false)] public ulong GetUInt64(long index) => m_bitArray[index];
 
-    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse() => System.Linq.Enumerable.Select(System.Linq.Enumerable.Cast<bool>(this).GetElementsAndIndicesInt64((e, i) => !e), e => e.index);
-    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue() => System.Linq.Enumerable.Select(System.Linq.Enumerable.Cast<bool>(this).GetElementsAndIndicesInt64((e, i) => e), e => e.index);
+    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToFalse()
+      => System.Linq.Enumerable.Cast<bool>(this).SelectWhere<bool, long>((e, i) => !e, (e, i) => i);
+    public System.Collections.Generic.IEnumerable<long> GetIndicesEqualToTrue()
+      => System.Linq.Enumerable.Cast<bool>(this).SelectWhere<bool, long>((e, i) => e, (e, i) => i);
 
     [System.CLSCompliant(false)] public void SetAll(ulong value) => System.Array.Fill(m_bitArray, value);
     public void SetAll(bool value) => SetAll(value ? 0xFFFFFFFFFFFFFFFF : 0UL);

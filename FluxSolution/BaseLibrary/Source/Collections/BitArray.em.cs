@@ -5,8 +5,8 @@ namespace Flux
   public static partial class ExtensionMethodsBitArray
   {
     public static System.Collections.Generic.IEnumerable<int> GetIndicesEqualToFalse(this System.Collections.BitArray source)
-      => System.Linq.Enumerable.Cast<bool>(source).GetElementsAndIndices((e, i) => !e).Select(e => e.index);
+      => source.Cast<bool>().SelectWhere((e, i) => !e, (e, i) => i);
     public static System.Collections.Generic.IEnumerable<int> GetIndicesEqualToTrue(this System.Collections.BitArray source)
-      => System.Linq.Enumerable.Cast<bool>(source).GetElementsAndIndices((e, i) => e).Select(e => e.index);
+      => source.Cast<bool>().SelectWhere((e, i) => e, (e, i) => i);
   }
 }

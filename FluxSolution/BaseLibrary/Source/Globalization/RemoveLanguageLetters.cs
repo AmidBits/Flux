@@ -6,7 +6,7 @@ namespace Flux
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
-      for (var index = source.Length - 1; index >= 0; index--)
+      for (var index = source.Count - 1; index >= 0; index--)
         if (!culture.IsLetterOf(source[index]))
           source.Remove(index, 1);
 
@@ -17,7 +17,7 @@ namespace Flux
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
-      for (var index = source.Length - 1; index >= 0; index--)
+      for (var index = source.Count - 1; index >= 0; index--)
         if (!culture.IsLetterOf(source[index]))
           source.Remove(index, 1);
 

@@ -16,15 +16,15 @@ namespace Foundation.Dsp
     [TestMethod]
     public void PulseWave()
     {
-      Assert.AreEqual((1.0), m_pulseWave.GenerateMonoWaveUi(0.25));
-      Assert.AreEqual((-1.0), m_pulseWave.GenerateMonoWaveUi(0.75));
+      Assert.AreEqual((1.0), m_pulseWave.GenerateMonoWaveUi(0.25).Wave);
+      Assert.AreEqual((-1.0), m_pulseWave.GenerateMonoWaveUi(0.75).Wave);
     }
 
     [TestMethod]
     public void SawtoothWave()
     {
-      Assert.AreEqual((0.5), m_sawtoothWave.GenerateMonoWaveUi(0.25));
-      Assert.AreEqual((-0.5), m_sawtoothWave.GenerateMonoWaveUi(0.75));
+      Assert.AreEqual((0.5), m_sawtoothWave.GenerateMonoWaveUi(0.25).Wave);
+      Assert.AreEqual((-0.5), m_sawtoothWave.GenerateMonoWaveUi(0.75).Wave);
     }
 
     [TestMethod]
@@ -37,15 +37,15 @@ namespace Foundation.Dsp
     [TestMethod]
     public void SquareWave()
     {
-      Assert.AreEqual(1.0, m_squareWave.GenerateMonoWaveUi(0.25));
-      Assert.AreEqual(-1.0, m_squareWave.GenerateMonoWaveUi(0.75));
+      Assert.AreEqual(1.0, m_squareWave.GenerateMonoWaveUi(0.25).Wave);
+      Assert.AreEqual(-1.0, m_squareWave.GenerateMonoWaveUi(0.75).Wave);
     }
 
     [TestMethod]
     public void TriangleWave()
     {
-      Assert.AreEqual(0.0, m_triangleWave.GenerateMonoWaveUi(0.25));
-      Assert.AreEqual(0.0, m_triangleWave.GenerateMonoWaveUi(0.75));
+      Assert.AreEqual(0.0, m_triangleWave.GenerateMonoWaveUi(0.25).Wave);
+      Assert.AreEqual(0.0, m_triangleWave.GenerateMonoWaveUi(0.75).Wave);
     }
   }
 }

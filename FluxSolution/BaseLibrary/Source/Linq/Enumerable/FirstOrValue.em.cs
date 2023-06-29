@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Returns the first element in the sequence that satisfies the predicate, or if none is found, the specified value.</summary>
     /// <exception cref="System.ArgumentNullException"/>
-    public static T FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, int, bool> predicate)
+    public static (T item, int index) FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, int, bool> predicate)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
@@ -12,9 +12,9 @@ namespace Flux
 
       for (var index = 0; e.MoveNext(); index++)
         if (predicate(e.Current, index))
-          return e.Current;
+          return (e.Current, index);
 
-      return value;
+      return (value, -1);
     }
   }
 }

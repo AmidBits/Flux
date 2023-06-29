@@ -85,18 +85,18 @@ namespace Flux
           }
           else if (lastCount == 4)
           {
-            sb.Append(ConvertMaxValueToBasicLatin(div));
-            sb.Append(ConvertMaxValueToBasicLatin(div * 5));
+            sb.Append(ConvertMaxValueToBasicLatin(div), 1);
+            sb.Append(ConvertMaxValueToBasicLatin(div * 5), 1);
           }
           else if (5 <= lastCount && lastCount <= 8)
           {
-            sb.Append(ConvertMaxValueToBasicLatin(div * 5));
+            sb.Append(ConvertMaxValueToBasicLatin(div * 5), 1);
             sb.Append(ConvertMaxValueToBasicLatin(div), lastCount - 5);
           }
           else if (lastCount == 9)
           {
-            sb.Append(ConvertMaxValueToBasicLatin(div));
-            sb.Append(ConvertMaxValueToBasicLatin(div * 10));
+            sb.Append(ConvertMaxValueToBasicLatin(div), 1);
+            sb.Append(ConvertMaxValueToBasicLatin(div * 10), 1);
           }
 
           number %= div;

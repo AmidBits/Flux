@@ -2,6 +2,9 @@ using System.Linq;
 
 namespace Flux.DataStructures
 {
+  /// <summary>Courtesy</summary>
+  /// <typeparam name="TKey">The key of the AVL tree node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
+  /// <typeparam name="TValue">The value of the AVL tree node.</typeparam>
   public sealed class ImmutableAvlTree<TKey, TValue>
     : IBinarySearchTree<TKey, TValue>
     where TKey : System.IComparable<TKey>

@@ -9,7 +9,7 @@ namespace Flux
     {
       var wasDigit = false;
 
-      for (var index = source.Length - 1; index >= 0; index--)
+      for (var index = source.Count - 1; index >= 0; index--)
       {
         var c = source[index];
 
@@ -28,7 +28,7 @@ namespace Flux
           };
 
           if (predicate?.Invoke(source.AsReadOnlySpan()[..(index + 1)].ToString(), suffix) ?? true)
-            source.Insert(index + 1, suffix.AsSpan());
+            source.Insert(index + 1, suffix.AsSpan(), 1);
         }
 
         wasDigit = isDigit;

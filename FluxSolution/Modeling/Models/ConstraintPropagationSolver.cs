@@ -163,8 +163,7 @@
                 h.Animal = kf.Animal;
             }
 
-
-            var indices = KnownFacts.GetElementsAndIndices((kf, i) => kf.House.Count == 1 && kf.House.First() == hn).Select(e => e.index).OrderByDescending(k => k).ToArray();
+            var indices = KnownFacts.SelectWhere((kf, i) => kf.House.Count == 1 && kf.House.First() == hn, (e, i) => i).OrderByDescending(k => k).ToArray();
 
             foreach (var index in indices)
               KnownFacts.RemoveAt((int)index);

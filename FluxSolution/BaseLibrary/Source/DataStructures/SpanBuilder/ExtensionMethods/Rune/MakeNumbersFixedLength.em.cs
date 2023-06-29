@@ -7,7 +7,7 @@ namespace Flux
       bool wasDigit = false;
       var digitCount = 0;
 
-      for (var index = source.Length - 1; index >= 0; index--)
+      for (var index = source.Count - 1; index >= 0; index--)
       {
         var isDigit = System.Text.Rune.IsDigit(source[index]);
 

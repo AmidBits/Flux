@@ -6,8 +6,8 @@ namespace Flux
     {
       var target = new SpanBuilder<char>();
 
-      for (var index = 0; index < source.Length; index++)
-        target.Append(source[index].ToString());
+      for (var index = 0; index < source.Count; index++)
+        target.Append(source[index].ToString(), 1);
 
       return target;
     }

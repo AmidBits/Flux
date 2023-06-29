@@ -9,7 +9,7 @@ namespace Flux
 
       var wasPredicate = true;
 
-      for (var index = 0; index < source.Length; index++)
+      for (var index = 0; index < source.Count; index++)
       {
         var c = source[index];
 

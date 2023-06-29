@@ -32,9 +32,25 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      //var cl = new Flux.SpanBuilder<char>("That");
+
+      //cl.Append(" is", 1);
+      //cl.Append(" a", 1);
+      //cl.Append(" thing.", 1);
+      //cl.Insert(9, " big", 1);
+      //cl.Prepend("Say, \"", 1);
+      //cl.Insert(cl.Count - 1, "\"", 1);
+
+      //cl.Remove(cl.IndexOf('\"'), 1);
+      //cl.Remove(cl.IndexOf('\"'), 1);
+
+      //var cls = cl.ToString();
+
+      return;
+
       var keywords = new string[] { "CAN YOU", "CAN I", "YOU ARE", "YOURE", "I DONT", "I FEEL", "WHY DONT YOU", "WHY CANT I", "ARE YOU", "I CANT", "I AM", " IM ", "YOU", "I WANT", "WHAT", "HOW", "WHO", "WHERE", "WHEN", "WHY", "NAME", "CAUSE", "SORRY", "DREAM", "HELLO", "HI", "MAYBE", "NO", "YOUR", "ALWAYS", "THINK", "ALIKE", "YES", "FRIEND", "COMPUTER", "NOKEYFOUND" };
 
-      var ja = keywords.ToJaggedArray(list => 8);
+      var ja = keywords.ToJaggedArray(list => 8, s => s);
       System.Console.WriteLine(ja.JaggedToConsoleString());
       var dt = ja.ToDataTable("Table", 8, (e, i) => e);
       System.Console.WriteLine(dt.DefaultView.ToConsoleString());
