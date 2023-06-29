@@ -103,20 +103,20 @@ namespace Flux
     //  return this;
     //}
 
-    //public SpanBuilder<T> CopyInPlace(int sourceIndex, int targetIndex, int count)
-    //{
-    //  if (sourceIndex < 0 || sourceIndex >= Count) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
-    //  if (targetIndex < 0 || targetIndex >= Count) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
-    //  if (count < 0 || sourceIndex + count > Count || targetIndex + count > Count) throw new System.ArgumentOutOfRangeException(nameof(count));
+    public SpanBuilder<T> CopyInPlace(int sourceIndex, int targetIndex, int count)
+    {
+      if (sourceIndex < 0 || sourceIndex >= Count) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
+      if (targetIndex < 0 || targetIndex >= Count) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
+      if (count < 0 || sourceIndex + count > Count || targetIndex + count > Count) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-    //  sourceIndex += m_head;
-    //  targetIndex += m_head;
+      sourceIndex += m_head;
+      targetIndex += m_head;
 
-    //  while (count-- > 0)
-    //    m_array[targetIndex++] = m_array[sourceIndex++];
+      while (count-- > 0)
+        m_array[targetIndex++] = m_array[sourceIndex++];
 
-    //  return this;
-    //}
+      return this;
+    }
 
     //public void CopyTo(int sourceIndex, System.Collections.Generic.IList<T> target, int targetIndex, int count)
     //{
@@ -124,24 +124,24 @@ namespace Flux
     //    target[targetIndex++] = this[sourceIndex++];
     //}
 
-    ///// <summary>Returns the <paramref name="source"/> with the specified <paramref name="values"/> duplicated by the specified <paramref name="count"/> throughout. If no values are specified, all characters are replicated. If the string builder is empty, nothing is replicated. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
-    ///// <exception cref="System.ArgumentNullException"/>
-    //public SpanBuilder<T> Duplicate(System.ReadOnlySpan<T> values, int count, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    //{
-    //  for (var index = 0; index < Count; index++)
-    //  {
-    //    var sourceValue = this[index];
+    /// <summary>Returns the <paramref name="source"/> with the specified <paramref name="values"/> duplicated by the specified <paramref name="count"/> throughout. If no values are specified, all characters are replicated. If the string builder is empty, nothing is replicated. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    /// <exception cref="System.ArgumentNullException"/>
+    public SpanBuilder<T> Duplicate(System.ReadOnlySpan<T> values, int count, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      for (var index = 0; index < Count; index++)
+      {
+        var sourceValue = this[index];
 
-    //    if (values.Length == 0 || values.IndexOf(sourceValue, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default) > -1)
-    //    {
-    //      Insert(index, sourceValue, count);
+        if (values.Length == 0 || values.IndexOf(sourceValue, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default) > -1)
+        {
+          Insert(index, sourceValue, count);
 
-    //      index += count;
-    //    }
-    //  }
+          index += count;
+        }
+      }
 
-    //  return this;
-    //}
+      return this;
+    }
 
     /// <summary>Grows a uniform (i.e. both left and right satisfies) buffer capacity to at least that specified.</summary>
     private void EnsureUniformCapacity(int sideCapacity)
@@ -306,125 +306,125 @@ namespace Flux
       return this;
     }
 
-    ///// <summary>Normalize the specified (or all if none specified) consecutive <paramref name="values"/> in the string normalized. Uses the specfied <paramref name="equalityComparer"/>, or default if null.</summary>
-    //public SpanBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    //{
-    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+    /// <summary>Normalize the specified (or all if none specified) consecutive <paramref name="values"/> in the string normalized. Uses the specfied <paramref name="equalityComparer"/>, or default if null.</summary>
+    public SpanBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-    //  var targetIndex = 0;
-    //  var previous = default(T);
+      var targetIndex = 0;
+      var previous = default(T);
 
-    //  for (var sourceIndex = 0; sourceIndex < Count; sourceIndex++)
-    //  {
-    //    var current = GetValue(sourceIndex);
+      for (var sourceIndex = 0; sourceIndex < Count; sourceIndex++)
+      {
+        var current = this[sourceIndex];
 
-    //    if (!equalityComparer.Equals(current, previous) || (values.Count > 0 && !values.Contains(current, equalityComparer)))
-    //    {
-    //      SetValue(targetIndex++, current);
+        if (!equalityComparer.Equals(current, previous) || (values.Count > 0 && !values.Contains(current, equalityComparer)))
+        {
+          this[targetIndex++] = current;
 
-    //      previous = current;
-    //    }
-    //  }
+          previous = current;
+        }
+      }
 
-    //  return Remove(targetIndex, Count - targetIndex);
-    //}
+      return Remove(targetIndex, Count - targetIndex);
+    }
 
-    ///// <summary>Normalize where the <paramref name="predicate"/> is satisfied using the <paramref name="normalizedValue"/> throughout the builder. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
-    //public SpanBuilder<T> NormalizeAll(T normalizedValue, System.Func<T, bool>? predicate = null)
-    //{
-    //  var normalizedIndex = 0;
+    /// <summary>Normalize where the <paramref name="predicate"/> is satisfied using the <paramref name="normalizedValue"/> throughout the builder. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element.</summary>
+    public SpanBuilder<T> NormalizeAll(T normalizedValue, System.Func<T, bool>? predicate = null)
+    {
+      var normalizedIndex = 0;
 
-    //  var isPrevious = true; // Set to true in order for trimming to occur on the left.
+      var isPrevious = true; // Set to true in order for trimming to occur on the left.
 
-    //  for (var index = 0; index < Count; index++)
-    //  {
-    //    var character = GetValue(index);
+      for (var index = 0; index < Count; index++)
+      {
+        var character = this[index];
 
-    //    var isCurrent = predicate?.Invoke(character) ?? true;
+        var isCurrent = predicate?.Invoke(character) ?? true;
 
-    //    if (!(isPrevious && isCurrent))
-    //    {
-    //      SetValue(normalizedIndex++, isCurrent ? normalizedValue : character);
+        if (!(isPrevious && isCurrent))
+        {
+          this[normalizedIndex++] = isCurrent ? normalizedValue : character;
 
-    //      isPrevious = isCurrent;
-    //    }
-    //  }
+          isPrevious = isCurrent;
+        }
+      }
 
-    //  if (isPrevious) normalizedIndex--;
+      if (isPrevious) normalizedIndex--;
 
-    //  return Remove(normalizedIndex, Count - normalizedIndex);
-    //}
+      return Remove(normalizedIndex, Count - normalizedIndex);
+    }
 
-    ///// <summary>Normalize the <paramref name="normalizeValues"/> using the <paramref name="normalizedValue"/> throughout the builder. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
-    //public SpanBuilder<T> NormalizeAll(T normalizedValue, System.Collections.Generic.IList<T> normalizeValues, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    //{
-    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+    /// <summary>Normalize the <paramref name="normalizeValues"/> using the <paramref name="normalizedValue"/> throughout the builder. Normalizing means removing leading/trailing, and replace all elements satisfying the predicate with the specified element. Uses the specified equality comparer.</summary>
+    public SpanBuilder<T> NormalizeAll(T normalizedValue, System.Collections.Generic.IList<T> normalizeValues, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-    //  return NormalizeAll(normalizedValue, t => normalizeValues.Contains(t, equalityComparer));
-    //}
+      return NormalizeAll(normalizedValue, t => normalizeValues.Contains(t, equalityComparer));
+    }
 
-    ///// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
-    //public SpanBuilder<T> PadEven(int totalWidth, T paddingLeft, T paddingRight, bool leftBias = true)
-    //{
-    //  if (totalWidth > Count)
-    //  {
-    //    var quotient = System.Math.DivRem(totalWidth - Count, 2, out var remainder);
+    /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
+    public SpanBuilder<T> PadEven(int totalWidth, T paddingLeft, T paddingRight, bool leftBias = true)
+    {
+      if (totalWidth > Count)
+      {
+        var quotient = System.Math.DivRem(totalWidth - Count, 2, out var remainder);
 
-    //    PadLeft(Count + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
-    //    // The two lines below are the original right biased (always) which works great.
-    //    //PadLeft(Length + (totalWidth - Length) / 2, paddingLeft);
-    //    PadRight(totalWidth, paddingRight);
-    //  }
+        PadLeft(Count + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
+        // The two lines below are the original right biased (always) which works great.
+        //PadLeft(Length + (totalWidth - Length) / 2, paddingLeft);
+        PadRight(totalWidth, paddingRight);
+      }
 
-    //  return this;
-    //}
+      return this;
+    }
 
-    ///// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
-    //public SpanBuilder<T> PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
-    //{
-    //  if (totalWidth > Count)
-    //  {
-    //    var quotient = System.Math.DivRem(totalWidth - Count, 2, out var remainder);
+    /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
+    public SpanBuilder<T> PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
+    {
+      if (totalWidth > Count)
+      {
+        var quotient = System.Math.DivRem(totalWidth - Count, 2, out var remainder);
 
-    //    PadLeft(Count + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
-    //    // The two lines below are the original right biased (always) which works great.
-    //    //PadLeft(Length + (totalWidth - Length) / 2, paddingLeft);
-    //    PadRight(totalWidth, paddingRight);
-    //  }
+        PadLeft(Count + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
+        // The two lines below are the original right biased (always) which works great.
+        //PadLeft(Length + (totalWidth - Length) / 2, paddingLeft);
+        PadRight(totalWidth, paddingRight);
+      }
 
-    //  return this;
-    //}
+      return this;
+    }
 
-    ///// <summary>Pad on the left with the specified <paramref name="padding"/>.</summary>
-    //public SpanBuilder<T> PadLeft(int totalWidth, T padding)
-    //{
-    //  if (Count < totalWidth)
-    //    Insert(0, padding, totalWidth - Count);
+    /// <summary>Pad on the left with the specified <paramref name="padding"/>.</summary>
+    public SpanBuilder<T> PadLeft(int totalWidth, T padding)
+    {
+      if (Count < totalWidth)
+        Insert(0, padding, totalWidth - Count);
 
-    //  return this;
-    //}
+      return this;
+    }
 
-    ///// <summary>Pad on the left with the specified <paramref name="padding"/>.</summary>
-    //public SpanBuilder<T> PadLeft(int totalWidth, System.ReadOnlySpan<T> padding)
-    //{
-    //  while (Count < totalWidth)
-    //    Insert(0, padding, 1);
+    /// <summary>Pad on the left with the specified <paramref name="padding"/>.</summary>
+    public SpanBuilder<T> PadLeft(int totalWidth, System.ReadOnlySpan<T> padding)
+    {
+      while (Count < totalWidth)
+        Insert(0, padding, 1);
 
-    //  return Remove(0, Count - totalWidth);
-    //}
+      return Remove(0, Count - totalWidth);
+    }
 
-    ///// <summary>Pad on the right with the specified <paramref name="padding"/>.</summary>
-    //public SpanBuilder<T> PadRight(int totalWidth, T padding)
-    //  => Append(padding, totalWidth - Count);
+    /// <summary>Pad on the right with the specified <paramref name="padding"/>.</summary>
+    public SpanBuilder<T> PadRight(int totalWidth, T padding)
+      => Append(padding, totalWidth - Count);
 
-    ///// <summary>Pad on the right with the specified <paramref name="padding"/>.</summary>
-    //public SpanBuilder<T> PadRight(int totalWidth, System.ReadOnlySpan<T> padding)
-    //{
-    //  while (Count < totalWidth)
-    //    Append(padding, 1);
+    /// <summary>Pad on the right with the specified <paramref name="padding"/>.</summary>
+    public SpanBuilder<T> PadRight(int totalWidth, System.ReadOnlySpan<T> padding)
+    {
+      while (Count < totalWidth)
+        Append(padding, 1);
 
-    //  return Remove(totalWidth, Count - totalWidth);
-    //}
+      return Remove(totalWidth, Count - totalWidth);
+    }
 
     /// <summary>Prepends with a <paramref name="value"/>, <paramref name="count"/> times.</summary>
     public SpanBuilder<T> Prepend(T value, int count)
@@ -483,45 +483,46 @@ namespace Flux
     /// <summary>Removes the specified range of values from the builder.</summary>
     public SpanBuilder<T> Remove(int startIndex) => Remove(startIndex, Count - startIndex);
 
-    ///// <summary>Remove all items where the <paramref name="predicate"/> is satisfied.</summary>
-    //public SpanBuilder<T> RemoveAll(System.Func<T, bool>? predicate = null)
-    //{
-    //  var removedIndex = 0;
+    /// <summary>Remove all items where the <paramref name="predicate"/> is satisfied.</summary>
+    public SpanBuilder<T> RemoveAll(System.Func<T, bool>? predicate = null)
+    {
+      var removedIndex = 0;
 
-    //  for (var index = 0; index < Count; index++)
-    //  {
-    //    var value = GetValue(index);
+      for (var index = 0; index < Count; index++)
+      {
+        var value = this[index];
 
-    //    if (!predicate?.Invoke(value) ?? true)
-    //      SetValue(removedIndex++, value);
-    //  }
+        if (!predicate?.Invoke(value) ?? true)
+          this[removedIndex++] = value;
+      }
 
-    //  return Remove(removedIndex, Count - removedIndex);
-    //}
+      return Remove(removedIndex, Count - removedIndex);
+    }
 
-    ///// <summary>Remove all <paramref name="removeValues"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
-    //public SpanBuilder<T> RemoveAll(System.Collections.Generic.IList<T> removeValues, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    //{
-    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+    /// <summary>Remove all <paramref name="removeValues"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    public SpanBuilder<T> RemoveAll(System.Collections.Generic.IList<T> removeValues, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-    //  return RemoveAll(t => removeValues.Contains(t, equalityComparer));
-    //}
+      return RemoveAll(t => removeValues.Contains(t, equalityComparer));
+    }
 
-    ///// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
-    //public SpanBuilder<T> Repeat(int count) => Append(new SpanBuilder<T>(AsReadOnlySpan(), count).AsSpan(), 1);
+    /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
+    public SpanBuilder<T> Repeat(int count)
+      => Append(new SpanBuilder<T>(AsReadOnlySpan(), count).AsSpan(), 1);
 
-    ///// <summary>Replace <paramref name="key"/> with <paramref name="value"/> if it exists at <paramref name="startAt"/> in <paramref name="source"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
-    ///// <exception cref="System.ArgumentNullException"></exception>
-    //public SpanBuilder<T> ReplaceIfEqualAt(int startAt, System.ReadOnlySpan<T> key, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    //{
-    //  if (AsReadOnlySpan().EqualsAt(startAt, key, 0, key.Length, equalityComparer))
-    //  {
-    //    Remove(startAt, key.Length);
-    //    Insert(startAt, value, 1);
-    //  }
+    /// <summary>Replace <paramref name="key"/> with <paramref name="value"/> if it exists at <paramref name="startAt"/> in <paramref name="source"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    /// <exception cref="System.ArgumentNullException"></exception>
+    public SpanBuilder<T> ReplaceIfEqualAt(int startAt, System.ReadOnlySpan<T> key, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      if (AsReadOnlySpan().EqualsAt(startAt, key, 0, key.Length, equalityComparer))
+      {
+        Remove(startAt, key.Length);
+        Insert(startAt, value, 1);
+      }
 
-    //  return this;
-    //}
+      return this;
+    }
 
     /// <summary>Reverse all items in the range [startIndex, endIndex], in the builder.</summary>
     public SpanBuilder<T> Reverse(int startIndex, int endIndex)
@@ -555,16 +556,17 @@ namespace Flux
       return this;
     }
 
-    //public string ToString(int startIndex, int count)
-    //{
-    //  var sb = new System.Text.StringBuilder();
+    public string ToString(int startIndex, int count)
+    {
+      var sb = new System.Text.StringBuilder();
 
-    //  while (count-- > 0)
-    //    sb.Append($"{this[startIndex++]}");
+      while (count-- > 0)
+        sb.Append($"{this[startIndex++]}");
 
-    //  return sb.ToString();
-    //}
-    //public string ToString(int startIndex) => ToString(startIndex, Count);
+      return sb.ToString();
+    }
+
+    public string ToString(int startIndex) => ToString(startIndex, Count);
 
     #region Implemented (or emulated) interfaces
 
