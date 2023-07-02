@@ -2,7 +2,7 @@ namespace Flux.DataStructures
 {
   public interface IOrderedDictionary<TKey, TValue>
     : System.Collections.Generic.IDictionary<TKey, TValue>
-      where TKey : notnull
+    where TKey : notnull
   {
     int GetIndex(TKey key);
     int GetIndex(TValue value);

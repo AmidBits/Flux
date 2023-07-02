@@ -459,7 +459,7 @@ namespace ConsoleApp
 
       static void AdjacencyList()
       {
-        var gal = new Flux.DataStructures.Graphs.AdjacencyList();
+        var gal = new Flux.DataStructures.Graphs.AdjacencyList<int, (int unused, int distance)>();
 
         gal.AddVertex(0);
         gal.AddVertex(1);
@@ -521,7 +521,7 @@ namespace ConsoleApp
 
         System.Console.WriteLine(gal.ToConsoleString());
 
-        var spt = gal.GetDijkstraShortestPathTree(0, o => ((System.ValueTuple<int, int>)o).Item2).ToList();
+        var spt = gal.GetDijkstraShortestPathTree(0, o => o.distance).ToList();
         System.Console.WriteLine();
         System.Console.WriteLine("Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
         foreach (var (destination, distance) in spt)
@@ -531,7 +531,7 @@ namespace ConsoleApp
 
       static void AdjacencyMatrix1()
       {
-        var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix();
+        var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, (int capacity, int cost)>();
 
         gam.AddVertex(0);
         gam.AddVertex(1);
@@ -539,7 +539,7 @@ namespace ConsoleApp
         gam.AddVertex(3);
         gam.AddVertex(4);
 
-        // 6, 8
+        // BellmanFord: 6, 8
         gam.AddEdge(0, 1, (3, 1));
         gam.AddEdge(0, 2, (1, 0));
         gam.AddEdge(0, 4, (3, 2));
@@ -549,7 +549,7 @@ namespace ConsoleApp
         gam.AddEdge(2, 4, (6, 0));
         gam.AddEdge(3, 4, (2, 1));
 
-        // 10, 1
+        // BellmanFord: 10, 1
         //gam.AddEdge(0, 1, (3, 1));
         //gam.AddEdge(0, 2, (4, 0));
         //gam.AddEdge(0, 3, (5, 0));
@@ -560,20 +560,20 @@ namespace ConsoleApp
 
         System.Console.WriteLine(gam.ToConsoleString());
 
-        var mcmf = gam.GetBellmanFordMaxFlowMinCost(0, 4, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item1, o => o is null ? 0 : ((System.ValueTuple<int, int>)o).Item2);
+        var mcmf = gam.GetBellmanFordMaxFlowMinCost(0, 4, o => o.capacity, o => o.cost);
         System.Console.WriteLine($"BellmanFord Min-Cost-Max-Flow: {mcmf}");
         System.Console.WriteLine();
 
-        var spt = gam.GetDijkstraShortestPathTree(0, o => ((System.ValueTuple<int, int>)o).Item2).ToList();
-        System.Console.WriteLine("Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination, distance):");
+        var spt = gam.GetDijkstraShortestPathTree(0, o => o.capacity).ToList();
+        System.Console.WriteLine("Dijkstra 'Shortest Path Tree' (a.k.a. SPT) from vertex 0 (destination = distance):");
         foreach (var (destination, distance) in spt)
-          System.Console.WriteLine($"{destination}={distance}");
+          System.Console.WriteLine($"{destination} = {distance}");
         System.Console.WriteLine(System.Environment.NewLine);
       }
 
       static void AdjacencyMatrix2()
       {
-        var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix();
+        var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix<char, int>();
 
         gam.AddVertex(0, 'a');
         gam.AddVertex(1, 'b');
@@ -625,7 +625,7 @@ namespace ConsoleApp
 
         System.Console.WriteLine(gam.ToConsoleString());
 
-        var mcmf = gam.GetBellmanFordMaxFlowMinCost(0, 4, o => o is null ? 0 : (int)o, o => o is null ? 0 : (int)o);
+        var mcmf = gam.GetBellmanFordMaxFlowMinCost(0, 4, o => o, o => o);
         System.Console.WriteLine($"BellmanFord Min-Cost-Max-Flow: {mcmf}");
         System.Console.WriteLine();
 

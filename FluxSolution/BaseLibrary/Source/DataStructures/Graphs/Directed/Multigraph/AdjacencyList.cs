@@ -5,14 +5,16 @@
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
-  public sealed class AdjacencyList
-    : IGraph
+  public sealed class AdjacencyList<TVertexValue, TEdgeValue>
+    : IGraph<TVertexValue, TEdgeValue>
+    where TVertexValue : notnull
+    where TEdgeValue : notnull
   {
     /// <summary>This is the adjacency list (of a directed multigraph) which consists of edges and the values of the edges.</summary>
-    private readonly System.Collections.Generic.Dictionary<int, System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<object>>> m_list;
+    private readonly System.Collections.Generic.Dictionary<int, System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<TEdgeValue>>> m_list;
 
     /// <summary>The values of vertices.</summary>
-    private readonly System.Collections.Generic.Dictionary<int, object> m_vertexValues;
+    private readonly System.Collections.Generic.Dictionary<int, TVertexValue> m_vertexValues;
 
     public AdjacencyList()
     {
@@ -39,15 +41,15 @@
     /// <summary>Lists all vertices y such that there is an edge from the vertex x to the vertex y. Loops are not considered neighbors.</summary>
     public System.Collections.Generic.IEnumerable<int> GetNeighbors(int x) => m_list[x].Keys;
 
-    /// <summary>Tests whether there is an edge from the vertex x to the vertex y.</summary>
-    public bool IsAdjacent(int x, int y) => m_list.ContainsKey(x) && m_list[x].ContainsKey(y) && m_list[x][y].Count > 0;
+    /// <summary>Tests whether there is an edge (<paramref name="x"/>, <paramref name="y"/>).</summary>
+    public bool IsAdjacent(int x, int y) => m_list.ContainsKey(x) && m_list[x].ContainsKey(y); // && m_list[x][y].Count > 0;
 
-    /// <summary>Adds the vertex x, if it is not there.</summary>
+    /// <summary>Adds the vertex <paramref name="x"/>, if it is not there.</summary>
     public bool AddVertex(int x)
     {
       if (!m_list.ContainsKey(x))
       {
-        m_list.Add(x, new System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<object>>());
+        m_list.Add(x, new System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<TEdgeValue>>());
 
         return true;
       }
@@ -55,8 +57,8 @@
       return false;
     }
 
-    /// <summary>Adds the vertex x with the value vv, if it is not there.</summary>
-    public bool AddVertex(int x, object value)
+    /// <summary>Adds the vertex <paramref name="x"/> with the <paramref name="value"/>, if it is not there.</summary>
+    public bool AddVertex(int x, TVertexValue value)
     {
       if (AddVertex(x))
       {
@@ -68,10 +70,10 @@
       return false;
     }
 
-    /// <summary>Tests whether there is a vertex x.</summary>
+    /// <summary>Tests whether there is a vertex <paramref name="x"/>.</summary>
     public bool VertexExists(int x) => m_list.ContainsKey(x);
 
-    /// <summary>Removes the vertex x, if it is there.</summary>
+    /// <summary>Removes vertex <paramref name="x"/>, if it is there.</summary>
     public bool RemoveVertex(int x)
     {
       if (VertexExists(x))
@@ -90,26 +92,24 @@
       return false;
     }
 
-    /// <summary>Returns the value associated with the vertex x. A vertex can exists without a value.</summary>
-    public bool TryGetVertexValue(int x, out object value) => m_vertexValues.TryGetValue(x, out value!);
+    /// <summary>Returns the <paramref name="value"/> associated with vertex <paramref name="x"/>. A vertex can exists without a value.</summary>
+    public bool TryGetVertexValue(int x, out TVertexValue value) => m_vertexValues.TryGetValue(x, out value!);
 
-    /// <summary>Removes the value for the edge and whether the removal was successful.</summary>
+    /// <summary>Removes the value for vertex <paramref name="x"/> and whether the removal was successful.</summary>
     public bool RemoveVertexValue(int x) => m_vertexValues.Remove(x);
 
-    /// <summary>Sets the value associated with the vertex x to v.</summary>
-    public void SetVertexValue(int x, object value) => m_vertexValues[x] = value;
+    /// <summary>Sets the <paramref name="value"/> associated with the vertex <paramref name="x"/>.</summary>
+    public void SetVertexValue(int x, TVertexValue value) => m_vertexValues[x] = value;
 
-    /// <summary>Adds the edge from the vertex x to the vertex y with the value ev, if it is not there.</summary>
-    public bool AddEdge(int x, int y, object value)
+    /// <summary>Adds the edge (<paramref name="x"/>, <paramref name="y"/>) with the <paramref name="value"/>, if it is not there.</summary>
+    public bool AddEdge(int x, int y, TEdgeValue value)
     {
-      if (m_list.TryGetValue(x, out var sub) && sub.TryGetValue(y, out var list))
-      //if (m_list.ContainsKey(x) && m_list.ContainsKey(y))
+      if (VertexExists(x) && VertexExists(y)) // Ensure both vertices exist.
       {
-        if (!m_list[x].ContainsKey(y)) // No matching endpoint exists, so we add it.
-          m_list[x].Add(y, new System.Collections.Generic.List<object>());
+        if (!m_list[x].ContainsKey(y)) // If no matching endpoint from x to y exists, we add it.
+          m_list[x].Add(y, new System.Collections.Generic.List<TEdgeValue>());
 
-        list.Add(value);
-        //m_list[x][y].Add(value);
+        m_list[x][y].Add(value);
 
         return true;
       }
@@ -117,14 +117,14 @@
       return false;
     }
 
-    /// <summary>Tests whether there is an existing edge (x, y).</summary>
+    /// <summary>Tests whether there is at least one edge (<paramref name="x"/>, <paramref name="y"/>).</summary>
     public bool EdgesExists(int x, int y) => m_list.ContainsKey(x) && m_list[x].ContainsKey(y);
 
-    /// <summary>Tests whether there is an existing edge (x, y) with the value.</summary>
-    public bool EdgeExists(int x, int y, object value) => EdgesExists(x, y) && m_list[x][y].Contains(value);
+    /// <summary>Tests whether there is an edge (<paramref name="x"/>, <paramref name="y"/>) with the <paramref name="value"/>.</summary>
+    public bool EdgeExists(int x, int y, TEdgeValue value) => EdgesExists(x, y) && m_list[x][y].Contains(value);
 
-    /// <summary>Removes the edge from the vertex x to the vertex y with the value, if it is there. If the value is the only edge, the direction is removed.</summary>
-    public bool RemoveEdge(int x, int y, object value)
+    /// <summary>Removes the edge (<paramref name="x"/>, <paramref name="y"/>) with <paramref name="value"/>, if it is there. If the <paramref name="value"/> is the only edge, the direction is removed.</summary>
+    public bool RemoveEdge(int x, int y, TEdgeValue value)
     {
       if (EdgeExists(x, y, value))
       {
@@ -139,7 +139,7 @@
       return false;
     }
 
-    /// <summary>Removes the edge from the vertex x to the vertex y, if it is there.</summary>
+    /// <summary>Removes all edges (<paramref name="x"/>, <paramref name="y"/>), if any.</summary>
     public bool RemoveEdges(int x, int y)
     {
       if (EdgesExists(x, y))
@@ -181,7 +181,7 @@
     //  }
     //}
 
-    public System.Collections.Generic.IEnumerable<(int x, int y, object value)> GetEdges()
+    public System.Collections.Generic.IEnumerable<(int x, int y, TEdgeValue value)> GetEdges()
     {
       foreach (var x in m_list.Keys)
         foreach (var y in m_list[x].Keys)
@@ -190,8 +190,8 @@
     }
 
     public System.Collections.Generic.IEnumerable<int> GetVertices() => m_list.Keys;
-    public System.Collections.Generic.IEnumerable<(int x, object value)> GetVerticesWithValue() => System.Linq.Enumerable.Select(GetVertices(), x => (x, TryGetVertexValue(x, out var v) ? v : default!));
-    public System.Collections.Generic.IEnumerable<(int x, object value, int degree)> GetVerticesWithValueAndDegree() => System.Linq.Enumerable.Select(GetVertices(), x => (x, TryGetVertexValue(x, out var v) ? v : default!, GetDegree(x)));
+    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value)> GetVerticesWithValue() => System.Linq.Enumerable.Select(GetVertices(), x => (x, TryGetVertexValue(x, out var v) ? v : default!));
+    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value, int degree)> GetVerticesWithValueAndDegree() => System.Linq.Enumerable.Select(GetVertices(), x => (x, TryGetVertexValue(x, out var v) ? v : default!, GetDegree(x)));
 
     public string ToConsoleString()
     {

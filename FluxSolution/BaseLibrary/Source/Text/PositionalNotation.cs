@@ -1,24 +1,58 @@
+using System.ComponentModel.Design;
+
 namespace Flux
 {
   public static partial class TextExtensionMethods
   {
 #if NET7_0_OR_GREATER
 
-    public static string ToBinaryString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Text.PositionalNotation.Base2.NumberToText(value.ToBigInteger(), value.GetBitCount());
+    //private const string m_toRadixStringChars = "0123456789ABCDEF";
 
-    public static string ToDecimalString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Text.PositionalNotation.Base10.NumberToText(value.ToBigInteger(), Bits.ToMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
+    //public static string ToBinaryString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //{
+    //  var sb = new System.Text.StringBuilder();
 
-    public static string ToHexadecimalString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Text.PositionalNotation.Base16.NumberToText(value.ToBigInteger(), Bits.ToMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
+    //  for (var index = value.GetBitCount() - 1; index >= 0; index--)
+    //    sb.Append(TSelf.IsZero((value >> index) & TSelf.One) ? '0' : '1');
 
-    public static string ToOctalString<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Text.PositionalNotation.Base8.NumberToText(value.ToBigInteger(), Bits.ToMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
+    //  return sb.ToString();
+    //}
 
-    /// <summary>Creates <paramref name="value"/> to text using base <paramref name="radix"/>.</summary>
-    public static string ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => new Text.PositionalNotation(radix).NumberToText(value.ToBigInteger(), minLength).ToString();
+    //public static string ToDecimalString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => ToRadixString(value, 10, Bits.ToMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
+
+    //public static string ToHexadecimalString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => ToRadixString(value, 16, Bits.ToMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
+
+    //public static string ToOctalString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => ToRadixString(value, 8, Bits.ToMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
+
+    ///// <summary>Creates <paramref name="value"/> to text using base <paramref name="radix"/>.</summary>
+    //public static string ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //{
+    //  if (TSelf.IsNegative(value))
+    //    return $"{(char)Flux.UnicodeCodepoint.HyphenMinus}{ToHexadecimalString(TSelf.Abs(value))}";
+
+    //  var sb = new System.Text.StringBuilder();
+
+    //  if (!TSelf.IsZero(value))
+    //    while (value != TSelf.Zero)
+    //    {
+    //      (value, var remainder) = TSelf.DivRem(value, TSelf.CreateChecked(radix));
+
+    //      sb.Insert(0, Flux.Text.PositionalNotation.Base64[int.CreateChecked(remainder)]);
+    //    }
+
+    //  if (sb.Length < minLength)
+    //    sb.Insert(0, "0", minLength - sb.Length);
+
+    //  return sb.ToString();
+    //}
 
 #else
 
@@ -80,7 +114,7 @@ namespace Flux
       public string NumberToText(System.Numerics.BigInteger number, int minLength = 1)
       {
         if (System.Numerics.BigInteger.IsNegative(number))
-          return $"{Flux.UnicodeCodepoint.MinusSign}{NumberToText(System.Numerics.BigInteger.Abs(number), minLength)}";
+          return $"{(char)Flux.UnicodeCodepoint.MinusSign}{NumberToText(System.Numerics.BigInteger.Abs(number), minLength)}";
 
         if (number.IsZero)
           return Symbols[0].ToString();
@@ -89,7 +123,7 @@ namespace Flux
 
         var sb = new SpanBuilder<System.Text.Rune>();
 
-        while (number > System.Numerics.BigInteger.Zero)
+        while (number != System.Numerics.BigInteger.Zero)
         {
           (number, var remainder) = System.Numerics.BigInteger.DivRem(number, radix);
 

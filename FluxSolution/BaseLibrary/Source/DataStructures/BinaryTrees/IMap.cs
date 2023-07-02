@@ -1,6 +1,11 @@
 namespace Flux.DataStructures
 {
-  // https://blogs.msdn.microsoft.com/bclteam/2012/12/18/preview-of-immutable-collections-released-on-nuget/
+  /// <summary>
+  /// <para>A map, or key/value, a.k.a. dictionary, interface.</para>
+  /// <para><see href="https://ericlippert.com/2008/01/18/immutability-in-c-part-eight-even-more-on-binary-trees/"/></para>
+  /// </summary>
+  /// <typeparam name="TKey">The type of key for the MAP node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
+  /// <typeparam name="TValue">The type of value for the MAP node.</typeparam>
   public interface IMap<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {

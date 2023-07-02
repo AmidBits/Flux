@@ -32,106 +32,24 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //var cl = new Flux.SpanBuilder<char>("That");
-
-      //cl.Append(" is", 1);
-      //cl.Append(" a", 1);
-      //cl.Append(" thing.", 1);
-      //cl.Insert(9, " big", 1);
-      //cl.Prepend("Say, \"", 1);
-      //cl.Insert(cl.Count - 1, "\"", 1);
-
-      //cl.Remove(cl.IndexOf('\"'), 1);
-      //cl.Remove(cl.IndexOf('\"'), 1);
-
-      //var cls = cl.ToString();
-
-      return;
-
-      var keywords = new string[] { "CAN YOU", "CAN I", "YOU ARE", "YOURE", "I DONT", "I FEEL", "WHY DONT YOU", "WHY CANT I", "ARE YOU", "I CANT", "I AM", " IM ", "YOU", "I WANT", "WHAT", "HOW", "WHO", "WHERE", "WHEN", "WHY", "NAME", "CAUSE", "SORRY", "DREAM", "HELLO", "HI", "MAYBE", "NO", "YOUR", "ALWAYS", "THINK", "ALIKE", "YES", "FRIEND", "COMPUTER", "NOKEYFOUND" };
-
-      var ja = keywords.ToJaggedArray(list => 8, s => s);
-      System.Console.WriteLine(ja.JaggedToConsoleString());
-      var dt = ja.ToDataTable("Table", 8, (e, i) => e);
-      System.Console.WriteLine(dt.DefaultView.ToConsoleString());
-
-      var cmp = keywords.CompareCount(37);
-
-      var madrid = Zamplez.MadridSpain;
-      var takapau = Zamplez.TakapauNewZealand;
-
-      var gm = Flux.Geometry.GeographicCoordinate.GreenwichMeridian;
-
-      var a = new Flux.Units.Angle(135, Flux.Units.AngleUnit.Degree);
-      var b = a.Degrees;
-      var an = a.GetAngleNames();
-
-      var ntp = new Flux.Net.NetworkTimeProtocol();
-
-      ntp.Request();
-
-      //var slope = new Flux.Units.BigRational(5, 8) + 2;
-      //var slopeThird = slope / 3;
-      //var slopes = slope.ToImproperString();
-
-      var carportPostHeight = new Flux.Units.Length(12, Flux.Units.LengthUnit.Foot);
-
-      var carportPostHeightIn = carportPostHeight.ToUnitString(Flux.Units.LengthUnit.Inch);
-      var carportPostHeightFt = carportPostHeight.ToUnitString(Flux.Units.LengthUnit.Foot);
-
-      // Frame:
-      var carportPostWidth = new Flux.Units.Length(291, Flux.Units.LengthUnit.Inch);
-      var carportPostDepth = new Flux.Units.Length(288, Flux.Units.LengthUnit.Inch);
-
-      // Posts:
-      //var carportPostWidth = new Flux.Units.Length(279, Flux.Units.LengthUnit.Inch);
-      //var carportPostDepth = new Flux.Units.Length(180, Flux.Units.LengthUnit.Inch);
-
-      //System.Int32 six = 6;
-      //var alsosix = six;
-
-      //var carportCenterPostDiagonalVector = new Flux.Geometry.CartesianCoordinate2<double>(carportPostWidth.Value, carportPostDepth.Value);
-      //var carportCenterPostDiagonal = new Flux.Units.Length(carportCenterPostDiagonalVector.EuclideanLength());
-
-      //var carportDiagonalIn = carportCenterPostDiagonal.ToUnitString(Flux.Units.LengthUnit.Inch);
-      //var carportDiagonalFt = carportCenterPostDiagonal.ToUnitString(Flux.Units.LengthUnit.Foot);
-
-      //var carportDiagonalFtBr = carportCenterPostDiagonal.ToUnitValue(Flux.Units.LengthUnit.Foot).ToBigRational(2);
-
-      //var num = -2039;
-      //var str = num.ToBinaryString();
-      //var numtxt = Flux.Text.PositionalNotation.Base10.NumberToText(num);
-      //var txtnum = Flux.Text.PositionalNotation.Base10.TextToNumber(numtxt);
-
-      for (var index = 1; index < 101; index++)
-      {
-        System.Console.WriteLine($"{index}");
-        System.Console.WriteLine($"Bin: {index.ToBinaryString()}");
-        System.Console.WriteLine($"Dec: {index.ToDecimalString()}");
-        System.Console.WriteLine($"Hex: {index.ToHexadecimalString()}");
-        System.Console.WriteLine($"Oct: {index.ToOctalString()}");
-        System.Console.WriteLine();
-      }
-
-      var s = System.Numerics.BigInteger.Parse("93528675864").ToString("X");
-      var sl = 93528675864L.ToString("X");
-      var slb = 93528675864L.ToHexadecimalString();
-
-      var ui16 = unchecked((ushort)0xC0C0);
-      var ui32 = unchecked((uint)0xC0C0C0C0U);
-      var ui64 = unchecked((ulong)0xC0C0C0C0C0C0C0C0UL);
-
-      ui16.ReverseBits();
-      ui32.ReverseBits();
-      ui64.ReverseBits();
-
       var n = (short.MaxValue - sbyte.MaxValue);
+      //      n = 0;
+      var ns = n.ToBinaryString();
       var nlpo2 = n.NextLargerPowerOf2();
-      var bi = n;//.ToBigInteger();
-      var birbts = bi.ReverseBits();
-      var bis = bi.ToBinaryString();
+      var bi = n;///.ToBigInteger();
+      //var birbts = bi.ReverseBits();
+      var bibs = bi.ToBinaryString();
+      var bios = bi.ToOctalString();
+      var bids = bi.ToDecimalString();
+      var bihs = bi.ToHexadecimalString();
+      var bir2s = bi.ToRadixString(2);
+      var bir8s = bi.ToRadixString(8);
+      var bir10s = bi.ToRadixString(10);
+      var bir16s = bi.ToRadixString(16);
       var bfl = bi.BitFoldLeft();
+      var bfls = bfl.ToBinaryString();
       var bfr = bi.BitFoldRight();
+      var bfrs = bfr.ToBinaryString();
       var bl = bi.ShortestBitLength();
       var bln = bi.BitLengthN();
       var l2 = bi.IntegerLog2();

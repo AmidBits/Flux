@@ -49,8 +49,8 @@ namespace Flux.Hashing.Special
 
       var passwordBytes = System.Text.Encoding.ASCII.GetBytes(password?.ToUpper(System.Globalization.CultureInfo.CurrentCulture) ?? string.Empty);
 
-      var passwordBytesHalf1 = passwordBytes.Copy(0, passwordBytes.Length >= 7 ? 7 : passwordBytes.Length);
-      var passwordBytesHalf2 = passwordBytes.Length > 7 ? passwordBytes.Copy(7, passwordBytes.Length >= 14 ? 7 : passwordBytes.Length - 7) : System.Array.Empty<byte>();
+      var passwordBytesHalf1 = passwordBytes.ToCopy(0, passwordBytes.Length >= 7 ? 7 : passwordBytes.Length);
+      var passwordBytesHalf2 = passwordBytes.Length > 7 ? passwordBytes.ToCopy(7, passwordBytes.Length >= 14 ? 7 : passwordBytes.Length - 7) : System.Array.Empty<byte>();
 
       passwordBytesHalf1 = ComputeHalf(passwordBytesHalf1);
       passwordBytesHalf2 = ComputeHalf(passwordBytesHalf2);

@@ -2,9 +2,14 @@ using System.Linq;
 
 namespace Flux.DataStructures
 {
-  /// <summary>Courtesy</summary>
-  /// <typeparam name="TKey">The key of the AVL tree node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
-  /// <typeparam name="TValue">The value of the AVL tree node.</typeparam>
+  /// <summary>
+  /// <para>An AVL tree (named after inventors Adelson-Velsky and Landis) is a self-balancing binary search tree.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/AVL_tree"/></para>
+  /// <para><see href="https://ericlippert.com/2008/01/21/immutability-in-c-part-nine-academic-plus-my-avl-tree-implementation/"/></para>
+  /// </summary>
+  /// <typeparam name="TKey">The type of key for the immutable AVL tree node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
+  /// <typeparam name="TValue">The type of value for the immutable AVL tree node.</typeparam>
+  /// <remarks>This implementation is courtesy Eric Lippert.</remarks>
   public sealed class ImmutableAvlTree<TKey, TValue>
     : IBinarySearchTree<TKey, TValue>
     where TKey : System.IComparable<TKey>

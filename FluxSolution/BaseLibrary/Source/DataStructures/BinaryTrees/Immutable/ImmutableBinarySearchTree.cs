@@ -2,6 +2,14 @@ using System.Linq;
 
 namespace Flux.DataStructures
 {
+  /// <summary>
+	/// <para>A binary search tree (BST) implementation.</para>
+  /// <para><see href="https://ericlippert.com/2008/01/18/immutability-in-c-part-eight-even-more-on-binary-trees/"/></para>
+  /// <para><seealso href="https://en.wikipedia.org/wiki/Binary_search_tree"/></para>
+  /// </summary>
+  /// <typeparam name="TKey">The type of key of the immutable BST node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
+  /// <typeparam name="TValue">The type of value of the immutable BST node.</typeparam>
+  /// <remarks>This implementation courtesy Eric Lippert.</remarks>
   public sealed class ImmutableBinarySearchTree<TKey, TValue>
     : IBinarySearchTree<TKey, TValue>
     where TKey : System.IComparable<TKey>

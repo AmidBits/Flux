@@ -1,7 +1,12 @@
 namespace Flux.DataStructures
 {
-  /// <summary></summary>
-  /// <see href="https://ericlippert.com/2007/12/18/immutability-in-c-part-six-a-simple-binary-tree/#more-8572"/>
+  /// <summary>
+  /// <para>An immutable binary tree.</para>
+  /// <para><see href="https://ericlippert.com/2007/12/18/immutability-in-c-part-six-a-simple-binary-tree/"/></para>
+  /// <para><seealso href="https://en.wikipedia.org/wiki/Binary_tree"/></para>
+  /// </summary>
+  /// <typeparam name="TValue">The type of value of the immutable binary tree node.</typeparam>
+  /// <remarks>This implementation is courtesy Eric Lippert.</remarks>
   public sealed class ImmutableBinaryTree<TValue>
     : IBinaryTree<TValue>
   {
