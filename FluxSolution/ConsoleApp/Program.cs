@@ -32,6 +32,16 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var value = 4;
+
+      var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
+
+      var p2tz = quotient.MostSignificant1Bit();
+      var p2afz = (p2tz < quotient || remainder > 0) ? (p2tz == 0 ? 1 : p2tz << 1) : p2tz;
+
+      var p2tzp = p2tz == value ? p2tz >> 1 : p2tz;
+      var p2afzp = p2afz == value ? p2afz << 1 : p2afz;
+
       var n = (short.MaxValue - sbyte.MaxValue);
       //      n = 0;
       var ns = n.ToBinaryString();

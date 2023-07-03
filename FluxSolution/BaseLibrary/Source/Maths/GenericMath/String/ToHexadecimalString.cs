@@ -6,7 +6,7 @@ namespace Flux
 
     public static string ToHexadecimalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 16, Bits.ToMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
+      => ToRadixString(value, 16, Bits.MaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
 
 #else
 

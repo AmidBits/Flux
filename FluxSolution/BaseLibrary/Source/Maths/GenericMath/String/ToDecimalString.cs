@@ -6,7 +6,7 @@ namespace Flux
 
     public static string ToDecimalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 10, Bits.ToMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
+      => ToRadixString(value, 10, Bits.MaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
 
 #else
 
