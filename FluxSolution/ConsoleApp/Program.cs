@@ -32,7 +32,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var value = 4;
+      var value = 4.1;
 
       var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
 
@@ -46,6 +46,10 @@ namespace ConsoleApp
       //      n = 0;
       var ns = n.ToBinaryString();
       var nlpo2 = n.NextLargerPowerOf2();
+      var np2tz = n.RoundToPowOf2Tz();
+      var np2afz = n.RoundToPowOf2Afz();
+      var np2 = n.PowOf2(false, RoundingMode.AwayFromZero, out var pow2tz, out var pow2afz);
+
       var bi = n;///.ToBigInteger();
       //var birbts = bi.ReverseBits();
       var bibs = bi.ToBinaryString();

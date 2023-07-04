@@ -1,3 +1,5 @@
+using System.ComponentModel.Design;
+
 namespace Flux
 {
   // <seealso cref="http://aggregate.org/MAGIC/"/>
