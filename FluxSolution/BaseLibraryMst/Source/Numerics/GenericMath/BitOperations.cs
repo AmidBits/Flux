@@ -68,7 +68,7 @@ namespace GenericMath
     [TestMethod]
     public void PowOf2()
     {
-      88.ToBigInteger().PowOf2(false, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
+      88.ToBigInteger().RoundToPow2(false, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
 
       Assert.AreEqual(64.ToBigInteger(), towardsZero);
       Assert.AreEqual(128.ToBigInteger(), awayFromZero);
@@ -77,7 +77,7 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPowOf2AwayFromZero()
     {
-      var actual = 88.ToBigInteger().RoundToPowOf2Afz(false);
+      var actual = 88.ToBigInteger().RoundToPow2(false, RoundingMode.AwayFromZero, out var _, out var _);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -85,7 +85,7 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPowOf2AwayFromZeroProper()
     {
-      var actual = 88.ToBigInteger().RoundToPowOf2Afz(true);
+      var actual = 88.ToBigInteger().RoundToPow2(true, RoundingMode.AwayFromZero, out var _, out var _);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -93,7 +93,7 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPowOf2TowardZero()
     {
-      var actual = 88.ToBigInteger().RoundToPowOf2Tz(false);
+      var actual = 88.ToBigInteger().RoundToPow2(false, RoundingMode.TowardZero, out var _, out var _);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }
@@ -101,7 +101,7 @@ namespace GenericMath
     [TestMethod]
     public void RoundToPowOf2TowardZeroProper()
     {
-      var actual = 88.ToBigInteger().RoundToPowOf2Tz(true);
+      var actual = 88.ToBigInteger().RoundToPow2(true, RoundingMode.TowardZero, out var _, out var _);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }

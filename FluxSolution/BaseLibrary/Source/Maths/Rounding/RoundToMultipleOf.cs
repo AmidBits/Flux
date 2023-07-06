@@ -4,38 +4,51 @@
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Compute the <paramref name="multiple"/> of <paramref name="value"/>, less than or equal to <paramref name="value"/>. Negative <paramref name="value"/> resilient.</summary>
-    /// <param name="value">The value for which the nearest multiples of will be found.</param>
-    /// <param name="multiple">The multiple to which the results will align.</param>
-    /// <returns>The <paramref name="multiple"/> equal to or less than <paramref name="value"/>.</returns>
-    public static TSelf MultipleOf<TSelf>(this TSelf value, TSelf multiple)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => value - (value % AssertNonNegative(multiple, nameof(multiple)));
+    ///// <summary>Compute the <paramref name="multiple"/> ceiling (away from zero) of <paramref name="value"/>. Negative <paramref name="value"/> resilient.</summary>
+    ///// <param name="value">The value for which the nearest multiple will be found.</param>
+    ///// <param name="multiple">The multiple to which the results will align.</param>
+    ///// <param name="ensureUnequal">Whether to ensure the resulting multiple is unequal to <paramref name="value"/>.</param>
+    ///// <returns>The nearest <paramref name="multiple"/> away from zero (positive ceiling) of <paramref name="value"/>.</returns>
+    //public static TSelf MultipleOfAwayFromZero<TSelf>(this TSelf value, TSelf multiple, bool ensureUnequal)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //  => (value - (value % multiple)) is var motz && (motz == value ? motz : motz + TSelf.CopySign(multiple, motz)) is var moafz && ensureUnequal && moafz == value
+    //  ? moafz + TSelf.CopySign(multiple, moafz) // If proper and the current multiple equals value.
+    //  : moafz; // Otherwise it is already unequal.
+
+    ///// <summary>Compute the <paramref name="multiple"/> floor (toward zero) of <paramref name="value"/>. Negative <paramref name="value"/> resilient.</summary>
+    ///// <param name="value">The value for which the nearest multiple will be found.</param>
+    ///// <param name="multiple">The multiple to which the results will align.</param>
+    ///// <param name="ensureUnequal">Whether to ensure the resulting multiple is unequal to <paramref name="value"/>.</param>
+    ///// <returns>The nearest <paramref name="multiple"/> toward zero (positive floor) of <paramref name="value"/>.</returns>
+    //public static TSelf MultipleOfTowardZero<TSelf>(this TSelf value, TSelf multiple, bool ensureUnequal)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //  => (value - (value % multiple)) is var motz && ensureUnequal && motz == value ? motz + TSelf.CopySign(multiple, motz) : motz;
 
     /// <summary>Get the two multiples nearest to value. Negative <paramref name="value"/> resilient.</summary>
     /// <param name="value">The value for which the nearest multiples of will be found.</param>
     /// <param name="multiple">The multiple to which the results will align.</param>
-    /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a multiple-of, i.e. the two multiple-of will be properly "nearest" (but not the same), or LT/GT rather than LTE/GTE.</param>
-    /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
-    /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
+    /// <param name="proper">Proper means nearest but not <paramref name="value"/> if it's a multiple-of, i.e. the two multiple-of will be properly "nearest" (but not the same), or LT/GT rather than LTE/GTE.</param>
+    /// <param name="multipleOfTowardsZero">Outputs the multiple of that is closer to zero.</param>
+    /// <param name="multipleOfAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static TSelf MultipleOf<TSelf>(this TSelf value, TSelf multiple, bool proper, RoundingMode mode, out TSelf multipleTowardsZero, out TSelf multipleAwayFromZero)
+    public static TSelf RoundToMultipleOf<TSelf>(this TSelf value, TSelf multiple, bool proper, RoundingMode mode, out TSelf multipleOfTowardsZero, out TSelf multipleOfAwayFromZero)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      multipleAwayFromZero = multipleTowardsZero = MultipleOf(value, multiple);
+      multipleOfTowardsZero = value - (value % multiple);
+      multipleOfAwayFromZero = multipleOfTowardsZero;
 
-      if (multipleAwayFromZero != value)
-        multipleAwayFromZero += TSelf.CopySign(multiple, value);
+      if (multipleOfAwayFromZero != value)
+        multipleOfAwayFromZero += TSelf.CopySign(multiple, value);
 
       if (proper)
       {
-        if (multipleTowardsZero == value)
-          multipleTowardsZero -= TSelf.CopySign(multiple, value);
-        if (multipleAwayFromZero == value)
-          multipleAwayFromZero += TSelf.CopySign(multiple, value);
+        if (multipleOfTowardsZero == value)
+          multipleOfTowardsZero -= TSelf.CopySign(multiple, value);
+        if (multipleOfAwayFromZero == value)
+          multipleOfAwayFromZero += TSelf.CopySign(multiple, value);
       }
 
-      return value.RoundToBoundaries(mode, multipleTowardsZero, multipleAwayFromZero);
+      return value.RoundToBoundaries(mode, multipleOfTowardsZero, multipleOfAwayFromZero);
     }
 
     ///// <summary>Find the nearest (to <paramref name="value"/>) multiple away from zero (round-up). Negative <paramref name="value"/> resilient.</summary>

@@ -18,7 +18,7 @@ namespace Flux
 
     private SpanBuilder(int capacity)
     {
-      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent((int)capacity.ToBigInteger().RoundToPowOf2Afz(false)) : System.Array.Empty<T>();
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent((int)capacity.ToBigInteger().RoundToPow2(false, RoundingMode.AwayFromZero, out var _, out var _)) : System.Array.Empty<T>();
 
       m_head = m_array.Length / 2;
       m_tail = m_array.Length / 2;
@@ -163,7 +163,7 @@ namespace Flux
       }
       else // Not enough uniform capacity available.
       {
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().RoundToPowOf2Afz(true));
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().RoundToPow2(true, RoundingMode.AwayFromZero, out var _, out var _));
 
         var head = (array.Length - Count) / 2;
         var tail = head + Count;
@@ -188,7 +188,7 @@ namespace Flux
 
         if (Capacity <= totalCapacity) // Not enough total capacity.
         {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().RoundToPowOf2Afz(true));
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().RoundToPow2(true, RoundingMode.AwayFromZero, out var _, out var _));
 
           var head = (array.Length - Count - appendCapacity) / 2;
           var tail = head + Count;
@@ -224,7 +224,7 @@ namespace Flux
 
         if (Capacity < totalCapacity) // Not enough total capacity, allocate new array.
         {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().RoundToPowOf2Afz(true));
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().RoundToPow2(true, RoundingMode.AwayFromZero, out var _, out var _));
 
           var head = (array.Length - Count + prependCapacity) / 2;
           var tail = head + Count;

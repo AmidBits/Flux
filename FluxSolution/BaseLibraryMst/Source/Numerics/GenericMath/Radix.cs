@@ -140,7 +140,7 @@ namespace GenericMath
     [TestMethod]
     public void LocateIntegerPowOf()
     {
-      1234567.ToBigInteger().PowOf(10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+      1234567.ToBigInteger().RoundToPowOf(10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
 
       Assert.AreEqual(1000000, nearestTowardsZero);
       Assert.AreEqual(10000000, nearestAwayFromZero);

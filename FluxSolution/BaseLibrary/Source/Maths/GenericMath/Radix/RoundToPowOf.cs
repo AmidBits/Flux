@@ -17,35 +17,34 @@ namespace Flux
     /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
     /// <param name="radix">The power of alignment.</param>
     /// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
-    /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
+    /// <param name="powOfTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
+    /// <param name="powOfAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static TSelf PowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powofTowardsZero, out TSelf powofAwayFromZero)
+    public static TSelf RoundToPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powOfTowardsZero, out TSelf powOfAwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertRadix(radix);
-
       if (TSelf.IsNegative(value))
       {
-        var nearest = PowOf(TSelf.Abs(value), radix, proper, mode, out powofTowardsZero, out powofAwayFromZero);
+        var nearest = RoundToPowOf(TSelf.Abs(value), radix, proper, mode, out powOfTowardsZero, out powOfAwayFromZero);
 
-        powofAwayFromZero = -powofAwayFromZero;
-        powofTowardsZero = -powofTowardsZero;
+        powOfAwayFromZero = -powOfAwayFromZero;
+        powOfTowardsZero = -powOfTowardsZero;
 
         return -nearest;
       }
       else  // The value is greater than or equal to zero here.
       {
-        powofAwayFromZero = (powofTowardsZero = PowOf(value, radix)) * radix;
+        powOfTowardsZero = IntegerPow(radix, IntegerLog(value, radix));
+        powOfAwayFromZero = powOfTowardsZero == value ? powOfTowardsZero : powOfTowardsZero * radix;
 
         if (proper)
         {
-          if (powofTowardsZero == value) powofTowardsZero /= radix;
-          if (powofAwayFromZero == value) powofAwayFromZero *= radix;
+          if (powOfTowardsZero == value) powOfTowardsZero /= radix;
+          if (powOfAwayFromZero == value) powOfAwayFromZero *= radix;
         }
       }
 
-      return value.RoundToBoundaries(mode, powofTowardsZero, powofAwayFromZero);
+      return value.RoundToBoundaries(mode, powOfTowardsZero, powOfAwayFromZero);
     }
 
 #else

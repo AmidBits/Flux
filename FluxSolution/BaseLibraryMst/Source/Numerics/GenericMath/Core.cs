@@ -131,7 +131,7 @@ namespace GenericMath
       var n = 512d;
       var m = 20;
 
-      n.MultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.RoundToMultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       var nearestMultiple = n.RoundToBoundaries(RoundingMode.HalfTowardZero, multipleTowardsZero, multipleAwayFromZero);
 

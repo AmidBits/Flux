@@ -48,7 +48,7 @@ namespace GenericMath
       var n = 1.75;
       var m = 0.45;
 
-      n.MultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.RoundToMultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       Assert.AreEqual(1.8, n.RoundToBoundaries(Flux.RoundingMode.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(LocateMultiplesOfAndRoundToBoundaries)} {Flux.RoundingMode.HalfAwayFromZero}");
     }
