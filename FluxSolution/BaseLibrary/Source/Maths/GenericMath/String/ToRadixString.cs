@@ -6,7 +6,8 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Creates <paramref name="value"/> to text using base <paramref name="radix"/>.</summary>
+    /// <summary>Creates a text string from <paramref name="value"/>, using base <paramref name="radix"/>. Optionally return <paramref name="minLength"/> of digits in the string, which is padded with zeroes if needed.</summary>
+    /// <remarks>By default, this function returns the shortest possible string length.</remarks>
     public static string ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

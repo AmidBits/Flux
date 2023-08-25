@@ -60,9 +60,9 @@ namespace ConsoleApp
       //      n = 0;
       var ns = n.ToBinaryString();
       var nlpo2 = n.NextLargerPowerOf2();
-      var np2tz = n.RoundToPow2(false, RoundingMode.TowardZero, out var _, out var _);
-      var np2afz = n.RoundToPow2(false, RoundingMode.AwayFromZero, out var _, out var _);
-      var np2 = n.RoundToPow2(false, RoundingMode.AwayFromZero, out var pow2tz, out var pow2afz);
+      var np2tz = (int)n.RoundToPow2(false, RoundingMode.TowardZero, out var _, out var _);
+      var np2afz = (int)n.RoundToPow2(false, RoundingMode.AwayFromZero, out var _, out var _);
+      var np2 = (int)n.RoundToPow2(false, RoundingMode.AwayFromZero, out var pow2tz, out var pow2afz);
 
       var bi = n;///.ToBigInteger();
       //var birbts = bi.ReverseBits();
