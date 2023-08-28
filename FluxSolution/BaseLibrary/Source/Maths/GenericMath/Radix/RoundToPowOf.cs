@@ -49,6 +49,14 @@ namespace Flux
 
 #else
 
+    /// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
+    /// <param name="value">The value for which the floor power-of-radix will be found.</param>
+    /// <param name="radix">The power of alignment.</param>
+    /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+    /// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
+    public static System.Numerics.BigInteger PowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
+      => IntegerPow(radix, IntegerLog(value, radix));
+
     /// <summary>Locate two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>.</summary>
     /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
     /// <param name="radix">The power of alignment.</param>
@@ -56,13 +64,13 @@ namespace Flux
     /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
     /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
     /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static System.Numerics.BigInteger PowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powofTowardsZero, out System.Numerics.BigInteger powofAwayFromZero)
+    public static System.Numerics.BigInteger RoundToPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powofTowardsZero, out System.Numerics.BigInteger powofAwayFromZero)
     {
       AssertRadix(radix);
 
       if (value < 0)
       {
-        var nearest = PowOf(System.Numerics.BigInteger.Abs(value), radix, proper, mode, out powofTowardsZero, out powofAwayFromZero);
+        var nearest = RoundToPowOf(System.Numerics.BigInteger.Abs(value), radix, proper, mode, out powofTowardsZero, out powofAwayFromZero);
 
         powofAwayFromZero = -powofAwayFromZero;
         powofTowardsZero = -powofTowardsZero;
@@ -85,13 +93,38 @@ namespace Flux
       return value.RoundToBoundaries(mode, powofTowardsZero, powofAwayFromZero);
     }
 
-    /// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
-    /// <param name="value">The value for which the floor power-of-radix will be found.</param>
+    /// <summary>Locate two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>.</summary>
+    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
     /// <param name="radix">The power of alignment.</param>
-    /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-    /// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
-    public static System.Numerics.BigInteger PowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
-       => IntegerPow(radix, IntegerLog(value, radix));
+    /// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+    /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
+    /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
+    /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
+    public static int RoundToPowOf(this int value, int radix, bool proper, RoundingMode mode, out int powofTowardsZero, out int powofAwayFromZero)
+    {
+      var rv = RoundToPowOf(value.ToBigInteger(), radix, proper, mode, out System.Numerics.BigInteger ptz, out System.Numerics.BigInteger pafz);
+
+      powofTowardsZero = (int)ptz;
+      powofAwayFromZero = (int)pafz;
+
+      return (int)rv;
+    }
+
+    ///// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
+    ///// <param name="value">The value for which the floor power-of-radix will be found.</param>
+    ///// <param name="radix">The power of alignment.</param>
+    ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+    ///// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
+    //public static System.Numerics.BigInteger RoundToPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
+    //   => IntegerPow(radix, IntegerLog(value, radix));
+
+    ///// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
+    ///// <param name="value">The value for which the floor power-of-radix will be found.</param>
+    ///// <param name="radix">The power of alignment.</param>
+    ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+    ///// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
+    //public static int RoundToPowOf(this int value, int radix)
+    //  => (int)RoundToPowOf(value.ToBigInteger(), radix.ToBigInteger());
 
     ///// <summary>Find the power-of-<paramref name="radix"/> nearest <paramref name="value"/> away from zero, optionally <paramref name="proper"/>.</summary>
     ///// <param name="value">The reference value.</param>

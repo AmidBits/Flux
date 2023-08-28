@@ -4,7 +4,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Creates a text string from <paramref name="value"/>, using base 2 (binary).</summary>
+    /// <summary>Creates a binary (base 2) text string from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
     public static string ToBinaryString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

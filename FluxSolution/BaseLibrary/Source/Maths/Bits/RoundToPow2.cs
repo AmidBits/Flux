@@ -88,11 +88,11 @@ namespace Flux
     /// <param name="pow2TowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="pow2AwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value.</returns>
-    public static System.Numerics.BigInteger PowOf2(this System.Numerics.BigInteger value, bool proper, RoundingMode mode, out System.Numerics.BigInteger pow2TowardsZero, out System.Numerics.BigInteger pow2AwayFromZero)
+    public static System.Numerics.BigInteger RoundToPow2(this System.Numerics.BigInteger value, bool proper, RoundingMode mode, out System.Numerics.BigInteger pow2TowardsZero, out System.Numerics.BigInteger pow2AwayFromZero)
     {
       if (value < 0)
       {
-        var pow2Nearest = PowOf2(System.Numerics.BigInteger.Abs(value), proper, mode, out pow2TowardsZero, out pow2AwayFromZero);
+        var pow2Nearest = RoundToPow2(System.Numerics.BigInteger.Abs(value), proper, mode, out pow2TowardsZero, out pow2AwayFromZero);
 
         pow2TowardsZero = -pow2TowardsZero;
         pow2AwayFromZero = -pow2AwayFromZero;
@@ -124,6 +124,23 @@ namespace Flux
       }
 
       return new System.Numerics.BigInteger(((double)value).RoundToBoundaries(mode, (double)pow2TowardsZero, (double)pow2AwayFromZero));
+    }
+
+    /// <summary>Find the nearest (to <paramref name="value"/>) of two power-of-2, using the specified <see cref="RoundingMode"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
+    /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
+    /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
+    /// <param name="mode">The halfway rounding mode to use, when halfway between two values.</param>
+    /// <param name="pow2TowardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="pow2AwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <returns>The nearest two power-of-2 to value.</returns>
+    public static int RoundToPow2(this int value, bool proper, RoundingMode mode, out int pow2TowardsZero, out int pow2AwayFromZero)
+    {
+      var rv = RoundToPow2(value.ToBigInteger(), proper, mode, out System.Numerics.BigInteger p2tz, out System.Numerics.BigInteger p2afz);
+
+      pow2TowardsZero = (int)p2tz;
+      pow2AwayFromZero = (int)p2afz;
+
+      return (int)rv;
     }
 
 #endif

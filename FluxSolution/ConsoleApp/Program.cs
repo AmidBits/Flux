@@ -17,6 +17,8 @@ namespace ConsoleApp
 {
   public class Program
   {
+    #region Presets
+
     private static void Eliza()
     {
       // At some point? https://github.com/jeffshrager/elizagen.org/blob/master/Other_Elizas/20120310ShragerNorthEliza.c64basic
@@ -27,10 +29,8 @@ namespace ConsoleApp
       var finding = new int[] { 1, 3, 4, 2, 6, 4, 6, 4, 10, 4, 14, 3, 17, 3, 20, 2, 22, 3, 25, 3, 28, 4, 28, 4, 32, 3, 35, 5, 40, 9, 40, 9, 40, 9, 40, 9, 40, 9, 40, 9, 49, 2, 51, 4, 55, 4, 59, 4, 63, 1, 63, 1, 64, 5, 69, 5, 74, 2, 76, 4, 80, 3, 83, 7, 90, 3, 93, 6, 99, 7, 106, 6 };
     }
 
-    private static void TimedMain(string[] _)
+    private static void EvaluateNumericStuff()
     {
-      //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       var value = 128;
       var multiple = -4;
@@ -59,10 +59,9 @@ namespace ConsoleApp
       var n = (short.MaxValue - sbyte.MaxValue);
       //      n = 0;
       var ns = n.ToBinaryString();
-      var nlpo2 = n.NextLargerPowerOf2();
-      var np2tz = (int)n.RoundToPow2(false, RoundingMode.TowardZero, out var _, out var _);
-      var np2afz = (int)n.RoundToPow2(false, RoundingMode.AwayFromZero, out var _, out var _);
-      var np2 = (int)n.RoundToPow2(false, RoundingMode.AwayFromZero, out var pow2tz, out var pow2afz);
+      var nlpow2 = n.NextLargerPowerOf2();
+      var np2tz = (int)n.RoundToPow2(false, RoundingMode.TowardZero, out var p2tzlo, out var p2tzhi);
+      var np2afz = (int)n.RoundToPow2(false, RoundingMode.AwayFromZero, out var p2afzlo, out var p2afzhi);
 
       var bi = n;///.ToBigInteger();
       //var birbts = bi.ReverseBits();
@@ -88,7 +87,28 @@ namespace ConsoleApp
       var bml = bi.BitMaskLeft();
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
-      return;
+    }
+
+    #endregion Presets
+
+    static int MyFunction(int x, int y)
+    {
+      var v = x;
+
+      for (var i = y - 1; i > 0; i--)
+        v *= x;
+
+      return v;
+    }
+
+    private static void TimedMain(string[] _)
+    {
+      //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => EvaluateNumericStuff(), 1)); // return;
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => MyFunction(8, 2), 1));
     }
 
     private static void Main(string[] args)

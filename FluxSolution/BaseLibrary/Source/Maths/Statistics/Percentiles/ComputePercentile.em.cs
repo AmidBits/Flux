@@ -28,21 +28,21 @@ namespace Flux
 
 #else
 
-    public static double ComputePercentileRank(this double count, double p, PercentileAlgorithm algorithm)
+    public static double ComputePercentileRank(this double count, double p, Statistics.PercentileAlgorithm algorithm)
       => algorithm switch
       {
-        PercentileAlgorithm.ExcelInc => Maths.PercentileVariant2.PercentileRank(count, p),
-        PercentileAlgorithm.ExcelExc => Maths.PercentileVariant3.PercentileRank(count, p),
-        PercentileAlgorithm.NearestRankMethod => Maths.PercentileNearestRank.PercentileRank(count, p),
+        Statistics.PercentileAlgorithm.ExcelInc => Statistics.PercentileVariant2.PercentileRank(count, p),
+        Statistics.PercentileAlgorithm.ExcelExc => Statistics.PercentileVariant3.PercentileRank(count, p),
+        Statistics.PercentileAlgorithm.NearestRankMethod => Statistics.PercentileNearestRank.PercentileRank(count, p),
         _ => throw new NotImplementedException(),
       };
 
-    public static double ComputePercentileScore(this System.Collections.Generic.IEnumerable<double> distribution, double p, PercentileAlgorithm algorithm)
+    public static double ComputePercentileScore(this System.Collections.Generic.IEnumerable<double> distribution, double p, Statistics.PercentileAlgorithm algorithm)
       => algorithm switch
       {
-        PercentileAlgorithm.ExcelInc => Maths.PercentileVariant2.PercentileScore(distribution, p),
-        PercentileAlgorithm.ExcelExc => Maths.PercentileVariant3.PercentileScore(distribution, p),
-        PercentileAlgorithm.NearestRankMethod => Maths.PercentileNearestRank.PercentileScore(distribution, p),
+        Statistics.PercentileAlgorithm.ExcelInc => Statistics.PercentileVariant2.PercentileScore(distribution, p),
+        Statistics.PercentileAlgorithm.ExcelExc => Statistics.PercentileVariant3.PercentileScore(distribution, p),
+        Statistics.PercentileAlgorithm.NearestRankMethod => Statistics.PercentileNearestRank.PercentileScore(distribution, p),
         _ => throw new NotImplementedException(),
       };
 

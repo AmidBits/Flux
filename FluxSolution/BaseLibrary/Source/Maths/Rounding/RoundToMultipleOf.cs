@@ -128,7 +128,7 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static double MultipleOf(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero)
+    public static double RoundToMultipleOf(this double value, double multiple, bool proper, RoundingMode mode, out double multipleTowardsZero, out double multipleAwayFromZero)
     {
       if (multiple < 0) throw new System.ArgumentOutOfRangeException(nameof(multiple)); // AssertNonNegative(multiple, nameof(multiple));
 
@@ -153,7 +153,7 @@
     /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static System.Numerics.BigInteger MultipleOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger multiple, bool proper, RoundingMode mode, out System.Numerics.BigInteger multipleTowardsZero, out System.Numerics.BigInteger multipleAwayFromZero)
+    public static System.Numerics.BigInteger RoundToMultipleOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger multiple, bool proper, RoundingMode mode, out System.Numerics.BigInteger multipleTowardsZero, out System.Numerics.BigInteger multipleAwayFromZero)
     {
       AssertNonNegative(multiple, nameof(multiple));
 
@@ -169,6 +169,23 @@
       }
 
       return value.RoundToBoundaries(mode, multipleTowardsZero, multipleAwayFromZero);
+    }
+
+    /// <summary>Get the two multiples nearest to value. Negative <paramref name="value"/> resilient.</summary>
+    /// <param name="value">The value for which the nearest multiples of will be found.</param>
+    /// <param name="multiple">The multiple to which the results will align.</param>
+    /// <param name="proper">Proper means nearest but do not include x if it's a multiple-of, i.e. the two multiple-of will be properly "nearest" (but not the same), or LT/GT rather than LTE/GTE.</param>
+    /// <param name="multipleTowardsZero">Outputs the multiple of that is closer to zero.</param>
+    /// <param name="multipleAwayFromZero">Outputs the multiple of that is farther from zero.</param>
+    /// <returns>The nearest two multiples to value as out parameters.</returns>
+    public static int RoundToMultipleOf(this int value, int multiple, bool proper, RoundingMode mode, out int multipleTowardsZero, out int multipleAwayFromZero)
+    {
+      var rv = RoundToMultipleOf(value.ToBigInteger(), multiple.ToBigInteger(), proper, mode, out System.Numerics.BigInteger mtz, out System.Numerics.BigInteger mafz);
+
+      multipleTowardsZero = (int)mtz;
+      multipleAwayFromZero = (int)mafz;
+
+      return (int)rv;
     }
 
     ///// <summary>Find the nearest (to <paramref name="value"/>) multiple away from zero (round-up). Negative <paramref name="value"/> resilient.</summary>

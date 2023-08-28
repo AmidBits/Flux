@@ -41,35 +41,35 @@ namespace Flux
       };
 
 #else
-    public static double ComputeQuantileRank(this double count, double p, QuantileAlgorithm algorithm)
+    public static double ComputeQuantileRank(this double count, double p, Statistics.QuantileAlgorithm algorithm)
       => algorithm switch
       {
-        QuantileAlgorithm.EDF => QuantileEdf.Default.EstimateQuantileRank(count, p),
-        QuantileAlgorithm.R1 => QuantileR1.Default.EstimateQuantileRank(count, p),
-        QuantileAlgorithm.R2 => QuantileR2.Default.EstimateQuantileRank(count, p),
-        QuantileAlgorithm.R3 => QuantileR3.Default.EstimateQuantileRank(count, p),
-        QuantileAlgorithm.R4 => QuantileR4.Default.EstimateQuantileRank(count, p),
-        QuantileAlgorithm.R5 => QuantileR5.Default.EstimateQuantileRank(count, p),
-        QuantileAlgorithm.R6 => QuantileR6.Default.EstimateQuantileRank(count, p),
-        QuantileAlgorithm.R7 => QuantileR7.Default.EstimateQuantileRank(count, p),
-        QuantileAlgorithm.R8 => QuantileR8.Default.EstimateQuantileRank(count, p),
-        QuantileAlgorithm.R9 => QuantileR9.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.EDF => Statistics.QuantileEdf.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.R1 => Statistics.QuantileR1.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.R2 => Statistics.QuantileR2.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.R3 => Statistics.QuantileR3.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.R4 => Statistics.QuantileR4.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.R5 => Statistics.QuantileR5.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.R6 => Statistics.QuantileR6.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.R7 => Statistics.QuantileR7.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.R8 => Statistics.QuantileR8.Default.EstimateQuantileRank(count, p),
+        Statistics.QuantileAlgorithm.R9 => Statistics.QuantileR9.Default.EstimateQuantileRank(count, p),
         _ => throw new NotImplementedException(),
       };
 
-    public static double EstimateQuantileValue(this System.Collections.Generic.IEnumerable<double> ordered, double p, QuantileAlgorithm algorithm)
+    public static double EstimateQuantileValue(this System.Collections.Generic.IEnumerable<double> ordered, double p, Statistics.QuantileAlgorithm algorithm)
       => algorithm switch
       {
-        QuantileAlgorithm.EDF => QuantileEdf.Default.EstimateQuantileValue(ordered, p),
-        QuantileAlgorithm.R1 => QuantileR1.Default.EstimateQuantileValue(ordered, p),
-        QuantileAlgorithm.R2 => QuantileR2.Default.EstimateQuantileValue(ordered, p),
-        QuantileAlgorithm.R3 => QuantileR3.Default.EstimateQuantileValue(ordered, p),
-        QuantileAlgorithm.R4 => QuantileR4.Default.EstimateQuantileValue(ordered, p),
-        QuantileAlgorithm.R5 => QuantileR5.Default.EstimateQuantileValue(ordered, p),
-        QuantileAlgorithm.R6 => QuantileR6.Default.EstimateQuantileValue(ordered, p),
-        QuantileAlgorithm.R7 => QuantileR7.Default.EstimateQuantileValue(ordered, p),
-        QuantileAlgorithm.R8 => QuantileR8.Default.EstimateQuantileValue(ordered, p),
-        QuantileAlgorithm.R9 => QuantileR9.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.EDF => Statistics.QuantileEdf.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.R1 => Statistics.QuantileR1.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.R2 => Statistics.QuantileR2.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.R3 => Statistics.QuantileR3.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.R4 => Statistics.QuantileR4.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.R5 => Statistics.QuantileR5.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.R6 => Statistics.QuantileR6.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.R7 => Statistics.QuantileR7.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.R8 => Statistics.QuantileR8.Default.EstimateQuantileValue(ordered, p),
+        Statistics.QuantileAlgorithm.R9 => Statistics.QuantileR9.Default.EstimateQuantileValue(ordered, p),
         _ => throw new NotImplementedException(),
       };
 
