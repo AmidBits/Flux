@@ -36,20 +36,29 @@ namespace Flux.NumberSequences
 
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetAscendingPotentialPrimes(System.Numerics.BigInteger startAt)
     {
-      if (startAt <= 2) yield return 2;
-      if (startAt <= 3) yield return 3;
-
       var quotient = System.Numerics.BigInteger.DivRem(startAt, 6, out var remainder);
 
-      if (remainder == 5) // On a potential prime before an ascending % 6 number. E.g. 11.
-        yield return 6 * ++quotient + 1;
-      else if (remainder == 0) // Between two potential primes on a % 6 number. E.g. 12.
-        yield return 6 * quotient++ + 1;
+      var multiple = 6 * (quotient + (remainder > 1 ? 1 : 0));
 
-      for (var index = 6 * (quotient + (remainder > 0 ? 1 : 0)); true; index += 6)
+      if (quotient == 0) // If startAt is less than 6.
       {
-        yield return index - 1;
-        yield return index + 1;
+        if (startAt <= 2) yield return 2;
+        if (startAt <= 3) yield return 3;
+
+        multiple = 6;
+      }
+      else if (remainder <= 1) // Or, either between two potential primes or on right of a % 6 number. E.g. 12 or 13.
+      {
+        yield return multiple + 1;
+        multiple += 6;
+      }
+
+      while (true)
+      {
+        yield return multiple - 1;
+        yield return multiple + 1;
+
+        multiple += 6;
       }
     }
     /// <summary>Creates a new sequence ascending prime numbers, greater than the specified number.</summary>

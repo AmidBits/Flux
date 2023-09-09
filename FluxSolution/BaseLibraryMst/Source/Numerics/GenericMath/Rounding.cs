@@ -31,6 +31,17 @@ namespace GenericMath
     }
 
     [TestMethod]
+    public void RoundToMultipleOf()
+    {
+      var n = 1.75;
+      var m = 0.45;
+
+      n.RoundToMultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
+
+      Assert.AreEqual(1.8, n.RoundToBoundaries(Flux.RoundingMode.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(RoundToMultipleOf)} {Flux.RoundingMode.HalfAwayFromZero}");
+    }
+
+    [TestMethod]
     public void RoundToPrecision()
     {
       Assert.AreEqual(99.97, (99.96535789).RoundToPrecision(Flux.RoundingMode.HalfToEven, 2));
@@ -40,17 +51,6 @@ namespace GenericMath
     public void RoundToTruncatedPrecision()
     {
       Assert.AreEqual(99.96, (99.96535789).RoundToTruncatedPrecision(Flux.RoundingMode.HalfToEven, 2));
-    }
-
-    [TestMethod]
-    public void LocateMultiplesOfAndRoundToBoundaries()
-    {
-      var n = 1.75;
-      var m = 0.45;
-
-      n.RoundToMultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
-
-      Assert.AreEqual(1.8, n.RoundToBoundaries(Flux.RoundingMode.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(LocateMultiplesOfAndRoundToBoundaries)} {Flux.RoundingMode.HalfAwayFromZero}");
     }
   }
 }

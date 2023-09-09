@@ -4,38 +4,36 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
-    /// <param name="value">The value for which the floor power-of-radix will be found.</param>
+    /// <summary>Compute the floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
+    /// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
     /// <param name="radix">The power of alignment.</param>
     /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-    /// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf PowOf<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => IntegerPow(radix, IntegerLog(value, radix));
 
-    /// <summary>Locate two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>.</summary>
+    /// <summary>Round <paramref name="value"/> to the two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/>, optionally <paramref name="proper"/>.</summary>
     /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
     /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    /// <param name="powOfTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
-    /// <param name="powOfAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
-    /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static TSelf RoundToPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powOfTowardsZero, out TSelf powOfAwayFromZero)
+    /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-<paramref name="radix"/> will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+    /// <returns>The two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/> to <paramref name="value"/>, optionally <paramref name="proper"/>.</returns>
+    public static (TSelf powOfTowardsZero, TSelf powOfAwayFromZero) RoundToPowOf<TSelf>(this TSelf value, TSelf radix, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
+      TSelf powOfTowardsZero, powOfAwayFromZero;
+
       if (TSelf.IsNegative(value))
       {
-        var nearest = RoundToPowOf(TSelf.Abs(value), radix, proper, mode, out powOfTowardsZero, out powOfAwayFromZero);
+        (powOfTowardsZero, powOfAwayFromZero) = RoundToPowOf(TSelf.Abs(value), radix, proper);
 
         powOfAwayFromZero = -powOfAwayFromZero;
         powOfTowardsZero = -powOfTowardsZero;
-
-        return -nearest;
       }
-      else  // The value is greater than or equal to zero here.
+      else // The value is greater than or equal to zero here.
       {
-        powOfTowardsZero = IntegerPow(radix, IntegerLog(value, radix));
-        powOfAwayFromZero = powOfTowardsZero == value ? powOfTowardsZero : powOfTowardsZero * radix;
+        powOfTowardsZero = PowOf(value, radix);
+        powOfAwayFromZero = powOfTowardsZero != value ? powOfTowardsZero * radix : powOfTowardsZero; // If toward-zero is not equal to value, make away-from-zero the next power-of.
 
         if (proper)
         {
@@ -43,6 +41,14 @@ namespace Flux
           if (powOfAwayFromZero == value) powOfAwayFromZero *= radix;
         }
       }
+
+      return (powOfTowardsZero, powOfAwayFromZero);
+    }
+
+    public static TSelf RoundToPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powOfTowardsZero, out TSelf powOfAwayFromZero)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      (powOfTowardsZero, powOfAwayFromZero) = RoundToPowOf(value, radix, proper);
 
       return value.RoundToBoundaries(mode, powOfTowardsZero, powOfAwayFromZero);
     }

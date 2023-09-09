@@ -7,6 +7,7 @@ namespace Flux
     /// <summary>Computes <paramref name="value"/> raised to the power of <paramref name="exponent"/>, using exponentiation by squaring.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation"/>
     /// <see cref="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf IntegerPow<TSelf>(this TSelf value, TSelf exponent)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

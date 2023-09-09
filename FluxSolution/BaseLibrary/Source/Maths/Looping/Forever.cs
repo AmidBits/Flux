@@ -1,56 +1,58 @@
 namespace Flux
 {
+  public static partial class Looping
+  {
+#if NET7_0_OR_GREATER
+
+    public static System.Collections.Generic.IEnumerable<TSelf> Forever<TSelf>(TSelf initial, TSelf step)
+      where TSelf : System.Numerics.INumber<TSelf>
+    {
+      for (TSelf n = initial; ; n += step)
+        yield return n;
+    }
+
+#else
+#endif
+  }
+
   namespace Loops
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Creates a new sequence based on the range properties.</summary>
-    public record class RangeLoop<TSelf>
-      : NumberSequences.INumericSequence<TSelf>
-      where TSelf : System.Numerics.INumber<TSelf>
-    {
-      private readonly TSelf m_startNumber;
-      private readonly TSelf m_count;
-      private readonly TSelf m_stepSize;
+    ///// <summary>Creates a new sequence based on the range properties.</summary>
+    //public record class Endless<TSelf>
+    //  : NumberSequences.INumericSequence<TSelf>
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //{
+    //  private readonly TSelf m_startNumber;
+    //  private readonly TSelf m_stepSize;
 
-      public RangeLoop(TSelf startNumber, TSelf count, TSelf stepSize)
-      {
-        Maths.AssertNonNegative(count, nameof(count));
+    //  public Endless(TSelf startNumber, TSelf stepSize)
+    //  {
+    //    m_startNumber = startNumber;
+    //    m_stepSize = stepSize;
+    //  }
 
-        m_startNumber = startNumber;
-        m_count = count;
-        m_stepSize = stepSize;
-      }
+    //  /// <summary>The first number in the sequence.</summary>
+    //  public TSelf StartNumber { get => m_startNumber; init => m_startNumber = value; }
+    //  /// <summary>The size between any two consecutive numbers, e.g. the first (StartNumber) and the second number, in the sequence.</summary>
+    //  public TSelf StepSize { get => m_stepSize; init => m_stepSize = value; }
 
-      /// <summary>The first number in the sequence.</summary>
-      public TSelf StartNumber { get => m_startNumber; init => m_startNumber = value; }
-      /// <summary>How many numbers in the sequence.</summary>
-      public TSelf Count { get => m_count; init => m_count = value; }
-      /// <summary>The size between any two consecutive numbers, e.g. the first (StartNumber) and the second number, in the sequence.</summary>
-      public TSelf StepSize { get => m_stepSize; init => m_stepSize = value; }
+    //  #region Implemented interfaces
 
-      #region Static methods
-      public static RangeLoop<TSelf> CreateBetween(TSelf source, TSelf target, TSelf step)
-        => new(source, TSelf.Abs(target - source) / step + TSelf.One, TSelf.Abs(step) is var absStep && source <= target ? absStep : -absStep);
-      public static RangeLoop<TSelf> CreateBetween(TSelf source, TSelf target)
-        => CreateBetween(source, target, TSelf.One);
-      #endregion Static methods
+    //  // INumberSequence
+    //  public System.Collections.Generic.IEnumerable<TSelf> GetSequence()
+    //  {
+    //    for (TSelf n = m_startNumber; ; n += m_stepSize)
+    //      yield return n;
+    //  }
 
-      #region Implemented interfaces
+    //  // IEnumerable<>
+    //  public System.Collections.Generic.IEnumerator<TSelf> GetEnumerator() => GetSequence().GetEnumerator();
+    //  System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
-      // INumberSequence
-      public System.Collections.Generic.IEnumerable<TSelf> GetSequence()
-      {
-        for (TSelf n = m_startNumber, c = m_count - TSelf.One; c >= TSelf.Zero; n += m_stepSize, c--)
-          yield return n;
-      }
-
-      // IEnumerable<>
-      public System.Collections.Generic.IEnumerator<TSelf> GetEnumerator() => GetSequence().GetEnumerator();
-      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-
-      #endregion Implemented interfaces
-    }
+    //  #endregion Implemented interfaces
+    //}
 
 #else
 

@@ -7,6 +7,7 @@ namespace Flux
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       if (TSelf.IsZero(value)) return Units.BigRational.Zero;
+      if (TSelf.IsInteger(value)) return new Units.BigRational(System.Numerics.BigInteger.CreateChecked(value));
 
       var Am = (Item1: System.Numerics.BigInteger.Zero, Item2: System.Numerics.BigInteger.One);
       var Bm = (Item1: System.Numerics.BigInteger.One, Item2: System.Numerics.BigInteger.Zero);

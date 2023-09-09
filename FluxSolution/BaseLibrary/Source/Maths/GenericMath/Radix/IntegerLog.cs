@@ -9,23 +9,24 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Logarithm"/></para>
     /// </summary>
     /// <remarks>The ceiling integer log: (<paramref name="value"/> >= 1 ? IntegerLog(<paramref name="value"/> - 1, <paramref name="radix"/>) + 1 : 0).</remarks>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf IntegerLog<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       AssertNonNegative(value);
       AssertRadix(radix);
 
-      var ilogr = TSelf.Zero;
+      var ilog = TSelf.Zero;
 
       if (!TSelf.IsZero(value))
         while (value >= radix)
         {
           value /= radix;
 
-          ilogr++;
+          ilog++;
         }
 
-      return ilogr;
+      return ilog;
     }
 
     /// <summary>

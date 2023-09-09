@@ -19,7 +19,7 @@ namespace Flux
       ? -ComputeFactorial(-x)
       : x <= TSelf.One
       ? TSelf.One
-      : new Loops.RangeLoop<TSelf>(TSelf.One + TSelf.One, x - TSelf.One, TSelf.One).AsParallel().Aggregate(TSelf.One, (a, b) => a * b);
+      : Looping.Range(TSelf.One + TSelf.One, x - TSelf.One, TSelf.One).AsParallel().Aggregate(TSelf.One, (a, b) => a * b);
 
 #else
 

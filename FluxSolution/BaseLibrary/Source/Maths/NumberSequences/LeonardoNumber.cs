@@ -18,7 +18,7 @@ namespace Flux.NumberSequences
     /// <summary>Creates a new sequence with Leonardo numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Leonardo_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    
+
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetLeonardoNumbers(System.Numerics.BigInteger first, System.Numerics.BigInteger second, System.Numerics.BigInteger step)
     {
       while (true)
@@ -35,10 +35,9 @@ namespace Flux.NumberSequences
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => GetLeonardoNumbers(FirstNumber, SecondNumber, StepSize);
 
-    
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

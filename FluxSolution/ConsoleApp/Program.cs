@@ -6,6 +6,7 @@ using Flux;
 using Flux.Formatting;
 using Flux.Text;
 using Flux.Unicode;
+using Flux.Units;
 using Microsoft.VisualBasic.FileIO;
 
 // C# Interactive commands:
@@ -101,6 +102,40 @@ namespace ConsoleApp
       return v;
     }
 
+    public static System.Collections.Generic.IEnumerable<TSelf> GetAscendingPotentialPrimes<TSelf>(TSelf startAt)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      var six = TSelf.CreateChecked(6);
+
+      var (quotient, remainder) = TSelf.DivRem(startAt, six);
+
+      var multiple = six * (quotient + (remainder > TSelf.One ? TSelf.One : TSelf.Zero));
+
+      if (quotient == TSelf.Zero) // If startAt is less than 6.
+      {
+        var two = TSelf.CreateChecked(2);
+        var three = TSelf.CreateChecked(3);
+
+        if (remainder <= two) yield return two;
+        if (remainder <= three) yield return three;
+
+        multiple = six;
+      }
+      else if (remainder <= TSelf.One) // Or, either between two potential primes or on right of a % 6 number. E.g. 12 or 13.
+      {
+        yield return multiple + TSelf.One;
+        multiple += six;
+      }
+
+      while (true)
+      {
+        yield return multiple - TSelf.One;
+        yield return multiple + TSelf.One;
+
+        multiple += six;
+      }
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
@@ -108,7 +143,11 @@ namespace ConsoleApp
 
       //System.Console.WriteLine(Flux.Services.Performance.Measure(() => EvaluateNumericStuff(), 1)); // return;
 
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => MyFunction(8, 2), 1));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => MyFunction(8, 2), 1));
+
+      for (var i = 0; i < 40; i++)
+        System.Console.WriteLine($"{i} : {i % 6} : {Maths.IsPrimeNumber(i)}");
+
     }
 
     private static void Main(string[] args)
