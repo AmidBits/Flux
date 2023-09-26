@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class ISet
@@ -8,16 +6,16 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> SymmetricDifference<T>(this System.Collections.Generic.ISet<T> source, System.Collections.Generic.IEnumerable<T> target)
     {
-      if (ReferenceEquals(source, target)) // A symmetric difference of a set with itself is an empty set.
-        return System.Linq.Enumerable.Empty<T>();
+      if (ReferenceEquals(source, target))
+        return System.Linq.Enumerable.Empty<T>(); // A symmetric difference of a set with itself is an empty set.
 
-      if (!source.Any())
-        return target;
+      if (!System.Linq.Enumerable.Any(source))
+        return target; // If source is empty, target is the result.
 
       var ths = new System.Collections.Generic.HashSet<T>(target);
 
-      if (!ths.Any())
-        return source;
+      if (!System.Linq.Enumerable.Any(ths))
+        return source; // If target is empty, source is the result.
 
       var ihs = new System.Collections.Generic.HashSet<T>(source.Intersect(ths));
 

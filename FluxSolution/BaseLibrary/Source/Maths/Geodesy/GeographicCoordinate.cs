@@ -86,7 +86,7 @@ namespace Flux.Geometry
     }
 
     /// <summary>Returns a bounding box for the specified lat/lon (both in radians) and box radius.</summary>
-    public static bool GetBoundingBox(double lat, double lon, double metersBoxRadius, out double latMin, out double lonMin, out double latMax, out double lonMax, EllipsoidReference ellipsoidReference)
+    public static bool GetBoundingBox(double lat, double lon, double metersBoxRadius, out double latMin, out double lonMin, out double latMax, out double lonMax, IEllipsoidReference ellipsoidReference)
     {
       metersBoxRadius = System.Math.Max(metersBoxRadius, 1);
 

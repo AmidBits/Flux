@@ -2,7 +2,7 @@ namespace Flux
 {
   namespace Units
   {
-    /// <summary>Probability is a ratio, represented as a range [0, 1] of values where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
+    /// <summary>Probability is a ratio, represented as a closed interval [0, 1], where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
     public readonly record struct Probability
     : System.IComparable, System.IComparable<Probability>, System.IFormattable, IQuantifiable<double>

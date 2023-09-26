@@ -141,12 +141,16 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => EvaluateNumericStuff(), 1)); // return;
+      var xyz = new char[] { 'x', 'y', 'z' }.ToList();
+      var xyz_ps = xyz.PowerSet().ToArray();
 
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => MyFunction(8, 2), 1));
+      for (var i = 0d; i < 30; i += 0.25)
+      {
+        var d = i.DetentInterval(10.25, 1);
 
-      for (var i = 0; i < 40; i++)
-        System.Console.WriteLine($"{i} : {i % 6} : {Maths.IsPrimeNumber(i)}");
+        //if (i != d)
+        System.Console.WriteLine($"{i:N2} : {d:N2}");
+      }
 
     }
 

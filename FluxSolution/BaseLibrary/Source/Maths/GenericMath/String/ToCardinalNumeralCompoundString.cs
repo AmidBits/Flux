@@ -2,21 +2,18 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class StringFormattingExtensionMethods
+  /// <summary>Supporting class for breaking down and translating numbers to strings.</summary>
+  public static partial class NumeralComposition
   {
 #if NET7_0_OR_GREATER
     public static string ToCardinalNumeralCompoundString<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => string.Join(' ', NumeralComposition.GetCardinalNumerals(NumeralComposition.GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
+      => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
 #else
     public static string ToCardinalNumeralCompoundString(this System.Numerics.BigInteger number)
-      => string.Join(' ', NumeralComposition.GetCardinalNumerals(NumeralComposition.GetCompoundNumbers(number)));
+      => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(number)));
 #endif
-  }
 
-  /// <summary>Supporting class for breaking down and translating numbers to strings.</summary>
-  public static partial class NumeralComposition
-  {
     /// <summary>This is step two. It translates <paramref name="compoundNumbers"/> into cardinal numerals.</summary>
     public static System.Collections.Generic.List<string> GetCardinalNumerals(System.Collections.Generic.List<System.Numerics.BigInteger> compoundNumbers)
     {

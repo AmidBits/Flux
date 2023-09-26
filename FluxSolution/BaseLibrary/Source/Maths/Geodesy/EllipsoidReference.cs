@@ -8,6 +8,7 @@ namespace Flux
   /// <para><see href="https://en.wikipedia.org/wiki/World_Geodetic_System"/></para>
   /// </summary>
   public record class EllipsoidReference
+    : IEllipsoidReference
   {
     public static EllipsoidReference Etrs89 => new(298.257222101, 6378137.000, 6356752.314140);
     public static EllipsoidReference Wgs84 => new(298.257223563, 6378137.0, 6356752.314245);
@@ -22,8 +23,8 @@ namespace Flux
     }
 
     public double InverseFlattening { get => m_inverseFlattening; init => m_inverseFlattening = value; }
-    public Units.Length SemiMajorAxis => new(m_ellipseGeometry.A);
-    public Units.Length SemiMinorAxis => new(m_ellipseGeometry.B);
+    public double SemiMajorAxis => m_ellipseGeometry.A;
+    public double SemiMinorAxis => m_ellipseGeometry.B;
 
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
     public Units.Length EquatorialCircumference => EquatorialRadius * System.Math.Tau;

@@ -7,22 +7,25 @@ namespace Flux
     /// <summary>Creates a new sequence, a set of all subsets (as lists) of the source set, including the empty set and the source itself.</summary>
     /// <exception cref="System.ArgumentNullException"/>
     /// <see cref="https://en.wikipedia.org/wiki/Power_set"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<T>> PowerSet<T>(this System.Collections.Generic.ISet<T> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<T>> PowerSet<T>(this System.Collections.Generic.IList<T> source)
     {
-      var sourceList = source.ToList();
+      var powerCount = (int)System.Numerics.BigInteger.Pow(2, source.Count);
 
-      var powerCount = (int)System.Math.Pow(2, sourceList.Count);
+      var subsetList = new System.Collections.Generic.List<T>(source.Count);
 
-      for (var outer = 0; outer < powerCount; outer++)
+      for (var o = 0; o < powerCount; o++)
       {
-        var subsetList = new System.Collections.Generic.List<T>();
+        subsetList.Clear();
 
-        for (var inner = 0; inner < powerCount; inner++)
-          if ((outer & (System.Numerics.BigInteger.One << inner)) > 0)
-            subsetList.Add(sourceList[inner]);
+        for (var i = 0; i < powerCount; i++)
+          if ((o & (1L << i)) > 0)
+            subsetList.Add(source[i]);
 
-        yield return subsetList;
+        yield return subsetList.ToArray();
       }
     }
+
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<T>> PowerSet<T>(this System.Collections.Generic.ISet<T> source)
+      => source.ToList().PowerSet();
   }
 }

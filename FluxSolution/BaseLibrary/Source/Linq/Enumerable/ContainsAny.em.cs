@@ -5,6 +5,7 @@ namespace Flux
   public static partial class Enumerable
   {
     /// <summary>Returns whether the source contains any of the items in subset, using the specified comparer.</summary>
+    /// <remarks>This extension method leverages (and re-use) the type <see cref="System.Collections.Generic.ISet{T}"/> for speed.</remarks>
     /// <exception cref="System.ArgumentNullException"/>
     public static bool ContainsAny<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {

@@ -13,23 +13,35 @@ namespace Flux
 
     QuotationMark = '\u0022',
     Apostrophe = '\u0027',
+    /// <summary>Mathematical symbol for add.</summary>
     PlusSign = '\u002B',
+    /// <summary>More commonly used symbol for minus or negative.</summary>
     HyphenMinus = '\u002D',
+    /// <summary>Symbol for degree.</summary>
     DegreeSign = '\u00B0',
     MicroSign = '\u00B5',
+    /// <summary>Mathematical symbol for multiply.</summary>
     MultiplicationSign = '\u00D7',
+    /// <summary>Mathematical symbol for divide.</summary>
     DivisionSign = '\u00F7',
 
+    /// <summary>Symbol for feet, arcminutes or minutes.</summary>
     Prime = '\u2032',
+    /// <summary>Symbol for inchesm, arcseconds or seconds.</summary>
     DoublePrime = '\u2033',
 
     OhmSign = '\u2126',
 
+    /// <summary>Mathematical symbol for subtract or minus/negative.</summary>
     MinusSign = '\u2212',
 
+    /// <summary>Visual symbol for recordset or rowset separator.</summary>
     SymbolForFileSeparator = '\u241C',
+    /// <summary>Visual symbol for table separator.</summary>
     SymbolForGroupSeparator = '\u241D',
+    /// <summary>Visual symbol for line or row separator.</summary>
     SymbolForRecordSeparator = '\u241E',
+    /// <summary>Visual symbol for field or column separator.</summary>
     SymbolForUnitSeparator = '\u241F',
 
     /// <summary>Square Micro Farad.</summary>

@@ -7,7 +7,7 @@ namespace Flux
     /// <summary>Snaps the value to the nearest interval if it's within the specified distance of an interval, otherwise unaltered.</summary>
     public static TSelf DetentInterval<TSelf>(this TSelf value, TSelf interval, TSelf distance)
       where TSelf : System.Numerics.INumber<TSelf>
-      => (value / interval) * interval is var tzInterval && TSelf.Abs(tzInterval - value) <= distance
+      => TSelf.CreateChecked(int.CreateChecked(value / interval)) * interval is var tzInterval && TSelf.Abs(tzInterval - value) <= distance
       ? tzInterval
       : tzInterval + interval is var afzInterval && TSelf.Abs(afzInterval - value) <= distance
       ? afzInterval
