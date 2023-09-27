@@ -8,7 +8,8 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>Count Leading Zeros (clz) counts the number of zero bits preceding the most significant one bit. In other words, the number of most significant 0 bits.</summary>
-    public static int LeadingZeroCount<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static int LeadingZeroCount<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => int.CreateChecked(TSelf.LeadingZeroCount(value));
 
 #else

@@ -13,6 +13,14 @@ namespace Flux
     }
 
 #else
+
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Custom<T>(System.Func<System.Numerics.BigInteger> initializer, System.Func<System.Numerics.BigInteger, int, bool> predicate, System.Func<System.Numerics.BigInteger, int, System.Numerics.BigInteger> stepper)
+    {
+      var index = 0;
+      for (var current = initializer(); predicate(current, index); current = stepper(current, index), index++)
+        yield return current;
+    }
+
 #endif
   }
 

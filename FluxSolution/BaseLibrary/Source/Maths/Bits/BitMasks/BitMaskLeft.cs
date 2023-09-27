@@ -5,7 +5,8 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>Create a left (most-significant) bit mask with <paramref name="bitCount"/> bits set to 1 on the MSB (Most Significant Bit) or left side.</summary>
-    public static TSelf BitMaskLeft<TSelf>(this TSelf bitCount) where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TSelf BitMaskLeft<TSelf>(this TSelf bitCount)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => bitCount.BitMaskRight() << (bitCount.GetBitCount() - int.CreateChecked(bitCount));
 
     /// <summary>Create a left (most-significant) bit mask with <paramref name="bitCount"/> bits set to 1 on the MSB (Most Significant Bit) or left side.</summary>

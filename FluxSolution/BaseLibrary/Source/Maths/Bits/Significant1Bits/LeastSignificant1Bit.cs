@@ -6,8 +6,9 @@ namespace Flux
 
     /// <summary>Extracts the lowest numbered element of a bit set. Given a 2's complement binary integer value, this is the least significant 1 bit.</summary>
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-    public static TSelf LeastSignificant1Bit<TSelf>(this TSelf x) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => x & -x; // Equivalent to: x & ((~x) + 1);
+    public static TSelf LeastSignificant1Bit<TSelf>(this TSelf x)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.IsNegative(x) ? x & ((~x) + TSelf.One) : x & -x;
 
 #else
 

@@ -6,8 +6,9 @@ namespace Flux
 
     /// <summary>Strips x of its least significant 1 bit.</summary>
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-    public static TSelf StripLeastSignificant1Bit<TSelf>(this TSelf x) where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => x & (x - TSelf.One);
+    public static TSelf StripLeastSignificant1Bit<TSelf>(this TSelf x)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.IsZero(x) ? x : x & (x - TSelf.One);
 
 #else
 

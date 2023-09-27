@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-
 namespace Flux
 {
   public static partial class Maths
@@ -16,7 +14,7 @@ namespace Flux
       if (!TSelf.IsZero(value) && value is var number)
         if (radix == 2)
         {
-          for (var bitIndex = number.GetBitCount() - 1; bitIndex >= 0; bitIndex--)
+          for (var bitIndex = number.BitLength() - 1; bitIndex >= 0; bitIndex--)
             if ((int.CreateChecked((number >> bitIndex) & TSelf.One) is var position && position > 0) || sb.Length > 0)
               sb.Append(Text.PositionalNotation.Base64[position]);
         }

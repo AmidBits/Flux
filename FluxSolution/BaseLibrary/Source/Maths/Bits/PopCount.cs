@@ -4,13 +4,13 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    public static int Count1Bits<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static int PopCount<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => int.CreateChecked(TSelf.PopCount(value));
 
 #else
 
     /// <summary>Also known as "population count" of a binary integer value x is the number of one bits in the value.</summary>
-    public static int Count1Bits(this System.Numerics.BigInteger value)
+    public static int PopCount(this System.Numerics.BigInteger value)
     {
       if (value > 255 && value.ToByteArray() is var byteArray)
       {
@@ -25,9 +25,9 @@ namespace Flux
       return -1;
     }
 
-    public static int Count1Bits(this int value) => System.Numerics.BitOperations.PopCount(unchecked((uint)value));
+    public static int PopCount(this int value) => System.Numerics.BitOperations.PopCount(unchecked((uint)value));
 
-    public static int Count1Bits(this long value) => System.Numerics.BitOperations.PopCount(unchecked((ulong)value));
+    public static int PopCount(this long value) => System.Numerics.BitOperations.PopCount(unchecked((ulong)value));
 
 #endif
   }

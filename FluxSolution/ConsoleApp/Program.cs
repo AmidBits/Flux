@@ -79,7 +79,7 @@ namespace ConsoleApp
       var bfr = bi.BitFoldRight();
       var bfrs = bfr.ToBinaryString();
       var bl = bi.ShortestBitLength();
-      var bln = bi.BitLengthN();
+      var bln = bi.BitLength();
       var l2 = bi.IntegerLog2();
       var ms1b = bi.MostSignificant1Bit();
       var bmr = bi.BitMaskRight();
@@ -141,17 +141,21 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var xyz = new char[] { 'x', 'y', 'z' }.ToList();
-      var xyz_ps = xyz.PowerSet().ToArray();
+      var isource = 30000;
+      var source = isource.ToBigInteger();
+      var targetF = source.RoundToPowOf(10, false);
+      var targetT = source.RoundToPowOf(10, true);
 
-      for (var i = 0d; i < 30; i += 0.25)
-      {
-        var d = i.DetentInterval(10.25, 1);
+      var sourceR = (int)isource.ReverseBits();
 
-        //if (i != d)
-        System.Console.WriteLine($"{i:N2} : {d:N2}");
-      }
+      var sourceS = source.ToRadixString(10, 1);
+      var sourceRS = sourceR.ToRadixString(10, 1);
 
+      var bits = 10;
+      var bitss = bits.ToRadixString(2, 32);
+      var bitsbl = bits.BitLength();
+      var bml = bits.BitMaskLeft();
+      var bmls = bml.ToRadixString(2, 32);
     }
 
     private static void Main(string[] args)

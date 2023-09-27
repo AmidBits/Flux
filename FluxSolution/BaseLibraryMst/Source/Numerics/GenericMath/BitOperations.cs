@@ -29,7 +29,7 @@ namespace GenericMath
     [TestMethod]
     public void FLog2()
     {
-      Assert.AreEqual(6.467605550082998, (88.5).Log2F());
+      Assert.AreEqual(6.467605550082998, (88.5).Log2());
     }
 
     [TestMethod]

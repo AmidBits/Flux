@@ -6,7 +6,8 @@ namespace Flux
 
     /// <summary>The next away-from-zero (i.e. larger if positive) power-of-2.</summary>
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-    public static TSelf NextLargerPowerOf2<TSelf>(this TSelf x) where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TSelf NextLargerPowerOf2<TSelf>(this TSelf x)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       //=> x.BitFoldRight() + TSelf.One;
       => TSelf.CreateChecked(RoundToPow2(x, true).pow2AwayFromZero);
 
