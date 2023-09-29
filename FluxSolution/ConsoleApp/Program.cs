@@ -144,42 +144,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      int x = -1;
-      var y = x & -x;
 
-      var value = 4.485; // 99.96535789
-      var r = Flux.Maths.Round(value, Flux.RoundingMode.HalfToEven);
-      var rp = Flux.Maths.RoundToPrecision(value, Flux.RoundingMode.HalfToEven, 2);
-      var rtp = Flux.Maths.RoundToTruncatedPrecision(value, Flux.RoundingMode.HalfToEven, 2);
-
-      var h = new Flux.Units.Length(4, LengthUnit.Inch);
-      var w = new Flux.Units.Length(24, LengthUnit.Foot);
-      var l = new Flux.Units.Length(24, LengthUnit.Foot);
-
-      var v = new Flux.Units.Volume((h * w * l).Value);
-      var vs = v.ToUnitString(VolumeUnit.CubicMeter, "N2", true);
-      var vscy = v.ToUnitString(VolumeUnit.CubicYard, "N2", true);
-
-      var n = 15;
-
-      var rn = n.BinaryToGray();
-      var rrn = rn.GrayToBinary();
-
-      var isource = 30000;
-      var source = isource.ToBigInteger();
-      var targetF = source.RoundToPowOf(10, false);
-      var targetT = source.RoundToPowOf(10, true);
-
-      var sourceR = (int)isource.ReverseBits();
-
-      var sourceS = source.ToRadixString(10, 1);
-      var sourceRS = sourceR.ToRadixString(10, 1);
-
-      var bits = 10;
-      var bitss = bits.ToRadixString(2, 32);
-      var bitsbl = bits.BitLength();
-      var bml = bits.BitMaskLeft();
-      var bmls = bml.ToRadixString(2, 32);
     }
 
     private static void Main(string[] args)
