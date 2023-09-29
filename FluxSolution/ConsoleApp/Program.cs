@@ -58,6 +58,9 @@ namespace ConsoleApp
       var p2afzp = p2afz == value ? p2afz << 1 : p2afz;
 
       var n = (short.MaxValue - sbyte.MaxValue);
+
+      var rn = n.BinaryToGray();
+      var rrn = rn.GrayToBinary();
       //      n = 0;
       var ns = n.ToBinaryString();
       var nlpow2 = n.NextLargerPowerOf2();
@@ -140,6 +143,27 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      int x = -1;
+      var y = x & -x;
+
+      var value = 4.485; // 99.96535789
+      var r = Flux.Maths.Round(value, Flux.RoundingMode.HalfToEven);
+      var rp = Flux.Maths.RoundToPrecision(value, Flux.RoundingMode.HalfToEven, 2);
+      var rtp = Flux.Maths.RoundToTruncatedPrecision(value, Flux.RoundingMode.HalfToEven, 2);
+
+      var h = new Flux.Units.Length(4, LengthUnit.Inch);
+      var w = new Flux.Units.Length(24, LengthUnit.Foot);
+      var l = new Flux.Units.Length(24, LengthUnit.Foot);
+
+      var v = new Flux.Units.Volume((h * w * l).Value);
+      var vs = v.ToUnitString(VolumeUnit.CubicMeter, "N2", true);
+      var vscy = v.ToUnitString(VolumeUnit.CubicYard, "N2", true);
+
+      var n = 15;
+
+      var rn = n.BinaryToGray();
+      var rrn = rn.GrayToBinary();
 
       var isource = 30000;
       var source = isource.ToBigInteger();

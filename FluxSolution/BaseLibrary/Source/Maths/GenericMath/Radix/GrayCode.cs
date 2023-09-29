@@ -4,15 +4,17 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Converts from reflected binary gray code number to a binary number.</summary>
+    /// <summary>Converts an binary number to reflected binary Gray code.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Gray_code"/>
+    /// <remarks>Works only on positive values, negative values return zero (0).</remarks>
     public static TSelf BinaryToGray<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value >= TSelf.Zero ? value ^ (value >> 1) : throw new System.ArgumentOutOfRangeException(nameof(value));
+      => value >= TSelf.Zero ? value ^ (value >> 1) : throw new System.ArgumentOutOfRangeException(nameof(value), "Must be a positive value.");
 
-    /// <summary>Converts from reflected binary gray code number to a binary number.</summary>
+    /// <summary>Converts a reflected binary Gray code number to a binary number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Gray_code"/>
-    public static TSelf GrayToBinary<TSelf>(TSelf value)
+    /// <remarks>Works only on positive values, negative values return zero (0).</remarks>
+    public static TSelf GrayToBinary<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (value > TSelf.Zero)

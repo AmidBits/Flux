@@ -8,7 +8,8 @@ namespace Flux
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
     public static TSelf LeastSignificant1Bit<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsNegative(x) ? x & ((~x) + TSelf.One) : x & -x;
+      => x & -x;
+    // => TSelf.IsNegative(x) ? x & ((~x) + TSelf.One) : x & -x;
 
 #else
 
