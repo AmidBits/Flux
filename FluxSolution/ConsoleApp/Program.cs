@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
@@ -139,11 +140,36 @@ namespace ConsoleApp
       }
     }
 
+    public static (TSelf potentialPrimeTowardZero, TSelf potentialPrimeAwayFromZero) GetNearestPotentialPrimes<TSelf>(TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      if (TSelf.CreateChecked(3) is var three && value <= three)
+        return (TSelf.CreateChecked(2), three);
+      else if (TSelf.CreateChecked(5) is var five && value < five)
+        return (three, five);
+
+      var (multipleOfTowardsZero, multipleOfAwayFromZero) = Flux.Maths.RoundToMultipleOf(value, TSelf.CreateChecked(6), false);
+
+      if (multipleOfTowardsZero - TSelf.One is var tzTz && multipleOfAwayFromZero + TSelf.One is var afzAfz && multipleOfTowardsZero == multipleOfAwayFromZero)
+        return (tzTz, afzAfz);
+      else if (multipleOfTowardsZero + TSelf.One is var tzAfz && value <= tzAfz)
+        return (tzTz, tzAfz);
+      else if (multipleOfAwayFromZero - TSelf.One is var afzTz && value >= afzTz)
+        return (afzTz, afzAfz);
+      else
+        return (tzAfz, afzTz);
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      //var app = GetAscendingPotentialPrimes(0).Take(30);
+      //foreach (var pp in app)
+      //  System.Console.WriteLine(pp);
+
+      var npp = GetNearestPotentialPrimes(50);
 
     }
 
