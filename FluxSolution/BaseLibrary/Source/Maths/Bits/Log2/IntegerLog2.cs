@@ -14,13 +14,15 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => int.CreateChecked(TSelf.Log2(value));
 
-    public static void IntegerLog2<TSelf>(this TSelf value, out int ilog2TowardZero, out int ilog2AwayFromZero)
+    public static System.Numerics.BigInteger IntegerLog2<TSelf>(this TSelf value, RoundingMode mode, out System.Numerics.BigInteger ilog2TowardZero, out System.Numerics.BigInteger ilog2AwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       ilog2AwayFromZero = ilog2TowardZero = IntegerLog2(value);
 
       if (!TSelf.IsPow2(value))
         ilog2AwayFromZero++;
+
+      return value.RoundToBoundaries(mode, ilog2TowardZero, ilog2AwayFromZero);
     }
 
 #else

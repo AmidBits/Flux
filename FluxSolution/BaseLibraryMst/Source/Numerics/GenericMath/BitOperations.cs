@@ -22,8 +22,8 @@ namespace GenericMath
     [TestMethod]
     public void GetBitLengthEx()
     {
-      Assert.AreEqual(7, 88.ToBigInteger().ShortestBitLength());
-      Assert.AreEqual(7, 88.ToBigInteger().ShortestBitLength());
+      Assert.AreEqual(7, 88.ToBigInteger().GetShortestBitLength());
+      Assert.AreEqual(7, 88.ToBigInteger().GetShortestBitLength());
     }
 
     [TestMethod]
@@ -41,13 +41,13 @@ namespace GenericMath
     [TestMethod]
     public void GetLeadingZeroCount()
     {
-      Assert.AreEqual(25, 88.LeadingZeroCount());
+      Assert.AreEqual(25, 88.GetLeadingZeroCount());
     }
 
     [TestMethod]
     public void GetTrailingZeroCount()
     {
-      Assert.AreEqual(3, 88.ToBigInteger().TrailingZeroCount());
+      Assert.AreEqual(3, 88.ToBigInteger().GetTrailingZeroCount());
     }
 
     //[TestMethod]
@@ -115,7 +115,7 @@ namespace GenericMath
     [TestMethod]
     public void MostSignificant1Bit()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().MostSignificant1Bit());
+      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().GetMostSignificant1Bit());
     }
 
     [TestMethod]

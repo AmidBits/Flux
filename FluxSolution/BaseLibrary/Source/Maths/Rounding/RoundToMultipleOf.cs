@@ -9,7 +9,7 @@
     /// <param name="multiple">The multiple to which the results will align.</param>
     /// <param name="proper">Proper means nearest but not <paramref name="value"/> if it's a multiple-of, i.e. the two multiple-of will be properly "nearest" (but not the same), or LT/GT rather than LTE/GTE.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static (TSelf multipleOfTowardsZero, TSelf multipleOfAwayFromZero) RoundToMultipleOf<TSelf>(this TSelf value, TSelf multiple, bool proper)
+    public static (TSelf MultipleOfTowardsZero, TSelf MultipleOfAwayFromZero) RoundToMultipleOf<TSelf>(this TSelf value, TSelf multiple, bool proper)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       TSelf multipleOfTowardsZero, multipleOfAwayFromZero;

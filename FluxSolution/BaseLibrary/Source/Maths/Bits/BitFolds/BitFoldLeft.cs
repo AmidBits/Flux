@@ -12,9 +12,9 @@ namespace Flux
     public static TSelf BitFoldLeft<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var tzc = TrailingZeroCount(value);
+      var tzc = value.GetTrailingZeroCount();
 
-      return BitFoldRight(value << LeadingZeroCount(value)) >> tzc << tzc;
+      return BitFoldRight(value << value.GetLeadingZeroCount()) >> tzc << tzc;
     }
 
 #else

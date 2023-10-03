@@ -18,7 +18,7 @@ namespace Flux
     /// <param name="radix">The power of alignment.</param>
     /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-<paramref name="radix"/> will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
     /// <returns>The two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/> to <paramref name="value"/>, optionally <paramref name="proper"/>.</returns>
-    public static (TSelf powOfTowardsZero, TSelf powOfAwayFromZero) RoundToPowOf<TSelf>(this TSelf value, TSelf radix, bool proper)
+    public static (TSelf PowOfTowardsZero, TSelf PowOfAwayFromZero) RoundToPowOf<TSelf>(this TSelf value, TSelf radix, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (TSelf.IsNegative(value))

@@ -11,7 +11,7 @@ namespace Flux
 
     /// <summary>Create a left (most-significant) bit mask with <paramref name="bitCount"/> bits set to 1 on the MSB or left side, and the number of <paramref name="trailingZeroCount"/> (bits set to zero) on the LSB or right side.</summary>
     /// <remarks>This is a specialized version for <see cref="System.Numerics.BigInteger"/>.</remarks>
-    public static System.Numerics.BigInteger BitMask(this System.Numerics.BigInteger bitCount, int trailingZeroCount)
+    public static System.Numerics.BigInteger BitMaskLeft(this System.Numerics.BigInteger bitCount, int trailingZeroCount)
       => bitCount.BitMaskRight() << trailingZeroCount;
 
 #else

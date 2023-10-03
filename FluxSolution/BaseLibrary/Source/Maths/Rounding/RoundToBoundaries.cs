@@ -32,6 +32,16 @@
       };
 
     /// <summary>Rounds a value to the nearest boundary. Computes the distance to both boundaries and then calls the alternate <see cref="Round(TSelf, TSelf, TSelf, RoundingMode, TSelf, TSelf)"/>.</summary>
+    public static TBound RoundToBoundaries<TValue, TBound>(this (TBound TowardsZero, TBound AwayFromZero) boundary, TValue value, RoundingMode mode)
+      where TValue : System.Numerics.INumber<TValue>
+      where TBound : System.Numerics.INumber<TBound>
+    {
+      ComputeDistanceToBoundaries(value, boundary.TowardsZero, boundary.AwayFromZero, out TValue distanceTowardsZero, out TValue distanceAwayFromZero);
+
+      return RoundToBoundaries(value, mode, boundary.TowardsZero, boundary.AwayFromZero, distanceTowardsZero, distanceAwayFromZero);
+    }
+
+    /// <summary>Rounds a value to the nearest boundary. Computes the distance to both boundaries and then calls the alternate <see cref="Round(TSelf, TSelf, TSelf, RoundingMode, TSelf, TSelf)"/>.</summary>
     public static TBound RoundToBoundaries<TValue, TBound>(this TValue value, RoundingMode mode, TBound boundaryTowardsZero, TBound boundaryAwayFromZero)
       where TValue : System.Numerics.INumber<TValue>
       where TBound : System.Numerics.INumber<TBound>

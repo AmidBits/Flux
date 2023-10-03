@@ -52,7 +52,7 @@ namespace ConsoleApp
 
       var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
 
-      var p2tz = quotient.MostSignificant1Bit();
+      var p2tz = quotient.GetMostSignificant1Bit();
       var p2afz = (p2tz < quotient || remainder > 0) ? (p2tz == 0 ? 1 : p2tz << 1) : p2tz;
 
       var p2tzp = p2tz == value ? p2tz >> 1 : p2tz;
@@ -62,9 +62,10 @@ namespace ConsoleApp
 
       var rn = n.BinaryToGray();
       var rrn = rn.GrayToBinary();
+
       //      n = 0;
       var ns = n.ToBinaryString();
-      var nlpow2 = n.NextLargerPowerOf2();
+      //      var nlpow2 = n.NextLargerPowerOf2();
       var np2tz = (int)n.RoundToPow2(false, RoundingMode.TowardZero, out var p2tzlo, out var p2tzhi);
       var np2afz = (int)n.RoundToPow2(false, RoundingMode.AwayFromZero, out var p2afzlo, out var p2afzhi);
 
@@ -82,10 +83,10 @@ namespace ConsoleApp
       var bfls = bfl.ToBinaryString();
       var bfr = bi.BitFoldRight();
       var bfrs = bfr.ToBinaryString();
-      var bl = bi.ShortestBitLength();
-      var bln = bi.BitLength();
+      var bl = bi.GetShortestBitLength();
+      var bln = bi.GetBitLength();
       var l2 = bi.IntegerLog2();
-      var ms1b = bi.MostSignificant1Bit();
+      var ms1b = bi.GetMostSignificant1Bit();
       var bmr = bi.BitMaskRight();
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
@@ -140,25 +141,33 @@ namespace ConsoleApp
       }
     }
 
-    public static (TSelf potentialPrimeTowardZero, TSelf potentialPrimeAwayFromZero) GetNearestPotentialPrimes<TSelf>(TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      if (TSelf.CreateChecked(3) is var three && value <= three)
-        return (TSelf.CreateChecked(2), three);
-      else if (TSelf.CreateChecked(5) is var five && value < five)
-        return (three, five);
+    //public static (TSelf potentialPrimeTowardZero, TSelf potentialPrimeAwayFromZero) RoundToPotentialPrime<TSelf>(TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //{
+    //  if (TSelf.CreateChecked(3) is var three && value <= three)
+    //    return (TSelf.CreateChecked(2), three);
+    //  else if (TSelf.CreateChecked(5) is var five && value < five)
+    //    return (three, five);
 
-      var (multipleOfTowardsZero, multipleOfAwayFromZero) = Flux.Maths.RoundToMultipleOf(value, TSelf.CreateChecked(6), false);
+    //  var (potentialPrimeMultipleTowardsZero, potentialPrimeMultipleAwayFromZero) = Flux.Maths.RoundToMultipleOf(value, TSelf.CreateChecked(6), false);
 
-      if (multipleOfTowardsZero - TSelf.One is var tzTz && multipleOfAwayFromZero + TSelf.One is var afzAfz && multipleOfTowardsZero == multipleOfAwayFromZero)
-        return (tzTz, afzAfz);
-      else if (multipleOfTowardsZero + TSelf.One is var tzAfz && value <= tzAfz)
-        return (tzTz, tzAfz);
-      else if (multipleOfAwayFromZero - TSelf.One is var afzTz && value >= afzTz)
-        return (afzTz, afzAfz);
-      else
-        return (tzAfz, afzTz);
-    }
+    //  if (potentialPrimeMultipleTowardsZero - TSelf.One is var tzTz && potentialPrimeMultipleAwayFromZero + TSelf.One is var afzAfz && potentialPrimeMultipleTowardsZero == potentialPrimeMultipleAwayFromZero)
+    //    return (tzTz, afzAfz);
+    //  else if (potentialPrimeMultipleTowardsZero + TSelf.One is var tzAfz && value <= tzAfz)
+    //    return (tzTz, tzAfz);
+    //  else if (potentialPrimeMultipleAwayFromZero - TSelf.One is var afzTz && value >= afzTz)
+    //    return (afzTz, afzAfz);
+    //  else
+    //    return (tzAfz, afzTz);
+    //}
+
+    //public static TSelf RoundToPotentialPrime<TSelf>(TSelf value, RoundingMode mode, out TSelf potentialPrimeTowardZero, out TSelf potentialPrimeAwayFromZero)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //{
+    //  (potentialPrimeTowardZero, potentialPrimeAwayFromZero) = RoundToPotentialPrime(value);
+
+    //  return value.RoundToBoundaries(mode, potentialPrimeTowardZero, potentialPrimeAwayFromZero);
+    //}
 
     private static void TimedMain(string[] _)
     {
@@ -169,7 +178,15 @@ namespace ConsoleApp
       //foreach (var pp in app)
       //  System.Console.WriteLine(pp);
 
-      var npp = GetNearestPotentialPrimes(50);
+      //for (var i = 0; i < 30; i++)
+      //{
+      //  var n = RoundToPotentialPrime(i, RoundingMode.HalfTowardZero, out var tz, out var afz);
+
+      //  var dpp = Flux.NumberSequences.PrimeNumberReverse.GetDescendingPotentialPrimes(i).First();
+      //  var app = Flux.NumberSequences.PrimeNumber.GetAscendingPotentialPrimes(i).First();
+
+      //  System.Console.WriteLine($"{i:D2} : {n} : ({tz}, {afz}) : ({dpp}, {app})");
+      //}
 
     }
 

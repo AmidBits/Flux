@@ -4,7 +4,8 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    public static int PopCount<TSelf>(this TSelf value) where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static int GetPopCount<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => int.CreateChecked(TSelf.PopCount(value));
 
 #else

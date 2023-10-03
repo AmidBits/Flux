@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux.NumberSequences
 {
-  public sealed class PrimeNumber
+  public sealed partial class PrimeNumber
     : INumericSequence<System.Numerics.BigInteger>
   {
     #region Constants
