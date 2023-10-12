@@ -12,11 +12,9 @@ namespace Flux
 
       rng ??= new System.Random();
 
-      using var e = source.GetEnumerator();
-
-      while (e.MoveNext())
+      foreach (var item in source)
         if (rng.NextDouble() < probability)
-          yield return e.Current;
+          yield return item;
     }
   }
 }

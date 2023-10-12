@@ -12,7 +12,7 @@ namespace Flux
     /// </summary>
     /// <exception cref="System.ArgumentNullException"/>
     public static void Median<TSelf, TResult>(this System.Collections.Generic.IEnumerable<TSelf> source, out TResult median, out System.Collections.Generic.List<TSelf> sortedList)
-      where TSelf : System.Numerics.INumberBase<TSelf>
+      where TSelf : System.Numerics.INumber<TSelf>
       where TResult : System.Numerics.IFloatingPoint<TResult>
     {
       sortedList = source.ToList();

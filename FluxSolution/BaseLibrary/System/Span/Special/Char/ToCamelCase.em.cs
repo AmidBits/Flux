@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class SpanBuilderExtensionMethods
   {
-    /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
+    /// <summary>Makes CamelCase of words separated by the specified predicate. Uses the specified culture, or the current culture if null.</summary>
     public static System.Span<char> ToCamelCase(this System.Span<char> source, System.Func<char, bool> predicate, System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
@@ -21,6 +21,9 @@ namespace Flux
 
       return source;
     }
-    public static System.Span<char> ToCamelCase(this System.Span<char> source) => ToCamelCase(source, char.IsWhiteSpace);
+
+    /// <summary>Makes CamelCase of words separated by whitespace. Uses the specified culture, or the invariant culture if null.</summary>
+    public static System.Span<char> ToCamelCase(this System.Span<char> source, System.Globalization.CultureInfo? culture = null)
+      => ToCamelCase(source, char.IsWhiteSpace, culture ?? System.Globalization.CultureInfo.InvariantCulture);
   }
 }

@@ -9,13 +9,17 @@ namespace Flux
     {
       rng ??= new System.Random();
 
-      using var e = source.ThrowOnNullOrEmpty().GetEnumerator();
-
       var value = default(T);
 
-      for (var count = 0; e.MoveNext(); count++)
+      var count = 0;
+
+      foreach (var item in source.ThrowOnNullOrEmpty())
+      {
         if (rng.Next(count) == 0)
-          value = e.Current;
+          value = item;
+
+        count++;
+      }
 
       return value!;
     }

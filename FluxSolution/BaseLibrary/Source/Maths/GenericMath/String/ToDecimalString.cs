@@ -8,7 +8,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
     public static string ToDecimalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 10, Bits.MaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
+      => ToRadixString(value, 10, Bits.GetMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
 
 #else
 

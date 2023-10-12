@@ -23,24 +23,21 @@ namespace Flux
         case System.Collections.ICollection ic when ic.Count > 0:
           return source.ElementAt(index = ((count = ic.Count) - 1) / 2);
         default:
-          using (var e = source.GetEnumerator())
+          var queue = new System.Collections.Generic.Queue<TSelf>();
+
+          count = 0;
+
+          foreach (var item in source)
           {
-            var queue = new System.Collections.Generic.Queue<TSelf>();
+            queue.Enqueue(item);
 
-            count = 0;
-
-            while (e.MoveNext())
-            {
-              queue.Enqueue(e.Current);
-
-              // Remove every other one when the ordinal count is odd and greater than 1.
-              if ((++count & 1) != 0 && queue.Count > 1) queue.Dequeue();
-            }
-
-            index = (count - 1) / 2;
-
-            return queue.Count > 0 ? queue.Dequeue() : throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
+            // Remove every other one when the ordinal count is odd and greater than 1.
+            if ((++count & 1) != 0 && queue.Count > 1) queue.Dequeue();
           }
+
+          index = (count - 1) / 2;
+
+          return queue.Count > 0 ? queue.Dequeue() : throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
       }
     }
 

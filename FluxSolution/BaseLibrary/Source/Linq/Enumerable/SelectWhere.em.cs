@@ -9,11 +9,15 @@ namespace Flux
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
       if (selector is null) throw new System.ArgumentNullException(nameof(selector));
 
-      using var e = source.GetEnumerator();
+      var index = 0;
 
-      for (var index = 0; e.MoveNext(); index++)
-        if (predicate(e.Current, index))
-          yield return selector(e.Current, index);
+      foreach (var item in source)
+      {
+        if (predicate(item, index))
+          yield return selector(item, index);
+
+        index++;
+      }
     }
   }
 }

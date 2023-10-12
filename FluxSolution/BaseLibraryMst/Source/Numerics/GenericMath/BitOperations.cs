@@ -26,17 +26,17 @@ namespace GenericMath
       Assert.AreEqual(7, 88.ToBigInteger().GetShortestBitLength());
     }
 
-    [TestMethod]
-    public void FLog2()
-    {
-      Assert.AreEqual(6.467605550082998, (88.5).Log2());
-    }
+    //[TestMethod]
+    //public void FLog2()
+    //{
+    //  Assert.AreEqual(6.467605550082998, (88.5).Log2());
+    //}
 
-    [TestMethod]
-    public void ILog2()
-    {
-      Assert.AreEqual(6, 88.IntegerLog2());
-    }
+    //[TestMethod]
+    //public void ILog2()
+    //{
+    //  Assert.AreEqual(6, 88.IntegerLog2());
+    //}
 
     [TestMethod]
     public void GetLeadingZeroCount()

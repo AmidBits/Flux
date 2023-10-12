@@ -18,12 +18,8 @@ namespace Flux
       return source;
     }
 
-    /// <summary>Convert all characters, in the specified range, to upper case. Uses the specified culture, or the current culture if null.</summary>
-    public static System.Span<char> ToUpperCase(this System.Span<char> source, int startIndex, System.Globalization.CultureInfo? culture = null)
-      => ToUpperCase(source, startIndex, source.Length, culture);
-
-    /// <summary>Convert all characters, in the specified range, to upper case. Uses the specified culture, or the current culture if null.</summary>
+    /// <summary>Convert all characters to upper case. Uses the specified culture, or the invariant culture if null.</summary>
     public static System.Span<char> ToUpperCase(this System.Span<char> source, System.Globalization.CultureInfo? culture = null)
-      => ToUpperCase(source, 0, source.Length, culture);
+      => ToUpperCase(source, 0, source.Length, culture ?? System.Globalization.CultureInfo.InvariantCulture);
   }
 }

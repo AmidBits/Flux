@@ -20,29 +20,31 @@ namespace Types
     }
 
     [TestMethod]
-    public void Extrema()
+    public void GetExtremum()
     {
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
-      var expectedIndexMinimum = 11;
-      var expectedIndexMaximum = 7;
-      var (actualIndexMinimum, actualIndexMaximum) = span.GetExtremum(n => n, null);
+      var expectedIndexMin = 11;
+      var expectedIndexMax = 7;
 
-      Assert.AreEqual(expectedIndexMinimum, actualIndexMinimum);
-      Assert.AreEqual(expectedIndexMaximum, actualIndexMaximum);
+      var (actualIndexMin, actualValueMin, actualIndexMax, actualValueMax) = span.GetExtremum(n => n, null);
+
+      Assert.AreEqual(expectedIndexMin, actualIndexMin);
+      Assert.AreEqual(expectedIndexMax, actualIndexMax);
     }
 
     [TestMethod]
-    public void ExtremaClosestTo()
+    public void GetInfimumAndSupremum()
     {
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
-      var expectedIndexMinimum = 6;
-      var expectedIndexMaximum = 8;
-      var (actualIndexMinimum, actualIndexMaximum) = span.GetInfimumAndSupremum(60, n => n, null);
+      var expectedIndexMin = 6;
+      var expectedIndexMax = 8;
 
-      Assert.AreEqual(expectedIndexMinimum, actualIndexMinimum);
-      Assert.AreEqual(expectedIndexMaximum, actualIndexMaximum);
+      var (actualIndexMin, actualValueMin, actualIndexMax, actualValueMax) = span.GetInfimumAndSupremum(60, n => n, null);
+
+      Assert.AreEqual(expectedIndexMin, actualIndexMin);
+      Assert.AreEqual(expectedIndexMax, actualIndexMax);
     }
 
     [TestMethod]

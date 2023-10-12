@@ -8,11 +8,15 @@ namespace Flux
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      using var e = source.ThrowOnNull().GetEnumerator();
+      var index = 0;
 
-      for (var index = 0; e.MoveNext(); index++)
-        if (predicate(e.Current, index))
-          return (e.Current, index);
+      foreach (var item in source.ThrowOnNull())
+      {
+        if (predicate(item, index))
+          return (item, index);
+
+        index++;
+      }
 
       return (value, -1);
     }

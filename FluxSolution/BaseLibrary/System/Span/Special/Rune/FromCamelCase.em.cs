@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class SpanBuilderExtensionMethods
   {
-    /// <summary>Inserts a space in front of any single upper case character, except the first one in the string.</summary>
+    /// <summary>Inserts a space in front of any single upper case character, except the first one in the string. Uses the specified culture, or the current culture if null.</summary>
     public static System.Span<System.Text.Rune> FromCamelCase(this System.Span<System.Text.Rune> source, System.Func<System.Text.Rune, bool> predicate, System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
@@ -21,6 +21,9 @@ namespace Flux
 
       return source;
     }
-    public static System.Span<System.Text.Rune> FromCamelCase(this System.Span<System.Text.Rune> source) => FromCamelCase(source, System.Text.Rune.IsWhiteSpace);
+
+    /// <summary>Inserts a space in front of any single upper case character, except the first one in the string. Uses the specified culture, or the invariant culture if null.</summary>
+    public static System.Span<System.Text.Rune> FromCamelCase(this System.Span<System.Text.Rune> source, System.Globalization.CultureInfo? culture = null)
+      => source.FromCamelCase(System.Text.Rune.IsWhiteSpace, culture ?? System.Globalization.CultureInfo.InvariantCulture);
   }
 }

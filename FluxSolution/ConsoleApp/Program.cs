@@ -85,7 +85,7 @@ namespace ConsoleApp
       var bfrs = bfr.ToBinaryString();
       var bl = bi.GetShortestBitLength();
       var bln = bi.GetBitLength();
-      var l2 = bi.IntegerLog2();
+      //var l2 = bi.IntegerLog2();
       var ms1b = bi.GetMostSignificant1Bit();
       var bmr = bi.BitMaskRight();
       var bmrs = bmr.ToBinaryString();
@@ -169,10 +169,20 @@ namespace ConsoleApp
     //  return value.RoundToBoundaries(mode, potentialPrimeTowardZero, potentialPrimeAwayFromZero);
     //}
 
+    public static System.Span<char> Transform(System.Span<char> source, System.Func<(char left, char current, char right), int, char> transformSelector)
+    {
+      for (var index = 0; index < source.Length; index++)
+        source[index] = transformSelector((index > 0 ? source[index - 1] : '\0', source[index], index < source.Length - 1 ? source[index + 1] : '\0'), index);
+
+      return source;
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      var span = new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 };
 
       //var app = GetAscendingPotentialPrimes(0).Take(30);
       //foreach (var pp in app)

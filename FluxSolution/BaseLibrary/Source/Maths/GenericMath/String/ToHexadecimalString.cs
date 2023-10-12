@@ -8,7 +8,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
     public static string ToHexadecimalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 16, Bits.MaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
+      => ToRadixString(value, 16, Bits.GetMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
 
 #else
 

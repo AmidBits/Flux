@@ -8,7 +8,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
     public static string ToOctalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 8, Bits.MaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
+      => ToRadixString(value, 8, Bits.GetMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
 
 #else
 

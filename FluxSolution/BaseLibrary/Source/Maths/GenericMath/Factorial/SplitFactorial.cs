@@ -24,7 +24,7 @@ namespace Flux
       var currentN = TSelf.One;
 
       TSelf h = TSelf.Zero, shift = TSelf.Zero, high = TSelf.One;
-      var log2n = source.IntegerLog2(); // System.Nu merics.BigInteger.Log(n);
+      var log2n = int.CreateChecked(TSelf.Log2(source)); // System.Nu merics.BigInteger.Log(n);
 
       while (h != source)
       {
