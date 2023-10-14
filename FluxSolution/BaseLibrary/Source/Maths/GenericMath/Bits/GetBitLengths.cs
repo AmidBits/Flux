@@ -25,38 +25,38 @@ namespace Flux
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    public static int ShortestBitLength(this System.Numerics.BigInteger value) => (int)value.GetBitLength();
+    public static int GetShortestBitLength(this System.Numerics.BigInteger value) => (int)value.GetBitLength();
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    public static int ShortestBitLength(this int value) => unchecked(((uint)value).ShortestBitLength());
+    public static int GetShortestBitLength(this int value) => unchecked(((uint)value).GetShortestBitLength());
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    public static int ShortestBitLength(this long value) => unchecked(((ulong)value).ShortestBitLength());
+    public static int GetShortestBitLength(this long value) => unchecked(((ulong)value).GetShortestBitLength());
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    [System.CLSCompliant(false)] public static int ShortestBitLength(this uint value) => 1 + System.Numerics.BitOperations.Log2(value);
+    [System.CLSCompliant(false)] public static int GetShortestBitLength(this uint value) => 1 + System.Numerics.BitOperations.Log2(value);
 
     /// <summary>Returns the number of bits in the minimal two's-complement representation of the number.</summary>
     /// <remarks>This is using the .NET built-in functionality, unmodified.</remarks>
-    [System.CLSCompliant(false)] public static int ShortestBitLength(this ulong value) => 1 + System.Numerics.BitOperations.Log2(value);
+    [System.CLSCompliant(false)] public static int GetShortestBitLength(this ulong value) => 1 + System.Numerics.BitOperations.Log2(value);
 
     /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns (<paramref name="value"/>.GetByteCount() * 8) instead.</summary>
-    public static int BitLength(this System.Numerics.BigInteger value) => value < 0 ? value.GetByteCount() * 8 : (int)value.GetBitLength();
+    public static int GetBitLength(this System.Numerics.BigInteger value) => value < 0 ? value.GetByteCount() * 8 : (int)value.GetBitLength();
 
     /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns 32 instead.</summary>
-    public static int BitLength(this int value) => value < 0 ? 32 : 1 + System.Numerics.BitOperations.Log2(unchecked((uint)value));
+    public static int GetBitLength(this int value) => value < 0 ? 32 : 1 + System.Numerics.BitOperations.Log2(unchecked((uint)value));
 
     /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns 64 instead.</summary>
-    public static int BitLength(this long value) => value < 0 ? 64 : 1 + System.Numerics.BitOperations.Log2(unchecked((ulong)value));
+    public static int GetBitLength(this long value) => value < 0 ? 64 : 1 + System.Numerics.BitOperations.Log2(unchecked((ulong)value));
 
     /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns 32 instead.</summary>
-    [System.CLSCompliant(false)] public static int BitLength(this uint value) => 1 + System.Numerics.BitOperations.Log2(value);
+    [System.CLSCompliant(false)] public static int GetBitLength(this uint value) => 1 + System.Numerics.BitOperations.Log2(value);
 
     /// <summary>This version of bit-length is the same as <see cref="BitLength{TSelf}(TSelf)"/> except for negative values, where this returns 64 instead.</summary>
-    [System.CLSCompliant(false)] public static int BitLength(this ulong value) => 1 + System.Numerics.BitOperations.Log2(value);
+    [System.CLSCompliant(false)] public static int GetBitLength(this ulong value) => 1 + System.Numerics.BitOperations.Log2(value);
 
 #endif
   }

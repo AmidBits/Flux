@@ -52,7 +52,7 @@ namespace ConsoleApp
 
       var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
 
-      var p2tz = quotient.GetMostSignificant1Bit();
+      var p2tz = quotient.MostSignificant1Bit();
       var p2afz = (p2tz < quotient || remainder > 0) ? (p2tz == 0 ? 1 : p2tz << 1) : p2tz;
 
       var p2tzp = p2tz == value ? p2tz >> 1 : p2tz;
@@ -60,8 +60,8 @@ namespace ConsoleApp
 
       var n = (short.MaxValue - sbyte.MaxValue);
 
-      var rn = n.BinaryToGray();
-      var rrn = rn.GrayToBinary();
+      //var rn = n.BinaryToGray();
+      //var rrn = rn.GrayToBinary();
 
       //      n = 0;
       var ns = n.ToBinaryString();
@@ -86,7 +86,7 @@ namespace ConsoleApp
       var bl = bi.GetShortestBitLength();
       var bln = bi.GetBitLength();
       //var l2 = bi.IntegerLog2();
-      var ms1b = bi.GetMostSignificant1Bit();
+      var ms1b = bi.MostSignificant1Bit();
       var bmr = bi.BitMaskRight();
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
@@ -184,20 +184,9 @@ namespace ConsoleApp
 
       var span = new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 };
 
-      //var app = GetAscendingPotentialPrimes(0).Take(30);
-      //foreach (var pp in app)
-      //  System.Console.WriteLine(pp);
 
-      //for (var i = 0; i < 30; i++)
-      //{
-      //  var n = RoundToPotentialPrime(i, RoundingMode.HalfTowardZero, out var tz, out var afz);
 
-      //  var dpp = Flux.NumberSequences.PrimeNumberReverse.GetDescendingPotentialPrimes(i).First();
-      //  var app = Flux.NumberSequences.PrimeNumber.GetAscendingPotentialPrimes(i).First();
-
-      //  System.Console.WriteLine($"{i:D2} : {n} : ({tz}, {afz}) : ({dpp}, {app})");
-      //}
-
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => EvaluateNumericStuff(), 1));
     }
 
     private static void Main(string[] args)

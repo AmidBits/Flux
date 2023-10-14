@@ -14,11 +14,9 @@ namespace Flux
 
       var aggregate = initiator();
 
-      using var e = source.ThrowOnNull().GetEnumerator();
-
-      while (e.MoveNext())
+      foreach (var item in source.ThrowOnNull())
       {
-        aggregate = aggregator(aggregate, e.Current, index);
+        aggregate = aggregator(aggregate, item, index);
 
         index++;
       }
@@ -36,11 +34,9 @@ namespace Flux
 
       var aggregate = initiator();
 
-      using var e = source.ThrowOnNull().GetEnumerator();
-
-      while (e.MoveNext())
+      foreach (var item in source.ThrowOnNull())
       {
-        aggregate = aggregator((aggregate, e.Current, index));
+        aggregate = aggregator((aggregate, item, index));
 
         index++;
       }

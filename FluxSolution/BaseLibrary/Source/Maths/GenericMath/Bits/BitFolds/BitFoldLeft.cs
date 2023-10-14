@@ -24,9 +24,9 @@ namespace Flux
     /// <returns>All bits set from LSB up, or -1 if the value is less than zero.</returns>
     public static System.Numerics.BigInteger BitFoldLeft(this System.Numerics.BigInteger value)
     {
-      var tzc = value.TrailingZeroCount();
+      var tzc = value.GetTrailingZeroCount();
 
-      return (value << value.LeadingZeroCount()).BitFoldRight() >> tzc << tzc;
+      return (value << value.GetLeadingZeroCount()).BitFoldRight() >> tzc << tzc;
 
       //for (var i = value.GetBitCount() >> 1; i > 0; i--)
       //  value |= value >> i;
@@ -39,9 +39,9 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static uint BitFoldLeft(this uint value)
     {
-      var tzc = value.TrailingZeroCount();
+      var tzc = value.GetTrailingZeroCount();
 
-      return (value << value.LeadingZeroCount()).BitFoldRight() >> tzc << tzc;
+      return (value << value.GetLeadingZeroCount()).BitFoldRight() >> tzc << tzc;
 
       //value |= (value << 1);
       //value |= (value << 2);
@@ -53,9 +53,9 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static ulong BitFoldLeft(this ulong value)
     {
-      var tzc = value.TrailingZeroCount();
+      var tzc = value.GetTrailingZeroCount();
 
-      return (value << value.LeadingZeroCount()).BitFoldRight() >> tzc << tzc;
+      return (value << value.GetLeadingZeroCount()).BitFoldRight() >> tzc << tzc;
 
       //value |= (value << 1);
       //value |= (value << 2);

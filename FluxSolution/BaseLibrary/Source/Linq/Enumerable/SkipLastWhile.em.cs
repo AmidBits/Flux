@@ -15,15 +15,11 @@ namespace Flux
       foreach (var item in source)
       {
         if (predicate(item, counter++))
-        {
           buffer.Enqueue(item);
-        }
         else
         {
           while (buffer.Count > 0)
-          {
             yield return buffer.Dequeue();
-          }
 
           yield return item;
         }

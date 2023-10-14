@@ -11,13 +11,11 @@ namespace Flux
 
       var aggregate = initiator();
 
-      using var e = source.ThrowOnNull().GetEnumerator();
-
-      while (e.MoveNext())
+      foreach (var item in source.ThrowOnNull())
       {
-        aggregate = accumulator(aggregate, e.Current, index);
+        aggregate = accumulator(aggregate, item, index);
 
-        yield return (aggregate, e.Current, index);
+        yield return (aggregate, item, index);
 
         index++;
       }

@@ -115,7 +115,7 @@ namespace GenericMath
     [TestMethod]
     public void MostSignificant1Bit()
     {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().GetMostSignificant1Bit());
+      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().MostSignificant1Bit());
     }
 
     [TestMethod]

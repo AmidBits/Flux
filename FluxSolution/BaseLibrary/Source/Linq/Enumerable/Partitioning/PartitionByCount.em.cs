@@ -14,7 +14,8 @@ namespace Flux
 
       var quotient = System.Math.DivRem(source.ThrowOnNull().Count(), partitionsCount, out var remainder);
 
-      return source.PartitionBySize(quotient + System.Math.Sign(remainder), resultSelector);
+      //return source.PartitionBySize(quotient + System.Math.Sign(remainder), resultSelector);
+      return source.Chunk(quotient + System.Math.Sign(remainder)).Select(resultSelector);
     }
 
     /// <summary>Partition the sequence into a specified number of list. The last partition may contain less elements than the other partitions.</summary>

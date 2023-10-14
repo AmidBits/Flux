@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Linq;
 
 namespace Flux
@@ -10,9 +11,7 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      using var se = source.ThrowOnNull().GetEnumerator();
-
-      return target.All(t => se.MoveNext() && equalityComparer.Equals(t, se.Current));
+      return source.Zip(target).All(z => equalityComparer.Equals(z.First, z.Second));
     }
   }
 }

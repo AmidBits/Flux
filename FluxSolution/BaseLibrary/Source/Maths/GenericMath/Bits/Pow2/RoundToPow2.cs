@@ -7,50 +7,19 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Find the nearest (to <paramref name="value"/>) two (optionally <paramref name="proper"/>) power-of-2.</summary>
+    /// <summary>Find the nearest (to <paramref name="value"/>) of two power-of-2, using the specified <see cref="RoundingMode"/> <paramref name="mode"/> to resolve any halfway conflict, and also return both power-of-2 as out parameters.</summary>
     /// <param name="value">The value for which the nearest power-of-2 will be found.</param>
     /// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
-    /// <returns>The nearest two power-of-2 to <paramref name="value"/>.</returns>
-    public static (TSelf Pow2TowardsZero, TSelf Pow2AwayFromZero) LocatePow2<TSelf>(this TSelf value, bool proper)
+    /// <param name="mode">The halfway rounding mode to use, when halfway between two values.</param>
+    /// <param name="pow2TowardsZero">Outputs the power-of-2 that is closer to zero.</param>
+    /// <param name="pow2AwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
+    /// <returns>The nearest two power-of-2 to value.</returns>
+    public static TSelf RoundToPow2<TSelf>(this TSelf value, bool proper, RoundingMode mode, out TSelf pow2TowardsZero, out TSelf pow2AwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (TSelf.IsNegative(value))
-      {
-        var (pow2TowardsZero, pow2AwayFromZero) = LocatePow2(TSelf.Abs(value), proper);
+      (pow2TowardsZero, pow2AwayFromZero) = LocatePow2(value, proper);
 
-        return (-pow2TowardsZero, -pow2AwayFromZero);
-      }
-      else // The value is positive/greater-than-zero.
-      {
-        var quotient = value.TruncMod(TSelf.One, out var remainder);
-
-        if (quotient.IsPow2())
-        {
-          if (proper)
-          {
-            return (
-              TSelf.IsZero(remainder) ? quotient >> 1 : quotient,
-              quotient << 1
-            );
-          }
-          else
-          {
-            return (
-              quotient,
-              TSelf.IsZero(remainder) ? quotient : quotient << 1
-            );
-          }
-        }
-        else // It's a positive NOT power-of-2 number.
-        {
-          var ms1b = GetMostSignificant1Bit(quotient);
-
-          return (
-            ms1b, // Use the MS1B for power-of-two closer to zero.
-            ms1b << 1 // Use the next greater MS1B for power-of-two farther from zero.
-          );
-        }
-      }
+      return value.RoundToBoundaries(mode, pow2TowardsZero, pow2AwayFromZero);
     }
 
 #else
@@ -71,7 +40,7 @@ namespace Flux
     /// <param name="value">The value for which the nearest power-of-2 towards zero will be found.</param>
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be toward zero and never equal to value.</param>
     public static System.Numerics.BigInteger RoundToPowOf2Tz(this System.Numerics.BigInteger value)
-      => value.AssertNonNegative().TruncMod(System.Numerics.BigInteger.One, out var _).GetMostSignificant1Bit();
+      => value.AssertNonNegative().TruncMod(System.Numerics.BigInteger.One, out var _).MostSignificant1Bit();
 
     /// <summary>Get the power-of-2 nearest to value, toward zero.</summary>
     /// <param name="value">The value for which the nearest power-of-2 towards zero will be found.</param>
@@ -116,7 +85,7 @@ namespace Flux
         }
         else // It's a positive non-power-of-two number.
         {
-          pow2TowardsZero = quotient.GetMostSignificant1Bit(); // Use the MS1B for power-of-two closer to zero.
+          pow2TowardsZero = quotient.MostSignificant1Bit(); // Use the MS1B for power-of-two closer to zero.
           pow2AwayFromZero = pow2TowardsZero << 1; // Use the next greater MS1B for power-of-two farther from zero.
         }
       }

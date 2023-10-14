@@ -163,7 +163,7 @@
     /// <param name="value">The value for which the nearest power-of-2 towards zero will be found.</param>
     /// <param name="proper">If true, ensure the power-of-2 are not equal to value, i.e. the power-of-2 will always be toward zero and never equal to value.</param>
     public static System.Numerics.BigInteger RoundToPowOf2TowardZero(this double value)
-      => new System.Numerics.BigInteger((value < 0 ? throw new System.ArgumentOutOfRangeException(nameof(value)) : value).TruncMod(1, out var _)).GetMostSignificant1Bit();
+      => new System.Numerics.BigInteger((value < 0 ? throw new System.ArgumentOutOfRangeException(nameof(value)) : value).TruncMod(1, out var _)).MostSignificant1Bit();
 
     #endregion Direct (non-halfway) rounding functions
 
