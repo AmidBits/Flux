@@ -13,12 +13,12 @@ namespace Flux
     {
       var bytes = new byte[value.GetByteCount()]; // Retrieve the byte size of the number, which will be the basis for the bit reversal.
 
-      value.WriteBigEndian(bytes); // Write as BigEndian ('left-to-right').
+      value.WriteBigEndian(bytes); // Write as BigEndian (high-to-low).
 
       for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
         ReverseBits(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-      return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(value.GetType())); // Read as LittleEndian ('right-to-left').
+      return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(typeof(TSelf))); // Read as LittleEndian (low-to-high).
     }
 
 #else
@@ -69,6 +69,12 @@ namespace Flux
 
 #endif
 
+    //[System.CLSCompliant(false)]
+    //public static void ReverseBits(ref this sbyte value) => value = unchecked((sbyte)BitSwap32(BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1((byte)value)))))));
+    //public static void ReverseBits(ref this short value) => value = unchecked((short)BitSwap32(BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1((ushort)value)))))));
+    //public static void ReverseBits(ref this int value) => value = unchecked((int)BitSwap32(BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1((uint)value)))))));
+    //public static void ReverseBits(ref this long value) => value = unchecked((long)BitSwap32(BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1((ulong)value)))))));
+
     /// <summary>In-place (by ref) mirror the bits (bit-reversal) of a byte, i.e. trade place of bit 7 with bit 0 and bit 6 with bit 1 and so on.</summary>
     /// <see href="http://www.inwap.com/pdp10/hbaker/hakmem/hakmem.html"/>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
@@ -97,7 +103,8 @@ namespace Flux
     //  //value = (tmp + (tmp << 4)) ^ value;
     //  //tmp = (value ^ (value >> 2)) & 0x22488842;
     //  //value = (tmp + (tmp << 2)) ^ value;
-
+    //}
+    //{
     //  value = ((value & 0xaaaaaaaa) >> 0x01) | ((value & 0x55555555) << 0x01);
     //  value = ((value & 0xcccccccc) >> 0x02) | ((value & 0x33333333) << 0x02);
     //  value = ((value & 0xf0f0f0f0) >> 0x04) | ((value & 0x0f0f0f0f) << 0x04);

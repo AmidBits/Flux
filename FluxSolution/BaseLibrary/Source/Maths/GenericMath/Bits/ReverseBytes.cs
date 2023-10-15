@@ -13,9 +13,9 @@ namespace Flux
     {
       var bytes = new byte[value.GetByteCount()]; // Retrieve the byte size of the number, which will be the basis for the byte reversal.
 
-      value.WriteBigEndian(bytes);
+      value.WriteBigEndian(bytes); // Write as BigEndian (high-to-low).
 
-      return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(value.GetType()));
+      return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(typeof(TSelf))); // Read as LittleEndian (low-to-high).
     }
 
 #else

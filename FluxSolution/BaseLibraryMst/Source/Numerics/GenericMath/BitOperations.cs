@@ -123,14 +123,16 @@ namespace GenericMath
     {
       // Somehow BigInteger must differ between .NET version 6 and 7. 
 
-      Assert.AreEqual(65536, Flux.Bits.ReverseBits(32768)); // This works on .NET 7, but not on .NET 6.
-      Assert.AreEqual(268435456, Flux.Bits.ReverseBits(8)); // This works on .NET 6, but not on .NET 7.
+      Assert.AreEqual(0x00010000, Flux.Bits.ReverseBits(0x00008000.ToBigInteger())); // This works on .NET 7, but not on .NET 6.
+      Assert.AreEqual(0x10000000, Flux.Bits.ReverseBits(0x00000008.ToBigInteger())); // This works on .NET 6, but not on .NET 7.
+
+      Assert.AreEqual(unchecked((int)0xFFFFFFFE).ToBigInteger(), 0x7FFFFFFF.ToBigInteger().ReverseBits());
     }
 
     [TestMethod]
     public void ReverseBytes()
     {
-      Assert.AreEqual(65536, Flux.Bits.ReverseBytes(256));
+      Assert.AreEqual(0x00010000, Flux.Bits.ReverseBytes(0x00000100));
     }
 
     //public static void Test()
