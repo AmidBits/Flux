@@ -27,7 +27,7 @@ namespace Flux.Units
 
     public Angle ToAngle() => new(m_latitude, AngleUnit.Degree);
 
-    public string ToSexagesimalDegreeString(DmsFormat format = DmsFormat.DegreesMinutesDecimalSeconds, bool preferUnicode = true, bool useSpaces = false)
+    public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool preferUnicode = true, bool useSpaces = false)
       => Angle.ToDmsString(m_latitude, format, CardinalAxis.NorthSouth, -1, preferUnicode, useSpaces);
 
     #region Static methods
@@ -114,12 +114,12 @@ namespace Flux.Units
     {
       if (format is not null)
       {
-        if (format.StartsWith(DmsFormat.DegreesMinutesDecimalSeconds.GetAcronymString()))
-          return ToSexagesimalDegreeString(DmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '));
-        if (format.StartsWith(DmsFormat.DegreesDecimalMinutes.GetAcronymString()))
-          return ToSexagesimalDegreeString(DmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '));
-        if (format.StartsWith(DmsFormat.DecimalDegrees.GetAcronymString()))
-          return ToSexagesimalDegreeString(DmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '));
+        if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronymString()))
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '));
+        if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronymString()))
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '));
+        if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronymString()))
+          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '));
 
         return ToAngle().ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
       }

@@ -1,5 +1,22 @@
 ﻿namespace Flux
 {
+  public static partial class ExtensionMethods
+  {
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitQuantifiable<TType, TUnit> source, string? format = null, bool preferUnicode = true, bool useFullName = false)
+#if NET7_0_OR_GREATER
+      where TType : System.Numerics.INumberBase<TType>
+#endif
+      where TUnit : notnull, System.Enum
+    {
+      var d = new System.Collections.Generic.Dictionary<TUnit, string>();
+
+      foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
+        d.Add(unit, source.ToUnitString(unit, format, preferUnicode, useFullName));
+
+      return d;
+    }
+  }
+
   /// <summary>An interface representing a qunatifiable value that can be converted to other units.</summary>
   /// <typeparam name="TType">The value type.</typeparam>
   /// <typeparam name="TUnit">The unit enum.</typeparam>

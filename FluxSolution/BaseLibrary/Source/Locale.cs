@@ -26,6 +26,9 @@ namespace Flux
     public static System.Version EnvironmentOsVersion
       => System.Environment.OSVersion.ToString() is var s && System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version) ? version : throw new System.NotSupportedException();
 
+    /// <summary>Returns a dictionary of all environment variables.</summary>
+    public static System.Collections.IDictionary EnvironmentVariables => System.Environment.GetEnvironmentVariables();
+
     /// <summary>Returns the descriptive text of the hosting framework.</summary>
     public static string FrameworkTitle
       => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription is var s ? s[..s.Trim().LastIndexOf(' ')] : string.Empty;

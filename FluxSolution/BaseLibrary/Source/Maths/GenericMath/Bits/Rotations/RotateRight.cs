@@ -5,9 +5,13 @@ namespace Flux
 
   public static partial class Bits
   {
+#if NET7_0_OR_GREATER
+
     /// <summary>Using the built-in <see cref="System.Numerics.IBinaryInteger{TSelf}.RotateRight(TSelf, int)"/>.</summary>
     public static TSelf RotateRight<TSelf>(this TSelf value, int rotateAmount)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.RotateRight(value, rotateAmount);
+
+#endif
   }
 }

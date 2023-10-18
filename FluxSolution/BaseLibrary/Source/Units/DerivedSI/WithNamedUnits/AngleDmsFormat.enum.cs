@@ -2,19 +2,19 @@
 {
   public static partial class UnitsExtensionMethods
   {
-    public static string GetAcronymString(this Units.DmsFormat format)
+    public static string GetAcronymString(this Units.AngleDmsFormat format)
     => format switch
     {
-      Units.DmsFormat.DecimalDegrees => "D",
-      Units.DmsFormat.DegreesDecimalMinutes => "DM",
-      Units.DmsFormat.DegreesMinutesDecimalSeconds => "DMS",
+      Units.AngleDmsFormat.DecimalDegrees => "D",
+      Units.AngleDmsFormat.DegreesDecimalMinutes => "DM",
+      Units.AngleDmsFormat.DegreesMinutesDecimalSeconds => "DMS",
       _ => throw new System.NotImplementedException(),
     };
   }
 
   namespace Units
   {
-    public enum DmsFormat
+    public enum AngleDmsFormat
     {
       /// <summary>A.k.a. "D" notation.</summary>
       DecimalDegrees,

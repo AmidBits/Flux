@@ -1,10 +1,14 @@
 ﻿namespace Flux
 {
-  /// <summary>Represents a value set, for various set operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable to operate.</summary>
+  /// <summary>
+  /// <para>Represents a value set, for various set operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable to operate.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Interval_(mathematics)"/>
+  /// </summary>
   public readonly record struct IntervalSet<TValue>
     : System.IComparable<IntervalSet<TValue>>
     where TValue : System.IComparable<TValue>
   {
+    /// <remarks>The default set is using the default(<typeparamref name="TValue"/>) and so representing a degenerate set with a value of zero for any standard numerical types (int, long, BigInteger, etc.).</remarks>
     public readonly static IntervalSet<TValue> Default;
 
     private readonly TValue m_max;
@@ -25,10 +29,8 @@
     public bool IsDefault => Equals(Default);
 
     /// <summary>Returns whether the set is a degenerate interval.</summary>
+    /// <remarks>The default set is included in this definition.</remarks>
     public bool IsDegenerateInterval => m_min.CompareTo(m_max) == 0 && m_max.CompareTo(m_min) == 0;
-
-    /// <summary>Returns whether this is a proper interval, i.e. neither empty nor degenerate.</summary>
-    public bool IsProperInterval => m_min.CompareTo(m_max) < 0 && m_max.CompareTo(m_min) > 0;
 
     /// <summary>Asserts that the value is a member of the interval set (throws an exception if it's not).</summary>
     /// <exception cref="System.NotImplementedException"></exception>

@@ -5,7 +5,7 @@
 #pragma warning disable IDE0060 // Remove unused parameter
     public static string GetUnitSpacing(this Units.AngleUnit unit, bool preferUnicode, bool useFullName)
 #pragma warning restore IDE0060 // Remove unused parameter
-      => (unit == Units.AngleUnit.Degree && preferUnicode) || unit == Units.AngleUnit.Arcminute || unit == Units.AngleUnit.Arcsecond ? string.Empty : " ";
+      => (unit == Units.AngleUnit.Degree && preferUnicode) || (unit == Units.AngleUnit.Gradian && preferUnicode) || unit == Units.AngleUnit.Arcminute || unit == Units.AngleUnit.Arcsecond ? string.Empty : " ";
 
     public static string GetUnitString(this Units.AngleUnit unit, bool preferUnicode, bool useFullName)
       => useFullName ? unit.ToString() : unit switch
@@ -13,11 +13,12 @@
         Units.AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
         Units.AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
         Units.AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
-        Units.AngleUnit.Gradian => "grad",
-        Units.AngleUnit.NatoMil => "mils",
+        Units.AngleUnit.Gradian => preferUnicode ? "\u1D4D" : "gon",
+        Units.AngleUnit.NatoMil => "mils (NATO)",
         Units.AngleUnit.Milliradian => "mrad",
         Units.AngleUnit.Radian => preferUnicode ? "\u33AD" : "rad",
         Units.AngleUnit.Turn => "turns",
+        Units.AngleUnit.WarsawPactMil => "mils (Warsaw Pact)",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -37,6 +38,8 @@
       /// <summary>This is sometimes also refered to as a 'mil'.</summary>
       Milliradian,
       Turn,
+      /// <summary>This is the Warsaw pact angle of mils.</summary>
+      WarsawPactMil,
     }
 
     /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
@@ -65,6 +68,7 @@
           AngleUnit.Milliradian => ConvertMilliradianToRadian(value),
           AngleUnit.Radian => value,
           AngleUnit.Turn => ConvertTurnToRadian(value),
+          AngleUnit.WarsawPactMil => ConvertWarsawPactMilToRadian(value),
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
@@ -104,8 +108,8 @@
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
       public static double ConvertCartesian2ToRotationAngleEx(double x, double y) => System.Math.Tau - ConvertCartesian2ToRotationAngle(y, -x);
 
-      /// <summary>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal (degrees, decimalMinutes), e.g. (32, 13.3).</summary>
-      private static (double degrees, double decimalMinutes) ConvertDecimalDegreesToDm(double decimalDegrees)
+      /// <summary>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal unit subdivisions (degrees, decimalMinutes), e.g. (32, 13.3).</summary>
+      private static (double degrees, double decimalMinutes) ConvertDecimalDegreesToDdm(double decimalDegrees)
       {
         var absDegrees = System.Math.Abs(decimalDegrees);
         var floorAbsDegrees = System.Math.Floor(absDegrees);
@@ -116,18 +120,18 @@
         return (degrees, decimalMinutes);
       }
 
-      /// <summary>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal (degrees, minutes, decimalSeconds), e.g. (32, 13, 18), and returns the <paramref name="decimalMinutes"/>, e.g. 13.3, as an out parameter.</summary>
+      /// <summary>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal unit subdivisions (degrees, minutes, decimalSeconds), e.g. (32, 13, 18), and returns the <paramref name="decimalMinutes"/>, e.g. 13.3, as an out parameter.</summary>
       public static (double degrees, double minutes, double decimalSeconds) ConvertDecimalDegreesToDms(double decimalDegrees, out double decimalMinutes)
       {
-        (var degrees, decimalMinutes) = ConvertDecimalDegreesToDm(decimalDegrees);
+        (var degrees, decimalMinutes) = ConvertDecimalDegreesToDdm(decimalDegrees);
 
-        var (minutes, decimalSeconds) = ConvertDecimalMinutesToMs(decimalMinutes);
+        var (minutes, decimalSeconds) = ConvertDecimalMinutesToMds(decimalMinutes);
 
         return (degrees, minutes, decimalSeconds);
       }
 
-      /// <summary>Converts a <paramref name="decimalMinutes"/>, e.g. 13.3, to sexagesimal (minutes, decimalSeconds), e.g. (13, 18).</summary>
-      private static (double minutes, double decimalSeconds) ConvertDecimalMinutesToMs(double decimalMinutes)
+      /// <summary>Converts a <paramref name="decimalMinutes"/>, e.g. 13.3, to sexagesimal unit subdivisions (minutes, decimalSeconds), e.g. (13, 18).</summary>
+      private static (double minutes, double decimalSeconds) ConvertDecimalMinutesToMds(double decimalMinutes)
       {
         var absMinutes = System.Math.Abs(decimalMinutes);
 
@@ -171,6 +175,8 @@
 
       public static double ConvertNatoMilToRadian(double milAngle) => milAngle * System.Math.PI / 3200;
 
+      public static double ConvertWarsawPactMilToRadian(double milAngle) => milAngle * System.Math.PI / 3000;
+
       /// <summary>Convert the angle specified in radians to arcminutes.</summary>
       public static double ConvertRadianToArcminute(double radAngle) => radAngle * 3437.746771;
 
@@ -188,6 +194,8 @@
       public static double ConvertRadianToNatoMil(double radAngle) => radAngle * 3200 / System.Math.PI;
 
       public static double ConvertRadianToTurn(double radAngle) => radAngle / System.Math.Tau;
+
+      public static double ConvertRadianToWarsawPactMil(double radAngle) => radAngle * 3000 / System.Math.PI;
 
       /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (i.e. radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
@@ -211,7 +219,7 @@
       /// <summary></summary>
       /// <see href="https://en.wikipedia.org/wiki/ISO_6709"/>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static string ToDmsString(double decimalDegrees, DmsFormat format, CardinalAxis axis, int decimalPoints = -1, bool preferUnicode = false, bool useSpaces = false)
+      public static string ToDmsString(double decimalDegrees, AngleDmsFormat format, CardinalAxis axis, int decimalPoints = -1, bool preferUnicode = false, bool useSpaces = false)
       {
         var (degrees, minutes, decimalSeconds) = ConvertDecimalDegreesToDms(decimalDegrees, out var decimalMinutes);
 
@@ -221,11 +229,11 @@
 
         return format switch
         {
-          DmsFormat.DecimalDegrees
+          AngleDmsFormat.DecimalDegrees
             => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitString(Units.AngleUnit.Degree, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}", true) + directional, // Show as decimal degrees.
-          DmsFormat.DegreesDecimalMinutes
+          AngleDmsFormat.DegreesDecimalMinutes
             => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitString(Units.AngleUnit.Degree, "N0", true) + spacing + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitString(Units.AngleUnit.Arcminute, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}", preferUnicode) + directional, // Show as degrees and decimal minutes.
-          DmsFormat.DegreesMinutesDecimalSeconds
+          AngleDmsFormat.DegreesMinutesDecimalSeconds
             => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitString(Units.AngleUnit.Degree, "N0", true) + spacing + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitString(Units.AngleUnit.Arcminute, "N0", preferUnicode).PadLeft(3, '0') + spacing + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitString(Units.AngleUnit.Arcsecond, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}", preferUnicode) + directional, // Show as degrees, minutes and decimal seconds.
           _
             => throw new System.ArgumentOutOfRangeException(nameof(format)),
@@ -470,6 +478,7 @@
           AngleUnit.Milliradian => ConvertRadianToMilliradian(m_radAngle),
           AngleUnit.Radian => m_radAngle,
           AngleUnit.Turn => ConvertRadianToTurn(m_radAngle),
+          AngleUnit.WarsawPactMil => ConvertRadianToWarsawPactMil(m_radAngle),
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
       #endregion Implemented interfaces
