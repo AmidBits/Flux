@@ -57,22 +57,14 @@ namespace Flux
 
   namespace Units
   {
-    //** A rational number (commonly called a fraction) is a ratio
-    //** between two integers.  For example (3/6) = (2/4) = (1/2)
-    //**
-    //** Arithmetic
-    //** ----------
-    //** a/b = c/d, iff ad = bc
-    //** -(a/b)     == (-a)/b
-    //** (a/b)^(-1) == b/a, if a != 0
-    //**
-    //** Reduction Algorithm
-    //** ------------------------
-    //** Euclid's algorithm is used to simplify the fraction.
-    //** Calculating the greatest common divisor of two n-digit
-    //** numbers can be found in
-    //**
-    //** O(n(log n)^5 (log log n)) steps as n -> +infinity
+    // A rational number (commonly called a fraction) is a ratio between two integers. For example (3/6) = (2/4) = (1/2)
+    //
+    // a/b = c/d, iff ad = bc
+    // -(a/b)     == (-a)/b
+    // (a/b)^(-1) == b/a, if a != 0
+    //
+    // Euclid's algorithm is used to simplify the fraction.
+    // Calculating the greatest common divisor of two n-digit numbers can be found in O(n(log n)^5 (log log n)) steps as n -> +infinity
 
     /// <summary>
     /// <para>BigRational, unit of rational number, i.e. in the form of numerator and denominator.</para>

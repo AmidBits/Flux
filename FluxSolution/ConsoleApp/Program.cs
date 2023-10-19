@@ -182,6 +182,8 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var il = (new Flux.Geometry.CartesianCoordinate2<double>(10, 10)).InterpolateLinear(new Flux.Geometry.CartesianCoordinate2<double>(-10, -10), new Flux.Geometry.CartesianCoordinate2<double>(-.25, -.25));
+
       var span = new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 };
 
       var angle = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);

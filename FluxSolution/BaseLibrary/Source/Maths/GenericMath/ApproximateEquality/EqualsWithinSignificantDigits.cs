@@ -11,9 +11,10 @@ namespace Flux
     /// <para>EqualsWithinDigitPrecision(1000.02, 1000.015, 2); // The difference of the fraction part is less or equal than 0.01.</para>
     /// <para>EqualsWithinDigitPrecision(1334.261, 1235.272, -2); // The difference of the integer part is less or equal than 100.</para>
     /// </remarks>
-    public static bool EqualsWithinSignificantDigits<TNumber>(this TNumber a, TNumber b, int significantDigits, int radix = 10)
-      where TNumber : System.Numerics.INumber<TNumber>
-      => a == b || (double.CreateChecked(TNumber.Abs(a - b)) <= double.Pow(AssertRadix(radix), -significantDigits));
+    public static bool EqualsWithinSignificantDigits<TValue>(this TValue a, TValue b, int significantDigits, int radix = 10)
+      where TValue : System.Numerics.INumber<TValue>
+      => a == b
+      || (double.CreateChecked(TValue.Abs(a - b)) <= double.Pow(AssertRadix(radix), -significantDigits));
 
 #else
 

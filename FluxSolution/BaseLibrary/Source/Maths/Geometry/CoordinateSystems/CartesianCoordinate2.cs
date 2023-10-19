@@ -36,9 +36,7 @@ namespace Flux
         m_x = x;
         m_y = y;
       }
-      //public CartesianCoordinate2(TSelf value)
-      //  : this(value, value)
-      //{ }
+      public CartesianCoordinate2(TSelf value) : this(value, value) { }
       //public CartesianCoordinate2(TSelf[] array, int startIndex)
       //{
       //  if (array is null) throw new System.ArgumentNullException(nameof(array));

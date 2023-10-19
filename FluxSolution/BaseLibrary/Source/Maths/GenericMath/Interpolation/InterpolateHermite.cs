@@ -17,7 +17,7 @@ namespace Flux
     /// <param name="bias"></param>
     /// <returns></returns>
     public static TSelf InterpolateHermite<TSelf>(this TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu, TSelf tension, TSelf bias)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      where TSelf : System.Numerics.INumberBase<TSelf>
     {
       var one = TSelf.One;
       var two = one + one;

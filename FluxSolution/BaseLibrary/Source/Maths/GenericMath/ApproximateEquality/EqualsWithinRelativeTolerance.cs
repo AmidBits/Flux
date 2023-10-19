@@ -5,11 +5,11 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</summary>
-    public static bool EqualsWithinRelativeTolerance<TValue, TTolerance>(this TValue a, TValue b, TTolerance relativeTolerance)
+    public static bool EqualsWithinRelativeTolerance<TValue, TRelativeTolerance>(this TValue a, TValue b, TRelativeTolerance relativeTolerance)
       where TValue : System.Numerics.INumber<TValue>
-      where TTolerance : System.Numerics.IFloatingPoint<TTolerance>
+      where TRelativeTolerance : System.Numerics.IFloatingPoint<TRelativeTolerance>
       => a == b
-      || TTolerance.CreateChecked(TValue.Abs(a - b)) <= TTolerance.CreateChecked(TValue.Max(TValue.Abs(a), TValue.Abs(b))) * relativeTolerance;
+      || TRelativeTolerance.CreateChecked(TValue.Abs(a - b)) <= TRelativeTolerance.CreateChecked(TValue.Max(TValue.Abs(a), TValue.Abs(b))) * relativeTolerance;
 
 #else
 

@@ -10,7 +10,7 @@ namespace Flux
     /// <param name="mu">The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points, the mu range is [0, 1]. Values of mu outside the range result in extrapolation.</param>
     /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
     public static TSelf InterpolateCosine<TSelf>(this TSelf y1, TSelf y2, TSelf mu)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
+      where TSelf : System.Numerics.ITrigonometricFunctions<TSelf>
     {
       var mu2 = (TSelf.One - TSelf.CosPi(mu)).Divide(2);
 

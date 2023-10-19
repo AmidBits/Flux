@@ -15,7 +15,7 @@ namespace Flux
     /// <param name="mu"></param>
     /// <returns></returns>
     public static TSelf InterpolateCubicPb<TSelf>(this TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      where TSelf : System.Numerics.INumberBase<TSelf>
     {
       var two = TSelf.One + TSelf.One;
       var half = TSelf.One / two;

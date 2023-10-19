@@ -4,11 +4,10 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
     /// <summary>Perform a comparison where the tolerance is the same, no matter how small or large the compared numbers.</summary>
-    public static bool EqualsWithinAbsoluteTolerance<TNumber, TTolerance>(this TNumber a, TNumber b, TTolerance absoluteTolerance)
-      where TNumber : System.Numerics.INumber<TNumber>
-      where TTolerance : System.Numerics.INumber<TTolerance>
+    public static bool EqualsWithinAbsoluteTolerance<TValue>(this TValue a, TValue b, TValue absoluteTolerance)
+      where TValue : System.Numerics.INumber<TValue>
       => a == b
-      || TTolerance.CreateChecked(TNumber.Abs(a - b)) <= absoluteTolerance;
+      || TValue.Abs(a - b) <= absoluteTolerance;
 
 #else
 
