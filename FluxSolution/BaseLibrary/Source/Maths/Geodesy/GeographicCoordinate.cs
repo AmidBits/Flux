@@ -15,9 +15,9 @@ namespace Flux.Geometry
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     private readonly double m_altitude;
-    /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
+    /// <summary>The latitude component of the geographic position in radians. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     private readonly double m_lat;
-    /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
+    /// <summary>The longitude component of the geographic position in radians. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     private readonly double m_lon;
 
     /// <summary></summary>
@@ -28,8 +28,8 @@ namespace Flux.Geometry
     public GeographicCoordinate(double latitude, double longitude, double altitude = 1.0)
     {
       m_altitude = altitude >= MinAltitudeInMeters && altitude <= MaxAltitudeInMeters ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
-      m_lat = new Units.Latitude(latitude).Radians;
-      m_lon = new Units.Longitude(longitude).Radians;
+      m_lat = latitude * (System.Math.PI / 180);
+      m_lon = longitude * (System.Math.PI / 180);
     }
 
     /// <summary></summary>
@@ -39,25 +39,24 @@ namespace Flux.Geometry
     public void Deconstruct(out double altitude, out double latitude, out double longitude)
     {
       altitude = m_altitude;
-      latitude = Latitude.Value;
-      longitude = Longitude.Value;
+      latitude = Latitude;
+      longitude = Longitude;
     }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public Units.Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
+    public double Altitude { get => m_altitude; init => m_altitude = value; }
 
     /// <summary>The diametrical opposite of the <see cref="GeographicCoordinate"/>, i.e. the opposite side of Earth's surface. This is a plain mathematical antipode.</summary>
-    public GeographicCoordinate Antipode => new(0 - Latitude.Value, Longitude.Value - 180, Altitude.Value);
+    public GeographicCoordinate Antipode => new(0 - Latitude, Longitude - 180, Altitude);
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public Units.Latitude Latitude { get => Units.Latitude.FromRadians(m_lat); init => m_lat = value.Radians; } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
-
-    //public double LatitudeInRadians => m_lat;
+    public double Latitude { get => m_lat * (180 / System.Math.PI); init => m_lat = value * (System.Math.PI / 180); } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public Units.Longitude Longitude { get => Units.Longitude.FromRadians(m_lon); init => m_lon = value.Radians; } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
+    public double Longitude { get => m_lon * (180 / System.Math.PI); init => m_lon = value * (System.Math.PI / 180); } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
 
-    //public double LongitudeInRadians => m_lon;
+    public double LatitudeInRadians => m_lat;
+    public double LongitudeInRadians => m_lon;
 
     #region Static members
 
@@ -90,7 +89,7 @@ namespace Flux.Geometry
     {
       metersBoxRadius = System.Math.Max(metersBoxRadius, 1);
 
-      var angularDistance = metersBoxRadius / ellipsoidReference.EquatorialRadius.Value;
+      var angularDistance = metersBoxRadius / ellipsoidReference.EquatorialRadius;
 
       var longitudeDelta = System.Math.Asin(System.Math.Sin(angularDistance) / System.Math.Cos(lat));
 
@@ -413,7 +412,7 @@ namespace Flux.Geometry
     #region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"{Latitude.ToQuantityString(format)} {Longitude.ToQuantityString(format)} {Altitude.ToUnitString(Units.Length.DefaultUnit, "N1").ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToString()}";
+      => $"Latitude: {Latitude}, Longitude: {Longitude}, Altitude: {Altitude}";
 
     #endregion Implemented interfaces
 

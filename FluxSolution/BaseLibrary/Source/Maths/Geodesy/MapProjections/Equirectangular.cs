@@ -12,14 +12,14 @@ namespace Flux.Geometry.MapProjections
 
     public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate project)
       => new(
-        project.Altitude.Value * (project.Longitude.Radians - CenterOfMap.Longitude.Radians) * System.Math.Cos(StandardParallels),
-        project.Altitude.Value * (project.Latitude.Radians - CenterOfMap.Latitude.Radians),
-        project.Altitude.Value
+        project.Altitude * (project.LongitudeInRadians - CenterOfMap.LongitudeInRadians) * System.Math.Cos(StandardParallels),
+        project.Altitude * (project.LatitudeInRadians - CenterOfMap.LatitudeInRadians),
+        project.Altitude
       );
     public IGeographicCoordinate ProjectReverse(ICartesianCoordinate3<double> project)
       => new GeographicCoordinate(
-        Units.Angle.ConvertRadianToDegree(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Radians),
-        Units.Angle.ConvertRadianToDegree(project.Y / project.Z + CenterOfMap.Latitude.Radians),
+        Units.Angle.ConvertRadianToDegree(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.LongitudeInRadians),
+        Units.Angle.ConvertRadianToDegree(project.Y / project.Z + CenterOfMap.LatitudeInRadians),
         project.Z
       );
   }

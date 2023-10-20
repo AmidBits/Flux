@@ -6,9 +6,9 @@
     /// <remarks>All angles in radians.</remarks>
     public static Geometry.SphericalCoordinate ToSphericalCoordinate(this Geometry.IGeographicCoordinate source)
       => new(
-        source.Altitude.Value,
-        System.Math.PI - (source.Latitude.Radians + System.Math.PI / 2),
-        source.Longitude.Radians + System.Math.PI
+        source.Altitude,
+        System.Math.PI - ((source.Latitude * (System.Math.PI / 180)) + System.Math.PI / 2),
+        (source.Longitude * (System.Math.PI / 180)) + System.Math.PI
       );
   }
 
@@ -17,11 +17,14 @@
     public interface IGeographicCoordinate
     {
       /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-      Units.Length Altitude { get; init; }
+      double Altitude { get; init; }
       /// <summary>The latitude component of the geographic position in degrees. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-      Units.Latitude Latitude { get; init; }
+      double Latitude { get; init; }
       /// <summary>The longitude component of the geographic position in degrees. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-      Units.Longitude Longitude { get; init; }
+      double Longitude { get; init; }
+
+      double LatitudeInRadians { get; }
+      double LongitudeInRadians { get; }
     }
   }
 }

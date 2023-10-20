@@ -96,18 +96,6 @@ namespace Flux
       public double Z => m_z;
       /// <summary>The angle component of the rotation.</summary>
       public double Angle => m_angle;
-
-      /// <summary>Create a <see cref="Quantities.Angle"/> from the angle component of the rotation.</summary>
-      /// <returns>The angle component as an <see cref="Quantities.Angle"/>.</returns>
-      public Units.Angle ToAngle()
-        => new(m_angle);
-
-#if NET7_0_OR_GREATER
-      /// <summary>Create an <see cref="CartesianCoordinate3{double}"/> from the axis vector components of the rotation.</summary>
-      /// <returns>The axis vector as a <see cref="CartesianCoordinate3{double}"/>.</returns>
-      public CartesianCoordinate3<double> ToAxis()
-        => new(m_x, m_y, m_z);
-#endif
     }
   }
 }

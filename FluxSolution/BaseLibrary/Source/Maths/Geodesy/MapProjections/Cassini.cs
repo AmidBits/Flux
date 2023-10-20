@@ -10,9 +10,9 @@ namespace Flux.Geometry.MapProjections
     //#pragma warning disable CA1822 // Mark members as static
     public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate project)
       => new(
-        System.Math.Asin(System.Math.Cos(project.Latitude.Radians) * System.Math.Sin(project.Longitude.Radians)),
-        System.Math.Atan(System.Math.Tan(project.Latitude.Radians) / System.Math.Cos(project.Longitude.Radians)),
-        project.Altitude.Value
+        System.Math.Asin(System.Math.Cos(project.LatitudeInRadians) * System.Math.Sin(project.LongitudeInRadians)),
+        System.Math.Atan(System.Math.Tan(project.LatitudeInRadians) / System.Math.Cos(project.LongitudeInRadians)),
+        project.Altitude
       );
     public IGeographicCoordinate ProjectReverse(ICartesianCoordinate3<double> project)
       => new GeographicCoordinate(

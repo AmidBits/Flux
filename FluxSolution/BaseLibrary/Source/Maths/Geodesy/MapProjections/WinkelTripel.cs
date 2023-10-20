@@ -10,8 +10,8 @@ namespace Flux.Geometry.MapProjections
     //#pragma warning disable CA1822 // Mark members as static
     public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate project)
     {
-      var lat = project.Latitude.Radians;
-      var lon = project.Longitude.Radians;
+      var lat = project.LatitudeInRadians;
+      var lon = project.LongitudeInRadians;
 
       var cosLatitude = System.Math.Cos(lat);
 
@@ -20,7 +20,7 @@ namespace Flux.Geometry.MapProjections
       var x = 0.5 * (lon * System.Math.Cos(System.Math.Acos(Maths.PiInto2)) + ((2 * cosLatitude * System.Math.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (System.Math.Sin(lat) / sinc));
 
-      return new(x, y, project.Altitude.Value);
+      return new(x, y, project.Altitude);
     }
     //#pragma warning restore CA1822 // Mark members as static
   }

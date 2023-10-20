@@ -6,7 +6,7 @@ namespace Flux
     double SemiMajorAxis { get; }
     double SemiMinorAxis { get; }
 
-    Units.Length EquatorialRadius { get; }
-    Units.Length PolarRadius { get; }
+    double EquatorialRadius { get; }
+    double PolarRadius { get; }
   }
 }
