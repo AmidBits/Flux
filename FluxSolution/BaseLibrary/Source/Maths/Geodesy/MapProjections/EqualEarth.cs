@@ -8,7 +8,7 @@ namespace Flux.Geometry.MapProjections
     public static readonly EqualEarthProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public CartesianCoordinate3<double> ProjectForward(IGeographicCoordinate location)
+    public System.Numerics.Vector3 ProjectForward(IGeographicCoordinate location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -28,9 +28,9 @@ namespace Flux.Geometry.MapProjections
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new(x, y, location.Altitude);
+      return new((float)x, (float)y, (float)location.Altitude);
     }
-    public IGeographicCoordinate ProjectReverse(ICartesianCoordinate3<double> location)
+    public IGeographicCoordinate ProjectReverse(System.Numerics.Vector3 location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -44,7 +44,7 @@ namespace Flux.Geometry.MapProjections
       var limit = 1e-8;
       var M = System.Math.Sqrt(3) / 2;
 
-      var p = location.Y; // Initial estimate for parametric latitude.
+      var p = (double)location.Y; // Initial estimate for parametric latitude.
       var dp = 0.0; // No change at start.
       var dy = 0.0;
 

@@ -39,9 +39,9 @@ namespace Flux
         );
     }
 
-    public static (Geometry.CartesianCoordinate3<double> axis, Units.Angle angle) ToQuantities(this Geometry.AxisAngle source)
+    public static (System.Numerics.Vector3 axis, Units.Angle angle) ToQuantities(this Geometry.AxisAngle source)
       => (
-        new Geometry.CartesianCoordinate3<double>(source.X, source.Y, source.Z),
+        new System.Numerics.Vector3((float)source.X, (float)source.Y, (float)source.Z),
         new Units.Angle(source.Angle)
       );
 

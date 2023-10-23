@@ -3,18 +3,18 @@
   #region ExtensionMethods
   public static partial class GeometryExtensionMethods
   {
-    /// <summary>Converts the cylindrical coordinates to cartesian 3D coordinates.</summary>
-    /// <remarks>All angles in radians.</remarks>
-    public static Geometry.ICartesianCoordinate3<double> ToCartesianCoordinate3(this Geometry.ICylindricalCoordinate source)
-    {
-      var (sa, ca) = System.Math.SinCos(source.Azimuth);
+    ///// <summary>Converts the cylindrical coordinates to cartesian 3D coordinates.</summary>
+    ///// <remarks>All angles in radians.</remarks>
+    //public static Geometry.ICartesianCoordinate3<double> ToCartesianCoordinate3(this Geometry.ICylindricalCoordinate source)
+    //{
+    //  var (sa, ca) = System.Math.SinCos(source.Azimuth);
 
-      return new Geometry.CartesianCoordinate3<double>(
-            source.Radius * ca,
-            source.Radius * sa,
-            source.Height
-          );
-    }
+    //  return new Geometry.CartesianCoordinate3<double>(
+    //        source.Radius * ca,
+    //        source.Radius * sa,
+    //        source.Height
+    //      );
+    //}
 
     public static Geometry.CylindricalCoordinate ToCylindricalCoordinate(this Geometry.ICylindricalCoordinate source)
       => new(source.Radius, source.Azimuth, source.Height);
@@ -35,6 +35,19 @@
         System.Math.Atan(source.Radius / source.Height),
         source.Azimuth
       );
+
+    /// <summary>Converts the cylindrical coordinates to cartesian 3D coordinates.</summary>
+    /// <remarks>All angles in radians.</remarks>
+    public static System.Numerics.Vector3 ToVector3(this Geometry.ICylindricalCoordinate source)
+    {
+      var (sa, ca) = System.Math.SinCos(source.Azimuth);
+
+      return new(
+            (float)(source.Radius * ca),
+            (float)(source.Radius * sa),
+            (float)source.Height
+          );
+    }
   }
   #endregion ExtensionMethods
 

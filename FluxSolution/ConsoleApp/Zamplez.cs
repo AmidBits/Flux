@@ -418,15 +418,15 @@ namespace ConsoleApp
 
         var sca = gc.ToSphericalCoordinate(); System.Console.WriteLine(sca);
         var cca = sca.ToCylindricalCoordinate(); System.Console.WriteLine(cca);
-        var cc3a = cca.ToCartesianCoordinate3(); System.Console.WriteLine(cc3a);
+        var cc3a = cca.ToVector3(); System.Console.WriteLine(cc3a);
 
         // Show 2D coordinate systems also.
         {
           Flux.Console.WriteWarningLine($" Sub 2D coordinate show-case from the 3D components X and Y.");
 
-          var cc2a = cc3a.ToCartesianCoordinate2XY(); System.Console.Write(' '); System.Console.WriteLine(cc2a);
+          var cc2a = cc3a.ToVector2XY(); System.Console.Write(' '); System.Console.WriteLine(cc2a);
           var pca = cc2a.ToPolarCoordinate(); System.Console.Write(' '); System.Console.WriteLine(pca);
-          var cc2b = pca.ToCartesianCoordinate2(); System.Console.Write(' '); System.Console.WriteLine(cc2b);
+          var cc2b = pca.ToVector2(); System.Console.Write(' '); System.Console.WriteLine(cc2b);
         }
 
         var ccb = cc3a.ToCylindricalCoordinate(); System.Console.WriteLine(ccb);

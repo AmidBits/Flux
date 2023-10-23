@@ -23,8 +23,8 @@
     public int Rows => m_rows;
     public int Columns => m_columns;
 
-    public Geometry.ICartesianCoordinate2<int> Size
-      => new Geometry.CartesianCoordinate2<int>(m_columns, m_rows);
+    public System.Drawing.Point Size
+      => new System.Drawing.Point(m_columns, m_rows);
 
     public System.Collections.Generic.IReadOnlyCollection<(int row, int column)> Keys
       => (System.Collections.Generic.IReadOnlyCollection<(int row, int column)>)m_values.Keys;

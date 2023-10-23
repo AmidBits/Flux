@@ -54,10 +54,6 @@ namespace Flux.Geometry
       return new CircleGeometry(m_sideLength).CreateVectors(6, (x, y) => resultSelector(x, y), radOrientationOffset + radOffset, maxRandomness, rng);
     }
 
-    public CircleGeometry ToCircleGeometry() => new(m_sideLength);
-
-    public EllipseGeometry ToEllipseGeometry() => new(m_sideLength, m_sideLength);
-
     #region Static methods
 
     /// <summary>Create a hexagon geometry by specifying a <paramref name="circumradius"/>, a.k.a. the maximal radius, or the side length of the hexagon.</summary>

@@ -137,9 +137,9 @@ namespace Flux
       );
     }
 
-    public static Geometry.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this Geometry.IHexCoordinate<TSelf> source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => new(source.Q, source.R, source.S);
+    //public static Geometry.CartesianCoordinate3<TSelf> ToCartesianCoordinate3<TSelf>(this Geometry.IHexCoordinate<TSelf> source)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //  => new(source.Q, source.R, source.S);
 
     public static Geometry.IHexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this Geometry.IHexCoordinate<TSelf> source, out Geometry.HexCoordinate<TResult> result)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

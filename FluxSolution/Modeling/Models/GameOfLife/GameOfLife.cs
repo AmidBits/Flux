@@ -5,9 +5,9 @@
   {
     private System.Collections.BitArray m_deadOrAlive;
     private readonly bool m_canLifeLogicWrapAroundEdges;
-    private readonly Geometry.CartesianCoordinate2<int> m_cellGrid;
+    private readonly System.Drawing.Point m_cellGrid;
 
-    public GameOfLife(Geometry.CartesianCoordinate2<int> cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
+    public GameOfLife(System.Drawing.Point cellGrid, bool canLifeLogicWrapAroundEdges, double probabilityOfBeingInitiallyAlive)
     {
       m_deadOrAlive = new System.Collections.BitArray(cellGrid.Y * cellGrid.X);
       m_canLifeLogicWrapAroundEdges = canLifeLogicWrapAroundEdges;
@@ -19,18 +19,18 @@
       {
         for (var c = m_cellGrid.X - 1; c >= 0; c--)
         {
-          var index = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(c, r, m_cellGrid.X);
+          var index = UniqueIndex.ConvertCartesian2ToUniqueIndex(c, r, m_cellGrid.X);
 
           m_deadOrAlive[(int)index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
         }
       }
     }
     public GameOfLife()
-      : this(new Geometry.CartesianCoordinate2<int>(40, 20), true, 0.25)
+      : this(new System.Drawing.Point(40, 20), true, 0.25)
     {
     }
 
-    public Geometry.CartesianCoordinate2<int> CellGrid
+    public System.Drawing.Point CellGrid
       => m_cellGrid;
 
     /// <summary>Moves the board to the next state based on Conway's rules.</summary>
@@ -42,7 +42,7 @@
       {
         for (var c = m_cellGrid.X - 1; c >= 0; c--)
         {
-          var index = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(c, r, m_cellGrid.X);
+          var index = UniqueIndex.ConvertCartesian2ToUniqueIndex(c, r, m_cellGrid.X);
 
           var state = m_deadOrAlive[(int)index];
 
@@ -75,13 +75,13 @@
 
           var x1 = (x + c + m_cellGrid.X) % m_cellGrid.X; // Loop around the edges if x+i is off the board.
 
-          var pointIndex = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x1, y1, m_cellGrid.X);
+          var pointIndex = UniqueIndex.ConvertCartesian2ToUniqueIndex(x1, y1, m_cellGrid.X);
 
           cn += m_deadOrAlive[(int)pointIndex] ? 1 : 0;
         }
       }
 
-      var positionIndex = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x, y, m_cellGrid.X);
+      var positionIndex = UniqueIndex.ConvertCartesian2ToUniqueIndex(x, y, m_cellGrid.X);
 
       cn -= m_deadOrAlive[(int)positionIndex] ? 1 : 0;
 
@@ -96,7 +96,7 @@
 
         for (var x = 0; x < m_cellGrid.X; x++)
         {
-          var index = Geometry.CartesianCoordinate2<int>.ConvertCartesian2ToUniqueIndex(x, y, m_cellGrid.X);
+          var index = UniqueIndex.ConvertCartesian2ToUniqueIndex(x, y, m_cellGrid.X);
 
           var c = m_deadOrAlive[(int)index] ? '\u2588' : ' ';
 

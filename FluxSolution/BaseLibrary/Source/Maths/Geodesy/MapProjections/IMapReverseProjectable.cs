@@ -3,8 +3,8 @@ namespace Flux.Geometry.MapProjections
 {
   public interface IMapReverseProjectable
   {
-    /// <summary>Creates a new <see cref="IGeographicCoordinate"/> from the <see cref="ICartesianCoordinate3{double}"/> (where the Altitude component equals the Z component, without any manipulations).</summary>
-    public IGeographicCoordinate ProjectReverse(ICartesianCoordinate3<double> project);
+    /// <summary>Creates a new <see cref="IGeographicCoordinate"/> from the <see cref="System.Numerics.Vector3"/> (where the Altitude component equals the Z component, without any manipulations).</summary>
+    public IGeographicCoordinate ProjectReverse(System.Numerics.Vector3 project);
   }
 }
 #endif

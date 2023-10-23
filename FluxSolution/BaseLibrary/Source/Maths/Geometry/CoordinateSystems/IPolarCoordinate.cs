@@ -3,17 +3,17 @@
   #region ExtensionMethods
   public static partial class GeometryExtensionMethods
   {
-    /// <summary>Converts the polar coordinates to cartesian 2D coordinates.</summary>
-    /// <remarks>All angles in radians.</remarks>
-    public static Geometry.CartesianCoordinate2<double> ToCartesianCoordinate2(this Geometry.IPolarCoordinate source)
-    {
-      var (sa, ca) = System.Math.SinCos(source.Azimuth);
+    ///// <summary>Converts the polar coordinates to cartesian 2D coordinates.</summary>
+    ///// <remarks>All angles in radians.</remarks>
+    //public static Geometry.CartesianCoordinate2<double> ToCartesianCoordinate2(this Geometry.IPolarCoordinate source)
+    //{
+    //  var (sa, ca) = System.Math.SinCos(source.Azimuth);
 
-      return new(
-        source.Radius * ca,
-        source.Radius * sa
-      );
-    }
+    //  return new(
+    //    source.Radius * ca,
+    //    source.Radius * sa
+    //  );
+    //}
 
     /// <summary>Converts the polar coordinates to a complex number.</summary>
     /// <remarks>All angles in radians.</remarks>
@@ -22,6 +22,18 @@
         source.Radius,
         source.Azimuth
       );
+
+    /// <summary>Converts the polar coordinates to cartesian 2D coordinates.</summary>
+    /// <remarks>All angles in radians.</remarks>
+    public static System.Numerics.Vector2 ToVector2(this Geometry.IPolarCoordinate source)
+    {
+      var (sa, ca) = System.Math.SinCos(source.Azimuth);
+
+      return new(
+        (float)(source.Radius * ca),
+        (float)(source.Radius * sa)
+      );
+    }
   }
   #endregion ExtensionMethods
 

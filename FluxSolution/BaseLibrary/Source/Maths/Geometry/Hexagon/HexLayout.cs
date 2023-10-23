@@ -4,19 +4,19 @@ namespace Flux.Geometry
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct HexLayout
   {
-    private readonly CartesianCoordinate2<int> m_size;
-    private readonly CartesianCoordinate2<int> m_origin;
+    private readonly System.Drawing.Point m_size;
+    private readonly System.Drawing.Point m_origin;
     private readonly HexOrientation m_orientation;
 
-    public HexLayout(HexOrientation orientation, CartesianCoordinate2<int> size, CartesianCoordinate2<int> origin)
+    public HexLayout(HexOrientation orientation, System.Drawing.Point size, System.Drawing.Point origin)
     {
       m_orientation = orientation;
       m_size = size;
       m_origin = origin;
     }
 
-    public CartesianCoordinate2<int> Size { get => m_size; init => m_size = value; }
-    public CartesianCoordinate2<int> Origin { get => m_origin; init => m_origin = value; }
+    public System.Drawing.Point Size { get => m_size; init => m_size = value; }
+    public System.Drawing.Point Origin { get => m_origin; init => m_origin = value; }
     public HexOrientation Orientation { get => m_orientation; init => m_orientation = value; }
 
     public void HexToPixel(HexCoordinate<int> h, out double x, out double y)

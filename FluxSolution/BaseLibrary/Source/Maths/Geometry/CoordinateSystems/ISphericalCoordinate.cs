@@ -3,20 +3,19 @@
   #region ExtensionMethods
   public static partial class GeometryExtensionMethods
   {
-    /// <summary>Converts the spherical coordinates to cartesian 3D coordinates.</summary>
-    /// <remarks>All angles in radians.</remarks>
-    public static Geometry.CartesianCoordinate3<double> ToCartesianCoordinate3(this Geometry.ISphericalCoordinate source)
-    {
+    ///// <summary>Converts the spherical coordinates to cartesian 3D coordinates.</summary>
+    ///// <remarks>All angles in radians.</remarks>
+    //public static Geometry.CartesianCoordinate3<double> ToCartesianCoordinate3(this Geometry.ISphericalCoordinate source)
+    //{
+    //  var (si, ci) = System.Math.SinCos(source.Inclination);
+    //  var (sa, ca) = System.Math.SinCos(source.Azimuth);
 
-      var (si, ci) = System.Math.SinCos(source.Inclination);
-      var (sa, ca) = System.Math.SinCos(source.Azimuth);
-
-      return new(
-        source.Radius * si * ca,
-        source.Radius * si * sa,
-        source.Radius * ci
-      );
-    }
+    //  return new(
+    //    source.Radius * si * ca,
+    //    source.Radius * si * sa,
+    //    source.Radius * ci
+    //  );
+    //}
 
     /// <summary>Converts the spherical coordinates to cylindrical coordinates.</summary>
     /// <remarks>All angles in radians.</remarks>
@@ -39,6 +38,20 @@
         Units.Angle.ConvertRadianToDegree(source.Azimuth - System.Math.PI),
         source.Radius
       );
+
+    /// <summary>Converts the spherical coordinates to cartesian 3D coordinates.</summary>
+    /// <remarks>All angles in radians.</remarks>
+    public static System.Numerics.Vector3 ToVector3(this Geometry.ISphericalCoordinate source)
+    {
+      var (si, ci) = System.Math.SinCos(source.Inclination);
+      var (sa, ca) = System.Math.SinCos(source.Azimuth);
+
+      return new(
+        (float)(source.Radius * si * ca),
+        (float)(source.Radius * si * sa),
+        (float)(source.Radius * ci)
+      );
+    }
   }
   #endregion ExtensionMethods
 

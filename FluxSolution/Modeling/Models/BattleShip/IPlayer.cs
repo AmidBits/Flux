@@ -8,17 +8,17 @@
 
     void NewMatch(string opponent);
 
-    void NewGame(Geometry.CartesianCoordinate2<int> size, System.TimeSpan timeSpan, int[] shipSizes);
+    void NewGame(System.Drawing.Point size, System.TimeSpan timeSpan, int[] shipSizes);
 
     System.Collections.Generic.List<Vessel> PlaceShips();
 
-    Geometry.CartesianCoordinate2<int> GetShot();
+    System.Drawing.Point GetShot();
 
-    void OpponentShot(Geometry.CartesianCoordinate2<int> shot);
+    void OpponentShot(System.Drawing.Point shot);
 
-    void ShotHit(Geometry.CartesianCoordinate2<int> shot, bool sunk);
+    void ShotHit(System.Drawing.Point shot, bool sunk);
 
-    void ShotMiss(Geometry.CartesianCoordinate2<int> shot);
+    void ShotMiss(System.Drawing.Point shot);
 
     void GameWon();
 

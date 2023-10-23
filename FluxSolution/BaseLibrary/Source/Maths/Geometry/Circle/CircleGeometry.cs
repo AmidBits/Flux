@@ -58,12 +58,6 @@ namespace Flux.Geometry
       }
     }
 
-    public HexagonGeometry ToHexagonGeometry()
-      => new(m_radius);
-
-    public EllipseGeometry ToEllipseGeometry()
-      => new(m_radius, m_radius);
-
     #region Static methods
 
     /// <summary></summary>

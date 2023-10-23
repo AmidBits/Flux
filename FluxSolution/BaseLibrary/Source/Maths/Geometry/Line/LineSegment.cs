@@ -65,9 +65,10 @@ namespace Flux.Geometry
           return new LineTestResult(LineTestOutcome.ParallelLines);
       }
     }
-    /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public static LineTestResult IntersectionTest(CartesianCoordinate2<double> a1, CartesianCoordinate2<double> a2, CartesianCoordinate2<double> b1, CartesianCoordinate2<double> b2)
-      => IntersectionTest(a1.X, a1.Y, a2.X, a2.Y, b1.X, b1.Y, b2.X, b2.Y);
+    ///// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
+    //public static LineTestResult IntersectionTest(CartesianCoordinate2<double> a1, CartesianCoordinate2<double> a2, CartesianCoordinate2<double> b1, CartesianCoordinate2<double> b2)
+    //  => IntersectionTest(a1.X, a1.Y, a2.X, a2.Y, b1.X, b1.Y, b2.X, b2.Y);
+
     /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
     public static LineTestResult IntersectionTest(System.Numerics.Vector2 a1, System.Numerics.Vector2 a2, System.Numerics.Vector2 b1, System.Numerics.Vector2 b2)
       => IntersectionTest(a1.X, a1.Y, a2.X, a2.Y, b1.X, b1.Y, b2.X, b2.Y);
@@ -76,7 +77,7 @@ namespace Flux.Geometry
     /// <param name="x"></param>
     /// <param name="slope"></param>
     /// <param name="p1"></param>
-    public static double PointSlopeForm(double x, double slope, CartesianCoordinate2<double> p1)
+    public static double PointSlopeForm(double x, double slope, System.Numerics.Vector2 p1)
       => p1.Y + slope * (x - p1.X);
 
     /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
