@@ -3,7 +3,7 @@ namespace Flux
   #region ExtensionMethods
   public static partial class GeometryExtensionMethods
   {
-    /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate{TSelf}"/> from a <see cref="Geometry.ICartesianCoordinate3{TSelf}"/>.</summary>
+    /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
     public static Geometry.SphericalCoordinate ToSphericalCoordinate(this System.Numerics.Vector3 source)
     {
       var x2y2 = source.X * source.X + source.Y * source.Y;

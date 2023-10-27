@@ -39,24 +39,6 @@
     public static float EuclideanLengthSquared(this System.Numerics.Vector3 source)
       => source.X * source.X + source.Y * source.Y + source.Z * source.Z;
 
-    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    //public static CartesianCoordinate3<TSelf> InterpolateLinear<TSelf>(this ICartesianCoordinate3<TSelf> p1, ICartesianCoordinate3<TSelf> p2, TSelf mu, I2NodeInterpolatable<TSelf, TSelf> mode)
-    //  where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-    //{
-    //  mode ??= new Interpolation.LinearInterpolation<TSelf, TSelf>();
-
-    //  return new(mode.Interpolate2Node(p1.X, p2.X, mu), mode.Interpolate2Node(p1.Y, p2.Y, mu), mode.Interpolate2Node(p1.Z, p2.Z, mu));
-    //}
-
-    ///// <summary>Creates a new vector by interpolating between the specified vectors and a unit interval [0, 1].</summary>
-    //public static CartesianCoordinate3<TSelf> Interpolate<TSelf>(this ICartesianCoordinate3<TSelf> p0, ICartesianCoordinate3<TSelf> p1, ICartesianCoordinate3<TSelf> p2, ICartesianCoordinate3<TSelf> p3, TSelf mu, I4NodeInterpolatable<TSelf, TSelf> mode)
-    //  where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-    //{
-    //  mode ??= new Interpolation.CubicInterpolation<TSelf, TSelf>();
-
-    //  return new(mode.Interpolate4Node(p0.X, p1.X, p2.X, p3.X, mu), mode.Interpolate4Node(p0.Y, p1.Y, p2.Y, p3.Y, mu), mode.Interpolate4Node(p0.Z, p1.Z, p2.Z, p3.Z, mu));
-    //}
-
     /// <summary>Lerp is a linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static System.Numerics.Vector3 Lerp(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float mu)
     {

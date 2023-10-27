@@ -6,11 +6,11 @@ namespace Flux
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
     public readonly record struct Acceleration2D
-  : System.IFormattable, IUnitQuantifiable<Geometry.CartesianCoordinate2<double>, AccelerationUnit>
+  : System.IFormattable, IUnitQuantifiable<System.Numerics.Vector2, AccelerationUnit>
     {
-      private readonly Geometry.CartesianCoordinate2<double> m_value;
+      private readonly System.Numerics.Vector2 m_value;
 
-      public Acceleration2D(Geometry.CartesianCoordinate2<double> value, AccelerationUnit unit = Acceleration.DefaultUnit)
+      public Acceleration2D(System.Numerics.Vector2 value, AccelerationUnit unit = Acceleration.DefaultUnit)
         => m_value = unit switch
         {
           AccelerationUnit.MeterPerSecondSquared => value,
@@ -20,24 +20,24 @@ namespace Flux
       #region Overloaded operators
       public static Acceleration2D operator -(Acceleration2D v)
         => new(-v.m_value);
-      public static Acceleration2D operator +(Acceleration2D a, double b)
-        => new(a.m_value + b);
+      public static Acceleration2D operator +(Acceleration2D a, float b)
+        => new(a.m_value + new System.Numerics.Vector2(b));
       public static Acceleration2D operator +(Acceleration2D a, Acceleration2D b)
         => new(a.m_value + b.m_value);
-      public static Acceleration2D operator /(Acceleration2D a, double b)
+      public static Acceleration2D operator /(Acceleration2D a, float b)
         => new(a.m_value / b);
       public static Acceleration2D operator /(Acceleration2D a, Acceleration2D b)
         => new(a.m_value / b.m_value);
-      public static Acceleration2D operator *(Acceleration2D a, double b)
+      public static Acceleration2D operator *(Acceleration2D a, float b)
         => new(a.m_value * b);
       public static Acceleration2D operator *(Acceleration2D a, Acceleration2D b)
         => new(a.m_value * b.m_value);
-      public static Acceleration2D operator %(Acceleration2D a, double b)
-        => new(a.m_value % b);
+      public static Acceleration2D operator %(Acceleration2D a, float b)
+        => new(new System.Numerics.Vector2(a.m_value.X % b, a.m_value.Y % b));
       public static Acceleration2D operator %(Acceleration2D a, Acceleration2D b)
-        => new(a.m_value % b.m_value);
-      public static Acceleration2D operator -(Acceleration2D a, double b)
-        => new(a.m_value - b);
+        => new(new System.Numerics.Vector2(a.m_value.X % b.m_value.X, a.m_value.Y % b.m_value.Y));
+      public static Acceleration2D operator -(Acceleration2D a, float b)
+        => new(a.m_value - new System.Numerics.Vector2(b));
       public static Acceleration2D operator -(Acceleration2D a, Acceleration2D b)
         => new(a.m_value - b.m_value);
       #endregion Overloaded operators
@@ -49,12 +49,12 @@ namespace Flux
 
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(Acceleration.DefaultUnit, format, preferUnicode, useFullName);
-      public Geometry.CartesianCoordinate2<double> Value { get => m_value; init => m_value = value; }
+      public System.Numerics.Vector2 Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
       public string ToUnitString(AccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{Value.ToString(format, null)} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public Geometry.CartesianCoordinate2<double> ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
+      public System.Numerics.Vector2 ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
         => unit switch
         {
           AccelerationUnit.MeterPerSecondSquared => m_value,

@@ -3,9 +3,7 @@
   public static partial class ExtensionMethods
   {
     public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitQuantifiable<TType, TUnit> source, string? format = null, bool preferUnicode = true, bool useFullName = false)
-#if NET7_0_OR_GREATER
-      where TType : System.Numerics.INumberBase<TType>
-#endif
+      where TType : struct, System.IEquatable<TType>
       where TUnit : notnull, System.Enum
     {
       var d = new System.Collections.Generic.Dictionary<TUnit, string>();
@@ -22,10 +20,8 @@
   /// <typeparam name="TUnit">The unit enum.</typeparam>
   public interface IUnitQuantifiable<TType, TUnit>
     : IQuantifiable<TType>
-#if NET7_0_OR_GREATER
-    where TType : System.Numerics.INumberBase<TType>
-#endif
-    where TUnit : System.Enum
+    where TType : struct, System.IEquatable<TType>
+    where TUnit : notnull, System.Enum
   {
     //static abstract IUnitQuantifiable<TType, TUnit> FromUnitValue(TType value, TUnit unit);
 

@@ -109,10 +109,10 @@
       public static double ConvertCartesian2ToRotationAngleEx(double x, double y) => System.Math.Tau - ConvertCartesian2ToRotationAngle(y, -x);
 
       /// <summary>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal unit subdivisions (degrees, decimalMinutes), e.g. (32, 13.3).</summary>
-      private static (double degrees, double decimalMinutes) ConvertDecimalDegreesToDdm(double decimalDegrees)
+      public static (int degrees, double minutes) ConvertDecimalDegreesToDm(double decimalDegrees)
       {
         var absDegrees = System.Math.Abs(decimalDegrees);
-        var floorAbsDegrees = System.Math.Floor(absDegrees);
+        var floorAbsDegrees = System.Convert.ToInt32(System.Math.Floor(absDegrees));
 
         var degrees = System.Math.Sign(decimalDegrees) * floorAbsDegrees;
         var decimalMinutes = 60 * (absDegrees - floorAbsDegrees);
@@ -121,21 +121,21 @@
       }
 
       /// <summary>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal unit subdivisions (degrees, minutes, decimalSeconds), e.g. (32, 13, 18), and returns the <paramref name="decimalMinutes"/>, e.g. 13.3, as an out parameter.</summary>
-      public static (double degrees, double minutes, double decimalSeconds) ConvertDecimalDegreesToDms(double decimalDegrees, out double decimalMinutes)
+      public static (int degrees, int minutes, double seconds) ConvertDecimalDegreesToDms(double decimalDegrees, out double decimalMinutes)
       {
-        (var degrees, decimalMinutes) = ConvertDecimalDegreesToDdm(decimalDegrees);
+        (var degrees, decimalMinutes) = ConvertDecimalDegreesToDm(decimalDegrees);
 
-        var (minutes, decimalSeconds) = ConvertDecimalMinutesToMds(decimalMinutes);
+        var (minutes, decimalSeconds) = ConvertDecimalMinutesToMs(decimalMinutes);
 
         return (degrees, minutes, decimalSeconds);
       }
 
       /// <summary>Converts a <paramref name="decimalMinutes"/>, e.g. 13.3, to sexagesimal unit subdivisions (minutes, decimalSeconds), e.g. (13, 18).</summary>
-      private static (double minutes, double decimalSeconds) ConvertDecimalMinutesToMds(double decimalMinutes)
+      private static (int minutes, double seconds) ConvertDecimalMinutesToMs(double decimalMinutes)
       {
         var absMinutes = System.Math.Abs(decimalMinutes);
 
-        var minutes = System.Math.Floor(absMinutes);
+        var minutes = System.Convert.ToInt32(System.Math.Floor(absMinutes));
         var decimalSeconds = 60 * (absMinutes - minutes);
 
         return (minutes, decimalSeconds);

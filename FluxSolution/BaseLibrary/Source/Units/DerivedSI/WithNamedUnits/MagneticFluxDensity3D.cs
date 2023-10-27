@@ -7,11 +7,11 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
     /// <see cref="https://en.wikipedia.org/wiki/Magnetic_field_density"/>
     public readonly record struct MagneticFluxDensity3D
-  : System.IFormattable, IUnitQuantifiable<Geometry.CartesianCoordinate3<double>, MagneticFluxDensityUnit>
+  : System.IFormattable, IUnitQuantifiable<System.Numerics.Vector3, MagneticFluxDensityUnit>
     {
-      private readonly Geometry.CartesianCoordinate3<double> m_value;
+      private readonly System.Numerics.Vector3 m_value;
 
-      public MagneticFluxDensity3D(Geometry.CartesianCoordinate3<double> value, MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
+      public MagneticFluxDensity3D(System.Numerics.Vector3 value, MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
         => m_value = unit switch
         {
           MagneticFluxDensityUnit.Tesla => value,
@@ -21,24 +21,24 @@ namespace Flux
       #region Overloaded operators
       public static MagneticFluxDensity3D operator -(MagneticFluxDensity3D v)
         => new(-v.m_value);
-      public static MagneticFluxDensity3D operator +(MagneticFluxDensity3D a, double b)
-        => new(a.m_value + b);
+      public static MagneticFluxDensity3D operator +(MagneticFluxDensity3D a, float b)
+        => new(a.m_value + new System.Numerics.Vector3(b));
       public static MagneticFluxDensity3D operator +(MagneticFluxDensity3D a, MagneticFluxDensity3D b)
         => new(a.m_value + b.m_value);
-      public static MagneticFluxDensity3D operator /(MagneticFluxDensity3D a, double b)
+      public static MagneticFluxDensity3D operator /(MagneticFluxDensity3D a, float b)
         => new(a.m_value / b);
       public static MagneticFluxDensity3D operator /(MagneticFluxDensity3D a, MagneticFluxDensity3D b)
         => new(a.m_value / b.m_value);
-      public static MagneticFluxDensity3D operator *(MagneticFluxDensity3D a, double b)
+      public static MagneticFluxDensity3D operator *(MagneticFluxDensity3D a, float b)
         => new(a.m_value * b);
       public static MagneticFluxDensity3D operator *(MagneticFluxDensity3D a, MagneticFluxDensity3D b)
         => new(a.m_value * b.m_value);
-      public static MagneticFluxDensity3D operator %(MagneticFluxDensity3D a, double b)
-        => new(a.m_value % b);
+      public static MagneticFluxDensity3D operator %(MagneticFluxDensity3D a, float b)
+        => new(new System.Numerics.Vector3(a.m_value.X % b, a.m_value.Y % b, a.m_value.Z % b));
       public static MagneticFluxDensity3D operator %(MagneticFluxDensity3D a, MagneticFluxDensity3D b)
-        => new(a.m_value % b.m_value);
-      public static MagneticFluxDensity3D operator -(MagneticFluxDensity3D a, double b)
-        => new(a.m_value - b);
+        => new(new System.Numerics.Vector3(a.m_value.X % b.m_value.X, a.m_value.Y % b.m_value.Y, a.m_value.Z % b.m_value.Z));
+      public static MagneticFluxDensity3D operator -(MagneticFluxDensity3D a, float b)
+        => new(a.m_value - new System.Numerics.Vector3(b));
       public static MagneticFluxDensity3D operator -(MagneticFluxDensity3D a, MagneticFluxDensity3D b)
         => new(a.m_value - b.m_value);
       #endregion Overloaded operators
@@ -50,12 +50,12 @@ namespace Flux
 
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(MagneticFluxDensity.DefaultUnit, format, preferUnicode, useFullName);
-      public Geometry.CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
+      public System.Numerics.Vector3 Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
       public string ToUnitString(MagneticFluxDensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{Value.ToString(format, null)} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public Geometry.CartesianCoordinate3<double> ToUnitValue(MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
+      public System.Numerics.Vector3 ToUnitValue(MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
         => unit switch
         {
           MagneticFluxDensityUnit.Tesla => m_value,

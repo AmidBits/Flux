@@ -1,126 +1,126 @@
-using System.Linq;
+//using System.Linq;
 
-namespace Flux.DataStructures
-{
-  public interface IOctree
-  {
-    Geometry.CartesianCoordinate3<int> Position { get; set; }
-  }
+//namespace Flux.DataStructures
+//{
+//  public interface IOctree
+//  {
+//    Geometry.CartesianCoordinate3<int> Position { get; set; }
+//  }
 
-  /// <summary></summary>
-  public sealed class Octree<T>
-    where T : IOctree
-  {
-    public Geometry.CartesianCoordinate3<int> BoundaryHigh { get; private set; }
-    public Geometry.CartesianCoordinate3<int> BoundaryLow { get; private set; }
+//  /// <summary></summary>
+//  public sealed class Octree<T>
+//    where T : IOctree
+//  {
+//    public Geometry.CartesianCoordinate3<int> BoundaryHigh { get; private set; }
+//    public Geometry.CartesianCoordinate3<int> BoundaryLow { get; private set; }
 
-    private readonly System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
-    public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
+//    private readonly System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
+//    public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
 
-    public int MaximumItems { get; set; }
+//    public int MaximumItems { get; set; }
 
-    private readonly System.Collections.Generic.IList<Octree<T>> m_subNodes = new System.Collections.Generic.List<Octree<T>>();
-    public System.Collections.Generic.IReadOnlyList<Octree<T>> SubNodes => (System.Collections.Generic.IReadOnlyList<Octree<T>>)m_subNodes;
+//    private readonly System.Collections.Generic.IList<Octree<T>> m_subNodes = new System.Collections.Generic.List<Octree<T>>();
+//    public System.Collections.Generic.IReadOnlyList<Octree<T>> SubNodes => (System.Collections.Generic.IReadOnlyList<Octree<T>>)m_subNodes;
 
-    public Octree(Geometry.CartesianCoordinate3<int> boundaryLow, Geometry.CartesianCoordinate3<int> boundaryHigh)
-    {
-      BoundaryLow = boundaryLow;
-      BoundaryHigh = boundaryHigh;
+//    public Octree(Geometry.CartesianCoordinate3<int> boundaryLow, Geometry.CartesianCoordinate3<int> boundaryHigh)
+//    {
+//      BoundaryLow = boundaryLow;
+//      BoundaryHigh = boundaryHigh;
 
-      MaximumItems = 1;
-    }
+//      MaximumItems = 1;
+//    }
 
-    public bool InScope(Geometry.CartesianCoordinate3<int> position)
-      => position.X >= BoundaryLow.X && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y && position.Z >= BoundaryLow.Z && position.Z <= BoundaryHigh.Z;
+//    public bool InScope(Geometry.CartesianCoordinate3<int> position)
+//      => position.X >= BoundaryLow.X && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y && position.Z >= BoundaryLow.Z && position.Z <= BoundaryHigh.Z;
 
-    public bool InsertItem(T item)
-    {
-      if (InScope(item.Position))
-      {
-        if (m_subNodes.Count == 0)
-        {
-          m_items.Add(item);
+//    public bool InsertItem(T item)
+//    {
+//      if (InScope(item.Position))
+//      {
+//        if (m_subNodes.Count == 0)
+//        {
+//          m_items.Add(item);
 
-          if (m_items.Count > MaximumItems)
-          {
-            if (m_items.Select(i => i.Position).Distinct().Count() > 1)
-            {
-              if (System.Math.Abs(BoundaryHigh.X - BoundaryLow.X) > 1 && System.Math.Abs(BoundaryHigh.Y - BoundaryLow.Y) > 1 && System.Math.Abs(BoundaryHigh.Z - BoundaryLow.Z) > 1) // Should be || (OR) instead of && (AND)?
-              {
-                SubDistributeItems();
-              }
-            }
-          }
-        }
-        else
-        {
-          foreach (var node in m_subNodes)
-          {
-            if (node.InsertItem(item))
-            {
-              break;
-            }
-          }
-        }
+//          if (m_items.Count > MaximumItems)
+//          {
+//            if (m_items.Select(i => i.Position).Distinct().Count() > 1)
+//            {
+//              if (System.Math.Abs(BoundaryHigh.X - BoundaryLow.X) > 1 && System.Math.Abs(BoundaryHigh.Y - BoundaryLow.Y) > 1 && System.Math.Abs(BoundaryHigh.Z - BoundaryLow.Z) > 1) // Should be || (OR) instead of && (AND)?
+//              {
+//                SubDistributeItems();
+//              }
+//            }
+//          }
+//        }
+//        else
+//        {
+//          foreach (var node in m_subNodes)
+//          {
+//            if (node.InsertItem(item))
+//            {
+//              break;
+//            }
+//          }
+//        }
 
-        return true;
-      }
+//        return true;
+//      }
 
-      return false;
-    }
+//      return false;
+//    }
 
-    public TResult SearchNodes<TResult>(TResult seed, System.Func<Octree<T>, TResult, TResult> aggregator)
-    {
-      if (aggregator is null) throw new System.ArgumentNullException(nameof(aggregator));
+//    public TResult SearchNodes<TResult>(TResult seed, System.Func<Octree<T>, TResult, TResult> aggregator)
+//    {
+//      if (aggregator is null) throw new System.ArgumentNullException(nameof(aggregator));
 
-      seed = aggregator(this, seed);
+//      seed = aggregator(this, seed);
 
-      if (m_subNodes.Count > 0)
-      {
-        foreach (var node in m_subNodes)
-        {
-          seed = node.SearchNodes(seed, aggregator);
-        }
-      }
+//      if (m_subNodes.Count > 0)
+//      {
+//        foreach (var node in m_subNodes)
+//        {
+//          seed = node.SearchNodes(seed, aggregator);
+//        }
+//      }
 
-      return seed;
-    }
+//      return seed;
+//    }
 
-    public void SubDistributeItems()
-    {
-      if (m_subNodes.Count == 0)
-      {
-        var midPoint = new Geometry.CartesianCoordinate3<int>((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2, (BoundaryLow.Z + BoundaryHigh.Z) / 2);
+//    public void SubDistributeItems()
+//    {
+//      if (m_subNodes.Count == 0)
+//      {
+//        var midPoint = new Geometry.CartesianCoordinate3<int>((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2, (BoundaryLow.Z + BoundaryHigh.Z) / 2);
 
-        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, midPoint.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, BoundaryHigh.Y, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, midPoint.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, BoundaryHigh.Y, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, BoundaryLow.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, midPoint.Y - 1, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, BoundaryLow.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, midPoint.Y - 1, BoundaryHigh.Z)));
-        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, midPoint.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, BoundaryHigh.Y, midPoint.Z - 1)));
-        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, midPoint.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, BoundaryHigh.Y, midPoint.Z - 1)));
-        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, midPoint.Y - 1, midPoint.Z - 1)));
-        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, midPoint.Y - 1, midPoint.Z - 1)));
-      }
+//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, midPoint.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, BoundaryHigh.Y, BoundaryHigh.Z)));
+//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, midPoint.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, BoundaryHigh.Y, BoundaryHigh.Z)));
+//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, BoundaryLow.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, midPoint.Y - 1, BoundaryHigh.Z)));
+//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, BoundaryLow.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, midPoint.Y - 1, BoundaryHigh.Z)));
+//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, midPoint.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, BoundaryHigh.Y, midPoint.Z - 1)));
+//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, midPoint.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, BoundaryHigh.Y, midPoint.Z - 1)));
+//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, midPoint.Y - 1, midPoint.Z - 1)));
+//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, midPoint.Y - 1, midPoint.Z - 1)));
+//      }
 
-      if (m_items.Count > 0)
-      {
-        while (m_items.Count > 0)
-        {
-          var item = m_items.ElementAt(0);
+//      if (m_items.Count > 0)
+//      {
+//        while (m_items.Count > 0)
+//        {
+//          var item = m_items.ElementAt(0);
 
-          foreach (var node in m_subNodes)
-          {
-            if (node.InsertItem(item))
-            {
-              m_items.RemoveAt(0);
+//          foreach (var node in m_subNodes)
+//          {
+//            if (node.InsertItem(item))
+//            {
+//              m_items.RemoveAt(0);
 
-              break;
-            }
-          }
-        }
+//              break;
+//            }
+//          }
+//        }
 
-        m_items.Clear();
-      }
-    }
-  }
-}
+//        m_items.Clear();
+//      }
+//    }
+//  }
+//}

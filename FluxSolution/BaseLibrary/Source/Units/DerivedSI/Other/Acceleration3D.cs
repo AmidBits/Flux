@@ -6,11 +6,11 @@ namespace Flux
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
     public readonly record struct Acceleration3D
-  : IUnitQuantifiable<Geometry.CartesianCoordinate3<double>, AccelerationUnit>
+  : IUnitQuantifiable<System.Numerics.Vector3, AccelerationUnit>
     {
-      private readonly Geometry.CartesianCoordinate3<double> m_value;
+      private readonly System.Numerics.Vector3 m_value;
 
-      public Acceleration3D(Geometry.CartesianCoordinate3<double> value, AccelerationUnit unit = Acceleration.DefaultUnit)
+      public Acceleration3D(System.Numerics.Vector3 value, AccelerationUnit unit = Acceleration.DefaultUnit)
         => m_value = unit switch
         {
           AccelerationUnit.MeterPerSecondSquared => value,
@@ -20,24 +20,24 @@ namespace Flux
       #region Overloaded operators
       public static Acceleration3D operator -(Acceleration3D v)
         => new(-v.m_value);
-      public static Acceleration3D operator +(Acceleration3D a, double b)
-        => new(a.m_value + b);
+      public static Acceleration3D operator +(Acceleration3D a, float b)
+        => new(a.m_value + new System.Numerics.Vector3(b));
       public static Acceleration3D operator +(Acceleration3D a, Acceleration3D b)
         => new(a.m_value + b.m_value);
-      public static Acceleration3D operator /(Acceleration3D a, double b)
+      public static Acceleration3D operator /(Acceleration3D a, float b)
         => new(a.m_value / b);
       public static Acceleration3D operator /(Acceleration3D a, Acceleration3D b)
         => new(a.m_value / b.m_value);
-      public static Acceleration3D operator *(Acceleration3D a, double b)
+      public static Acceleration3D operator *(Acceleration3D a, float b)
         => new(a.m_value * b);
       public static Acceleration3D operator *(Acceleration3D a, Acceleration3D b)
         => new(a.m_value * b.m_value);
-      public static Acceleration3D operator %(Acceleration3D a, double b)
-        => new(a.m_value % b);
+      public static Acceleration3D operator %(Acceleration3D a, float b)
+        => new(new System.Numerics.Vector3(a.m_value.X % b, a.m_value.Y % b, a.m_value.Z % b));
       public static Acceleration3D operator %(Acceleration3D a, Acceleration3D b)
-        => new(a.m_value % b.m_value);
-      public static Acceleration3D operator -(Acceleration3D a, double b)
-        => new(a.m_value - b);
+        => new(new System.Numerics.Vector3(a.m_value.X % b.m_value.X, a.m_value.Y % b.m_value.Y, a.m_value.Z % b.m_value.Z));
+      public static Acceleration3D operator -(Acceleration3D a, float b)
+        => new(a.m_value - new System.Numerics.Vector3(b));
       public static Acceleration3D operator -(Acceleration3D a, Acceleration3D b)
         => new(a.m_value - b.m_value);
       #endregion Overloaded operators
@@ -46,12 +46,12 @@ namespace Flux
 
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(Acceleration.DefaultUnit, format, preferUnicode, useFullName);
-      public Geometry.CartesianCoordinate3<double> Value { get => m_value; init => m_value = value; }
+      public System.Numerics.Vector3 Value { get => m_value; init => m_value = value; }
 
       // IUnitQuantifiable<>
       public string ToUnitString(AccelerationUnit unit = Acceleration.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
         => $"{Value.ToString(format, null)} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public Geometry.CartesianCoordinate3<double> ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
+      public System.Numerics.Vector3 ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
         => unit switch
         {
           AccelerationUnit.MeterPerSecondSquared => m_value,
