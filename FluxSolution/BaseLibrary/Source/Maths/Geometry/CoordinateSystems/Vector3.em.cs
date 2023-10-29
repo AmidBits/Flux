@@ -4,7 +4,7 @@
   public static partial class GeometryExtensionMethods
   {
     public static float AbsoluteSum(this System.Numerics.Vector3 source)
-      => float.Abs(source.X) + float.Abs(source.Y) + float.Abs(source.Z);
+      => System.Math.Abs(source.X) + System.Math.Abs(source.Y) + System.Math.Abs(source.Z);
 
     /// <summary>(3D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
@@ -12,16 +12,16 @@
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
     public static float AngleTo(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
-      => float.Acos(float.Clamp(System.Numerics.Vector3.Dot(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -1f, 1f));
+      => (float)System.Math.Acos(System.Math.Clamp(System.Numerics.Vector3.Dot(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -1f, 1f));
 
     /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static float ChebyshevLength(this System.Numerics.Vector3 source, float edgeLength)
-      => float.Max(
-        float.Abs(source.X / edgeLength),
-        float.Max(
-          float.Abs(source.Y / edgeLength),
-          float.Abs(source.Z / edgeLength)
+      => System.Math.Max(
+        System.Math.Abs(source.X / edgeLength),
+        System.Math.Max(
+          System.Math.Abs(source.Y / edgeLength),
+          System.Math.Abs(source.Z / edgeLength)
         )
       );
 
@@ -29,11 +29,11 @@
     /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
     /// <see href="https://gamedev.stackexchange.com/a/89832/129646"/>
     public static float DotProductEx(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
-      => System.Numerics.Vector3.Dot(a, b) / float.Sqrt(a.EuclideanLengthSquared() * b.EuclideanLengthSquared());
+      => (float)(System.Numerics.Vector3.Dot(a, b) / System.Math.Sqrt(a.EuclideanLengthSquared() * b.EuclideanLengthSquared()));
 
     /// <summary>Compute the Euclidean length of the vector.</summary>
     public static float EuclideanLength(this System.Numerics.Vector3 source)
-      => float.Sqrt(source.EuclideanLengthSquared());
+      => (float)System.Math.Sqrt(source.EuclideanLengthSquared());
 
     /// <summary>Compute the Euclidean length squared of the vector.</summary>
     public static float EuclideanLengthSquared(this System.Numerics.Vector3 source)
@@ -50,7 +50,7 @@
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static float ManhattanLength(this System.Numerics.Vector3 source, float edgeLength)
-      => float.Abs(source.X / edgeLength) + float.Abs(source.Y / edgeLength) + float.Abs(source.Z / edgeLength);
+      => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength) + System.Math.Abs(source.Z / edgeLength);
 
     /// <summary>Lerp is a normalized linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static System.Numerics.Vector3 Nlerp(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float mu)
@@ -74,7 +74,7 @@
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalized, and does not normalize the output.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
     public static System.Numerics.Vector3 Orthogonal(this System.Numerics.Vector3 source)
-      => float.Abs(source.X) > float.Abs(source.Z)
+      => System.Math.Abs(source.X) > System.Math.Abs(source.Z)
       ? new(
           -source.Y,
           source.X,
@@ -89,11 +89,11 @@
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
     public static System.Numerics.Vector3 Slerp(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float mu)
     {
-      var dp = float.Clamp(System.Numerics.Vector3.Dot(source, target), -1, 1); // Ensure precision doesn't exceed acos limits.
-      var theta = float.Acos(dp) * mu; // Angle between start and desired.
-      var (sin, cos) = float.SinCos(theta);
+      var dp = System.Math.Clamp(System.Numerics.Vector3.Dot(source, target), -1, 1); // Ensure precision doesn't exceed acos limits.
+      var theta = System.Math.Acos(dp) * mu; // Angle between start and desired.
+      var (sin, cos) = System.Math.SinCos(theta);
 
-      return new(source.X * cos + (target.X - source.X) * dp * sin, source.Y * cos + (target.Y - source.Y) * dp * sin, source.Z * cos + (target.Z - source.Z) * dp * sin);
+      return new((float)(source.X * cos + (target.X - source.X) * dp * sin), (float)(source.Y * cos + (target.Y - source.Y) * dp * sin), (float)(source.Z * cos + (target.Z - source.Z) * dp * sin));
     }
 
     /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="System.Numerics.Vector3"/> using the X and Y.</summary>
@@ -102,7 +102,7 @@
 
     /// <summary>Creates a new <see cref="System.Numerics.Vector3"/> from a <see cref="System.Numerics.Vector3"/> using a <see cref="RoundingMode"/>.</summary>
     public static System.Numerics.Vector3 ToVector3(this System.Numerics.Vector3 source, RoundingMode mode, out System.Numerics.Vector3 result)
-      => result = new(source.X.Round(mode), source.Y.Round(mode), source.Z.Round(mode));
+      => result = new((float)((double)(source.X)).Round(mode), (float)((double)(source.Y)).Round(mode), (float)((double)(source.Z)).Round(mode));
 
     /// <summary>Returns a quaternion from two vectors.
     /// <para><see href="http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final"/></para>
@@ -110,8 +110,8 @@
     /// </summary>
     public static System.Numerics.Quaternion ToQuaternion(this System.Numerics.Vector3 source, System.Numerics.Vector3 target)
     {
-      var norm_u_norm_v = float.Sqrt(System.Numerics.Vector3.Dot(source, source) * System.Numerics.Vector3.Dot(target, target));
-      var real_part = norm_u_norm_v + System.Numerics.Vector3.Dot(source, target);
+      var norm_u_norm_v = System.Math.Sqrt(System.Numerics.Vector3.Dot(source, source) * System.Numerics.Vector3.Dot(target, target));
+      var real_part = (float)norm_u_norm_v + System.Numerics.Vector3.Dot(source, target);
 
       System.Numerics.Vector3 w;
 
@@ -120,7 +120,7 @@
         real_part = 0;
 
         // If u and v are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis. Axis normalisation can happen later, when we normalise the quaternion.
-        w = float.Abs(source.X) > float.Abs(source.Z) ? new System.Numerics.Vector3(-source.Y, source.X, 0) : new System.Numerics.Vector3(0, -source.Z, source.Y);
+        w = System.Math.Abs(source.X) > System.Math.Abs(source.Z) ? new System.Numerics.Vector3(-source.Y, source.X, 0) : new System.Numerics.Vector3(0, -source.Z, source.Y);
       }
       else
       {

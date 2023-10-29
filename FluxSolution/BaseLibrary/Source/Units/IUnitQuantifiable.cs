@@ -23,8 +23,6 @@
     where TType : struct, System.IEquatable<TType>
     where TUnit : notnull, System.Enum
   {
-    //static abstract IUnitQuantifiable<TType, TUnit> FromUnitValue(TType value, TUnit unit);
-
     /// <summary>Create a string of the quantity, suffixed with the unit symbol, in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>
     /// <param name="format">The format for the unit value.</param>

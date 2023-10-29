@@ -36,7 +36,9 @@ namespace Flux
       public static implicit operator Radix(System.Int16 v) => new(v);
       public static implicit operator Radix(System.Int32 v) => new(v);
       public static implicit operator Radix(System.Int64 v) => new((int)v);
+#if NET7_0_OR_GREATER
       public static implicit operator Radix(System.Int128 v) => new((int)v);
+#endif
       public static implicit operator Radix(System.Numerics.BigInteger v) => new((int)v);
 
       public static bool operator <(Radix a, Radix b) => a.CompareTo(b) < 0;

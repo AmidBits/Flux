@@ -6,8 +6,8 @@ namespace Flux
     /// <summary>Creates a new <see cref="Geometry.PolarCoordinate"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
     public static Geometry.PolarCoordinate ToPolarCoordinate(this System.Numerics.Vector2 source)
       => new(
-        double.Sqrt(source.X * source.X + source.Y * source.Y),
-        double.Atan2(source.Y, source.X)
+        System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
+        System.Math.Atan2(source.Y, source.X)
       );
   }
   #endregion

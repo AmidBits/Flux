@@ -184,19 +184,14 @@ namespace ConsoleApp
 
       //var il = (new Flux.Geometry.CartesianCoordinate2<double>(10, 10)).InterpolateLinear(new Flux.Geometry.CartesianCoordinate2<double>(-10, -10), new Flux.Geometry.CartesianCoordinate2<double>(-.25, -.25));
 
-      var span = new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 };
+      var symbols = Flux.Text.PositionalNotation.Base64.Take(16).ToArray();
+      var radix = symbols.Length;
 
-      var angle = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
-
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, angle.ToStringOfAllUnits().Select((u, s) => $"{u} = {s}")));
-
-      //var ucd = new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile));
-
-      //foreach (var a in ucd.GetStrings())
-      //  if (a[1].Contains("Hangul", StringComparison.OrdinalIgnoreCase))
-      //    System.Console.WriteLine($"{new string(Flux.UnicodeExtensionMethods.ParseUnicodeCsEscapeSequence("\\u" + a[0]).ToArray())} {string.Join(", ", a)}");
-
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => EvaluateNumericStuff(), 1));
+      //var a = 6705302039L;
+      //var b = Flux.Text.PositionalNotationX.NumberToIndices(a, radix);
+      //var c = Flux.Text.PositionalNotationX.IndicesToSymbols<int, char>(b, symbols);
+      //var d = Flux.Text.PositionalNotationX.SymbolsToIndices(c, symbols);
+      //var e = Flux.Text.PositionalNotationX.IndicesToNumber<int, int>(d, radix);
     }
 
     private static void Main(string[] args)

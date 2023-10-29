@@ -9,9 +9,9 @@ namespace Flux
       var x2y2 = source.X * source.X + source.Y * source.Y;
 
       return new(
-        double.Sqrt(x2y2 + source.Z * source.Z),
-        double.Atan2(double.Sqrt(x2y2), source.Z) + double.Pi,
-        double.Atan2(source.Y, source.X) + double.Pi
+        System.Math.Sqrt(x2y2 + source.Z * source.Z),
+        System.Math.Atan2(System.Math.Sqrt(x2y2), source.Z) + System.Math.PI,
+        System.Math.Atan2(source.Y, source.X) + System.Math.PI
       );
     }
   }

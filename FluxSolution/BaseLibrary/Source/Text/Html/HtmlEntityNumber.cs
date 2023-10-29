@@ -12,7 +12,8 @@ namespace Flux
 #endif
 
       public static System.Collections.Generic.IEnumerable<System.Text.Rune> Parse(string text)
-        => System.Linq.Enumerable.Select(System.Linq.Enumerable.Where(RegexParse().Matches(text), m => m.Success), m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.Number, null)));
+        => System.Linq.Enumerable.Select(System.Linq.Enumerable.Where(RegexParse().Matches(text), m => m.Success), m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.Number)));
+
       public static bool TryParse(string text, out System.Collections.Generic.List<System.Text.Rune> result)
       {
         try

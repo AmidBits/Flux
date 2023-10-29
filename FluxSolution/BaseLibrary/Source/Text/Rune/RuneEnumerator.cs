@@ -11,7 +11,7 @@ namespace Flux
   namespace Text
   {
     public sealed class RuneEnumerator
-    : Disposable, System.Collections.Generic.IEnumerable<System.Text.Rune>
+      : Disposable, System.Collections.Generic.IEnumerable<System.Text.Rune>
     {
       const int DefaultBufferSize = 4096;
       const int DefaultMinLength = 16;

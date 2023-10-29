@@ -86,6 +86,54 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
+    public static class PositionalNotationX
+    {
+      /// <summary>Converts a positional notation list of <paramref name="indices"/> with <paramref name="radix"/> to a number.</summary>
+      public static TSelf IndicesToNumber<TSelf, TRadix>(System.Collections.Generic.IList<int> indices, TRadix radix)
+        where TSelf : System.Numerics.IBinaryInteger<TSelf>
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        var bi = TSelf.Zero;
+
+        for (var index = 0; index < indices.Count; index++)
+        {
+          bi *= TSelf.CreateChecked(radix);
+
+          bi += TSelf.CreateChecked(indices[index]);
+        }
+
+        return bi;
+      }
+
+      /// <summary>Converts <paramref name="number"/> with <paramref name="radix"/> to a positional notation list of indices.</summary>
+      public static System.Collections.Generic.List<int> SymbolsToIndices<TSymbol>(System.Collections.Generic.IList<TSymbol> text, System.Collections.Generic.IList<TSymbol> symbols)
+        => text.Select(symbols.IndexOf).ToList();
+
+      /// <summary>Converts <paramref name="number"/> with <paramref name="radix"/> to a positional notation list of indices.</summary>
+      public static System.Collections.Generic.List<int> NumberToIndices<TSelf, TRadix>(TSelf number, TRadix radix)
+        where TSelf : System.Numerics.IBinaryInteger<TSelf>
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        if (TSelf.IsNegative(number)) throw new System.ArgumentOutOfRangeException(nameof(number));
+
+        var list = new System.Collections.Generic.List<int>();
+
+        while (number != TSelf.Zero)
+        {
+          (number, var remainder) = TSelf.DivRem(number, TSelf.CreateChecked(radix));
+
+          list.Insert(0, int.CreateChecked(remainder));
+        }
+
+        return list;
+      }
+
+      /// <summary>Converts <paramref name="indices"/> with <paramref name="symbols"/> to a positional notation list of indices.</summary>
+      public static System.Collections.Generic.List<TSymbol> IndicesToSymbols<TSelf, TSymbol>(System.Collections.Generic.List<int> indices, System.Collections.Generic.IList<TSymbol> symbols)
+        where TSelf : System.Numerics.IBinaryInteger<TSelf>
+        => indices.Select(index => symbols[index]).ToList();
+    }
+
     /// <summary>Convert a number into a positional notation text string.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/List_of_numeral_systems#Standard_positional_numeral_systems"/>
