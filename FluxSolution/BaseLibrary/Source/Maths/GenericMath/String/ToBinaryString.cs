@@ -8,7 +8,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
     public static string ToBinaryString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 2, value.GetBitCount());
+      => value.ToRadixString(2, value.GetBitCount());
 
 #else
 

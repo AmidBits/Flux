@@ -1,4 +1,4 @@
-using System.ComponentModel.Design;
+using Flux.Text;
 
 namespace Flux
 {
@@ -54,6 +54,50 @@ namespace Flux
     //  return sb.ToString();
     //}
 
+    ///// <summary>Creates a binary (base 2) text string from <paramref name="value"/>.</summary>
+    ///// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
+    //public static string ToBinaryString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => ToRadixString(value, 2, value.GetBitCount());
+
+    ///// <summary>Creates a decimal (base 10) text string from <paramref name="value"/>.</summary>
+    ///// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
+    //public static string ToDecimalString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => ToRadixString(value, 10, Bits.GetMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
+
+    ///// <summary>Creates a hexadecimal (base 16) text string from <paramref name="value"/>.</summary>
+    ///// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
+    //public static string ToHexadecimalString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => ToRadixString(value, 16, Bits.GetMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
+
+    ///// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
+    ///// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
+    //public static string ToOctalString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => ToRadixString(value, 8, Bits.GetMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
+
+    /// <summary>Creates a base <paramref name="radix"/> text string from <paramref name="value"/>, with an optional <paramref name="minLength"/> of digits in the resulting string (padded with zeroes if needed).</summary>
+    /// <remarks>By default, this function returns the shortest possible string length.</remarks>
+    public static string ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      var alphabet = PositionalNotation.Base64.Take(radix).ToList();
+
+      var indices = PositionalNotation.ConvertValueToIndices(value, radix);
+
+      var symbols = PositionalNotation.ConvertIndicesToSymbols(indices, alphabet);
+
+      if (symbols.Count < minLength)
+        symbols.InsertRange(0, new string(alphabet[0], minLength - symbols.Count));
+
+      if (TSelf.IsNegative(value) && radix == 10)
+        symbols.Insert(0, (char)Flux.UnicodeCodepoint.HyphenMinus);
+
+      return symbols.AsSpan().ToString();
+    }
+
 #else
 
     //public static string ToBinaryString(this System.Numerics.BigInteger value) => Text.PositionalNotation.Base2.NumberToText(value, value.GetBitCount());
@@ -85,54 +129,6 @@ namespace Flux
   namespace Text
   {
 #if NET7_0_OR_GREATER
-
-    public static class PositionalNotationX
-    {
-      /// <summary>Converts a positional notation list of <paramref name="indices"/> with <paramref name="radix"/> to a number.</summary>
-      public static TSelf IndicesToNumber<TSelf, TRadix>(System.Collections.Generic.IList<int> indices, TRadix radix)
-        where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        var bi = TSelf.Zero;
-
-        for (var index = 0; index < indices.Count; index++)
-        {
-          bi *= TSelf.CreateChecked(radix);
-
-          bi += TSelf.CreateChecked(indices[index]);
-        }
-
-        return bi;
-      }
-
-      /// <summary>Converts <paramref name="number"/> with <paramref name="radix"/> to a positional notation list of indices.</summary>
-      public static System.Collections.Generic.List<int> SymbolsToIndices<TSymbol>(System.Collections.Generic.IList<TSymbol> text, System.Collections.Generic.IList<TSymbol> symbols)
-        => text.Select(symbols.IndexOf).ToList();
-
-      /// <summary>Converts <paramref name="number"/> with <paramref name="radix"/> to a positional notation list of indices.</summary>
-      public static System.Collections.Generic.List<int> NumberToIndices<TSelf, TRadix>(TSelf number, TRadix radix)
-        where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        if (TSelf.IsNegative(number)) throw new System.ArgumentOutOfRangeException(nameof(number));
-
-        var list = new System.Collections.Generic.List<int>();
-
-        while (number != TSelf.Zero)
-        {
-          (number, var remainder) = TSelf.DivRem(number, TSelf.CreateChecked(radix));
-
-          list.Insert(0, int.CreateChecked(remainder));
-        }
-
-        return list;
-      }
-
-      /// <summary>Converts <paramref name="indices"/> with <paramref name="symbols"/> to a positional notation list of indices.</summary>
-      public static System.Collections.Generic.List<TSymbol> IndicesToSymbols<TSelf, TSymbol>(System.Collections.Generic.List<int> indices, System.Collections.Generic.IList<TSymbol> symbols)
-        where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => indices.Select(index => symbols[index]).ToList();
-    }
 
     /// <summary>Convert a number into a positional notation text string.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
@@ -245,6 +241,55 @@ namespace Flux
         number = default;
         return false;
       }
+
+      #region Static methods
+
+      /// <summary>Converts a positional notation list of <paramref name="indices"/> with <paramref name="radix"/> to a numerical value.</summary>
+      public static TSelf ConvertIndicesToValue<TSelf, TRadix>(System.Collections.Generic.IList<int> indices, TRadix radix)
+        where TSelf : System.Numerics.IBinaryInteger<TSelf>
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        var bi = TSelf.Zero;
+
+        for (var index = 0; index < indices.Count; index++)
+        {
+          bi *= TSelf.CreateChecked(radix);
+
+          bi += TSelf.CreateChecked(indices[index]);
+        }
+
+        return bi;
+      }
+
+      /// <summary>Converts <paramref name="symbols"/> with <paramref name="alphabet"/> to a positional notation list of indices.</summary>
+      public static System.Collections.Generic.List<int> ConvertSymbolsToIndices<TSymbol>(System.Collections.Generic.IList<TSymbol> symbols, System.Collections.Generic.IList<TSymbol> alphabet)
+        => symbols.Select(alphabet.IndexOf).ToList();
+
+      /// <summary>Converts a numerical <paramref name="value"/> using <paramref name="radix"/> to a positional notation list of indices.</summary>
+      public static System.Collections.Generic.List<int> ConvertValueToIndices<TSelf, TRadix>(TSelf value, TRadix radix)
+        where TSelf : System.Numerics.IBinaryInteger<TSelf>
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        if (TSelf.IsNegative(value))
+          return ConvertValueToIndices(TSelf.Abs(value), radix);
+
+        var list = new System.Collections.Generic.List<int>();
+
+        while (value != TSelf.Zero)
+        {
+          (value, var remainder) = TSelf.DivRem(value, TSelf.CreateChecked(radix));
+
+          list.Insert(0, int.CreateChecked(remainder));
+        }
+
+        return list;
+      }
+
+      /// <summary>Converts <paramref name="indices"/> using <paramref name="alphabet"/> to a positional notation list of indices.</summary>
+      public static System.Collections.Generic.List<TSymbol> ConvertIndicesToSymbols<TSymbol>(System.Collections.Generic.IList<int> indices, System.Collections.Generic.IList<TSymbol> alphabet)
+        => indices.Select(index => alphabet[index]).ToList();
+
+      #endregion // Static methods
     }
 
 #else
