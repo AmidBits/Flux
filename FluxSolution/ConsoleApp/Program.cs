@@ -184,14 +184,16 @@ namespace ConsoleApp
 
       //var il = (new Flux.Geometry.CartesianCoordinate2<double>(10, 10)).InterpolateLinear(new Flux.Geometry.CartesianCoordinate2<double>(-10, -10), new Flux.Geometry.CartesianCoordinate2<double>(-.25, -.25));
 
-      var symbols = Flux.Text.PositionalNotation.Base64.Take(16).ToArray();
+      EvaluateNumericStuff();
+
+      var symbols = Flux.Text.PositionalNotation.Base64.Take(10).ToArray();
       var radix = symbols.Length;
 
-      //var a = 6705302039L;
-      //var b = Flux.Text.PositionalNotationX.NumberToIndices(a, radix);
-      //var c = Flux.Text.PositionalNotationX.IndicesToSymbols<int, char>(b, symbols);
-      //var d = Flux.Text.PositionalNotationX.SymbolsToIndices(c, symbols);
-      //var e = Flux.Text.PositionalNotationX.IndicesToNumber<int, int>(d, radix);
+      var a = 31;
+      var b = Flux.Text.PositionalNotation.ConvertValueToIndices(a, radix);
+      var c = Flux.Text.PositionalNotation.ConvertIndicesToSymbols<char>(b, symbols);
+      var d = Flux.Text.PositionalNotation.ConvertSymbolsToIndices(c, symbols);
+      var e = Flux.Text.PositionalNotation.ConvertIndicesToValue<int, int>(d, radix);
     }
 
     private static void Main(string[] args)
