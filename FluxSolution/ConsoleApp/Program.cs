@@ -184,6 +184,8 @@ namespace ConsoleApp
 
       //var il = (new Flux.Geometry.CartesianCoordinate2<double>(10, 10)).InterpolateLinear(new Flux.Geometry.CartesianCoordinate2<double>(-10, -10), new Flux.Geometry.CartesianCoordinate2<double>(-.25, -.25));
 
+      var ewsd = Flux.Maths.EqualsWithinSignificantDigits(100, 150, -2);
+
       var symbols = Flux.Text.PositionalNotation.Base64.Take(16).ToArray();
       var radix = symbols.Length;
 
