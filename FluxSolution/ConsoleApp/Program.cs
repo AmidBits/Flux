@@ -58,7 +58,7 @@ namespace ConsoleApp
       var p2tzp = p2tz == value ? p2tz >> 1 : p2tz;
       var p2afzp = p2afz == value ? p2afz << 1 : p2afz;
 
-      var n = (short.MaxValue - sbyte.MaxValue);
+      var n = (int)(short.MaxValue / sbyte.MaxValue);
 
       //var rn = n.BinaryToGray();
       //var rrn = rn.GrayToBinary();

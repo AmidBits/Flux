@@ -8,7 +8,7 @@ namespace Flux.Formatting
   {
     public const string FormatIdentifier = @"RADIX";
 
-    public static readonly System.Text.Rune[] RadixNumerals = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".Select(c => (System.Text.Rune)c).ToArray();
+    public static readonly char[] RadixNumerals = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".Select(c => (char)c).ToArray();
 
     public override string Format(string? format, object? arg, System.IFormatProvider? formatProvider)
     {
@@ -26,11 +26,11 @@ namespace Flux.Formatting
       return HandleOtherFormats(format, arg);
     }
 
-    public static bool TryFormat(System.Numerics.BigInteger number, System.Text.Rune[] radixNumerals, out string result)
+    public static bool TryFormat(System.Numerics.BigInteger number, char[] radixNumerals, out string result)
     {
       try
       {
-        result = new Text.PositionalNotation(radixNumerals).NumberToText(number).ToString();
+        result = Text.PositionalNotation.NumberToText(number, radixNumerals, (char)UnicodeCodepoint.HyphenMinus).ToString();
         return true;
       }
       catch { }

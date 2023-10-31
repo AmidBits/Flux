@@ -4,11 +4,11 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
-    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
-    public static string ToOctalString<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value.ToRadixString(8, Bits.GetMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
+    ///// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
+    ///// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
+    //public static string ToOctalString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => value.ToRadixString(8, Bits.GetMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
 
 #else
 

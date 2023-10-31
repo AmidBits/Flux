@@ -18,10 +18,10 @@ namespace Flux.Text
     ///// <seealso cref="https://en.wikipedia.org/wiki/Vigesimal"/>
     //public static System.Text.Rune[] MayanNumerals = new System.Text.Rune[] { (System.Text.Rune)0x1D2E0, (System.Text.Rune)0x1D2E1, (System.Text.Rune)0x1D2E2, (System.Text.Rune)0x1D2E3, (System.Text.Rune)0x1D2E4, (System.Text.Rune)0x1D2E5, (System.Text.Rune)0x1D2E6, (System.Text.Rune)0x1D2E7, (System.Text.Rune)0x1D2E8, (System.Text.Rune)0x1D2E9, (System.Text.Rune)0x1D2EA, (System.Text.Rune)0x1D2EB, (System.Text.Rune)0x1D2EC, (System.Text.Rune)0x1D2ED, (System.Text.Rune)0x1D2EE, (System.Text.Rune)0x1D2EF, (System.Text.Rune)0x1D2F0, (System.Text.Rune)0x1D2F1, (System.Text.Rune)0x1D2F2, (System.Text.Rune)0x1D2F3 };
 
-    public static readonly System.Text.Rune[] SubscriptDecimalDigitRunes
-      = new System.Text.Rune[] { (System.Text.Rune)0x2080, (System.Text.Rune)0x2081, (System.Text.Rune)0x2082, (System.Text.Rune)0x2083, (System.Text.Rune)0x2084, (System.Text.Rune)0x2085, (System.Text.Rune)0x2086, (System.Text.Rune)0x2087, (System.Text.Rune)0x2088, (System.Text.Rune)0x2089 };
+    //public static readonly System.Text.Rune[] SubscriptDecimalDigitRunes
+    //  = new System.Text.Rune[] { (System.Text.Rune)0x2080, (System.Text.Rune)0x2081, (System.Text.Rune)0x2082, (System.Text.Rune)0x2083, (System.Text.Rune)0x2084, (System.Text.Rune)0x2085, (System.Text.Rune)0x2086, (System.Text.Rune)0x2087, (System.Text.Rune)0x2088, (System.Text.Rune)0x2089 };
 
-    public static readonly System.Text.Rune[] SuperscriptDecimalDigitRunes
-      = new System.Text.Rune[] { (System.Text.Rune)0x2070, (System.Text.Rune)0x00B9, (System.Text.Rune)0x00B2, (System.Text.Rune)0x00B3, (System.Text.Rune)0x2074, (System.Text.Rune)0x2075, (System.Text.Rune)0x2076, (System.Text.Rune)0x2077, (System.Text.Rune)0x2078, (System.Text.Rune)0x2079 };
+    //public static readonly System.Text.Rune[] SuperscriptDecimalDigitRunes
+    //  = new System.Text.Rune[] { (System.Text.Rune)0x2070, (System.Text.Rune)0x00B9, (System.Text.Rune)0x00B2, (System.Text.Rune)0x00B3, (System.Text.Rune)0x2074, (System.Text.Rune)0x2075, (System.Text.Rune)0x2076, (System.Text.Rune)0x2077, (System.Text.Rune)0x2078, (System.Text.Rune)0x2079 };
   }
 }

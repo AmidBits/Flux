@@ -4,11 +4,11 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Creates a decimal (base 10) text string from <paramref name="value"/>.</summary>
-    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
-    public static string ToDecimalString<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value.ToRadixString(10, Bits.GetMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
+    ///// <summary>Creates a decimal (base 10) text string from <paramref name="value"/>.</summary>
+    ///// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
+    //public static string ToDecimalString<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => value.ToRadixString(10, Bits.GetMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
 
 #else
 
