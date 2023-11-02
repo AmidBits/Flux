@@ -1,4 +1,5 @@
 #if NET7_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Flux
@@ -8,32 +9,32 @@ namespace Flux
     /// <summary>Returns whether the source is of System.Numerics.IBinaryInteger<>.</summary>
     public static bool ImplementsBinaryInteger<TSelf>(this TSelf source)
       where TSelf : System.Numerics.INumberBase<TSelf>
-      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(System.Numerics.IBinaryInteger<>));
+      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(typeof(System.Numerics.IBinaryInteger<>)));
 
     /// <summary>Returns whether the source is of System.Numerics.IFloatingPoint<>.</summary>
     public static bool ImplementsFloatingPoint<TSelf>(this TSelf source)
       where TSelf : System.Numerics.INumberBase<TSelf>
-      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(System.Numerics.IFloatingPoint<>));
+      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(typeof(System.Numerics.IFloatingPoint<>)));
 
     /// <summary>Returns whether the source is of System.Numerics.IFloatingPointIeee754<>.</summary>
     public static bool ImplementsFloatingPointIeee754<TSelf>(this TSelf source)
       where TSelf : System.Numerics.INumberBase<TSelf>
-      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(System.Numerics.IFloatingPointIeee754<>));
+      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(typeof(System.Numerics.IFloatingPointIeee754<>)));
 
     /// <summary>Returns whether the source is of System.Numerics.INumber<>.</summary>
     public static bool ImplementsNumber<TSelf>(this TSelf source)
       where TSelf : System.Numerics.INumberBase<TSelf>
-      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(System.Numerics.INumber<>));
+      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(typeof(System.Numerics.INumber<>)));
 
     /// <summary>Returns whether the source is of System.Numerics.ISignedNumber<>.</summary>
     public static bool ImplementsSignedNumber<TSelf>(this TSelf source)
       where TSelf : System.Numerics.INumberBase<TSelf>
-      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(System.Numerics.ISignedNumber<>));
+      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(typeof(System.Numerics.ISignedNumber<>)));
 
     /// <summary>Returns whether the source is of System.Numerics.IUnsignedNumber<>.</summary>
     public static bool ImplementsUnsignedNumber<TSelf>(this TSelf source)
       where TSelf : System.Numerics.INumberBase<TSelf>
-      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(System.Numerics.IUnsignedNumber<>));
+      => source.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().Equals(typeof(System.Numerics.IUnsignedNumber<>)));
   }
 }
 #endif

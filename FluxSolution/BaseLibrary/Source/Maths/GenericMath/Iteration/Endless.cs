@@ -1,10 +1,10 @@
 namespace Flux
 {
-  public static partial class Looping
+  public static partial class Iteration
   {
 #if NET7_0_OR_GREATER
 
-    public static System.Collections.Generic.IEnumerable<TSelf> Forever<TSelf>(TSelf initial, TSelf step)
+    public static System.Collections.Generic.IEnumerable<TSelf> Endless<TSelf>(TSelf initial, TSelf step)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       for (TSelf n = initial; ; n += step)

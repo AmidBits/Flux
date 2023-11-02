@@ -21,7 +21,7 @@ namespace Flux
       while (exponent != TSelf.One)
       {
         if (TSelf.IsOddInteger(exponent)) // Only act on set bits in exponent.
-          result *= value; // Multiply by the current corresponding power-of-radix (adjusted in radix below for each iteration).
+          result *= value; // Multiply by the current corresponding power-of-radix (adjusts value/exponent below for each iteration).
 
         value *= value; // Compute power-of-radix for the next iteration.
         exponent >>= 1; // Half the exponent for the next iteration.

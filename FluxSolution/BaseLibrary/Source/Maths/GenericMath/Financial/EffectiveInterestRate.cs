@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Financials
+  public static partial class Financial
   {
     /// <summary>The interest rate on a loan or financial product restated from the nominal interest rate as an interest rate with annual compound interest payable in arrears.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Effective_interest_rate"/>

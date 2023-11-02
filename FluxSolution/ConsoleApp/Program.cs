@@ -97,103 +97,14 @@ namespace ConsoleApp
 
     #endregion Presets
 
-    static int MyFunction(int x, int y)
-    {
-      var v = x;
-
-      for (var i = y - 1; i > 0; i--)
-        v *= x;
-
-      return v;
-    }
-
-    public static System.Collections.Generic.IEnumerable<TSelf> GetAscendingPotentialPrimes<TSelf>(TSelf startAt)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      var six = TSelf.CreateChecked(6);
-
-      var (quotient, remainder) = TSelf.DivRem(startAt, six);
-
-      var multiple = six * (quotient + (remainder > TSelf.One ? TSelf.One : TSelf.Zero));
-
-      if (quotient == TSelf.Zero) // If startAt is less than 6.
-      {
-        var two = TSelf.CreateChecked(2);
-        var three = TSelf.CreateChecked(3);
-
-        if (remainder <= two) yield return two;
-        if (remainder <= three) yield return three;
-
-        multiple = six;
-      }
-      else if (remainder <= TSelf.One) // Or, either between two potential primes or on right of a % 6 number. E.g. 12 or 13.
-      {
-        yield return multiple + TSelf.One;
-        multiple += six;
-      }
-
-      while (true)
-      {
-        yield return multiple - TSelf.One;
-        yield return multiple + TSelf.One;
-
-        multiple += six;
-      }
-    }
-
-    //public static (TSelf potentialPrimeTowardZero, TSelf potentialPrimeAwayFromZero) RoundToPotentialPrime<TSelf>(TSelf value)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //{
-    //  if (TSelf.CreateChecked(3) is var three && value <= three)
-    //    return (TSelf.CreateChecked(2), three);
-    //  else if (TSelf.CreateChecked(5) is var five && value < five)
-    //    return (three, five);
-
-    //  var (potentialPrimeMultipleTowardsZero, potentialPrimeMultipleAwayFromZero) = Flux.Maths.RoundToMultipleOf(value, TSelf.CreateChecked(6), false);
-
-    //  if (potentialPrimeMultipleTowardsZero - TSelf.One is var tzTz && potentialPrimeMultipleAwayFromZero + TSelf.One is var afzAfz && potentialPrimeMultipleTowardsZero == potentialPrimeMultipleAwayFromZero)
-    //    return (tzTz, afzAfz);
-    //  else if (potentialPrimeMultipleTowardsZero + TSelf.One is var tzAfz && value <= tzAfz)
-    //    return (tzTz, tzAfz);
-    //  else if (potentialPrimeMultipleAwayFromZero - TSelf.One is var afzTz && value >= afzTz)
-    //    return (afzTz, afzAfz);
-    //  else
-    //    return (tzAfz, afzTz);
-    //}
-
-    //public static TSelf RoundToPotentialPrime<TSelf>(TSelf value, RoundingMode mode, out TSelf potentialPrimeTowardZero, out TSelf potentialPrimeAwayFromZero)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //{
-    //  (potentialPrimeTowardZero, potentialPrimeAwayFromZero) = RoundToPotentialPrime(value);
-
-    //  return value.RoundToBoundaries(mode, potentialPrimeTowardZero, potentialPrimeAwayFromZero);
-    //}
-
-    public static System.Span<char> Transform(System.Span<char> source, System.Func<(char left, char current, char right), int, char> transformSelector)
-    {
-      for (var index = 0; index < source.Length; index++)
-        source[index] = transformSelector((index > 0 ? source[index - 1] : '\0', source[index], index < source.Length - 1 ? source[index + 1] : '\0'), index);
-
-      return source;
-    }
-
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //var il = (new Flux.Geometry.CartesianCoordinate2<double>(10, 10)).InterpolateLinear(new Flux.Geometry.CartesianCoordinate2<double>(-10, -10), new Flux.Geometry.CartesianCoordinate2<double>(-.25, -.25));
+      //EvaluateNumericStuff();
 
-      EvaluateNumericStuff();
 
-      var symbols = Flux.Text.PositionalNotation.Base64.Take(10).ToArray();
-      var radix = symbols.Length;
-
-      var a = 31;
-      var b = Flux.Text.PositionalNotation.ConvertValueToIndices(a, radix);
-      var c = Flux.Text.PositionalNotation.ConvertIndicesToSymbols<char>(b, symbols);
-      var d = Flux.Text.PositionalNotation.ConvertSymbolsToIndices(c, symbols);
-      var e = Flux.Text.PositionalNotation.ConvertIndicesToValue<int, int>(d, radix);
     }
 
     private static void Main(string[] args)

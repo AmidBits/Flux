@@ -1,9 +1,14 @@
 namespace Flux
 {
-  public static partial class Looping
+  public static partial class Iteration
   {
 #if NET7_0_OR_GREATER
 
+    /// <summary>Creates a sequence of <paramref name="count"/> numbers alternating around <paramref name="mean"/>, controlled by a <paramref name="direction"/> (towards or away from <paramref name="mean"/>) and <paramref name="step"/> size.</summary>
+    /// <param name="mean">The mean around which the iteration takes place.</param>
+    /// <param name="count">The number of iterations to execute.</param>
+    /// <param name="step">The stepping size between iterations. A positive number iterates from mean to extent, whereas a negative number iterates from extent to mean.</param>
+    /// <param name="direction">Specified by <see cref="AlternatingLoopDirection"/>.</param>
     public static System.Collections.Generic.IEnumerable<TSelf> Alternating<TSelf>(TSelf mean, TSelf count, TSelf step, AlternatingLoopDirection direction)
       where TSelf : System.Numerics.INumber<TSelf>
     {
@@ -14,7 +19,7 @@ namespace Flux
           {
             yield return mean;
 
-            mean += step * index;
+            mean += (step * index);
             step = -step;
           }
           break;
@@ -26,7 +31,7 @@ namespace Flux
           {
             yield return mean;
 
-            mean -= step * index;
+            mean -= (step * index);
             step = -step;
           }
           break;

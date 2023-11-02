@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class InterpolationExtensionMethods
+  public static partial class Interpolation
   {
 #if NET7_0_OR_GREATER
 

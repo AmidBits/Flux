@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Financials
+  public static partial class Financial
   {
     /// <summary>Compound interest is the addition of interest to the principal sum of a loan or deposit, or in other words, interest on interest.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Compound_interest"/>

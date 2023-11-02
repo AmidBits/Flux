@@ -9,6 +9,8 @@ namespace Flux.Statistics
   public record class QuartileEmpirical
     : IQuartileComputable
   {
+    public static IQuartileComputable Default => new QuartileEmpirical();
+
     public (double q1, double q2, double q3) ComputeQuartiles(System.Collections.Generic.IEnumerable<double> sample)
       => Compute(sample);
 

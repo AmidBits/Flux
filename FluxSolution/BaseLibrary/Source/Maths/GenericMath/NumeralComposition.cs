@@ -19,12 +19,12 @@ namespace Flux
     {
       var list = new System.Collections.Generic.List<string>();
 
-      var isNegative = !compoundNumbers.First().IsNonNegative();
+      var sign = compoundNumbers.First();
 
-      if (isNegative)
+      if (System.Numerics.BigInteger.IsNegative(sign))
         list.Add("Negative");
 
-      list.AddRange(compoundNumbers.Skip(System.Math.Abs((int)compoundNumbers.First())).Select(on => NumeralComposition.ShortScaleDictionary[on]));
+      list.AddRange(compoundNumbers.Skip((int)System.Numerics.BigInteger.Abs(sign)).Select(on => NumeralComposition.ShortScaleDictionary[on])); // Skip sign for breakdown.
 
       return list;
     }
