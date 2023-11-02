@@ -8,10 +8,10 @@ namespace Flux
     public static string GetOrdinalIndicator<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var nm100 = int.CreateChecked(TSelf.Abs(x) % TSelf.CreateChecked(100));
-      var nm10 = nm100 % 10;
+      var rem100 = int.CreateChecked(TSelf.Abs(x) % TSelf.CreateChecked(100));
+      var rem10 = rem100 % 10;
 
-      return (nm10 is var o && o < 4 && nm100 is var t && (t < 11 || t > 13) ? o : 0) switch
+      return (rem10 is var o && o < 4 && rem100 is var t && (t < 11 || t > 13) ? o : 0) switch
       {
         1 => "st",
         2 => "nd",
