@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class IComparableExtensionMethods
+  public static partial class ExtensionMethodsIComparable
   {
     public static T Clamp<T>(this T source, T min, T max)
       where T : System.IComparable<T>

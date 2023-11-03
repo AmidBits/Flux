@@ -13,7 +13,7 @@ namespace Flux
   ///// <para>A glyph is a visual "image", e.g. in a font, used to represent visual "symbols". One or more glyphs may be used to represent a grapheme.</para>
   ///// </remarks>
 
-  public static partial class UnicodeExtensionMethods
+  public static partial class Unicode
   {
     /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
     private static System.Collections.Generic.IList<(string name, System.Text.Unicode.UnicodeRange range)> GetUnicodeNamesAndRanges()
@@ -40,11 +40,11 @@ namespace Flux
     }
 
     /// <summary>Locates the Unicode range and block name of the <paramref name="character"/>.</summary>
-    public static (string name, System.Text.Unicode.UnicodeRange range) GetUnicodeRange(this System.Char character)
-      => GetUnicodeRange((System.Text.Rune)character);
+    public static (string name, System.Text.Unicode.UnicodeRange range) FindUnicodeRange(this System.Char character)
+      => FindUnicodeRange((System.Text.Rune)character);
 
     /// <summary>Locates the Unicode range and block name of the <paramref name="rune"/>.</summary>
-    public static (string name, System.Text.Unicode.UnicodeRange range) GetUnicodeRange(this System.Text.Rune rune)
+    public static (string name, System.Text.Unicode.UnicodeRange range) FindUnicodeRange(this System.Text.Rune rune)
     {
       for (var index = 0; index < UnicodeNamesAndRanges.Count; index++)
         if (UnicodeNamesAndRanges[index] is var unar && unar.range is var ur && rune.Value >= ur.FirstCodePoint && rune.Value < ur.FirstCodePoint + ur.Length)

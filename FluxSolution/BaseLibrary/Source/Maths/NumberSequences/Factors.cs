@@ -124,12 +124,12 @@ namespace Flux.NumberSequences
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
-    public static System.Numerics.BigInteger GetSumOfDivisors(System.Numerics.BigInteger number) => Enumerable.Sum(GetDivisors(number));
+    public static System.Numerics.BigInteger GetSumOfDivisors(System.Numerics.BigInteger number) => ExtensionMethodsIEnumerableT.Sum(GetDivisors(number));
 
     /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
-    public static System.Numerics.BigInteger GetSumOfProperDivisors(System.Numerics.BigInteger number) => Enumerable.Sum(GetProperDivisors(number));
+    public static System.Numerics.BigInteger GetSumOfProperDivisors(System.Numerics.BigInteger number) => ExtensionMethodsIEnumerableT.Sum(GetProperDivisors(number));
 
     /// <summary>Determines whether the number is a deficient number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Deficient_number"/>

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class SystemNumericsExtensionMethods
+  public static partial class ExtensionMethodsVector2
   {
     #region 2D vector (non-collection) computations
 

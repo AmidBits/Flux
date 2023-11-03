@@ -21,7 +21,8 @@ namespace Flux
 
       list.Mean(out TResult mean, out var _, out var _);
       list.Median(out TResult median, out var _);
-      list.Mode(out var rawMode, out var _); // Mode can be applied on any type of object (not just numerics) and therefor no conversion is performed as in mean and median.
+      //list.Mode(out var rawMode, out var _); // Mode can be applied on any type of object (not just numerics) and therefor no conversion is performed as in mean and median.
+      var (rawMode, _) = list.Mode().First(); // Mode can be applied on any type of object (not just numerics) and therefor no conversion is performed as in mean and median.
       var mode = TResult.CreateChecked(rawMode); // We perform our own conversion here.
 
       madMean = TResult.Zero;

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class UnicodeExtensionMethods
+  public static partial class Unicode
   {
     /// <summary>Remove diacritical marks.</summary>
     public static SpanBuilder<char> RemoveUnicodeMarks(this string source)

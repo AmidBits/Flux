@@ -30,7 +30,7 @@ namespace Flux.Formatting
     {
       try
       {
-        result = Text.PositionalNotation.NumberToText(number, radixNumerals, (char)UnicodeCodepoint.HyphenMinus).ToString();
+        result = PositionalNotation.NumberToText(number, radixNumerals, (char)UnicodeCodepoint.HyphenMinus).ToString();
         return true;
       }
       catch { }

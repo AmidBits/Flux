@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class TimeZoneInfoExtensionMethods
+  public static partial class ExtensionMethodsTimeZoneInfo
   {
     /// <summary>This is simple straight forward abbreviator for time zones. Since there is no real standard for abbreviations, or rather all abbreviations are localized, this is not a reliable source of information.</summary>
     public static string GetCustomAbbreviation(this System.TimeZoneInfo source, bool? isDaylightSavingTime = null)

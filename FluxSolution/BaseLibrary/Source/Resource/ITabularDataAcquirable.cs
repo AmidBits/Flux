@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethods
+  public static partial class ITabularExtensionMethods
   {
     public static System.Data.IDataReader AcquireDataReader(this ITabularDataAcquirable source)
          => new Data.EnumerableTabularDataReader(source.GetFieldValues(), source.FieldNames, source.FieldTypes);

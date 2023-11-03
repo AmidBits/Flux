@@ -9,13 +9,13 @@ namespace Flux
     /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static string ToSubscriptString<TSelf>(this TSelf number, int radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Text.PositionalNotation.NumberToText(number, m_subscriptDecimalDigits.AsSpan()[..AssertRadix(radix, m_subscriptDecimalDigits.Length)], (char)UnicodeCodepoint.HyphenMinus).ToString();
+      => PositionalNotation.NumberToText(number, m_subscriptDecimalDigits.AsSpan()[..AssertRadix(radix, m_subscriptDecimalDigits.Length)], (char)UnicodeCodepoint.HyphenMinus).ToString();
 
 #else
 
     /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static string ToSubscriptString(this System.Numerics.BigInteger number, int radix)
-      => new Text.PositionalNotation(Text.RuneSequences.SubscriptDecimalDigitRunes.AsSpan()[..AssertRadix(radix, Text.RuneSequences.SubscriptDecimalDigitRunes.Length)]).NumberToText(number).ToString();
+      => new PositionalNotation(Text.RuneSequences.SubscriptDecimalDigitRunes.AsSpan()[..AssertRadix(radix, Text.RuneSequences.SubscriptDecimalDigitRunes.Length)]).NumberToText(number).ToString();
 
 #endif
   }

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Permutation
   {
 #if NET7_0_OR_GREATER
 
@@ -26,7 +26,7 @@ namespace Flux
         do
         {
           x++;
-          r = BinomialCoefficient(n - x, p - i);
+          r = Maths.BinomialCoefficient(n - x, p - i);
           k += r;
         }
         while (k <= l);
@@ -62,7 +62,7 @@ namespace Flux
         do
         {
           x++;
-          r = (int)BinomialCoefficient(n - x, p - i);
+          r = (int)Maths.BinomialCoefficient(n - x, p - i);
           k += r;
         }
         while (k <= l);

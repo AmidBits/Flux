@@ -37,7 +37,7 @@ namespace Types
     [TestMethod]
     public void Mean()
     {
-      d.Mean(out double result, out int _, out double _);
+      d.Mean(out double result, out double _, out int _);
 
       Assert.AreEqual(54, result, nameof(Mean));
     }

@@ -6,7 +6,6 @@ using System.Runtime.CompilerServices;
 using Flux;
 using Flux.Formatting;
 using Flux.Text;
-using Flux.Unicode;
 using Flux.Units;
 using Microsoft.VisualBasic.FileIO;
 

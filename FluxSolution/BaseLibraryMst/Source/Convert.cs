@@ -29,8 +29,8 @@ namespace Static
       string binS102 = @"1100110";
       System.Numerics.BigInteger binI102 = 0b1100110;
 
-      Assert.AreEqual(binS102, Flux.Text.PositionalNotation.NumberToText(binI102, Flux.Text.PositionalNotation.Base64.Substring(0, 2), (char)UnicodeCodepoint.HyphenMinus).ToString());
-      Assert.AreEqual(binI102, Flux.Text.PositionalNotation.TextToNumber(binS102, Flux.Text.PositionalNotation.Base64.Substring(0, 2).ToCharArray(), (char)UnicodeCodepoint.HyphenMinus, out System.Numerics.BigInteger _));
+      Assert.AreEqual(binS102, Flux.PositionalNotation.NumberToText(binI102, Flux.PositionalNotation.Base64.Substring(0, 2), (char)UnicodeCodepoint.HyphenMinus).ToString());
+      Assert.AreEqual(binI102, Flux.PositionalNotation.TextToNumber(binS102, Flux.PositionalNotation.Base64.Substring(0, 2).ToCharArray(), (char)UnicodeCodepoint.HyphenMinus, out System.Numerics.BigInteger _));
     }
 
     [TestMethod]
@@ -39,8 +39,8 @@ namespace Static
       string decS102 = @"102";
       System.Numerics.BigInteger decI102 = 102;
 
-      Assert.AreEqual(decS102, Flux.Text.PositionalNotation.NumberToText(decI102, Flux.Text.PositionalNotation.Base64.Substring(0, 10), (char)UnicodeCodepoint.HyphenMinus).ToString());
-      Assert.AreEqual(decI102, Flux.Text.PositionalNotation.TextToNumber(decS102, Flux.Text.PositionalNotation.Base64.Substring(0, 10).ToCharArray(), (char)UnicodeCodepoint.HyphenMinus, out System.Numerics.BigInteger _));
+      Assert.AreEqual(decS102, Flux.PositionalNotation.NumberToText(decI102, Flux.PositionalNotation.Base64.Substring(0, 10), (char)UnicodeCodepoint.HyphenMinus).ToString());
+      Assert.AreEqual(decI102, Flux.PositionalNotation.TextToNumber(decS102, Flux.PositionalNotation.Base64.Substring(0, 10).ToCharArray(), (char)UnicodeCodepoint.HyphenMinus, out System.Numerics.BigInteger _));
     }
 
     [TestMethod]
@@ -49,8 +49,8 @@ namespace Static
       string hexS102 = @"66";
       System.Numerics.BigInteger hexI102 = 0x66;
 
-      Assert.AreEqual(hexS102, Flux.Text.PositionalNotation.NumberToText(hexI102, Flux.Text.PositionalNotation.Base64.Substring(0, 16), (char)UnicodeCodepoint.HyphenMinus).ToString());
-      Assert.AreEqual(hexI102, Flux.Text.PositionalNotation.TextToNumber(hexS102, Flux.Text.PositionalNotation.Base64.Substring(0, 16).ToCharArray(), (char)UnicodeCodepoint.HyphenMinus, out System.Numerics.BigInteger _));
+      Assert.AreEqual(hexS102, Flux.PositionalNotation.NumberToText(hexI102, Flux.PositionalNotation.Base64.Substring(0, 16), (char)UnicodeCodepoint.HyphenMinus).ToString());
+      Assert.AreEqual(hexI102, Flux.PositionalNotation.TextToNumber(hexS102, Flux.PositionalNotation.Base64.Substring(0, 16).ToCharArray(), (char)UnicodeCodepoint.HyphenMinus, out System.Numerics.BigInteger _));
     }
   }
 }

@@ -60,5 +60,8 @@ namespace Flux
     SquareBq = '\u33C3',
     /// <summary>Square Katal.</summary>
     SquareKt = '\u33CF',
+
+    /// <summary>Replacement Char</summary>
+    ReplacementChar = '\uFFFD',
   }
 }

@@ -1,58 +1,108 @@
-using Flux.Text;
-
 namespace Flux
 {
-  public static partial class TextExtensionMethods
-  {
 #if NET7_0_OR_GREATER
 
-    //private const string m_toRadixStringChars = "0123456789ABCDEF";
+  /// <summary>Convert a number into a positional notation text string.</summary>
+  /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
+  /// <seealso cref="https://en.wikipedia.org/wiki/List_of_numeral_systems#Standard_positional_numeral_systems"/>
+  /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
+  public static partial class PositionalNotation
+  {
+    public const string Base64 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
 
-    //public static string ToBinaryString<TSelf>(this TSelf value)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //{
-    //  var sb = new System.Text.StringBuilder();
+    #region Static methods
 
-    //  for (var index = value.GetBitCount() - 1; index >= 0; index--)
-    //    sb.Append(TSelf.IsZero((value >> index) & TSelf.One) ? '0' : '1');
+    //#if NET7_0_OR_GREATER
+    /// <summary>Converts a positional notation list of <paramref name="indices"/> with <paramref name="radix"/> to a numerical value.</summary>
+    public static TSelf ConvertIndicesToValue<TSelf, TRadix>(System.Collections.Generic.IList<int> indices, TRadix radix)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
+    {
+      var bi = TSelf.Zero;
 
-    //  return sb.ToString();
-    //}
+      for (var index = 0; index < indices.Count; index++)
+      {
+        bi *= TSelf.CreateChecked(radix);
 
-    //public static string ToDecimalString<TSelf>(this TSelf value)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //  => ToRadixString(value, 10, Bits.ToMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
+        bi += TSelf.CreateChecked(indices[index]);
+      }
 
-    //public static string ToHexadecimalString<TSelf>(this TSelf value)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //  => ToRadixString(value, 16, Bits.ToMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
+      return bi;
+    }
 
-    //public static string ToOctalString<TSelf>(this TSelf value)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //  => ToRadixString(value, 8, Bits.ToMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
+    /// <summary>Converts <paramref name="symbols"/> with <paramref name="alphabet"/> to a positional notation list of indices.</summary>
+    public static System.Collections.Generic.List<int> ConvertSymbolsToIndices<TSymbol>(System.Collections.Generic.IList<TSymbol> symbols, System.Collections.Generic.IList<TSymbol> alphabet)
+      => symbols.Select(alphabet.IndexOf).ToList();
 
-    ///// <summary>Creates <paramref name="value"/> to text using base <paramref name="radix"/>.</summary>
-    //public static string ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //{
-    //  if (TSelf.IsNegative(value))
-    //    return $"{(char)Flux.UnicodeCodepoint.HyphenMinus}{ToHexadecimalString(TSelf.Abs(value))}";
+    /// <summary>Converts a numerical <paramref name="value"/> using <paramref name="radix"/> to a positional notation list of indices.</summary>
+    public static System.Collections.Generic.List<int> ConvertValueToIndices<TSelf, TRadix>(TSelf value, TRadix radix)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
+    {
+      if (TSelf.IsNegative(value))
+        return ConvertValueToIndices(TSelf.Abs(value), radix);
 
-    //  var sb = new System.Text.StringBuilder();
+      var list = new System.Collections.Generic.List<int>();
 
-    //  if (!TSelf.IsZero(value))
-    //    while (value != TSelf.Zero)
-    //    {
-    //      (value, var remainder) = TSelf.DivRem(value, TSelf.CreateChecked(radix));
+      while (value != TSelf.Zero)
+      {
+        (value, var remainder) = TSelf.DivRem(value, TSelf.CreateChecked(radix));
 
-    //      sb.Insert(0, Flux.Text.PositionalNotation.Base64[int.CreateChecked(remainder)]);
-    //    }
+        list.Insert(0, int.CreateChecked(remainder));
+      }
 
-    //  if (sb.Length < minLength)
-    //    sb.Insert(0, "0", minLength - sb.Length);
+      return list;
+    }
 
-    //  return sb.ToString();
-    //}
+    /// <summary>Converts <paramref name="indices"/> using <paramref name="alphabet"/> to a positional notation list of indices.</summary>
+    public static System.Collections.Generic.List<TSymbol> ConvertIndicesToSymbols<TSymbol>(System.Collections.Generic.IList<int> indices, System.Collections.Generic.IList<TSymbol> alphabet)
+      => indices.Select(index => alphabet[index]).ToList();
+
+    /// <summary>Converts <paramref name="number"/> to a positional notation text string with the specified <paramref name="minLength"/>.</summary>
+    public static System.ReadOnlySpan<TSymbol> NumberToText<TSelf, TSymbol>(TSelf number, System.ReadOnlySpan<TSymbol> alphabet, TSymbol negativeSymbol, int minLength = 1)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      var indices = new System.Collections.Generic.List<int>();
+
+      if (alphabet.Length == 2) // Special case for base-2 (radix).
+      {
+        for (var bitIndex = number.GetBitLength() - 1; bitIndex >= 0; bitIndex--)
+          if ((int.CreateChecked((number >> bitIndex) & TSelf.One) is var position && position > 0) || indices.Count > 0)
+            indices.Add(position);
+      }
+      else // Otherwise use generic algorithm.
+        indices = PositionalNotation.ConvertValueToIndices(number, alphabet.Length);
+
+      while (indices.Count < minLength)
+        indices.Insert(0, 0); // Pad left with zeroth element.
+
+      var symbols = PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray());
+
+      if (TSelf.IsNegative(number) && alphabet.Length == 10)
+        symbols.Insert(0, negativeSymbol); // If the value is negative AND base-2 (radix) is 10 (decimal)...
+
+      return symbols.AsSpan();
+    }
+
+    /// <summary>Convert a positional notation <paramref name="text"/> string to a number.</summary>
+    public static TSelf TextToNumber<TSelf, TSymbol>(System.ReadOnlySpan<TSymbol> text, System.Collections.Generic.IList<TSymbol> alphabet, TSymbol negativeSymbol, out TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      var isNegative = text[0]!.Equals(negativeSymbol);
+
+      var indices = ConvertSymbolsToIndices(text.Slice(isNegative ? 1 : 0).ToList(), alphabet);
+
+      var value = ConvertIndicesToValue<TSelf, int>(indices, alphabet.Count);
+
+      return number = (isNegative ? -value : value);
+    }
+
+    //#else
+    //#endif
+
+    #endregion // Static methods
+
+#if NET7_0_OR_GREATER
 
     /// <summary>Creates a binary (base 2) text string from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
@@ -138,215 +188,6 @@ namespace Flux
 
 #endif
   }
-
-  namespace Text
-  {
-#if NET7_0_OR_GREATER
-
-    /// <summary>Convert a number into a positional notation text string.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/List_of_numeral_systems#Standard_positional_numeral_systems"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
-    public readonly ref struct PositionalNotation
-    {
-      public const string Base64 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
-
-      //public const int MaxRadix = 64;
-
-      //public static PositionalNotation Base2 => new(2);
-      //public static PositionalNotation Base8 => new(8);
-      //public static PositionalNotation Base10 => new(10);
-      //public static PositionalNotation Base16 => new(16);
-
-      ////public System.Text.Rune NegativeSign { get; init; } = (System.Text.Rune)'\u2212';
-
-      //public System.ReadOnlySpan<System.Text.Rune> Symbols { get; }
-
-      ///// <summary>Convert a number into a positional notation text string.</summary>
-      ///// <param name="symbols">Symbols must be represented as TextElements (i.e. graphemes).</param>
-      //public PositionalNotation(System.ReadOnlySpan<System.Text.Rune> symbols) => Symbols = symbols;
-      //public PositionalNotation(int radix) : this(Base64.AsSpan()[..radix].ToListRune().AsSpan()) { }
-
-      ///// <summary>Converts <paramref name="number"/> to a positional notation text string with the specified <paramref name="minLength"/>.</summary>
-      //public string NumberToText(System.Numerics.BigInteger number, int minLength = 1)
-      //{
-      //  if (System.Numerics.BigInteger.IsNegative(number))
-      //    return $"{(char)Flux.UnicodeCodepoint.MinusSign}{NumberToText(System.Numerics.BigInteger.Abs(number), minLength)}";
-
-      //  if (number.IsZero)
-      //    return Symbols[0].ToString();
-
-      //  var radix = Symbols.Length;
-
-      //  var sb = new SpanBuilder<System.Text.Rune>();
-
-      //  while (number != System.Numerics.BigInteger.Zero)
-      //  {
-      //    (number, var remainder) = System.Numerics.BigInteger.DivRem(number, radix);
-
-      //    sb.Insert(0, Symbols[int.CreateChecked(remainder)]);
-      //  }
-
-      //  if (minLength > sb.Count)
-      //    sb.Insert(0, Symbols[0], minLength - sb.Count);
-
-      //  return sb.ToString();
-      //}
-
-      ///// <summary>Try converting <paramref name="number"/> to a positional notation <paramref name="text"/> string (as an out parameter) with the specified <paramref name="minLength"/>.</summary>
-      //public bool TryNumberToText(System.Numerics.BigInteger number, out string text, int minLength = 1)
-      //{
-      //  try
-      //  {
-      //    text = NumberToText(number, minLength);
-      //    return true;
-      //  }
-      //  catch { }
-
-      //  text = string.Empty;
-      //  return false;
-      //}
-
-      ///// <summary>Convert a positional notation <paramref name="text"/> string to a number.</summary>
-      //public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<System.Text.Rune> text)
-      //{
-      //  var isNegative = (text[0] == (System.Text.Rune)(int)UnicodeCodepoint.MinusSign | text[0] == (System.Text.Rune)(int)UnicodeCodepoint.HyphenMinus);
-
-      //  var bi = System.Numerics.BigInteger.Zero;
-
-      //  for (var index = isNegative ? 1 : 0; index < text.Length; index++)
-      //  {
-      //    bi *= Symbols.Length;
-
-      //    bi += MemoryExtensions.IndexOf(Symbols, text[index]) is var position && position >= 0 ? position : throw new System.InvalidOperationException();
-      //  }
-
-      //  return isNegative ? -bi : bi;
-      //}
-
-      ///// <summary>Convert a positional notation <paramref name="text"/> string to a number.</summary>
-      //public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> text) => TextToNumber(text.ToListRune().AsSpan());
-
-      ///// <summary>Try converting a positional notation <paramref name="text"/> string to a <paramref name="number"/> (as an out parameter).</summary>
-      //public bool TryTextToNumber(System.ReadOnlySpan<System.Text.Rune> text, out System.Numerics.BigInteger number)
-      //{
-      //  try
-      //  {
-      //    number = TextToNumber(text);
-      //    return true;
-      //  }
-      //  catch { }
-
-      //  number = default;
-      //  return false;
-      //}
-
-      ///// <summary>Try converting a positional notation <paramref name="text"/> string to a <paramref name="number"/> (as an out parameter).</summary>
-      //public bool TryTextToNumber(System.ReadOnlySpan<char> text, out System.Numerics.BigInteger number)
-      //{
-      //  try
-      //  {
-      //    number = TextToNumber(text);
-      //    return true;
-      //  }
-      //  catch { }
-
-      //  number = default;
-      //  return false;
-      //}
-
-      #region Static methods
-
-      //#if NET7_0_OR_GREATER
-      /// <summary>Converts a positional notation list of <paramref name="indices"/> with <paramref name="radix"/> to a numerical value.</summary>
-      public static TSelf ConvertIndicesToValue<TSelf, TRadix>(System.Collections.Generic.IList<int> indices, TRadix radix)
-        where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        var bi = TSelf.Zero;
-
-        for (var index = 0; index < indices.Count; index++)
-        {
-          bi *= TSelf.CreateChecked(radix);
-
-          bi += TSelf.CreateChecked(indices[index]);
-        }
-
-        return bi;
-      }
-
-      /// <summary>Converts <paramref name="symbols"/> with <paramref name="alphabet"/> to a positional notation list of indices.</summary>
-      public static System.Collections.Generic.List<int> ConvertSymbolsToIndices<TSymbol>(System.Collections.Generic.IList<TSymbol> symbols, System.Collections.Generic.IList<TSymbol> alphabet)
-        => symbols.Select(alphabet.IndexOf).ToList();
-
-      /// <summary>Converts a numerical <paramref name="value"/> using <paramref name="radix"/> to a positional notation list of indices.</summary>
-      public static System.Collections.Generic.List<int> ConvertValueToIndices<TSelf, TRadix>(TSelf value, TRadix radix)
-        where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        if (TSelf.IsNegative(value))
-          return ConvertValueToIndices(TSelf.Abs(value), radix);
-
-        var list = new System.Collections.Generic.List<int>();
-
-        while (value != TSelf.Zero)
-        {
-          (value, var remainder) = TSelf.DivRem(value, TSelf.CreateChecked(radix));
-
-          list.Insert(0, int.CreateChecked(remainder));
-        }
-
-        return list;
-      }
-
-      /// <summary>Converts <paramref name="indices"/> using <paramref name="alphabet"/> to a positional notation list of indices.</summary>
-      public static System.Collections.Generic.List<TSymbol> ConvertIndicesToSymbols<TSymbol>(System.Collections.Generic.IList<int> indices, System.Collections.Generic.IList<TSymbol> alphabet)
-        => indices.Select(index => alphabet[index]).ToList();
-
-      /// <summary>Converts <paramref name="number"/> to a positional notation text string with the specified <paramref name="minLength"/>.</summary>
-      public static System.ReadOnlySpan<TSymbol> NumberToText<TSelf, TSymbol>(TSelf number, System.ReadOnlySpan<TSymbol> alphabet, TSymbol negativeSymbol, int minLength = 1)
-        where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      {
-        var indices = new System.Collections.Generic.List<int>();
-
-        if (alphabet.Length == 2) // Special case for base-2 (radix).
-        {
-          for (var bitIndex = number.GetBitLength() - 1; bitIndex >= 0; bitIndex--)
-            if ((int.CreateChecked((number >> bitIndex) & TSelf.One) is var position && position > 0) || indices.Count > 0)
-              indices.Add(position);
-        }
-        else // Otherwise use generic algorithm.
-          indices = PositionalNotation.ConvertValueToIndices(number, alphabet.Length);
-
-        while (indices.Count < minLength)
-          indices.Insert(0, 0); // Pad left with zeroth element.
-
-        var symbols = PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray());
-
-        if (TSelf.IsNegative(number) && alphabet.Length == 10)
-          symbols.Insert(0, negativeSymbol); // If the value is negative AND base-2 (radix) is 10 (decimal)...
-
-        return symbols.AsSpan();
-      }
-
-      /// <summary>Convert a positional notation <paramref name="text"/> string to a number.</summary>
-      public static TSelf TextToNumber<TSelf, TSymbol>(System.ReadOnlySpan<TSymbol> text, System.Collections.Generic.IList<TSymbol> alphabet, TSymbol negativeSymbol, out TSelf number)
-        where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      {
-        var isNegative = text[0]!.Equals(negativeSymbol);
-
-        var indices = ConvertSymbolsToIndices(text.Slice(isNegative ? 1 : 0).ToList(), alphabet);
-
-        var value = ConvertIndicesToValue<TSelf, int>(indices, alphabet.Count);
-
-        return number = (isNegative ? -value : value);
-      }
-
-      //#else
-      //#endif
-
-      #endregion // Static methods
-    }
 
 #else
 
@@ -460,5 +301,4 @@ namespace Flux
     }
 
 #endif
-  }
 }

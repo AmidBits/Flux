@@ -1,10 +1,5 @@
 namespace Flux
 {
-  public static partial class ExtensionMethods
-  {
-
-  }
-
   namespace Geometry
   {
     /// <summary>Kepler elements for computing orbits.

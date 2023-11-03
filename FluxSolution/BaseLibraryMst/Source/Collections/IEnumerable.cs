@@ -99,7 +99,7 @@ namespace Collections.Generic
     [TestMethod]
     public void Mode()
     {
-      integers.Mode(out var mode, out var count);
+      var (mode, count) = integers.Mode().First();
 
       Assert.AreEqual((17, 2), (mode, count));
     }
