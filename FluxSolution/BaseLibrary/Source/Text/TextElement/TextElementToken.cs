@@ -6,8 +6,8 @@ namespace Flux
   namespace Text
   {
     /// <summary>An implementation of a demarcated and classified section of a grapheme.</summary>
-    public sealed class TextElementToken
-      : IToken<TextElement>
+    public record class TextElementToken
+      : IToken<TextElement>, System.IFormattable
     {
       public int Index { get; }
       public TextElement Value { get; }
@@ -36,8 +36,14 @@ namespace Flux
         return forms;
       }
 
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => string.Format(formatProvider, $"{{0}}{(format is null ? string.Empty : $":{format}")}", Value);
+
+      public string ToTokenString()
+        => $"{GetType().Name} {{ \"{Value.AsReadOnlySpanChar}\", Index = {Index}, Chars = {Value.AsReadOnlyListChar.Count}:[{string.Join(", ", Value.AsReadOnlyListChar.Select(c => $"0x{(int)c:x4}"))}], Runes = {Value.ToReadOnlyListRune().Count}:[{string.Join(", ", Value.ToReadOnlyListRune().Select(r => r.ToStringEx()))}]{(string.Concat(GetNormalizationForms(string.Concat(Value.AsReadOnlyListChar), false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $", {s}" : string.Empty)} }}";
+
       public override string ToString()
-        => $"{GetType().Name} {{ \"{Value.AsReadOnlyListChar}\", Index = {Index}, Chars = {Value.AsReadOnlyListChar.Count}:[{string.Join(", ", Value.AsReadOnlyListChar.Select(c => $"0x{(int)c:x4}"))}], Runes = {Value.ToReadOnlyListRune().Count}:[{string.Join(", ", Value.ToReadOnlyListRune().Select(r => r.ToStringEx()))}]{(string.Concat(GetNormalizationForms(string.Concat(Value.AsReadOnlyListChar), false).Select((kvp, i) => $"[{kvp.Key}=\"{kvp.Value}\"]")) is var s && s.Length > 0 ? $", {s}" : string.Empty)} }}";
+        => ToString(null, null);
     }
   }
 }

@@ -30,7 +30,7 @@ namespace Flux.Text
       };
     }
 
-    public System.Collections.Generic.List<MathToken> GetTokens(string expression)
+    public System.Collections.Generic.IEnumerable<MathToken> GetTokens(string expression)
     {
       var tokens = new System.Collections.Generic.List<MathToken>();
 
@@ -86,18 +86,21 @@ namespace Flux.Text
         }
       }
 
-      return MergeUnaryNegativeOperator(tokens);
+      return tokens;
     }
+
+    public System.Collections.Generic.IList<MathToken> FilterTokens(System.Collections.Generic.IList<MathToken> tokens, bool discardUnrecognized)
+      => MergeUnaryNegativeOperator(tokens.Where(t => t is not MathTokenWhitespace).Where(t => !(t is MathTokenUnrecognized && discardUnrecognized)).Select(t => t is not MathTokenUnrecognized ? t : throw new System.ArgumentException($"Invalid token: {t.ToTokenString()}", nameof(tokens))).ToList());
 
     /// <summary>
     /// <para>Evaluate a sequence of tokens in prefix notation order (a.k.a. Normal Polish Notation, or NPN), to a value.</para>
     /// <see cref="https://en.wikipedia.org/wiki/Polish_notation"/>
     /// </summary>
-    public static double EvaluateNPN(System.Collections.Generic.IEnumerable<MathToken> tokens)
+    public static double EvaluateNPN(System.Collections.Generic.IEnumerable<MathToken> tokensNPN)
     {
       var stack = new System.Collections.Generic.Stack<MathToken>();
 
-      foreach (var token in tokens.Reverse())
+      foreach (var token in tokensNPN.Reverse())
       {
         switch (token)
         {
@@ -118,11 +121,11 @@ namespace Flux.Text
     /// <para>Evaluate a sequence of tokens in postfix notation order (a.k.a. Reverse Polish Notation, or RPN), to a value.</para>
     /// <see cref="https://en.wikipedia.org/wiki/Reverse_Polish_notation"/>
     /// </summary>
-    public static double EvaluateRPN(System.Collections.Generic.IEnumerable<MathToken> tokens)
+    public static double EvaluateRPN(System.Collections.Generic.IEnumerable<MathToken> tokensRPN)
     {
       var stack = new System.Collections.Generic.Stack<MathToken>();
 
-      foreach (var token in tokens.ThrowOnNull(nameof(tokens)))
+      foreach (var token in tokensRPN.ThrowOnNull(nameof(tokensRPN)))
       {
         switch (token)
         {

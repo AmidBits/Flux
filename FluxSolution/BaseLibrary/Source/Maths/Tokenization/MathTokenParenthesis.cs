@@ -21,9 +21,6 @@ namespace Flux.Text
       Depth = depth;
       Group = group;
     }
-
-    public override string ToTokenString() => $"{base.ToTokenString()},{nameof(Depth)}=\"{Depth}\",{nameof(Group)}=\"{Group}\"";
-
-    public override string ToString() => ToString(null, null);
+    public override string ToTokenString() => base.ToTokenString().Replace(" }", $", {nameof(Depth)}=\"{Depth}\", {nameof(Group)}=\"{Group}\" }}");
   }
 }

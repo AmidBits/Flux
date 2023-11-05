@@ -94,7 +94,7 @@ namespace ConsoleApp
       var bmlsl = bmls.Length;
     }
 
-    #endregion Presets
+    #endregion // Presets
 
     private static void TimedMain(string[] _)
     {
@@ -103,6 +103,39 @@ namespace ConsoleApp
 
       //EvaluateNumericStuff();
 
+      var s = "(5+4)*\u2213(3*2 + - 1)";
+
+      //var rt = new Flux.Text.RuneTokenizer();
+      //var rtt = rt.GetTokens(s).ToList();
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, rtt.Select(t => t.ToTokenString())));
+      //System.Console.WriteLine();
+
+      //var tet = new Flux.Text.TextElementTokenizer();
+      //var tett = tet.GetTokens(s).ToList();
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, tett.Select(t => t.ToTokenString())));
+      //System.Console.WriteLine();
+
+      var mt = new Flux.Text.MathTokenizer(true);
+      var mtt = mt.GetTokens(s).ToArray();
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, mtt.Select(t => t.ToTokenString())));
+      System.Console.WriteLine();
+      var fmtt = mt.FilterTokens(mtt, true).ToArray();
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, fmtt.Select(t => t.ToTokenString())));
+      System.Console.WriteLine();
+
+      var tnpn = Flux.Text.MathTokenizer.GetTokensNPN(fmtt);
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, tnpn.Select(t => t.ToTokenString())));
+      //System.Console.WriteLine();
+      var tnpnr = Flux.Text.MathTokenizer.EvaluateNPN(tnpn);
+      System.Console.WriteLine($"NPN: {tnpnr}");
+      System.Console.WriteLine();
+
+      var trpn = Flux.Text.MathTokenizer.GetTokensRPN(fmtt);
+      //System.Console.WriteLine(string.Join(System.Environment.NewLine, trpn.Select(t => t.ToTokenString())));
+      //System.Console.WriteLine();
+      var trpnr = Flux.Text.MathTokenizer.EvaluateRPN(trpn);
+      System.Console.WriteLine($"RPN: {trpnr}");
+      System.Console.WriteLine();
 
     }
 

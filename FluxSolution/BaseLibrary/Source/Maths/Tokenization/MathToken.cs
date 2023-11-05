@@ -3,7 +3,7 @@ namespace Flux.Text
   // https://en.wikipedia.org/wiki/Lexical_analysis
 
   public class MathToken
-    : IToken<string>, IFormattable
+    : IToken<string>, System.IFormattable
   {
     public int Index { get; }
     public string Name { get; }
@@ -16,9 +16,9 @@ namespace Flux.Text
       Index = textIndex;
     }
 
-    public virtual string ToString(string? format, IFormatProvider? formatProvider) => Value;
+    public virtual string ToString(string? format, IFormatProvider? formatProvider) => string.Format(formatProvider, $"{{0}}{(format is null ? string.Empty : $":{format}")}", Value);
 
-    public virtual string ToTokenString() => $"{GetType().Name}=\"{Value}\",#{Index}";
+    public virtual string ToTokenString() => $"{GetType().Name} {{ \"{ToString()}\", Index = {Index} }}";
 
     public override string ToString() => ToString(null, null);
 
