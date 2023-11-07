@@ -1,5 +1,15 @@
+using System.Formats.Tar;
+
 namespace Flux
 {
+  public enum NumericBitSize
+  {
+    /// <summary>The total number of bits used by a type in order to represent a number.</summary>
+    BitCount,
+    /// <summary>The minimum number of bits (a.k.a. shortest-bit-length) needed to represent a number.</summary>
+    BitLength
+  }
+
 #if NET7_0_OR_GREATER
 
   /// <summary>Convert a number into a positional notation text string.</summary>
@@ -34,13 +44,31 @@ namespace Flux
     public static System.Collections.Generic.List<int> ConvertSymbolsToIndices<TSymbol>(System.Collections.Generic.IList<TSymbol> symbols, System.Collections.Generic.IList<TSymbol> alphabet)
       => symbols.Select(alphabet.IndexOf).ToList();
 
+    public static System.Collections.Generic.List<int> ConvertValueToIndices(System.Numerics.BigInteger value, int radix)
+    {
+      if (System.Numerics.BigInteger.IsNegative(value))
+        return ConvertValueToIndices(System.Numerics.BigInteger.Abs(value), radix);
+
+      var list = new System.Collections.Generic.List<int>();
+
+      while (value != System.Numerics.BigInteger.Zero)
+      {
+        (value, var remainder) = System.Numerics.BigInteger.DivRem(value, radix);
+
+        list.Insert(0, int.CreateChecked(remainder));
+      }
+
+      return list;
+    }
+
     /// <summary>Converts a numerical <paramref name="value"/> using <paramref name="radix"/> to a positional notation list of indices.</summary>
     public static System.Collections.Generic.List<int> ConvertValueToIndices<TSelf, TRadix>(TSelf value, TRadix radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       if (TSelf.IsNegative(value))
-        return ConvertValueToIndices(TSelf.Abs(value), radix);
+        return ConvertValueToIndices(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(radix));
+      return ConvertValueToIndices(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(radix));
 
       var list = new System.Collections.Generic.List<int>();
 
@@ -104,62 +132,180 @@ namespace Flux
 
 #if NET7_0_OR_GREATER
 
+    #region Binary strings
     /// <summary>Creates a binary (base 2) text string from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
-    public static string ToBinaryString<TSelf>(this TSelf value)
+    public static System.ReadOnlySpan<TSymbol> ToBinaryString<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 2, value.GetBitCount());
+      where TSymbol : struct
+    {
+      var list = new System.Collections.Generic.List<TSymbol>();
+
+      for (var bitIndex = value.GetBitLength() - 1; bitIndex >= 0; bitIndex--)
+        list.Add(alphabet[int.CreateChecked((value >> bitIndex) & TSelf.One)]);
+
+      while (list.Count < minLength)
+        list.Insert(0, alphabet[0]); // Pad with zero element symbol.
+
+      return list.AsSpan();
+    }
+
+    //public static System.ReadOnlySpan<TSymbol> InsertEvery<TSymbol>(this System.ReadOnlySpan<TSymbol> symbols, TSymbol insert, int interval)
+    //{
+    //  var target = new System.Collections.Generic.List<TSymbol>();
+
+    //  for (var index = symbols.Length - 1; index >= 0; index--)
+    //  {
+    //    target.Add(symbols[symbols.Length - 1 - index]);
+
+    //    if (index > 0 && index % interval == 0)
+    //      target.Add(insert);
+    //  }
+
+    //  return target.AsSpan();
+    //}
+
+    /// <summary>Creates a binary (base 2) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
+    public static System.ReadOnlySpan<char> ToBinaryString<TSelf>(this TSelf value, int minLength)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ToBinaryString(value, Base64.AsSpan()[..2], minLength);
+
+    /// <summary>Creates a binary (base 2) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
+    public static System.ReadOnlySpan<char> ToBinaryString<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ToBinaryString(value, value.GetBitCount());
+
+    #endregion // Binary strings
+
+    #region Decimal strings
 
     /// <summary>Creates a decimal (base 10) text string from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
-    public static string ToDecimalString<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 10, Bits.GetMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
-
-    /// <summary>Creates a hexadecimal (base 16) text string from <paramref name="value"/>.</summary>
-    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
-    public static string ToHexadecimalString<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 16, Bits.GetMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()) /*value.GetByteCount() << 1*/);
-
-    /// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
-    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
-    public static string ToOctalString<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixString(value, 8, Bits.GetMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()) /*int.DivRem(value.GetBitCount(), 3) is var dr && dr.Remainder > 0 ? dr.Quotient + 1 : dr.Quotient*/);
-
-    /// <summary>Creates a base <paramref name="radix"/> text string from <paramref name="value"/>, with an optional <paramref name="minLength"/> of digits in the resulting string (padded with zeroes if needed).</summary>
-    /// <remarks>By default, this function returns the shortest possible string length.</remarks>
-    public static System.ReadOnlySpan<TSymbol> ToRadixSpan<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, TSymbol negativeSymbol, int minLength = 1)
+    public static System.ReadOnlySpan<TSymbol> ToDecimalString<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, TSymbol negativeSymbol, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var indices = new System.Collections.Generic.List<int>();
+      if (alphabet.Length < 10) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      if (alphabet.Length == 2) // Special case for base-2 (radix).
-      {
-        for (var bitIndex = value.GetBitLength() - 1; bitIndex >= 0; bitIndex--)
-          if ((int.CreateChecked((value >> bitIndex) & TSelf.One) is var position && position > 0) || indices.Count > 0)
-            indices.Add(position);
-      }
-      else // Otherwise use generic algorithm.
-        indices = PositionalNotation.ConvertValueToIndices(value, alphabet.Length);
+      var indices = PositionalNotation.ConvertValueToIndices(value, 10);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
       var symbols = PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray());
 
-      if (TSelf.IsNegative(value) && alphabet.Length == 10)
-        symbols.Insert(0, negativeSymbol); // If the value is negative AND base-2 (radix) is 10 (decimal)...
+      if (TSelf.IsNegative(value))
+        symbols.Insert(0, negativeSymbol);
 
       return symbols.AsSpan();
     }
 
+    /// <summary>Creates a decimal (base 10) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
+    public static System.ReadOnlySpan<char> ToDecimalString<TSelf>(this TSelf value, int minLength)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ToDecimalString(value, Base64.AsSpan()[..10], (char)Flux.UnicodeCodepoint.HyphenMinus, minLength);
+
+    /// <summary>Creates a decimal (base 10) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
+    public static System.ReadOnlySpan<char> ToDecimalString<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ToDecimalString(value, Bits.GetMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
+
+    #endregion // Decimal strings
+
+    #region Hexadecimal strings
+
+    /// <summary>Creates a hexadecimal (base 16) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
+    public static System.ReadOnlySpan<TSymbol> ToHexadecimalString<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, int minLength = 1)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      if (alphabet.Length < 16) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
+
+      var indices = PositionalNotation.ConvertValueToIndices(value, 16);
+
+      while (indices.Count < minLength)
+        indices.Insert(0, 0); // Pad left with zeroth element.
+
+      return PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
+    }
+
+    /// <summary>Creates a hexadecimal (base 16) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
+    public static System.ReadOnlySpan<char> ToHexadecimalString<TSelf>(this TSelf value, int minLength)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ToHexadecimalString(value, Base64.AsSpan()[..16], minLength);
+
+    /// <summary>Creates a hexadecimal (base 16) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
+    public static System.ReadOnlySpan<char> ToHexadecimalString<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ToHexadecimalString(value, Bits.GetMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()));
+
+    #endregion // Hexadecimal strings
+
+    #region Octal strings
+
+    /// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
+    public static System.ReadOnlySpan<TSymbol> ToOctalString<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, int minLength = 1)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      if (alphabet.Length < 8) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
+
+      var indices = PositionalNotation.ConvertValueToIndices(value, 8);
+
+      while (indices.Count < minLength)
+        indices.Insert(0, 0); // Pad left with zeroth element.
+
+      return PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
+    }
+
+    /// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
+    public static System.ReadOnlySpan<char> ToOctalString<TSelf>(this TSelf value, int minLength)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ToOctalString(value, Base64.AsSpan()[..8], minLength);
+
+    /// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
+    /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
+    public static System.ReadOnlySpan<char> ToOctalString<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ToOctalString(value, Bits.GetMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()));
+
+    #endregion // Octal strings
+
     /// <summary>Creates a base <paramref name="radix"/> text string from <paramref name="value"/>, with an optional <paramref name="minLength"/> of digits in the resulting string (padded with zeroes if needed).</summary>
     /// <remarks>By default, this function returns the shortest possible string length.</remarks>
-    public static string ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1)
+    public static System.ReadOnlySpan<TSymbol> ToRadixSpan<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, TSymbol negativeSymbol, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixSpan(value, PositionalNotation.Base64.Take(radix).ToArray(), (char)Flux.UnicodeCodepoint.HyphenMinus, minLength).ToString();
+      where TSymbol : struct
+    {
+      if (alphabet.Length == 2)
+        return ToBinaryString(value, alphabet, minLength);
+      else if (alphabet.Length == 8)
+        return ToOctalString(value, alphabet, minLength);
+      else if (alphabet.Length == 10)
+        return ToDecimalString(value, alphabet, negativeSymbol, minLength);
+      else if (alphabet.Length == 16)
+        return ToHexadecimalString(value, alphabet, minLength);
+      // Otherwise use generic algorithm.
+
+      var indices = PositionalNotation.ConvertValueToIndices(value, alphabet.Length);
+
+      while (indices.Count < minLength)
+        indices.Insert(0, 0); // Pad left with zeroth element.
+
+      return PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
+    }
+
+    /// <summary>Creates a base <paramref name="radix"/> text string from <paramref name="value"/>, with an optional <paramref name="minLength"/> of digits in the resulting string (padded with zeroes if needed).</summary>
+    /// <remarks>By default, this function returns the shortest possible string length.</remarks>
+    public static System.ReadOnlySpan<char> ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ToRadixSpan(value, PositionalNotation.Base64.AsSpan()[..radix], (char)Flux.UnicodeCodepoint.HyphenMinus, minLength);
 
 #else
 

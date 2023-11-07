@@ -58,38 +58,57 @@ namespace ConsoleApp
       var p2afzp = p2afz == value ? p2afz << 1 : p2afz;
 
       var n = (int)(short.MaxValue / sbyte.MaxValue);
+      n = -3;
+      System.Console.WriteLine($"        Number = {n}");
+
+      var bibs = n.ToBinaryString().ToSpanBuilder().InsertAtEvery(' ', 3).AsSpan();
+      System.Console.WriteLine($"        Binary = {bibs}");
+      var bios = n.ToOctalString();
+      System.Console.WriteLine($"         Octal = {bios}");
+      var bids = n.ToDecimalString();
+      System.Console.WriteLine($"       Decimal = {bids}");
+      var bihs = n.ToHexadecimalString();
+      System.Console.WriteLine($"   Hexadecimal = {bihs}");
+      var bir2s = n.ToRadixString(2);
+      System.Console.WriteLine($"       Radix 2 = {bir2s}");
+      var bir8s = n.ToRadixString(8);
+      System.Console.WriteLine($"       Radix 8 = {bir8s}");
+      var bir10s = n.ToRadixString(10);
+      System.Console.WriteLine($"      Radix 10 = {bir10s}");
+      var bir16s = n.ToRadixString(16);
+      System.Console.WriteLine($"      Radix 16 = {bir16s}");
 
       //var rn = n.BinaryToGray();
       //var rrn = rn.GrayToBinary();
 
       //      n = 0;
-      var ns = n.ToBinaryString();
       //      var nlpow2 = n.NextLargerPowerOf2();
       var np2tz = (int)n.RoundToPow2(false, RoundingMode.TowardZero, out var p2tzlo, out var p2tzhi);
+      System.Console.WriteLine($" RoundToPow2tz = {np2tz}");
       var np2afz = (int)n.RoundToPow2(false, RoundingMode.AwayFromZero, out var p2afzlo, out var p2afzhi);
+      System.Console.WriteLine($"RountToPow2afz = {np2afz}");
 
-      var bi = n;///.ToBigInteger();
-      //var birbts = bi.ReverseBits();
-      var bibs = bi.ToBinaryString();
-      var bios = bi.ToOctalString();
-      var bids = bi.ToDecimalString();
-      var bihs = bi.ToHexadecimalString();
-      var bir2s = bi.ToRadixString(2);
-      var bir8s = bi.ToRadixString(8);
-      var bir10s = bi.ToRadixString(10);
-      var bir16s = bi.ToRadixString(16);
-      var bfl = bi.BitFoldLeft();
+      var birbits = n.ReverseBits();
+      System.Console.WriteLine($"  Reverse Bits = {birbits.ToBinaryString()}");
+      var birbyts = n.ReverseBytes();
+      System.Console.WriteLine($" Reverse Bytes = {birbyts.ToBinaryString()}");
+
+      var bfl = n.BitFoldLeft();
+      System.Console.WriteLine($" Bit-Fold Left = {bfl}");
       var bfls = bfl.ToBinaryString();
-      var bfr = bi.BitFoldRight();
+      System.Console.WriteLine($"     As Binary = {bfls}");
+      var bfr = n.BitFoldRight();
+      System.Console.WriteLine($"Bit-Fold Right = {bfr}");
       var bfrs = bfr.ToBinaryString();
-      var bl = bi.GetShortestBitLength();
-      var bln = bi.GetBitLength();
+      System.Console.WriteLine($"     As Binary = {bfrs}");
+      var bl = n.GetShortestBitLength();
+      var bln = n.GetBitLength();
       //var l2 = bi.IntegerLog2();
-      var ms1b = bi.MostSignificant1Bit();
-      var bmr = bi.BitMaskRight();
+      var ms1b = n.MostSignificant1Bit();
+      var bmr = n.BitMaskRight();
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = bi.BitMaskLeft();
+      var bml = n.BitMaskLeft();
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }
@@ -101,42 +120,17 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //EvaluateNumericStuff();
+      EvaluateNumericStuff();
 
-      var s = "(5+4)*\u2213(3*2 + - 1)";
+      var nums = Flux.NumberSequences.PrimeNumber.GetPrimeSextuplets<int>(2).Take(20).ToArray();
 
-      //var rt = new Flux.Text.RuneTokenizer();
-      //var rtt = rt.GetTokens(s).ToList();
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, rtt.Select(t => t.ToTokenString())));
-      //System.Console.WriteLine();
+      foreach (var num in nums)
+      {
+        System.Console.WriteLine($"{string.Join(", ", num)}");
+      }
 
-      //var tet = new Flux.Text.TextElementTokenizer();
-      //var tett = tet.GetTokens(s).ToList();
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, tett.Select(t => t.ToTokenString())));
-      //System.Console.WriteLine();
-
-      var mt = new Flux.Text.MathTokenizer(true);
-      var mtt = mt.GetTokens(s).ToArray();
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, mtt.Select(t => t.ToTokenString())));
       System.Console.WriteLine();
-      var fmtt = mt.FilterTokens(mtt, true).ToArray();
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, fmtt.Select(t => t.ToTokenString())));
-      System.Console.WriteLine();
-
-      var tnpn = Flux.Text.MathTokenizer.GetTokensNPN(fmtt);
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, tnpn.Select(t => t.ToTokenString())));
-      //System.Console.WriteLine();
-      var tnpnr = Flux.Text.MathTokenizer.EvaluateNPN(tnpn);
-      System.Console.WriteLine($"NPN: {tnpnr}");
-      System.Console.WriteLine();
-
-      var trpn = Flux.Text.MathTokenizer.GetTokensRPN(fmtt);
-      //System.Console.WriteLine(string.Join(System.Environment.NewLine, trpn.Select(t => t.ToTokenString())));
-      //System.Console.WriteLine();
-      var trpnr = Flux.Text.MathTokenizer.EvaluateRPN(trpn);
-      System.Console.WriteLine($"RPN: {trpnr}");
-      System.Console.WriteLine();
-
+      System.Console.WriteLine(string.Join(", ", Flux.NumberSequences.PrimeNumber.GetPrimeFactors(60)));
     }
 
     private static void Main(string[] args)

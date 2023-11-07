@@ -306,6 +306,15 @@ namespace Flux
       return this;
     }
 
+    public SpanBuilder<T> InsertAtEvery(T insert, int interval)
+    {
+      for (var index = Count - 1; index >= 0; index--)
+        if (index > 0 && index % interval == interval - 1)
+          Insert(index, insert);
+
+      return this;
+    }
+
     /// <summary>Normalize the specified (or all if none specified) consecutive <paramref name="values"/> in the string normalized. Uses the specfied <paramref name="equalityComparer"/>, or default if null.</summary>
     public SpanBuilder<T> NormalizeAdjacent(System.Collections.Generic.IList<T> values, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {

@@ -7,27 +7,31 @@ namespace Flux.NumberSequences
   : INumericSequence<System.Numerics.BigInteger>
   {
     #region Static methods
+
     /// <summary>Returns the Catalan number for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
 
-    public static System.Numerics.BigInteger GetCatalanNumber(System.Numerics.BigInteger number)
-      => (number * 2).ComputeFactorial(FactorialFunction.SplitFactorial) / ((number + 1).ComputeFactorial(FactorialFunction.SplitFactorial) * (number).ComputeFactorial(FactorialFunction.SplitFactorial));
+    public static TSelf GetCatalanNumber<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => number.Multiply(2).ComputeFactorial(FactorialFunction.SplitFactorial) / ((number + TSelf.One).ComputeFactorial(FactorialFunction.SplitFactorial) * (number).ComputeFactorial(FactorialFunction.SplitFactorial));
 
     /// <summary>Creates a new sequence with Catalan numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
 
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCatalanSequence()
+    public static System.Collections.Generic.IEnumerable<TSelf> GetCatalanSequence<TSelf>()
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      for (var number = System.Numerics.BigInteger.Zero; ; number++)
+      for (var number = TSelf.Zero; ; number++)
         yield return GetCatalanNumber(number);
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
     // INumberSequence
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
-      => GetCatalanSequence();
+      => GetCatalanSequence<System.Numerics.BigInteger>();
 
 
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()

@@ -90,23 +90,28 @@ namespace Flux.NumberSequences
 
     /// <summary>Returns the count of divisors in the sequence for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    public static System.Numerics.BigInteger GetCountOfDivisors(System.Numerics.BigInteger number) => System.Linq.Enumerable.Count(GetDivisors(number));
+    public static TSelf GetCountOfDivisors<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.CreateChecked(System.Linq.Enumerable.Count(GetDivisors(number)));
 
     /// <summary>Returns the count of proper divisors in the sequence for the specified number (divisors including 1 but not itself).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    public static System.Numerics.BigInteger GetCountOfProperDivisors(System.Numerics.BigInteger number) => System.Linq.Enumerable.Count(GetProperDivisors(number));
+    public static TSelf GetCountOfProperDivisors<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.CreateChecked(System.Linq.Enumerable.Count(GetProperDivisors(number)));
 
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
     /// <remarks>This implementaion does not order the result.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetDivisors(System.Numerics.BigInteger number)
+    public static System.Collections.Generic.IEnumerable<TSelf> GetDivisors<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (number > 0)
+      if (number > TSelf.Zero)
       {
         var sqrt = Maths.IntegerSqrt(number);
 
-        for (var counter = 1; counter <= sqrt; counter++)
-          if (number % counter == 0)
+        for (var counter = TSelf.One; counter <= sqrt; counter++)
+          if (TSelf.IsZero(number % counter))
           {
             yield return counter;
 
@@ -119,26 +124,36 @@ namespace Flux.NumberSequences
     /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
     /// <remarks>This implementaion does not order the result.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetProperDivisors(System.Numerics.BigInteger number) => System.Linq.Enumerable.Where(GetDivisors(number), bi => bi != number);
+    public static System.Collections.Generic.IEnumerable<TSelf> GetProperDivisors<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => System.Linq.Enumerable.Where(GetDivisors(number), n => n != number);
 
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
-    public static System.Numerics.BigInteger GetSumOfDivisors(System.Numerics.BigInteger number) => ExtensionMethodsIEnumerableT.Sum(GetDivisors(number));
+    public static TSelf GetSumOfDivisors<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ExtensionMethodsIEnumerableT.Sum(GetDivisors(number));
 
     /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
-    public static System.Numerics.BigInteger GetSumOfProperDivisors(System.Numerics.BigInteger number) => ExtensionMethodsIEnumerableT.Sum(GetProperDivisors(number));
+    public static TSelf GetSumOfProperDivisors<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => ExtensionMethodsIEnumerableT.Sum(GetProperDivisors(number));
 
     /// <summary>Determines whether the number is a deficient number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Deficient_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
-    public static bool IsDeficientNumber(System.Numerics.BigInteger number) => GetSumOfDivisors(number) - number < number;
+    public static bool IsDeficientNumber<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => GetSumOfDivisors(number) - number < number;
 
     /// <summary>Determines whether the number is a perfect number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perfect_number"/>
-    public static bool IsPerfectNumber(System.Numerics.BigInteger number) => GetSumOfDivisors(number) - number == number;
+    public static bool IsPerfectNumber<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => GetSumOfDivisors(number) - number == number;
 
     #endregion Static methods
 

@@ -5,35 +5,40 @@ namespace Flux.NumberSequences
   public record class MoserDeBruijnSequence
     : INumericSequence<System.Numerics.BigInteger>
   {
-    public int MaxNumber { get; set; }
+    public System.Numerics.BigInteger MaxNumber { get; set; }
 
-    public MoserDeBruijnSequence(int maxNumber)
+    public MoserDeBruijnSequence(System.Numerics.BigInteger maxNumber)
       => MaxNumber = maxNumber;
 
     #region Static methods
+
     /// <summary>Creates a sequence of Moser/DeBruijn numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
     /// <seealso cref="https://www.geeksforgeeks.org/moser-de-bruijn-sequence/"/>
-    
-    public static System.Collections.Generic.List<System.Numerics.BigInteger> GetMoserDeBruijnSequence(System.Numerics.BigInteger maxNumber)
+    public static System.Collections.Generic.List<TSelf> GetMoserDeBruijnSequence<TSelf>(TSelf maxNumber)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (maxNumber < 0) throw new System.ArgumentOutOfRangeException(nameof(maxNumber));
+      if (maxNumber < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(maxNumber));
 
-      var sequence = new System.Collections.Generic.List<System.Numerics.BigInteger>() { 0 };
+      var sequence = new System.Collections.Generic.List<TSelf>() { TSelf.Zero };
 
-      if (maxNumber > 0)
-        sequence.Add(1);
+      if (maxNumber > TSelf.Zero)
+        sequence.Add(TSelf.One);
 
-      for (var i = 2; i <= maxNumber; i++)
+      var two = TSelf.CreateChecked(2);
+      var four = TSelf.CreateChecked(4);
+
+      for (var i = two; i <= maxNumber; i++)
       {
-        if (i % 2 == 0) // S(2 * n) = 4 * S(n)
-          sequence.Add(4 * sequence[i / 2]);
+        if (TSelf.IsZero(i % two)) // S(2 * n) = 4 * S(n)
+          sequence.Add(four * sequence[int.CreateChecked(i / two)]);
         else // S(2 * n + 1) = 4 * S(n) + 1
-          sequence.Add(4 * sequence[i / 2] + 1);
+          sequence.Add(four * sequence[int.CreateChecked(i / two)] + TSelf.One);
       }
 
       return sequence;
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
@@ -41,10 +46,10 @@ namespace Flux.NumberSequences
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => GetMoserDeBruijnSequence(MaxNumber);
 
-    
+
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

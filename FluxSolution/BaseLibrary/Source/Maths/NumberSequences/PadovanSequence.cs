@@ -7,13 +7,14 @@ namespace Flux.NumberSequences
     : INumericSequence<System.Numerics.BigInteger>
   {
     #region Static methods
+
     /// <summary>Creates a new sequence with padovan numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Padovan_sequence"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPadovanSequence()
+    public static System.Collections.Generic.IEnumerable<TSelf> GetPadovanSequence<TSelf>()
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      int p1 = 1, p2 = 1, p3 = 1;
+      TSelf p1 = TSelf.One, p2 = TSelf.One, p3 = TSelf.One;
 
       yield return p1;
       yield return p2;
@@ -30,17 +31,18 @@ namespace Flux.NumberSequences
         p1 = pn;
       }
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
     // INumberSequence
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
-      => GetPadovanSequence();
+      => GetPadovanSequence<System.Numerics.BigInteger>();
 
-    
+
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

@@ -4,27 +4,32 @@ namespace Flux.NumberSequences
   public record class NaturalNumber
     : INumericSequence<System.Numerics.BigInteger>
   {
-    private bool m_includeZero;
+    private System.Numerics.BigInteger m_startNumber;
 
-    public NaturalNumber(bool includeZero) => m_includeZero = includeZero;
-    public NaturalNumber() : this(true) { }
+    public NaturalNumber(System.Numerics.BigInteger startNumber) => m_startNumber = startNumber;
+    public NaturalNumber() : this(0) { }
 
-    public bool IncludeZero { get => m_includeZero; set => m_includeZero = value; }
+    public System.Numerics.BigInteger StartNumber { get => m_startNumber; set => m_startNumber = value; }
 
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNaturalNumbers(bool includeZero = true)
+    #region Static methods
+
+    public static System.Collections.Generic.IEnumerable<TSelf> GetNaturalNumbers<TSelf>(TSelf startAt)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      for (var naturalNumber = includeZero ? System.Numerics.BigInteger.Zero : System.Numerics.BigInteger.One; ; naturalNumber++)
+      for (var naturalNumber = startAt; ; naturalNumber++)
         yield return naturalNumber;
     }
 
+    #endregion // Static methods
+
     #region Implemented interfaces
     // INumberSequence
-    
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence() => GetNaturalNumbers(m_includeZero);
+
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence() => GetNaturalNumbers(m_startNumber);
 
     // IEnumerable<>
-     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator() => GetSequence().GetEnumerator();
-     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator() => GetSequence().GetEnumerator();
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
     #endregion Implemented interfaces
   }
 }

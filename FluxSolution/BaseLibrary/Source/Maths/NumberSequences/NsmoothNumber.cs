@@ -6,12 +6,12 @@ namespace Flux.NumberSequences
     private readonly System.Collections.Generic.IReadOnlyList<System.Numerics.BigInteger> m_primeNumbers; // Needs to be converted to BitArray instead.
 
     public NsmoothNumber(System.Numerics.BigInteger n)
-      => m_primeNumbers = System.Linq.Enumerable.ToList(System.Linq.Enumerable.TakeWhile(PrimeNumber.GetAscendingPrimes(2), p => p <= n));
+      => m_primeNumbers = System.Linq.Enumerable.ToList(System.Linq.Enumerable.TakeWhile(PrimeNumber.GetAscendingPrimes(System.Numerics.BigInteger.CreateChecked(2)), p => p <= n));
 
     /// <summary>Creates a new sequence of n-smooth numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Smooth_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    
+
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNsmoothNumbers()
     {
       for (var number = System.Numerics.BigInteger.One; true; number++)
@@ -19,7 +19,7 @@ namespace Flux.NumberSequences
           yield return number;
     }
 
-    
+
     public bool IsNsmoothNumber(System.Numerics.BigInteger number)
     {
       if (number <= 1)
@@ -43,14 +43,14 @@ namespace Flux.NumberSequences
 
     #region Implemented interfaces
     // INumberSequence
-    
+
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
       => GetNsmoothNumbers();
 
-    
+
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

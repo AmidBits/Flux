@@ -15,11 +15,12 @@ namespace Flux.NumberSequences
     public System.Numerics.BigInteger StepSize { get; init; } = 1;
 
     #region Static methods
+
     /// <summary>Creates a new sequence with Leonardo numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Leonardo_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetLeonardoNumbers(System.Numerics.BigInteger first, System.Numerics.BigInteger second, System.Numerics.BigInteger step)
+    public static System.Collections.Generic.IEnumerable<TSelf> GetLeonardoNumbers<TSelf>(TSelf first, TSelf second, TSelf step)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       while (true)
       {
@@ -28,6 +29,7 @@ namespace Flux.NumberSequences
         (first, second) = (second, first + second + step);
       }
     }
+
     #endregion Static methods
 
     #region Implemented interfaces

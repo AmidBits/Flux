@@ -63,6 +63,7 @@ namespace Flux.NumberSequences
     /// <summary>Generates a new de Bruijn sequence of order_n on a size_k alphabet.</summary>
     public static System.Collections.Generic.IEnumerable<T> GetDeBruijnSequence<T>(int size_k, int order_n, params T[] alphabet)
       => GetDeBruijnSequence(size_k, order_n, (System.Collections.Generic.IList<T>)alphabet);
+
     #endregion Static methods
 
     #region Implemented interfaces

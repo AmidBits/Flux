@@ -6,16 +6,19 @@ namespace Flux.NumberSequences
     : INumericSequence<System.Numerics.BigInteger>
   {
     #region Static methods
+
     /// <summary>Yields a Perrin number of the specified value number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
-    public static System.Numerics.BigInteger GetPerrinNumber(System.Numerics.BigInteger index)
-      => System.Linq.Enumerable.First(System.Linq.Enumerable.Where(GetPerrinNumbers(), (e, i) => i == index));
+    public static TSelf GetPerrinNumber<TSelf>(TSelf index)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => System.Linq.Enumerable.First(System.Linq.Enumerable.Where(GetPerrinNumbers<TSelf>(), (e, i) => TSelf.CreateChecked(i) == index));
+
     /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
-    
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPerrinNumbers()
+    public static System.Collections.Generic.IEnumerable<TSelf> GetPerrinNumbers<TSelf>()
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      System.Numerics.BigInteger a = 3, b = 0, c = 2;
+      TSelf a = TSelf.CreateChecked(3), b = TSelf.Zero, c = TSelf.CreateChecked(2);
 
       yield return a;
       yield return b;
@@ -32,17 +35,18 @@ namespace Flux.NumberSequences
         yield return p;
       }
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
     // INumberSequence
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
-      => GetPerrinNumbers();
+      => GetPerrinNumbers<System.Numerics.BigInteger>();
 
-    
+
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

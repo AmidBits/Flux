@@ -12,10 +12,11 @@ namespace Flux.NumberSequences
     #region Static methods
 
     /// <summary>Creates a sequence of powers-of-radix values.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPowersOfRadixSequence(System.Numerics.BigInteger radix)
+    public static System.Collections.Generic.IEnumerable<TSelf> GetPowersOfRadixSequence<TSelf>(TSelf radix)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      for (var index = 0; ; index++)
-        yield return System.Numerics.BigInteger.Pow(radix, index);
+      for (var index = TSelf.Zero; ; index++)
+        yield return radix.IntegerPow(index);
     }
 
     #endregion Static methods
@@ -23,7 +24,7 @@ namespace Flux.NumberSequences
     #region Implemented interfaces
 
     // INumberSequence
-    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence() => GetPowersOfRadixSequence(Radix);
+    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence() => GetPowersOfRadixSequence(Radix.ToBigInteger());
 
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator() => GetSequence().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();

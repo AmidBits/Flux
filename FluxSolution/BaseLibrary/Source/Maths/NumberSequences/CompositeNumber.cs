@@ -4,76 +4,40 @@ namespace Flux.NumberSequences
     : INumericSequence<System.Numerics.BigInteger>
   {
     #region Static methods
-    
-    public static bool IsComposite(System.Numerics.BigInteger value)
-    {
-      if (value <= long.MaxValue)
-        return IsComposite((long)value);
 
-      if (value <= 3)
+    public static bool IsComposite<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      var two = TSelf.CreateChecked(2);
+      var three = TSelf.CreateChecked(3);
+      var five = TSelf.CreateChecked(5);
+      var six = TSelf.CreateChecked(6);
+
+      if (number <= TSelf.CreateChecked(3))
         return false;
 
-      if (value % 2 == 0 || value % 3 == 0)
+      if (TSelf.IsZero(number % two) || TSelf.IsZero(number % three))
         return true;
 
-      var limit = value.IntegerSqrt();
+      var limit = number.IntegerSqrt();
 
-      for (var k = 5; k <= limit; k += 6)
-        if ((value % k) == 0 || (value % (k + 2)) == 0)
+      for (var k = five; k <= limit; k += six)
+        if (TSelf.IsZero(number % k) || TSelf.IsZero(number % (k + two)))
           return true;
 
       return false;
     }
 
-    
-    public static bool IsComposite(int value)
+    public static System.Collections.Generic.IEnumerable<TSelf> GetCompositeNumbers<TSelf>()
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (value <= 3)
-        return false;
-
-      if (value % 2 == 0 || value % 3 == 0)
-        return true;
-
-      var limit = System.Math.Sqrt(value);
-
-      for (var k = 5; k <= limit; k += 6)
-        if ((value % k) == 0 || (value % (k + 2)) == 0)
-          return true;
-
-      return false;
-    }
-    
-    public static bool IsComposite(long value)
-    {
-      if (value <= int.MaxValue)
-        return IsComposite((int)value);
-
-      if (value <= 3)
-        return false;
-
-      if (value % 2 == 0 || value % 3 == 0)
-        return true;
-
-      var limit = System.Math.Sqrt(value);
-
-      for (var k = 5; k <= limit; k += 6)
-        if ((value % k) == 0 || (value % (k + 2)) == 0)
-          return true;
-
-      return false;
-    }
-
-    
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCompositeNumbers()
-    {
-      for (var k = System.Numerics.BigInteger.One; ; k++)
+      for (var k = TSelf.One; ; k++)
         if (IsComposite(k))
           yield return k;
     }
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Highly_composite_number"/>
-    
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyCompositeNumbers()
     {
       var largestCountOfDivisors = System.Numerics.BigInteger.Zero;
@@ -84,17 +48,18 @@ namespace Flux.NumberSequences
           largestCountOfDivisors = countOfDivisors;
         }
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
     // INumberSequence
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
-      => GetCompositeNumbers();
+      => GetCompositeNumbers<System.Numerics.BigInteger>();
 
-    
+
     public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
       => GetSequence().GetEnumerator();
-    
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces

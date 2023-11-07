@@ -13,7 +13,6 @@ namespace Flux.NumberSequences
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Highly_abundant_number"/>
-
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyAbundantNumbers()
     {
       var largestSumOfDivisors = System.Numerics.BigInteger.Zero;
@@ -27,7 +26,6 @@ namespace Flux.NumberSequences
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Superabundant_number"/>
-
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetSuperAbundantNumbers()
     {
       var largestValue = 0.0;
@@ -41,9 +39,9 @@ namespace Flux.NumberSequences
 
     /// <summary>Determines whether the number is an abundant number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Abundant_number"/>
-
     public static bool IsAbundantNumber(System.Numerics.BigInteger value)
       => Factors.GetSumOfDivisors(value) - value > value;
+
     #endregion Static methods
 
     #region Implemented interfaces

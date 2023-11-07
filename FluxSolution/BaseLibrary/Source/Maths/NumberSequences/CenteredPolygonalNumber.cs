@@ -12,49 +12,53 @@ namespace Flux.NumberSequences
       => NumberOfSides = numberOfSides;
 
     #region Static methods
+
     /// <summary></summary>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    
-    public static System.Collections.Generic.IEnumerable<(int minCenteredNumber, int maxCenteredNumber, int count)> GetLayers(int numberOfSides)
+    public static System.Collections.Generic.IEnumerable<(TSelf minCenteredNumber, TSelf maxCenteredNumber, TSelf count)> GetLayers<TSelf>(TSelf numberOfSides)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      yield return (1, 1, 1);
+      yield return (TSelf.One, TSelf.One, TSelf.One);
 
-      foreach (var v in new CenteredPolygonalNumber(numberOfSides).GetSequence().PartitionTuple2(false, (min, max, index) => (min, max)))
-        yield return (v.min + 1, v.max, v.max - v.min);
+      foreach (var v in GetSequence(numberOfSides).PartitionTuple2(false, (min, max, index) => (min, max)))
+        yield return (v.min + TSelf.One, v.max, v.max - v.min);
     }
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
-    
-    public static int GetNumber(int index, int numberOfSides)
+    public static TSelf GetNumber<TSelf>(TSelf index, TSelf numberOfSides)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (index < 0) throw new System.ArgumentOutOfRangeException(nameof(index));
-      if (numberOfSides < 3) throw new System.ArgumentOutOfRangeException(nameof(numberOfSides));
+      if (index < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(index));
+      if (numberOfSides < TSelf.CreateChecked(3)) throw new System.ArgumentOutOfRangeException(nameof(numberOfSides));
 
-      return (numberOfSides * index * index + numberOfSides * index + 2) / 2;
+      var two = TSelf.CreateChecked(2);
+
+      return (numberOfSides * index * index + numberOfSides * index + two) / two;
     }
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    
-    public static System.Collections.Generic.IEnumerable<int> GetSequence(int numberOfSides)
+    public static System.Collections.Generic.IEnumerable<TSelf> GetSequence<TSelf>(TSelf numberOfSides)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      for (var index = 0; ; index++)
+      for (var index = TSelf.Zero; ; index++)
         yield return GetNumber(index, numberOfSides);
     }
+
     #endregion Static methods
 
     #region Implemented interfaces
     // INumberSequence
-    
+
     public System.Collections.Generic.IEnumerable<int> GetSequence()
       => GetSequence(NumberOfSides);
 
-    
+
     public System.Collections.Generic.IEnumerator<int> GetEnumerator()
       => GetSequence().GetEnumerator();
-    
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
     #endregion Implemented interfaces
