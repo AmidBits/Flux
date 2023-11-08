@@ -122,12 +122,14 @@ namespace ConsoleApp
 
       EvaluateNumericStuff();
 
-      var nums = Flux.NumberSequences.PrimeNumber.GetPrimeSextuplets<int>(2).Take(20).ToArray();
+      var nums = Flux.NumberSequences.PowersOfRadix.GetPowersOfRadixSequence(10).Take(7).ToArray();
 
-      foreach (var num in nums)
-      {
-        System.Console.WriteLine($"{string.Join(", ", num)}");
-      }
+      var pvs = 1234.GetPlaceValues(10).ToArray();
+
+      //foreach (var num in nums)
+      //{
+      //  System.Console.WriteLine($"{string.Join(", ", num)}");
+      //}
 
       System.Console.WriteLine();
       System.Console.WriteLine(string.Join(", ", Flux.NumberSequences.PrimeNumber.GetPrimeFactors(60)));

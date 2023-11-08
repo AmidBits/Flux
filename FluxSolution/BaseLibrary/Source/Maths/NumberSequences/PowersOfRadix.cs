@@ -15,8 +15,8 @@ namespace Flux.NumberSequences
     public static System.Collections.Generic.IEnumerable<TSelf> GetPowersOfRadixSequence<TSelf>(TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      for (var index = TSelf.Zero; ; index++)
-        yield return radix.IntegerPow(index);
+      for (var por = TSelf.One; ; por *= radix)
+        yield return por;
     }
 
     #endregion Static methods
