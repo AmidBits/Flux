@@ -46,10 +46,10 @@ namespace Flux
       var ucsb = (source == System.Globalization.UnicodeCategory.OtherNotAssigned ? source.ToString()[5..] : source.ToString()).ToSpanBuilder();
       var ucms = source.ToUnicodeCategoryMajor().ToString();
 
-      if (ucsb.AsReadOnlySpan().EndsWith(ucms)) ucsb.Remove(ucsb.Count - ucms.Length); // Either fix the unicode category that ends with its own category major.
+      if (ucsb.AsReadOnlySpan().EndsWith(ucms)) ucsb.Remove(ucsb.Length - ucms.Length); // Either fix the unicode category that ends with its own category major.
       else if (ucsb.AsReadOnlySpan().StartsWith(ucms)) ucsb.Remove(ucms.Length); // Or fix the unicode category that starts with its own category major.
 
-      ucsb.ExpandFromCamelCase();
+      ucsb.SplitFromCamelCase();
 
       if (source == System.Globalization.UnicodeCategory.NonSpacingMark) ucsb.RemoveAll(e => e == ' '); // Fix "non spacing" to "nonspacing".
       if (source == System.Globalization.UnicodeCategory.PrivateUse) ucsb.AsSpan().ReplaceAll(e => e == ' ' ? '-' : e); // Fix "private use" to "private-use".

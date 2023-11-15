@@ -10,7 +10,8 @@ namespace Flux
 
   namespace Text
   {
-    /// <summary>The <see cref="TextElementEnumerator"/> can be used for larger text segments by utilizing a text reader (stream).</summary>
+    /// <summary>Creates an enumerator of <see cref="Text.TextElement"/> from a stream of <see cref="System.Char"/>.</summary>
+    /// <remarks>Can be used for larger text segments by utilizing a (text) stream.</remarks>
     public sealed class TextElementEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<TextElement>
     {
@@ -67,8 +68,6 @@ namespace Flux
           m_current = default!;
         }
 
-        private int m_overallIndex = 0;
-
         public TextElement Current
           => m_current;
         object System.Collections.IEnumerator.Current
@@ -98,9 +97,7 @@ namespace Flux
 
             m_bufferIndex += textElement.Length; // Adjust the buffer index by the number of characters in the text element.
 
-            m_current = new TextElement(textElement, m_overallIndex); // Set current to the text element.
-
-            m_overallIndex += textElement.Length;
+            m_current = new TextElement(textElement); // Set current to the text element.
 
             return true;
           }

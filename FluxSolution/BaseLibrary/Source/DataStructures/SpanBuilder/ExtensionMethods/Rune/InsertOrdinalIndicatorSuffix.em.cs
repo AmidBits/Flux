@@ -9,7 +9,7 @@ namespace Flux
     {
       var wasDigit = false;
 
-      for (var index = source.Count - 1; index >= 0; index--)
+      for (var index = source.Length - 1; index >= 0; index--)
       {
         var r = source[index];
 
@@ -19,10 +19,10 @@ namespace Flux
         {
           var isBetweenTenAndTwenty = index > 0 && source[index - 1] == (System.Text.Rune)'1';
 
-          var suffix = (r == (System.Text.Rune)'1' && !isBetweenTenAndTwenty) ? "st".AsSpan().ToListRune().AsSpan()
-            : (r == (System.Text.Rune)'2' && !isBetweenTenAndTwenty) ? "nd".AsSpan().ToListRune().AsSpan()
-            : (r == (System.Text.Rune)'3' && !isBetweenTenAndTwenty) ? "rd".AsSpan().ToListRune().AsSpan()
-            : "th".AsSpan().ToListRune().AsSpan();
+          var suffix = (r == (System.Text.Rune)'1' && !isBetweenTenAndTwenty) ? "st".AsSpan().ToListOfRune().AsSpan()
+            : (r == (System.Text.Rune)'2' && !isBetweenTenAndTwenty) ? "nd".AsSpan().ToListOfRune().AsSpan()
+            : (r == (System.Text.Rune)'3' && !isBetweenTenAndTwenty) ? "rd".AsSpan().ToListOfRune().AsSpan()
+            : "th".AsSpan().ToListOfRune().AsSpan();
 
           source.Insert(index + 1, suffix, 1);
         }

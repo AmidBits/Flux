@@ -7,7 +7,7 @@ namespace Flux
       var target = new SpanBuilder<T>();
 
       foreach (var item in source)
-        target.Add(item);
+        target.Append(item, 1);
 
       return target;
     }

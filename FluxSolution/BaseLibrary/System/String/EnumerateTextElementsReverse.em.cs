@@ -7,7 +7,7 @@ namespace Flux
       var si = new System.Globalization.StringInfo(source);
 
       for (var index = si.LengthInTextElements - 1; index >= 0; index--)
-        yield return new Text.TextElement(si.SubstringByTextElements(index, 1), index);
+        yield return new Text.TextElement(si.SubstringByTextElements(index, 1));
     }
   }
 }

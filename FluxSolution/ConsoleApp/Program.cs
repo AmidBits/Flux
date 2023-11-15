@@ -61,7 +61,7 @@ namespace ConsoleApp
       n = -3;
       System.Console.WriteLine($"        Number = {n}");
 
-      var bibs = n.ToBinaryString().ToSpanBuilder().InsertAtEvery(' ', 3).AsSpan();
+      var bibs = n.ToBinaryString().ToSpanBuilder().InsertEvery(' ', 3).AsReadOnlySpan();
       System.Console.WriteLine($"        Binary = {bibs}");
       var bios = n.ToOctalString();
       System.Console.WriteLine($"         Octal = {bios}");
@@ -120,7 +120,29 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      EvaluateNumericStuff();
+      //EvaluateNumericStuff();
+
+
+      var s = " This is API test bed  ".AsSpan().ToSpanBuilder().TrimLeft(' ').TrimRight(' ');
+
+      for (var i = 0; i < 10; i++)
+      {
+        s.JoinToCamelCase();
+        s.SplitFromCamelCase();
+      }
+
+      //var tokens = new Flux.Text.RuneTokenizer().GetTokens(s).ToArray();
+
+      //var x = new Flux.Units.BigRational(256, 3);
+      var x = Flux.Units.BigRational.Tau;
+
+      var c = new Flux.Geometry.CircleGeometry(1);
+
+      var a = new byte[x.GetByteCount()];
+
+      x.TryWriteBytes(a, out var bytesWritten);
+
+      Flux.Units.BigRational.TryReadBytes(a, out var y);
 
       var nums = Flux.NumberSequences.PowersOfRadix.GetPowersOfRadixSequence(10).Take(7).ToArray();
 

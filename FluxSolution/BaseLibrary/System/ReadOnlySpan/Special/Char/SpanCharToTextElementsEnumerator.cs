@@ -2,7 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethodsReadOnlySpan
   {
-    public static SpanCharToTextElementEnumerator EnumerateTextElements(this System.ReadOnlySpan<char> source) => new(source);
+    public static SpanCharToTextElementEnumerator EnumerateTextElements(this System.ReadOnlySpan<char> source)
+      => new(source);
   }
 
   public ref struct SpanCharToTextElementEnumerator
@@ -10,7 +11,6 @@ namespace Flux
     private readonly System.ReadOnlySpan<char> m_span;
 
     private System.ReadOnlySpan<char> m_startOfNextTextElement;
-    private int m_indexOfNextTextElement;
 
     private Text.TextElement m_current;
 
@@ -18,10 +18,9 @@ namespace Flux
     {
       m_span = span;
 
-      m_indexOfNextTextElement = 0;
       m_startOfNextTextElement = m_span;
 
-      m_current = new Text.TextElement(System.ReadOnlySpan<char>.Empty, -1);
+      m_current = new Text.TextElement(System.ReadOnlySpan<char>.Empty);
     }
 
     public Text.TextElement Current => m_current;
@@ -34,9 +33,8 @@ namespace Flux
       {
         var length = System.Globalization.StringInfo.GetNextTextElementLength(m_startOfNextTextElement);
 
-        m_current = new Text.TextElement(m_startOfNextTextElement[..length], m_indexOfNextTextElement);
+        m_current = new Text.TextElement(m_startOfNextTextElement[..length]);
 
-        m_indexOfNextTextElement += length;
         m_startOfNextTextElement = m_startOfNextTextElement[length..];
 
         return true;
@@ -47,10 +45,9 @@ namespace Flux
 
     public void Reset()
     {
-      m_indexOfNextTextElement = 0;
       m_startOfNextTextElement = m_span;
 
-      m_current = new Text.TextElement(System.ReadOnlySpan<char>.Empty, -1);
+      m_current = new Text.TextElement(System.ReadOnlySpan<char>.Empty);
     }
   }
 }

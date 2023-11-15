@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Radix, unit of natural number.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Radix"/>
-    public readonly partial record struct Radix
+    public readonly record struct Radix
     : System.IComparable<Radix>, IQuantifiable<int>
     {
       private readonly int m_value;

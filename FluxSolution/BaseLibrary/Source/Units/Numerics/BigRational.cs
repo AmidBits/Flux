@@ -1,4 +1,6 @@
 #if NET7_0_OR_GREATER
+using System.ComponentModel.Design;
+
 namespace Flux
 {
   public static partial class UnitsExtensionMethods
@@ -72,10 +74,9 @@ namespace Flux
     /// <para><seealso href="https://github.com/kiprobinson/BigFraction"/></para>
     /// <para><seealso href="https://github.com/bazzilic/BigFraction"/></para>
     /// </summary>
-    public readonly struct BigRational
+    public readonly record struct BigRational
     : System.IComparable, System.IComparable<BigRational>
     , System.IConvertible
-    , System.IEquatable<BigRational>
     , System.Numerics.IAdditiveIdentity<BigRational, BigRational>
     , System.Numerics.IAdditionOperators<BigRational, BigRational, BigRational>, System.Numerics.IAdditionOperators<BigRational, System.Numerics.BigInteger, BigRational>
     , System.Numerics.IComparisonOperators<BigRational, BigRational, bool>
@@ -184,6 +185,9 @@ namespace Flux
 
       //  return IsMixed;
       //}
+
+      public int GetByteCount()
+        => 4 + m_numerator.GetByteCount() + 4 + m_denominator.GetByteCount();
 
       #region Static methods
 
@@ -527,6 +531,74 @@ namespace Flux
         }
       }
 
+      #region Methods to read and write binary.
+
+      // Read Binary representation of BigRational.
+      public static BigRational ReadBytes(ReadOnlySpan<byte> source, bool isUnsigned = false, bool isBigEndian = true)
+      {
+        var bytesInNumerator = System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(source.Slice(0, 4));
+
+        var numerator = new System.Numerics.BigInteger(source.Slice(4, bytesInNumerator), isUnsigned, isBigEndian);
+
+        var bytesInDenominator = System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(source.Slice(4 + bytesInNumerator, 4));
+
+        var denominator = new System.Numerics.BigInteger(source.Slice(4 + bytesInNumerator + 4, bytesInDenominator), isUnsigned, isBigEndian);
+
+        return new BigRational(numerator, denominator);
+      }
+
+      // Try Read Binary representation of BigRational.
+      public static bool TryReadBytes(ReadOnlySpan<byte> source, out BigRational value, bool isUnsigned = false, bool isBigEndian = true)
+      {
+        try
+        {
+          value = ReadBytes(source, isUnsigned, isBigEndian);
+          return true;
+        }
+        catch { }
+
+        value = default;
+        return false;
+      }
+
+      // Write Binary representation of BigRational.
+      public int WriteBytes(Span<byte> source, bool isUnsigned = false, bool isBigEndian = true)
+      {
+        var bytesInNumerator = m_numerator.GetByteCount();
+
+        if (isBigEndian) System.Buffers.Binary.BinaryPrimitives.WriteInt32BigEndian(source.Slice(0, 4), bytesInNumerator);
+        else System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(source.Slice(0, 4), bytesInNumerator);
+
+        if (!m_numerator.TryWriteBytes(source.Slice(4, bytesInNumerator), out var bytesWrittenNumerator, isUnsigned, isBigEndian))
+          throw new System.InvalidOperationException();
+
+        var bytesInDenominator = m_denominator.GetByteCount();
+
+        if (isBigEndian) System.Buffers.Binary.BinaryPrimitives.WriteInt32BigEndian(source.Slice(4 + bytesInNumerator, 4), bytesInDenominator);
+        else System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(source.Slice(4 + bytesInNumerator, 4), bytesInDenominator);
+
+        if (!m_denominator.TryWriteBytes(source.Slice(4 + bytesInNumerator + 4), out var bytesWrittenDenominator, isUnsigned, isBigEndian))
+          throw new System.InvalidOperationException();
+
+        return 4 + bytesInNumerator + 4 + bytesInDenominator;
+      }
+
+      // Try Write Binary representation of BigRational.
+      public bool TryWriteBytes(Span<byte> source, out int bytesWritten, bool isUnsigned = false, bool isBigEndian = true)
+      {
+        try
+        {
+          bytesWritten = WriteBytes(source, isUnsigned, isBigEndian);
+          return true;
+        }
+        catch { }
+
+        bytesWritten = 0;
+        return false;
+      }
+
+      #endregion // Methods to read and write binary.
+
       #endregion Static methods
 
       #region Overloaded operators
@@ -740,11 +812,6 @@ namespace Flux
       [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
       #endregion IConvertible
 
-      // IEquatable<>
-      public bool Equals(BigRational other) => m_numerator * other.m_denominator == m_denominator * other.m_numerator;
-      public static bool operator ==(BigRational a, BigRational b) => a.Equals(b);
-      public static bool operator !=(BigRational a, BigRational b) => !a.Equals(b);
-
       // IQuantifiable<>
       public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
         => IsProper
@@ -757,8 +824,6 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override bool Equals([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] object? obj) => obj is BigRational o && Equals(o);
-      public override int GetHashCode() => System.HashCode.Combine(m_numerator, m_denominator);
       public override string ToString() => ToQuantityString();
     }
   }

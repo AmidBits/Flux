@@ -10,6 +10,7 @@ namespace Flux
 
   namespace Text
   {
+    /// <summary>Creates an enumerator of <see cref="System.Text.Rune"/> from a stream of <see cref="System.Char"/>.</summary>
     public sealed class RuneEnumerator
       : Disposable, System.Collections.Generic.IEnumerable<System.Text.Rune>
     {

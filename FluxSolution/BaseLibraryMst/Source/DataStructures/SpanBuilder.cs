@@ -30,7 +30,7 @@ namespace Text
     public void Copy()
     {
       var expected = "Robertbert";
-      var actual = new Flux.SpanBuilder<char>("HugoRobert".AsSpan()).CopyInPlace(4, 0, 6).ToString();
+      var actual = new Flux.SpanBuilder<char>("HugoRobert".AsSpan()).Copy(4, 0, 6).ToString();
       Assert.AreEqual(expected, actual);
     }
 
@@ -207,7 +207,7 @@ namespace Text
     {
       var expected = @"There is a bee in the soup.";
       var actual = new Flux.SpanBuilder<char>(@"There is aa bbee in the soup.".AsSpan());
-      actual.NormalizeAdjacent(new char[] { 'a', 'b' });
+      actual.NormalizeAdjacent(1, new char[] { 'a', 'b' });
       Assert.AreEqual(expected, actual.ToString());
     }
 
