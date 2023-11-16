@@ -216,7 +216,7 @@ namespace Text
     {
       var expected = @"There is a bee in the soup.";
       var actual = new Flux.SpanBuilder<char>(@"   There  is a  bee in  the soup.".AsSpan());
-      actual.NormalizeAll(' ', char.IsWhiteSpace);
+      actual.NormalizeAll(char.IsWhiteSpace, ' ');
       Assert.AreEqual(expected, actual.ToString());
     }
 

@@ -118,7 +118,7 @@ namespace Flux
     //  return false;
     //}
 
-    /// <summary>Internally copy <paramref name="count"/> items from <paramref name="sourceIndex"/> to <paramref name="targetIndex"/>.</summary>
+    /// <summary>Internally copy <paramref name="count"/> values from <paramref name="sourceIndex"/> to <paramref name="targetIndex"/>.</summary>
     /// <param name="sourceIndex"></param>
     /// <param name="targetIndex"></param>
     /// <param name="count"></param>
@@ -345,28 +345,29 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
-    public SpanBuilder<T> NormalizeAdjacent(int maxAdjacentLength, System.ReadOnlySpan<T> items, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    /// <summary>Normalize (trim down) any consecutive <paramref name="values"/> (or all items, if none specified) that occur more than <paramref name="maxAdjacentCount"/> in the <see cref="SpanBuilder{T}"/>. Uses the specfied <paramref name="equalityComparer"/>.</summary>
+    public SpanBuilder<T> NormalizeAdjacent(int maxAdjacentCount, System.ReadOnlySpan<T> values, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      if (maxAdjacentLength < 1) throw new System.ArgumentNullException(nameof(maxAdjacentLength));
+      if (maxAdjacentCount < 1) throw new System.ArgumentNullException(nameof(maxAdjacentCount));
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var index = 0;
+      var normalizedMark = m_head;
+
       T previous = default!;
       var adjacentLength = 1;
 
-      for (var indexOfSource = 0; indexOfSource < Length; indexOfSource++)
+      for (var i = m_head; i < m_tail; i++)
       {
-        var current = this[indexOfSource];
+        var current = m_array[i];
 
-        var isEqual = items.Length > 0 // Use list or just characters?
-          ? (items.IndexOf(current, equalityComparer) > -1 && items.IndexOf(previous, equalityComparer) > -1) // Is both current and previous in characters?
-          : equalityComparer.Equals(current, previous); // Is current and previous character equal?
+        var isEqual = values.Length > 0 // Use span or just items?
+          ? (values.IndexOf(current, equalityComparer) > -1 && values.IndexOf(previous, equalityComparer) > -1) // Is both current and previous in items?
+          : equalityComparer.Equals(current, previous); // Are current and previous items equal?
 
-        if (!isEqual || adjacentLength < maxAdjacentLength)
+        if (!isEqual || adjacentLength < maxAdjacentCount)
         {
-          this[index++] = current;
+          m_array[normalizedMark++] = current;
 
           previous = current;
         }
@@ -374,50 +375,41 @@ namespace Flux
         adjacentLength = !isEqual ? 1 : adjacentLength + 1;
       }
 
-      return Remove(index, Length - index);
+      return this;
     }
 
-    /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the default comparer.</summary>
-    public SpanBuilder<T> NormalizeAdjacent(int maxAdjacentLength, params T[] items)
-      => NormalizeAdjacent(maxAdjacentLength, items, System.Collections.Generic.EqualityComparer<T>.Default);
-
-    /// <summary>Normalize all sequences of characters satisfying the predicate throughout the string. Normalizing means removing leading/trailing and replacing certain consecutive characters with a single specified character.</summary>
-    /// <example>"".NormalizeAll(' ', char.IsWhiteSpace);</example>
-    /// <example>"".NormalizeAll(' ', c => c == ' ');</example>
-    public SpanBuilder<T> NormalizeAll(T replacement, System.Func<T, bool> predicate)
+    /// <summary>Normalize all consecutive items satisfying the <paramref name="predicate"/> throughout the string and replace each instance with <paramref name="replacement"/>, except if at either end of the <see cref="SpanBuilder{T}"/>.</summary>
+    /// <example>"".NormalizeAll(char.IsWhiteSpace, ' ');</example>
+    /// <example>"".NormalizeAll(c => c == ' ', ' ');</example>
+    /// <remarks>Normalizing (here) means removing leading/trailing (either end of the <see cref="SpanBuilder{T}"/>) and replacing consecutive characters within the <see cref="SpanBuilder{T}"/> with <paramref name="replacement"/>.</remarks>
+    public SpanBuilder<T> NormalizeAll(System.Func<T, bool> predicate, T replacement)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      var normlizedIndex = 0;
+      var normalizedMark = m_head;
 
       var isPrevious = true;
 
-      for (var sourceIndex = 0; sourceIndex < Length; sourceIndex++)
+      for (var i = m_head; i < m_tail; i++)
       {
-        var character = this[sourceIndex];
+        var c = m_array[i];
 
-        var isCurrent = predicate(character);
+        var isCurrent = predicate(c);
 
         if (!(isPrevious && isCurrent))
         {
-          this[normlizedIndex++] = isCurrent ? replacement : character;
+          m_array[normalizedMark++] = isCurrent ? replacement : c;
 
           isPrevious = isCurrent;
         }
       }
 
-      if (isPrevious) normlizedIndex--;
+      if (isPrevious) normalizedMark--;
 
-      return normlizedIndex == Length ? this : Remove(normlizedIndex, Length - normlizedIndex);
+      m_tail = normalizedMark;
+
+      return this;
     }
-
-    /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing and replacing sequences of specified characters with a single specified character.</summary>
-    public SpanBuilder<T> NormalizeAll(T replacement, System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] items)
-      => NormalizeAll(replacement, t => items.Contains(t, equalityComparer));
-
-    /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing and replacing sequences of specified characters with a single specified character.</summary>
-    public SpanBuilder<T> NormalizeAll(T replacement, params T[] items)
-      => NormalizeAll(replacement, items.Contains);
 
     /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
     public SpanBuilder<T> PadEven(int totalWidth, T paddingLeft, T paddingRight, bool leftBias = true)
@@ -545,30 +537,26 @@ namespace Flux
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      var sourceLength = Length;
+      var removedMark = m_head; // This represents the "lag" mark, and becomes the new m_tail in the end.
 
-      var removedIndex = 0;
+      for (var i = m_head; i < m_tail; i++)
+        if (m_array[i] is var c && !predicate(c))
+          m_array[removedMark++] = c;
 
-      for (var sourceIndex = 0; sourceIndex < sourceLength; sourceIndex++)
-        if (this[sourceIndex] is var character && !predicate(character))
-          this[removedIndex++] = character;
+      m_tail = removedMark;
 
-      return Remove(removedIndex, Length - removedIndex);
+      return this;
     }
-
-    /// <summary>Remove the specified characters. Uses the specified comparer.</summary>
-    public SpanBuilder<T> RemoveAll(System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] remove)
-      => RemoveAll(t => remove.Contains(t, equalityComparer));
-
-    /// <summary>Remove the specified characters. Uses the default comparer.</summary>
-    public SpanBuilder<T> RemoveAll(params T[] remove)
-      => RemoveAll(remove.Contains);
 
     public SpanBuilder<T> RemoveEvery(int interval)
     {
-      for (var index = Length - 1; index >= 0; index--)
-        if (index > 0 && index % interval == interval - 1)
-          Remove(index, 1);
+      var removedMark = m_head;
+
+      for (var i = m_head; i < m_tail; i++)
+        if ((i - m_head) % interval < interval - 1)
+          m_array[removedMark++] = m_array[i];
+
+      m_tail = removedMark;
 
       return this;
     }
@@ -577,49 +565,42 @@ namespace Flux
     public SpanBuilder<T> Repeat(int count)
       => Append(new SpanBuilder<T>(AsReadOnlySpan(), count).AsReadOnlySpan(), 1);
 
-    /// <summary>Replace all characters using the specified replacement selector function. If the replacement selector returns null/default or empty, no replacement is made.</summary>
-    public SpanBuilder<T> ReplaceAll(System.Func<T, T[]> replacementSelector)
-    {
-      if (replacementSelector is null) throw new System.ArgumentNullException(nameof(replacementSelector));
-
-      for (var index = Length - 1; index >= 0; index--)
-        if (replacementSelector(this[index]) is var replacement && (replacement is not null && replacement.Length > 0))
-          Remove(index, 1).Insert(index, replacement.AsSpan(), 1);
-
-      return this;
-    }
-
-    /// <summary>Replace all characters using the specified replacement selector function.</summary>
-    public SpanBuilder<T> ReplaceAll(System.Func<T, T> replacementSelector)
-    {
-      if (replacementSelector is null) throw new System.ArgumentNullException(nameof(replacementSelector));
-
-      for (var index = Length - 1; index >= 0; index--)
-        this[index] = replacementSelector(this[index]);
-
-      return this;
-    }
-
-    /// <summary>Replace all characters satisfying the predicate with the specified character.</summary>
+    /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the specified <paramref name="replacement"/> character.</summary>
     /// <example>"".ReplaceAll(replacement, char.IsWhiteSpace);</example>
-    public SpanBuilder<T> ReplaceAll(T replacement, System.Func<T, bool> predicate)
+    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, T replacement)
     {
       if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-      for (var index = Length - 1; index >= 0; index--)
-        if (predicate(this[index]))
-          this[index] = replacement;
+      for (var i = m_head; i < m_tail; i++)
+        if (predicate(m_array[i]))
+          m_array[i] = replacement;
 
       return this;
     }
 
-    /// <summary>Replace all specified characters with the specified character.</summary>
-    public SpanBuilder<T> ReplaceAll(T replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] replace)
-      => ReplaceAll(replacement, t => replace.Contains(t, equalityComparer));
+    /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the result of the <paramref name="replacementSelector"/>.</summary>
+    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, System.Func<T, T> replacementSelector)
+    {
+      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
 
-    /// <summary>Replace all specified characters with the specified character.</summary>
-    public SpanBuilder<T> ReplaceAll(T replacement, params T[] replace)
-      => ReplaceAll(replacement, replace.Contains);
+      for (var i = m_head; i < m_tail; i++)
+        if (m_array[i] is var c && predicate(c))
+          m_array[i] = replacementSelector(c);
+
+      return this;
+    }
+
+    /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the result of the <paramref name="replacementSelector"/>.</summary>
+    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, System.Func<T, System.Collections.Generic.ICollection<T>> replacementSelector)
+    {
+      if (replacementSelector is null) throw new System.ArgumentNullException(nameof(replacementSelector));
+
+      for (var index = Length - 1; index >= 0; index--)
+        if (this[index] is var c && predicate(c))
+          Remove(index, 1).Insert(index, replacementSelector(c), 1);
+
+      return this;
+    }
 
     public SpanBuilder<T> ReplaceIfEqualAt(int startAt, System.ReadOnlySpan<T> key, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
@@ -666,28 +647,22 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
-    public SpanBuilder<T> TrimLeft(T separator, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    /// <summary>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the beginning of the <see cref="SpanBuilder{T}"/>.</summary>
+    public SpanBuilder<T> TrimLeft(System.Func<T, bool> predicate)
     {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-      for (var index = 0; index < Length; index++)
-        if (equalityComparer.Equals(this[index], separator))
-          Remove(index, 1);
-        else break;
+      for (; m_head < m_tail; m_head++)
+        if (!predicate(m_array[m_head]))
+          break;
 
       return this;
     }
 
-    /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
-    public SpanBuilder<T> TrimRight(T separator, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    /// <summary>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the end of the <see cref="SpanBuilder{T}"/>.</summary>
+    public SpanBuilder<T> TrimRight(System.Func<T, bool> predicate)
     {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-      for (var index = Length - 1; index >= 0; index--)
-        if (equalityComparer.Equals(this[index], separator))
-          Remove(index, 1);
-        else break;
+      for (; m_tail > m_head; m_tail--)
+        if (!predicate(m_array[m_tail - 1]))
+          break;
 
       return this;
     }

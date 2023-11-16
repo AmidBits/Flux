@@ -117,7 +117,7 @@ namespace Flux.Globalization.EnUs.Az.PimaCounty
     {
       var sb = $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSpanBuilder();
 
-      sb.NormalizeAll(' ', char.IsWhiteSpace);
+      sb.NormalizeAll(char.IsWhiteSpace, ' ');
 
       return sb.ToString();
     }

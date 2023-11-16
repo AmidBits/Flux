@@ -123,7 +123,16 @@ namespace ConsoleApp
       //EvaluateNumericStuff();
 
 
-      var s = " This is API test bed  ".AsSpan().ToSpanBuilder().TrimLeft(' ').TrimRight(' ');
+      var s = " This is an APPPPI test bed  ".AsSpan().ToSpanBuilder();
+
+      s.TrimRight(e => new char[] { 'h', 'd', ' ' }.Contains(e));
+      s.TrimLeft(e => new char[] { 'h', 'T', ' ' }.Contains(e));
+      s.RemoveEvery(3);
+      s.NormalizeAdjacent(2, new char[] { 'P' });
+      s.NormalizeAll(char.IsWhiteSpace, ':');
+      s.ReplaceAll(e => e == ':', e => '*');
+      s.ReplaceAll(e => e == '*', '-');
+      s.RemoveAll(e => e == '-');
 
       for (var i = 0; i < 10; i++)
       {
