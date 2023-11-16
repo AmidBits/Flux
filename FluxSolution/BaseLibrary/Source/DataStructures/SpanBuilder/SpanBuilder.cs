@@ -375,6 +375,8 @@ namespace Flux
         adjacentLength = !isEqual ? 1 : adjacentLength + 1;
       }
 
+      m_tail = normalizedMark;
+
       return this;
     }
 
