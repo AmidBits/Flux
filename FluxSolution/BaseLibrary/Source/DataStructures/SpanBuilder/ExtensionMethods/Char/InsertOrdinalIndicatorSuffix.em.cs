@@ -2,11 +2,13 @@ namespace Flux
 {
   public static partial class SpanBuilderExtensionMethods
   {
-    /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.), if the predicate is satisfied.</summary>
+    /// <summary>Appends ordinal extensions (e.g. rd, th, etc.) to any digit numerals (e.g. 3, 12, etc.) in the <paramref name="source"/> that satisfies the <paramref name="predicate"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
     /// <param name="predicate">The first string is the string up until and including the numeric value, and the second string is the suffix to be affixed.</param>
-    public static SpanBuilder<char> InsertOrdinalIndicatorSuffix(ref this SpanBuilder<char> source, System.Func<string, string, bool>? predicate = null)
+    public static SpanBuilder<char> InsertOrdinalIndicatorSuffix(ref this SpanBuilder<char> source, System.Func<string, string, string, bool>? predicate = null)
     {
+      predicate ??= (textOnLeft, suffix, textOnRight) => { System.Diagnostics.Debug.WriteLine($"{textOnLeft}>{suffix}<{textOnRight}"); return true; };
+
       var wasDigit = false;
 
       for (var index = source.Length - 1; index >= 0; index--)
@@ -27,7 +29,7 @@ namespace Flux
             _ => @"th"
           };
 
-          if (predicate?.Invoke(source.AsReadOnlySpan()[..(index + 1)].ToString(), suffix) ?? true)
+          if (predicate(source.AsReadOnlySpan()[..(index + 1)].ToString(), suffix, source.AsReadOnlySpan()[(index + 1)..].ToString()))
             source.Insert(index + 1, suffix.AsSpan(), 1);
         }
 

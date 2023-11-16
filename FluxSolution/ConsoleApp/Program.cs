@@ -123,22 +123,23 @@ namespace ConsoleApp
       //EvaluateNumericStuff();
 
 
-      var s = " This is an APPPPI test bed  ".AsSpan().ToSpanBuilder();
+      var s = " This is the 111APPPPI test bed of 125 in total  ".AsSpan().ToListOfRune().AsSpan().ToSpanBuilder();
 
-      s.TrimRight(e => new char[] { 'h', 'd', ' ' }.Contains(e));
-      s.TrimLeft(e => new char[] { 'h', 'T', ' ' }.Contains(e));
-      s.RemoveEvery(3);
-      s.NormalizeAdjacent(2, new char[] { 'P' });
-      s.NormalizeAll(char.IsWhiteSpace, ':');
-      s.ReplaceAll(e => e == ':', e => '*');
-      s.ReplaceAll(e => e == '*', '-');
-      s.RemoveAll(e => e == '-');
+      s.MakeNumbersFixedLength(10, (System.Text.Rune)'0');
+      //s.TrimRight(e => new char[] { 'h', 'd', ' ' }.Contains(e));
+      //s.TrimLeft(e => new char[] { 'h', 'T', ' ' }.Contains(e));
+      //s.RemoveEvery(3);
+      //s.NormalizeAdjacent(2, new char[] { 'P' });
+      //s.NormalizeAll(char.IsWhiteSpace, ':');
+      //s.ReplaceAll(e => e == ':', e => '*');
+      //s.ReplaceAll(e => e == '*', '-');
+      //s.RemoveAll(e => e == '-');
 
-      for (var i = 0; i < 10; i++)
-      {
-        s.JoinToCamelCase();
-        s.SplitFromCamelCase();
-      }
+      //for (var i = 0; i < 10; i++)
+      //{
+      //  s.JoinToCamelCase();
+      //  s.SplitFromCamelCase();
+      //}
 
       //var tokens = new Flux.Text.RuneTokenizer().GetTokens(s).ToArray();
 

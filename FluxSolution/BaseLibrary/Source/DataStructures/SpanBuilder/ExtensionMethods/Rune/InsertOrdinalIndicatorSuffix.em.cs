@@ -5,8 +5,10 @@ namespace Flux
     /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.), if the predicate is satisfied.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
     /// <param name="predicate">The first string is the string up until and including the numeric value, and the second string is the suffix to be affixed.</param>
-    public static SpanBuilder<System.Text.Rune> InsertOrdinalIndicatorSuffix(ref this SpanBuilder<System.Text.Rune> source)
+    public static SpanBuilder<System.Text.Rune> InsertOrdinalIndicatorSuffix(ref this SpanBuilder<System.Text.Rune> source, System.Func<System.Text.Rune[], System.Text.Rune[], System.Text.Rune[], bool>? predicate = null)
     {
+      predicate ??= (textOnLeft, suffix, textOnRight) => { System.Diagnostics.Debug.WriteLine($"{textOnLeft}>{suffix}<{textOnRight}"); return true; };
+
       var wasDigit = false;
 
       for (var index = source.Length - 1; index >= 0; index--)
@@ -19,12 +21,13 @@ namespace Flux
         {
           var isBetweenTenAndTwenty = index > 0 && source[index - 1] == (System.Text.Rune)'1';
 
-          var suffix = (r == (System.Text.Rune)'1' && !isBetweenTenAndTwenty) ? "st".AsSpan().ToListOfRune().AsSpan()
-            : (r == (System.Text.Rune)'2' && !isBetweenTenAndTwenty) ? "nd".AsSpan().ToListOfRune().AsSpan()
-            : (r == (System.Text.Rune)'3' && !isBetweenTenAndTwenty) ? "rd".AsSpan().ToListOfRune().AsSpan()
-            : "th".AsSpan().ToListOfRune().AsSpan();
+          var suffix = (r == (System.Text.Rune)'1' && !isBetweenTenAndTwenty) ? new System.Text.Rune[] { (System.Text.Rune)'s', (System.Text.Rune)'t' }
+            : (r == (System.Text.Rune)'2' && !isBetweenTenAndTwenty) ? new System.Text.Rune[] { (System.Text.Rune)'n', (System.Text.Rune)'d' }
+            : (r == (System.Text.Rune)'3' && !isBetweenTenAndTwenty) ? new System.Text.Rune[] { (System.Text.Rune)'r', (System.Text.Rune)'d' }
+            : new System.Text.Rune[] { (System.Text.Rune)'t', (System.Text.Rune)'h' };
 
-          source.Insert(index + 1, suffix, 1);
+          if (predicate(source.AsReadOnlySpan()[..(index + 1)].ToArray(), suffix, source.AsReadOnlySpan()[(index + 1)..].ToArray()))
+            source.Insert(index + 1, suffix.AsSpan(), 1);
         }
 
         wasDigit = isDigit;

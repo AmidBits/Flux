@@ -12,7 +12,7 @@ namespace Flux
         var isDigit = System.Text.Rune.IsDigit(source[index]);
 
         if (!isDigit && wasDigit && digitCount < length)
-          source.Insert(index + digitCount, padding, length - digitCount);
+          source.Insert(index + 1, padding, length - digitCount);
         else if (isDigit && !wasDigit)
           digitCount = 1;
         else
