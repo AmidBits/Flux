@@ -52,7 +52,7 @@ namespace Flux
       ucsb.SplitFromCamelCase();
 
       if (source == System.Globalization.UnicodeCategory.NonSpacingMark) ucsb.RemoveAll(e => e == ' '); // Fix "non spacing" to "nonspacing".
-      if (source == System.Globalization.UnicodeCategory.PrivateUse) ucsb.AsSpan().ReplaceAll(e => e == ' ' ? '-' : e); // Fix "private use" to "private-use".
+      if (source == System.Globalization.UnicodeCategory.PrivateUse) ucsb.AsSpan().ReplaceAll((e, i) => e == ' ', (e, i) => '-'); // Fix "private use" to "private-use".
 
       return ucsb.ToString();
     }

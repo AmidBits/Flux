@@ -10,14 +10,14 @@ namespace Flux
 
     public static void DeleteDirectories(this System.IO.DirectoryInfo directoryInfo, string searchPattern, System.IO.SearchOption searchOption, bool recursiveDelete)
     {
-      if (directoryInfo is null) throw new System.ArgumentNullException(nameof(directoryInfo));
+      System.ArgumentNullException.ThrowIfNull(directoryInfo);
 
       foreach (var directory in directoryInfo.EnumerateDirectories(searchPattern, searchOption))
         directory.Delete(recursiveDelete);
     }
     public static void DeleteFiles(this System.IO.DirectoryInfo directoryInfo, string searchPattern, System.IO.SearchOption searchOption)
     {
-      if (directoryInfo is null) throw new System.ArgumentNullException(nameof(directoryInfo));
+      System.ArgumentNullException.ThrowIfNull(directoryInfo);
 
       foreach (var file in directoryInfo.EnumerateFiles(searchPattern, searchOption))
         file.Delete();
@@ -25,7 +25,10 @@ namespace Flux
 
     public static System.Collections.Generic.IEnumerable<System.IO.FileInfo> DirectorySearch(this System.IO.DirectoryInfo directoryInfo, System.Func<System.IO.FileInfo, bool> predicateFile, System.Func<System.IO.DirectoryInfo, bool> predicateDirectory)
     {
-      if (directoryInfo is null) throw new System.ArgumentNullException(nameof(directoryInfo));
+      System.ArgumentNullException.ThrowIfNull(directoryInfo);
+
+      predicateFile ??= fi => true;
+      predicateDirectory ??= di => true;
 
       if (directoryInfo.Exists)
       {
@@ -35,7 +38,7 @@ namespace Flux
         catch { }
 
         foreach (var fi in fileInfos)
-          if (predicateFile?.Invoke(fi) ?? true)
+          if (predicateFile(fi))
             yield return fi;
 
         var directoryInfos = System.Array.Empty<System.IO.DirectoryInfo>();
@@ -44,7 +47,7 @@ namespace Flux
         catch { }
 
         foreach (var di in directoryInfos)
-          if (predicateDirectory?.Invoke(di) ?? true)
+          if (predicateDirectory(di))
             foreach (var fi in DirectorySearch(di, predicateFile, predicateDirectory!))
               yield return fi;
       }

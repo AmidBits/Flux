@@ -5,7 +5,7 @@ namespace Flux.Model.Maze
   {
     public override void CarveMaze(MazeGrid grid)
     {
-      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+      System.ArgumentNullException.ThrowIfNull(grid);
 
       Divide(grid, 0, 0, grid.Size.Y, grid.Size.X);
     }

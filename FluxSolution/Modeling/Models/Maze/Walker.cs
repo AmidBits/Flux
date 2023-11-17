@@ -7,7 +7,7 @@ namespace Flux.Model.Maze
 
     public override void CarveMaze(MazeGrid grid)
     {
-      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+      System.ArgumentNullException.ThrowIfNull(grid);
 
       var counter = grid.Size.X * grid.Size.Y / RemovalCount;
 
@@ -15,7 +15,7 @@ namespace Flux.Model.Maze
 
       while (counter > 0)
       {
-        var next = current.Edges.RandomElement(RandomNumberGenerator).Value;
+        var next = current.Edges.Random(RandomNumberGenerator).Value;
 
         if (current.GetEdgesWithoutPaths().Contains(next))
         {

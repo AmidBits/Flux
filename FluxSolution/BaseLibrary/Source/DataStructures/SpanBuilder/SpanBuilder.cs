@@ -76,6 +76,8 @@ namespace Flux
 
       return this;
     }
+    public SpanBuilder<T> Append(System.Collections.Generic.IEnumerable<T> sequence, int count)
+      => Append(sequence.ToList(), count);
 
     /// <summary>Append <paramref name="count"/> of <paramref name="values"/>.</summary>
     public SpanBuilder<T> Append(System.ReadOnlySpan<T> values, int count)
@@ -566,31 +568,6 @@ namespace Flux
     /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
     public SpanBuilder<T> Repeat(int count)
       => Append(new SpanBuilder<T>(AsReadOnlySpan(), count).AsReadOnlySpan(), 1);
-
-    /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the specified <paramref name="replacement"/> character.</summary>
-    /// <example>"".ReplaceAll(replacement, char.IsWhiteSpace);</example>
-    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, T replacement)
-    {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-
-      for (var i = m_head; i < m_tail; i++)
-        if (predicate(m_array[i]))
-          m_array[i] = replacement;
-
-      return this;
-    }
-
-    /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the result of the <paramref name="replacementSelector"/>.</summary>
-    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, System.Func<T, T> replacementSelector)
-    {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-
-      for (var i = m_head; i < m_tail; i++)
-        if (m_array[i] is var c && predicate(c))
-          m_array[i] = replacementSelector(c);
-
-      return this;
-    }
 
     /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the result of the <paramref name="replacementSelector"/>.</summary>
     public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, System.Func<T, System.Collections.Generic.ICollection<T>> replacementSelector)

@@ -7,16 +7,17 @@ namespace Flux.Model.Maze
   {
     public override void CarveMaze(MazeGrid grid)
     {
-      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+      System.ArgumentNullException.ThrowIfNull(grid);
 
-      grid.GetValues().TryGetRandomElement(out var current, RandomNumberGenerator);
+      grid.Values.TryRandom(out var current, RandomNumberGenerator);
 
       while (current != null)
       {
         var unvisited = current.GetEdgesWithoutPaths();
+
         if (unvisited.Any())
         {
-          unvisited.TryGetRandomElement(out var unvisitedElement, RandomNumberGenerator);
+          unvisited.TryRandom(out var unvisitedElement, RandomNumberGenerator);
 
           current = current.ConnectPath(unvisitedElement, true);
         }
@@ -24,13 +25,13 @@ namespace Flux.Model.Maze
         {
           current = null;
 
-          foreach (var cell in grid.GetValues().Where(c => !c.Paths.Any()))
+          foreach (var cell in grid.Values.Where(c => !c.Paths.Any()))
           {
             var visited = cell.GetEdgesWithPaths();
 
             if (visited.Any())
             {
-              visited.TryGetRandomElement(out var visitedElement, RandomNumberGenerator);
+              visited.TryRandom(out var visitedElement, RandomNumberGenerator);
 
               cell.ConnectPath(visitedElement, true);
 

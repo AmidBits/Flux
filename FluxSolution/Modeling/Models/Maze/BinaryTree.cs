@@ -9,7 +9,7 @@ namespace Flux.Model.Maze
 
     public override void CarveMaze(MazeGrid grid)
     {
-      if (grid is null) throw new System.ArgumentNullException(nameof(grid));
+      System.ArgumentNullException.ThrowIfNull(grid);
 
       var direction1 = (int)Diagonal - 4;
       var direction2 = (direction1 + 8) % 32;
@@ -20,7 +20,7 @@ namespace Flux.Model.Maze
 
         if (direction.Any())
         {
-          direction.TryGetRandomElement(out var element, RandomNumberGenerator);
+          direction.TryRandom(out var element, RandomNumberGenerator);
 
           cell.ConnectPath(element.Value, true);
         }

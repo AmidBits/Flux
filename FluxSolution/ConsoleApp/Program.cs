@@ -45,9 +45,9 @@ namespace ConsoleApp
       //var mafzpf = value.MultipleOfAwayFromZero(multiple, false);
       //var mafzpt = value.MultipleOfAwayFromZero(multiple, true);
 
-      var rtmo = value.RoundToMultipleOf(multiple, true, RoundingMode.AwayFromZero, out var mtz, out var mafz);
+      var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mtz, out var mafz);
 
-      var rtp = value.RoundToPowOf(radix, true, RoundingMode.AwayFromZero, out var rtptz, out var rtpafz);
+      var rtp = value.RoundToPowOf(radix, true, Flux.RoundingMode.AwayFromZero, out var rtptz, out var rtpafz);
 
       var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
 
@@ -83,9 +83,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2tz = (int)n.RoundToPow2(false, RoundingMode.TowardZero, out var p2tzlo, out var p2tzhi);
+      var np2tz = (int)n.RoundToPow2(false, Flux.RoundingMode.TowardZero, out var p2tzlo, out var p2tzhi);
       System.Console.WriteLine($" RoundToPow2tz = {np2tz}");
-      var np2afz = (int)n.RoundToPow2(false, RoundingMode.AwayFromZero, out var p2afzlo, out var p2afzhi);
+      var np2afz = (int)n.RoundToPow2(false, Flux.RoundingMode.AwayFromZero, out var p2afzlo, out var p2afzhi);
       System.Console.WriteLine($"RountToPow2afz = {np2afz}");
 
       var birbits = n.ReverseBits();
