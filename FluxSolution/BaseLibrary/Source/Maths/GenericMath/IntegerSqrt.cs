@@ -19,11 +19,8 @@ namespace Flux
 
       if (!TSelf.IsZero(x0))
       {
-        checked
-        {
-          while (((x0 + y / x0) >> 1) is var x1 && x1 < x0)
-            x0 = x1;
-        }
+        while (((x0 + y / x0) >> 1) is var x1 && x1 < x0)
+          x0 = x1;
 
         return x0;
       }

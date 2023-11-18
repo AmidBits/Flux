@@ -38,21 +38,13 @@ namespace Flux.NumberSequences
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (TSelf.CreateChecked(2) is var two && startAt <= two)
-      {
         yield return two;
 
-        startAt = two;
-      }
-
       if (TSelf.CreateChecked(3) is var three && startAt <= three)
-      {
         yield return three;
 
-        startAt = three;
-      }
-
-      if (TSelf.CreateChecked(4) is var four && startAt < four)
-        startAt = four;
+      if (TSelf.CreateChecked(5) is var five && startAt <= five)
+        startAt = five;
 
       var six = TSelf.CreateChecked(6);
 
@@ -136,7 +128,6 @@ namespace Flux.NumberSequences
           multiple -= six;
         }
       }
-
 
       if (TSelf.CreateChecked(3) is var three && startAt >= three)
         yield return three;
@@ -574,12 +565,11 @@ namespace Flux.NumberSequences
       if (TSelf.IsZero(number % two) || TSelf.IsZero(number % three))
         return false;
 
-      var five = TSelf.CreateChecked(5);
-      var six = TSelf.CreateChecked(6);
-
       var limit = number.IntegerSqrt();
 
-      for (var k = five; k <= limit; k += six)
+      var six = TSelf.CreateChecked(6);
+
+      for (var k = TSelf.CreateChecked(5); k <= limit; k += six)
         if (TSelf.IsZero(number % k) || TSelf.IsZero(number % (k + two)))
           return false;
 

@@ -2,20 +2,20 @@ namespace Flux
 {
   public static partial class ExtensionMethodsIEnumerableT
   {
-    public static System.Collections.Generic.IEnumerable<(TAccumulate aggregate, TSource element, int index)> RunningAggregate<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TAccumulate> initiator, System.Func<TAccumulate, TSource, int, TAccumulate> accumulator)
+    public static System.Collections.Generic.IEnumerable<(TAccumulate aggregate, TSource element, int index)> RunningAggregate<TSource, TAccumulate>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TAccumulate> seedFactory, System.Func<TAccumulate, TSource, int, TAccumulate> accumulator)
     {
-      if (initiator is null) throw new System.ArgumentNullException(nameof(initiator));
-      if (accumulator is null) throw new System.ArgumentNullException(nameof(accumulator));
+      System.ArgumentNullException.ThrowIfNull(seedFactory);
+      System.ArgumentNullException.ThrowIfNull(accumulator);
 
       var index = 0;
 
-      var aggregate = initiator();
+      var result = seedFactory();
 
       foreach (var item in source.ThrowOnNull())
       {
-        aggregate = accumulator(aggregate, item, index);
+        result = accumulator(result, item, index);
 
-        yield return (aggregate, item, index);
+        yield return (result, item, index);
 
         index++;
       }

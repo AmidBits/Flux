@@ -10,7 +10,7 @@ namespace Flux.NumberSequences
     public static System.Collections.Generic.IEnumerable<TSelf> GetPrimeFactors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      foreach (var prime in NumberSequences.PrimeNumber.GetAscendingPrimes(TSelf.CreateChecked(2)))
+      foreach (var prime in PrimeNumber.GetAscendingPrimes(TSelf.CreateChecked(2)))
         while (TSelf.IsZero(number % prime))
         {
           yield return prime;

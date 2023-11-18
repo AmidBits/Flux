@@ -122,6 +122,7 @@ namespace ConsoleApp
 
       //EvaluateNumericStuff();
 
+      var pns = Flux.NumberSequences.PrimeNumber.GetAscendingPrimes(6).Take(10).ToArray();
 
       var s = " This is the 111APPPPI test bed of 125 in total  ".AsSpan().ToListOfRune().AsSpan().ToSpanBuilder();
 
