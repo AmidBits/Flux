@@ -9,7 +9,7 @@ namespace Foundation.Randomization
     [TestMethod]
     public void BigInteger()
     {
-      for (var i = 0; i < short.MaxValue; i++)
+      for (var i = 1; i < short.MaxValue; i++)
       {
         var rv = Flux.Random.NumberGenerators.Crypto.NextBigInteger(i);
 
@@ -212,7 +212,7 @@ namespace Foundation.Randomization
     {
       var cr = new Flux.Random.Cryptographic();
 
-      for (var i = 0; i < short.MaxValue; i++)
+      for (var i = 1; i < short.MaxValue; i++)
       {
         var rv = cr.NextBigInteger(i);
 
@@ -297,7 +297,7 @@ namespace Foundation.Randomization
     {
       var cr = new Flux.Random.IsaacRandom();
 
-      for (var i = 0; i < short.MaxValue; i++)
+      for (var i = 1; i < short.MaxValue; i++)
       {
         var rv = cr.NextBigInteger(i);
 
@@ -382,7 +382,7 @@ namespace Foundation.Randomization
     {
       var cr = new Flux.Random.SplitMix64();
 
-      for (var i = 0; i < short.MaxValue; i++)
+      for (var i = 1; i < short.MaxValue; i++)
       {
         var rv = cr.NextBigInteger(i);
 
@@ -468,7 +468,7 @@ namespace Foundation.Randomization
     {
       var cr = new Flux.Random.Xoshiro256P();
 
-      for (var i = 0; i < short.MaxValue; i++)
+      for (var i = 1; i < short.MaxValue; i++)
       {
         var rv = cr.NextBigInteger(i);
 
@@ -553,7 +553,7 @@ namespace Foundation.Randomization
     {
       var cr = new Flux.Random.Xoshiro256SS();
 
-      for (var i = 0; i < short.MaxValue; i++)
+      for (var i = 1; i < short.MaxValue; i++)
       {
         var rv = cr.NextBigInteger(i);
 

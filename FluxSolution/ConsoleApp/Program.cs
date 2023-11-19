@@ -124,25 +124,28 @@ namespace ConsoleApp
 
       var pns = Flux.NumberSequences.PrimeNumber.GetAscendingPrimes(6).Take(10).ToArray();
 
-      var s = " This is the 111APPPPI test bed of 125 in total  ".AsSpan().ToListOfRune().AsSpan().ToSpanBuilder();
+      var s = " This is the 111APPPPI test bed of 125 in total  ";
+      var sb = s.AsSpan().ToListOfRune().AsSpan().ToSpanBuilder();
 
-      s.MakeNumbersFixedLength(10, (System.Text.Rune)'0');
-      //s.TrimRight(e => new char[] { 'h', 'd', ' ' }.Contains(e));
-      //s.TrimLeft(e => new char[] { 'h', 'T', ' ' }.Contains(e));
-      //s.RemoveEvery(3);
-      //s.NormalizeAdjacent(2, new char[] { 'P' });
-      //s.NormalizeAll(char.IsWhiteSpace, ':');
-      //s.ReplaceAll(e => e == ':', e => '*');
-      //s.ReplaceAll(e => e == '*', '-');
-      //s.RemoveAll(e => e == '-');
+      var im = s.GetIndexMap(c => c);
+
+      sb.MakeNumbersFixedLength(10, (System.Text.Rune)'0');
+      //sb.TrimRight(e => new char[] { 'h', 'd', ' ' }.Contains(e));
+      //sb.TrimLeft(e => new char[] { 'h', 'T', ' ' }.Contains(e));
+      //sb.RemoveEvery(3);
+      //sb.NormalizeAdjacent(2, new char[] { 'P' });
+      //sb.NormalizeAll(char.IsWhiteSpace, ':');
+      //sb.ReplaceAll(e => e == ':', e => '*');
+      //sb.ReplaceAll(e => e == '*', '-');
+      //sb.RemoveAll(e => e == '-');
 
       //for (var i = 0; i < 10; i++)
       //{
-      //  s.JoinToCamelCase();
-      //  s.SplitFromCamelCase();
+      //  sb.JoinToCamelCase();
+      //  sb.SplitFromCamelCase();
       //}
 
-      //var tokens = new Flux.Text.RuneTokenizer().GetTokens(s).ToArray();
+      //var tokens = new Flux.Text.RuneTokenizer().GetTokens(sb).ToArray();
 
       //var x = new Flux.Units.BigRational(256, 3);
       var x = Flux.Units.BigRational.Tau;
