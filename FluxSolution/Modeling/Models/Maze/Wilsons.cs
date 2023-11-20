@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Model.Maze
 {
   public sealed class WilsonsMaze
@@ -8,6 +6,8 @@ namespace Flux.Model.Maze
     public override void CarveMaze(MazeGrid grid)
     {
       System.ArgumentNullException.ThrowIfNull(grid);
+
+      RandomNumberGenerator = new System.Random(23);
 
       var path = new System.Collections.Generic.List<Cell>();
 

@@ -3,7 +3,7 @@ namespace Flux.Model.Maze
   public sealed class WalkerCave
     : AMaze
   {
-    public int RemovalCount = 2;
+    public int RemovalCount = 7;
 
     public override void CarveMaze(MazeGrid grid)
     {

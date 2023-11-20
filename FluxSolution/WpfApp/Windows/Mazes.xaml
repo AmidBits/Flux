@@ -19,6 +19,7 @@
 		</Grid.RowDefinitions>
 		<StackPanel x:Name="stackPanelControls" Orientation="Horizontal">
             <Button Click="Button_Click_Clear" Content="Clear" Margin="1" Padding="5" ToolTip="Clear the Map"/>
+            <ComboBox x:Name="comboBoxSeedNumber" Margin="1" Padding="5" Width="50" ToolTip="Seed Number"/>
             <Button Click="Button_Click_AldousBroder" Content="Aldous/Broder" Margin="1" Padding="5" ToolTip="Maze"/>
             <Button Click="Button_Click_BackTracker" Content="BackTracker" Margin="1" Padding="5" ToolTip="Maze"/>
             <Button Click="Button_Click_BinaryTree" Content="BinaryTree" Margin="1" Padding="5" ToolTip="Maze" Visibility="Visible"/>

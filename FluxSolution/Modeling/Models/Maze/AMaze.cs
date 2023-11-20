@@ -1,11 +1,9 @@
-using System.Linq;
-
 namespace Flux.Model.Maze
 {
   public abstract class AMaze
     : IMazeBraidable, IMazeCarvable
   {
-    public System.Random RandomNumberGenerator { get; init; } = new System.Random();
+    public System.Random RandomNumberGenerator { get; set; } = new System.Random();
 
     public virtual void BraidMaze(MazeGrid grid, double threshold = 0.5)
     {
