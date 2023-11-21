@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>In-place swap of two elements by the specified indices.</summary>
     /// <exception cref="System.ArgumentNullException"/>
     /// <exception cref="System.ArgumentOutOfRangeException"/>
-    public static void Swap<T>(this System.Collections.Generic.List<T> source, int indexA, int indexB)
+    public static void Swap<T>(this System.Collections.Generic.IList<T> source, int indexA, int indexB)
     {
       if (indexA != indexB) // No need to do anything, if the indices are the same.
       {

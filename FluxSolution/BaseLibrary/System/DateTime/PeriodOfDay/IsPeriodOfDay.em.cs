@@ -1,57 +1,7 @@
 namespace Flux
 {
-  public enum PeriodOfDay
-  {
-    Unknown,
-    /// <summary>
-    /// <para></para>
-    /// <see href="https://en.wikipedia.org/wiki/Afternoon"/>
-    /// </summary>
-    Afternoon,
-    /// <summary>
-    /// <para></para>
-    /// <see href="https://en.wikipedia.org/wiki/Day#Daytime"/>
-    /// </summary>
-    Day,
-    /// <summary>
-    /// <para></para>
-    /// <see href="https://en.wikipedia.org/wiki/Evening"/>
-    /// </summary>
-    Evening,
-    /// <summary>
-    /// <para></para>
-    /// <see href="https://en.wikipedia.org/wiki/Midnight"/>
-    /// </summary>
-    Midnight,
-    /// <summary>
-    /// <para></para>
-    /// <see href="https://en.wikipedia.org/wiki/Morning"/>
-    /// </summary>
-    Morning,
-    /// <summary>
-    /// <para></para>
-    /// <see href="https://en.wikipedia.org/wiki/Night"/>
-    /// </summary>
-    Night,
-    /// <summary>
-    /// <para></para>
-    /// <see href="https://en.wikipedia.org/wiki/Noon"/>
-    /// </summary>
-    Noon,
-  }
-
   public static partial class ExtensionMethodsDateTime
   {
-    public static PeriodOfDay GetPeriodOfDay(this System.DateTime source)
-      => IsMidnight(source) ? PeriodOfDay.Midnight
-      : IsNoon(source) ? PeriodOfDay.Noon
-      : IsMorning(source) ? PeriodOfDay.Morning
-      : IsAfternoon(source) ? PeriodOfDay.Afternoon
-      : IsEvening(source) ? PeriodOfDay.Evening
-      : IsNightTime(source) ? PeriodOfDay.Night
-      : IsDaytime(source) ? PeriodOfDay.Day
-      : throw new System.NotImplementedException();
-
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Afternoon"/>
     public static bool IsAfternoon(this System.DateTime source)

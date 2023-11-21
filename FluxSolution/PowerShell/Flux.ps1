@@ -16,10 +16,10 @@ $vsProjectReference = @{ SolutionName='FluxSolution'; ProjectName='BaseLibrary';
 
 [string]$assemblyFileName = Expand-FileToPath "$($vsProjectReference.ProjectName).dll" $vsProjectReference
 
-"Add-on <$assemblyFileName>$([System.Environment]::NewLine)"
-
 if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.FullName -match "^$($vsProjectReference.ProjectName)" } | Test-Any)) # Check whether the project library is already loaded.
 {
+    "Add-on <$assemblyFileName>$([System.Environment]::NewLine)"
+
     # Various ways to include/use the Flux BaseLibray in PowerShell:
 
     [byte[]]$bytes = [System.IO.File]::ReadAllBytes($assemblyFileName) # Read the binary assembly to a byte array.
@@ -42,38 +42,37 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 }
 
 # Sample use from Flux BaseLibrary:
-[Flux.Locale]::EnvironmentVariables
-# "Locale-Properties:"
- [Flux.Locale]::GetProperties()
-# [Flux.Locale]::SpecialFolders
-# return;
 
-#$md = New-Object 'Flux.Memory.Metrics.DamerauLevenshteinDistance[char]'
-#$fm = $md.GetFullMatrix("settings", "kitten")
+"Flux.Locale.EnvironmentVariables: (This dictionary is projected directly from the `"System.Environment.GetEnvironmentVariables()`" method.)"
+[Flux.Locale]::EnvironmentVariables | Format-Table
 
-# $fe = 
-# {  
-#   param($e, $i)
+"Flux.Locale.GetProperties(): (This dictionary is compiled from various sources within the system. They can also be accessed as properties of the Flux.Locale, using the same names as the keys in the dictionary.)"
+[Flux.Locale]::GetProperties() | Format-Table
 
-#   $e.ToString()
-# }
+"Flux.Locale.SpecialFolders: (This dictionary represents the names and values of the `"System.Environment.SpecialFolder`" enum.)"
+[Flux.Locale]::SpecialFolders | Format-Table
 
-#$af = New-Object Flux.Formatting.ArrayFormatter
-#$s = $af.TwoToConsoleString($fm)
+"Prime numbers: $([Flux.NumberSequences.PrimeNumber]::GetAscendingPrimes[int](2) | Select-Object -First 25 | Join-String -Separator ',')$([System.Environment]::NewLine)"
 
-# $uri = New-Object System.Uri ([Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings]::LocalFile)
-# $uri.OriginalString
-# $binuri = ConvertTo-BinUri $uri $vsProjectReference
-# $binuri.OriginalString
-# $cad = New-Object Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings $binuri
-# $atb = $cad.AcquireDataTable() 
-# $atb.Rows | Where-Object {$_.Title -match 'SCANDINAVIA'}  | Format-List
+"GetLevenshteinDistanceMatrix(`"sitting`", `"kitten`")$([System.Environment]::NewLine)"
+$m = [Flux.ExtensionMethodsReadOnlySpan]::GetLevenshteinDistanceMatrix[char]("sitting", "kitten")
+$s = [Flux.ArrayRank2]::Rank2ToConsoleString[int]($m)
+"$($s)$([System.Environment]::NewLine)"
 
-# [Flux.Locale].Assembly.GetTypes() | ForEach-Object { $_.ImplementedInterfaces }
-# [Flux.Locale].Assembly.GetTypes() | Select-Object FullName
+"GetLevenshteinDistanceMatrix(`"Sunday`", `"Saturday`")$([System.Environment]::NewLine)"
+$m = [Flux.ExtensionMethodsReadOnlySpan]::GetLevenshteinDistanceMatrix[char]("Sunday", "Saturday")
+$s = [Flux.ArrayRank2]::Rank2ToConsoleString[int]($m)
+"$($s)$([System.Environment]::NewLine)"
 
-#[Flux.Locale].Assembly.GetTypes() | 
-    #Where-Object { $_.IsPublic -and $_.IsInterface } |
-    # Where-Object { $_.ImplementedInterfaces | Where-Object { $_.Name.EndsWith('`1') } | Test-Any } |
-    # Select-Object FullName, ImplementedInterfaces |
-    #Sort-Object FullName
+"Excerpt from ProjectGutenberg's TenThousandWonderfulThings, searching for `"SCANDINAVIA`" in the title.$([System.Environment]::NewLine)"
+$uri = New-Object System.Uri ([Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings]::LocalFile)
+$binuri = ConvertTo-BinUri $uri $vsProjectReference
+$book = New-Object Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings ($binuri)
+$book.GetStrings() | Where-Object {$_[0] -match 'SCANDINAVIA'} | Format-Table
+
+"$([System.Environment]::NewLine)Looking through interfaces using reflection."
+[Flux.Locale].Assembly.GetTypes()
+ | Where-Object { $_.IsPublic -and $_.IsInterface }
+ | Where-Object { $_.ImplementedInterfaces | Where-Object { $_.Name.EndsWith('`1') } | Test-Any }
+ | Select-Object FullName, ImplementedInterfaces
+ | Sort-Object FullName
