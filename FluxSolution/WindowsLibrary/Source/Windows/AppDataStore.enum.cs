@@ -1,6 +1,10 @@
 namespace Flux
 {
-  /// <summary>Represents the types of stores available for application data.</summary>
+  /// <summary>
+  /// <para>Represents the types of stores available for application data.</para>
+  /// <see href="https://learn.microsoft.com/en-us/uwp/api/windows.storage.applicationdata"/>
+  /// </summary>
+  [System.Runtime.Versioning.SupportedOSPlatform("Windows")]
   public enum AppDataStore
   {
     /// <summary>Gets the root folder in the local app data store. This folder is backed up to the cloud.</summary>
@@ -11,11 +15,17 @@ namespace Flux
     Temp
   }
 
+  [System.Runtime.Versioning.SupportedOSPlatform("Windows")]
   public static partial class AppDataStoreExtensionMethods
   {
-    /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="AppDataStore"/>.</summary>
+    /// <summary>Creates a <see cref="System.IO.DirectoryInfo"/> for the specified <see cref="AppDataStore"/>.</summary>
     public static System.IO.DirectoryInfo GetDirectoryInfo(this AppDataStore store)
       => new(GetMsAppDataPath(store));
+
+    /// <summary>
+    /// <para>Returns a "ms-appdata:" path for the specified <see cref="AppDataStore"/>.</para>
+    /// <see href="https://learn.microsoft.com/en-us/uwp/api/windows.storage.applicationdata"/>
+    /// </summary>
     public static string GetMsAppDataPath(this AppDataStore store)
       => store switch
       {

@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>Get the lines of Webster's Unabridged Dictionary (from gutenberg.com</summary>
@@ -9,30 +7,13 @@ namespace Flux.Resources.ProjectGutenberg
   public sealed class WebstersUnabridgedDictionary
     : ITabularDataAcquirable
   {
-    public static string LocalFile
-      => @"file://\Resources\ProjectGutenberg\pg29765.txt";
-    public static System.Uri SourceUri
-      => new(@"http://www.gutenberg.org/ebooks/29765.txt.utf-8");
+    public static readonly System.Uri Local = new(@"file://\Resources\ProjectGutenberg\pg29765.txt");
+    public static readonly System.Uri Origin = new(@"http://www.gutenberg.org/ebooks/29765.txt.utf-8");
 
-    public System.Uri Uri { get; private set; }
-
-    public WebstersUnabridgedDictionary(System.Uri uri)
-      => Uri = uri;
-
-
-    public string[] FieldNames
-      => new string[] { @"Title", @"Text" };
-    public Type[] FieldTypes
-      => FieldNames.Select(s => typeof(string)).ToArray();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
-      => GetObjects();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
-      => GetStrings();
+    public System.Uri Uri { get; private set; } = Local;
 
     /// <summary>Returns project Gutenberg's Websters unabridged dictionary data. No field names.</summary>
-    public System.Collections.Generic.IEnumerable<string[]> GetStrings()
+    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
       var m_reSplitWords = new System.Text.RegularExpressions.Regex(@"\s*;\s*", System.Text.RegularExpressions.RegexOptions.Compiled);
       var m_reWord = new System.Text.RegularExpressions.Regex(@"^[A-Z \-';]+$", System.Text.RegularExpressions.RegexOptions.Compiled);
@@ -40,9 +21,10 @@ namespace Flux.Resources.ProjectGutenberg
       var word = new System.Text.StringBuilder();
       var definition = new System.Text.StringBuilder();
 
-      using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+      using var stream = uri.GetStream();
+      using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-      foreach (var line in sr.ReadLines(false))
+      foreach (var line in reader.ReadLines(false))
       {
         if (m_reWord.Match(line) is var match && match.Success)
         {
@@ -87,5 +69,14 @@ namespace Flux.Resources.ProjectGutenberg
         return new string[] { string.Join(System.Environment.NewLine, m_reSplitWords.Split(word.ToString())), definition.ToString() };
       }
     }
+
+    #region Implemented interfaces
+
+    public string[] FieldNames => ["Title", "Text"];
+    public System.Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);
+
+    #endregion // Implemented interfaces
   }
 }

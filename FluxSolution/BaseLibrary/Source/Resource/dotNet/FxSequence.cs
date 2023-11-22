@@ -12,25 +12,21 @@ namespace Flux
     public sealed class FxSequence
     : ITabularDataAcquirable
     {
-      private readonly System.Collections.IEnumerable m_collection;
+      private readonly System.Collections.IEnumerable m_enumerable;
 
-      public FxSequence(System.Collections.IEnumerable collection) => m_collection = collection;
+      public FxSequence(System.Collections.IEnumerable enumerable) => m_enumerable = enumerable;
 
-      private System.Collections.Generic.IEnumerable<object> GetCollection()
-      {
-        foreach (var item in m_collection)
-          yield return item;
-      }
+      private System.Collections.Generic.IEnumerable<object[]> GetData(System.Collections.IEnumerable enumerable)
+        => enumerable.Cast<object>().Select(o => o.GetPropertyInfos().Select(pi => pi.GetValue(o)!).ToArray());
 
-      public string[] FieldNames => GetCollection().First().GetPropertyInfos().Select(pi => pi.Name).ToArray();
+      #region Implemented interfaces
 
-      public System.Type[] FieldTypes => GetCollection().First().GetPropertyInfos().Select(pi => pi.PropertyType).ToArray();
+      public string[] FieldNames => GetData(m_enumerable).First().GetPropertyInfos().Select(pi => pi.Name).ToArray();
+      public System.Type[] FieldTypes => GetData(m_enumerable).First().GetPropertyInfos().Select(pi => pi.PropertyType).ToArray();
 
-      public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetObjects();
+      public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(m_enumerable);
 
-      public System.Collections.Generic.IEnumerable<object[]> GetObjects() => GetCollection().Select(e => e.GetPropertyInfos().Select(pi => pi.GetValue(e)!).ToArray());
-
-      public System.Collections.Generic.IEnumerable<string[]> GetStrings() => GetCollection().Select(e => e.GetPropertyInfos().Select(pi => $"{pi.GetValue(e)}").ToArray());
+      #endregion // Implemented interfaces
     }
   }
 }

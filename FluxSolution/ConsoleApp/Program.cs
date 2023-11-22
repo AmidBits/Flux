@@ -1,13 +1,6 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
 using Flux;
-using Flux.Formatting;
-using Flux.Text;
-using Flux.Units;
-using Microsoft.VisualBasic.FileIO;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -121,6 +114,16 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       //EvaluateNumericStuff();
+
+      //var d = new Flux.Resources.Ucd.Blocks().GetFieldValues().ToList();
+
+      var d = new Flux.Resources.Scowl.TwoOfTwelveFull();
+      var dr = new Flux.Data.EnumerableTabularDataReader(d.GetFieldValues(), d.FieldNames, d.FieldTypes);
+      var dt = dr.ToDataTable(d.GetType().Name);
+      var a2 = dt.To2dArray(false);
+      var aj = dt.ToJaggedArray(false);
+
+      var data = System.TimeZoneInfo.GetSystemTimeZones().GetData((e, i) => e).ToList();
 
       var pns = Flux.NumberSequences.PrimeNumber.GetAscendingPrimes(6).Take(10).ToArray();
 

@@ -1,39 +1,22 @@
-using System.Linq;
-
 namespace Flux.Resources.ProjectGutenberg
 {
   public sealed class TenThousandWonderfulThings
     : ITabularDataAcquirable
   {
-    public static string LocalFile
-      => @"file://\Resources\ProjectGutenberg\pg45849.txt";
-    public static System.Uri SourceUri
-      => new(@"http://www.gutenberg.org/ebooks/45849.txt.utf-8");
+    public static readonly System.Uri Local = new(@"file://\Resources\ProjectGutenberg\pg45849.txt");
+    public static readonly System.Uri Origin = new(@"http://www.gutenberg.org/ebooks/45849.txt.utf-8");
 
-    public System.Uri Uri { get; private set; }
-
-    public TenThousandWonderfulThings(System.Uri uri)
-      => Uri = uri;
-
-    public string[] FieldNames
-      => new string[] { @"Title", @"Text" };
-    public Type[] FieldTypes
-      => FieldNames.Select(s => typeof(string)).ToArray();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
-      => GetObjects();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
-      => GetStrings();
+    public System.Uri Uri { get; private set; } = Local;
 
     /// <summary>Returns project Gutenberg's Ten thousand wonderful things data. No field names.</summary>
-    public System.Collections.Generic.IEnumerable<string[]> GetStrings()
+    public System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
       var reTitle = new System.Text.RegularExpressions.Regex(@"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$", System.Text.RegularExpressions.RegexOptions.Compiled);
 
-      using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+      using var stream = uri.GetStream();
+      using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-      using var e = sr.ReadLines(true).GetEnumerator();
+      using var e = reader.ReadLines(true).GetEnumerator();
 
       var entry = new System.Text.StringBuilder();
 
@@ -59,5 +42,14 @@ namespace Flux.Resources.ProjectGutenberg
         entry.AppendLine(e.Current);
       }
     }
+
+    #region Implemented interfaces
+
+    public string[] FieldNames => ["Title", "Text"];
+    public System.Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);
+
+    #endregion // Implemented interfaces
   }
 }

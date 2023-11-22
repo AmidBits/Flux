@@ -1,67 +1,47 @@
 namespace Flux.Resources.Ucd
 {
-  /// <summary>The Unicode block database.</summary>
-  /// <see cref="https://www.unicode.org/"/>
-  /// <seealso cref="https://unicode.org/Public/"/>
-  /// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
+  /// <summary>
+  /// <para>The Unicode block database.</para>
+  /// <para><see href="https://www.unicode.org/"/></para>
+  /// <para><seealso href="https://unicode.org/Public/"/></para>
+  /// <para><seealso href="https://www.unicode.org/Public/UCD/latest/ucd"/></para>
+  /// </summary>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt
   public sealed partial class Blocks
     : ITabularDataAcquirable
   {
-    public static string LocalFile
-      => @"file://\Resources\Ucd\Blocks.txt";
-    public static System.Uri SourceUri
-      => new(@"https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt");
+    public static readonly System.Uri Local = new(@"file://\Resources\Ucd\Blocks.txt");
+    public static readonly System.Uri Origin = new(@"https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt");
 
-    public System.Uri Uri { get; private set; }
-
-    public Blocks(System.Uri uri)
-      => Uri = uri;
-
-    public string[] FieldNames
-      => new string[] { "StartCode", "EndCode", "BlockName" };
-    public System.Type[] FieldTypes
-      => new System.Type[] { typeof(int), typeof(int), typeof(string) };
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
-      => GetObjects();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
-    {
-      return GetStrings().Select(strings =>
-      {
-        var objects = new object[strings.Length];
-
-        for (var index = strings.Length - 1; index >= 0; index--)
-        {
-          objects[index] = index switch
-          {
-            0 or 1 => int.TryParse(strings[index], System.Globalization.NumberStyles.HexNumber, null, out var intValue) ? intValue : System.DBNull.Value,
-            _ => strings[index],
-          };
-        }
-
-        return objects;
-      });
-    }
+    public System.Uri Uri { get; private set; } = Local;
 
 #if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture)]
     private static partial System.Text.RegularExpressions.Regex SplitRegex();
 #else
-    private static System.Text.RegularExpressions.Regex SplitRegex() => new(@"(\.\.|; )");
+        private static System.Text.RegularExpressions.Regex SplitRegex() => new(@"(\.\.|; )");
 #endif
 
-    /// <summary>Returns Unicode blocks data. No field names.</summary>
-    public System.Collections.Generic.IEnumerable<string[]> GetStrings()
+    /// <summary>Returns the UCD Blocks information.</summary>
+    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
+      using var stream = uri.GetStream();
+      using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
+
       var reSplit = SplitRegex();
 
-      using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
-
-      foreach (var line in sr.ReadLines(false))
+      foreach (var line in reader.ReadLines(false))
         if (line.Length > 0 && !line.StartsWith('#'))
           yield return reSplit.Split(line);
     }
+
+    #region Implemented interfaces
+
+    public string[] FieldNames => ["StartCode", "EndCode", "BlockName"];
+    public System.Type[] FieldTypes => [typeof(int), typeof(int), typeof(string)];
+
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);
+
+    #endregion // Implemented interfaces
   }
 }

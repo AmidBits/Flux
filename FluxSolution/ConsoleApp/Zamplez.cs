@@ -766,16 +766,16 @@ namespace ConsoleApp
 
       var tdas = new ITabularDataAcquirable[]
       {
-        new Flux.Resources.Census.CountiesAllData(new System.Uri(Flux.Resources.Census.CountiesAllData.LocalFile)),
-        new Flux.Resources.Scrape.ZipCodes(new System.Uri(Flux.Resources.Scrape.ZipCodes.LocalFile)),
-        new Flux.Resources.Ucd.UnicodeData(new System.Uri(Flux.Resources.Ucd.UnicodeData.LocalFile)),
-        new Flux.Resources.Ucd.Blocks(new System.Uri(Flux.Resources.Ucd.Blocks.LocalFile)),
-        new Flux.Resources.Scowl.TwoOfTwelveFull(new System.Uri(Flux.Resources.Scowl.TwoOfTwelveFull.LocalFile)),
-        new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(new System.Uri(Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows.LocalFile)),
-        new Flux.Resources.ProjectGutenberg.TableOfContents(new System.Uri(Flux.Resources.ProjectGutenberg.TableOfContents.LocalFile)),
-        new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(new System.Uri(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.LocalFile)),
-        new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(new System.Uri(Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary.LocalFile)),
-        new Flux.Resources.W3c.NamedCharacterReferences(new System.Uri(Flux.Resources.W3c.NamedCharacterReferences.LocalFile)),
+        new Flux.Resources.Census.CountiesAllData(),
+        new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(),
+        new Flux.Resources.ProjectGutenberg.TableOfContents(),
+        new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(),
+        new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(),
+        new Flux.Resources.Scowl.TwoOfTwelveFull(),
+        new Flux.Resources.Scrape.ZipCodes(),
+        new Flux.Resources.Ucd.UnicodeData(),
+        new Flux.Resources.Ucd.Blocks(),
+        new Flux.Resources.W3c.NamedCharacterReferences(),
         new Flux.Resources.DotNet.FxSequence(System.TimeZoneInfo.GetSystemTimeZones()),
       };
 

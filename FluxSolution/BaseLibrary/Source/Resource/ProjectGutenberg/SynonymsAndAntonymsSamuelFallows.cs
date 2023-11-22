@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>A Complete Dictionary of Synonyms and Antonyms by Samuel Fallows (Acdsasf).</summary>
@@ -8,29 +6,13 @@ namespace Flux.Resources.ProjectGutenberg
   public sealed class SynonymsAndAntonymsSamuelFallows
     : ITabularDataAcquirable
   {
-    public static string LocalFile
-      => @"file://\Resources\ProjectGutenberg\51155-0.txt";
-    public static System.Uri SourceUri
-      => new(@"http://www.gutenberg.org/files/51155/51155-0.txt");
+    public static readonly System.Uri Local = new(@"file://\Resources\ProjectGutenberg\51155-0.txt");
+    public static readonly System.Uri Origin = new(@"http://www.gutenberg.org/files/51155/51155-0.txt");
 
     public System.Uri Uri { get; private set; }
 
-    public SynonymsAndAntonymsSamuelFallows(System.Uri uri)
-      => Uri = uri;
-
-    public string[] FieldNames
-      => new string[] { "Keywords", "Synonyms", "Antonyms" };
-    public Type[] FieldTypes
-      => FieldNames.Select(s => typeof(string)).ToArray();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues()
-      => GetObjects();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetObjects()
-      => GetStrings();
-
     /// <summary>Returns project Gutenberg's Synonyms and antonyms by Samuel Fallows data. No field names.</summary>
-    public System.Collections.Generic.IEnumerable<string[]> GetStrings()
+    public System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
       var reSection = new System.Text.RegularExpressions.Regex(@"(?<=(KEY:|SYN:|ANT:))\s", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
@@ -41,9 +23,10 @@ namespace Flux.Resources.ProjectGutenberg
       {
         var lines = new System.Text.StringBuilder();
 
-        using var sr = new System.IO.StreamReader(Uri.GetStream(), System.Text.Encoding.UTF8);
+        using var stream = uri.GetStream();
+        using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-        foreach (var line in sr.ReadLines(false))
+        foreach (var line in reader.ReadLines(false))
         {
           if (line == @"=" || line.Length == 0)
           {
@@ -75,5 +58,14 @@ namespace Flux.Resources.ProjectGutenberg
         }
       }
     }
+
+    #region Implemented interfaces
+
+    public string[] FieldNames => ["Keywords", "Synonyms", "Antonyms"];
+    public Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
+
+    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);
+
+    #endregion // Implemented interfaces
   }
 }
