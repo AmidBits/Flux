@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux.Text.PhoneticAlgorithm
+﻿namespace Flux.Text.PhoneticAlgorithm
 {
   public sealed partial class EnhancedNysiis
     : IPhoneticAlgorithmEncoder
@@ -64,7 +62,7 @@ namespace Flux.Text.PhoneticAlgorithm
 #endif
 
 #if NET7_0_OR_GREATER
-   [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)(AH|HA)")] private static partial System.Text.RegularExpressions.Regex RegexStep12();
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?!^)(AH|HA)")] private static partial System.Text.RegularExpressions.Regex RegexStep12();
 #else
     private static System.Text.RegularExpressions.Regex RegexStep12() => new(@"(?!^)(AH|HA)");
 #endif
@@ -188,6 +186,6 @@ namespace Flux.Text.PhoneticAlgorithm
 
     /// <summary>Ensure valid characters for nysiis code generation.</summary>
     public static string GetValidCharacters(string text)
-      => text.RemoveUnicodeMarks().ReplaceUnicodeLatinStrokes().RemoveNonLanguageLetters().AsSpan().ToUpperCase(System.Globalization.CultureInfo.CurrentCulture).ToString();
+      => text.RemoveUnicodeMarks().ReplaceUnicodeLatinStrokes().RemoveAll(char.IsLetter).AsSpan().ToUpperCase(System.Globalization.CultureInfo.CurrentCulture).ToString();
   }
 }

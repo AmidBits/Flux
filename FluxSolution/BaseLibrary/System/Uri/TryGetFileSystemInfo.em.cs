@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class ExtensionMethodsUri
@@ -16,7 +14,7 @@ namespace Flux
 
         try
         {
-          fileSystemInfo = new System.IO.FileInfo(uri.LocalPath.StartsWith(@"/") ? uri.LocalPath[1..] : uri.LocalPath);
+          fileSystemInfo = new System.IO.FileInfo(uri.LocalPath.StartsWith('/') ? uri.LocalPath[1..] : uri.LocalPath);
 
           if (fileSystemInfo.Exists)
             return true;

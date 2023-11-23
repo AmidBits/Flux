@@ -117,6 +117,13 @@ namespace ConsoleApp
 
       //var d = new Flux.Resources.Ucd.Blocks().GetFieldValues().ToList();
 
+      var culture = System.Globalization.CultureInfo.GetCultureInfo("sv");
+
+      var lex = culture.GetLexiconOf(out var lexFsi);
+      var ipa = culture.GetIpaDictionaryOf(out var ipaFsi);
+
+      var j = lex.Join(ipa, l => l, i => i.Key, (l, i) => i.Key).ToHashSet();
+
       var d = new Flux.Resources.Scowl.TwoOfTwelveFull();
       var dr = new Flux.Data.EnumerableTabularDataReader(d.GetFieldValues(), d.FieldNames, d.FieldTypes);
       var dt = dr.ToDataTable(d.GetType().Name);

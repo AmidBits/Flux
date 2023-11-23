@@ -9,7 +9,7 @@ namespace Flux.Resources.ProjectGutenberg
     public static readonly System.Uri Local = new(@"file://\Resources\ProjectGutenberg\51155-0.txt");
     public static readonly System.Uri Origin = new(@"http://www.gutenberg.org/files/51155/51155-0.txt");
 
-    public System.Uri Uri { get; private set; }
+    public System.Uri Uri { get; private set; } = Local;
 
     /// <summary>Returns project Gutenberg's Synonyms and antonyms by Samuel Fallows data. No field names.</summary>
     public System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
