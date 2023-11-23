@@ -57,6 +57,9 @@
 	  <None Update="Resources\Dictionaries\Ipa\eo.txt">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Resources\Dictionaries\Ipa\es-ES.txt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	  <None Update="Resources\Dictionaries\Ipa\es-MX.txt">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
