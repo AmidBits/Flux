@@ -65,10 +65,10 @@ $s = [Flux.ArrayRank2]::Rank2ToConsoleString[int]($m)
 "$($s)$([System.Environment]::NewLine)"
 
 "Excerpt from ProjectGutenberg's TenThousandWonderfulThings, searching for `"SCANDINAVIA`" in the title.$([System.Environment]::NewLine)"
-$uri = New-Object System.Uri ([Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings]::LocalFile)
-$binuri = ConvertTo-BinUri $uri $vsProjectReference
-$book = New-Object Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings ($binuri)
-$book.GetStrings() | Where-Object {$_[0] -match 'SCANDINAVIA'} | Format-Table
+$book = New-Object Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings
+$book.AcquireDataTable($null) 
+#| Select-Object -Skip 100 -First 100
+| Where-Object {$_.Title -match 'SCANDINAVIA'} | Format-Table
 
 "$([System.Environment]::NewLine)Looking through interfaces using reflection."
 [Flux.Locale].Assembly.GetTypes()

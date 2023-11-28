@@ -152,7 +152,7 @@ namespace Text
     [TestMethod]
     public void IsPalindrome()
     {
-      var palindrome = @"Poor Dan is in a droop".ToStringBuilder().RemoveAll(char.IsWhiteSpace).ToLowerCase();
+      var palindrome = new System.Text.StringBuilder(@"Poor Dan is in a droop").RemoveAll(char.IsWhiteSpace).ToLowerCase();
       var expected = true;
       var actual = palindrome.IsPalindrome();
       Assert.AreEqual(expected, actual);

@@ -17,7 +17,7 @@ namespace Flux.DataStructures
     public DarityHeapMax(int arity, System.Collections.Generic.IEnumerable<T> collection)
       : this(arity)
     {
-      if (collection is null) throw new System.ArgumentNullException(nameof(collection));
+      System.ArgumentNullException.ThrowIfNull(collection);
 
       foreach (var t in collection)
         Insert(t);
@@ -115,7 +115,7 @@ namespace Flux.DataStructures
     }
     public void Insert(T item)
     {
-      m_data ??= new System.Collections.Generic.List<T>();
+      m_data ??= new();
 
       m_data.Add(item);
 

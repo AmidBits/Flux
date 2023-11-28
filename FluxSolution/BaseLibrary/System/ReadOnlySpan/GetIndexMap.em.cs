@@ -20,7 +20,7 @@ namespace Flux
         if (map.TryGetValue(key, out System.Collections.Generic.List<int>? value))
           value.Add(index);
         else
-          map[key] = [index];
+          map[key] = new() { index };
 
         index++;
       }

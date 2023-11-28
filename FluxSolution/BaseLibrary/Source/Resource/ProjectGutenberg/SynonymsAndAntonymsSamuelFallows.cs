@@ -12,7 +12,7 @@ namespace Flux.Resources.ProjectGutenberg
     public System.Uri Uri { get; private set; } = Local;
 
     /// <summary>Returns project Gutenberg's Synonyms and antonyms by Samuel Fallows data. No field names.</summary>
-    public System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
       var reSection = new System.Text.RegularExpressions.Regex(@"(?<=(KEY:|SYN:|ANT:))\s", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
@@ -38,12 +38,12 @@ namespace Flux.Resources.ProjectGutenberg
               var iSyn = list.IndexOf(@"syn:");
               var iAnt = list.IndexOf(@"ant:");
 
-              var aKey = iKey > -1 ? list.GetRange(iKey + 1, (iSyn > -1 ? iSyn : iAnt > -1 ? iAnt : list.Count) - 1).ToArray() : System.Array.Empty<string>();
-              var aSyn = iSyn > -1 ? list.GetRange(iSyn + 1, (iAnt > -1 ? iAnt - iSyn : list.Count - iSyn) - 1).ToArray() : System.Array.Empty<string>();
-              var aAnt = iAnt > -1 ? list.GetRange(iAnt + 1, (list.Count - iAnt) - 1).ToArray() : System.Array.Empty<string>();
+              var listKey = iKey > -1 ? list.GetRange(iKey + 1, (iSyn > -1 ? iSyn : iAnt > -1 ? iAnt : list.Count) - 1) : new();
+              var listSyn = iSyn > -1 ? list.GetRange(iSyn + 1, (iAnt > -1 ? iAnt - iSyn : list.Count - iSyn) - 1) : new();
+              var listAnt = iAnt > -1 ? list.GetRange(iAnt + 1, (list.Count - iAnt) - 1) : new();
 
-              if (aKey.Length > 0)
-                yield return new string[][] { aKey, aSyn, aAnt };
+              if (listKey.Count > 0)
+                yield return new string[][] { listKey.ToArray(), listSyn.ToArray(), listAnt.ToArray() };
             }
 
             lines.Clear();
@@ -61,7 +61,7 @@ namespace Flux.Resources.ProjectGutenberg
 
     #region Implemented interfaces
 
-    public string[] FieldNames => ["Keywords", "Synonyms", "Antonyms"];
+    public string[] FieldNames => new string[] { "Keywords", "Synonyms", "Antonyms" };
     public Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);

@@ -2,7 +2,7 @@ namespace Flux.IO
 {
   public sealed class UnicodeStructuredReader
   {
-    private System.IO.TextReader m_reader;
+    private readonly System.IO.TextReader m_reader;
 
     private int m_lastRead;
 

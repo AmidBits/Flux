@@ -1,12 +1,10 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class ExtensionMethodsDataView
   {
     public static System.Data.DataColumnCollection GetDataColumnCollection(this System.Data.DataView source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
       if (source.Table is null) throw new System.ArgumentException("The Table in the DataView is null.");
 
       return source.Table.Columns;
@@ -14,7 +12,8 @@ namespace Flux
 
     public static int[] MaxColumnWidths(this System.Data.DataView source, bool includeColumnNames, bool uniformWidths)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Table is null) throw new System.ArgumentException("The Table in the DataView is null.");
       if (source.Count == 0) throw new System.ArgumentOutOfRangeException(nameof(source), "The DataView is empty.");
 
@@ -34,7 +33,7 @@ namespace Flux
     /// <summary>Returns the data table as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
     public static System.Collections.Generic.IEnumerable<string> ToConsoleStrings(this System.Data.DataView source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool includeColumnNames = true, bool uniformWidth = false, bool centerContent = false)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var horizontalSeparatorString = horizontalSeparator == '\0' ? null : horizontalSeparator.ToString();
 
@@ -46,7 +45,7 @@ namespace Flux
 
       if (includeColumnNames)
       {
-        yield return string.Format(horizontalLineFormat, source!.Table!.Columns.Cast<System.Data.DataColumn>().Select((e, i) => centerContent ? e.ColumnName.ToStringBuilder().PadEven(maxColumnWidths[i], ' ', ' ').ToString() : e.ColumnName).ToArray());
+        yield return string.Format(horizontalLineFormat, source!.Table!.Columns.Cast<System.Data.DataColumn>().Select((e, i) => centerContent ? new System.Text.StringBuilder(e.ColumnName).PadEven(maxColumnWidths[i], ' ', ' ').ToString() : e.ColumnName).ToArray());
 
         if (verticalLine is not null)
           yield return verticalLine;
@@ -57,7 +56,7 @@ namespace Flux
         if (verticalLine is not null && r > 0)
           yield return verticalLine;
 
-        var values = source[r].Row.ItemArray is var array && centerContent ? array.Select((e, i) => $"{e}".ToStringBuilder().PadEven(maxColumnWidths[i], ' ', ' ').ToString()).ToArray() : array;
+        var values = source[r].Row.ItemArray is var array && centerContent ? array.Select((e, i) => new System.Text.StringBuilder($"{e}").PadEven(maxColumnWidths[i], ' ', ' ').ToString()).ToArray() : array;
 
         yield return string.Format(horizontalLineFormat, values);
       }
@@ -65,6 +64,6 @@ namespace Flux
 
     /// <summary>Returns the data table as a ready-to-print grid-like formatted string, that can be printed in the console.</summary>
     public static string ToConsoleString(this System.Data.DataView source, char horizontalSeparator = '\u007C', char verticalSeparator = '\u002D', bool includeColumnNames = true, bool uniformWidth = false, bool centerContent = false)
-      => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, includeColumnNames, uniformWidth));
+      => string.Join(System.Environment.NewLine, ToConsoleStrings(source, horizontalSeparator, verticalSeparator, includeColumnNames, uniformWidth, centerContent));
   }
 }

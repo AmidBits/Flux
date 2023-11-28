@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Data
 {
   /// <summary>SQL data type name functionality</summary>
@@ -53,7 +51,7 @@ namespace Flux.Data
       : this(name, System.Linq.Enumerable.Empty<string>())
     { }
 
-    public string ToStringQuoted(bool ansi)
+    public readonly string ToStringQuoted(bool ansi)
       => ansi ? Name.Wrap('"', '"') : Name.Wrap('[', ']');
 
     #region Static members
@@ -91,7 +89,7 @@ namespace Flux.Data
       => string.Join(@",", dataTypeArguments) is var dta && dta.Length > 0 ? dta.Wrap('(', ')') : string.Empty;
     /// <summary>Convert a data type arguments string into a new sequence of argument values.</summary>
     public static System.Collections.Generic.IEnumerable<string> ToArguments(string dataTypeArguments)
-      => dataTypeArguments.ToStringBuilder().RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, new char[] { ',' });
+      => new System.Text.StringBuilder(dataTypeArguments).RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, new char[] { ',' });
 
     private static readonly System.Text.RegularExpressions.Regex m_reParse = new(@"^\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?$");
     /// <summary></summary>
@@ -318,7 +316,7 @@ namespace Flux.Data
     #endregion Static members
 
     #region Object overrides
-    public override string ToString() => $"{GetType().Name} {{ Name = {Name} }}";
+    public override readonly string ToString() => $"{GetType().Name} {{ Name = {Name} }}";
     #endregion Object overrides
   }
 }

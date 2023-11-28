@@ -9,7 +9,7 @@ namespace Flux.Resources.ProjectGutenberg
     public System.Uri Uri { get; private set; } = Local;
 
     /// <summary>Returns project Gutenberg's Ten thousand wonderful things data. No field names.</summary>
-    public System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
       var reTitle = new System.Text.RegularExpressions.Regex(@"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$", System.Text.RegularExpressions.RegexOptions.Compiled);
 
@@ -45,7 +45,7 @@ namespace Flux.Resources.ProjectGutenberg
 
     #region Implemented interfaces
 
-    public string[] FieldNames => ["Title", "Text"];
+    public string[] FieldNames => new string[] { "Title", "Text" };
     public System.Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);

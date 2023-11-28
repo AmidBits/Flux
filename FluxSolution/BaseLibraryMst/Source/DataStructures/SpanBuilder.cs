@@ -16,21 +16,10 @@ namespace Text
     //readonly Flux.StringComparerEx comparerNone = Flux.StringComparerEx.Ordinal;
 
     [TestMethod]
-    public void AreIsomorphic()
-    {
-      var expected = true;
-      var actual = new Flux.SpanBuilder<char>("egg".AsSpan()).AsReadOnlySpan().IsIsomorphic("add");
-      Assert.AreEqual(expected, actual);
-      expected = false;
-      actual = new Flux.SpanBuilder<char>("foo").AsReadOnlySpan().IsIsomorphic("bar");
-      Assert.AreEqual(expected, actual);
-    }
-
-    [TestMethod]
     public void Copy()
     {
       var expected = "Robertbert";
-      var actual = new Flux.SpanBuilder<char>("HugoRobert".AsSpan()).Copy(4, 0, 6).ToString();
+      var actual = new Flux.SpanBuilder<char>("HugoRobert").Copy(4, 0, 6).ToString();
       Assert.AreEqual(expected, actual);
     }
 
@@ -46,7 +35,7 @@ namespace Text
     public void CountEqualAtEnd()
     {
       var expected = 3;
-      var actual = new Flux.SpanBuilder<char>("Robert".AsSpan()).AsReadOnlySpan().CountEqualAtEnd("Rupert");
+      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().CountEqualAtEnd("Rupert");
       Assert.AreEqual(expected, actual);
     }
 
@@ -54,60 +43,51 @@ namespace Text
     public void CountEqualAtStart()
     {
       var expected = 2;
-      var actual = new Flux.SpanBuilder<char>("Robert".AsSpan()).AsReadOnlySpan().CountEqualAtStart("Rommel");
+      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().CountEqualAtStart("Rommel");
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
-    public void Duplicate1()
+    public void Duplicate()
     {
-      var expected = "RoobeertRoobeertRoobeertRoobeert";
-      var actual = new Flux.SpanBuilder<char>("Roobeert".AsSpan());
-      actual.Repeat(3);
+      var expected = "Roobeert";
+      var actual = new Flux.SpanBuilder<char>("Robert").Duplicate("aeiou", 1);
       Assert.AreEqual(expected, actual.ToString());
     }
-
-    //[TestMethod]
-    //public void Duplicate2()
-    //{
-    //  var expected = "Roobeert";
-    //  var actual = new Flux.SpanBuilder<char>("Robert".AsSpan()).Duplicate("aeiou", 1).ToString();
-    //  Assert.AreEqual(expected, actual);
-    //}
 
     [TestMethod]
     public void EndsWith()
     {
       var expected = true;
-      var actual = new Flux.SpanBuilder<char>("Robert".AsSpan()).AsReadOnlySpan().EndsWith("ert");
+      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().EndsWith("ert");
       Assert.AreEqual(expected, actual);
 
       expected = false;
-      actual = new Flux.SpanBuilder<char>("Robert".AsSpan()).AsReadOnlySpan().EndsWith("Bert");
+      actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().EndsWith("Bert");
       Assert.AreEqual(expected, actual);
     }
 
-    //[TestMethod]
-    //public void EqualsAnyAt()
-    //{
-    //  var expected = false;
-    //  var actual = new Flux.SequenceBuilder<char>("Robert".AsSpan()).EqualsAnyAt(2, 2, new string[] { "do", "re", "mi" });
-    //  Assert.AreEqual(expected, actual);
+    [TestMethod]
+    public void EqualsAnyAt()
+    {
+      var expected = false;
+      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().EqualsAnyAt(2, 2, ["do", "re", "mi"]);
+      Assert.AreEqual(expected, actual);
 
-    //  expected = true;
-    //  actual = new Flux.SequenceBuilder<char>("Robert".AsSpan()).EqualsAnyAt(2, 2, new string[] { "bo", "bi", "be" });
-    //  Assert.AreEqual(expected, actual);
-    //}
+      expected = true;
+      actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().EqualsAnyAt(2, 2, ["bo", "bitter", "be"]);
+      Assert.AreEqual(expected, actual);
+    }
 
     [TestMethod]
     public void EqualsAt()
     {
       var expected = false;
-      var actual = new Flux.SpanBuilder<char>("Robert".AsSpan()).AsReadOnlySpan().EqualsAt(2, "re");
+      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().EqualsAt(2, "re");
       Assert.AreEqual(expected, actual);
 
       expected = true;
-      actual = new Flux.SpanBuilder<char>("Robert".AsSpan()).AsReadOnlySpan().EqualsAt(2, "be");
+      actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().EqualsAt(2, "be");
       Assert.AreEqual(expected, actual);
     }
 
@@ -115,7 +95,7 @@ namespace Text
     public void IndexOf()
     {
       var expected = 3;
-      var actual = new Flux.SpanBuilder<char>("Robert Serious".AsSpan()).AsReadOnlySpan().IndexOf("er");
+      var actual = new Flux.SpanBuilder<char>("Robert Serious").AsReadOnlySpan().IndexOf("er");
       Assert.AreEqual(expected, actual);
     }
 
@@ -147,25 +127,36 @@ namespace Text
     public void InsertOrdinalIndicatorSuffix()
     {
       var expected = @"The 3rd item is before the 13th.";
-      var actual = new SpanBuilder<char>(@"The 3 item is before the 13.".AsSpan());
+      var actual = new SpanBuilder<char>(@"The 3 item is before the 13.");
       actual.InsertOrdinalIndicatorSuffix();
       Assert.AreEqual(expected, actual.ToString());
     }
 
-    //[TestMethod]
-    //public void IsPalindrome()
-    //{
-    //  var palindrome = @"Poor Dan is in a droop".ToSpanBuilder().RemoveAll(char.IsWhiteSpace).ToLowerCaseInvariant();
-    //  var expected = true;
-    //  var actual = palindrome.IsPalindrome();
-    //  Assert.AreEqual(expected, actual);
-    //}
+    [TestMethod]
+    public void IsIsomorphic()
+    {
+      var expected = true;
+      var actual = new Flux.SpanBuilder<char>("egg").AsReadOnlySpan().IsIsomorphic("add");
+      Assert.AreEqual(expected, actual);
+      expected = false;
+      actual = new Flux.SpanBuilder<char>("foo").AsReadOnlySpan().IsIsomorphic("bar");
+      Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void IsPalindrome()
+    {
+      var palindrome = new SpanBuilder<char>("Poor Dan is in a droop").RemoveAll(char.IsWhiteSpace).AsSpan().ToLowerCase().AsReadOnlySpan();
+      var expected = true;
+      var actual = palindrome.IsPalindrome();
+      Assert.AreEqual(expected, actual);
+    }
 
     [TestMethod]
     public void LastIndexOf()
     {
       var expected = 8;
-      var actual = new Flux.SpanBuilder<char>("Robert Serious".AsSpan()).AsReadOnlySpan().LastIndexOf("er");
+      var actual = new Flux.SpanBuilder<char>("Robert Serious").AsReadOnlySpan().LastIndexOf("er");
       Assert.AreEqual(expected, actual);
     }
 
@@ -173,7 +164,7 @@ namespace Text
     public void LastIndexOfAny1()
     {
       var expected = 9;
-      var actual = new Flux.SpanBuilder<char>("Robert Serious".AsSpan()).AsReadOnlySpan().LastIndexOfAny(null, 'e', 'r');
+      var actual = new Flux.SpanBuilder<char>("Robert Serious").AsReadOnlySpan().LastIndexOfAny(null, 'e', 'r');
       Assert.AreEqual(expected, actual);
     }
 
@@ -181,7 +172,7 @@ namespace Text
     public void LastIndexOfAny2()
     {
       var expected = 11;
-      var actual = new Flux.SpanBuilder<char>("Robert Serious".AsSpan()).AsReadOnlySpan().LastIndexOfAny(null, "er", "o");
+      var actual = new Flux.SpanBuilder<char>("Robert Serious").AsReadOnlySpan().LastIndexOfAny(null, "er", "o");
       Assert.AreEqual(expected, actual);
     }
 
@@ -197,7 +188,7 @@ namespace Text
     public void MakeIntegersFixedLength()
     {
       var expected = @"The 0003 item is before the 0013.";
-      var actual = new Flux.SpanBuilder<char>(@"The 3 item is before the 13.".AsSpan());
+      var actual = new Flux.SpanBuilder<char>(@"The 3 item is before the 13.");
       actual.MakeNumbersFixedLength(4, '0');
       Assert.AreEqual(expected, actual.ToString());
     }
@@ -206,7 +197,7 @@ namespace Text
     public void NormalizeAdjacents()
     {
       var expected = @"There is a bee in the soup.";
-      var actual = new Flux.SpanBuilder<char>(@"There is aa bbee in the soup.".AsSpan());
+      var actual = new Flux.SpanBuilder<char>(@"There is aa bbee in the soup.");
       actual.NormalizeAdjacent(1, new char[] { 'a', 'b' });
       Assert.AreEqual(expected, actual.ToString());
     }
@@ -215,8 +206,8 @@ namespace Text
     public void NormalizeAll()
     {
       var expected = @"There is a bee in the soup.";
-      var actual = new Flux.SpanBuilder<char>(@"   There  is a  bee in  the soup.".AsSpan());
-      actual.NormalizeAll(char.IsWhiteSpace, ' ');
+      var actual = new Flux.SpanBuilder<char>(@"   There  is a  bee in  the soup.");
+      actual.NormalizeAll(char.IsWhiteSpace, c => ' ');
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -224,7 +215,7 @@ namespace Text
     public void PadEven()
     {
       var expected = @"---101----";
-      var actual = new Flux.SpanBuilder<char>(@"101".AsSpan());
+      var actual = new Flux.SpanBuilder<char>(@"101");
       actual.PadEven(10, '-', '-', false);
       Assert.AreEqual(expected, actual.ToString());
     }
@@ -233,7 +224,7 @@ namespace Text
     public void PadLeft()
     {
       var expected = @"00000006";
-      var actual = new Flux.SpanBuilder<char>(@"6".AsSpan());
+      var actual = new Flux.SpanBuilder<char>(@"6");
       actual.PadLeft(8, '0');
       Assert.AreEqual(expected, actual.ToString());
     }
@@ -242,7 +233,7 @@ namespace Text
     public void PadRight()
     {
       var expected = @"60000000";
-      var actual = new Flux.SpanBuilder<char>(@"6".AsSpan());
+      var actual = new Flux.SpanBuilder<char>(@"6");
       actual.PadRight(8, '0');
       Assert.AreEqual(expected, actual.ToString());
     }
@@ -251,32 +242,41 @@ namespace Text
     public void RemoveAll()
     {
       var expected = @" There  is  a  new  neat  little  thing  that  eats  soup.";
-      var actual = new Flux.SpanBuilder<char>(@"1 There 2 is 3 a 4 new 5 neat 6 little 7 thing 8 that 9 eats 0 soup.".AsSpan());
+      var actual = new Flux.SpanBuilder<char>(@"1 There 2 is 3 a 4 new 5 neat 6 little 7 thing 8 that 9 eats 0 soup.");
       actual.RemoveAll(char.IsDigit);
       Assert.AreEqual(expected, actual.ToString());
     }
 
-    //[TestMethod]
-    //public void ReplaceEqualAt()
-    //{
-    //  var expected = @"It's a test.";
-    //  var actual = new Flux.SpanBuilder<char>(@"It's a bamboozle.".AsSpan()).ReplaceIfEqualAt(7, @"bamboozle", @"test").ToString();
-    //  Assert.AreEqual(expected, actual);
-    //}
+    [TestMethod]
+    public void Repeat()
+    {
+      var expected = "RoobeertRoobeertRoobeertRoobeert";
+      var actual = new Flux.SpanBuilder<char>("Roobeert").Repeat(3);
+      Assert.AreEqual(expected, actual.ToString());
+    }
+
+    [TestMethod]
+    public void ReplaceEqualAt()
+    {
+      var expected = @"It's a test.";
+      var actual = new Flux.SpanBuilder<char>(@"It's a bamboozle.").ReplaceIfEqualAt(7, @"bamboozle", @"test");
+      Assert.AreEqual(expected, actual.ToString());
+    }
 
     [TestMethod]
     public void Reverse()
     {
       var expected = @"daeheldooD";
-      var actual = new Flux.SpanBuilder<char>(@"Doodlehead".AsSpan()).Reverse().ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>(@"Doodlehead");
+      actual.Reverse();
+      Assert.AreEqual(expected, actual.ToString());
     }
 
     [TestMethod]
     public void StartsWith()
     {
       var expected = true;
-      var actual = new Flux.SpanBuilder<char>(@"Robs boat.".AsSpan()).AsReadOnlySpan().StartsWith(@"Rob");
+      var actual = new Flux.SpanBuilder<char>(@"Robs boat.").AsReadOnlySpan().StartsWith(@"Rob");
       Assert.AreEqual(expected, actual);
     }
 
@@ -284,50 +284,48 @@ namespace Text
     public void Substring_LeftMost()
     {
       var expected = @"Rob";
-      var actual = new Flux.SpanBuilder<char>(@"Rob".AsSpan()).AsReadOnlySpan().LeftMost(10).ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>(@"Rob").AsReadOnlySpan().LeftMost(10);
+      Assert.AreEqual(expected, actual.ToString());
     }
 
     [TestMethod]
     public void Substring_Right()
     {
       var expected = @"ob";
-      var actual = new Flux.SpanBuilder<char>(@"Rob".AsSpan()).AsReadOnlySpan().RightMost(2).ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>(@"Rob").AsReadOnlySpan().RightMost(2);
+      Assert.AreEqual(expected, actual.ToString());
     }
 
     [TestMethod]
     public void Substring_RightMost()
     {
       var expected = @"Rob";
-      var actual = new Flux.SpanBuilder<char>(@"Rob".AsSpan()).AsReadOnlySpan().RightMost(10).ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>(@"Rob").AsReadOnlySpan().RightMost(10);
+      Assert.AreEqual(expected, actual.ToString());
     }
 
     [TestMethod]
     public void Swap()
     {
       var expected = @"Hobert Rugo";
-      var sb = new Flux.SpanBuilder<char>(@"Robert Hugo".AsSpan());
-      sb.Swap(7, 0);
-      var actual = sb.ToString();
-      Assert.AreEqual(expected, actual);
+      var actual = new Flux.SpanBuilder<char>(@"Robert Hugo").Swap(7, 0);
+      Assert.AreEqual(expected, actual.ToString());
     }
 
-    //[TestMethod]
-    //public void ToLowerCase()
-    //{
-    //  var expected = @"robert hugo";
-    //  var actual = new Flux.SpanBuilder<char>(@"Robert Hugo".AsSpan()).ToLowerCaseInvariant().ToString();
-    //  Assert.AreEqual(expected, actual);
-    //}
+    [TestMethod]
+    public void ToLowerCase()
+    {
+      var expected = @"robert hugo";
+      var actual = new Flux.SpanBuilder<char>(@"Robert Hugo").AsSpan().ToLowerCase();
+      Assert.AreEqual(expected, actual.ToString());
+    }
 
-    //[TestMethod]
-    //public void ToUpperCase()
-    //{
-    //  var expected = @"ROBERT HUGO";
-    //  var actual = new Flux.SpanBuilder<char>(@"Robert Hugo".AsSpan()).ToUpperCaseInvariant().ToString();
-    //  Assert.AreEqual(expected, actual);
-    //}
+    [TestMethod]
+    public void ToUpperCase()
+    {
+      var expected = @"ROBERT HUGO";
+      var actual = new Flux.SpanBuilder<char>(@"Robert Hugo").AsSpan().ToUpperCase();
+      Assert.AreEqual(expected, actual.ToString());
+    }
   }
 }

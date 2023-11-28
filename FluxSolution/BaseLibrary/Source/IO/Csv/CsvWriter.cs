@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public sealed class CsvWriter
@@ -113,7 +111,7 @@ namespace Flux
 
     public void WriteArray(System.Collections.Generic.IEnumerable<string> values)
     {
-      if (values is null) throw new System.ArgumentNullException(nameof(values));
+      System.ArgumentNullException.ThrowIfNull(values);
 
       WriteStartLine();
       foreach (var value in values)
@@ -129,7 +127,7 @@ namespace Flux
       {
         CsvEscapeLevel.None => source,
         CsvEscapeLevel.Enclose => source.Wrap('"', '"'),
-        CsvEscapeLevel.ReplaceAndEnclose => source.ToStringBuilder().Replace("\"", "\"\"").Wrap('"', '"').ToString(),
+        CsvEscapeLevel.ReplaceAndEnclose => new System.Text.StringBuilder(source).Replace("\"", "\"\"").Wrap('"', '"').ToString(),
         _ => source,
       };
 

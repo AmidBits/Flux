@@ -10,10 +10,10 @@ namespace Flux.Hashing
 
     private uint m_hash;
 
-    public int SimpleHash32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+    public int SimpleHash32 { readonly get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     private uint m_primeMultiplier;
-    public int Prime { get => (int)m_primeMultiplier; set => m_primeMultiplier = (uint)value; }
+    public int Prime { readonly get => (int)m_primeMultiplier; set => m_primeMultiplier = (uint)value; }
 
     [System.CLSCompliant(false)]
     public Fnv1a(uint hash, uint primeMultiplier)
@@ -26,7 +26,7 @@ namespace Flux.Hashing
 
     public int GenerateSimpleHash32(byte[] bytes, int offset, int count)
     {
-      if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
+      System.ArgumentNullException.ThrowIfNull(bytes);
 
       unchecked
       {
@@ -41,7 +41,7 @@ namespace Flux.Hashing
     }
 
     #region Object overrides.
-    public override string ToString() => $"{nameof(Fnv1a)} {{ HashCode = {m_hash} }}";
+    public override readonly string ToString() => $"{nameof(Fnv1a)} {{ HashCode = {m_hash} }}";
     #endregion Object overrides.
   }
 }

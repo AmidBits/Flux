@@ -7,13 +7,13 @@ namespace Flux.Hashing
   {
     private uint m_hash;
 
-    public int SimpleHash32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+    public int SimpleHash32 { readonly get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     public Oat(int hash = 0) => m_hash = unchecked((uint)hash);
 
     public int GenerateSimpleHash32(byte[] bytes, int offset, int count)
     {
-      if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
+      System.ArgumentNullException.ThrowIfNull(bytes);
 
       unchecked
       {
@@ -33,7 +33,7 @@ namespace Flux.Hashing
     }
 
     #region Object overrides.
-    public override string ToString() => $"{nameof(Oat)} {{ HashCode = {m_hash} }}";
+    public override readonly string ToString() => $"{nameof(Oat)} {{ HashCode = {m_hash} }}";
     #endregion Object overrides.
   }
 }

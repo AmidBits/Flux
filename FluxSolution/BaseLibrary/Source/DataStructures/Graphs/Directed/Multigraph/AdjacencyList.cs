@@ -49,7 +49,7 @@
     {
       if (!m_list.ContainsKey(x))
       {
-        m_list.Add(x, new System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<TEdgeValue>>());
+        m_list.Add(x, new());
 
         return true;
       }
@@ -107,7 +107,7 @@
       if (VertexExists(x) && VertexExists(y)) // Ensure both vertices exist.
       {
         if (!m_list[x].ContainsKey(y)) // If no matching endpoint from x to y exists, we add it.
-          m_list[x].Add(y, new System.Collections.Generic.List<TEdgeValue>());
+          m_list[x].Add(y, new());
 
         m_list[x][y].Add(value);
 

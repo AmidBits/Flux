@@ -1,6 +1,3 @@
-using System.Linq;
-using System;
-
 namespace Flux.Text
 {
   public static partial class XmlEx
@@ -19,7 +16,7 @@ namespace Flux.Text
 
     /// <summary>Returns an XML escaped string (basically replacing all entity characters with their respective entity.</summary>
     public static string Escape(string source)
-      => source.ToStringBuilder().ReplaceAll(c => c switch
+      => new System.Text.StringBuilder(source).ReplaceAll(c => c switch
       {
         XmlEntityCharAmp => XmlEntityAmp,
         XmlEntityCharApos => XmlEntityApos,

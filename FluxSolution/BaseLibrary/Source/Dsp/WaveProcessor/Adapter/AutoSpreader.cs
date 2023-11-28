@@ -31,7 +31,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       }
     }
 
-    public System.Collections.Generic.List<IMonoWaveProcessable> WaveProcessors { get; } = new System.Collections.Generic.List<IMonoWaveProcessable>();
+    public System.Collections.Generic.List<IMonoWaveProcessable> WaveProcessors { get; } = new();
 
     public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo)
     {

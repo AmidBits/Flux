@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Globalization.EnUs.Az.PimaCounty
 {
   /// <summary>The usage below was active and working on and before the year 2023. Much of the guidelines for the naming in Pima county was done by Pima Association of Governments (PAG).</summary>
@@ -115,9 +113,9 @@ namespace Flux.Globalization.EnUs.Az.PimaCounty
 
     public override string? ToString()
     {
-      var sb = $"{Number} {Direction} {Intersection} {Name} {Type} {Unit}".ToSpanBuilder();
+      var sb = new SpanBuilder<char>($"{Number} {Direction} {Intersection} {Name} {Type} {Unit}");
 
-      sb.NormalizeAll(char.IsWhiteSpace, ' ');
+      sb.NormalizeAll(char.IsWhiteSpace, c => ' ');
 
       return sb.ToString();
     }

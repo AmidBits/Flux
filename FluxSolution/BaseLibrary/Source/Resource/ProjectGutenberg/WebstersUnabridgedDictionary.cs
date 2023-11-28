@@ -72,7 +72,7 @@ namespace Flux.Resources.ProjectGutenberg
 
     #region Implemented interfaces
 
-    public string[] FieldNames => ["Title", "Text"];
+    public string[] FieldNames => new string[] { "Title", "Text" };
     public System.Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);

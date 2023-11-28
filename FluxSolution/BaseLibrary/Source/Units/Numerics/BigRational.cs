@@ -1,6 +1,4 @@
 #if NET7_0_OR_GREATER
-using System.ComponentModel.Design;
-
 namespace Flux
 {
   public static partial class UnitsExtensionMethods
@@ -148,7 +146,7 @@ namespace Flux
 #if NET7_0_OR_GREATER
       /// <summary>Convert the ratio to a fraction. If numerator and/or denominator are not integers, the fraction is approximated.</summary>
       public Ratio ToRatio()
-        => new Ratio(double.CreateChecked(m_numerator), double.CreateChecked(m_denominator));
+        => new(double.CreateChecked(m_numerator), double.CreateChecked(m_denominator));
 #endif
 
       ///// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
@@ -536,7 +534,7 @@ namespace Flux
       // Read Binary representation of BigRational.
       public static BigRational ReadBytes(ReadOnlySpan<byte> source, bool isUnsigned = false, bool isBigEndian = true)
       {
-        var bytesInNumerator = System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(source.Slice(0, 4));
+        var bytesInNumerator = System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(source[..4]);
 
         var numerator = new System.Numerics.BigInteger(source.Slice(4, bytesInNumerator), isUnsigned, isBigEndian);
 
@@ -566,8 +564,8 @@ namespace Flux
       {
         var bytesInNumerator = m_numerator.GetByteCount();
 
-        if (isBigEndian) System.Buffers.Binary.BinaryPrimitives.WriteInt32BigEndian(source.Slice(0, 4), bytesInNumerator);
-        else System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(source.Slice(0, 4), bytesInNumerator);
+        if (isBigEndian) System.Buffers.Binary.BinaryPrimitives.WriteInt32BigEndian(source[..4], bytesInNumerator);
+        else System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(source[..4], bytesInNumerator);
 
         if (!m_numerator.TryWriteBytes(source.Slice(4, bytesInNumerator), out var bytesWrittenNumerator, isUnsigned, isBigEndian))
           throw new System.InvalidOperationException();
@@ -577,7 +575,7 @@ namespace Flux
         if (isBigEndian) System.Buffers.Binary.BinaryPrimitives.WriteInt32BigEndian(source.Slice(4 + bytesInNumerator, 4), bytesInDenominator);
         else System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(source.Slice(4 + bytesInNumerator, 4), bytesInDenominator);
 
-        if (!m_denominator.TryWriteBytes(source.Slice(4 + bytesInNumerator + 4), out var bytesWrittenDenominator, isUnsigned, isBigEndian))
+        if (!m_denominator.TryWriteBytes(source[(4 + bytesInNumerator + 4)..], out var bytesWrittenDenominator, isUnsigned, isBigEndian))
           throw new System.InvalidOperationException();
 
         return 4 + bytesInNumerator + 4 + bytesInDenominator;

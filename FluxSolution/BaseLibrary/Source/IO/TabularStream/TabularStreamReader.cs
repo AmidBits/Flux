@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.IO
 {
   public sealed class TabularStreamReader
@@ -10,7 +8,7 @@ namespace Flux.IO
     private readonly char m_fieldSeparator;
 
     /// <summary>An array of the field provider types for the result.</summary>
-    public System.Collections.Generic.List<string> FieldProviderTypes { get; } = new System.Collections.Generic.List<string>();
+    public System.Collections.Generic.List<string> FieldProviderTypes { get; } = new();
 
     public int RecordIndex { get; private set; }
 

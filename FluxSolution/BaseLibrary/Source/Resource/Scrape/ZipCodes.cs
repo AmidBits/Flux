@@ -12,7 +12,7 @@ namespace Flux.Resources.Scrape
     public System.Uri Uri { get; private set; } = Local;
 
     /// <summary>Returns zip codes with the first line being field names.</summary>
-    public System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
       using var stream = uri.GetStream();
 

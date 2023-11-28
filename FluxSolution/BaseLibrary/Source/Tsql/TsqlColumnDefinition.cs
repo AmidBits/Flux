@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Data
 {
   public record struct TsqlColumnDefinition
@@ -23,11 +21,11 @@ namespace Flux.Data
     {
       ColumnName = columnName.TsqlUnenquote();
       DataTypeName = dataTypeName.TsqlUnenquote();
-      DataTypeArguments = dataTypeArguments.Select(s => s.ToStringBuilder().RemoveAll(char.IsWhiteSpace).ToString()).ToList();
+      DataTypeArguments = dataTypeArguments.Select(s => new System.Text.StringBuilder(s).RemoveAll(char.IsWhiteSpace).ToString()).ToList();
       Nullability = nullability;
     }
 
-    public string ToString(bool ansi)
+    public readonly string ToString(bool ansi)
       => $"{ColumnName.TsqlEnquote(ansi)} {DataTypeName.TsqlEnquote(ansi)} {FromDataTypeArguments(DataTypeArguments)} {Nullability}";
 
     #region Static methods
@@ -36,7 +34,7 @@ namespace Flux.Data
       => string.Join(@",", dataTypeArguments) is var dta && dta.Length > 0 ? dta.Wrap('(', ')') : string.Empty;
     /// <summary>Convert a data type arguments string into a new sequence of argument values.</summary>
     public static System.Collections.Generic.IEnumerable<string> ToDataTypeArguments(string dataTypeArgumentsAsString)
-      => dataTypeArgumentsAsString.ToStringBuilder().RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, new char[] { ',' });
+      => new System.Text.StringBuilder(dataTypeArgumentsAsString).RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, new char[] { ',' });
 
     private static readonly System.Text.RegularExpressions.Regex m_reParse = new(@"^\s*?(?<ColumnName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?(?<Nullability>NOT\s+NULL|NULL)\s*?$");
     public static TsqlColumnDefinition Parse(string tsqlColumnDefinition)
@@ -77,7 +75,7 @@ namespace Flux.Data
     #endregion Static methods
 
     #region Object overrides
-    public override string ToString() => ToString(false);
+    public override readonly string ToString() => ToString(false);
     #endregion Object overrides
 
     //public static void Validate(string columnName, string dataTypeName, int[] dataTypeArguments, bool isNullable)

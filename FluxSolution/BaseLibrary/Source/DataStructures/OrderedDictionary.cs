@@ -30,8 +30,8 @@ namespace Flux
       {
         //m_equalityComparer = equalityComparer;
         m_dictionary = new System.Collections.Generic.Dictionary<TKey, TValue>(equalityComparer);
-        m_listOfKeys = new System.Collections.Generic.List<TKey>();
-        m_listOfValues = new System.Collections.Generic.List<TValue>();
+        m_listOfKeys = new();
+        m_listOfValues = new();
       }
       public OrderedDictionary()
         : this(System.Collections.Generic.EqualityComparer<TKey>.Default)

@@ -43,7 +43,7 @@ namespace Flux.Hashing.Special
 
     public static byte[] Compute(string password)
     {
-      if (password is null) throw new System.ArgumentNullException(nameof(password));
+      System.ArgumentNullException.ThrowIfNull(password);
 
       if (password.Length > 14) password = password[..14];
 

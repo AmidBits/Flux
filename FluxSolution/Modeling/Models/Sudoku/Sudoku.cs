@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Model
 {
   /// <summary></summary>
@@ -24,7 +22,7 @@ namespace Flux.Model
     /// <returns>Null in case of failure to assign, otherwise the updated values dictionary is returned.</returns>
     public static System.Collections.Generic.List<string>? Assign(System.Collections.Generic.List<string> values, int square, string digit)
     {
-      if (values is null) throw new System.ArgumentNullException(nameof(values));
+      System.ArgumentNullException.ThrowIfNull(values);
 
       if (values[square].Where(d => d.ToString() != digit).Any(d => Eliminate(values, square, d.ToString()) == null))
         return null;
@@ -35,7 +33,7 @@ namespace Flux.Model
     /// <returns>Null in case of failure to eliminate, otherwise the updated values dictionary is returned.</returns>
     public static System.Collections.Generic.List<string>? Eliminate(System.Collections.Generic.List<string> values, int square, string digit)
     {
-      if (values is null) throw new System.ArgumentNullException(nameof(values));
+      System.ArgumentNullException.ThrowIfNull(values);
 
       if (!values[square].Contains(digit, System.StringComparison.Ordinal))
       {
@@ -196,7 +194,7 @@ namespace Flux.Model
     /// <summary>Creates a string made for the console.</summary>
     public static string ToConsoleString(System.Collections.Generic.List<string> values)
     {
-      if (values is null) throw new System.ArgumentNullException(nameof(values));
+      System.ArgumentNullException.ThrowIfNull(values);
 
       var sb = new System.Text.StringBuilder();
 
@@ -206,7 +204,7 @@ namespace Flux.Model
       {
         foreach (var c in Sudoku.ColumnLabels)
         {
-          sb.Append(values[Sudoku.ToIndex(r.ToString() + c.ToString())].ToStringBuilder().PadEven(width, ' ', ' '));
+          sb.Append(new System.Text.StringBuilder(values[Sudoku.ToIndex(r.ToString() + c.ToString())]).PadEven(width, ' ', ' '));
 
           if (c == '9') { sb.AppendLine(); } // After each unit row.
         }

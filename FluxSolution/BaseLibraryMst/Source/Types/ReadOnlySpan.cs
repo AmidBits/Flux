@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -34,17 +33,25 @@ namespace Types
     }
 
     [TestMethod]
-    public void GetInfimumAndSupremum()
+    public void GetInfimumAndSupremumNonProper()
     {
-      var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
+      var span = new System.ReadOnlySpan<int>([45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30]);
 
-      var expectedIndexMin = 6;
-      var expectedIndexMax = 8;
+      var (actualIndexMin, actualValueMin, actualIndexMax, actualValueMax) = span.GetInfimumAndSupremum(60, n => n, false);
 
-      var (actualIndexMin, actualValueMin, actualIndexMax, actualValueMax) = span.GetInfimumAndSupremum(60, n => n, null);
+      Assert.AreEqual(6, actualIndexMin);
+      Assert.AreEqual(8, actualIndexMax);
+    }
 
-      Assert.AreEqual(expectedIndexMin, actualIndexMin);
-      Assert.AreEqual(expectedIndexMax, actualIndexMax);
+    [TestMethod]
+    public void GetInfimumAndSupremumProper()
+    {
+      var span = new System.ReadOnlySpan<int>([45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30]);
+
+      var (actualIndexMin, actualValueMin, actualIndexMax, actualValueMax) = span.GetInfimumAndSupremum(55, n => n);
+
+      Assert.AreEqual(6, actualIndexMin);
+      Assert.AreEqual(1, actualIndexMax);
     }
 
     [TestMethod]
@@ -64,10 +71,10 @@ namespace Types
     {
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
-      var expected = new int[] { 45, 60, 10, 20, 70, 80, 40, 20 };
-      var actual = span.GetLongestAlternatingSubsequenceValues(out var _);
+      var expected = new int[] { 45, 60, 10, 20, 70, 80, 40, 20 }.ToList();
+      var actual = span.GetLongestAlternatingSubsequenceValues(out var _).ToList();
 
-      Assert.AreEqual(expected.Length, actual.Length, "Element count is different.");
+      Assert.AreEqual(expected.Count, actual.Count, "Element count is different.");
       CollectionAssert.AreEqual(expected, actual, "Values are different.");
     }
 

@@ -110,7 +110,7 @@ namespace Flux.DataStructures
     }
     public void Insert(T item)
     {
-      m_data ??= new System.Collections.Generic.List<T>();
+      m_data ??= new();
 
       m_data.Add(item);
 

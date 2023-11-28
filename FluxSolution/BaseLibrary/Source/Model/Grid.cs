@@ -24,7 +24,7 @@
     public int Columns => m_columns;
 
     public System.Drawing.Point Size
-      => new System.Drawing.Point(m_columns, m_rows);
+      => new(m_columns, m_rows);
 
     public System.Collections.Generic.IReadOnlyCollection<(int row, int column)> Keys
       => (System.Collections.Generic.IReadOnlyCollection<(int row, int column)>)m_values.Keys;

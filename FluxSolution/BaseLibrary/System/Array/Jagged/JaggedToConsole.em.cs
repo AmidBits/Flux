@@ -20,7 +20,7 @@ namespace Flux
     public bool UseColumnSeparator => m_columnSeparator.Length >= 1 && m_columnSeparator[0] != '\0';
     public bool UseRowSeparator => m_rowSeparator != '\0';
 
-    public string GetContentCentered(string text, int maxWidth) => m_centerContent ? text.ToStringBuilder().PadEven(maxWidth, ' ', ' ').ToString() : text;
+    public string GetContentCentered(string text, int maxWidth) => m_centerContent ? new System.Text.StringBuilder(text).PadEven(maxWidth, ' ', ' ').ToString() : text;
   }
 
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension, i.e. so called row-major.</summary>
@@ -51,7 +51,7 @@ namespace Flux
           yield return verticalSeparatorString;
 
         var format = string.Join(horizontalSeparator == '\0' ? null : horizontalSeparator.ToString(), maxWidths.Take(source[r].Length).Select((width, index) => $"{{{index},-{width}}}"));
-        var values = source[r].Select((e, i) => $"{e}" is var s && centerContent ? s.ToStringBuilder().PadEven(maxWidths[i], ' ', ' ').ToString() : s).ToArray();
+        var values = source[r].Select((e, i) => $"{e}" is var s && centerContent ? new System.Text.StringBuilder(s).PadEven(maxWidths[i], ' ', ' ').ToString() : s).ToArray();
 
         yield return string.Format(null, format, values);
       }

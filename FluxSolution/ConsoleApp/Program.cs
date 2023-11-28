@@ -54,7 +54,7 @@ namespace ConsoleApp
       n = -3;
       System.Console.WriteLine($"        Number = {n}");
 
-      var bibs = n.ToBinaryString().ToSpanBuilder().InsertEvery(' ', 3).AsReadOnlySpan();
+      var bibs = new SpanBuilder<char>(n.ToBinaryString()).InsertEvery(' ', 3).AsReadOnlySpan();
       System.Console.WriteLine($"        Binary = {bibs}");
       var bios = n.ToOctalString();
       System.Console.WriteLine($"         Octal = {bios}");
@@ -117,65 +117,101 @@ namespace ConsoleApp
 
       //var d = new Flux.Resources.Ucd.Blocks().GetFieldValues().ToList();
 
-      var culture = System.Globalization.CultureInfo.GetCultureInfo("sv");
+      string[] inputs = ["GAAATAAA", "CACCGCTACCGC", "CAGCTAGC", "AAAAAAAA", "GAAAAAAA", "GATGAATAACCA", "ACGT"];
 
-      var lex = culture.GetLexiconOf(out var lexFsi);
-      var ipa = culture.GetIpaDictionaryOf(out var ipaFsi);
+      System.Collections.Generic.List<string> replacement = [];
 
-      var j = lex.Join(ipa, l => l, i => i.Key, (l, i) => i.Key).ToHashSet();
+      foreach (var item in inputs)
+      {
+        var result = item.AsSpan().ShortestBalancingSubstring();
 
-      var d = new Flux.Resources.Scowl.TwoOfTwelveFull();
-      var dr = new Flux.Data.EnumerableTabularDataReader(d.GetFieldValues(), d.FieldNames, d.FieldTypes);
-      var dt = dr.ToDataTable(d.GetType().Name);
-      var a2 = dt.To2dArray(false);
-      var aj = dt.ToJaggedArray(false);
+        replacement.Add(result.ToString());
 
-      var data = System.TimeZoneInfo.GetSystemTimeZones().GetData((e, i) => e).ToList();
+        System.Console.WriteLine($"{item} = {result}");
+      }
 
-      var pns = Flux.NumberSequences.PrimeNumber.GetAscendingPrimes(6).Take(10).ToArray();
+      var gene = "GAAAAAAA";
+      //gene = "AAGAAGAA";
+      //gene = "CACCGCTACCGC";
+      gene = "GATGAATAACCA";
+      var charCounts = new System.Collections.Generic.Dictionary<char, int>() { { 'A', 0 }, { 'C', 0 }, { 'G', 0 }, { 'T', 0 } };
+      foreach (var c in gene)
+        charCounts[c] += 1;
 
-      var s = " This is the 111APPPPI test bed of 125 in total  ";
-      var sb = s.AsSpan().ToListOfRune().AsSpan().ToSpanBuilder();
+      var n = gene.Length;
 
-      var im = s.GetIndexMap(c => c);
+      var n_by_4 = n / 4;
+      var minLength = n;
+      var left = 0;
+      var right = 0;
 
-      sb.MakeNumbersFixedLength(10, (System.Text.Rune)'0');
-      //sb.TrimRight(e => new char[] { 'h', 'd', ' ' }.Contains(e));
-      //sb.TrimLeft(e => new char[] { 'h', 'T', ' ' }.Contains(e));
-      //sb.RemoveEvery(3);
-      //sb.NormalizeAdjacent(2, new char[] { 'P' });
-      //sb.NormalizeAll(char.IsWhiteSpace, ':');
-      //sb.ReplaceAll(e => e == ':', e => '*');
-      //sb.ReplaceAll(e => e == '*', '-');
-      //sb.RemoveAll(e => e == '-');
+      var missingCounts = new System.Collections.Generic.Dictionary<char, int>();
+      foreach (var kvp in charCounts)
+        missingCounts[kvp.Key] = System.Math.Max(0, n_by_4 - kvp.Value);
 
-      //for (var i = 0; i < 10; i++)
-      //{
-      //  sb.JoinToCamelCase();
-      //  sb.SplitFromCamelCase();
-      //}
+      var substringCounts = new System.Collections.Generic.Dictionary<char, int>() { { 'A', 0 }, { 'C', 0 }, { 'G', 0 }, { 'T', 0 } };
 
-      //var tokens = new Flux.Text.RuneTokenizer().GetTokens(sb).ToArray();
+      while (right < n)
+      {
+        substringCounts[gene[right]] += 1;
+        right += 1;
 
-      //var x = new Flux.Units.BigRational(256, 3);
-      var x = Flux.Units.BigRational.Tau;
+        var has_enough_excessive_chars = true;
 
-      var c = new Flux.Geometry.CircleGeometry(1);
+        foreach (var ch in "ACTG")
+        {
+          var diff = charCounts[ch] - n_by_4;
 
-      var a = new byte[x.GetByteCount()];
+          if (diff > 0 && substringCounts[ch] < diff)
+          {
+            has_enough_excessive_chars = false;
+            break;
+          }
+        }
 
-      x.TryWriteBytes(a, out var bytesWritten);
+        if (has_enough_excessive_chars)
+        {
+          while (left < right && substringCounts[gene[left]] > charCounts[gene[left]] - n_by_4)
+          {
+            substringCounts[gene[left]] -= 1;
+            left += 1;
+          }
 
-      Flux.Units.BigRational.TryReadBytes(a, out var y);
+          minLength = System.Math.Min(minLength, right - left + 1);
+        }
+      }
+
+      System.Console.WriteLine(gene);
+      System.Console.WriteLine(new SpanBuilder<char>(gene.AsSpan().Slice(left, right - left)).PadLeft(right, ' ').PadRight(n, ' ').Append($" ({minLength})".AsSpan(), 1).ToString());
+
+      char cHigh = '\uD800';
+      char cLow = '\uDC00';
+      var s1 = new string(['a', '\uD800', '\uDC00', 'z']);
+      System.Console.WriteLine(s1.ToString());
+      var sb1 = new SpanBuilder<char>(s1);
+      string divider = string.Concat(System.Environment.NewLine, new string('-', 70), System.Environment.NewLine);
+
+      sb1.PadLeft(10, "LEFFT");
+      sb1.PadRight(17, "RIGHT");
+      sb1.PadEven(40, "leefft", "riigght", false);
+      sb1.NormalizeAdjacent(1, new char[] { 'F' });
+      sb1.NormalizeAll(c => c == 'e' || c == 'g', c => '*');
+      //sb1.NormalizeAll(c => c == 'e' || c == 'g', c => c switch { 'e' => '#', 'g' => '$', _ => '*' });
+      //var s1s = s1.AsSpan().AsSpan();
+      //s1s.Reverse();
+      //System.Console.WriteLine(s1s.ToString());
+
+      var sb2 = new SpanBuilder<char>(sb1.AsReadOnlySpan());
+      var sb2r = new SpanBuilder<System.Text.Rune>(sb2.AsReadOnlySpan().ToListOfRune());
+      sb2r.Reverse();
+      sb2.Reverse();
+      System.Console.WriteLine(sb2.ToString());
+
+      var (IndexLte, ValueLte, IndexGte, ValueGte) = Flux.NumberSequences.PrimeNumber.GetAscendingPrimes(6).Take(10).ToArray().AsSpan().AsReadOnlySpan().GetInfimumAndSupremum(17, p => p, false);
+
 
       var nums = Flux.NumberSequences.PowersOfRadix.GetPowersOfRadixSequence(10).Take(7).ToArray();
 
-      var pvs = 1234.GetPlaceValues(10).ToArray();
-
-      //foreach (var num in nums)
-      //{
-      //  System.Console.WriteLine($"{string.Join(", ", num)}");
-      //}
 
       System.Console.WriteLine();
       System.Console.WriteLine(string.Join(", ", Flux.NumberSequences.PrimeNumber.GetPrimeFactors(60)));

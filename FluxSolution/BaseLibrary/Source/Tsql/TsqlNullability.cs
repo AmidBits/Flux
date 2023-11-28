@@ -18,7 +18,7 @@ namespace Flux.Data
       => value ? Null : NotNull;
     public static TsqlNullability Parse(string expression)
     {
-      var text = expression.ToStringBuilder().NormalizeAll(' ', char.IsWhiteSpace).ToString();
+      var text = new System.Text.StringBuilder(expression).NormalizeAll(' ', char.IsWhiteSpace).ToString();
 
       if (text.Equals(CsNotNull, System.StringComparison.InvariantCultureIgnoreCase))
         return NotNull;

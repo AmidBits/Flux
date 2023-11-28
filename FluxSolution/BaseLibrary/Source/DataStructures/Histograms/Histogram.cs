@@ -23,7 +23,7 @@ namespace Flux
       : System.Collections.Generic.IDictionary<TKey, System.Numerics.BigInteger>
       where TKey : notnull
     {
-      private readonly System.Collections.Generic.SortedDictionary<TKey, System.Numerics.BigInteger> m_data = new();
+      private readonly System.Collections.Generic.Dictionary<TKey, System.Numerics.BigInteger> m_data = new();
 
       private System.Numerics.BigInteger m_totalFrequency = System.Numerics.BigInteger.Zero;
 
@@ -144,7 +144,11 @@ namespace Flux
 
       public bool ContainsKey(TKey key) => m_data.ContainsKey(key);
 
-      public void CopyTo(System.Collections.Generic.KeyValuePair<TKey, System.Numerics.BigInteger>[] array, int index) => m_data.CopyTo(array, index);
+      public void CopyTo(System.Collections.Generic.KeyValuePair<TKey, System.Numerics.BigInteger>[] array, int index)
+      {
+        foreach (var kvp in m_data)
+          array[index++] = kvp;
+      }
 
       public bool Remove(TKey key)
       {

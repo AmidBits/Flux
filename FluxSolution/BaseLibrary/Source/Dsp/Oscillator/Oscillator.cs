@@ -91,9 +91,9 @@ namespace Flux.Dsp.Synthesis
     {
       Generator = generator;
 
-      PreProcessors = new System.Collections.Generic.List<IMonoWaveProcessable>();
+      PreProcessors = new();
 
-      PostProcessors = new System.Collections.Generic.List<IMonoWaveProcessable>();
+      PostProcessors = new();
 
       Reset(false);
 

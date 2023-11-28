@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   /// <summary>Represents a general version implementation, similar to the built-in Version, but can handle more parts.</summary>

@@ -36,12 +36,12 @@ namespace Flux.Geometry
 
       return new HecsCoordinate[]
       {
-        new HecsCoordinate(m_a, m_r, m_c + 1),
-        new HecsCoordinate(uMa, rMu, cPa),
-        new HecsCoordinate(uMa, rMu, cMu),
-        new HecsCoordinate(m_a, m_r, m_c - 1),
-        new HecsCoordinate(uMa, rPa, cMu),
-        new HecsCoordinate(uMa, rPa, cPa),
+        new(m_a, m_r, m_c + 1),
+        new(uMa, rMu, cPa),
+        new(uMa, rMu, cMu),
+        new(m_a, m_r, m_c - 1),
+        new(uMa, rPa, cMu),
+        new(uMa, rPa, cPa),
       };
     }
 
@@ -55,12 +55,12 @@ namespace Flux.Geometry
 
       return new HecsCoordinate[]
       {
-        new HecsCoordinate(uMa, rMu, cPa),
-        new HecsCoordinate(m_a, m_r, m_c + 1),
-        new HecsCoordinate(uMa, rPa, cPa),
-        new HecsCoordinate(uMa, rPa, cMu),
-        new HecsCoordinate(m_a, m_r, m_c - 1),
-        new HecsCoordinate(uMa, rMu, cMu),
+        new(uMa, rMu, cPa),
+        new(m_a, m_r, m_c + 1),
+        new(uMa, rPa, cPa),
+        new(uMa, rPa, cMu),
+        new(m_a, m_r, m_c - 1),
+        new(uMa, rMu, cMu),
       };
     }
 

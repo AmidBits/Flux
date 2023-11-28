@@ -2,7 +2,7 @@ namespace Flux.IO
 {
   public sealed class UnicodeStructuredWriter
   {
-    private System.IO.TextWriter m_writer;
+    private readonly System.IO.TextWriter m_writer;
 
     private bool m_useSymbolsInsteadOfControl;
 

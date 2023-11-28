@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.DataStructures
 {
   public interface IQuadtree
@@ -16,13 +14,13 @@ namespace Flux.DataStructures
     public System.Drawing.Point BoundaryHigh { get; private set; }
     public System.Drawing.Point BoundaryLow { get; private set; }
 
-    private readonly System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
+    private readonly System.Collections.Generic.List<T> m_items = new();
     /// <summary>A list of items in this tree.</summary>
     public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
 
     public int MaximumItems { get; set; }
 
-    private System.Collections.Generic.IList<Quadtree<T>> m_nodes = new System.Collections.Generic.List<Quadtree<T>>();
+    private System.Collections.Generic.List<Quadtree<T>> m_nodes = new();
     /// <summary>A list of sub-trees.</summary>
     public System.Collections.Generic.IReadOnlyList<Quadtree<T>> Nodes => (System.Collections.Generic.IReadOnlyList<Quadtree<T>>)m_nodes;
 
@@ -81,7 +79,7 @@ namespace Flux.DataStructures
 
     public TResult SearchNodes<TResult>(TResult seed, System.Func<Quadtree<T>, TResult, TResult> aggregator)
     {
-      if (aggregator is null) throw new System.ArgumentNullException(nameof(aggregator));
+      System.ArgumentNullException.ThrowIfNull(aggregator);
 
       seed = aggregator(this, seed);
 
@@ -102,12 +100,12 @@ namespace Flux.DataStructures
       {
         var midPoint = new System.Drawing.Point((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2);
 
-        m_nodes = new System.Collections.Generic.List<Quadtree<T>>()
+        m_nodes = new()
         {
-           new Quadtree<T>(new System.Drawing.Point(midPoint.X, midPoint.Y), new System.Drawing.Point(BoundaryHigh.X, BoundaryHigh.Y)),
-           new Quadtree<T>(new System.Drawing.Point(BoundaryLow.X, midPoint.Y), new System.Drawing.Point(midPoint.X - 1, BoundaryHigh.Y)),
-           new Quadtree<T>(new System.Drawing.Point(BoundaryLow.X, BoundaryLow.Y), new System.Drawing.Point(midPoint.X - 1, midPoint.Y - 1)),
-           new Quadtree<T>(new System.Drawing.Point(midPoint.X, BoundaryLow.Y), new System.Drawing.Point(BoundaryHigh.X, midPoint.Y - 1))
+          new(new System.Drawing.Point(midPoint.X, midPoint.Y), new System.Drawing.Point(BoundaryHigh.X, BoundaryHigh.Y)),
+          new(new System.Drawing.Point(BoundaryLow.X, midPoint.Y), new System.Drawing.Point(midPoint.X - 1, BoundaryHigh.Y)),
+          new(new System.Drawing.Point(BoundaryLow.X, BoundaryLow.Y), new System.Drawing.Point(midPoint.X - 1, midPoint.Y - 1)),
+          new(new System.Drawing.Point(midPoint.X, BoundaryLow.Y), new System.Drawing.Point(BoundaryHigh.X, midPoint.Y - 1))
         };
       }
 

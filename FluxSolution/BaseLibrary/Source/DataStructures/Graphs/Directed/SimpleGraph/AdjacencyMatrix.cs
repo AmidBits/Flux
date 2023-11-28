@@ -22,8 +22,8 @@
     {
       m_matrix = (int[,])matrix.AssertSymmetrical(); // matrix.IsSymmetrical() ? matrix : throw new System.ArgumentOutOfRangeException(nameof(matrix));
 
-      m_vertexValues = new System.Collections.Generic.Dictionary<int, TVertexValue>();
-      m_edgeValues = new System.Collections.Generic.Dictionary<(int, int), TEdgeValue>();
+      m_vertexValues = new();
+      m_edgeValues = new();
     }
     public AdjacencyMatrix() : this(new int[0, 0]) { }
 
@@ -181,8 +181,9 @@
     {
       if (!VertexExists(x)) throw new System.ArgumentOutOfRangeException(nameof(x));
       if (!VertexExists(y)) throw new System.ArgumentOutOfRangeException(nameof(y));
-      if (capacitySelector is null) throw new System.ArgumentNullException(nameof(capacitySelector));
-      if (costSelector is null) throw new System.ArgumentNullException(nameof(costSelector));
+
+      System.ArgumentNullException.ThrowIfNull(capacitySelector);
+      System.ArgumentNullException.ThrowIfNull(costSelector);
 
       var vertexCount = Count;
 

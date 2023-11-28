@@ -17,14 +17,15 @@
       where T : notnull
     {
       private readonly System.Collections.Generic.IEqualityComparer<T> m_equalityComparer;
-      private readonly System.Collections.Generic.IDictionary<T, int> m_dictionary;
+
+      private readonly System.Collections.Generic.Dictionary<T, int> m_dictionary;
       private readonly System.Collections.Generic.List<T> m_values;
 
       public OrderedSet(System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       {
         m_equalityComparer = equalityComparer;
         m_dictionary = new System.Collections.Generic.Dictionary<T, int>(equalityComparer);
-        m_values = new System.Collections.Generic.List<T>();
+        m_values = new();
       }
       public OrderedSet()
         : this(System.Collections.Generic.EqualityComparer<T>.Default)
@@ -78,7 +79,7 @@
       // ISet<>
       public int Count => m_dictionary.Count;
 
-      public bool IsReadOnly => m_dictionary.IsReadOnly;
+      public bool IsReadOnly => false;
 
       public bool Add(T item)
       {
@@ -166,7 +167,7 @@
         foreach (var o in other)
           if (Contains(o))
             Remove(o);
-          else if (!adding.Contains(o))
+          else
             adding.Add(o);
 
         AddRange(adding);

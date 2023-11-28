@@ -31,7 +31,7 @@ namespace Flux.Resources.W3c
 
     #region Implemented interfaces
 
-    public string[] FieldNames => ["Name", "CodePoints", "Characters", "CharactersAsString"];
+    public string[] FieldNames => new string[] { "Name", "CodePoints", "Characters", "CharactersAsString" };
     public Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);

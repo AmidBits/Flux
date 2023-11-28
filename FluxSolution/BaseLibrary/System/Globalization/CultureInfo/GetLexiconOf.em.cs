@@ -12,7 +12,7 @@ namespace Flux
 
       var hashSet = new System.Collections.Generic.HashSet<string>(equalityComparer);
 
-      if (new System.Uri(string.Format(filePath, source.Name)).TryGetFileSystemInfo(out fsi, source.Name.IndexOf('-') is var index && index > -1 ? [new System.Uri(string.Format(filePath, source.Name[..source.Name.IndexOf('-')]))] : System.Array.Empty<System.Uri>()))
+      if (new System.Uri(string.Format(filePath, source.Name)).TryGetFileSystemInfo(out fsi, source.Name.IndexOf('-') is var index && index > -1 ? new System.Uri[] { new(string.Format(filePath, source.Name[..source.Name.IndexOf('-')])) } : System.Array.Empty<System.Uri>()))
       {
         using var s = new System.Uri(fsi.FullName).GetStream();
         using var sr = new System.IO.StreamReader(s, System.Text.Encoding.UTF8);

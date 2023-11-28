@@ -10,7 +10,7 @@ namespace Flux.Resources.ProjectGutenberg
     public System.Uri Uri { get; private set; } = Local;
 
     /// <summary>Returns project Gutenberg's table of contents data. No field names.</summary>
-    public System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
       var reMatch = new System.Text.RegularExpressions.Regex(@"^[\p{L}\p{N}\p{Zs}\p{P}]+\s{2,}\d+$", System.Text.RegularExpressions.RegexOptions.Compiled);
       var reSplit = new System.Text.RegularExpressions.Regex(@"(?<=^.+)\s{2,}(?=\d+$)", System.Text.RegularExpressions.RegexOptions.Compiled);
@@ -25,7 +25,7 @@ namespace Flux.Resources.ProjectGutenberg
 
     #region Implemented interfaces
 
-    public string[] FieldNames => ["Ebook", "Number"];
+    public string[] FieldNames => new string[] { "Ebook", "Number" };
     public Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);

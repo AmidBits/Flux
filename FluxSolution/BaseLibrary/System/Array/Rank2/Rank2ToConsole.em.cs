@@ -29,7 +29,7 @@ namespace Flux
         if (!string.IsNullOrEmpty(verticalLine) && r > 0)
           yield return verticalLine;
 
-        var values = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select(c => $"{source[r, c]}" is var s && centerContent ? s.ToStringBuilder().PadEven(maxWidth, ' ', ' ').ToString() : s).ToArray();
+        var values = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select(c => $"{source[r, c]}" is var s && centerContent ? new System.Text.StringBuilder(s).PadEven(maxWidth, ' ', ' ').ToString() : s).ToArray();
 
         yield return string.Format(null, horizontalLineFormat, values);
       }

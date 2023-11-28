@@ -27,7 +27,7 @@ namespace Flux.Resources.Scowl
 
     #region Implemented interfaces
 
-    public string[] FieldNames => ["DictionaryCount", "NonVariant", "Variant", "NonAmerican", "SecondClass", "Word"];
+    public string[] FieldNames => new string[] { "DictionaryCount", "NonVariant", "Variant", "NonAmerican", "SecondClass", "Word" };
     public System.Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);

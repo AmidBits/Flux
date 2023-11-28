@@ -47,7 +47,8 @@
     public BitStruct(byte[] bytes, int offset, int count)
       : this()
     {
-      if (bytes is null) throw new ArgumentNullException(nameof(bytes));
+      System.ArgumentNullException.ThrowIfNull(bytes);
+
       if (offset < 0 || offset >= bytes.Length) throw new ArgumentNullException(nameof(offset));
       if (count < 0 || offset + count >= bytes.Length || count > 16) throw new ArgumentNullException(nameof(count));
 
@@ -91,39 +92,39 @@
 
     #region Properties
 
-    public byte Byte0 { get => m_byte0; set => m_byte0 = value; }
-    public byte Byte1 { get => m_byte1; set => m_byte1 = value; }
-    public byte Byte2 { get => m_byte2; set => m_byte2 = value; }
-    public byte Byte3 { get => m_byte3; set => m_byte3 = value; }
-    public byte Byte4 { get => m_byte4; set => m_byte4 = value; }
-    public byte Byte5 { get => m_byte5; set => m_byte5 = value; }
-    public byte Byte6 { get => m_byte6; set => m_byte6 = value; }
-    public byte Byte7 { get => m_byte7; set => m_byte7 = value; }
-    public byte Byte8 { get => m_byte8; set => m_byte8 = value; }
-    public byte Byte9 { get => m_byte9; set => m_byte9 = value; }
-    public byte ByteA { get => m_byteA; set => m_byteA = value; }
-    public byte ByteB { get => m_byteB; set => m_byteB = value; }
-    public byte ByteC { get => m_byteC; set => m_byteC = value; }
-    public byte ByteD { get => m_byteD; set => m_byteD = value; }
-    public byte ByteE { get => m_byteE; set => m_byteE = value; }
-    public byte ByteF { get => m_byteF; set => m_byteF = value; }
+    public byte Byte0 { readonly get => m_byte0; set => m_byte0 = value; }
+    public byte Byte1 { readonly get => m_byte1; set => m_byte1 = value; }
+    public byte Byte2 { readonly get => m_byte2; set => m_byte2 = value; }
+    public byte Byte3 { readonly get => m_byte3; set => m_byte3 = value; }
+    public byte Byte4 { readonly get => m_byte4; set => m_byte4 = value; }
+    public byte Byte5 { readonly get => m_byte5; set => m_byte5 = value; }
+    public byte Byte6 { readonly get => m_byte6; set => m_byte6 = value; }
+    public byte Byte7 { readonly get => m_byte7; set => m_byte7 = value; }
+    public byte Byte8 { readonly get => m_byte8; set => m_byte8 = value; }
+    public byte Byte9 { readonly get => m_byte9; set => m_byte9 = value; }
+    public byte ByteA { readonly get => m_byteA; set => m_byteA = value; }
+    public byte ByteB { readonly get => m_byteB; set => m_byteB = value; }
+    public byte ByteC { readonly get => m_byteC; set => m_byteC = value; }
+    public byte ByteD { readonly get => m_byteD; set => m_byteD = value; }
+    public byte ByteE { readonly get => m_byteE; set => m_byteE = value; }
+    public byte ByteF { readonly get => m_byteF; set => m_byteF = value; }
 
-    public decimal Decimal { get => m_decimal; set => m_decimal = value; }
+    public decimal Decimal { readonly get => m_decimal; set => m_decimal = value; }
 
-    public double Double { get => m_double; set => m_double = value; }
+    public double Double { readonly get => m_double; set => m_double = value; }
 
-    public int Int32 { get => m_int32; set => m_int32 = value; }
-    public long Int64 { get => m_int64; set => m_int64 = value; }
+    public int Int32 { readonly get => m_int32; set => m_int32 = value; }
+    public long Int64 { readonly get => m_int64; set => m_int64 = value; }
 #if NET7_0_OR_GREATER
-    public Int128 Int128 { get => m_int128; set => m_int128 = value; }
+    public Int128 Int128 { readonly get => m_int128; set => m_int128 = value; }
 #endif
 
-    public float Single { get => m_single; set => m_single = value; }
+    public float Single { readonly get => m_single; set => m_single = value; }
 
-    [CLSCompliant(false)] public uint UInt32 { get => m_uint32; set => m_uint32 = value; }
-    [CLSCompliant(false)] public ulong UInt64 { get => m_uint64; set => m_uint64 = value; }
+    [CLSCompliant(false)] public uint UInt32 { readonly get => m_uint32; set => m_uint32 = value; }
+    [CLSCompliant(false)] public ulong UInt64 { readonly get => m_uint64; set => m_uint64 = value; }
 #if NET7_0_OR_GREATER
-   [CLSCompliant(false)] public UInt128 UInt128 { get => m_uint128; set => m_uint128 = value; }
+    [CLSCompliant(false)] public UInt128 UInt128 { readonly get => m_uint128; set => m_uint128 = value; }
 #endif
 
     #endregion // Properties

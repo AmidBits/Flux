@@ -37,8 +37,8 @@ namespace Flux.Resources.Ucd
 
     #region Implemented interfaces
 
-    public string[] FieldNames => ["StartCode", "EndCode", "BlockName"];
-    public System.Type[] FieldTypes => [typeof(int), typeof(int), typeof(string)];
+    public string[] FieldNames => new string[] { "StartCode", "EndCode", "BlockName" };
+    public System.Type[] FieldTypes => new System.Type[] { typeof(int), typeof(int), typeof(string) };
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);
 

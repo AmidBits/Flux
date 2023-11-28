@@ -11,7 +11,7 @@ namespace Flux.DataStructures
     public BinaryHeapMin() { }
     public BinaryHeapMin(System.Collections.Generic.IEnumerable<T> collection)
     {
-      if (collection is null) throw new System.ArgumentNullException(nameof(collection));
+      System.ArgumentNullException.ThrowIfNull(collection);
 
       foreach (var item in collection)
         Insert(item);

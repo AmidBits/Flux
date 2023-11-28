@@ -45,7 +45,7 @@ namespace Flux.Riff
 
     public void ReadBytes(System.IO.Stream stream, int count)
     {
-      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+      System.ArgumentNullException.ThrowIfNull(stream);
 
       var read = -1;
 
@@ -69,7 +69,7 @@ namespace Flux.Riff
 
     public void FillChunk(System.IO.Stream stream)
     {
-      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+      System.ArgumentNullException.ThrowIfNull(stream);
 
       var offset = m_buffer.Length;
 
@@ -82,13 +82,13 @@ namespace Flux.Riff
 
     public void WriteBytes(System.IO.Stream targetStream, int offset, int count)
     {
-      if (targetStream is null) throw new System.ArgumentNullException(nameof(targetStream));
+      System.ArgumentNullException.ThrowIfNull(targetStream);
 
       targetStream.Write(m_buffer, offset, count);
     }
     public void WriteTo(System.IO.Stream stream)
     {
-      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+      System.ArgumentNullException.ThrowIfNull(stream);
 
       stream.Write(m_buffer, 0, m_buffer.Length);
     }
