@@ -117,72 +117,26 @@ namespace ConsoleApp
 
       //var d = new Flux.Resources.Ucd.Blocks().GetFieldValues().ToList();
 
+      var vocab = "ACGT";
+
       string[] inputs = ["GAAATAAA", "CACCGCTACCGC", "CAGCTAGC", "AAAAAAAA", "GAAAAAAA", "GATGAATAACCA", "ACGT"];
 
-      System.Collections.Generic.List<string> replacement = [];
-
-      foreach (var item in inputs)
+      foreach (var input in inputs)
       {
-        var result = item.AsSpan().ShortestBalancingSubstring();
+        var sb = new SpanBuilder<char>(input);
 
-        replacement.Add(result.ToString());
+        var (index, count) = input.AsSpan().ShortestBalancingSubstring(vocab);
 
-        System.Console.WriteLine($"{item} = {result}");
+        for (var i = 0; i < input.Length; i++)
+          if (i >= index && i < index + count)
+            sb[i] = '*';
+
+        var value = index > -1 ? input.Substring(index, count) : string.Empty;
+
+        System.Console.WriteLine($"{input} ({input.Length}) = {(index, count)} = {value} : {sb.ToString()}");
       }
 
-      var gene = "GAAAAAAA";
-      //gene = "AAGAAGAA";
-      //gene = "CACCGCTACCGC";
-      gene = "GATGAATAACCA";
-      var charCounts = new System.Collections.Generic.Dictionary<char, int>() { { 'A', 0 }, { 'C', 0 }, { 'G', 0 }, { 'T', 0 } };
-      foreach (var c in gene)
-        charCounts[c] += 1;
-
-      var n = gene.Length;
-
-      var n_by_4 = n / 4;
-      var minLength = n;
-      var left = 0;
-      var right = 0;
-
-      var missingCounts = new System.Collections.Generic.Dictionary<char, int>();
-      foreach (var kvp in charCounts)
-        missingCounts[kvp.Key] = System.Math.Max(0, n_by_4 - kvp.Value);
-
-      var substringCounts = new System.Collections.Generic.Dictionary<char, int>() { { 'A', 0 }, { 'C', 0 }, { 'G', 0 }, { 'T', 0 } };
-
-      while (right < n)
-      {
-        substringCounts[gene[right]] += 1;
-        right += 1;
-
-        var has_enough_excessive_chars = true;
-
-        foreach (var ch in "ACTG")
-        {
-          var diff = charCounts[ch] - n_by_4;
-
-          if (diff > 0 && substringCounts[ch] < diff)
-          {
-            has_enough_excessive_chars = false;
-            break;
-          }
-        }
-
-        if (has_enough_excessive_chars)
-        {
-          while (left < right && substringCounts[gene[left]] > charCounts[gene[left]] - n_by_4)
-          {
-            substringCounts[gene[left]] -= 1;
-            left += 1;
-          }
-
-          minLength = System.Math.Min(minLength, right - left + 1);
-        }
-      }
-
-      System.Console.WriteLine(gene);
-      System.Console.WriteLine(new SpanBuilder<char>(gene.AsSpan().Slice(left, right - left)).PadLeft(right, ' ').PadRight(n, ' ').Append($" ({minLength})".AsSpan(), 1).ToString());
+      return;
 
       char cHigh = '\uD800';
       char cLow = '\uDC00';

@@ -168,6 +168,19 @@ namespace Flux
         target[targetIndex++] = this[sourceIndex++];
     }
 
+    public readonly int Count(T target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      var count = 0;
+
+      for (var i = m_head; i < m_tail; i++)
+        if (equalityComparer.Equals(target, m_array[i]))
+          count++;
+
+      return count;
+    }
+
     /// <summary>Duplicates the specified <paramref name="values"/>, <paramref name="count"/> times, throughout. If no values are specified, all characters are duplicated <paramref name="count"/> times. If the string builder is empty, nothing is duplicated. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
     /// <exception cref="System.ArgumentNullException"/>
     public SpanBuilder<T> Duplicate(System.ReadOnlySpan<T> values, int count, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
