@@ -2,19 +2,8 @@ namespace Flux
 {
   public static partial class ExtensionMethodsSpan
   {
-    ///// <summary>Reverse all ranged characters sort of in-place. Handles surrogates.</summary>
-    //public static System.Span<char> Reverse(ref this System.Span<char> source, int startIndex, int endIndex)
-    //{
-    //  if (startIndex < 0 || startIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
-    //  if (endIndex < startIndex || endIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
-
-    //  source.Slice(startIndex, endIndex - startIndex + 1);
-
-    //  return source;
-    //}
-
-    /// <summary>Reverse all characters sort of in-place. Handles surrogates.</summary>
-    public static System.Span<char> Reverse(ref this System.Span<char> source)
+    /// <summary>Reverse all characters in <paramref name="source"/>. Handles surrogates.</summary>
+    public static System.Span<char> ReverseCharacters(ref this System.Span<char> source)
     {
       var startIndex = 0;
       var endIndex = source.Length - 1;

@@ -1,6 +1,5 @@
 ﻿using System;
 using Flux;
-using Flux.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Collections.Generic
@@ -129,6 +128,24 @@ namespace Collections.Generic
 
       Assert.AreEqual(1, m_text4a.AsSpan().GetOptimalStringAlignmentMetric(m_text4b, m_comparisonOrdinal));
       Assert.AreEqual(1, m_text4a.AsSpan().GetOptimalStringAlignmentMetric(m_text4b, m_comparisonOrdinalIgnoreCase));
+    }
+
+    [TestMethod]
+    public void ShortestBalancingSubstring()
+    {
+      var vocab = "ACGT";
+
+      string[] inputs = ["GAAATAAA", "CACCGCTACCGC", "CAGCTAGC", "AAAAAAAA", "GAAAAAAA", "GATGAATAACCA", "ACGT"];
+      System.ValueTuple<int, int>[] outputs = [(1, 5), (2, 7), (0, 1), (0, 6), (1, 5), (4, 4), (-1, 0)];
+
+      Assert.AreEqual(inputs.Length, outputs.Length);
+
+      for (var i = 0; i < inputs.Length; i++)
+      {
+        var vt = inputs[i].AsSpan().ShortestBalancingSubstring(vocab);
+
+        Assert.AreEqual(vt, outputs[i]);
+      }
     }
   }
 }

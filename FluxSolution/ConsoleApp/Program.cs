@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Flux;
 
 // C# Interactive commands:
@@ -115,60 +114,8 @@ namespace ConsoleApp
 
       //EvaluateNumericStuff();
 
-      //var d = new Flux.Resources.Ucd.Blocks().GetFieldValues().ToList();
-
-      var vocab = "ACGT";
-
-      string[] inputs = ["GAAATAAA", "CACCGCTACCGC", "CAGCTAGC", "AAAAAAAA", "GAAAAAAA", "GATGAATAACCA", "ACGT"];
-
-      foreach (var input in inputs)
-      {
-        var sb = new SpanBuilder<char>(input);
-
-        var (index, count) = input.AsSpan().ShortestBalancingSubstring(vocab);
-
-        for (var i = 0; i < input.Length; i++)
-          if (i >= index && i < index + count)
-            sb[i] = '*';
-
-        var value = index > -1 ? input.Substring(index, count) : string.Empty;
-
-        System.Console.WriteLine($"{input} ({input.Length}) = {(index, count)} = {value} : {sb.ToString()}");
-      }
-
-      return;
-
-      char cHigh = '\uD800';
-      char cLow = '\uDC00';
-      var s1 = new string(['a', '\uD800', '\uDC00', 'z']);
-      System.Console.WriteLine(s1.ToString());
-      var sb1 = new SpanBuilder<char>(s1);
-      string divider = string.Concat(System.Environment.NewLine, new string('-', 70), System.Environment.NewLine);
-
-      sb1.PadLeft(10, "LEFFT");
-      sb1.PadRight(17, "RIGHT");
-      sb1.PadEven(40, "leefft", "riigght", false);
-      sb1.NormalizeAdjacent(1, new char[] { 'F' });
-      sb1.NormalizeAll(c => c == 'e' || c == 'g', c => '*');
-      //sb1.NormalizeAll(c => c == 'e' || c == 'g', c => c switch { 'e' => '#', 'g' => '$', _ => '*' });
-      //var s1s = s1.AsSpan().AsSpan();
-      //s1s.Reverse();
-      //System.Console.WriteLine(s1s.ToString());
-
-      var sb2 = new SpanBuilder<char>(sb1.AsReadOnlySpan());
-      var sb2r = new SpanBuilder<System.Text.Rune>(sb2.AsReadOnlySpan().ToListOfRune());
-      sb2r.Reverse();
-      sb2.Reverse();
-      System.Console.WriteLine(sb2.ToString());
-
-      var (IndexLte, ValueLte, IndexGte, ValueGte) = Flux.NumberSequences.PrimeNumber.GetAscendingPrimes(6).Take(10).ToArray().AsSpan().AsReadOnlySpan().GetInfimumAndSupremum(17, p => p, false);
-
-
-      var nums = Flux.NumberSequences.PowersOfRadix.GetPowersOfRadixSequence(10).Take(7).ToArray();
-
-
-      System.Console.WriteLine();
-      System.Console.WriteLine(string.Join(", ", Flux.NumberSequences.PrimeNumber.GetPrimeFactors(60)));
+      var sb = "robert".AsSpan().AsSpan();
+      sb.ReverseRange(0, sb.Length - 1);
     }
 
     private static void Main(string[] args)

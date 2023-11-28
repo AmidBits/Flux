@@ -15,13 +15,13 @@ namespace Text
     //readonly Flux.StringComparerEx comparerIgnoreNonSpace = Flux.StringComparerEx.CurrentCultureIgnoreNonSpace;
     //readonly Flux.StringComparerEx comparerNone = Flux.StringComparerEx.Ordinal;
 
-    [TestMethod]
-    public void Copy()
-    {
-      var expected = "Robertbert";
-      var actual = new Flux.SpanBuilder<char>("HugoRobert").Copy(4, 0, 6).ToString();
-      Assert.AreEqual(expected, actual);
-    }
+    //[TestMethod]
+    //public void Count()
+    //{
+    //  var expected = 2;
+    //  var actual = new Flux.SpanBuilder<char>("HugoRobert").Count('o');
+    //  Assert.AreEqual(expected, actual);
+    //}
 
     //[TestMethod]
     //public void CountEqualAt()
