@@ -52,7 +52,7 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 "Flux.Locale.SpecialFolders: (This dictionary represents the names and values of the `"System.Environment.SpecialFolder`" enum.)"
 [Flux.Locale]::SpecialFolders | Format-Table
 
-"Prime numbers: $([Flux.NumberSequences.PrimeNumber]::GetAscendingPrimes[int](2) | Select-Object -First 25 | Join-String -Separator ',')$([System.Environment]::NewLine)"
+# "Prime numbers: $([Flux.NumberSequences.PrimeNumber]::GetAscendingPrimes[int](2) | Select-Object -First 25 | Join-String -Separator ',')$([System.Environment]::NewLine)"
 
 "GetLevenshteinDistanceMatrix(`"sitting`", `"kitten`")$([System.Environment]::NewLine)"
 $m = [Flux.ExtensionMethodsReadOnlySpan]::GetLevenshteinDistanceMatrix[char]("sitting", "kitten")

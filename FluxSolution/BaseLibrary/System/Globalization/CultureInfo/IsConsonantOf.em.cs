@@ -10,22 +10,30 @@ namespace Flux
     /// <summary></summary>
     /// <exception cref="System.NotImplementedException"/>
     public static bool IsConsonantOf(this System.Globalization.CultureInfo source, char character)
-      => (source ?? System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
+    {
+      source ??= System.Globalization.CultureInfo.CurrentCulture;
+
+      return source.TwoLetterISOLanguageName switch
       {
         "en" => IsConsonantOf_en((System.Text.Rune)character),
         "se" => IsConsonantOf_se((System.Text.Rune)character),
         _ => throw new System.NotImplementedException(nameof(source))
       };
+    }
 
     /// <summary></summary>
     /// <exception cref="System.OverflowException"/>
     public static bool IsConsonantOf(this System.Globalization.CultureInfo source, System.Text.Rune rune)
-      => (source ?? System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
+    {
+      source ??= System.Globalization.CultureInfo.CurrentCulture;
+
+      return source.TwoLetterISOLanguageName switch
       {
         "en" => IsConsonantOf_en(rune),
         "se" => IsConsonantOf_se(rune),
         _ => throw new System.NotImplementedException(nameof(source))
       };
+    }
 
     ///// <summary></summary>
     ///// <exception cref="System.OverflowException"/>

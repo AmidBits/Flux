@@ -8,6 +8,7 @@ namespace Flux
     {
       const string filePath = @"file://\Resources\Dictionaries\Ipa\{0}.txt";
 
+      source ??= System.Globalization.CultureInfo.CurrentCulture;
       comparer ??= System.Collections.Generic.Comparer<string>.Default;
 
       var dictionary = new System.Collections.Generic.SortedDictionary<string, string>(comparer);

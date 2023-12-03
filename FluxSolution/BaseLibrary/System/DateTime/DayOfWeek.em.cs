@@ -33,12 +33,12 @@ namespace Flux
       }
     }
 
-    /// <summary>Yields the date of the next specified dayOfWeek relative to the source. In order to return same date for same dayOfWeek, subtract 1 day from the source before calling this function.</summary>
-    public static System.DateTime NextDayOfWeek(this System.DateTime source, System.DayOfWeek dayOfWeek, bool excludeSource)
-      => source.DayOfWeek == dayOfWeek && excludeSource ? source.AddDays(7) : source.AddDays(unchecked((int)dayOfWeek - (int)source.DayOfWeek + 7) % 7);
+    /// <summary>Yields the <see cref="System.DateTime"/> of the next specified <paramref name="dayOfWeek"/> relative to the <paramref name="source"/>. Use <paramref name="proper"/> to include/exclude <paramref name="source"/> as the next <see cref="System.DayOfWeek"/>.</summary>
+    public static System.DateTime NextDayOfWeek(this System.DateTime source, System.DayOfWeek dayOfWeek, bool proper)
+      => source.DayOfWeek == dayOfWeek && proper ? source.AddDays(7) : source.AddDays(unchecked((int)dayOfWeek - (int)source.DayOfWeek + 7) % 7);
 
-    /// <summary>Yields the date of the previous specified dayOfWeek relative to the source. In order to return same date for same dayOfWeek, add 1 day to the source before calling this function.</summary>
-    public static System.DateTime PreviousDayOfWeek(this System.DateTime source, System.DayOfWeek dayOfWeek, bool excludeSource)
-      => source.DayOfWeek == dayOfWeek && excludeSource ? source.AddDays(-7) : source.AddDays(unchecked((int)dayOfWeek - (int)source.DayOfWeek - 7) % 7);
+    /// <summary>Yields the <see cref="System.DateTime"/> of the previous specified <paramref name="dayOfWeek"/> relative to the <paramref name="source"/>. Use <paramref name="proper"/> to include/exclude <paramref name="source"/> as the previous <see cref="System.DayOfWeek"/>.</summary>
+    public static System.DateTime PreviousDayOfWeek(this System.DateTime source, System.DayOfWeek dayOfWeek, bool proper)
+      => source.DayOfWeek == dayOfWeek && proper ? source.AddDays(-7) : source.AddDays(unchecked((int)dayOfWeek - (int)source.DayOfWeek - 7) % 7);
   }
 }

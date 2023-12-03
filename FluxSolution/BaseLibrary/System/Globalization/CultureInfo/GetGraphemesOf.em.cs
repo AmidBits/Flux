@@ -39,10 +39,14 @@ namespace Flux
     /// <seealso href="https://www.dyslexia-reading-well.com/44-phonemes-in-english.html"/>
     /// <seealso href="https://books.openedition.org/obp/2190"/>
     public static System.Collections.Generic.IList<string> GetGraphemesOf(this System.Globalization.CultureInfo source)
-      => (source ?? System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
+    {
+      source ??= System.Globalization.CultureInfo.CurrentCulture;
+
+      return source.TwoLetterISOLanguageName switch
       {
         "en" => Graphemes_en.SelectMany(aa => aa.SelectMany(a => a)).ToList(),
         _ => throw new System.NotImplementedException(nameof(source))
       };
+    }
   }
 }

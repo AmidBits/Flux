@@ -8,7 +8,7 @@ namespace Flux.Resources.DotNet
 
     public FxSequence(System.Collections.IEnumerable enumerable) => m_enumerable = enumerable;
 
-    private System.Collections.Generic.IEnumerable<object[]> GetData(System.Collections.IEnumerable enumerable)
+    public static System.Collections.Generic.IEnumerable<object[]> GetData(System.Collections.IEnumerable enumerable)
       => enumerable.Cast<object>().Select(o => o.GetPropertyInfos().Select(pi => pi.GetValue(o)!).ToArray());
 
     #region Implemented interfaces

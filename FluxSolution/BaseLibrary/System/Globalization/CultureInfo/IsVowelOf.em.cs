@@ -10,22 +10,30 @@ namespace Flux
     /// <summary></summary>
     /// <exception cref="System.NotImplementedException"/>
     public static bool IsVowelOf(this System.Globalization.CultureInfo source, char character)
-      => (source ?? System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
+    {
+      source ??= System.Globalization.CultureInfo.CurrentCulture;
+
+      return source.TwoLetterISOLanguageName switch
       {
         "en" => IsVowelOf_en((System.Text.Rune)character),
         "se" => IsVowelOf_se((System.Text.Rune)character),
         _ => throw new System.NotImplementedException(nameof(source))
       };
+    }
 
     /// <summary></summary>
     /// <exception cref="System.OverflowException"/>
     public static bool IsVowelOf(this System.Globalization.CultureInfo source, System.Text.Rune rune)
-      => (source ?? System.Globalization.CultureInfo.CurrentCulture).TwoLetterISOLanguageName switch
+    {
+      source ??= System.Globalization.CultureInfo.CurrentCulture;
+
+      return source.TwoLetterISOLanguageName switch
       {
         "en" => IsVowelOf_en(rune),
         "se" => IsVowelOf_se(rune),
         _ => throw new System.NotImplementedException(nameof(source))
       };
+    }
 
     ///// <summary></summary>
     ///// <exception cref="System.OverflowException"/>

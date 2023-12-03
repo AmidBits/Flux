@@ -1,5 +1,4 @@
-﻿using System;
-using Flux;
+﻿using Flux;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -109,13 +108,14 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var ndow = System.DateTime.Today.NextDayOfWeek(System.DateTime.Today.DayOfWeek, true);
+
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       //EvaluateNumericStuff();
-
-      var sb = "robert".AsSpan().AsSpan();
-      sb.ReverseRange(0, sb.Length - 1);
+      var x = (int)System.Globalization.CultureTypes.AllCultures;
+      //((Flux.ITabularDataAcquirable)new Flux.Resources.DotNet.FxSequence(System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures))).AcquireDataTable("AllCultures")
     }
 
     private static void Main(string[] args)

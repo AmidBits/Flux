@@ -8,6 +8,7 @@ namespace Flux
     {
       const string filePath = @"file://\Resources\Lexicons\{0}.txt";
 
+      source ??= System.Globalization.CultureInfo.CurrentCulture;
       equalityComparer ??= System.Collections.Generic.EqualityComparer<string>.Default;
 
       var hashSet = new System.Collections.Generic.HashSet<string>(equalityComparer);
