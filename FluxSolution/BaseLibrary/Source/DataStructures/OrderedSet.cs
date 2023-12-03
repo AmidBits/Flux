@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class DataStructuresExtensionMethods
+  public static partial class Em
   {
     public static DataStructures.OrderedSet<T> ToOrderedSet<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
       where T : notnull

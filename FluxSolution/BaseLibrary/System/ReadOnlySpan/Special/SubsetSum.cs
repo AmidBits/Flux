@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsReadOnlySpan
+  public static partial class Fx
   {
 #if NET7_0_OR_GREATER
 

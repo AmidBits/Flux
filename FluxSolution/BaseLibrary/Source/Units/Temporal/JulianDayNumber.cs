@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class TemporalExtensionMethods
+  public static partial class Em
   {
     public static Units.JulianDayNumber ToJulianDayNumber(this System.DateTime source, Units.TemporalCalendar calendar = Units.TemporalCalendar.GregorianCalendar)
       => new(source.Year, source.Month, source.Day, calendar);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsIDataReader
+  public static partial class Fx
   {
     /// <summary>Creates a new data table with values from the IDataReader. The specified table name is used in constructing the data table.</summary>
     public static System.Data.DataTable ToDataTable(this System.Data.IDataReader source, string tableName)

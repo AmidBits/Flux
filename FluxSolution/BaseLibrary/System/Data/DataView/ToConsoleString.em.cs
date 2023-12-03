@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsDataView
+  public static partial class Fx
   {
     public static System.Data.DataColumnCollection GetDataColumnCollection(this System.Data.DataView source)
     {

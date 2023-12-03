@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  public static partial class ExtensionMethodsIDataReader
+  public static partial class Fx
   {
     const string CsAllowDBNull = @"AllowDBNull";
     const string CsColumnName = @"ColumnName";

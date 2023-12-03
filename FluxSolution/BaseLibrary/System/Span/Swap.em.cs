@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsSpan
+  public static partial class Fx
   {
     /// <summary>In-place swap of two elements by the specified indices. No checks performed.</summary>
     private static System.Span<T> SwapImpl<T>(this System.Span<T> source, int indexA, int indexB)

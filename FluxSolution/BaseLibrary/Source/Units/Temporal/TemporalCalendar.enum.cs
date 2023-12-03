@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class TemporalExtensionMethods
+  public static partial class Em
   {
     public static double AverageDaysInYear(this Units.TemporalCalendar source)
       => source switch

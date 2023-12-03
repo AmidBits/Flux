@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsIEnumerableT
+  public static partial class Fx
   {
     /// <summary>Flattens a sequence of objects into a sequence of key/value pairs based on the specified keySelector and valuesSelector.</summary>
     /// <exception cref="System.ArgumentNullException"/>

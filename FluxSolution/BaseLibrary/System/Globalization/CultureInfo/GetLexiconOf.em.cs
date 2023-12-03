@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsCultureInfo
+  public static partial class Fx
   {
     /// <summary>Returns the lexicon (word list) for the <paramref name="source"/>, if available. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
     /// <see href="https://github.com/open-dict-data/ipa-dict/tree/master/"/>

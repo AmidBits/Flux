@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
-  public static partial class ArrayRank2
+  public static partial class Fx
   {
     /// <summary>Create a new array with the elements from <paramref name="source"/> and by inserting <paramref name="count"/> new contiguous strands (of rows or colums) in the specified <paramref name="dimension"/> at the <paramref name="index"/>. All values from the <paramref name="source"/> are copied.</summary>
     public static T[,] Insert<T>(this T[,] source, int dimension, int index, int count)

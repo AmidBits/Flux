@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class DataStructuresExtensionMethods
+  public static partial class Em
   {
     /// <summary>Computes a frequency histogram from the elements in the sequence into a dictionary. This version can be used for semi-aggregate data sources, hence the frequency selector. Uses the specified comparer.</summary>
     /// <exception cref="System.ArgumentNullException"/>

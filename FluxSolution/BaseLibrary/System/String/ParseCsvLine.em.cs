@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsString
+  public static partial class Fx
   {
     /// <summary>Parses the string as a CSV 'line' and creates a list of sub-strings representing the comma separated values (or fields).</summary>
     /// <remarks>Uses a more </remarks>

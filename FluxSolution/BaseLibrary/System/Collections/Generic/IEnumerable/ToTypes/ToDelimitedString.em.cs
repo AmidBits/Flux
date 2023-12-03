@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsIEnumerableT
+  public static partial class Fx
   {
     /// <summary>Enables concatenation of <typeparamref name="T"/> data from the <paramref name="source"/> sequence into a <see cref="System.Text.StringBuilder"/> using the specified <paramref name="builder"/>.</summary>
     /// <exception cref="System.ArgumentNullException"/>

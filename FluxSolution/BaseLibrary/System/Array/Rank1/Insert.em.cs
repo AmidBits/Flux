@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayRank1
+  public static partial class Fx
   {
     /// <summary>Create a new array with all elements from <paramref name="source"/> and <paramref name="count"/> elements inserted at <paramref name="index"/>.</summary>
     private static T[] Insert<T>(this T[] source, int index, int count)

@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethodsEnvironment
+  public static partial class Fx
   {
     /// <summary>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="System.Environment.SpecialFolder"/>.</summary>
     public static System.IO.DirectoryInfo? GetDirectoryInfo(this System.Environment.SpecialFolder specialFolder)

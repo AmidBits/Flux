@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsIEnumerableT
+  public static partial class Fx
   {
     /// <summary>Returns a new sequence with the specified items removed and replaced with the specified items.</summary>
     /// <exception cref="System.ArgumentNullException"/>

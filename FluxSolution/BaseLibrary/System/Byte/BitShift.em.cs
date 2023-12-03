@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsByte
+  public static partial class Fx
   {
     /// <summary>Returns a sequence bit-shifted left by count bits, by extending the array with the necessary number of bytes.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitShiftLeft(this System.Collections.Generic.IEnumerable<byte> source, int count)

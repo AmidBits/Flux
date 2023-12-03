@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsIEnumerableT
+  public static partial class Fx
   {
     /// <summary>Locate the minimum/maximum elements and indices, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified (default if null) <paramref name="comparer"/>.</summary>
     /// <exception cref="System.ArgumentNullException"/>

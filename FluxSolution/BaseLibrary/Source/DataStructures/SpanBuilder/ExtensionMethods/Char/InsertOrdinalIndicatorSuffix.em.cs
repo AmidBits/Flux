@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanBuilderExtensionMethods
+  public static partial class Em
   {
     /// <summary>Appends ordinal extensions (e.g. rd, th, etc.) to any digit numerals (e.g. 3, 12, etc.) in the <paramref name="source"/> that satisfies the <paramref name="predicate"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>

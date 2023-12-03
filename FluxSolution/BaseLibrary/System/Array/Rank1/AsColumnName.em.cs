@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class ArrayRank1
+	public static partial class Fx
 	{
 		// Should be a resource!
 		private static readonly string DefaultIndexedColumnFormat = @"Column_{0}";

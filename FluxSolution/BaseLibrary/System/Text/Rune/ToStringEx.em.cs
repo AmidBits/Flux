@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StringFormattingExtensionMethods
+  public static partial class Fx
   {
     public static string ToStringEx(this System.Text.Rune source)
     {

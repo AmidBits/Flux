@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethodsIEnumerableT
+  public static partial class Fx
   {
     /// <summary>Returns whether the source contains any of the items in subset, using the specified comparer.</summary>
     /// <remarks>This extension method leverages (and re-use) the type <see cref="System.Collections.Generic.ISet{T}"/> for speed.</remarks>

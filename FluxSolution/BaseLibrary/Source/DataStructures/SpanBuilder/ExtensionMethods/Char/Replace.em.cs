@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanBuilderExtensionMethods
+  public static partial class Em
   {
     /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the result of the <paramref name="replacementSelector"/>.</summary>
     public static SpanBuilder<char> Replace(ref this Flux.SpanBuilder<char> source, System.Func<char, bool> predicate, System.Func<char, string> replacementSelector)

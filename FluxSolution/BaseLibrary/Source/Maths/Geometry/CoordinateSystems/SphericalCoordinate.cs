@@ -1,7 +1,7 @@
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
     public static Geometry.SphericalCoordinate ToSphericalCoordinate(this System.Numerics.Vector3 source)

@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class UnitsExtensionMethods
+  public static partial class Em
   {
     public static bool Is(this Units.AngleNames source, Units.Angle angle) => source switch
     {

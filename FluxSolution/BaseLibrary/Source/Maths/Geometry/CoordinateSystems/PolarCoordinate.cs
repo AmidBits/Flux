@@ -1,7 +1,7 @@
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     /// <summary>Creates a new <see cref="Geometry.PolarCoordinate"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
     public static Geometry.PolarCoordinate ToPolarCoordinate(this System.Numerics.Vector2 source)

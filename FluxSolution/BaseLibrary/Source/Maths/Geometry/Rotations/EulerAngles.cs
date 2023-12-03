@@ -2,7 +2,7 @@ namespace Flux
 {
   #region ExtensionMethods
 
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     public static Geometry.AxisAngle ToAxisAngle(this Geometry.EulerAngles source)
     {

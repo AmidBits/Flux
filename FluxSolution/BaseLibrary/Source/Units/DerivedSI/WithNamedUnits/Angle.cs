@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class UnitsExtensionMethods
+  public static partial class Em
   {
 #pragma warning disable IDE0060 // Remove unused parameter
     public static string GetUnitSpacing(this Units.AngleUnit unit, bool preferUnicode, bool useFullName)

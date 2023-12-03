@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsSpan
+  public static partial class Fx
   {
     /// <summary>Reverse all characters in <paramref name="source"/>. Handles surrogates.</summary>
     public static System.Span<char> ReverseCharacters(ref this System.Span<char> source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [45, 135, 225, 315], from a four value inter-cardinal direction compass point [0, 1, 2, 3].</summary>
     public static Units.Azimuth GetAzimuth(this Units.InterCardinalDirection source)

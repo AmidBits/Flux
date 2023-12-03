@@ -1,7 +1,7 @@
 ﻿namespace Flux
 {
   #region ExtensionMethods
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     public static float AbsoluteSum(this System.Numerics.Vector2 source)
       => System.Math.Abs(source.X) + System.Math.Abs(source.Y);

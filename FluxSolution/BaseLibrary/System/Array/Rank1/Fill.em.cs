@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayRank1
+  public static partial class Fx
   {
     /// <summary>Fill <paramref name="source"/> with <paramref name="count"/> of <paramref name="pattern"/> at <paramref name="index"/>.</summary>
     public static T[] Fill<T>(this T[] source, int index, int count, params T[] pattern)

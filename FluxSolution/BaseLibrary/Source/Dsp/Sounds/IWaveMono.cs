@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethodsDsp
+  public static partial class Em
   {
 #if NET7_0_OR_GREATER
     public static Dsp.IWaveStereo<TSelf> ToStereoWave<TSelf>(this Dsp.IWaveMono<TSelf> mono)

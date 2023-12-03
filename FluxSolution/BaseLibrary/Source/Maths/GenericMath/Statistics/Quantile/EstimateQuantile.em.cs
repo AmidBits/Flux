@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StatisticsExtensionMethods
+  public static partial class Em
   {
 #if NET7_0_OR_GREATER
 

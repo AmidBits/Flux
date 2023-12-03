@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class MusicExtensionMethods
+  public static partial class Em
   {
     public static double GetTimeCodeRate(this Music.Midi.MidiTimeCodeType source)
       => source switch

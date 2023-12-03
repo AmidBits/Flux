@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsSpanBuilder
+  public static partial class Em
   {
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunesReverse(this SpanBuilder<char> source)
     {

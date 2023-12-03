@@ -1,7 +1,7 @@
 ﻿namespace Flux
 {
   #region ExtensionMethods
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     ///// <summary>Converts the polar coordinates to cartesian 2D coordinates.</summary>
     ///// <remarks>All angles in radians.</remarks>

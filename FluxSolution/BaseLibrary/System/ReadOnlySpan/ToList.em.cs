@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsReadOnlySpan
+  public static partial class Fx
   {
     /// <summary>Creates a new <see cref="System.Collections.Generic.List{T}"/> from <paramref name="source"/>.</summary>
     public static System.Collections.Generic.List<T> ToList<T>(this System.ReadOnlySpan<T> source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayRank2
+  public static partial class Fx
   {
     /// <summary>Create a new sequence with elements in <paramref name="source"/> from the specified <paramref name="dimension"/> and <paramref name="index"/> (within the <paramref name="dimension"/>).</summary>
     public static System.Collections.Generic.IEnumerable<(int index0, int index1, T item)> GetElements<T>(this T[,] source, int dimension, int index)

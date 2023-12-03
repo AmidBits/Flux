@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class StatisticsExtensionMethods
+  public static partial class Em
   {
     public static (double q1, double q2, double q3) ComputeQuartiles<TSelf>(this System.Collections.Generic.IEnumerable<double> sample, Statistics.QuartileAlgorithm algorithm)
       => algorithm switch

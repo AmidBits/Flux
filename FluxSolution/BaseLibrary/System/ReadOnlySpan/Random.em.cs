@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsReadOnlySpan
+  public static partial class Fx
   {
     /// <summary>Returns a random element from the <see cref="System.ReadOnlySpan{T}"/>. Uses the specified <paramref name="rng"/> (default if null).</summary>
     /// <exception cref="System.ArgumentOutOfRangeException"/>

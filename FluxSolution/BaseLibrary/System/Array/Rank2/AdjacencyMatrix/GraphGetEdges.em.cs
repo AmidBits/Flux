@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayRank2
+  public static partial class Fx
   {
     public static System.Collections.Generic.IEnumerable<(int keySource, int keyTarget, T value)> GraphGetEdges<T>(this T[,] source)
       where T : System.IEquatable<T>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsByte
+  public static partial class Fx
   {
     public static byte[] SetBits(this byte[] source, long startBitIndex, long bitCount, bool state)
     {

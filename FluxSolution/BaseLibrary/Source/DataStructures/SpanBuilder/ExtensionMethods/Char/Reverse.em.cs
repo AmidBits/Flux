@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanBuilderExtensionMethods
+  public static partial class Em
   {
     /// <summary>Reverse all ranged characters sort of in-place. Handles surrogates.</summary>
     public static Flux.SpanBuilder<char> Reverse(ref this Flux.SpanBuilder<char> source, int startIndex, int endIndex)

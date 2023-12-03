@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanBuilderExtensionMethods
+  public static partial class Em
   {
     public static SpanBuilder<char> MakeNumbersFixedLength(ref this SpanBuilder<char> source, int length, char padding)
     {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsDiagnostics
+  public static partial class Fx
   {
     /// <summary>Compute how many nanoseconds has elapsed.</summary>
     public static double GetElapsedNanoseconds(this System.Diagnostics.Stopwatch source)

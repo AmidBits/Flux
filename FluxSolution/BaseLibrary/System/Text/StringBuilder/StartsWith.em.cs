@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsStringBuilder
+  public static partial class Fx
   {
     /// <summary>Indicates whether <paramref name="source"/> starts with <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
     public static bool StartsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)

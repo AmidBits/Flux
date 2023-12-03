@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class ExtensionMethodsReadOnlySpan
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Creates a map of the amount of safely skippable elements.</para>

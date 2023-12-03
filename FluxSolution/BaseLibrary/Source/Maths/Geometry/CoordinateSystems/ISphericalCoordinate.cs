@@ -1,7 +1,7 @@
 ﻿namespace Flux
 {
   #region ExtensionMethods
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     ///// <summary>Converts the spherical coordinates to cartesian 3D coordinates.</summary>
     ///// <remarks>All angles in radians.</remarks>

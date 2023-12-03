@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsException
+  public static partial class Fx
   {
     public static System.Xml.Linq.XDocument ToXDocument(this System.Exception source, string? additionalText = null)
     {

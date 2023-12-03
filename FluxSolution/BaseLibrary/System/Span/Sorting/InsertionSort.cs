@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsSpan
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Sorts the content of the sequence using insertion sort.</para>

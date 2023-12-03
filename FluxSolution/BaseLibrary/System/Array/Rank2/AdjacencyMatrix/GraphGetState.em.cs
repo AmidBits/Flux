@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayRank2
+  public static partial class Fx
   {
     /// <summary>If the adjacency matrix value yields the default(T) value, state = 0, otherwise, if the from/to indices are the same. state = 2. and if they are different, state = 1. This "Impl" version bypass argument checks.</summary>
     private static int GraphGetStateImpl<T>(this T[,] source, int keyFrom, int keyTo)

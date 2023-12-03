@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsIEnumerableT
+  public static partial class Fx
   {
     /// <summary>Partition the sequence into one or more lists of a specified size. The last partition may contain less elements than requested.</summary>
     /// <param name="resultSelector">Receives the elements in the partition and partition index (this is not the element index).</param>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsReadOnlySpan
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation. Uses the specified comparer.</para>

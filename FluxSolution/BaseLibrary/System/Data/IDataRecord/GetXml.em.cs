@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsIDataRecord
+  public static partial class Fx
   {
     /// <summary>Creates a new sequence of XML attributes for each column in the current row.</summary>
     public static System.Collections.Generic.IEnumerable<System.Xml.Linq.XAttribute?> GetXmlAttributes(this System.Data.IDataRecord source, System.Func<string, string> nameSelector, System.Func<object, string> valueSelector)

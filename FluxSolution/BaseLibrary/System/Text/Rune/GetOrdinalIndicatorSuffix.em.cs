@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsRune
+  public static partial class Fx
   {
     public static string GetOrdinalIndicatorSuffix(this System.Text.Rune onesDigit, System.Text.Rune tensDigit)
     {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsDateTime
+  public static partial class Fx
   {
     public static PeriodOfDay GetPeriodOfDay(this System.DateTime source)
       => IsMidnight(source) ? PeriodOfDay.Midnight

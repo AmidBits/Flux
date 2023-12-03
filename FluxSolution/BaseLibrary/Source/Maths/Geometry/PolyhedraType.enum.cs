@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     /// <summary>A regular polyhedron that has q regular p-sided polygon faces around each vertex is represented by {p,q} (using System.ValueType(p, q) in .NET).</summary>
     /// <see href="https://en.wikipedia.org/wiki/Schl%C3%A4fli_symbol"/>

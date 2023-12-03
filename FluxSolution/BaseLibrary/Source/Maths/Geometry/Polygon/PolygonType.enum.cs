@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class PolygonTypeExtensionMethods
+  public static partial class Em
   {
     /// <summary></summary>
     /// <param name="source"></param>

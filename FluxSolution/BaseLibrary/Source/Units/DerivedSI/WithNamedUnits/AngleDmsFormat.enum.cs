@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class UnitsExtensionMethods
+  public static partial class Em
   {
     public static string GetAcronymString(this Units.AngleDmsFormat format)
     => format switch

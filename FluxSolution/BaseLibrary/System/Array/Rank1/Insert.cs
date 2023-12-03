@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayRank1
+  public static partial class Fx
   {
     /// <summary>Modifies <paramref name="source"/> by inserting <paramref name="count"/> of <typeparamref name="T"/> at <paramref name="index"/>.</summary>
     private static void Insert<T>(ref T[] source, int index, int count)

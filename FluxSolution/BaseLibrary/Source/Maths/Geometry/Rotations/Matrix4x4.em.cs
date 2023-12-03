@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     /// <summary>
     /// <para>The determinant is a scalar value that is a function of the entries of a square matrix.</para>

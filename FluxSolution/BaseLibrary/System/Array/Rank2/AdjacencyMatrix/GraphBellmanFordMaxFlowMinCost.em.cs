@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayRank2
+  public static partial class Fx
   {
     /// <summary>Returns the maximum flow/minimum cost using the Bellman-Ford algorithm.</summary>
     /// <param name="x"></param>

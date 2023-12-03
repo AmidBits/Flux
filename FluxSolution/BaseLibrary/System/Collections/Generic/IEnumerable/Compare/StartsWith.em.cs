@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethodsIEnumerableT
+  public static partial class Fx
   {
     /// <summary>Determines whether the source sequence begins with the target sequence. Uses the specified equality comparer.</summary>
     /// <exception cref="System.ArgumentNullException"/>

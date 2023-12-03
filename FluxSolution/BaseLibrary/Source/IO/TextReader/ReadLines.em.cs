@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsIO
+  public static partial class Fx
   {
     /// <summary>Returns a new sequence with all lines from the <see cref="System.IO.TextReader"/> and whether to keep empty lines.</summary>
     public static System.Collections.Generic.IEnumerable<string> ReadLines(this System.IO.TextReader source, bool keepEmptyLines)

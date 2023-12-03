@@ -1,7 +1,7 @@
 ﻿#if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class GeometryExtensionMethods
+  public static partial class Em
   {
     /// <summary></summary>
     /// <remarks>The quaternion must be normalized.</remarks>

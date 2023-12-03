@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class UnitsExtensionMethods
+  public static partial class Em
   {
     public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitQuantifiable<TType, TUnit> source, string? format = null, bool preferUnicode = true, bool useFullName = false)
       where TType : struct, System.IEquatable<TType>

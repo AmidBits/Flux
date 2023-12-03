@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class UnitsExtensionMethods
+  public static partial class Em
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 359] (every 11.25°, starting at 0), from a thirty-two value compass point [0, 31]. Each principal wind is 11.25° from its two neighbours.</summary>
     public static Units.Azimuth GetAzimuth(this Units.ThirtytwoWindCompassRose source)

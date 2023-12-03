@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethodsIEnumerableT
+  public static partial class Fx
   {
     /// <summary>Partition the sequence into sub-results, separated when the predicate is satisfied.</summary>
     /// <remarks>The initial element for each sub-result is always returned.</remarks>

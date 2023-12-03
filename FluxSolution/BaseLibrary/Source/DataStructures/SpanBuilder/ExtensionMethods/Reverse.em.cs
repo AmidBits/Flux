@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanBuilderExtensionMethods
+  public static partial class Em
   {
     /// <summary>Reverse all ranged elements in-place.</summary>
     public static Flux.SpanBuilder<T> Reverse<T>(ref this Flux.SpanBuilder<T> source, int startIndex, int endIndex)

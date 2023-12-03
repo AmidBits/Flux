@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsReadOnlySpan
+  public static partial class Fx
   {
     /// <summary>Locate the index and value of both the max element that is less-than(-or-equal) and the min element that is greater-than(-or-equal), the specified reference value identified by the <paramref name="valueSelector"/>. Uses the specified comparer (null for default).</summary>
     /// <remarks>By definition of infimum and supremum, the function is supposed to return both the less-than-or-equal and greater-than-or-equal, but this version makes the (-or-equal) optional via the <paramref name="proper"/> parameter.</remarks>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsVector3
+  public static partial class Fx
   {
     //    /// <summary>Creates a new sequence with the midpoints added in-between the vertices in the sequence.</summary>
     //    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector3> AddMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsReadOnlySpan
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Computes the Jaro-Winkler similarity between <paramref name="source"/> and <paramref name="target"/>, which is a normalized value in the range [0, 1] (from less to greater match).</para>

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethodsIEnumerableT
+  public static partial class Fx
   {
     ///// <summary>This version of Zip runs over all elements in all sequences.</summary>
     //public static System.Collections.Generic.IEnumerable<TResult> ZipEx<T1, T2, TResult>(this System.Collections.Generic.IEnumerable<T1> source1, System.Collections.Generic.IEnumerable<T2> source2, System.Func<T1, T2, TResult> resultSelector)

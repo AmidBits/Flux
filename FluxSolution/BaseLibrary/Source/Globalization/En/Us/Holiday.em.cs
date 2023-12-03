@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GlobalizationExtensionMethods
+  public static partial class Em
   {
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.DateTime>> GetHolidays(this System.DateTime source, Globalization.EnUs.HolidayScope scope)
     {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ArrayRank2
+  public static partial class Fx
   {
     public static int GraphGetDegree<T>(this T[,] source, int key)
       where T : System.IEquatable<T>

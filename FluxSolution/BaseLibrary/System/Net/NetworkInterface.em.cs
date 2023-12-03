@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  public static partial class ExtensionMethodsNetworkInformation
+  public static partial class Fx
   {
     public static System.Collections.Generic.IEnumerable<string> GetMACs(this System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.NetworkInterface> source)
       => source.Select(ni => ni.GetPhysicalAddress()).Where(pa => pa.GetAddressBytes().Length == 6).Select(pa => pa.ToStringMAC());

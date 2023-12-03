@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     private static string ToOpenTelemetryName(this string? name)
       => name is null ? throw new System.ArgumentNullException(nameof(name))

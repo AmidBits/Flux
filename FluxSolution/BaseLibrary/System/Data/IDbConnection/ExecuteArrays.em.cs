@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class ExtensionMethodsIDbConnection
+  public static partial class Fx
   {
     /// <summary>Returns a sequence of objects (as an array) from all results, rows and columns.</summary>
     /// <param name="includeNames">Whether to the column header names for each result set.</param>

@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  public static partial class ExtensionMethodsSecurity
+  public static partial class Fx
   {
     public static System.Xml.Linq.XElement ClaimXml(this System.Security.Claims.Claim source)
     {

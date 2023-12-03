@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsIDataRecord
+  public static partial class Fx
   {
     public static string ToCsv(this System.Data.IDataRecord source, string nullValue, bool quotes)
     {

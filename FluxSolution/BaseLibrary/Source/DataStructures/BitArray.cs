@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class BitArrayExtensionMethods
+  public static partial class Em
   {
     public static System.Collections.Generic.IEnumerable<bool> Enumerate(this BitArray source)
     {

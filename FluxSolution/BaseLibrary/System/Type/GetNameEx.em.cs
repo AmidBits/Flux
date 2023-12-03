@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     private static string InternalGenericToFriendly(string? name)
       => name is null

@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  public static partial class ExtensionMethodsVector2
+  public static partial class Fx
   {
     #region 2D vector (non-collection) computations
 

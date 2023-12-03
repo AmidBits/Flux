@@ -16,7 +16,7 @@ namespace Flux
   }
 
   [System.Runtime.Versioning.SupportedOSPlatform("Windows")]
-  public static partial class AppDataStoreExtensionMethods
+  public static partial class Em
   {
     /// <summary>Creates a <see cref="System.IO.DirectoryInfo"/> for the specified <see cref="AppDataStore"/>.</summary>
     public static System.IO.DirectoryInfo GetDirectoryInfo(this AppDataStore store)

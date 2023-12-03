@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsUri
+  public static partial class Fx
   {
     public static bool TryGetFileSystemInfo(this System.Uri source, out System.IO.FileSystemInfo fileSystemInfo, params System.Uri[] alternateFiles)
     {

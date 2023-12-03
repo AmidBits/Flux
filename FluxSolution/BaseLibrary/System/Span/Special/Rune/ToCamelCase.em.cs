@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class SpanBuilderExtensionMethods
+  public static partial class Em
   {
     /// <summary>Makes CamelCase of words separated by the specified predicate. Uses the specified culture, or the current culture if null.</summary>
     public static System.Span<System.Text.Rune> ToCamelCase(this System.Span<System.Text.Rune> source, System.Func<System.Text.Rune, bool> predicate, System.Globalization.CultureInfo? culture = null)

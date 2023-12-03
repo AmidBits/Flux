@@ -1,7 +1,7 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
-  public static partial class UnitsExtensionMethods
+  public static partial class Em
   {
     public static Units.BigRational ToBigRational<TSelf>(this TSelf value, int maxIterations = 101)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>

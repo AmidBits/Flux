@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsNet
+  public static partial class Em
   {
     /// <summary>Creates a new sequence of all IP addresses in the specified MulticastV4 block.</summary>
     public static System.Collections.Generic.IEnumerable<System.Net.IPAddress> GetAllIPAddresses(this Net.IPv4.MulticastV4Block source)

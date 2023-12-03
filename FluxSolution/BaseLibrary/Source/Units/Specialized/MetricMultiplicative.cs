@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class UnitsExtensionMethods
+  public static partial class Em
   {
     public static double GetUnitFactor(this Units.MetricMultiplicativePrefix source)
       => System.Math.Pow(10, (int)source);

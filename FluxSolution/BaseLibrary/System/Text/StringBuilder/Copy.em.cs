@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsStringBuilder
+  public static partial class Fx
   {
     public static System.Text.StringBuilder Copy(this System.Text.StringBuilder source, int fromStartIndex, int count, int toStartIndex)
     {

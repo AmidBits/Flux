@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsTimeSpan
+  public static partial class Fx
   {
     public static System.Text.StringBuilder ToXsdString(this System.TimeSpan source)
     {

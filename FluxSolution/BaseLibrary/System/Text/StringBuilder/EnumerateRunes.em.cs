@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ExtensionMethodsStringBuilder
+  public static partial class Fx
   {
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunes(this System.Text.StringBuilder source)
     {
