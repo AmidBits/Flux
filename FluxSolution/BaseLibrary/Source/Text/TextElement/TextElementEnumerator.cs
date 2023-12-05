@@ -15,8 +15,8 @@ namespace Flux
     public sealed class TextElementEnumerator
     : Disposable, System.Collections.Generic.IEnumerable<TextElement>
     {
-      const int DefaultBufferSize = 4096;
-      const int DefaultMinLength = 16;
+      internal const int DefaultBufferSize = 4096;
+      internal const int DefaultMinLength = 16;
 
       internal readonly System.IO.TextReader m_textReader;
       internal readonly int m_bufferSize; // The size of the total buffer.
@@ -30,6 +30,8 @@ namespace Flux
       }
       public TextElementEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
         : this(new System.IO.StreamReader(stream, encoding), bufferSize, minLength) { }
+      public TextElementEnumerator(string text, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
+        : this(new System.IO.StringReader(text), bufferSize, minLength) { }
 
       public System.Collections.Generic.IEnumerator<TextElement> GetEnumerator() => new TextElementIterator(this);
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
@@ -68,10 +70,8 @@ namespace Flux
           m_current = default!;
         }
 
-        public TextElement Current
-          => m_current;
-        object System.Collections.IEnumerator.Current
-          => m_current!;
+        public TextElement Current => m_current;
+        object System.Collections.IEnumerator.Current => m_current;
 
         public bool MoveNext()
         {
@@ -105,11 +105,9 @@ namespace Flux
           return false;
         }
 
-        public void Reset()
-          => throw new System.NotImplementedException();
+        public void Reset() => throw new System.NotImplementedException();
 
-        public void Dispose()
-        { }
+        public void Dispose() { }
       }
     }
   }

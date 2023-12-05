@@ -206,8 +206,10 @@
       /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (i.e. radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
 
+      //public static (double x, double y) ConvertRotationAngleToCartesian2Ex(double radAngle)
+      //  => ConvertRotationAngleToCartesian2(System.Math.Tau - (radAngle % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2);
       public static (double x, double y) ConvertRotationAngleToCartesian2Ex(double radAngle)
-        => ConvertRotationAngleToCartesian2(System.Math.Tau - (radAngle % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2);
+        => (-System.Math.Sin(radAngle), System.Math.Cos(radAngle));
 
       public static double ConvertSexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds)
         => degrees + minutes / 60 + seconds / 3600;

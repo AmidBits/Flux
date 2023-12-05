@@ -113,7 +113,6 @@ namespace ConsoleApp
 
       var ndow = System.DateTime.Today.NextDayOfWeek(System.DateTime.Today.DayOfWeek, true);
 
-      //Flux.Fx
 
       //EvaluateNumericStuff();
       var x = (int)System.Globalization.CultureTypes.AllCultures;

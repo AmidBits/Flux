@@ -26,7 +26,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct SphericalCoordinate
-    : System.IFormattable, ISphericalCoordinate
+    : System.IFormattable, ISphericalCoordinate<double>
     {
       public static readonly SphericalCoordinate Zero;
 
@@ -49,38 +49,50 @@ namespace Flux
 
       public double Elevation { get => ConvertInclinationToElevation(m_inclination); init => m_inclination = ConvertElevationToInclination(value); }
 
-      ///// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref=" CartesianCoordinate3{double}">CartesianCoordinate3</see>.</summary>
-      //public CartesianCoordinate3<double> ToCartesianCoordinate3()
-      //{
-      //  var (si, ci) = System.Math.SinCos(m_inclination);
-      //  var (sa, ca) = System.Math.SinCos(m_azimuth);
+      /// <summary>Creates cartesian 3D coordinates from the <see cref="SphericalCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public (double x, double y, double z) ToCartesianCoordinate3()
+      {
+        var (si, ci) = System.Math.SinCos(m_inclination);
+        var (sa, ca) = System.Math.SinCos(m_azimuth);
 
-      //  return new(
-      //    m_radius * ca * si,
-      //    m_radius * sa * si,
-      //    m_radius * ci
-      //  );
-      //}
+        return (
+          m_radius * si * ca,
+          m_radius * si * sa,
+          m_radius * ci
+        );
+      }
 
-      ///// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="CylindricalCoordinate"/>.</summary>
-      //public CylindricalCoordinate ToCylindricalCoordinate()
-      //{
-      //  var (si, ci) = System.Math.SinCos(m_inclination);
+      /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public CylindricalCoordinate ToCylindricalCoordinate()
+      {
+        var (si, ci) = System.Math.SinCos(m_inclination);
 
-      //  return new(
-      //    m_radius * si,
-      //    m_azimuth,
-      //    m_radius * ci
-      //  );
-      //}
+        return new(
+          m_radius * si,
+          m_azimuth,
+          m_radius * ci
+        );
+      }
 
-      ///// <summary>Converts the <see cref="SphericalCoordinate"/> to a <see cref="GeographicCoordinate"/>.</summary>
-      //public GeographicCoordinate ToGeographicCoordinate()
-      // => new(
-      //   Units.Angle.ConvertRadianToDegree(System.Math.PI - m_inclination - System.Math.PI / 2),
-      //   Units.Angle.ConvertRadianToDegree(m_azimuth - System.Math.PI),
-      //   m_radius
-      // );
+      /// <summary>Creates a new <see cref="GeographicCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public GeographicCoordinate ToGeographicCoordinate()
+        => new(
+          Units.Angle.ConvertRadianToDegree(System.Math.PI - m_inclination - System.Math.PI / 2),
+          Units.Angle.ConvertRadianToDegree(m_azimuth - System.Math.PI),
+          m_radius
+        );
+
+      /// <summary>Creates a new <see cref="System.Numerics.Vector3"/> from the <see cref="SphericalCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public System.Numerics.Vector3 ToVector3()
+      {
+        var (x, y, z) = ToCartesianCoordinate3();
+
+        return new((float)x, (float)y, (float)z);
+      }
 
       #region Static methods
 

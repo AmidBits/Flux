@@ -58,6 +58,15 @@ namespace Flux.Geometry
     public double LatitudeInRadians => m_lat;
     public double LongitudeInRadians => m_lon;
 
+    /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
+    /// <remarks>All angles in radians.</remarks>
+    public Geometry.SphericalCoordinate ToSphericalCoordinate()
+      => new(
+        m_altitude,
+        System.Math.PI - ((m_lat * (System.Math.PI / 180)) + System.Math.PI / 2),
+        (m_lon * (System.Math.PI / 180)) + System.Math.PI
+      );
+
     #region Static members
 
     ///// <summary>Return the <see cref="IGeographicCoordinate"/> from the specified components.</summary>

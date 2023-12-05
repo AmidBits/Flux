@@ -1,6 +1,4 @@
 ﻿#if NET7_0_OR_GREATER
-using System.Linq;
-
 namespace Flux
 {
   #region ExtensionMethods
@@ -21,7 +19,7 @@ namespace Flux
     /// <param name="direction">The hexagon direction [-5, 5] (either direction).</param>
     public static Geometry.HexCoordinate<TSelf> DiagonalNeighbor<TSelf>(this Geometry.IHexCoordinate<TSelf> source, int direction)
       where TSelf : System.Numerics.INumber<TSelf>
-      => Geometry.IHexCoordinate<TSelf>.Diagonal(direction) + source;
+      => Geometry.HexCoordinate<TSelf>.Diagonal(direction) + source;
 
     /// <summary>The distance between two hex locations is computer like a vector is computed, i.e. the length of the difference.</summary>
     public static TSelf Distance<TSelf>(this Geometry.HexCoordinate<TSelf> source, Geometry.HexCoordinate<TSelf> target)
@@ -32,7 +30,7 @@ namespace Flux
     /// <param name="center">The center reference hex.</param>
     public static System.Collections.Generic.IEnumerable<Geometry.HexCoordinate<TSelf>> GetNeighbors<TSelf>(this Geometry.IHexCoordinate<TSelf> source)
       where TSelf : System.Numerics.INumber<TSelf>
-      => Geometry.IHexCoordinate<TSelf>.Directions.Select(d => d + source);
+      => Geometry.HexCoordinate<TSelf>.Directions.Select(d => d + source);
 
     /// <summary>Creates a new sequence of all (including the specified center) hex cubes within the specified radius (inclusive).</summary>
     /// <param name="center">The center reference hex.</param>
@@ -60,7 +58,7 @@ namespace Flux
       {
         var deltaMultiplier = isCounterClockWise ? -1 : 1; // Determines the sign of the delta direction as a multiplier.
 
-        var corner = Geometry.IHexCoordinate<TSelf>.Direction(startDirection) * radius + source; // Find the first corner hex, relative center in direction of choice (plus the length of the radius).
+        var corner = Geometry.HexCoordinate<TSelf>.Direction(startDirection) * radius + source; // Find the first corner hex, relative center in direction of choice (plus the length of the radius).
         var deltaDirection = (startDirection + 2 * deltaMultiplier) % 6; // Set initial delta direction.
 
         for (var index = 0; index < 6; index++)
@@ -68,7 +66,7 @@ namespace Flux
           yield return corner;
 
           for (var deltaIndex = TSelf.One; deltaIndex < radius; deltaIndex++) // Enumerate the 'side of the current corner hex'.
-            yield return Geometry.IHexCoordinate<TSelf>.Direction(deltaDirection) * deltaIndex + corner; // Compute the direction and offset of the side.
+            yield return Geometry.HexCoordinate<TSelf>.Direction(deltaDirection) * deltaIndex + corner; // Compute the direction and offset of the side.
 
           corner = isCounterClockWise ? corner.NextCornerCcw() : corner.NextCornerCw(); // Locate the next corner hex.
           deltaDirection = (deltaDirection + 1 * deltaMultiplier) % 6; // Set next delta direction (i.e. rotate clockwise one 'turn').
@@ -99,7 +97,7 @@ namespace Flux
     /// <returns>The neighbor of the reference hex.</returns>
     public static Geometry.HexCoordinate<TSelf> Neighbor<TSelf>(this Geometry.IHexCoordinate<TSelf> source, int direction)
       where TSelf : System.Numerics.INumber<TSelf>
-      => Geometry.IHexCoordinate<TSelf>.Direction(direction) + source;
+      => Geometry.HexCoordinate<TSelf>.Direction(direction) + source;
 
     /// <summary>Yields the next corner hex in a clockwise direction on the same ring as the specified 'corner' hex. This can also be use for other any 'non-corner' hex for various 'circular' (symmetrical) pattern traverals.</summary>
     public static Geometry.HexCoordinate<TSelf> NextCornerCw<TSelf>(this Geometry.IHexCoordinate<TSelf> source)
@@ -169,71 +167,16 @@ namespace Flux
     /// <summary>A hex cube/axial coordinate system.</summary>
     /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
     public interface IHexCoordinate<TSelf>
-      //: System.IFormattable
       where TSelf : System.Numerics.INumber<TSelf>
     {
       /// <summary>The first component or coordinate.</summary>
       TSelf Q { get; }
+
       /// <summary>The second component or coordinate.</summary>
       TSelf R { get; }
-      /// <summary>The third component or coordinate, that can be calculated from Q and R with the formula (-Q - R).</summary>
+
+      /// <summary>The third component or coordinate. It can be derived from Q and R with the formula (-Q - R).</summary>
       TSelf S { get; }
-
-      /// <summary>Computes the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
-      public static int ComputeRangeCount(int radius)
-        => Iteration.Range(0, radius + 1, 6).AsParallel().Sum() + 1;
-
-      /// <summary>Computes the count of hexes in the ring of the specified radius.</summary>
-      public static int ComputeRingCount(int radius)
-        => radius < 0
-        ? throw new System.ArgumentOutOfRangeException(nameof(radius))
-        : radius == 0
-        ? 1
-        : radius * 6;
-
-      /// <summary>Diagonal in counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry), specified in the range [0, 5].</summary>
-      public static HexCoordinate<TSelf> Diagonal(int index)
-        => index < 0 && index > 5
-        ? throw new System.ArgumentOutOfRangeException(nameof(index))
-        : Diagonals[index];
-
-      /// <summary>Diagonals in counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry), in the range [0, 5].</summary>
-      public static HexCoordinate<TSelf>[] Diagonals
-        => new HexCoordinate<TSelf>[] {
-          new(TSelf.CreateChecked(2), -TSelf.One, -TSelf.One),
-          new(TSelf.One, -TSelf.CreateChecked(2), TSelf.One),
-          new(-TSelf.One, -TSelf.One, TSelf.CreateChecked(2)),
-          new(-TSelf.CreateChecked(2), TSelf.One, TSelf.One),
-          new(-TSelf.One, TSelf.CreateChecked(2), -TSelf.One),
-          new(TSelf.One, TSelf.One, -TSelf.CreateChecked(2))
-        };
-
-      /// <summary>Directions in counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry), specified in the range [0, 5].</summary>
-      /// <summary>Returns the unit hex of the specified direction range [0, 5].</summary>
-      /// <param name="index">The </param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static HexCoordinate<TSelf> Direction(int index)
-        => index < 0 || index > 5
-        ? throw new System.ArgumentOutOfRangeException(nameof(index))
-        : Directions[index];
-
-      /// <summary>Directions in counter-clockwise order, starting at 3 o'clock (the same as Euclidean trigonometry), in the range [0, 5].</summary>
-      public static HexCoordinate<TSelf>[] Directions
-        => new HexCoordinate<TSelf>[] {
-          new(TSelf.One, TSelf.Zero, -TSelf.One),
-          new(TSelf.One, -TSelf.One, TSelf.Zero),
-          new(TSelf.Zero, -TSelf.One, TSelf.One),
-          new(-TSelf.One, TSelf.Zero, TSelf.One),
-          new(-TSelf.One, TSelf.One, TSelf.Zero),
-          new(TSelf.Zero, TSelf.One, -TSelf.One),
-        };
-
-      ///// <summary>Returns whether the coordinate make up a valid cube hex, i.e. it satisfies the required cube constraint.</summary>
-      //public static bool IsCubeCoordinate(TSelf q, TSelf r, TSelf s) => TSelf.IsZero(q + r + s);
-
-      ///// <summary>Returns the length of the coordinate.</summary>
-      //public static TSelf CubeLength(TSelf q, TSelf r, TSelf s) => (TSelf.Abs(q) + TSelf.Abs(r) + TSelf.Abs(s)).Divide(2);
     }
   }
 }

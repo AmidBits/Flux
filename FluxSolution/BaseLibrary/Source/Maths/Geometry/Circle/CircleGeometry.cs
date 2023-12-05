@@ -61,6 +61,13 @@ namespace Flux.Geometry
     #region Static methods
 
     /// <summary></summary>
+    public static (double radius, double rotationAngle) ConvertCartesian2ToCircle(double x, double y)
+      => (
+        System.Math.Sqrt(x * x + y * y),
+        System.Math.Atan2(y, x)
+      );
+
+    /// <summary></summary>
     public static (double x, double y) ConvertCircleToCartesian2(double radius, double rotationAngle = 0)
       => (
         System.Math.Cos(rotationAngle) * radius,

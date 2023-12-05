@@ -14,8 +14,8 @@ namespace Flux
     public sealed class RuneEnumerator
       : Disposable, System.Collections.Generic.IEnumerable<System.Text.Rune>
     {
-      const int DefaultBufferSize = 4096;
-      const int DefaultMinLength = 16;
+      internal const int DefaultBufferSize = 4096;
+      internal const int DefaultMinLength = 16;
 
       internal readonly System.IO.TextReader m_textReader;
       internal readonly int m_bufferSize; // The size of the total buffer.
@@ -28,15 +28,16 @@ namespace Flux
         m_minLength = minLength >= 8 ? minLength : throw new System.ArgumentOutOfRangeException(nameof(minLength));
       }
       public RuneEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
-       : this(new System.IO.StreamReader(stream, encoding), bufferSize, minLength) { }
+        : this(new System.IO.StreamReader(stream, encoding), bufferSize, minLength) { }
+      public RuneEnumerator(string text, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
+        : this(new System.IO.StringReader(text), bufferSize, minLength) { }
 
       public System.Collections.Generic.IEnumerator<System.Text.Rune> GetEnumerator()
         => new RuneIterator(this);
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         => GetEnumerator();
 
-      protected override void DisposeManaged()
-        => m_textReader.Dispose();
+      protected override void DisposeManaged() => m_textReader.Dispose();
 
       private sealed class RuneIterator
         : System.Collections.Generic.IEnumerator<System.Text.Rune>
@@ -60,14 +61,8 @@ namespace Flux
           m_current = default!;
         }
 
-        private int m_overallPosition = 0;
-        public int OverallPosition
-          => m_overallPosition;
-
-        public System.Text.Rune Current
-          => m_current;
-        object System.Collections.IEnumerator.Current
-          => m_current!;
+        public System.Text.Rune Current => m_current;
+        object System.Collections.IEnumerator.Current => m_current;
 
         public bool MoveNext()
         {
@@ -89,19 +84,15 @@ namespace Flux
 
             m_current = rune; // Set current to the rune.
 
-            m_overallPosition += charCount;
-
             return true;
           }
 
           return false;
         }
 
-        public void Reset()
-          => throw new System.NotImplementedException();
+        public void Reset() => throw new System.NotImplementedException();
 
-        public void Dispose()
-        { }
+        public void Dispose() { }
       }
     }
   }

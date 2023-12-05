@@ -21,7 +21,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct PolarCoordinate
-    : System.IFormattable, IPolarCoordinate
+    : System.IFormattable, IPolarCoordinate<double>
     {
       public static readonly PolarCoordinate Zero;
 
@@ -39,19 +39,31 @@ namespace Flux
       public double Radius { get => m_radius; init => m_radius = value; }
       public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
-      ///// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="Vector2"/>.</summary>
-      //public CartesianCoordinate2<double> ToCartesianCoordinate2()
-      // => new(
-      //   m_radius * System.Math.Cos(m_azimuth),
-      //   m_radius * System.Math.Sin(m_azimuth)
-      // );
+      /// <summary>Creates a cartesian 2D coordinate from the <see cref="PolarCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public (double x, double y) ToCartesianCoordinate2()
+      {
+        var (sa, ca) = System.Math.SinCos(m_azimuth);
 
-      ///// <summary>Converts the <see cref="PolarCoordinate"/> to a <see cref="System.Numerics.Complex"/>.</summary>
-      //public System.Numerics.Complex ToComplex()
-      // => System.Numerics.Complex.FromPolarCoordinates(
-      //   m_radius,
-      //   m_azimuth
-      // );
+        return (m_radius * ca, m_radius * sa);
+      }
+
+      /// <summary>Creates a <see cref="System.Numerics.Complex"/> from the <see cref="PolarCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public System.Numerics.Complex ToComplex()
+        => System.Numerics.Complex.FromPolarCoordinates(
+          m_radius,
+          m_azimuth
+        );
+
+      /// <summary>Creates a <see cref="System.Numerics.Vector2"/> from the <see cref="PolarCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public System.Numerics.Vector2 ToVector2()
+      {
+        var (x, y) = ToCartesianCoordinate2();
+
+        return new((float)x, (float)y);
+      }
 
       //#region Static methods
       ///// <summary>Return the <see cref="IPolarCoordinate"/> from the specified components.</summary>
