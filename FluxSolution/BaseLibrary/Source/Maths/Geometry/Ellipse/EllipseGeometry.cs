@@ -1,5 +1,9 @@
 namespace Flux.Geometry
 {
+  /// <summary>
+  /// <para></para>
+  /// <see href="https://en.wikipedia.org/wiki/Ellipse"/>
+  /// </summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct EllipseGeometry
   {
@@ -19,15 +23,15 @@ namespace Flux.Geometry
     /// <summary>The y-axis (height) of the ellipse.</summary>
     public double B => m_b;
 
-    /// <summary>The semimajor axis of the ellipse.</summary>
+    /// <summary>The semi-major axis of the ellipse. A semi-major axis is the longest radius.</summary>
     public double SemiMajorAxis => System.Math.Max(m_a, m_b);
-    /// <summary>The semiminor axis of the ellipse.</summary>
+    /// <summary>The semi-minor axis of the ellipse. A semi-minor axis is the shortest radius.</summary>
     public double SemiMinorAxis => System.Math.Min(m_a, m_b);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
     public double Area => System.Math.PI * m_a * m_b;
 
-    /// <summary>Returns the approxate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
+    /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
     public double Circumference
     {
       get
@@ -157,13 +161,13 @@ namespace Flux.Geometry
       );
 
     /// <summary>
-    /// <para>This is a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses. The parameters <paramref name="a"/> and <paramref name="b"/> are the lengths of the semi-major and semi-minor axes, respectively.</para>
+    /// <para>This is a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses. The parameters <paramref name="semiMajorAxis"/> and <paramref name="semiMinorAxis"/> are the lengths of the semi-major and semi-minor axes, respectively.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Ellipse#Circumference"/></para>
     /// </summary>
-    /// <param name="a">The semi-major axis.</param>
-    /// <param name="b">The semi-minor axis.</param>
+    /// <param name="semiMajorAxis">The semi-major axis.</param>
+    /// <param name="semiMinorAxis">The semi-minor axis.</param>
     /// <returns>pow(a - b, 2) / pow(a + b, 2)</returns>
-    public static double H(double a, double b) => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
+    public static double H(double semiMajorAxis, double semiMinorAxis) => System.Math.Pow(semiMajorAxis - semiMinorAxis, 2) / System.Math.Pow(semiMajorAxis + semiMinorAxis, 2);
 
     #endregion Static methods
   }

@@ -113,7 +113,6 @@ namespace ConsoleApp
 
       var ndow = System.DateTime.Today.NextDayOfWeek(System.DateTime.Today.DayOfWeek, true);
 
-
       //EvaluateNumericStuff();
       var x = (int)System.Globalization.CultureTypes.AllCultures;
       //((Flux.ITabularDataAcquirable)new Flux.Resources.DotNet.FxSequence(System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures))).AcquireDataTable("AllCultures")
