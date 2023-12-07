@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>Create a new array with <paramref name="count"/> elements removed from the <paramref name="source"/> starting at <paramref name="index"/>.</summary>
     public static T[] Remove<T>(this T[] source, int index, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var sourceLength = source.Length;
 

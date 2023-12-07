@@ -6,7 +6,8 @@ namespace Flux
     /// <summary>Create a new two dimensional array from <paramref name="source"/> with the elements rotated counter-clockwise.</summary>
     public static T[,] RotateCounterClockwise<T>(this T[,] source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var sourceLength0 = source.GetLength(0);

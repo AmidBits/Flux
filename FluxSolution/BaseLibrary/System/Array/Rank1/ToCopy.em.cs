@@ -11,6 +11,8 @@ namespace Flux
     /// <returns></returns>
     public static T[] ToCopy<T>(this T[] source, int index, int count, int preCount = 0, int postCount = 0)
     {
+      System.ArgumentNullException.ThrowIfNull(source);
+
       var target = new T[preCount + count + postCount];
       System.Array.Copy(source, index, target, preCount, count);
       return target;

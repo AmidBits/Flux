@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
@@ -7,7 +5,7 @@ namespace Flux
     /// <summary>Returns a new array with all column names from the data table.</summary>
     public static string[] AllColumnNames(this System.Data.DataTable source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var array = new string[source.Columns.Count];
       for (var index = array.Length - 1; index >= 0; index--)
@@ -17,7 +15,7 @@ namespace Flux
     /// <summary>Returns a new array of all column types in the data table.</summary>
     public static System.Type[] AllColumnTypes(this System.Data.DataTable source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var array = new System.Type[source.Columns.Count];
       for (var index = array.Length - 1; index >= 0; index--)
@@ -28,7 +26,8 @@ namespace Flux
     /// <summary>Returns a new sequence with all values for that column.</summary>
     public static System.Collections.Generic.IEnumerable<object> GetValuesInColumn(this System.Data.DataTable source, int columnIndex, bool inReverseOrder = false)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (columnIndex < 0 || columnIndex >= source.Columns.Count) throw new System.ArgumentOutOfRangeException(nameof(source));
 
       if (inReverseOrder)

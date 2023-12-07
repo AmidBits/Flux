@@ -1,21 +1,20 @@
 namespace Flux.Data
 {
-  /// <summary>Abstract class for implementing a <see cref="DataReader"/> over tabular data.</summary>
+  /// <summary>Abstract class for implementing a <see cref="DataReaderEnumerable"/> over tabular data.</summary>
   public abstract class TabularDataReader
-    : DataReader
+    : DataReaderEnumerable
   {
     protected System.Collections.Generic.List<string> m_fieldNames = new();
-    /// <summary>An array of the field names for the result.</summary>
-    public System.Collections.Generic.IReadOnlyList<string> FieldNames { get => m_fieldNames; /*init => m_fieldNames.AddRange(value);*/ }
+    /// <summary>A collection of field names for the <see cref="DataReaderEnumerable"/>.</summary>
+    public System.Collections.Generic.IReadOnlyList<string> FieldNames { get => m_fieldNames; init => m_fieldNames.AddRange(value); }
 
     protected System.Collections.Generic.List<System.Type> m_fieldTypes = new();
     ///// <summary>FieldTypes is an optional functionality and each field will default to typeof(object).</summary>
-    public System.Collections.Generic.IReadOnlyList<System.Type> FieldTypes { get => m_fieldTypes; set => m_fieldTypes.AddRange(value); }
+    public System.Collections.Generic.IReadOnlyList<System.Type> FieldTypes { get => m_fieldTypes; init => m_fieldTypes.AddRange(value); }
 
     protected System.Collections.Generic.List<object> m_fieldValues = new();
     /// <summary>An array of field values for the result.</summary>
-    public System.Collections.Generic.IReadOnlyList<object> FieldValues
-      => m_fieldValues;
+    public System.Collections.Generic.IReadOnlyList<object> FieldValues => m_fieldValues;
 
     // IDataRecord
     /// <summary>Gets the data type information for the specified field. Return the name of the System.Type exposed by GetFieldType(index) by default. Override to change this behavior.</summary>

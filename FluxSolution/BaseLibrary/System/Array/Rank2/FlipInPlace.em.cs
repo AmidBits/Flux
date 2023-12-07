@@ -6,7 +6,8 @@ namespace Flux
     /// <summary>Flip the order of the strands, in-place, along the specified <paramref name="dimension"/> in <paramref name="source"/>.</summary>
     public static void FlipInPlace<T>(this T[,] source, int dimension)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var sourceLength0 = source.GetLength(0);

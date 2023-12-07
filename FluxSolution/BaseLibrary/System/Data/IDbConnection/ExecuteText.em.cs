@@ -12,9 +12,9 @@ namespace Flux
     /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<string> ExecuteStrings(this System.Data.IDbConnection source, string commandText, int commandTimeout, System.Func<string, int, string> nameSelector, System.Func<object, int, string> valueSelector, string nullValue = "\u2400", string fieldSeparator = "\u241F", string recordSeparator = "\u241E", string resultSeparator = "\u241D")
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (nameSelector is null) throw new System.ArgumentNullException(nameof(nameSelector));
-      if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(nameSelector);
+      System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       using var c = source.CreateCommand();
 

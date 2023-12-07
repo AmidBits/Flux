@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
@@ -7,8 +5,8 @@ namespace Flux
     /// <summary>Returns the first index of any of the specified characters within the string builder, or -1 if none were found. Uses the specified comparer.</summary>
     public static int IndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (targets is null) throw new System.ArgumentNullException(nameof(targets));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(targets);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
@@ -27,8 +25,8 @@ namespace Flux
     /// <summary>Reports the first index of any of the specified strings within the string builder, or -1 if none were found. Uses the specified comparer.</summary>
     public static int IndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<string> targets, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (targets is null) throw new System.ArgumentNullException(nameof(targets));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(targets);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 

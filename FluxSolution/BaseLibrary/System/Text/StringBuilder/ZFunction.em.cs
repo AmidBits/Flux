@@ -6,16 +6,16 @@ namespace Flux
     // https://cp-algorithms.com/string/z-function.html
     public static int[] ZFunction(this System.Text.StringBuilder source)
     {
-      var sourceLength = source.Length;
+      System.ArgumentNullException.ThrowIfNull(source);
 
-      var z = new int[sourceLength];
+      var z = new int[source.Length];
 
-      for (int i = 1, l = 0, r = 0; i < sourceLength; i++)
+      for (int i = 1, l = 0, r = 0; i < source.Length; i++)
       {
         if (i <= r)
           z[i] = System.Math.Min(r - i + 1, z[i - l]);
 
-        while (i + z[i] < sourceLength && source[z[i]] == source[i + z[i]])
+        while (i + z[i] < source.Length && source[z[i]] == source[i + z[i]])
           z[i]++;
 
         if (i + z[i] - 1 > r)

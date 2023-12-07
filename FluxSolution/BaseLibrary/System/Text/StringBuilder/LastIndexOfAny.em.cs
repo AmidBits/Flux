@@ -5,8 +5,8 @@ namespace Flux
     /// <summary>Returns the last index of any of the specified characters. Or -1 if none were found.</summary>
     public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<char> targets, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (targets is null) throw new System.ArgumentNullException(nameof(targets));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(targets);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
@@ -24,8 +24,8 @@ namespace Flux
     /// <summary>Returns the last index of any of the specified values. or -1 if none is found.</summary>
     public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IList<string> targets, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (targets is null) throw new System.ArgumentNullException(nameof(targets));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(targets);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 

@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
     public static System.Text.StringBuilder MakeCamelCase(this System.Text.StringBuilder source, System.Func<char, bool> predicate)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       for (var index = 0; index < source.Length; index++)
         if (predicate(source[index]))

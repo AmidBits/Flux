@@ -4,6 +4,8 @@ namespace Flux
   {
     public static bool TryGetFileSystemInfo(this System.Uri source, out System.IO.FileSystemInfo fileSystemInfo, params System.Uri[] alternateFiles)
     {
+      System.ArgumentNullException.ThrowIfNull(source);
+
       var list = alternateFiles.ToList();
 
       list.Insert(0, source);

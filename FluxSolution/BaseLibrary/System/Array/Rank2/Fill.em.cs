@@ -6,7 +6,8 @@ namespace Flux
     /// <summary>Fill <paramref name="source"/> with the specified pattern, at the indices and counts.</summary>
     public static void Fill<T>(this T[,] source, int index0, int index1, int count0, int count1, params T[] pattern)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var length0 = source.GetLength(0);

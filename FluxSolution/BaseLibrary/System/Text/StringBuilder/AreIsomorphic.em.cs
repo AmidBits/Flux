@@ -6,7 +6,7 @@ namespace Flux
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
     public static bool AreIsomorphic(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 

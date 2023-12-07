@@ -4,8 +4,8 @@ namespace Flux
   {
     public static string ToCsv(this System.Data.IDataRecord source, string nullValue, bool quotes)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (nullValue is null) throw new System.ArgumentNullException(nameof(nullValue));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(nullValue);
 
       var sb = new System.Text.StringBuilder();
 

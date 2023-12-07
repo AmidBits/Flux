@@ -4,7 +4,7 @@ namespace Flux
   {
     public static System.Xml.Linq.XDocument ToXDocument(this System.Exception source, string? additionalText = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var xe = new System.Xml.Linq.XElement(@"Error");
       if (additionalText is not null)
@@ -22,7 +22,7 @@ namespace Flux
 
     public static System.Xml.XmlDocument ToXmlDocument(this System.Exception source, string? additionalText = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var xd = new System.Xml.XmlDocument();
 

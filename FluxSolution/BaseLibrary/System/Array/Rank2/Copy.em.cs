@@ -6,8 +6,9 @@ namespace Flux
     /// <summary>Copies a selection of (<paramref name="count0"/>, <paramref name="count1"/>) elements from <paramref name="source"/> starting at [<paramref name="sourceIndex0"/>, <paramref name="sourceIndex1"/>] to <paramref name="target"/> starting at [<paramref name="targetIndex0"/>, <paramref name="targetIndex1"/>].</summary>
     public static void Copy<T>(this T[,] source, T[,] target, int sourceIndex0, int sourceIndex1, int targetIndex0, int targetIndex1, int count0, int count1)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (target is null) throw new System.ArgumentNullException(nameof(target));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(target);
+
       if (source.Rank != target.Rank) throw new System.ArgumentException($"Arrays of different rank ({source.Rank} vs {target.Rank}).", nameof(source));
 
       if (source.GetLength(0) is var sourceLength0 && sourceIndex0 < 0 || sourceIndex0 >= sourceLength0) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex0));

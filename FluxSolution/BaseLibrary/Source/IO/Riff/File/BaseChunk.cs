@@ -26,7 +26,7 @@ namespace Flux.Riff
 
     public static Chunk? GetChunk(System.IO.Stream stream)
     {
-      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+      System.ArgumentNullException.ThrowIfNull(stream);
 
       try
       {
@@ -72,7 +72,7 @@ namespace Flux.Riff
     }
     public static System.Collections.Generic.IEnumerable<Chunk> GetChunks(System.IO.Stream stream)
     {
-      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+      System.ArgumentNullException.ThrowIfNull(stream);
 
       while (GetChunk(stream) is var chunk && chunk is not null)
         yield return chunk;

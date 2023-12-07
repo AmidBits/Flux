@@ -1,4 +1,4 @@
-  namespace Flux
+namespace Flux
 {
   public static class TypeBuilder
   {
@@ -9,9 +9,9 @@
 
     public static void AddProperty(System.Reflection.Emit.TypeBuilder typeBuilder, string name, System.Type type, bool isNullable)
     {
-      if (typeBuilder is null) throw new System.ArgumentNullException(nameof(typeBuilder));
-      if (name is null) throw new System.ArgumentNullException(nameof(name));
-      if (type is null) throw new System.ArgumentNullException(nameof(type));
+      System.ArgumentNullException.ThrowIfNull(typeBuilder);
+      System.ArgumentNullException.ThrowIfNull(name);
+      System.ArgumentNullException.ThrowIfNull(type);
 
       var propertyName = name;
 
@@ -52,24 +52,24 @@
 
     public static object? GetPropertyValue(object instance, string propertyName)
     {
-      if (instance is null) throw new System.ArgumentNullException(nameof(instance));
-      if (propertyName is null) throw new System.ArgumentNullException(nameof(propertyName));
+      System.ArgumentNullException.ThrowIfNull(instance);
+      System.ArgumentNullException.ThrowIfNull(propertyName);
 
       return instance.GetType().GetProperty(propertyName)?.GetValue(instance);
     }
 
     public static object? GetPropertyValue(object instance, string propertyName, object[] index)
     {
-      if (instance is null) throw new System.ArgumentNullException(nameof(instance));
-      if (propertyName is null) throw new System.ArgumentNullException(nameof(propertyName));
+      System.ArgumentNullException.ThrowIfNull(instance);
+      System.ArgumentNullException.ThrowIfNull(propertyName);
 
       return instance.GetType().GetProperty(propertyName)?.GetValue(instance, index);
     }
 
     public static void SetPropertyValue(object instance, string propertyName, object propertyValue)
     {
-      if (instance is null) throw new System.ArgumentNullException(nameof(instance));
-      if (propertyName is null) throw new System.ArgumentNullException(nameof(propertyName));
+      System.ArgumentNullException.ThrowIfNull(instance);
+      System.ArgumentNullException.ThrowIfNull(propertyName);
 
       instance.GetType().GetProperty(propertyName)?.SetValue(instance, propertyValue);
     }

@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
@@ -9,8 +7,8 @@ namespace Flux
     /// <example>"".RemoveAll(c => c == ' ');</example>
     public static System.Text.StringBuilder RemoveAll(this System.Text.StringBuilder source, System.Func<char, bool> predicate)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(predicate);
 
       var sourceLength = source.Length;
 

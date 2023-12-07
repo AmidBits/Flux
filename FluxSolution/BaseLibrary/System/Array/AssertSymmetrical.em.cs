@@ -15,6 +15,8 @@ namespace Flux
     /// <returns></returns>
     public static bool IsSymmetrical(this System.Array source)
     {
+      System.ArgumentNullException.ThrowIfNull(source);
+
       var sourceLength = source.GetLength(0); // Load the first dimensional length.
 
       if (IsJaggedArray(source))

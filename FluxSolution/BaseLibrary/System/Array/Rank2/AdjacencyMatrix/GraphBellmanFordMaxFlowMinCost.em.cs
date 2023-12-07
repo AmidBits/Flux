@@ -12,8 +12,8 @@ namespace Flux
     {
       GraphAssertProperty(source, out var length);
 
-      if (capacitySelector is null) throw new System.ArgumentNullException(nameof(capacitySelector));
-      if (costSelector is null) throw new System.ArgumentNullException(nameof(costSelector));
+      System.ArgumentNullException.ThrowIfNull(capacitySelector);
+      System.ArgumentNullException.ThrowIfNull(costSelector);
 
       var vertexCount = length;
 

@@ -1,5 +1,3 @@
-using System.Linq;
-
 /// <summary>Contains classes to read and evaluate RIFF files, which includes *.WAV files.</summary>
 /// <seealso cref="http://tiny.systems/software/soundProgrammer/WavFormatDocs.pdf"/>
 /// <seealso cref="http://soundfile.sapp.org/doc/WaveFormat/"/>
@@ -14,7 +12,7 @@ namespace Flux.Riff
   {
     public static void CreateFile16BitMono(string path, Dsp.Synthesis.Oscillator oscillator, int sampleCount)
     {
-      if (oscillator is null) throw new System.ArgumentNullException(nameof(oscillator));
+      System.ArgumentNullException.ThrowIfNull(oscillator);
 
       var fileName = System.IO.Path.Combine(path, $"{oscillator}.wav");
 
@@ -38,8 +36,8 @@ namespace Flux.Riff
     }
     public static void CreateFile16BitStereo(string path, Dsp.Synthesis.Oscillator oscillatorL, Dsp.Synthesis.Oscillator oscillatorR, int sampleCount)
     {
-      if (oscillatorL is null) throw new System.ArgumentNullException(nameof(oscillatorL));
-      if (oscillatorR is null) throw new System.ArgumentNullException(nameof(oscillatorR));
+      System.ArgumentNullException.ThrowIfNull(oscillatorL);
+      System.ArgumentNullException.ThrowIfNull(oscillatorR);
 
       var fileName = System.IO.Path.Combine(path, $"{oscillatorL}_{oscillatorR}.wav");
 

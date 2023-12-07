@@ -87,7 +87,7 @@ namespace Flux.IO
     /// <summary>Implements reading bulk bytes of bits.</summary>
     public override int Read(byte[] buffer, int offset, int count)
     {
-      if (buffer is null) throw new System.ArgumentNullException(nameof(buffer));
+      System.ArgumentNullException.ThrowIfNull(buffer);
 
       int index = offset, limit = offset + count;
 

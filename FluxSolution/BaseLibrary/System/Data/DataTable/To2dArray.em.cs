@@ -4,7 +4,7 @@ namespace Flux
   {
     public static object[,] To2dArray(this System.Data.DataTable source, int columnStartIndex, int columnCount, int rowStartIndex, int rowCount)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var array = new object[rowCount, columnCount];
 
@@ -14,9 +14,10 @@ namespace Flux
 
       return array;
     }
+
     public static object[,] To2dArray(this System.Data.DataTable source, bool includeColumnNames)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var rowStartIndex = includeColumnNames ? 1 : 0;
 

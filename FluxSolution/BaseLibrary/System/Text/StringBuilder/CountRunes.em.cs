@@ -4,7 +4,7 @@ namespace Flux
   {
     public static int CountRunes(this System.Text.StringBuilder source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var count = 0;
 

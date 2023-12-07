@@ -5,7 +5,7 @@ namespace Flux
   {
     public static System.Collections.Generic.IDictionary<string, string> GetNamedGroups(this System.Text.RegularExpressions.Match source)
     {
-      if (source is null) throw new System.Exception(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var dictionary = new System.Collections.Generic.Dictionary<string, string>();
 

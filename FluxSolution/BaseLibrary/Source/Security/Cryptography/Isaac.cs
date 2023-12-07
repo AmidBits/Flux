@@ -33,8 +33,8 @@ namespace Flux.Cryptography
 
     public int Crypt(System.IO.MemoryStream input, System.IO.MemoryStream output, string key)
     {
-      if (input is null) throw new System.ArgumentNullException(nameof(input));
-      if (output is null) throw new System.ArgumentNullException(nameof(output));
+      System.ArgumentNullException.ThrowIfNull(input);
+      System.ArgumentNullException.ThrowIfNull(output);
 
       Seed(key, true);
 

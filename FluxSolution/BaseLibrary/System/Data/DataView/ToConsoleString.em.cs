@@ -5,7 +5,7 @@ namespace Flux
     public static System.Data.DataColumnCollection GetDataColumnCollection(this System.Data.DataView source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
-      if (source.Table is null) throw new System.ArgumentException("The Table in the DataView is null.");
+      System.ArgumentNullException.ThrowIfNull(source.Table);
 
       return source.Table.Columns;
     }
@@ -13,8 +13,8 @@ namespace Flux
     public static int[] MaxColumnWidths(this System.Data.DataView source, bool includeColumnNames, bool uniformWidths)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(source.Table);
 
-      if (source.Table is null) throw new System.ArgumentException("The Table in the DataView is null.");
       if (source.Count == 0) throw new System.ArgumentOutOfRangeException(nameof(source), "The DataView is empty.");
 
       var maxColumnWidths = source.Table.Columns.Cast<System.Data.DataColumn>()

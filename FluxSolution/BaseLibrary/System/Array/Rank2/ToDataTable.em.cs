@@ -6,7 +6,8 @@ namespace Flux
     /// <summary>Create a new <see cref="System.Data.DataTable"/> from <paramref name="source"/>.</summary>
     public static System.Data.DataTable ToDataTable<T>(this T[,] source, bool sourceHasColumnNames, params string[] customColumnNames)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var sourceLength0 = source.GetLength(0);

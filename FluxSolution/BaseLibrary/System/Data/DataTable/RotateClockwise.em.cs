@@ -7,7 +7,7 @@ namespace Flux
     /// <param name="targetColumnNames">If less target column names than needed are specified, "Column_[ordinalIndex]" will be used.</param>
     public static System.Data.DataTable RotateClockwise(this System.Data.DataTable source, out string[] sourceColumnNames, params string[] targetColumnNames)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       sourceColumnNames = new string[source.Columns.Count];
       for (var index = sourceColumnNames.Length - 1; index >= 0; index--)

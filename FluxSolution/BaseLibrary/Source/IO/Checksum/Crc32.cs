@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Checksum
 {
   /// <summary></summary>
@@ -23,7 +21,7 @@ namespace Flux.Checksum
     {
       m_hash = 0xFFFFFFFF;
 
-      if (lookupTable is null) throw new System.ArgumentNullException(nameof(lookupTable));
+      System.ArgumentNullException.ThrowIfNull(lookupTable);
 
       if (lookupTable.Length != 256) throw new System.ArgumentOutOfRangeException(nameof(lookupTable), @"The lookup table must contain 256 values");
 
@@ -32,7 +30,7 @@ namespace Flux.Checksum
 
     public int GenerateChecksum32(byte[] bytes, int offset, int count)
     {
-      if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
+      System.ArgumentNullException.ThrowIfNull(bytes);
 
       unchecked
       {

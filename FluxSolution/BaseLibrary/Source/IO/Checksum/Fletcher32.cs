@@ -13,7 +13,7 @@ namespace Flux.Checksum
 
     public int GenerateChecksum32(byte[] bytes, int offset, int count)
     {
-      if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
+      System.ArgumentNullException.ThrowIfNull(bytes);
 
       uint sum1 = m_hash & 0xFFFF, sum2 = m_hash >> 16;
 

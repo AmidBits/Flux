@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data rows reversed (mirrored).</summary>
     public static System.Data.DataTable FlipRows(this System.Data.DataTable source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var target = new System.Data.DataTable(source.TableName);
 

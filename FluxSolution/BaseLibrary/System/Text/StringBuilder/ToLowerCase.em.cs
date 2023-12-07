@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Convert all characters, in the specified range, to lower case. Uses the specified culture.</summary>
     public static System.Text.StringBuilder ToLowerCase(this System.Text.StringBuilder source, int startIndex, int length, System.Globalization.CultureInfo? culture = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       culture ??= System.Globalization.CultureInfo.InvariantCulture;
 

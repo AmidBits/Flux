@@ -27,7 +27,7 @@ namespace Flux.Riff
 
     public void SetSampleBuffer(FormatChunk format, int samples)
     {
-      if (format is null) throw new System.ArgumentNullException(nameof(format));
+      System.ArgumentNullException.ThrowIfNull(format);
 
       System.Array.Resize(ref m_buffer, 8 + (format.SampleBitDepth / 8 * format.SampleChannels) * samples);
 

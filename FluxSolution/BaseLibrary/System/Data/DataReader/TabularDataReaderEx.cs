@@ -1,11 +1,18 @@
+using System.Data;
+
 namespace Flux.Data
 {
-  /// <summary>Abstract class for implementing a <see cref="DataReader"/> over tabular data.</summary>
+  /// <summary>Abstract class for implementing a <see cref="DataReaderEnumerable"/> over tabular data.</summary>
   public abstract class TabularDataReaderEx
     : TabularDataReader
   {
-    public const string AllowDBNull = nameof(AllowDBNull);
-    public const string TsqlDataType = nameof(TsqlDataType);
+    public override DataTable CreateSchemaTable() // Adding two additional column, so override the method in DataReader.
+    {
+      var dt = base.CreateSchemaTable();
+      dt.Columns.Add("AllowDBNull", typeof(bool));
+      dt.Columns.Add("TsqlDataType", typeof(string));
+      return dt;
+    }
 
     protected System.Collections.Generic.List<bool> m_fieldAllowDBNulls = new();
     /// <summary>An array of whether the fields FieldNulls is an optional functionality where each field defaults to true (as in, the field allows null values).</summary>
@@ -42,17 +49,7 @@ namespace Flux.Data
     // IDataReader
     public override System.Data.DataTable GetSchemaTable()
     {
-      var dt = new System.Data.DataTable(@"SchemaTable")
-      {
-        Columns = {
-                { ColumnOrdinal, typeof(int) },
-                { ColumnName, typeof(string) },
-                { DataType, typeof(System.Type) },
-                { ColumnSize, typeof(int) },
-                { AllowDBNull, typeof(bool) },
-                { TsqlDataType, typeof(string) }
-              }
-      };
+      var dt = CreateSchemaTable();
 
       for (var index = 0; index < FieldCount; index++)
         dt.Rows.Add(new object[] { index, GetName(index), GetFieldType(index), -1, GetFieldAllowDBNull(index), GetFieldTsqlDataType(index) });

@@ -5,7 +5,8 @@ namespace Flux
     /// <summary>Create a new array with all elements from <paramref name="source"/> and <paramref name="count"/> elements inserted at <paramref name="index"/>.</summary>
     private static T[] Insert<T>(this T[] source, int index, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
 
       var targetLength = source.Length + count; // Pre-compute for multi-use.

@@ -6,7 +6,8 @@ namespace Flux
     /// <summary>Create a new array from <paramref name="source"/> with the <paramref name="indices"/> of strands (rows or columns) removed from the specified <paramref name="dimension"/>.</summary>
     public static T[,] Remove<T>(this T[,] source, int dimension, params int[] indices)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var hs = new System.Collections.Generic.HashSet<int>(indices);

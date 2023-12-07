@@ -5,7 +5,8 @@ namespace Flux
     /// <summary>Reverse all ranged characters sort of in-place. Handles surrogates.</summary>
     public static System.Text.StringBuilder Reverse(this System.Text.StringBuilder source, int startIndex, int endIndex)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (startIndex < 0 || startIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
       if (endIndex < startIndex || endIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
 

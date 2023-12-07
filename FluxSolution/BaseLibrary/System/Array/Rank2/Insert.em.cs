@@ -6,7 +6,8 @@ namespace Flux
     /// <summary>Create a new array with the elements from <paramref name="source"/> and by inserting <paramref name="count"/> new contiguous strands (of rows or colums) in the specified <paramref name="dimension"/> at the <paramref name="index"/>. All values from the <paramref name="source"/> are copied.</summary>
     public static T[,] Insert<T>(this T[,] source, int dimension, int index, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
       if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
       if (index < 0 || index > source.GetLength(dimension)) throw new System.ArgumentOutOfRangeException(nameof(index));

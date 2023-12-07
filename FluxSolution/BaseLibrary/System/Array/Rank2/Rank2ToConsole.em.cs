@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>Returns the two-dimensional array as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
     public static System.Collections.Generic.IEnumerable<string> Rank2ToConsoleStrings<T>(this T[,] source, char horizontalSeparator = '\u007c', char verticalSeparator = '\u002d', bool uniformWidth = false, bool centerContent = false)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var maxWidths = new int[source.GetLength(1)];
 

@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Yields the number of characters that the source and the target have in common from the specified respective indices. Uses the specified comparer.</summary>
     public static int CountEqualAt(this System.Text.StringBuilder source, int sourceStartIndex, System.ReadOnlySpan<char> target, int targetStartIndex, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var sourceLength = source.Length;
       var targetLength = target.Length;

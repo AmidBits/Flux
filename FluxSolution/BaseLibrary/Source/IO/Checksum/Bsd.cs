@@ -13,7 +13,7 @@ namespace Flux.Checksum
 
     public int GenerateChecksum32(byte[] bytes, int offset, int count)
     {
-      if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
+      System.ArgumentNullException.ThrowIfNull(bytes);
 
       unchecked
       {

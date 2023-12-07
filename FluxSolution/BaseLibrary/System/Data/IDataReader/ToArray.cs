@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Creates a new data table with values from the IDataReader. The specified table name is used in constructing the data table.</summary>
     public static object[][] ToArray(this System.Data.IDataReader source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var count = 0;
 

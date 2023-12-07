@@ -1,4 +1,5 @@
-﻿using Flux;
+﻿using System.Linq;
+using Flux;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -112,6 +113,21 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       var ndow = System.DateTime.Today.NextDayOfWeek(System.DateTime.Today.DayOfWeek, true);
+
+      //var dre = new Flux.Data.DataReaderEnumerable(System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures).Select(ci => new object[] { ci.DisplayName, ci.NativeName, ci.LCID }));// { FieldNames = new string[] { "DisplayName", "NativeName" }, FieldTypes = new System.Type[] { typeof(string), typeof(string), typeof(int) } };
+      var drec = new Flux.Data.EnumerableTabularDataReader(
+        System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures).Select(ci => new object[] { ci.DisplayName, ci.NativeName, ci.LCID })
+        , new string[] { "DisplayName", "NativeName", "LCID" }
+        , new System.Type[] { typeof(string), typeof(string), typeof(int) }
+      );
+
+      foreach (var d in drec.Take(10))
+      {
+        System.Console.WriteLine($"{string.Join(", ", d.GetValues())}");
+      }
+
+      System.Console.WriteLine($"{string.Join(", ", drec.FieldNames)}");
+      System.Console.WriteLine($"{string.Join(", ", drec.FieldTypes)}");
 
       //EvaluateNumericStuff();
       var x = (int)System.Globalization.CultureTypes.AllCultures;

@@ -4,7 +4,7 @@ namespace Flux
   {
     public static System.Text.StringBuilder MakeNumbersFixedLength(this System.Text.StringBuilder source, int length)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       bool wasDigit = false;
       var digitCount = 0;

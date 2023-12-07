@@ -7,7 +7,7 @@ namespace Flux
     /// <see cref="System.Data.IDbCommand.ExecuteNonQuery"/>
     public static int ExecuteNonQuery(this System.Data.IDbConnection source, string commandText, int commandTimeout)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       using var c = source.CreateCommand();
 

@@ -1,12 +1,10 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
   {
     public static object?[][] ToJaggedArray(this System.Data.DataTable source, int columnStartIndex, int columnCount, int rowStartIndex, int rowCount)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var array = new object?[rowCount][];
 
@@ -15,9 +13,10 @@ namespace Flux
 
       return array;
     }
+
     public static object?[][] ToJaggedArray(this System.Data.DataTable source, bool includeColumnNames)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var rowStartIndex = includeColumnNames ? 1 : 0;
 

@@ -7,7 +7,7 @@ namespace Flux
     /// <param name="predicate">The first string is the string up until and including the numeric value, and the second string is the suffix to be affixed.</param>
     public static System.Text.StringBuilder InsertOrdinalIndicatorSuffix(this System.Text.StringBuilder source, System.Func<string, string, bool>? predicate = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var wasDigit = false;
 

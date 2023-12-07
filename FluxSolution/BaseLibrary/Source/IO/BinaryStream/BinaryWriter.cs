@@ -34,9 +34,13 @@
     /// <param name="encoding">Encoding to use when writing character data</param>
     public BinaryWriter(BitConverter bitConverter, System.IO.Stream stream, System.Text.Encoding encoding)
     {
-      m_stream = stream ?? throw new System.ArgumentNullException(nameof(stream));
-      m_bitConverter = bitConverter ?? throw new System.ArgumentNullException(nameof(bitConverter));
-      m_encoding = encoding ?? throw new System.ArgumentNullException(nameof(encoding));
+      System.ArgumentNullException.ThrowIfNull(bitConverter);
+      System.ArgumentNullException.ThrowIfNull(stream);
+      System.ArgumentNullException.ThrowIfNull(encoding);
+
+      m_stream = stream;
+      m_bitConverter = bitConverter;
+      m_encoding = encoding;
 
       if (!stream.CanWrite) throw new System.ArgumentException("Stream isn't writable", nameof(stream));
     }

@@ -4,9 +4,9 @@ namespace Flux
   {
     public static System.Security.Cryptography.SymmetricAlgorithm SetKeyIV(this System.Security.Cryptography.SymmetricAlgorithm source, byte[] key, byte[] iv)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (key is null) throw new System.ArgumentNullException(nameof(key));
-      if (iv is null) throw new System.ArgumentNullException(nameof(iv));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(key);
+      System.ArgumentNullException.ThrowIfNull(iv);
 
       var keyBytes = new byte[source.KeySize / 8];
       System.Array.Clear(keyBytes);
@@ -26,7 +26,7 @@ namespace Flux
     /// <summary>Decrypt the source stream to the specified stream using the specified key, salt and symmetric algorithm.</summary>
     public static void Decrypt(this System.Security.Cryptography.SymmetricAlgorithm source, System.IO.Stream input, System.IO.Stream output)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       using var cs = new System.Security.Cryptography.CryptoStream(output, source.CreateDecryptor(), System.Security.Cryptography.CryptoStreamMode.Write);
 
@@ -35,7 +35,7 @@ namespace Flux
     /// <summary>Encrypt the source stream to the specified stream using the specified key, salt and symmetric algorithm.</summary>
     public static void Encrypt(this System.Security.Cryptography.SymmetricAlgorithm source, System.IO.Stream input, System.IO.Stream output)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       using var cs = new System.Security.Cryptography.CryptoStream(output, source.CreateEncryptor(), System.Security.Cryptography.CryptoStreamMode.Write);
 

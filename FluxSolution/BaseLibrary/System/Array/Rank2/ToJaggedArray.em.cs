@@ -6,7 +6,8 @@ namespace Flux
     /// <summary>Create a new jagged array (a single-dimension array of one-dimensional arrays) with all elements from <paramref name="source"/> in <paramref name="dimension"/>-major order (by rows or by column).</summary>
     public static T[][] ToJaggedArray<T>(this T[,] source, int dimension)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
       if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
 

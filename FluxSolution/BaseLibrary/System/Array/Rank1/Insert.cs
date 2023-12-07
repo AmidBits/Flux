@@ -5,7 +5,8 @@ namespace Flux
     /// <summary>Modifies <paramref name="source"/> by inserting <paramref name="count"/> of <typeparamref name="T"/> at <paramref name="index"/>.</summary>
     private static void Insert<T>(ref T[] source, int index, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (index < 0 || index > source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
 
       var sourceLength = source.Length;
@@ -27,7 +28,7 @@ namespace Flux
     /// <summary>Modifies <paramref name="source"/> by inserting the elements of <paramref name="values"/> at <paramref name="index"/>.</summary>
     public static void Insert<T>(ref T[] source, int index, params T[] values)
     {
-      if (values is null) throw new System.ArgumentNullException(nameof(values));
+      System.ArgumentNullException.ThrowIfNull(values);
 
       Insert(ref source, index, values.Length);
 

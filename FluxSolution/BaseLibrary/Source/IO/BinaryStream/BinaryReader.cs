@@ -35,12 +35,15 @@
     /// <param name="encoding">Encoding to use when reading character data</param>
     public BinaryReader(BitConverter bitConverter, System.IO.Stream stream, System.Text.Encoding encoding)
     {
-      if (stream is null) throw new System.ArgumentNullException(nameof(stream));
+      System.ArgumentNullException.ThrowIfNull(bitConverter);
+      System.ArgumentNullException.ThrowIfNull(stream);
+      System.ArgumentNullException.ThrowIfNull(encoding);
+
       if (!stream.CanRead) throw new System.ArgumentException("Stream isn't readable.", nameof(stream));
 
       m_stream = stream;
-      m_bitConverter = bitConverter ?? throw new System.ArgumentNullException(nameof(bitConverter));
-      m_encoding = encoding ?? throw new System.ArgumentNullException(nameof(encoding));
+      m_bitConverter = bitConverter;
+      m_encoding = encoding;
       m_decoder = encoding.GetDecoder();
       m_minBytesPerChar = encoding is System.Text.UnicodeEncoding ? 2 : 1;
     }

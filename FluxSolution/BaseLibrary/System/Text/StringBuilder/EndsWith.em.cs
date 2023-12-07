@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Indicates whether the source ends with value. Uses the specified comparer.</summary>
     public static bool EndsWith(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 

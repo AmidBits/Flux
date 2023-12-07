@@ -9,7 +9,7 @@ namespace Flux.Data
     /// <summary>Creates a enumerable tabular data reader using the specified sequence.</summary>
     public EnumerableTabularDataReader(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<object>> source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(nameof(source));
 
       m_enumerator = source.GetEnumerator();
     }

@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Net
 {
   public static class QueryString
@@ -7,8 +5,8 @@ namespace Flux.Net
     /// <summary>Change any specified keys in the query dictionary. If the value of a key is the same as the default value of that key, then omit the key altogether.</summary>
     public static System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> ChangeInDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>> change, System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>>? defaults = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (change is null) throw new System.ArgumentNullException(nameof(change));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(change);
 
       var changed = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
@@ -30,8 +28,8 @@ namespace Flux.Net
     /// <summary>Remove any specified keys in the query dictionary. If the value of a key is the same as the default value of that key, then omit the key altogether.</summary>
     public static System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> RemoveInDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, System.Collections.Generic.List<string>>> remove, System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>>? defaults = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (remove is null) throw new System.ArgumentNullException(nameof(remove));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(remove);
 
       var removed = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
@@ -48,7 +46,7 @@ namespace Flux.Net
     /// <summary>Generate a query string from the 'query string dictionary'.</summary>
     public static string ToQueryString(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       return source.Count > 0 ? $"{'?'}{string.Join(@"&", source.OrderBy(kvp => kvp.Key).Where(kvp => kvp.Value.Count > 0).SelectMany(kvp => kvp.Value.Select(v => $"{kvp.Key}={v}")))}" : string.Empty;
     }
@@ -56,7 +54,7 @@ namespace Flux.Net
     /// <summary>Generate a 'query string dictionary' from the specified query string.</summary>
     public static System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> Parse(this string source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       return (source.Length > 0 && source[0] == '?' ? source[1..] : source).Split('&').Select(s => s.Split('=')).Where(a => a.Length == 2).GroupBy(a => a[0]).ToDictionary(g => System.Net.WebUtility.UrlDecode(g.Key), g => g.Select(a => System.Net.WebUtility.UrlDecode(a[1])).ToList());
     }
@@ -64,7 +62,7 @@ namespace Flux.Net
     /// <summary>Generate a 'simplified query string dictionary' from the 'query string dictionary'.</summary>
     public static System.Collections.Generic.IDictionary<string, string> ToSimplifiedDictionary(this System.Collections.Generic.IDictionary<string, System.Collections.Generic.List<string>> source, string delimiter = "|")
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       return source.ToDictionary(kvp => kvp.Key, kvp => string.Join(delimiter, kvp.Value));
     }

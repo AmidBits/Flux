@@ -5,7 +5,8 @@ namespace Flux
     /// <summary>Reverse the rows of the <see cref="System.Data.DataTable"/> in-line. The process swaps itemArray's within the data table.</summary>
     public static void FlipRowsInPlace(this System.Data.DataTable source, int startIndex, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (startIndex < 0 || startIndex > source.Rows.Count - 2) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
       if (count < 1 || startIndex + count > source.Rows.Count) throw new System.ArgumentOutOfRangeException(nameof(count));
 

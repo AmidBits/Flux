@@ -6,11 +6,11 @@ namespace Flux
     // https://cp-algorithms.com/string/prefix-function.html
     public static int[] PrefixFunction(this System.Text.StringBuilder source)
     {
-      var sourceLength = source.Length;
+      System.ArgumentNullException.ThrowIfNull(source);
 
-      var p = new int[sourceLength];
+      var p = new int[source.Length];
 
-      for (int i = 1; i < sourceLength; i++)
+      for (int i = 1; i < source.Length; i++)
       {
         var j = p[i - 1];
 

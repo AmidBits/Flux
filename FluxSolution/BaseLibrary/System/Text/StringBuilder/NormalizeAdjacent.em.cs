@@ -5,7 +5,8 @@ namespace Flux
     /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
     public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, System.Collections.Generic.IEqualityComparer<char> equalityComparer, System.ReadOnlySpan<char> characters)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (maxAdjacentLength < 1) throw new System.ArgumentNullException(nameof(maxAdjacentLength));
       if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 

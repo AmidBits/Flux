@@ -26,7 +26,7 @@ namespace Flux.Hashing
 
     public int GenerateSimpleHash32(byte[] bytes, int offset, int count)
     {
-      if (bytes is null) throw new System.ArgumentNullException(nameof(bytes));
+      System.ArgumentNullException.ThrowIfNull(bytes);
 
       unchecked
       {

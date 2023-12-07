@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
@@ -7,8 +5,8 @@ namespace Flux
     /// <summary>Determines whether <paramref name="count"/> characters from any of the specified <paramref name="targets"/> is found in the <paramref name="source"/> at the specified <paramref name="startIndex"/>. Uses the specified comparer.</summary>
     public static bool EqualsAnyAt(this System.Text.StringBuilder source, int startIndex, int count, System.Collections.Generic.IList<string> targets, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (targets is null) throw new System.ArgumentNullException(nameof(targets));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(targets);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 

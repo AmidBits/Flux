@@ -5,7 +5,8 @@ namespace Flux
     /// <summary>Create a new sequence with all elements in <paramref name="source"/> with the specified 'major' <paramref name="dimension"/> order, i.e. by row or by column first (then the other).</summary>
     public static System.Collections.Generic.IEnumerable<(int index0, int index1, T item)> GetAllElements<T>(this T[,] source, int dimension)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var sourceLength0 = source.GetLength(0);

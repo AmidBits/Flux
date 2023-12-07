@@ -19,9 +19,9 @@ namespace Flux.Hashing
 
     public long ComputeHash<TValue>(TValue[,] board, System.Func<TValue, bool> predicate, System.Func<TValue, int> selector)
     {
-      if (board is null) throw new System.ArgumentNullException(nameof(board));
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-      if (selector is null) throw new System.ArgumentNullException(nameof(selector));
+      System.ArgumentNullException.ThrowIfNull(board);
+      System.ArgumentNullException.ThrowIfNull(predicate);
+      System.ArgumentNullException.ThrowIfNull(selector);
 
       var td0l = m_table.GetLength(0);
       var td1l = m_table.GetLength(1);

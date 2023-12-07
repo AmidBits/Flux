@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>Returns the jagged array (i.e. an array of arrays) as a two-dimensional array.</summary>
     public static T[,] ToTwoDimensionalArray<T>(this T[][] source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var target = new T[source.Length, System.Linq.Enumerable.Max(source, t => t.Length)];
 

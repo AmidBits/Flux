@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Results in a string array of all column values in the current row.</summary>
     public static string GetString(this System.Data.IDataRecord source, int index, string nullString)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       return source.IsDBNull(index) ? nullString : source.GetValue(index).ToString() ?? nullString;
     }
@@ -24,7 +24,7 @@ namespace Flux
     /// <summary>Results in a sequence of strings of all column values in the current row.</summary>
     public static System.Collections.Generic.IEnumerable<string> GetStrings(this System.Data.IDataRecord source, string nullString)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       for (var index = 0; index < source.FieldCount; index++)
         yield return GetString(source, index, nullString);

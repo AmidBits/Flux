@@ -7,7 +7,8 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Transpose"/>
     public static void TransposeInPlace<T>(this T[,] source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
 
       var sourceLength0 = source.GetLength(0);

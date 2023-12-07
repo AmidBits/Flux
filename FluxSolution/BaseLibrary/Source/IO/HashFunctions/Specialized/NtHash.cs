@@ -21,7 +21,7 @@ namespace Flux.Hashing.Special
 
     public static byte[] Compute(byte[] data)
     {
-      if (data is null) throw new System.ArgumentNullException(nameof(data));
+      System.ArgumentNullException.ThrowIfNull(data);
 
       var dataBitLength = data.Length * 8; // The message is "padded" (extended) so that its length (in bits) is congruent to 448, modulo 512.
 

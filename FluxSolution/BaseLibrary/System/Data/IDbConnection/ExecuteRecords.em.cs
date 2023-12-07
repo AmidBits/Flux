@@ -6,7 +6,7 @@ namespace Flux
     /// <returns>A sequence of <see cref="System.Data.IDataRecord"/>.</returns>
     public static System.Collections.Generic.IEnumerable<System.Data.IDataRecord> ExecuteRecords(this System.Data.IDbConnection source, string commandText, int commandTimeout)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       using var c = source.CreateCommand();
 
@@ -27,8 +27,8 @@ namespace Flux
     /// <returns>A sequence of <typeparamref name="TResult"/>.</returns>
     public static System.Collections.Generic.IEnumerable<TResult> ExecuteRecords<TResult>(this System.Data.IDbConnection source, string commandText, int commandTimeout, System.Func<System.Data.IDataRecord, System.Data.DataTable?, TResult> recordSelector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (recordSelector is null) throw new System.ArgumentNullException(nameof(recordSelector));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(recordSelector);
 
       using var c = source.CreateCommand();
 
