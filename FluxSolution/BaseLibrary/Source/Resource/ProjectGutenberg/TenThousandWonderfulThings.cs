@@ -16,7 +16,7 @@ namespace Flux.Resources.ProjectGutenberg
       using var stream = uri.GetStream();
       using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-      using var e = reader.ReadLines(true).GetEnumerator();
+      using var e = reader.ReadLines(s => true, s => s).GetEnumerator();
 
       var entry = new System.Text.StringBuilder();
 

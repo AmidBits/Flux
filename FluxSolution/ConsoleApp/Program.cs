@@ -112,26 +112,25 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var ndow = System.DateTime.Today.NextDayOfWeek(System.DateTime.Today.DayOfWeek, true);
+      var ipaFileInfos = Flux.Fx.GetFileInfos(Flux.Fx.ResourcesDirectoryIpa);
+      var lexiconFileInfos = Flux.Fx.GetFileInfos(Flux.Fx.ResourcesDirectoryLexicon);
 
-      //var dre = new Flux.Data.DataReaderEnumerable(System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures).Select(ci => new object[] { ci.DisplayName, ci.NativeName, ci.LCID }));// { FieldNames = new string[] { "DisplayName", "NativeName" }, FieldTypes = new System.Type[] { typeof(string), typeof(string), typeof(int) } };
-      var drec = new Flux.Data.EnumerableTabularDataReader(
-        System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures).Select(ci => new object[] { ci.DisplayName, ci.NativeName, ci.LCID })
-        , new string[] { "DisplayName", "NativeName", "LCID" }
-        , new System.Type[] { typeof(string), typeof(string), typeof(int) }
-      );
+      var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("ko-KR");
+      //cultureInfo = System.Globalization.CultureInfo.CurrentCulture;
 
-      foreach (var d in drec.Take(10))
-      {
-        System.Console.WriteLine($"{string.Join(", ", d.GetValues())}");
-      }
+      var ipaOk = cultureInfo.TryLoadCultureInfoFile(l => l.Split(new char[] { ',', '\t' }, 2), out var ipaDataTable, out var ipaFileInfo, Flux.Fx.ResourcesDirectoryIpa);
+      var lexiconOk = cultureInfo.TryLoadCultureInfoFile(l => new string[] { l }, out var lexiconDataTable, out var lexiconFileInfo, Flux.Fx.ResourcesDirectoryLexicon);
 
-      System.Console.WriteLine($"{string.Join(", ", drec.FieldNames)}");
-      System.Console.WriteLine($"{string.Join(", ", drec.FieldTypes)}");
+      var a = ipaDataTable.ToTwoDimensionalArray(true, 0, 1, 1, 1);
+
+      var xmlDocument = ipaDataTable.ToXmlDocument();
+      var sxmldocument = xmlDocument.OuterXml;
+      var xDocument = ipaDataTable.ToXDocument();
+      var sxdocument = xDocument.ToString(System.Xml.Linq.SaveOptions.DisableFormatting);
 
       //EvaluateNumericStuff();
       var x = (int)System.Globalization.CultureTypes.AllCultures;
-      //((Flux.ITabularDataAcquirable)new Flux.Resources.DotNet.FxSequence(System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures))).AcquireDataTable("AllCultures")
+      var y = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures).Select(ci => (ci.Name, ci.DisplayName, ci.NativeName)).ToArray();
     }
 
     private static void Main(string[] args)

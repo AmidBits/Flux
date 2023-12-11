@@ -2,14 +2,6 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static System.Data.DataColumnCollection GetDataColumnCollection(this System.Data.DataView source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-      System.ArgumentNullException.ThrowIfNull(source.Table);
-
-      return source.Table.Columns;
-    }
-
     public static int[] MaxColumnWidths(this System.Data.DataView source, bool includeColumnNames, bool uniformWidths)
     {
       System.ArgumentNullException.ThrowIfNull(source);

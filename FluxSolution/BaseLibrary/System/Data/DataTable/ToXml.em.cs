@@ -7,10 +7,10 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var xd = new System.Xml.Linq.XDocument();
-      using (var xw = xd.CreateWriter())
-        source.WriteXml(xw);
-      return xd;
+      var document = new System.Xml.Linq.XDocument();
+      using (var writer = document.CreateWriter())
+        source.WriteXml(writer);
+      return document;
     }
 
     /// <summary>Creates a new XmlDocument with the data from the DataTable.</summary>
@@ -18,10 +18,10 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var xd = new System.Xml.XmlDocument();
-      using (var writer = xd.CreateNavigator()?.AppendChild())
+      var document = new System.Xml.XmlDocument();
+      using (var writer = document.CreateNavigator()?.AppendChild())
         source.WriteXml(writer);
-      return xd;
+      return document;
     }
   }
 }

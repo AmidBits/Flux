@@ -2,29 +2,30 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static bool TryGetFileSystemInfo(this System.Uri source, out System.IO.FileSystemInfo fileSystemInfo, params System.Uri[] alternateFiles)
+    public static bool TryGetFileInfo(this System.Uri source, out System.IO.FileInfo? fileInfo)
     {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      var list = alternateFiles.ToList();
-
-      list.Insert(0, source);
-
-      for (var index = 0; index < list.Count; index++)
+      try
       {
-        var uri = list[index];
+        fileInfo = new System.IO.FileInfo(source.LocalPath.StartsWith('/') ? source.LocalPath[1..] : source.LocalPath);
 
-        try
-        {
-          fileSystemInfo = new System.IO.FileInfo(uri.LocalPath.StartsWith('/') ? uri.LocalPath[1..] : uri.LocalPath);
+        if (fileInfo.Exists)
+          return true;
+      }
+      catch { }
 
-          if (fileSystemInfo.Exists)
-            return true;
-        }
-        catch { }
+      fileInfo = default;
+      return false;
+    }
+
+    public static bool TryGetFileInfo(this System.Collections.Generic.IEnumerable<System.Uri> source, out System.IO.FileInfo? fileInfo)
+    {
+      foreach (var uri in source)
+      {
+        if (uri.TryGetFileInfo(out fileInfo))
+          return true;
       }
 
-      fileSystemInfo = default!;
+      fileInfo = default;
       return false;
     }
   }

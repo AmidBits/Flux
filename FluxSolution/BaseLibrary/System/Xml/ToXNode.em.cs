@@ -2,10 +2,16 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Convert an XmlElement into an XElement.</summary>
-    /// <param name="source">The XmlElement to convert.</param>
-    /// <returns>An XElement containing the XML from the XmlElement.</returns>
+    /// <summary>Creates an <see cref="System.Xml.Linq.XNode"/> from an existing <see cref="System.Xml.XmlNode"/>.</summary>
+    /// <param name="source">The source <see cref="System.Xml.XmlNode"/>.</param>
+    /// <returns>An <see cref="System.Xml.Linq.XNode"/> containing the XML from an <see cref="System.Xml.XmlNode"/>.</returns>
     public static System.Xml.Linq.XNode ToXNode(this System.Xml.XmlNode source)
-      => System.Xml.Linq.XNode.ReadFrom(((source ?? throw new System.ArgumentNullException(nameof(source))).CreateNavigator() ?? throw new System.NullReferenceException(@"CreateNavigator")).ReadSubtree());
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+
+      using var reader = source.CreateNavigator()?.ReadSubtree() ?? throw new System.NullReferenceException(@"CreateNavigator");
+
+      return System.Xml.Linq.XNode.ReadFrom(reader);
+    }
   }
 }

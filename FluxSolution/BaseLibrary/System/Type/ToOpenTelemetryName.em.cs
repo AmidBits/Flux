@@ -1,12 +1,16 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
   {
+    /// <summary>
+    /// <see href="https://opentelemetry.io/docs/specs/otel/common/attribute-naming/"/>
+    /// </summary>
     private static string ToOpenTelemetryName(this string? name)
-      => name is null ? throw new System.ArgumentNullException(nameof(name))
-      : name.AsSpan().AsSpan().FromCamelCase().ToLowerCase().ToString();
+    {
+      System.ArgumentNullException.ThrowIfNull(name);
+
+      return new SpanBuilder<char>(name).AsSpan().ToLowerCase().ReplaceAll((e, i) => !char.IsLetterOrDigit(e), (e, i) => e == '.' ? e : '_').ToString();
+    }
 
     /// <summary>Returns the name with various extended functionalities, e.g. "<T1, T2, T3>" for generics instead of "`3".</summary>
     public static string ToOpenTelemetryName(this System.Type source)

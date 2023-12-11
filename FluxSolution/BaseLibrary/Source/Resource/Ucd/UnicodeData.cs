@@ -19,7 +19,7 @@ namespace Flux.Resources.Ucd
       using var stream = uri.GetStream();
       using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-      foreach (var line in reader.ReadLines(false))
+      foreach (var line in reader.ReadLines(s => s.Length > 0, s => s))
         yield return line.Split(';');
     }
 

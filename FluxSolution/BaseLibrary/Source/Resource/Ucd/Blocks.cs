@@ -30,7 +30,7 @@ namespace Flux.Resources.Ucd
 
       var reSplit = SplitRegex();
 
-      foreach (var line in reader.ReadLines(false))
+      foreach (var line in reader.ReadLines(s => s.Length > 0, s => s))
         if (line.Length > 0 && !line.StartsWith('#'))
           yield return reSplit.Split(line);
     }
