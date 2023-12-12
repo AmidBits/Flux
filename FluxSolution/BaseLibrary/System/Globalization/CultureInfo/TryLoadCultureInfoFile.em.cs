@@ -2,9 +2,18 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static bool TryFindCultureInfoFile(this System.Globalization.CultureInfo source, out System.IO.FileInfo? fileInfo, string directory)
+    /// <summary>
+    /// <para>Try to locate a file that</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="fileInfo"></param>
+    /// <param name="directory"></param>
+    /// <returns></returns>
+    public static bool TryLocateCultureFile(this System.Globalization.CultureInfo source, out System.IO.FileInfo? fileInfo, string directory)
     {
       source ??= System.Globalization.CultureInfo.CurrentCulture;
+
+      var list = new List<(int offset, int index, FileInfo fileInfo)>();
 
       var fileInfos = GetFileInfos(directory);
 
@@ -14,8 +23,16 @@ namespace Flux
 
         var fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(fileInfo.Name);
 
-        if (source.TryMatchName(fileNameWithoutExtension))
-          return true;
+        if (source.TryMatchCulture(fileNameWithoutExtension, out var hierarchy))
+          list.Add((hierarchy, index, fileInfo));
+      }
+
+      if (list.Count > 0)
+      {
+        list.Sort();
+
+        fileInfo = list.First().fileInfo;
+        return true;
       }
 
       fileInfo = default;
@@ -25,19 +42,14 @@ namespace Flux
     /// <para>Returns the lexicon (word list) for the <paramref name="source"/>, if available.</para>
     /// <see href="https://github.com/open-dict-data/ipa-dict/tree/master/"/>
     /// </summary>
-    public static bool TryLoadCultureInfoFile(this System.Globalization.CultureInfo source, System.Func<string, string[]> itemArraySelector, out System.Data.DataTable dataTable, out System.IO.FileInfo? fileInfo, string directory)
+    public static bool TryLoadCultureFile(this System.Globalization.CultureInfo source, System.Func<string, string[]> itemArraySelector, out System.Data.DataTable dataTable, out System.IO.FileInfo? fileInfo, string directory, System.Text.Encoding? encoding = null)
     {
-      if (source.TryFindCultureInfoFile(out fileInfo, directory))
+      if (source.TryLocateCultureFile(out fileInfo, directory))
       {
-        dataTable = fileInfo!.ReadIntoDataTable(itemArraySelector, System.Text.Encoding.UTF8);
+        using var fileStream = fileInfo?.OpenRead() ?? throw new System.ArgumentNullException(nameof(fileInfo));
+        using var streamReader = new System.IO.StreamReader(fileStream, encoding ?? System.Text.Encoding.UTF8);
 
-        return true;
-
-      }
-
-      if (source.Parent != System.Globalization.CultureInfo.InvariantCulture && source.Parent.TryFindCultureInfoFile(out fileInfo, directory))
-      {
-        dataTable = fileInfo!.ReadIntoDataTable(itemArraySelector, System.Text.Encoding.UTF8);
+        dataTable = streamReader.ToDataTable(s => s.Length > 0, itemArraySelector, System.IO.Path.GetFileNameWithoutExtension(source.Name));
 
         return true;
       }

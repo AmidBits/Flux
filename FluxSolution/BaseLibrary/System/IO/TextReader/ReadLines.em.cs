@@ -16,9 +16,9 @@ namespace Flux
     //public static System.Collections.Generic.IEnumerable<string> ReadLines(this System.IO.TextReader source, bool keepEmptyLines)
     //  => source.ReadLines(s => s.Length > 0 || keepEmptyLines, s => s);
 
-    public static System.Data.DataTable ToDataTable(this System.IO.TextReader source, System.Func<string, bool> predicate, System.Func<string, string[]> resultSelector)
+    public static System.Data.DataTable ToDataTable(this System.IO.TextReader source, System.Func<string, bool> predicate, System.Func<string, string[]> resultSelector, string tableName)
     {
-      var dataTable = new System.Data.DataTable();
+      var dataTable = new System.Data.DataTable(tableName);
 
       foreach (var array in source.ReadLines(predicate, resultSelector))
       {

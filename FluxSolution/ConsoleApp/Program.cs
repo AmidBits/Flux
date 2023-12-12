@@ -115,11 +115,15 @@ namespace ConsoleApp
       var ipaFileInfos = Flux.Fx.GetFileInfos(Flux.Fx.ResourcesDirectoryIpa);
       var lexiconFileInfos = Flux.Fx.GetFileInfos(Flux.Fx.ResourcesDirectoryLexicon);
 
+      //var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("en-US");
       var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("ko-KR");
+      var subci1 = cultureInfo.Parent;
+      var subci2 = subci1.Parent;
+
       //cultureInfo = System.Globalization.CultureInfo.CurrentCulture;
 
-      var ipaOk = cultureInfo.TryLoadCultureInfoFile(l => l.Split(new char[] { ',', '\t' }, 2), out var ipaDataTable, out var ipaFileInfo, Flux.Fx.ResourcesDirectoryIpa);
-      var lexiconOk = cultureInfo.TryLoadCultureInfoFile(l => new string[] { l }, out var lexiconDataTable, out var lexiconFileInfo, Flux.Fx.ResourcesDirectoryLexicon);
+      var ipaOk = cultureInfo.TryLoadCultureFile(l => l.Split(new char[] { ',', '\t' }, 2), out var ipaDataTable, out var ipaFileInfo, Flux.Fx.ResourcesDirectoryIpa);
+      var lexiconOk = cultureInfo.TryLoadCultureFile(l => new string[] { l }, out var lexiconDataTable, out var lexiconFileInfo, Flux.Fx.ResourcesDirectoryLexicon);
 
       var a = ipaDataTable.ToTwoDimensionalArray(true, 0, 1, 1, 1);
 
