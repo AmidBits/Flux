@@ -1,9 +1,10 @@
 namespace Flux
 {
-  /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class Fx
   {
-    /// <summary>Create a new array with <paramref name="count"/> elements removed from the <paramref name="source"/> starting at <paramref name="index"/>.</summary>
+    /// <summary>
+    /// <para>Create a new array with <paramref name="count"/> elements removed from the <paramref name="source"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
     public static T[] Remove<T>(this T[] source, int index, int count)
     {
       System.ArgumentNullException.ThrowIfNull(source);

@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class Fx
   {
-    //public static int GetColumnOrdinalIndex(this System.Data.DataTable source, string columnName)
-    //  => source.Columns.Cast<System.Data.DataColumn>().Where(dc => dc.ColumnName == columnName).Single().Ordinal;
+    public static int GetColumnOrdinalIndex(this System.Data.DataTable source, string columnName)
+      => source.Columns[columnName]?.Ordinal ?? throw new System.ArgumentOutOfRangeException(nameof(columnName));
 
     //    /// <summary>Returns a new sequence with all values for that column.</summary>
     //    public static System.Collections.Generic.List<object> GetValuesInColumn(this System.Data.DataTable source, int columnIndex, bool reverseOrder = false)

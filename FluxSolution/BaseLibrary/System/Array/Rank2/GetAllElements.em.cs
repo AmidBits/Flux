@@ -2,7 +2,10 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Create a new sequence with all elements in <paramref name="source"/> with the specified 'major' <paramref name="dimension"/> order, i.e. by row or by column first (then the other).</summary>
+    /// <summary>
+    /// <para>Create a new sequence with all elements in <paramref name="source"/> with the specified 'major' <paramref name="dimension"/> order, i.e. by row or by column first (then the other).</para>
+    /// </summary>
+    /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static System.Collections.Generic.IEnumerable<(int index0, int index1, T item)> GetAllElements<T>(this T[,] source, int dimension)
     {
       System.ArgumentNullException.ThrowIfNull(source);

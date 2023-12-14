@@ -17,21 +17,13 @@ namespace Flux
 
       var fileInfos = GetFileInfos(directory);
 
-      for (var index = 0; index < fileInfos.Count; index++)
+      var matched = source.TryLocateCulture(fileInfos.Select(fi => fi.FullName), out var matches, out var dt);
+
+      System.Console.WriteLine(dt.DefaultView.ToConsoleString(new ConsoleStringOptions() { CenterContent = true }));
+
+      if (matched)
       {
-        fileInfo = fileInfos[index];
-
-        var fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(fileInfo.Name);
-
-        if (source.TryMatchCulture(fileNameWithoutExtension, out var hierarchy))
-          list.Add((hierarchy, index, fileInfo));
-      }
-
-      if (list.Count > 0)
-      {
-        list.Sort();
-
-        fileInfo = list.First().fileInfo;
+        fileInfo = fileInfos.First(fi => string.Equals(fi.FullName, matches.First().text));
         return true;
       }
 
@@ -49,7 +41,7 @@ namespace Flux
         using var fileStream = fileInfo?.OpenRead() ?? throw new System.ArgumentNullException(nameof(fileInfo));
         using var streamReader = new System.IO.StreamReader(fileStream, encoding ?? System.Text.Encoding.UTF8);
 
-        dataTable = streamReader.ToDataTable(s => s.Length > 0, itemArraySelector, System.IO.Path.GetFileNameWithoutExtension(source.Name));
+        dataTable = streamReader.ToDataTable(s => s.Length > 0, itemArraySelector, source.Name);
 
         return true;
       }

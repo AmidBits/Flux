@@ -93,7 +93,7 @@ namespace Types
     [TestMethod]
     public void EmInsertDim0()
     {
-      var insert0 = (int[,])original.Insert(0, 1, 1, -1, -2, -3);
+      var insert0 = (int[,])original.InsertToCopy(0, 1, 1, -1, -2, -3);
 
       var expected = new int[4, 3] { { 1, 2, 3 }, { -1, -2, -3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 
@@ -103,7 +103,7 @@ namespace Types
     [TestMethod]
     public void EmInsertDim1()
     {
-      var insert1 = (int[,])original.Insert(1, 1, 1, -1, -2, -3);
+      var insert1 = (int[,])original.InsertToCopy(1, 1, 1, -1, -2, -3);
 
       var expected = new int[3, 4] { { 1, -1, 2, 3 }, { 4, -2, 5, 6 }, { 7, -3, 8, 9 } };
 
@@ -113,7 +113,7 @@ namespace Types
     [TestMethod]
     public void EmRemoveDim0()
     {
-      var remove0 = original.Remove(0, 1);
+      var remove0 = original.RemoveToCopy(0, 1);
 
       var expected = new int[2, 3] { { 1, 2, 3 }, { 7, 8, 9 } };
 
@@ -123,7 +123,7 @@ namespace Types
     [TestMethod]
     public void EmRemoveDim1()
     {
-      var remove1 = original.Remove(1, 1);
+      var remove1 = original.RemoveToCopy(1, 1);
 
       var expected = new int[3, 2] { { 1, 3 }, { 4, 6 }, { 7, 9 } };
 
@@ -133,7 +133,7 @@ namespace Types
     [TestMethod]
     public void EmRotateClockwise()
     {
-      var rotateCw = original.RotateClockwise();
+      var rotateCw = original.RotateToCopyCw();
 
       var expected = new int[3, 3] { { 7, 4, 1 }, { 8, 5, 2 }, { 9, 6, 3 } };
 
@@ -143,7 +143,7 @@ namespace Types
     [TestMethod]
     public void EmRotateCounterClockwise()
     {
-      var rotateCcw = original.RotateCounterClockwise();
+      var rotateCcw = original.RotateToCopyCcw();
 
       var expected = new int[3, 3] { { 3, 6, 9 }, { 2, 5, 8 }, { 1, 4, 7 } };
 

@@ -54,7 +54,7 @@ namespace Flux
       {
         while (matrix[sourceIndex, targetIndex] != 0)
         {
-          lcs.Insert(0, source[sourceIndex - 1]); // Can also use target[targetIndex - 1].
+          lcs.InsertToCopy(0, source[sourceIndex - 1]); // Can also use target[targetIndex - 1].
 
           sourceIndex--;
           targetIndex--;

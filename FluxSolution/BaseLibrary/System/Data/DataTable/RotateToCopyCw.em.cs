@@ -2,10 +2,12 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data rotated left.</summary>
+    /// <summary>
+    /// <para>Creates a new <see cref="System.Data.DataTable"/> containing the <paramref name="source"/> data rotated (clockwise) to the right.</para>
+    /// </summary>
     /// <param name="sourceColumnNames">Outputs the column names of the source data table.</param>
     /// <param name="targetColumnNames">If less target column names than needed are specified, "Column_[ordinalIndex]" will be used.</param>
-    public static System.Data.DataTable RotateCounterClockwise(this System.Data.DataTable source, out string[] sourceColumnNames, params string[] targetColumnNames)
+    public static System.Data.DataTable RotateToCopyCw(this System.Data.DataTable source, out string[] sourceColumnNames, params string[] targetColumnNames)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -18,11 +20,11 @@ namespace Flux
       for (var index = 0; index < source.Rows.Count; index++)
         target.Columns.Add(targetColumnNames.AsColumnName(index));
 
-      for (var columnIndex = source.Columns.Count - 1; columnIndex >= 0; columnIndex--)
+      for (var columnIndex = 0; columnIndex < source.Columns.Count; columnIndex++)
       {
         var itemArray = new object[source.Rows.Count];
-        for (var rowIndex = 0; rowIndex < source.Rows.Count; rowIndex++)
-          itemArray[rowIndex] = source.Rows[rowIndex][columnIndex];
+        for (var rowIndex = source.Rows.Count - 1; rowIndex >= 0; rowIndex--)
+          itemArray[source.Rows.Count - 1 - rowIndex] = source.Rows[rowIndex][columnIndex];
         target.Rows.Add(itemArray);
       }
 

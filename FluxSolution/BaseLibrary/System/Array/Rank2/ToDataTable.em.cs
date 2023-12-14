@@ -1,9 +1,11 @@
 namespace Flux
 {
-  /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class Fx
   {
-    /// <summary>Create a new <see cref="System.Data.DataTable"/> from <paramref name="source"/>.</summary>
+    /// <summary>
+    /// <para>Create a new <see cref="System.Data.DataTable"/> from <paramref name="source"/>.</para>
+    /// </summary>
+    /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static System.Data.DataTable ToDataTable<T>(this T[,] source, bool sourceHasColumnNames, params string[] customColumnNames)
     {
       System.ArgumentNullException.ThrowIfNull(source);

@@ -2,10 +2,12 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source data transposed (pivoted).</summary>
+    /// <summary>
+    /// <para>Creates a new <see cref="System.Data.DataTable"/> containing the source data transposed (pivoted).</para>
+    /// </summary>
     /// <param name="sourceColumnNames">Outputs the column names of the source data table.</param>
     /// <param name="targetColumnNames">If less target column names than needed are specified, "Column_[ordinalIndex]" will be used.</param>
-    public static System.Data.DataTable Transpose(this System.Data.DataTable source, out string[] sourceColumnNames, params string[] targetColumnNames)
+    public static System.Data.DataTable TransposeToCopy(this System.Data.DataTable source, out string[] sourceColumnNames, params string[] targetColumnNames)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 

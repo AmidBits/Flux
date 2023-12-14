@@ -69,8 +69,8 @@
       {
         for (var i = count; i <= x; i++)
         {
-          m_matrix = m_matrix.Insert(0, i, 1, 0); // Add dimension 0 to accomodate the new vertex as a source.
-          m_matrix = m_matrix.Insert(1, i, 1, 0); // Add dimension 1 to accomodate the new vertex as a target.
+          m_matrix = m_matrix.InsertToCopy(0, i, 1, 0); // Add dimension 0 to accomodate the new vertex as a source.
+          m_matrix = m_matrix.InsertToCopy(1, i, 1, 0); // Add dimension 1 to accomodate the new vertex as a target.
         }
 
         return true;
@@ -101,8 +101,8 @@
       {
         RemoveVertexValue(x);
 
-        m_matrix = m_matrix.Remove(0, x); // Add dimension 0 to accomodate vertex values.
-        m_matrix = m_matrix.Remove(1, x); // Add dimension 1 to accomodate vertex values.
+        m_matrix = m_matrix.RemoveToCopy(0, x); // Add dimension 0 to accomodate vertex values.
+        m_matrix = m_matrix.RemoveToCopy(1, x); // Add dimension 1 to accomodate vertex values.
 
         return true;
       }
@@ -374,7 +374,7 @@
           grid[i0 + 1, i1 + 1] = m_matrix[i0, i1];
       }
 
-      sb.AppendLine(string.Join(System.Environment.NewLine, grid.Rank2ToConsoleStrings(uniformWidth: true, centerContent: true)));
+      sb.AppendLine(string.Join(System.Environment.NewLine, grid.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true, CenterContent = true })));
 
       sb.AppendLine();
 

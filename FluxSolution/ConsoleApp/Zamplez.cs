@@ -274,30 +274,30 @@ namespace ConsoleApp
       var padding = 2;
       padding++;
 
-      var (minLeft, minTop, maxLeft, maxTop) = new string[] { "Array-2D" }.Concat(matrix.Rank2ToConsoleStrings(uniformWidth: true)).WriteToConsole();
+      var (minLeft, minTop, maxLeft, maxTop) = new string[] { "Array-2D" }.Concat(matrix.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole();
 
-      var mrotatec = matrix.RotateClockwise();
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CW" }.Concat(mrotatec.Rank2ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      var mrotatec = matrix.RotateToCopyCw();
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CW" }.Concat(mrotatec.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
 
-      var mrotatecc = matrix.RotateCounterClockwise();
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CCW" }.Concat(mrotatecc.Rank2ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      var mrotatecc = matrix.RotateToCopyCcw();
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CCW" }.Concat(mrotatecc.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
 
       var mtranspose = matrix.TransposeToCopy();
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Transposed" }.Concat(mtranspose.Rank2ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Transposed" }.Concat(mtranspose.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
 
-      var minsert = matrix.Insert(1, 1, 4, 0);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Inserted" }.Concat(minsert.Rank2ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      var minsert = matrix.InsertToCopy(1, 1, 4, 0);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Inserted" }.Concat(minsert.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
       minsert.Fill(0, 1, 3, 4, 9);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Fill (Inserted)" }.Concat(minsert.Rank2ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Fill (Inserted)" }.Concat(minsert.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
 
       var mflip0 = matrix.FlipToCopy(0);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_0" }.Concat(mflip0.Rank2ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_0" }.Concat(mflip0.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
 
       var mflip1 = matrix.FlipToCopy(1);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_1" }.Concat(mflip1.Rank2ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_1" }.Concat(mflip1.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
 
-      var mremove = matrix.Remove(1, 1);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Remove" }.Concat(mremove.Rank2ToConsoleStrings(uniformWidth: true)).WriteToConsole(maxLeft + padding, minTop);
+      var mremove = matrix.RemoveToCopy(1, 1);
+      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Remove" }.Concat(mremove.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
 
       System.Console.WriteLine();
 
@@ -840,9 +840,9 @@ namespace ConsoleApp
         var user3 = new User(23, "John", "Canada");
 
         var rulesCompiled = rules.CompileRules<User>();
-        System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsoleString(verticalSeparator: ", ")}");
-        System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsoleString(verticalSeparator: ", ")}");
-        System.Console.WriteLine($"{user3}, {rulesCompiled.EvaluateRules(user3).ToConsoleString(verticalSeparator: ", ")}");
+        System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsoleString(new ConsoleStringOptions() { VerticalSeparator = ',' })}");
+        System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsoleString(new ConsoleStringOptions() { VerticalSeparator = ',' })}");
+        System.Console.WriteLine($"{user3}, {rulesCompiled.EvaluateRules(user3).ToConsoleString(new ConsoleStringOptions() { VerticalSeparator = ',' })}");
       }
     }
 

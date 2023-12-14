@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a new array with <paramref name="count"/> elements from <paramref name="source"/> starting at <paramref name="index"/>. Use <paramref name="preCount"/> and <paramref name="postCount"/> arguments to add surrounding element space in the new array.</summary>
+    /// <summary>
+    /// <para>Creates a new array with <paramref name="count"/> elements from <paramref name="source"/> starting at <paramref name="index"/>. Use <paramref name="preCount"/> and <paramref name="postCount"/> arguments to add surrounding element space in the new array.</para>
+    /// </summary>
     /// <param name="source">W</param>
     /// <param name="index"></param>
     /// <param name="count"></param>

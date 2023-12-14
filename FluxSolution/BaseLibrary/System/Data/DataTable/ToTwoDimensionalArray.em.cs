@@ -14,9 +14,9 @@ namespace Flux
         for (var column = columnStartIndex + columnCount - 1; column >= columnStartIndex; column--)
           array[0, column - columnStartIndex] = source.Columns[column].ColumnName;
 
-      for (var row = offset + rowStartIndex + rowCount - 1; row >= rowStartIndex + offset; row--)
+      for (var row = rowStartIndex + rowCount - 1; row >= rowStartIndex; row--)
         for (var column = columnStartIndex + columnCount - 1; column >= columnStartIndex; column--)
-          array[row - rowStartIndex, column - columnStartIndex] = source.Rows[row][column];
+          array[row - rowStartIndex + offset, column - columnStartIndex] = source.Rows[row][column];
 
       return array;
     }

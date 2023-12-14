@@ -1,16 +1,27 @@
 namespace Flux
 {
-  public static partial class LinqX
+  public static partial class Fx
   {
-    public static T[] ImplicitJoin<T>(params T[][] source)
+    /// <summary>
+    /// <para>Perform an inner join of all sub-sequences in <paramref name="source"/>.</para>
+    /// </summary>
+    /// <returns></returns>
+    public static System.Collections.Generic.HashSet<T> ImplicitJoin<T>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var sourceLength = source.Length;
+      using var e = source.GetEnumerator();
 
-      var ij = System.Array.Empty<T>();
-      for (var index = 0; index < sourceLength; index++)
-        ij = index == 0 ? source[index] : ij.Join(source[index], outer => outer, inner => inner, (outer, inner) => inner).ToArray();
+      var ij = new System.Collections.Generic.HashSet<T>();
+
+      if (e.MoveNext())
+      {
+        ij = new System.Collections.Generic.HashSet<T>(e.Current);
+
+        while (e.MoveNext())
+          ij = new System.Collections.Generic.HashSet<T>(ij.Join(e.Current, outer => outer, inner => inner, (outer, inner) => inner));
+      }
+
       return ij;
     }
   }

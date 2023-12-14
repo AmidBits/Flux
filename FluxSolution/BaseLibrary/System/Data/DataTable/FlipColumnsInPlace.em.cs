@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Reverse the columns of the <see cref="System.Data.DataTable"/> in-line. The process re-orders the columns (using the SetOrdinal() method) within the data table.</summary>
+    /// <summary>
+    /// <para>Reverse <paramref name="count"/> columns at <paramref name="startIndex"/> of the <paramref name="source"/> <see cref="System.Data.DataTable"/> in-line. The process re-orders the columns (using the SetOrdinal() method) within the data table.</para>
+    /// </summary>
     public static void FlipColumnsInPlace(this System.Data.DataTable source, int startIndex, int count)
     {
       System.ArgumentNullException.ThrowIfNull(source);

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux
+﻿namespace Flux
 {
   public static class ConstraintPropagationSolver2
   {
@@ -131,7 +129,7 @@ namespace Flux
         matrix[5, index] = kf.Pet != EnumPet.Unknown ? kf.Pet.ToString() : string.Empty;
       }
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.Rank2ToConsoleStrings(uniformWidth: true, centerContent: true)));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true, CenterContent = true })));
     }
 
     public static void Example()

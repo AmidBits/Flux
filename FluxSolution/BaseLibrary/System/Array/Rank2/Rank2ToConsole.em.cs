@@ -1,12 +1,16 @@
 namespace Flux
 {
-  /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension, i.e. so called row-major.</summary>
   public static partial class Fx
   {
-    /// <summary>Returns the two-dimensional array as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
-    public static System.Collections.Generic.IEnumerable<string> Rank2ToConsoleStrings<T>(this T[,] source, char horizontalSeparator = '\u007c', char verticalSeparator = '\u002d', bool uniformWidth = false, bool centerContent = false)
+    /// <summary>
+    /// <para>Returns the two-dimensional array as a new sequence of grid-like formatted strings, that can be printed in the console.</para>
+    /// </summary>
+    /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
+    public static System.Collections.Generic.IEnumerable<string> Rank2ToConsoleStrings<T>(this T[,] source, ConsoleStringOptions? options = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+
+      options ??= new ConsoleStringOptions();
 
       var maxWidths = new int[source.GetLength(1)];
 
@@ -16,26 +20,26 @@ namespace Flux
 
       var maxWidth = maxWidths.Max();
 
-      if (uniformWidth)
+      if (options.UniformWidth)
         for (var c = maxWidths.Length - 1; c >= 0; c--)
           maxWidths[c] = maxWidth;
 
-      var verticalLine = verticalSeparator == '\0' ? null : string.Join(horizontalSeparator, System.Linq.Enumerable.Select(maxWidths, width => new string(verticalSeparator, width)));
+      var verticalLine = options.VerticalSeparator == '\0' ? null : string.Join(options.HorizontalSeparator, System.Linq.Enumerable.Select(maxWidths, width => new string(options.VerticalSeparator, width)));
 
-      var horizontalLineFormat = string.Join(horizontalSeparator == '\0' ? null : horizontalSeparator.ToString(), System.Linq.Enumerable.Select(maxWidths, (width, index) => $"{{{index},-{width}}}"));
+      var horizontalLineFormat = string.Join(options.HorizontalSeparator == '\0' ? null : options.HorizontalSeparator.ToString(), System.Linq.Enumerable.Select(maxWidths, (width, index) => $"{{{index},-{width}}}"));
 
       for (var r = 0; r < source.GetLength(0); r++) // Consider row as dimension 0.
       {
         if (!string.IsNullOrEmpty(verticalLine) && r > 0)
           yield return verticalLine;
 
-        var values = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select(c => $"{source[r, c]}" is var s && centerContent ? new System.Text.StringBuilder(s).PadEven(maxWidth, ' ', ' ').ToString() : s).ToArray();
+        var values = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select((c, i) => $"{source[r, c]}" is var s && options.CenterContent ? new System.Text.StringBuilder(s).PadEven(maxWidths[i], ' ', ' ').ToString() : s).ToArray();
 
         yield return string.Format(null, horizontalLineFormat, values);
       }
     }
 
-    public static string Rank2ToConsoleString<T>(this T[,] source, char horizontalSeparator = '\u007c', char verticalSeparator = '\u002d', bool uniformWidth = false, bool centerContent = false)
-      => string.Join(System.Environment.NewLine, Rank2ToConsoleStrings(source, horizontalSeparator, verticalSeparator, uniformWidth, centerContent));
+    public static string Rank2ToConsoleString<T>(this T[,] source, ConsoleStringOptions? options = null)
+      => string.Join(System.Environment.NewLine, source.Rank2ToConsoleStrings(options));
   }
 }

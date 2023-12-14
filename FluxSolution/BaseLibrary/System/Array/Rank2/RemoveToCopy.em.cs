@@ -1,10 +1,12 @@
 namespace Flux
 {
-  /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class Fx
   {
-    /// <summary>Create a new array from <paramref name="source"/> with the <paramref name="indices"/> of strands (rows or columns) removed from the specified <paramref name="dimension"/>.</summary>
-    public static T[,] Remove<T>(this T[,] source, int dimension, params int[] indices)
+    /// <summary>
+    /// <para>Create a new array from <paramref name="source"/> with the <paramref name="indices"/> of strands (rows or columns) removed from the specified <paramref name="dimension"/>.</para>
+    /// </summary>
+    /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
+    public static T[,] RemoveToCopy<T>(this T[,] source, int dimension, params int[] indices)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 

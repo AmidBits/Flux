@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Fill <paramref name="source"/> with <paramref name="count"/> of <paramref name="pattern"/> at <paramref name="index"/>.</summary>
+    /// <summary>
+    /// <para>Fill <paramref name="count"/> elements in <paramref name="source"/> with <paramref name="pattern"/> at <paramref name="index"/>.</para>
+    /// </summary>
     public static T[] Fill<T>(this T[] source, int index, int count, params T[] pattern)
     {
       System.ArgumentNullException.ThrowIfNull(source);

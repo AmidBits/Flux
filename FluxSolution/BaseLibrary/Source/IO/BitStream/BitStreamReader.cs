@@ -9,8 +9,7 @@ namespace Flux.IO
 
     private int m_bitCount;
 
-    public BitStreamReader(System.IO.Stream input)
-      => m_baseStream = input;
+    public BitStreamReader(System.IO.Stream input) => m_baseStream = input;
 
     /// <summary>The intermediate 64-bit storage buffer.</summary>
     [System.CLSCompliant(false)]
@@ -27,19 +26,15 @@ namespace Flux.IO
       while (m_bitCount < bitCount)
       {
         if (m_baseStream.ReadByte() is int read && read == -1)
-        {
           throw new System.IO.EndOfStreamException();
-        }
 
         m_bitCount += 8;
         m_bitBuffer = (m_bitBuffer << 8) | (byte)read;
       }
     }
 
-    public int ReadBitsInt32(int bitCount)
-      => unchecked((int)ReadBitsUInt32(bitCount));
-    public long ReadBitsInt64(int bitCount)
-      => unchecked((long)ReadBitsUInt64(bitCount));
+    public int ReadBitsInt32(int bitCount) => unchecked((int)ReadBitsUInt32(bitCount));
+    public long ReadBitsInt64(int bitCount) => unchecked((long)ReadBitsUInt64(bitCount));
 
     [System.CLSCompliant(false)]
     public uint ReadBitsUInt32(int bitCount)
@@ -64,6 +59,7 @@ namespace Flux.IO
       if (bitCount > 32)
       {
         bitCount -= 32;
+
         bits = ((ulong)ReadBitsUInt32(32)) << bitCount;
       }
 
@@ -71,19 +67,15 @@ namespace Flux.IO
     }
 
     #region Overridden inheritance
+
     // System.IO.Stream
-    public override bool CanRead
-      => m_baseStream.CanRead;
-    public override bool CanSeek
-      => false;
-    public override bool CanWrite
-      => false;
-    public override void Flush()
-    { }
-    public override long Length
-      => m_baseStream.Length;
-    public override long Position
-    { get => m_baseStream.Position; set => throw new System.NotImplementedException(); }
+    public override bool CanRead => m_baseStream.CanRead;
+    public override bool CanSeek => false;
+    public override bool CanWrite => false;
+    public override void Flush() { }
+    public override long Length => m_baseStream.Length;
+    public override long Position { get => m_baseStream.Position; set => throw new System.NotImplementedException(); }
+
     /// <summary>Implements reading bulk bytes of bits.</summary>
     public override int Read(byte[] buffer, int offset, int count)
     {
@@ -99,15 +91,14 @@ namespace Flux.IO
 
       return limit - index - 1;
     }
+
     /// <summary>Implements reading a single byte of bits.</summary>
-    public override int ReadByte()
-      => (byte)ReadBitsUInt32(8);
-    public override long Seek(long offset, System.IO.SeekOrigin origin)
-      => throw new System.NotImplementedException();
-    public override void SetLength(long value)
-      => throw new System.NotImplementedException();
-    public override void Write(byte[] buffer, int offset, int count)
-      => throw new System.NotImplementedException();
+    public override int ReadByte() => (byte)ReadBitsUInt32(8);
+
+    public override long Seek(long offset, System.IO.SeekOrigin origin) => throw new System.NotImplementedException();
+    public override void SetLength(long value) => throw new System.NotImplementedException();
+    public override void Write(byte[] buffer, int offset, int count) => throw new System.NotImplementedException();
+
     #endregion Overridden inheritance
   }
 }

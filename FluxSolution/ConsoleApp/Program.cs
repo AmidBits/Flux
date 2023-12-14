@@ -112,11 +112,19 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var r = new int[,]{
+        { 1, 2, 3, 4, 5, 6, 7 },
+        { 9, 8, 7, 6, 5, 4, 3 },
+        { 9, 8, 7, 6, 0, 4, 3 }
+      };
+      var s = r.ToJaggedArray(0);
+      var t = Flux.Fx.ImplicitJoin(s);
+
       var ipaFileInfos = Flux.Fx.GetFileInfos(Flux.Fx.ResourcesDirectoryIpa);
       var lexiconFileInfos = Flux.Fx.GetFileInfos(Flux.Fx.ResourcesDirectoryLexicon);
 
-      //var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("en-US");
-      var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("ko-KR");
+      var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("en-US");
+      //var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("ko-KR");
       var subci1 = cultureInfo.Parent;
       var subci2 = subci1.Parent;
 

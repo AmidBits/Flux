@@ -1,8 +1,8 @@
 namespace Flux
 {
-  /// <summary>All expressions are unanchored (for now).</summary>
   public static partial class Fx
   {
+    /// <summary>All expressions are unanchored (for now).</summary>
     public static System.Collections.Generic.IDictionary<string, string> GetNamedGroups(this System.Text.RegularExpressions.Match source)
     {
       System.ArgumentNullException.ThrowIfNull(source);

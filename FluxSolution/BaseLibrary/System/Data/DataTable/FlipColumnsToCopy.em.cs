@@ -2,15 +2,17 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a new <see cref="System.Data.DataTable"/> containing the source columns reversed (mirrored).</summary>
-    public static System.Data.DataTable FlipColumns(this System.Data.DataTable source)
+    /// <summary>
+    /// <para>Creates a new <see cref="System.Data.DataTable"/> containing the <paramref name="source"/> columns reversed (mirrored).</para>
+    /// </summary>
+    public static System.Data.DataTable FlipColumnsToCopy(this System.Data.DataTable source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       var target = new System.Data.DataTable(source.TableName);
 
       for (var index = source.Columns.Count - 1; index >= 0; index--)
-        target.Columns.Add(source.Columns[index].ColumnName, source.Columns[index].DataType);
+        target.Columns.Add(source.Columns[index].ColumnName, source.Columns[index].DataType, source.Columns[index].Expression);
 
       for (var rowIndex = 0; rowIndex < source.Rows.Count; rowIndex++)
       {

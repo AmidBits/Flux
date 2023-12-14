@@ -1,15 +1,16 @@
 namespace Flux
 {
-  /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
   public static partial class Fx
   {
-    /// <summary>Create a new jagged array (a single-dimension array of one-dimensional arrays) with all elements from <paramref name="source"/> in <paramref name="dimension"/>-major order (by rows or by column).</summary>
+    /// <summary>
+    /// <para>Create a new jagged array (a single-dimension array of one-dimensional arrays) with all elements from <paramref name="source"/> in <paramref name="dimension"/>-major order (by rows or by column).</para>
+    /// </summary>
+    /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static T[][] ToJaggedArray<T>(this T[,] source, int dimension)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
-      if (dimension < 0 || dimension > 1) throw new System.ArgumentOutOfRangeException(nameof(dimension));
 
       var target = new T[source.GetLength(dimension)][];
 

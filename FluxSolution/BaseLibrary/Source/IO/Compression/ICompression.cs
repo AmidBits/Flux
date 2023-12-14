@@ -15,6 +15,7 @@ namespace Flux.Compression
         using var input = new System.IO.MemoryStream(data);
         using var output = new System.IO.MemoryStream();
         Compress(input, output);
+        output.Flush();
         result = output.ToArray();
         return true;
       }
@@ -43,6 +44,7 @@ namespace Flux.Compression
         using var input = new System.IO.MemoryStream(data);
         using var output = new System.IO.MemoryStream();
         Decompress(input, output);
+        output.Flush();
         result = output.ToArray();
         return true;
       }
