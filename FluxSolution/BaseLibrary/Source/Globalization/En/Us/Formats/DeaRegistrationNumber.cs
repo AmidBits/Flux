@@ -1,9 +1,9 @@
+
 namespace Flux.Globalization.EnUs
 {
   /// <summary>A DEA number (DEA Registration Number) is an identifier assigned to a health care provider (such as a physician, optometrist, dentist, or veterinarian) by the United States Drug Enforcement Administration allowing them to write prescriptions for controlled substances.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/DEA_number"/>
-  public partial struct DeaRegistrationNumber
-    : System.IEquatable<DeaRegistrationNumber>
+  public partial record struct DeaRegistrationNumber
   {
 #if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<RegistrantType>[ABCDEFGHJKLMPRSTUX])(?<RegistrantLastNameOr9>[A-Z9])(?<Digits>[0-9]{6})(?<Checksum>[0-9])(\-(?<AffixedID>.+))?", System.Text.RegularExpressions.RegexOptions.Compiled)]
@@ -45,6 +45,7 @@ namespace Flux.Globalization.EnUs
 
       throw new System.InvalidOperationException();
     }
+
     public static bool TryParse(string text, out DeaRegistrationNumber result)
     {
       try
@@ -54,29 +55,11 @@ namespace Flux.Globalization.EnUs
       }
       catch { }
 
-      result = new DeaRegistrationNumber();
+      result = default;
       return false;
     }
 
-    // Operators
-    public static bool operator ==(DeaRegistrationNumber a, DeaRegistrationNumber b)
-      => a.Equals(b);
-    public static bool operator !=(DeaRegistrationNumber a, DeaRegistrationNumber b)
-      => !a.Equals(b);
-
-    // IEquatable
-    public bool Equals(DeaRegistrationNumber other)
-      => RegistrantType == other.RegistrantType && RegistrantLastNameOr9 == other.RegistrantLastNameOr9 && Digits == other.Digits && Checksum == other.Checksum && AffixedID == other.AffixedID;
-
-    // Object (overrides)
-    public override bool Equals(object? obj)
-      => obj is DeaRegistrationNumber o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(RegistrantType, RegistrantLastNameOr9, Digits, Checksum, AffixedID);
     public override string? ToString()
-      => $"{GetType().Name} {{ {ToUnitString()} }}";
-
-    public string ToUnitString()
       => $"{RegistrantType}{RegistrantLastNameOr9}{Digits}{Checksum}-{AffixedID}";
   }
 }

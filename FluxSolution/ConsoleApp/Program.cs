@@ -112,6 +112,28 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var ucdud = Flux.Resources.Ucd.UnicodeData.GetData(Flux.Resources.Ucd.UnicodeData.Local).ToArray();
+
+      //var uri = new System.Uri(@"file://\Resources\Ucd\UnicodeData.txt\");
+      var uri = new System.Uri(@"file://\Resources\Ucd\");
+
+      var bfi = uri.TryToFileInfo(out var fi);
+
+      var ofi = bfi ? new System.IO.StreamReader(fi.OpenRead()).ReadLine() : "null";
+      System.Console.WriteLine(ofi);
+
+      var bdi = uri.TryToDirectoryInfo(out var di);
+
+      var edi = bdi ? di.EnumerateFiles().ToArray() : System.Array.Empty<System.IO.FileInfo>();
+      System.Console.WriteLine(edi.Length);
+
+      //var fi = new System.IO.FileInfo(uri.LocalPath.Substring(1));
+      //var di = new System.IO.DirectoryInfo(uri.LocalPath.Substring(1));
+
+      var mis = typeof(System.OperatingSystem).GetMethods().Where(mi => mi.ReturnType == typeof(bool) && mi.GetParameters().Length == 0 && mi.Name.StartsWith("Is")).Select(mi => mi.Name.Substring(2)).ToArray();
+
+      var eov = Flux.Locale.GetProperties();
+
       var r = new int[,]{
         { 1, 2, 3, 4, 5, 6, 7 },
         { 9, 8, 7, 6, 5, 4, 3 },

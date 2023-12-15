@@ -10,8 +10,10 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      if (source.IsFile) // If the URI is a file, create a local FileStream from the URI data.
-        return new System.IO.FileStream(source.LocalPath.StartsWith(@"/") ? source.LocalPath[1..] : source.LocalPath, System.IO.FileMode.Open);
+      if (source.TryToFileInfo(out var fi))
+        return fi.OpenRead();
+      //if (source.IsFile) // If the URI is a file, create a local FileStream from the URI data.
+      //  return new System.IO.FileStream(source.LocalPath.StartsWith(@"/") ? source.LocalPath[1..] : source.LocalPath, System.IO.FileMode.Open);
 
       using var hc = new System.Net.Http.HttpClient();
       using var response = hc.SendAsync(new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Get, source), System.Net.Http.HttpCompletionOption.ResponseHeadersRead).Result;

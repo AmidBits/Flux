@@ -98,6 +98,7 @@ namespace Flux.Globalization.EnUs.Az.PimaCounty
 
       throw new System.InvalidOperationException();
     }
+
     public static bool TryParse(string text, out PimaCountyStreetAddress result)
     {
       try

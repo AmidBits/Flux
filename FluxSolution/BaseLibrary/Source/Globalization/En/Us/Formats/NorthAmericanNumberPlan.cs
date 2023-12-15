@@ -2,8 +2,7 @@ namespace Flux.Globalization.EnUs
 {
   /// <summary>The North American Numbering Plan (NANP) is a telephone numbering plan that encompasses 25 distinct regions.</summary>
   /// <see href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"/>
-  public partial struct NorthAmericanNumberingPlan
-    : System.IEquatable<NorthAmericanNumberingPlan>
+  public partial record struct NorthAmericanNumberingPlan
   {
 #if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<!\d)(?<CC>1)?[\s\-\.]*?(?<NPA>[2-9][0-9]{2})?[\s\-\.]*?(?<NXX>[2-9][0-9]{2})[\s\-\.]*?(?<XXXX>[0-9]{4})(?!\d)", System.Text.RegularExpressions.RegexOptions.Compiled)]
@@ -77,25 +76,7 @@ namespace Flux.Globalization.EnUs
       return sb.ToString();
     }
 
-    // Operators
-    public static bool operator ==(NorthAmericanNumberingPlan a, NorthAmericanNumberingPlan b)
-      => a.Equals(b);
-    public static bool operator !=(NorthAmericanNumberingPlan a, NorthAmericanNumberingPlan b)
-      => !a.Equals(b);
-
-    // IEquatable
-    public bool Equals(NorthAmericanNumberingPlan other)
-      => CC == other.CC && NPA == other.NPA && NXX == other.NXX && XXXX == other.XXXX;
-
-    // Object (overrides)
-    public override bool Equals(object? obj)
-      => obj is NorthAmericanNumberingPlan o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(CC, NPA, NXX, XXXX);
     public override string? ToString()
-      => $"{GetType().Name} {{ {ToUnitString()} }}";
-
-    public string ToUnitString()
       => $"{CC}-{NPA}-{NXX}-{XXXX}";
   }
 }

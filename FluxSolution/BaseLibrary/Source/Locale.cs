@@ -20,22 +20,22 @@ namespace Flux
 
     /// <summary>Returns the descriptive text of the current platform identifier.</summary>
     public static string EnvironmentOsTitle
-      => System.Environment.OSVersion.ToString() is var s ? s[..s.Trim().LastIndexOf(' ')] : string.Empty;
+      => System.Environment.OSVersion.ToString().Trim() is var s ? s[..s.LastIndexOf(' ')] : string.Empty;
 
     /// <summary>Returns the version of the current platform identifier.</summary>
     public static System.Version EnvironmentOsVersion
-      => System.Environment.OSVersion.ToString() is var s && System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version) ? version : throw new System.NotSupportedException();
+      => System.Environment.OSVersion.Version; // System.Environment.OSVersion.ToString().Trim() is var s && System.Version.TryParse(s[s.LastIndexOf(' ')..].Trim(), out var version) ? version : throw new System.NotSupportedException();
 
     /// <summary>Returns a dictionary of all environment variables.</summary>
     public static System.Collections.IDictionary EnvironmentVariables => System.Environment.GetEnvironmentVariables();
 
     /// <summary>Returns the descriptive text of the hosting framework.</summary>
     public static string FrameworkTitle
-      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription is var s ? s[..s.Trim().LastIndexOf(' ')] : string.Empty;
+      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.Trim() is var s ? s[..s.LastIndexOf(' ')] : string.Empty;
 
     /// <summary>Returns the version of the hosting framework.</summary>
     public static System.Version FrameworkVersion
-      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription is var s && System.Version.TryParse(s[s.Trim().LastIndexOf(' ')..], out var version) ? version : new();
+      => System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.Trim() is var s && System.Version.TryParse(s[s.LastIndexOf(' ')..].Trim(), out var version) ? version : new();
 
     /// <summary>Returns the computer name from <see cref="System.Environment"/>.</summary>
     public static string MachineName
@@ -48,6 +48,10 @@ namespace Flux
     /// <summary>Returns the host name of the computer.</summary>
     public static string NetworkHostName
       => System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().HostName;
+
+    /// <summary>Returns an array of platforms that this version of .NET can interrogate.</summary>
+    public static string[] Platforms
+      => typeof(System.OperatingSystem).GetMethods().Where(mi => mi.ReturnType == typeof(bool) && mi.GetParameters().Length == 0 && mi.Name.StartsWith("Is")).Select(mi => mi.Name[2..]).ToArray();
 
     /// <summary>Returns the descriptive text of the hosting operating system from <see cref="System.Runtime.InteropServices.RuntimeInformation"/>.</summary>
     public static string RuntimeOsArchitecture
@@ -87,16 +91,14 @@ namespace Flux
       }
     }
 
-    private static string[] m_platformStrings = new string[] { @"Android", @"Browser", @"FreeBSD", @"iOS", @"Linux", @"tvOS", @"watchOS", @"Windows" };
-
     /// <summary>Returns the enumerated operating system platform found in <see cref="System.OperatingSystem"/>. If no title can be determined, an empty string is returned.</summary>
     public static string SystemOsTitle
     {
       get
       {
-        for (var index = m_platformStrings.Length - 1; index >= 0; index--)
-          if (m_platformStrings[index] is var platformString && System.OperatingSystem.IsOSPlatform(platformString))
-            return platformString;
+        for (var index = Platforms.Length - 1; index >= 0; index--)
+          if (Platforms[index] is var platform && System.OperatingSystem.IsOSPlatform(platform))
+            return platform;
 
         return string.Empty;
       }

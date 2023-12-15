@@ -2,8 +2,7 @@ namespace Flux.Globalization.EnUs
 {
   /// <summary>A regular expression that complies with SSN regulations.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Social_Security_number#Structure"/>
-  public partial struct SocialSecurityNumber
-    : System.IEquatable<SocialSecurityNumber>
+  public partial record struct SocialSecurityNumber
   {
 #if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<!\d)(?<AAA>(?!(000|666|9\d\d))\d{3}).?(?<GG>(?!00)\d{2}).?(?<SSSS>(?!0000)\d{4})(?!\d)", System.Text.RegularExpressions.RegexOptions.Compiled)]
@@ -37,6 +36,7 @@ namespace Flux.Globalization.EnUs
 
       throw new System.InvalidOperationException();
     }
+
     public static bool TryParse(string text, out SocialSecurityNumber result)
     {
       try
@@ -50,25 +50,7 @@ namespace Flux.Globalization.EnUs
       return false;
     }
 
-    // Operators
-    public static bool operator ==(SocialSecurityNumber a, SocialSecurityNumber b)
-      => a.Equals(b);
-    public static bool operator !=(SocialSecurityNumber a, SocialSecurityNumber b)
-      => !a.Equals(b);
-
-    // IEquatable
-    public bool Equals(SocialSecurityNumber other)
-      => AAA == other.AAA && GG == other.GG && SSSS == other.SSSS;
-
-    // Object (overrides)
-    public override bool Equals(object? obj)
-      => obj is SocialSecurityNumber o && Equals(o);
-    public override int GetHashCode()
-      => System.HashCode.Combine(AAA, GG, SSSS);
     public override string? ToString()
-      => $"{GetType().Name} {{ {ToUnitString()} }}";
-
-    public string ToUnitString()
       => $"{AAA}-{GG}-{SSSS}";
   }
 }
