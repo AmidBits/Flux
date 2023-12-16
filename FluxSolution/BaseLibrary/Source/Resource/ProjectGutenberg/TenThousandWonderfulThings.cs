@@ -18,23 +18,26 @@ namespace Flux.Resources.ProjectGutenberg
 
       using var e = reader.ReadLines(s => true, s => s).GetEnumerator();
 
-      var entry = new System.Text.StringBuilder();
-
       while (e.MoveNext())
         if (e.Current.Equals(@"TEN THOUSAND WONDERFUL THINGS.", System.StringComparison.Ordinal)) // This is where we start enumerating lines from the text.
           break;
+
+      var entry = new System.Text.StringBuilder();
 
       while (e.MoveNext())
       {
         if (e.Current.Equals(@"  PRINTED BY WILLIAM CLOWES AND SONS, LIMITED, LONDON AND DECCLES.", System.StringComparison.Ordinal)) // This is where we stop enumerating lines from the text.
           break;
 
-        if (entry.EndsWith("\r\n\r\n\r\n") && reTitle.IsMatch(e.Current))
+        if (entry.EndsWith("\r\n\r\n\r\n") && e.Current.EndsWith('.'))//&& reTitle.IsMatch(e.Current))
         {
           var text = entry.ToString().Trim();
+
+          text = System.Text.RegularExpressions.Regex.Replace(text, "(?<!\\s+)\r\n(?!\\s+)", " ");
+
           var index = text.IndexOf("\r\n\r\n", System.StringComparison.Ordinal);
 
-          yield return new string[] { text[..index], text[index..].Trim() };
+          yield return new string[] { text[..index].Trim(), text[index..].Trim() };
 
           entry.Clear();
         }

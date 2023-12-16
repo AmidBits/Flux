@@ -1,7 +1,7 @@
 namespace Flux.Resources.ProjectGutenberg
 {
   /// <summary>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</summary>
-  public sealed class TableOfContents
+  public sealed partial class TableOfContents
     : ITabularDataAcquirable
   {
     public static readonly System.Uri Local = new(@"file://\Resources\ProjectGutenberg\GUTINDEX.ALL");
@@ -9,18 +9,20 @@ namespace Flux.Resources.ProjectGutenberg
 
     public System.Uri Uri { get; private set; } = Local;
 
+    [System.Text.RegularExpressions.GeneratedRegexAttribute(@"^[\p{L}\p{N}\p{Zs}\p{P}]+\s{2,}\d+$", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    private static partial System.Text.RegularExpressions.Regex MatchRegex();
+
+    [System.Text.RegularExpressions.GeneratedRegexAttribute(@"(?<=^.+)\s{2,}(?=\d+$)", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    private static partial System.Text.RegularExpressions.Regex SplitRegex();
+
     /// <summary>Returns project Gutenberg's table of contents data. No field names.</summary>
     public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
-      var reMatch = new System.Text.RegularExpressions.Regex(@"^[\p{L}\p{N}\p{Zs}\p{P}]+\s{2,}\d+$", System.Text.RegularExpressions.RegexOptions.Compiled);
-      var reSplit = new System.Text.RegularExpressions.Regex(@"(?<=^.+)\s{2,}(?=\d+$)", System.Text.RegularExpressions.RegexOptions.Compiled);
-
       using var stream = uri.GetStream();
       using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-      foreach (var line in reader.ReadLines(s => s.Length > 0, s => s))
-        if (line.Length == 78 && reMatch.IsMatch(line))
-          yield return reSplit.Split(line);
+      foreach (var fields in reader.ReadLines(s => s.Length == 78 && MatchRegex().IsMatch(s), SplitRegex().Split))
+        yield return fields;
     }
 
     #region Implemented interfaces

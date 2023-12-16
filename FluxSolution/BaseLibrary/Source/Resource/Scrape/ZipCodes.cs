@@ -1,3 +1,4 @@
+using Flux;
 namespace Flux.Resources.Scrape
 {
   /// <summary>A free zip code file.</summary>
@@ -15,8 +16,9 @@ namespace Flux.Resources.Scrape
     public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
     {
       using var stream = uri.GetStream();
+      using var reader = new StreamReader(stream);
 
-      foreach (var fields in stream.ReadCsv(new CsvOptions()))
+      foreach (var fields in reader.ReadCsv(",", true))
         yield return fields;
     }
 

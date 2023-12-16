@@ -28,22 +28,33 @@ namespace Flux.Resources.ProjectGutenberg
 
         foreach (var line in reader.ReadLines(s => s.Length > 0, s => s))
         {
-          if (line == @"=" || line.Length == 0)
+          if (line == @"=")
           {
             if (lines.StartsWith(@"KEY:"))
             {
-              var list = reSection.Replace(lines.ToString(), @",").ToLower(System.Globalization.CultureInfo.CurrentCulture).Split(new char[] { ',' }, System.StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim(' ', '.')).Where(s => s.Length > 0).ToList();
+              var dictionary = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
-              var iKey = list.IndexOf(@"key:");
-              var iSyn = list.IndexOf(@"syn:");
-              var iAnt = list.IndexOf(@"ant:");
+              System.Array.ForEach(
+                System.Text.RegularExpressions.Regex.Split(lines.RemoveAll('.').ToLowerCase().ToString(), @".(?=>key:|syn:|ant:)", System.Text.RegularExpressions.RegexOptions.IgnoreCase),
+                s =>
+                {
+                  var array = s.Split(':');
 
-              var listKey = iKey > -1 ? list.GetRange(iKey + 1, (iSyn > -1 ? iSyn : iAnt > -1 ? iAnt : list.Count) - 1) : new();
-              var listSyn = iSyn > -1 ? list.GetRange(iSyn + 1, (iAnt > -1 ? iAnt - iSyn : list.Count - iSyn) - 1) : new();
-              var listAnt = iAnt > -1 ? list.GetRange(iAnt + 1, (list.Count - iAnt) - 1) : new();
+                  var key = array[0];
+                  var value = array[1].Split(',', System.StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Select(s => s.Trim()).ToList();
 
-              if (listKey.Count > 0)
-                yield return new string[][] { listKey.ToArray(), listSyn.ToArray(), listAnt.ToArray() };
+                  if (dictionary.TryGetValue(key, out var dictionaryList))
+                    dictionaryList.AddRange(value);
+                  else
+                    dictionary.Add(key, value);
+                }
+              );
+
+              var key = dictionary.TryGetValue("key", out var lKey) ? lKey : new();
+              var syn = dictionary.TryGetValue("syn", out var lSyn) ? lSyn : new();
+              var ant = dictionary.TryGetValue("ant", out var lAnt) ? lAnt : new();
+
+              yield return new string[][] { key.ToArray(), syn.ToArray(), ant.ToArray() };
             }
 
             lines.Clear();

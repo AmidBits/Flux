@@ -112,7 +112,20 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var ucdud = Flux.Resources.Ucd.UnicodeData.GetData(Flux.Resources.Ucd.UnicodeData.Local).ToArray();
+      var index = 1;
+      foreach (var ttwt in Flux.Resources.Scrape.ZipCodes.GetData(Flux.Resources.Scrape.ZipCodes.Local).Take(10))
+      {
+        System.Console.WriteLine(string.Join("|", ttwt));
+        System.Console.WriteLine();
+        System.Console.WriteLine();
+        System.Console.WriteLine();
+
+        //System.Console.ReadKey();
+        //System.Console.Clear();
+        //System.Console.Clear();
+        //System.Console.ReadKey();
+      }
+      return;
 
       //var uri = new System.Uri(@"file://\Resources\Ucd\UnicodeData.txt\");
       var uri = new System.Uri(@"file://\Resources\Ucd\");
@@ -171,7 +184,7 @@ namespace ConsoleApp
     {
       var originalOutputEncoding = SetEncoding();
 
-      SetSize(0.75);
+      //SetSize(0.75);
 
       System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
 
@@ -181,10 +194,12 @@ namespace ConsoleApp
       System.Console.ReadKey();
 
       #region Support functions
+
       static void ResetEncoding(System.Text.Encoding originalOutputEncoding)
       {
         System.Console.OutputEncoding = originalOutputEncoding;
       }
+
       static System.Text.Encoding SetEncoding()
       {
         var originalOutputEncoding = System.Console.OutputEncoding;
@@ -198,6 +213,7 @@ namespace ConsoleApp
 
         return originalOutputEncoding;
       }
+
       static void SetSize(double percentOfLargestWindowSize)
       {
         if (System.OperatingSystem.IsWindows())
@@ -210,6 +226,7 @@ namespace ConsoleApp
           System.Console.SetWindowSize(width, height);
         }
       }
+
       #endregion Support functions
     }
   }

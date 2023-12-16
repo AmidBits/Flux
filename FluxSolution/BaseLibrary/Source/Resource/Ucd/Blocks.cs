@@ -28,11 +28,8 @@ namespace Flux.Resources.Ucd
       using var stream = uri.GetStream();
       using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-      var reSplit = SplitRegex();
-
-      foreach (var line in reader.ReadLines(s => s.Length > 0, s => s))
-        if (line.Length > 0 && !line.StartsWith('#'))
-          yield return reSplit.Split(line);
+      foreach (var fields in reader.ReadLines(s => s.Length > 0 && !s.StartsWith('#'), SplitRegex().Split))
+        yield return fields;
     }
 
     #region Implemented interfaces
