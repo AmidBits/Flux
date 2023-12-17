@@ -112,6 +112,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var uncompressed = "This is a short message to try the compression/decompression methods, just to make sure they work the way one would imagine them to work.";
+
+      var deflate = (Flux.Compression.ICompression)new Flux.Compression.Deflate();
+      deflate.TryCompress(uncompressed, out var cdeflate);
+      deflate.TryDecompress(cdeflate, out var undeflate);
+      var gzip = (Flux.Compression.ICompression)new Flux.Compression.GZip();
+      gzip.TryCompress(uncompressed, out var cgzip);
+      gzip.TryDecompress(cgzip, out var ungzip);
+      var zlib = (Flux.Compression.ICompression)new Flux.Compression.ZLib();
+      zlib.TryCompress(uncompressed, out var czlib);
+      zlib.TryDecompress(czlib, out var unzlib);
+
       var index = 1;
       foreach (var ttwt in Flux.Resources.Scrape.ZipCodes.GetData(Flux.Resources.Scrape.ZipCodes.Local).Take(10))
       {
