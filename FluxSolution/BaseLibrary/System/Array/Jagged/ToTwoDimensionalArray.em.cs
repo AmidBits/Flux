@@ -10,7 +10,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var target = new T[source.Length, System.Linq.Enumerable.Max(source, t => t.Length)];
+      var target = new T[source.Length, source.Max(t => t.Length)];
 
       for (var i0 = source.Length - 1; i0 >= 0; i0--)
         for (var i1 = source[i0].Length - 1; i1 >= 0; i1--)

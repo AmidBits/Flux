@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Flux;
+﻿using Flux;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -110,93 +109,15 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var uncompressed = "This is a short message to try the compression/decompression methods, just to make sure they work the way one would imagine them to work.";
-
-      var deflate = (Flux.Compression.ICompression)new Flux.Compression.Deflate();
-      deflate.TryCompress(uncompressed, out var cdeflate);
-      deflate.TryDecompress(cdeflate, out var undeflate);
-      var gzip = (Flux.Compression.ICompression)new Flux.Compression.GZip();
-      gzip.TryCompress(uncompressed, out var cgzip);
-      gzip.TryDecompress(cgzip, out var ungzip);
-      var zlib = (Flux.Compression.ICompression)new Flux.Compression.ZLib();
-      zlib.TryCompress(uncompressed, out var czlib);
-      zlib.TryDecompress(czlib, out var unzlib);
-
-      var index = 1;
-      foreach (var ttwt in Flux.Resources.Scrape.ZipCodes.GetData(Flux.Resources.Scrape.ZipCodes.Local).Take(10))
-      {
-        System.Console.WriteLine(string.Join("|", ttwt));
-        System.Console.WriteLine();
-        System.Console.WriteLine();
-        System.Console.WriteLine();
-
-        //System.Console.ReadKey();
-        //System.Console.Clear();
-        //System.Console.Clear();
-        //System.Console.ReadKey();
-      }
-      return;
-
-      //var uri = new System.Uri(@"file://\Resources\Ucd\UnicodeData.txt\");
-      var uri = new System.Uri(@"file://\Resources\Ucd\");
-
-      var bfi = uri.TryToFileInfo(out var fi);
-
-      var ofi = bfi ? new System.IO.StreamReader(fi.OpenRead()).ReadLine() : "null";
-      System.Console.WriteLine(ofi);
-
-      var bdi = uri.TryToDirectoryInfo(out var di);
-
-      var edi = bdi ? di.EnumerateFiles().ToArray() : System.Array.Empty<System.IO.FileInfo>();
-      System.Console.WriteLine(edi.Length);
-
-      //var fi = new System.IO.FileInfo(uri.LocalPath.Substring(1));
-      //var di = new System.IO.DirectoryInfo(uri.LocalPath.Substring(1));
-
-      var mis = typeof(System.OperatingSystem).GetMethods().Where(mi => mi.ReturnType == typeof(bool) && mi.GetParameters().Length == 0 && mi.Name.StartsWith("Is")).Select(mi => mi.Name.Substring(2)).ToArray();
-
-      var eov = Flux.Locale.GetProperties();
-
-      var r = new int[,]{
-        { 1, 2, 3, 4, 5, 6, 7 },
-        { 9, 8, 7, 6, 5, 4, 3 },
-        { 9, 8, 7, 6, 0, 4, 3 }
-      };
-      var s = r.ToJaggedArray(0);
-      var t = Flux.Fx.ImplicitJoin(s);
-
-      var ipaFileInfos = Flux.Fx.GetFileInfos(Flux.Fx.ResourcesDirectoryIpa);
-      var lexiconFileInfos = Flux.Fx.GetFileInfos(Flux.Fx.ResourcesDirectoryLexicon);
-
-      var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("en-US");
-      //var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("ko-KR");
-      var subci1 = cultureInfo.Parent;
-      var subci2 = subci1.Parent;
-
-      //cultureInfo = System.Globalization.CultureInfo.CurrentCulture;
-
-      var ipaOk = cultureInfo.TryLoadCultureFile(l => l.Split(new char[] { ',', '\t' }, 2), out var ipaDataTable, out var ipaFileInfo, Flux.Fx.ResourcesDirectoryIpa);
-      var lexiconOk = cultureInfo.TryLoadCultureFile(l => new string[] { l }, out var lexiconDataTable, out var lexiconFileInfo, Flux.Fx.ResourcesDirectoryLexicon);
-
-      var a = ipaDataTable.ToTwoDimensionalArray(true, 0, 1, 1, 1);
-
-      var xmlDocument = ipaDataTable.ToXmlDocument();
-      var sxmldocument = xmlDocument.OuterXml;
-      var xDocument = ipaDataTable.ToXDocument();
-      var sxdocument = xDocument.ToString(System.Xml.Linq.SaveOptions.DisableFormatting);
-
-      //EvaluateNumericStuff();
-      var x = (int)System.Globalization.CultureTypes.AllCultures;
-      var y = System.Globalization.CultureInfo.GetCultures(System.Globalization.CultureTypes.AllCultures).Select(ci => (ci.Name, ci.DisplayName, ci.NativeName)).ToArray();
     }
 
     private static void Main(string[] args)
     {
       var originalOutputEncoding = SetEncoding();
 
-      //SetSize(0.75);
+      SetSize(0.75);
 
       System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
 

@@ -26,7 +26,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct SphericalCoordinate
-    : System.IFormattable, ISphericalCoordinate<double>
+      : System.IFormattable, ISphericalCoordinate<double>
     {
       public static readonly SphericalCoordinate Zero;
 

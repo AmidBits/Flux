@@ -6,11 +6,13 @@ namespace Flux
     /// <para>Returns the two-dimensional array as a new sequence of grid-like formatted strings, that can be printed in the console.</para>
     /// </summary>
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
-    public static System.Collections.Generic.IEnumerable<string> JaggedToConsoleStrings<T>(this T[][] source, ConsoleStringOptions? options = null)
+    public static System.Text.StringBuilder JaggedToConsoleString<T>(this T[][] source, ConsoleStringOptions? options = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       options ??= new ConsoleStringOptions();
+
+      var sb = new System.Text.StringBuilder();
 
       var maxWidths = new int[source.Max(a => a.Length)]; // Create an array to hold the max widths of all elements in the largest sub-array.
 
@@ -29,16 +31,15 @@ namespace Flux
       for (var r = 0; r < source.Length; r++) // Consider row as dimension 0.
       {
         if (verticalSeparatorString is not null && r > 0)
-          yield return verticalSeparatorString;
+          sb.AppendLine(verticalSeparatorString);
 
         var format = string.Join(options.HorizontalSeparator == '\0' ? null : options.HorizontalSeparator.ToString(), maxWidths.Take(source[r].Length).Select((width, index) => $"{{{index},-{width}}}"));
         var values = source[r].Select((e, i) => $"{e}" is var s && options.CenterContent ? new System.Text.StringBuilder(s).PadEven(maxWidths[i], ' ', ' ').ToString() : s).ToArray();
 
-        yield return string.Format(null, format, values);
+        sb.AppendLine(string.Format(null, format, values));
       }
-    }
 
-    public static string JaggedToConsoleString<T>(this T[][] source, ConsoleStringOptions? options = null)
-      => string.Join(System.Environment.NewLine, source.JaggedToConsoleStrings(options));
+      return sb;
+    }
   }
 }

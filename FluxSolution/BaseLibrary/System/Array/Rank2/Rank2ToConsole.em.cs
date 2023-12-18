@@ -6,11 +6,13 @@ namespace Flux
     /// <para>Returns the two-dimensional array as a new sequence of grid-like formatted strings, that can be printed in the console.</para>
     /// </summary>
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
-    public static System.Collections.Generic.IEnumerable<string> Rank2ToConsoleStrings<T>(this T[,] source, ConsoleStringOptions? options = null)
+    public static System.Text.StringBuilder Rank2ToConsoleString<T>(this T[,] source, ConsoleStringOptions? options = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       options ??= new ConsoleStringOptions();
+
+      var sb = new System.Text.StringBuilder();
 
       var maxWidths = new int[source.GetLength(1)];
 
@@ -31,15 +33,14 @@ namespace Flux
       for (var r = 0; r < source.GetLength(0); r++) // Consider row as dimension 0.
       {
         if (!string.IsNullOrEmpty(verticalLine) && r > 0)
-          yield return verticalLine;
+          sb.AppendLine(verticalLine);
 
         var values = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select((c, i) => $"{source[r, c]}" is var s && options.CenterContent ? new System.Text.StringBuilder(s).PadEven(maxWidths[i], ' ', ' ').ToString() : s).ToArray();
 
-        yield return string.Format(null, horizontalLineFormat, values);
+        sb.AppendLine(string.Format(null, horizontalLineFormat, values));
       }
-    }
 
-    public static string Rank2ToConsoleString<T>(this T[,] source, ConsoleStringOptions? options = null)
-      => string.Join(System.Environment.NewLine, source.Rank2ToConsoleStrings(options));
+      return sb;
+    }
   }
 }

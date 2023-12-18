@@ -274,30 +274,30 @@ namespace ConsoleApp
       var padding = 2;
       padding++;
 
-      var (minLeft, minTop, maxLeft, maxTop) = new string[] { "Array-2D" }.Concat(matrix.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole();
+      var (minLeft, minTop, maxLeft, maxTop) = ("Array-2D" + System.Environment.NewLine + matrix.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole();
 
       var mrotatec = matrix.RotateToCopyCw();
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CW" }.Concat(mrotatec.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = ("Rotated-CW" + System.Environment.NewLine + mrotatec.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
 
       var mrotatecc = matrix.RotateToCopyCcw();
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Rotated-CCW" }.Concat(mrotatecc.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = ("Rotated-CCW" + System.Environment.NewLine + mrotatecc.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
 
       var mtranspose = matrix.TransposeToCopy();
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Transposed" }.Concat(mtranspose.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = ("Transposed" + System.Environment.NewLine + mtranspose.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
 
       var minsert = matrix.InsertToCopy(1, 1, 4, 0);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Inserted" }.Concat(minsert.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = ("Inserted" + System.Environment.NewLine + minsert.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
       minsert.Fill(0, 1, 3, 4, 9);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Fill (Inserted)" }.Concat(minsert.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = ("Fill (Inserted)" + System.Environment.NewLine + minsert.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
 
       var mflip0 = matrix.FlipToCopy(0);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_0" }.Concat(mflip0.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = ("Flip_0" + System.Environment.NewLine + mflip0.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
 
       var mflip1 = matrix.FlipToCopy(1);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Flip_1" }.Concat(mflip1.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = ("Flip_1" + System.Environment.NewLine + mflip1.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
 
       var mremove = matrix.RemoveToCopy(1, 1);
-      (minLeft, minTop, maxLeft, maxTop) = new string[] { "Remove" }.Concat(mremove.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true })).WriteToConsole(maxLeft + padding, minTop);
+      (minLeft, minTop, maxLeft, maxTop) = ("Remove" + System.Environment.NewLine + mremove.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
 
       System.Console.WriteLine();
 
@@ -1092,6 +1092,12 @@ namespace ConsoleApp
 
       return WriteToConsole(source, left, top);
     }
+
+    public static (int minLeft, int minTop, int maxLeft, int maxTop) WriteToConsole(this string source, int left, int top)
+      => WriteToConsole(new string[] { source }, left, top);
+
+    public static (int minLeft, int minTop, int maxLeft, int maxTop) WriteToConsole(this string source)
+      => WriteToConsole(new string[] { source });
 
     #endregion
   }

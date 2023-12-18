@@ -1,7 +1,5 @@
-﻿using System.Linq;
+﻿using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Flux;
 
 namespace Types
 {
@@ -25,7 +23,7 @@ namespace Types
 
       CollectionAssert.AreEqual(original, clone);
 
-      var array0 = clone.GetAllElements(0).Select(vt => vt.item).ToArray();
+      var array0 = clone.GetAllElements(0);
 
       var original0 = new int[9] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -39,7 +37,7 @@ namespace Types
 
       CollectionAssert.AreEqual(original, clone);
 
-      var array1 = clone.GetAllElements(1).Select(vt => vt.item).ToArray();
+      var array1 = clone.GetAllElements(1);
 
       var original1 = new int[9] { 1, 4, 7, 2, 5, 8, 3, 6, 9 };
 

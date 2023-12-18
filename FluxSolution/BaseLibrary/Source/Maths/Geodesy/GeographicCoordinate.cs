@@ -28,19 +28,19 @@ namespace Flux.Geometry
     public GeographicCoordinate(double latitude, double longitude, double altitude = 1.0)
     {
       m_altitude = altitude >= MinAltitudeInMeters && altitude <= MaxAltitudeInMeters ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
-      m_lat = latitude * (System.Math.PI / 180);
-      m_lon = longitude * (System.Math.PI / 180);
+      m_lat = Units.Angle.ConvertDegreeToRadian(latitude);
+      m_lon = Units.Angle.ConvertDegreeToRadian(longitude);
     }
 
     /// <summary></summary>
     /// <param name="altitude">The altitude in meters.</param>
     /// <param name="latitude">The latitude in degrees.</param>
     /// <param name="longitude">The longitude in degrees.</param>
-    public void Deconstruct(out double altitude, out double latitude, out double longitude)
+    public void Deconstruct(out double latitude, out double longitude, out double altitude)
     {
-      altitude = m_altitude;
       latitude = Latitude;
       longitude = Longitude;
+      altitude = m_altitude;
     }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
@@ -50,10 +50,10 @@ namespace Flux.Geometry
     public GeographicCoordinate Antipode => new(0 - Latitude, Longitude - 180, Altitude);
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => m_lat * (180 / System.Math.PI); init => m_lat = value * (System.Math.PI / 180); } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
+    public double Latitude { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = Units.Angle.ConvertDegreeToRadian(value); } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => m_lon * (180 / System.Math.PI); init => m_lon = value * (System.Math.PI / 180); } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
+    public double Longitude { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = Units.Angle.ConvertDegreeToRadian(value); } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
 
     public double LatitudeInRadians => m_lat;
     public double LongitudeInRadians => m_lon;
@@ -63,8 +63,8 @@ namespace Flux.Geometry
     public Geometry.SphericalCoordinate ToSphericalCoordinate()
       => new(
         m_altitude,
-        System.Math.PI - ((m_lat * (System.Math.PI / 180)) + System.Math.PI / 2),
-        (m_lon * (System.Math.PI / 180)) + System.Math.PI
+        System.Math.PI - (m_lat + (System.Math.PI / 2)),
+        m_lon + System.Math.PI
       );
 
     #region Static members
@@ -421,7 +421,7 @@ namespace Flux.Geometry
     #region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"Latitude: {Latitude}, Longitude: {Longitude}, Altitude: {Altitude}";
+      => $"{GetType().Name} {{ {new Units.Latitude(Latitude)}, {new Units.Longitude(Longitude)} ({new Units.Length(Altitude).ToUnitString(Units.LengthUnit.Meter)}) }}";
 
     #endregion Implemented interfaces
 

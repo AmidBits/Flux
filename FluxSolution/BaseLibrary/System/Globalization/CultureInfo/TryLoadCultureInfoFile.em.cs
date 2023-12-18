@@ -19,8 +19,6 @@ namespace Flux
 
       var matched = source.TryLocateCulture(fileInfos.Select(fi => fi.FullName), out var matches, out var dt);
 
-      System.Console.WriteLine(dt.DefaultView.ToConsoleString(new ConsoleStringOptions() { CenterContent = true }));
-
       if (matched)
       {
         fileInfo = fileInfos.First(fi => string.Equals(fi.FullName, matches.First().text));

@@ -374,7 +374,7 @@
           grid[i0 + 1, i1 + 1] = m_matrix[i0, i1];
       }
 
-      sb.AppendLine(string.Join(System.Environment.NewLine, grid.Rank2ToConsoleStrings(new ConsoleStringOptions() { UniformWidth = true, CenterContent = true })));
+      sb.AppendLine(string.Join(System.Environment.NewLine, grid.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true, CenterContent = true })));
 
       sb.AppendLine();
 

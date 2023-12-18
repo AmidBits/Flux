@@ -1,6 +1,3 @@
-using System;
-using System.Linq;
-
 namespace Flux.Formatting
 {
   /// <summary>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</summary>
@@ -26,7 +23,7 @@ namespace Flux.Formatting
     #region Jagged Arrays
     public System.Collections.Generic.IEnumerable<string> JaggedToConsoleStrings<T>(T[][] source, System.Func<T, int, string> formatSelector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       formatSelector ??= (e, i) => $"{e}";
 
@@ -58,11 +55,11 @@ namespace Flux.Formatting
     // Returns the array elements formatted for the console.
     public System.Collections.Generic.IEnumerable<string> TwoToConsoleStrings<T>(T[,] source, System.Func<T, int, string> formatSelector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       formatSelector ??= (e, i) => $"{e}";
 
-      var columnMaxWidths = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select(i => source.GetElements(1, i).Select((e, i) => formatSelector(e.item, i)).Max(s => s.Length)).ToArray();
+      var columnMaxWidths = System.Linq.Enumerable.Range(0, source.GetLength(1)).Select(i => source.GetElements(1, i).Select((e, i) => formatSelector(e, i)).Max(s => s.Length)).ToArray();
       if (UniformWidth) columnMaxWidths = columnMaxWidths.Select(w => columnMaxWidths.Max()).ToArray(); // If used, replace all with total max width.
       if (ForcedWidth > 0) columnMaxWidths = columnMaxWidths.Select(w => ForcedWidth).ToArray();
 
@@ -75,7 +72,7 @@ namespace Flux.Formatting
         if (verticalSeparatorRow is not null && index0 > 0)
           yield return verticalSeparatorRow;
 
-        yield return string.Format(System.Globalization.CultureInfo.CurrentCulture, format, source.GetElements(0, index0).Select((e, i) => formatSelector(e.item, i)).ToArray());
+        yield return string.Format(System.Globalization.CultureInfo.CurrentCulture, format, source.GetElements(0, index0).Select((e, i) => formatSelector(e, i)).ToArray());
       }
     }
     public string TwoToConsoleString<T>(T[,] source, System.Func<T, int, string> formatSelector)
