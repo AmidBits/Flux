@@ -1,5 +1,3 @@
-using System.Formats.Tar;
-
 namespace Flux
 {
   public enum NumericBitSize
@@ -133,6 +131,7 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     #region Binary strings
+
     /// <summary>Creates a binary (base 2) text string from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
     public static System.ReadOnlySpan<TSymbol> ToBinaryString<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, int minLength = 1)
@@ -291,6 +290,7 @@ namespace Flux
         return ToDecimalString(value, alphabet, negativeSymbol, minLength);
       else if (alphabet.Length == 16)
         return ToHexadecimalString(value, alphabet, minLength);
+
       // Otherwise use generic algorithm.
 
       var indices = PositionalNotation.ConvertValueToIndices(value, alphabet.Length);

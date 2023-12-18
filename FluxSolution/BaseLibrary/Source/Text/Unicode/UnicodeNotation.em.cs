@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   ///// <summary></summary>
@@ -24,6 +22,7 @@ namespace Flux
 
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> ParseUnicodeUnotation(this string text)
       => RegexParseUnicodeUnotation().Matches(text).Where(m => m.Success).Select(m => new System.Text.Rune(int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null)));
+
     public static bool TryParseUnicodeUnotation(this string text, out System.Collections.Generic.List<System.Text.Rune> result)
     {
       try

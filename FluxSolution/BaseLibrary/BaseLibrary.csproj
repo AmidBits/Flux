@@ -38,10 +38,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="System\Enum\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Update="Resources\Dictionaries\Ipa\ar.csv">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

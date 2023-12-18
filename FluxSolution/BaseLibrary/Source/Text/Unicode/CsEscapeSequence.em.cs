@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   ///// <summary></summary>
@@ -24,6 +22,7 @@ namespace Flux
 
     public static System.Collections.Generic.IEnumerable<char> ParseUnicodeCsEscapeSequence(this string text)
       => RegexParseUnicodeCsEscapeSequence().Matches(text).Where(m => m.Success).Select(m => (char)int.Parse(m.Value, System.Globalization.NumberStyles.HexNumber, null));
+
     public static bool TryParseUnicodeCsEscapeSequence(this string text, out System.Collections.Generic.List<char> result)
     {
       try
@@ -50,15 +49,5 @@ namespace Flux
         CsEscapeSequenceFormat.Variable => $@"\x{rune.Value:X2}",
         _ => throw new NotImplementedException(),
       };
-  }
-
-  public enum CsEscapeSequenceFormat
-  {
-    /// <summary>\u = Unicode escape sequence (UTF-16) \uHHHH (range: 0000 - FFFF; example: \u00E7 = "ç")</summary>
-    UTF16,
-    /// <summary>\U = Unicode escape sequence (UTF-32) \U00HHHHHH (range: 000000 - 10FFFF; example: \U0001F47D)</summary>
-    UTF32,
-    /// <summary>\x = Unicode escape sequence similar to "\u" except with variable length \xH[H][H][H] (range: 0 - FFFF; example: \x00E7 or \x0E7 or \xE7 = "ç")</summary>
-    Variable
   }
 }
