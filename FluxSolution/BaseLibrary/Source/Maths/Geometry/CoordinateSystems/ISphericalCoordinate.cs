@@ -3,7 +3,9 @@
   /// <summary>Spherical coordinate.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/>
   public interface ISphericalCoordinate<TSelf>
-      where TSelf : System.Numerics.INumber<TSelf>
+#if NET7_0_OR_GREATER
+    where TSelf : System.Numerics.INumber<TSelf>
+#endif
   {
     /// <summary>Radius. A.k.a. radial distance, radial coordinate.</summary>
     /// <remarks>If the radius is zero, both azimuth and inclination are arbitrary.</remarks>

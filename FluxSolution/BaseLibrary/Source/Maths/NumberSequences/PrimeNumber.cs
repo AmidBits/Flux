@@ -1,5 +1,4 @@
-using System.Linq;
-
+#if NET7_0_OR_GREATER
 namespace Flux.NumberSequences
 {
   public sealed partial class PrimeNumber
@@ -31,7 +30,7 @@ namespace Flux.NumberSequences
     public const int SmallestPrime = 2;
     #endregion Constants
 
-    #region Static members
+#region Static members
 
     /// <summary>Creates a new sequence of ascending potential primes, greater-than-or-equal-to the specified number.</summary>
     public static System.Collections.Generic.IEnumerable<TSelf> GetAscendingPotentialPrimes<TSelf>(TSelf startAt)
@@ -642,7 +641,8 @@ namespace Flux.NumberSequences
 
     //  return true;
     //}
-    #endregion Static members
+
+#endregion Static members
 
     #region Implemented interfaces
     // INumberSequence
@@ -654,3 +654,4 @@ namespace Flux.NumberSequences
     #endregion Implemented interfaces
   }
 }
+#endif

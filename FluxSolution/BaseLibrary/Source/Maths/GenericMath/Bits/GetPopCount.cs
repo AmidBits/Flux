@@ -5,6 +5,7 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>Using the built-in <see cref="System.Numerics.IBinaryInteger{TSelf}.PopCount(TSelf)"/>.</summary>
+    /// <returns>The number of bits set to 1 in <paramref name="value"/>.</returns>
     public static int GetPopCount<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => int.CreateChecked(TSelf.PopCount(value));

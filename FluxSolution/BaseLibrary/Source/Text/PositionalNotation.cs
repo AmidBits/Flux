@@ -210,7 +210,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToDecimalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToDecimalString(value, Bits.GetMaxDigitCount(value.GetBitCount(), 10, value.ImplementsSignedNumber()));
+      => ToDecimalString(value, Bits.GetMaxDigitCount(value.GetBitCount(), 10, value.IsISignedNumber()));
 
     #endregion // Decimal strings
 
@@ -241,7 +241,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToHexadecimalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToHexadecimalString(value, Bits.GetMaxDigitCount(value.GetBitCount(), 16, value.ImplementsSignedNumber()));
+      => ToHexadecimalString(value, Bits.GetMaxDigitCount(value.GetBitCount(), 16, value.IsISignedNumber()));
 
     #endregion // Hexadecimal strings
 
@@ -272,7 +272,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToOctalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToOctalString(value, Bits.GetMaxDigitCount(value.GetBitCount(), 8, value.ImplementsSignedNumber()));
+      => ToOctalString(value, Bits.GetMaxDigitCount(value.GetBitCount(), 8, value.IsISignedNumber()));
 
     #endregion // Octal strings
 

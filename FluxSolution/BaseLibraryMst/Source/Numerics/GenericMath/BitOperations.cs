@@ -10,33 +10,115 @@ namespace GenericMath
     [TestMethod]
     public void BitFoldLeft()
     {
-      Assert.AreEqual(0xFFFFFFF8U, 0x98U.BitFoldLeft());
+      Assert.AreEqual(0xFFFFFFF8U, 0b00000000_10011000U.BitFoldLeft());
     }
 
     [TestMethod]
     public void BitFoldRight()
     {
-      Assert.AreEqual(0x0000007FU, 0x58U.BitFoldRight());
+      Assert.AreEqual(0x0000007FU, 0b00000000_01011000U.BitFoldRight());
     }
 
     [TestMethod]
-    public void GetBitLengthEx()
+    public void GetBitLength()
     {
-      Assert.AreEqual(7, 88.ToBigInteger().GetShortestBitLength());
-      Assert.AreEqual(7, 88.ToBigInteger().GetShortestBitLength());
+      Assert.AreEqual(7, 88.GetBitLength());
+      Assert.AreEqual(32, (-88).GetBitLength());
     }
 
-    //[TestMethod]
-    //public void FLog2()
-    //{
-    //  Assert.AreEqual(6.467605550082998, (88.5).Log2());
-    //}
+    [TestMethod]
+    public void GetShortestBitLength()
+    {
+      Assert.AreEqual(7, 88.GetShortestBitLength());
+      Assert.AreEqual(8, (-88).GetShortestBitLength());
+    }
 
-    //[TestMethod]
-    //public void ILog2()
-    //{
-    //  Assert.AreEqual(6, 88.IntegerLog2());
-    //}
+    [TestMethod]
+    public void BitMaskLeft()
+    {
+      Assert.AreEqual(-1, 32.BitMaskLeft());
+    }
+
+    [TestMethod]
+    public void BitMaskRight()
+    {
+      Assert.AreEqual(127, 7.BitMaskRight());
+    }
+
+    [TestMethod]
+    public void GetIntegerLog2()
+    {
+      Assert.AreEqual(7, 215.GetIntegerLog2Floor());
+      Assert.AreEqual((7, 8), 215.IntegerLog2());
+    }
+
+    [TestMethod]
+    public void IsPowOf2()
+    {
+      Assert.AreEqual(false, 88.IsPow2());
+      Assert.AreEqual(true, 64.IsPow2());
+    }
+
+    [TestMethod]
+    public void PowOf2()
+    {
+      var rounded = 88.RoundToPowOf2(false, RoundingMode.HalfAwayFromZero, out var towardsZero, out var awayFromZero);
+
+      Assert.AreEqual(64, rounded);
+
+      Assert.AreEqual(64, towardsZero);
+      Assert.AreEqual(128, awayFromZero);
+    }
+
+    [TestMethod]
+    public void RoundToPowOf2AwayFromZero()
+    {
+      var actual = 88.ToBigInteger().RoundToPowOf2(false, RoundingMode.AwayFromZero, out var _, out var _);
+
+      Assert.AreEqual(128.ToBigInteger(), actual);
+    }
+
+    [TestMethod]
+    public void RoundToPowOf2AwayFromZeroProper()
+    {
+      var actual = 88.ToBigInteger().RoundToPowOf2(true, RoundingMode.AwayFromZero, out var _, out var _);
+
+      Assert.AreEqual(128.ToBigInteger(), actual);
+    }
+
+    [TestMethod]
+    public void RoundToPowOf2TowardZero()
+    {
+      var actual = 88.ToBigInteger().RoundToPowOf2(false, RoundingMode.TowardZero, out var _, out var _);
+
+      Assert.AreEqual(64.ToBigInteger(), actual);
+    }
+
+    [TestMethod]
+    public void RoundToPowOf2TowardZeroProper()
+    {
+      var actual = 88.ToBigInteger().RoundToPowOf2(true, RoundingMode.TowardZero, out var _, out var _);
+
+      Assert.AreEqual(64.ToBigInteger(), actual);
+    }
+
+    [TestMethod]
+    public void LeastSignificant1Bit()
+    {
+      Assert.AreEqual(8, 88.LeastSignificant1Bit());
+    }
+
+    [TestMethod]
+    public void MostSignificant1Bit()
+    {
+      Assert.AreEqual(64, 88.MostSignificant1Bit());
+    }
+
+    [TestMethod]
+    public void StripLeastSignificant1Bit()
+    {
+      Assert.AreEqual(80, 88.StripLeastSignificant1Bit());
+    }
 
     [TestMethod]
     public void GetLeadingZeroCount()
@@ -50,72 +132,29 @@ namespace GenericMath
       Assert.AreEqual(3, 88.ToBigInteger().GetTrailingZeroCount());
     }
 
-    //[TestMethod]
-    //public void IsPow2Ex()
-    //{
-    //  Assert.AreEqual(false, 88.ToBigInteger().IsPow2Ex());
-    //}
-
-    //[TestMethod]
-    //public void LocatePow2()
-    //{
-    //  88.LocatePow2(false, out var towardsZero, out var awayFromZero);
-
-    //  Assert.AreEqual(64.ToBigInteger(), towardsZero);
-    //  Assert.AreEqual(128.ToBigInteger(), awayFromZero);
-    //}
-
     [TestMethod]
-    public void PowOf2()
+    public void GetBitCount()
     {
-      88.ToBigInteger().RoundToPow2(false, RoundingMode.HalfToEven, out System.Numerics.BigInteger towardsZero, out System.Numerics.BigInteger awayFromZero);
-
-      Assert.AreEqual(64.ToBigInteger(), towardsZero);
-      Assert.AreEqual(128.ToBigInteger(), awayFromZero);
+      Assert.AreEqual(32, 88.GetBitCount());
     }
 
     [TestMethod]
-    public void RoundToPowOf2AwayFromZero()
+    public void GetByteCount()
     {
-      var actual = 88.ToBigInteger().RoundToPow2(false, RoundingMode.AwayFromZero, out var _, out var _);
-
-      Assert.AreEqual(128.ToBigInteger(), actual);
+      Assert.AreEqual(4, 88.GetByteCount());
     }
 
     [TestMethod]
-    public void RoundToPowOf2AwayFromZeroProper()
+    public void GetMaxDigitCount()
     {
-      var actual = 88.ToBigInteger().RoundToPow2(true, RoundingMode.AwayFromZero, out var _, out var _);
-
-      Assert.AreEqual(128.ToBigInteger(), actual);
+      Assert.AreEqual(4, Bits.GetMaxDigitCount(10, 10, false));
+      Assert.AreEqual(3, Bits.GetMaxDigitCount(10, 10, true));
     }
 
     [TestMethod]
-    public void RoundToPowOf2TowardZero()
+    public void GetPopCount()
     {
-      var actual = 88.ToBigInteger().RoundToPow2(false, RoundingMode.TowardZero, out var _, out var _);
-
-      Assert.AreEqual(64.ToBigInteger(), actual);
-    }
-
-    [TestMethod]
-    public void RoundToPowOf2TowardZeroProper()
-    {
-      var actual = 88.ToBigInteger().RoundToPow2(true, RoundingMode.TowardZero, out var _, out var _);
-
-      Assert.AreEqual(64.ToBigInteger(), actual);
-    }
-
-    [TestMethod]
-    public void LeastSignificant1Bit()
-    {
-      Assert.AreEqual(8.ToBigInteger(), 88.ToBigInteger().LeastSignificant1Bit());
-    }
-
-    [TestMethod]
-    public void MostSignificant1Bit()
-    {
-      Assert.AreEqual(64.ToBigInteger(), 88.ToBigInteger().MostSignificant1Bit());
+      Assert.AreEqual(4, 0xF0.GetPopCount());
     }
 
     [TestMethod]

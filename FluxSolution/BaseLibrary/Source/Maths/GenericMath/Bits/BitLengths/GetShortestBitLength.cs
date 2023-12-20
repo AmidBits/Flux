@@ -7,7 +7,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>using the built-in <see cref="System.Numerics.IBinaryInteger{TSelf}.GetShortestBitLength()"/>.</summary>
+    /// <summary>Uses the built-in <see cref="System.Numerics.IBinaryInteger{TSelf}.GetShortestBitLength()"/>.</summary>
     public static int GetShortestBitLength<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => value.GetShortestBitLength();

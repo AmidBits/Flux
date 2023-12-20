@@ -7,7 +7,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>"Folds" the upper bits into the lower bits, by taking the most significant 1 bit (MS1B) and OR it with (MS1B - 1). The process yields a bit vector with the same most significant 1 as the value, but all 1's below it.</summary>
+    /// <summary>"Folds" the upper bits into the lower bits, by taking the most-significant-1-bit (MS1B) and OR it with (MS1B - 1). The process yields a bit vector with the same most-significant-1-bit as the value, and all 1's below it.</summary>
     /// <returns>All bits set from MSB down, or -1 (all bits) if the value is less than zero.</returns>
     public static TSelf BitFoldRight<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

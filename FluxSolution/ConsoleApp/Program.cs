@@ -28,25 +28,25 @@ namespace ConsoleApp
       var multiple = -4;
       var radix = 2;
 
-      ////      var mtz = value.MultipleOfTowardZero(multiple);
-      //var mtzpf = value.MultipleOfTowardZero(multiple, false);
-      //var mtzpt = value.MultipleOfTowardZero(multiple, true);
+      ////      var mTowardsZero = value.MultipleOfTowardZero(multiple);
+      //var mTowardsZeropf = value.MultipleOfTowardZero(multiple, false);
+      //var mTowardsZeropt = value.MultipleOfTowardZero(multiple, true);
 
-      ////      var mafz = value.MultipleOfAwayFromZero(multiple);
-      //var mafzpf = value.MultipleOfAwayFromZero(multiple, false);
-      //var mafzpt = value.MultipleOfAwayFromZero(multiple, true);
+      ////      var mAwayFromZero = value.MultipleOfAwayFromZero(multiple);
+      //var mAwayFromZeropf = value.MultipleOfAwayFromZero(multiple, false);
+      //var mAwayFromZeropt = value.MultipleOfAwayFromZero(multiple, true);
 
-      var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mtz, out var mafz);
+      var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
-      var rtp = value.RoundToPowOf(radix, true, Flux.RoundingMode.AwayFromZero, out var rtptz, out var rtpafz);
+      var rtp = value.RoundToPowOf(radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
       var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
 
-      var p2tz = quotient.MostSignificant1Bit();
-      var p2afz = (p2tz < quotient || remainder > 0) ? (p2tz == 0 ? 1 : p2tz << 1) : p2tz;
+      var p2TowardsZero = quotient.MostSignificant1Bit();
+      var p2AwayFromZero = (p2TowardsZero < quotient || remainder > 0) ? (p2TowardsZero == 0 ? 1 : p2TowardsZero << 1) : p2TowardsZero;
 
-      var p2tzp = p2tz == value ? p2tz >> 1 : p2tz;
-      var p2afzp = p2afz == value ? p2afz << 1 : p2afz;
+      var p2TowardsZerop = p2TowardsZero == value ? p2TowardsZero >> 1 : p2TowardsZero;
+      var p2AwayFromZerop = p2AwayFromZero == value ? p2AwayFromZero << 1 : p2AwayFromZero;
 
       var n = (int)(short.MaxValue / sbyte.MaxValue);
       n = -3;
@@ -74,10 +74,10 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2tz = (int)n.RoundToPow2(false, Flux.RoundingMode.TowardZero, out var p2tzlo, out var p2tzhi);
-      System.Console.WriteLine($" RoundToPow2tz = {np2tz}");
-      var np2afz = (int)n.RoundToPow2(false, Flux.RoundingMode.AwayFromZero, out var p2afzlo, out var p2afzhi);
-      System.Console.WriteLine($"RountToPow2afz = {np2afz}");
+      var np2TowardsZero = (int)n.RoundToPowOf2(false, Flux.RoundingMode.TowardZero, out var p2TowardsZerolo, out var p2TowardsZerohi);
+      System.Console.WriteLine($" RoundToPow2TowardsZero = {np2TowardsZero}");
+      var np2AwayFromZero = (int)n.RoundToPowOf2(false, Flux.RoundingMode.AwayFromZero, out var p2AwayFromZerolo, out var p2AwayFromZerohi);
+      System.Console.WriteLine($"RountToPow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = n.ReverseBits();
       System.Console.WriteLine($"  Reverse Bits = {birbits.ToBinaryString()}");
@@ -109,8 +109,46 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var v = 550.ToBigInteger();
+      //var vpow10 = v.PowOf(10);
+      var (log10TowardsZero, log10AwayFromZero) = v.IntegerLog(10);
+      var (log2TowardsZero, log2AwayFromZero) = v.IntegerLog2();
+      var powOfClosest = v.RoundToPowOf(10, true, RoundingMode.HalfTowardZero, out var powOfTowardsZero, out var powOfAwayFromZero);
+      var powOf2Closest = v.RoundToPowOf2(true, RoundingMode.HalfTowardZero, out var pow2TowardsZero, out var pow2AwayFromZero);
+      var pvs = v.GetPlaceValues(10);
+
+      var vTowardsZero = v.MostSignificant1Bit();
+      var vAwayFromZero = vTowardsZero << 1;
+
+      byte a = 215;
+      short b = 215;
+      int c = 215;
+      ulong d = 215;
+      System.Int128 e = 215;
+      System.Numerics.BigInteger f = 215;
+      //f += 1;
+
+      var mdcish = 0b0000000111111111;
+      var mdcish2 = unchecked((short)0b1111111000000000);
+      var mdc = Flux.Bits.GetMaxDigitCount(10, 10, false);
+
+      var abc = a.GetBitCount();
+      var abl = a.IsISignedNumber();
+      var bbc = b.GetBitCount();
+      var bbl = b.IsISignedNumber();
+      var cbc = c.GetBitCount();
+      var cbl = c.IsISignedNumber();
+      var dbc = d.GetBitCount();
+      var dbl = d.IsISignedNumber();
+      var ebc = e.GetBitCount();
+      var ebl = e.IsISignedNumber();
+      var fbc = f.GetBitCount();
+      var fbl = f.IsISignedNumber();
+
+      var x = d.IsISignedNumber();
+      var y = d.IsIUnsignedNumber();
     }
 
     private static void Main(string[] args)

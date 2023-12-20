@@ -3,7 +3,9 @@
   /// <summary>A hex cube/axial coordinate system.</summary>
   /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
   public interface IHexCoordinate<TSelf>
-      where TSelf : System.Numerics.INumber<TSelf>
+#if NET7_0_OR_GREATER
+    where TSelf : System.Numerics.INumber<TSelf>
+#endif
   {
     /// <summary>The first component or coordinate.</summary>
     TSelf Q { get; }

@@ -82,7 +82,7 @@ namespace GenericMath
     [TestMethod]
     public void IntegerLog()
     {
-      512.ToBigInteger().IntegerLog(10, out var logFloor, out var logCeiling);
+      var (logFloor, logCeiling) = 512.ToBigInteger().IntegerLog(10);
 
       Assert.AreEqual(2.ToBigInteger(), logFloor);
       Assert.AreEqual(3.ToBigInteger(), logCeiling);
@@ -91,13 +91,13 @@ namespace GenericMath
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual(3, Flux.Maths.IntegerLog(512.ToBigInteger() - 1, 10) + 1);
+      Assert.AreEqual(3, Flux.Maths.IntegerLog(512.ToBigInteger() - 1, 10).IlogAwayFromZero);
     }
 
     [TestMethod]
     public void IntegerLogFloor()
     {
-      Assert.AreEqual(2, 512.ToBigInteger().IntegerLog(10));
+      Assert.AreEqual(2, 512.IntegerLog(10).IlogTowardZero);
     }
 
     [TestMethod]

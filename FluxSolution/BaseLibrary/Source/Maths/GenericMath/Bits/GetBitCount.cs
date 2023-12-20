@@ -7,7 +7,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Gets the storage size, in bits, of the binary integer, based on byte-count.</summary>
+    /// <summary>Gets the storage size, in bits, of the binary integer, based on <see cref="System.Numerics.IBinaryInteger{TSelf}.GetByteCount"/>.</summary>
     public static int GetBitCount<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => value.GetByteCount() * 8;

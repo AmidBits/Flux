@@ -13,6 +13,7 @@ namespace Flux.NumberSequences
 
     #region Static methods
 
+#if NET7_0_OR_GREATER
     /// <summary></summary>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
     public static System.Collections.Generic.IEnumerable<(TSelf minCenteredNumber, TSelf maxCenteredNumber, TSelf count)> GetLayers<TSelf>(TSelf numberOfSides)
@@ -46,6 +47,7 @@ namespace Flux.NumberSequences
       for (var index = TSelf.Zero; ; index++)
         yield return GetNumber(index, numberOfSides);
     }
+#endif
 
     #endregion Static methods
 

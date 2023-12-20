@@ -5,12 +5,12 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>
-    /// <para>Computes the floor integer log of <paramref name="value"/> in base <paramref name="radix"/>.</para>
+    /// <para>Computes the floor integer-log-<paramref name="radix"/> of <paramref name="value"/>.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Logarithm"/></para>
     /// </summary>
-    /// <remarks>The ceiling integer log: (<paramref name="value"/> >= 1 ? IntegerLog(<paramref name="value"/> - 1, <paramref name="radix"/>) + 1 : 0).</remarks>
+    /// <remarks>The ceiling integer log: (<paramref name="value"/> >= 1 ? IntegerLogFloor(<paramref name="value"/> - 1, <paramref name="radix"/>) + 1 : 0).</remarks>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf IntegerLog<TSelf>(this TSelf value, TSelf radix)
+    public static TSelf IntegerLogFloor<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       AssertNonNegative(value);
@@ -37,13 +37,22 @@ namespace Flux
     /// <param name="radix">The power of alignment.</param>
     /// <param name="ilogTowardZero"></param>
     /// <param name="ilogAwayFromZero"></param>
-    public static void IntegerLog<TSelf>(this TSelf value, TSelf radix, out TSelf ilogTowardZero, out TSelf ilogAwayFromZero)
+    public static (TSelf IlogTowardZero, TSelf IlogAwayFromZero) IntegerLog<TSelf>(this TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      ilogAwayFromZero = ilogTowardZero = IntegerLog(value, radix);
+      TSelf ilogTowardZero, ilogAwayFromZero;
 
-      if (!IsPowOf(value, radix))
-        ilogAwayFromZero++;
+      if (TSelf.IsNegative(value))
+      {
+        (ilogTowardZero, ilogAwayFromZero) = IntegerLog(TSelf.Abs(value), radix);
+
+        return (-ilogTowardZero, -ilogAwayFromZero);
+      }
+
+      ilogTowardZero = IntegerLogFloor(value, radix);
+      ilogAwayFromZero = IsPowOf(value, radix) ? ilogTowardZero : ilogTowardZero + TSelf.One;
+
+      return (ilogTowardZero, ilogAwayFromZero);
     }
 
 #else

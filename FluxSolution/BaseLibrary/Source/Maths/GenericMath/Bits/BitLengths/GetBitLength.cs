@@ -7,8 +7,8 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Gets the size, in bits, of the shortest two's-complement representation of <paramref name="value"/>, if <paramref name="value"/> is positive. If <paramref name="value"/> is negative, the bit-length represents the storage size of the <typeparamref name="TSelf"/>, based on byte-count (times 8). This bit-length also serves as the bit position of a power-of-2 <paramref name="value"/>.</summary>
-    /// <remarks>Some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies. This means that the bit-count also is dynamic.</remarks>
+    /// <summary>Gets the size, in bits, of the shortest two's-complement representation, if <paramref name="value"/> is positive. If <paramref name="value"/> is negative, the bit-length represents the storage size of the <typeparamref name="TSelf"/>, based on byte-count (times 8). This bit-length also serves as the bit position of a power-of-2 <paramref name="value"/>.</summary>
+    /// <remarks>Some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies. This means that the <see cref="GetBitLength{TSelf}"/> also is dynamic.</remarks>
     public static int GetBitLength<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsNegative(value)

@@ -7,7 +7,7 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Recursively "folds" the lower bits into the upper bits (left). The process yields a bit vector with the same least significant 1 as the value, and all 1's above it.</summary>
+    /// <summary>Recursively "folds" the lower bits into the upper bits (left) from the least-significant-1-bit. The process yields a bit vector with the same least-significant-1-bit as the value, and all 1's above it.</summary>
     /// <returns>All bits set from LSB up, or -1 if the value is less than zero.</returns>
     public static TSelf BitFoldLeft<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
