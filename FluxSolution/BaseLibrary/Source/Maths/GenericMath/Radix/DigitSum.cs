@@ -1,75 +1,75 @@
-namespace Flux
-{
-  public static partial class Maths
-  {
-#if NET7_0_OR_GREATER
+//namespace Flux
+//{
+//  public static partial class Maths
+//  {
+//#if NET7_0_OR_GREATER
 
-    /// <summary>Returns the sum of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static TSelf DigitSum<TSelf>(this TSelf value, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      AssertRadix(radix);
+//    /// <summary>Returns the sum of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
+//    /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
+//    public static TSelf DigitSum<TSelf>(this TSelf value, TSelf radix)
+//      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+//    {
+//      AssertRadix(radix);
 
-      var sum = TSelf.Zero;
+//      var sum = TSelf.Zero;
 
-      while (!TSelf.IsZero(value))
-      {
-        sum += value % radix;
+//      while (!TSelf.IsZero(value))
+//      {
+//        sum += value % radix;
 
-        value /= radix;
-      }
+//        value /= radix;
+//      }
 
-      return sum;
-    }
+//      return sum;
+//    }
 
-#else
+//#else
 
-    /// <summary>Returns the sum of all digits in the value using the specified radix.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static System.Numerics.BigInteger DigitSum(this System.Numerics.BigInteger value, int radix)
-    {
-      var sum = System.Numerics.BigInteger.Zero;
+//    /// <summary>Returns the sum of all digits in the value using the specified radix.</summary>
+//    /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
+//    public static System.Numerics.BigInteger DigitSum(this System.Numerics.BigInteger value, int radix)
+//    {
+//      var sum = System.Numerics.BigInteger.Zero;
 
-      while (value != 0)
-      {
-        sum += value % radix;
-        value /= radix;
-      }
+//      while (value != 0)
+//      {
+//        sum += value % radix;
+//        value /= radix;
+//      }
 
-      return sum;
-    }
+//      return sum;
+//    }
 
-    /// <summary>Returns the sum of all digits in the value using the specified radix.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static int DigitSum(this int value, int radix)
-    {
-      var sum = 0;
+//    /// <summary>Returns the sum of all digits in the value using the specified radix.</summary>
+//    /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
+//    public static int DigitSum(this int value, int radix)
+//    {
+//      var sum = 0;
 
-      while (value != 0)
-      {
-        sum += value % radix;
-        value /= radix;
-      }
+//      while (value != 0)
+//      {
+//        sum += value % radix;
+//        value /= radix;
+//      }
 
-      return sum;
-    }
+//      return sum;
+//    }
 
-    /// <summary>Returns the sum of all digits in the value using the specified radix.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static long DigitSum(this long value, int radix)
-    {
-      var sum = 0L;
+//    /// <summary>Returns the sum of all digits in the value using the specified radix.</summary>
+//    /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
+//    public static long DigitSum(this long value, int radix)
+//    {
+//      var sum = 0L;
 
-      while (value != 0)
-      {
-        sum += value % radix;
-        value /= radix;
-      }
+//      while (value != 0)
+//      {
+//        sum += value % radix;
+//        value /= radix;
+//      }
 
-      return sum;
-    }
+//      return sum;
+//    }
 
-#endif
-  }
-}
+//#endif
+//  }
+//}

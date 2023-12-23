@@ -1,9 +1,9 @@
-﻿using Flux;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Flux;
 
 namespace WpfApp
 {
@@ -21,7 +21,7 @@ namespace WpfApp
       index = 0;
       comboBoxSeedNumber.Items.Clear();
       comboBoxSeedNumber.Items.Insert(index++, "Rnd");
-      foreach (var pn in Flux.NumberSequences.PrimeNumber.GetAscendingPrimes(2).TakeWhile(p => p < 100))
+      foreach (var pn in Flux.NumberSequence.GetAscendingPrimes(2).TakeWhile(p => p < 100))
         comboBoxSeedNumber.Items.Insert(index++, pn.ToString());
       comboBoxSeedNumber.SelectedIndex = 0;
 

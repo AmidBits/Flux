@@ -102,7 +102,7 @@ namespace Flux
       public static MetricMultiplicativePrefix FindMetricMultiplicativePrefix(double value, out double outValue, MetricMultiplicativePrefix prefix = MetricMultiplicativePrefix.One)
       {
         var sourceFactor = (int)prefix;
-        var target = (MetricMultiplicativePrefix)System.Convert.ToInt32(new System.Numerics.BigInteger(System.Math.Truncate(value)).DigitCount(10) / 3 * 3 + sourceFactor);
+        var target = (MetricMultiplicativePrefix)System.Convert.ToInt32(Radix.DigitCount(new System.Numerics.BigInteger(System.Math.Truncate(value)), 10) / 3 * 3 + sourceFactor);
         var targetFactor = (int)target;
 
         outValue = value / System.Math.Pow(10, targetFactor - sourceFactor);

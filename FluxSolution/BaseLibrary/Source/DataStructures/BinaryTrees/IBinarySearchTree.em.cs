@@ -6,7 +6,7 @@ namespace Flux
     public static DataStructures.IBinarySearchTree<TKey, TValue> GetMaximumNode<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) return source;
 
@@ -19,7 +19,7 @@ namespace Flux
     public static DataStructures.IBinarySearchTree<TKey, TValue> GetMinimumNode<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) return source;
 
@@ -44,7 +44,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinarySearchTree<TKey, TValue>> GetNodesInOrder<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var stack = new System.Collections.Generic.Stack<DataStructures.IBinarySearchTree<TKey, TValue>>();
 
@@ -74,7 +74,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinarySearchTree<TKey, TValue>> GetNodesInOrderReversed<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var stack = new System.Collections.Generic.Stack<DataStructures.IBinarySearchTree<TKey, TValue>>();
 
@@ -105,7 +105,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinarySearchTree<TKey, TValue>> GetNodesLevelOrder<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source, int maxDepth)
       where TKey : System.IComparable<TKey>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
@@ -135,7 +135,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinarySearchTree<TKey, TValue>[]> GetNodesLevelOrderChunked<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
@@ -162,7 +162,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinarySearchTree<TKey, TValue>> GetNodesPostOrder<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
@@ -204,7 +204,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinarySearchTree<TKey, TValue>> GetNodesPreOrder<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
@@ -231,9 +231,9 @@ namespace Flux
     public static bool IsBinarySearchTree<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source, TKey minimumKey, TKey maximumKey, System.Func<TKey, TKey> keyDecrementor, System.Func<TKey, TKey> keyIncrementor)
       where TKey : System.IComparable<TKey>
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (keyDecrementor is null) throw new System.ArgumentNullException(nameof(keyDecrementor));
-      if (keyIncrementor is null) throw new System.ArgumentNullException(nameof(keyIncrementor));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(keyDecrementor);
+      System.ArgumentNullException.ThrowIfNull(keyIncrementor);
 
       if (source.IsEmpty) return true;
       if (source.Key.CompareTo(minimumKey) < 0 || source.Key.CompareTo(maximumKey) > 0) return false;

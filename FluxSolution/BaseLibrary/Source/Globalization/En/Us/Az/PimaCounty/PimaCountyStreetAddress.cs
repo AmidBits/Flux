@@ -87,10 +87,10 @@ namespace Flux.Globalization.EnUs.Az.PimaCounty
         var type = match.Groups[nameof(Type)].Value;
         var unit = match.Groups[nameof(Unit)].Value;
 
-        if (!DirectionAliases.ContainsKey(direction) && direction.Any())
+        if (!DirectionAliases.ContainsKey(direction) && direction.Length != 0)
           direction = DirectionAliases.First(kvp => kvp.Value.Contains(direction, System.StringComparer.InvariantCultureIgnoreCase)).Key;
 
-        if (!TypeAliases.ContainsKey(type) && type.Any())
+        if (!TypeAliases.ContainsKey(type) && type.Length != 0)
           type = TypeAliases.First(kvp => kvp.Value.Contains(type, System.StringComparer.InvariantCultureIgnoreCase)).Key;
 
         return new PimaCountyStreetAddress(number, direction, intersection, name, type, unit);

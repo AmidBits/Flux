@@ -1,4 +1,5 @@
-﻿using Flux;
+﻿using System.Linq;
+using Flux;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -38,7 +39,7 @@ namespace ConsoleApp
 
       var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
-      var rtp = value.RoundToPowOf(radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
+      var rtp = Flux.Units.Radix.RoundToPowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
       var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
 
@@ -111,44 +112,66 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var v = 550.ToBigInteger();
-      //var vpow10 = v.PowOf(10);
-      var (log10TowardsZero, log10AwayFromZero) = v.IntegerLog(10);
-      var (log2TowardsZero, log2AwayFromZero) = v.IntegerLog2();
-      var powOfClosest = v.RoundToPowOf(10, true, RoundingMode.HalfTowardZero, out var powOfTowardsZero, out var powOfAwayFromZero);
-      var powOf2Closest = v.RoundToPowOf2(true, RoundingMode.HalfTowardZero, out var pow2TowardsZero, out var pow2AwayFromZero);
-      var pvs = v.GetPlaceValues(10);
+      var n = 1234;
 
-      var vTowardsZero = v.MostSignificant1Bit();
-      var vAwayFromZero = vTowardsZero << 1;
+      var alphabet = "0123456789";
 
-      byte a = 215;
-      short b = 215;
-      int c = 215;
-      ulong d = 215;
-      System.Int128 e = 215;
-      System.Numerics.BigInteger f = 215;
-      //f += 1;
+      Flux.Units.Radix.TryConvertNumberToPositionalNotationIndices(n, 2, out var npni);
 
-      var mdcish = 0b0000000111111111;
-      var mdcish2 = unchecked((short)0b1111111000000000);
-      var mdc = Flux.Bits.GetMaxDigitCount(10, 10, false);
+      var symbols = npni.Select(i => alphabet[i]).ToArray();
 
-      var abc = a.GetBitCount();
-      var abl = a.IsISignedNumber();
-      var bbc = b.GetBitCount();
-      var bbl = b.IsISignedNumber();
-      var cbc = c.GetBitCount();
-      var cbl = c.IsISignedNumber();
-      var dbc = d.GetBitCount();
-      var dbl = d.IsISignedNumber();
-      var ebc = e.GetBitCount();
-      var ebl = e.IsISignedNumber();
-      var fbc = f.GetBitCount();
-      var fbl = f.IsISignedNumber();
+      var spni = symbols.Select(s => alphabet.IndexOf(s)).ToArray();
 
-      var x = d.IsISignedNumber();
-      var y = d.IsIUnsignedNumber();
+      Flux.Units.Radix.TryConvertPositionalNotationIndicesToNumber(spni, 2, out long pnin);
+
+      var gray = Flux.Units.Radix.BinaryToGray(1899U, 10U);
+
+      var db = Flux.NumberSequence.GetDeBruijnSequenceExpanded(10, 4, new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' }).ToArray();
+
+      //var v = 215;
+
+      //var a = Flux.NumberSequences.PerfectNthRoot.GetPerfectNthRootSequence<int>(2).Take(20).ToArray();
+
+      //var c = Flux.NumberSequences.PerfectNthRoot.GetPerfectNthRootSequence<int>(2).PartitionTuple2(false, (l, h, i) => (lo: l, hi: h)).First(p => p.lo <= v && p.hi >= v);
+
+      //var v = 550.ToBigInteger();
+      ////var vpow10 = v.PowOf(10);
+      //var (log10TowardsZero, log10AwayFromZero) = v.IntegerLog(10);
+      //var (log2TowardsZero, log2AwayFromZero) = v.IntegerLog2();
+      //var powOfClosest = v.RoundToPowOf(10, true, RoundingMode.HalfTowardZero, out var powOfTowardsZero, out var powOfAwayFromZero);
+      //var powOf2Closest = v.RoundToPowOf2(true, RoundingMode.HalfTowardZero, out var pow2TowardsZero, out var pow2AwayFromZero);
+      //var pvs = v.GetPlaceValues(10);
+
+      //var vTowardsZero = v.MostSignificant1Bit();
+      //var vAwayFromZero = vTowardsZero << 1;
+
+      //byte a = 215;
+      //short b = 215;
+      //int c = 215;
+      //ulong d = 215;
+      //System.Int128 e = 215;
+      //System.Numerics.BigInteger f = 215;
+      ////f += 1;
+
+      //var mdcish = 0b0000000111111111;
+      //var mdcish2 = unchecked((short)0b1111111000000000);
+      //var mdc = Flux.Bits.GetMaxDigitCount(10, 10, false);
+
+      //var abc = a.GetBitCount();
+      //var abl = a.IsISignedNumber();
+      //var bbc = b.GetBitCount();
+      //var bbl = b.IsISignedNumber();
+      //var cbc = c.GetBitCount();
+      //var cbl = c.IsISignedNumber();
+      //var dbc = d.GetBitCount();
+      //var dbl = d.IsISignedNumber();
+      //var ebc = e.GetBitCount();
+      //var ebl = e.IsISignedNumber();
+      //var fbc = f.GetBitCount();
+      //var fbl = f.IsISignedNumber();
+
+      //var x = d.IsISignedNumber();
+      //var y = d.IsIUnsignedNumber();
     }
 
     private static void Main(string[] args)

@@ -7,7 +7,7 @@ namespace Flux
     /// <remarks>This is the method used in the static property <see cref="m_typeConverterOfT"/>.</remarks>
     public static T? TypeConverter<T>(object value, System.Globalization.CultureInfo? culture = null)
     {
-      if (value is null) throw new System.ArgumentNullException(nameof(value));
+      System.ArgumentNullException.ThrowIfNull(value);
 
       var exceptions = new System.Collections.Generic.List<System.Exception>();
 

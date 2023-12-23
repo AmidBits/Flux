@@ -18,7 +18,7 @@ namespace Flux
           yield return item;
       }
 
-      while (rotate.Any())
+      while (rotate.Count != 0)
         yield return rotate.Dequeue();
     }
   }

@@ -14,7 +14,7 @@ namespace Flux
 
       var ths = new System.Collections.Generic.HashSet<T>(target);
 
-      if (!System.Linq.Enumerable.Any(ths))
+      if (ths.Count == 0)
         return source; // If target is empty, source is the result.
 
       var ihs = new System.Collections.Generic.HashSet<T>(source.Intersect(ths));

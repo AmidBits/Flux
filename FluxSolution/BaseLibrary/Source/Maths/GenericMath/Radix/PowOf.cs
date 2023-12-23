@@ -1,204 +1,204 @@
-namespace Flux
-{
-  public static partial class Maths
-  {
-#if NET7_0_OR_GREATER
+//namespace Flux
+//{
+//  public static partial class Maths
+//  {
+//#if NET7_0_OR_GREATER
 
-    /// <summary>Compute the floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
-    /// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
-    /// <param name="radix">The power of alignment.</param>
-    /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf PowOf<TSelf>(this TSelf value, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => IntegerPow(radix, TSelf.CreateChecked(IntegerLogFloor(value, radix)));
+//    /// <summary>Compute the floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
+//    /// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
+//    /// <param name="radix">The power of alignment.</param>
+//    /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+//    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+//    public static TSelf PowOf<TSelf>(this TSelf value, TSelf radix)
+//      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+//      => IntegerPow(radix, TSelf.CreateChecked(IntegerLogFloor(value, radix)));
 
-    /// <summary>Compute the two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/> of <paramref name="value"/>. Specify <paramref name="proper"/> to ensure results that are not equal to value.</summary>
-    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
-    /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-<paramref name="radix"/> will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    /// <returns>The two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/> to <paramref name="value"/>.</returns>
-    public static (TSelf powOfTowardsZero, TSelf powOfAwayFromZero) PowOf<TSelf>(this TSelf value, TSelf radix, bool proper)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      TSelf powOfTowardsZero, powOfAwayFromZero;
+//    /// <summary>Compute the two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/> of <paramref name="value"/>. Specify <paramref name="proper"/> to ensure results that are not equal to value.</summary>
+//    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
+//    /// <param name="radix">The power of alignment.</param>
+//    /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-<paramref name="radix"/> will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+//    /// <returns>The two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/> to <paramref name="value"/>.</returns>
+//    public static (TSelf powOfTowardsZero, TSelf powOfAwayFromZero) PowOf<TSelf>(this TSelf value, TSelf radix, bool proper)
+//      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+//    {
+//      TSelf powOfTowardsZero, powOfAwayFromZero;
 
-      if (TSelf.IsNegative(value))
-      {
-        (powOfTowardsZero, powOfAwayFromZero) = PowOf(TSelf.Abs(value), radix, proper);
+//      if (TSelf.IsNegative(value))
+//      {
+//        (powOfTowardsZero, powOfAwayFromZero) = PowOf(TSelf.Abs(value), radix, proper);
 
-        return (-powOfTowardsZero, -powOfAwayFromZero);
-      }
+//        return (-powOfTowardsZero, -powOfAwayFromZero);
+//      }
 
-      powOfTowardsZero = PowOf(value, radix);
-      powOfAwayFromZero = powOfTowardsZero != value ? powOfTowardsZero * radix : powOfTowardsZero; // If toward-zero is not equal to value, make away-from-zero the next power-of.
+//      powOfTowardsZero = PowOf(value, radix);
+//      powOfAwayFromZero = powOfTowardsZero != value ? powOfTowardsZero * radix : powOfTowardsZero; // If toward-zero is not equal to value, make away-from-zero the next power-of.
 
-      return proper && powOfTowardsZero == powOfAwayFromZero
-        ? (powOfTowardsZero /= radix, powOfAwayFromZero *= radix)
-        : (powOfTowardsZero, powOfAwayFromZero);
-    }
+//      return proper && powOfTowardsZero == powOfAwayFromZero
+//        ? (powOfTowardsZero /= radix, powOfAwayFromZero *= radix)
+//        : (powOfTowardsZero, powOfAwayFromZero);
+//    }
 
-    /// <summary>Compute the nearest power-of-<paramref name="radix"/> from <paramref name="powOfTowardsZero"/>/<paramref name="powOfAwayFromZero"/> of <paramref name="value"/>. Specify <paramref name="proper"/> to ensure results that are not equal to value.</summary>
-    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
-    /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-<paramref name="radix"/> will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    /// <returns>The nearest power-of-<paramref name="radix"/> to <paramref name="value"/>.</returns>
-    public static TSelf RoundToPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powOfTowardsZero, out TSelf powOfAwayFromZero)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      (powOfTowardsZero, powOfAwayFromZero) = PowOf(value, radix, proper);
+//    /// <summary>Compute the nearest power-of-<paramref name="radix"/> from <paramref name="powOfTowardsZero"/>/<paramref name="powOfAwayFromZero"/> of <paramref name="value"/>. Specify <paramref name="proper"/> to ensure results that are not equal to value.</summary>
+//    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
+//    /// <param name="radix">The power of alignment.</param>
+//    /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-<paramref name="radix"/> will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+//    /// <returns>The nearest power-of-<paramref name="radix"/> to <paramref name="value"/>.</returns>
+//    public static TSelf RoundToPowOf<TSelf>(this TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powOfTowardsZero, out TSelf powOfAwayFromZero)
+//      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+//    {
+//      (powOfTowardsZero, powOfAwayFromZero) = PowOf(value, radix, proper);
 
-      return value.RoundToBoundaries(mode, powOfTowardsZero, powOfAwayFromZero);
-    }
+//      return value.RoundToBoundaries(mode, powOfTowardsZero, powOfAwayFromZero);
+//    }
 
-#else
+//#else
 
-    /// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
-    /// <param name="value">The value for which the floor power-of-radix will be found.</param>
-    /// <param name="radix">The power of alignment.</param>
-    /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-    /// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
-    public static System.Numerics.BigInteger PowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
-      => IntegerPow(radix, IntegerLog(value, radix));
+//    /// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
+//    /// <param name="value">The value for which the floor power-of-radix will be found.</param>
+//    /// <param name="radix">The power of alignment.</param>
+//    /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+//    /// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
+//    public static System.Numerics.BigInteger PowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
+//      => IntegerPow(radix, IntegerLog(value, radix));
 
-    /// <summary>Locate two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>.</summary>
-    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
-    /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
-    /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
-    /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static (System.Numerics.BigInteger powOfTowardsZero, System.Numerics.BigInteger powOfAwayFromZero) RoundToPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
-    {
-      if (value < 0)
-      {
-        var (powOfTowardsZero, powOfAwayFromZero) = RoundToPowOf(System.Numerics.BigInteger.Abs(value), radix, proper);
+//    /// <summary>Locate two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>.</summary>
+//    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
+//    /// <param name="radix">The power of alignment.</param>
+//    /// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+//    /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
+//    /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
+//    /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
+//    public static (System.Numerics.BigInteger powOfTowardsZero, System.Numerics.BigInteger powOfAwayFromZero) RoundToPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
+//    {
+//      if (value < 0)
+//      {
+//        var (powOfTowardsZero, powOfAwayFromZero) = RoundToPowOf(System.Numerics.BigInteger.Abs(value), radix, proper);
 
-        return (-powOfTowardsZero, -powOfAwayFromZero);
-      }
-      else  // The value is greater than or equal to zero here.
-      {
-        var powOfTowardsZero = PowOf(value, AssertRadix(radix));
-        var powOfAwayFromZero = powOfTowardsZero != value ? powOfTowardsZero * radix : powOfTowardsZero; // If toward-zero is not equal to value, make away-from-zero the next power-of.
+//        return (-powOfTowardsZero, -powOfAwayFromZero);
+//      }
+//      else  // The value is greater than or equal to zero here.
+//      {
+//        var powOfTowardsZero = PowOf(value, AssertRadix(radix));
+//        var powOfAwayFromZero = powOfTowardsZero != value ? powOfTowardsZero * radix : powOfTowardsZero; // If toward-zero is not equal to value, make away-from-zero the next power-of.
 
-        return proper && powOfTowardsZero == powOfAwayFromZero
-          ? (powOfTowardsZero /= radix, powOfAwayFromZero *= radix)
-          : (powOfTowardsZero, powOfAwayFromZero);
-      }
-    }
+//        return proper && powOfTowardsZero == powOfAwayFromZero
+//          ? (powOfTowardsZero /= radix, powOfAwayFromZero *= radix)
+//          : (powOfTowardsZero, powOfAwayFromZero);
+//      }
+//    }
 
-    /// <summary>Locate two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>.</summary>
-    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
-    /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
-    /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
-    /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static System.Numerics.BigInteger RoundToPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powOfTowardsZero, out System.Numerics.BigInteger powOfAwayFromZero)
-    {
-      (powOfTowardsZero, powOfAwayFromZero) = RoundToPowOf(value, radix, proper);
+//    /// <summary>Locate two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>.</summary>
+//    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
+//    /// <param name="radix">The power of alignment.</param>
+//    /// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+//    /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
+//    /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
+//    /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
+//    public static System.Numerics.BigInteger RoundToPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powOfTowardsZero, out System.Numerics.BigInteger powOfAwayFromZero)
+//    {
+//      (powOfTowardsZero, powOfAwayFromZero) = RoundToPowOf(value, radix, proper);
 
-      return value.RoundToBoundaries(mode, powOfTowardsZero, powOfAwayFromZero);
-    }
+//      return value.RoundToBoundaries(mode, powOfTowardsZero, powOfAwayFromZero);
+//    }
 
-    /// <summary>Locate two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>.</summary>
-    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
-    /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
-    /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
-    /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
-    public static int RoundToPowOf(this int value, int radix, bool proper, RoundingMode mode, out int powofTowardsZero, out int powofAwayFromZero)
-    {
-      var rv = RoundToPowOf(value.ToBigInteger(), radix, proper, mode, out System.Numerics.BigInteger ptz, out System.Numerics.BigInteger pafz);
+//    /// <summary>Locate two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>.</summary>
+//    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
+//    /// <param name="radix">The power of alignment.</param>
+//    /// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+//    /// <param name="powofTowardsZero">Outputs the power-of-radix that is closer to zero.</param>
+//    /// <param name="powofAwayFromZero">Outputs the power-of-radix that is farther from zero.</param>
+//    /// <returns>The nearest two power-of-radix to value as out parameters.</returns>
+//    public static int RoundToPowOf(this int value, int radix, bool proper, RoundingMode mode, out int powofTowardsZero, out int powofAwayFromZero)
+//    {
+//      var rv = RoundToPowOf(value.ToBigInteger(), radix, proper, mode, out System.Numerics.BigInteger ptz, out System.Numerics.BigInteger pafz);
 
-      powofTowardsZero = (int)ptz;
-      powofAwayFromZero = (int)pafz;
+//      powofTowardsZero = (int)ptz;
+//      powofAwayFromZero = (int)pafz;
 
-      return (int)rv;
-    }
+//      return (int)rv;
+//    }
 
-    ///// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
-    ///// <param name="value">The value for which the floor power-of-radix will be found.</param>
-    ///// <param name="radix">The power of alignment.</param>
-    ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-    ///// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
-    //public static System.Numerics.BigInteger RoundToPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
-    //   => IntegerPow(radix, IntegerLog(value, radix));
+//    ///// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
+//    ///// <param name="value">The value for which the floor power-of-radix will be found.</param>
+//    ///// <param name="radix">The power of alignment.</param>
+//    ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+//    ///// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
+//    //public static System.Numerics.BigInteger RoundToPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
+//    //   => IntegerPow(radix, IntegerLog(value, radix));
 
-    ///// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
-    ///// <param name="value">The value for which the floor power-of-radix will be found.</param>
-    ///// <param name="radix">The power of alignment.</param>
-    ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-    ///// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
-    //public static int RoundToPowOf(this int value, int radix)
-    //  => (int)RoundToPowOf(value.ToBigInteger(), radix.ToBigInteger());
+//    ///// <summary>Compute the (floor or toward-zero) power-of-<paramref name="radix"/> number of <paramref name="value"/>.</summary>
+//    ///// <param name="value">The value for which the floor power-of-radix will be found.</param>
+//    ///// <param name="radix">The power of alignment.</param>
+//    ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+//    ///// <remarks>To compute the (away-from-zero/ceiling) power-of-<paramref name="radix"/> instead, multiply the return value from <see cref="PowOf"/> with <paramref name="radix"/>.</remarks>
+//    //public static int RoundToPowOf(this int value, int radix)
+//    //  => (int)RoundToPowOf(value.ToBigInteger(), radix.ToBigInteger());
 
-    ///// <summary>Find the power-of-<paramref name="radix"/> nearest <paramref name="value"/> away from zero, optionally <paramref name="proper"/>.</summary>
-    ///// <param name="value">The reference value.</param>
-    ///// <param name="radix">The power of alignment.</param>
-    ///// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
-    ///// <returns>The the next power of 2 away from zero.</returns>
-    //public static System.Numerics.BigInteger LocatePowOfAfz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
-    //{
-    //  LocatePowOf(value, radix, proper, out var _, out var powAwayFromZero);
+//    ///// <summary>Find the power-of-<paramref name="radix"/> nearest <paramref name="value"/> away from zero, optionally <paramref name="proper"/>.</summary>
+//    ///// <param name="value">The reference value.</param>
+//    ///// <param name="radix">The power of alignment.</param>
+//    ///// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
+//    ///// <returns>The the next power of 2 away from zero.</returns>
+//    //public static System.Numerics.BigInteger LocatePowOfAfz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
+//    //{
+//    //  LocatePowOf(value, radix, proper, out var _, out var powAwayFromZero);
 
-    //  return powAwayFromZero;
-    //}
+//    //  return powAwayFromZero;
+//    //}
 
-    ///// <summary>Find the power-of-<paramref name="radix"/> nearest <paramref name="value"/> toward zero, optionally <paramref name="proper"/>.</summary>
-    ///// <param name="value">The reference value.</param>
-    ///// <param name="radix">The power of alignment.</param>
-    ///// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
-    ///// <returns>The the next power of 2 towards zero.</returns>
-    //public static System.Numerics.BigInteger LocatePowOfTz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
-    //{
-    //  LocatePowOf(value, radix, proper, out var powTowardsZero, out var _);
+//    ///// <summary>Find the power-of-<paramref name="radix"/> nearest <paramref name="value"/> toward zero, optionally <paramref name="proper"/>.</summary>
+//    ///// <param name="value">The reference value.</param>
+//    ///// <param name="radix">The power of alignment.</param>
+//    ///// <param name="proper">If true, then the result never the same as <paramref name="value"/>.</param>
+//    ///// <returns>The the next power of 2 towards zero.</returns>
+//    //public static System.Numerics.BigInteger LocatePowOfTz(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper)
+//    //{
+//    //  LocatePowOf(value, radix, proper, out var powTowardsZero, out var _);
 
-    //  return powTowardsZero;
-    //}
+//    //  return powTowardsZero;
+//    //}
 
-    ///// <summary>Get the two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>, using the specified <see cref="RoundingMode"/> to resolve any halfway conflict, and also out parameters <paramref name="powTowardsZero"/> and <paramref name="powAwayFromZero"/>.</summary>
-    ///// <param name="value">The value for which the nearest power-of-radix will be found.</param>
-    ///// <param name="radix">The power of to align to.</param>
-    ///// <param name="proper">Proper means nearest but do not include x if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    ///// <param name="mode">The halfway <see cref="RoundingMode"/> to use, when halfway between two values.</param>
-    ///// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
-    ///// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
-    ///// <returns>The nearest of two power-of-<paramref name="radix"/> to <paramref name="value"/>, optionally <paramref name="proper"/>.</returns>
-    //public static System.Numerics.BigInteger NearestPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero)
-    //{
-    //  LocatePowOf(value, radix, proper, out powTowardsZero, out powAwayFromZero);
+//    ///// <summary>Get the two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>, using the specified <see cref="RoundingMode"/> to resolve any halfway conflict, and also out parameters <paramref name="powTowardsZero"/> and <paramref name="powAwayFromZero"/>.</summary>
+//    ///// <param name="value">The value for which the nearest power-of-radix will be found.</param>
+//    ///// <param name="radix">The power of to align to.</param>
+//    ///// <param name="proper">Proper means nearest but do not include x if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+//    ///// <param name="mode">The halfway <see cref="RoundingMode"/> to use, when halfway between two values.</param>
+//    ///// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
+//    ///// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
+//    ///// <returns>The nearest of two power-of-<paramref name="radix"/> to <paramref name="value"/>, optionally <paramref name="proper"/>.</returns>
+//    //public static System.Numerics.BigInteger NearestPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero)
+//    //{
+//    //  LocatePowOf(value, radix, proper, out powTowardsZero, out powAwayFromZero);
 
-    //  return (System.Numerics.BigInteger)RoundToBoundaries((double)value, mode, (double)powTowardsZero, (double)powAwayFromZero);
-    //}
+//    //  return (System.Numerics.BigInteger)RoundToBoundaries((double)value, mode, (double)powTowardsZero, (double)powAwayFromZero);
+//    //}
 
-    ///// <summary>Attempt to get two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>, using the specified <see cref="RoundingMode"/> to resolve any halfway conflict, in out parameters <paramref name="powTowardsZero"/> and <paramref name="powAwayFromZero"/>.</summary>
-    ///// <param name="value">The value for which the nearest power-of-<paramref name="radix"/> will be found.</param>
-    ///// <param name="radix">The power of alignment.</param>
-    ///// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    ///// <param name="mode">The halfway <see cref="RoundingMode"/> to use, when halfway between two values.</param>
-    ///// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
-    ///// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
-    ///// <returns>Whether the operation was successful.</returns>
-    //public static bool TryNearestPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero, out System.Numerics.BigInteger nearestPow)
-    //{
-    //  try
-    //  {
-    //    nearestPow = NearestPowOf(value, radix, proper, mode, out powTowardsZero, out powAwayFromZero);
+//    ///// <summary>Attempt to get two power-of-<paramref name="radix"/> numbers nearest to <paramref name="value"/>, optionally <paramref name="proper"/>, using the specified <see cref="RoundingMode"/> to resolve any halfway conflict, in out parameters <paramref name="powTowardsZero"/> and <paramref name="powAwayFromZero"/>.</summary>
+//    ///// <param name="value">The value for which the nearest power-of-<paramref name="radix"/> will be found.</param>
+//    ///// <param name="radix">The power of alignment.</param>
+//    ///// <param name="proper">Proper means nearest but do not include x if it's a power-of-radix, i.e. the two power-of-radix will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+//    ///// <param name="mode">The halfway <see cref="RoundingMode"/> to use, when halfway between two values.</param>
+//    ///// <param name="powTowardsZero">Outputs the power-of-<paramref name="radix"/> that is closer to zero.</param>
+//    ///// <param name="powAwayFromZero">Outputs the power-of-<paramref name="radix"/> that is farther from zero.</param>
+//    ///// <returns>Whether the operation was successful.</returns>
+//    //public static bool TryNearestPowOf(this System.Numerics.BigInteger value, System.Numerics.BigInteger radix, bool proper, RoundingMode mode, out System.Numerics.BigInteger powTowardsZero, out System.Numerics.BigInteger powAwayFromZero, out System.Numerics.BigInteger nearestPow)
+//    //{
+//    //  try
+//    //  {
+//    //    nearestPow = NearestPowOf(value, radix, proper, mode, out powTowardsZero, out powAwayFromZero);
 
-    //    return true;
-    //  }
-    //  catch { }
+//    //    return true;
+//    //  }
+//    //  catch { }
 
-    //  powTowardsZero = System.Numerics.BigInteger.Zero;
-    //  powAwayFromZero = System.Numerics.BigInteger.Zero;
+//    //  powTowardsZero = System.Numerics.BigInteger.Zero;
+//    //  powAwayFromZero = System.Numerics.BigInteger.Zero;
 
-    //  nearestPow = System.Numerics.BigInteger.Zero;
+//    //  nearestPow = System.Numerics.BigInteger.Zero;
 
-    //  return false;
-    //}
+//    //  return false;
+//    //}
 
-#endif
-  }
-}
+//#endif
+//  }
+//}

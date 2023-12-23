@@ -1,3 +1,12 @@
+#if NET7_0_OR_GREATER
+namespace Flux
+{
+  public static partial class NumberSequence
+  {
+  }
+}
+#endif
+
 namespace Flux.NumberSequences
 {
   public record class NsmoothNumber
@@ -6,7 +15,7 @@ namespace Flux.NumberSequences
     private readonly System.Collections.Generic.IReadOnlyList<System.Numerics.BigInteger> m_primeNumbers; // Needs to be converted to BitArray instead.
 
     public NsmoothNumber(System.Numerics.BigInteger n)
-      => m_primeNumbers = System.Linq.Enumerable.ToList(System.Linq.Enumerable.TakeWhile(PrimeNumber.GetAscendingPrimes(System.Numerics.BigInteger.CreateChecked(2)), p => p <= n));
+      => m_primeNumbers = System.Linq.Enumerable.ToList(System.Linq.Enumerable.TakeWhile(NumberSequence.GetAscendingPrimes(System.Numerics.BigInteger.CreateChecked(2)), p => p <= n));
 
     /// <summary>Creates a new sequence of n-smooth numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Smooth_number"/>

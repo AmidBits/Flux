@@ -2,11 +2,17 @@ namespace Flux.Text
 {
   // https://en.wikipedia.org/wiki/Lexical_analysis
 
-  public sealed class MathTokenParenthesis
+  public sealed partial class MathTokenParenthesis
     : MathToken
   {
-    public const string RegexWithComma = @"^[\(\,\)]";
-    public const string RegexWithoutComma = @"^[\(\)]";
+    //public const string RegexWithComma = @"^[\(\,\)]";
+    //public const string RegexWithoutComma = @"^[\(\)]";
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"^[\(\,\)]")]
+    public static partial System.Text.RegularExpressions.Regex RegexWithComma();
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"^[\(\)]")]
+    public static partial System.Text.RegularExpressions.Regex RegexWithoutComma();
 
     public const string SymbolComma = @",";
     public const string SymbolLeft = @"(";

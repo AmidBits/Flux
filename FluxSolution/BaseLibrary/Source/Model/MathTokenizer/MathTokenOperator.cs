@@ -2,13 +2,16 @@ namespace Flux.Text
 {
   // https://en.wikipedia.org/wiki/Lexical_analysis
 
-  public sealed class MathTokenOperator
+  public sealed partial class MathTokenOperator
     : MathToken
   {
     public const string AssociativityLeft = "Left";
     public const string AssociativityRight = "Right";
 
-    public const string Regex = @"^[\u002B\u00F7\u00D7\u2212%]";
+    //public const string Regex = @"^[\u002B\u00F7\u00D7\u2212%]";
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"^[\u002B\u00F7\u00D7\u2212%]")]
+    public static partial System.Text.RegularExpressions.Regex Regex();
 
     public const string SymbolAdd = "\u002B";
     public const string SymbolDivide = "\u00F7";
@@ -44,8 +47,8 @@ namespace Flux.Text
 
     public MathToken Evaluate(MathToken left, MathToken right)
     {
-      if (left is null) throw new System.ArgumentNullException(nameof(left));
-      if (right is null) throw new System.ArgumentNullException(nameof(right));
+      System.ArgumentNullException.ThrowIfNull(left);
+      System.ArgumentNullException.ThrowIfNull(right);
 
       return Value switch
       {
@@ -61,7 +64,7 @@ namespace Flux.Text
 
     public static string Unify(string expression)
     {
-      if (expression is null) throw new System.ArgumentNullException(nameof(expression));
+      System.ArgumentNullException.ThrowIfNull(expression);
 
       expression = expression.Replace(@"+", MathTokenOperator.SymbolAdd, System.StringComparison.Ordinal);
       expression = expression.Replace(@"/", MathTokenOperator.SymbolDivide, System.StringComparison.Ordinal);

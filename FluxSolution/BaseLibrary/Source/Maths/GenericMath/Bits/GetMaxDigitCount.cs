@@ -15,7 +15,7 @@ namespace Flux
       if (isSigned)
         foldedRight >>= 1; // Shift to properly represent a most-significant-bit used for negative values.
 
-      return (int)foldedRight.IntegerLogFloor(radix) + 1;
+      return (int)Units.Radix.IntegerLogFloor(foldedRight, radix) + 1;
     }
   }
 }

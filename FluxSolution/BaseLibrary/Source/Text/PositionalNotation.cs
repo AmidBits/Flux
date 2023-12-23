@@ -20,65 +20,9 @@ namespace Flux
 
     #region Static methods
 
-    //#if NET7_0_OR_GREATER
-    /// <summary>Converts a positional notation list of <paramref name="indices"/> with <paramref name="radix"/> to a numerical value.</summary>
-    public static TSelf ConvertIndicesToValue<TSelf, TRadix>(System.Collections.Generic.IList<int> indices, TRadix radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-    {
-      var bi = TSelf.Zero;
-
-      for (var index = 0; index < indices.Count; index++)
-      {
-        bi *= TSelf.CreateChecked(radix);
-
-        bi += TSelf.CreateChecked(indices[index]);
-      }
-
-      return bi;
-    }
-
     /// <summary>Converts <paramref name="symbols"/> with <paramref name="alphabet"/> to a positional notation list of indices.</summary>
     public static System.Collections.Generic.List<int> ConvertSymbolsToIndices<TSymbol>(System.Collections.Generic.IList<TSymbol> symbols, System.Collections.Generic.IList<TSymbol> alphabet)
-      => symbols.Select(alphabet.IndexOf).ToList();
-
-    public static System.Collections.Generic.List<int> ConvertValueToIndices(System.Numerics.BigInteger value, int radix)
-    {
-      if (System.Numerics.BigInteger.IsNegative(value))
-        return ConvertValueToIndices(System.Numerics.BigInteger.Abs(value), radix);
-
-      var list = new System.Collections.Generic.List<int>();
-
-      while (value != System.Numerics.BigInteger.Zero)
-      {
-        (value, var remainder) = System.Numerics.BigInteger.DivRem(value, radix);
-
-        list.Insert(0, int.CreateChecked(remainder));
-      }
-
-      return list;
-    }
-
-    /// <summary>Converts a numerical <paramref name="value"/> using <paramref name="radix"/> to a positional notation list of indices.</summary>
-    public static System.Collections.Generic.List<int> ConvertValueToIndices<TSelf, TRadix>(TSelf value, TRadix radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-    {
-      if (TSelf.IsNegative(value))
-        return ConvertValueToIndices(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(radix));
-      return ConvertValueToIndices(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(radix));
-
-      var list = new System.Collections.Generic.List<int>();
-
-      while (value != TSelf.Zero)
-      {
-        (value, var remainder) = TSelf.DivRem(value, TSelf.CreateChecked(radix));
-
-        list.Insert(0, int.CreateChecked(remainder));
-      }
-
-      return list;
-    }
+      => symbols.Select(character => alphabet.IndexOf(character)).ToList();
 
     /// <summary>Converts <paramref name="indices"/> using <paramref name="alphabet"/> to a positional notation list of indices.</summary>
     public static System.Collections.Generic.List<TSymbol> ConvertIndicesToSymbols<TSymbol>(System.Collections.Generic.IList<int> indices, System.Collections.Generic.IList<TSymbol> alphabet)
@@ -97,12 +41,12 @@ namespace Flux
             indices.Add(position);
       }
       else // Otherwise use generic algorithm.
-        indices = PositionalNotation.ConvertValueToIndices(number, alphabet.Length);
+        Units.Radix.TryConvertNumberToPositionalNotationIndices(number, TSelf.CreateChecked(alphabet.Length), out indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      var symbols = PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray());
+      var symbols = ConvertIndicesToSymbols(indices, alphabet.ToArray());
 
       if (TSelf.IsNegative(number) && alphabet.Length == 10)
         symbols.Insert(0, negativeSymbol); // If the value is negative AND base-2 (radix) is 10 (decimal)...
@@ -118,9 +62,9 @@ namespace Flux
 
       var indices = ConvertSymbolsToIndices(text.Slice(isNegative ? 1 : 0).ToList(), alphabet);
 
-      var value = ConvertIndicesToValue<TSelf, int>(indices, alphabet.Count);
+      Units.Radix.TryConvertPositionalNotationIndicesToNumber(indices, alphabet.Count, out TSelf value);
 
-      return number = (isNegative ? -value : value);
+      return number = isNegative ? -value : value;
     }
 
     //#else
@@ -187,12 +131,12 @@ namespace Flux
     {
       if (alphabet.Length < 10) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      var indices = PositionalNotation.ConvertValueToIndices(value, 10);
+      Units.Radix.TryConvertNumberToPositionalNotationIndices(value, 10, out var indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      var symbols = PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray());
+      var symbols = ConvertIndicesToSymbols(indices, alphabet.ToArray());
 
       if (TSelf.IsNegative(value))
         symbols.Insert(0, negativeSymbol);
@@ -223,12 +167,12 @@ namespace Flux
     {
       if (alphabet.Length < 16) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      var indices = PositionalNotation.ConvertValueToIndices(value, 16);
+      Units.Radix.TryConvertNumberToPositionalNotationIndices(value, 16, out var indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      return PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
+      return ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
     }
 
     /// <summary>Creates a hexadecimal (base 16) text string from <paramref name="value"/>.</summary>
@@ -254,12 +198,12 @@ namespace Flux
     {
       if (alphabet.Length < 8) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      var indices = PositionalNotation.ConvertValueToIndices(value, 8);
+      Units.Radix.TryConvertNumberToPositionalNotationIndices(value, 8, out var indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      return PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
+      return ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
     }
 
     /// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
@@ -293,19 +237,19 @@ namespace Flux
 
       // Otherwise use generic algorithm.
 
-      var indices = PositionalNotation.ConvertValueToIndices(value, alphabet.Length);
+      Units.Radix.TryConvertNumberToPositionalNotationIndices(value, TSelf.CreateChecked(alphabet.Length), out var indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      return PositionalNotation.ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
+      return ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
     }
 
     /// <summary>Creates a base <paramref name="radix"/> text string from <paramref name="value"/>, with an optional <paramref name="minLength"/> of digits in the resulting string (padded with zeroes if needed).</summary>
     /// <remarks>By default, this function returns the shortest possible string length.</remarks>
     public static System.ReadOnlySpan<char> ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixSpan(value, PositionalNotation.Base64.AsSpan()[..radix], (char)Flux.UnicodeCodepoint.HyphenMinus, minLength);
+      => ToRadixSpan(value, Base64.AsSpan()[..radix], (char)Flux.UnicodeCodepoint.HyphenMinus, minLength);
 
 #else
 

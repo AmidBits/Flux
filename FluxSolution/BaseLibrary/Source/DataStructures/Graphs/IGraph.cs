@@ -13,7 +13,7 @@ namespace Flux
 
       var edges = System.Linq.Enumerable.ToList(source.GetEdges()); // Cache edges, because we need it while there are available distances.
 
-      while (System.Linq.Enumerable.Any(distances)) // As long as there are nodes available.
+      while (distances.Count != 0) // As long as there are nodes available.
       {
         var shortest = System.Linq.Enumerable.First(System.Linq.Enumerable.OrderBy(distances, v => v.Value)); // Get the node with the shortest distance.
 

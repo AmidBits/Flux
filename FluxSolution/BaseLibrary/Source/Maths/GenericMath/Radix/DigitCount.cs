@@ -1,40 +1,40 @@
-namespace Flux
-{
-  public static partial class Maths
-  {
-#if NET7_0_OR_GREATER
+//namespace Flux
+//{
+//  public static partial class Maths
+//  {
+//#if NET7_0_OR_GREATER
 
-    /// <summary>Returns the count of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
-    public static TSelf DigitCount<TSelf>(this TSelf value, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      AssertRadix(radix);
+//    /// <summary>Returns the count of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
+//    public static TSelf DigitCount<TSelf>(this TSelf value, TSelf radix)
+//      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+//    {
+//      AssertRadix(radix);
 
-      var count = TSelf.Zero;
+//      var count = TSelf.Zero;
 
-      while (!TSelf.IsZero(value))
-      {
-        count++;
+//      while (!TSelf.IsZero(value))
+//      {
+//        count++;
 
-        value /= radix;
-      }
+//        value /= radix;
+//      }
 
-      return count;
-    }
+//      return count;
+//    }
 
-#else
+//#else
 
-    /// <summary>Returns the count of all digits in the value using the specified radix.</summary>
-    public static int DigitCount(this System.Numerics.BigInteger value, int radix)
-      => IsSingleDigit(value, radix) ? 1 : System.Convert.ToInt32(System.Math.Floor(System.Numerics.BigInteger.Log(System.Numerics.BigInteger.Abs(value), AssertRadix(radix))) + 1);
+//    /// <summary>Returns the count of all digits in the value using the specified radix.</summary>
+//    public static int DigitCount(this System.Numerics.BigInteger value, int radix)
+//      => IsSingleDigit(value, radix) ? 1 : System.Convert.ToInt32(System.Math.Floor(System.Numerics.BigInteger.Log(System.Numerics.BigInteger.Abs(value), AssertRadix(radix))) + 1);
 
-    /// <summary>Returns the count of all digits in the value using the specified radix.</summary>
-    public static int DigitCount(this int value, int radix)
-      => IsSingleDigit(value, radix) ? 1 : System.Convert.ToInt32(System.Math.Floor(System.Math.Log(System.Math.Abs(value), AssertRadix(radix))) + 1);
-    /// <summary>Returns the count of all digits in the value using the specified radix.</summary>
-    public static int DigitCount(this long value, int radix)
-      => IsSingleDigit(value, radix) ? 1 : System.Convert.ToInt32(System.Math.Floor(System.Math.Log(System.Math.Abs(value), AssertRadix(radix))) + 1);
+//    /// <summary>Returns the count of all digits in the value using the specified radix.</summary>
+//    public static int DigitCount(this int value, int radix)
+//      => IsSingleDigit(value, radix) ? 1 : System.Convert.ToInt32(System.Math.Floor(System.Math.Log(System.Math.Abs(value), AssertRadix(radix))) + 1);
+//    /// <summary>Returns the count of all digits in the value using the specified radix.</summary>
+//    public static int DigitCount(this long value, int radix)
+//      => IsSingleDigit(value, radix) ? 1 : System.Convert.ToInt32(System.Math.Floor(System.Math.Log(System.Math.Abs(value), AssertRadix(radix))) + 1);
 
-#endif
-  }
-}
+//#endif
+//  }
+//}

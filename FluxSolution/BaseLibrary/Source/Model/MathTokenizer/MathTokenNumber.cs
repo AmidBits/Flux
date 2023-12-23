@@ -2,10 +2,13 @@ namespace Flux.Text
 {
   // https://en.wikipedia.org/wiki/Lexical_analysis
 
-  public sealed class MathTokenNumber
+  public sealed partial class MathTokenNumber
     : MathToken
   {
-    public const string Regex = @"^(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?";
+    //public const string Regex = @"^(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?";
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"^(?=\d|\.\d)\d*(\.\d*)?([Ee]([+-]?\d+))?")]
+    public static partial System.Text.RegularExpressions.Regex Regex();
 
     public double NumericalValue { get; set; }
 

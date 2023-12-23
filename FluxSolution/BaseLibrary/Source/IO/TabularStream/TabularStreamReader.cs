@@ -43,7 +43,7 @@ namespace Flux.IO
       else
         FieldProviderTypes.AddRange(fieldProviderTypes ?? throw new System.ArgumentOutOfRangeException(nameof(fieldNames), @"Missing field provider types."));
 
-      if (FieldProviderTypes.Any() && FieldNames.Any() && FieldProviderTypes.Count != FieldNames.Count)
+      if (FieldProviderTypes.Count != 0 && FieldNames.Any() && FieldProviderTypes.Count != FieldNames.Count)
         throw new System.DataMisalignedException($"The number of field provider types ({FieldProviderTypes.Count}) does not match the number of field types ({FieldNames.Count}).");
     }
 

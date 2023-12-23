@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
@@ -12,7 +10,7 @@ namespace Flux
       var sourceList = source.ToList();
       var resultLists = new System.Collections.Generic.List<TResult[]>();
 
-      while (sourceList.Any())
+      while (sourceList.Count != 0)
       {
         var count = System.Math.Min(countSelector(sourceList), sourceList.Count); // Cannot select more elements than is in the list.
 

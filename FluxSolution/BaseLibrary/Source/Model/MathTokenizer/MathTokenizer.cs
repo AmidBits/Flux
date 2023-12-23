@@ -1,6 +1,3 @@
-using System.Linq;
-using Flux.Hashing;
-
 namespace Flux.Text
 {
   // https://en.wikipedia.org/wiki/Lexical_analysis
@@ -21,12 +18,12 @@ namespace Flux.Text
     {
       m_recognized = new System.Collections.Generic.Dictionary<string, System.Text.RegularExpressions.Regex>()
       {
-        { nameof(MathTokenParenthesis), new System.Text.RegularExpressions.Regex(multipleArguments ? MathTokenParenthesis.RegexWithComma : MathTokenParenthesis.RegexWithoutComma) },
-        { nameof(MathTokenOperator), new System.Text.RegularExpressions.Regex(MathTokenOperator.Regex) },
-        { nameof(MathTokenNumber), new System.Text.RegularExpressions.Regex(MathTokenNumber.Regex) },
-        { nameof(MathTokenLabel), new System.Text.RegularExpressions.Regex(MathTokenLabel.Regex) },
-        { nameof(MathTokenWhitespace), new System.Text.RegularExpressions.Regex(MathTokenWhitespace.Regex) },
-        { nameof(MathTokenUnrecognized), new System.Text.RegularExpressions.Regex(MathTokenUnrecognized.Regex) }
+        { nameof(MathTokenParenthesis), multipleArguments ? MathTokenParenthesis.RegexWithComma() : MathTokenParenthesis.RegexWithoutComma() },
+        { nameof(MathTokenOperator), MathTokenOperator.Regex() },
+        { nameof(MathTokenNumber), MathTokenNumber.Regex() },
+        { nameof(MathTokenLabel), MathTokenLabel.Regex() },
+        { nameof(MathTokenWhitespace), MathTokenWhitespace.Regex() },
+        { nameof(MathTokenUnrecognized), MathTokenUnrecognized.Regex() }
       };
     }
 
@@ -145,7 +142,7 @@ namespace Flux.Text
 
     public static System.Collections.Generic.IEnumerable<MathToken> GetUnbalancedParenthesis(System.Collections.Generic.IEnumerable<MathToken> tokens)
     {
-      if (tokens.Where(t => t.Name.Equals(nameof(MathTokenParenthesis), System.StringComparison.Ordinal)).ToList() is System.Collections.Generic.List<MathToken> ps && ps.Any())
+      if (tokens.Where(t => t.Name.Equals(nameof(MathTokenParenthesis), System.StringComparison.Ordinal)).ToList() is System.Collections.Generic.List<MathToken> ps && ps.Count != 0)
       {
         var psl = ps.Where(t => t.Value.Equals(MathTokenParenthesis.SymbolLeft, System.StringComparison.Ordinal)).Cast<MathTokenParenthesis>();
         var psr = ps.Where(t => t.Value.Equals(MathTokenParenthesis.SymbolRight, System.StringComparison.Ordinal)).Cast<MathTokenParenthesis>();
@@ -283,7 +280,7 @@ namespace Flux.Text
 
     public static string UnifyExpressionOperators(string expression)
     {
-      if (expression is null) throw new System.ArgumentNullException(nameof(expression));
+      System.ArgumentNullException.ThrowIfNull(expression);
 
       expression = expression.Replace(@"+", MathTokenOperator.SymbolAdd, System.StringComparison.Ordinal);
       expression = expression.Replace(@"/", MathTokenOperator.SymbolDivide, System.StringComparison.Ordinal);
