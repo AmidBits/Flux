@@ -4,6 +4,35 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
+    public static System.Collections.Generic.IEnumerable<TSelf> IntervalAscending<TSelf>(TSelf low, TSelf high)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      while (true)
+        for (var i = low; i <= high; i++)
+          yield return i;
+
+      //var n = TSelf.Abs(high - low) + TSelf.One;
+
+      //for (var i = TSelf.Zero; ; i = (i + TSelf.One) % n)
+      //{
+      //  yield return low + i;
+      //}
+    }
+
+    public static System.Collections.Generic.IEnumerable<TSelf> IntervalDescending<TSelf>(TSelf low, TSelf high)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      while (true)
+        for (var i = high; i >= low; i--)
+          yield return i;
+      //var n = TSelf.Abs(high - low) + TSelf.One;
+
+      //for (var i = n - TSelf.One; ; i = (i - TSelf.One + n) % n)
+      //{
+      //  yield return low + i;
+      //}
+    }
+
     public static System.Collections.Generic.IEnumerable<TSelf> Range<TSelf>(TSelf initial, TSelf count, TSelf step)
       where TSelf : System.Numerics.INumber<TSelf>
     {

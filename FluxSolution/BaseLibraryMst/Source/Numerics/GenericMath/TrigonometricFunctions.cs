@@ -1,9 +1,6 @@
 ﻿#if NET7_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Flux;
-using System;
-
 namespace GenericMath
 {
   [TestClass]
@@ -12,13 +9,13 @@ namespace GenericMath
     [TestMethod]
     public void SincN()
     {
-      Assert.AreEqual(0.6366197723675814, (0.5).Sincn());
+      Assert.AreEqual(0.6366197723675814, Flux.Units.Angle.Sincn(0.5));
     }
 
     [TestMethod]
     public void SincU()
     {
-      Assert.AreEqual(0.958851077208406, (0.5).Sincu());
+      Assert.AreEqual(0.958851077208406, Flux.Units.Angle.Sincu(0.5));
     }
   }
 }

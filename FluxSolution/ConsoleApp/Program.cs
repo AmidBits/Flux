@@ -112,6 +112,14 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var vr = new Flux.ValueRange<int>(4, 9);
+      var vrt = vr.IterateAlternating(1, SortOrder.Descending, IntervalConstraint.Closed).Take(30).ToArray();
+      //var vra = vr.IterateRange().ToArray();
+      //var vrb = vr.IterateRange(IterativeOrder.Ascending, IntervalConstraint.HalfOpenLeft, 10).Take(20).ToArray();
+      //var vrc = vr.IterateRange(IterativeOrder.Descending, IntervalConstraint.HalfOpenRight, 10).Take(20).ToArray();
+
+      var ia = Flux.Iteration.IntervalDescending(5, 9).Take(12).ToArray();
+
       var n = 1234;
 
       var alphabet = "0123456789";
