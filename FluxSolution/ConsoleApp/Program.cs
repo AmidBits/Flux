@@ -113,7 +113,7 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
       var vr = new Flux.ValueRange<int>(4, 9);
-      var vrt = vr.IterateAlternating(1, SortOrder.Descending, IntervalConstraint.Closed).Take(30).ToArray();
+      var vrt = vr.IterateAlternating(1, SortOrder.Descending, IntervalNotation.Closed).Take(30).ToArray();
       //var vra = vr.IterateRange().ToArray();
       //var vrb = vr.IterateRange(IterativeOrder.Ascending, IntervalConstraint.HalfOpenLeft, 10).Take(20).ToArray();
       //var vrc = vr.IterateRange(IterativeOrder.Descending, IntervalConstraint.HalfOpenRight, 10).Take(20).ToArray();

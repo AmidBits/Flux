@@ -2,15 +2,15 @@
 {
   public static partial class Em
   {
-    public static (TSelf Minimum, TSelf Maximum) GetExtremumUsingConstraint<TSelf>(this ValueRange<TSelf> source, IntervalConstraint constraint)
+    public static (TSelf Minimum, TSelf Maximum) GetExtremumUsingConstraint<TSelf>(this ValueRange<TSelf> source, IntervalNotation constraint)
   where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       return constraint switch
       {
-        IntervalConstraint.Closed => (source.Min, source.Max),
-        IntervalConstraint.Open => (source.Min + TSelf.One, source.Max - TSelf.One),
-        IntervalConstraint.HalfOpenLeft => (source.Min + TSelf.One, source.Max),
-        IntervalConstraint.HalfOpenRight => (source.Min, source.Max - TSelf.One),
+        IntervalNotation.Closed => (source.Min, source.Max),
+        IntervalNotation.Open => (source.Min + TSelf.One, source.Max - TSelf.One),
+        IntervalNotation.HalfOpenLeft => (source.Min + TSelf.One, source.Max),
+        IntervalNotation.HalfOpenRight => (source.Min, source.Max - TSelf.One),
         _ => throw new NotImplementedException(),
       };
     }
@@ -22,7 +22,7 @@
     /// <param name="count">The number of iterations to perform.</param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.Collections.Generic.IEnumerable<TSelf> IterateRange<TSelf>(this ValueRange<TSelf> source, TSelf step, SortOrder order = SortOrder.Ascending, IntervalConstraint constraint = IntervalConstraint.Closed, int count = 1)
+    public static System.Collections.Generic.IEnumerable<TSelf> IterateRange<TSelf>(this ValueRange<TSelf> source, TSelf step, SortOrder order = SortOrder.Ascending, IntervalNotation constraint = IntervalNotation.Closed, int count = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       var (min, max) = source.GetExtremumUsingConstraint(constraint);
@@ -49,7 +49,7 @@
     /// <param name="count">The number of iterations to execute.</param>
     /// <param name="step">The stepping size between iterations. A positive number iterates from mean to extent, whereas a negative number iterates from extent to mean.</param>
     /// <param name="direction">Specified by <see cref="AlternatingLoopDirection"/>.</param>
-    public static System.Collections.Generic.IEnumerable<TSelf> IterateAlternating<TSelf>(this ValueRange<TSelf> source, TSelf step, SortOrder initialOrder, IntervalConstraint constraint = IntervalConstraint.Closed)
+    public static System.Collections.Generic.IEnumerable<TSelf> IterateAlternating<TSelf>(this ValueRange<TSelf> source, TSelf step, SortOrder initialOrder, IntervalNotation constraint = IntervalNotation.Closed)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       var a = source.IterateRange(step, SortOrder.Ascending, constraint).ToList();
@@ -138,25 +138,25 @@
 
     /// <summary>Asserts that the value is a member of the interval set (throws an exception if it's not).</summary>
     /// <exception cref="System.NotImplementedException"></exception>
-    public TSelf AssertMember(TSelf value, IntervalConstraint constraint, string? paramName = null)
+    public TSelf AssertMember(TSelf value, IntervalNotation constraint, string? paramName = null)
       => constraint switch
       {
-        IntervalConstraint.Closed => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than-or-equal-to {m_min} and less-than-or-equal-to {m_max}."),
-        IntervalConstraint.Open => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than {m_min} and less-than {m_max}."),
-        IntervalConstraint.HalfOpenLeft => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than {m_min} and less-than-or-equal-to {m_max}."),
-        IntervalConstraint.HalfOpenRight => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than-or-equal-to {m_min} and less-than {m_max}."),
+        IntervalNotation.Closed => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than-or-equal-to {m_min} and less-than-or-equal-to {m_max}."),
+        IntervalNotation.Open => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than {m_min} and less-than {m_max}."),
+        IntervalNotation.HalfOpenLeft => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than {m_min} and less-than-or-equal-to {m_max}."),
+        IntervalNotation.HalfOpenRight => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than-or-equal-to {m_min} and less-than {m_max}."),
         _ => throw new NotImplementedException(),
       };
 
     /// <summary>Returns whether the value is a member of the interval set.</summary>
     /// <exception cref="System.NotImplementedException"></exception>
-    public bool IsMember(TSelf value, IntervalConstraint constraint)
+    public bool IsMember(TSelf value, IntervalNotation constraint)
       => constraint switch
       {
-        IntervalConstraint.Closed => value.CompareTo(m_min) >= 0 && value.CompareTo(m_max) <= 0,
-        IntervalConstraint.Open => value.CompareTo(m_min) > 0 && value.CompareTo(m_max) < 0,
-        IntervalConstraint.HalfOpenLeft => value.CompareTo(m_min) >= 0 && value.CompareTo(m_max) < 0,
-        IntervalConstraint.HalfOpenRight => value.CompareTo(m_min) > 0 && value.CompareTo(m_max) <= 0,
+        IntervalNotation.Closed => value.CompareTo(m_min) >= 0 && value.CompareTo(m_max) <= 0,
+        IntervalNotation.Open => value.CompareTo(m_min) > 0 && value.CompareTo(m_max) < 0,
+        IntervalNotation.HalfOpenLeft => value.CompareTo(m_min) >= 0 && value.CompareTo(m_max) < 0,
+        IntervalNotation.HalfOpenRight => value.CompareTo(m_min) > 0 && value.CompareTo(m_max) <= 0,
         _ => throw new NotImplementedException(),
       };
 
