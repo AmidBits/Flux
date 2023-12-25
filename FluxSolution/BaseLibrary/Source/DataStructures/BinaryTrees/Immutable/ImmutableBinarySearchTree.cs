@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.DataStructures
 {
   /// <summary>
@@ -63,9 +61,9 @@ namespace Flux.DataStructures
     public IBinarySearchTree<TKey, TValue> Search(TKey key) => IsEmpty ? Empty : (key.CompareTo(Key) switch { var gt when gt > 0 => Right.Search(key), var lt when lt < 0 => Left.Search(key), _ => this });
 
     // IMap<TKey, TValue>
-    public System.Collections.Generic.IEnumerable<TKey> Keys => this.GetNodesInOrder().Select(t => t.Key);
-    public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs => this.GetNodesInOrder().Select(t => new System.Collections.Generic.KeyValuePair<TKey, TValue>(t.Key, t.Value));
-    public System.Collections.Generic.IEnumerable<TValue> Values => this.GetNodesInOrder().Select(t => t.Value);
+    public System.Collections.Generic.IEnumerable<TKey> Keys => this.TraverseInOrder().Select(t => ((IBinarySearchTree<TKey, TValue>)t).Key);
+    public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs => this.TraverseInOrder().Select(t => new System.Collections.Generic.KeyValuePair<TKey, TValue>(((IBinarySearchTree<TKey, TValue>)t).Key, t.Value));
+    public System.Collections.Generic.IEnumerable<TValue> Values => this.TraverseInOrder().Select(t => t.Value);
     IMap<TKey, TValue> IMap<TKey, TValue>.Add(TKey key, TValue value) => Add(key, value);
     public bool Contains(TKey key) => !Search(key).IsEmpty;
     public TValue Lookup(TKey key) => Search(key) is var tree && tree.IsEmpty ? throw new System.Exception(@"Key not found.") : tree.Value;

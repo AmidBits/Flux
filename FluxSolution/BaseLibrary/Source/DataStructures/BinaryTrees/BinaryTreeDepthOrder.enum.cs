@@ -1,6 +1,6 @@
 namespace Flux.DataStructures
 {
-  public enum BinaryTreeSearchDepthOrder
+  public enum BinaryTreeDepthOrder
   {
     InOrder,
     PostOrder,

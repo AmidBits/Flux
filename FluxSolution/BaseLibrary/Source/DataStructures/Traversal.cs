@@ -4,7 +4,7 @@ namespace Flux.DataStructures
   {
     /// <summary>Performs a depth-first-search (DFS) on a binary tree type hierarchy, using a recursive algorithm.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Binary_search_algorithm"/>
-    public static System.Collections.Generic.IEnumerable<T> BinaryTreeSearchDfsR<T>(T node, System.Func<T, T> selectorChildLeft, System.Func<T, T> selectorChildRight, BinaryTreeSearchDepthOrder order, System.Func<T, bool>? predicate = null)
+    public static System.Collections.Generic.IEnumerable<T> BinaryTreeSearchDfsR<T>(T node, System.Func<T, T> selectorChildLeft, System.Func<T, T> selectorChildRight, BinaryTreeDepthOrder order, System.Func<T, bool>? predicate = null)
     {
       if (node is null) throw new System.ArgumentNullException(nameof(node));
       if (selectorChildLeft is null) throw new System.ArgumentNullException(nameof(selectorChildLeft));
@@ -13,27 +13,27 @@ namespace Flux.DataStructures
       if (!(predicate?.Invoke(node) ?? true))
         yield break;
 
-      if (order == BinaryTreeSearchDepthOrder.PreOrder)
+      if (order == BinaryTreeDepthOrder.PreOrder)
         yield return node;
 
-      if (order == BinaryTreeSearchDepthOrder.ReverseInOrder)
+      if (order == BinaryTreeDepthOrder.ReverseInOrder)
         foreach (var subNode in BinaryTreeSearchDfsR(selectorChildRight(node), selectorChildLeft, selectorChildRight, order, predicate))
           yield return subNode;
       else
         foreach (var subNode in BinaryTreeSearchDfsR(selectorChildLeft(node), selectorChildLeft, selectorChildRight, order, predicate))
           yield return subNode;
 
-      if (order == BinaryTreeSearchDepthOrder.InOrder || order == BinaryTreeSearchDepthOrder.ReverseInOrder)
+      if (order == BinaryTreeDepthOrder.InOrder || order == BinaryTreeDepthOrder.ReverseInOrder)
         yield return node;
 
-      if (order == BinaryTreeSearchDepthOrder.ReverseInOrder)
+      if (order == BinaryTreeDepthOrder.ReverseInOrder)
         foreach (var subNode in BinaryTreeSearchDfsR(selectorChildLeft(node), selectorChildLeft, selectorChildRight, order, predicate))
           yield return subNode;
       else
         foreach (var subNode in BinaryTreeSearchDfsR(selectorChildRight(node), selectorChildLeft, selectorChildRight, order, predicate))
           yield return subNode;
 
-      if (order == BinaryTreeSearchDepthOrder.PostOrder)
+      if (order == BinaryTreeDepthOrder.PostOrder)
         yield return node;
     }
 

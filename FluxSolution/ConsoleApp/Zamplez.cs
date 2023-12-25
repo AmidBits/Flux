@@ -655,7 +655,7 @@ namespace ConsoleApp
     {
       var bst = Flux.DataStructures.ImmutableAvlTree<int, string>.Empty;
 
-      for (var index = 0; bst.GetNodeCount() < 16; index++)
+      for (var index = 0; bst.GetTreeCount() < 16; index++)
       {
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
 
@@ -666,7 +666,7 @@ namespace ConsoleApp
       System.Console.WriteLine(bst.ToConsoleBlock());
 
       var counter = 0;
-      foreach (var item in bst.GetNodesInOrder())
+      foreach (var item in bst.TraverseInOrder())
         System.Console.WriteLine($"{counter++:D2} : {item.Value}");
     }
 

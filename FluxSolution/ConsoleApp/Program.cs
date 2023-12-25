@@ -112,6 +112,61 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var inOrder = new int[] { 4, 8, 10, 12, 14, 20, 22 };
+      var levelOrder = new int[] { 20, 8, 22, 4, 12, 10, 14 };
+
+      //var t = Flux.DataStructures.ImmutableBinaryTree<int>.Create(inOrder, levelOrder);
+
+      var t = Flux.DataStructures.ImmutableAvlTree<int, int>.Empty;
+      t = t.Add(4, 4);
+      t = t.Add(8, 8);
+      t = t.Add(10, 10);
+      t = t.Add(12, 12);
+      t = t.Add(14, 14);
+      t = t.Add(20, 20);
+      t = t.Add(22, 22);
+
+      var tisbst = t.IsBstByKey(int.MinValue, int.MaxValue, n => n - 1, n => n + 1);
+
+      var l = t.GetTreeLevel(4);
+
+      System.Console.WriteLine(t.ToConsoleBlock());
+
+      var io = t.TraverseInOrder().Select(bt => bt.Value).ToArray();
+      var lo = t.TraverseLevelOrder(100).Select(bt => bt.Value).ToArray();
+
+      var n8 = Flux.DataStructures.ImmutableBinarySearchTree<int, int>.Empty.Add(8, 8);
+      n8 = n8.Add(3, 3);
+      n8 = n8.Add(10, 10);
+
+      n8 = n8.Add(1, 1);
+
+      n8 = n8.Add(6, 6);
+
+      //var n14 = new Flux.DataStructures.ImmutableBinaryTree<int>(14, n13, Flux.DataStructures.ImmutableBinaryTree<int>.Empty);
+
+      //var n13 = Flux.DataStructures.ImmutableBinarySearchTree<int, int>.Empty.Add(13, 13);
+      //var n7 = new Flux.DataStructures.ImmutableBinaryTree<int>(7, Flux.DataStructures.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.ImmutableBinaryTree<int>.Empty);
+      //var n4 = new Flux.DataStructures.ImmutableBinaryTree<int>(4, Flux.DataStructures.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.ImmutableBinaryTree<int>.Empty);
+      //var n1 = new Flux.DataStructures.ImmutableBinaryTree<int>(1, Flux.DataStructures.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.ImmutableBinaryTree<int>.Empty);
+
+      //var n3 = new Flux.DataStructures.ImmutableBinaryTree<int>(3, n1, Flux.DataStructures.ImmutableBinaryTree<int>.Empty);
+
+      //var n6 = new Flux.DataStructures.ImmutableBinaryTree<int>(6, n4, n7);
+
+      //var n10 = new Flux.DataStructures.ImmutableBinaryTree<int>(10, n6, n14);
+
+
+      var n8tba = n8.TraverseBoundary().ToArray();
+      var n8tda = n8.TraverseDiagonal().ToArray();
+
+      System.Console.WriteLine(n8.ToConsoleBlock());
+      System.Console.WriteLine();
+      n8.TraversePreOrder().ToList().ForEach(bt => System.Console.WriteLine(bt));
+      System.Console.WriteLine();
+      n8.TraverseInOrder().ToList().ForEach(bt => System.Console.WriteLine(bt));
+
+
       var vr = new Flux.ValueRange<int>(4, 9);
       var vrt = vr.IterateAlternating(1, SortOrder.Descending, IntervalNotation.Closed).Take(30).ToArray();
       //var vra = vr.IterateRange().ToArray();

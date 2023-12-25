@@ -9,6 +9,7 @@ namespace Flux.DataStructures
   /// <remarks>This implementation is courtesy Eric Lippert.</remarks>
   public sealed class ImmutableBinaryTree<TValue>
     : IBinaryTree<TValue>
+    where TValue : System.IEquatable<TValue>
   {
     public static readonly IBinaryTree<TValue> Empty = new EmptyBinaryTree();
 
@@ -21,6 +22,56 @@ namespace Flux.DataStructures
       m_left = left ?? Empty;
       m_right = right ?? Empty;
       m_value = value;
+    }
+
+    /// <summary>
+    /// <para>Creates a new <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> based on the <paramref name="inOrder"/> and <paramref name="levelOrder"/> arrays.</para>
+    /// </summary>
+    /// <param name="inOrder">The values from a binary-tree using in-order traversal.</param>
+    /// <param name="levelOrder">The values from a binary-tree using level-order traversal.</param>
+    /// <returns></returns>
+    public static Flux.DataStructures.IBinaryTree<TValue> Create(TValue[] inOrder, TValue[] levelOrder)
+    {
+      return ConstructTree(Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty, levelOrder, inOrder, 0, inOrder.Length - 1);
+
+      static Flux.DataStructures.IBinaryTree<TValue> ConstructTree(Flux.DataStructures.IBinaryTree<TValue> startNode, TValue[] levelOrder, TValue[] inOrder, int inStart, int inEnd)
+      {
+        if (inStart > inEnd)
+          return Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty;
+
+        if (inStart == inEnd)
+          return new Flux.DataStructures.ImmutableBinaryTree<TValue>(inOrder[inStart], Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty, Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty);
+
+        var found = false;
+        var index = 0;
+
+        for (var i = 0; i < levelOrder.Length - 1; i++) // It represents the index in inOrder array of element that appear first in levelOrder array.
+        {
+          var data = levelOrder[i];
+
+          for (var j = inStart; j < inEnd; j++)
+          {
+            if (data.Equals(inOrder[j]))
+            {
+              startNode = new Flux.DataStructures.ImmutableBinaryTree<TValue>(data, Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty, Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty);
+              index = j;
+              found = true;
+              break;
+            }
+          }
+
+          if (found == true)
+            break;
+        }
+
+        startNode = new Flux.DataStructures.ImmutableBinaryTree<TValue>(
+          startNode.Value,
+          ConstructTree(startNode, levelOrder, inOrder, inStart, index - 1), // Elements before index are part of left child of startNode.
+          ConstructTree(startNode, levelOrder, inOrder, index + 1, inEnd) // Elements after index are part of right child of startNode.
+        );
+
+        return startNode;
+      }
     }
 
     // IBinaryTree<TValue>
