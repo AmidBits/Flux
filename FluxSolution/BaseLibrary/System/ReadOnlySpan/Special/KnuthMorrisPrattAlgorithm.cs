@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Creates a map of the amount of safely skippable elements in target (word).</para>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Perform an inner join of all sub-sequences in <paramref name="source"/>.</para>

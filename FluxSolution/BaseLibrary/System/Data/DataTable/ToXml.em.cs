@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Creates a new <see cref="System.Xml.Linq.XDocument"/> with the data from the <see cref="System.Data.DataTable"/>.</para>

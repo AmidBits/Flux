@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunes(this System.IO.Stream source, System.Text.Encoding encoding)
       => new Text.RuneEnumerator(source, encoding);

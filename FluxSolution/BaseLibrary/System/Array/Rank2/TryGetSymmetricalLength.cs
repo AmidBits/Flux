@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Measures all dimensions, if all equal in length sets the out argument and returns whether they are equal.</para>

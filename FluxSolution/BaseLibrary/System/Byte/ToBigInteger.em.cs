@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Creates a new BigInteger from the sequence of bytes and adds a padding zero byte if needed.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this System.Collections.Generic.IEnumerable<byte> source)

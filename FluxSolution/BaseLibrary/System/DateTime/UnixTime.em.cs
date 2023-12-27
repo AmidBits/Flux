@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     public static readonly System.DateTime UnixEpoch = new(1970, 1, 1, 0, 0, 0);
 

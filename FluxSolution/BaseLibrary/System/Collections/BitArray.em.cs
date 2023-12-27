@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Returns the indices of the bits that are either true (1) or false (0) depending on the <paramref name="isOne"/>.</para>

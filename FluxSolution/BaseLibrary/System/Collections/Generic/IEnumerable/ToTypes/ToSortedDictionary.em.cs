@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Returns a new sequence with the specified items removed and replaced with the specified items.</summary>
     /// <exception cref="System.ArgumentNullException"/>

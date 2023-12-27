@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Swap two elements by the specified indices.</summary>
     internal static void SwapImpl(this System.Text.StringBuilder source, int indexA, int indexB)

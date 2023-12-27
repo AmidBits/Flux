@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Creates an <see cref="System.Xml.XmlNode"/> from an existing <see cref="System.Xml.Linq.XNode"/>.</summary>
     /// <param name="source">The source <see cref="System.Xml.Linq.XNode"/>.</param>

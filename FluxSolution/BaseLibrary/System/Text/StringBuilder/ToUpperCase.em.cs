@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Convert all characters, in the specified range, to upper case. Uses the specified culture.</summary>
     public static System.Text.StringBuilder ToUpperCase(this System.Text.StringBuilder source, int startIndex, int length, System.Globalization.CultureInfo? culture = null)

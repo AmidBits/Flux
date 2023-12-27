@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Remove all characters satisfying the predicate from the string.</summary>
     /// <example>"".RemoveAll(char.IsWhiteSpace);</example>

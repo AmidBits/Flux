@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Finds the shortest substring that can be replaced to achieve a balanced count of all <paramref name="vocabulary"/> elements in <paramref name="source"/> (i.e. with no change in space requirements).</para>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Creates a new two-dimensional array by copying a selection of (<paramref name="count0"/> by <paramref name="count1"/>) elements from <paramref name="source"/> starting at [<paramref name="index0"/>, <paramref name="index1"/>]. Use (<paramref name="preCount0"/> by <paramref name="preCount1"/>) and (<paramref name="postCount0"/> by <paramref name="postCount1"/>) to add surrounding element space in the new array.</para>

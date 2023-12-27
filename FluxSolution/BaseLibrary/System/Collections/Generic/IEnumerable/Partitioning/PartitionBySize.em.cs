@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Partition the sequence into one or more sequences of a specified size. The last partition may contain less elements than requested.</summary>
     /// <param name="resultSelector">Receives the elements in the partition and partition index (this is not the element index).</param>

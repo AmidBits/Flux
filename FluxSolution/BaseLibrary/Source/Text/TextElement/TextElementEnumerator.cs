@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     public static System.Collections.Generic.IEnumerable<Text.TextElement> EnumerateTextElements(this System.IO.Stream source, System.Text.Encoding encoding)
       => new Text.TextElementEnumerator(source, encoding);

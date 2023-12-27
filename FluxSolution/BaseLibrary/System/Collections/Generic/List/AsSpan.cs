@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Flux non-allocating conversion (casting) to <see cref="System.Span{T}"/>.</summary>
     public static System.Span<T> AsSpan<T>(this System.Collections.Generic.List<T> source) => System.Runtime.InteropServices.CollectionsMarshal.AsSpan(source);

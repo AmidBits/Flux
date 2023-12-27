@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Convert all runes, in the specified range, to lower case. Uses the specified culture, or the current culture if null.</summary>
     public static System.Span<System.Text.Rune> ToLowerCase(this System.Span<System.Text.Rune> source, int startIndex, int length, System.Globalization.CultureInfo? culture = null)

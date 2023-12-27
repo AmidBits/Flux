@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Enables concatenation of <typeparamref name="T"/> data from the <paramref name="source"/> sequence into a <see cref="System.Text.StringBuilder"/> using the specified <paramref name="builder"/>.</summary>
     /// <exception cref="System.ArgumentNullException"/>

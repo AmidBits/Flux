@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Flip the order of the strands, in-place, along the specified <paramref name="dimension"/> in <paramref name="source"/>.</para>

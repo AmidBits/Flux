@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Yields a new sequence of elements from <paramref name="source"/> based on <paramref name="predicate"/> and <paramref name="selector"/>.</summary>
     /// <exception cref="System.ArgumentNullException"/>

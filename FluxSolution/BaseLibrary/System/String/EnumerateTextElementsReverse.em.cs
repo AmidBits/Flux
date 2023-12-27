@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     public static System.Collections.Generic.IEnumerable<Text.TextElement> EnumerateTextElementsReverse(this string source)
     {

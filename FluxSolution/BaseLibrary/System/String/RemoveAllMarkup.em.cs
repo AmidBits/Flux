@@ -1,6 +1,6 @@
 namespace Flux
 {
-	public static partial class Fx
+	public static partial class Reflection
 	{
 		public const string AllMarkupTags = @"(" + OneMarkupTag + @")+";
 		public const string OneMarkupTag = @"<[^>]+>";

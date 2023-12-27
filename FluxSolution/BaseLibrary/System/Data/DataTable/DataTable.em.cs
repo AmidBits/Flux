@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     public static int GetColumnOrdinalIndex(this System.Data.DataTable source, string columnName)
       => source.Columns[columnName]?.Ordinal ?? throw new System.ArgumentOutOfRangeException(nameof(columnName));

@@ -2,12 +2,9 @@
 {
   public static partial class Em
   {
-    public static DataStructures.OrderedSet<T> ToOrderedSet<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+    public static DataStructures.OrderedSet<T> ToOrderedSet<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
-      => new(source, equalityComparer);
-    public static DataStructures.OrderedSet<T> ToOrderedSet<T>(this System.Collections.Generic.IEnumerable<T> source)
-      where T : notnull
-      => ToOrderedSet(source, System.Collections.Generic.EqualityComparer<T>.Default);
+      => new(source, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default);
   }
 
   namespace DataStructures
@@ -37,23 +34,23 @@
         : this(collection, System.Collections.Generic.EqualityComparer<T>.Default)
       { }
 
-      #region Implemented interfaces
-      // IOrderedSet<>
-      public T this[int index]
+      /// <summary>
+      /// <para>Adds all non-existing elements in the collection into the <see cref="IOrderedSet{T}"/> and returns the number of elements successfully added.</para>
+      /// </summary>
+      public int AddRange(System.Collections.Generic.IEnumerable<T> collection)
       {
-        get => m_values[index];
-        set => m_values[index] = value;
+        var count = 0;
+
+        foreach (var t in collection)
+          if (Add(t))
+            count++;
+
+        return count;
       }
 
-      public int GetIndex(T value) => m_dictionary[value];
-
-      public void Insert(int index, T value)
-      {
-        if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
-
-        m_dictionary.Add(value, index);
-        m_values.Insert(index, value);
-      }
+      /// <summary>
+      /// <para>Inserts all non-existing elements in the collection into the <see cref="IOrderedSet{T}"/> (starting) at the specified index and returns the number of elements successfully inserted.</para>
+      /// </summary>
       public int InsertRange(int index, System.Collections.Generic.IEnumerable<T> collection)
       {
         var count = 0;
@@ -68,63 +65,9 @@
         return count;
       }
 
-      public void RemoveAt(int index)
-      {
-        if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
-
-        m_dictionary.Remove(m_values[index]);
-        m_values.RemoveAt(index);
-      }
-
-      // ISet<>
-      public int Count => m_dictionary.Count;
-
-      public bool IsReadOnly => false;
-
-      public bool Add(T item)
-      {
-        if (m_dictionary.ContainsKey(item))
-          return false;
-
-        var node = m_values.Count;
-        m_values.Add(item);
-        m_dictionary.Add(item, node);
-        return true;
-      }
-      void System.Collections.Generic.ICollection<T>.Add(T item) => Add(item);
-      public int AddRange(System.Collections.Generic.IEnumerable<T> collection)
-      {
-        var count = 0;
-
-        foreach (var t in collection)
-          if (Add(t))
-            count++;
-
-        return count;
-      }
-
-      public void Clear()
-      {
-        m_values.Clear();
-        m_dictionary.Clear();
-      }
-
-      public bool Contains(T item) => m_dictionary.ContainsKey(item);
-
-      public void CopyTo(T[] array, int arrayIndex) => m_values.CopyTo(array, arrayIndex);
-
-      /// <summary>Removes all elements in the specified collection from the current set.</summary>
-      public void ExceptWith(System.Collections.Generic.IEnumerable<T> other) => RemoveRange(other);
-
-      public bool Remove(T item)
-      {
-        if (!m_dictionary.TryGetValue(item, out var node))
-          return false;
-
-        m_dictionary.Remove(item);
-        m_values.RemoveAt(node);
-        return true;
-      }
+      /// <summary>
+      /// <para>Removes all existing elements in the collection from the <see cref="IOrderedSet{T}"/> and returns the number of elements successfully found and removed.</para>
+      /// </summary>
       public int RemoveRange(System.Collections.Generic.IEnumerable<T> collection)
       {
         var count = 0;
@@ -136,7 +79,78 @@
         return count;
       }
 
-      /// <summary>Modifies the current set so that it contains only elements that are also in the specified collection.</summary>
+      #region Implemented interfaces
+
+      // IOrderedSet<>
+
+      public T this[int index]
+      {
+        get => m_values[index];
+        set => m_values[index] = value;
+      }
+
+      public bool TryGetIndex(T value, out int index)
+        => m_dictionary.TryGetValue(value, out index);
+
+      public void Insert(int index, T value)
+      {
+        if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+        m_dictionary.Add(value, index);
+        m_values.Insert(index, value);
+      }
+
+      public void RemoveAt(int index)
+      {
+        if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+        m_dictionary.Remove(m_values[index]);
+        m_values.RemoveAt(index);
+      }
+
+      // ICollection<>
+
+      public int Count => m_dictionary.Count;
+
+      public bool IsReadOnly => false;
+
+      void System.Collections.Generic.ICollection<T>.Add(T item) => Add(item);
+
+      public void Clear()
+      {
+        m_values.Clear();
+        m_dictionary.Clear();
+      }
+
+      public bool Contains(T item) => m_dictionary.ContainsKey(item);
+
+      public void CopyTo(T[] array, int arrayIndex) => m_values.CopyTo(array, arrayIndex);
+
+      public bool Remove(T item)
+      {
+        if (!m_dictionary.TryGetValue(item, out var node))
+          return false;
+
+        m_dictionary.Remove(item);
+        m_values.RemoveAt(node);
+        return true;
+      }
+
+      // ISet<>
+
+      public bool Add(T item)
+      {
+        if (m_dictionary.ContainsKey(item))
+          return false;
+
+        var node = m_values.Count;
+        m_values.Add(item);
+        m_dictionary.Add(item, node);
+        return true;
+      }
+
+      public void ExceptWith(System.Collections.Generic.IEnumerable<T> other) => RemoveRange(other);
+
       public void IntersectWith(System.Collections.Generic.IEnumerable<T> other)
       {
         var removing = new System.Collections.Generic.HashSet<T>(this, m_equalityComparer); // Order does not matter for removal, so we can use the built-in type.
@@ -153,13 +167,11 @@
         => this.SetCounts(other, false) is var (unfoundCount, uniqueCount) && unfoundCount >= 0 && uniqueCount == Count;
       public bool IsSupersetOf(System.Collections.Generic.IEnumerable<T> other) => this.ContainsAll(other);
 
-      /// <summary>Determines whether the current set overlaps with the specified collection.</summary>
       public bool Overlaps(System.Collections.Generic.IEnumerable<T> other) => this.ContainsAny(other);
 
       public bool SetEquals(System.Collections.Generic.IEnumerable<T> other)
         => this.SetCounts(other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == Count;
 
-      /// <summary>Modifies the current set so that it contains only elements that are present either in the current set or in the specified collection, but not both.</summary>
       public void SymmetricExceptWith(System.Collections.Generic.IEnumerable<T> other)
       {
         var adding = new OrderedSet<T>(m_equalityComparer);
@@ -173,11 +185,13 @@
         AddRange(adding);
       }
 
-      /// <summary>Modifies the current set so that it contains all elements that are present in the current set, in the specified collection, or in both.</summary>
       public void UnionWith(System.Collections.Generic.IEnumerable<T> other) => AddRange(other);
+
+      // IEnumerable<>
 
       public System.Collections.Generic.IEnumerator<T> GetEnumerator() => m_values.GetEnumerator();
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+
       #endregion Implemented interfaces
 
       public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";

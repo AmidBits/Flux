@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Determines the number of leading (left or most significant) consecutive bits, in the array, and whether they are 0 or 1.</summary>
     public static int CountLeastSignificantBits(this byte[] source, out int bit)

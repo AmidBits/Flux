@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Creates a new <see cref="System.Collections.Generic.List{T}"/> from <paramref name="source"/> and optionally selected <paramref name="indices"/>.</summary>
     public static System.Collections.Generic.List<T> ToList<T>(this System.ReadOnlySpan<T> source, params int[] indices)

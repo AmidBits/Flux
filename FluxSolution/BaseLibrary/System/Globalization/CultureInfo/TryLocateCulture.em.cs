@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     public static bool TryLocateCulture(this System.Globalization.CultureInfo source, System.Collections.Generic.IEnumerable<string> collection, out System.Collections.Generic.List<(int hierarchyLevel, int index, string text)> matches, out System.Data.DataTable dataTable)
     {

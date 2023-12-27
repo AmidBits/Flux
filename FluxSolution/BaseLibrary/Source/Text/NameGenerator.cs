@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   namespace Text
@@ -28,7 +26,7 @@ namespace Flux
 
         var maxLength = lengths.Keys.Max();
 
-        var cpl = new System.Collections.Generic.SortedDictionary<int, DataStructures.CumulativeDistributionFunction<char>>();
+        var cpl = new System.Collections.Generic.SortedDictionary<int, DataStructures.CumulativeDistributionFunction<char, double>>();
 
         foreach (var i in Iteration.Range(0, maxLength, 1))
           cpl[(int)i + 1] = list.Where(n => i < n.Length).ToHistogram(k => k[(int)i], f => System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(f[(int)i]) ? 1 : 1).ToCumulativeDistributionFunction(1.0);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
     public static System.Text.StringBuilder MakeCamelCase(this System.Text.StringBuilder source, System.Func<char, bool> predicate)

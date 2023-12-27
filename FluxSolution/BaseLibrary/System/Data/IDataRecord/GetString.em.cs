@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Results in a string array of all column values in the current row.</summary>
     public static string GetString(this System.Data.IDataRecord source, int index, string nullString)

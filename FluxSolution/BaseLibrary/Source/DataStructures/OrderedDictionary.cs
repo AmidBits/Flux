@@ -2,17 +2,14 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static DataStructures.OrderedDictionary<TKey, TValue> ToOrderedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IEqualityComparer<TKey> equalityComparer)
+    public static DataStructures.OrderedDictionary<TKey, TValue> ToOrderedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IEqualityComparer<TKey>? equalityComparer = null)
       where TKey : notnull
     {
-      var od = new DataStructures.OrderedDictionary<TKey, TValue>(equalityComparer);
+      var od = new DataStructures.OrderedDictionary<TKey, TValue>(equalityComparer ?? System.Collections.Generic.EqualityComparer<TKey>.Default);
       foreach (var item in source)
         od.Add(keySelector(item), valueSelector(item));
       return od;
     }
-    public static DataStructures.OrderedDictionary<TKey, TValue> ToOrderedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> valueSelector)
-      where TKey : notnull
-      => ToOrderedDictionary(source, keySelector, valueSelector, System.Collections.Generic.EqualityComparer<TKey>.Default);
   }
 
   namespace DataStructures
@@ -21,14 +18,12 @@ namespace Flux
       : IOrderedDictionary<TKey, TValue>
     where TKey : notnull
     {
-      //private readonly System.Collections.Generic.IEqualityComparer<TKey> m_equalityComparer;
       private readonly System.Collections.Generic.Dictionary<TKey, TValue> m_dictionary;
       private readonly System.Collections.Generic.List<TKey> m_listOfKeys;
       private readonly System.Collections.Generic.List<TValue> m_listOfValues;
 
       public OrderedDictionary(System.Collections.Generic.IEqualityComparer<TKey> equalityComparer)
       {
-        //m_equalityComparer = equalityComparer;
         m_dictionary = new System.Collections.Generic.Dictionary<TKey, TValue>(equalityComparer);
         m_listOfKeys = new();
         m_listOfValues = new();
@@ -37,19 +32,21 @@ namespace Flux
         : this(System.Collections.Generic.EqualityComparer<TKey>.Default)
       { }
 
+      public System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<TKey, TValue>> CreateKeyValuePairs()
+        => m_listOfKeys.Zip(m_listOfValues, (k, v) => new System.Collections.Generic.KeyValuePair<TKey, TValue>(k, v)).ToList();
+
       #region Implemented interfaces
+
       // IOrderedDictionary<>
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> CreateKeyValuePairs()
+      public TValue this[int index]
       {
-        for (var index = 0; index < Count; index++)
-          yield return new System.Collections.Generic.KeyValuePair<TKey, TValue>(m_listOfKeys[index], m_listOfValues[index]);
+        get => m_listOfValues[index];
+        set
+        {
+          m_listOfValues[index] = value;
+          m_dictionary[m_listOfKeys[index]] = value;
+        }
       }
-
-      public int GetIndex(TKey key) => m_listOfKeys.IndexOf(key);
-      public int GetIndex(TValue value) => m_listOfValues.IndexOf(value);
-
-      public TKey GetKey(int index) => m_listOfKeys[index];
-      public TKey GetKey(TValue value) => m_listOfKeys[m_listOfValues.IndexOf(value)];
 
       public void Insert(int index, TKey key, TValue value)
       {
@@ -60,35 +57,37 @@ namespace Flux
         m_listOfValues.Insert(index, value);
       }
 
+      public bool TryGetIndex(TKey key, out int index)
+      {
+        index = m_listOfKeys.IndexOf(key);
+
+        return index >= 0;
+      }
+
+      public bool TryGetIndex(TValue value, out int index)
+      {
+        index = m_listOfValues.IndexOf(value);
+
+        return index >= 0;
+      }
+
+      public bool TryGetKey(int index, out TKey key)
+      {
+        if (index >= 0 && index < m_listOfKeys.Count)
+        {
+          key = m_listOfKeys[index];
+
+          return true;
+        }
+
+        key = default!;
+        return false;
+      }
+
+      public bool TryGetKey(TValue value, out TKey key)
+        => TryGetKey(m_listOfValues.IndexOf(value), out key);
+
       // ICollection<>
-      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => m_dictionary.ContainsKey(item.Key) && System.Collections.Generic.EqualityComparer<TValue>.Default.Equals(m_dictionary[item.Key], item.Value);
-
-      // IDictionary<>
-      public TValue this[int index]
-      {
-        get => m_listOfValues[index];
-        set
-        {
-          m_listOfValues[index] = value;
-          m_dictionary[m_listOfKeys[index]] = value;
-        }
-      }
-      public TValue this[TKey key]
-      {
-        get => m_dictionary[key];
-        set
-        {
-          m_dictionary[key] = value;
-          m_listOfValues[GetIndex(key)] = value;
-        }
-      }
-
-      public void Add(TKey key, TValue value)
-      {
-        m_dictionary.Add(key, value);
-        m_listOfKeys.Add(key);
-        m_listOfValues.Add(value);
-      }
       public void Add(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => Add(item.Key, item.Value);
 
       public void Clear()
@@ -98,7 +97,7 @@ namespace Flux
         m_listOfValues.Clear();
       }
 
-      public bool ContainsKey(TKey key) => m_dictionary.ContainsKey(key);
+      public bool Contains(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => m_dictionary.ContainsKey(item.Key) && System.Collections.Generic.EqualityComparer<TValue>.Default.Equals(m_dictionary[item.Key], item.Value);
 
       public void CopyTo(System.Collections.Generic.KeyValuePair<TKey, TValue>[] array, int arrayIndex)
       {
@@ -110,13 +109,39 @@ namespace Flux
 
       public bool IsReadOnly => false;
 
+      public bool Remove(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => Remove(item.Key);
+
+      // IDictionary<>
+      public TValue this[TKey key]
+      {
+        get => m_dictionary[key];
+        set
+        {
+          TryGetIndex(key, out var index);
+
+          m_dictionary[key] = value;
+          m_listOfValues[index] = value;
+        }
+      }
+
       public System.Collections.Generic.ICollection<TKey> Keys => m_listOfKeys;
+
+      public System.Collections.Generic.ICollection<TValue> Values => m_listOfValues;
+
+      public void Add(TKey key, TValue value)
+      {
+        m_dictionary.Add(key, value);
+        m_listOfKeys.Add(key);
+        m_listOfValues.Add(value);
+      }
+
+      public bool ContainsKey(TKey key) => m_dictionary.ContainsKey(key);
 
       public bool Remove(TKey key)
       {
         if (m_dictionary.Remove(key))
         {
-          var index = GetIndex(key);
+          TryGetIndex(key, out var index);
 
           m_listOfKeys.RemoveAt(index);
           m_listOfValues.RemoveAt(index);
@@ -126,14 +151,13 @@ namespace Flux
 
         return false;
       }
-      public bool Remove(System.Collections.Generic.KeyValuePair<TKey, TValue> item) => Remove(item.Key);
 
       public bool TryGetValue(TKey key, out TValue value) => m_dictionary.TryGetValue(key, out value!);
 
-      public System.Collections.Generic.ICollection<TValue> Values => m_listOfValues;
-
+      // IEnumerable<>
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => CreateKeyValuePairs().GetEnumerator();
       System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<TKey, TValue>> System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>.GetEnumerator() => CreateKeyValuePairs().GetEnumerator();
+
       #endregion Implemented interfaces
 
       public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";

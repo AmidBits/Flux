@@ -2,7 +2,7 @@ using System;
 
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Reports the index of the last occurence that satisfies the predicate.</summary>
     public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)

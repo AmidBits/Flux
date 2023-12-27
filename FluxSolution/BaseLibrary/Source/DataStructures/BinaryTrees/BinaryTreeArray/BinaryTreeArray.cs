@@ -18,7 +18,7 @@ namespace Flux.DataStructures
     public int GetTreeCount(int index)
       => index > m_data.Length - 1 || m_data[index] is var indexItem && indexItem.IsEmpty
       ? 0
-      : 1 + GetTreeCount(ChildIndexLeft(index)) + GetTreeCount(ChildIndexRight(index));
+      : GetTreeCount(ChildIndexLeft(index)) + 1 + GetTreeCount(ChildIndexRight(index));
 
     public BinaryTreeArray(int size)
     {
@@ -33,32 +33,82 @@ namespace Flux.DataStructures
       : this(1)
     { }
 
+    ///// <summary>
+    ///// <para>Creates a new <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> based on the <paramref name="inOrder"/> and <paramref name="levelOrder"/> arrays.</para>
+    ///// </summary>
+    ///// <param name="inOrder">The values from a binary-tree using in-order traversal.</param>
+    ///// <param name="levelOrder">The values from a binary-tree using level-order traversal.</param>
+    ///// <returns></returns>
+    //public static Flux.DataStructures.IBinaryTree<TValue> Create(TValue[] inOrder, TValue[] levelOrder)
+    //{
+    //  return ConstructTree(Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty, levelOrder, inOrder, 0, inOrder.Length - 1);
+
+    //  static Flux.DataStructures.IBinaryTree<TValue> ConstructTree(Flux.DataStructures.IBinaryTree<TValue> startNode, TValue[] levelOrder, TValue[] inOrder, int inStart, int inEnd)
+    //  {
+    //    if (inStart > inEnd)
+    //      return Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty;
+
+    //    if (inStart == inEnd)
+    //      return new Flux.DataStructures.ImmutableBinaryTree<TValue>(inOrder[inStart], Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty, Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty);
+
+    //    var found = false;
+    //    var index = 0;
+
+    //    for (var i = 0; i < levelOrder.Length - 1; i++) // It represents the index in inOrder array of element that appear first in levelOrder array.
+    //    {
+    //      var data = levelOrder[i];
+
+    //      for (var j = inStart; j < inEnd; j++)
+    //      {
+    //        if (data.Equals(inOrder[j]))
+    //        {
+    //          startNode = new Flux.DataStructures.ImmutableBinaryTree<TValue>(data, Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty, Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty);
+    //          index = j;
+    //          found = true;
+    //          break;
+    //        }
+    //      }
+
+    //      if (found == true)
+    //        break;
+    //    }
+
+    //    startNode = new Flux.DataStructures.ImmutableBinaryTree<TValue>(
+    //      startNode.Value,
+    //      ConstructTree(startNode, levelOrder, inOrder, inStart, index - 1), // Elements before index are part of left child of startNode.
+    //      ConstructTree(startNode, levelOrder, inOrder, index + 1, inEnd) // Elements after index are part of right child of startNode.
+    //    );
+
+    //    return startNode;
+    //  }
+    //}
+
     /// <summary>Determines whether this is a valid binary-search-tree.</summary>
-    public bool IsBST(int index, TKey minimumKey, TKey maximumKey)
+    public bool IsBst(int index, TKey minimumKey, TKey maximumKey)
     {
       if (index >= m_data.Length - 1 || (m_data[index] is var item && item.IsEmpty)) return true;
       if (item.Key.CompareTo(minimumKey) < 0 || item.Key.CompareTo(maximumKey) > 0) return false;
 
-      return IsBST(ChildIndexLeft(index), minimumKey, item.Key) && IsBST(ChildIndexRight(index), item.Key, maximumKey);
+      return IsBst(ChildIndexLeft(index), minimumKey, item.Key) && IsBst(ChildIndexRight(index), item.Key, maximumKey);
     }
 
     /// <summary>Determines whether this is a valid binary-tree.</summary>
-    public bool IsBT(int index)
+    public bool IsBt(int index)
     {
       var item = m_data[index];
 
       var indexL = ChildIndexLeft(index);
       var indexR = ChildIndexRight(index);
 
-      var isL = indexL > m_data.Length - 1 || (m_data[indexL] is var itemL && (itemL.IsEmpty || (itemL.Key.CompareTo(item.Key) < 0 && IsBT(indexL))));
-      var isR = indexR > m_data.Length - 1 || (m_data[indexR] is var itemR && (itemR.IsEmpty || (itemR.Key.CompareTo(item.Key) > 0 && IsBT(indexR))));
+      var isL = indexL > m_data.Length - 1 || (m_data[indexL] is var itemL && (itemL.IsEmpty || (itemL.Key.CompareTo(item.Key) < 0 && IsBt(indexL))));
+      var isR = indexR > m_data.Length - 1 || (m_data[indexR] is var itemR && (itemR.IsEmpty || (itemR.Key.CompareTo(item.Key) > 0 && IsBt(indexR))));
 
       return isL && isR;
     }
 
-    public static int ChildIndexLeft(int index) => (index << 1) + 1;
-    public static int ChildIndexRight(int index) => (index << 1) + 2;
-    public static int ParentIndex(int index) => index <= 0 ? -1 : (index - 1) >> 1;
+    public static int ChildIndexLeft(int parentIndex) => (parentIndex << 1) + 1;
+    public static int ChildIndexRight(int parentIndex) => (parentIndex << 1) + 2;
+    public static int ParentIndex(int childIndex) => childIndex <= 0 ? -1 : (childIndex - 1) >> 1;
 
     private bool Delete(TKey key, int index)
     {
@@ -85,35 +135,35 @@ namespace Flux.DataStructures
     /// <returns>Whether the key was found and a delete occured.</returns>
     public bool Delete(TKey key) => Delete(key, 0);
 
-    private System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesInOrder(int index)
+    private System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraverseInOrder(int index)
     {
       if (index < 0 || index >= m_data.Length)
         yield break;
 
-      foreach (var nodeL in GetNodesInOrder(ChildIndexLeft(index)))
+      foreach (var nodeL in TraverseInOrder(ChildIndexLeft(index)))
         if (!nodeL.IsEmpty)
           yield return nodeL;
       var node = m_data[index];
       if (!node.IsEmpty)
         yield return node;
-      foreach (var nodeR in GetNodesInOrder(ChildIndexRight(index)))
+      foreach (var nodeR in TraverseInOrder(ChildIndexRight(index)))
         if (!nodeR.IsEmpty)
           yield return nodeR;
     }
     /// <summary>Depth-first search (DFS), in-order (LNR). In a binary search tree, in-order traversal retrieves data in sorted order.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesInOrder() => GetNodesInOrder(0);
+    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraverseInOrder() => TraverseInOrder(0);
 
-    private System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPostOrder(int index)
+    private System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraversePostOrder(int index)
     {
       if (index < 0 || index >= m_data.Length)
         yield break;
 
-      foreach (var nodeL in GetNodesPostOrder(ChildIndexLeft(index)))
+      foreach (var nodeL in TraversePostOrder(ChildIndexLeft(index)))
         if (!nodeL.IsEmpty)
           yield return nodeL;
-      foreach (var nodeR in GetNodesPostOrder(ChildIndexRight(index)))
+      foreach (var nodeR in TraversePostOrder(ChildIndexRight(index)))
         if (!nodeR.IsEmpty)
           yield return nodeR;
       var node = m_data[index];
@@ -123,9 +173,9 @@ namespace Flux.DataStructures
     /// <summary>Depth-first search (DFS), post-order (LRN). The trace of a traversal is called a sequentialisation of the tree. The traversal trace is a list of each visited root.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Post-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPostOrder() => GetNodesPostOrder(0);
+    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraversePostOrder() => TraversePostOrder(0);
 
-    private System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPreOrder(int index)
+    private System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraversePreOrder(int index)
     {
       if (index < 0 || index >= m_data.Length)
         yield break;
@@ -133,17 +183,17 @@ namespace Flux.DataStructures
       var node = m_data[index];
       if (!node.IsEmpty)
         yield return node;
-      foreach (var nodeL in GetNodesPreOrder(ChildIndexLeft(index)))
+      foreach (var nodeL in TraversePreOrder(ChildIndexLeft(index)))
         if (!nodeL.IsEmpty)
           yield return nodeL;
-      foreach (var nodeR in GetNodesPreOrder(ChildIndexRight(index)))
+      foreach (var nodeR in TraversePreOrder(ChildIndexRight(index)))
         if (!nodeR.IsEmpty)
           yield return nodeR;
     }
     /// <summary>Depth-first search (DFS), pre-order (NLR). The pre-order traversal is a topologically sorted one, because a parent node is processed before any of its child nodes is done.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> GetNodesPreOrder() => GetNodesPreOrder(0);
+    public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraversePreOrder() => TraversePreOrder(0);
 
     private void Insert(TKey key, TValue value, int index)
     {
@@ -192,61 +242,6 @@ namespace Flux.DataStructures
     }
     /// <summary>Searches the tree for the first node with a matching key.</summary>
     public IBinaryTreeArrayNode<TKey, TValue> Search(TKey key) => Search(key, 0) is var index && index > -1 ? m_data[index] : Empty;
-
-    //public System.Collections.Generic.IEnumerable<(int, IBinaryTreeArrayNode<TKey, TValue>)> TraverseBreadthFirstSearch(int index)
-    //{
-    //  var current = new System.Collections.Generic.Queue<int>();
-    //  current.Enqueue(index);
-
-    //  var next = new System.Collections.Generic.Queue<int>();
-    //  var level = 0;
-
-    //  while (current.Count > 0)
-    //  {
-    //    index = current.Dequeue();
-
-    //    if (this[index] is var item && !item.IsEmpty)
-    //      yield return (level, item);
-
-    //    if (ChildIndexLeft(index) is var indexL && !this[indexL].IsEmpty)
-    //      next.Enqueue(indexL);
-    //    if (ChildIndexRight(index) is var indexR && !this[indexR].IsEmpty)
-    //      next.Enqueue(indexR);
-
-    //    if (current.Count == 0)
-    //    {
-    //      current = next;
-    //      next = new System.Collections.Generic.Queue<int>();
-    //      level++;
-    //    }
-    //  }
-    //}
-
-    //public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraverseDepthFirstSearchInOrder(int index)
-    //{
-    //  Flux.Collections.Generic.Traversal.BinaryTreeSearch()
-    //  if (this[index] is var item && item.IsEmpty) yield break;
-
-    //  foreach (var itemL in TraverseDepthFirstSearchInOrder(ChildIndexLeft(index))) yield return itemL;
-    //  yield return item;
-    //  foreach (var itemR in TraverseDepthFirstSearchInOrder(ChildIndexRight(index))) yield return itemR;
-    //}
-    //public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraverseDepthFirstSearchPostOrder(int index)
-    //{
-    //  if (this[index] is var item && item.IsEmpty) yield break;
-
-    //  foreach (var itemL in TraverseDepthFirstSearchPostOrder(ChildIndexLeft(index))) yield return itemL;
-    //  foreach (var itemR in TraverseDepthFirstSearchPostOrder(ChildIndexRight(index))) yield return itemR;
-    //  yield return item;
-    //}
-    //public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraverseDepthFirstSearchPreOrder(int index)
-    //{
-    //  if (this[index] is var item && item.IsEmpty) yield break;
-
-    //  yield return item;
-    //  foreach (var itemL in TraverseDepthFirstSearchPreOrder(ChildIndexLeft(index))) yield return itemL;
-    //  foreach (var itemR in TraverseDepthFirstSearchPreOrder(ChildIndexRight(index))) yield return itemR;
-    //}
 
     public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";
 

@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Partition the sequence into a specified number of list. The last partition may contain less elements than the other partitions.</summary>
     /// <exception cref="System.ArgumentNullException"/>

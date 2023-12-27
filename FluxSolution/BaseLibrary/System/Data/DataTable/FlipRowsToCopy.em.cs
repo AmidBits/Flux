@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Creates a new <see cref="System.Data.DataTable"/> containing the <paramref name="source"/> data rows reversed (mirrored).</para>

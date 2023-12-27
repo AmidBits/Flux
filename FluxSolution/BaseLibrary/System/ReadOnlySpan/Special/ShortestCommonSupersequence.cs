@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Create a dunamic programming matrix of shortest common supersequence (SCS) between two sequences.</para>

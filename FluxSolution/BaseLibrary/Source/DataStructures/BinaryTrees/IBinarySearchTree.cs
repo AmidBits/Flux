@@ -7,6 +7,7 @@ namespace Flux.DataStructures
   /// </summary>
   /// <typeparam name="TKey">The type of key for the BST node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
   /// <typeparam name="TValue">The type of value for the BST node.</typeparam>
+  /// <remarks>This implementation is courtesy Eric Lippert.</remarks>
 	public interface IBinarySearchTree<TKey, TValue>
     : IBinaryTree<TValue>, IMap<TKey, TValue>
     where TKey : System.IComparable<TKey>

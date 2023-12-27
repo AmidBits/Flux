@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     private const double Lg = 6.969290134e-10;
     /// <summary></summary>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Returns the ISO8601 current week of year of the <paramref name="source"/>.</summary>
     /// <see cref="https://stackoverflow.com/questions/1497586/how-can-i-calculate-find-the-week-number-of-a-given-date"/>

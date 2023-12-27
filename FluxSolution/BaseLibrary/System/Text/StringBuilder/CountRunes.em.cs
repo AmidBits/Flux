@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     public static int CountRunes(this System.Text.StringBuilder source)
     {

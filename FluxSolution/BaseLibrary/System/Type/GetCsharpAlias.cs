@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Get the C# alias of .NET built-in types.</summary>
     public static string CsharpAliasName(this System.Type source)

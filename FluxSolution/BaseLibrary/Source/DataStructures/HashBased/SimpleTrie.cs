@@ -1,6 +1,6 @@
 namespace Flux.DataStructures
 {
-  /// <summary></summary>
+  /// <summary>A simple implementation of a trie data structure, which essentially is a storage structure for storing sequential data by their smaller components, e.g. <see cref="string"/>s (where the storage unit is <see cref="char"/>).</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Trie"/>
   /// <seealso cref="https://github.com/gmamaladze/trienet/tree/master/TrieNet"/>
   public sealed class SimpleTrie<TKey>
@@ -24,7 +24,7 @@ namespace Flux.DataStructures
       if (DeleteEntryOrToEnd(m_root, 0, entry))
         m_count--;
     }
-    private bool DeleteEntryOrToEnd(Node root, int index, System.ReadOnlySpan<TKey> array)
+    private static bool DeleteEntryOrToEnd(Node root, int index, System.ReadOnlySpan<TKey> array)
     {
       if (index == array.Length)
       {
@@ -56,9 +56,9 @@ namespace Flux.DataStructures
 
       for (int index = 0; index < entry.Length; index++)
       {
-        if (temp.SubNodes.ContainsKey(entry[index]))
+        if (temp.SubNodes.TryGetValue(entry[index], out var value))
         {
-          temp = temp.SubNodes[entry[index]];
+          temp = value;
         }
         else
         {
@@ -81,9 +81,9 @@ namespace Flux.DataStructures
 
       for (int index = 0; index < entry.Length; index++)
       {
-        if (node.SubNodes.ContainsKey(entry[index]))
+        if (node.SubNodes.TryGetValue(entry[index], out var value))
         {
-          node = node.SubNodes[entry[index]];
+          node = value;
 
           if (!acceptStartsWith && node.EndOfEntry && index == entry.Length - 1)
           {

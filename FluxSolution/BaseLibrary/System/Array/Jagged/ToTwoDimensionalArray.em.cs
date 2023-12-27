@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Returns the jagged array (i.e. an array of arrays) as a two-dimensional array.</para>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Sorts the content of the sequence using essentially an improved bubble sort.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Comb_sort"/>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Afternoon"/>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Returns a sequence of strings from all results, rows, columns and specified delimiters for easy parsing.</summary>
     /// <param name="nameSelector">The string representing the separation between result sets (if more than one).</param>

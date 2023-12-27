@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>
     /// <para>Creates a new <see cref="System.Array"/> from <paramref name="source"/> with a <paramref name="preLength"/> and a <paramref name="postLength"/>.</para>

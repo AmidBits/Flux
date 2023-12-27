@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     public static System.Collections.Generic.IEnumerable<int> GraphGetVertices<T>(this T[,] source)
       where T : System.IEquatable<T>

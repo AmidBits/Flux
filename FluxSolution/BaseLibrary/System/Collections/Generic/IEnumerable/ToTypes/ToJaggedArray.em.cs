@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Creates a jagged array <paramref name="source"/> using the specified <paramref name="countSelector"/> which specifies the number of elements (i.e. field/column count) for the next row.</summary>
     /// <remarks>For each row, a readonly list of all remaining elements is presented for decision on how many elements should appear on the next row.</remarks>

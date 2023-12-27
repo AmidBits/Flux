@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Reflection
   {
     /// <summary>Reverse all elements in the index range (<paramref name="startIndex"/>, <paramref name="endIndex"/>) of the <paramref name="source"/>.</summary>
     public static System.Span<T> ReverseRange<T>(ref this System.Span<T> source, int startIndex, int endIndex)
