@@ -100,7 +100,7 @@ namespace Flux.DataStructures
       return (m1 == 0 || p1 == 0);
     }
 
-    // IHeap<T>
+    // IDarityHeap<T>
     public bool IsEmpty => m_data.Count == 0;
     public T Extract()
     {

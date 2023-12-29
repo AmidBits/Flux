@@ -97,6 +97,7 @@ namespace Flux.DataStructures
     }
 
     // IDarityHeap<T>
+    public bool IsEmpty => m_data.Count == 0;
     public T Extract()
     {
       var min = m_data[0];
@@ -116,7 +117,6 @@ namespace Flux.DataStructures
 
       HeapifyUp(m_data.Count - 1);
     }
-    public bool IsEmpty => m_data.Count == 0;
     public T Peek() => m_data[0];
 
     // ICloneable

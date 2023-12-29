@@ -28,32 +28,6 @@ namespace Flux.DataStructures
       }
     }
 
-    public bool IsConsistent()
-    {
-      if (m_data.Count == 0)
-        return true;
-
-      int m1 = 0, z = 0, p1 = 0;
-
-      foreach (var index in GetIndicesOfDescendantsBFS(1, m_data.Count))
-      {
-        switch (m_data[(index - 1) >> 1].CompareTo(m_data[index]))
-        {
-          case -1:
-            m1++;
-            break;
-          case 0:
-            z++;
-            break;
-          case 1:
-            p1++;
-            break;
-        }
-      }
-
-      return m1 == 0 || p1 == 0;
-    }
-
     private void HeapifyDown(int index)
     {
       for (var smallerIndex = index; true; index = smallerIndex)
@@ -90,6 +64,32 @@ namespace Flux.DataStructures
       }
     }
 
+    public bool IsConsistent()
+    {
+      if (m_data.Count == 0)
+        return true;
+
+      int m1 = 0, z = 0, p1 = 0;
+
+      foreach (var index in GetIndicesOfDescendantsBFS(1, m_data.Count))
+      {
+        switch (m_data[(index - 1) >> 1].CompareTo(m_data[index]))
+        {
+          case -1:
+            m1++;
+            break;
+          case 0:
+            z++;
+            break;
+          case 1:
+            p1++;
+            break;
+        }
+      }
+
+      return m1 == 0 || p1 == 0;
+    }
+
     // IHeap<T>
     public bool IsEmpty => m_data.Count == 0;
     public T Extract()
@@ -119,7 +119,6 @@ namespace Flux.DataStructures
     public System.Collections.Generic.IEnumerator<T> GetEnumerator() => ((IHeap<T>)Clone()).ExtractAll().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public override string ToString()
-      => $"{GetType().Name} {{ Count = {m_data.Count} }}";
+    public override string ToString() => $"{GetType().Name} {{ Count = {m_data.Count} }}";
   }
 }
