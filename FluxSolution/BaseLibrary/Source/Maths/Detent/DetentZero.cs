@@ -4,10 +4,13 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Snaps the value to zero if it's within the specified distance of zero, otherwise unaltered.</summary>
-    public static TSelf DetentZero<TSelf>(this TSelf value, TSelf distance)
+    /// <summary>
+    /// <para>Snaps the <paramref name="value"/> to zero if it's within the specified <paramref name="proximity"/> of zero, otherwise unaltered.</para>
+    /// </summary>
+    /// <remarks>This is similar to a knob that has a notch which latches the knob at the zero position.</remarks>
+    public static TSelf DetentZero<TSelf>(this TSelf value, TSelf proximity)
       where TSelf : System.Numerics.INumber<TSelf>
-      => TSelf.Zero.EqualsWithinAbsoluteTolerance(value, distance)
+      => TSelf.Zero.EqualsWithinAbsoluteTolerance(value, proximity)
       ? TSelf.Zero // Detent to zero.
       : value;
 

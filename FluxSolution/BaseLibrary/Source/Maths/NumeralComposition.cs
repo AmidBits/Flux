@@ -1,14 +1,14 @@
-using System.Linq;
-
 namespace Flux
 {
   /// <summary>Supporting class for breaking down and translating numbers to strings.</summary>
   public static partial class NumeralComposition
   {
 #if NET7_0_OR_GREATER
+
     public static string ToCardinalNumeralCompoundString<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
+
 #else
     public static string ToCardinalNumeralCompoundString(this System.Numerics.BigInteger number)
       => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(number)));
@@ -29,7 +29,9 @@ namespace Flux
       return list;
     }
 
-    /// <summary>This is step one. It breaks a <paramref name="number"/> down into parts (compound numbers) that can be translated into cardinal numerals. The first compound number is the sign of <paramref name="number"/>.</summary>
+    /// <summary>
+    /// <para>This is step one. It breaks a <paramref name="number"/> down into parts (compound numbers) that can be translated into cardinal numerals. The first compound number is the sign of <paramref name="number"/>.</para>
+    /// </summary>
     /// <remarks>The first number in the list is the sign, i.e. -1, 0 or 1. If the sign is 0, there are no more numbers in the list.</remarks>
     public static System.Collections.Generic.List<System.Numerics.BigInteger> GetCompoundNumbers(System.Numerics.BigInteger number)
     {

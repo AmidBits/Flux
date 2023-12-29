@@ -10,8 +10,8 @@ namespace Flux.DataStructures
   /// <typeparam name="TPercentRank"></typeparam>
   public sealed class CumulativeDistributionFunction<TKey, TPercentRank>
       : System.Collections.Generic.SortedDictionary<TKey, TPercentRank>
-      where TKey : notnull
-      where TPercentRank : System.Numerics.IFloatingPoint<TPercentRank>
+      where TKey : System.Numerics.INumber<TKey>
+      where TPercentRank : System.Numerics.IFloatingPointIeee754<TPercentRank>
   {
     /// <summary>Get the CDF (percent rank) of the <paramref name="key"/>. If the key exists it is returned, otherwise the percent rank is located by enumeration.</summary>
     /// <param name="key">The key to lookup percent rank for.</param>
@@ -31,6 +31,24 @@ namespace Flux.DataStructures
         cumulative = TPercentRank.CreateChecked(current.Value);
 
       return cumulative;
+    }
+
+    public ProbabilityMassFunction<TKey, TPercentRank> ToProbabilityMassFunction()
+    {
+      var pmf = new ProbabilityMassFunction<TKey, TPercentRank>();
+
+      var previous = TPercentRank.Zero;
+
+      foreach (var key in Keys.ToList())
+      {
+        var current = this[key];
+
+        pmf.Add(key, current - previous);
+
+        previous = current;
+      }
+
+      return pmf;
     }
   }
 }

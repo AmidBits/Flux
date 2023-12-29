@@ -7,8 +7,8 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Histogram"/>
     /// <seealso href="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
     public static DataStructures.Histogram<TKey, TFrequency> ToHistogram<TSource, TKey, TFrequency>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TFrequency> frequencySelector)
-      where TKey : notnull
-      where TFrequency : System.Numerics.INumber<TFrequency>
+      where TKey : System.Numerics.INumber<TKey>
+      where TFrequency : System.Numerics.IBinaryInteger<TFrequency>
       => new DataStructures.Histogram<TKey, TFrequency>().AddRange(source, keySelector, frequencySelector);
   }
 
@@ -22,8 +22,8 @@ namespace Flux
     /// <typeparam name="TKey"></typeparam>
     public sealed class Histogram<TKey, TFrequency>
       : System.Collections.Generic.IDictionary<TKey, TFrequency>
-      where TKey : notnull
-      where TFrequency : System.Numerics.INumber<TFrequency>
+      where TKey : System.Numerics.INumber<TKey>
+      where TFrequency : System.Numerics.IBinaryInteger<TFrequency>
     {
       private readonly System.Collections.Generic.Dictionary<TKey, TFrequency> m_data = new();
 
@@ -83,7 +83,7 @@ namespace Flux
       /// <typeparam name="TPercentRank"></typeparam>
       /// <returns>A new <see cref="CumulativeDistributionFunction{TKey, TPercentRank}"/> (CDF) dictionary.</returns>
       public CumulativeDistributionFunction<TKey, TPercentRank> ToCumulativeDistributionFunction<TPercentRank>(TPercentRank factor)
-        where TPercentRank : System.Numerics.IFloatingPoint<TPercentRank>
+        where TPercentRank : System.Numerics.IFloatingPointIeee754<TPercentRank>
       {
         var totalFrequency = TPercentRank.CreateChecked(m_totalFrequency);
 
@@ -110,7 +110,7 @@ namespace Flux
       /// <remarks>If there's a need to add a key with a POST NORMALIZED probability, divide the probability by the probability remainder, e.g. Add(key, 0.2) is pre-normalized, and Add(key, 0.2 / 0.8) is post-normalized.</remarks>
       /// <returns>A new <see cref="ProbabilityMassFunction{TKey, TProbability}"/> (PMF) dictionary.</returns>
       public ProbabilityMassFunction<TKey, TProbability> ToProbabilityMassFunction<TProbability>(TProbability factor)
-        where TProbability : System.Numerics.IFloatingPoint<TProbability>
+        where TProbability : System.Numerics.IFloatingPointIeee754<TProbability>
       {
         var totalFrequency = TProbability.CreateChecked(m_totalFrequency);
 

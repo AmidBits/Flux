@@ -11,19 +11,23 @@ namespace Flux.Statistics
     /// <summary>The probability that the first occurrence of success requires <paramref name="k"/> independent trials, each with success probability <paramref name="p"/>.</summary>
     /// <param name="k">The number of trials [1, ..].</param>
     /// <param name="p">The success probability (0, 1].</param>
-    public static double ProbabilityMassFunction1(this double k, double p)
-      => System.Math.Pow(1 - p, k - 1) * p;
+    public static TSelf ProbabilityMassFunction1<TSelf>(this TSelf k, TSelf p)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+      => TSelf.Pow(TSelf.One - p, k - TSelf.One) * p;
 
     /// <summary>The probability of <paramref name="k"/> of failures until the first success, each with success probability <paramref name="p"/>.</summary>
     /// <param name="k">The number of failures [0, ..].</param>
     /// <param name="p">The success probability (0, 1].</param>
-    public static double ProbabilityMassFunction2(this double k, double p)
-      => System.Math.Pow(1 - p, k) * p;
+    public static TSelf ProbabilityMassFunction2<TSelf>(this TSelf k, TSelf p)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+      => TSelf.Pow(TSelf.One - p, k) * p;
 
-    public static double CumulativeDistributionFunction1(this double x, double p)
-      => x >= 1 ? 1 - System.Math.Pow(1 - p, System.Math.Floor(x)) : 0;
+    public static TSelf CumulativeDistributionFunction1<TSelf>(this TSelf x, TSelf p)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+      => x >= TSelf.One ? TSelf.One - TSelf.Pow(TSelf.One - p, TSelf.Floor(x)) : TSelf.Zero;
 
-    public static double CumulativeDistributionFunction2(this double x, double p)
-      => x < 0 ? 0 : 1 - System.Math.Pow(1 - p, System.Math.Floor(x) + 1);
+    public static TSelf CumulativeDistributionFunction2<TSelf>(this TSelf x, TSelf p)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+      => x < TSelf.Zero ? TSelf.Zero : TSelf.One - TSelf.Pow(TSelf.One - p, TSelf.Floor(x) + TSelf.One);
   }
 }

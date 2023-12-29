@@ -5,7 +5,7 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>
-    /// Creates a list of the subsets of size K selected from a set of size N.
+    /// <para>Creates a list of the subsets (as indices) of size <paramref name="p"/> selected from a set of size <paramref name="n"/>.</para>
     /// <para><seealso href="https://github.com/sleeepyjack/alg515"/></para>
     /// <para><seealso href="https://stackoverflow.com/questions/561/how-to-use-combinations-of-sets-as-test-data#794"/></para>
     /// <para><seealso href="https://people.math.sc.edu/Burkardt/f_src/toms515/toms515.html"/></para>

@@ -1,5 +1,4 @@
 ﻿#if NET7_0_OR_GREATER
-using System.Linq;
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -39,15 +38,10 @@ namespace GenericMath
     [TestMethod]
     public void Factorial()
     {
-      var factorials = typeof(Flux.IFactorialComputable<>).GetDerivedTypes(typeof(Flux.IFactorialComputable<>).Assembly.DefinedTypes).Select(t => (Flux.IFactorialComputable<System.Numerics.BigInteger>)(t.IsGenericType ? t.CreateGenericInstance(typeof(System.Numerics.BigInteger)) : t.CreateInstance())).ToList<Flux.IFactorialComputable<System.Numerics.BigInteger>>();
-
-      foreach (var factorial in factorials)
-      {
-        //Assert.AreEqual(362880, factorial.ComputeFactorial(9), factorial.GetType().Name);
-        //Assert.AreEqual(System.Numerics.BigInteger.Parse("36471110918188685288249859096605464427167635314049524593701628500267962436943872000000000000000"), factorial.ComputeFactorial(67), factorial.GetType().Name);
-        Assert.AreEqual(479001600, factorial.ComputeFactorial(12), factorial.GetType().Name);
-        //Assert.AreEqual(-479001600, factorial.ComputeFactorial(-12), factorial.GetType().Name);
-      }
+      Assert.AreEqual(362880, Flux.Maths.Factorial(9), nameof(Flux.Maths.Factorial));
+      Assert.AreEqual(362880, Flux.Maths.SplitFactorial(9), nameof(Flux.Maths.SplitFactorial));
+      Assert.AreEqual(479001600, Flux.Maths.Factorial(12), nameof(Flux.Maths.Factorial));
+      Assert.AreEqual(479001600, Flux.Maths.SplitFactorial(12), nameof(Flux.Maths.SplitFactorial));
     }
 
     [TestMethod]

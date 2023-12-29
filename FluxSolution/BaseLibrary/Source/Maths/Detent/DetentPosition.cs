@@ -4,11 +4,14 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Snaps the value to the position if it's within the specified distance of the position, otherwise unaltered.</summary>
-    public static TSelf DetentPosition<TSelf>(this TSelf value, TSelf position, TSelf distance)
+    /// <summary>
+    /// <para>Snaps a <paramref name="value"/> to a <paramref name="position"/> if it's within the specified <paramref name="proximity"/> of the <paramref name="position"/>, otherwise unaltered.</para>
+    /// </summary>
+    /// <remarks>This is similar to a knob that has a notch which latches the knob at a certain position.</remarks>
+    public static TSelf DetentPosition<TSelf>(this TSelf value, TSelf position, TSelf proximity)
       where TSelf : System.Numerics.INumber<TSelf>
-      => position.EqualsWithinAbsoluteTolerance(value, distance)
-      ? position // Detent to position.
+      => position.EqualsWithinAbsoluteTolerance(value, proximity)
+      ? position // Detent to the position.
       : value;
 
 #else

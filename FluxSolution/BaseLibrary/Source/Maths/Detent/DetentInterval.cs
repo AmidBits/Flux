@@ -4,12 +4,15 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Snaps the value to the nearest interval if it's within the specified distance of an interval, otherwise unaltered.</summary>
-    public static TSelf DetentInterval<TSelf>(this TSelf value, TSelf interval, TSelf distance)
+    /// <summary>
+    /// <para>Snaps the <paramref name="value"/> to the nearest <paramref name="interval"/> if it's within the specified <paramref name="proximity"/> of an <paramref name="interval"/> position, otherwise unaltered.</para>
+    /// </summary>
+    /// <remarks>This is similar to a knob that has notches which latches the knob at certain positions.</remarks>
+    public static TSelf DetentInterval<TSelf>(this TSelf value, TSelf interval, TSelf proximity)
       where TSelf : System.Numerics.INumber<TSelf>
-      => TSelf.CreateChecked(int.CreateChecked(value / interval)) * interval is var tzInterval && TSelf.Abs(tzInterval - value) <= distance
+      => TSelf.CreateChecked(int.CreateChecked(value / interval)) * interval is var tzInterval && TSelf.Abs(tzInterval - value) <= proximity
       ? tzInterval
-      : tzInterval + interval is var afzInterval && TSelf.Abs(afzInterval - value) <= distance
+      : tzInterval + interval is var afzInterval && TSelf.Abs(afzInterval - value) <= proximity
       ? afzInterval
       : value;
 
