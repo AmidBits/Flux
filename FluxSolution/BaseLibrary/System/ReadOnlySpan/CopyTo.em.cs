@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Copy the specified <paramref name="count"/> of elements from <paramref name="source"/> into <paramref name="target"/> at the specified <paramref name="offset"/>.</summary>
     public static void CopyTo<T>(this System.ReadOnlySpan<T> source, System.Span<T> target, int offset, int count)

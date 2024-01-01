@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Decrypt the <paramref name="source"/> stream to the specified stream using the specified <paramref name="key"/>, <paramref name="salt"/> and symmetric <paramref name="algorithm"/> into the target <paramref name="target"/> stream. If <paramref name="algorithm"/> is null then <see cref="System.Security.Cryptography.Aes"/> is used.</summary>
     public static void Decrypt(this System.IO.Stream source, System.IO.Stream target, string key, string salt, System.Security.Cryptography.SymmetricAlgorithm algorithm)

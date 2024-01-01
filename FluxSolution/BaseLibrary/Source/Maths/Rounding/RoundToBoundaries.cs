@@ -13,7 +13,7 @@
       {
         // First we take care of the direct rounding cases.
         RoundingMode.AwayFromZero => boundaryAwayFromZero,
-        RoundingMode.TowardZero => boundaryTowardsZero,
+        RoundingMode.TowardsZero => boundaryTowardsZero,
         RoundingMode.ToNegativeInfinity => TValue.IsNegative(value) ? boundaryAwayFromZero : boundaryTowardsZero,
         RoundingMode.ToPositiveInfinity => TValue.IsNegative(value) ? boundaryTowardsZero : boundaryAwayFromZero,
         // If not applicable, and since we're comparing a value against two boundaries, if the distances from the value to the two boundaries are not equal, we can avoid halfway checks.
@@ -23,7 +23,7 @@
           {
             RoundingMode.HalfToEven => TBound.IsEvenInteger(boundaryTowardsZero) ? boundaryTowardsZero : boundaryAwayFromZero,
             RoundingMode.HalfAwayFromZero => boundaryAwayFromZero,
-            RoundingMode.HalfTowardZero => boundaryTowardsZero,
+            RoundingMode.HalfTowardsZero => boundaryTowardsZero,
             RoundingMode.HalfToNegativeInfinity => TValue.IsNegative(value) ? boundaryAwayFromZero : boundaryTowardsZero,
             RoundingMode.HalfToPositiveInfinity => TValue.IsNegative(value) ? boundaryTowardsZero : boundaryAwayFromZero,
             RoundingMode.HalfToOdd => TBound.IsOddInteger(boundaryAwayFromZero) ? boundaryAwayFromZero : boundaryTowardsZero,

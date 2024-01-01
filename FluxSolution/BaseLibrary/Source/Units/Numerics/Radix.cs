@@ -241,7 +241,7 @@ namespace Flux
       /// <param name="radix">The power of alignment.</param>
       /// <param name="ilogTowardZero"></param>
       /// <param name="ilogAwayFromZero"></param>
-      public static (TSelf IlogTowardZero, TSelf IlogAwayFromZero) IntegerLog<TSelf>(TSelf value, TSelf radix)
+      public static (TSelf ilogTowardZero, TSelf ilogAwayFromZero) IntegerLog<TSelf>(TSelf value, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
         TSelf ilogTowardZero, ilogAwayFromZero;
@@ -335,14 +335,14 @@ namespace Flux
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
         => value / Maths.IntegerPow(radix, DigitCount(value, radix) - count);
 
-      /// <summary>Compute the floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
-      /// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
-      /// <param name="radix">The power of alignment.</param>
-      /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TSelf PowOf<TSelf>(TSelf value, TSelf radix)
-        where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => Maths.IntegerPow(radix, TSelf.CreateChecked(IntegerLogFloor(value, radix)));
+      ///// <summary>Compute the floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
+      ///// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
+      ///// <param name="radix">The power of alignment.</param>
+      ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      //public static TSelf PowOf<TSelf>(TSelf value, TSelf radix)
+      //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      //  => Maths.IntegerPow(radix, TSelf.CreateChecked(IntegerLogFloor(value, radix)));
 
       /// <summary>Compute the two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/> of <paramref name="value"/>. Specify <paramref name="proper"/> to ensure results that are not equal to value.</summary>
       /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
@@ -361,7 +361,7 @@ namespace Flux
           return (-powOfTowardsZero, -powOfAwayFromZero);
         }
 
-        powOfTowardsZero = PowOf(value, radix);
+        powOfTowardsZero = Maths.IntegerPow(radix, TSelf.CreateChecked(IntegerLogFloor(value, radix)));
         powOfAwayFromZero = powOfTowardsZero != value ? powOfTowardsZero * radix : powOfTowardsZero; // If toward-zero is not equal to value, make away-from-zero the next power-of.
 
         return proper && powOfTowardsZero == powOfAwayFromZero
@@ -374,7 +374,7 @@ namespace Flux
       /// <param name="radix">The power of alignment.</param>
       /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-<paramref name="radix"/> will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
       /// <returns>The nearest power-of-<paramref name="radix"/> to <paramref name="value"/>.</returns>
-      public static TSelf RoundToPowOf<TSelf>(TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powOfTowardsZero, out TSelf powOfAwayFromZero)
+      public static TSelf PowOf<TSelf>(TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powOfTowardsZero, out TSelf powOfAwayFromZero)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
         (powOfTowardsZero, powOfAwayFromZero) = PowOf(value, radix, proper);

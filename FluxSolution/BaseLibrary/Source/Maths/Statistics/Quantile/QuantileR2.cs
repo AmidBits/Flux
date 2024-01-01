@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Statistics
 {
   /// <summary>
@@ -16,7 +14,7 @@ namespace Flux.Statistics
     public TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      => TPercent.CreateChecked(count) * Maths.AssertUnitInterval(p, nameof(p)) + TPercent.One.Divide(2);
+      => TPercent.CreateChecked(count) * Maths.AssertUnitInterval(p, nameof(p)) + TPercent.CreateChecked(0.5);
 
     public TPercent EstimateQuantileValue<TValue, TPercent>(System.Collections.Generic.IEnumerable<TValue> ordered, TPercent p)
       where TValue : System.Numerics.INumber<TValue>
@@ -26,7 +24,7 @@ namespace Flux.Statistics
 
       var h = EstimateQuantileRank(count, p);
 
-      var half = TPercent.One.Divide(2);
+      var half = TPercent.CreateChecked(0.5);
 
       var indexLo = System.Convert.ToInt32(TPercent.Ceiling(h - half)); // ceiling(h - 0.5).
       var indexHi = System.Convert.ToInt32(TPercent.Floor(h + half)); // floor(h + 0.5).
@@ -35,7 +33,7 @@ namespace Flux.Statistics
       indexLo = int.Clamp(indexLo, 1, count) - 1;
       indexHi = int.Clamp(indexHi, 1, count) - 1;
 
-      return TPercent.CreateChecked(ordered.ElementAt(indexLo) + ordered.ElementAt(indexHi)).Divide(2);
+      return TPercent.CreateChecked(ordered.ElementAt(indexLo) + ordered.ElementAt(indexHi)) / TPercent.CreateChecked(2);
     }
 
 #else

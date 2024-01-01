@@ -9,12 +9,12 @@ namespace Flux.Resources.DotNet
     public FxSequence(System.Collections.IEnumerable enumerable) => m_enumerable = enumerable;
 
     public static System.Collections.Generic.IEnumerable<object[]> GetData(System.Collections.IEnumerable enumerable)
-      => enumerable.Cast<object>().Select(o => Reflection.GetPropertyInfos(o).Select(pi => pi.GetValue(o)!).ToArray());
+      => enumerable.Cast<object>().Select(o => Fx.GetPropertyInfos(o).Select(pi => pi.GetValue(o)!).ToArray());
 
     #region Implemented interfaces
 
-    public string[] FieldNames => Reflection.GetPropertyInfos(GetData(m_enumerable).First()).Select(pi => pi.Name).ToArray();
-    public System.Type[] FieldTypes => Reflection.GetPropertyInfos(GetData(m_enumerable).First()).Select(pi => pi.PropertyType).ToArray();
+    public string[] FieldNames => Fx.GetPropertyInfos(GetData(m_enumerable).First()).Select(pi => pi.Name).ToArray();
+    public System.Type[] FieldTypes => Fx.GetPropertyInfos(GetData(m_enumerable).First()).Select(pi => pi.PropertyType).ToArray();
 
     public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(m_enumerable);
 

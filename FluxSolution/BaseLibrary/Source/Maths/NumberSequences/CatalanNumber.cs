@@ -8,8 +8,8 @@ namespace Flux
     public static TSelf GetCatalanNumber<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => number < TSelf.CreateChecked(200)
-      ? Maths.Factorial(number.Multiply(2)) / (Maths.Factorial(number + TSelf.One) * Maths.Factorial(number))
-      : Maths.SplitFactorial(number.Multiply(2)) / (Maths.SplitFactorial(number + TSelf.One) * Maths.SplitFactorial(number));
+      ? Maths.Factorial(number + number) / (Maths.Factorial(number + TSelf.One) * Maths.Factorial(number))
+      : Maths.SplitFactorial(number + number) / (Maths.SplitFactorial(number + TSelf.One) * Maths.SplitFactorial(number));
 
     /// <summary>Creates a new sequence with Catalan numbers.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>

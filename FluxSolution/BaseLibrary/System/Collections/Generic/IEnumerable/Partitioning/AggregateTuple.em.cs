@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Creates a sequence of staggered (by one element) n-tuples.</summary>
     /// <param name="tupleSize">The number of elements in each tuple.</param>

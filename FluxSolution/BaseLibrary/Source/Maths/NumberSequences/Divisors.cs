@@ -110,14 +110,14 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
     public static TSelf GetSumOfDivisors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Reflection.Sum(GetDivisors(number));
+      => Fx.Sum(GetDivisors(number));
 
     /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
     public static TSelf GetSumOfProperDivisors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Reflection.Sum(GetProperDivisors(number));
+      => Fx.Sum(GetProperDivisors(number));
 
     /// <summary>Determines whether the number is a deficient number.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Deficient_number"/>

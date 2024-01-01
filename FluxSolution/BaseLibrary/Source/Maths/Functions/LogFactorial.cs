@@ -19,7 +19,7 @@ namespace Flux
       {
         var x = TOutput.CreateChecked(n + TInput.One);
 
-        var half = TOutput.One.Divide(2);
+        var half = TOutput.CreateChecked(0.5);
 
         return (x - half) * TOutput.Log(x) - x + half * TOutput.Log(TOutput.Tau) + TOutput.One / (TOutput.CreateChecked(12) * x);
       }

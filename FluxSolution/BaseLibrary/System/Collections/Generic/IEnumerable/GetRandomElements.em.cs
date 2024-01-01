@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Returns the specified percent (<paramref name="probability"/>) of random elements from <paramref name="source"/>. Uses the specified <paramref name="rng"/> (default if null).</summary>
     /// <param name="probability">Probability as a percent value in the range [0, 1].</param>

@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Model.Maze
 {
   public sealed class BackTrackerMaze
@@ -10,7 +8,7 @@ namespace Flux.Model.Maze
       System.ArgumentNullException.ThrowIfNull(grid);
 
       var stack = new System.Collections.Generic.Stack<Cell>();
-      grid.GetValues().TryRandom(out var element, RandomNumberGenerator);
+      grid.Values.TryRandom(out var element, RandomNumberGenerator);
       stack.Push(element);
       while (stack.Any())
       {

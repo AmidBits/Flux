@@ -27,7 +27,7 @@ namespace GenericMath
     public void RoundToBoundary()
     {
       Assert.AreEqual(17, (12.ToBigInteger()).RoundToBoundaries(RoundingMode.HalfAwayFromZero, 7, 17), RoundingMode.HalfAwayFromZero.ToString());
-      Assert.AreEqual(7, (12.ToBigInteger()).RoundToBoundaries(RoundingMode.HalfTowardZero, 7, 17), RoundingMode.HalfTowardZero.ToString());
+      Assert.AreEqual(7, (12.ToBigInteger()).RoundToBoundaries(RoundingMode.HalfTowardsZero, 7, 17), RoundingMode.HalfTowardsZero.ToString());
     }
 
     [TestMethod]

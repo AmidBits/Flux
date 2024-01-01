@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Duplicates this string builder a specified number of times.</summary>
     public static System.Text.StringBuilder Duplicate(this System.Text.StringBuilder source, int count)

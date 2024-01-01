@@ -38,7 +38,7 @@ namespace ConsoleApp
 
       var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
-      var rtp = Flux.Units.Radix.RoundToPowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
+      var rtp = Flux.Units.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
       var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
 
@@ -74,9 +74,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)n.RoundToPowOf2(false, Flux.RoundingMode.TowardZero, out var p2TowardsZerolo, out var p2TowardsZerohi);
+      var np2TowardsZero = (int)n.PowOf2(false, Flux.RoundingMode.TowardsZero, out var p2TowardsZerolo, out var p2TowardsZerohi);
       System.Console.WriteLine($" RoundToPow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)n.RoundToPowOf2(false, Flux.RoundingMode.AwayFromZero, out var p2AwayFromZerolo, out var p2AwayFromZerohi);
+      var np2AwayFromZero = (int)n.PowOf2(false, Flux.RoundingMode.AwayFromZero, out var p2AwayFromZerolo, out var p2AwayFromZerohi);
       System.Console.WriteLine($"RountToPow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = n.ReverseBits();
@@ -111,8 +111,136 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var grid = new Flux.Model.Grid<int>(4, 4);
 
+      //for (var index = 0; index < grid.Rows * grid.Columns; index++) grid[index] = index + 1;
+      //grid[15] = 0;
+
+      //System.Console.WriteLine(grid.ToConsoleString());
+
+      //var fifteen = CompletedPuzzle();
+
+      ////System.Console.Clear();
+
+      //PrintPuzzle(fifteen);
+
+      //System.Console.WriteLine(string.Join(", ", MovableBlocks(fifteen)));
+
+      //var b = TryMoveBlock(fifteen, 12, Flux.Units.CardinalDirection.S);
+
+      ////System.Console.Clear();
+
+      //PrintPuzzle(fifteen);
+
+      //System.Console.WriteLine(string.Join(", ", MovableBlocks(fifteen)));
     }
+
+    #region Puzzle
+
+    //public static Grid<int> CompletedPuzzle()
+    //{
+    //  var grid = new Grid<int>(4, 4);
+
+    //  for (var index = 0; index < grid.Rows * grid.Columns; index++) grid[index] = index + 1;
+
+    //  grid[15] = 0;
+
+    //  return grid;
+    //}
+
+    //public static void AssertValidPuzzle(Grid<int> puzzle) { if (!IsValidPuzzle(puzzle)) throw new System.Exception("The board is invalid."); }
+
+    ////public static int[] CreatePuzzle() { var puzzle = CompletedPuzzle; puzzle.AsSpan().Shuffle(); AssertValidPuzzle(puzzle); return puzzle; }
+
+    //public static bool IsValidPuzzle(Grid<int> puzzle)
+    //{
+    //  var list = puzzle.GetIndexValuePairs();
+
+    //  return list.Any(pair => pair.Value < 0 || pair.Value > 15) && list.Select(kvp => kvp.Value).Distinct().Count() == 16;
+
+    //  //var index = 0;
+
+    //  //foreach (var kvp in puzzle.GetIndexValuePairs())
+    //  //  if (kvp.Key != index++)
+    //  //    return false;
+
+    //  //if (index != 16)
+    //  //  return false;
+
+    //  //return true;
+    //}
+
+    //public static bool TryMoveBlock(Grid<int> puzzle, int number, Flux.Units.CardinalDirection direction)
+    //{
+    //  var index = System.Array.IndexOf(puzzle, number);
+
+    //  if (index < 0) return false;
+
+    //  switch (direction)
+    //  {
+    //    case Flux.Units.CardinalDirection.N:
+    //      if (index - 4 is var up && puzzle[up] == 0)
+    //      {
+    //        puzzle.Swap(index, up);
+    //        return true;
+    //      }
+    //      break;
+    //    case Flux.Units.CardinalDirection.E:
+    //      if (index + 1 is var right && puzzle[right] == 0)
+    //      {
+    //        puzzle.Swap(index, right);
+    //        return true;
+    //      }
+    //      break;
+    //    case Flux.Units.CardinalDirection.S:
+    //      if (index + 4 is var down && puzzle[down] == 0)
+    //      {
+    //        puzzle.Swap(index, down);
+    //        return true;
+    //      }
+    //      break;
+    //    case Flux.Units.CardinalDirection.W:
+    //      if (index - 1 is var left && puzzle[left] == 0)
+    //      {
+    //        puzzle.Swap(index, left);
+    //        return true;
+    //      }
+    //      break;
+    //    default:
+    //      throw new System.ArgumentOutOfRangeException(nameof(direction));
+    //  }
+
+    //  return false;
+    //}
+
+    //public static System.Collections.Generic.IEnumerable<int> MovableBlocks(Grid<int> puzzle)
+    //{
+    //  for (var index = 0; index < puzzle.Length; index++)
+    //  {
+    //    if (index - 4 is var indexN && indexN >= 0 && puzzle[indexN] is var blockN && blockN == 0)
+    //      yield return puzzle[index];
+
+    //    if (index + 1 is var indexE && indexE <= 15 && puzzle[indexE] is var blockE && blockE == 0)
+    //      yield return puzzle[index];
+
+    //    if (index + 4 is var indexS && indexS <= 15 && puzzle[indexS] is var blockS && blockS == 0)
+    //      yield return puzzle[index];
+
+    //    if (index - 1 is var indexW && indexW >= 0 && puzzle[indexW] is var blockW && blockW == 0)
+    //      yield return puzzle[index];
+    //  }
+    //}
+
+    //public static void PrintPuzzle(Grid<int> puzzle)
+    //{
+    //  AssertValidPuzzle(puzzle);
+
+    //  var twod = puzzle.Select(n => n).ToTwoDimensionalArray(4, 4).Rank2ToConsoleString(new ConsoleStringOptions() { CenterContent = true });
+
+    //  System.Console.WriteLine(twod);
+    //}
+
+    #endregion // Puzzle
 
     private static void Main(string[] args)
     {

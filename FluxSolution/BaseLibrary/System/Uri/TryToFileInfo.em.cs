@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static bool TryToFileInfo(this System.Uri source, out System.IO.FileInfo fileInfo)
     {

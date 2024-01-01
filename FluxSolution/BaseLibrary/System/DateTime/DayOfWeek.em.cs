@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static void LocateNearestDayOfWeek(this System.DateTime source, System.DayOfWeek dayOfWeek, bool proper, out System.DateTime nearestPrevious, out System.DateTime nearestNext)
     {

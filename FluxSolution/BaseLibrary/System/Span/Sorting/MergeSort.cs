@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Sorts the content of the sequence using merge sort.</para>

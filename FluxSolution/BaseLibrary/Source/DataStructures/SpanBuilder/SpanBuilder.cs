@@ -14,7 +14,7 @@ namespace Flux
 
     private SpanBuilder(int capacity)
     {
-      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent((int)capacity.ToBigInteger().RoundToPowOf2(false, RoundingMode.AwayFromZero, out var _, out var _)) : System.Array.Empty<T>();
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent((int)capacity.ToBigInteger().PowOf2(false, RoundingMode.AwayFromZero, out var _, out var _)) : System.Array.Empty<T>();
 
       m_head = m_array.Length / 2;
       m_tail = m_array.Length / 2;
@@ -164,7 +164,7 @@ namespace Flux
       }
       else // Not enough uniform capacity available.
       {
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().RoundToPowOf2(true, RoundingMode.AwayFromZero, out var _, out var _));
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().PowOf2(true, RoundingMode.AwayFromZero, out var _, out var _));
 
         var head = (array.Length - Length) / 2;
         var tail = head + Length;
@@ -188,7 +188,7 @@ namespace Flux
 
         if (Capacity <= totalCapacity) // Not enough total capacity.
         {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().RoundToPowOf2(true, RoundingMode.AwayFromZero, out var _, out var _));
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().PowOf2(true, RoundingMode.AwayFromZero, out var _, out var _));
 
           var head = (array.Length - Length - appendCapacity) / 2;
           var tail = head + Length;
@@ -223,7 +223,7 @@ namespace Flux
 
         if (Capacity < totalCapacity) // Not enough total capacity, allocate new array.
         {
-          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().RoundToPowOf2(true, RoundingMode.AwayFromZero, out var _, out var _));
+          var array = System.Buffers.ArrayPool<T>.Shared.Rent((int)totalCapacity.ToBigInteger().PowOf2(true, RoundingMode.AwayFromZero, out var _, out var _));
 
           var head = (array.Length - Length + prependCapacity) / 2;
           var tail = head + Length;

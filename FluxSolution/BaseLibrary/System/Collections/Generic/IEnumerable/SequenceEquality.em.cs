@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Indicates whether <paramref name="source"/> contains the same elements (in any order) as <paramref name="target"/>, by Xor'ing the hash codes of all elements.</summary>
     public static bool SequenceEqualHashCodesByXor<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEnumerable<T> target)

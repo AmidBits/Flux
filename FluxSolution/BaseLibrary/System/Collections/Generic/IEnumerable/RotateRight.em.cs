@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Returns the sequence rotated right by the specified count.</summary>
     /// <exception cref="System.ArgumentNullException"/>

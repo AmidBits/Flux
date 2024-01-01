@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Create a new data table from the specified sequence.</summary>
     /// <param name="source">The source sequence.</param>

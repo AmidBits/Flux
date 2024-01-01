@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Create a new array with all elements from <paramref name="source"/> and <paramref name="count"/> elements inserted at <paramref name="index"/>.</para>

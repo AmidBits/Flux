@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <see href="https://opentelemetry.io/docs/specs/otel/common/attribute-naming/"/>

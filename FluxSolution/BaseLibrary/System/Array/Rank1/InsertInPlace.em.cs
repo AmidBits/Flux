@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Modifies <paramref name="source"/> by inserting <paramref name="count"/> of <typeparamref name="T"/> at <paramref name="index"/>.</para>

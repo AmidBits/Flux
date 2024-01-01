@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static string ToStringOf(this System.TimeSpan source)
       => string.Join(' ', new string[] {

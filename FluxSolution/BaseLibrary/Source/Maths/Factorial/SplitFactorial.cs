@@ -32,7 +32,7 @@ namespace Flux
         h = value >> log2n--;
         var len = high;
         high = (h - TSelf.One) | TSelf.One;
-        len = (high - len).Divide(2);
+        len = (high - len) / TSelf.CreateChecked(2);
 
         if (len > TSelf.Zero)
         {

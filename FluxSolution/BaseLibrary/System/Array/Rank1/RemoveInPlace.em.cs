@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Modify <paramref name="source"/> by removing <paramref name="count"/> elements starting at <paramref name="index"/>.</para>

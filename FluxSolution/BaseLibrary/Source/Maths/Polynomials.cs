@@ -36,14 +36,14 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
     public static TSelf PolynomialQuadraticRootR1<TSelf>(this TSelf a, TSelf b, TSelf c)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
-      => (-b - TSelf.Sqrt(b * b - TSelf.CreateChecked(4) * a * c)) / a.Multiply(2);
+      => (-b - TSelf.Sqrt(b * b - TSelf.CreateChecked(4) * a * c)) / (a + a);
 
     /// <summary>Compute the root r2 from the univariate function.</summary>
     /// <param name="a">a != 0</param>
     /// <see cref="https://en.wikipedia.org/wiki/Quadratic_function"/>
     public static TSelf PolynomialQuadraticRootR2<TSelf>(this TSelf a, TSelf b, TSelf c)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
-      => (-b + TSelf.Sqrt(b * b - TSelf.CreateChecked(4) * a * c)) / a.Multiply(2);
+      => (-b + TSelf.Sqrt(b * b - TSelf.CreateChecked(4) * a * c)) / (a + a);
 
     /// <summary>A bivariate quadratic function, or second-degree polynomial.</summary>
     /// <param name="a">a != 0</param>

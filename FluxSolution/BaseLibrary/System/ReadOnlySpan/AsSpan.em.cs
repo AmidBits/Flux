@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Non-allocating casting from <see cref="System.ReadOnlySpan{T}"/> to <see cref="System.Span{T}"/>.</summary>
     public static System.Span<T> AsSpan<T>(this System.ReadOnlySpan<T> source)

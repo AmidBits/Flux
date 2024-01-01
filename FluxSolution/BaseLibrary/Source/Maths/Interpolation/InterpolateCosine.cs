@@ -12,7 +12,7 @@ namespace Flux
     public static TSelf InterpolateCosine<TSelf>(this TSelf y1, TSelf y2, TSelf mu)
       where TSelf : System.Numerics.ITrigonometricFunctions<TSelf>
     {
-      var mu2 = (TSelf.One - TSelf.CosPi(mu)).Divide(2);
+      var mu2 = (TSelf.One - TSelf.CosPi(mu)) / TSelf.CreateChecked(2);
 
       return InterpolateLinear(y1, y2, mu2);
     }

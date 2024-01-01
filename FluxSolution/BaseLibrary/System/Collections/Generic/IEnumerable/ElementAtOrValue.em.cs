@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  public static partial class Enumerable
+  public static partial class Fx
   {
     /// <summary>Returns the element positioned at <paramref name="index"/>, or <paramref name="value"/> if not found (with index = -1).</summary>
     /// <exception cref="System.ArgumentOutOfRangeException"/>

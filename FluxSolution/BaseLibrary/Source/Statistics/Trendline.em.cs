@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static TrendLine<double> Trend(this System.Collections.Generic.IEnumerable<double> source)
       => new(source, d => d);

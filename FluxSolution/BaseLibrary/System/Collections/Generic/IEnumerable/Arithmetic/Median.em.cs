@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
 #if NET7_0_OR_GREATER
 
@@ -21,7 +19,7 @@ namespace Flux
       var (quotient, remainder) = int.DivRem(sortedList.Count, 2);
 
       median = (remainder == 0)
-        ? TResult.CreateChecked(sortedList.ElementAt(quotient - 1) + sortedList.ElementAt(quotient)).Divide(2) // Even count = ((previous + current) / 2).
+        ? TResult.CreateChecked(sortedList.ElementAt(quotient - 1) + sortedList.ElementAt(quotient)) / TResult.CreateChecked(2) // Even count = ((previous + current) / 2).
         : TResult.CreateChecked(sortedList.ElementAt(quotient)); // Odd count = current value only.
     }
 

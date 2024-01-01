@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Returns the current calendar quarter [1, 4] of the <paramref name="source"/>.</summary>
     public static int QuarterOfYear(this System.DateTime source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static bool GraphIsAdjacent<T>(this T[,] source, int keyFrom, int keyTo)
       where T : System.IEquatable<T>

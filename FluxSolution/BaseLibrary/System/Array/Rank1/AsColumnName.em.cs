@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Returns a column name from the array as if it were an array of column names, substituting if not enough column names are specified.</para>

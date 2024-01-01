@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static System.Xml.Linq.XElement? Copy(this System.Xml.Linq.XElement source)
     {

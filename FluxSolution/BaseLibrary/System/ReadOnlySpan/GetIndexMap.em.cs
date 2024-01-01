@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Enumerable
+  public static partial class Fx
   {
     /// <summary>Creates a new dictionary with all indices of all target occurences in the source. Uses the specified (default if null) <paramref name="equalityComparer"/>.</summary>
     /// <exception cref="System.ArgumentNullException"/>

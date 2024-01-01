@@ -13,7 +13,7 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Rectangular_function"/>
     public static TSelf Rectangular<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => StepFunction(x, TSelf.One.Divide(2), TSelf.One, TSelf.One.Divide(2), TSelf.Zero);
+      => StepFunction(x, TSelf.One / TSelf.CreateChecked(2), TSelf.One, TSelf.One / TSelf.CreateChecked(2), TSelf.Zero);
 
     /// <summary>The sign step function.</summary>
     /// <remarks>Zero basis, where < is -1, = is 0 and > is +1.</remarks>
@@ -50,7 +50,7 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Heaviside_step_function#Discrete_form"/>
     public static TSelf UnitStepHalfMaximumConvention<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => StepFunction(x, TSelf.Zero, TSelf.Zero, TSelf.One.Divide(2), TSelf.One);
+      => StepFunction(x, TSelf.Zero, TSelf.Zero, TSelf.One / TSelf.CreateChecked(2), TSelf.One);
 
 #endif
   }

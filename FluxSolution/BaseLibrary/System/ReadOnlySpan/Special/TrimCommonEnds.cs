@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     private static void TrimCommonEnds<T>(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out System.ReadOnlySpan<T> sourceSlice, out System.ReadOnlySpan<T> targetSlice, out int atStart, out int atEnd, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {

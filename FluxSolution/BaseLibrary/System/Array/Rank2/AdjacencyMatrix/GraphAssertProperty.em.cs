@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static void GraphAssertProperty<T>(this T[,] source, out int length)
     {

@@ -18,22 +18,17 @@
       {
         (multipleOfTowardsZero, multipleOfAwayFromZero) = RoundToMultipleOf(TSelf.Abs(value), multiple, proper);
 
-        multipleOfTowardsZero = -multipleOfTowardsZero;
-        multipleOfAwayFromZero = -multipleOfAwayFromZero;
-      }
-      else // Here, value is positive.
-      {
-        multipleOfTowardsZero = value - (value % multiple);
-        multipleOfAwayFromZero = multipleOfTowardsZero != value ? multipleOfTowardsZero + TSelf.CopySign(multiple, value) : multipleOfTowardsZero; // If toward-zero is not equal to value, then make away-from-zero the next multiple.
-
-        if (proper)
-        {
-          if (multipleOfTowardsZero == value) multipleOfTowardsZero -= TSelf.CopySign(multiple, value);
-          if (multipleOfAwayFromZero == value) multipleOfAwayFromZero += TSelf.CopySign(multiple, value);
-        }
+        return (-multipleOfTowardsZero, -multipleOfAwayFromZero);
       }
 
-      return (multipleOfTowardsZero, multipleOfAwayFromZero);
+      var copySign = TSelf.CopySign(multiple, value);
+
+      multipleOfTowardsZero = value - (value % multiple);
+      multipleOfAwayFromZero = multipleOfTowardsZero != value ? multipleOfTowardsZero + copySign : multipleOfTowardsZero; // If toward-zero is not equal to value, then make away-from-zero the next multiple.
+
+      return proper
+        ? (multipleOfTowardsZero - copySign, multipleOfAwayFromZero + copySign)
+        : (multipleOfTowardsZero, multipleOfAwayFromZero);
     }
 
     /// <summary>Get the two multiples nearest to value. Negative <paramref name="value"/> resilient.</summary>

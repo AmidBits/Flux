@@ -419,7 +419,7 @@ namespace Flux
           {
             lowerX = upperX;
             lowerPow = upperPow;
-            upperX = lowerX.Multiply(2);
+            upperX = (lowerX + lowerX);
             upperPow = upperX.IntegerPow(n);
           }
 
@@ -431,7 +431,7 @@ namespace Flux
 
           while (true)
           {
-            var testX = (lowerX + upperX).Divide(2);
+            var testX = (lowerX + upperX) / 2;
 
             if (testX.Equals(lowerX) || testX.Equals(upperX))
               break;
@@ -634,7 +634,7 @@ namespace Flux
       // System.Numerics.IFloatingPointConstants<>
       public static BigRational E => new(System.Numerics.BigInteger.Parse("611070150698522592097"), System.Numerics.BigInteger.Parse("224800145555521536000"), false);
       public static BigRational Pi => new(System.Numerics.BigInteger.Parse("2646693125139304345"), System.Numerics.BigInteger.Parse("842468587426513207"), false);
-      public static BigRational Tau => Pi.Multiply(2);
+      public static BigRational Tau => Pi + Pi;
 
       // System.Numerics.IIncrementOperators<>
       public static BigRational operator ++(BigRational value) => value + System.Numerics.BigInteger.One;

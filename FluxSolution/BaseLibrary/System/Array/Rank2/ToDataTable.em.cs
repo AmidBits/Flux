@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Create a new <see cref="System.Data.DataTable"/> from <paramref name="source"/>.</para>

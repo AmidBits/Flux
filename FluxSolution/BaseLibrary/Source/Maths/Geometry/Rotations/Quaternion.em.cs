@@ -11,7 +11,8 @@ namespace Flux
 
       var w = n.W;
 
-      var angle = System.Math.Acos(w).Multiply(2);
+      var angle = System.Math.Acos(w);
+      angle += angle; // Times 2!
 
       var s = System.Math.Sqrt(1 - w * w); // Assuming quaternion normalized then w is less than 1, so term always positive.
 
@@ -37,14 +38,20 @@ namespace Flux
       var test = x * y + z * w;
 
       if (test > 0.499 * unit) // Singularity at north pole when pitch approaches +90.
-        return new(double.CreateChecked(System.Math.Atan2(x, w).Multiply(2)), System.Math.PI / 2, 0);
+      {
+        var xw = System.Math.Atan2(x, w);
+        return new(double.CreateChecked(xw + xw), System.Math.PI / 2, 0);
+      }
 
       if (test < -0.499 * unit) // Singularity at south pole when pitch approaches -90.
-        return new(double.CreateChecked(System.Math.Atan2(x, w).Multiply(-2)), -System.Math.PI / 2, 0);
+      {
+        var xw = System.Math.Atan2(x, w);
+        return new(double.CreateChecked(-(xw + xw)), -System.Math.PI / 2, 0);
+      }
 
-      var h = System.Math.Atan2(y.Multiply(2) * w - x.Multiply(2) * z, sqx - sqy - sqz + sqw);
-      var a = System.Math.Asin(test.Multiply(2) / unit);
-      var b = System.Math.Atan2(x.Multiply(2) * w - y.Multiply(2) * z, -sqx + sqy - sqz + sqw);
+      var h = System.Math.Atan2((y + y) * w - (x + x) * z, sqx - sqy - sqz + sqw);
+      var a = System.Math.Asin((test + test) / unit);
+      var b = System.Math.Atan2((x + x) * w - (y + y) * z, -sqx + sqy - sqz + sqw);
 
       return new(double.CreateChecked(h), double.CreateChecked(a), double.CreateChecked(b));
     }

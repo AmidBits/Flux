@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Determines the first day of the month in the source.</summary>
     public static System.DateTime FirstDayOfMonth(this System.DateTime source)

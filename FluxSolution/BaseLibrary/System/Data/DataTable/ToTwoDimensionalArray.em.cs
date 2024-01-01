@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static object[,] ToTwoDimensionalArray(this System.Data.DataTable source, bool includeColumnNames, int rowStartIndex, int rowCount, int columnStartIndex, int columnCount)
     {

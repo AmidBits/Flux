@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static System.TimeSpan OverlapOfRanges(System.DateTime startA, System.DateTime endA, System.DateTime startB, System.DateTime endB)
       => (endA < endB ? endA : endB) - (startA > startB ? startA : startB);

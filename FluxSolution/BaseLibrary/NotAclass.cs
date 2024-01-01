@@ -1,0 +1,1 @@
+﻿// https://stackoverflow.com/questions/75593871/generic-math-how-to-cast-from-inumber-to-a-concrete-type-int-double-etc#:~:text=Correct%2C%20because%20you%20can%27t%20actually%20%22cast%22%20a%20double,convert%20any%20numeric%20value%20to%20an%20integer%20generically.

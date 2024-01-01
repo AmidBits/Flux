@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>In-place swap of two elements by the specified indices.</summary>
     /// <exception cref="System.ArgumentNullException"/>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Fill <paramref name="count"/> elements in <paramref name="source"/> with <paramref name="pattern"/> at <paramref name="index"/>.</para>

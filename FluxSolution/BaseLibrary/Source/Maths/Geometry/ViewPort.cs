@@ -57,7 +57,7 @@ namespace Flux.Geometry
     /// <summary>Convert from screen vector to a normalized device coordinate (NDC). The NDC will be in the range [0.0, 1.0].</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>
     public System.Numerics.Vector2 TransformCanvasToNdc(System.Numerics.Vector2 source)
-      => new((source.X + m_canvasWidth.Divide(2)) / m_canvasWidth, (source.Y + m_canvasHeight.Divide(2)) / m_canvasHeight); // normalize vector, will be in the range [0.0, 1.0]
+      => new((source.X + m_canvasWidth / 2) / m_canvasWidth, (source.Y + m_canvasHeight / 2) / m_canvasHeight); // normalize vector, will be in the range [0.0, 1.0]
 
     /// <summary>Convert from normalize device coordinate (NDC) to pixel coordinate, with the Y coordinate inverted. (Why is that?)</summary>
     /// <seealso cref="http://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points"/>

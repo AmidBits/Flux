@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static bool IsVowelOf_en(System.Text.Rune rune)
       => System.Text.Rune.IsLetter(rune) && (rune.Value is 'a' or 'e' or 'i' or 'o' or 'u' or 'y' or 'A' or 'E' or 'I' or 'O' or 'U' or 'Y');

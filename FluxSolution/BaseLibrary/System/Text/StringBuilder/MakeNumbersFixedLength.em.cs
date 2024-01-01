@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static System.Text.StringBuilder MakeNumbersFixedLength(this System.Text.StringBuilder source, int length)
     {

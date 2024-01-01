@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Create a new transposed two dimensional array from <paramref name="source"/>, i.e. switch rows and columns.</para>

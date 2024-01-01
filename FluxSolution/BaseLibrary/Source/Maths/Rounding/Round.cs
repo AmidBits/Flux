@@ -9,7 +9,7 @@
       => mode switch // First, handle the direct rounding strategies.
       {
         RoundingMode.AwayFromZero => RoundAwayFromZero(source),
-        RoundingMode.TowardZero => RoundTowardZero(source),
+        RoundingMode.TowardsZero => RoundTowardZero(source),
         RoundingMode.ToPositiveInfinity => RoundToPositiveInfinity(source),
         RoundingMode.ToNegativeInfinity => RoundToNegativeInfinity(source),
         //RoundingMode.ToPowOf2AwayFromZero => TSelf.CreateChecked(RoundToPowOf2AwayFromZero(source)),
@@ -17,7 +17,7 @@
         _ => mode switch  // Second, handle the halfway rounding strategies.
         {
           RoundingMode.HalfAwayFromZero => RoundHalfAwayFromZero(source),
-          RoundingMode.HalfTowardZero => RoundHalfTowardZero(source),
+          RoundingMode.HalfTowardsZero => RoundHalfTowardZero(source),
           RoundingMode.HalfToEven => RoundHalfToEven(source),
           RoundingMode.HalfToNegativeInfinity => RoundHalfToNegativeInfinity(source),
           RoundingMode.HalfToOdd => RoundHalfToOdd(source),
@@ -47,7 +47,7 @@
       => TSelf.CopySign(RoundHalfToPositiveInfinity(TSelf.Abs(x)), x);
 
     /// <summary>Symmetric rounding: round half down, bias: towards zero.</summary>
-    /// <remarks><see cref="RoundingMode.HalfTowardZero"/></remarks>
+    /// <remarks><see cref="RoundingMode.HalfTowardsZero"/></remarks>
     public static TSelf RoundHalfTowardZero<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.CopySign(RoundHalfToNegativeInfinity(TSelf.Abs(x)), x);

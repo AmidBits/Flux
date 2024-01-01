@@ -13,7 +13,7 @@ namespace Flux
     {
       var epsilon = TSelf.One;
 
-      while (epsilon.Divide(2) is var halfEpsilon && (TSelf.One + halfEpsilon) > TSelf.One)
+      while (epsilon / TSelf.CreateChecked(2) is var halfEpsilon && (TSelf.One + halfEpsilon) > TSelf.One)
         epsilon = halfEpsilon;
 
       return epsilon;

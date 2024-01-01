@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Creates a sequence of fields derived using <see cref="Microsoft.VisualBasic.FileIO.TextFieldParser"/>.</para>

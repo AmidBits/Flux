@@ -91,13 +91,13 @@ namespace GenericMath
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual(3, Flux.Units.Radix.IntegerLog(512.ToBigInteger() - 1, 10).IlogAwayFromZero);
+      Assert.AreEqual(3, Flux.Units.Radix.IntegerLog(512.ToBigInteger() - 1, 10).ilogAwayFromZero);
     }
 
     [TestMethod]
     public void IntegerLogFloor()
     {
-      Assert.AreEqual(2, Flux.Units.Radix.IntegerLog(512, 10).IlogTowardZero);
+      Assert.AreEqual(2, Flux.Units.Radix.IntegerLog(512, 10).ilogTowardZero);
     }
 
     [TestMethod]
@@ -140,7 +140,7 @@ namespace GenericMath
     [TestMethod]
     public void LocateIntegerPowOf()
     {
-      Flux.Units.Radix.RoundToPowOf(1234567.ToBigInteger(), 10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+      Flux.Units.Radix.PowOf(1234567.ToBigInteger(), 10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
 
       Assert.AreEqual(1000000, nearestTowardsZero);
       Assert.AreEqual(10000000, nearestAwayFromZero);

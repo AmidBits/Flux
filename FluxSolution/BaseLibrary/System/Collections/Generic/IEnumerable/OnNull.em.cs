@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Throws an exception if <paramref name="source"/> is null. Deferred execution.</summary>
     /// <exception cref="System.ArgumentNullException"/>

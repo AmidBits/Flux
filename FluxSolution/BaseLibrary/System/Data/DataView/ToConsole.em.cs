@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static int[] MaxColumnWidths(this System.Data.DataView source, ConsoleStringOptions? options = null)
     {

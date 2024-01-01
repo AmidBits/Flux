@@ -17,6 +17,20 @@ namespace Flux
     public static TSelf BinomialCoefficient<TSelf>(TSelf n, TSelf k)
        where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
+      //TSelf r = TSelf.One;
+
+      //if (k > n) return TSelf.Zero;
+      //if (n == k) { return TSelf.One; }
+      //if (k > n - k) { k = n - k; }
+
+      //for (var d = TSelf.One; d <= k; d++)
+      //{
+      //  r *= n--;
+      //  r /= d;
+      //}
+
+      //return r;
+
       if (TSelf.IsNegative(k) || k > n)
         return TSelf.Zero;
 
@@ -27,10 +41,48 @@ namespace Flux
 
       var c = TSelf.One;
 
-      for (var i = TSelf.Zero; i < k; i++)
-        c = c * (n - i) / (i + TSelf.One);
+      for (var d = TSelf.One; d <= k; d++)
+      {
+        c *= n--;
+        c /= d;
+      }
 
       return c;
+
+      //var c = TSelf.One;
+
+      //for (var i = TSelf.Zero; i < k; i++)
+      //  c = c * (n - i) / (i + TSelf.One);
+
+      //return c;
+    }
+
+    public static System.Numerics.BigInteger BinomialCoefficient(System.Numerics.BigInteger n, System.Numerics.BigInteger k)
+    {
+      if (System.Numerics.BigInteger.IsNegative(k) || k > n)
+        return System.Numerics.BigInteger.Zero;
+
+      if (k.IsZero || k == n)
+        return System.Numerics.BigInteger.One;
+
+      k = System.Numerics.BigInteger.Min(k, n - k);
+
+      var r = System.Numerics.BigInteger.One;
+
+      for (var d = System.Numerics.BigInteger.One; d <= k; d++)
+      {
+        r *= n--;
+        r /= d;
+      }
+
+      return r;
+
+      //var c = System.Numerics.BigInteger.One;
+
+      //for (var i = System.Numerics.BigInteger.Zero; i < k; i++)
+      //  c = c * (n - i) / (i + System.Numerics.BigInteger.One);
+
+      //return c;
     }
 
 #else

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /

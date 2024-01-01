@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Enumerable
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Creates a new sequence of "rows", i.e. arrays containing fields. The first row contains field names, the second row contains field types and then come the rows of field values.</para>
@@ -15,12 +15,12 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        yield return Reflection.GetPropertyInfos(e.Current).Select(pi => pi.Name).ToArray();
-        yield return Reflection.GetPropertyInfos(e.Current).Select(pi => pi.PropertyType).ToArray();
+        yield return Fx.GetPropertyInfos(e.Current).Select(pi => pi.Name).ToArray();
+        yield return Fx.GetPropertyInfos(e.Current).Select(pi => pi.PropertyType).ToArray();
 
         do
         {
-          yield return Reflection.GetPropertyInfos(e.Current).Select((pi, i) => valueSelector(pi.GetValue(e.Current), i)).ToArray();
+          yield return Fx.GetPropertyInfos(e.Current).Select((pi, i) => valueSelector(pi.GetValue(e.Current), i)).ToArray();
         }
         while (e.MoveNext());
       }

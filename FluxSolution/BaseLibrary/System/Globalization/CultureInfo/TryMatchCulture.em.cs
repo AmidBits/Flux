@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Tries to match a <paramref name="name"/> to a culture in the <paramref name="source"/> hierarchy. Also returns the <paramref name="hierarchyLevel"/> where a match was found, -1 if not found.</para>

@@ -3,7 +3,7 @@
   public static partial class Em
   {
     public static (TSelf Minimum, TSelf Maximum) GetExtremumUsingConstraint<TSelf>(this ValueRange<TSelf> source, IntervalNotation constraint)
-  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       return constraint switch
       {
@@ -138,27 +138,11 @@
 
     /// <summary>Asserts that the value is a member of the interval set (throws an exception if it's not).</summary>
     /// <exception cref="System.NotImplementedException"></exception>
-    public TSelf AssertMember(TSelf value, IntervalNotation constraint, string? paramName = null)
-      => constraint switch
-      {
-        IntervalNotation.Closed => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than-or-equal-to {m_min} and less-than-or-equal-to {m_max}."),
-        IntervalNotation.Open => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than {m_min} and less-than {m_max}."),
-        IntervalNotation.HalfOpenLeft => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than {m_min} and less-than-or-equal-to {m_max}."),
-        IntervalNotation.HalfOpenRight => IsMember(value, constraint) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than-or-equal-to {m_min} and less-than {m_max}."),
-        _ => throw new NotImplementedException(),
-      };
+    public TSelf AssertMember(TSelf value, IntervalNotation constraint, string? paramName = null) => constraint.AssertMember(value, m_min, m_max, paramName);
 
     /// <summary>Returns whether the value is a member of the interval set.</summary>
     /// <exception cref="System.NotImplementedException"></exception>
-    public bool IsMember(TSelf value, IntervalNotation constraint)
-      => constraint switch
-      {
-        IntervalNotation.Closed => value.CompareTo(m_min) >= 0 && value.CompareTo(m_max) <= 0,
-        IntervalNotation.Open => value.CompareTo(m_min) > 0 && value.CompareTo(m_max) < 0,
-        IntervalNotation.HalfOpenLeft => value.CompareTo(m_min) >= 0 && value.CompareTo(m_max) < 0,
-        IntervalNotation.HalfOpenRight => value.CompareTo(m_min) > 0 && value.CompareTo(m_max) <= 0,
-        _ => throw new NotImplementedException(),
-      };
+    public bool IsMember(TSelf value, IntervalNotation constraint) => constraint.IsMember(value, m_min, m_max);
 
     #region Static methods
 

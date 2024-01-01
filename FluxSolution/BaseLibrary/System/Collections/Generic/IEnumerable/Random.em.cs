@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Returns a random element from <paramref name="source"/>. Uses the specified <paramref name="rng"/> (default if null).</summary>
     /// <exception cref="System.InvalidOperationException"></exception>

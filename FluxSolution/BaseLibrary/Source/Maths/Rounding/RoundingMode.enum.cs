@@ -14,7 +14,7 @@ namespace Flux
     HalfAwayFromZero = MidpointRounding.AwayFromZero,
     /// <summary>Round to the nearest number, and when a number is halfway between two others, round to the number that is closer to zero.</summary>
     /// <remarks>E.g. rounding a fraction part of 0.5 to the nearest integer that is closer to zero. For example, 1.5 would round to 1.0 and -1.5 would round to -1.0. Symmetric rounding: round half down, bias: towards zero.</remarks>
-    HalfTowardZero = MidpointRounding.ToZero,
+    HalfTowardsZero = MidpointRounding.ToZero,
 
     /// <summary>Round to the nearest number, and when a number is halfway between two others, round (down) to the number that is less than.</summary>
     /// <remarks>E.g. rounding a fraction part of 0.5 to the nearest lower integer. For example, 1.5 rounds to 1.0 and -1.5 rounds to -2.0. Common rounding: round half down, bias: negative infinity.</remarks>
@@ -32,7 +32,7 @@ namespace Flux
     AwayFromZero = 11,
     /// <summary>Round to the number towards-zero.</summary>
     /// <remarks>This is the same as Math.Truncate of the number. Symmetric rounding: round down, bias: towards zero.</remarks>
-    TowardZero = 12,
+    TowardsZero = 12,
 
     /// <summary>Round down to the number less-than-or-equal to value.</summary>
     /// <remarks>This is the same as Math.Floor of the number. Common rounding: round down, bias: negative infinity.</remarks>
@@ -41,9 +41,9 @@ namespace Flux
     /// <remarks>This is the same as Math.Ceiling of the number. Common rounding: round up, bias: positive infinity.</remarks>
     ToPositiveInfinity = 14,
 
-    /// <summary>Round up to the power-of-2 number greater-than-or-equal to value.</summary>
-    ToPowOf2AwayFromZero = 21,
-    /// <summary>Round down to the power-of-2 number less-than-or-equal to value.</summary>
-    ToPowOf2TowardZero = 22,
+    ///// <summary>Round up to the power-of-2 number greater-than-or-equal to value.</summary>
+    //ToPowOf2AwayFromZero = 21,
+    ///// <summary>Round down to the power-of-2 number less-than-or-equal to value.</summary>
+    //ToPowOf2TowardsZero = 22,
   }
 }

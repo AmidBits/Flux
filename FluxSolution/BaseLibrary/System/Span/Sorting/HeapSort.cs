@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Sorts the content of the sequence using a heap sort, which is more or less an improved selection sort.</para>

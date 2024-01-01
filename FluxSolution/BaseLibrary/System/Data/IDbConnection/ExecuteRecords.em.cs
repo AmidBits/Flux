@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Returns a sequence of <see cref="System.Data.IDataRecord"/> from all rows.</summary>
     /// <returns>A sequence of <see cref="System.Data.IDataRecord"/>.</returns>

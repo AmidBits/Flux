@@ -10,6 +10,11 @@ namespace Flux.DataStructures
     TValue this[int index] { get; set; }
 
     /// <summary>
+    /// <para>Determines of the <paramref name="value"/> exists in the <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
+    /// </summary>
+    bool ContainsValue(TValue value);
+
+    /// <summary>
     /// <para>Inserts an <paramref name="key"/>/<paramref name="value"/> pair into the <see cref="IOrderedDictionary{TKey, TValue}"/> at the specified index.</para>
     /// </summary>
     void Insert(int index, TKey key, TValue value);
@@ -33,5 +38,10 @@ namespace Flux.DataStructures
     /// <para>Gets the <paramref name="key"/> associated with the specified <paramref name="value"/> in the <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
     /// </summary>
     bool TryGetKey(TValue value, out TKey key);
+
+    /// <summary>
+    /// <para>Gets the <paramref name="value"/> associated with the specified <paramref name="index"/> in the <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
+    /// </summary>
+    bool TryGetValue(int index, out TValue value);
   }
 }

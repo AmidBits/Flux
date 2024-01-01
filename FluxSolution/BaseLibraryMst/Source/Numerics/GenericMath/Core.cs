@@ -127,7 +127,7 @@ namespace GenericMath
 
       n.RoundToMultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      var nearestMultiple = n.RoundToBoundaries(RoundingMode.HalfTowardZero, multipleTowardsZero, multipleAwayFromZero);
+      var nearestMultiple = n.RoundToBoundaries(RoundingMode.HalfTowardsZero, multipleTowardsZero, multipleAwayFromZero);
 
       Assert.AreEqual(520, nearestMultiple);
 

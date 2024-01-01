@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Partition the sequence as a new sequence of size elements.</summary>
     /// <exception cref="System.ArgumentNullException"/>

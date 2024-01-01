@@ -1,5 +1,3 @@
-using System;
-
 namespace Flux.Model.Maze
 {
   public sealed class SidewinderMaze
@@ -20,7 +18,7 @@ namespace Flux.Model.Maze
       {
         run.Clear();
 
-        foreach (var cell in grid.GetValues().Skip(r * grid.Size.X).Take(grid.Size.X))
+        foreach (var cell in grid.Values.Skip(r * grid.Size.X).Take(grid.Size.X))
         {
           run.Add(cell);
 

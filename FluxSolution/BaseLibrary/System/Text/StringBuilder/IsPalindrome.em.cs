@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Determines whether the string is a palindrome.</summary>
     public static bool IsPalindrome(this System.Text.StringBuilder source)

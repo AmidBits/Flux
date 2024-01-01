@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
 #if NET7_0_OR_GREATER
 

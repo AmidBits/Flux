@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>Indicates whether the character is the letter 'Y' or 'y', i.e. ignore case.</summary>
     /// <remarks>Provided for consistent check against consonants and vowels in English.</remarks>

@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static int GetLongestAlternatingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {

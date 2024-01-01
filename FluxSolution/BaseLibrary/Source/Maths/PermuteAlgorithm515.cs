@@ -4,6 +4,70 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
+    public static int[] PermuteAlgorithm515b(int n, int p, int l)
+    {
+      int r;
+
+      var c = new int[p];
+
+      if (p == 1)
+      {
+        c[0] = l;
+        return c;
+      }
+
+      var k = 0;
+
+      var p1 = p - 1;
+      c[0] = 0;
+
+      for (var i = 1; i <= p1; i++)
+      {
+        if (1 < i)
+        {
+          c[i - 1] = c[i - 2];
+        }
+
+        for (; ; )
+        {
+          c[i - 1] = c[i - 1] + 1;
+          r = Maths.BinomialCoefficient(n - c[i - 1], p - i);
+          k = k + r;
+
+          if (l <= k)
+          {
+            break;
+          }
+        }
+        k = k - r;
+      }
+
+      c[p - 1] = c[p1 - 1] + l - k;
+
+      return c;
+    }
+
+    public static int[] PermuteAlgorithm515a(int n, int p, int x)
+    {
+      var c = new int[p];
+
+      int i, r, k = 0;
+      for (i = 0; i < p - 1; i++)
+      {
+        c[i] = (i != 0) ? c[i - 1] : 0;
+        do
+        {
+          c[i]++;
+          r = Maths.BinomialCoefficient(n - c[i], p - (i + 1));
+          k = k + r;
+        } while (k < x);
+        k = k - r;
+      }
+      c[p - 1] = c[p - 2] + x - k;
+
+      return c;
+    }
+
     /// <summary>
     /// <para>Creates a list of the subsets (as indices) of size <paramref name="p"/> selected from a set of size <paramref name="n"/>.</para>
     /// <para><seealso href="https://github.com/sleeepyjack/alg515"/></para>
@@ -26,7 +90,8 @@ namespace Flux
         do
         {
           x++;
-          r = Maths.BinomialCoefficient(n - x, p - i);
+          var bc = Maths.BinomialCoefficient(ulong.CreateChecked(n - c[int.CreateChecked(i) - 1]), ulong.CreateChecked(p - i));
+          r = TSelf.CreateChecked(bc);
           k += r;
         }
         while (k <= l);

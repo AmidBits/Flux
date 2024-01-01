@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Model.Maze
 {
   public sealed class GrowingTreeMaze
@@ -16,7 +14,7 @@ namespace Flux.Model.Maze
     {
       System.ArgumentNullException.ThrowIfNull(grid);
 
-      var active = new System.Collections.Generic.List<Cell> { Selector(grid.GetValues(), RandomNumberGenerator) };
+      var active = new System.Collections.Generic.List<Cell> { Selector(grid.Values, RandomNumberGenerator) };
 
       while (active.Any())
       {

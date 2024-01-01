@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     public static System.Text.RegularExpressions.Regex RegexDecimalNumber(this System.Globalization.CultureInfo source)
     {

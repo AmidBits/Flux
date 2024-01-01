@@ -185,7 +185,7 @@ namespace Flux
       public readonly TSelf R { get => m_r; init => m_r = value; }
       public readonly TSelf S { get => m_s; init => m_s = value; }
 
-      public readonly TSelf Length() => (TSelf.Abs(m_q) + TSelf.Abs(m_r) + TSelf.Abs(m_s)).Divide(2);
+      public readonly TSelf Length() => (TSelf.Abs(m_q) + TSelf.Abs(m_r) + TSelf.Abs(m_s)) / TSelf.CreateChecked(2);
 
       public readonly System.Drawing.Point ToPoint()
         => new(int.CreateChecked(m_q), int.CreateChecked(m_r));

@@ -14,7 +14,7 @@ namespace Flux.Model.Maze
 
     /// <summary>Returns a sequence with all dead end (singly linked) cells.</summary>
     public System.Collections.Generic.IEnumerable<Cell> GetDeadEnds()
-      => GetValues().Where(cell => cell.Paths.Count == 1);
+      => Values.Where(cell => cell.Paths.Count == 1);
 
     /// <summary>Reset edges with one optional 4-way N,E,S,W and/or one 4-way NE,SE,SW,NW.</summary>
     public void ResetEdges(bool orthogonal, bool diagonal)
@@ -54,7 +54,7 @@ namespace Flux.Model.Maze
     /// <summary>Reset all pathway connection states as either connected or not.</summary>
     public void ResetPaths(bool isConnected)
     {
-      foreach (var cell in GetValues())
+      foreach (var cell in Values)
       {
         cell.Paths.Clear();
 
@@ -70,7 +70,7 @@ namespace Flux.Model.Maze
       var grid = new MazeGrid(Size);
 
       for (var index = 0; index < grid.Count; index++)
-        grid.SetValue(index, GetValue(index));
+        grid[index] = this[index];
 
       return grid;
     }

@@ -7,14 +7,18 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Compute the floor power-of-2 of <paramref name="value"/>.</summary>
-    /// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
-    /// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf PowOf2<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value.MostSignificant1Bit();
+    ///// <summary>Compute the floor power-of-2 of <paramref name="value"/>.</summary>
+    ///// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
+    ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+    ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    //public static TSelf PowOf2<TSelf>(this TSelf value)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => value.MostSignificant1Bit();
 
+    /// <summary>Compute the two closest (toward-zero and away-from-zero) power-of-2 of <paramref name="value"/>. Specify <paramref name="proper"/> to ensure results that are not equal to value.</summary>
+    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
+    /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-2, i.e. the two power-of-2 will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
+    /// <returns>The two closest (toward-zero and away-from-zero) power-of-2 to <paramref name="value"/>.</returns>
     public static (TSelf powOf2TowardsZero, TSelf powOf2AwayFromZero) PowOf2<TSelf>(this TSelf value, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -27,7 +31,7 @@ namespace Flux
         return (-powOf2TowardsZero, -powOf2AwayFromZero);
       }
 
-      powOf2TowardsZero = value.PowOf2();
+      powOf2TowardsZero = value.MostSignificant1Bit();
       powOf2AwayFromZero = powOf2TowardsZero != value ? powOf2TowardsZero << 1 : powOf2TowardsZero;
 
       return proper && powOf2TowardsZero == powOf2AwayFromZero
@@ -42,7 +46,7 @@ namespace Flux
     /// <param name="powOf2TowardsZero">Outputs the power-of-2 that is closer to zero.</param>
     /// <param name="powOf2AwayFromZero">Outputs the power-of-2 that is farther from zero.</param>
     /// <returns>The nearest two power-of-2 to value.</returns>
-    public static TSelf RoundToPowOf2<TSelf>(this TSelf value, bool proper, RoundingMode mode, out TSelf powOf2TowardsZero, out TSelf powOf2AwayFromZero)
+    public static TSelf PowOf2<TSelf>(this TSelf value, bool proper, RoundingMode mode, out TSelf powOf2TowardsZero, out TSelf powOf2AwayFromZero)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       (powOf2TowardsZero, powOf2AwayFromZero) = PowOf2(value, proper);

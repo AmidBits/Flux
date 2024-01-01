@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Reflection
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Create a new array from <paramref name="source"/> with the <paramref name="indices"/> of strands (rows or columns) removed from the specified <paramref name="dimension"/>.</para>

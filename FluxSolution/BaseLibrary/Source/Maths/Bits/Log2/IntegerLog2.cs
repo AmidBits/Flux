@@ -21,7 +21,7 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.Log2(value);
 
-    public static (TSelf Ilog2TowardZero, TSelf Ilog2AwayFromZero) IntegerLog2<TSelf>(this TSelf value)
+    public static (TSelf ilog2TowardZero, TSelf ilog2AwayFromZero) IntegerLog2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       TSelf ilog2TowardZero, ilog2AwayFromZero;
@@ -33,7 +33,7 @@ namespace Flux
         return (-ilog2TowardZero, -ilog2AwayFromZero);
       }
 
-      ilog2TowardZero = value.GetIntegerLog2Floor();
+      ilog2TowardZero = TSelf.Log2(value);
       ilog2AwayFromZero = TSelf.IsPow2(value) ? ilog2TowardZero : ilog2TowardZero + TSelf.One;
 
       return (ilog2TowardZero, ilog2AwayFromZero);
