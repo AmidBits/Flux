@@ -6,7 +6,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) GetExtremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
-      if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
+      System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
@@ -50,7 +50,7 @@ namespace Flux
 
     public static (int minIndex, TSource? minItem, int maxIndex, TSource? maxItem) GetExtremum2<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
-      if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
+      System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 

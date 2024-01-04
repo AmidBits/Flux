@@ -7,7 +7,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey>? equalityComparer = null)
       where TKey : notnull
     {
-      if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
+      System.ArgumentNullException.ThrowIfNull(keySelector);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<TKey>.Default;
 

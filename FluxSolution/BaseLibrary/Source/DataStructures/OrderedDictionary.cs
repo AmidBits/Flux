@@ -56,7 +56,60 @@ namespace Flux
       public System.Collections.Generic.IEnumerable<IndexKeyValue<TKey, TValue>> CreateIndexKeyValue()
       {
         for (var index = 0; index < Count; index++)
-          yield return new IndexKeyValue<TKey, TValue>(index, m_listOfKeys[index], m_listOfValues[index]);
+          if (TryGetKey(index, out var key) && TryGetValue(index, out var value))
+            yield return new IndexKeyValue<TKey, TValue>(index, key, value);
+          else // Throw if the key and value could not be retrieved.
+            throw new System.InvalidOperationException();
+      }
+
+      public bool TryGetIndexKeyValue(int index, out IndexKeyValue<TKey, TValue> ikv)
+      {
+        try
+        {
+          if (TryGetKey(index, out var key) && TryGetValue(index, out var value))
+          {
+            ikv = new(index, key, value);
+            return true;
+          }
+        }
+        catch { }
+
+        ikv = default!;
+        return false;
+      }
+
+      public bool TryGetIndexKeyValue(TKey key, out IndexKeyValue<TKey, TValue> ikv)
+      {
+        try
+        {
+          // Additional retrieve for key, to make sure we get the stored value.
+          // The equality comparer for the dictionary could for example, be case insensitive which would yield a match between say "key" (searched for) and "Key" (stored).
+          if (TryGetIndex(key, out var index) && TryGetKey(index, out key) && TryGetValue(key, out var value))
+          {
+            ikv = new(index, key, value);
+            return true;
+          }
+        }
+        catch { }
+
+        ikv = default!;
+        return false;
+      }
+
+      public bool TryGetIndexKeyValue(TValue value, out IndexKeyValue<TKey, TValue> ikv)
+      {
+        try
+        {
+          if (TryGetIndex(value, out var index) && TryGetKey(value, out var key))
+          {
+            ikv = new(index, key, value);
+            return true;
+          }
+        }
+        catch { }
+
+        ikv = default!;
+        return false;
       }
 
       #region Implemented interfaces
@@ -80,18 +133,8 @@ namespace Flux
         m_listOfKeys.Insert(index, key);
         m_listOfValues.Insert(index, value);
       }
-      public bool TryGetIndex(TKey key, out int index)
-      {
-        index = m_listOfKeys.IndexOf(key);
-
-        return index >= 0;
-      }
-      public bool TryGetIndex(TValue value, out int index)
-      {
-        index = m_listOfValues.IndexOf(value);
-
-        return index >= 0;
-      }
+      public bool TryGetIndex(TKey key, out int index) => (index = m_listOfKeys.IndexOf(key)) >= 0;
+      public bool TryGetIndex(TValue value, out int index) => (index = m_listOfValues.IndexOf(value)) >= 0;
       public bool TryGetKey(int index, out TKey key)
       {
         if (index >= 0 && index < m_listOfKeys.Count)
@@ -103,8 +146,7 @@ namespace Flux
         key = default!;
         return false;
       }
-      public bool TryGetKey(TValue value, out TKey key)
-        => TryGetKey(m_listOfValues.IndexOf(value), out key);
+      public bool TryGetKey(TValue value, out TKey key) => TryGetKey(m_listOfValues.IndexOf(value), out key);
       public bool TryGetValue(int index, out TValue value)
       {
         if (index >= 0 && index < m_listOfValues.Count)

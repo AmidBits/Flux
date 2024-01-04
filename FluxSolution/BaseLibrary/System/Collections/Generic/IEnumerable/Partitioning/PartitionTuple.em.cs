@@ -13,7 +13,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int tupleSize, int tupleWrap, System.Func<System.Collections.Generic.IReadOnlyList<TSource>, int, TResult> resultSelector)
     {
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+      System.ArgumentNullException.ThrowIfNull(resultSelector);
 
       if (tupleSize < 2) throw new System.ArgumentOutOfRangeException(nameof(tupleSize));
       if (tupleWrap < 0 || tupleWrap >= tupleSize) throw new System.ArgumentException($@"A {tupleSize}-tuple can only wrap from 0 to {tupleSize - 1} elements.");
@@ -60,8 +60,8 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple2<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, bool wrap, System.Func<TSource, TSource, int, TResult> resultSelector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(resultSelector);
 
       using var e = source.ThrowOnNull().GetEnumerator();
 
@@ -92,8 +92,8 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple3<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, int, TResult> resultSelector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(resultSelector);
 
       if (wrap < 0 || wrap > 2) throw new System.ArgumentException("A 3-tuple can only wrap 0 (i.e. no-wrap), 1 or 2 elements.", nameof(wrap));
 

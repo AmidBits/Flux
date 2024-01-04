@@ -8,9 +8,6 @@ namespace Flux
     public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 before, System.Numerics.Vector2 after)
       => AngleTo(before - source, after - source);
 
-    //public static double AngleSum(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, System.Numerics.Vector2 vector)
-    //  => source.AggregateTuple2(0d, true, (a, v1, v2, i) => a + AngleBetween(vector, v1, v2), (a, i) => a);
-
     /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
     /// When dot eq 0 then the vectors are perpendicular.
     /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
@@ -21,17 +18,17 @@ namespace Flux
 
     /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength = 1)
+    public static float ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength = 1)
       => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
 
-    public static double LineSlopeX(this System.Numerics.Vector2 source)
-      => System.Math.CopySign(source.X / source.Y, source.X);
-    public static double LineSlopeY(this System.Numerics.Vector2 source)
-      => System.Math.CopySign(source.Y / source.X, source.Y);
+    public static float LineSlopeX(this System.Numerics.Vector2 source)
+      => System.MathF.CopySign(source.X / source.Y, source.X);
+    public static float LineSlopeY(this System.Numerics.Vector2 source)
+      => System.MathF.CopySign(source.Y / source.X, source.Y);
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static double ManhattanLength(this System.Numerics.Vector2 source, float edgeLength = 1)
+    public static float ManhattanLength(this System.Numerics.Vector2 source, float edgeLength = 1)
       => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength);
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
@@ -75,7 +72,7 @@ namespace Flux
       => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
 
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
-    public static System.Numerics.Vector2 SlerpTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
+    public static System.Numerics.Vector2 Slerp(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
     {
       var dot = System.Math.Clamp(System.Numerics.Vector2.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
       var theta = System.MathF.Acos(dot) * percent; // Angle between start and desired.
@@ -94,34 +91,44 @@ namespace Flux
 
     #region 2D vector collection (shape) algorithms
 
-    ///// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
-    ///// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    //public static double ChebyshevDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b, float edgeLength = 1)
-    //  => System.Math.Max((b.X - a.X) / edgeLength, (b.Y - a.Y) / edgeLength);
+    //    /// <summary>Creates a new sequence with the midpoints added in-between the vertices in the sequence.</summary>
+    //    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> AddMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    //    {
+    //      if (source is null) throw new System.ArgumentNullException(nameof(source));
 
-    ///// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
-    //public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-    //  => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + ((e1.X * e2.Y - e2.X * e1.Y)), (a, i) => a / 2);
-    ///// <summary>Compute the surface area of the polygon.</summary>
-    //public static double ComputeArea(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-    //  => System.Math.Abs(ComputeAreaSigned(source));
+    //      using var ev = source.GetEnumerator();
+    //      using var em = source.GetMidpoints().GetEnumerator();
+
+    //      while (ev.MoveNext() && em.MoveNext())
+    //      {
+    //        yield return ev.Current;
+    //        yield return em.Current;
+    //      }
+    //    }
+
+    public static double AngleSum(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, System.Numerics.Vector2 vector)
+      => source.PartitionTuple2(true, (v1, v2, i) => AngleBetween(vector, v1, v2)).Sum();
+
+    /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
+    public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => source.PartitionTuple2(true, (e1, e2, i) => e1.X * e2.Y - e2.X * e1.Y).Sum() / 2;
+
+    /// <summary>Compute the surface area of the polygon.</summary>
+    public static double ComputeArea(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => System.Math.Abs(ComputeAreaSigned(source));
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     public static System.Numerics.Vector2 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.Aggregate(() => System.Numerics.Vector2.Zero, (a, e, i) => a + e, (a, c) => a / c);
+      => source.Aggregate(System.Numerics.Vector2.Zero, (a, e, index) => a + e, (a, count) => a / count);
 
-    ///// <summary>Compute the perimeter length of the polygon.</summary>
-    //public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-    //  => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e2 - e1).Length(), (a, i) => a);
-
-    //public static double EuclideanDistanceSquaredTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-    //  => (a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y);
-    //public static double EuclideanDistanceTo(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-    //  => System.Math.Sqrt(EuclideanDistanceSquaredTo(a, b));
+    /// <summary>Compute the perimeter length of the polygon.</summary>
+    public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => source.PartitionTuple2(true, (e1, e2, i) => (e2 - e1).Length()).Sum();
 
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
       => source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
+
     /// <summary>Returns a sequence triplet angles.</summary>
     public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector2 v1, System.Numerics.Vector2 v2, System.Numerics.Vector2 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
       => source.PartitionTuple3(2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
@@ -269,7 +276,7 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, Geometry.TriangulationType mode, System.Random rng)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, Geometry.TriangulationType mode, System.Random? rng = null)
     {
       var copy = source.ToList();
 

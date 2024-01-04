@@ -8,7 +8,7 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/N-gram"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionNgram<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int size, System.Func<System.Collections.Generic.IEnumerable<TSource>, int, TResult> resultSelector)
     {
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+      System.ArgumentNullException.ThrowIfNull(resultSelector);
 
       if (size < 1) throw new System.ArgumentOutOfRangeException(nameof(size), $"Must be greater than or equal to 1 ({size}).");
 

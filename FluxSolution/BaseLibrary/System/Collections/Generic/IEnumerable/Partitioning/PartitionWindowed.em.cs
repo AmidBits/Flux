@@ -7,7 +7,7 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionWindowed<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int size, int step, bool includeTrailing, System.Func<System.Collections.Generic.List<TSource>, TResult> resultSelector)
     {
-      if (resultSelector is null) throw new System.ArgumentNullException(nameof(resultSelector));
+      System.ArgumentNullException.ThrowIfNull(resultSelector);
 
       if (size <= 0) throw new System.ArgumentOutOfRangeException(nameof(size), "Must be greater-than zero.");
       if (step <= 0 || step > size) throw new System.ArgumentOutOfRangeException(nameof(step), "Must be greater-than zero and less-than-or-equal to size.");

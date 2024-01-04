@@ -7,7 +7,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TSource> TakeUntil<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, bool> predicate)
     {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+      System.ArgumentNullException.ThrowIfNull(predicate);
 
       var index = 0;
 

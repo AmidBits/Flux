@@ -11,7 +11,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, System.Func<TSource, object[], string[]> namesSelector, System.Func<TSource, object[], System.Type[]> typesSelector, System.Func<TSource, int, object[]> valuesSelector)
     {
-      if (valuesSelector is null) throw new System.ArgumentNullException(nameof(valuesSelector));
+      System.ArgumentNullException.ThrowIfNull(valuesSelector);
 
       var dt = new System.Data.DataTable(tableName);
 

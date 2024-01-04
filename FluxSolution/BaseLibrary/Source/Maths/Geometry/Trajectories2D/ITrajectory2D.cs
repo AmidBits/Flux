@@ -2,11 +2,11 @@ namespace Flux.Mechanics
 {
   public interface ITrajectory2D
   {
-    /// <summary>Gravitational acceleration.</summary>
+    /// <summary>Gravitational acceleration in meters per second square (M/S²).</summary>
     double GravitationalAcceleration { get; init; }
-    /// <summary>Initial angle.</summary>
+    /// <summary>Initial angle in radians (RAD).</summary>
     double InitialAngle { get; init; }
-    /// <summary>Initial velocity.</summary>
+    /// <summary>Initial velocity in meters per second (M/S).</summary>
     double InitialVelocity { get; init; }
 
     /// <summary>Yields the greatest parabolic height an object reaches within the trajectory</summary>

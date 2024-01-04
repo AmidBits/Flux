@@ -22,18 +22,27 @@
     [System.Runtime.InteropServices.FieldOffset(14)] private byte m_byteE;
     [System.Runtime.InteropServices.FieldOffset(15)] private byte m_byteF;
 
+    [System.Runtime.InteropServices.FieldOffset(0)] private byte[] m_bytes;
+
+    [System.Runtime.InteropServices.FieldOffset(0)] private char m_char;
+
     [System.Runtime.InteropServices.FieldOffset(0)] private decimal m_decimal;
 
     [System.Runtime.InteropServices.FieldOffset(0)] private double m_double;
 
+    [System.Runtime.InteropServices.FieldOffset(0)] private short m_int16;
     [System.Runtime.InteropServices.FieldOffset(0)] private int m_int32;
     [System.Runtime.InteropServices.FieldOffset(0)] private long m_int64;
+
 #if NET7_0_OR_GREATER
     [System.Runtime.InteropServices.FieldOffset(0)] private Int128 m_int128;
 #endif
 
     [System.Runtime.InteropServices.FieldOffset(0)] private float m_single;
 
+    [System.Runtime.InteropServices.FieldOffset(0)] private sbyte m_sbyte;
+
+    [System.Runtime.InteropServices.FieldOffset(0)] private ushort m_uint16;
     [System.Runtime.InteropServices.FieldOffset(0)] private uint m_uint32;
     [System.Runtime.InteropServices.FieldOffset(0)] private ulong m_uint64;
 #if NET7_0_OR_GREATER
@@ -44,6 +53,7 @@
 
     #region Constructors
 
+    public BitStruct() => m_bytes = new byte[16];
     public BitStruct(byte[] bytes, int offset, int count)
       : this()
     {
@@ -70,22 +80,28 @@
       m_byteF = bytes[offset + 15];
     }
 
+    public BitStruct(char value) : this() => m_char = value;
+
     public BitStruct(decimal value) : this() => m_decimal = value;
 
     public BitStruct(double value) : this() => m_double = value;
 
+    public BitStruct(short value) : this() => m_int16 = value;
     public BitStruct(int value) : this() => m_int32 = value;
     public BitStruct(long value) : this() => m_int64 = value;
 #if NET7_0_OR_GREATER
-    public BitStruct(Int128 value) => m_int128 = value;
+    public BitStruct(Int128 value) : this() => m_int128 = value;
 #endif
 
     public BitStruct(float value) : this() => m_single = value;
 
+    [CLSCompliant(false)] public BitStruct(sbyte value) : this() => m_sbyte = value;
+
+    [CLSCompliant(false)] public BitStruct(ushort value) : this() => m_uint16 = value;
     [CLSCompliant(false)] public BitStruct(uint value) : this() => m_uint32 = value;
     [CLSCompliant(false)] public BitStruct(ulong value) : this() => m_uint64 = value;
 #if NET7_0_OR_GREATER
-    [CLSCompliant(false)] public BitStruct(UInt128 value) => m_uint128 = value;
+    [CLSCompliant(false)] public BitStruct(UInt128 value) : this() => m_uint128 = value;
 #endif
 
     #endregion // Constructors
@@ -108,19 +124,25 @@
     public byte ByteD { readonly get => m_byteD; set => m_byteD = value; }
     public byte ByteE { readonly get => m_byteE; set => m_byteE = value; }
     public byte ByteF { readonly get => m_byteF; set => m_byteF = value; }
+    public byte[] Bytes { readonly get => m_bytes; set => m_bytes = value; }
+
+    public char Char { readonly get => m_char; set => m_char = value; }
 
     public decimal Decimal { readonly get => m_decimal; set => m_decimal = value; }
 
     public double Double { readonly get => m_double; set => m_double = value; }
 
+    public short Int16 { readonly get => m_int16; set => m_int16 = value; }
     public int Int32 { readonly get => m_int32; set => m_int32 = value; }
     public long Int64 { readonly get => m_int64; set => m_int64 = value; }
 #if NET7_0_OR_GREATER
     public Int128 Int128 { readonly get => m_int128; set => m_int128 = value; }
 #endif
-
     public float Single { readonly get => m_single; set => m_single = value; }
 
+    [CLSCompliant(false)] public sbyte SByte { readonly get => m_sbyte; set => m_sbyte = value; }
+
+    [CLSCompliant(false)] public ushort UInt16 { readonly get => m_uint16; set => m_uint16 = value; }
     [CLSCompliant(false)] public uint UInt32 { readonly get => m_uint32; set => m_uint32 = value; }
     [CLSCompliant(false)] public ulong UInt64 { readonly get => m_uint64; set => m_uint64 = value; }
 #if NET7_0_OR_GREATER
