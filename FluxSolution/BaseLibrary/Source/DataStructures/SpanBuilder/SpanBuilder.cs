@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public class SpanBuilder<T>
+  public record class SpanBuilder<T>
   {
     private const int DefaultBufferSize = 16;
 
@@ -33,7 +33,7 @@ namespace Flux
 
     /// <summary>This provides direct access to the underlying array storage for the SpanBuilder.</summary>
     /// <remarks>Use with caution!</remarks>
-    public T[] InternalArray { get => m_array; init => m_array = value; }
+    //public T[] InternalArray { get => m_array; init => m_array = value; }
 
     /// <summary>The current total capacity of the builder buffer.</summary>
     public int Capacity => m_array.Length;
@@ -540,10 +540,6 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Remove all <paramref name="values"/> from the <see cref="SpanBuilder{T}"/>.</summary>
-    public SpanBuilder<T> RemoveAll(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
-      => RemoveAll(t => values.Contains(t, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default));
-
     public SpanBuilder<T> RemoveEvery(int interval)
     {
       var removedMark = m_head;
@@ -636,10 +632,6 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Trims all consecutive occurences of any elements in <paramref name="values"/> at the beginning of the <see cref="SpanBuilder{T}"/>.</summary>
-    public SpanBuilder<T> TrimLeft(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
-      => TrimLeft(c => values.Contains(c, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default));
-
     /// <summary>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the end of the <see cref="SpanBuilder{T}"/>.</summary>
     public SpanBuilder<T> TrimRight(System.Func<T, bool> predicate)
     {
@@ -653,10 +645,6 @@ namespace Flux
 
       return this;
     }
-
-    /// <summary>Trims all consecutive occurences of any elements in <paramref name="values"/> at the end of the <see cref="SpanBuilder{T}"/>.</summary>
-    public SpanBuilder<T> TrimRight(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
-      => TrimRight(c => values.Contains(c, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default));
 
     public string ToString(int startIndex, int count)
     {

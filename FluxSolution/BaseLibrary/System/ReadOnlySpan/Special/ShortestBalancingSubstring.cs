@@ -3,15 +3,15 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Finds the shortest substring that can be replaced to achieve a balanced count of all <paramref name="vocabulary"/> elements in <paramref name="source"/> (i.e. with no change in space requirements).</para>
+    /// <para>Finds the shortest substring that can be replaced to achieve a balanced count of all <paramref name="vocabulary"/> elements in <paramref name="source"/> with no change in space requirements.</para>
     /// <see href="https://stackoverflow.com/questions/38877718/smallest-substring-that-can-be-replaced-to-make-the-string-have-the-same-number"/>
     /// </summary>
     /// <param name="source">The sequence in which the shortest balancing substring should be found.</param>
     /// <param name="vocabulary">The items which must be present and balanced in <paramref name="source"/>.</param>
     /// <returns>The (index, count) of elements in the shortest balancing substring, or (-1, 0) if not found.</returns>
-    public static (int index, int count) ShortestBalancingSubstring(this System.ReadOnlySpan<char> source, System.ReadOnlySpan<char> vocabulary)
+    public static (int index, int count) ShortestBalancingSubstring<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> vocabulary)
     {
-      var frequencies = new System.Collections.Generic.Dictionary<char, int>();
+      var frequencies = new System.Collections.Generic.Dictionary<T, int>();
 
       for (var i = 0; i < vocabulary.Length; i++)
         frequencies.Add(vocabulary[i], 0);

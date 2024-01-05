@@ -115,9 +115,7 @@ namespace Flux.Globalization.EnUs.Az.PimaCounty
     public override string? ToString()
     {
       var sb = new SpanBuilder<char>($"{Number} {Direction} {Intersection} {Name} {Type} {Unit}");
-
       sb.NormalizeAll(char.IsWhiteSpace, c => ' ');
-
       return sb.ToString();
     }
   }

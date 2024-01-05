@@ -51,7 +51,7 @@ namespace Text
     public void HammingDistance_Default()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetHammingEditDistance(target);
+      var actual = source.AsSpan().GetHammingDistance(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -59,7 +59,7 @@ namespace Text
     public void HammingDistance_IgnoreCase()
     {
       var expected = 1;
-      var actual = source.AsSpan().GetHammingEditDistance(target, comparerIgnoreCase);
+      var actual = source.AsSpan().GetHammingDistance(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -67,7 +67,7 @@ namespace Text
     public void HammingDistance_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = source.AsSpan().GetHammingEditDistance(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().GetHammingDistance(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -75,7 +75,7 @@ namespace Text
     public void HammingDistance_None()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetHammingEditDistance(target, comparerNone);
+      var actual = source.AsSpan().GetHammingDistance(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 

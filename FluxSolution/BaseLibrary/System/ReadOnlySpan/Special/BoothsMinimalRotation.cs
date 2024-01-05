@@ -6,7 +6,7 @@ namespace Flux
     /// <para>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation. Uses the specified comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
     /// </summary>
-    public static int BoothsFindMinimalRotation<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T>? comparer = null)
+    public static int BoothsMinimalRotation<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 

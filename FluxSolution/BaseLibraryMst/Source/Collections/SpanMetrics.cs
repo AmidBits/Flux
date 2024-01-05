@@ -46,11 +46,11 @@ namespace Collections.Generic
     [TestMethod]
     public void HammingDistance()
     {
-      Assert.AreEqual(0, m_text2a.AsSpan().GetHammingEditDistance(m_text2b, m_comparableIgnoreNonSpace));
-      Assert.AreEqual(60, m_text2a.AsSpan().GetHammingEditDistance(m_text2b, m_comparerDoNotIgnoreCase));
+      Assert.AreEqual(0, m_text2a.AsSpan().GetHammingDistance(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().GetHammingDistance(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(6, m_text3a.AsSpan().GetHammingEditDistance(m_text3b, m_comparisonOrdinal));
-      Assert.AreEqual(4, m_text3a.AsSpan().GetHammingEditDistance(m_text3b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(6, m_text3a.AsSpan().GetHammingDistance(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(4, m_text3a.AsSpan().GetHammingDistance(m_text3b, m_comparableIgnoreNonSpace));
     }
 
     [TestMethod]

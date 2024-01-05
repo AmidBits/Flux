@@ -7,6 +7,7 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Jaro-Winkler_distance"/></para>
     /// <para><seealso href="https://stackoverflow.com/questions/19123506/jaro-winkler-distance-algorithm-in-c-sharp"/></para>
     /// <para><seealso href="http://alias-i.com/lingpipe/docs/api/com/aliasi/spell/JaroWinklerDistance.html"/></para>
+    /// <para><seealso href="https://www.geeksforgeeks.org/jaro-and-jaro-winkler-similarity/"/></para>
     /// <remarks>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two sequences is, the more similar the sequences are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</remarks>
     /// </summary>
     /// <param name="source"></param>
