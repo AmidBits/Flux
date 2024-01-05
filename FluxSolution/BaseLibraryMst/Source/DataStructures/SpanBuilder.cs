@@ -198,7 +198,7 @@ namespace Text
     {
       var expected = @"There is a bee in the soup.";
       var actual = new Flux.SpanBuilder<char>(@"There is aa bbee in the soup.");
-      actual.NormalizeAdjacent(1, new char[] { 'a', 'b' });
+      actual.NormalizeAdjacent(1, null, 'a', 'b');
       Assert.AreEqual(expected, actual.ToString());
     }
 

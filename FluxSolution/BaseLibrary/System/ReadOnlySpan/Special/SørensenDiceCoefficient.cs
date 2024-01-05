@@ -7,6 +7,6 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Sørensen–Dice_coefficient"/>
     /// </summary>
     public static double GetSørensenDiceCoefficient<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => 2d * (double)source.Intersect(target, equalityComparer).Length / (double)(source.Length + target.Length);
+      => 2d * (double)source.Intersect(target, equalityComparer).Count / (double)(source.Length + target.Length);
   }
 }

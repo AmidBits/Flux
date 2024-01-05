@@ -14,10 +14,8 @@ namespace Flux
       var index = 0;
 
       foreach (var item in source)
-      {
         if (rng.Next(++index) == 0)
           result = (item, index - 1);
-      }
 
       return result;
     }

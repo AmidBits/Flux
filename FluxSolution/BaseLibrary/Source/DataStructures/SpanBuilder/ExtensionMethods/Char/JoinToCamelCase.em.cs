@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
-    public static SpanBuilder<char> JoinToCamelCase(ref this SpanBuilder<char> source, char separator = ' ', System.Globalization.CultureInfo? culture = null)
+    public static SpanBuilder<char> JoinToCamelCase(this SpanBuilder<char> source, char separator = ' ', System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 

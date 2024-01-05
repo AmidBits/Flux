@@ -18,7 +18,7 @@ namespace Flux
       /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
       public Azimuth(double azimuth) => m_azimuth = WrapExtremum(azimuth);
 
-      public double Radians => Angle.ConvertDegreeToRadian(m_azimuth);
+      public double Radians => Angle.DegreeToRadian(m_azimuth);
 
       public Angle ToAngle() => new(m_azimuth, AngleUnit.Degree);
 
@@ -51,7 +51,7 @@ namespace Flux
       /// <param name="azm">The azimuth in radians.</param>
       /// <returns></returns>
       public static Azimuth FromRadians(double azm)
-        => new(Angle.ConvertRadianToDegree(azm));
+        => new(Angle.RadianToDegree(azm));
 
       public static Azimuth FromWords(string compassPointInWords)
       {

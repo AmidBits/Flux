@@ -18,8 +18,8 @@ namespace Flux.Geometry.MapProjections
       );
     public IGeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new GeographicCoordinate(
-        Units.Angle.ConvertRadianToDegree(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.LongitudeInRadians),
-        Units.Angle.ConvertRadianToDegree(project.Y / project.Z + CenterOfMap.LatitudeInRadians),
+        Units.Angle.RadianToDegree(project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.LongitudeInRadians),
+        Units.Angle.RadianToDegree(project.Y / project.Z + CenterOfMap.LatitudeInRadians),
         project.Z
       );
   }

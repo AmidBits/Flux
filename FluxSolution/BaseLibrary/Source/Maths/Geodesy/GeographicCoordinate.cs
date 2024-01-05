@@ -28,8 +28,8 @@ namespace Flux.Geometry
     public GeographicCoordinate(double latitude, double longitude, double altitude = 1.0)
     {
       m_altitude = altitude >= MinAltitudeInMeters && altitude <= MaxAltitudeInMeters ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
-      m_lat = Units.Angle.ConvertDegreeToRadian(latitude);
-      m_lon = Units.Angle.ConvertDegreeToRadian(longitude);
+      m_lat = Units.Angle.DegreeToRadian(latitude);
+      m_lon = Units.Angle.DegreeToRadian(longitude);
     }
 
     /// <summary></summary>
@@ -50,10 +50,10 @@ namespace Flux.Geometry
     public GeographicCoordinate Antipode => new(0 - Latitude, Longitude - 180, Altitude);
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = Units.Angle.ConvertDegreeToRadian(value); } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
+    public double Latitude { get => Units.Angle.RadianToDegree(m_lat); init => m_lat = Units.Angle.DegreeToRadian(value); } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = Units.Angle.ConvertDegreeToRadian(value); } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
+    public double Longitude { get => Units.Angle.RadianToDegree(m_lon); init => m_lon = Units.Angle.DegreeToRadian(value); } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
 
     public double LatitudeInRadians => m_lat;
     public double LongitudeInRadians => m_lon;

@@ -80,8 +80,8 @@ namespace Flux
       /// <remarks>All angles in radians.</remarks>
       public GeographicCoordinate ToGeographicCoordinate()
         => new(
-          Units.Angle.ConvertRadianToDegree(System.Math.PI - m_inclination - System.Math.PI / 2),
-          Units.Angle.ConvertRadianToDegree(m_azimuth - System.Math.PI),
+          Units.Angle.RadianToDegree(System.Math.PI - m_inclination - System.Math.PI / 2),
+          Units.Angle.RadianToDegree(m_azimuth - System.Math.PI),
           m_radius
         );
 

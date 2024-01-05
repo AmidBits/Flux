@@ -22,8 +22,6 @@
     [System.Runtime.InteropServices.FieldOffset(14)] private byte m_byteE;
     [System.Runtime.InteropServices.FieldOffset(15)] private byte m_byteF;
 
-    [System.Runtime.InteropServices.FieldOffset(0)] private byte[] m_bytes;
-
     [System.Runtime.InteropServices.FieldOffset(0)] private char m_char;
 
     [System.Runtime.InteropServices.FieldOffset(0)] private decimal m_decimal;
@@ -53,7 +51,7 @@
 
     #region Constructors
 
-    public BitStruct() => m_bytes = new byte[16];
+    public BitStruct() { } // => m_bytes = new byte[16];
     public BitStruct(byte[] bytes, int offset, int count)
       : this()
     {
@@ -124,7 +122,6 @@
     public byte ByteD { readonly get => m_byteD; set => m_byteD = value; }
     public byte ByteE { readonly get => m_byteE; set => m_byteE = value; }
     public byte ByteF { readonly get => m_byteF; set => m_byteF = value; }
-    public byte[] Bytes { readonly get => m_bytes; set => m_bytes = value; }
 
     public char Char { readonly get => m_char; set => m_char = value; }
 

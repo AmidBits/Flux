@@ -29,12 +29,12 @@ namespace Foundation.Units
       var u = new Flux.Units.Angle(1);
 
       var expected = (X: 0.5403023058681398, Y: 0.8414709848078965);
-      var actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2(u.Value);
+      var actual = Flux.Units.Angle.RotationAngleToCartesian2(u.Value);
       Assert.AreEqual(expected.X, actual.x, Flux.Maths.Epsilon1E15);
       Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 
       expected = (0.8414709848078966, 0.5403023058681394);
-      actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2Ex(u.Value);
+      actual = Flux.Units.Angle.RotationAngleToCartesian2Ex(u.Value);
       Assert.AreEqual(expected.X, actual.x);
       Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 

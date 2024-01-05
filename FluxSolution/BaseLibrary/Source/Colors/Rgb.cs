@@ -109,7 +109,7 @@ namespace Flux.Colors
       var beta = (Maths.TheodorusConstant / 2) * (g - b);
 
       chroma2 = System.Math.Sqrt(alpha * alpha + beta * beta);
-      hue2 = Units.Angle.ConvertRadianToDegree(System.Math.Atan2(beta, alpha)).Wrap(0, 360);
+      hue2 = Units.Angle.RadianToDegree(System.Math.Atan2(beta, alpha)).Wrap(0, 360);
     }
 
     /// <summary>Converts the RGB color to grayscale using the specified method.</summary>

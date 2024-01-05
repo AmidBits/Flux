@@ -1,7 +1,6 @@
 namespace Flux
 {
-  public ref struct SpanBuilder<T>
-  //where T : notnull
+  public class SpanBuilder<T>
   {
     private const int DefaultBufferSize = 16;
 
@@ -26,7 +25,7 @@ namespace Flux
     public SpanBuilder(System.ReadOnlySpan<T> readOnlySpan, int count = 1) : this(0) => Append(readOnlySpan, count);
 
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
-    public readonly T this[int index]
+    public T this[int index]
     {
       get => (index >= 0 && index <= Length) ? m_array[m_head + index] : throw new System.ArgumentOutOfRangeException(nameof(index));
       set => m_array[m_head + index] = (index >= 0 && index <= Length) ? value : throw new System.ArgumentOutOfRangeException(nameof(index));
@@ -34,17 +33,17 @@ namespace Flux
 
     /// <summary>This provides direct access to the underlying array storage for the SpanBuilder.</summary>
     /// <remarks>Use with caution!</remarks>
-    public T[] InternalArray { readonly get => m_array; init => m_array = value; }
+    public T[] InternalArray { get => m_array; init => m_array = value; }
 
     /// <summary>The current total capacity of the builder buffer.</summary>
-    public readonly int Capacity => m_array.Length;
+    public int Capacity => m_array.Length;
     /// <summary>The current partial capacity of the builder buffer right-side (append).</summary>
-    private readonly int CapacityAppend => m_array.Length - m_tail;
+    private int CapacityAppend => m_array.Length - m_tail;
     /// <summary>The current partial capacity of the builder buffer left-side (prepend).</summary>
-    private readonly int CapacityPrepend => m_head;
+    private int CapacityPrepend => m_head;
 
     /// <summary>The number of elements in the <see cref="SpanBuilder{T}"/>.</summary>
-    public readonly int Length => m_tail - m_head;
+    public int Length => m_tail - m_head;
 
     /// <summary>Append <paramref name="count"/> of <paramref name="value"/>.</summary>
     public SpanBuilder<T> Append(T value, int count)
@@ -86,18 +85,22 @@ namespace Flux
     }
 
     /// <summary>Creates a non-allocating <see cref="System.ReadOnlySpan{T}"/> of the elements in the <see cref="SpanBuilder{T}"/>.</summary>
-    public readonly System.ReadOnlySpan<T> AsReadOnlySpan() => new(m_array, m_head, m_tail - m_head);
+    public System.ReadOnlySpan<T> AsReadOnlySpan()
+      => new(m_array, m_head, m_tail - m_head);
 
     /// <summary>Creates a non-allocating <see cref="System.Span{T}"/> of the elements in the <see cref="SpanBuilder{T}"/>. This provides partial direct access into the underlying array storage for the SpanBuilder.</summary>
     /// <remarks>Use with caution!</remarks>
-    public readonly System.Span<T> AsSpan() => new(m_array, m_head, m_tail - m_head);
+    public System.Span<T> AsSpan()
+      => new(m_array, m_head, m_tail - m_head);
 
-    public void Clear()
+    public SpanBuilder<T> Clear()
     {
       System.Array.Clear(m_array);
 
       m_head = m_array.Length / 2;
       m_tail = m_array.Length / 2;
+
+      return this;
     }
 
     /// <summary>
@@ -108,7 +111,7 @@ namespace Flux
     /// <param name="targetIndex">The starting index in the <paramref name="target"/>.</param>
     /// <param name="count">The number of elements to copy.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public readonly void CopyTo(int sourceIndex, System.Collections.Generic.IList<T> target, int targetIndex, int count)
+    public void CopyTo(int sourceIndex, System.Collections.Generic.IList<T> target, int targetIndex, int count)
     {
       if (sourceIndex < 0 || sourceIndex >= Length) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
       if (targetIndex < 0 || targetIndex >= Length) throw new System.ArgumentOutOfRangeException(nameof(targetIndex));
@@ -310,9 +313,13 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Normalize (trim down) any consecutive <paramref name="values"/> (or all items, if none specified) that occur more than <paramref name="maxAdjacentCount"/> in the <see cref="SpanBuilder{T}"/>. Uses the specfied <paramref name="equalityComparer"/>.</summary>
-    public SpanBuilder<T> NormalizeAdjacent(int maxAdjacentCount, System.ReadOnlySpan<T> values, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    /// <summary>
+    /// <para>Normalize (trim down) any consecutive <paramref name="values"/> (or all items, if none specified) that occur more than <paramref name="maxAdjacentCount"/> in the <see cref="SpanBuilder{T}"/>. Uses the specfied <paramref name="equalityComparer"/>.</para>
+    /// </summary>
+    public SpanBuilder<T> NormalizeAdjacent(int maxAdjacentCount, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
     {
+      System.ArgumentNullException.ThrowIfNull(values);
+
       if (maxAdjacentCount < 1) throw new System.ArgumentNullException(nameof(maxAdjacentCount));
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -327,7 +334,7 @@ namespace Flux
         var current = m_array[i];
 
         var isEqual = values.Length > 0 // Use span or just items?
-          ? (values.IndexOf(current, equalityComparer) > -1 && values.IndexOf(previous, equalityComparer) > -1) // Is both current and previous in items?
+          ? (System.Array.Exists(values, c => equalityComparer.Equals(c, current)) && System.Array.Exists(values, c => equalityComparer.Equals(c, previous))) // Is both current and previous in items?
           : equalityComparer.Equals(current, previous); // Are current and previous items equal?
 
         if (!isEqual || adjacentLength < maxAdjacentCount)
@@ -345,10 +352,31 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Normalize all consecutive items where the <paramref name="replacementSelector"/> returns any element but default(<typeparamref name="T"/>) with the element returned by <paramref name="replacementSelector"/>.</summary>
+    /// <summary>
+    /// <para>Normalize all adjacent duplicates. Uses the specified <paramref name="equalityComparer"/>.</para>
+    /// </summary>
+    public SpanBuilder<T> NormalizeAdjacentDuplicates(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      if (Length >= 2)
+      {
+        equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+        var removeIndex = m_head + 1;
+
+        for (var index = m_head + 1; index != m_tail; index++)
+          if (!equalityComparer.Equals(m_array[removeIndex - 1], m_array[index]))
+            m_array[removeIndex++] = m_array[index];
+
+        m_tail = removeIndex;
+      }
+
+      return this;
+    }
+
+    /// <summary>Normalize any one or more consecutive items satisfied by the <paramref name="predicate"/> with the element returned by <paramref name="replacementSelector"/>.</summary>
     /// <example>"".NormalizeAll(char.IsWhiteSpace, ' ');</example>
     /// <example>"".NormalizeAll(c => c == ' ', ' ');</example>
-    /// <remarks>Normalizing (here) means removing leading/trailing (either end of the <see cref="SpanBuilder{T}"/>) and replacing consecutive characters within the <see cref="SpanBuilder{T}"/> with <paramref name="replacement"/>. No replacements are performed if elements are on left or right edge.</remarks>
+    /// <remarks>Normalizing (here) means removing leading/trailing (either end of the <see cref="SpanBuilder{T}"/>) and replacing one or more consecutive characters satisfying the <paramref name="predicate"/> within the <see cref="SpanBuilder{T}"/> with <paramref name="replacementSelector"/>. No replacements are performed if elements are on left or right edge.</remarks>
     public SpanBuilder<T> NormalizeAll(System.Func<T, bool> predicate, System.Func<T, T> replacementSelector)
     {
       System.ArgumentNullException.ThrowIfNull(predicate);
@@ -392,6 +420,7 @@ namespace Flux
 
       return this;
     }
+
     /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
     public SpanBuilder<T> PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
     {
@@ -409,6 +438,7 @@ namespace Flux
     /// <summary>Pads this StringBuilder on the left with the specified padding character.</summary>
     public SpanBuilder<T> PadLeft(int totalWidth, T padding)
       => Insert(0, padding, totalWidth - Length);
+
     /// <summary>Pads this StringBuilder on the left with the specified padding string.</summary>
     public SpanBuilder<T> PadLeft(int totalWidth, System.ReadOnlySpan<T> padding)
     {
@@ -421,6 +451,7 @@ namespace Flux
     /// <summary>Pads this StringBuilder on the right with the specified padding character.</summary>
     public SpanBuilder<T> PadRight(int totalWidth, T padding)
       => Append(padding, totalWidth - Length);
+
     /// <summary>Pads this StringBuilder on the right with the specified padding string.</summary>
     public SpanBuilder<T> PadRight(int totalWidth, System.ReadOnlySpan<T> padding)
     {
@@ -440,6 +471,7 @@ namespace Flux
 
       return this;
     }
+
     /// <summary>Prepends with the <paramref name="collection"/>, <paramref name="count"/> times.</summary>
     public SpanBuilder<T> Prepend(System.Collections.Generic.ICollection<T> collection, int count)
     {
@@ -450,6 +482,7 @@ namespace Flux
 
       return this;
     }
+
     /// <summary>Prepends with the <paramref name="span"/>, <paramref name="count"/> times.</summary>
     public SpanBuilder<T> Prepend(System.ReadOnlySpan<T> span, int count)
     {
@@ -484,10 +517,12 @@ namespace Flux
 
       return this;
     }
-    /// <summary>Removes the specified range of values from the builder.</summary>
-    public SpanBuilder<T> Remove(int startIndex) => Remove(startIndex, Length - startIndex);
 
-    /// <summary>Remove all characters satisfying the predicate from the string.</summary>
+    /// <summary>Removes the specified range of values from the builder.</summary>
+    public SpanBuilder<T> Remove(int startIndex)
+      => Remove(startIndex, Length - startIndex);
+
+    /// <summary>Removes all items satisfying the <paramref name="predicate"/> from the <see cref="SpanBuilder{T}"/>.</summary>
     /// <example>"".RemoveAll(char.IsWhiteSpace);</example>
     /// <example>"".RemoveAll(c => c == ' ');</example>
     public SpanBuilder<T> RemoveAll(System.Func<T, bool> predicate)
@@ -505,6 +540,10 @@ namespace Flux
       return this;
     }
 
+    /// <summary>Remove all <paramref name="values"/> from the <see cref="SpanBuilder{T}"/>.</summary>
+    public SpanBuilder<T> RemoveAll(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
+      => RemoveAll(t => values.Contains(t, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default));
+
     public SpanBuilder<T> RemoveEvery(int interval)
     {
       var removedMark = m_head;
@@ -518,25 +557,27 @@ namespace Flux
       return this;
     }
 
-    public SpanBuilder<T> RemoveFirst(int count) => Remove(0, count);
+    public SpanBuilder<T> RemoveFirst(int count)
+      => Remove(0, count);
 
-    public SpanBuilder<T> RemoveLast(int count) => Remove(Length - count, count);
+    public SpanBuilder<T> RemoveLast(int count)
+      => Remove(Length - count, count);
 
     /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
     public SpanBuilder<T> Repeat(int count)
       => Append(new SpanBuilder<T>(AsReadOnlySpan(), count).AsReadOnlySpan(), 1);
 
-    ///// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the result of the <paramref name="replacementSelector"/>.</summary>
-    //public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, System.Func<T, System.Collections.Generic.ICollection<T>> replacementSelector)
-    //{
-    //  System.ArgumentNullException.ThrowIfNull(replacementSelector);
+    /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the result of the <paramref name="replacementSelector"/>.</summary>
+    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, System.Func<T, System.Collections.Generic.ICollection<T>> replacementSelector)
+    {
+      System.ArgumentNullException.ThrowIfNull(replacementSelector);
 
-    //  for (var index = Length - 1; index >= 0; index--)
-    //    if (this[index] is var c && predicate(c))
-    //      Remove(index, 1).Insert(index, replacementSelector(c), 1);
+      for (var index = Length - 1; index >= 0; index--)
+        if (this[index] is var c && predicate(c))
+          Remove(index, 1).Insert(index, replacementSelector(c), 1);
 
-    //  return this;
-    //}
+      return this;
+    }
 
     public SpanBuilder<T> ReplaceIfEqualAt(int startAt, System.ReadOnlySpan<T> find, System.ReadOnlySpan<T> replacement, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
@@ -553,7 +594,7 @@ namespace Flux
 
     /// <summary>Swap two values at the specified indices.</summary>
     /// <exception cref="System.ArgumentOutOfRangeException"/>
-    public readonly SpanBuilder<T> Swap(int indexA, int indexB)
+    public SpanBuilder<T> Swap(int indexA, int indexB)
     {
       if (indexA != indexB)
       {
@@ -567,14 +608,14 @@ namespace Flux
       return this;
     }
 
-    public readonly T[] ToArray(int startIndex, int count)
+    public T[] ToArray(int startIndex, int count)
     {
       var array = new T[count];
       CopyTo(startIndex, array, 0, count);
       return array;
     }
 
-    public readonly System.Collections.Generic.List<T> ToList(int startIndex, int count)
+    public System.Collections.Generic.List<T> ToList(int startIndex, int count)
     {
       var list = new System.Collections.Generic.List<T>(count);
       list.AddRange(AsReadOnlySpan().Slice(startIndex, count));
@@ -584,6 +625,8 @@ namespace Flux
     /// <summary>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the beginning of the <see cref="SpanBuilder{T}"/>.</summary>
     public SpanBuilder<T> TrimLeft(System.Func<T, bool> predicate)
     {
+      System.ArgumentNullException.ThrowIfNull(predicate);
+
       while (m_head < m_tail)
         if (predicate(m_array[m_head]))
           m_head++;
@@ -593,9 +636,15 @@ namespace Flux
       return this;
     }
 
+    /// <summary>Trims all consecutive occurences of any elements in <paramref name="values"/> at the beginning of the <see cref="SpanBuilder{T}"/>.</summary>
+    public SpanBuilder<T> TrimLeft(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
+      => TrimLeft(c => values.Contains(c, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default));
+
     /// <summary>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the end of the <see cref="SpanBuilder{T}"/>.</summary>
     public SpanBuilder<T> TrimRight(System.Func<T, bool> predicate)
     {
+      System.ArgumentNullException.ThrowIfNull(predicate);
+
       while (m_tail > m_head)
         if (predicate(m_array[m_tail - 1]))
           m_tail--;
@@ -604,6 +653,10 @@ namespace Flux
 
       return this;
     }
+
+    /// <summary>Trims all consecutive occurences of any elements in <paramref name="values"/> at the end of the <see cref="SpanBuilder{T}"/>.</summary>
+    public SpanBuilder<T> TrimRight(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
+      => TrimRight(c => values.Contains(c, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default));
 
     public string ToString(int startIndex, int count)
     {

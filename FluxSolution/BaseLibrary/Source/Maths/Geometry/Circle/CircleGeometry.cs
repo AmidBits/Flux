@@ -56,7 +56,7 @@ namespace Flux.Geometry
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, circularArc * maxRandomness);
 
-        var (x, y) = Units.Angle.ConvertRotationAngleToCartesian2Ex(angle);
+        var (x, y) = Units.Angle.RotationAngleToCartesian2Ex(angle);
 
         yield return resultSelector(x * m_radius, y * m_radius);
       }
@@ -65,14 +65,14 @@ namespace Flux.Geometry
     #region Static methods
 
     /// <summary></summary>
-    public static (double radius, double rotationAngle) ConvertCartesian2ToCircle(double x, double y)
+    public static (double radius, double rotationAngle) Cartesian2ToCircle(double x, double y)
       => (
         System.Math.Sqrt(x * x + y * y),
         System.Math.Atan2(y, x)
       );
 
     /// <summary></summary>
-    public static (double x, double y) ConvertCircleToCartesian2(double radius, double rotationAngle = 0)
+    public static (double x, double y) CircleToCartesian2(double radius, double rotationAngle = 0)
       => (
         System.Math.Cos(rotationAngle) * radius,
         System.Math.Sin(rotationAngle) * radius

@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Reverse all ranged elements in-place.</summary>
-    public static Flux.SpanBuilder<T> Reverse<T>(ref this Flux.SpanBuilder<T> source, int startIndex, int endIndex)
+    public static Flux.SpanBuilder<T> Reverse<T>(this Flux.SpanBuilder<T> source, int startIndex, int endIndex)
     {
       if (startIndex < 0 || startIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
       if (endIndex < startIndex || endIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
@@ -14,7 +14,7 @@ namespace Flux
       return source;
     }
     /// <summary>Reverse all elements in-place.</summary>
-    public static Flux.SpanBuilder<T> Reverse<T>(ref this Flux.SpanBuilder<T> source)
+    public static Flux.SpanBuilder<T> Reverse<T>(this Flux.SpanBuilder<T> source)
       => source.Reverse(0, source.Length - 1);
   }
 }

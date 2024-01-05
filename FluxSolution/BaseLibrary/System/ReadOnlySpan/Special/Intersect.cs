@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
@@ -7,22 +5,26 @@ namespace Flux
     /// <summary>
     /// <para></para>
     /// </summary>
-    public static System.ReadOnlySpan<T> Intersect<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static System.Collections.Generic.List<T> Intersect<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var intersection = new System.Collections.Generic.List<T>();
-
       var set = new System.Collections.Generic.HashSet<T>(equalityComparer);
 
-      foreach (var element in target)
-        set.Add(element);
+      set.AddSpan(target);
 
-      foreach (var element in source)
-        if (set.Remove(element))
-          intersection.Add(element);
+      var intersection = new System.Collections.Generic.List<T>();
 
-      return intersection.AsSpan();
+      for (var index = 0; index < source.Length; index++)
+      {
+        if (source[index] is var item && set.Remove(item))
+          intersection.Add(item);
+
+        if (set.Count == 0)
+          break;
+      }
+
+      return intersection;
     }
   }
 }

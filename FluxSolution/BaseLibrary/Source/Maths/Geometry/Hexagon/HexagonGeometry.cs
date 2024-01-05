@@ -47,7 +47,7 @@ namespace Flux.Geometry
       var radOrientationOffset = orientation switch
       {
         HexagonOrientation.PointyTopped => 0,
-        HexagonOrientation.FlatTopped => Units.Angle.ConvertDegreeToRadian(90),
+        HexagonOrientation.FlatTopped => Units.Angle.DegreeToRadian(90),
         _ => throw new System.ArgumentOutOfRangeException(nameof(orientation))
       };
 

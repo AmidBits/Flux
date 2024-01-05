@@ -186,6 +186,11 @@
 
     /// <summary>Ensure valid characters for nysiis code generation.</summary>
     public static string GetValidCharacters(string text)
-      => text.RemoveUnicodeMarks().ReplaceUnicodeLatinStrokes().RemoveAll(char.IsLetter).AsSpan().ToUpperCase(System.Globalization.CultureInfo.CurrentCulture).ToString();
+    {
+      var sb = text.RemoveUnicodeMarks();
+      sb.ReplaceUnicodeLatinStrokes();
+      sb.RemoveAll(char.IsLetter);
+      return sb.AsSpan().ToUpperCase(System.Globalization.CultureInfo.CurrentCulture).ToString();
+    }
   }
 }

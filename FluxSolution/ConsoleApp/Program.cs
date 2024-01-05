@@ -111,44 +111,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      // for(var i=0;i<90;i++)
 
-      var initialAngle = Flux.Units.Angle.ConvertDegreeToRadian(45);
-      var initialVelocity = 10;
-
-      var dht2d = new Flux.Mechanics.DownhillTrajectory2D(1, initialAngle, initialVelocity);
-      var drt2d = new Flux.Mechanics.DroppedTrajectory2D(1, initialAngle, initialVelocity);
-      var ft2d = new Flux.Mechanics.FlatTrajectory2D(initialAngle, initialVelocity);
-      var ut2d = new Flux.Mechanics.UphillTrajectory2D(1, initialAngle, initialVelocity);
-
-      //var th = dt2d.GetHeight(ht);
-
-      var grid = new Flux.Model.Grid<int>(4, 4);
-
-      var ints = new int[] { 1, 2, 3 };
-
-
-
-      //for (var index = 0; index < grid.Rows * grid.Columns; index++) grid[index] = index + 1;
-      //grid[15] = 0;
-
-      //System.Console.WriteLine(grid.ToConsoleString());
-
-      //var fifteen = CompletedPuzzle();
-
-      ////System.Console.Clear();
-
-      //PrintPuzzle(fifteen);
-
-      //System.Console.WriteLine(string.Join(", ", MovableBlocks(fifteen)));
-
-      //var b = TryMoveBlock(fifteen, 12, Flux.Units.CardinalDirection.S);
-
-      ////System.Console.Clear();
-
-      //PrintPuzzle(fifteen);
-
-      //System.Console.WriteLine(string.Join(", ", MovableBlocks(fifteen)));
     }
 
     #region Puzzle

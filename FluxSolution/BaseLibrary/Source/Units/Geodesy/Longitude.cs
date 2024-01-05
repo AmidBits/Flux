@@ -15,7 +15,7 @@ namespace Flux.Units
     /// <summary>Creates a new Longitude from the specfied Angle instance. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(Angle angle) : this(angle.ToUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
-    public double Radians => Angle.ConvertDegreeToRadian(m_longitude);
+    public double Radians => Angle.DegreeToRadian(m_longitude);
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
     public int TheoreticalTimezoneOffset => GetTheoreticalTimezoneOffset(m_longitude);
@@ -34,7 +34,7 @@ namespace Flux.Units
 
     /// <summary></summary>
     /// <param name="lon">The longitude in radians.</param>
-    public static Longitude FromRadians(double lon) => new(Angle.ConvertRadianToDegree(lon));
+    public static Longitude FromRadians(double lon) => new(Angle.RadianToDegree(lon));
 
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
     /// <param name="longitude">The longitude in degrees.</param>
@@ -88,11 +88,11 @@ namespace Flux.Units
     {
       if (format is not null)
       {
-        if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronymString()))
+        if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
           return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '));
-        if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronymString()))
+        if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
           return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '));
-        if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronymString()))
+        if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
           return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '));
 
         return ToAngle().ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);

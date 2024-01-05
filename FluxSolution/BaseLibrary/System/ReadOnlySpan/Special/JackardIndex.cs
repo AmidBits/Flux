@@ -7,6 +7,6 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Jaccard_index"/>
     /// </summary>
     public static double GetJackardIndex<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)source.Intersect(target, equalityComparer).Length / (double)source.Union(target, equalityComparer).Length;
+      => (double)source.Intersect(target, equalityComparer).Count / (double)source.UnionDistinct(target, equalityComparer).Count;
   }
 }

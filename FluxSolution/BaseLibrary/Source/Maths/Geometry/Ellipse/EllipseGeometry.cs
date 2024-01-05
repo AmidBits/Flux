@@ -82,7 +82,7 @@ namespace Flux.Geometry
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, circularArc * maxRandomness);
 
-        var (x, y) = Units.Angle.ConvertRotationAngleToCartesian2Ex(angle);
+        var (x, y) = Units.Angle.RotationAngleToCartesian2Ex(angle);
 
         yield return resultSelector(x * m_a, y * m_b);
       }
@@ -147,17 +147,17 @@ namespace Flux.Geometry
     #region Static methods
 
     /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
-    public static (double a, double b) ConvertCartesian2ToEllipse(double x, double y)
+    public static (double xAxis, double yAxis) Cartesian2ToEllipse(double x, double y)
       => (
         System.Math.Sqrt(x * x + y * y),
         System.Math.Atan2(y, x)
       );
 
     /// <summary></summary>
-    public static (double x, double y) ConvertEllipseToCartesian2(double a, double b, double rotationAngle = 0)
+    public static (double x, double y) EllipseToCartesian2(double xAxis, double yAxis, double rotationAngle = 0)
       => (
-        System.Math.Cos(rotationAngle) * a,
-        System.Math.Sin(rotationAngle) * b
+        System.Math.Cos(rotationAngle) * xAxis,
+        System.Math.Sin(rotationAngle) * yAxis
       );
 
     /// <summary>

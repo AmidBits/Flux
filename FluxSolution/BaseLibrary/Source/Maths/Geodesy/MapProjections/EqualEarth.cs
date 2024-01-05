@@ -62,8 +62,8 @@ namespace Flux.Geometry.MapProjections
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
       return new GeographicCoordinate(
-        Units.Angle.ConvertRadianToDegree(lat),
-        Units.Angle.ConvertRadianToDegree(lon),
+        Units.Angle.RadianToDegree(lat),
+        Units.Angle.RadianToDegree(lon),
         location.Z
       );
     }

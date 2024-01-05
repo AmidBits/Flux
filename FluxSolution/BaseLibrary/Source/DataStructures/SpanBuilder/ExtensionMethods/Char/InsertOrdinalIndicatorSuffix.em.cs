@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Appends ordinal extensions (e.g. rd, th, etc.) to any digit numerals (e.g. 3, 12, etc.) in the <paramref name="source"/> that satisfies the <paramref name="predicate"/>.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
     /// <param name="predicate">The first string is the string up until and including the numeric value, and the second string is the suffix to be affixed.</param>
-    public static SpanBuilder<char> InsertOrdinalIndicatorSuffix(ref this SpanBuilder<char> source, System.Func<string, string, string, bool>? predicate = null)
+    public static SpanBuilder<char> InsertOrdinalIndicatorSuffix(this SpanBuilder<char> source, System.Func<string, string, string, bool>? predicate = null)
     {
       predicate ??= (textOnLeft, suffix, textOnRight) => { System.Diagnostics.Debug.WriteLine($"{textOnLeft}>{suffix}<{textOnRight}"); return true; };
 

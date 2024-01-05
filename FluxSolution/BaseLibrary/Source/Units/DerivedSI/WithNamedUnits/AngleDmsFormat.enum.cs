@@ -2,7 +2,7 @@
 {
   public static partial class Em
   {
-    public static string GetAcronymString(this Units.AngleDmsFormat format)
+    public static string GetAcronym(this Units.AngleDmsFormat format)
     => format switch
     {
       Units.AngleDmsFormat.DecimalDegrees => "D",

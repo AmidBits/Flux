@@ -18,7 +18,7 @@ namespace Flux.Units
     /// <summary>Creates a new Latitude from the specfied Angle instance. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
     public Latitude(Angle angle) : this(angle.ToUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
-    public double Radians => Angle.ConvertDegreeToRadian(m_latitude);
+    public double Radians => Angle.DegreeToRadian(m_latitude);
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
@@ -48,7 +48,7 @@ namespace Flux.Units
     /// <summary></summary>
     /// <param name="lat">The latitude in radians.</param>
     /// <returns></returns>
-    public static Latitude FromRadians(double lat) => new(Angle.ConvertRadianToDegree(lat));
+    public static Latitude FromRadians(double lat) => new(Angle.RadianToDegree(lat));
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     /// <param name="lat">The latitude in radians.</param>
@@ -114,11 +114,11 @@ namespace Flux.Units
     {
       if (format is not null)
       {
-        if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronymString()))
+        if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
           return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '));
-        if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronymString()))
+        if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
           return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '));
-        if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronymString()))
+        if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
           return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '));
 
         return ToAngle().ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
