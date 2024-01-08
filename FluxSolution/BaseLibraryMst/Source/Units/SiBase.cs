@@ -1,8 +1,6 @@
-﻿using Flux;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Foundation.Units
+namespace Units
 {
   [TestClass]
   public class SiBase

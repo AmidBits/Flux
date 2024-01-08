@@ -5,70 +5,98 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
     /// <summary>
-    /// <para>Returns the (floor) square root of the <paramref name="y"/>, using Newton's method.</para>
+    /// <para>Returns the (floor) square root of the <paramref name="number"/>, using Newton's method.</para>
     /// <see href="https://en.wikipedia.org/wiki/Square_root"/>
     /// </summary>
-    /// <returns>Returns the integer (i.e. floor) square root of <paramref name="y"/>.</returns>
-    /// <remarks>The ceiling square root is <see cref="IntegerSqrt"/>() + 1.</remarks>
-    public static TSelf IntegerSqrt<TSelf>(this TSelf y)
+    /// <param name="number">The square number to find the square-<paramref name="root"/> of.</param>
+    /// <returns>Returns the integer (i.e. floor) square root of <paramref name="number"/>.</returns>
+    /// <remarks>The ceiling square root is <see cref="IntegerSqrt"/> + 1.</remarks>
+    public static TSelf IntegerSqrt<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertNonNegative(y);
+      AssertNonNegative(number);
 
-      if (TryFastIntegerSqrt(y, out var root)) // Testing.
+      if (TryFastIntegerSqrt(number, out var root)) // Testing!
         return root;
 
-      var x0 = TSelf.One << (y.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square number.
+      var x0 = TSelf.One << (number.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square number.
 
       if (!TSelf.IsZero(x0))
       {
-        while (((x0 + y / x0) >> 1) is var x1 && x1 < x0)
+        while (((x0 + number / x0) >> 1) is var x1 && x1 < x0)
           x0 = x1;
 
         return x0;
       }
 
-      return y;
+      return number;
     }
 
-    /// <summary>Returns whether <paramref name="y"/> is the integer (not necessarily perfect) square of <paramref name="x"/>.</summary>
-    public static bool IsIntegerSqrt<TSelf>(this TSelf y, TSelf x)
+    /// <summary>
+    /// <para>Returns whether <paramref name="number"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="number">The square number to find the square-<paramref name="root"/> of.</param>
+    /// <param name="root">The resulting square-root of <paramref name="number"/>.</param>
+    /// <returns>Whether the <paramref name="number"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
+    public static bool IsIntegerSqrt<TSelf>(this TSelf number, TSelf root)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => y >= (x * x) && (x + TSelf.One) is var x1 && y < (x1 * x1);
+      => (root * root) <= number && number < ((root + TSelf.One) * (root + TSelf.One));
+    // Does this work? => number / root >= root && number / (root + TSelf.One) < (root + TSelf.One);
 
-    /// <summary>Returns whether <paramref name="y"/> is a perfect square of <paramref name="x"/>.</summary>
-    public static bool IsPerfectIntegerSqrt<TSelf>(this TSelf y, TSelf x)
+    /// <summary>
+    /// <para>Returns whether <paramref name="number"/> is a perfect square of <paramref name="root"/>.</para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="number">The square number to find the square-<paramref name="root"/> of.</param>
+    /// <param name="root">The resulting square-root of <paramref name="number"/>.</param>
+    /// <returns>Whether the <paramref name="number"/> is a perfect square of <paramref name="root"/>.</returns>
+    /// <remarks>Not using "y == (x * x)" because risk of overflow.</remarks>
+    public static bool IsPerfectIntegerSqrt<TSelf>(this TSelf number, TSelf root)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => y / x == x && y % x == TSelf.Zero; // Not using "y == checked(x * x)" because risk of overflow.
+      => number / root == root // Is integer root?
+      && TSelf.IsZero(number % root); // Is perfect integer root?
 
-    public static bool TryFastIntegerSqrt<TSelf>(TSelf y, out TSelf sqrt)
+    /// <summary>
+    /// <para>Attempts to compute the (floor) square root of <paramref name="number"/> into the out parameter <paramref name="root"/>. This is a faster but limited version.</para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="number">The square number to find the square-<paramref name="root"/> of.</param>
+    /// <param name="root">The resulting square-root of <paramref name="number"/>.</param>
+    /// <returns>Whether the operation was successful.</returns>
+    public static bool TryFastIntegerSqrt<TSelf>(TSelf number, out TSelf root)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (y.GetBitLength() <= 53)
+      if (number.GetBitLength() <= 53)
       {
-        sqrt = TSelf.CreateChecked(double.Sqrt(double.CreateChecked(y)));
+        root = TSelf.CreateChecked(double.Sqrt(double.CreateChecked(number)));
         return true;
       }
 
-      sqrt = TSelf.Zero;
+      root = TSelf.Zero;
       return false;
     }
 
-    /// <summary>Attempts to compute the (floor) square root of <paramref name="y"/> into the out parameter <paramref name="x"/>, using Newton's method.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
-    /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
-    public static bool TryIntegerSqrt<TSelf>(this TSelf y, out TSelf x)
+    /// <summary>
+    /// <para>Attempts to compute the (floor) square root of <paramref name="number"/> into the out parameter <paramref name="root"/>, using Newton's method.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Square_root"/>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="number">The square number to find the square-<paramref name="root"/> of.</param>
+    /// <param name="root">The resulting square-root of <paramref name="number"/>.</param>
+    /// <returns>Whether the operation was successful.</returns>
+    public static bool TryIntegerSqrt<TSelf>(this TSelf number, out TSelf root)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       try
       {
-        x = IntegerSqrt(y);
+        root = IntegerSqrt(number);
 
         return true;
       }
       catch { }
 
-      x = TSelf.Zero;
+      root = TSelf.Zero;
 
       return false;
     }

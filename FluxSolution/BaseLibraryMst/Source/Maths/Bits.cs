@@ -2,10 +2,10 @@
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Maths
+namespace Numerics
 {
   [TestClass]
-  public class BitOperations
+  public class Bits
   {
     [TestMethod]
     public void BitFoldLeft()
@@ -147,8 +147,8 @@ namespace Maths
     [TestMethod]
     public void GetMaxDigitCount()
     {
-      Assert.AreEqual(4, Bits.GetMaxDigitCount(10, 10, false));
-      Assert.AreEqual(3, Bits.GetMaxDigitCount(10, 10, true));
+      Assert.AreEqual(4, Flux.Bits.GetMaxDigitCount(10, 10, false));
+      Assert.AreEqual(3, Flux.Bits.GetMaxDigitCount(10, 10, true));
     }
 
     [TestMethod]

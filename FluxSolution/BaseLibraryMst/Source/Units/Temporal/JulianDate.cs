@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Foundation
+namespace Units
 {
   [TestClass]
   public class JulianDate

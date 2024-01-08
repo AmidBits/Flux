@@ -2,10 +2,10 @@
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GenericMath
+namespace Numerics
 {
   [TestClass]
-  public class Interpolations
+  public class Interpolation
   {
     [TestMethod]
     public void InterpolateCosine()

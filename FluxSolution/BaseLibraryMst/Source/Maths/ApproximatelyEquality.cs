@@ -2,7 +2,7 @@
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GenericMath
+namespace Numerics
 {
   [TestClass]
   public class ApproximateEquality

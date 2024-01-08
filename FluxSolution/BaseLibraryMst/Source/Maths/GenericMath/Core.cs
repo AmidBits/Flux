@@ -2,7 +2,7 @@
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GenericMath
+namespace Maths
 {
   [TestClass]
   public class Core

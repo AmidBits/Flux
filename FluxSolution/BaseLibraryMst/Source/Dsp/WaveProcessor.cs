@@ -1,9 +1,7 @@
-﻿using System.Linq;
+﻿#if NET7_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Flux;
-
-namespace Foundation.Dsp
+namespace Dsp
 {
   [TestClass]
   public class WaveProcessor
@@ -62,3 +60,4 @@ namespace Foundation.Dsp
     }
   }
 }
+#endif

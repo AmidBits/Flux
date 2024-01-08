@@ -2,7 +2,7 @@
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GenericMath
+namespace Units
 {
   [TestClass]
   public class Radix

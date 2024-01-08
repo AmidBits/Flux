@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using Flux;
+﻿#if NET7_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Foundation.Dsp
+namespace Dsp
 {
   [TestClass]
   public class WaveGenerator
@@ -49,3 +48,4 @@ namespace Foundation.Dsp
     }
   }
 }
+#endif

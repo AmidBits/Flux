@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using Flux;
+﻿#if NET7_0_OR_GREATER
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Foundation
+namespace Maths
 {
   [TestClass]
   public class Geometry
@@ -86,3 +85,4 @@ namespace Foundation
     //}
   }
 }
+#endif

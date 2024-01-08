@@ -1,9 +1,8 @@
 ﻿#if NET7_0_OR_GREATER
-using System;
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GenericMath
+namespace Maths
 {
   [TestClass]
   public class Modular
