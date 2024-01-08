@@ -8,14 +8,14 @@ namespace Flux
     /// <para>Reverses the bytes of an integer. The LSBs (least significant bytes) becomes the MSBs (most significant bytes) and vice versa, i.e. the bytes are mirrored across the integer storage space. It's a reversal of all bytes, i.e. all 8-bit segments.</para>
     /// See <see cref="ReverseBits{TSelf}(TSelf)"/> for bit reversal.
     /// </summary>
-    public static TSelf ReverseBytes<TSelf>(this TSelf value)
+    public static TSelf ReverseBytes<TSelf>(this TSelf integer)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var bytes = new byte[value.GetByteCount()]; // Retrieve the byte size of the number, which will be the basis for the byte reversal.
+      var bytes = new byte[integer.GetByteCount()]; // Retrieve the byte size of the number, which will be the basis for the byte reversal.
 
-      value.WriteBigEndian(bytes); // Write as BigEndian (high-to-low).
+      integer.WriteBigEndian(bytes); // Write as BigEndian (high-to-low).
 
-      return TSelf.ReadLittleEndian(bytes, typeof(System.Numerics.IUnsignedNumber<>).IsSupertypeOf(typeof(TSelf))); // Read as LittleEndian (low-to-high).
+      return TSelf.ReadLittleEndian(bytes, !integer.IsSigned()); // Read as LittleEndian (low-to-high).
     }
 
 #else

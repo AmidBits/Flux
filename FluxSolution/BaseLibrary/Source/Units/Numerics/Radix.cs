@@ -215,7 +215,7 @@ namespace Flux
       /// <remarks>The ceiling integer log: (<paramref name="value"/> >= 1 ? IntegerLogFloor(<paramref name="value"/> - 1, <paramref name="radix"/>) + 1 : 0).</remarks>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static TSelf IntegerLogFloor<TSelf>(TSelf value, TSelf radix)
-        where TSelf : System.Numerics.INumber<TSelf>
+        where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
         Maths.AssertNonNegative(value);
         Assert(radix);
@@ -360,6 +360,9 @@ namespace Flux
 
           return (-powOfTowardsZero, -powOfAwayFromZero);
         }
+
+        if (radix == (TSelf.One + TSelf.One))
+          return Bits.PowOf2(value, proper);
 
         powOfTowardsZero = Maths.IntegerPow(radix, TSelf.CreateChecked(IntegerLogFloor(value, radix)));
         powOfAwayFromZero = powOfTowardsZero != value ? powOfTowardsZero * radix : powOfTowardsZero; // If toward-zero is not equal to value, make away-from-zero the next power-of.

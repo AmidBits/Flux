@@ -15,12 +15,12 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        yield return Fx.GetPropertyInfos(e.Current).Select(pi => pi.Name).ToArray();
-        yield return Fx.GetPropertyInfos(e.Current).Select(pi => pi.PropertyType).ToArray();
+        yield return FxReflection.GetPropertyInfos(e.Current).Select(pi => pi.Name).ToArray();
+        yield return FxReflection.GetPropertyInfos(e.Current).Select(pi => pi.PropertyType).ToArray();
 
         do
         {
-          yield return Fx.GetPropertyInfos(e.Current).Select((pi, i) => valueSelector(pi.GetValue(e.Current), i)).ToArray();
+          yield return FxReflection.GetPropertyInfos(e.Current).Select((pi, i) => valueSelector(pi.GetValue(e.Current), i)).ToArray();
         }
         while (e.MoveNext());
       }

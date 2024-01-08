@@ -11,6 +11,9 @@
       AssertNonNegative(y, nameof(y));
       AssertRoot(n);
 
+      if (TryFastIntegerRootN(y, n, out TSelf root)) // Testing.
+        return root;
+
       var nM1 = n - TSelf.One;
       var c = TSelf.One;
       var d = (nM1 + y) / n;
@@ -82,6 +85,19 @@
     public static bool IsPerfectIntegerRootN<TSelf>(TSelf y, TSelf n, TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => y == IntegerPow(x, n);
+
+    public static bool TryFastIntegerRootN<TSelf>(TSelf y, TSelf n, out TSelf root)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      if (y.GetBitLength() <= 53)
+      {
+        root = TSelf.CreateChecked(double.RootN(double.CreateChecked(y), int.CreateChecked(n)));
+        return true;
+      }
+
+      root = TSelf.Zero;
+      return false;
+    }
 
     /// <summary>Attempts to compute the (floor) <paramref name="n"/>th root of <paramref name="y"/> into the out parameter <paramref name="x"/>.</summary>
     public static bool TryIntegerRootN<TSelf>(TSelf y, TSelf n, out TSelf x)

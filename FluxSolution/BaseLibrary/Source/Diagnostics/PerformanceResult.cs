@@ -53,6 +53,6 @@ namespace Flux.Services
     }
 
     public override string ToString()
-      => $"{GetType().Name} {{ {Identifier}, x {Iterations.ToGroupedString()}, {TotalTime} (avg {new System.TimeSpan(TotalTime.Ticks / (Iterations > 0 ? Iterations : 1))}) {(LastResult is null ? @"null" : $"{LastResult}[{LastResult.GetType().Name}]")} }}";
+      => $"{GetType().Name} {{ {Identifier}, x {Iterations.ToString("#,###0")}, {TotalTime} (avg {new System.TimeSpan(TotalTime.Ticks / (Iterations > 0 ? Iterations : 1))}) {(LastResult is null ? @"null" : $"{LastResult}[{LastResult.GetType().Name}]")} }}";
   }
 }

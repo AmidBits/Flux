@@ -11,13 +11,13 @@ namespace Flux
     /// <returns>The ceiling integer log2 of <paramref name="value"/>.</returns>
     public static TSelf IntegerLog2Ceiling<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.Log2(value) is var log2 && TSelf.IsPow2(value) ? log2 : log2 + TSelf.One;
+      => TSelf.Log2(value) is var log2floor && TSelf.IsPow2(value) ? log2floor : log2floor + TSelf.One;
 
     /// <summary>Computes the floor integer-log-2 (a.k.a. floor-log-2) of <paramref name="value"/>. The log-2 also serves as the bit (0-based) index of a power-of-2 <paramref name="value"/>.</summary>
     /// <param name="value">The value of which to find the log.</param>
     /// <returns>The floor integer-log-2 of <paramref name="value"/>.</returns>
     /// <remarks>The ceiling log2 of <paramref name="value"/> = (x > 1 ? GetIntegerLog2Floor(x - 1) + 1 : 0).</remarks>
-    public static TSelf GetIntegerLog2Floor<TSelf>(this TSelf value)
+    public static TSelf IntegerLog2Floor<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.Log2(value);
 

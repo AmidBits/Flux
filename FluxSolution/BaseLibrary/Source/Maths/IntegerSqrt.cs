@@ -15,6 +15,9 @@ namespace Flux
     {
       AssertNonNegative(y);
 
+      if (TryFastIntegerSqrt(y, out var root)) // Testing.
+        return root;
+
       var x0 = TSelf.One << (y.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square number.
 
       if (!TSelf.IsZero(x0))
@@ -37,6 +40,19 @@ namespace Flux
     public static bool IsPerfectIntegerSqrt<TSelf>(this TSelf y, TSelf x)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => y / x == x && y % x == TSelf.Zero; // Not using "y == checked(x * x)" because risk of overflow.
+
+    public static bool TryFastIntegerSqrt<TSelf>(TSelf y, out TSelf sqrt)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      if (y.GetBitLength() <= 53)
+      {
+        sqrt = TSelf.CreateChecked(double.Sqrt(double.CreateChecked(y)));
+        return true;
+      }
+
+      sqrt = TSelf.Zero;
+      return false;
+    }
 
     /// <summary>Attempts to compute the (floor) square root of <paramref name="y"/> into the out parameter <paramref name="x"/>, using Newton's method.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>

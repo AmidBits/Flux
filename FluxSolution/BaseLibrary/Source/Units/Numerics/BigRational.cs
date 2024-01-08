@@ -246,9 +246,9 @@ namespace Flux
       public static BigRational CreateChecked<TOther>(TOther o)
         where TOther : System.Numerics.INumberBase<TOther>
       {
-        if (o.IsIBinaryInteger())
+        if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IBinaryInteger<>)))
           return new(System.Numerics.BigInteger.CreateChecked(o));
-        else if (o.IsIFloatingPoint())
+        else if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IFloatingPoint<>)))
           return ApproximateRational(double.CreateChecked(o));
         else if (o is BigRational br)
           return br;
@@ -258,9 +258,9 @@ namespace Flux
       public static BigRational CreateSaturating<TOther>(TOther o)
         where TOther : System.Numerics.INumberBase<TOther>
       {
-        if (o.IsIBinaryInteger())
+        if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IBinaryInteger<>)))
           return new(System.Numerics.BigInteger.CreateSaturating(o));
-        else if (o.IsIFloatingPoint())
+        else if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IFloatingPoint<>)))
           return ApproximateRational(double.CreateSaturating(o));
         else if (o is BigRational br)
           return br;
@@ -270,9 +270,9 @@ namespace Flux
       public static BigRational CreateTruncating<TOther>(TOther o)
         where TOther : System.Numerics.INumberBase<TOther>
       {
-        if (o.IsIBinaryInteger())
+        if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IBinaryInteger<>)))
           return new(System.Numerics.BigInteger.CreateTruncating(o));
-        else if (o.IsIFloatingPoint())
+        else if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IFloatingPoint<>)))
           return ApproximateRational(double.CreateTruncating(o));
         else if (o is BigRational br)
           return br;

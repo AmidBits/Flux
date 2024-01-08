@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class FxReflection
   {
     /// <summary>Enumerates all FieldInfo matching the specified binding flags. If the source is a System.Type, the fields are enumerated from the type, otherwise the instance is used.</summary>
     public static bool TryGetPropertyValue(this System.Reflection.PropertyInfo source, object? target, out object? result)

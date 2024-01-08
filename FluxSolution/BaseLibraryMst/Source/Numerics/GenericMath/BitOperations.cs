@@ -2,7 +2,7 @@
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GenericMath
+namespace Maths
 {
   [TestClass]
   public class BitOperations
@@ -48,7 +48,7 @@ namespace GenericMath
     [TestMethod]
     public void GetIntegerLog2()
     {
-      Assert.AreEqual(7, 215.GetIntegerLog2Floor());
+      Assert.AreEqual(7, 215.IntegerLog2Floor());
       Assert.AreEqual((7, 8), 215.IntegerLog2());
     }
 
