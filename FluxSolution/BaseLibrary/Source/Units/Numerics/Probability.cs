@@ -10,10 +10,10 @@ namespace Flux
       public const double MaxValue = 1;
       public const double MinValue = 0;
 
-      private readonly double m_probability;
+      private readonly double m_value;
 
       public Probability(double ratio)
-        => m_probability = ratio >= MinValue && ratio <= MaxValue ? ratio : throw new System.ArgumentOutOfRangeException(nameof(ratio));
+        => m_value = ratio >= MinValue && ratio <= MaxValue ? ratio : throw new System.ArgumentOutOfRangeException(nameof(ratio));
 
       #region Static methods
 
@@ -72,16 +72,16 @@ namespace Flux
       /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
       /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
       /// <returns>The probability, which is in the range [0, 1].</returns>
-      public static Probability OfDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount) => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_probability);
+      public static Probability OfDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount) => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_value);
 
       /// <summary>Computes the odds (p / (1 - p)) ratio of the probability.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Odds"/>
-      public Ratio ToOdds() => new(m_probability, 1 - m_probability);
+      public Ratio ToOdds() => new(m_value, 1 - m_value);
 
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Probability v) => v.m_probability;
+      public static explicit operator double(Probability v) => v.m_value;
       public static explicit operator Probability(double v) => new(v);
 
       public static bool operator <(Probability a, Probability b) => a.CompareTo(b) < 0;
@@ -89,17 +89,17 @@ namespace Flux
       public static bool operator >(Probability a, Probability b) => a.CompareTo(b) > 0;
       public static bool operator >=(Probability a, Probability b) => a.CompareTo(b) >= 0;
 
-      public static Probability operator -(Probability v) => new(-v.m_probability);
-      public static Probability operator +(Probability a, double b) => new(a.m_probability + b);
-      public static Probability operator +(Probability a, Probability b) => a + b.m_probability;
-      public static Probability operator /(Probability a, double b) => new(a.m_probability / b);
-      public static Probability operator /(Probability a, Probability b) => a / b.m_probability;
-      public static Probability operator *(Probability a, double b) => new(a.m_probability * b);
-      public static Probability operator *(Probability a, Probability b) => a * b.m_probability;
-      public static Probability operator %(Probability a, double b) => new(a.m_probability % b);
-      public static Probability operator %(Probability a, Probability b) => a % b.m_probability;
-      public static Probability operator -(Probability a, double b) => new(a.m_probability - b);
-      public static Probability operator -(Probability a, Probability b) => a - b.m_probability;
+      public static Probability operator -(Probability v) => new(-v.m_value);
+      public static Probability operator +(Probability a, double b) => new(a.m_value + b);
+      public static Probability operator +(Probability a, Probability b) => a + b.m_value;
+      public static Probability operator /(Probability a, double b) => new(a.m_value / b);
+      public static Probability operator /(Probability a, Probability b) => a / b.m_value;
+      public static Probability operator *(Probability a, double b) => new(a.m_value * b);
+      public static Probability operator *(Probability a, Probability b) => a * b.m_value;
+      public static Probability operator %(Probability a, double b) => new(a.m_value % b);
+      public static Probability operator %(Probability a, Probability b) => a % b.m_value;
+      public static Probability operator -(Probability a, double b) => new(a.m_value - b);
+      public static Probability operator -(Probability a, Probability b) => a - b.m_value;
       #endregion Overloaded operators
 
       #region Implemented interfaces
@@ -108,16 +108,16 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Probability o ? CompareTo(o) : -1;
 
       // IComparable<>
-      public int CompareTo(Probability other) => m_probability.CompareTo(other.m_probability);
+      public int CompareTo(Probability other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_probability.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
       public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{m_probability}";
+        => string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
 
-      public double Value => m_probability;
+      public double Value => m_value;
 
       #endregion Implemented interfaces
 

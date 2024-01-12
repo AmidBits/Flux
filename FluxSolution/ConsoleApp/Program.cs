@@ -109,12 +109,12 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
 
-      WriteFile();
-      ReadFile();
+      //WriteFile();
+      //ReadFile();
     }
 
     private static void WriteFile()

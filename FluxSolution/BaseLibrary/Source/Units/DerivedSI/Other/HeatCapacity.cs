@@ -19,8 +19,8 @@ namespace Flux
       JoulePerKelvin,
     }
 
-    /// <summary>Surface tension, unit of Newton per meter.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Surface_tension"/>
+    /// <summary>Heat capacity, unit of Joule per Kelvin.</summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Heat_capacity"/>
     public readonly record struct HeatCapacity
       : System.IComparable, System.IComparable<HeatCapacity>, System.IFormattable, IUnitValueQuantifiable<double, HeatCapacityUnit>
     {

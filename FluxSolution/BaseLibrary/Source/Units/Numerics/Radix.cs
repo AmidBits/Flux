@@ -481,7 +481,7 @@ namespace Flux
 
       // IQuantifiable<>
       public string ToValueString(string? format, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{m_value}";
+        => string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
 
       public int Value => m_value;
 

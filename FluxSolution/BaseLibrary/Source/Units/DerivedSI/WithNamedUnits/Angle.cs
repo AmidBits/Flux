@@ -49,7 +49,7 @@
     {
       public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
-      public static readonly Angle FullTurn = new(System.Math.PI * 2);
+      public static readonly Angle FullTurn = new(System.Math.Tau);
       public static readonly Angle HalfTurn = new(System.Math.PI);
       public static readonly Angle QuarterTurn = new(System.Math.PI / 2);
 

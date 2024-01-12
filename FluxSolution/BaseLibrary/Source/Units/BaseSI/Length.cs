@@ -51,8 +51,7 @@ namespace Flux
     public readonly record struct Length
       : System.IComparable, System.IComparable<Length>, System.IFormattable, IUnitValueQuantifiable<double, LengthUnit>
     {
-      public const double PiParsecsInMeters = 96939420213600000;
-      public const double OneParsecInMeters = PiParsecsInMeters / System.Math.PI;
+      public const double OneParsecInMeters = 30856775814913672;
 
       public const LengthUnit DefaultUnit = LengthUnit.Meter;
 

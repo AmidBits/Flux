@@ -31,8 +31,7 @@ namespace Flux
     {
       public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
 
-      public static ElectricalResistance VonKlitzing
-        => new(25812.80745); // 25812.80745;
+      public static ElectricalResistance VonKlitzingConstant => new(25812.80745); // 25812.80745;
 
       private readonly double m_value;
 

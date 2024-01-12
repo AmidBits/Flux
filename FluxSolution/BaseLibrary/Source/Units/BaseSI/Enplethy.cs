@@ -22,9 +22,13 @@ namespace Flux
     public readonly record struct Enplethy
       : System.IComparable, System.IComparable<Enplethy>, System.IFormattable, IUnitValueQuantifiable<double, EnplethyUnit>
     {
+      /// <summary>The exact number of elementary entities in one mole.</summary>
+      public static readonly double AvagadroNumber = 6.02214076e23;
+
       public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
 
-      public static readonly Enplethy AvagadroConstant = new(1 / 6.02214076e23);
+      /// <summary>The dimension of the Avagadro constant is the reciprocal of amount of substance.</summary>
+      public static readonly Enplethy AvagadroConstant = new(1 / AvagadroNumber);
 
       private readonly double m_value;
 
