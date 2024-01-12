@@ -49,7 +49,7 @@ namespace Flux
     /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Parts-per_notation"/>
     public readonly record struct PartsPerNotation
-      : System.IComparable, System.IComparable<PartsPerNotation>, IUnitQuantifiable<double, PartsPerNotationUnit>
+      : System.IComparable, System.IComparable<PartsPerNotation>, IUnitValueQuantifiable<double, PartsPerNotationUnit>
     {
       public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Percent;
 
@@ -111,13 +111,13 @@ namespace Flux
       public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_parts; init => m_parts = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_parts;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(PartsPerNotationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(PartsPerNotationUnit unit = DefaultUnit)
+      public double GetUnitValue(PartsPerNotationUnit unit)
         => unit switch
         {
           PartsPerNotationUnit.One => m_parts,
@@ -132,9 +132,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(PartsPerNotationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

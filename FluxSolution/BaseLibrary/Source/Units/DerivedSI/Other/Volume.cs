@@ -50,7 +50,7 @@ namespace Flux
     /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
     public readonly record struct Volume
-      : System.IComparable, System.IComparable<Volume>, System.IFormattable, IUnitQuantifiable<double, VolumeUnit>
+      : System.IComparable, System.IComparable<Volume>, System.IFormattable, IUnitValueQuantifiable<double, VolumeUnit>
     {
       public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
 
@@ -119,13 +119,13 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(VolumeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(VolumeUnit unit = DefaultUnit)
+      public double GetUnitValue(VolumeUnit unit)
         => unit switch
         {
           VolumeUnit.Millilitre => m_value * 1000000,
@@ -144,9 +144,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(VolumeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

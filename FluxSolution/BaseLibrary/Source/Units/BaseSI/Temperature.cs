@@ -7,7 +7,7 @@ namespace Flux
       {
         Units.TemperatureUnit.Celsius => preferUnicode ? "\u2103" : "\u00B0C",
         Units.TemperatureUnit.Fahrenheit => preferUnicode ? "\u2109" : "\u00B0F",
-        Units.TemperatureUnit.Kelvin => preferUnicode ? "\u212A" : $"K",
+        Units.TemperatureUnit.Kelvin => preferUnicode ? "\u212A" : "K",
         Units.TemperatureUnit.Rankine => $"\u00B0R",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -27,7 +27,7 @@ namespace Flux
     /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Temperature"/>
     public readonly record struct Temperature
-      : System.IComparable, System.IComparable<Temperature>, System.IFormattable, IUnitQuantifiable<double, TemperatureUnit>
+      : System.IComparable, System.IComparable<Temperature>, System.IFormattable, IUnitValueQuantifiable<double, TemperatureUnit>
     {
       public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
 
@@ -108,13 +108,13 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(TemperatureUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(TemperatureUnit unit = DefaultUnit)
+      public double GetUnitValue(TemperatureUnit unit)
         => unit switch
         {
           TemperatureUnit.Celsius => ConvertKelvinToCelsius(m_value),
@@ -124,9 +124,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(TemperatureUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

@@ -6,7 +6,7 @@ namespace Flux
     /// <see cref="https://en.wikipedia.org/wiki/Cent_(music)"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
     public readonly record struct Cent
-      : System.IComparable<Cent>, IQuantifiable<int>
+      : System.IComparable<Cent>, IValueQuantifiable<int>
     {
       public const double FrequencyRatio = 1.0005777895065548592967925757932;
 
@@ -64,20 +64,22 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
+
       // IComparable<>
       public int CompareTo(Cent other) => m_value.CompareTo(other.m_value);
+
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Cent o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
         => $"{m_value} cent{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
-      public int Value
-        => m_value;
+      public int Value => m_value;
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

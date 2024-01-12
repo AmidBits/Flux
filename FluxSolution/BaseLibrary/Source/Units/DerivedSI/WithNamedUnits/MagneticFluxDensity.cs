@@ -25,7 +25,7 @@ namespace Flux
     /// <summary>Magnetic flux density unit of tesla.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
     public readonly record struct MagneticFluxDensity
-      : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IFormattable, IUnitQuantifiable<double, MagneticFluxDensityUnit>
+      : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxDensityUnit>
     {
       public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
 
@@ -40,7 +40,7 @@ namespace Flux
 
 
       public MetricMultiplicative ToMetricMultiplicative()
-        => new(ToUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
+        => new(GetUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
       public static explicit operator double(MagneticFluxDensity v) => v.m_value;
@@ -76,22 +76,25 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
       public double Value => m_value;
 
       //IUnitQuantifiable<>
-      public string ToUnitString(MagneticFluxDensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(MagneticFluxDensityUnit unit = DefaultUnit)
+      public double GetUnitValue(MagneticFluxDensityUnit unit)
         => unit switch
         {
           MagneticFluxDensityUnit.Tesla => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(MagneticFluxDensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

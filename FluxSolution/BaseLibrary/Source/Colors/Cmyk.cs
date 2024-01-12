@@ -34,7 +34,7 @@ namespace Flux.Colors
       return new Rgb(red, green, blue);
     }
 
-    public static Cmyk FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble()); }
+    public static Cmyk FromRandom(System.Random? rng = null) { rng ??= System.Random.Shared; return new(rng.NextDouble(), rng.NextDouble(), rng.NextDouble(), rng.NextDouble()); }
 
     public override string ToString() => $"{GetType().Name} {{ {m_cyan * 360:N1}\u00B0, {m_magenta * 360:N1}\u00B0, {m_yellow * 360:N1}\u00B0, {m_key * 360:N1}\u00B0 }}";
   }

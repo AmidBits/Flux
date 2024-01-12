@@ -7,7 +7,7 @@ namespace Flux
     /// <param name="rng">The random number generator to use.</param>
     public static (T item, int index) RandomOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Random? rng = null)
     {
-      rng ??= new System.Random();
+      rng ??= System.Random.Shared;
 
       var result = (value, -1);
 

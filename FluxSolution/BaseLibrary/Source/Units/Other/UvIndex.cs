@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>UV index, unit of itself.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ultraviolet_index"/>
     public readonly record struct UvIndex
-    : System.IComparable, System.IComparable<UvIndex>, IQuantifiable<double>
+    : System.IComparable, System.IComparable<UvIndex>, IValueQuantifiable<double>
     {
       private readonly double m_value;
 
@@ -42,12 +42,14 @@ namespace Flux
       public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => string.Format($"UV Index {{0:{format ?? "N1"}}}", m_value);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => string.Format(culture, $"UV Index {{0:{format ?? "N1"}}}", m_value);
+
+      public double Value => m_value;
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

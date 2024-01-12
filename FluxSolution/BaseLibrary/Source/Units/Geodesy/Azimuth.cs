@@ -6,7 +6,7 @@ namespace Flux
     /// <remarks>It may seem unreasonable to perform arithmetic with what could be perceived as a compass quantity, but this really is just another angle quantity hardcoded to degrees and a range of [0, +360).</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
     public readonly record struct Azimuth
-    : System.IComparable<Azimuth>, IQuantifiable<double>
+    : System.IComparable<Azimuth>, IValueQuantifiable<double>
     {
       /// <summary>MaxValue is the open (excluded) endpoint.</summary>
       public const double MaxValue = 360;
@@ -179,14 +179,14 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = true, bool useFullName = false)
-        => new Angle(m_azimuth, AngleUnit.Degree).ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
+      public string ToValueString(string? format = null, bool preferUnicode = true, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => new Angle(m_azimuth, AngleUnit.Degree).ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
 
-      public double Value { get => m_azimuth; init => m_azimuth = value; }
+      public double Value => m_azimuth;
 
       #endregion // Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

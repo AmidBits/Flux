@@ -36,10 +36,10 @@ namespace Units
       Assert.AreEqual(expected.X, actual.x);
       Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 
-      Assert.AreEqual(57.29577951308232, u.ToUnitValue(Flux.Units.AngleUnit.Degree));
-      Assert.AreEqual(63.66197723675813, u.ToUnitValue(Flux.Units.AngleUnit.Gradian));
+      Assert.AreEqual(57.29577951308232, u.GetUnitValue(Flux.Units.AngleUnit.Degree));
+      Assert.AreEqual(63.66197723675813, u.GetUnitValue(Flux.Units.AngleUnit.Gradian));
       Assert.AreEqual(1, u.Value);
-      Assert.AreEqual(0.15915494309189535, u.ToUnitValue(Flux.Units.AngleUnit.Turn));
+      Assert.AreEqual(0.15915494309189535, u.GetUnitValue(Flux.Units.AngleUnit.Turn));
     }
 
     [TestMethod]
@@ -200,7 +200,7 @@ namespace Units
       var u = new Flux.Units.Pressure(1);
 
       Assert.AreEqual(1, u.Value);
-      Assert.AreEqual(0.0001450377377302092, u.ToUnitValue(Flux.Units.PressureUnit.Psi));
+      Assert.AreEqual(0.0001450377377302092, u.GetUnitValue(Flux.Units.PressureUnit.Psi));
     }
 
     [TestMethod]
@@ -224,11 +224,11 @@ namespace Units
     {
       var u = new Flux.Units.LinearVelocity(1);
 
-      Assert.AreEqual(3.2808398950131235, u.ToUnitValue(Flux.Units.LinearVelocityUnit.FootPerSecond));
-      Assert.AreEqual(3.6, u.ToUnitValue(Flux.Units.LinearVelocityUnit.KilometerPerHour));
-      Assert.AreEqual(1.9438444924406046, u.ToUnitValue(Flux.Units.LinearVelocityUnit.Knot));
+      Assert.AreEqual(3.2808398950131235, u.GetUnitValue(Flux.Units.LinearVelocityUnit.FootPerSecond));
+      Assert.AreEqual(3.6, u.GetUnitValue(Flux.Units.LinearVelocityUnit.KilometerPerHour));
+      Assert.AreEqual(1.9438444924406046, u.GetUnitValue(Flux.Units.LinearVelocityUnit.Knot));
       Assert.AreEqual(1, u.Value);
-      Assert.AreEqual(2.2369362920544025, u.ToUnitValue(Flux.Units.LinearVelocityUnit.MilePerHour));
+      Assert.AreEqual(2.2369362920544025, u.GetUnitValue(Flux.Units.LinearVelocityUnit.MilePerHour));
     }
 
     [TestMethod]

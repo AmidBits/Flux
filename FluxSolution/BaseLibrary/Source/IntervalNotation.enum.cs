@@ -59,15 +59,15 @@ namespace Flux
   /// </summary>
   public enum IntervalNotation
   {
-    /// <summary>A closed interval is an interval which includes all its limit points, and is denoted with square brackets: "[ low , high ]"</summary>
+    /// <summary>A closed interval is an interval which includes all its limit points, and is denoted with square brackets: [min , max]</summary>
     Closed,
     /// <summary>A half-open interval includes only one of its endpoints, and is denoted by mixing the notations for open and closed intervals.</summary>
-    /// <remarks>This is a half-open interval on the lower, or left side, value: "( low , high ]"</remarks>
+    /// <remarks>This is a half-open interval on the minimum value: (min, max]</remarks>
     HalfOpenLeft,
     /// <summary>A half-open interval includes only one of its endpoints, and is denoted by mixing the notations for open and closed intervals.</summary>
-    /// <remarks>This is a half-open interval on the higher, or right side, value: "[ low , high )"</remarks>
+    /// <remarks>This is a half-open interval on the maximum value: [min, max)</remarks>
     HalfOpenRight,
-    /// <summary>An open interval does not include its endpoints, and is indicated with parentheses: "( low , high )"</summary>
+    /// <summary>An open interval does not include its endpoints, and is indicated with parentheses: (min , max)</summary>
     Open,
   }
 }

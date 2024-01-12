@@ -25,7 +25,7 @@ namespace Flux
     /// <summary>Power unit of watt.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Power"/>
     public readonly record struct Power
-      : System.IComparable, System.IComparable<Power>, System.IEquatable<Power>, System.IFormattable, IUnitQuantifiable<double, PowerUnit>
+      : System.IComparable, System.IComparable<Power>, System.IEquatable<Power>, System.IFormattable, IUnitValueQuantifiable<double, PowerUnit>
     {
       public const PowerUnit DefaultUnit = PowerUnit.Watt;
 
@@ -41,12 +41,13 @@ namespace Flux
         };
 
       #region Static methods
-      /// <summary>Creates a new Power instance from the specified current and voltage.</summary>
+
+      /// <summary>Creates a new Power instance from the specified <paramref name="current"/> and <paramref name="voltage"/>.</summary>
       /// <param name="current"></param>
       /// <param name="voltage"></param>
-
       public static Power From(ElectricCurrent current, Voltage voltage)
         => new(current.Value * voltage.Value);
+
       #endregion Static methods
 
       #region Overloaded operators
@@ -83,13 +84,13 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(PowerUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(PowerUnit unit = DefaultUnit)
+      public double GetUnitValue(PowerUnit unit)
         => unit switch
         {
           PowerUnit.Watt => m_value,
@@ -98,9 +99,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(PowerUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

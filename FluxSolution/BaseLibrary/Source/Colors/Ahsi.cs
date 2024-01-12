@@ -19,7 +19,7 @@ namespace Flux.Colors
     /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
     public Argb ToArgb() => new(System.Convert.ToByte(m_alpha * 255), HSI.ToRgb());
 
-    public static Ahsi FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new Ahsi(rng.NextDouble(), Hsi.FromRandom(rng)); }
+    public static Ahsi FromRandom(System.Random? rng = null) { rng ??= System.Random.Shared; return new Ahsi(rng.NextDouble(), Hsi.FromRandom(rng)); }
 
     public override string ToString() => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HSI.Hue:N1}\u00B0, {HSI.Saturation * 100:N1}%, {HSI.Intensity * 100:N1}% }}";
   }

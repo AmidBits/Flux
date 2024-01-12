@@ -20,7 +20,7 @@ namespace Flux
     /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Luminous_intensity"/>
     public readonly record struct LuminousIntensity
-      : System.IComparable, System.IComparable<LuminousIntensity>, System.IFormattable, IUnitQuantifiable<double, LuminousIntensityUnit>
+      : System.IComparable, System.IComparable<LuminousIntensity>, System.IFormattable, IUnitValueQuantifiable<double, LuminousIntensityUnit>
     {
       public const LuminousIntensityUnit DefaultUnit = LuminousIntensityUnit.Candela;
 
@@ -70,23 +70,25 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(LuminousIntensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(LuminousIntensityUnit unit = DefaultUnit)
+      public double GetUnitValue(LuminousIntensityUnit unit)
         => unit switch
         {
           LuminousIntensityUnit.Candela => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(LuminousIntensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

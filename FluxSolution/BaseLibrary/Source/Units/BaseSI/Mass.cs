@@ -32,7 +32,7 @@ namespace Flux
     /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
     public readonly record struct Mass
-      : System.IComparable, System.IComparable<Mass>, System.IFormattable, IUnitQuantifiable<double, MassUnit>
+      : System.IComparable, System.IComparable<Mass>, System.IFormattable, IUnitValueQuantifiable<double, MassUnit>
     {
       public const MassUnit DefaultUnit = MassUnit.Kilogram;
 
@@ -89,13 +89,13 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(MassUnit unit, string? valueFormat = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(MassUnit unit = DefaultUnit)
+      public double GetUnitValue(MassUnit unit)
         => unit switch
         {
           MassUnit.Milligram => m_value * 1000000,
@@ -107,9 +107,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(MassUnit unit, string? valueFormat = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Probability is a ratio, represented as a closed interval [0, 1], where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
     public readonly record struct Probability
-    : System.IComparable, System.IComparable<Probability>, System.IFormattable, IQuantifiable<double>
+    : System.IComparable, System.IComparable<Probability>, System.IFormattable, IValueQuantifiable<double>
     {
       public const double MaxValue = 1;
       public const double MinValue = 0;
@@ -24,7 +24,7 @@ namespace Flux
       /// <summary>Create a random probability from the specified <see cref="System.Random"/>.</summary>
       /// <param name="rng"></param>
       /// <returns></returns>
-      public static Probability FromRandom(System.Random rng) => new(rng.Next() / (double)int.MaxValue);
+      public static Probability FromRandom(System.Random? rng = null) => new((rng ?? System.Random.Shared).Next() / (double)int.MaxValue);
 
       /// <summary>A logistic function or logistic curve is a common "S" shape (sigmoid curve).</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Logistic_function"/>
@@ -114,12 +114,14 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_probability.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{m_probability}";
-      public double Value { get => m_probability; init => m_probability = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{m_probability}";
+
+      public double Value => m_probability;
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

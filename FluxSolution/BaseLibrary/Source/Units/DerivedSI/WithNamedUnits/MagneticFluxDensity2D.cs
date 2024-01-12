@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>Magnetic flux density unit of tesla.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
     public readonly record struct MagneticFluxDensity2D
-  : IUnitQuantifiable<System.Numerics.Vector2, MagneticFluxDensityUnit>
+  : IUnitValueQuantifiable<System.Numerics.Vector2, MagneticFluxDensityUnit>
     {
       private readonly System.Numerics.Vector2 m_value;
 
@@ -45,22 +45,25 @@ namespace Flux
       #region Implemented interfaces
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(MagneticFluxDensity.DefaultUnit, format, preferUnicode, useFullName);
-      public System.Numerics.Vector2 Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(MagneticFluxDensity.DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public System.Numerics.Vector2 Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(MagneticFluxDensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{Value.ToString(format, null)} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public System.Numerics.Vector2 ToUnitValue(MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
+      public System.Numerics.Vector2 GetUnitValue(MagneticFluxDensityUnit unit)
         => unit switch
         {
           MagneticFluxDensityUnit.Tesla => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(MagneticFluxDensityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{Value.ToString(format, culture)} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

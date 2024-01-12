@@ -20,7 +20,7 @@ namespace Flux
     /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
     public readonly record struct AngularVelocity
-      : System.IComparable, System.IComparable<AngularVelocity>, System.IFormattable, IUnitQuantifiable<double, AngularVelocityUnit>
+      : System.IComparable, System.IComparable<AngularVelocity>, System.IFormattable, IUnitValueQuantifiable<double, AngularVelocityUnit>
     {
       public const AngularVelocityUnit DefaultUnit = AngularVelocityUnit.RadianPerSecond;
 
@@ -90,22 +90,25 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(AngularVelocityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(AngularVelocityUnit unit = DefaultUnit)
+      public double GetUnitValue(AngularVelocityUnit unit)
         => unit switch
         {
           AngularVelocityUnit.RadianPerSecond => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(AngularVelocityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

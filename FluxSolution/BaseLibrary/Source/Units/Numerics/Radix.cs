@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Radix, unit of natural number.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Radix"/>
     public readonly record struct Radix
-    : System.IComparable<Radix>, IQuantifiable<int>
+    : System.IComparable<Radix>, IValueQuantifiable<int>
     {
       private readonly int m_value;
 
@@ -427,19 +427,19 @@ namespace Flux
         return TSelf.Max(value - maxDistinct, TSelf.Zero);
       }
 
-      private static string m_subscriptDecimalDigits = "\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089";
+      private static readonly string m_subscriptDecimalDigits = "\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089";
 
       /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
       public static string ToSubscriptString<TSelf>(TSelf number, int radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => PositionalNotation.NumberToText(number, m_subscriptDecimalDigits.AsSpan()[..Assert(radix, m_subscriptDecimalDigits.Length)], (char)UnicodeCodepoint.HyphenMinus).ToString();
+        => PositionalNotation.NumberToText(number, m_subscriptDecimalDigits.AsSpan()[..Assert(radix, m_subscriptDecimalDigits.Length)], '\u002D').ToString();
 
-      private static string m_superscriptDecimalDigits = "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";
+      private static readonly string m_superscriptDecimalDigits = "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";
 
       /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
       public static string ToSuperscriptString<TSelf>(TSelf number, int radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => PositionalNotation.NumberToText(number, m_superscriptDecimalDigits.AsSpan()[..Assert(radix, m_superscriptDecimalDigits.Length)], (char)UnicodeCodepoint.HyphenMinus).ToString();
+        => PositionalNotation.NumberToText(number, m_superscriptDecimalDigits.AsSpan()[..Assert(radix, m_superscriptDecimalDigits.Length)], '\u002D').ToString();
 
       #endregion Static methods
 
@@ -472,19 +472,24 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
+
       // IComparable<>
       public int CompareTo(Radix other) => m_value.CompareTo(other.m_value);
+
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Radix o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format, bool preferUnicode = false, bool useFullName = false) => $"{m_value}";
+      public string ToValueString(string? format, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{m_value}";
+
       public int Value => m_value;
+
       #endregion Implemented interfaces
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
       /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public override string ToString() => ToQuantityString(null, false, false);
+      public override string ToString() => ToValueString(null, false, false);
     }
   }
 }

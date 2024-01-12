@@ -2,10 +2,10 @@ namespace Flux
 {
   namespace Units
   {
-    /// <summary>Unit interval, unit of rational number between 0 and 1.</summary>
+    /// <summary>Unit interval, unit of rational number between 0 and 1 (closed interval, i.e. includes both endpoints).</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Unit_interval"/>
     public readonly record struct UnitInterval
-    : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, IQuantifiable<double>
+    : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, IValueQuantifiable<double>
     {
       private readonly IntervalNotation m_intervalNotation;
       private readonly double m_value;
@@ -14,8 +14,6 @@ namespace Flux
       {
         m_value = AssertMember(unitInterval, constraint);
         m_intervalNotation = constraint;
-
-
       }
       public UnitInterval(double unitInterval) : this(unitInterval, IntervalNotation.Closed) { }
 
@@ -65,12 +63,14 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{m_value}";
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{m_value}";
+
+      public double Value => m_value;
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

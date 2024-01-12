@@ -25,7 +25,7 @@ namespace Flux.Colors
 
     public string ToHtmlColorString() => $"hsla({HSL.Hue}, {HSL.Saturation}%, {HSL.Lightness}%, {m_alpha})";
 
-    public static Ahsl FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble(), Hsl.FromRandom(rng)); }
+    public static Ahsl FromRandom(System.Random? rng = null) { rng ??= System.Random.Shared; return new(rng.NextDouble(), Hsl.FromRandom(rng)); }
 
     public override string ToString() => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HSL.Hue:N1}\u00B0, {HSL.Saturation * 100:N1}%, {HSL.Lightness * 100:N1}% }}";
   }

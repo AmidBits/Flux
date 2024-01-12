@@ -20,7 +20,7 @@ namespace Flux
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
     public readonly record struct Acceleration
-      : System.IComparable, System.IComparable<Acceleration>, System.IFormattable, IUnitQuantifiable<double, AccelerationUnit>
+      : System.IComparable, System.IComparable<Acceleration>, System.IFormattable, IUnitValueQuantifiable<double, AccelerationUnit>
     {
       public const AccelerationUnit DefaultUnit = AccelerationUnit.MeterPerSecondSquared;
 
@@ -66,25 +66,28 @@ namespace Flux
       public int CompareTo(Acceleration other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToQuantityString(format);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(format);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(AccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(AccelerationUnit unit = DefaultUnit)
+      public double GetUnitValue(AccelerationUnit unit)
         => unit switch
         {
           AccelerationUnit.MeterPerSecondSquared => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(AccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

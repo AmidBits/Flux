@@ -421,7 +421,7 @@ namespace Flux.Geometry
     #region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"{GetType().Name} {{ {new Units.Latitude(Latitude)}, {new Units.Longitude(Longitude)} ({new Units.Length(Altitude).ToUnitString(Units.LengthUnit.Meter)}) }}";
+      => $"{GetType().Name} {{ {new Units.Latitude(Latitude)}, {new Units.Longitude(Longitude)} ({new Units.Length(Altitude).ToUnitValueString(Units.LengthUnit.Meter)}) }}";
 
     #endregion Implemented interfaces
 

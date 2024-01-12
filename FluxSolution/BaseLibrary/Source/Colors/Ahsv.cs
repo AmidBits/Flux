@@ -22,7 +22,7 @@ namespace Flux.Colors
     /// <summary>Creates an RGB color corresponding to the HSV instance.</summary>
     public Argb ToArgb() => new(System.Convert.ToByte(m_alpha * 255), HSV.ToRgb());
 
-    public static Ahsv FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble(), Hsv.FromRandom(rng)); }
+    public static Ahsv FromRandom(System.Random? rng = null) { rng ??= System.Random.Shared; return new(rng.NextDouble(), Hsv.FromRandom(rng)); }
 
     public override string ToString() => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HSV.Hue:N1}\u00B0, {HSV.Saturation * 100:N1}%, {HSV.Value * 100:N1}% }}";
   }

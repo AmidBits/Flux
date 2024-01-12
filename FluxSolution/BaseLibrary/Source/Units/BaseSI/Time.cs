@@ -45,7 +45,7 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Time"/></para>
     /// </summary>
     public readonly record struct Time
-      : System.IComparable, System.IComparable<Time>, System.IFormattable, IUnitQuantifiable<double, TimeUnit>
+      : System.IComparable, System.IComparable<Time>, System.IFormattable, IUnitValueQuantifiable<double, TimeUnit>
     {
       public const TimeUnit DefaultUnit = TimeUnit.Second;
 
@@ -121,16 +121,16 @@ namespace Flux
       public int CompareTo(Time other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToQuantityString(format);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(format);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(TimeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(TimeUnit unit = DefaultUnit)
+      public double GetUnitValue(TimeUnit unit)
         => unit switch
         {
           TimeUnit.Picosecond => m_value * 1000000000000,
@@ -147,9 +147,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(TimeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

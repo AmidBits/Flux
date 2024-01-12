@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Longitude"/>
   public readonly record struct Longitude
-    : System.IComparable<Longitude>, IQuantifiable<double>
+    : System.IComparable<Longitude>, IValueQuantifiable<double>
   {
     public const double MaxValue = +180;
     public const double MinValue = -180;
@@ -13,7 +13,7 @@ namespace Flux.Units
     /// <summary>Creates a new Longitude from the specified number of degrees. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(double longitude) => m_longitude = WrapExtremum(longitude);
     /// <summary>Creates a new Longitude from the specfied Angle instance. The value is wrapped within the degree range [-180, +180].</summary>
-    public Longitude(Angle angle) : this(angle.ToUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
+    public Longitude(Angle angle) : this(angle.GetUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
     public double Radians => Angle.DegreeToRadian(m_longitude);
 
@@ -27,8 +27,8 @@ namespace Flux.Units
 
     public Angle ToAngle() => new(m_longitude, AngleUnit.Degree);
 
-    public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool preferUnicode = true, bool useSpaces = false)
-      => Angle.ToDmsString(m_longitude, format, CardinalAxis.EastWest, -1, preferUnicode, useSpaces);
+    public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool preferUnicode = true, bool useSpaces = false, System.Globalization.CultureInfo? culture = null)
+      => Angle.ToDmsString(m_longitude, format, CardinalAxis.EastWest, -1, preferUnicode, useSpaces, culture);
 
     #region Static methods
 
@@ -80,31 +80,32 @@ namespace Flux.Units
 
     // IComparable<>
     public int CompareTo(Longitude other) => m_longitude.CompareTo(other.m_longitude);
+
     // IComparable
     public int CompareTo(object? other) => other is not null && other is Longitude o ? CompareTo(o) : -1;
 
     // IQuantifiable<>
-    public string ToQuantityString(string? format = null, bool preferUnicode = true, bool useFullName = false)
+    public string ToValueString(string? format = null, bool preferUnicode = true, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
     {
       if (format is not null)
       {
         if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '));
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '), culture);
         if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '));
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '), culture);
         if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '));
+          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '), culture);
 
-        return ToAngle().ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
+        return ToAngle().ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
       }
 
       return ToSexagesimalDegreeString();
     }
 
-    public double Value { get => m_longitude; init => m_longitude = value; }
+    public double Value => m_longitude;
 
     #endregion Implemented interfaces
 
-    public override string ToString() => ToQuantityString();
+    public override string ToString() => ToValueString();
   }
 }

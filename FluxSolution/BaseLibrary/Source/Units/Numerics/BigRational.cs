@@ -94,7 +94,7 @@ namespace Flux
     , System.Numerics.ISubtractionOperators<BigRational, BigRational, BigRational>, System.Numerics.ISubtractionOperators<BigRational, System.Numerics.BigInteger, BigRational>
     , System.Numerics.IUnaryNegationOperators<BigRational, BigRational>
     , System.Numerics.IUnaryPlusOperators<BigRational, BigRational>
-    , IQuantifiable<double>
+    , IValueQuantifiable<double>
     {
       public static readonly BigRational EpsilonLikeSingle = new(1, 1_000_000, false);
       public static readonly BigRational EpsilonLikeDouble = new(1, 1_000_000_000_000_000, false);
@@ -605,7 +605,7 @@ namespace Flux
 
       #endregion Overloaded operators
 
-      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider) => ToQuantityString();
+      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider) => ToValueString();
 
       #region Implemented interfaces
 
@@ -811,7 +811,7 @@ namespace Flux
       #endregion IConvertible
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false)
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
         => IsProper
         ? RatioFormat.AslashB.ToRatioString(m_numerator, m_denominator)
         : TryGetMixedParts(this, out var wholeNumber, out var properNumerator, out var properDenominator)
@@ -822,7 +822,7 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

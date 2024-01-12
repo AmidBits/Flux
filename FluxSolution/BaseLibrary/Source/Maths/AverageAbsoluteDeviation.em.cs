@@ -2,14 +2,10 @@ namespace Flux
 {
   public static partial class Em
   {
-    /// <summary>The average absolute deviation, or mean absolute deviation (MAD), of a data set is the average of the absolute deviations from a central point.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>
-    public static double AverageAbsoluteDeviation<TSelf>(this System.Collections.Generic.IEnumerable<double> source, double mean, double center)
-      => source.Select(v => System.Math.Abs(v - center)).Sum() / mean;
 
 #if NET7_0_OR_GREATER
 
-    /// <summary>The average absolute deviation of a data set is the average of the absolute deviations from a central point, in the case of this function: mean, median and mode.</summary>
+    /// <summary>The average absolute deviation, or mean absolute deviation (MAD), of a data set is the average of the absolute deviations from a central point, in the case of this function, all of mean, median and mode are computed simoultaneously.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>
     public static void AverageAbsoluteDeviationFrom<TSelf, TResult>(this System.Collections.Generic.IEnumerable<TSelf> source, out TResult madMean, out TResult madMedian, out TResult madMode)
       where TSelf : System.Numerics.INumber<TSelf>
@@ -19,9 +15,7 @@ namespace Flux
 
       list.Mean(out TResult mean, out var _, out var _);
       list.Median(out TResult median, out var _);
-      //list.Mode(out var rawMode, out var _); // Mode can be applied on any type of object (not just numerics) and therefor no conversion is performed as in mean and median.
-      var (rawMode, _) = list.Mode().First(); // Mode can be applied on any type of object (not just numerics) and therefor no conversion is performed as in mean and median.
-      var mode = TResult.CreateChecked(rawMode); // We perform our own conversion here.
+      var mode = TResult.CreateChecked(list.Mode().First().Key);
 
       madMean = TResult.Zero;
       madMedian = TResult.Zero;

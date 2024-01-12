@@ -67,7 +67,7 @@ namespace Flux.Colors
       );
     }
 
-    public static Hsi FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble()); }
+    public static Hsi FromRandom(System.Random? rng = null) { rng ??= System.Random.Shared; return new(rng.NextDouble() * 360, rng.NextDouble(), rng.NextDouble()); }
 
     public override string ToString() => $"{GetType().Name} {{ {m_hue:N1}\u00B0, {m_saturation * 100:N1}%, {m_intensity * 100:N1}% }}";
   }

@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
     public readonly record struct AngularAcceleration2D
-  : IUnitQuantifiable<System.Numerics.Vector2, AngularAccelerationUnit>
+  : IUnitValueQuantifiable<System.Numerics.Vector2, AngularAccelerationUnit>
     {
       private readonly System.Numerics.Vector2 m_value;
 
@@ -45,22 +45,25 @@ namespace Flux
       #region Implemented interfaces
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(AngularAcceleration.DefaultUnit, format, preferUnicode, useFullName);
-      public System.Numerics.Vector2 Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(AngularAcceleration.DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public System.Numerics.Vector2 Value { get => m_value; }
 
       // IUnitQuantifiable<>
-      public string ToUnitString(AngularAccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{Value.ToString(format, null)} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public System.Numerics.Vector2 ToUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+      public System.Numerics.Vector2 GetUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
         => unit switch
         {
           AngularAccelerationUnit.RadianPerSecondSquared => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(AngularAccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{Value.ToString(format, culture)} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

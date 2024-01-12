@@ -3,7 +3,7 @@ namespace Flux.Units
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
   /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
   public readonly record struct Latitude
-    : System.IComparable<Latitude>, IQuantifiable<double>
+    : System.IComparable<Latitude>, IValueQuantifiable<double>
   {
     public const double MaxValue = +90;
     public const double MinValue = -90;
@@ -16,7 +16,7 @@ namespace Flux.Units
     /// <summary>Creates a new Latitude from the specified number of degrees. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
     public Latitude(double latitude) => m_latitude = FoldExtremum(latitude);
     /// <summary>Creates a new Latitude from the specfied Angle instance. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
-    public Latitude(Angle angle) : this(angle.ToUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
+    public Latitude(Angle angle) : this(angle.GetUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
 
     public double Radians => Angle.DegreeToRadian(m_latitude);
 
@@ -27,8 +27,8 @@ namespace Flux.Units
 
     public Angle ToAngle() => new(m_latitude, AngleUnit.Degree);
 
-    public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool preferUnicode = true, bool useSpaces = false)
-      => Angle.ToDmsString(m_latitude, format, CardinalAxis.NorthSouth, -1, preferUnicode, useSpaces);
+    public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool preferUnicode = true, bool useSpaces = false, System.Globalization.CultureInfo? culture = null)
+      => Angle.ToDmsString(m_latitude, format, CardinalAxis.NorthSouth, -1, preferUnicode, useSpaces, culture);
 
     #region Static methods
 
@@ -104,33 +104,35 @@ namespace Flux.Units
     #endregion Overloaded operators
 
     #region Implemented interfaces
+
     // IComparable<>
     public int CompareTo(Latitude other) => m_latitude.CompareTo(other.m_latitude);
+
     // IComparable
     public int CompareTo(object? other) => other is not null && other is Latitude o ? CompareTo(o) : -1;
 
     // IQuantifiable<>
-    public string ToQuantityString(string? format = null, bool preferUnicode = true, bool useFullName = false)
+    public string ToValueString(string? format = null, bool preferUnicode = true, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
     {
       if (format is not null)
       {
         if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '));
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '), culture);
         if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '));
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '), culture);
         if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '));
+          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '), culture);
 
-        return ToAngle().ToUnitString(AngleUnit.Degree, format, preferUnicode, useFullName);
+        return ToAngle().ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
       }
 
       return ToSexagesimalDegreeString();
     }
 
-    public double Value { get => m_latitude; init => m_latitude = value; }
+    public double Value => m_latitude;
 
     #endregion Implemented interfaces
 
-    public override string ToString() => ToQuantityString();
+    public override string ToString() => ToValueString();
   }
 }

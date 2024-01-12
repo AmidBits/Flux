@@ -12,7 +12,7 @@ namespace Flux
     /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
     /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
     public readonly record struct JulianDayNumber
-      : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, System.IFormattable, IQuantifiable<int>
+      : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, System.IFormattable, IValueQuantifiable<int>
     {
       public readonly int m_value;
 
@@ -169,16 +169,17 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is JulianDayNumber o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => format is null ? ToQuantityString() : m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => format is null ? ToValueString() : m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToDateString(GetConversionCalendar());
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToDateString(GetConversionCalendar());
 
-      public int Value { get => m_value; init => m_value = value; }
+      public int Value => m_value;
 
       #endregion // Implemented interfaces
 
-      public override string? ToString() => ToQuantityString();
+      public override string? ToString() => ToValueString();
     }
   }
 }

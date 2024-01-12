@@ -23,7 +23,7 @@ namespace Flux
     /// <summary>Voltage unit of volt.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
     public readonly record struct Voltage
-      : System.IComparable, System.IComparable<Voltage>, IUnitQuantifiable<double, VoltageUnit>
+      : System.IComparable, System.IComparable<Voltage>, IUnitValueQuantifiable<double, VoltageUnit>
     {
       public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
 
@@ -83,13 +83,13 @@ namespace Flux
       public int CompareTo(Voltage other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(VoltageUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(VoltageUnit unit = DefaultUnit)
+      public double GetUnitValue(VoltageUnit unit)
         => unit switch
         {
           VoltageUnit.Volt => m_value,
@@ -97,9 +97,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(VoltageUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

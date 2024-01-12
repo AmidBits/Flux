@@ -87,7 +87,7 @@ namespace Flux
     /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Metric_prefix"/>
     public readonly record struct MetricMultiplicative
-      : System.IComparable, System.IComparable<MetricMultiplicative>, System.IFormattable, IUnitQuantifiable<double, MetricMultiplicativePrefix>
+      : System.IComparable, System.IComparable<MetricMultiplicative>, System.IFormattable, IUnitValueQuantifiable<double, MetricMultiplicativePrefix>
     {
       private readonly double m_value;
 
@@ -146,17 +146,21 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(MetricMultiplicativePrefix.One, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(MetricMultiplicativePrefix.One, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":format")}}}", ToUnitValue(multiplicativePrefix))}{(multiplicativePrefix.GetUnitString(preferUnicode, useFullName) is var prefix && prefix.Length > 0 ? $" {prefix}" : string.Empty)}";
-      public double ToUnitValue(MetricMultiplicativePrefix multiplicativePrefix) => m_value / multiplicativePrefix.GetUnitFactor();
+      public double GetUnitValue(MetricMultiplicativePrefix multiplicativePrefix)
+        => m_value / multiplicativePrefix.GetUnitFactor();
+
+      public string ToUnitValueString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format($"{{0{(format is null ? string.Empty : $":format")}}}", GetUnitValue(multiplicativePrefix))}{(multiplicativePrefix.GetUnitString(preferUnicode, useFullName) is var prefix && prefix.Length > 0 ? $" {prefix}" : string.Empty)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

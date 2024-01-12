@@ -21,7 +21,7 @@ namespace Flux.Colors
     /// <summary>Converts the Hwb to a corresponding RGB color.</summary>
     public Argb ToArgb() => new(System.Convert.ToByte(m_alpha * 255), HWB.ToRgb());
 
-    public static Ahwb FromRandom(System.Random? rng = null) { rng ??= new System.Random(); return new(rng.NextDouble(), Hwb.FromRandom(rng)); }
+    public static Ahwb FromRandom(System.Random? rng = null) { rng ??= System.Random.Shared; return new(rng.NextDouble(), Hwb.FromRandom(rng)); }
 
     public override string ToString() => $"{GetType().Name} {{ {(m_alpha * 100):N1}%, {HWB.Hue:N1}\u00B0, {HWB.White * 100:N1}%, {HWB.Black * 100:N1}% }}";
   }

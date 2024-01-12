@@ -45,7 +45,7 @@
     /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
     public readonly partial record struct Angle
-      : System.IComparable, System.IComparable<Angle>, IUnitQuantifiable<double, AngleUnit>
+      : System.IComparable, System.IComparable<Angle>, IUnitValueQuantifiable<double, AngleUnit>
     {
       public const AngleUnit DefaultUnit = AngleUnit.Radian;
 
@@ -218,7 +218,7 @@
       /// <summary></summary>
       /// <see href="https://en.wikipedia.org/wiki/ISO_6709"/>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static string ToDmsString(double decimalDegrees, AngleDmsFormat format, CardinalAxis axis, int decimalPoints = -1, bool preferUnicode = false, bool useSpaces = false)
+      public static string ToDmsString(double decimalDegrees, AngleDmsFormat format, CardinalAxis axis, int decimalPoints = -1, bool preferUnicode = false, bool useSpaces = false, System.Globalization.CultureInfo? culture = null)
       {
         var (degrees, minutes, decimalSeconds) = DecimalDegreesToDms(decimalDegrees, out var decimalMinutes);
 
@@ -229,11 +229,11 @@
         return format switch
         {
           AngleDmsFormat.DecimalDegrees
-            => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitString(Units.AngleUnit.Degree, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}", true) + directional, // Show as decimal degrees.
+            => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}", true) + directional, // Show as decimal degrees.
           AngleDmsFormat.DegreesDecimalMinutes
-            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitString(Units.AngleUnit.Degree, "N0", true) + spacing + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitString(Units.AngleUnit.Arcminute, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}", preferUnicode) + directional, // Show as degrees and decimal minutes.
+            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0", true) + spacing + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}", preferUnicode) + directional, // Show as degrees and decimal minutes.
           AngleDmsFormat.DegreesMinutesDecimalSeconds
-            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitString(Units.AngleUnit.Degree, "N0", true) + spacing + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitString(Units.AngleUnit.Arcminute, "N0", preferUnicode).PadLeft(3, '0') + spacing + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitString(Units.AngleUnit.Arcsecond, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}", preferUnicode) + directional, // Show as degrees, minutes and decimal seconds.
+            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0", true) + spacing + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, "N0", preferUnicode).PadLeft(3, '0') + spacing + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitValueString(Units.AngleUnit.Arcsecond, $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}", preferUnicode) + directional, // Show as degrees, minutes and decimal seconds.
           _
             => throw new System.ArgumentOutOfRangeException(nameof(format)),
         };
@@ -460,13 +460,13 @@
       public int CompareTo(Angle other) => m_radAngle.CompareTo(other.m_radAngle);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => $"{ToUnitString(DefaultUnit, format, preferUnicode, useFullName)}";
-      public double Value { get => m_radAngle; init => m_radAngle = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_radAngle;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(AngleUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))}{unit.GetUnitSpacing(preferUnicode, useFullName)}{unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(AngleUnit unit = DefaultUnit)
+      public double GetUnitValue(AngleUnit unit)
         => unit switch
         {
           AngleUnit.Arcminute => RadianToArcminute(m_radAngle),
@@ -480,9 +480,13 @@
           AngleUnit.WarsawPactMil => RadianToWarsawPactMil(m_radAngle),
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
+
+      public string ToUnitValueString(AngleUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))}{unit.GetUnitSpacing(preferUnicode, useFullName)}{unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

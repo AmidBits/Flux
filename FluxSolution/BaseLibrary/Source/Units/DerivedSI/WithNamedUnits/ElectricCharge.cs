@@ -23,7 +23,7 @@ namespace Flux
     /// <summary>Electric charge unit of Coulomb.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
     public readonly record struct ElectricCharge
-      : System.IComparable, System.IComparable<ElectricCharge>, IUnitQuantifiable<double, ElectricChargeUnit>
+      : System.IComparable, System.IComparable<ElectricCharge>, IUnitValueQuantifiable<double, ElectricChargeUnit>
     {
       public const ElectricChargeUnit DefaultUnit = ElectricChargeUnit.Coulomb;
 
@@ -69,22 +69,25 @@ namespace Flux
       public int CompareTo(ElectricCharge other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(ElectricChargeUnit unit = DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(ElectricChargeUnit unit = DefaultUnit)
+      public double GetUnitValue(ElectricChargeUnit unit)
         => unit switch
         {
           ElectricChargeUnit.Coulomb => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(ElectricChargeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

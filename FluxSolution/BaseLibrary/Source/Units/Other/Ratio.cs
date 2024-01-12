@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>A ratio, using real numbers is an irrational number, indicates how many times one number contains another. It is two related quantities measured with the same unit, it is a dimensionless number (value). This struct stores both constituting numbers of the ratio (numerator and denominator) and returns the quotient as a value.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Ratio"/>
     public readonly record struct Ratio
-      : IQuantifiable<double>
+      : IValueQuantifiable<double>
     {
       private readonly double m_numerator;
       private readonly double m_denominator;
@@ -67,12 +67,14 @@ namespace Flux
       #region Implemented interfaces
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => RatioFormat.AcolonB.ToRatioString(m_numerator, m_denominator);
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => RatioFormat.AcolonB.ToRatioString(m_numerator, m_denominator);
+
       public double Value => m_numerator / m_denominator;
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

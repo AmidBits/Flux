@@ -10,7 +10,7 @@ namespace Flux
     {
       if (probability <= 0 && probability > 1) throw new System.ArgumentOutOfRangeException(nameof(probability));
 
-      rng ??= new System.Random();
+      rng ??= System.Random.Shared;
 
       foreach (var item in source)
         if (rng.NextDouble() < probability)

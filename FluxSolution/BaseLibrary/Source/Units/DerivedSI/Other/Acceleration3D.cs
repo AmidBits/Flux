@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
     public readonly record struct Acceleration3D
-  : IUnitQuantifiable<System.Numerics.Vector3, AccelerationUnit>
+  : IUnitValueQuantifiable<System.Numerics.Vector3, AccelerationUnit>
     {
       private readonly System.Numerics.Vector3 m_value;
 
@@ -45,22 +45,25 @@ namespace Flux
       #region Implemented interfaces
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(Acceleration.DefaultUnit, format, preferUnicode, useFullName);
-      public System.Numerics.Vector3 Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(Acceleration.DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public System.Numerics.Vector3 Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(AccelerationUnit unit = Acceleration.DefaultUnit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{Value.ToString(format, null)} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public System.Numerics.Vector3 ToUnitValue(AccelerationUnit unit = Acceleration.DefaultUnit)
+      public System.Numerics.Vector3 GetUnitValue(AccelerationUnit unit)
         => unit switch
         {
           AccelerationUnit.MeterPerSecondSquared => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(AccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{Value.ToString(format, culture)} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

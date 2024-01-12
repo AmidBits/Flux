@@ -148,7 +148,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToDecimalString<TSelf>(this TSelf value, int minLength)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToDecimalString(value, Base64.AsSpan()[..10], (char)Flux.UnicodeCodepoint.HyphenMinus, minLength);
+      => ToDecimalString(value, Base64.AsSpan()[..10], '\u002D', minLength);
 
     /// <summary>Creates a decimal (base 10) text string from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
@@ -249,7 +249,7 @@ namespace Flux
     /// <remarks>By default, this function returns the shortest possible string length.</remarks>
     public static System.ReadOnlySpan<char> ToRadixString<TSelf>(this TSelf value, int radix, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToRadixSpan(value, Base64.AsSpan()[..radix], (char)Flux.UnicodeCodepoint.HyphenMinus, minLength);
+      => ToRadixSpan(value, Base64.AsSpan()[..radix], '\u002D', minLength);
 
 #else
 

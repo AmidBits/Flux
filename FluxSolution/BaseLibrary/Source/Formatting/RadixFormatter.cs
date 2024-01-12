@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Formatting
 {
   /// <summary>Enables formatting of any number base (radix) with any characters desired.</summary>
@@ -30,7 +28,7 @@ namespace Flux.Formatting
     {
       try
       {
-        result = PositionalNotation.NumberToText(number, radixNumerals, (char)UnicodeCodepoint.HyphenMinus).ToString();
+        result = PositionalNotation.NumberToText(number, radixNumerals, '\u002D').ToString();
         return true;
       }
       catch { }

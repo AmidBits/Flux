@@ -28,7 +28,7 @@ namespace Flux
     /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
     public readonly record struct LinearVelocity
-      : System.IComparable, System.IComparable<LinearVelocity>, System.IFormattable, IUnitQuantifiable<double, LinearVelocityUnit>
+      : System.IComparable, System.IComparable<LinearVelocity>, System.IFormattable, IUnitValueQuantifiable<double, LinearVelocityUnit>
     {
       public const LinearVelocityUnit DefaultUnit = LinearVelocityUnit.MeterPerSecond;
 
@@ -105,13 +105,13 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(LinearVelocityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(LinearVelocityUnit unit = DefaultUnit)
+      public double GetUnitValue(LinearVelocityUnit unit)
         => unit switch
         {
           LinearVelocityUnit.FootPerSecond => m_value * (1250.0 / 381.0),
@@ -122,9 +122,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(LinearVelocityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

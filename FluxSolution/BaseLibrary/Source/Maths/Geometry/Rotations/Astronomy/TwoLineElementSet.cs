@@ -97,7 +97,7 @@ namespace Flux.Geometry
     #region Object overrides
 
     public override string ToString()
-      => $"{GetType().Name} {{ Inclination = {new Units.Angle(m_radInclination).ToUnitString(Units.AngleUnit.Degree)}, RightAscensionOfAscendingNode = {new Units.Angle(m_radRightAscensionOfAscendingNode).ToUnitString(Units.AngleUnit.Degree)}, Eccentricity = {m_eccentricity}, ArgumentOfPerigee = {new Units.Angle(m_radArgumentOfPerigee).ToUnitString(Units.AngleUnit.Degree)}, MeanAnomaly = {new Units.Angle(m_radMeanAnomaly).ToUnitString(Units.AngleUnit.Degree)}, MeanMotion = {m_meanMotion} }}";
+      => $"{GetType().Name} {{ Inclination = {new Units.Angle(m_radInclination).ToUnitValueString(Units.AngleUnit.Degree)}, RightAscensionOfAscendingNode = {new Units.Angle(m_radRightAscensionOfAscendingNode).ToUnitValueString(Units.AngleUnit.Degree)}, Eccentricity = {m_eccentricity}, ArgumentOfPerigee = {new Units.Angle(m_radArgumentOfPerigee).ToUnitValueString(Units.AngleUnit.Degree)}, MeanAnomaly = {new Units.Angle(m_radMeanAnomaly).ToUnitValueString(Units.AngleUnit.Degree)}, MeanMotion = {m_meanMotion} }}";
     #endregion Object overrides
   }
 }

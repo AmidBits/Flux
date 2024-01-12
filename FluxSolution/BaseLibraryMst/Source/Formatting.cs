@@ -21,7 +21,7 @@ namespace Formatting
     {
       Assert.IsTrue(Flux.Units.Angle.TryParseDms(_dms1, out var dms1tp));
 
-      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(Flux.Units.AngleUnit.Degree));
+      Assert.AreEqual(_dms1tp, dms1tp.GetUnitValue(Flux.Units.AngleUnit.Degree));
     }
 
     [TestMethod]
@@ -35,7 +35,7 @@ namespace Formatting
     {
       Assert.IsTrue(Flux.Units.Angle.TryParseDms(_dms1, out var dms1tp));
 
-      Assert.AreEqual(_dms1tp, dms1tp.ToUnitValue(Flux.Units.AngleUnit.Degree));
+      Assert.AreEqual(_dms1tp, dms1tp.GetUnitValue(Flux.Units.AngleUnit.Degree));
     }
   }
 

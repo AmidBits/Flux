@@ -21,13 +21,13 @@ namespace Flux
     /// <summary>Magnetic flux unit of weber.</summary>
     /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux"/>
     public readonly record struct MagneticFlux
-      : System.IComparable, System.IComparable<MagneticFlux>, System.IFormattable, IUnitQuantifiable<double, MagneticFluxUnit>
+      : System.IComparable, System.IComparable<MagneticFlux>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxUnit>
     {
       public const MagneticFluxUnit DefaultUnit = MagneticFluxUnit.Weber;
 
       private readonly double m_value;
 
-      public MagneticFlux(double value, MagneticFluxUnit unit = MagneticFluxUnit.Weber)
+      public MagneticFlux(double value, MagneticFluxUnit unit = DefaultUnit)
         => m_value = unit switch
         {
           MagneticFluxUnit.Weber => value,
@@ -68,22 +68,25 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToQuantityString(string? format = null, bool preferUnicode = false, bool useFullName = false) => ToUnitString(DefaultUnit, format, preferUnicode, useFullName);
-      public double Value { get => m_value; init => m_value = value; }
+      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+
+      public double Value => m_value;
 
       // IUnitQuantifiable<>
-      public string ToUnitString(MagneticFluxUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", ToUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public double ToUnitValue(MagneticFluxUnit unit = MagneticFluxUnit.Weber)
+      public double GetUnitValue(MagneticFluxUnit unit)
         => unit switch
         {
           MagneticFluxUnit.Weber => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(MagneticFluxUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+
       #endregion Implemented interfaces
 
-      public override string ToString() => ToQuantityString();
+      public override string ToString() => ToValueString();
     }
   }
 }

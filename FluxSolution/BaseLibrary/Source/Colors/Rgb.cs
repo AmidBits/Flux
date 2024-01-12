@@ -15,7 +15,7 @@ namespace Flux.Colors
     }
     public Rgb(int rgb) : this((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb) { }
     public Rgb(System.ReadOnlySpan<byte> rgb) : this(rgb[0], rgb[1], rgb[2]) { }
-    public Rgb(System.Random rng) : this((rng ?? new System.Random()).GetRandomBytes(3)) { }
+    public Rgb(System.Random rng) : this((rng ?? System.Random.Shared).GetRandomBytes(3)) { }
 
     public int Red => m_red;
     public int Green => m_green;
