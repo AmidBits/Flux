@@ -41,24 +41,24 @@ namespace Flux
     }
 
     /// <summary>Create a new array from the existing array, copy all elements and insert the specified items at the specified dimension and index.</summary>
-    /// <param name="source">The source array from where the new array as is based..</param>
+    /// <param name="source">The source array from where the new array as is based.</param>
     /// <param name="dimension">The dimension to resize.</param>
     /// <param name="index">The index in the dimension where the strands should be inserted, e.g. which row or column to fill.</param>
     /// <param name="count">The number of strands to add for the dimension.</param>
-    /// <param name="items">The items to fill at index. If less or more than the number of slots in the array, as many as can be copied will be.</param>
-    public static T[,] InsertToCopy<T>(this T[,] source, int dimension, int index, int count, params T[] items)
+    /// <param name="pattern">The items to fill at index. Using a sort of continuous flow fill.</param>
+    public static T[,] InsertToCopy<T>(this T[,] source, int dimension, int index, int count, params T[] pattern)
     {
       var target = InsertToCopy(source, dimension, index, count);
 
       switch (dimension)
       {
         case 0:
-          if (items.Length > 0)
-            Fill(target, index, 0, count, target.GetLength(1), items);
+          if (pattern.Length > 0)
+            Fill(target, index, 0, count, target.GetLength(1), pattern);
           break;
         case 1:
-          if (items.Length > 0)
-            Fill(target, 0, index, target.GetLength(0), count, items);
+          if (pattern.Length > 0)
+            Fill(target, 0, index, target.GetLength(0), count, pattern);
           break;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(dimension));

@@ -1,4 +1,5 @@
-﻿using Flux;
+﻿using System.Linq;
+using Flux;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -109,12 +110,9 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
-
-      //WriteFile();
-      //ReadFile();
     }
 
     private static void WriteFile()
@@ -122,9 +120,9 @@ namespace ConsoleApp
       using var fs = new System.IO.FileStream(@"C:\tmp\File.urgf", System.IO.FileMode.Create);
       using var sw = new System.IO.StreamWriter(fs, System.Text.Encoding.UTF8);
 
-      var g = new string[][] { ["First", "Second"], ["A", "B"], ["C", "D"] };
+      var g = new string[][] { ["First", "Second"], ["A,", "B"], ["C", "D"] };
 
-      sw.WriteUrgfGroup(g);
+      sw.WriteUrgf(g);
     }
 
     private static void ReadFile()
@@ -132,8 +130,7 @@ namespace ConsoleApp
       using var fs = new System.IO.FileStream(@"C:\tmp\File.urgf", System.IO.FileMode.Open);
       using var sr = new System.IO.StreamReader(fs, System.Text.Encoding.UTF8);
 
-      foreach (var g in sr.ReadUrgf())
-        System.Console.WriteLine(g.JaggedToConsoleString());
+      var data = sr.ReadUrgf().First();
     }
 
     #region Puzzle

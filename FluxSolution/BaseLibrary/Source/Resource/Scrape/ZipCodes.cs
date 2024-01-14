@@ -18,7 +18,7 @@ namespace Flux.Resources.Scrape
       using var stream = uri.GetStream();
       using var reader = new StreamReader(stream);
 
-      foreach (var fields in reader.ReadCsv(true, ","))
+      foreach (var fields in reader.ReadCsv())
         yield return fields;
     }
 

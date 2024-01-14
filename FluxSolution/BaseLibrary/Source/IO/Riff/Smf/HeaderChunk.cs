@@ -10,9 +10,9 @@ namespace Flux.Riff.Smf
     public const int FixedSize = 14;
     public const string ID = @"MThd";
 
-    public Format Format { get => (Format)BitConverter.BigEndian.ToUInt16(m_buffer, 8); set => BitConverter.BigEndian.GetBytes((ushort)value).CopyTo(m_buffer, 8); }
-    [System.CLSCompliant(false)] public ushort Tracks { get => BitConverter.BigEndian.ToUInt16(m_buffer, 10); set { BitConverter.BigEndian.GetBytes(value).CopyTo(m_buffer, 10); } }
-    public short Division { get => BitConverter.BigEndian.ToInt16(m_buffer, 12); set { BitConverter.BigEndian.GetBytes(value).CopyTo(m_buffer, 12); } }
+    public Format Format { get => (Format)m_buffer.ReadUInt16(8, Endianess.BigEndian); set => ((ushort)value).WriteBytes(m_buffer, 8, Endianess.BigEndian); }
+    [System.CLSCompliant(false)] public ushort Tracks { get => m_buffer.ReadUInt16(10, Endianess.BigEndian); set { value.WriteBytes(m_buffer, 10, Endianess.BigEndian); } }
+    public short Division { get => m_buffer.ReadInt16(12, Endianess.BigEndian); set { value.WriteBytes(m_buffer, 12, Endianess.BigEndian); } }
 
     public void SetMillisecondDivision() => Division = unchecked((short)FramesPerSecond.TwentyFive << 8) | 40;
 

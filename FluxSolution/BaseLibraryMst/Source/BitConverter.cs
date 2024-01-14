@@ -1,299 +1,342 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Numerics
+namespace System
 {
   [TestClass]
-  public class BitConverter
+  public class BitConversion
   {
     [TestMethod]
-    public void GetBytesBoolean()
+    public void BigEndianWriteBytesBoolean()
     {
       byte[] expected = new byte[] { 1 };
-      byte[] actual = Flux.BitConverter.GetBytes(true);
+      byte[] actual = new byte[expected.Length];
+      true.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
-
     [TestMethod]
-    public void BigEndianGetBytesChar()
+    public void BigEndianWriteBytesChar()
     {
       byte[] expected = new byte[] { 0, 1 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((char)1);
+      byte[] actual = new byte[expected.Length];
+      ((char)1).WriteBytes(actual, 0, Flux.Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianGetBytesDecimal()
+    public void BigEndianWriteBytesDecimal()
     {
       byte[] expected = new byte[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((decimal)1);
+      byte[] actual = new byte[expected.Length];
+      System.Decimal.One.WriteBytes(actual, 0, Flux.Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianGetBytesDouble()
+    public void BigEndianWriteBytesDouble()
     {
       byte[] expected = new byte[] { 63, 240, 0, 0, 0, 0, 0, 0 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((double)1);
+      byte[] actual = new byte[expected.Length];
+      1D.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianGetBytesFloat()
+    public void BigEndianWriteBytesFloat()
     {
       byte[] expected = new byte[] { 63, 128, 0, 0 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((float)1);
+      byte[] actual = new byte[expected.Length];
+      1F.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianGetBytesInt16()
+    public void BigEndianWriteBytesInt16()
     {
       byte[] expected = new byte[] { 0, 1 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((short)1);
+      byte[] actual = new byte[expected.Length];
+      ((short)1).WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianGetBytesInt32()
+    public void BigEndianWriteBytesInt32()
     {
       byte[] expected = new byte[] { 0, 0, 0, 1 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((int)1);
+      byte[] actual = new byte[expected.Length];
+      1.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianGetBytesInt64()
+    public void BigEndianWriteBytesInt64()
     {
       byte[] expected = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((long)1);
+      byte[] actual = new byte[expected.Length];
+      1L.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianGetBytesUInt16()
+    public void BigEndianWriteBytesUInt16()
     {
       byte[] expected = new byte[] { 0, 1 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((ushort)1);
+      byte[] actual = new byte[expected.Length];
+      ((ushort)1).WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianGetBytesUInt32()
+    public void BigEndianWriteBytesUInt32()
     {
       byte[] expected = new byte[] { 0, 0, 0, 1 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((uint)1);
+      byte[] actual = new byte[expected.Length];
+      1U.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianGetBytesUInt64()
+    public void BigEndianWriteBytesUInt64()
     {
       byte[] expected = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 };
-      byte[] actual = Flux.BitConverter.BigEndian.GetBytes((ulong)1);
+      byte[] actual = new byte[expected.Length];
+      1UL.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
     [TestMethod]
-    public void LittleEndianGetBytesChar()
+    public void LittleEndianWriteBytesBoolean()
     {
-      byte[] expected = new byte[] { 1, 0 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((char)1);
+      byte[] expected = new byte[] { 1 };
+      byte[] actual = new byte[expected.Length];
+      true.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianGetBytesDecimal()
+    public void LittleEndianWriteBytesChar()
+    {
+      byte[] expected = new byte[] { 1, 0 };
+      byte[] actual = new byte[expected.Length];
+      ((char)1).WriteBytes(actual, 0, Endianess.LittleEndian);
+      CollectionAssert.AreEqual(expected, actual);
+    }
+    [TestMethod]
+    public void LittleEndianWriteBytesDecimal()
     {
       byte[] expected = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((decimal)1);
+      byte[] actual = new byte[expected.Length];
+      1M.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianGetBytesDouble()
+    public void LittleEndianWriteBytesDouble()
     {
       byte[] expected = new byte[] { 0, 0, 0, 0, 0, 0, 240, 63 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((double)1);
+      byte[] actual = new byte[expected.Length];
+      1D.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianGetBytesFloat()
+    public void LittleEndianWriteBytesFloat()
     {
       byte[] expected = new byte[] { 0, 0, 128, 63 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((float)1);
+      byte[] actual = new byte[expected.Length];
+      1F.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianGetBytesInt16()
+    public void LittleEndianWriteBytesInt16()
     {
       byte[] expected = new byte[] { 1, 0 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((short)1);
+      byte[] actual = new byte[expected.Length];
+      ((short)1).WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianGetBytesInt32()
+    public void LittleEndianWriteBytesInt32()
     {
       byte[] expected = new byte[] { 1, 0, 0, 0 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((int)1);
+      byte[] actual = new byte[expected.Length];
+      1.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianGetBytesInt64()
+    public void LittleEndianWriteBytesInt64()
     {
       byte[] expected = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((long)1);
+      byte[] actual = new byte[expected.Length];
+      1L.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianGetBytesUInt16()
+    public void LittleEndianWriteBytesUInt16()
     {
       byte[] expected = new byte[] { 1, 0 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((ushort)1);
+      byte[] actual = new byte[expected.Length];
+      ((ushort)1).WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianGetBytesUInt32()
+    public void LittleEndianWriteBytesUInt32()
     {
       byte[] expected = new byte[] { 1, 0, 0, 0 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((uint)1);
+      byte[] actual = new byte[expected.Length];
+      1U.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianGetBytesUInt64()
+    public void LittleEndianWriteBytesUInt64()
     {
       byte[] expected = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 };
-      byte[] actual = Flux.BitConverter.LittleEndian.GetBytes((ulong)1);
+      byte[] actual = new byte[expected.Length];
+      1UL.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
     [TestMethod]
-    public void BigEndianToChar()
+    public void BigEndianReadBoolean()
+    {
+      bool expected = true;
+      bool actual = new System.ReadOnlySpan<byte>(new byte[] { 1 }).ReadBoolean(0, Endianess.BigEndian);
+      Assert.AreEqual(expected, actual);
+    }
+    [TestMethod]
+    public void BigEndianReadChar()
     {
       var expected = (char)1;
-      var actual = Flux.BitConverter.BigEndian.ToChar(new byte[] { 0, 1 }, 0);
+      var actual = new byte[] { 0, 1 }.ReadChar(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianToDecimal()
+    public void BigEndianReadDecimal()
     {
       var expected = (decimal)1;
-      var actual = Flux.BitConverter.BigEndian.ToDecimal(new byte[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0);
+      var actual = new byte[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }.ReadDecimal(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianToDouble()
+    public void BigEndianReadDouble()
     {
       var expected = (double)1;
-      var actual = Flux.BitConverter.BigEndian.ToDouble(new byte[] { 63, 240, 0, 0, 0, 0, 0, 0 }, 0);
+      var actual = new byte[] { 63, 240, 0, 0, 0, 0, 0, 0 }.ReadDouble(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianToFloat()
+    public void BigEndianReadFloat()
     {
       var expected = (float)1;
-      var actual = Flux.BitConverter.BigEndian.ToSingle(new byte[] { 63, 128, 0, 0 }, 0);
+      var actual = new byte[] { 63, 128, 0, 0 }.ReadSingle(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianToInt16()
+    public void BigEndianReadInt16()
     {
       var expected = (short)1;
-      var actual = Flux.BitConverter.BigEndian.ToInt16(new byte[] { 0, 1 }, 0);
+      var actual = new byte[] { 0, 1 }.ReadInt16(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianToInt32()
+    public void BigEndianReadInt32()
     {
       var expected = (int)1;
-      var actual = Flux.BitConverter.BigEndian.ToInt32(new byte[] { 0, 0, 0, 1 }, 0);
+      var actual = new byte[] { 0, 0, 0, 1 }.ReadInt32(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianToInt64()
+    public void BigEndianReadInt64()
     {
       var expected = (long)1;
-      var actual = Flux.BitConverter.BigEndian.ToInt64(new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 }, 0);
+      var actual = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 }.ReadInt64(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianToUInt16()
+    public void BigEndianReadUInt16()
     {
       var expected = (ushort)1;
-      var actual = Flux.BitConverter.BigEndian.ToUInt16(new byte[] { 0, 1 }, 0);
+      var actual = new byte[] { 0, 1 }.ReadUInt16(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianToUInt32()
+    public void BigEndianReadUInt32()
     {
       var expected = (uint)1;
-      var actual = Flux.BitConverter.BigEndian.ToUInt32(new byte[] { 0, 0, 0, 1 }, 0);
+      var actual = new byte[] { 0, 0, 0, 1 }.ReadUInt32(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void BigEndianToUInt64()
+    public void BigEndianReadUInt64()
     {
       var expected = (ulong)1;
-      var actual = Flux.BitConverter.BigEndian.ToUInt64(new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 }, 0);
+      var actual = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 }.ReadUInt64(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
-    public void LittleEndianToChar()
+    public void LittleEndianReadBoolean()
+    {
+      bool expected = true;
+      bool actual = new System.ReadOnlySpan<byte>(new byte[] { 1 }).ReadBoolean(0, Endianess.LittleEndian);
+      Assert.AreEqual(expected, actual);
+    }
+    [TestMethod]
+    public void LittleEndianReadChar()
     {
       var expected = (char)1;
-      var actual = Flux.BitConverter.LittleEndian.ToChar(new byte[] { 1, 0 }, 0);
+      var actual = new byte[] { 1, 0 }.ReadChar(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianToDecimal()
+    public void LittleEndianReadDecimal()
     {
       var expected = (decimal)1;
-      var actual = Flux.BitConverter.LittleEndian.ToDecimal(new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0);
+      var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }.ReadDecimal(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianToDouble()
+    public void LittleEndianReadDouble()
     {
       var expected = (double)1;
-      var actual = Flux.BitConverter.LittleEndian.ToDouble(new byte[] { 0, 0, 0, 0, 0, 0, 240, 63 }, 0);
+      var actual = new byte[] { 0, 0, 0, 0, 0, 0, 240, 63 }.ReadDouble(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianToFloat()
+    public void LittleEndianReadFloat()
     {
       var expected = (float)1;
-      var actual = Flux.BitConverter.LittleEndian.ToSingle(new byte[] { 0, 0, 128, 63 }, 0);
+      var actual = new byte[] { 0, 0, 128, 63 }.ReadSingle(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianToInt16()
+    public void LittleEndianReadInt16()
     {
       var expected = (short)1;
-      var actual = Flux.BitConverter.LittleEndian.ToInt16(new byte[] { 1, 0 }, 0);
+      var actual = new byte[] { 1, 0 }.ReadInt16(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianToInt32()
+    public void LittleEndianReadInt32()
     {
       var expected = (int)1;
-      var actual = Flux.BitConverter.LittleEndian.ToInt32(new byte[] { 1, 0, 0, 0 }, 0);
+      var actual = new byte[] { 1, 0, 0, 0 }.ReadInt32(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianToInt64()
+    public void LittleEndianReadInt64()
     {
       var expected = (long)1;
-      var actual = Flux.BitConverter.LittleEndian.ToInt64(new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 }, 0);
+      var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 }.ReadInt64(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianToUInt16()
+    public void LittleEndianReadUInt16()
     {
       var expected = (ushort)1;
-      var actual = Flux.BitConverter.LittleEndian.ToUInt16(new byte[] { 1, 0 }, 0);
+      var actual = new byte[] { 1, 0 }.ReadUInt16(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianToUInt32()
+    public void LittleEndianReadUInt32()
     {
       var expected = (uint)1;
-      var actual = Flux.BitConverter.LittleEndian.ToUInt32(new byte[] { 1, 0, 0, 0 }, 0);
+      var actual = new byte[] { 1, 0, 0, 0 }.ReadUInt16(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void LittleEndianToUInt64()
+    public void LittleEndianReadUInt64()
     {
       var expected = (ulong)1;
-      var actual = Flux.BitConverter.LittleEndian.ToUInt64(new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 }, 0);
+      var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 }.ReadUInt16(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
   }

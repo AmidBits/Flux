@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>
     /// <para>Modify <paramref name="source"/> by removing <paramref name="count"/> elements starting at <paramref name="index"/>.</para>
     /// </summary>
-    public static void Remove<T>(ref T[] source, int index, int count)
+    public static void RemoveInPlace<T>(ref T[] source, int index, int count)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 

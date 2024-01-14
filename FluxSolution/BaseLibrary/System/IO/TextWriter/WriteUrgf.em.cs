@@ -2,48 +2,30 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static void WriteUrgfUnitSeparator(this System.IO.TextWriter writer) => writer.Write('\u001F');
-    public static void WriteUrgfRecordSeparator(this System.IO.TextWriter writer) => writer.Write('\u001E');
-    public static void WriteUrgfGroupSeparator(this System.IO.TextWriter writer) => writer.Write('\u001D');
-    public static void WriteUrgfFileSeparator(this System.IO.TextWriter writer) => writer.Write('\u001C');
-
-    public static void WriteUrgfUnit(this System.IO.TextWriter writer, params string[] data)
+    /// <summary>
+    /// <para>Writes a jagged array as URGF (tabular) <paramref name="data"/> to the <paramref name="writer"/>.</para>
+    /// </summary>
+    /// <param name="writer"></param>
+    /// <param name="data"></param>
+    public static void WriteUrgf(this System.IO.TextWriter writer, string[][] data)
     {
-      for (var u = 0; u < data.Length; u++)
-      {
-        if (u > 0) writer.WriteUrgfUnitSeparator();
+      const char unitSeparator = '\u001F';
+      const char recordSeparator = '\u001E';
+      //const char groupSeparator = '\u001D';
+      //const char fileSeparator = '\u001C';
 
-        writer.Write(data[u]);
-      }
-    }
-
-    public static void WriteUrgfRecord(this System.IO.TextWriter writer, params string[][] data)
-    {
       for (var r = 0; r < data.Length; r++)
       {
-        if (r > 0) writer.WriteUrgfRecordSeparator();
+        if (r > 0) writer.Write(recordSeparator);
 
-        WriteUrgfUnit(writer, data[r]);
-      }
-    }
+        var record = data[r];
 
-    public static void WriteUrgfGroup(this System.IO.TextWriter writer, params string[][][] data)
-    {
-      for (var g = 0; g < data.Length; g++)
-      {
-        if (g > 0) writer.WriteUrgfGroupSeparator();
+        for (var u = 0; u < record.Length; u++)
+        {
+          if (u > 0) writer.Write(unitSeparator);
 
-        WriteUrgfRecord(writer, data[g]);
-      }
-    }
-
-    public static void WriteUrgfFile(this System.IO.TextWriter writer, params string[][][][] data)
-    {
-      for (var g = 0; g < data.Length; g++)
-      {
-        if (g > 0) writer.WriteUrgfFileSeparator();
-
-        WriteUrgfGroup(writer, data[g]);
+          writer.Write(record[u]);
+        }
       }
     }
   }

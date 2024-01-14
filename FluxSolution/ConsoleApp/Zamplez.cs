@@ -264,85 +264,57 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunArrayRank2));
       System.Console.WriteLine();
 
+      var cso = new ConsoleStringOptions() { UniformWidth = true };
+
       var matrix = new int[,] {
         { 1, 2, 3, 4 },
         { 5, 6, 7, 8 },
         { 9, 10, 11, 12 },
         { 13, 14, 15, 16 },
       };
-
-      var padding = 2;
-      padding++;
-
-      var (minLeft, minTop, maxLeft, maxTop) = ("Array-2D" + System.Environment.NewLine + matrix.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole();
-
-      var mrotatec = matrix.RotateToCopyCw();
-      (minLeft, minTop, maxLeft, maxTop) = ("Rotated-CW" + System.Environment.NewLine + mrotatec.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
-
-      var mrotatecc = matrix.RotateToCopyCcw();
-      (minLeft, minTop, maxLeft, maxTop) = ("Rotated-CCW" + System.Environment.NewLine + mrotatecc.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
-
-      var mtranspose = matrix.TransposeToCopy();
-      (minLeft, minTop, maxLeft, maxTop) = ("Transposed" + System.Environment.NewLine + mtranspose.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
-
-      var minsert = matrix.InsertToCopy(1, 1, 4, 0);
-      (minLeft, minTop, maxLeft, maxTop) = ("Inserted" + System.Environment.NewLine + minsert.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
-      minsert.Fill(0, 1, 3, 4, 9);
-      (minLeft, minTop, maxLeft, maxTop) = ("Fill (Inserted)" + System.Environment.NewLine + minsert.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
-
-      var mflip0 = matrix.FlipToCopy(0);
-      (minLeft, minTop, maxLeft, maxTop) = ("Flip_0" + System.Environment.NewLine + mflip0.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
-
-      var mflip1 = matrix.FlipToCopy(1);
-      (minLeft, minTop, maxLeft, maxTop) = ("Flip_1" + System.Environment.NewLine + mflip1.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
-
-      var mremove = matrix.RemoveToCopy(1, 1);
-      (minLeft, minTop, maxLeft, maxTop) = ("Remove" + System.Environment.NewLine + mremove.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true }).ToString()).WriteToConsole(maxLeft + padding, minTop);
-
+      System.Console.WriteLine(nameof(matrix));
+      System.Console.WriteLine(matrix.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
-      //System.Console.WriteLine(nameof(matrix));
-      //System.Console.WriteLine(matrix.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
+      var mrotatec = matrix.RotateToCopyCw();
+      System.Console.WriteLine(nameof(Fx.RotateToCopyCw));
+      System.Console.WriteLine(mrotatec.Rank2ToConsoleString(cso));
+      System.Console.WriteLine();
 
-      //var mrotatec = matrix.RotateClockwise();
-      //System.Console.WriteLine(nameof(ExtensionMethods.RotateClockwise));
-      //System.Console.WriteLine(mrotatec.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
+      var mrotatecc = matrix.RotateToCopyCcw();
+      System.Console.WriteLine(nameof(Fx.RotateToCopyCcw));
+      System.Console.WriteLine(mrotatecc.Rank2ToConsoleString(cso));
+      System.Console.WriteLine();
 
-      //var mrotatecc = matrix.RotateCounterClockwise();
-      //System.Console.WriteLine(nameof(ExtensionMethods.RotateCounterClockwise));
-      //System.Console.WriteLine(mrotatecc.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
+      var mtranspose = matrix.TransposeToCopy();
+      System.Console.WriteLine(nameof(Fx.TransposeToCopy));
+      System.Console.WriteLine(mtranspose.Rank2ToConsoleString(cso));
+      System.Console.WriteLine();
 
-      //var mtranspose = matrix.TransposeToCopy();
-      //System.Console.WriteLine(nameof(ExtensionMethods.Transpose));
-      //System.Console.WriteLine(mtranspose.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
+      var minsert = matrix.InsertToCopy(1, 1, 4, 0);
+      System.Console.WriteLine(nameof(Fx.InsertToCopy));
+      System.Console.WriteLine(minsert.Rank2ToConsoleString(cso));
+      System.Console.WriteLine();
 
-      //var minsert = matrix.Insert(1, 1, 4, 0);
-      //System.Console.WriteLine(nameof(ArrayRank2.Insert));
-      //System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
-      //minsert.Fill(0, 1, 3, 4, 9);
-      //System.Console.WriteLine(nameof(ArrayRank2.Fill));
-      //System.Console.WriteLine(minsert.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
+      minsert.Fill(0, 1, 3, 4, 9);
+      System.Console.WriteLine(nameof(Fx.Fill));
+      System.Console.WriteLine(minsert.Rank2ToConsoleString(cso));
+      System.Console.WriteLine();
 
-      //var mflip0 = matrix.FlipToCopy(0);
-      //System.Console.WriteLine(nameof(ArrayRank2.FlipToCopy));
-      //System.Console.WriteLine(mflip0.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
+      var mflip0 = matrix.FlipToCopy(0);
+      System.Console.WriteLine(nameof(Fx.FlipToCopy));
+      System.Console.WriteLine(mflip0.Rank2ToConsoleString(cso));
+      System.Console.WriteLine();
 
-      //var mflip1 = matrix.FlipToCopy(1);
-      //System.Console.WriteLine(nameof(ArrayRank2.FlipToCopy));
-      //System.Console.WriteLine(mflip1.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
+      var mflip1 = matrix.FlipToCopy(1);
+      System.Console.WriteLine(nameof(Fx.FlipToCopy));
+      System.Console.WriteLine(mflip1.Rank2ToConsoleString(cso));
+      System.Console.WriteLine();
 
-      //var mremove = matrix.Remove(1, 1);
-      //System.Console.WriteLine(nameof(ArrayRank2.Remove));
-      //System.Console.WriteLine(mremove.ToConsoleBlock(uniformWidth: true));
-      //System.Console.WriteLine();
+      var mremove = matrix.RemoveToCopy(1, 1);
+      System.Console.WriteLine(nameof(Fx.RemoveToCopy));
+      System.Console.WriteLine(mremove.Rank2ToConsoleString(cso));
+      System.Console.WriteLine();
     }
 
     #endregion

@@ -18,7 +18,7 @@ namespace Flux
       var target = new System.Data.DataTable(source.TableName);
 
       for (var index = 0; index < source.Rows.Count; index++)
-        target.Columns.Add(targetColumnNames.AsColumnName(index));
+        target.Columns.Add(targetColumnNames.EnsureColumnName(index));
 
       for (var columnIndex = 0; columnIndex < source.Columns.Count; columnIndex++)
       {
