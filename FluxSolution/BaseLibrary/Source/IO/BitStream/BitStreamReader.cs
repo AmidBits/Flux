@@ -21,6 +21,11 @@ namespace Flux.IO
     /// <summary>The total number of bits read through the bit stream.</summary>
     public int TotalBits { get; private set; }
 
+    /// <summary>
+    /// <para>Read bytes until at least <paramref name="bitCount"/> bits are in the bit-buffer.</para>
+    /// </summary>
+    /// <param name="bitCount">The minimum number of bits to buffer.</param>
+    /// <exception cref="System.IO.EndOfStreamException"></exception>
     private void ReadBytes(int bitCount)
     {
       while (m_bitCount < bitCount)

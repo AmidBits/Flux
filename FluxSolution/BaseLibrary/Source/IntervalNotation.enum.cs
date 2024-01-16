@@ -15,6 +15,19 @@ namespace Flux
         _ => throw new NotImplementedException(),
       };
 
+    /// <summary>Asserts that the <paramref name="value"/> is an upper member of the interval set beginning at <paramref name="minValue"/> based on the <paramref name="source"/> <see cref="IntervalNotation"/>, and throws an exception if it's not.</summary>
+    /// <exception cref="System.NotImplementedException"></exception>
+    public static TSource AssertMember<TSource>(this IntervalNotation source, TSource value, TSource minValue, string? paramName = null)
+      where TSource : System.IComparable<TSource>
+      => source switch
+      {
+        IntervalNotation.Closed => source.IsMember(value, minValue) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than-or-equal-to {minValue}."),
+        IntervalNotation.Open => source.IsMember(value, minValue) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than {minValue}."),
+        IntervalNotation.HalfOpenLeft => source.IsMember(value, minValue) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than {minValue}."),
+        IntervalNotation.HalfOpenRight => source.IsMember(value, minValue) ? value : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Must be a value greater-than-or-equal-to {minValue}."),
+        _ => throw new NotImplementedException(),
+      };
+
     /// <summary>Returns the actual minimum and maximum integer of the interval set <paramref name="minValue"/>..<paramref name="maxValue"/> based on the <paramref name="source"/> <see cref="IntervalNotation"/>.</summary>
     public static (TSource ActualMinimum, TSource ActualMaximum) GetExtremumBI<TSource>(this IntervalNotation source, TSource minValue, TSource maxValue)
       where TSource : System.Numerics.IBinaryInteger<TSource>
@@ -36,6 +49,19 @@ namespace Flux
         IntervalNotation.Open => (TSource.BitIncrement(minValue), TSource.BitDecrement(maxValue)),
         IntervalNotation.HalfOpenLeft => (TSource.BitIncrement(minValue), maxValue),
         IntervalNotation.HalfOpenRight => (minValue, TSource.BitDecrement(maxValue)),
+        _ => throw new NotImplementedException(),
+      };
+
+    /// <summary>Determines whether the <paramref name="value"/> is an upper member of the interval set lower bound <paramref name="minValue"/> based on the <paramref name="source"/> <see cref="IntervalNotation"/>.</summary>
+    /// <exception cref="System.NotImplementedException"></exception>
+    public static bool IsMember<TSource>(this IntervalNotation source, TSource value, TSource minValue)
+      where TSource : System.IComparable<TSource>
+      => source switch
+      {
+        IntervalNotation.Closed => value.CompareTo(minValue) >= 0,
+        IntervalNotation.Open => value.CompareTo(minValue) > 0,
+        IntervalNotation.HalfOpenLeft => value.CompareTo(minValue) >= 0,
+        IntervalNotation.HalfOpenRight => value.CompareTo(minValue) > 0,
         _ => throw new NotImplementedException(),
       };
 

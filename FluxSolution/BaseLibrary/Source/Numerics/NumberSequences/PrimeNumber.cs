@@ -194,57 +194,65 @@ namespace Flux
     //  return binm;
     //}
 
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPotentialPrimes(System.Numerics.BigInteger number)
+    public static System.Collections.Generic.IEnumerable<TSelf> GetClosestPotentialPrimes<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      var quotient = System.Numerics.BigInteger.DivRem(number, 6, out var remainder);
+      var two = TSelf.CreateChecked(2);
+      var three = TSelf.CreateChecked(3);
+      var four = TSelf.CreateChecked(4);
+      var five = TSelf.CreateChecked(5);
+      var six = TSelf.CreateChecked(6);
 
-      var lo = quotient * 6;
-      var hi = lo + 6;
+      var (quotient, remainder) = TSelf.DivRem(number, six);
 
-      if (number <= 2)
+      var lo = quotient * six;
+      var hi = lo + six;
+
+      if (number <= two)
       {
-        yield return 2;
-        yield return 3;
-        lo = -6;
+        yield return two;
+        yield return three;
+        lo = -six;
       }
-      else if (number <= 3)
+      else if (number <= three)
       {
-        yield return 3;
-        yield return 2;
-        lo = -6;
+        yield return three;
+        yield return two;
+        lo = -six;
       }
 
-      if (remainder >= 3)
+      if (remainder >= three)
       {
         while (true)
         {
-          yield return hi - 1;
-          if (lo >= 6) yield return lo + 1;
-          else if (lo == 0) yield return 3;
-          yield return hi + 1;
-          if (lo >= 6) yield return lo - 1;
-          else if (lo == 0) yield return 2;
-          hi += 6;
-          lo -= 6;
+          yield return hi - TSelf.One;
+          if (lo >= six) yield return lo + TSelf.One;
+          else if (TSelf.IsZero(lo)) yield return three;
+          yield return hi + TSelf.One;
+          if (lo >= six) yield return lo - TSelf.One;
+          else if (TSelf.IsZero(lo)) yield return two;
+          hi += six;
+          lo -= six;
         }
       }
       else
       {
         while (true)
         {
-          if (lo > 0) yield return lo + 1;
-          else if (lo == 0) yield return 3;
-          yield return hi - 1;
-          if (lo > 0) yield return lo - 1;
-          else if (lo == 0) yield return 2;
-          yield return hi + 1;
-          lo -= 6;
-          hi += 6;
+          if (lo > TSelf.Zero) yield return lo + TSelf.One;
+          else if (TSelf.IsZero(lo)) yield return three;
+          yield return hi - TSelf.One;
+          if (lo > TSelf.Zero) yield return lo - TSelf.One;
+          else if (TSelf.IsZero(lo)) yield return two;
+          yield return hi + TSelf.One;
+          lo -= six;
+          hi += six;
         }
       }
     }
 
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPrimes(System.Numerics.BigInteger number)
+    public static System.Collections.Generic.IEnumerable<TSelf> GetClosestPrimes<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => GetClosestPotentialPrimes(number).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
     /// <summary>Returns a sequence of cousine primes, each of which is a pair of primes that differ by four.</summary>
@@ -264,6 +272,24 @@ namespace Flux
         }
       }
     }
+
+    /// <summary>
+    /// <para>Returns the infimum and supremum of <paramref name="number"/> (as the subset) of potential primes.</para>
+    /// </summary>
+    /// <param name="number">The target for locating the bounds.</param>
+    /// <returns></returns>
+    /// <remarks>Any number below 2, simply returns 2 for both infimum and supremum.</remarks>
+    public static (TSelf Infimum, TSelf Supremum) GetInfimumAndSupremumOfPotentialPrimes<TSelf>(TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.CreateChecked(2) is var two && number <= two // If the number is two, or less.
+      ? (two, two)
+      : TSelf.CreateChecked(3) is var three && number == three // If the number is three.
+      ? (three, three)
+      : (number % TSelf.CreateChecked(6) is var r && r == TSelf.Zero) || number == TSelf.CreateChecked(4) // It's between two potential primes, e.g. the number = 3]4[5, the remainder = 5]6[7 or 11]12[13 (examples).
+      ? (number - TSelf.One, number + TSelf.One)
+      : TSelf.CreateChecked(5) is var five && (r == TSelf.One || r == five) // If the remainder is either a one or a five, i.e. a potential prime.
+      ? (number, number)
+      : (number - r + TSelf.One, number - r + five); // Otherwise locate the potential prime using the remainder.
 
     /// <summary></summary>
     /// <see cref="https://en.wikipedia.org/wiki/Factorization"/>

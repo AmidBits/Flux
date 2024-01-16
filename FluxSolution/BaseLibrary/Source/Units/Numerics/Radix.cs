@@ -7,29 +7,34 @@ namespace Flux
     public readonly record struct Radix
     : System.IComparable<Radix>, IValueQuantifiable<int>
     {
+      public const int MinRadix = 2;
+      public const int MaxRadix = 256;
+
       private readonly int m_value;
 
-      public Radix(int radix) => m_value = Assert(radix);
+      public Radix(int radix) => m_value = IntervalNotation.Closed.AssertMember(radix, MinRadix, MaxRadix, nameof(radix));
 
       #region Static methods
 
       /// <summary>Asserts the number is a valid <paramref name="radix"/> (throws an exception with an optional <paramref name="paramName"/>, if not).</summary>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TSelf Assert<TSelf>(TSelf radix, string? paramName = null)
+      public static TSelf AssertMember<TSelf>(TSelf radix)
         where TSelf : System.Numerics.INumber<TSelf>
-        => Is(radix) ? radix : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), "Must be an integer, greater than or equal to 2.");
+        => AssertMember(radix, TSelf.CreateChecked(MaxRadix));
 
-      /// <summary>Asserts the number is a valid <paramref name="radix"/>, with an <paramref name="upperLimit"/> (throws an exception with an optional <paramref name="paramName"/>, if not).</summary>
+      /// <summary>Asserts the number is a valid <paramref name="radix"/>, with an <paramref name="maxRadix"/> (throws an exception with an optional <paramref name="paramName"/>, if not).</summary>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TSelf Assert<TSelf>(TSelf radix, TSelf upperLimit, string? paramName = null)
+      public static TSelf AssertMember<TSelf>(TSelf radix, TSelf maxRadix)
         where TSelf : System.Numerics.INumber<TSelf>
-        => Is(radix, upperLimit) ? radix : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"Must be an integer, greater than or equal to 2 and less than or equal to {upperLimit}.");
+        => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), maxRadix, nameof(radix));
 
       /// <summary>Converts a positional notation list of <paramref name="positionalNotationIndices"/> with <paramref name="radix"/> to a numerical value.</summary>
       public static bool TryConvertPositionalNotationIndicesToNumber<TRadix, TValue>(System.Collections.Generic.IList<int> positionalNotationIndices, TRadix radix, out TValue number)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
         where TValue : System.Numerics.IBinaryInteger<TValue>
       {
+        Units.Radix.AssertMember(radix);
+
         number = TValue.Zero;
 
         try
@@ -56,7 +61,9 @@ namespace Flux
         if (TValue.IsNegative(number))
           return TryConvertNumberToPositionalNotationIndices(TValue.Abs(number), radix, out positionalNotationIndices);
 
-        positionalNotationIndices = new System.Collections.Generic.List<int>();
+        Units.Radix.AssertMember(radix);
+
+        positionalNotationIndices = new();
 
         try
         {
@@ -78,7 +85,7 @@ namespace Flux
       public static TSelf DigitCount<TSelf>(TSelf value, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
-        Assert(radix);
+        AssertMember(radix);
 
         var count = TSelf.Zero;
 
@@ -97,7 +104,7 @@ namespace Flux
       public static TSelf DigitSum<TSelf>(TSelf value, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
-        Assert(radix);
+        AssertMember(radix);
 
         var sum = TSelf.Zero;
 
@@ -114,12 +121,12 @@ namespace Flux
       /// <summary>Drop the trailing (least significant) digit of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
       public static TSelf DropLeastSignificantDigit<TSelf>(TSelf number, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => number / Assert(radix);
+        => number / AssertMember(radix);
 
       /// <summary>Drop <paramref name="count"/> trailing (least significant) digits from <paramref name="number"/> using base <paramref name="radix"/>.</summary>
       public static TSelf DropLeastSignificantDigits<TSelf>(TSelf number, TSelf radix, TSelf count)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => number / Maths.IntegerPow(Assert(radix), count);
+        => number / Maths.IntegerPow(AssertMember(radix), count);
 
       /// <summary>Drop <paramref name="count"/> leading (most significant) digits of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
       public static TSelf DropMostSignificantDigits<TSelf>(TSelf number, TSelf radix, TSelf count)
@@ -139,7 +146,7 @@ namespace Flux
       public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf>(TSelf number, TSelf radix, int count = int.MaxValue)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
-        Assert(radix);
+        AssertMember(radix);
 
         if (TSelf.IsNegative(number))
           number = -number;
@@ -218,7 +225,7 @@ namespace Flux
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
         Maths.AssertNonNegative(value);
-        Assert(radix);
+        AssertMember(radix);
 
         var ilog = TSelf.Zero;
 
@@ -260,21 +267,21 @@ namespace Flux
       }
 
       /// <summary>Returns whether the number is a valid <paramref name="radix"/>.</summary>
-      public static bool Is<TSelf>(TSelf radix)
-        where TSelf : System.Numerics.INumber<TSelf> // Accomodate INumber so that other types than integer can be used if needed.
-        => radix > TSelf.One && TSelf.IsInteger(radix);
+      public static bool IsMember<TSelf>(TSelf radix)
+        where TSelf : System.Numerics.INumber<TSelf> =>
+        IsMember(radix, TSelf.CreateChecked(MaxRadix));
 
-      /// <summary>Returns whether the number is a valid <paramref name="radix"/>, with an <paramref name="upperLimit"/>.</summary>
-      public static bool Is<TSelf>(TSelf radix, TSelf upperLimit)
-        where TSelf : System.Numerics.INumber<TSelf> // Accomodate INumber so that other types than integer can be used if needed.
-        => radix > TSelf.One && radix <= upperLimit && TSelf.IsInteger(radix);
+      /// <summary>Returns whether the number is a valid <paramref name="radix"/>, with an <paramref name="maxRadix"/>.</summary>
+      public static bool IsMember<TSelf>(TSelf radix, TSelf maxRadix)
+        where TSelf : System.Numerics.INumber<TSelf>
+        => IntervalNotation.Closed.IsMember(radix, TSelf.CreateChecked(MinRadix), maxRadix);
 
       /// <summary>Indicates whether <paramref name="number"/> using base <paramref name="radix"/> is jumbled (i.e. no neighboring digits having a difference larger than 1).</summary>
       /// <see cref="http://www.geeksforgeeks.org/check-if-a-number-is-jumbled-or-not/"/>
       public static bool IsJumbled<TSelf>(TSelf number, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
-        Assert(radix);
+        AssertMember(radix);
 
         while (!TSelf.IsZero(number))
         {
@@ -296,7 +303,7 @@ namespace Flux
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
         Maths.AssertNonNegative(value);
-        Assert(radix);
+        AssertMember(radix);
 
         if (value == radix) // If the value is equal to the radix, then it's a power of the radix.
           return true;
@@ -315,7 +322,7 @@ namespace Flux
       public static bool IsSingleDigit<TSelf>(TSelf number, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
-        Assert(radix);
+        AssertMember(radix);
 
         return (TSelf.IsZero(number) || (TSelf.IsPositive(number) && number < radix) || (TSelf.IsNegative(number) && number > -radix));
       }
@@ -323,12 +330,12 @@ namespace Flux
       /// <summary>Retreive <paramref name="count"/> least significant digits of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
       public static TSelf KeepLeastSignificantDigit<TSelf>(TSelf value, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => value % Assert(radix);
+        => value % AssertMember(radix);
 
       /// <summary>Retreive <paramref name="count"/> least significant digits of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
       public static TSelf KeepLeastSignificantDigits<TSelf>(TSelf value, TSelf radix, TSelf count)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => value % Maths.IntegerPow(Assert(radix), count);
+        => value % Maths.IntegerPow(AssertMember(radix), count);
 
       /// <summary>Drop the leading digit of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
       public static TSelf KeepMostSignificantDigits<TSelf>(TSelf value, TSelf radix, TSelf count)
@@ -389,7 +396,7 @@ namespace Flux
       public static TSelf ReverseDigits<TSelf>(TSelf number, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
-        Assert(radix);
+        AssertMember(radix);
 
         var reversed = TSelf.Zero;
 
@@ -432,14 +439,14 @@ namespace Flux
       /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
       public static string ToSubscriptString<TSelf>(TSelf number, int radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => PositionalNotation.NumberToText(number, m_subscriptDecimalDigits.AsSpan()[..Assert(radix, m_subscriptDecimalDigits.Length)], '\u002D').ToString();
+        => PositionalNotation.NumberToText(number, m_subscriptDecimalDigits.AsSpan()[..AssertMember(radix, m_subscriptDecimalDigits.Length)], '\u002D').ToString();
 
       private static readonly string m_superscriptDecimalDigits = "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";
 
       /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
       public static string ToSuperscriptString<TSelf>(TSelf number, int radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
-        => PositionalNotation.NumberToText(number, m_superscriptDecimalDigits.AsSpan()[..Assert(radix, m_superscriptDecimalDigits.Length)], '\u002D').ToString();
+        => PositionalNotation.NumberToText(number, m_superscriptDecimalDigits.AsSpan()[..AssertMember(radix, m_superscriptDecimalDigits.Length)], '\u002D').ToString();
 
       #endregion Static methods
 
