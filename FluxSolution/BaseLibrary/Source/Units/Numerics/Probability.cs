@@ -25,9 +25,9 @@ namespace Flux
 
       /// <summary>Returns whether the value is a member of the probability.</summary>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static bool IsMember<TSelf>(TSelf value)
+      public static bool VerifyMember<TSelf>(TSelf value)
         where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => IntervalNotation.Closed.IsMember(value, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+        => IntervalNotation.Closed.VerifyMember(value, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
 
       /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
       /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>

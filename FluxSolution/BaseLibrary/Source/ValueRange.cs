@@ -138,11 +138,13 @@
 
     /// <summary>Asserts that the value is a member of the interval set (throws an exception if it's not).</summary>
     /// <exception cref="System.NotImplementedException"></exception>
-    public TSelf AssertMember(TSelf value, IntervalNotation constraint, string? paramName = null) => constraint.AssertMember(value, m_min, m_max, paramName);
+    public TSelf AssertMember(TSelf value, IntervalNotation constraint, string? paramName = null)
+      => constraint.AssertMember(value, m_min, m_max, paramName);
 
     /// <summary>Returns whether the value is a member of the interval set.</summary>
     /// <exception cref="System.NotImplementedException"></exception>
-    public bool IsMember(TSelf value, IntervalNotation constraint) => constraint.IsMember(value, m_min, m_max);
+    public bool VerifyMember(TSelf value, IntervalNotation constraint)
+      => constraint.VerifyMember(value, m_min, m_max);
 
     #region Static methods
 

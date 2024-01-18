@@ -15,7 +15,8 @@
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       AssertNonNegative(number, nameof(number));
-      AssertRoot(nth);
+
+      if (nth <= TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(nth), "Must be an integer, greater than or equal to 2.");
 
       if (TryFastIntegerRootN(number, nth, out TSelf root)) // Testing!
         return root;

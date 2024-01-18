@@ -20,7 +20,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static TSelf AssertMember<TSelf>(TSelf radix)
         where TSelf : System.Numerics.INumber<TSelf>
-        => AssertMember(radix, TSelf.CreateChecked(MaxRadix));
+        => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix), nameof(radix));
 
       /// <summary>Asserts the number is a valid <paramref name="radix"/>, with an <paramref name="maxRadix"/> (throws an exception with an optional <paramref name="paramName"/>, if not).</summary>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
@@ -267,14 +267,14 @@ namespace Flux
       }
 
       /// <summary>Returns whether the number is a valid <paramref name="radix"/>.</summary>
-      public static bool IsMember<TSelf>(TSelf radix)
-        where TSelf : System.Numerics.INumber<TSelf> =>
-        IsMember(radix, TSelf.CreateChecked(MaxRadix));
+      public static bool VerifyMember<TSelf>(TSelf radix)
+        where TSelf : System.Numerics.INumber<TSelf>
+        => IntervalNotation.Closed.VerifyMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix));
 
       /// <summary>Returns whether the number is a valid <paramref name="radix"/>, with an <paramref name="maxRadix"/>.</summary>
-      public static bool IsMember<TSelf>(TSelf radix, TSelf maxRadix)
+      public static bool VerifyMember<TSelf>(TSelf radix, TSelf maxRadix)
         where TSelf : System.Numerics.INumber<TSelf>
-        => IntervalNotation.Closed.IsMember(radix, TSelf.CreateChecked(MinRadix), maxRadix);
+        => IntervalNotation.Closed.VerifyMember(radix, TSelf.CreateChecked(MinRadix), maxRadix);
 
       /// <summary>Indicates whether <paramref name="number"/> using base <paramref name="radix"/> is jumbled (i.e. no neighboring digits having a difference larger than 1).</summary>
       /// <see cref="http://www.geeksforgeeks.org/check-if-a-number-is-jumbled-or-not/"/>

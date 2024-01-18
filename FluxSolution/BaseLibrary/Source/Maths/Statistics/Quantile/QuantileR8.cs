@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Statistics
 {
   /// <summary>
@@ -18,7 +16,7 @@ namespace Flux.Statistics
     public TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      => (TPercent.CreateChecked(count) + TPercent.CreateChecked(OneThird)) * Maths.AssertUnitInterval(p, nameof(p)) + TPercent.CreateChecked(OneThird);
+      => (TPercent.CreateChecked(count) + TPercent.CreateChecked(OneThird)) * Units.UnitInterval.AssertMember(p, IntervalNotation.Closed, nameof(p)) + TPercent.CreateChecked(OneThird);
 
     public TPercent EstimateQuantileValue<TValue, TPercent>(System.Collections.Generic.IEnumerable<TValue> ordered, TPercent p)
       where TValue : System.Numerics.INumber<TValue>
