@@ -112,72 +112,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //var pps = Flux.NumberSequence.GetInfimumAndSupremumOfPotentialPrimes(30);
 
-      //var desc = Flux.NumberSequence.GetDescendingPotentialPrimes(pps.Infimum).Take(10).ToArray();
-      //var asc = Flux.NumberSequence.GetAscendingPotentialPrimes(pps.Supremum).Take(10).ToArray();
-
-      //return;
-
-      //{
-      //  var (q, r) = System.Math.DivRem(i, 6);
-
-      //  var adjustedMaxNumber = i;
-
-      //  if (r == 0) adjustedMaxNumber--;
-      //  else if (r != 5) adjustedMaxNumber = q * 6 + 1;
-
-      //  var (qpp, rpp) = System.Math.DivRem(adjustedMaxNumber, 6);
-
-
-      //  var bitCount = 0;
-      //  if (r == 5) bitCount = (q + 1) * 2; // E.g. 23
-      //  else if (r == 0) bitCount = q * 2; // E.g. 24
-      //  else if (r >= 1) bitCount = q * 2 + 1; // E.g. 25
-
-      //  System.Console.WriteLine($"{i} {(q, r)} {adjustedMaxNumber} {(qpp, rpp)} {bitCount}");
-      //}
-      //return;
-
-      //var ps3 = Flux.NumberSequence.CreateSieveOfEratosthenes3(1000);
-      //return;
-
-      //var maxNumber = 30;
-
-      //var ps = new Flux.PrimeSieve(maxNumber, true);
-
-      //for (var i = 25; i < maxNumber; i++)
-      //  ps.GetNumber(i);
-
-      // return;
-
-      var counts = new Flux.DataStructures.OrderedDictionary<int, int>()
-      {
-        { 10, 4 },
-        { 100, 25 },
-        { 1000, 168 },
-        { 10000, 1229 },
-        { 100000, 9592 },
-        { 1000000, 78498 },
-        { 10000000, 664579 },
-        { 100000000, 5761455 },
-        //{ 1000000000, 50847534 }
-      };
-
-      for (int index = 0; index < counts.Count; index++)
-      {
-        counts.TryGetKey(index, out var length);
-        counts.TryGetKey(counts.Count - 1 - index, out var count);
-
-        System.Console.WriteLine(Flux.Services.Performance.Measure(() => Flux.NumberSequence.CreateSieveOfEratosthenes(length).CountPrimesInSieveOfEratosthenes(), count));
-        //break;
-      }
-
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => Flux.NumberSequence.CreateSieveOfEratosthenes(100000000).CountPrimes(), 100));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => Flux.NumberSequence.CreateSieveOfEratosthenes2(100000000).CountPrimes(), 100));
-
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => Flux.NumberSequence.CreateSieveOfEratosthenes(100).CountPrimes(), 100000000));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => Flux.NumberSequence.CreateSieveOfEratosthenes2(100).CountPrimes(), 100000000));
     }
 
     private static void WriteFile()

@@ -3,26 +3,106 @@ namespace Flux
 {
   public static partial class NumberSequence
   {
-    public static (int, int) CountPrimesInSieveOfEratosthenes(this System.Collections.BitArray source)
+    /// <summary>
+    /// <para>This is a fast building sieve of Eratosthenes.</para>
+    /// </summary>
+    /// <param name="maxNumber">The max number of the sieve.</param>
+    /// <returns></returns>
+    /// <remarks>In .NET there is currently a maximum index limit for an array: 2,146,435,071 (0X7FEFFFFF). That number times 64 (137,371,844,544) is the practical limit of <paramref name="maxNumber"/>.</remarks>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static Flux.DataStructures.BitArray64 CreateSieveOfEratosthenes(long maxNumber)
     {
-      var length = source.Length - 1;
+      if (maxNumber < 1) throw new System.ArgumentOutOfRangeException(nameof(maxNumber));
 
-      var count = source.Length > 3 ? 2 : source.Length > 2 ? 1 : 0;
+      var ba = new Flux.DataStructures.BitArray64(maxNumber + 1, unchecked((long)0xAAAAAAAAAAAAAAAAUL)); // Bits represents the number line, so we start with all odd numbers being set to 1 and all even numbers set to 0.
 
-      for (var index = 6; index < length; index += 6)
+      ba.Set(1, false); // One is not a prime so we set it to 0.
+      ba.Set(2, true); // Two is the only even and the oddest prime so we set it to 1.
+
+      var sqrt = (long)System.Math.Sqrt(maxNumber);
+
+      var factor = 3L;
+
+      while (factor <= sqrt)
       {
-        if (source[index - 1]) count++;
-        if (index + 1 < source.Length && source[index + 1]) count++;
+        for (var num = factor; num <= maxNumber; num += 2)
+          if (ba[num])
+          {
+            factor = num;
+            break;
+          }
+
+        for (var num = factor * factor; num <= maxNumber; num += factor * 2)
+          ba[num] = false;
+
+        factor += 2;
       }
 
-      var edge = length % 6;
-      if (edge == 0 && source[length - 1]) count++; // The next to last element can be a prime. E.g. case is 6, so 5 will be set by this.
-      else if (edge == 5 && source[length]) count++; // The last element can be a prime. E.g. case is 5, so 5 will be set by this.
-
-      return (count, length);
+      return ba;
     }
 
-    //public static System.Collections.BitArray CreateSieveOfEratosthenes(int length)
+    //private static Flux.DataStructures.OrderedDictionary<int, int> DecimalPlaceValuePrimeCounts = new()
+    //  {
+    //    { 10, 4 },
+    //    { 100, 25 },
+    //    { 1000, 168 },
+    //    { 10000, 1229 },
+    //    { 100000, 9592 },
+    //    { 1000000, 78498 },
+    //    { 10000000, 664579 },
+    //    { 100000000, 5761455 },
+    //    //{ 1000000000, 50847534 }
+    //  };
+
+    //public static System.Collections.Generic.IEnumerable<(int primeNumber, int primeIndex)> EnumerateSieveOfEratosthenes(this System.Collections.BitArray source)
+    //{
+    //  if (source.Length >= 2)
+    //    yield return (2, 0);
+
+    //  if (source.Length >= 3)
+    //    yield return (3, 1);
+
+    //  var index = 2;
+
+    //  for (var pn = 5; pn < source.Length; pn += 4)
+    //  {
+    //    if (source[pn]) yield return (pn, index);
+
+    //    index++;
+
+    //    pn += 2;
+
+    //    if (pn < source.Length && source[pn]) yield return (pn, index);
+
+    //    index++;
+    //  }
+    //}
+
+    //public static System.Collections.Generic.IEnumerable<(int primeNumber, int primeIndex)> EnumerateSieveOfEratosthenes(this Flux.BitArray64 source)
+    //{
+    //  if (source.BitCount >= 2)
+    //    yield return (2, 0);
+
+    //  if (source.BitCount >= 3)
+    //    yield return (3, 1);
+
+    //  var index = 2;
+
+    //  for (var pn = 5; pn < source.BitCount; pn += 4)
+    //  {
+    //    if (source.Get(pn)) yield return (pn, index);
+
+    //    index++;
+
+    //    pn += 2;
+
+    //    if (pn < source.BitCount && source.Get(pn)) yield return (pn, index);
+
+    //    index++;
+    //  }
+    //}
+
+    //public static System.Collections.BitArray CreateSieveOfEratosthenes2(int length)
     //{
     //  if (length < 1) throw new System.ArgumentOutOfRangeException(nameof(length));
 
@@ -51,33 +131,43 @@ namespace Flux
     //  return ba;
     //}
 
-    public static System.Collections.BitArray CreateSieveOfEratosthenes(int maxNumber)
-    {
-      if (maxNumber < 1) throw new System.ArgumentOutOfRangeException(nameof(maxNumber));
+    ///// <summary>
+    ///// <para>A very fast function that builds a map of prime numbers using a <see cref="System.Collections.BitArray"/> (booleans) up to <paramref name="maxNumber"/>. Optionally <paramref name="skipSettingEvenBitsToZero"/> can be used to optimize for speed.</para>
+    ///// </summary>
+    ///// <param name="maxNumber"></param>
+    ///// <returns>A bit array with all primes set to 1. A side effect to this method for the sake of speed, depending on <paramref name="skipSettingEvenBitsToZero"/> it will either leave EVEN bits at 0, or set them to 1, so basically always disregard all even bits!</returns>
+    ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    //public static System.Collections.BitArray CreateSieveOfEratosthenes1(int maxNumber, bool skipSettingEvenBitsToZero = true)
+    //{
+    //  if (maxNumber < 1) throw new System.ArgumentOutOfRangeException(nameof(maxNumber));
 
-      var ba = new System.Collections.BitArray(maxNumber + 1, true);
+    //  var ba = new System.Collections.BitArray(maxNumber + 1, true);
 
-      var sqrt = (int)System.Math.Sqrt(maxNumber);
+    //  var sqrt = (int)System.Math.Sqrt(maxNumber);
 
-      var factor = 3;
+    //  var factor = 3;
 
-      while (factor <= sqrt)
-      {
-        for (var num = factor; num <= maxNumber; num += 2)
-          if (ba[num])
-          {
-            factor = num;
-            break;
-          }
+    //  while (factor <= sqrt)
+    //  {
+    //    for (var num = factor; num <= maxNumber; num += 2)
+    //      if (ba[num])
+    //      {
+    //        factor = num;
+    //        break;
+    //      }
 
-        for (var num = factor * factor; num <= maxNumber; num += factor * 2)
-          ba[num] = false;
+    //    for (var num = factor * factor; num <= maxNumber; num += factor * 2)
+    //      ba[num] = false;
 
-        factor += 2;
-      }
+    //    factor += 2;
+    //  }
 
-      return ba;
-    }
+    //  if (skipSettingEvenBitsToZero)
+    //    for (var num = 4; num <= maxNumber; num += 2)
+    //      ba[num] = false;
+
+    //  return ba;
+    //}
   }
 }
 #endif

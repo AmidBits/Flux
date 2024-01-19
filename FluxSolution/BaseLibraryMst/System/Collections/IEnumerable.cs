@@ -18,7 +18,9 @@ namespace Collections.Generic
     [TestMethod]
     public void Choose()
     {
-      CollectionAssert.AreEqual(new int[] { 17, 23, 57 }, integers.SelectWhere((e, i) => (i & 1) == 1, (e, i) => e).ToArray());
+      var expected = new int[] { 17, 23, 57 };
+      var actual = integers.SelectWhere((e, i) => ((i & 1) == 1), (e, i) => e).ToArray();
+      CollectionAssert.AreEqual(expected, actual);
     }
 
     [TestMethod]
