@@ -112,7 +112,32 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var bitLength = 128;
 
+      var ba = new Flux.DataStructures.BitArray64(bitLength, new ulong[] { 0x0807060504030201, 0x910f0e0d0c0b0a09 });
+
+      var b64 = new long[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 64)];
+      ba.CopyTo(b64, 0);
+
+      var b32 = new int[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 32)];
+      ba.CopyTo(b32, 0);
+
+      var bu32 = new uint[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 32)];
+      ba.CopyTo(bu32, 0);
+
+      var b16 = new short[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 16)];
+      ba.CopyTo(b16, 0);
+
+      var bu16 = new ushort[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 16)];
+      ba.CopyTo(bu16, 0);
+
+      var b8 = new byte[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 8)];
+      ba.CopyTo(b8, 0);
+
+      var sb8 = new sbyte[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 8)];
+      ba.CopyTo(sb8, 0);
+
+      ba.Shuffle();
     }
 
     private static void WriteFile()

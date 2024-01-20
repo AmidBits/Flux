@@ -11,9 +11,9 @@
     private double m_b0, m_b1, m_b2, m_b3, m_b4, m_b5, m_b6;
 
     public PinkNoisePk3(System.Random rng)
-      => m_rng = rng ?? new System.Random();
+      => m_rng = rng ?? System.Random.Shared;
     public PinkNoisePk3()
-      : this(new System.Random())
+      : this(System.Random.Shared)
     { }
 
     /// <summary>A bipolar (-1 to 1) pink noise sample. The phase is ignored.</summary>

@@ -8,8 +8,9 @@ namespace Flux
     /// </summary>
     /// <param name="source">The sequence in which the shortest balancing substring should be found.</param>
     /// <param name="vocabulary">The items which must be present and balanced in <paramref name="source"/>.</param>
-    /// <returns>The (index, count) of elements in the shortest balancing substring, or (-1, 0) if not found.</returns>
+    /// <returns>A 2-tuple with (index, count) of elements in the shortest balancing substring, or (-1, 0) if not found.</returns>
     public static (int index, int count) ShortestBalancingSubstring<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> vocabulary)
+      where T : notnull
     {
       var frequencies = new System.Collections.Generic.Dictionary<T, int>();
 

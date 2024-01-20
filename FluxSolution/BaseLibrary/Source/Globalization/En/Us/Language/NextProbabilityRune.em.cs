@@ -25,7 +25,7 @@
 //    /// <summary>Returns the next probable consonant based on <paramref name="source"/>.</summary>
 //    public static System.Text.Rune NextProbabilityRuneEnUsConsonant(this System.Random source, System.Globalization.CultureInfo? culture = null)
 //    {
-//      source ??= new System.Random();
+//      source ??= System.Random.Shared;
 //      culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
 //      var rune = NextProbabilityRuneEnUs(source);
@@ -36,7 +36,7 @@
 //    /// <summary>Returns the next probable vowel based on <paramref name="source"/> and whether Y will be considered.</summary>
 //    public static System.Text.Rune NextProbabilityRuneEnUsVowel(this System.Random source, System.Globalization.CultureInfo? culture = null)
 //    {
-//      source ??= new System.Random();
+//      source ??= System.Random.Shared;
 //      culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
 //      var rune = NextProbabilityRuneEnUs(source);

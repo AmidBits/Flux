@@ -20,7 +20,7 @@
     /// <param name="rng">The random number generator to use.</param>
     public VariableNoiseSN(double alpha, int poles, System.Random rng)
     {
-      m_rng = rng ?? new System.Random();
+      m_rng = rng ?? System.Random.Shared;
 
       if (alpha < 0 || alpha > 2) throw new System.ArgumentOutOfRangeException(nameof(alpha));
       else if (poles < 0 || poles > 256) throw new System.ArgumentOutOfRangeException(nameof(poles));
@@ -42,7 +42,7 @@
         Sample();
     }
     public VariableNoiseSN(double alpha, int poles)
-      : this(alpha, poles, new System.Random())
+      : this(alpha, poles, System.Random.Shared)
     { }
     public VariableNoiseSN()
       : this(1, 5)

@@ -10,9 +10,9 @@
     private double m_brown;
 
     public BrownNoise(System.Random rng)
-      => m_rng = rng ?? new System.Random();
+      => m_rng = rng ?? System.Random.Shared;
     public BrownNoise()
-      : this(new System.Random())
+      : this(System.Random.Shared)
     { }
 
     public double Sample()

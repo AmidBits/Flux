@@ -7,9 +7,9 @@
     private readonly System.Random m_rng;
 
     public WhiteNoise(System.Random? rng)
-      => m_rng = rng ?? new System.Random();
+      => m_rng = rng ?? System.Random.Shared;
     public WhiteNoise()
-      : this(new System.Random())
+      : this(System.Random.Shared)
     { }
 
     public double Sample()

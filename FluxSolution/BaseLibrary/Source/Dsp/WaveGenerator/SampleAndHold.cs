@@ -9,9 +9,9 @@ namespace Flux.Dsp.WaveGenerator
     private double m_sample, m_hold = System.Math.PI;
 
     public SampleAndHold(System.Random rng)
-      => m_rng = rng ?? new System.Random();
+      => m_rng = rng ?? System.Random.Shared;
     public SampleAndHold()
-      : this(new System.Random())
+      : this(System.Random.Shared)
     { }
 
     public double Sample(double phase)

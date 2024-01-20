@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Model
 {
   //public interface IPasswordGenerator
@@ -40,7 +38,7 @@ namespace Flux.Model
 
     public bool ForceStartWithAlpha { get; set; }
 
-    public System.Random RandomNumberGenerator { get; init; } = new System.Random();
+    public System.Random RandomNumberGenerator { get; init; } = System.Random.Shared;
 
     /// <summary>Creates a new password sequence of specified length and various options.</summary>
     public System.Collections.Generic.IEnumerable<char> GetPassword(int length)
