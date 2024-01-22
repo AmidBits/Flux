@@ -76,13 +76,19 @@ namespace Flux
         };
 
       #region Static methods
-      /// <summary>Creates a new Volumne instance from the specified rectangular length, width and height.</summary>
-      /// <param name="length"></param>
-      /// <param name="width"></param>
-      /// <param name="height"></param>
 
-      public static Volume From(Length length, Length width, Length height)
+      /// <summary>Creates a new <see cref="Volume"/> instance from the specified cuboid.</summary>
+      /// <param name="length">The length of a cuboid.</param>
+      /// <param name="width">The width of a cuboid.</param>
+      /// <param name="height">The height of a cuboid.</param>
+      public static Volume OfCuboid(Length length, Length width, Length height)
         => new(length.Value * width.Value * height.Value);
+
+      /// <summary>Creates a new <see cref="Volume"/> instance from the specified sphere.</summary>
+      /// <param name="radius">The radius of a sphere.</param>
+      public static Volume OfSphere(Length radius)
+        => new(4d / 3d * System.Math.PI * System.Math.Pow(radius.Value, 3));
+
       #endregion Static methods
 
       #region Overloaded operators

@@ -1,9 +1,8 @@
 ﻿using System.Linq;
+using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Flux;
-
-namespace Types
+namespace SystemFx
 {
   [TestClass]
   public class DateTime

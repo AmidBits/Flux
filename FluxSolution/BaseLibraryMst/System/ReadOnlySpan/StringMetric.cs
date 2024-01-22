@@ -3,7 +3,7 @@ using Flux;
 using Flux.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Text
+namespace SystemFx
 {
   [TestClass]
   public partial class SequenceMetrics

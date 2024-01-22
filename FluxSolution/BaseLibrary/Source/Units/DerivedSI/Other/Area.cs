@@ -37,12 +37,34 @@ namespace Flux
         };
 
       #region Static methods
-      /// <summary>Creates a new Area instance from the specified rectangular length and width.</summary>
-      /// <param name="length"></param>
-      /// <param name="width"></param>
 
-      public static Area From(Length length, Length width)
+      /// <summary>Creates a new <see cref="Area"/> instance from the specified hexagon.</summary>
+      /// <param name="radius">The radius and length of one side of a hexagon are both the same.</param>
+      public static Area OfHexagon(Length radius)
+        => new(3 * System.Math.Sqrt(3) / 2 * System.Math.Pow(radius.Value, 2));
+
+      /// <summary>Creates a new <see cref="Area"/> instance from the specified circle.</summary>
+      /// <param name="radius">The radius of a circle.</param>
+      public static Area OfCircle(Length radius)
+        => new(System.Math.PI * radius.Value * radius.Value);
+
+      /// <summary>Creates a new <see cref="Area"/> instance from the specified rectangle.</summary>
+      /// <param name="semiMajorAxis">The longer radius.</param>
+      /// <param name="semiMinorAxis">The shorter radius.</param>
+      public static Area OfEllipse(Length semiMajorAxis, Length semiMinorAxis)
+        => new(System.Math.PI * semiMajorAxis.Value * semiMinorAxis.Value);
+
+      /// <summary>Creates a new <see cref="Area"/> instance from the specified rectangle.</summary>
+      /// <param name="length">The length of a rectangle.</param>
+      /// <param name="width">The width of a rectangle.</param>
+      public static Area OfRectangle(Length length, Length width)
         => new(length.Value * width.Value);
+
+      /// <summary>Creates a new <see cref="Area"/> instance from the specified sphere.</summary>
+      /// <param name="radius">The radius of a sphere.</param>
+      public static Area OfSphere(Length radius)
+         => new(4d * System.Math.PI * System.Math.Pow(radius.Value, 2));
+
       #endregion Static methods
 
       #region Overloaded operators

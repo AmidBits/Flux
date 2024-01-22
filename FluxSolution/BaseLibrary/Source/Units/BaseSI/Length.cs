@@ -79,21 +79,52 @@ namespace Flux
         };
 
       #region Static methods
+
+      /// <summary>Creates a new <see cref="Length"/> instance from <see cref="LinearVelocity"/> and <see cref="AngularVelocity"/></summary>
+      /// <param name="speed"></param>
+      /// <param name="angularVelocity"></param>
+      public static Length From(LinearVelocity speed, AngularVelocity angularVelocity)
+        => new(speed.Value / angularVelocity.Value);
+
+      public static Length OfCirclePerimeter(Length radius)
+        => new(2 * System.Math.PI * radius.Value);
+
+      /// <summary>Creates a new <see cref="Length"/> instance representing the perimeter of the specified ellipse.</summary>
+      /// <param name="semiMajorAxis">The longer radius.</param>
+      /// <param name="semiMinorAxis">The shorter radius.</param>
+      public static Length OfEllipsePerimeter(Length semiMajorAxis, Length semiMinorAxis)
+      {
+        var circle = System.Math.PI * (semiMajorAxis.Value + semiMinorAxis.Value);
+
+        if (semiMajorAxis.Value == semiMinorAxis.Value) // For a circle, use (PI * diameter);
+          return new(circle);
+
+        var h3 = 3 * System.Math.Pow(semiMajorAxis.Value - semiMinorAxis.Value, 2) / System.Math.Pow(semiMajorAxis.Value + semiMinorAxis.Value, 2);
+
+        var ellipse = circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
+
+        return new(ellipse);
+      }
+
+      /// <summary>Creates a new <see cref="Length"/> instance from the specified rectangle.</summary>
+      /// <param name="radius">The radius or length of one side of a hexagon are both the same.</param>
+      public static Length OfHexagonPerimeter(Length radius)
+        => new(6 * radius.Value);
+
+      /// <summary>Creates a new <see cref="Length"/> instance from the specified rectangle.</summary>
+      /// <param name="length">The length of a rectangle.</param>
+      /// <param name="width">The width of a rectangle.</param>
+      public static Area OfRectanglePerimiter(Length length, Length width)
+        => new(2 * length.Value + 2 * width.Value);
+
       /// <summary>Computes the wavelength from the specified phase velocity and frequency. A wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per second) for the wavelength distance.</summary>
       /// <param name="phaseVelocity">The constant speed of the traveling wave. If these are sound waves then typically this is the speed of sound. If electromagnetic radiation (e.g. light) in free space then speed of light.</param>
       /// <param name="frequency"></param>
       /// <returns>The wavelength of the frequency cycle at the phase velocity.</returns>
       /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
-
-      public static Length ComputeWavelength(LinearVelocity phaseVelocity, Frequency frequency)
+      public static Length Wavelength(LinearVelocity phaseVelocity, Frequency frequency)
         => new(phaseVelocity.Value / frequency.Value);
 
-      /// <summary>Creates a new <see cref="Length"/> instance from <see cref="LinearVelocity"/> and <see cref="AngularVelocity"/></summary>
-      /// <param name="speed"></param>
-      /// <param name="angularVelocity"></param>
-
-      public static Length From(LinearVelocity speed, AngularVelocity angularVelocity)
-        => new(speed.Value / angularVelocity.Value);
       #endregion Static methods
 
       #region Overloaded operators

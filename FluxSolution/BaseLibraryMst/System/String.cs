@@ -3,7 +3,7 @@ using System.Linq;
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Types
+namespace SystemFx
 {
   [TestClass]
   public class String

@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace System
+namespace SystemFx
 {
   [TestClass]
   public class ReadOnlySpan

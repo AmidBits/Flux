@@ -1,7 +1,7 @@
 ﻿using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace System
+namespace SystemFx
 {
   [TestClass]
   public class BitConversion
@@ -14,6 +14,7 @@ namespace System
       true.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesChar()
     {
@@ -22,6 +23,7 @@ namespace System
       ((char)1).WriteBytes(actual, 0, Flux.Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesDecimal()
     {
@@ -30,6 +32,7 @@ namespace System
       System.Decimal.One.WriteBytes(actual, 0, Flux.Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesDouble()
     {
@@ -38,6 +41,7 @@ namespace System
       1D.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesFloat()
     {
@@ -46,6 +50,7 @@ namespace System
       1F.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesInt16()
     {
@@ -54,6 +59,7 @@ namespace System
       ((short)1).WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesInt32()
     {
@@ -62,6 +68,7 @@ namespace System
       1.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesInt64()
     {
@@ -70,6 +77,7 @@ namespace System
       1L.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesUInt16()
     {
@@ -78,6 +86,7 @@ namespace System
       ((ushort)1).WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesUInt32()
     {
@@ -86,6 +95,7 @@ namespace System
       1U.WriteBytes(actual, 0, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianWriteBytesUInt64()
     {
@@ -103,6 +113,7 @@ namespace System
       true.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesChar()
     {
@@ -111,6 +122,7 @@ namespace System
       ((char)1).WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesDecimal()
     {
@@ -119,6 +131,7 @@ namespace System
       1M.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesDouble()
     {
@@ -127,6 +140,7 @@ namespace System
       1D.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesFloat()
     {
@@ -135,6 +149,7 @@ namespace System
       1F.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesInt16()
     {
@@ -143,6 +158,7 @@ namespace System
       ((short)1).WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesInt32()
     {
@@ -151,6 +167,7 @@ namespace System
       1.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesInt64()
     {
@@ -159,6 +176,7 @@ namespace System
       1L.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesUInt16()
     {
@@ -167,6 +185,7 @@ namespace System
       ((ushort)1).WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesUInt32()
     {
@@ -175,6 +194,7 @@ namespace System
       1U.WriteBytes(actual, 0, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianWriteBytesUInt64()
     {
@@ -191,6 +211,7 @@ namespace System
       bool actual = new System.ReadOnlySpan<byte>(new byte[] { 1 }).ReadBoolean(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadChar()
     {
@@ -198,6 +219,7 @@ namespace System
       var actual = new byte[] { 0, 1 }.ReadChar(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadDecimal()
     {
@@ -205,6 +227,7 @@ namespace System
       var actual = new byte[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }.ReadDecimal(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadDouble()
     {
@@ -212,6 +235,7 @@ namespace System
       var actual = new byte[] { 63, 240, 0, 0, 0, 0, 0, 0 }.ReadDouble(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadFloat()
     {
@@ -219,6 +243,7 @@ namespace System
       var actual = new byte[] { 63, 128, 0, 0 }.ReadSingle(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadInt16()
     {
@@ -226,6 +251,7 @@ namespace System
       var actual = new byte[] { 0, 1 }.ReadInt16(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadInt32()
     {
@@ -233,6 +259,7 @@ namespace System
       var actual = new byte[] { 0, 0, 0, 1 }.ReadInt32(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadInt64()
     {
@@ -240,6 +267,7 @@ namespace System
       var actual = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 }.ReadInt64(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadUInt16()
     {
@@ -247,6 +275,7 @@ namespace System
       var actual = new byte[] { 0, 1 }.ReadUInt16(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadUInt32()
     {
@@ -254,6 +283,7 @@ namespace System
       var actual = new byte[] { 0, 0, 0, 1 }.ReadUInt32(0, Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void BigEndianReadUInt64()
     {
@@ -269,6 +299,7 @@ namespace System
       bool actual = new System.ReadOnlySpan<byte>(new byte[] { 1 }).ReadBoolean(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadChar()
     {
@@ -276,6 +307,7 @@ namespace System
       var actual = new byte[] { 1, 0 }.ReadChar(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadDecimal()
     {
@@ -283,6 +315,7 @@ namespace System
       var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }.ReadDecimal(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadDouble()
     {
@@ -290,6 +323,7 @@ namespace System
       var actual = new byte[] { 0, 0, 0, 0, 0, 0, 240, 63 }.ReadDouble(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadFloat()
     {
@@ -297,6 +331,7 @@ namespace System
       var actual = new byte[] { 0, 0, 128, 63 }.ReadSingle(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadInt16()
     {
@@ -304,6 +339,7 @@ namespace System
       var actual = new byte[] { 1, 0 }.ReadInt16(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadInt32()
     {
@@ -311,6 +347,7 @@ namespace System
       var actual = new byte[] { 1, 0, 0, 0 }.ReadInt32(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadInt64()
     {
@@ -318,6 +355,7 @@ namespace System
       var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 }.ReadInt64(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadUInt16()
     {
@@ -325,6 +363,7 @@ namespace System
       var actual = new byte[] { 1, 0 }.ReadUInt16(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadUInt32()
     {
@@ -332,6 +371,7 @@ namespace System
       var actual = new byte[] { 1, 0, 0, 0 }.ReadUInt16(0, Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
+
     [TestMethod]
     public void LittleEndianReadUInt64()
     {

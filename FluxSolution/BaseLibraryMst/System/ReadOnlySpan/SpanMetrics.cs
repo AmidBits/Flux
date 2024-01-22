@@ -2,7 +2,7 @@
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Collections.Generic
+namespace SystemFx
 {
   [TestClass]
   public class SpanMetrics
