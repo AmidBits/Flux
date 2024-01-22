@@ -2,7 +2,7 @@ namespace Flux
 {
   public record class SpanBuilder<T>
   {
-    private const int DefaultBufferSize = 16;
+    private const int DefaultBufferSize = 64;
 
     private T[] m_array;
 
@@ -304,11 +304,21 @@ namespace Flux
     }
 
     /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
-    public SpanBuilder<T> InsertEvery(T insert, int interval)
+    public SpanBuilder<T> InsertEvery(T insert, int interval, Flux.Geometry.BodyRelativeCoordinateAxisX alignment = Geometry.BodyRelativeCoordinateAxisX.Left)
     {
-      for (var index = Length - 1; index >= 0; index--)
-        if (index > 0 && index % interval == interval - 1)
-          Insert(index, insert, 1);
+      switch (alignment)
+      {
+        case Geometry.BodyRelativeCoordinateAxisX.Left:
+          for (var index = interval; index < Length; index += interval + 1)
+            Insert(index, insert, 1);
+          break;
+        case Geometry.BodyRelativeCoordinateAxisX.Right:
+          for (var index = Length - interval; index >= 0; index -= interval)
+            Insert(index, insert, 1);
+          break;
+        default:
+          break;
+      }
 
       return this;
     }

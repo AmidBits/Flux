@@ -4,34 +4,34 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    /// <summary>Creates a sequence of <paramref name="count"/> numbers alternating around <paramref name="mean"/>, controlled by a <paramref name="direction"/> (towards or away from <paramref name="mean"/>) and <paramref name="step"/> size.</summary>
-    /// <param name="mean">The mean around which the iteration takes place.</param>
+    /// <summary>Creates a sequence of <paramref name="count"/> numbers alternating around <paramref name="source"/>, controlled by a <paramref name="direction"/> (towards or away from <paramref name="source"/>) and <paramref name="step"/> size.</summary>
+    /// <param name="source">The mean around which the iteration takes place.</param>
     /// <param name="count">The number of iterations to execute.</param>
     /// <param name="step">The stepping size between iterations. A positive number iterates from mean to extent, whereas a negative number iterates from extent to mean.</param>
     /// <param name="direction">Specified by <see cref="AlternatingLoopDirection"/>.</param>
-    public static System.Collections.Generic.IEnumerable<TSelf> Alternating<TSelf>(TSelf mean, TSelf count, TSelf step, AlternatingLoopDirection direction)
+    public static System.Collections.Generic.IEnumerable<TSelf> Alternate<TSelf>(this TSelf source, TSelf count, TSelf step, AlternatingLoopDirection direction)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       switch (direction)
       {
-        case AlternatingLoopDirection.AwayFromMean:
+        case AlternatingLoopDirection.Outward:
           for (var index = TSelf.One; index <= count; index++)
           {
-            yield return mean;
+            yield return source;
 
-            mean += (step * index);
+            source += (step * index);
             step = -step;
           }
           break;
-        case AlternatingLoopDirection.TowardsMean:
+        case AlternatingLoopDirection.Inward:
           // Setup the inital outer edge value for inward iteration.
-          mean += step * Maths.TruncMod(count, TSelf.One + TSelf.One, out TSelf _);
+          source += step * Maths.TruncMod(count, TSelf.One + TSelf.One);
 
           for (var index = count - TSelf.One; index >= TSelf.Zero; index--)
           {
-            yield return mean;
+            yield return source;
 
-            mean -= (step * index);
+            source -= (step * index);
             step = -step;
           }
           break;

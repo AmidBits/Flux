@@ -4,39 +4,41 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
-    public static System.Collections.Generic.IEnumerable<TSelf> IntervalAscending<TSelf>(TSelf low, TSelf high)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      while (true)
-        for (var i = low; i <= high; i++)
-          yield return i;
-
-      //var n = TSelf.Abs(high - low) + TSelf.One;
-
-      //for (var i = TSelf.Zero; ; i = (i + TSelf.One) % n)
-      //{
-      //  yield return low + i;
-      //}
-    }
-
-    public static System.Collections.Generic.IEnumerable<TSelf> IntervalDescending<TSelf>(TSelf low, TSelf high)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      while (true)
-        for (var i = high; i >= low; i--)
-          yield return i;
-      //var n = TSelf.Abs(high - low) + TSelf.One;
-
-      //for (var i = n - TSelf.One; ; i = (i - TSelf.One + n) % n)
-      //{
-      //  yield return low + i;
-      //}
-    }
-
-    public static System.Collections.Generic.IEnumerable<TSelf> Range<TSelf>(TSelf initial, TSelf count, TSelf step)
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="source">The iteration starts with this value.</param>
+    /// <param name="count">The process iterates this many times.</param>
+    /// <param name="stepSize">The value is increased this much each iteration.</param>
+    /// <returns></returns>
+    /// <remarks>This version runs indefinitely.</remarks>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static System.Collections.Generic.IEnumerable<TSelf> Iterate<TSelf>(this TSelf source, TSelf stepSize, TSelf count)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      for (TSelf n = initial, c = count - TSelf.One; c >= TSelf.Zero; n += step, c--)
+      if (TSelf.IsZero(stepSize)) throw new System.ArgumentOutOfRangeException(nameof(stepSize));
+      if (count < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(count));
+
+      for (TSelf n = source, c = count - TSelf.One; c >= TSelf.Zero; n += stepSize, c--)
+        yield return n;
+    }
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="source">The iteration starts with this value.</param>
+    /// <param name="stepSize">The value is increased this much each iteration.</param>
+    /// <returns></returns>
+    /// <remarks>This version runs indefinitely.</remarks>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static System.Collections.Generic.IEnumerable<TSelf> Iterate<TSelf>(this TSelf source, TSelf stepSize)
+      where TSelf : System.Numerics.INumber<TSelf>
+    {
+      if (TSelf.IsZero(stepSize)) throw new System.ArgumentOutOfRangeException(nameof(stepSize));
+
+      for (var n = source; ; n += stepSize)
         yield return n;
     }
 

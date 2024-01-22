@@ -8,6 +8,6 @@ namespace Flux
     /// </summary>
     // <example>var isUnsignedNumber = typeof(int).IsAssignableToGenericType(typeof(System.Numerics.IUnsignedNumber<>));</example>
     public static bool IsAssignableToGenericType(this System.Type source, System.Type genericType)
-      => source.GetInterfaces().Append(source).Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericType) || (source.BaseType?.IsAssignableToGenericType(genericType) ?? false);
+      => source.GetInterfaces().Prepend(source).Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericType) || (source.BaseType?.IsAssignableToGenericType(genericType) ?? false);
   }
 }

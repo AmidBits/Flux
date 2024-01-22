@@ -20,6 +20,7 @@ namespace ConsoleApp
 #if ZAMPLEZ
       RunAmbOperator();
       RunArrayRank2();
+      RunBits();
       RunColors();
       RunCoordinateSystems();
       RunDataStructuresGraphs();
@@ -255,7 +256,7 @@ namespace ConsoleApp
 
     #endregion
 
-    #region ArrayRank2
+    #region RunArrayRank2
 
     /// <summary>Run the two-dimensional (rank equals 2) array zample.</summary>
     public static void RunArrayRank2()
@@ -318,6 +319,96 @@ namespace ConsoleApp
     }
 
     #endregion
+
+    #region RunBits
+
+    private static void RunBits()
+    {
+      System.Console.WriteLine();
+      System.Console.WriteLine(nameof(RunBits));
+      System.Console.WriteLine();
+
+      var value = 128;
+      var multiple = -4;
+      var radix = 2;
+
+      ////      var mTowardsZero = value.MultipleOfTowardZero(multiple);
+      //var mTowardsZeropf = value.MultipleOfTowardZero(multiple, false);
+      //var mTowardsZeropt = value.MultipleOfTowardZero(multiple, true);
+
+      ////      var mAwayFromZero = value.MultipleOfAwayFromZero(multiple);
+      //var mAwayFromZeropf = value.MultipleOfAwayFromZero(multiple, false);
+      //var mAwayFromZeropt = value.MultipleOfAwayFromZero(multiple, true);
+
+      var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
+
+      var rtp = Flux.Units.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
+
+      var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
+
+      var p2TowardsZero = quotient.MostSignificant1Bit();
+      var p2AwayFromZero = (p2TowardsZero < quotient || remainder > 0) ? (p2TowardsZero == 0 ? 1 : p2TowardsZero << 1) : p2TowardsZero;
+
+      var p2TowardsZerop = p2TowardsZero == value ? p2TowardsZero >> 1 : p2TowardsZero;
+      var p2AwayFromZerop = p2AwayFromZero == value ? p2AwayFromZero << 1 : p2AwayFromZero;
+
+      var n = (int)(short.MaxValue / sbyte.MaxValue);
+      //n = -3;
+      System.Console.WriteLine($"          Number = {n}");
+
+      var bibs = n.ToBinaryString();
+      System.Console.WriteLine($"          Binary = {bibs}");
+      var bios = n.ToOctalString();
+      System.Console.WriteLine($"           Octal = {bios}");
+      var bids = n.ToDecimalString();
+      System.Console.WriteLine($"         Decimal = {bids}");
+      var bihs = n.ToHexadecimalString();
+      System.Console.WriteLine($"     Hexadecimal = {bihs}");
+      var bir2s = n.ToRadixString(2);
+      System.Console.WriteLine($"         Radix 2 = {bir2s}");
+      var bir8s = n.ToRadixString(8);
+      System.Console.WriteLine($"         Radix 8 = {bir8s}");
+      var bir10s = n.ToRadixString(10);
+      System.Console.WriteLine($"        Radix 10 = {bir10s}");
+      var bir16s = n.ToRadixString(16);
+      System.Console.WriteLine($"        Radix 16 = {bir16s}");
+
+      //var rn = n.BinaryToGray();
+      //var rrn = rn.GrayToBinary();
+
+      //      n = 0;
+      //      var nlpow2 = n.NextLargerPowerOf2();
+      var np2TowardsZero = (int)n.PowOf2(false, Flux.RoundingMode.TowardsZero, out var p2TowardsZerolo, out var p2TowardsZerohi);
+      System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
+      var np2AwayFromZero = (int)n.PowOf2(false, Flux.RoundingMode.AwayFromZero, out var p2AwayFromZerolo, out var p2AwayFromZerohi);
+      System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
+
+      var birbits = n.ReverseBits();
+      System.Console.WriteLine($"    Reverse Bits = {birbits.ToBinaryString()}");
+      var birbyts = n.ReverseBytes();
+      System.Console.WriteLine($"   Reverse Bytes = {birbyts.ToBinaryString()}");
+
+      var bfl = n.BitFoldLeft();
+      System.Console.WriteLine($"   Bit-Fold Left = {bfl}");
+      var bfls = bfl.ToBinaryString();
+      System.Console.WriteLine($"       As Binary = {bfls}");
+      var bfr = n.BitFoldRight();
+      System.Console.WriteLine($"  Bit-Fold Right = {bfr}");
+      var bfrs = bfr.ToBinaryString();
+      System.Console.WriteLine($"       As Binary = {bfrs}");
+      var bl = n.GetShortestBitLength();
+      var bln = n.GetBitLength();
+      //var l2 = bi.IntegerLog2();
+      var ms1b = n.MostSignificant1Bit();
+      var bmr = n.BitMaskRight();
+      var bmrs = bmr.ToBinaryString();
+      var bmrsl = bmrs.Length;
+      var bml = n.BitMaskLeft();
+      var bmls = bml.ToBinaryString();
+      var bmlsl = bmls.Length;
+    }
+
+    #endregion // RunBits
 
     #region RunColors
 

@@ -54,7 +54,7 @@ namespace Flux
       return symbols.AsSpan();
     }
 
-    /// <summary>Convert a positional notation <paramref name="text"/> string to a number.</summary>
+    /// <summary>Convert a positional notation <paramref name="text"/> string to a number using <paramref name="alphabet"/> and <paramref name="negativeSymbol"/>.</summary>
     public static TSelf TextToNumber<TSelf, TSymbol>(System.ReadOnlySpan<TSymbol> text, System.Collections.Generic.IList<TSymbol> alphabet, TSymbol negativeSymbol, out TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -76,7 +76,7 @@ namespace Flux
 
     #region Binary strings
 
-    /// <summary>Creates a binary (base 2) text string from <paramref name="value"/>.</summary>
+    /// <summary>Creates a binary (base 2) text string with <paramref name="minLength"/> and <paramref name="alphabet"/> from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
     public static System.ReadOnlySpan<TSymbol> ToBinaryString<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -93,22 +93,7 @@ namespace Flux
       return list.AsSpan();
     }
 
-    //public static System.ReadOnlySpan<TSymbol> InsertEvery<TSymbol>(this System.ReadOnlySpan<TSymbol> symbols, TSymbol insert, int interval)
-    //{
-    //  var target = new System.Collections.Generic.List<TSymbol>();
-
-    //  for (var index = symbols.Length - 1; index >= 0; index--)
-    //  {
-    //    target.Add(symbols[symbols.Length - 1 - index]);
-
-    //    if (index > 0 && index % interval == 0)
-    //      target.Add(insert);
-    //  }
-
-    //  return target.AsSpan();
-    //}
-
-    /// <summary>Creates a binary (base 2) text string from <paramref name="value"/>.</summary>
+    /// <summary>Creates a binary (base 2) text string with <paramref name="minLength"/> from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 32 digit string for a 32-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToBinaryString<TSelf>(this TSelf value, int minLength)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -124,7 +109,7 @@ namespace Flux
 
     #region Decimal strings
 
-    /// <summary>Creates a decimal (base 10) text string from <paramref name="value"/>.</summary>
+    /// <summary>Creates a decimal (base 10) text string with <paramref name="minLength"/> and <paramref name="alphabet"/> from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
     public static System.ReadOnlySpan<TSymbol> ToDecimalString<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, TSymbol negativeSymbol, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -144,7 +129,7 @@ namespace Flux
       return symbols.AsSpan();
     }
 
-    /// <summary>Creates a decimal (base 10) text string from <paramref name="value"/>.</summary>
+    /// <summary>Creates a decimal (base 10) text string with <paramref name="minLength"/> from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToDecimalString<TSelf>(this TSelf value, int minLength)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -160,7 +145,7 @@ namespace Flux
 
     #region Hexadecimal strings
 
-    /// <summary>Creates a hexadecimal (base 16) text string from <paramref name="value"/>.</summary>
+    /// <summary>Creates a hexadecimal (base 16) text string with <paramref name="minLength"/> and <paramref name="alphabet"/> from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
     public static System.ReadOnlySpan<TSymbol> ToHexadecimalString<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -175,7 +160,7 @@ namespace Flux
       return ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
     }
 
-    /// <summary>Creates a hexadecimal (base 16) text string from <paramref name="value"/>.</summary>
+    /// <summary>Creates a hexadecimal (base 16) text string with <paramref name="minLength"/> from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToHexadecimalString<TSelf>(this TSelf value, int minLength)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -191,7 +176,7 @@ namespace Flux
 
     #region Octal strings
 
-    /// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
+    /// <summary>Creates an octal (base 8) text string with <paramref name="minLength"/> and <paramref name="alphabet"/> from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
     public static System.ReadOnlySpan<TSymbol> ToOctalString<TSelf, TSymbol>(this TSelf value, System.ReadOnlySpan<TSymbol> alphabet, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -206,7 +191,7 @@ namespace Flux
       return ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
     }
 
-    /// <summary>Creates an octal (base 8) text string from <paramref name="value"/>.</summary>
+    /// <summary>Creates an octal (base 8) text string with <paramref name="minLength"/> from <paramref name="value"/>.</summary>
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToOctalString<TSelf>(this TSelf value, int minLength)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

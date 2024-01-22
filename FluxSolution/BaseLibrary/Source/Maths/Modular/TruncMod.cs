@@ -4,6 +4,11 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
+    /// <summary>Computes the integer (i.e. truncated/floor) quotient.</summary>
+    public static TSelf TruncMod<TSelf>(this TSelf dividend, TSelf divisor)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => (dividend - (dividend % divisor)) / divisor;
+
     /// <summary>Computes the integer (i.e. truncated/floor) quotient and also returns the <paramref name="remainder"/> (<paramref name="dividend"/> modulo <paramref name="divisor"/>) as an output parameter.</summary>
     public static TSelf TruncMod<TSelf>(this TSelf dividend, TSelf divisor, out TSelf remainder)
       where TSelf : System.Numerics.INumber<TSelf>

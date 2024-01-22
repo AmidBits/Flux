@@ -202,7 +202,7 @@ namespace Flux
 
       /// <summary>Computes the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
       public static int ComputeRangeCount(int radius)
-        => Iteration.Range(0, radius + 1, 6).AsParallel().Sum() + 1;
+        => Iteration.Iterate(0, 6, radius + 1).AsParallel().Sum() + 1;
 
       /// <summary>Computes the count of hexes in the ring of the specified radius.</summary>
       public static int ComputeRingCount(int radius)

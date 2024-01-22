@@ -22,89 +22,6 @@ namespace ConsoleApp
       var finding = new int[] { 1, 3, 4, 2, 6, 4, 6, 4, 10, 4, 14, 3, 17, 3, 20, 2, 22, 3, 25, 3, 28, 4, 28, 4, 32, 3, 35, 5, 40, 9, 40, 9, 40, 9, 40, 9, 40, 9, 40, 9, 49, 2, 51, 4, 55, 4, 59, 4, 63, 1, 63, 1, 64, 5, 69, 5, 74, 2, 76, 4, 80, 3, 83, 7, 90, 3, 93, 6, 99, 7, 106, 6 };
     }
 
-    private static void EvaluateNumericStuff()
-    {
-
-      var value = 128;
-      var multiple = -4;
-      var radix = 2;
-
-      ////      var mTowardsZero = value.MultipleOfTowardZero(multiple);
-      //var mTowardsZeropf = value.MultipleOfTowardZero(multiple, false);
-      //var mTowardsZeropt = value.MultipleOfTowardZero(multiple, true);
-
-      ////      var mAwayFromZero = value.MultipleOfAwayFromZero(multiple);
-      //var mAwayFromZeropf = value.MultipleOfAwayFromZero(multiple, false);
-      //var mAwayFromZeropt = value.MultipleOfAwayFromZero(multiple, true);
-
-      var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
-
-      var rtp = Flux.Units.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
-
-      var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
-
-      var p2TowardsZero = quotient.MostSignificant1Bit();
-      var p2AwayFromZero = (p2TowardsZero < quotient || remainder > 0) ? (p2TowardsZero == 0 ? 1 : p2TowardsZero << 1) : p2TowardsZero;
-
-      var p2TowardsZerop = p2TowardsZero == value ? p2TowardsZero >> 1 : p2TowardsZero;
-      var p2AwayFromZerop = p2AwayFromZero == value ? p2AwayFromZero << 1 : p2AwayFromZero;
-
-      var n = (int)(short.MaxValue / sbyte.MaxValue);
-      n = -3;
-      System.Console.WriteLine($"        Number = {n}");
-
-      var bibs = new SpanBuilder<char>(n.ToBinaryString()).InsertEvery(' ', 3).AsReadOnlySpan();
-      System.Console.WriteLine($"        Binary = {bibs}");
-      var bios = n.ToOctalString();
-      System.Console.WriteLine($"         Octal = {bios}");
-      var bids = n.ToDecimalString();
-      System.Console.WriteLine($"       Decimal = {bids}");
-      var bihs = n.ToHexadecimalString();
-      System.Console.WriteLine($"   Hexadecimal = {bihs}");
-      var bir2s = n.ToRadixString(2);
-      System.Console.WriteLine($"       Radix 2 = {bir2s}");
-      var bir8s = n.ToRadixString(8);
-      System.Console.WriteLine($"       Radix 8 = {bir8s}");
-      var bir10s = n.ToRadixString(10);
-      System.Console.WriteLine($"      Radix 10 = {bir10s}");
-      var bir16s = n.ToRadixString(16);
-      System.Console.WriteLine($"      Radix 16 = {bir16s}");
-
-      //var rn = n.BinaryToGray();
-      //var rrn = rn.GrayToBinary();
-
-      //      n = 0;
-      //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)n.PowOf2(false, Flux.RoundingMode.TowardsZero, out var p2TowardsZerolo, out var p2TowardsZerohi);
-      System.Console.WriteLine($" RoundToPow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)n.PowOf2(false, Flux.RoundingMode.AwayFromZero, out var p2AwayFromZerolo, out var p2AwayFromZerohi);
-      System.Console.WriteLine($"RountToPow2AwayFromZero = {np2AwayFromZero}");
-
-      var birbits = n.ReverseBits();
-      System.Console.WriteLine($"  Reverse Bits = {birbits.ToBinaryString()}");
-      var birbyts = n.ReverseBytes();
-      System.Console.WriteLine($" Reverse Bytes = {birbyts.ToBinaryString()}");
-
-      var bfl = n.BitFoldLeft();
-      System.Console.WriteLine($" Bit-Fold Left = {bfl}");
-      var bfls = bfl.ToBinaryString();
-      System.Console.WriteLine($"     As Binary = {bfls}");
-      var bfr = n.BitFoldRight();
-      System.Console.WriteLine($"Bit-Fold Right = {bfr}");
-      var bfrs = bfr.ToBinaryString();
-      System.Console.WriteLine($"     As Binary = {bfrs}");
-      var bl = n.GetShortestBitLength();
-      var bln = n.GetBitLength();
-      //var l2 = bi.IntegerLog2();
-      var ms1b = n.MostSignificant1Bit();
-      var bmr = n.BitMaskRight();
-      var bmrs = bmr.ToBinaryString();
-      var bmrsl = bmrs.Length;
-      var bml = n.BitMaskLeft();
-      var bmls = bml.ToBinaryString();
-      var bmlsl = bmls.Length;
-    }
-
     #endregion // Presets
 
     private static void TimedMain(string[] _)
@@ -112,32 +29,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var bitLength = 128;
+      var vr = new Flux.ValueRange<double>(5, 16);
 
-      var ba = new Flux.DataStructures.BitArray64(bitLength, new ulong[] { 0x0807060504030201, 0x910f0e0d0c0b0a09 });
-
-      var b64 = new long[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 64)];
-      ba.CopyTo(b64, 0);
-
-      var b32 = new int[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 32)];
-      ba.CopyTo(b32, 0);
-
-      var bu32 = new uint[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 32)];
-      ba.CopyTo(bu32, 0);
-
-      var b16 = new short[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 16)];
-      ba.CopyTo(b16, 0);
-
-      var bu16 = new ushort[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 16)];
-      ba.CopyTo(bu16, 0);
-
-      var b8 = new byte[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 8)];
-      ba.CopyTo(b8, 0);
-
-      var sb8 = new sbyte[Flux.DataStructures.BitArray64.ComputeLength(bitLength, 8)];
-      ba.CopyTo(sb8, 0);
-
-      ba.Shuffle();
+      foreach (var v in vr.IterateRange(1.15, SortOrder.Ascending, IntervalNotation.HalfOpenRight, 2))
+        System.Console.WriteLine($"{v}");
     }
 
     private static void WriteFile()

@@ -2,9 +2,9 @@ namespace Flux
 {
   public enum AlternatingLoopDirection
   {
-    /// <summary>Symmetrically step further from mean by alternating the sign.</summary>
-    AwayFromMean,
-    /// <summary>Symmetrically step closer to mean by alternating the sign.</summary>
-    TowardsMean
+    /// <summary>Loop in an alternating direction further away from, i.e. outward.</summary>
+    Outward,
+    /// <summary>Loop in an alternating direction closer towards, i.e. inward.</summary>
+    Inward
   }
 }
