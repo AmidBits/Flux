@@ -38,21 +38,27 @@ namespace Flux
 
       #region Static methods
 
-      /// <summary>Creates a new <see cref="Area"/> instance from the specified hexagon.</summary>
-      /// <param name="radius">The radius and length of one side of a hexagon are both the same.</param>
-      public static Area OfHexagon(Length radius)
-        => new(3 * System.Math.Sqrt(3) / 2 * System.Math.Pow(radius.Value, 2));
-
       /// <summary>Creates a new <see cref="Area"/> instance from the specified circle.</summary>
       /// <param name="radius">The radius of a circle.</param>
       public static Area OfCircle(Length radius)
         => new(System.Math.PI * radius.Value * radius.Value);
+
+      /// <summary>Creates a new <see cref="Area"/> instance from the specified cylinder.</summary>
+      /// <param name="radius">The radius of a cylinder.</param>
+      /// <param name="height">The height of a cylinder.</param>
+      public static Area OfCylinder(Length radius, Length height)
+        => new(2 * System.Math.PI * radius.Value * (radius.Value + height.Value));
 
       /// <summary>Creates a new <see cref="Area"/> instance from the specified rectangle.</summary>
       /// <param name="semiMajorAxis">The longer radius.</param>
       /// <param name="semiMinorAxis">The shorter radius.</param>
       public static Area OfEllipse(Length semiMajorAxis, Length semiMinorAxis)
         => new(System.Math.PI * semiMajorAxis.Value * semiMinorAxis.Value);
+
+      /// <summary>Creates a new <see cref="Area"/> instance from the specified hexagon.</summary>
+      /// <param name="radius">The radius and length of one side of a hexagon are both the same.</param>
+      public static Area OfHexagon(Length radius)
+        => new(3 * System.Math.Sqrt(3) / 2 * System.Math.Pow(radius.Value, 2));
 
       /// <summary>Creates a new <see cref="Area"/> instance from the specified rectangle.</summary>
       /// <param name="length">The length of a rectangle.</param>

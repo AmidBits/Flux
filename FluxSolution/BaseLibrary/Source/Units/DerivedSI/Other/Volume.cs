@@ -84,6 +84,12 @@ namespace Flux
       public static Volume OfCuboid(Length length, Length width, Length height)
         => new(length.Value * width.Value * height.Value);
 
+      /// <summary>Creates a new <see cref="Volume"/> instance from the specified cylinder.</summary>
+      /// <param name="radius">The radius of a cylinder.</param>
+      /// <param name="height">The height of a cylinder.</param>
+      public static Volume OfCylinder(Length radius, Length height)
+        => new(System.Math.PI * System.Math.Pow(radius.Value, 2) * height.Value);
+
       /// <summary>Creates a new <see cref="Volume"/> instance from the specified sphere.</summary>
       /// <param name="radius">The radius of a sphere.</param>
       public static Volume OfSphere(Length radius)

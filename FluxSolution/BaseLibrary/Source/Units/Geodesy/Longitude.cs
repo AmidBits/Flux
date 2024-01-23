@@ -8,27 +8,26 @@ namespace Flux.Units
     public const double MaxValue = +180;
     public const double MinValue = -180;
 
-    private readonly double m_longitude;
+    private readonly double m_degrees; // In degrees.
 
     /// <summary>Creates a new Longitude from the specified number of degrees. The value is wrapped within the degree range [-180, +180].</summary>
-    public Longitude(double longitude) => m_longitude = WrapExtremum(longitude);
-    /// <summary>Creates a new Longitude from the specfied Angle instance. The value is wrapped within the degree range [-180, +180].</summary>
-    public Longitude(Angle angle) : this(angle.GetUnitValue(AngleUnit.Degree)) { } // Call base to ensure value is between min/max.
+    public Longitude(double longitude) => m_degrees = WrapExtremum(longitude);
 
-    public double Radians => Angle.DegreeToRadian(m_longitude);
+    /// <summary>The <see cref="Units.Angle"/> of the longitude.</summary>
+    public Angle Angle { get => new(m_degrees, AngleUnit.Degree); init => m_degrees = WrapExtremum(value.GetUnitValue(AngleUnit.Degree)); }
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
-    public int TheoreticalTimezoneOffset => GetTheoreticalTimezoneOffset(m_longitude);
+    public int TheoreticalTimezoneOffset
+      => GetTheoreticalTimezoneOffset(m_degrees);
 
     /// <summary>Projects the longitude to a mercator X value in the range [-PI, PI].</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
-    public double GetMercatorProjectedX() => Radians;
-
-    public Angle ToAngle() => new(m_longitude, AngleUnit.Degree);
+    public double GetMercatorProjectedX()
+      => Angle.GetUnitValue(AngleUnit.Radian);
 
     public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool preferUnicode = true, bool useSpaces = false, System.Globalization.CultureInfo? culture = null)
-      => Angle.ToDmsString(m_longitude, format, CardinalAxis.EastWest, -1, preferUnicode, useSpaces, culture);
+      => Angle.ToDmsString(m_degrees, format, CardinalAxis.EastWest, -1, preferUnicode, useSpaces, culture);
 
     #region Static methods
 
@@ -54,7 +53,7 @@ namespace Flux.Units
 
     #region Overloaded operators
 
-    public static explicit operator double(Longitude v) => v.m_longitude;
+    public static explicit operator double(Longitude v) => v.m_degrees;
     public static explicit operator Longitude(double v) => new(v);
 
     public static bool operator <(Longitude a, Longitude b) => a.CompareTo(b) < 0;
@@ -62,16 +61,16 @@ namespace Flux.Units
     public static bool operator >(Longitude a, Longitude b) => a.CompareTo(b) > 0;
     public static bool operator >=(Longitude a, Longitude b) => a.CompareTo(b) >= 0;
 
-    public static Longitude operator -(Longitude v) => new(-v.m_longitude);
-    public static Longitude operator +(Longitude a, double b) => new(a.m_longitude + b);
+    public static Longitude operator -(Longitude v) => new(-v.m_degrees);
+    public static Longitude operator +(Longitude a, double b) => new(a.m_degrees + b);
     public static Longitude operator +(Longitude a, Longitude b) => a + b.Value;
-    public static Longitude operator /(Longitude a, double b) => new(a.m_longitude / b);
+    public static Longitude operator /(Longitude a, double b) => new(a.m_degrees / b);
     public static Longitude operator /(Longitude a, Longitude b) => a / b.Value;
-    public static Longitude operator *(Longitude a, double b) => new(a.m_longitude * b);
+    public static Longitude operator *(Longitude a, double b) => new(a.m_degrees * b);
     public static Longitude operator *(Longitude a, Longitude b) => a * b.Value;
-    public static Longitude operator %(Longitude a, double b) => new(a.m_longitude % b);
+    public static Longitude operator %(Longitude a, double b) => new(a.m_degrees % b);
     public static Longitude operator %(Longitude a, Longitude b) => a % b.Value;
-    public static Longitude operator -(Longitude a, double b) => new(a.m_longitude - b);
+    public static Longitude operator -(Longitude a, double b) => new(a.m_degrees - b);
     public static Longitude operator -(Longitude a, Longitude b) => a - b.Value;
 
     #endregion Overloaded operators
@@ -79,7 +78,7 @@ namespace Flux.Units
     #region Implemented interfaces
 
     // IComparable<>
-    public int CompareTo(Longitude other) => m_longitude.CompareTo(other.m_longitude);
+    public int CompareTo(Longitude other) => m_degrees.CompareTo(other.m_degrees);
 
     // IComparable
     public int CompareTo(object? other) => other is not null && other is Longitude o ? CompareTo(o) : -1;
@@ -96,13 +95,13 @@ namespace Flux.Units
         if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
           return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '), culture);
 
-        return ToAngle().ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
+        return Angle.ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
       }
 
       return ToSexagesimalDegreeString();
     }
 
-    public double Value => m_longitude;
+    public double Value => m_degrees;
 
     #endregion Implemented interfaces
 

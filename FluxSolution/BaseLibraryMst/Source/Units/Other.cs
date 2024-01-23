@@ -25,7 +25,7 @@ namespace Units
     {
       var a = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
 
-      var u = new Flux.Units.Azimuth(a.Degrees);
+      var u = new Flux.Units.Azimuth() { Angle = a };
 
       Assert.AreEqual(a.GetUnitValue(Flux.Units.AngleUnit.Degree), u.Value);
     }
@@ -44,7 +44,7 @@ namespace Units
     {
       var a = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
 
-      var u = new Flux.Units.Latitude(a);
+      var u = new Flux.Units.Latitude() { Angle = a };
 
       Assert.AreEqual(a.GetUnitValue(Flux.Units.AngleUnit.Degree), u.Value);
     }
@@ -54,7 +54,7 @@ namespace Units
     {
       var a = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
 
-      var u = new Flux.Units.Longitude(a);
+      var u = new Flux.Units.Longitude() { Angle = a };
 
       Assert.AreEqual(a.GetUnitValue(Flux.Units.AngleUnit.Degree), u.Value);
     }

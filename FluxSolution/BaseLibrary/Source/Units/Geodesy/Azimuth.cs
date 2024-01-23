@@ -8,32 +8,30 @@ namespace Flux
     public readonly record struct Azimuth
     : System.IComparable<Azimuth>, IValueQuantifiable<double>
     {
-      /// <summary>MaxValue is the open (excluded) endpoint.</summary>
+      /// <summary>MaxValue is an open (excluded) endpoint.</summary>
       public const double MaxValue = 360;
-      /// <summary>MinValue is the closed (included) endpoint.</summary>
+      /// <summary>MinValue is a closed (included) endpoint.</summary>
       public const double MinValue = 0;
 
-      private readonly double m_azimuth;
+      private readonly double m_degrees; // In degrees.
 
       /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
-      public Azimuth(double azimuth) => m_azimuth = WrapExtremum(azimuth);
+      public Azimuth(double azimuth) => m_degrees = WrapExtremum(azimuth);
 
-      public double Radians => Angle.DegreeToRadian(m_azimuth);
-
-      public Angle ToAngle() => new(m_azimuth, AngleUnit.Degree);
+      public Angle Angle { get => new(m_degrees, AngleUnit.Degree); init => m_degrees = WrapExtremum(value.GetUnitValue(AngleUnit.Degree)); }
 
       #region Static methods
 
-      public ThirtytwoWindCompassRose ToCompassPoint(PointsOfTheCompass precision, out double notch)
-      {
-        notch = System.Math.Round(m_azimuth / (MaxValue / (int)precision) % (int)precision);
+      //public ThirtytwoWindCompassRose ToCompassPoint(PointsOfTheCompass precision, out double notch)
+      //{
+      //  notch = System.Math.Round(m_degrees / (MaxValue / (int)precision) % (int)precision);
 
-        return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
-      }
+      //  return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
+      //}
 
       /// <summary>Compass point (to given precision) for specified bearing.</summary>
       /// <remarks>Precision = max length of compass point, 1 = the four cardinal directions, 2 = ; it could be extended to 4 for quarter-winds (eg NEbN), but I think they are little used.</remarks>
-      /// <param name="azimuth">The direction in radians.</param>
+      /// <param name="azimuth">The direction in degrees.</param>
       /// <param name="precision">The precision, or resolution to adhere to, 4 = the four cardinal directions, 8 = the four cardinals and four intercardinal together (a.k.a. the eight principal winds) form the 8-wind compass rose, 16 = the eight principal winds and the eight half-winds together form the 16-wind compass rose, 32 = the eight principal winds, eight half-winds and sixteen quarter-winds form the 32-wind compass rose.</param>
       /// <param name="notch">The integer notch that is closest to the <paramref name="azimuth"/> scaled by <paramref name="precision"/>.</param>
       /// <returns></returns>
@@ -149,7 +147,7 @@ namespace Flux
 
       #region Overloaded operators
 
-      public static explicit operator double(Azimuth v) => v.m_azimuth;
+      public static explicit operator double(Azimuth v) => v.m_degrees;
       public static explicit operator Azimuth(double v) => new(v);
 
       public static bool operator <(Azimuth a, Azimuth b) => a.CompareTo(b) < 0;
@@ -157,16 +155,16 @@ namespace Flux
       public static bool operator >(Azimuth a, Azimuth b) => a.CompareTo(b) > 0;
       public static bool operator >=(Azimuth a, Azimuth b) => a.CompareTo(b) >= 0;
 
-      public static Azimuth operator -(Azimuth v) => new(-v.m_azimuth);
-      public static Azimuth operator +(Azimuth a, double b) => new(a.m_azimuth + b);
+      public static Azimuth operator -(Azimuth v) => new(-v.m_degrees);
+      public static Azimuth operator +(Azimuth a, double b) => new(a.m_degrees + b);
       public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.Value;
-      public static Azimuth operator /(Azimuth a, double b) => new(a.m_azimuth / b);
+      public static Azimuth operator /(Azimuth a, double b) => new(a.m_degrees / b);
       public static Azimuth operator /(Azimuth a, Azimuth b) => a / b.Value;
-      public static Azimuth operator *(Azimuth a, double b) => new(a.m_azimuth * b);
+      public static Azimuth operator *(Azimuth a, double b) => new(a.m_degrees * b);
       public static Azimuth operator *(Azimuth a, Azimuth b) => a * b.Value;
-      public static Azimuth operator %(Azimuth a, double b) => new(a.m_azimuth % b);
+      public static Azimuth operator %(Azimuth a, double b) => new(a.m_degrees % b);
       public static Azimuth operator %(Azimuth a, Azimuth b) => a % b.Value;
-      public static Azimuth operator -(Azimuth a, double b) => new(a.m_azimuth - b);
+      public static Azimuth operator -(Azimuth a, double b) => new(a.m_degrees - b);
       public static Azimuth operator -(Azimuth a, Azimuth b) => a - b.Value;
 
       #endregion // Overloaded operators
@@ -174,15 +172,15 @@ namespace Flux
       #region Implemented interfaces
 
       // IComparable<>
-      public int CompareTo(Azimuth other) => m_azimuth.CompareTo(other.m_azimuth);
+      public int CompareTo(Azimuth other) => m_degrees.CompareTo(other.m_degrees);
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
       public string ToValueString(string? format = null, bool preferUnicode = true, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => new Angle(m_azimuth, AngleUnit.Degree).ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
+        => Angle.ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
 
-      public double Value => m_azimuth;
+      public double Value => m_degrees;
 
       #endregion // Implemented interfaces
 

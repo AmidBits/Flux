@@ -37,8 +37,6 @@ namespace Flux
         m_height = height;
       }
 
-      public void Deconstruct(out double radius, out double azimuth, out double height) { radius = m_radius; azimuth = m_azimuth; height = m_height; }
-
       public double Radius { get => m_radius; init => m_radius = value; }
       public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
       public double Height { get => m_height; init => m_height = value; }

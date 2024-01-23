@@ -32,30 +32,21 @@ namespace Flux.Geometry
       m_lon = Units.Angle.DegreeToRadian(longitude);
     }
 
-    /// <summary></summary>
-    /// <param name="altitude">The altitude in meters.</param>
-    /// <param name="latitude">The latitude in degrees.</param>
-    /// <param name="longitude">The longitude in degrees.</param>
-    public void Deconstruct(out double latitude, out double longitude, out double altitude)
-    {
-      latitude = Latitude;
-      longitude = Longitude;
-      altitude = m_altitude;
-    }
-
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public double Altitude { get => m_altitude; init => m_altitude = value; }
+    public Units.Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
 
     /// <summary>The diametrical opposite of the <see cref="GeographicCoordinate"/>, i.e. the opposite side of Earth's surface. This is a plain mathematical antipode.</summary>
-    public GeographicCoordinate Antipode => new(0 - Latitude, Longitude - 180, Altitude);
+    public GeographicCoordinate Antipode => new(0 - Units.Angle.RadianToDegree(m_lat), Units.Angle.RadianToDegree(m_lon) - 180, m_altitude);
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => Units.Angle.RadianToDegree(m_lat); init => m_lat = Units.Angle.DegreeToRadian(value); } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
+    public Units.Latitude Latitude { get => new(Units.Angle.RadianToDegree(m_lat)); init => m_lat = Units.Angle.DegreeToRadian(value.Value); } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => Units.Angle.RadianToDegree(m_lon); init => m_lon = Units.Angle.DegreeToRadian(value); } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
+    public Units.Longitude Longitude { get => new(Units.Angle.RadianToDegree(m_lon)); init => m_lon = Units.Angle.DegreeToRadian(value.Value); } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
 
+    public double LatitudeInDegrees => Units.Angle.RadianToDegree(m_lat);
     public double LatitudeInRadians => m_lat;
+    public double LongitudeInDegrees => Units.Angle.RadianToDegree(m_lon);
     public double LongitudeInRadians => m_lon;
 
     /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
@@ -421,7 +412,7 @@ namespace Flux.Geometry
     #region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"{GetType().Name} {{ {new Units.Latitude(Latitude)}, {new Units.Longitude(Longitude)} ({new Units.Length(Altitude).ToUnitValueString(Units.LengthUnit.Meter)}) }}";
+      => $"{GetType().Name} {{ {Latitude}, {Longitude} ({Altitude.ToValueString("N0")}) }}";
 
     #endregion Implemented interfaces
 

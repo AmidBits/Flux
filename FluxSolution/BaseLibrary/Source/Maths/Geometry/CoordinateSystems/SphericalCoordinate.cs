@@ -41,8 +41,6 @@ namespace Flux
         m_azimuth = azimuth;
       }
 
-      public void Deconstruct(out double radius, out double inclination, out double azimuth) { radius = m_radius; inclination = m_inclination; azimuth = m_azimuth; }
-
       public double Radius { get => m_radius; init => m_radius = value; }
       public double Inclination { get => m_inclination; init => m_inclination = value; }
       public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
