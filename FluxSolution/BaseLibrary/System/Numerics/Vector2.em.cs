@@ -17,7 +17,7 @@ namespace Flux
       => System.Math.Acos(System.Math.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
 
     /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static float ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength = 1)
       => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
 
@@ -27,7 +27,7 @@ namespace Flux
       => System.MathF.CopySign(source.Y / source.X, source.Y);
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static float ManhattanLength(this System.Numerics.Vector2 source, float edgeLength = 1)
       => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength);
 
@@ -39,7 +39,7 @@ namespace Flux
       => new(source.Y, -source.X);
 
     /// <summary>Find the perpendicular distance from a point in a 2D plane to a line equation (ax+by+c=0).</summary>
-    /// <see cref="https://www.geeksforgeeks.org/perpendicular-distance-between-a-point-and-a-line-in-2-d/"/>
+    /// <see href="https://www.geeksforgeeks.org/perpendicular-distance-between-a-point-and-a-line-in-2-d/"/>
     /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
     /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
     /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
@@ -56,7 +56,7 @@ namespace Flux
     }
 
     /// <summary>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</summary>
-    /// <see cref="https://www.geeksforgeeks.org/find-foot-of-perpendicular-from-a-point-in-2-d-plane-to-a-line/"/>
+    /// <see href="https://www.geeksforgeeks.org/find-foot-of-perpendicular-from-a-point-in-2-d-plane-to-a-line/"/>
     /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
     /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
     /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>

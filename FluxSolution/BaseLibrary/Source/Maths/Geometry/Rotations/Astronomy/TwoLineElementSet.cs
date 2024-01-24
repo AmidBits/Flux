@@ -1,8 +1,8 @@
 namespace Flux.Geometry
 {
   /// <summary>Kepler elements for computing orbits.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Orbital_elements"/>
-  /// <see cref="https://www.amsat.org/keplerian-elements-tutorial/"/>
+  /// <see href="https://en.wikipedia.org/wiki/Orbital_elements"/>
+  /// <see href="https://www.amsat.org/keplerian-elements-tutorial/"/>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct TwoLineElementSet2
   {

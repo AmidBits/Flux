@@ -151,7 +151,7 @@ namespace Flux.DataStructures
           yield return nodeR;
     }
     /// <summary>Depth-first search (DFS), in-order (LNR). In a binary search tree, in-order traversal retrieves data in sorted order.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
+    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraverseInOrder() => TraverseInOrder(0);
 
@@ -171,7 +171,7 @@ namespace Flux.DataStructures
         yield return node;
     }
     /// <summary>Depth-first search (DFS), post-order (LRN). The trace of a traversal is called a sequentialisation of the tree. The traversal trace is a list of each visited root.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Post-order"/>
+    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Post-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraversePostOrder() => TraversePostOrder(0);
 
@@ -191,7 +191,7 @@ namespace Flux.DataStructures
           yield return nodeR;
     }
     /// <summary>Depth-first search (DFS), pre-order (NLR). The pre-order traversal is a topologically sorted one, because a parent node is processed before any of its child nodes is done.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order"/>
+    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public System.Collections.Generic.IEnumerable<IBinaryTreeArrayNode<TKey, TValue>> TraversePreOrder() => TraversePreOrder(0);
 

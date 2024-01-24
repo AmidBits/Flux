@@ -21,7 +21,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct PolarCoordinate
-    : System.IFormattable, IPolarCoordinate<double>
+      : System.IFormattable
     {
       public static readonly PolarCoordinate Zero;
 
@@ -34,8 +34,8 @@ namespace Flux
         m_azimuth = azimuth;
       }
 
-      public double Radius { get => m_radius; init => m_radius = value; }
-      public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
+      public Units.Length Radius { get => new(m_radius); init => m_radius = value.Value; }
+      public Units.Azimuth Azimuth { get => new(Units.Angle.RadianToDegree(m_azimuth)); init => m_azimuth = Units.Angle.DegreeToRadian(value.Value); }
 
       /// <summary>Creates a cartesian 2D coordinate from the <see cref="PolarCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
@@ -45,6 +45,15 @@ namespace Flux
 
         return (m_radius * ca, m_radius * sa);
       }
+
+      /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="PolarCoordinate"/> by adding the third component <paramref name="height"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public CylindricalCoordinate ToCylindricalCoordinate(double height)
+        => new(
+          m_radius,
+          m_azimuth,
+          height
+        );
 
       /// <summary>Creates a <see cref="System.Numerics.Complex"/> from the <see cref="PolarCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
@@ -73,7 +82,8 @@ namespace Flux
       //#endregion // Static methods
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Units.Angle(Azimuth).ToUnitValueString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
+        => $"{GetType().GetNameEx()} {{ Radius = {Radius.ToValueString("N1")}, Azimuth = {Azimuth.ToValueString("N3")} }}"
+        + $" <{m_radius}, {m_azimuth}>";
 
       public override string ToString() => ToString(null, null);
     }

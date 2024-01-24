@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Sorts the content of the sequence using essentially an improved bubble sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Comb_sort"/>
+    /// <see href="https://en.wikipedia.org/wiki/Comb_sort"/>
     public static void CombSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;

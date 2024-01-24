@@ -2,7 +2,7 @@ namespace Flux.Hashing.Special
 {
   /// <summary>An NT hash algorithm, which is basically MD4. This implementation is based on RFC1320.</summary>
   /// <remarks>This is the algorithm used for NTLM (a.k.a. NT hash).</remarks>
-  /// <see cref="https://en.wikipedia.org/wiki/NT_LAN_Manager"/>
+  /// <see href="https://en.wikipedia.org/wiki/NT_LAN_Manager"/>
   /// <remarks>
   /// reg save HKLM\SAM C:\sam
   /// reg save HKLM\SYSTEM C:\system

@@ -12,7 +12,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>The eight principal winds (or main winds) are the four cardinals and four intercardinals considered together, that is: N, NE, E, SE, S, SW, W, NW. Each principal wind is 22.5° from its two neighbours. The directional values are the degrees they represent.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
+    /// <see href="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
     public enum SixteenWindCompassRose
     {
       N = (int)ThirtytwoWindCompassRose.N,

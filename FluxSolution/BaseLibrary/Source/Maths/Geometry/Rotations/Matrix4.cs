@@ -3,7 +3,7 @@
 //{
 //  /// <summary>A matrix of 16 elements (4 rows by 4 columns).</summary>
 //  /// <remarks>All angles in radians.</remarks>
-//  /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Matrix4x4.cs"/>
+//  /// <see href="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Matrix4x4.cs"/>
 //  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
 //  public readonly record struct Matrix4
 //    : IMatrix4

@@ -25,7 +25,7 @@ namespace Flux
     }
 
     /// <summary>Electrical capacitance unit of Farad.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Capacitance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Capacitance"/>
     public readonly record struct Capacitance
       : System.IComparable, System.IComparable<Capacitance>, IUnitValueQuantifiable<double, CapacitanceUnit>
     {

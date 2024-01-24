@@ -150,7 +150,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A low-pass filter is used to cut unwanted high-frequency signals.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Low-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Low-pass_filter"/>
 //		public class LowPass : BiQuad
 //		{
 //			protected override void CalculateCoefficients(double Fc, double Q, double peakGain)
@@ -168,7 +168,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A high-pass filter passes high frequencies fairly well; it is helpful as a filter to cut any unwanted low-frequency components.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/High-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/High-pass_filter"/>
 //		public class HighPass : BiQuad
 //		{
 //			protected override void CalculateCoefficients(double Fc, double Q, double peakGain)
@@ -186,7 +186,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A band-pass filter passes a limited range of frequencies.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Band-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Band-pass_filter"/>
 //		public class BandPass : BiQuad
 //		{
 //			protected override void CalculateCoefficients(double Fc, double Q, double peakGain)
@@ -204,7 +204,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A band-stop filter passes frequencies above and below a certain range. A very narrow band-stop filter is known as a notch filter.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Band-stop_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Band-stop_filter"/>
 //		public class Notch : BiQuad
 //		{
 //			protected override void CalculateCoefficients(double Fc, double Q, double peakGain)
@@ -222,7 +222,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A peak filter makes a peak or a dip in the frequency response, commonly used in parametric equalizers.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Band-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Band-pass_filter"/>
 //		public class Peak : BiQuad
 //		{
 //			protected override void CalculateCoefficients(double Fc, double Q, double peakGain)
@@ -376,7 +376,7 @@ namespace Flux.Dsp
 //public static class LinearTrapezoidalIntegrated
 //{
 //	/// <summary>Sallen Key Filter (SKF) collection</summary>
-//	/// <see cref="https://cytomic.com/index.php?q=technical-papers"/>
+//	/// <see href="https://cytomic.com/index.php?q=technical-papers"/>
 //	/// <seealso cref="https://cytomic.com/files/dsp/SkfLinearTrapOptimised2.pdf"/>
 //	public abstract class SallenKeyFilter : IFilter
 //	{
@@ -423,7 +423,7 @@ namespace Flux.Dsp
 //		public abstract double Process(double value);
 
 //		/// <summary>A low-pass filter is used to cut unwanted high-frequency signals.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Low-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Low-pass_filter"/>
 //		public class LowPassV1 : SallenKeyFilter
 //		{
 //			protected override void CalculateCoefficients(double normlizedHz, double resonance, double dB)
@@ -450,7 +450,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A low-pass filter is used to cut unwanted high-frequency signals.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Low-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Low-pass_filter"/>
 //		public class LowPassV2 : SallenKeyFilter
 //		{
 //			protected override void CalculateCoefficients(double normlizedHz, double resonance, double dB)
@@ -478,7 +478,7 @@ namespace Flux.Dsp
 //	}
 
 //	/// <summary>State Variable Filter (SVF) collection</summary>
-//	/// <see cref="https://cytomic.com/index.php?q=technical-papers"/>
+//	/// <see href="https://cytomic.com/index.php?q=technical-papers"/>
 //	/// <seealso cref="https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf"/>
 //	public abstract class StateVariableFilter : IFilter
 //	{
@@ -534,7 +534,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A low-pass filter is used to cut unwanted high-frequency signals.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Low-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Low-pass_filter"/>
 //		public class LowPass : StateVariableFilter
 //		{
 
@@ -552,7 +552,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A band-pass filter passes a limited range of frequencies.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Band-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Band-pass_filter"/>
 //		public class BandPass : StateVariableFilter
 //		{
 //			protected override void CalculateCoefficients(double normlizedHz, double Q, double dB)
@@ -569,7 +569,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A high-pass filter passes high frequencies fairly well; it is helpful as a filter to cut any unwanted low-frequency components.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/High-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/High-pass_filter"/>
 //		public class HighPass : StateVariableFilter
 //		{
 //			protected override void CalculateCoefficients(double normlizedHz, double Q, double dB)
@@ -586,7 +586,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A band-stop filter passes frequencies above and below a certain range. A very narrow band-stop filter is known as a notch filter.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Band-stop_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Band-stop_filter"/>
 //		public class Notch : StateVariableFilter
 //		{
 //			protected override void CalculateCoefficients(double normlizedHz, double Q, double dB)
@@ -603,7 +603,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>A peak filter makes a peak or a dip in the frequency response, commonly used in parametric equalizers.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/Band-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/Band-pass_filter"/>
 //		public class Peak : StateVariableFilter
 //		{
 //			protected override void CalculateCoefficients(double normlizedHz, double Q, double dB)
@@ -620,7 +620,7 @@ namespace Flux.Dsp
 //		}
 
 //		/// <summary>An all-pass filter is a signal processing filter that passes all frequencies equally in gain, but changes the phase relationship among various frequencies.</summary>
-//		/// <see cref="https://en.wikipedia.org/wiki/All-pass_filter"/>
+//		/// <see href="https://en.wikipedia.org/wiki/All-pass_filter"/>
 //		public class AllPass : StateVariableFilter
 //		{
 //			protected override void CalculateCoefficients(double normlizedHz, double Q, double dB)

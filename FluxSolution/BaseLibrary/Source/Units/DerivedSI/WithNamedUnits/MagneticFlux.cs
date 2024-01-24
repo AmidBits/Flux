@@ -19,7 +19,7 @@ namespace Flux
     }
 
     /// <summary>Magnetic flux unit of weber.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux"/>
+    /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux"/>
     public readonly record struct MagneticFlux
       : System.IComparable, System.IComparable<MagneticFlux>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxUnit>
     {

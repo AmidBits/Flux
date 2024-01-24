@@ -5,7 +5,7 @@ namespace Flux.Statistics
   /// <param name="growthRate">The proliferation rate per generation (R0).</param>
   /// <param name="carryingCapacity">The carrying capacity in the environment (M).</param>
   /// <returns>The number of individuals at time Nt+1.</returns>
-  /// <see cref="https://en.wikipedia.org/wiki/Beverton%E2%80%93Holt_model"/>
+  /// <see href="https://en.wikipedia.org/wiki/Beverton%E2%80%93Holt_model"/>
   /// <seealso cref="RickerModel(double, double, double)" />
   public record class PopulationModelBevertonHolt
     : IPopulationModelable
@@ -39,7 +39,7 @@ namespace Flux.Statistics
     /// <param name="growthRate">The proliferation rate per generation (R0).</param>
     /// <param name="carryingCapacity">The carrying capacity in the environment (M).</param>
     /// <returns>The number of individuals at time Nt+1.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Beverton%E2%80%93Holt_model"/>
+    /// <see href="https://en.wikipedia.org/wiki/Beverton%E2%80%93Holt_model"/>
     /// <seealso cref="RickerModel(double, double, double)" />
     public static double Compute(double population, double growthRate, double carryingCapacity)
       => (growthRate * population) / (1 + population / carryingCapacity);

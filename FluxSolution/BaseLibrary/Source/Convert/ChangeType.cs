@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Convert
   {
     /// <summary>Complement the built-in System.IConvertible functionality.</summary>
-    /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.convert.changetype"/>
+    /// <see href="https://docs.microsoft.com/en-us/dotnet/api/system.convert.changetype"/>
     [System.CLSCompliant(false)]
     public static T ChangeType<T>(System.IConvertible value, System.IFormatProvider? provider)
       => (T)System.Convert.ChangeType(value, typeof(T), provider);

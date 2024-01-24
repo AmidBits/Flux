@@ -26,7 +26,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct SphericalCoordinate
-      : System.IFormattable, ISphericalCoordinate<double>
+      : System.IFormattable
     {
       public static readonly SphericalCoordinate Zero;
 
@@ -41,11 +41,11 @@ namespace Flux
         m_azimuth = azimuth;
       }
 
-      public double Radius { get => m_radius; init => m_radius = value; }
-      public double Inclination { get => m_inclination; init => m_inclination = value; }
-      public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
+      public Units.Length Radius { get => new(m_radius); init => m_radius = value.Value; }
+      public Units.Angle Inclination { get => new(m_inclination); init => m_inclination = value.Value; }
+      public Units.Azimuth Azimuth { get => new(Units.Angle.RadianToDegree(m_azimuth)); init => m_azimuth = Units.Angle.DegreeToRadian(value.Value); }
 
-      public double Elevation { get => ConvertInclinationToElevation(m_inclination); init => m_inclination = ConvertElevationToInclination(value); }
+      public Units.Angle Elevation { get => new(ConvertInclinationToElevation(m_inclination)); init => m_inclination = ConvertElevationToInclination(value.Value); }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="SphericalCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
@@ -115,7 +115,8 @@ namespace Flux
       #endregion Static methods
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Inclination = {new Units.Angle(Inclination).ToUnitValueString(Units.AngleUnit.Degree, format ?? "N3", true)} (Elevation = {new Units.Angle(Elevation).ToUnitValueString(Units.AngleUnit.Degree, format ?? "N3", true)}), Azimuth = {new Units.Angle(Azimuth).ToUnitValueString(Units.AngleUnit.Degree, format ?? "N3", true)} }}";
+        => $"{GetType().GetNameEx()} {{ Radius = {Radius.ToValueString("N1")}, Inclination = {Inclination.ToUnitValueString(Units.AngleUnit.Degree, "N3", true)} (Elevation = {Elevation.ToUnitValueString(Units.AngleUnit.Degree, "N3", true)}), Azimuth = {Azimuth.ToValueString("N3")} }}"
+        + $" <{m_radius}, {m_inclination}, {m_azimuth}>";
 
       public override string ToString() => ToString(null, null);
     }

@@ -5,7 +5,7 @@ namespace Flux
   {
     // https://codeforces.com/blog/entry/22229
     /// <summary>Generates an array of divisor counts of all numbers less than or equal to the specified number. This is done as with the sum of divisors, only increase by 1 instead of by the divisor.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     public static TSelf[] GenerateCountOfFactors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -18,7 +18,7 @@ namespace Flux
       return counts;
     }
     /// <summary>Generates am array of Euler totient values for numbers up to the specified number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     public static TSelf[] GenerateEulerTotient<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -35,7 +35,7 @@ namespace Flux
     }
 
     /// <summary>Generates am array of the largest prime factors for numbers up to the specified number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     public static TSelf[] GenerateLargestPrimeFactor<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -52,7 +52,7 @@ namespace Flux
     }
 
     /// <summary>Generates an array of divisor sums of all numbers less than or equal to the specified number. This is done as the count of divisors, only we increase by the divisor instead of by 1.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     public static TSelf[] GenerateSumOfFactors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -66,20 +66,20 @@ namespace Flux
     }
 
     /// <summary>Returns the count of divisors in the sequence for the specified number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     public static TSelf GetCountOfDivisors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.CreateChecked(System.Linq.Enumerable.Count(GetDivisors(number)));
 
     /// <summary>Returns the count of proper divisors in the sequence for the specified number (divisors including 1 but not itself).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     public static TSelf GetCountOfProperDivisors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.CreateChecked(System.Linq.Enumerable.Count(GetProperDivisors(number)));
 
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
     /// <remarks>This implementaion does not order the result.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     public static System.Collections.Generic.IEnumerable<TSelf> GetDivisors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -100,34 +100,34 @@ namespace Flux
 
     /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
     /// <remarks>This implementaion does not order the result.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     public static System.Collections.Generic.IEnumerable<TSelf> GetProperDivisors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => System.Linq.Enumerable.Where(GetDivisors(number), n => n != number);
 
     /// <summary>Results in a sequence of divisors for the specified number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
     public static TSelf GetSumOfDivisors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => Fx.Sum(GetDivisors(number));
 
     /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
     public static TSelf GetSumOfProperDivisors<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => Fx.Sum(GetProperDivisors(number));
 
     /// <summary>Determines whether the number is a deficient number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Deficient_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Deficient_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
     public static bool IsDeficientNumber<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => GetSumOfDivisors(number) - number < number;
 
     /// <summary>Determines whether the number is a perfect number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Perfect_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Perfect_number"/>
     public static bool IsPerfectNumber<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => GetSumOfDivisors(number) - number == number;
@@ -171,7 +171,7 @@ namespace Flux
 
 //    // https://codeforces.com/blog/entry/22229
 //    /// <summary>Generates an array of divisor counts of all numbers less than or equal to the specified number. This is done as with the sum of divisors, only increase by 1 instead of by the divisor.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    public static int[] GenerateCountOfFactors(int number)
 //    {
 //      var counts = new int[number + 1];
@@ -183,7 +183,7 @@ namespace Flux
 //      return counts;
 //    }
 //    /// <summary>Generates am array of Euler totient values for numbers up to the specified number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    public static int[] GenerateEulerTotient(int number)
 //    {
 //      var totient = new int[number + 1];
@@ -199,7 +199,7 @@ namespace Flux
 //    }
 
 //    /// <summary>Generates am array of the largest prime factors for numbers up to the specified number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    public static int[] GenerateLargestPrimeFactor(int number)
 //    {
 //      var factor = new int[number + 1];
@@ -214,7 +214,7 @@ namespace Flux
 //    }
 
 //    /// <summary>Generates an array of divisor sums of all numbers less than or equal to the specified number. This is done as the count of divisors, only we increase by the divisor instead of by 1.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    public static int[] GenerateSumOfFactors(int number)
 //    {
 //      var sums = new int[number + 1];
@@ -227,20 +227,20 @@ namespace Flux
 //    }
 
 //    /// <summary>Returns the count of divisors in the sequence for the specified number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    public static TSelf GetCountOfDivisors<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //      => TSelf.CreateChecked(System.Linq.Enumerable.Count(GetDivisors(number)));
 
 //    /// <summary>Returns the count of proper divisors in the sequence for the specified number (divisors including 1 but not itself).</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    public static TSelf GetCountOfProperDivisors<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //      => TSelf.CreateChecked(System.Linq.Enumerable.Count(GetProperDivisors(number)));
 
 //    /// <summary>Results in a sequence of divisors for the specified number.</summary>
 //    /// <remarks>This implementaion does not order the result.</remarks>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetDivisors<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //    {
@@ -261,34 +261,34 @@ namespace Flux
 
 //    /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
 //    /// <remarks>This implementaion does not order the result.</remarks>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetProperDivisors<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //      => System.Linq.Enumerable.Where(GetDivisors(number), n => n != number);
 
 //    /// <summary>Results in a sequence of divisors for the specified number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
 //    public static TSelf GetSumOfDivisors<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //      => Fx.Sum(GetDivisors(number));
 
 //    /// <summary>Results in a sequence of proper divisors for the specified number (divisors including 1 but not itself).</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Divisor"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
 //    /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
 //    public static TSelf GetSumOfProperDivisors<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //      => Fx.Sum(GetProperDivisors(number));
 
 //    /// <summary>Determines whether the number is a deficient number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Deficient_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Deficient_number"/>
 //    /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
 //    public static bool IsDeficientNumber<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //      => GetSumOfDivisors(number) - number < number;
 
 //    /// <summary>Determines whether the number is a perfect number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Perfect_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Perfect_number"/>
 //    public static bool IsPerfectNumber<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //      => GetSumOfDivisors(number) - number == number;

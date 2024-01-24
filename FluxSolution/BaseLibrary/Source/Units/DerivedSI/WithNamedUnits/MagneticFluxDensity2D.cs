@@ -4,7 +4,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>Magnetic flux density unit of tesla.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
+    /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
     public readonly record struct MagneticFluxDensity2D
   : IUnitValueQuantifiable<System.Numerics.Vector2, MagneticFluxDensityUnit>
     {

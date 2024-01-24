@@ -22,7 +22,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct CylindricalCoordinate
-    : System.IFormattable, ICylindricalCoordinate<double>
+      : System.IFormattable
     {
       public static readonly CylindricalCoordinate Zero;
 
@@ -37,24 +37,24 @@ namespace Flux
         m_height = height;
       }
 
-      public double Radius { get => m_radius; init => m_radius = value; }
-      public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
-      public double Height { get => m_height; init => m_height = value; }
+      public Units.Length Radius { get => new(m_radius); init => m_radius = value.Value; }
+      public Units.Azimuth Azimuth { get => new(Units.Angle.RadianToDegree(m_azimuth)); init => m_azimuth = Units.Angle.DegreeToRadian(value.Value); }
+      public Units.Length Height { get => new(m_height); init => m_height = value.Value; }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
       public (double x, double y, double z) ToCartesianCoordinate3()
       {
-        var (sa, ca) = System.Math.SinCos(m_azimuth);
+        var (sin, cos) = System.Math.SinCos(m_azimuth);
 
         return (
-              m_radius * ca,
-              m_radius * sa,
-              m_height
-            );
+          m_radius * cos,
+          m_radius * sin,
+          m_height
+        );
       }
 
-      /// <summary>Creates a new <see cref="PolarCoordinate"/> from the <see cref="CylindricalCoordinate"/>.</summary>
+      /// <summary>Creates a new <see cref="PolarCoordinate"/> from the <see cref="CylindricalCoordinate"/> by removing the third component "height".</summary>
       /// <remarks>All angles in radians.</remarks>
       public PolarCoordinate ToPolarCoordinate()
         => new(
@@ -62,12 +62,15 @@ namespace Flux
           m_azimuth
         );
 
-      /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="CylindricalCoordinate"/>.</summary>
+      /// <summary>
+      /// <para>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="CylindricalCoordinate"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system#Spherical_coordinates"/></para>
+      /// </summary>
       /// <remarks>All angles in radians.</remarks>
       public SphericalCoordinate ToSphericalCoordinate()
         => new(
           System.Math.Sqrt(m_radius * m_radius + m_height * m_height),
-          System.Math.Atan(m_radius / m_height),
+          (System.Math.PI / 2) - System.Math.Atan(m_height / m_radius), // "System.Math.Atan(m_radius / m_height);", does NOT work for Takapau, New Zealand. Have to use elevation math instead of inclination, and investigate.
           m_azimuth
         );
 
@@ -91,7 +94,8 @@ namespace Flux
       //#endregion Static methods
 
       public string ToString(string? format, System.IFormatProvider? provider)
-          => $"{GetType().GetNameEx()} {{ Radius = {string.Format($"{{0:{format ?? "N1"}}}", Radius)}, Azimuth = {new Units.Angle(Azimuth).ToUnitValueString(Units.AngleUnit.Degree, format ?? "N3", true)}, Height = {string.Format($"{{0:{format ?? "N1"}}}", Height)} }}";
+        => $"{GetType().GetNameEx()} {{ Radius = {Radius.ToValueString("N1")}, Azimuth = {Azimuth.ToValueString("N3")}, Height = {Height.ToValueString("N1")} }}"
+        + $" <{m_radius}, {m_azimuth}, {m_height}>";
 
       public override string ToString() => ToString(null, null);
     }

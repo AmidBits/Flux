@@ -45,7 +45,7 @@ namespace Flux.Statistics
     /// <param name="immigrated">The number of individuals immigrating into the population between Nt and Nt+1 (I).</param>
     /// <param name="emigrated">The number of individuals emigrating into the population between Nt and Nt+1 (E).</param>
     /// <returns>The number of individuals at time Nt+1.</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Matrix_population_models"/>
+    /// <see href="https://en.wikipedia.org/wiki/Matrix_population_models"/>
     public static double Compute(double population, double births, double immigrated, double deaths, double emigrated)
       => population + births - deaths + immigrated - emigrated;
   }

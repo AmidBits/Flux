@@ -1,7 +1,7 @@
 namespace Flux.Checksum
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Adler-32"/>
+  /// <see href="https://en.wikipedia.org/wiki/Adler-32"/>
   public record struct Adler32
     : IChecksumGenerator32
   {

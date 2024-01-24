@@ -5,7 +5,7 @@ namespace Flux.Statistics
   /// <param name="growthRate">The intrinsic growth rate (r).</param>
   /// <param name="carryingCapacity">The carrying capacity of the environment (k).</param>
   /// <returns>The expected number (or density) of individuals in (the next) generation (Nt + 1).</returns>
-  /// <see cref="https://en.wikipedia.org/wiki/Ricker_model"/>
+  /// <see href="https://en.wikipedia.org/wiki/Ricker_model"/>
   public record class PopulationModelRicker
     : IPopulationModelable
   {
@@ -38,7 +38,7 @@ namespace Flux.Statistics
     /// <param name="growthRate">The intrinsic growth rate (r).</param>
     /// <param name="carryingCapacity">The carrying capacity of the environment (k).</param>
     /// <returns>The expected number (or density) of individuals in (the next) generation (Nt + 1).</returns>
-    /// <see cref="https://en.wikipedia.org/wiki/Ricker_model"/>
+    /// <see href="https://en.wikipedia.org/wiki/Ricker_model"/>
     public static double Compute(double population, double growthRate, double carryingCapacity)
       => population * System.Math.Pow(System.Math.E, growthRate * (1 - (population / carryingCapacity)));
   }

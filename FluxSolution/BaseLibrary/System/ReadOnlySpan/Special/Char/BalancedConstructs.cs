@@ -10,7 +10,7 @@ namespace Flux
       => IsBalancedConstruct(source, $"\\{open}", $"[^\\{open}\\{close}]", $"\\{close}");
 
     /// <summary>Checks whether the string is a matching balanced construct.</summary>
-    /// <see cref="https://www.regular-expressions.info/balancing.html"/>
+    /// <see href="https://www.regular-expressions.info/balancing.html"/>
     /// <example>See below for balanced parenthesis.</example>
     public static bool IsBalancedConstruct(this System.ReadOnlySpan<char> source, string open, string match, string close)
       => System.Text.RegularExpressions.Regex.IsMatch(source.ToString(), CreateBalancedExpression(open, match, close));

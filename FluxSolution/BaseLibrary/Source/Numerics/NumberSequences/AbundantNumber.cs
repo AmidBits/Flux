@@ -7,7 +7,7 @@ namespace Flux
     //=> Enumerable.Loop(() => (System.Numerics.BigInteger)3, e => true, e => e + 1, e => e).AsParallel().AsOrdered().Select(n => (n, sum: NumberSequences.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
 
     /// <summary></summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Highly_abundant_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Highly_abundant_number"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyAbundantNumbers()
     {
       var largestSumOfDivisors = System.Numerics.BigInteger.Zero;
@@ -20,7 +20,7 @@ namespace Flux
     }
 
     /// <summary></summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Superabundant_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Superabundant_number"/>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetSuperAbundantNumbers()
     {
       var largestValue = 0.0;
@@ -33,7 +33,7 @@ namespace Flux
     }
 
     /// <summary>Determines whether the number is an abundant number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Abundant_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Abundant_number"/>
     public static bool IsAbundantNumber(System.Numerics.BigInteger value)
       => Flux.NumberSequence.GetSumOfDivisors(value) - value > value;
   }
@@ -51,7 +51,7 @@ namespace Flux
 //    //=> Enumerable.Loop(() => (System.Numerics.BigInteger)3, e => true, e => e + 1, e => e).AsParallel().AsOrdered().Select(n => (n, sum: NumberSequences.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
 
 //    /// <summary></summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Highly_abundant_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Highly_abundant_number"/>
 //    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetHighlyAbundantNumbers()
 //    {
 //      var largestSumOfDivisors = System.Numerics.BigInteger.Zero;
@@ -64,7 +64,7 @@ namespace Flux
 //    }
 
 //    /// <summary></summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Superabundant_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Superabundant_number"/>
 //    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.Numerics.BigInteger, System.Numerics.BigInteger>> GetSuperAbundantNumbers()
 //    {
 //      var largestValue = 0.0;
@@ -77,7 +77,7 @@ namespace Flux
 //    }
 
 //    /// <summary>Determines whether the number is an abundant number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Abundant_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Abundant_number"/>
 //    public static bool IsAbundantNumber(System.Numerics.BigInteger value)
 //      => Factors.GetSumOfDivisors(value) - value > value;
 

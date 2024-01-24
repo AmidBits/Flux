@@ -3,7 +3,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>UV index, unit of itself.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Ultraviolet_index"/>
+    /// <see href="https://en.wikipedia.org/wiki/Ultraviolet_index"/>
     public readonly record struct UvIndex
     : System.IComparable, System.IComparable<UvIndex>, IValueQuantifiable<double>
     {

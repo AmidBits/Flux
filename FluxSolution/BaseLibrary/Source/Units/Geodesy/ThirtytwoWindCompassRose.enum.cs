@@ -32,7 +32,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>The 32-wind compass rose is yielded from the eight principal winds, eight half-winds and sixteen quarter-winds combined together, with each compass direction point at an 11.25° angle from the next.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass#32-wind_compass_rose"/>
+    /// <see href="https://en.wikipedia.org/wiki/Points_of_the_compass#32-wind_compass_rose"/>
     public enum ThirtytwoWindCompassRose
     {
       N = 0,

@@ -323,7 +323,7 @@ namespace Flux
     }
 
     /// <summary>Depth-first search (DFS), in-order (LNR). In a binary search tree, in-order traversal retrieves data in sorted order.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
+    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraverseInOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
@@ -353,7 +353,7 @@ namespace Flux
     }
 
     /// <summary>Depth-first search (DFS), in-order reverse (RNL). In a binary search tree, in-order traversal retrieves data in sorted order. This is in-order reversed.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
+    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraverseInReverseOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
@@ -383,7 +383,7 @@ namespace Flux
     }
 
     /// <summary>Breadth-first search (BFS), level order. Traversal yields the binary tree levels starting with the root, then its two possible children, then their children, and so on "in generations".</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/>
+    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraverseLevelOrder<TValue>(this DataStructures.IBinaryTree<TValue> source, int maxDepth)
     {
@@ -413,7 +413,7 @@ namespace Flux
     }
 
     /// <summary>Breadth-first search (BFS), chunked level order. Traversal yields the binary tree levels, in chunks, starting with the root, then its two children, then their children, and so on "in generations".</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/>
+    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>[]> TraverseLevelOrderChunked<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
@@ -439,7 +439,7 @@ namespace Flux
     }
 
     /// <summary>Depth-first search (DFS), post-order (LRN). The trace of a traversal is called a sequentialisation of the tree. The traversal trace is a list of each visited root.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Post-order"/>
+    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Post-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraversePostOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
@@ -480,7 +480,7 @@ namespace Flux
     }
 
     /// <summary>Depth-first search (DFS), pre-order (NLR). The pre-order traversal is a topologically sorted one, because a parent node is processed before any of its child nodes is done.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order"/>
+    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraversePreOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {

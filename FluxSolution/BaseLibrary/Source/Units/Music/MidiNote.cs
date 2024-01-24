@@ -87,7 +87,7 @@ namespace Flux
 #endif
 
       /// <summary>Parse the specified SPN string into a MIDI note.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
+      /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
       public static MidiNote Parse(string scientificPitchNotation)
       {
         var m = ScientificPitchNotationRegex().Match(scientificPitchNotation);
@@ -106,7 +106,7 @@ namespace Flux
         throw new System.ArgumentException($"Cannot parse note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
       }
       /// <summary>Attempts to parse the specified SPN string into a MIDI note.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
+      /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
 
       public static bool TryParse(string scientificPitchNotation, out MidiNote result)
       {
@@ -160,7 +160,7 @@ namespace Flux
       #endregion Implemented interfaces
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
+      /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
       public override string ToString() => ToValueString(null, false, false);
     }
   }

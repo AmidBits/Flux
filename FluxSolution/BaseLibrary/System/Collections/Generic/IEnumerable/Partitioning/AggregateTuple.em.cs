@@ -8,7 +8,7 @@
 //    /// <param name="resultSelector">Allows the result of each tuple to be processed.</param>
 //    /// <returns>A sequence of n-tuples staggered by one element, optionally extending the sequence by the specified overflow.</returns>
 //    /// <exception cref="System.ArgumentNullException"/>
-//    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Tuple"/>
 //    public static TResult AggregateTuple<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int tupleSize, int tupleWrap, System.Func<TAccumulate, System.Collections.Generic.IReadOnlyList<TSource>, int, TAccumulate> accumulator, System.Func<TAccumulate, int, TResult> resultSelector)
 //    {
 //      System.ArgumentNullException.ThrowIfNull(accumulator);
@@ -63,7 +63,7 @@
 //    /// <returns>A sequence of 2-tuples staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
 //    /// <exception cref="System.ArgumentException"/>
 //    /// <exception cref="System.ArgumentNullException"/>
-//    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Tuple"/>
 //    public static TResult AggregateTuple2<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, bool tupleWrap, System.Func<TAccumulate, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
 //    {
 //      System.ArgumentNullException.ThrowIfNull(aggregateComputor);
@@ -99,7 +99,7 @@
 //    /// <returns>A sequence of 3-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
 //    /// <exception cref="System.ArgumentException"/>
 //    /// <exception cref="System.ArgumentNullException"/>
-//    /// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Tuple"/>
 //    public static TResult AggregateTuple3<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int tupleWrap, System.Func<TAccumulate, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
 //    {
 //      System.ArgumentNullException.ThrowIfNull(aggregateComputor);
@@ -140,7 +140,7 @@
 
 //    ///// <summary>Creates a sequence of staggered (by one element) 4-tuple elements.</summary>
 //    ///// <returns>A sequence of 4-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
-//    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+//    ///// <see href="https://en.wikipedia.org/wiki/Tuple"/>
 //    //public static TResult AggregateTuple4<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
 //    //{
 //    //  if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -187,7 +187,7 @@
 
 //    ///// <summary>Creates a sequence of staggered (by one element) 5-tuple elements.</summary>
 //    ///// <returns>A sequence of 5-tuple elements staggered by one element, optionally extending the sequence by the specified number of wraps.</returns>
-//    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+//    ///// <see href="https://en.wikipedia.org/wiki/Tuple"/>
 //    //public static TResult AggregateTuple5<TSource, TAccumulate, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, TAccumulate seed, int wrap, System.Func<TAccumulate, TSource, TSource, TSource, TSource, TSource, int, TAccumulate> aggregateComputor, System.Func<TAccumulate, int, TResult> resultSelector)
 //    //{
 //    //  if (source is null) throw new System.ArgumentNullException(nameof(source));

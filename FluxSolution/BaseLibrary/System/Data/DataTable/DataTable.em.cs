@@ -37,7 +37,7 @@ namespace Flux
     //    }
 
     //    /// <summary>Removes (as in deletes) all DataRow objects matching the specified filter expression.</summary>
-    //    /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.data.datatable.select?view=netcore-3.1#System_Data_DataTable_Select_System_String_"/>
+    //    /// <see href="https://docs.microsoft.com/en-us/dotnet/api/system.data.datatable.select?view=netcore-3.1#System_Data_DataTable_Select_System_String_"/>
     //    /// <seealso cref="https://www.csharp-examples.net/dataview-rowfilter/"/>
     //    public static void RemoveAllRowsMatching(this System.Data.DataTable source, string filterExpression)
     //    {
@@ -47,7 +47,7 @@ namespace Flux
     //    }
 
     //    /// <summary>Removes (as in deletes) all DataRow objects NOT matching the specified filter expression.</summary>
-    //    /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.data.datatable.select?view=netcore-3.1#System_Data_DataTable_Select_System_String_"/>
+    //    /// <see href="https://docs.microsoft.com/en-us/dotnet/api/system.data.datatable.select?view=netcore-3.1#System_Data_DataTable_Select_System_String_"/>
     //    /// <seealso cref="https://www.csharp-examples.net/dataview-rowfilter/"/>
     //    public static void RemoveAllRowsNotMatching(this System.Data.DataTable source, string filterExpression)
     //    {

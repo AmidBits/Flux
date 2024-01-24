@@ -1,7 +1,7 @@
 ﻿namespace Flux.Net
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Network_Time_Protocol"/>
+  /// <see href="https://en.wikipedia.org/wiki/Network_Time_Protocol"/>
   public sealed class NetworkTimeProtocol
   {
     // private const ulong m_ntpTimestampDelta = 2208988800UL;

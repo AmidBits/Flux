@@ -9,7 +9,7 @@
 //  public record class HexagonShape
 //  {
 //    /// <summary></summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
 //    public static System.Collections.Generic.IEnumerable<int> GetCenteredNumbers(int count)
 //    {
 //      for (var nth = 1; nth <= count; nth++)
@@ -21,7 +21,7 @@
 //      => new (int, int, int, int)[] { (0, 1, 1, 1) }.Concat(GetCenteredNumbers(int.MaxValue).Take(count).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Select((n, i) => (i + 1, n.leading + 1, n.trailing, n.trailing - n.leading)));
 
 //    /// <summary></summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Centered_hexagonal_number#Testing_/_finding_the_root"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number#Testing_/_finding_the_root"/>
 //    public static int GetCenteredRoot(int centeredNumber)
 //      => centeredNumber >= 1 ? (3 + (int)System.Math.Sqrt(12 * centeredNumber - 3)) / 6 : centeredNumber == 0 ? 0 : throw new System.ArgumentOutOfRangeException(nameof(centeredNumber));
 

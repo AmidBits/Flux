@@ -110,7 +110,7 @@ namespace Flux.Colors
     public string ToHtmlColorString() => $"rgba({RGB.Red}, {RGB.Green}, {RGB.Blue}, {m_alpha / 255.0})";
 
     /// <summary>Converts a Color value to a scRGB string representation of the value.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/ScRGB"/>
+    /// <see href="https://en.wikipedia.org/wiki/ScRGB"/>
     /// <param name="color">The Color to convert.</param>
     /// <returns>Returns a string representing the hex value.</returns>
     public string ToHtmlScString() => $"sc#{m_alpha / 255F}{RGB.Red / 255F}{RGB.Green / 255F}{RGB.Blue / 255F}";

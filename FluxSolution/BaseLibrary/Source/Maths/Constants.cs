@@ -52,11 +52,11 @@ namespace Flux
     public const double Epsilon1E15 = 1E-15d;
 
     /// <summary>Represents mathematical constants.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Euler%27s_constant"/>
+    /// <see href="https://en.wikipedia.org/wiki/Euler%27s_constant"/>
     public const double EulerConstant = 0.57721566490153286060651209008240243;
 
     /// <summary>Represents the ratio of two quantities being the same as the ratio of their sum to their maximum. (~1.618)</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Golden_ratio"/>
+    /// <see href="https://en.wikipedia.org/wiki/Golden_ratio"/>
     public const double GoldenRatio = 1.6180339887498948482045868343656381177203091798057628621354486227052604628189024497072072041893911374;
 
     /// <summary>Represents (180 / PI)</summary>

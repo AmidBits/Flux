@@ -6,8 +6,8 @@ namespace Flux
 
     /// <summary>
     /// <para>Computes <paramref name="radix"/> raised to the power of <paramref name="exponent"/>, using exponentiation by squaring.</para>
-    /// <see cref="https://en.wikipedia.org/wiki/Exponentiation"/>
-    /// <see cref="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
+    /// <see href="https://en.wikipedia.org/wiki/Exponentiation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
     /// <param name="radix">The radix (base) to be raised to the power-of-<paramref name="exponent"/>.</param>
@@ -90,8 +90,8 @@ namespace Flux
 #else
 
     /// <summary>Returns <paramref name="radix"/> raised to the power of <paramref name="exponent"/>, using exponentiation by squaring.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Exponentiation"/>
-    /// <see cref="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
+    /// <see href="https://en.wikipedia.org/wiki/Exponentiation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
     public static System.Numerics.BigInteger IntegerPow(this System.Numerics.BigInteger radix, System.Numerics.BigInteger exponent)
     {
       AssertNonNegative(exponent, nameof(exponent));

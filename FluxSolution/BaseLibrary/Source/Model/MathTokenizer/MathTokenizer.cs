@@ -91,7 +91,7 @@ namespace Flux.Text
 
     /// <summary>
     /// <para>Evaluate a sequence of tokens in prefix notation order (a.k.a. Normal Polish Notation, or NPN), to a value.</para>
-    /// <see cref="https://en.wikipedia.org/wiki/Polish_notation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Polish_notation"/>
     /// </summary>
     public static double EvaluateNPN(System.Collections.Generic.IEnumerable<MathToken> tokensNPN)
     {
@@ -116,7 +116,7 @@ namespace Flux.Text
     }
     /// <summary>
     /// <para>Evaluate a sequence of tokens in postfix notation order (a.k.a. Reverse Polish Notation, or RPN), to a value.</para>
-    /// <see cref="https://en.wikipedia.org/wiki/Reverse_Polish_notation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Reverse_Polish_notation"/>
     /// </summary>
     public static double EvaluateRPN(System.Collections.Generic.IEnumerable<MathToken> tokensRPN)
     {
@@ -157,8 +157,8 @@ namespace Flux.Text
 
     /// <summary>
     /// <para>Convert an infix sequence of tokens to prefix notation order (a.k.a. Normal Polish Notation, or NPN), using a Shunting-yard algorithm.</para>
-    /// <para><see cref="https://en.wikipedia.org/wiki/Shunting-yard_algorithm"/></para>
-    /// <para><see cref="https://en.wikipedia.org/wiki/Polish_notation"/></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm"/></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Polish_notation"/></para>
     /// </summary>
     /// <param name="tokens"></param>
     /// <returns></returns>
@@ -207,8 +207,8 @@ namespace Flux.Text
 
     /// <summary>
     /// <para>Convert an infix sequence of tokens to postfix notation (a.k.a. Reverse Polish Notation, or RPN), using a Shunting-yard algorithm.</para>
-    /// <para><see cref="https://en.wikipedia.org/wiki/Shunting-yard_algorithm"/></para>
-    /// <para><see cref="https://en.wikipedia.org/wiki/Reverse_Polish_notation"/></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Shunting-yard_algorithm"/></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Reverse_Polish_notation"/></para>
     /// </summary>
     /// <param name="tokens"></param>
     /// <returns></returns>

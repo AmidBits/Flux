@@ -2,10 +2,10 @@ namespace Flux
 {
   namespace Text
   {
-    /// <see cref="https://en.wikipedia.org/wiki/Roman_numerals"/>
+    /// <see href="https://en.wikipedia.org/wiki/Roman_numerals"/>
     public sealed class RomanNumerals
     {
-      ///// <see cref="https://en.wikipedia.org/wiki/Roman_numerals"/>
+      ///// <see href="https://en.wikipedia.org/wiki/Roman_numerals"/>
       //public static readonly SignValueNotation RomanNumeralSystem = new(new System.Collections.Generic.Dictionary<string, int>() {
       //  { "M", 1000 },
       //  { "CM", 900 },
@@ -44,7 +44,7 @@ namespace Flux
 
       ///// <summary>Convert a number into a sign-value notaion string.</summary>
       ///// <remarks>The dictionary has to be ordered descending by value, and like its keys already are, the values must also be unique.</remarks>
-      ///// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
+      ///// <see href="https://en.wikipedia.org/wiki/Sign-value_notation"/>
       ///// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
 
       //public System.Text.StringBuilder NumberToText(System.Numerics.BigInteger number)

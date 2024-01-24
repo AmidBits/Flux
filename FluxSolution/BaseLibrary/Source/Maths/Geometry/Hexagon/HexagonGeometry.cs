@@ -93,7 +93,7 @@ namespace Flux.Geometry
 
     /// <summary>
     /// <para>The inverse of getting the centered hexagonal number, i.e. find the root, or index, of the centered hexagonal number.</para>
-    /// <see cref="https://en.wikipedia.org/wiki/Centered_hexagonal_number#Testing_/_finding_the_root"/>
+    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number#Testing_/_finding_the_root"/>
     /// </summary>
     public static int GetCenteredRoot(int centeredHexagonalNumber)
       => centeredHexagonalNumber >= 1 ? (3 + System.Convert.ToInt32(System.Math.Sqrt(12 * centeredHexagonalNumber - 3))) / 6 : centeredHexagonalNumber == 0 ? 0 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));

@@ -24,7 +24,7 @@ namespace Flux.Services.GitHub
   }
 
   /// <summary></summary>
-  /// <see cref="https://markheath.net/post/list-and-download-github-repo-cs"/>
+  /// <see href="https://markheath.net/post/list-and-download-github-repo-cs"/>
   public static class GitHubApi
   {
     public static System.Uri CreateUri(string repo, string branch = @"master")

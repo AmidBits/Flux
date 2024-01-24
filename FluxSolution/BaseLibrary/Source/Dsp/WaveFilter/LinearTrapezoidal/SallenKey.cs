@@ -2,8 +2,8 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
 {
   /// <summary>A linear trapezoidal integrated Sallen Key filter (SKF) collection</summary>
   /// <summary>A low-pass filter is used to cut unwanted high-frequency signals.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Low-pass_filter"/>
-  /// <see cref="https://cytomic.com/files/dsp/SkfLinearTrapOptimised2.pdf"/>
+  /// <see href="https://en.wikipedia.org/wiki/Low-pass_filter"/>
+  /// <see href="https://cytomic.com/files/dsp/SkfLinearTrapOptimised2.pdf"/>
   /// <seealso cref="https://cytomic.com/index.php?q=technical-papers"/>
   public record class SallenKey
     : IMonoWaveFilterable, IMonoWaveProcessable

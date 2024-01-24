@@ -48,7 +48,7 @@ namespace Flux
     }
 
     /// <summary>Volume, unit of cubic meter. This is an SI derived quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Volume"/>
+    /// <see href="https://en.wikipedia.org/wiki/Volume"/>
     public readonly record struct Volume
       : System.IComparable, System.IComparable<Volume>, System.IFormattable, IUnitValueQuantifiable<double, VolumeUnit>
     {

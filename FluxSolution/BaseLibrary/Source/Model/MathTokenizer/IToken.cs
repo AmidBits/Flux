@@ -2,7 +2,7 @@ namespace Flux
 {
   namespace Text
   {
-    /// <see cref="https://en.wikipedia.org/wiki/Lexical_analysis"/>
+    /// <see href="https://en.wikipedia.org/wiki/Lexical_analysis"/>
     public interface IToken<TValue>
       where TValue : notnull
     {

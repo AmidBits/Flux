@@ -1,7 +1,7 @@
 namespace Flux.Hashing
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Jenkins_hash_function"/>
+  /// <see href="https://en.wikipedia.org/wiki/Jenkins_hash_function"/>
   public record struct Oat
     : ISimpleHashGenerator32
   {

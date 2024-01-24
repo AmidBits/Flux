@@ -21,7 +21,7 @@ namespace Flux
     }
 
     /// <summary>Electrical inductance unit of Henry.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Inductance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Inductance"/>
     public readonly record struct Inductance
       : System.IComparable, System.IComparable<Inductance>, IUnitValueQuantifiable<double, InductanceUnit>
     {

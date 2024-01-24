@@ -22,7 +22,7 @@ namespace Flux.Colors
     public int Blue => m_blue;
 
     /// <summary>Returns the chroma for the RGB value.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chrominance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Chrominance"/>
     public double GetChroma(out double min, out double max, out double r, out double g, out double b)
     {
       r = System.Math.Clamp(m_red / 255d, 0, 1);
@@ -36,7 +36,7 @@ namespace Flux.Colors
     }
 
     /// <summary>Returns the hue [0, 360] for the RGB value.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Hue"/>
+    /// <see href="https://en.wikipedia.org/wiki/Hue"/>
     public double GetHue(out double min, out double max, out double r, out double g, out double b, out double chroma)
     {
       chroma = GetChroma(out min, out max, out r, out g, out b);
@@ -61,7 +61,7 @@ namespace Flux.Colors
     }
 
     /// <summary>Returns the luma for the RGB value, using the specified coefficients.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Luma_(video)"/>
+    /// <see href="https://en.wikipedia.org/wiki/Luma_(video)"/>
     public double GetLuma(double rc, double gc, double bc)
     {
       var r = m_red / 255d;
@@ -72,15 +72,15 @@ namespace Flux.Colors
     }
 
     /// <summary>Returns the luma for the RGB value, using Rec.601 coefficients.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Rec._601"/>
+    /// <see href="https://en.wikipedia.org/wiki/Rec._601"/>
     public double GetLuma601() => GetLuma(0.2989, 0.5870, 0.1140);
 
     /// <summary>Returns the luma for the RGB value, using Adobe/SMPTE 240M coefficients.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Adobe_RGB_color_space"/>
+    /// <see href="https://en.wikipedia.org/wiki/Adobe_RGB_color_space"/>
     public double GetLuma240() => GetLuma(0.212, 0.701, 0.087);
 
     /// <summary>Returns the luma for the RGB value, using Rec.709 coefficients.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Rec._709"/>
+    /// <see href="https://en.wikipedia.org/wiki/Rec._709"/>
     public double GetLuma709() => GetLuma(0.2126, 0.7152, 0.0722);
 
     /// <summary>Returns the luma for the RGB value, using Rec.2020 coefficients.</summary>

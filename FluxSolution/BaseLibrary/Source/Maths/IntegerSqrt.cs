@@ -104,7 +104,7 @@ namespace Flux
 #else
 
     /// <summary>Returns the (floor) square root of the <paramref name="y"/>, using Newton's method.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
+    /// <see href="https://en.wikipedia.org/wiki/Square_root"/>
     public static System.Numerics.BigInteger IntegerSqrt(this System.Numerics.BigInteger y)
     {
       AssertNonNegative(y);
@@ -134,8 +134,8 @@ namespace Flux
       => y / x == x && y % x == System.Numerics.BigInteger.Zero; // Not using "y == checked(x * x)" because risk of overflow.
 
     /// <summary>Attempts to compute the (floor) square root of <paramref name="y"/> into the out parameter <paramref name="x"/>, using Newton's method.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
-    /// <see cref="https://en.wikipedia.org/wiki/Square_root"/>
+    /// <see href="https://en.wikipedia.org/wiki/Square_root"/>
+    /// <see href="https://en.wikipedia.org/wiki/Square_root"/>
     public static bool TryIntegerSqrt(this System.Numerics.BigInteger y, out System.Numerics.BigInteger x)
     {
       try

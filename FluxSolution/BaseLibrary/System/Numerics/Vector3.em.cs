@@ -29,12 +29,12 @@ namespace Flux
     //    //  => System.Math.Atan2(System.Math.Sqrt(source.X * source.X + source.Y * source.Y), source.Z);
 
     /// <summary>Compute the Chebyshev length of a vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static float ChebyshevLength(this System.Numerics.Vector3 source, float edgeLength = 1)
       => float.Max(float.Max(source.X, source.Y), source.Z) / edgeLength;
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static float ManhattanLength(this System.Numerics.Vector3 source, float edgeLength = 1)
       => (System.Math.Abs(source.X) + System.Math.Abs(source.Y) + System.Math.Abs(source.Z)) / edgeLength;
 
@@ -52,7 +52,7 @@ namespace Flux
 
     /// <summary>Create a new scalar by computing the scalar triple product, i.e. the dot product of one of the vectors with the cross product of the other two.</summary>
     /// <remarks>This is the signed volume of the parallelepiped defined by the three vectors given.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
+    /// <see href="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
     public static float ScalarTripleProduct(System.Numerics.Vector3 a, System.Numerics.Vector3 b, System.Numerics.Vector3 c)
       => System.Numerics.Vector3.Dot(a, System.Numerics.Vector3.Cross(b, c));
 
@@ -66,7 +66,7 @@ namespace Flux
     }
 
     /// <summary>Create a new vector by computing the vector triple product (Lagrange's formula), i.e. the cross product of one vector with the cross product of the other two.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
+    /// <see href="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
     public static System.Numerics.Vector3 VectorTripleProduct(System.Numerics.Vector3 a, System.Numerics.Vector3 b, System.Numerics.Vector3 c)
       => System.Numerics.Vector3.Cross(a, System.Numerics.Vector3.Cross(b, c));
 

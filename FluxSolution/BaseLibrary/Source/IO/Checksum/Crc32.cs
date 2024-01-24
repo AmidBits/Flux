@@ -1,7 +1,7 @@
 namespace Flux.Checksum
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"/>
+  /// <see href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"/>
   public record struct Crc32
     : IChecksumGenerator32
   {

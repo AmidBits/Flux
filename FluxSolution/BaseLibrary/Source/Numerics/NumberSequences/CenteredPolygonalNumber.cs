@@ -15,7 +15,7 @@ namespace Flux
     }
 
     /// <summary></summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
     public static TSelf GetNumber<TSelf>(TSelf index, TSelf numberOfSides)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -28,7 +28,7 @@ namespace Flux
     }
 
     /// <summary></summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
     public static System.Collections.Generic.IEnumerable<TSelf> GetSequence<TSelf>(TSelf numberOfSides)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -43,7 +43,7 @@ namespace Flux
 //namespace Flux.NumberSequences
 //{
 //  /// <summary></summary>
-//  /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+//  /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
 //  /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //  public record class CenteredPolygonalNumber
 //    : INumericSequence<int>
@@ -68,7 +68,7 @@ namespace Flux
 //    }
 
 //    /// <summary></summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
 //    public static TSelf GetNumber<TSelf>(TSelf index, TSelf numberOfSides)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //    {
@@ -81,7 +81,7 @@ namespace Flux
 //    }
 
 //    /// <summary></summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
 //    /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetSequence<TSelf>(TSelf numberOfSides)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>

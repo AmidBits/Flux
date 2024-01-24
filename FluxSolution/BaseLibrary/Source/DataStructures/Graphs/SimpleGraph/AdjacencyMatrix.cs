@@ -4,7 +4,7 @@
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
-  /// <see cref="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
+  /// <see href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
   public sealed class AdjacencyMatrix<TVertexValue, TEdgeValue>
     : IGraph<TVertexValue, TEdgeValue>
     where TVertexValue : notnull

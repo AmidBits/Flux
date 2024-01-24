@@ -3,7 +3,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>Semitone, unit of itself. A musical interval equal to one hundred cents.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Semitone"/>
+    /// <see href="https://en.wikipedia.org/wiki/Semitone"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
     public readonly record struct Semitone
     : System.IComparable<Semitone>, IValueQuantifiable<int>

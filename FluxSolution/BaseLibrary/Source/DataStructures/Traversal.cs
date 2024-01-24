@@ -3,7 +3,7 @@ namespace Flux.DataStructures
   public static partial class Traversal
   {
     /// <summary>Performs a depth-first-search (DFS) on a binary tree type hierarchy, using a recursive algorithm.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Binary_search_algorithm"/>
+    /// <see href="https://en.wikipedia.org/wiki/Binary_search_algorithm"/>
     public static System.Collections.Generic.IEnumerable<T> BinaryTreeSearchDfsR<T>(T node, System.Func<T, T> selectorChildLeft, System.Func<T, T> selectorChildRight, BinaryTreeDepthOrder order, System.Func<T, bool>? predicate = null)
     {
       if (node is null) throw new System.ArgumentNullException(nameof(node));
@@ -38,7 +38,7 @@ namespace Flux.DataStructures
     }
 
     /// <summary>Performs a breadth-first-search (BFS) on a binary tree type hierarchy, using an iterative algorithm.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
+    /// <see href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     public static System.Collections.Generic.IEnumerable<(int depth, T node)> BinaryTreeSearchBfs<T>(T node, System.Func<T, T> selectorChildLeft, System.Func<T, T> selectorChildRight, int maxDepth, System.Func<(int depth, T node), bool>? predicate = null)
     {
       if (node is null) throw new System.ArgumentNullException(nameof(node));
@@ -70,7 +70,7 @@ namespace Flux.DataStructures
     }
 
     /// <summary>Perform a breadth-first-search (BFS) on a general parent-child type tree hierarchy.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
+    /// <see href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     public static System.Collections.Generic.IEnumerable<(int depth, T node)> BreadthFirstSearch<T>(T node, int maxDepth, System.Func<(int depth, T node), bool> predicate, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildNodes)
     {
       if (node is null) throw new System.ArgumentNullException(nameof(node));
@@ -101,7 +101,7 @@ namespace Flux.DataStructures
     }
 
     /// <summary>Perform a depth-first-search (DFS) on a general parent-child type tree hierarchy.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
+    /// <see href="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public static System.Collections.Generic.IEnumerable<(int depth, T node)> DepthFirstSearch<T>(T node, int maxDepth, System.Func<(int depth, T node), bool> predicate, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildNodes)
     {
       if (node is null) throw new System.ArgumentNullException(nameof(node));
@@ -133,7 +133,7 @@ namespace Flux.DataStructures
     }
 
     /// <summary>Perform a iterative deepening depth first search (IDDFS) on a tree hierarchy.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search"/>
+    /// <see href="https://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search"/>
     public static T IterativeDeepeningDepthFirstSearch<T>(T node, int maxDepth, System.Func<T, bool> predicateGoal, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildNodes)
     {
       if (predicateGoal is null) throw new System.ArgumentNullException(nameof(predicateGoal));

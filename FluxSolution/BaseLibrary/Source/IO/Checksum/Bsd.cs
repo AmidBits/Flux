@@ -1,7 +1,7 @@
 namespace Flux.Checksum
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/BSD_checksum"/>
+  /// <see href="https://en.wikipedia.org/wiki/BSD_checksum"/>
   public record struct Bsd
     : IChecksumGenerator32
   {

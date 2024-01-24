@@ -1,7 +1,7 @@
 namespace Flux.DataStructures
 {
 	/// <summary></summary>
-	/// <see cref="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
+	/// <see href="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
 	public interface IHeap<T>
 	{
 		/// <summary>Yields the number of items on the heap.</summary>

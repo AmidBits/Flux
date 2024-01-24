@@ -4,7 +4,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
+    /// <see href="https://en.wikipedia.org/wiki/Angular_acceleration"/>
     public readonly record struct AngularAcceleration3D
   : IUnitValueQuantifiable<System.Numerics.Vector3, AngularAccelerationUnit>
     {

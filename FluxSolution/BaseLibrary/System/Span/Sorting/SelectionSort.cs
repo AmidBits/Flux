@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Sorts the content of the sequence using selection sort.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Selection_sort"/>
+    /// <see href="https://en.wikipedia.org/wiki/Selection_sort"/>
     public static void SelectionSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;

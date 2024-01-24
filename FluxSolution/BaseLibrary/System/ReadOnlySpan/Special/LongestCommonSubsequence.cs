@@ -8,7 +8,7 @@ namespace Flux
       => (double)GetLongestCommonSubsequenceEditDistance(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
     /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/> 
+    /// <see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/> 
     /// <seealso cref="http://www.geeksforgeeks.org/longest-common-subsequence/"/>
     /// <seealso cref="https://www.ics.uci.edu/~eppstein/161/960229.html"/>
     /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>

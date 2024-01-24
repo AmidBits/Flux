@@ -18,7 +18,7 @@ namespace Flux
     }
 
     /// <summary>Impulse, unit of Newton second.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Impulse"/>
+    /// <see href="https://en.wikipedia.org/wiki/Impulse"/>
     public readonly record struct Impulse
       : System.IComparable, System.IComparable<Impulse>, System.IFormattable, IUnitValueQuantifiable<double, ImpulseUnit>
     {

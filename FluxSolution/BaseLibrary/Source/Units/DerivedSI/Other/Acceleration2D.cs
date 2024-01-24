@@ -4,7 +4,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Acceleration"/>
+    /// <see href="https://en.wikipedia.org/wiki/Acceleration"/>
     public readonly record struct Acceleration2D
   : System.IFormattable, IUnitValueQuantifiable<System.Numerics.Vector2, AccelerationUnit>
     {

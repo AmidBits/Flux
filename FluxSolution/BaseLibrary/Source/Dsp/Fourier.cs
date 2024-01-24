@@ -1,7 +1,7 @@
 ﻿namespace Flux.Dsp
 {
   /// <summary>Fourier transformation.</summary>
-  /// <see cref="https://github.com/andrewkirillov/AForge.NET/blob/master/Sources/Math/FourierTransform.cs"/>
+  /// <see href="https://github.com/andrewkirillov/AForge.NET/blob/master/Sources/Math/FourierTransform.cs"/>
   /// <remarks>The class implements one dimensional and two dimensional Discrete and Fast Fourier Transformation.</remarks>
   public static class FourierTransform
   {

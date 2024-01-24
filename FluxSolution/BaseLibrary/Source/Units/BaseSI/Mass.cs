@@ -30,7 +30,7 @@ namespace Flux
     }
 
     /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Mass"/>
+    /// <see href="https://en.wikipedia.org/wiki/Mass"/>
     public readonly record struct Mass
       : System.IComparable, System.IComparable<Mass>, System.IFormattable, IUnitValueQuantifiable<double, MassUnit>
     {

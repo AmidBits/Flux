@@ -4,13 +4,13 @@ namespace Flux
   public static partial class NumberSequence
   {
     /// <summary>Yields a Perrin number of the specified value number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Perrin_number"/>
     public static TSelf GetPerrinNumber<TSelf>(TSelf index)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => System.Linq.Enumerable.First(System.Linq.Enumerable.Where(GetPerrinNumbers<TSelf>(), (e, i) => TSelf.CreateChecked(i) == index));
 
     /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Perrin_number"/>
     public static System.Collections.Generic.IEnumerable<TSelf> GetPerrinNumbers<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -39,20 +39,20 @@ namespace Flux
 //namespace Flux.NumberSequences
 //{
 //  /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
-//  /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
+//  /// <see href="https://en.wikipedia.org/wiki/Perrin_number"/>
 //  public sealed class PerrinNumber
 //    : INumericSequence<System.Numerics.BigInteger>
 //  {
 //    #region Static methods
 
 //    /// <summary>Yields a Perrin number of the specified value number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Perrin_number"/>
 //    public static TSelf GetPerrinNumber<TSelf>(TSelf index)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //      => System.Linq.Enumerable.First(System.Linq.Enumerable.Where(GetPerrinNumbers<TSelf>(), (e, i) => TSelf.CreateChecked(i) == index));
 
 //    /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Perrin_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Perrin_number"/>
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetPerrinNumbers<TSelf>()
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //    {

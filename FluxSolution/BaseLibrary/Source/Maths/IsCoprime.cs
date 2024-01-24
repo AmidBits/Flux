@@ -13,28 +13,28 @@ namespace Flux
 #else
 
     /// <summary>Determines whether the two numbers are coprime.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Coprime_integers"/>
+    /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
     public static bool IsCoprime(this System.Numerics.BigInteger a, System.Numerics.BigInteger b)
       => System.Numerics.BigInteger.GreatestCommonDivisor(a, b) == 1;
 
     /// <summary>Determines whether the two numbers are coprime.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Coprime_integers"/>
+    /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
     public static bool IsCoprime(this int a, int b)
       => GreatestCommonDivisor(a, b) == 1;
 
     /// <summary>Determines whether the two numbers are coprime.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Coprime_integers"/>
+    /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
     public static bool IsCoprime(this long a, long b)
       => GreatestCommonDivisor(a, b) == 1;
 
     /// <summary>Determines whether the two numbers are coprime.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Coprime_integers"/>
+    /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
     [System.CLSCompliant(false)]
     public static bool IsCoprime(this uint a, uint b)
       => GreatestCommonDivisor(a, b) == 1;
 
     /// <summary>Determines whether the two numbers are coprime.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Coprime_integers"/>
+    /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
     [System.CLSCompliant(false)]
     public static bool IsCoprime(this ulong a, ulong b)
       => GreatestCommonDivisor(a, b) == 1;

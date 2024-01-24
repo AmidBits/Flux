@@ -20,7 +20,7 @@ namespace Flux
     }
 
     /// <summary>Surface density, unit of kilograms per square meter.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Surface_density"/>
+    /// <see href="https://en.wikipedia.org/wiki/Surface_density"/>
     public readonly record struct AreaDensity
       : System.IComparable, System.IComparable<AreaDensity>, System.IFormattable, IUnitValueQuantifiable<double, AreaDensityUnit>
     {

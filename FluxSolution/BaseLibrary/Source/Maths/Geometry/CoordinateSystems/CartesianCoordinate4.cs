@@ -3,8 +3,8 @@
 //namespace Flux.Geometry
 //{
 //  /// <summary>A structure encapsulating four double precision floating point values and provides hardware accelerated methods.</summary>
-//  /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4.cs"/>
-//  /// <see cref="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4_Intrinsics.cs"/>
+//  /// <see href="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4.cs"/>
+//  /// <see href="https://github.com/mono/mono/blob/bd278dd00dd24b3e8c735a4220afa6cb3ba317ee/netcore/System.Private.CoreLib/shared/System/Numerics/Vector4_Intrinsics.cs"/>
 //  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
 //  public readonly record struct CartesianCoordinate4
 //    : IFormattable, ICartesianCoordinate4<double>
@@ -108,11 +108,11 @@
 //    public static double AngleToZaxis(in CartesianCoordinate4 v)
 //      => Math.Atan2(Math.Sqrt(v.X * v.X + v.Y * v.Y), v.Z);
 //    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
 //    public static double ChebyshevDistance(in CartesianCoordinate4 v1, in CartesianCoordinate4 v2, double edgeLength = 1)
 //      => v1.m_v256d.ChebyshevDistance(v2.m_v256d, edgeLength).GetElement(0);
 //    /// <summary>Compute the Chebyshev length of vector.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
 //    public static double ChebyshevLength(in CartesianCoordinate4 v, double edgeLength = 1)
 //      => v.m_v256d.ChebyshevLength(edgeLength).GetElement(0);
 //    /// <summary>Restricts a vector between a min and max value.</summary>
@@ -155,11 +155,11 @@
 //      => (CartesianCoordinate4)v1.m_v256d.Lerp(v2.m_v256d, amount);
 
 //    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
 //    public static double ManhattanDistance(in CartesianCoordinate4 v1, in CartesianCoordinate4 v2, double edgeLength = 1)
 //      => v2.m_v256d.ManhattanDistance(v1.m_v256d, edgeLength).GetElement(0);
 //    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
 //    public static double ManhattanLength(in CartesianCoordinate4 v, double edgeLength = 1)
 //      => v.m_v256d.ManhattanLength(edgeLength).GetElement(0);
 
@@ -182,7 +182,7 @@
 //    public static CartesianCoordinate4 Negate(in CartesianCoordinate4 v)
 //      => (CartesianCoordinate4)v.m_v256d.Negate();
 //    /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
 //    public static double ScalarTripleProduct(in CartesianCoordinate4 a, in CartesianCoordinate4 b, in CartesianCoordinate4 c)
 //      => a.m_v256d.Dot(b.m_v256d.Cross(c.m_v256d)).GetElement(0);
 //    /// <summary>Returns a vector whose elements are the square root of each of the source vector's elements.</summary>
@@ -221,7 +221,7 @@
 //    //  );
 //    //}
 //    /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
 //    public static CartesianCoordinate4 VectorTripleProduct(in CartesianCoordinate4 a, in CartesianCoordinate4 b, in CartesianCoordinate4 c)
 //      => (CartesianCoordinate4)a.m_v256d.Cross(b.m_v256d.Cross(c.m_v256d));
 //    #endregion Static methods

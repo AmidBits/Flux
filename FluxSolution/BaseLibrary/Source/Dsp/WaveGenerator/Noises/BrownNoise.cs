@@ -1,6 +1,6 @@
 ﻿namespace Flux.Dsp.WaveGenerator
 {
-  /// <see cref="https://en.wikipedia.org/wiki/Brownian_noise"/>
+  /// <see href="https://en.wikipedia.org/wiki/Brownian_noise"/>
   /// <seealso cref="http://vellocet.com/dsp/noise/VRand.html"/>
   public sealed class BrownNoise
      : IMonoWaveUiGeneratable, IMonoWavePi2Generatable

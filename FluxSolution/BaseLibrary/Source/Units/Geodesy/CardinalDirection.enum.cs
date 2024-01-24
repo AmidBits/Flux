@@ -13,7 +13,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>The four cardinal directions, or cardinal points, are the directions north, east, south, and west, commonly denoted by their initials N, E, S, and W. Each principal wind is 90° from its two neighbours.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction"/>
+    /// <see href="https://en.wikipedia.org/wiki/Cardinal_direction"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
     public enum CardinalDirection
     {

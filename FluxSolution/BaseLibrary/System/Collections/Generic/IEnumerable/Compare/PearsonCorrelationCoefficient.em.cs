@@ -6,7 +6,7 @@ namespace Flux
 
     /// <summary>Pearson correlation coefficient (PCC) is a measure of linear correlation between two sets of data. It is the ratio between the covariance of two variables and the product of their standard deviations. Thus, it is essentially a normalized measurement of the covariance, such that the result always has a value between -1 and 1.</summary>
     /// <exception cref="System.ArgumentNullException"/>
-    /// <see cref="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"/>
+    /// <see href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"/>
     public static (TSelf correlation, TSelf covariance) PearsonCorrelationCoefficient<TValueX, TValueY, TSelf>(this System.Collections.Generic.IEnumerable<TValueX> setX, System.Func<TValueX, TSelf> valueSelectorX, System.Collections.Generic.IEnumerable<TValueY> setY, System.Func<TValueY, TSelf> valueSelectorY)
       where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IRootFunctions<TSelf>
     {
@@ -48,7 +48,7 @@ namespace Flux
 
     /// <summary>Pearson correlation coefficient (PCC) is a measure of linear correlation between two sets of data. It is the ratio between the covariance of two variables and the product of their standard deviations. Thus, it is essentially a normalized measurement of the covariance, such that the result always has a value between -1 and 1.</summary>
     /// <exception cref="System.ArgumentNullException"/>
-    /// <see cref="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"/>
+    /// <see href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"/>
     public static (double correlation, double covariance) PearsonCorrelationCoefficient<TValueX, TValueY>(this System.Collections.Generic.IEnumerable<TValueX> setX, System.Func<TValueX, double> valueSelectorX, System.Collections.Generic.IEnumerable<TValueY> setY, System.Func<TValueY, double> valueSelectorY)
     {
       var ex = setX.ThrowOnNullOrEmpty().GetEnumerator();

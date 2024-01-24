@@ -3,7 +3,7 @@ using System.Linq;
 namespace Flux.Checksum.Special
 {
   /// <summary>Luhn is a specific purpose checksum algorithm.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Luhn_algorithm"/>
+  /// <see href="https://en.wikipedia.org/wiki/Luhn_algorithm"/>
   public record struct Luhn
   {
     private readonly int[] m_sequence;

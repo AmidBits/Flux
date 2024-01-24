@@ -3,7 +3,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>Probability is a ratio, represented as a closed interval [0, 1], where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Probability"/>
+    /// <see href="https://en.wikipedia.org/wiki/Probability"/>
     public readonly record struct Probability
     : System.IComparable, System.IComparable<Probability>, System.IFormattable, IValueQuantifiable<double>
     {
@@ -39,7 +39,7 @@ namespace Flux
       public static Probability FromRandom(System.Random? rng = null) => new((rng ?? System.Random.Shared).Next() / (double)int.MaxValue);
 
       /// <summary>A logistic function or logistic curve is a common "S" shape (sigmoid curve).</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Logistic_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Logistic_function"/>
       /// <seealso cref="https://en.wikipedia.org/wiki/Sigmoid_function"/>
       /// <remarks>The standard logistic function is the logistic function with parameters (k = 1, x0 = 0, L = 1), a.k.a. sigmoid function.</remarks>
       /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity] (x).</param>
@@ -52,18 +52,18 @@ namespace Flux
       /// <param name="Xn">The ratio of existing population to maximum possible population (Xn).</param>
       /// <param name="r">A value in the range [0, 4] (r).</param>
       /// <returns>The ratio of population to max possible population in the next generation (Xn + 1)</returns>
-      /// <see cref="https://en.wikipedia.org/wiki/Logistic_map"/>
+      /// <see href="https://en.wikipedia.org/wiki/Logistic_map"/>
       /// <seealso cref="RickerModel(double, double, double)"/>
       public static double LogisticMap(double Xn, double r) => r * Xn * (1 - Xn);
 
       /// <summary>The logit function, which is the inverse of expit (or the logistic function), is the logarithm of the odds (p / (1 - p)) where p is the probability. Creates a map of probability values from [0, 1] to [-infinity, +infinity].</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Logit"/>
+      /// <see href="https://en.wikipedia.org/wiki/Logit"/>
       /// <param name="probability">The probability in the range [0, 1].</param>
       /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
       public static double Logit(double probability) => System.Math.Log(OddsRatio(probability));
 
       /// <summary>Computes the odds (p / (1 - p)) of a probability p.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Logit"/>
+      /// <see href="https://en.wikipedia.org/wiki/Logit"/>
       /// <param name="probability">The probability in the range [0, 1].</param>
       /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
       public static double OddsRatio(double probability) => probability / (1 - probability);
@@ -87,7 +87,7 @@ namespace Flux
       public static Probability OfDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount) => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_value);
 
       /// <summary>Computes the odds (p / (1 - p)) ratio of the probability.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Odds"/>
+      /// <see href="https://en.wikipedia.org/wiki/Odds"/>
       public Ratio ToOdds() => new(m_value, 1 - m_value);
 
       #endregion Static methods

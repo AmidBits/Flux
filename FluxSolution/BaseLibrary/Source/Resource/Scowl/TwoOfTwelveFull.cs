@@ -1,7 +1,7 @@
 namespace Flux.Resources.Scowl
 {
   /// <summary>The records from 2Of12Full word list.</summary>
-  /// <see cref="https://github.com/en-wl/wordlist"/>
+  /// <see href="https://github.com/en-wl/wordlist"/>
   // Download URL: https://github.com/en-wl/wordlist/raw/master/alt12dicts/2of12full.txt
   /// <seealso cref="http://wordlist.aspell.net/"/>
   /// <seealso cref="https://github.com/en-wl/wordlist/blob/master/"/>

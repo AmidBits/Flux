@@ -26,7 +26,7 @@ namespace Flux
     }
 
     /// <summary>Speed (a.k.a. velocity) unit of meters per second.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Speed"/>
+    /// <see href="https://en.wikipedia.org/wiki/Speed"/>
     public readonly record struct LinearVelocity
       : System.IComparable, System.IComparable<LinearVelocity>, System.IFormattable, IUnitValueQuantifiable<double, LinearVelocityUnit>
     {
@@ -52,7 +52,7 @@ namespace Flux
 
       #region Static methods
       /// <summary>Create a new Speed instance representing phase velocity from the specified frequency and wavelength.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Phase_velocity"/>
+      /// <see href="https://en.wikipedia.org/wiki/Phase_velocity"/>
       /// <param name="frequency"></param>
       /// <param name="wavelength"></param>
       public static LinearVelocity ComputePhaseVelocity(Frequency frequency, Length wavelength)

@@ -27,7 +27,7 @@ namespace Flux
     }
 
     /// <summary>Energy unit of Joule.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Energy"/>
+    /// <see href="https://en.wikipedia.org/wiki/Energy"/>
     public readonly record struct Energy
       : System.IComparable, System.IComparable<Energy>, IUnitValueQuantifiable<double, EnergyUnit>
     {

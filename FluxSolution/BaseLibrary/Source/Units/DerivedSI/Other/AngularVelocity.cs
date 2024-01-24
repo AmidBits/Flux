@@ -18,7 +18,7 @@ namespace Flux
     }
 
     /// <summary>Angular velocity, unit of radians per second. This is an SI derived quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Angular_velocity"/>
+    /// <see href="https://en.wikipedia.org/wiki/Angular_velocity"/>
     public readonly record struct AngularVelocity
       : System.IComparable, System.IComparable<AngularVelocity>, System.IFormattable, IUnitValueQuantifiable<double, AngularVelocityUnit>
     {
@@ -37,11 +37,11 @@ namespace Flux
         => new(m_value / System.Math.Tau);
 
       #region Static methods
-      /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
+      /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
       public static double ConvertAngularVelocityToRotationalSpeed(double radPerSecond)
         => radPerSecond / System.Math.Tau;
 
-      /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
+      /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
       public static double ConvertRotationalSpeedToAngularVelocity(double revolutionPerMinute)
         => revolutionPerMinute / 60;
 

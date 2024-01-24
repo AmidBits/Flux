@@ -11,7 +11,7 @@ namespace Flux
 #if NET7_0_OR_GREATER
 
   /// <summary>Convert a number into a positional notation text string.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
+  /// <see href="https://en.wikipedia.org/wiki/Positional_notation"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/List_of_numeral_systems#Standard_positional_numeral_systems"/>
   /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
   public static partial class PositionalNotation
@@ -268,7 +268,7 @@ namespace Flux
 
 
     /// <summary>Convert a number into a positional notation text string.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Positional_notation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Positional_notation"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/List_of_numeral_systems#Standard_positional_numeral_systems"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
     public readonly ref struct PositionalNotation

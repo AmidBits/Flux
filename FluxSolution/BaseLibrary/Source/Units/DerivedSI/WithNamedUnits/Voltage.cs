@@ -21,7 +21,7 @@ namespace Flux
     }
 
     /// <summary>Voltage unit of volt.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Voltage"/>
+    /// <see href="https://en.wikipedia.org/wiki/Voltage"/>
     public readonly record struct Voltage
       : System.IComparable, System.IComparable<Voltage>, IUnitValueQuantifiable<double, VoltageUnit>
     {

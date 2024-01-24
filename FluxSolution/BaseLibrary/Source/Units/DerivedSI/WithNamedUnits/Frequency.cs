@@ -27,7 +27,7 @@ namespace Flux
     }
 
     /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Frequency"/>
+    /// <see href="https://en.wikipedia.org/wiki/Frequency"/>
     public readonly record struct Frequency
       : System.IComparable, System.IComparable<Frequency>, IUnitValueQuantifiable<double, FrequencyUnit>
     {
@@ -54,7 +54,7 @@ namespace Flux
         };
 
       /// <summary>Returns the angular velocity from the (rotational) frequency.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
+      /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
 
       public AngularVelocity ToAngularVelocity()
         => new(System.Math.Tau * m_hertz);
@@ -66,19 +66,19 @@ namespace Flux
 
       #region Static methods
       /// <remarks>Revolutions Per Minute (RPM) is officially a frequency and as such measured in Hertz (which is 'per second'). Conversion is a straight forward by a factor of 60 (i.e. seconds per minute)</remarks>
-      /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
+      /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
 
       public static double ConvertFrequencyToRpm(double frequency)
         => frequency * 60;
 
       /// <remarks>Revolutions Per Minute (RPM) is officially a frequency and as such measured in Hertz (which is 'per second'). Conversion is a straight forward by a factor of 60 (i.e. seconds per minute)</remarks>
-      /// <see cref="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
+      /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
 
       public static double ConvertRpmToFrequency(double revolutionPerMinute)
         => revolutionPerMinute / 60;
 
       /// <summary>Computes the normalized frequency (a.k.a. cycles/sample) of the specified frequency and sample rate. The normalized frequency represents a fractional part of the cycle, per sample.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
+      /// <see href="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
       public static double NormalizedFrequency(double frequency, double sampleRate)
         => frequency / sampleRate;
 

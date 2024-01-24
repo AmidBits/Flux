@@ -21,7 +21,7 @@ namespace Flux
     }
 
     /// <summary>Electric charge unit of Coulomb.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Electric_charge"/>
+    /// <see href="https://en.wikipedia.org/wiki/Electric_charge"/>
     public readonly record struct ElectricCharge
       : System.IComparable, System.IComparable<ElectricCharge>, IUnitValueQuantifiable<double, ElectricChargeUnit>
     {

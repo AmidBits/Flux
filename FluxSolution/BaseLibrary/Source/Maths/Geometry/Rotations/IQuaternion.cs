@@ -182,7 +182,7 @@
 //  #endregion ExtensionMethods
 
 //  /// <summary>The polar coordinate system is a two-dimensional coordinate system in which each point on a plane is determined by a distance from a reference point and an angle from a reference direction.</summary>
-//  /// <see cref="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
+//  /// <see href="https://en.wikipedia.org/wiki/Polar_coordinate_system"/>
 //  namespace Geometry
 //  {
 //    public interface IQuaternion

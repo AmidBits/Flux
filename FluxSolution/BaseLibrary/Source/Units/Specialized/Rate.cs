@@ -3,7 +3,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>A rate is the ratio between two related quantities that are measured with different units.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Rate_(mathematics)"/>
+    /// <see href="https://en.wikipedia.org/wiki/Rate_(mathematics)"/>
     public readonly record struct Rate<TNumerator, TDenominator>
       where TNumerator : IValueQuantifiable<double>
       where TDenominator : IValueQuantifiable<double>

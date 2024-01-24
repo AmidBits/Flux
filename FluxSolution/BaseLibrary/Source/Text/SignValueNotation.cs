@@ -1,9 +1,9 @@
 //namespace Flux.Text
 //{
-//  /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
+//  /// <see href="https://en.wikipedia.org/wiki/Sign-value_notation"/>
 //  public sealed class SignValueNotation
 //  {
-//    /// <see cref="https://en.wikipedia.org/wiki/Egyptian_numerals"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Egyptian_numerals"/>
 //    public static readonly SignValueNotation AncientEgyptianNumeralSystemUnicode = new(new System.Collections.Generic.Dictionary<string, int>()
 //    {
 //      { "\U00013060", 1000000 },
@@ -15,7 +15,7 @@
 //      { "\U000133FA", 1 }
 //    });
 
-//    /// <see cref="https://en.wikipedia.org/wiki/Roman_numerals"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Roman_numerals"/>
 //    public static readonly SignValueNotation RomanNumeralSystem = new(new System.Collections.Generic.Dictionary<string, int>() {
 //      { "M", 1000 },
 //      { "CM", 900 },
@@ -61,7 +61,7 @@
 
 //    /// <summary>Convert a number into a sign-value notaion string.</summary>
 //    /// <remarks>The dictionary has to be ordered descending by value, and like its keys already are, the values must also be unique.</remarks>
-//    /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Sign-value_notation"/>
 //    /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
 
 //    public System.Text.StringBuilder NumberToText(System.Numerics.BigInteger number)
@@ -83,7 +83,7 @@
 
 //    /// <summary>Convert a sign-value notaion string into a number.</summary>
 //    /// <remarks>The dictionary has to be ordered descending by value, and like its keys already are, the values must also be unique.</remarks>
-//    /// <see cref="https://en.wikipedia.org/wiki/Sign-value_notation"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Sign-value_notation"/>
 //    /// <seealso cref="https://en.wikipedia.org/wiki/Numeral_system"/>
 
 //    public System.Numerics.BigInteger TextToNumber(System.ReadOnlySpan<char> number)

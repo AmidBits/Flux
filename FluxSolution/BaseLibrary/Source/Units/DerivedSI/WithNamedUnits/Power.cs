@@ -23,7 +23,7 @@ namespace Flux
     }
 
     /// <summary>Power unit of watt.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Power"/>
+    /// <see href="https://en.wikipedia.org/wiki/Power"/>
     public readonly record struct Power
       : System.IComparable, System.IComparable<Power>, System.IEquatable<Power>, System.IFormattable, IUnitValueQuantifiable<double, PowerUnit>
     {

@@ -20,7 +20,7 @@ namespace Flux
     }
 
     /// <summary>Volumetric flow, unit of cubic meters per second, is the rate of change of volume with respect to time.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Flow"/>
+    /// <see href="https://en.wikipedia.org/wiki/Flow"/>
     public readonly record struct Flow
       : System.IComparable, System.IComparable<Flow>, System.IFormattable, IUnitValueQuantifiable<double, FlowUnit>
     {

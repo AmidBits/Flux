@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Azimuth, a.k.a. bearing, unit of degree. The internal unit here is defined in the range [0, +360). Values are always wrapped within that range.</summary>
     /// <remarks>It may seem unreasonable to perform arithmetic with what could be perceived as a compass quantity, but this really is just another angle quantity hardcoded to degrees and a range of [0, +360).</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Azimuth"/>
+    /// <see href="https://en.wikipedia.org/wiki/Azimuth"/>
     public readonly record struct Azimuth
     : System.IComparable<Azimuth>, IValueQuantifiable<double>
     {

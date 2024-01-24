@@ -7,7 +7,7 @@ namespace Flux.Dsp.Synthesis
     public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The frequency modulator (FM) for the oscillator.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Frequency_modulation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Frequency_modulation"/>
     public IOscillator? FrequencyModulator { get; set; }
 
     public double NormalizedFrequency { get; set; }
@@ -20,7 +20,7 @@ namespace Flux.Dsp.Synthesis
     public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The pulse modulator (PM) for the oscillator.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Phase_modulation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Phase_modulation"/>
     public Oscillator? PhaseModulator { get; set; }
 
     private double m_position;

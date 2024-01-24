@@ -47,7 +47,7 @@ namespace Flux
     }
 
     /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Length"/>
+    /// <see href="https://en.wikipedia.org/wiki/Length"/>
     public readonly record struct Length
       : System.IComparable, System.IComparable<Length>, System.IFormattable, IUnitValueQuantifiable<double, LengthUnit>
     {
@@ -121,7 +121,7 @@ namespace Flux
       /// <param name="phaseVelocity">The constant speed of the traveling wave. If these are sound waves then typically this is the speed of sound. If electromagnetic radiation (e.g. light) in free space then speed of light.</param>
       /// <param name="frequency"></param>
       /// <returns>The wavelength of the frequency cycle at the phase velocity.</returns>
-      /// <see cref="https://en.wikipedia.org/wiki/Wavelength"/>
+      /// <see href="https://en.wikipedia.org/wiki/Wavelength"/>
       public static Length Wavelength(LinearVelocity phaseVelocity, Frequency frequency)
         => new(phaseVelocity.Value / frequency.Value);
 

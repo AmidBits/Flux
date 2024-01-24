@@ -63,7 +63,7 @@ namespace Flux
   {
     /// <summary>Axis-angle 3D rotation.</summary>
     /// <remarks>All angles in radians.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Axis-angle_representation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Axis-angle_representation"/>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct AxisAngle
     {

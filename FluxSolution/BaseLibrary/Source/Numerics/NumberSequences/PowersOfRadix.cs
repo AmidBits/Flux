@@ -18,7 +18,7 @@ namespace Flux
 //namespace Flux.NumberSequences
 //{
 //  /// <summary>Creates a new sequence with powers-of-radix values.</summary>
-//  /// <see cref="https://en.wikipedia.org/wiki/PowersOfRadix"/>
+//  /// <see href="https://en.wikipedia.org/wiki/PowersOfRadix"/>
 //  public record class PowersOfRadix
 //    : INumericSequence<System.Numerics.BigInteger>
 //  {

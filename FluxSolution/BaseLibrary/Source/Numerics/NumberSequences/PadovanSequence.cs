@@ -4,7 +4,7 @@ namespace Flux
   public static partial class NumberSequence
   {
     /// <summary>Creates a new sequence with padovan numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Padovan_sequence"/>
+    /// <see href="https://en.wikipedia.org/wiki/Padovan_sequence"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
     public static System.Collections.Generic.IEnumerable<TSelf> GetPadovanSequence<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -34,7 +34,7 @@ namespace Flux
 //namespace Flux.NumberSequences
 //{
 //  /// <summary>Creates a new sequence with padovan numbers.</summary>
-//  /// <see cref="https://en.wikipedia.org/wiki/Padovan_sequence"/>
+//  /// <see href="https://en.wikipedia.org/wiki/Padovan_sequence"/>
 //  /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //  public sealed class PadovanSequence
 //    : INumericSequence<System.Numerics.BigInteger>
@@ -42,7 +42,7 @@ namespace Flux
 //    #region Static methods
 
 //    /// <summary>Creates a new sequence with padovan numbers.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Padovan_sequence"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Padovan_sequence"/>
 //    /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetPadovanSequence<TSelf>()
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>

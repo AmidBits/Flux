@@ -4,7 +4,7 @@ namespace Flux
   public static partial class NumberSequence
   {
     /// <summary>Yields a Bell number of the specified value.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Bell_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
     public static System.Collections.Generic.IEnumerable<TSelf> GetBellNumbers<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -24,7 +24,7 @@ namespace Flux
     }
 
     /// <summary>Creates a new sequence with each element being an array (i.e. row) of Bell numbers in a Bell triangle.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Bell_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
     public static System.Collections.Generic.IEnumerable<TSelf[]> GetBellTriangle<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -44,7 +44,7 @@ namespace Flux
     }
 
     /// <summary>Creates a new sequence with each element being an array (i.e. row) of Bell numbers in an augmented Bell triangle.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Bell_number"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
     public static System.Collections.Generic.IEnumerable<TSelf[]> GetBellTriangleAugmented<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -75,7 +75,7 @@ namespace Flux
 //    #region Static methods
 
 //    /// <summary>Yields a Bell number of the specified value.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Bell_number"/>
 //    /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetBellNumbers<TSelf>()
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -95,7 +95,7 @@ namespace Flux
 //    }
 
 //    /// <summary>Creates a new sequence with each element being an array (i.e. row) of Bell numbers in a Bell triangle.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Bell_number"/>
 //    /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
 //    public static System.Collections.Generic.IEnumerable<TSelf[]> GetBellTriangle<TSelf>()
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -115,7 +115,7 @@ namespace Flux
 //    }
 
 //    /// <summary>Creates a new sequence with each element being an array (i.e. row) of Bell numbers in an augmented Bell triangle.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Bell_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Bell_number"/>
 //    /// <seealso cref="https://en.wikipedia.org/wiki/Bell_triangle"/>
 //    public static System.Collections.Generic.IEnumerable<TSelf[]> GetBellTriangleAugmented<TSelf>()
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>

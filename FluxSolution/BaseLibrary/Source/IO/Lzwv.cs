@@ -178,8 +178,8 @@
 //    /// <summary>
 //    /// 
 //    /// </summary>
-//    /// <see cref="https://marknelson.us/posts/1989/10/01/lzw-data-compression.html"/>
-//    /// <see cref="https://marknelson.us/posts/2011/11/08/lzw-revisited.html"/>
+//    /// <see href="https://marknelson.us/posts/1989/10/01/lzw-data-compression.html"/>
+//    /// <see href="https://marknelson.us/posts/2011/11/08/lzw-revisited.html"/>
 //    public void Compress(System.IO.Stream reader, System.IO.Stream writer, int max_code = 32767)
 //    {
 //      var codes = new System.Collections.Generic.Dictionary<string, uint>();

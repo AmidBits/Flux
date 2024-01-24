@@ -20,7 +20,7 @@ namespace Flux
     }
 
     /// <summary>Density unit of kilograms per cubic meter.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Density"/>
+    /// <see href="https://en.wikipedia.org/wiki/Density"/>
     public readonly record struct Density
       : System.IComparable, System.IComparable<Density>, System.IFormattable, IUnitValueQuantifiable<double, DensityUnit>
     {

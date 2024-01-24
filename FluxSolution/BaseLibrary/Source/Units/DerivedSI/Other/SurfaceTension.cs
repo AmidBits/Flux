@@ -20,7 +20,7 @@ namespace Flux
     }
 
     /// <summary>Surface tension, unit of Newton per meter.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Surface_tension"/>
+    /// <see href="https://en.wikipedia.org/wiki/Surface_tension"/>
     public readonly record struct SurfaceTension
       : System.IComparable, System.IComparable<SurfaceTension>, System.IFormattable, IUnitValueQuantifiable<double, SurfaceTensionUnit>
     {

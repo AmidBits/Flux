@@ -3,7 +3,7 @@ namespace Flux
   namespace Text.PhoneticAlgorithm
   {
     /// <summary>Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Soundex"/>
+    /// <see href="https://en.wikipedia.org/wiki/Soundex"/>
     /// <seealso cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/>
     public sealed class AmericanSoundex
       : IPhoneticAlgorithmEncoder

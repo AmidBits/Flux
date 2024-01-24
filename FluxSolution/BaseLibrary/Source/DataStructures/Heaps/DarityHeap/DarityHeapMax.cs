@@ -1,7 +1,7 @@
 namespace Flux.DataStructures
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
+  /// <see href="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
   public sealed class DarityHeapMax<T>
     : IHeap<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
     where T : System.IComparable<T>

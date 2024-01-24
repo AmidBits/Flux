@@ -22,7 +22,7 @@ namespace Flux
     }
 
     /// <summary>Absolute humidity unit of grams per cubic meter.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
+    /// <see href="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/>
     public readonly record struct AbsoluteHumidity
       : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IFormattable, IUnitValueQuantifiable<double, AbsoluteHumidityUnit>
     {

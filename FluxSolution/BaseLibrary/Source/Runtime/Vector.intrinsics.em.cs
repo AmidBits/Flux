@@ -95,21 +95,21 @@ namespace Flux
       : Vector256.Create(System.Math.Ceiling(source.GetElement(0)), System.Math.Ceiling(source.GetElement(1)), System.Math.Ceiling(source.GetElement(2)), System.Math.Ceiling(source.GetElement(3)));
 
     /// <summary>Returns a new vector with the Chebyshev distance (using the specified edgeLength) between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static Vector128<double> ChebyshevDistance(this Vector128<double> source, Vector128<double> target, double edgeLength = 1)
       => ChebyshevLength(target.Subtract(source), edgeLength);
     /// <summary>Returns a new vector with the Chebyshev distance (using the specified edgeLength) between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static Vector256<double> ChebyshevDistance(this Vector256<double> source, Vector256<double> target, double edgeLength = 1)
       => ChebyshevLength(target.Subtract(source), edgeLength);
     //=> target.m_v256.Subtract(source.m_v256).Abs().Divide(stepSize).Max3D().GetElement(0) / stepSize;
 
     /// <summary>Returns a new vector with the Chebyshev length (using the specified edgeLength) of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static Vector128<double> ChebyshevLength(this Vector128<double> source, double edgeLength = 1)
       => MaxHorizontal(Divide(Abs(source), Vector128.Create(edgeLength)));
     /// <summary>Returns a new vector with the Chebyshev length (using the specified edgeLength) of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static Vector256<double> ChebyshevLength(this Vector256<double> source, double edgeLength = 1)
       => MaxHorizontal(Divide(Abs(source), Vector256.Create(edgeLength)));
     //=> target.m_v256.Subtract(source.m_v256).Abs().Divide(stepSize).Max3D().GetElement(0) / stepSize;
@@ -276,20 +276,20 @@ namespace Flux
       => Add(source, Multiply(Subtract(target, source), Vector256.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
 
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static Vector128<double> ManhattanDistance(this Vector128<double> source, Vector128<double> target, double edgeLength = 1)
       => ManhattanLength(target.Subtract(source), edgeLength);
     /// <summary>Compute the Manhattan distance between the vectors.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static Vector256<double> ManhattanDistance(this Vector256<double> source, Vector256<double> target, double edgeLength = 1)
       => ManhattanLength(target.Subtract(source), edgeLength);
 
     /// <summary>Compute the Manhattan length of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static Vector128<double> ManhattanLength(this Vector128<double> source, double edgeLength = 1)
       => AddHorizontal(Divide(Abs(source), Vector128.Create(edgeLength)));
     /// <summary>Compute the Manhattan length of the vector.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static Vector256<double> ManhattanLength(this Vector256<double> source, double edgeLength = 1)
       => AddHorizontal(Divide(Abs(source), Vector256.Create(edgeLength)));
 
@@ -364,23 +364,23 @@ namespace Flux
 
     /// <summary></summary>
     /// <param name="order"></param>
-    /// <see cref="https://en.wikipedia.org/wiki/Minkowski_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Minkowski_distance"/>
     public static Vector128<double> MinkowskiDistance(this Vector128<double> source, Vector128<double> target, int order)
       => MinkowskiLength(source.Subtract(target), order);
     /// <summary></summary>
     /// <param name="order"></param>
-    /// <see cref="https://en.wikipedia.org/wiki/Minkowski_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Minkowski_distance"/>
     public static Vector256<double> MinkowskiDistance(this Vector256<double> source, Vector256<double> target, int order)
       => MinkowskiLength(source.Subtract(target), order);
 
     /// <summary></summary>
     /// <param name="order"></param>
-    /// <see cref="https://en.wikipedia.org/wiki/Minkowski_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Minkowski_distance"/>
     public static Vector128<double> MinkowskiLength(this Vector128<double> source, int order)
       => Vector128.Create(System.Math.Pow(source.Abs().Pow(order).AddHorizontal().GetElement(0), 1d / order));
     /// <summary></summary>
     /// <param name="order"></param>
-    /// <see cref="https://en.wikipedia.org/wiki/Minkowski_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Minkowski_distance"/>
     public static Vector256<double> MinkowskiLength(this Vector256<double> source, int order)
       => Vector256.Create(System.Math.Pow(source.Abs().Pow(order).AddHorizontal().GetElement(0), 1d / order));
 
@@ -596,7 +596,7 @@ namespace Flux
       : Vector256.Create(System.Math.Round(source.GetElement(0), System.MidpointRounding.ToZero), System.Math.Round(source.GetElement(1), System.MidpointRounding.ToZero), System.Math.Round(source.GetElement(2), System.MidpointRounding.ToZero), System.Math.Round(source.GetElement(3), System.MidpointRounding.ToZero));
 
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
+    /// <see href="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
     public static Vector256<double> ScalarTripleProduct(this Vector256<double> source, Vector256<double> second, Vector256<double> third)
       => Dot(source, Cross(second, third));
 
@@ -731,7 +731,7 @@ namespace Flux
       : Vector256.Create(System.Math.Truncate(source.GetElement(0)), System.Math.Truncate(source.GetElement(1)), System.Math.Truncate(source.GetElement(2)), System.Math.Truncate(source.GetElement(3)));
 
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
+    /// <see href="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
     public static Vector256<double> VectorTripleProduct(this Vector256<double> source, Vector256<double> second, Vector256<double> third)
       => Cross(source, Cross(second, third));
 
@@ -755,7 +755,7 @@ namespace Flux
 //  //}
 
 //  /// <summary></summary>
-//  /// <see cref="https://github.com/john-h-k/MathSharp/tree/master/sources/MathSharp/Vector/VectorFloatingPoint/VectorDouble"/>
+//  /// <see href="https://github.com/john-h-k/MathSharp/tree/master/sources/MathSharp/Vector/VectorFloatingPoint/VectorDouble"/>
 //  public struct FourD
 //    : System.IEquatable<FourD>
 //  {
@@ -1038,7 +1038,7 @@ namespace Flux
 //      ? System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(lower).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(upper))
 //      : Vector256.Create(System.Math.Round(v.GetElement(0)), System.Math.Round(v.GetElement(1)), System.Math.Round(v.GetElement(2)), System.Math.Round(v.GetElement(3)));
 //    /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
 //    public static Vector256<double> ScalarTripleProduct3D(in Vector256<double> a, in Vector256<double> b, in Vector256<double> c)
 //      => DotProduct3D(a, CrossProduct3D(b, c));
 //    public static Vector256<double> Sign(in Vector256<double> v)
@@ -1113,7 +1113,7 @@ namespace Flux
 //      ? System.Runtime.Intrinsics.X86.Sse41.RoundToZero(lower).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToZero(upper))
 //      : Vector256.Create(System.Math.Truncate(v.GetElement(0)), System.Math.Truncate(v.GetElement(1)), System.Math.Truncate(v.GetElement(2)), System.Math.Truncate(v.GetElement(3)));
 //    /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
 //    public static Vector256<double> VectorTripleProduct3D(in Vector256<double> a, in Vector256<double> b, in Vector256<double> c)
 //      => CrossProduct3D(a, CrossProduct3D(b, c));
 //    public static Vector256<double> WithinBounds(in Vector256<double> v, in Vector256<double> bound)

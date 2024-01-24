@@ -1,6 +1,6 @@
 ﻿namespace Flux.Net
 {
-  /// <see cref="https://en.wikipedia.org/wiki/Network_Time_Protocol"/>
+  /// <see href="https://en.wikipedia.org/wiki/Network_Time_Protocol"/>
   public enum NtpLeapIndicator
   {
     NoWarning = 0b00,

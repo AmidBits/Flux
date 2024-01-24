@@ -2,7 +2,7 @@
 namespace Flux.Globalization.EnUs
 {
   /// <summary>A DEA number (DEA Registration Number) is an identifier assigned to a health care provider (such as a physician, optometrist, dentist, or veterinarian) by the United States Drug Enforcement Administration allowing them to write prescriptions for controlled substances.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/DEA_number"/>
+  /// <see href="https://en.wikipedia.org/wiki/DEA_number"/>
   public partial record struct DeaRegistrationNumber
   {
 #if NET7_0_OR_GREATER
@@ -13,7 +13,7 @@ namespace Flux.Globalization.EnUs
 #endif
 
     ///// <summary>A DEA number (DEA Registration Number) is an identifier assigned to a health care provider (such as a physician, optometrist, dentist, or veterinarian) by the United States Drug Enforcement Administration allowing them to write prescriptions for controlled substances.</summary>
-    ///// <see cref="https://en.wikipedia.org/wiki/DEA_number"/>
+    ///// <see href="https://en.wikipedia.org/wiki/DEA_number"/>
     //public const string Regex = @"(?<RegistrantType>[ABCDEFGHJKLMPRSTUX])(?<RegistrantLastNameOr9>[A-Z9])(?<Digits>[0-9]{6})(?<Checksum>[0-9])(\-(?<AffixedID>.+))?";
 
     public string RegistrantType { get; private set; }

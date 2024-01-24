@@ -19,7 +19,7 @@ namespace Flux
     }
 
     /// <summary>Catalytic activity unit of Katal.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Catalysis"/>
+    /// <see href="https://en.wikipedia.org/wiki/Catalysis"/>
     public readonly record struct CatalyticActivity
       : System.IComparable, System.IComparable<CatalyticActivity>, IUnitValueQuantifiable<double, CatalyticActivityUnit>
     {

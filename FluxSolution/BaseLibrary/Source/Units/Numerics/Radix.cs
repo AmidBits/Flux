@@ -100,7 +100,7 @@ namespace Flux
       }
 
       /// <summary>Returns the sum of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Digit_sum"/>
+      /// <see href="https://en.wikipedia.org/wiki/Digit_sum"/>
       public static TSelf DigitSum<TSelf>(TSelf value, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
@@ -411,7 +411,7 @@ namespace Flux
       }
 
       /// <summary>Returns whether <paramref name="number"/> using base <paramref name="radix"/> is a self number. A self number, Colombian number or Devlali number, in a given number base (radix) is a natural number that cannot be written as the sum of any other natural number n and the individual digits of n.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Self_number"/>
+      /// <see href="https://en.wikipedia.org/wiki/Self_number"/>
       public static bool IsSelfNumber<TSelf>(TSelf number, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
       {
@@ -495,7 +495,7 @@ namespace Flux
       #endregion Implemented interfaces
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
+      /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
       public override string ToString() => ToValueString(null, false, false);
     }
   }

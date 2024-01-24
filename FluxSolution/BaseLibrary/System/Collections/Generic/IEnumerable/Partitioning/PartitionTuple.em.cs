@@ -123,7 +123,7 @@ namespace Flux
     }
 
     ///// <summary>Create a new sequence of 4-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the third element.</summary>
-    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    ///// <see href="https://en.wikipedia.org/wiki/Tuple"/>
     //public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple4<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, TSource, int, TResult> resultSelector)
     //{
     //  if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -163,7 +163,7 @@ namespace Flux
     //}
 
     ///// <summary>Create a new sequence of 5-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the fourth element.</summary>
-    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    ///// <see href="https://en.wikipedia.org/wiki/Tuple"/>
     //public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple5<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, TSource, TSource, int, TResult> resultSelector)
     //{
     //  if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -207,7 +207,7 @@ namespace Flux
     //}
 
     ///// <summary>Create a new sequence of 5-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around up to the fourth element.</summary>
-    ///// <see cref="https://en.wikipedia.org/wiki/Tuple"/>
+    ///// <see href="https://en.wikipedia.org/wiki/Tuple"/>
     //public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple6<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int wrap, System.Func<TSource, TSource, TSource, TSource, TSource, TSource, int, TResult> resultSelector)
     //{
     //  if (source is null) throw new System.ArgumentNullException(nameof(source));

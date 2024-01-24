@@ -1,6 +1,6 @@
 ﻿namespace Flux.Dsp.WaveGenerator
 {
-  /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Square_wave"/>
+  /// <see href="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Square_wave"/>
   public record class SquareWave
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {

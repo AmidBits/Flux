@@ -18,7 +18,7 @@ namespace Flux
     }
 
     /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Angular_acceleration"/>
+    /// <see href="https://en.wikipedia.org/wiki/Angular_acceleration"/>
     public readonly record struct AngularAcceleration
       : System.IComparable, System.IComparable<AngularAcceleration>, System.IFormattable, IUnitValueQuantifiable<double, AngularAccelerationUnit>
     {

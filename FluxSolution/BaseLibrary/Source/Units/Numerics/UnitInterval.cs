@@ -3,7 +3,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>Unit interval, unit of rational number between 0 and 1, constrained by the <see cref="IntervalNotation"/>.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Unit_interval"/>
+    /// <see href="https://en.wikipedia.org/wiki/Unit_interval"/>
     public readonly record struct UnitInterval
     : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, IValueQuantifiable<double>
     {

@@ -110,7 +110,7 @@
 #endif
 
     /// <summary>Nysiis is similar in nature to the SOUNDEX phonetic encoder, but does of course produce different results. New York State Identification and Intelligence System (NYSIIS) Phonetic Encoder.</summary>
-    /// <see cref="https://xlinux.nist.gov/dads/HTML/nysiis.html"/>
+    /// <see href="https://xlinux.nist.gov/dads/HTML/nysiis.html"/>
     /// <summary>Returns a NYSIIS phonetically coded string.</summary>
     public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> expression)
     {

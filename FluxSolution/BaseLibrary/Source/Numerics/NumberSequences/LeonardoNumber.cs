@@ -4,7 +4,7 @@ namespace Flux
   public static partial class NumberSequence
   {
     /// <summary>Creates a new sequence with Leonardo numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Leonardo_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Leonardo_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
     public static System.Collections.Generic.IEnumerable<TSelf> GetLeonardoNumbers<TSelf>(TSelf first, TSelf second, TSelf step)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -24,7 +24,7 @@ namespace Flux
 //namespace Flux.NumberSequences
 //{
 //  /// <summary>Creates a new sequence with Leonardo numbers.</summary>
-//  /// <see cref="https://en.wikipedia.org/wiki/Leonardo_number"/>
+//  /// <see href="https://en.wikipedia.org/wiki/Leonardo_number"/>
 //  /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //  public record class LeonardoNumber
 //    : INumericSequence<System.Numerics.BigInteger>
@@ -40,7 +40,7 @@ namespace Flux
 //    #region Static methods
 
 //    /// <summary>Creates a new sequence with Leonardo numbers.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Leonardo_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Leonardo_number"/>
 //    /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetLeonardoNumbers<TSelf>(TSelf first, TSelf second, TSelf step)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>

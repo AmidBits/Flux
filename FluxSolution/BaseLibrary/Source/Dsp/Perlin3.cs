@@ -1,7 +1,7 @@
 namespace Flux.Dsp
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Perlin_noise"/>
+  /// <see href="https://en.wikipedia.org/wiki/Perlin_noise"/>
   /// <see cref="http://rosettacode.org/wiki/Perlin_noise"/>
   public sealed class Perlin3
   {

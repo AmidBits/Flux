@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.), if the predicate is satisfied.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
+    /// <see href="https://en.wikipedia.org/wiki/Ordinal_indicator"/>
     /// <param name="predicate">The first string is the string up until and including the numeric value, and the second string is the suffix to be affixed.</param>
     public static System.Text.StringBuilder InsertOrdinalIndicatorSuffix(this System.Text.StringBuilder source, System.Func<string, string, bool>? predicate = null)
     {

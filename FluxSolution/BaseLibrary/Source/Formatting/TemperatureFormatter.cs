@@ -1,7 +1,7 @@
 namespace Flux.Formatting
 {
   /// <summary>Use of degrees-minutes-seconds is also called DMS notation.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/>
+  /// <see href="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/>
   /// <example>
   /// var value = "40 11 15 ";
   /// Flux.IFormatProvider.DmsFormatter.TryParse(value, out var result);

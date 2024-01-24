@@ -1,7 +1,7 @@
 namespace Flux.Hashing.Special
 {
   /// <summary>The LM hash algorithm.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/LAN_Manager#LM_hash_details"/>
+  /// <see href="https://en.wikipedia.org/wiki/LAN_Manager#LM_hash_details"/>
   /// <remarks>
   /// reg save HKLM\SAM C:\sam
   /// reg save HKLM\SYSTEM C:\system

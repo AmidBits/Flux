@@ -10,7 +10,7 @@ namespace Flux
   {
     /// <summary>Julian Day Number unit of days.</summary>
     /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
+    /// <see href="https://en.wikipedia.org/wiki/Julian_day"/>
     public readonly record struct JulianDayNumber
       : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, System.IFormattable, IValueQuantifiable<int>
     {

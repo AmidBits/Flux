@@ -4,7 +4,7 @@ namespace Flux
   public static partial class NumberSequence
   {
     /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
+    /// <see href="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
     public static System.Collections.Generic.IEnumerable<TSelf> GetVanEckSequence<TSelf>(TSelf startWith)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -42,7 +42,7 @@ namespace Flux
 //namespace Flux.NumberSequences
 //{
 //  /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-//  /// <see cref="https://wiki.formulae.org/Van_Eck_sequence"/>
+//  /// <see href="https://wiki.formulae.org/Van_Eck_sequence"/>
 //  /// <seealso cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
 //  /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //  public record class VanEckSequence
@@ -56,7 +56,7 @@ namespace Flux
 //    #region Static methods
 
 //    /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
 //    /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetVanEckSequence<TSelf>(TSelf startWith)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>

@@ -28,7 +28,7 @@ namespace Flux
     }
 
     /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Pressure"/>
+    /// <see href="https://en.wikipedia.org/wiki/Pressure"/>
     public readonly record struct Pressure
       : System.IComparable, System.IComparable<Pressure>, System.IFormattable, IUnitValueQuantifiable<double, PressureUnit>
     {

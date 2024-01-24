@@ -1,7 +1,7 @@
 namespace Flux.Resources.Ucd
 {
   /// <summary>The Unicode character database.</summary>
-  /// <see cref="https://www.unicode.org/"/>
+  /// <see href="https://www.unicode.org/"/>
   /// <seealso href="https://www.unicode.org/Public/UCD/latest/ucd"/>
   /// <seealso href="https://unicode.org/Public/"/>
   // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt
@@ -45,7 +45,7 @@ namespace Flux.Resources.Ucd
 //namespace Flux.Resources.Ucd
 //{
 //  /// <summary>The Unicode character database.</summary>
-//  /// <see cref="https://www.unicode.org/"/>
+//  /// <see href="https://www.unicode.org/"/>
 //  /// <seealso cref="https://www.unicode.org/Public/UCD/latest/ucd"/>
 //  /// <seealso cref="https://unicode.org/Public/"/>
 //  // Download URL: https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt

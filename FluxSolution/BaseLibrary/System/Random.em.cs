@@ -85,7 +85,7 @@ namespace Flux
     }
 
     /// <remarks>Apply inverse of the Cauchy distribution function to a random sample.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Cauchy_distribution"/>
+    /// <see href="https://en.wikipedia.org/wiki/Cauchy_distribution"/>
     public static double NextCauchy(this System.Random source, double mu, double scale)
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -219,7 +219,7 @@ namespace Flux
     }
 
     /// <summary>The Laplace distribution is also known as the double exponential distribution.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Laplace_distribution"/>
+    /// <see href="https://en.wikipedia.org/wiki/Laplace_distribution"/>
     public static double NextLaplace(this System.Random source, double mean, double scale)
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -306,7 +306,7 @@ namespace Flux
       return source.NextDouble() is var sample && sample > 0 && sample < 1 ? sample : double.Epsilon;
     }
 
-    /// <see cref="https://en.wikipedia.org/wiki/Weibull_distribution"/>
+    /// <see href="https://en.wikipedia.org/wiki/Weibull_distribution"/>
     public static double NextWeibull(this System.Random source, double shape, double scale)
     {
       System.ArgumentNullException.ThrowIfNull(source);

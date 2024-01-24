@@ -6,7 +6,7 @@ namespace Flux.Geometry
   /// <remarks>Abbreviated angles are in radians, and full names are in degrees.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct GeographicCoordinate
-    : System.IFormattable, IGeographicCoordinate
+    : /*System.IFormattable, */IGeographicCoordinate
   {
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
@@ -409,12 +409,13 @@ namespace Flux.Geometry
 
     #endregion Static members
 
-    #region Implemented interfaces
+    //#region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"{GetType().Name} {{ {Latitude}, {Longitude} ({Altitude.ToValueString("N0")}) }}";
+      => $"{GetType().Name} {{ {Latitude}, {Longitude} ({Altitude.ToValueString("N0")}) }}"
+      + $" <{m_altitude}, {m_lat}, {m_lon}>";
 
-    #endregion Implemented interfaces
+    //#endregion Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

@@ -59,7 +59,7 @@
 //      => System.Linq.ParallelEnumerable.Range(segmentStart, segmentCount).SelectMany(segment => GetSegment(segment));
 
 //    /// <summary></summary>
-//    /// <see cref="https://www.geeksforgeeks.org/segmented-sieve/"/>
+//    /// <see href="https://www.geeksforgeeks.org/segmented-sieve/"/>
 //    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPrimes(System.Numerics.BigInteger number, int segmentSize)
 //    {
 //      var primes = new SieveOfEratosthenes(segmentSize).ToList();
@@ -99,7 +99,7 @@
 //    }
 
 //    /// <summary></summary>
-//    /// <see cref="https://www.geeksforgeeks.org/segmented-sieve/"/>
+//    /// <see href="https://www.geeksforgeeks.org/segmented-sieve/"/>
 //    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetPrimesParallel(System.Numerics.BigInteger number, int segmentSize)
 //    {
 //      var primes = new SieveOfEratosthenes(segmentSize).Select(i => (System.Numerics.BigInteger)i).ToList();

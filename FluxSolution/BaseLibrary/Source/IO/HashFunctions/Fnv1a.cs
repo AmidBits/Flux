@@ -1,7 +1,7 @@
 namespace Flux.Hashing
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Fowler-Noll-Vo_hash_function"/>
+  /// <see href="https://en.wikipedia.org/wiki/Fowler-Noll-Vo_hash_function"/>
   public record struct Fnv1a
     : ISimpleHashGenerator32
   {

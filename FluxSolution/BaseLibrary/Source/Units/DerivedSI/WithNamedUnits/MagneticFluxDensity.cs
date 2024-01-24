@@ -23,7 +23,7 @@ namespace Flux
     }
 
     /// <summary>Magnetic flux density unit of tesla.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
+    /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
     public readonly record struct MagneticFluxDensity
       : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxDensityUnit>
     {

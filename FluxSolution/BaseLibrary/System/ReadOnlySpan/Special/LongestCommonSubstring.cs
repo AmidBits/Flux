@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
+    /// <see href="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
     /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
 
     private static int[,] GetLongestCommonSubstringMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)

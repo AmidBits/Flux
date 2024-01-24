@@ -19,7 +19,7 @@ namespace Flux
     }
 
     /// <summary>Dose equivalent, unit of sievert.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Equivalent_dose"/>
+    /// <see href="https://en.wikipedia.org/wiki/Equivalent_dose"/>
     public readonly record struct EquivalentDose
       : System.IComparable, System.IComparable<EquivalentDose>, IUnitValueQuantifiable<double, EquivalentDoseUnit>
     {

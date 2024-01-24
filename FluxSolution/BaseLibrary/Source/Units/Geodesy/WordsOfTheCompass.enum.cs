@@ -10,7 +10,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>The compass point directions.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
+    /// <see href="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
     public enum WordsOfTheCompassPoints
     {
       North,

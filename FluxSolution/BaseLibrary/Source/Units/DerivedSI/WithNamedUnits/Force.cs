@@ -21,7 +21,7 @@ namespace Flux
     }
 
     /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Force"/>
+    /// <see href="https://en.wikipedia.org/wiki/Force"/>
     public readonly record struct Force
       : System.IComparable, System.IComparable<Force>, IUnitValueQuantifiable<double, ForceUnit>
     {

@@ -19,7 +19,7 @@ namespace Flux
     }
 
     /// <summary>Activity, unit of becquerel.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Specific_activity"/>
+    /// <see href="https://en.wikipedia.org/wiki/Specific_activity"/>
     public readonly record struct Activity
       : System.IComparable, System.IComparable<Activity>, IUnitValueQuantifiable<double, ActivityUnit>
     {

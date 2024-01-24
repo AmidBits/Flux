@@ -1,7 +1,7 @@
 namespace Flux.Dsp.Synthesis
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Amplitude"/>
+  /// <see href="https://en.wikipedia.org/wiki/Amplitude"/>
   public record class Amplitude
   {
     private double m_amplitudeModulation;
@@ -9,7 +9,7 @@ namespace Flux.Dsp.Synthesis
     public double AmplitudeModulation { get => m_amplitudeModulation; set => m_amplitudeModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The amplitude modulator (AM) for the oscillator.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Amplitude_modulation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Amplitude_modulation"/>
     public IOscillator? AmplitudeModulator { get; set; }
 
     /// <summary>Indicates whether the sample polarity should be inverted.</summary>
@@ -24,7 +24,7 @@ namespace Flux.Dsp.Synthesis
     public double RingModulation { get => m_ringModulation; set => m_ringModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The ring modulator (RM) for the oscillator.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Ring_modulation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Ring_modulation"/>
     public IOscillator? RingModulator { get; set; }
 
     private readonly double m_maximumAmplitude;

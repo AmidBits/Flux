@@ -1,7 +1,7 @@
 namespace Flux.Random
 {
   /// <remarks>In earlier .net implementations, only Sample() was required to be overridden, whereas later implementations changed requirements of more overrides.</remarks>
-  /// <see cref="https://docs.microsoft.com/en-us/dotnet/api/system.random"/>
+  /// <see href="https://docs.microsoft.com/en-us/dotnet/api/system.random"/>
   public abstract class ARandomUInt64
     : System.Random, IRandomSamplingInt64
   {

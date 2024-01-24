@@ -275,7 +275,7 @@ namespace Flux
       #region Implemented interfaces
 
       public readonly string ToString(string? format, System.IFormatProvider? provider)
-        => $"({string.Format(provider, $"{{0:{format ?? "N6"}}}", Q)}, {string.Format(provider, $"{{0:{format ?? "N6"}}}", R)}, {string.Format(provider, $"{{0:{format ?? "N6"}}}", S)})";
+        => $"<{m_q.ToString(format ?? "N6", provider)}, {m_r.ToString(format ?? "N6", provider)}, {m_s.ToString(format ?? "N6", provider)}>";
 
       #endregion // Implemented interfaces
 

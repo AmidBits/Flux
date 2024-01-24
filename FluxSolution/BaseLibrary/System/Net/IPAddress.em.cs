@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Returns the 16-bit words (as integers) of an IP address. This is mainly useful for IPv6 addresses.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/IPv6"/>
+    /// <see href="https://en.wikipedia.org/wiki/IPv6"/>
     public static System.Collections.Generic.IEnumerable<int> GetAddressWords(this System.Net.IPAddress source)
     {
       var bytes = (source ?? throw new System.ArgumentNullException(nameof(source))).GetAddressBytes();
@@ -13,7 +13,7 @@ namespace Flux
     }
 
     /// <summary>There is no such thing as a broadcast address in IPv6.</summary>
-    /// <see cref="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
+    /// <see href="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
     public static System.Net.IPAddress GetBroadcastAddressIPv4(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -31,7 +31,7 @@ namespace Flux
     }
 
     /// <summary></summary>
-    /// <see cref="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
+    /// <see href="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
     public static System.Net.IPAddress GetNetworkAddress(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
     {
       if (source is null) throw new System.ArgumentNullException(nameof(source));
@@ -72,7 +72,7 @@ namespace Flux
       => source.ToBigInteger() is var bi && bi >= min.ToBigInteger() && bi <= max.ToBigInteger();
 
     /// <summary>Determines whether two addresses are in the same subnet.</summary>
-    /// <see cref="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
+    /// <see href="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
     public static bool InSameSubnet(this System.Net.IPAddress source, System.Net.IPAddress other, System.Net.IPAddress subnetMask)
       => source.GetNetworkAddress(subnetMask).Equals(other.GetNetworkAddress(subnetMask));
 

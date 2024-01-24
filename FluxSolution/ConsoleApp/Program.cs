@@ -29,6 +29,8 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var sc = Zamplez.TakapauNewZealand.ToSphericalCoordinate();
+
       var vr = new Flux.ValueRange<double>(5, 16);
 
       foreach (var v in vr.IterateRange(1.15, SortOrder.Ascending, IntervalNotation.HalfOpenRight, 2))

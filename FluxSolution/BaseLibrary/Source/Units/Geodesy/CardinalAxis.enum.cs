@@ -19,7 +19,7 @@ namespace Flux
   namespace Units
   {
     /// <summary>The two cardinal axes are the latitudinal north-south and the longitudinal east-west.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Cardinal_direction"/>
+    /// <see href="https://en.wikipedia.org/wiki/Cardinal_direction"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
     public enum CardinalAxis
     {

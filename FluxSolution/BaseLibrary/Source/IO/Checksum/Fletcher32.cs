@@ -1,7 +1,7 @@
 namespace Flux.Checksum
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Fletcher%27s_checksum"/>
+  /// <see href="https://en.wikipedia.org/wiki/Fletcher%27s_checksum"/>
   public record struct Fletcher32
     : IChecksumGenerator32
   {

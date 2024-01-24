@@ -2,6 +2,28 @@
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+  public readonly record struct Line
+  {
+    private readonly double m_x1;
+    private readonly double m_y1;
+    private readonly double m_x2;
+    private readonly double m_y2;
+
+    public Line(double x1, double y1, double x2, double y2)
+    {
+      m_x1 = x1;
+      m_y1 = y1;
+      m_x2 = x2;
+      m_y2 = y2;
+    }
+
+    public double X1 { get => m_x1; init => m_x1 = value; }
+    public double Y1 { get => m_y1; init => m_y1 = value; }
+    public double X2 { get => m_x2; init => m_x2 = value; }
+    public double Y2 { get => m_y2; init => m_y2 = value; }
+  }
+
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct LineSegment
   {
     private readonly double m_x1;
@@ -33,19 +55,87 @@ namespace Flux.Geometry
     //public static Numerics.CartesianCoordinate2<double> IntermediaryPoint(Numerics.CartesianCoordinate2<double> a, Numerics.CartesianCoordinate2<double> b, double scalar = 0.5)
     //  => (a + b) * scalar;
 
-    /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public static LineTestResult IntersectionTest(double aX1, double aY1, double aX2, double aY2, double bX1, double bY1, double bX2, double bY2)
+    public static (IntersectTestLine Outcome, double X, double Y) GivenTwoPointsOnEachLine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
     {
-      var p13x = aX1 - bX1;
-      var p13y = aY1 - bY1;
-      var p21x = aX2 - aX1;
-      var p21y = aY2 - aY1;
-      var p43x = bX2 - bX1;
-      var p43y = bY2 - bY1;
+      var sx1x2 = x1 - x2;
+      var sy1y2 = y1 - y2;
+      var sx3x4 = x3 - x4;
+      var sy3y4 = y3 - y4;
+
+      var nl = x1 * y2 - y1 * x2; // P numerator-left component.
+      var nr = x3 * y4 - y3 * x4; // P numerator-right component.
+
+      var d = sx1x2 * sy3y4 - sy1y2 * sx3x4;
+
+      var px = (nl * sx3x4 - sx1x2 * nr);
+      var py = (nl * sy3y4 - sy1y2 * nr);
+
+      // if(d == 0)return // coincident or parallel, i.e. NOT intersecting.
+      if (d != 0)
+      {
+        px /= d;
+        py /= d;
+
+        return (IntersectTestLine.LinesIntersect, px, py);
+      }
+      else
+        return (IntersectTestLine.NonIntersectingLines, double.NaN, double.NaN);
+    }
+
+    public static (IntersectTestLineSegment Outcome, double X, double Y) GivenTwoPointsOnEachLineSegment(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
+    {
+      var sx1x2 = x1 - x2;
+      var sx1x3 = x1 - x3;
+      var sy1y2 = y1 - y2;
+      var sy1y3 = y1 - y3;
+      var sx3x4 = x3 - x4;
+      var sy3y4 = y3 - y4;
+
+      var d = sx1x2 * sy3y4 - sy1y2 * sx3x4;
+
+      var t = sx1x3 * sy3y4 - sy1y3 * sx3x4;
+      var u = sx1x2 * sy1y3 - sy1y2 * sx1x3;
+
+      if (d != 0)
+      {
+        t /= d;
+        u /= d;
+
+        var ptx = x1 + t * (x2 - x1);
+        var pty = y1 + t * (y2 - y1);
+        var pux = x3 + u * (x4 - x3);
+        var puy = y3 + u * (y4 - y3);
+
+        if (t >= 0 && t <= 1)
+          return (IntersectTestLineSegment.IntersectWithinFirst, ptx, pty);
+        else if (u >= 0 && u <= 1)
+          return (IntersectTestLineSegment.IntersectWithinSecond, pux, puy);
+        else // Not intersecting.
+          return (IntersectTestLineSegment.Unknown, double.NaN, double.NaN);
+      }
+      else
+      {
+        if (t == 0 || u == 0) // Coincident lines.
+          return (IntersectTestLineSegment.Coincident, double.NaN, double.NaN);
+        else // Parallel lines.
+          return (IntersectTestLineSegment.Parallel, double.NaN, double.NaN);
+      }
+    }
+
+    /// <summary>Returns the sign indicating whether the test point is Left|On|Right of the (infinite) line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
+    public static LineTestResult IntersectionTest(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
+    {
+      var p13x = x1 - x3;
+      var p13y = y1 - y3;
+      var p21x = x2 - x1;
+      var p21y = y2 - y1;
+      var p43x = x4 - x3;
+      var p43y = y4 - y3;
+
+      var ab = p43y * p21x - p43x * p21y;
 
       var a = p43x * p13y - p43y * p13x;
       var b = p21x * p13y - p21y * p13x;
-      var ab = p43y * p21x - p43x * p21y;
 
       if (ab != 0)
       {
@@ -53,7 +143,7 @@ namespace Flux.Geometry
         b /= ab;
 
         if (a >= 0 && a <= 1 && b >= 0 && b <= 1) // Intersecting.
-          return new LineTestResult(LineTestOutcome.LinesIntersecting, aX1 + a * (aX2 - aX1), aY1 + a * (aY2 - aY1));
+          return new LineTestResult(LineTestOutcome.LinesIntersecting, x1 + a * (x2 - x1), y1 + a * (y2 - y1));
         else // Not intersecting.
           return new LineTestResult(LineTestOutcome.Unknown);
       }

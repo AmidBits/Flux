@@ -19,7 +19,7 @@ namespace Flux
     }
 
     /// <summary>Illuminance unit of lux.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Illuminance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Illuminance"/>
     public readonly record struct Illuminance
       : System.IComparable, System.IComparable<Illuminance>, IUnitValueQuantifiable<double, IlluminanceUnit>
     {

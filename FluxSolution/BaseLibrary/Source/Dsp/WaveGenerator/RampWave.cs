@@ -1,7 +1,7 @@
 ﻿namespace Flux.Dsp.WaveGenerator
 {
   /// <summary>This is simply an inverted saw wave.</summary>
-  /// <see cref="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sawtooth_wave"/>
+  /// <see href="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sawtooth_wave"/>
   public record class RampWave
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {

@@ -8,7 +8,7 @@ namespace Flux.Dsp.Synthesis
     public double AmplitudeModulation { get => m_amplitudeModulation; set => m_amplitudeModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The amplitude modulator (AM) for the oscillator.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Amplitude_modulation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Amplitude_modulation"/>
     public IOscillator? AmplitudeModulator { get; set; }
 
     /// <summary>The last sample generated.</summary>
@@ -16,7 +16,7 @@ namespace Flux.Dsp.Synthesis
 
     private double m_frequency;
     /// <summary>The audio frequency in Hertz, i.e. the pitch, of the waveform. This is also the quotient of cycles/second.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Audio_frequency"/>
+    /// <see href="https://en.wikipedia.org/wiki/Audio_frequency"/>
     public double Frequency { get => m_frequency; set => SetState(value, m_sampleRate); }
 
     private double m_frequencyModulation;
@@ -24,7 +24,7 @@ namespace Flux.Dsp.Synthesis
     public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The frequency modulator (FM) for the oscillator.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Frequency_modulation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Frequency_modulation"/>
     public IOscillator? FrequencyModulator { get; set; }
 
     /// <summary>The wave generator used to produce the waveform of the oscillator.</summary>
@@ -34,17 +34,17 @@ namespace Flux.Dsp.Synthesis
     public bool InvertPolarity { get; set; }
 
     /// <summary>The normalized frequency is also known as samples per cycle.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
+    /// <see href="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
     public double NormalizedFrequency { get; private set; }
 
     private double m_offset;
     /// <summary>Initial offset of the oscillator phase.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Phase_(waves)"/>
+    /// <see href="https://en.wikipedia.org/wiki/Phase_(waves)"/>
     public double Offset { get => m_offset; set => m_offset = value.Wrap(-1.0, 1.0); }
 
     private double m_phase;
     /// <summary>The position of a point in time (an instant) on the waveform cycle in the range [0, 1].</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Phase_(waves)"/>
+    /// <see href="https://en.wikipedia.org/wiki/Phase_(waves)"/>
     public double Phase { get => m_phase; set => m_phase = value.Wrap(0.0, 1.0); }
 
     private double m_phaseModulation;
@@ -52,7 +52,7 @@ namespace Flux.Dsp.Synthesis
     public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The pulse modulator (PM) for the oscillator.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Phase_modulation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Phase_modulation"/>
     public Oscillator? PhaseModulator { get; set; }
 
     /// <summary>Audio processors applied before AM, RM, FM and PM.</summary>
@@ -69,16 +69,16 @@ namespace Flux.Dsp.Synthesis
     public double RingModulation { get => m_ringModulation; set => m_ringModulation = System.Math.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The ring modulator (RM) for the oscillator.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Ring_modulation"/>
+    /// <see href="https://en.wikipedia.org/wiki/Ring_modulation"/>
     public IOscillator? RingModulator { get; set; }
 
     /// <summary>The period of a sample, in seconds. Can be used to set the sample rate.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Sampling_(signal_processing)#Theory"/>
+    /// <see href="https://en.wikipedia.org/wiki/Sampling_(signal_processing)#Theory"/>
     public double SamplePeriod { get; private set; }
 
     private double m_sampleRate;
     /// <summary>The sample rate, i.e. the resolution, of the waveform in hertz.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Sampling_(signal_processing)#Sampling_rate"/>
+    /// <see href="https://en.wikipedia.org/wiki/Sampling_(signal_processing)#Sampling_rate"/>
     public double SampleRate { get => m_sampleRate; set => SetState(m_frequency, value); }
 
     /// <summary>The number of samples per cycle (in the period) of the waveform frequency.</summary>

@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Financial
   {
     /// <summary>An amortizing mortgage loan where the interest rate on the note remains the same through the term of the loan, as opposed to loans where the interest rate may adjust or "float".</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Fixed-rate_mortgage"/>
+    /// <see href="https://en.wikipedia.org/wiki/Fixed-rate_mortgage"/>
 #if NET7_0_OR_GREATER
     public static TSelf FixedRateMortgageMonthlyPayment<TSelf>(this TSelf fixedYearlyNominalInterestRate, TSelf numberOfYears, TSelf loanAmount)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>

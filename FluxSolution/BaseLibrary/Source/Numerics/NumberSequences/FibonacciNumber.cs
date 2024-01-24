@@ -4,7 +4,7 @@ namespace Flux
   public static partial class NumberSequence
   {
     /// <summary>Creates a new sequence with Fibonacci numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Fibonacci_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
     public static System.Collections.Generic.IEnumerable<TSelf> GetFibonacciSequence<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -23,7 +23,7 @@ namespace Flux
     }
 
     /// <summary>Determines whether the number is a Fibonacci number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Fibonacci_number"/>
     public static bool IsFibonacciNumber<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -45,7 +45,7 @@ namespace Flux
 //namespace Flux.NumberSequences
 //{
 //  /// <summary>Creates a new sequence with Fibonacci numbers.</summary>
-//  /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
+//  /// <see href="https://en.wikipedia.org/wiki/Fibonacci_number"/>
 //  /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //  public sealed class FibonacciNumber
 //    : INumericSequence<System.Numerics.BigInteger>
@@ -53,7 +53,7 @@ namespace Flux
 //    #region Static methods
 
 //    //  /// <summary>Creates a new sequence with Fibonacci numbers.</summary>
-//    //  /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
+//    //  /// <see href="https://en.wikipedia.org/wiki/Fibonacci_number"/>
 //    //  /// <remarks>This function runs indefinitely, if allowed.</remarks>
 
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetFibonacciSequence<TSelf>()
@@ -73,7 +73,7 @@ namespace Flux
 //    }
 
 //    /// <summary>Determines whether the number is a Fibonacci number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Fibonacci_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Fibonacci_number"/>
 
 //    public static bool IsFibonacciNumber<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>

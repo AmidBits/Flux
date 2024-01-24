@@ -17,7 +17,7 @@ namespace Flux
 //namespace Flux.NumberSequences
 //{
 //  /// <summary>Creates a new sequence with perfect-square (or simply just square number) values.</summary>
-//  /// <see cref="https://en.wikipedia.org/wiki/Square_number"/>
+//  /// <see href="https://en.wikipedia.org/wiki/Square_number"/>
 //  public record class PerfectNthRoot
 //    : INumericSequence<System.Numerics.BigInteger>
 //  {

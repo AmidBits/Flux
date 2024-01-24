@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Find the Kth smallest element in an unordered list, between left and right index.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Quickselect"/>
+    /// <see href="https://en.wikipedia.org/wiki/Quickselect"/>
     public static T QuickSelect<T>(this System.Span<T> source, int leftIndex, int rightIndex, int kth, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;

@@ -10,7 +10,7 @@ namespace Flux
   {
     /// <summary>Julian Date unit of days with time of day fraction. The Julian Date struct can also be used to handle Julian Day Fraction, which is the number of days, hours, minutes and seconds since the beginning of the year.</summary>
     /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
-    /// <see cref="https://en.wikipedia.org/wiki/Julian_day"/>
+    /// <see href="https://en.wikipedia.org/wiki/Julian_day"/>
     public readonly record struct JulianDate
       : System.IFormattable, System.IComparable<JulianDate>, IValueQuantifiable<double>
     {

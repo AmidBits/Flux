@@ -43,7 +43,7 @@
     }
 
     /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Angle"/>
+    /// <see href="https://en.wikipedia.org/wiki/Angle"/>
     public readonly partial record struct Angle
       : System.IComparable, System.IComparable<Angle>, IUnitValueQuantifiable<double, AngleUnit>
     {
@@ -101,11 +101,11 @@
       public static double ArcsecondToRadian(double arcsecAngle) => arcsecAngle / 206264.806247;
 
       /// <summary>Convert the cartesian 2D coordinate (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
       public static double Cartesian2ToRotationAngle(double x, double y) => System.Math.Atan2(y, x) is var atan2 && atan2 < 0 ? System.Math.Tau + atan2 : atan2;
 
       /// <summary>Convert the cartesian 2D coordinate (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
       public static double Cartesian2ToRotationAngleEx(double x, double y) => System.Math.Tau - Cartesian2ToRotationAngle(y, -x);
 
       /// <summary>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal unit subdivisions (degrees, decimalMinutes), e.g. (32, 13.3).</summary>
@@ -198,12 +198,12 @@
       public static double RadianToWarsawPactMil(double radAngle) => radAngle * 3000 / System.Math.PI;
 
       /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (i.e. radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
       public static (double x, double y) RotationAngleToCartesian2(double radAngle)
         => (System.Math.Cos(radAngle), System.Math.Sin(radAngle));
 
       /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (i.e. radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
       public static (double x, double y) RotationAngleToCartesian2Ex(double radAngle)
         => RotationAngleToCartesian2(System.Math.Tau - (radAngle % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2);
       //=> (-System.Math.Sin(radAngle), System.Math.Cos(radAngle));
@@ -289,13 +289,13 @@
 
       #region Gudermannian
       /// <summary>Returns the Gudermannian of the specified value.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Gudermannian_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Gudermannian_function"/>
       public static double Gd(double value) => System.Math.Atan(System.Math.Sinh(value));
 
       // Inverse function:
 
       /// <summary>Returns the inverse Gudermannian of the specified value.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Gudermannian_function#Inverse"/>
+      /// <see href="https://en.wikipedia.org/wiki/Gudermannian_function#Inverse"/>
       /// <remarks>The integral of the secant function defines the inverse of the Gudermannian function.</remarks>
       /// <remarks>The lambertian function (lam) is a notation for the inverse of the gudermannian which is encountered in the theory of map projections.</remarks>
       public static double Agd(double value) => System.Math.Atanh(System.Math.Sin(value));
@@ -305,25 +305,25 @@
       // Hyperbolic reciprocals (1 divided by):
 
       /// <summary>Returns the hyperbolic cosecant of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
       public static double Csch(double v) => 1 / System.Math.Sinh(v);
       /// <summary>Returns the hyperbolic secant of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
       public static double Sech(double v) => 1 / System.Math.Cosh(v);
       /// <summary>Returns the hyperbolic cotangent of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
       public static double Coth(double v) => System.Math.Cosh(v) / System.Math.Sinh(v);
 
       // Inverse hyperbolic reciprocals:
 
       /// <summary>Returns the inverse hyperbolic cosecant of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
       public static double Acsch(double v) => System.Math.Asinh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log(1 / x + System.Math.Sqrt(1 / x * x + 1));
       /// <summary>Returns the inverse hyperbolic secant of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
       public static double Asech(double v) => System.Math.Acosh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log((1 + System.Math.Sqrt(1 - x * x)) / x);
       /// <summary>Returns the inverse hyperbolic cotangent of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
       public static double Acoth(double v) => System.Math.Atanh(1 / v); // Cheaper versions than using log functions: System.Math.Log((x + 1) / (x - 1)) / 2;
       #endregion Hyperbolic Reciprocals/Inverse
 
@@ -331,35 +331,35 @@
       // Reciprocals (1 divided by):
 
       /// <summary>Returns the cosecant of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
       public static double Csc(double v) => 1 / System.Math.Sin(v);
       /// <summary>Returns the secant of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
       public static double Sec(double v) => 1 / System.Math.Cos(v);
       /// <summary>Returns the cotangent of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
       public static double Cot(double v) => 1 / System.Math.Tan(v);
 
       // Inverse reciprocals:
 
       /// <summary>Returns the inverse cosecant of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
       public static double Acsc(double v) => System.Math.Asin(1 / v);
       /// <summary>Returns the inverse secant of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
       public static double Asec(double v) => System.Math.Acos(1 / v);
       /// <summary>Returns the inverse cotangent of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
       public static double Acot(double v) => System.Math.Atan(1 / v);
       #endregion Reciprocals/Inverse
 
       #region Sinc
       /// <summary>Returns the normalized sinc of the specified value.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Sinc_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Sinc_function"/>
       public static double Sincn(double value) => Sincu(System.Math.PI * value);
 
       /// <summary>Returns the unnormalized sinc of the specified value.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Sinc_function"/>
+      /// <see href="https://en.wikipedia.org/wiki/Sinc_function"/>
       public static double Sincu(double value) => value != 0 ? System.Math.Sin(value) / value : 1;
       #endregion Sinc
 
@@ -367,31 +367,31 @@
       // Versed functions.
 
       /// <summary>Returns the versed sine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
       public static double Vsin(double value) => 1 - System.Math.Cos(value);
       /// <summary>Returns the versed cosine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
       public static double Vcos(double value) => 1 + System.Math.Cos(value);
       /// <summary>Returns the coversed sine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
       public static double Cvsin(double value) => 1 - System.Math.Sin(value);
       /// <summary>Returns the coversed cosine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
       public static double Cvcos(double value) => 1 + System.Math.Sin(value);
 
       // Inverse versed functions:
 
       /// <summary>Returns the inverse of versed sine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Avsin(double y) => System.Math.Acos(1 - y);
       /// <summary>Returns the inverse of versed cosine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Avcos(double y) => System.Math.Acos(y - 1);
       /// <summary>Returns the inverse of coversed sine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Acvsin(double y) => System.Math.Asin(1 - y);
       /// <summary>Returns the inverse of coversed cosine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Acvcos(double y) => System.Math.Asin(y - 1);
       #endregion Versed/Inverse
 
@@ -399,31 +399,31 @@
       // Haversed functions (half of the versed versions above):
 
       /// <summary>Returns the haversed sine of the specified angle. This is the famous Haversin function.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
       public static double Hvsin(double value) => (1 - System.Math.Cos(value)) / 2;
       /// <summary>Returns the haversed cosine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
       public static double Hvcos(double value) => (1 + System.Math.Cos(value)) / 2;
       /// <summary>Returns the hacoversed sine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
       public static double Hcvsin(double value) => (1 - System.Math.Sin(value)) / 2;
       /// <summary>Returns the hacoversed cosine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Definitions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
       public static double Hcvcos(double value) => (1 + System.Math.Sin(value)) / 2;
 
       // Inversed haversed functions:
 
       /// <summary>Returns the inverse of haversed sine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Ahvsin(double y) => System.Math.Acos(1 - 2 * y); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Asin(System.Math.Sqrt(y));
       /// <summary>Returns the inverse of haversed cosine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Ahvcos(double y) => System.Math.Acos(2 * y - 1); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Acos(System.Math.Sqrt(y));
       /// <summary>Returns the inverse of cohaversed sine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Ahcvsin(double y) => System.Math.Asin(1 - 2 * y);
       /// <summary>Returns the inverse of cohaversed cosine of the specified angle.</summary>
-      /// <see cref="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Ahcvcos(double y) => System.Math.Asin(2 * y - 1);
       #endregion Versine/Haversine
 

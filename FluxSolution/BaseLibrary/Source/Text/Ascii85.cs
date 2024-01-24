@@ -4,7 +4,7 @@ namespace Flux
 {
   namespace Text
   {
-    /// <see cref="https://en.wikipedia.org/wiki/Ascii85"/>
+    /// <see href="https://en.wikipedia.org/wiki/Ascii85"/>
     public static class Ascii85
     {
       private static readonly uint[] m_powersOf85 = new uint[] { 52200625U, 614125U, 7225U, 85U, 1U };

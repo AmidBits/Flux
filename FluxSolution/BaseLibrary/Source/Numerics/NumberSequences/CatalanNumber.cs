@@ -4,7 +4,7 @@ namespace Flux
   public static partial class NumberSequence
   {
     /// <summary>Returns the Catalan number for the specified number.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Catalan_number"/>
     public static TSelf GetCatalanNumber<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => number < TSelf.CreateChecked(200)
@@ -12,7 +12,7 @@ namespace Flux
       : Maths.SplitFactorial(number + number) / (Maths.SplitFactorial(number + TSelf.One) * Maths.SplitFactorial(number));
 
     /// <summary>Creates a new sequence with Catalan numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Catalan_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
     public static System.Collections.Generic.IEnumerable<TSelf> GetCatalanSequence<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -28,7 +28,7 @@ namespace Flux
 //namespace Flux.NumberSequences
 //{
 //  /// <summary>Creates a new sequence with Catalan numbers.</summary>
-//  /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
+//  /// <see href="https://en.wikipedia.org/wiki/Catalan_number"/>
 //  /// <remarks>This function runs indefinitely, if allowed.</remarks>
 //  public sealed class CatalanNumber
 //  : INumericSequence<System.Numerics.BigInteger>
@@ -36,13 +36,13 @@ namespace Flux
 //    #region Static methods
 
 //    /// <summary>Returns the Catalan number for the specified number.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Catalan_number"/>
 //    public static TSelf GetCatalanNumber<TSelf>(TSelf number)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //      => number.Multiply(2).ComputeFactorial(FactorialFunction.SplitFactorial) / ((number + TSelf.One).ComputeFactorial(FactorialFunction.SplitFactorial) * (number).ComputeFactorial(FactorialFunction.SplitFactorial));
 
 //    /// <summary>Creates a new sequence with Catalan numbers.</summary>
-//    /// <see cref="https://en.wikipedia.org/wiki/Catalan_number"/>
+//    /// <see href="https://en.wikipedia.org/wiki/Catalan_number"/>
 //    /// <remarks>This function runs indefinitely, if allowed.</remarks>
 
 //    public static System.Collections.Generic.IEnumerable<TSelf> GetCatalanSequence<TSelf>()

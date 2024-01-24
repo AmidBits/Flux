@@ -18,7 +18,7 @@ namespace Flux
     }
 
     /// <summary>Torque unit of newton meter.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Torque"/>
+    /// <see href="https://en.wikipedia.org/wiki/Torque"/>
     public readonly record struct LuminousEfficacy
       : System.IComparable, System.IComparable<LuminousEfficacy>, System.IFormattable, IUnitValueQuantifiable<double, LuminousEfficacyUnit>
     {

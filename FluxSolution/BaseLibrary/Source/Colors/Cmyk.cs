@@ -1,7 +1,7 @@
 namespace Flux.Colors
 {
   /// <summary>CMYK refers to the four ink plates used in some color printing: Cyan, Magenta, Yellow, and Key (black).</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/CMYK_color_model"/>
+  /// <see href="https://en.wikipedia.org/wiki/CMYK_color_model"/>
   public readonly record struct Cmyk
   {
     private readonly double m_cyan;

@@ -19,7 +19,7 @@ namespace Flux
     }
 
     /// <summary>Luminous flux unit of lumen.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Luminous_flux"/>
+    /// <see href="https://en.wikipedia.org/wiki/Luminous_flux"/>
     public readonly record struct LuminousFlux
       : System.IComparable, System.IComparable<LuminousFlux>, IUnitValueQuantifiable<double, LuminousFluxUnit>
     {

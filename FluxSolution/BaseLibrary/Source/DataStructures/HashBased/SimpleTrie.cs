@@ -1,7 +1,7 @@
 namespace Flux.DataStructures
 {
   /// <summary>A simple implementation of a trie data structure, which essentially is a storage structure for storing sequential data by their smaller components, e.g. <see cref="string"/>s (where the storage unit is <see cref="char"/>).</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Trie"/>
+  /// <see href="https://en.wikipedia.org/wiki/Trie"/>
   /// <seealso cref="https://github.com/gmamaladze/trienet/tree/master/TrieNet"/>
   public sealed class SimpleTrie<TKey>
     where TKey : notnull

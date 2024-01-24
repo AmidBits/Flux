@@ -2,7 +2,7 @@ namespace Flux
 {
 #if NET7_0_OR_GREATER
   /// <summary></summary>
-  /// <see cref="https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers"/>
+  /// <see href="https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers"/>
   public sealed record class MedianOnline<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
@@ -64,7 +64,7 @@ namespace Flux
 #else
 
   /// <summary></summary>
-  /// <see cref="https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers"/>
+  /// <see href="https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers"/>
   public sealed record class MedianOnline
   {
     private readonly DataStructures.IHeap<double> m_maxHeap = new DataStructures.BinaryHeapMax<double>();

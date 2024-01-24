@@ -25,7 +25,7 @@ namespace Flux
     }
 
     /// <summary>Electric resistance, unit of Ohm.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
     public readonly record struct ElectricalResistance
       : System.IComparable, System.IComparable<ElectricalResistance>, IUnitValueQuantifiable<double, ElectricalResistanceUnit>
     {

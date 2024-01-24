@@ -1,7 +1,7 @@
 namespace Flux.Units
 {
   /// <summary>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</summary>
-  /// <see cref="https://en.wikipedia.org/wiki/Latitude"/>
+  /// <see href="https://en.wikipedia.org/wiki/Latitude"/>
   public readonly record struct Latitude
     : System.IComparable<Latitude>, IValueQuantifiable<double>
   {
@@ -57,7 +57,7 @@ namespace Flux.Units
     public static double GetApproximateLongitudinalWidth(double lat) => 111412.84 * System.Math.Cos(lat) + -93.5 * System.Math.Cos(3 * lat) + 0.118 * System.Math.Cos(5 * lat);
 
     /// <summary>Determines an approximate radius in meters.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
+    /// <see href="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
     /// <seealso cref="https://gis.stackexchange.com/questions/20200/how-do-you-compute-the-earths-radius-at-a-given-geodetic-latitude"/>
     /// <param name="lat">The latitude in radians.</param>
     public static double GetApproximateRadius(double lat, double equatorialRadius, double polarRadius)

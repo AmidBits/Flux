@@ -1,6 +1,6 @@
 namespace Flux.Dsp.WaveGenerator
 {
-  /// <see cref="https://en.wikipedia.org/wiki/Sample_and_hold"/>
+  /// <see href="https://en.wikipedia.org/wiki/Sample_and_hold"/>
   public record class SampleAndHold
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
@@ -35,7 +35,7 @@ namespace Flux.Dsp.WaveGenerator
   // /// <summary>A sample and hold based on the frequencies corresponding to all MIDI notes, which is a subset of the chromatic scale.</summary>
   // /// <remarks>No random number generator is needed for this sample and hold.</remarks>
   // /// <remarks>Since this is based on the logarithmic scale of MIDI note frequencies, there are more frequencies on the lower end of the spectrum, which means more peaks will be generated on the negative side of the sample co-domain [-1, 1].</remarks>
-  // /// <see cref="https://en.wikipedia.org/wiki/Sample_and_hold"/>
+  // /// <see href="https://en.wikipedia.org/wiki/Sample_and_hold"/>
   // public struct SampleAndHoldCS : IWaveGenerator
   // {
   // 	private double _sample, _hold;

@@ -1,6 +1,6 @@
 ﻿namespace Flux.Dsp.WaveGenerator
 {
-  /// <see cref="https://en.wikipedia.org/wiki/White_noise"/>
+  /// <see href="https://en.wikipedia.org/wiki/White_noise"/>
   public sealed class WhiteNoise
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {

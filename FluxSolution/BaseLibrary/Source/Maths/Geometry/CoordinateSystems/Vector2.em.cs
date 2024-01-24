@@ -15,7 +15,7 @@
       => (float)System.Math.Acos(System.Math.Clamp(System.Numerics.Vector2.Dot(a, b) / (a.EuclideanLength() * b.EuclideanLength()), -1, 1));
 
     /// <summary>Compute the Chebyshev length of the source vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static float ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength)
       => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
 
@@ -42,7 +42,7 @@
     }
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static float ManhattanLength(this System.Numerics.Vector2 source, float edgeLength)
       => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength);
 
@@ -55,7 +55,7 @@
       => source.EuclideanLength() is var m && m != 0 ? new System.Numerics.Vector2(source.X, source.Y) / m : source;
 
     /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Orthant"/>
+    /// <see href="https://en.wikipedia.org/wiki/Orthant"/>
     public static int OrthantNumber(this System.Numerics.Vector2 source, System.Numerics.Vector2 center, OrthantNumbering numbering)
       => numbering switch
       {

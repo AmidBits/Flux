@@ -18,7 +18,7 @@ namespace Flux.NumberSequences
       => m_primeNumbers = System.Linq.Enumerable.ToList(System.Linq.Enumerable.TakeWhile(NumberSequence.GetAscendingPrimes(System.Numerics.BigInteger.CreateChecked(2)), p => p <= n));
 
     /// <summary>Creates a new sequence of n-smooth numbers.</summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Smooth_number"/>
+    /// <see href="https://en.wikipedia.org/wiki/Smooth_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
 
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNsmoothNumbers()

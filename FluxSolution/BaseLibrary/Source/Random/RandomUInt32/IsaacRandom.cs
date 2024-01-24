@@ -1,7 +1,7 @@
 namespace Flux.Random
 {
   /// <summary></summary>
-  /// <see cref="https://en.wikipedia.org/wiki/ISAAC_(cipher)"/>
+  /// <see href="https://en.wikipedia.org/wiki/ISAAC_(cipher)"/>
   /// <seealso cref="http://burtleburtle.net/bob/rand/isaacafa.html"/>
   /// <seealso cref="http://rosettacode.org/wiki/The_ISAAC_Cipher#C.23"/>
   public class IsaacRandom
