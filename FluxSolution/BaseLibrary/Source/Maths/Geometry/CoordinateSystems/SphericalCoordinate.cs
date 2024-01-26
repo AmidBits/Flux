@@ -26,7 +26,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct SphericalCoordinate
-      : System.IFormattable
+      : System.IFormattable, ISphericalCoordinate<double>
     {
       public static readonly SphericalCoordinate Zero;
 
@@ -41,11 +41,19 @@ namespace Flux
         m_azimuth = azimuth;
       }
 
-      public Units.Length Radius { get => new(m_radius); init => m_radius = value.Value; }
-      public Units.Angle Inclination { get => new(m_inclination); init => m_inclination = value.Value; }
-      public Units.Azimuth Azimuth { get => new(Units.Angle.RadianToDegree(m_azimuth)); init => m_azimuth = Units.Angle.DegreeToRadian(value.Value); }
+      public SphericalCoordinate(Units.Length radius, Units.Angle inclination, Units.Azimuth azimuth)
+        : this(radius.Value, inclination.Value, azimuth.Angle.Value)
+      { }
 
-      public Units.Angle Elevation { get => new(ConvertInclinationToElevation(m_inclination)); init => m_inclination = ConvertElevationToInclination(value.Value); }
+      public SphericalCoordinate(double radiusValue, Units.LengthUnit radiusUnit, double inclinationValue, Units.AngleUnit inclinationUnit, double azimuthValue, Units.AngleUnit azimuthUnit)
+        : this(new Units.Length(radiusValue, radiusUnit), new Units.Angle(inclinationValue, inclinationUnit), new Units.Azimuth(azimuthValue, azimuthUnit))
+      { }
+
+      public double Radius { get => m_radius; init => m_radius = value; }
+      public double Inclination { get => m_inclination; init => m_inclination = value; }
+      public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
+
+      public double Elevation { get => ConvertInclinationToElevation(m_inclination); init => m_inclination = ConvertElevationToInclination(value); }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="SphericalCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
@@ -78,9 +86,9 @@ namespace Flux
       /// <remarks>All angles in radians.</remarks>
       public GeographicCoordinate ToGeographicCoordinate()
         => new(
-          Units.Angle.RadianToDegree(System.Math.PI - m_inclination - System.Math.PI / 2),
-          Units.Angle.RadianToDegree(m_azimuth - System.Math.PI),
-          m_radius
+          new Units.Latitude(System.Math.PI - m_inclination - System.Math.PI / 2, Units.AngleUnit.Radian),
+          new Units.Longitude(m_azimuth - System.Math.PI, Units.AngleUnit.Radian),
+          new Units.Length(m_radius)
         );
 
       /// <summary>Creates a new <see cref="System.Numerics.Vector3"/> from the <see cref="SphericalCoordinate"/>.</summary>
@@ -95,27 +103,17 @@ namespace Flux
       #region Static methods
 
       /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
-
       public static double ConvertInclinationToElevation(double inclination)
         => System.Math.PI / 2 - inclination;
 
       /// <summary>Converting from elevation to inclination is simply a quarter turn (PI / 2) minus the elevation.</summary>
-
       public static double ConvertElevationToInclination(double elevation)
         => System.Math.PI / 2 - elevation;
-
-      ///// <summary>Return the <see cref="ISphericalCoordinate"/> from the specified components.</summary>
-      //public static SphericalCoordinate<TSelf> From(Quantities.Length radius, Quantities.Angle inclination, Azimuth azimuth)
-      //  => new(
-      //    TSelf.CreateChecked(radius.Value),
-      //    TSelf.CreateChecked(inclination.Value),
-      //    TSelf.CreateChecked(azimuth.ToRadians())
-      //  );
 
       #endregion Static methods
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {Radius.ToValueString("N1")}, Inclination = {Inclination.ToUnitValueString(Units.AngleUnit.Degree, "N3", true)} (Elevation = {Elevation.ToUnitValueString(Units.AngleUnit.Degree, "N3", true)}), Azimuth = {Azimuth.ToValueString("N3")} }}"
+        => $"{GetType().GetNameEx()} {{ Radius = {m_radius.ToString("N1")}, Inclination = {new Units.Angle(Inclination).ToUnitValueString(Units.AngleUnit.Degree, "N3", true)} (Elevation = {new Units.Angle(Elevation).ToUnitValueString(Units.AngleUnit.Degree, "N3", true)}), Azimuth = {new Units.Azimuth(m_azimuth, Units.AngleUnit.Radian).ToValueString("N3")} }}"
         + $" <{m_radius}, {m_inclination}, {m_azimuth}>";
 
       public override string ToString() => ToString(null, null);

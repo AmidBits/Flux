@@ -1,3 +1,5 @@
+using Flux.Units;
+
 namespace Flux
 {
   #region ExtensionMethods
@@ -21,7 +23,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct PolarCoordinate
-      : System.IFormattable
+      : System.IFormattable, IPolarCoordinate<double>
     {
       public static readonly PolarCoordinate Zero;
 
@@ -34,8 +36,18 @@ namespace Flux
         m_azimuth = azimuth;
       }
 
-      public Units.Length Radius { get => new(m_radius); init => m_radius = value.Value; }
-      public Units.Azimuth Azimuth { get => new(Units.Angle.RadianToDegree(m_azimuth)); init => m_azimuth = Units.Angle.DegreeToRadian(value.Value); }
+      /// <summary>Return the <see cref="PolarCoordinate"/> from the specified components.</summary>
+      public PolarCoordinate(Units.Length radius, Units.Azimuth azimuth)
+        : this(radius.Value, azimuth.Angle.Value)
+      { }
+
+      /// <summary>Return the <see cref="PolarCoordinate"/> from the specified components.</summary>
+      public PolarCoordinate(double radiusValue, Units.LengthUnit radiusUnit, double azimuthValue, Units.AngleUnit azimuthUnit)
+        : this(new Units.Length(radiusValue, radiusUnit), new Units.Azimuth(azimuthValue, azimuthUnit))
+      { }
+
+      public double Radius { get => m_radius; init => m_radius = value; }
+      public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
       /// <summary>Creates a cartesian 2D coordinate from the <see cref="PolarCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
@@ -72,17 +84,12 @@ namespace Flux
         return new((float)x, (float)y);
       }
 
-      //#region Static methods
-      ///// <summary>Return the <see cref="IPolarCoordinate"/> from the specified components.</summary>
-      //public static PolarCoordinate<TSelf> From(Quantities.Length radius, Azimuth azimuth)
-      //  => new(
-      //    TSelf.CreateChecked(radius.Value),
-      //    TSelf.CreateChecked(azimuth.ToRadians())
-      //  );
-      //#endregion // Static methods
+      #region Static methods
+
+      #endregion // Static methods
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {Radius.ToValueString("N1")}, Azimuth = {Azimuth.ToValueString("N3")} }}"
+        => $"{GetType().GetNameEx()} {{ Radius = {m_radius.ToString("N1")}, Azimuth = {new Units.Azimuth(m_azimuth, Units.AngleUnit.Radian).ToValueString("N3")} }}"
         + $" <{m_radius}, {m_azimuth}>";
 
       public override string ToString() => ToString(null, null);

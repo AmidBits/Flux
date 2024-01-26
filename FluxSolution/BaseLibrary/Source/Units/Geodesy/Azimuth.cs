@@ -13,12 +13,12 @@ namespace Flux
       /// <summary>MinValue is a closed (included) endpoint.</summary>
       public const double MinValue = 0;
 
-      private readonly double m_degrees; // In degrees.
+      private readonly Units.Angle m_angle;
 
       /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
-      public Azimuth(double azimuth) => m_degrees = WrapExtremum(azimuth);
+      public Azimuth(double angle, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(angle, unit);
 
-      public Angle Angle { get => new(m_degrees, AngleUnit.Degree); init => m_degrees = WrapExtremum(value.GetUnitValue(AngleUnit.Degree)); }
+      public Angle Angle { get => m_angle; init => m_angle = new(WrapExtremum(value.GetUnitValue(AngleUnit.Degree)), AngleUnit.Degree); }
 
       #region Static methods
 
@@ -44,12 +44,6 @@ namespace Flux
 
       public static Azimuth FromAbbreviation(string compassPointAbbreviated)
         => System.Enum.TryParse<ThirtytwoWindCompassRose>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
-
-      /// <summary></summary>
-      /// <param name="azm">The azimuth in radians.</param>
-      /// <returns></returns>
-      public static Azimuth FromRadians(double azm)
-        => new(Angle.RadianToDegree(azm));
 
       public static Azimuth FromWords(string compassPointInWords)
       {
@@ -147,7 +141,7 @@ namespace Flux
 
       #region Overloaded operators
 
-      public static explicit operator double(Azimuth v) => v.m_degrees;
+      public static explicit operator double(Azimuth v) => v.m_angle.GetUnitValue(AngleUnit.Degree);
       public static explicit operator Azimuth(double v) => new(v);
 
       public static bool operator <(Azimuth a, Azimuth b) => a.CompareTo(b) < 0;
@@ -155,16 +149,16 @@ namespace Flux
       public static bool operator >(Azimuth a, Azimuth b) => a.CompareTo(b) > 0;
       public static bool operator >=(Azimuth a, Azimuth b) => a.CompareTo(b) >= 0;
 
-      public static Azimuth operator -(Azimuth v) => new(-v.m_degrees);
-      public static Azimuth operator +(Azimuth a, double b) => new(a.m_degrees + b);
+      public static Azimuth operator -(Azimuth v) => new(-v.m_angle.GetUnitValue(AngleUnit.Degree));
+      public static Azimuth operator +(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) + b);
       public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.Value;
-      public static Azimuth operator /(Azimuth a, double b) => new(a.m_degrees / b);
+      public static Azimuth operator /(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) / b);
       public static Azimuth operator /(Azimuth a, Azimuth b) => a / b.Value;
-      public static Azimuth operator *(Azimuth a, double b) => new(a.m_degrees * b);
+      public static Azimuth operator *(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) * b);
       public static Azimuth operator *(Azimuth a, Azimuth b) => a * b.Value;
-      public static Azimuth operator %(Azimuth a, double b) => new(a.m_degrees % b);
+      public static Azimuth operator %(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) % b);
       public static Azimuth operator %(Azimuth a, Azimuth b) => a % b.Value;
-      public static Azimuth operator -(Azimuth a, double b) => new(a.m_degrees - b);
+      public static Azimuth operator -(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) - b);
       public static Azimuth operator -(Azimuth a, Azimuth b) => a - b.Value;
 
       #endregion // Overloaded operators
@@ -172,7 +166,7 @@ namespace Flux
       #region Implemented interfaces
 
       // IComparable<>
-      public int CompareTo(Azimuth other) => m_degrees.CompareTo(other.m_degrees);
+      public int CompareTo(Azimuth other) => m_angle.CompareTo(other.m_angle);
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
@@ -180,7 +174,7 @@ namespace Flux
       public string ToValueString(string? format = null, bool preferUnicode = true, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
         => Angle.ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
 
-      public double Value => m_degrees;
+      public double Value => m_angle.GetUnitValue(AngleUnit.Degree);
 
       #endregion // Implemented interfaces
 

@@ -83,9 +83,11 @@
 //    }
 
 //    #region Static methods
+
 //    /// <summary>Returns a vector whose elements are the absolute values of each of the source vector's elements.</summary>
 //    public static CartesianCoordinate4 Abs(in CartesianCoordinate4 v)
-//      => (CartesianCoordinate4)v.m_v256d.Abs(); // new(System.Math.Abs(v.X), System.Math.Abs(v.Y), System.Math.Abs(v.Z), System.Math.Abs(v.W));
+//      => (CartesianCoordinate4)v.m_v256d.Abs();
+
 //    /// <summary>Calculate the angle between the source vector and the specified target vector. (2D/3D)
 //    /// when dot eq 0 then the vectors are perpendicular
 //    /// when dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction)
@@ -101,20 +103,24 @@
 
 //      //return System.Math.Atan2(Dot(Normalize(cross), cross), Dot(v1, v2));
 //    }
+
 //    public static double AngleToXaxis(in CartesianCoordinate4 v)
 //      => Math.Atan2(Math.Sqrt(v.Y * v.Y + v.Z * v.Z), v.X);
 //    public static double AngleToYaxis(in CartesianCoordinate4 v)
 //      => Math.Atan2(Math.Sqrt(v.Z * v.Z + v.X * v.X), v.Y);
 //    public static double AngleToZaxis(in CartesianCoordinate4 v)
 //      => Math.Atan2(Math.Sqrt(v.X * v.X + v.Y * v.Y), v.Z);
+
 //    /// <summary>Compute the Chebyshev distance from vector a to vector b.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
 //    public static double ChebyshevDistance(in CartesianCoordinate4 v1, in CartesianCoordinate4 v2, double edgeLength = 1)
-//      => v1.m_v256d.ChebyshevDistance(v2.m_v256d, edgeLength).GetElement(0);
+//      => v2.m_v256d.Subtract(v1.m_v256d).ChebyshevLength(edgeLength).GetElement(0);
+
 //    /// <summary>Compute the Chebyshev length of vector.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
 //    public static double ChebyshevLength(in CartesianCoordinate4 v, double edgeLength = 1)
 //      => v.m_v256d.ChebyshevLength(edgeLength).GetElement(0);
+
 //    /// <summary>Restricts a vector between a min and max value.</summary>
 //    public static CartesianCoordinate4 Clamp(in CartesianCoordinate4 v, in CartesianCoordinate4 min, in CartesianCoordinate4 max)
 //      => (CartesianCoordinate4)v.m_v256d.Clamp(min.m_v256d, max.m_v256d);
@@ -134,7 +140,7 @@
 //    /// <param name="v2">The second point.</param>
 //    /// <returns>The distance.</returns>
 //    public static double EuclideanDistance(in CartesianCoordinate4 v1, in CartesianCoordinate4 v2)
-//      => v1.m_v256d.EuclideanDistance(v2.m_v256d).GetElement(0);
+//      => v2.m_v256d.Subtract(v1.m_v256d).EuclideanLength().GetElement(0);
 //    /// <summary>
 //    /// Returns the Euclidean distance squared between the two given points.
 //    /// </summary>
@@ -157,7 +163,7 @@
 //    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
 //    public static double ManhattanDistance(in CartesianCoordinate4 v1, in CartesianCoordinate4 v2, double edgeLength = 1)
-//      => v2.m_v256d.ManhattanDistance(v1.m_v256d, edgeLength).GetElement(0);
+//      => v2.m_v256d.Subtract(v1.m_v256d).ManhattanLength(edgeLength).GetElement(0);
 //    /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
 //    public static double ManhattanLength(in CartesianCoordinate4 v, double edgeLength = 1)
@@ -171,7 +177,7 @@
 //      => (CartesianCoordinate4)v1.m_v256d.Min(v2.m_v256d);
 
 //    public static double MinkowskiDistance(CartesianCoordinate4 v1, CartesianCoordinate4 v2, int order)
-//      => v1.m_v256d.MinkowskiDistance(v2.m_v256d, order).GetElement(0);
+//      => v2.m_v256d.Subtract(v1.m_v256d).MinkowskiLength(order).GetElement(0);
 //    public static double MinkowskiLength(CartesianCoordinate4 v, int order)
 //      => v.m_v256d.MinkowskiLength(order).GetElement(0);
 
@@ -235,24 +241,31 @@
 //    /// <summary>Negates a given vector.</summary>
 //    public static CartesianCoordinate4 operator -(in CartesianCoordinate4 v)
 //      => (CartesianCoordinate4)v.m_v256d.Negate();
+
 //    /// <summary>Adds two vectors together.</summary>
 //    public static CartesianCoordinate4 operator +(in CartesianCoordinate4 v1, in CartesianCoordinate4 v2)
 //      => (CartesianCoordinate4)v1.m_v256d.Add(v2.m_v256d);
+
 //    /// <summary>Subtracts the second vector from the first.</summary>
 //    public static CartesianCoordinate4 operator -(in CartesianCoordinate4 v1, in CartesianCoordinate4 v2)
 //      => (CartesianCoordinate4)v1.m_v256d.Subtract(v2.m_v256d);
+
 //    /// <summary>Multiplies two vectors together.</summary>
 //    public static CartesianCoordinate4 operator *(in CartesianCoordinate4 v1, in CartesianCoordinate4 v2)
 //      => (CartesianCoordinate4)v1.m_v256d.Multiply(v2.m_v256d);
+
 //    /// <summary>Multiplies a vector by the given scalar.</summary>
 //    public static CartesianCoordinate4 operator *(in CartesianCoordinate4 v, double scalar)
 //      => (CartesianCoordinate4)v.m_v256d.Add(scalar);
+
 //    /// <summary>Multiplies a vector by the given scalar.</summary>
 //    public static CartesianCoordinate4 operator *(double scalar, in CartesianCoordinate4 v)
 //      => (CartesianCoordinate4)v.m_v256d.Add(scalar);
+
 //    /// <summary>Divides the first vector by the second.</summary>
 //    public static CartesianCoordinate4 operator /(in CartesianCoordinate4 v1, in CartesianCoordinate4 v2)
 //      => (CartesianCoordinate4)v1.m_v256d.Divide(v2.m_v256d);
+
 //    /// <summary>Divides the vector by the given scalar.</summary>
 //    public static CartesianCoordinate4 operator /(in CartesianCoordinate4 v, double divisor)
 //      => (CartesianCoordinate4)v.m_v256d.Add(divisor);

@@ -36,6 +36,22 @@ namespace Maths
     }
 
     [TestMethod]
+    public void GivenTwoPointsOnEachLine()
+    {
+      var expected = (Flux.Geometric.IntersectTestLine.LinesIntersect, 17d / 11d, 14d / 11d);
+      var actual = Flux.Geometric.GivenTwoPointsOnEachLine(1, 1, 3, 2, 1, 4, 2, -1);
+      Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void GivenTwoPointsOnEachLineSegment()
+    {
+      var expected = (Flux.Geometric.IntersectTestLineSegment.IntersectWithinFirst, 17d / 11d, 14d / 11d);
+      var actual = Flux.Geometric.GivenTwoPointsOnEachLineSegment(1, 1, 3, 2, 1, 4, 2, -1);
+      Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
     public void Line()
     {
       var geometry = new Flux.Geometry.LineSegment(5, 7, 11, 13);

@@ -2,18 +2,28 @@
 {
   public interface IGeographicCoordinate
   {
-    /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    Units.Length Altitude { get; init; }
+    /// <summary>
+    /// <para>The height (a.k.a. altitude) of the geographic position in meters.</para>
+    /// </summary>
+    double Altitude { get; }
 
-    /// <summary>The latitude component of the geographic position in degrees. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    Units.Latitude Latitude { get; init; }
+    /// <summary>
+    /// <para>Latitude, unit of degree, a component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</para>
+    /// </summary>
+    double Latitude { get; }
 
-    /// <summary>The longitude component of the geographic position in degrees. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    Units.Longitude Longitude { get; init; }
+    /// <summary>
+    /// <para>Longitude, unit of degree, a component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</para>
+    /// </summary>
+    double Longitude { get; }
 
-    double LatitudeInDegrees { get; }
+    /// <summary>
+    /// <para>Latitude in radians.</para>
+    /// </summary>
     double LatitudeInRadians { get; }
-    double LongitudeInDegrees { get; }
+    /// <summary>
+    /// <para>Longitude in radians.</para>
+    /// </summary>
     double LongitudeInRadians { get; }
   }
 }

@@ -21,6 +21,12 @@ namespace Flux
     public static float ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength = 1)
       => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
 
+    /// <summary>Returns the dot product of two non-normalized 3D vectors.</summary>
+    /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
+    /// <see href="https://gamedev.stackexchange.com/a/89832/129646"/>
+    public static float DotProductEx(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+      => (float)(System.Numerics.Vector2.Dot(a, b) / System.Math.Sqrt(a.LengthSquared() * b.LengthSquared()));
+
     public static float LineSlopeX(this System.Numerics.Vector2 source)
       => System.MathF.CopySign(source.X / source.Y, source.X);
     public static float LineSlopeY(this System.Numerics.Vector2 source)
@@ -30,6 +36,17 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static float ManhattanLength(this System.Numerics.Vector2 source, float edgeLength = 1)
       => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength);
+
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Orthant"/>
+    public static int OrthantNumber(this System.Numerics.Vector2 source, System.Numerics.Vector2 center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => source.Y >= center.Y ? (source.X >= center.X ? 0 : 1) : (source.X >= center.X ? 3 : 2),
+        OrthantNumbering.BinaryNegativeAs1 => (source.X >= center.X ? 0 : 1) + (source.Y >= center.Y ? 0 : 2),
+        OrthantNumbering.BinaryPositiveAs1 => (source.X < center.X ? 0 : 1) + (source.Y < center.Y ? 0 : 2),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
 
     /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
     public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source)
@@ -71,6 +88,10 @@ namespace Flux
     public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, float yaw, float pitch, float roll)
       => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
 
+    /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
+    public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+      => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (source.Y - b.Y) * (a.X - b.X));
+
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
     public static System.Numerics.Vector2 Slerp(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
     {
@@ -80,9 +101,20 @@ namespace Flux
       return source * System.MathF.Cos(theta) + relative * System.MathF.Sin(theta);
     }
 
-    /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
-    public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-      => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (source.Y - b.Y) * (a.X - b.X));
+    /// <summary>
+    /// <para>A slope or gradient of a line is a number that describes both the direction and the steepness of the line (in this case from <paramref name="a"/> to <paramref name="b"/>).</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Slope"/></para>
+    /// </summary>
+    /// <param name="a">The cartesian source point.</param>
+    /// <param name="b">The cartesian target point.</param>
+    /// <returns>The slopes for both rise-over-run and run-over-rise.</returns>
+    public static (float mx, float my) Slope(System.Numerics.Vector2 a, System.Numerics.Vector2 b)
+    {
+      var dx = b.X - a.X;
+      var dy = b.Y - a.Y;
+
+      return (dx == 0) || (dy == 0) ? (0, 0) : (dx / dy, dy / dx);
+    }
 
     //public static Geometry.Ellipse ToEllipse(this System.Numerics.Vector2 vector2)
     //  => new Geometry.Ellipse(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));

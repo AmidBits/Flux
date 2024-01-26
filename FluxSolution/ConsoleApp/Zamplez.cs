@@ -385,15 +385,15 @@ namespace ConsoleApp
     #region RunCoordinateSystems
 
     /// <summary>This is a reference coordinate for Madrid, Spain, which is antipodal to Takapau, New Zeeland.</summary>
-    public static Flux.Geometry.GeographicCoordinate MadridSpain => new(40.416944, -3.703333, 650);
+    public static Flux.Geometry.GeographicCoordinate MadridSpain => new(40.416944, Flux.Units.AngleUnit.Degree, -3.703333, Flux.Units.AngleUnit.Degree, 650);
 
     /// <summary>This is a reference coordinate for Takapau, New Zeeland, which is antipodal to Madrid, Spain.</summary>
-    public static Flux.Geometry.GeographicCoordinate TakapauNewZealand => new(-40.033333, 176.35, 235);
+    public static Flux.Geometry.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Units.AngleUnit.Degree, 176.35, Flux.Units.AngleUnit.Degree, 235);
 
     /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.GeographicCoordinate PhoenixAzUsa => new(33.448333, -112.073889, 331);
+    public static Flux.Geometry.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Units.AngleUnit.Degree, -112.073889, Flux.Units.AngleUnit.Degree, 331);
     /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.GeographicCoordinate TucsonAzUsa => new(32.221667, -110.926389, 728);
+    public static Flux.Geometry.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Units.AngleUnit.Degree, -110.926389, Flux.Units.AngleUnit.Degree, 728);
 
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
@@ -417,16 +417,10 @@ namespace ConsoleApp
         var cca = sca.ToCylindricalCoordinate(); System.Console.WriteLine(cca);
         var cc3a = cca.ToVector3(); System.Console.WriteLine(cc3a);
 
-        // Show 2D coordinate systems also.
-        {
-          Flux.Console.WriteWarningLine($" Sub 2D coordinate show-case from the 3D components X and Y.");
+        Flux.Console.WriteWarningLine($" Sub 2D coordinate show-case from the 3D components X and Y."); // Show 2D coordinate systems also.
+        var pca = cca.ToPolarCoordinate(); System.Console.Write(' '); System.Console.WriteLine(pca);
 
-          var cc2a = cc3a.ToVector2XY(); System.Console.Write(' '); System.Console.WriteLine(cc2a);
-          var pca = cc2a.ToPolarCoordinate(); System.Console.Write(' '); System.Console.WriteLine(pca);
-          var cc2b = pca.ToVector2(); System.Console.Write(' '); System.Console.WriteLine(cc2b);
-        }
-
-        var ccb = cc3a.ToCylindricalCoordinate(); System.Console.WriteLine(ccb);
+        var ccb = pca.ToCylindricalCoordinate(cca.Height); System.Console.WriteLine(ccb);
         var scb = ccb.ToSphericalCoordinate(); System.Console.WriteLine(scb);
         var gcb = scb.ToGeographicCoordinate(); System.Console.WriteLine(gcb);
 

@@ -1,16 +1,18 @@
 namespace Flux
 {
   #region ExtensionMethods
+
   public static partial class Em
   {
     /// <summary>Creates a new <see cref="Geometry.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
-    public static Geometry.CylindricalCoordinate ToCylindricalCoordinate(this System.Numerics.Vector3 source)
-      => new(
+    public static Geometry.ICylindricalCoordinate<double> ToCylindricalCoordinate(this System.Numerics.Vector3 source)
+      => new Geometry.CylindricalCoordinate(
         System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
         (System.Math.Atan2(source.Y, source.X) + System.Math.Tau) % System.Math.Tau,
         source.Z
       );
   }
+
   #endregion
 
   namespace Geometry
@@ -22,7 +24,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct CylindricalCoordinate
-      : System.IFormattable
+      : System.IFormattable, ICylindricalCoordinate<double>
     {
       public static readonly CylindricalCoordinate Zero;
 
@@ -30,6 +32,12 @@ namespace Flux
       private readonly double m_azimuth; // In radians.
       private readonly double m_height;
 
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="radius"></param>
+      /// <param name="azimuth"></param>
+      /// <param name="height"></param>
       public CylindricalCoordinate(double radius, double azimuth, double height)
       {
         m_radius = radius;
@@ -37,9 +45,23 @@ namespace Flux
         m_height = height;
       }
 
-      public Units.Length Radius { get => new(m_radius); init => m_radius = value.Value; }
-      public Units.Azimuth Azimuth { get => new(Units.Angle.RadianToDegree(m_azimuth)); init => m_azimuth = Units.Angle.DegreeToRadian(value.Value); }
-      public Units.Length Height { get => new(m_height); init => m_height = value.Value; }
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="radius"></param>
+      /// <param name="azimuth"></param>
+      /// <param name="height"></param>
+      public CylindricalCoordinate(Units.Length radius, Units.Azimuth azimuth, Units.Length height)
+        : this(radius.Value, azimuth.Angle.Value, height.Value)
+      { }
+
+      public CylindricalCoordinate(double radiusValue, Units.LengthUnit radiusUnit, double azimuthValue, Units.AngleUnit azimuthUnit, double heightValue, Units.LengthUnit heightUnit)
+        : this(new Units.Length(radiusValue, radiusUnit), new Units.Azimuth(azimuthValue, azimuthUnit), new Units.Length(heightValue, heightUnit))
+      { }
+
+      public double Radius { get => m_radius; init => m_radius = value; }
+      public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
+      public double Height { get => m_height; init => m_height = value; }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
@@ -83,18 +105,12 @@ namespace Flux
         return new((float)x, (float)y, (float)z);
       }
 
-      //#region Static methods
-      ///// <summary>Return a <see cref="CylindricalCoordinate"/> from the specified components.</summary>
-      //public static CylindricalCoordinate<TSelf> From(Quantities.Length radius, Azimuth azimuth, Quantities.Length height)
-      //  => new(
-      //    TSelf.CreateChecked(radius.Value),
-      //    TSelf.CreateChecked(azimuth.ToRadians()),
-      //    TSelf.CreateChecked(height.Value)
-      //  );
-      //#endregion Static methods
+      #region Static methods
+
+      #endregion // Static methods
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {Radius.ToValueString("N1")}, Azimuth = {Azimuth.ToValueString("N3")}, Height = {Height.ToValueString("N1")} }}"
+        => $"{GetType().GetNameEx()} {{ Radius = {m_radius.ToString("N1")}, Azimuth = {new Units.Azimuth(m_azimuth, Units.AngleUnit.Radian).ToValueString("N3")}, Height = {m_height.ToString("N1")} }}"
         + $" <{m_radius}, {m_azimuth}, {m_height}>";
 
       public override string ToString() => ToString(null, null);

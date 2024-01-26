@@ -40,36 +40,37 @@ namespace Flux
 
       /// <summary>Creates a new <see cref="Area"/> instance from the specified circle.</summary>
       /// <param name="radius">The radius of a circle.</param>
-      public static Area OfCircle(Length radius)
-        => new(System.Math.PI * radius.Value * radius.Value);
+      public static Area OfCircle(Length radius) => new(System.Math.PI * radius.Value * radius.Value);
+
+      /// <summary>Returns whether a point is inside the circle.</summary>
+      public bool OfCircleContains(Length radius, double x, double y) => System.Math.Pow(x, 2) + System.Math.Pow(y, 2) <= System.Math.Pow(radius.Value, 2);
 
       /// <summary>Creates a new <see cref="Area"/> instance from the specified cylinder.</summary>
       /// <param name="radius">The radius of a cylinder.</param>
       /// <param name="height">The height of a cylinder.</param>
-      public static Area OfCylinder(Length radius, Length height)
-        => new(2 * System.Math.PI * radius.Value * (radius.Value + height.Value));
+      public static Area OfCylinder(Length radius, Length height) => new(2 * System.Math.PI * radius.Value * (radius.Value + height.Value));
 
       /// <summary>Creates a new <see cref="Area"/> instance from the specified rectangle.</summary>
       /// <param name="semiMajorAxis">The longer radius.</param>
       /// <param name="semiMinorAxis">The shorter radius.</param>
-      public static Area OfEllipse(Length semiMajorAxis, Length semiMinorAxis)
-        => new(System.Math.PI * semiMajorAxis.Value * semiMinorAxis.Value);
+      public static Area OfEllipse(Length semiMajorAxis, Length semiMinorAxis) => new(System.Math.PI * semiMajorAxis.Value * semiMinorAxis.Value);
+
+      /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
+      public bool OfEllipseContains(Length semiMajorAxis, Length semiMinorAxis, double x, double y, double rotationAngle = 0)
+        => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (semiMajorAxis.Value * semiMajorAxis.Value) + System.Math.Pow(sin * x - cos * y, 2) / (semiMinorAxis.Value * semiMinorAxis.Value) <= 1;
 
       /// <summary>Creates a new <see cref="Area"/> instance from the specified hexagon.</summary>
       /// <param name="radius">The radius and length of one side of a hexagon are both the same.</param>
-      public static Area OfHexagon(Length radius)
-        => new(3 * System.Math.Sqrt(3) / 2 * System.Math.Pow(radius.Value, 2));
+      public static Area OfHexagon(Length radius) => new(3 * System.Math.Sqrt(3) / 2 * System.Math.Pow(radius.Value, 2));
 
       /// <summary>Creates a new <see cref="Area"/> instance from the specified rectangle.</summary>
       /// <param name="length">The length of a rectangle.</param>
       /// <param name="width">The width of a rectangle.</param>
-      public static Area OfRectangle(Length length, Length width)
-        => new(length.Value * width.Value);
+      public static Area OfRectangle(Length length, Length width) => new(length.Value * width.Value);
 
       /// <summary>Creates a new <see cref="Area"/> instance from the specified sphere.</summary>
       /// <param name="radius">The radius of a sphere.</param>
-      public static Area OfSphere(Length radius)
-         => new(4d * System.Math.PI * System.Math.Pow(radius.Value, 2));
+      public static Area OfSphere(Length radius) => new(4d * System.Math.PI * System.Math.Pow(radius.Value, 2));
 
       #endregion Static methods
 

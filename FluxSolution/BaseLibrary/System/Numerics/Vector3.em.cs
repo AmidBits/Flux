@@ -4,6 +4,9 @@ namespace Flux
   {
     #region 3D vector (non-collection) computations
 
+    public static float AbsoluteSum(this System.Numerics.Vector3 source)
+      => System.Math.Abs(source.X) + System.Math.Abs(source.Y) + System.Math.Abs(source.Z);
+
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 before, System.Numerics.Vector3 after)
       => AngleTo(before - source, after - source);
@@ -31,12 +34,33 @@ namespace Flux
     /// <summary>Compute the Chebyshev length of a vector.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static float ChebyshevLength(this System.Numerics.Vector3 source, float edgeLength = 1)
-      => float.Max(float.Max(source.X, source.Y), source.Z) / edgeLength;
+      => System.Math.Max(System.Math.Max(source.X, source.Y), source.Z) / edgeLength;
+
+    /// <summary>Returns the dot product of two non-normalized 3D vectors.</summary>
+    /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
+    /// <see href="https://gamedev.stackexchange.com/a/89832/129646"/>
+    public static float DotProductEx(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
+      => (float)(System.Numerics.Vector3.Dot(a, b) / System.Math.Sqrt(a.LengthSquared() * b.LengthSquared()));
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static float ManhattanLength(this System.Numerics.Vector3 source, float edgeLength = 1)
       => (System.Math.Abs(source.X) + System.Math.Abs(source.Y) + System.Math.Abs(source.Z)) / edgeLength;
+
+    /// <summary>Lerp is a normalized linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
+    public static System.Numerics.Vector3 Nlerp(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float mu)
+      => System.Numerics.Vector3.Normalize(System.Numerics.Vector3.Lerp(source, target, mu));
+
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Orthant"/>
+    public static int OrthantNumber(this System.Numerics.Vector3 source, System.Numerics.Vector3 center, OrthantNumbering numbering)
+      => numbering switch
+      {
+        OrthantNumbering.Traditional => source.Z >= center.Z ? (source.Y >= center.Y ? (source.X >= center.X ? 0 : 1) : (source.X >= center.X ? 3 : 2)) : (source.Y >= center.Y ? (source.X >= center.X ? 7 : 6) : (source.X >= center.X ? 4 : 5)),
+        OrthantNumbering.BinaryNegativeAs1 => (source.X >= center.X ? 0 : 1) + (source.Y >= center.Y ? 0 : 2) + (source.Z >= center.Z ? 0 : 4),
+        OrthantNumbering.BinaryPositiveAs1 => (source.X < center.X ? 0 : 1) + (source.Y < center.Y ? 0 : 2) + (source.Z < center.Z ? 0 : 4),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
 
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalised, and does not normalise the output.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
@@ -63,6 +87,32 @@ namespace Flux
       var theta = System.MathF.Acos(dot) * percent; // Angle between start and desired.
       var relative = System.Numerics.Vector3.Normalize(target - source * dot);
       return source * System.MathF.Cos(theta) + relative * System.MathF.Sin(theta);
+    }
+
+    /// <summary>Returns a quaternion from two vectors.
+    /// <para><see href="http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final"/></para>
+    /// <para><see href="http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors"/></para>
+    /// </summary>
+    public static System.Numerics.Quaternion ToQuaternion(this System.Numerics.Vector3 source, System.Numerics.Vector3 target)
+    {
+      var norm_u_norm_v = System.Math.Sqrt(System.Numerics.Vector3.Dot(source, source) * System.Numerics.Vector3.Dot(target, target));
+      var real_part = (float)norm_u_norm_v + System.Numerics.Vector3.Dot(source, target);
+
+      System.Numerics.Vector3 w;
+
+      if (real_part < Maths.Epsilon1E7 * norm_u_norm_v)
+      {
+        real_part = 0;
+
+        // If u and v are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis. Axis normalisation can happen later, when we normalise the quaternion.
+        w = System.Math.Abs(source.X) > System.Math.Abs(source.Z) ? new System.Numerics.Vector3(-source.Y, source.X, 0) : new System.Numerics.Vector3(0, -source.Z, source.Y);
+      }
+      else
+      {
+        w = System.Numerics.Vector3.Cross(source, target);
+      }
+
+      return System.Numerics.Quaternion.Normalize(new System.Numerics.Quaternion(w.X, w.Y, w.Z, real_part));
     }
 
     /// <summary>Create a new vector by computing the vector triple product (Lagrange's formula), i.e. the cross product of one vector with the cross product of the other two.</summary>
