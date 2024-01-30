@@ -92,7 +92,7 @@ namespace Flux
 
       if (scale <= 0) throw new System.ArgumentOutOfRangeException(nameof(scale));
 
-      return mu + scale * System.Math.Tan(System.Math.PI * (NextUniform(source) - 0.5));
+      return mu + scale * double.TanPi(NextUniform(source) - 0.5);
     }
 
     /// <summary>Returns a random System.DateTime in the interval [<see cref="System.DateTime.MinValue"/>, <see cref="System.DateTime.MaxValue"/>).</summary>

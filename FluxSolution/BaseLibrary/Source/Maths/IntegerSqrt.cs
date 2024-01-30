@@ -4,6 +4,32 @@ namespace Flux
   {
 #if NET7_0_OR_GREATER
 
+    // Testing Stuff
+    //public static TSelf GenericSquareRoot<TSelf>(this TSelf number)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //{
+    //  AssertNonNegative(number);
+
+    //  //if (TryFastIntegerSqrt(number, out var root)) // Testing!
+    //  //  return root;
+
+
+
+    //  var x0 = TSelf.CreateChecked(System.Numerics.BigInteger.One << (System.Numerics.BigInteger.CreateChecked(number).GetShortestBitLength() / 2 + 1)); // The least power of two bigger than the square number.
+
+    //  if (!TSelf.IsZero(x0))
+    //  {
+    //    while (((x0 + number / x0) / (TSelf.One + TSelf.One)) is var x1 && x1 < x0)
+    //      x0 = x1;
+
+    //    return x0;
+    //  }
+
+    //  return number;
+    //}
+
+
+
     /// <summary>
     /// <para>Returns the (floor) square root of the <paramref name="number"/>, using Newton's method.</para>
     /// <see href="https://en.wikipedia.org/wiki/Square_root"/>

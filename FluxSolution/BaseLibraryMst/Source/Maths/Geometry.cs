@@ -38,16 +38,16 @@ namespace Maths
     [TestMethod]
     public void GivenTwoPointsOnEachLine()
     {
-      var expected = (Flux.Geometric.IntersectTestLine.LinesIntersect, 17d / 11d, 14d / 11d);
-      var actual = Flux.Geometric.GivenTwoPointsOnEachLine(1, 1, 3, 2, 1, 4, 2, -1);
+      var expected = (Flux.Tools.IntersectTestLine.LinesIntersect, 17d / 11d, 14d / 11d);
+      var actual = Flux.Tools.GivenTwoPointsOnEachLine(1, 1, 3, 2, 1, 4, 2, -1);
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void GivenTwoPointsOnEachLineSegment()
     {
-      var expected = (Flux.Geometric.IntersectTestLineSegment.IntersectWithinFirst, 17d / 11d, 14d / 11d);
-      var actual = Flux.Geometric.GivenTwoPointsOnEachLineSegment(1, 1, 3, 2, 1, 4, 2, -1);
+      var expected = (Flux.Tools.IntersectTestLineSegment.IntersectWithinFirst, 17d / 11d, 14d / 11d);
+      var actual = Flux.Tools.GivenTwoPointsOnEachLineSegment(1, 1, 3, 2, 1, 4, 2, -1);
       Assert.AreEqual(expected, actual);
     }
 

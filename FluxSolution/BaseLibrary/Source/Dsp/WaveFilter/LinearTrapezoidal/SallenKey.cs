@@ -47,7 +47,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
       m_resonance = resonance;
       m_sampleRate = sampleRate;
 
-      var g = System.Math.Tan(System.Math.PI * (cutoff / sampleRate));
+      var g = double.TanPi(cutoff / sampleRate);
       k = 2.0 * resonance;
       a0 = 1.0 / (System.Math.Pow(1.0 + g, 2.0) - g * k);
       a1 = k * a0;

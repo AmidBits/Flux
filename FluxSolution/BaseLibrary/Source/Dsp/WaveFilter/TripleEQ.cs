@@ -28,13 +28,13 @@ namespace Flux.Dsp.WaveFilter
 
     public TripleEq(double lpfCutoff = 880, double hpfCutoff = 5000, double sampleRate = 44100)
     {
-      m_lpfCutoff = 2 * System.Math.Sin(System.Math.PI * (lpfCutoff / sampleRate));
+      m_lpfCutoff = 2 * double.SinPi(lpfCutoff / sampleRate);
       m_lpfPole1 = 0;
       m_lpfPole2 = 0;
       m_lpfPole3 = 0;
       m_lpfPole4 = 0;
 
-      m_hpfCutoff = 2 * System.Math.Sin(System.Math.PI * (hpfCutoff / sampleRate));
+      m_hpfCutoff = 2 * double.SinPi(hpfCutoff / sampleRate);
       m_hpfPole1 = 0;
       m_hpfPole2 = 0;
       m_hpfPole3 = 0;

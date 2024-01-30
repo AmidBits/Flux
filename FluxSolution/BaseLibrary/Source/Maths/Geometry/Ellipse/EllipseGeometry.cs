@@ -12,8 +12,8 @@ namespace Flux.Geometry
 
     public EllipseGeometry(double a, double b)
     {
-      m_a = a;
-      m_b = b;
+      m_a = System.Math.Max(a, b);
+      m_b = System.Math.Min(a, b);
     }
 
     public void Deconstruct(out double a, out double b) { a = m_a; b = m_b; }
@@ -24,9 +24,9 @@ namespace Flux.Geometry
     public double B => m_b;
 
     /// <summary>The semi-major axis of the ellipse. A semi-major axis is the longest radius.</summary>
-    public double SemiMajorAxis => System.Math.Max(m_a, m_b);
+    public double SemiMajorAxis => m_a;
     /// <summary>The semi-minor axis of the ellipse. A semi-minor axis is the shortest radius.</summary>
-    public double SemiMinorAxis => System.Math.Min(m_a, m_b);
+    public double SemiMinorAxis => m_b;
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
     public double Area => System.Math.PI * m_a * m_b;
@@ -71,43 +71,25 @@ namespace Flux.Geometry
     /// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
     public System.Collections.Generic.IEnumerable<TResult> CreateVectors<TResult>(double numberOfPoints, System.Func<double, double, TResult> resultSelector, double radOffset = 0, double maxRandomness = 0, System.Random? rng = null)
     {
-      rng ??= Random.NumberGenerators.Crypto;
+      rng ??= System.Random.Shared;
 
-      var circularArc = System.Math.Tau / numberOfPoints;
+      var arc = System.Math.Tau / numberOfPoints;
 
-      for (var segment = 0; segment < numberOfPoints; segment++)
+      for (var index = 0; index < numberOfPoints; index++)
       {
-        var angle = radOffset + segment * circularArc;
+        var angle = radOffset + index * arc;
 
         if (maxRandomness > 0)
-          angle += rng.NextDouble(0, circularArc * maxRandomness);
+          angle += rng.NextDouble(0, arc * maxRandomness);
 
         var (x, y) = Units.Angle.RotationAngleToCartesian2Ex(angle);
+
+        // Looking to add rotation angle to the struct. ;)
+        //var xy = System.Numerics.Vector2.Transform(new System.Numerics.Vector2((float)x, (float)y), new System.Numerics.Quaternion(System.Numerics.Vector3.Zero, (float)System.Math.PI));
 
         yield return resultSelector(x * m_a, y * m_b);
       }
     }
-
-    /// <summary>
-    /// <para>The eccentricity of a conic section is a non-negative real number that uniquely characterizes its shape. One can think of the eccentricity as a measure of how much a conic section deviates from being circular. The eccentricity of an ellipse which is not a circle is greater than zero but less than 1.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
-    /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
-    /// </summary>
-    public double Eccentricity => LinearEccentricity / SemiMajorAxis;
-
-    /// <summary>
-    /// <para>The eccentricity can be expressed in terms of the flattening f (defined as 1-b/a for semimajor axis a and semiminor axis b).</para>
-    /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
-    /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
-    /// </summary>
-    public double Flattening => 1 - SemiMinorAxis / SemiMajorAxis;
-
-    /// <summary>
-    /// <para>First eccentricity.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
-    /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
-    /// </summary>
-    public double FirstEccentricity => System.Math.Sqrt(1 - System.Math.Pow(SemiMinorAxis, 2) / System.Math.Pow(SemiMajorAxis, 2));
 
     /// <summary>
     /// <para>The linear eccentricity of an ellipse or hyperbola, denoted c (or sometimes f or e), is the distance between its center and either of its two foci.</para>
@@ -115,34 +97,59 @@ namespace Flux.Geometry
     /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
     /// <remarks>In the case of ellipses and hyperbolas the linear eccentricity is sometimes called the half-focal separation.</remarks>
-    public double LinearEccentricity => System.Math.Sqrt(System.Math.Pow(SemiMajorAxis, 2) - System.Math.Pow(SemiMinorAxis, 2));
+    public double LinearEccentricity => System.Math.Sqrt(System.Math.Pow(m_a, 2) - System.Math.Pow(m_b, 2));
+
+    /// <summary>
+    /// <para>First eccentricity.</para>
+    /// <para>The eccentricity of a conic section is a non-negative real number that uniquely characterizes its shape. One can think of the eccentricity as a measure of how much a conic section deviates from being circular. The eccentricity of an ellipse which is not a circle is greater than zero but less than 1.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
+    /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
+    /// </summary>
+    public double FirstEccentricity => System.Math.Sqrt(1 - System.Math.Pow(m_b, 2) / System.Math.Pow(m_a, 2));
 
     /// <summary>
     /// <para>Second eccentricity.</para>
     /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
     /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    /// <param name="a">The semimajor axis.</param>
-    /// <param name="b">The semiminor axis.</param>
-    public double SecondEccentricity => System.Math.Sqrt(System.Math.Pow(SemiMajorAxis, 2) / System.Math.Pow(SemiMinorAxis, 2) - 1);
+    public double SecondEccentricity => System.Math.Sqrt(System.Math.Pow(m_a, 2) / System.Math.Pow(m_b, 2) - 1);
 
     /// <summary>
     /// <para>Third eccentricity.</para>
     /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
     /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    /// <param name="a">The semimajor axis.</param>
-    /// <param name="b">The semiminor axis.</param>
     public double ThirdEccentricity
     {
       get
       {
-        var a2 = System.Math.Pow(SemiMajorAxis, 2);
-        var b2 = System.Math.Pow(SemiMinorAxis, 2);
+        var a2 = System.Math.Pow(m_a, 2);
+        var b2 = System.Math.Pow(m_b, 2);
 
         return System.Math.Sqrt(a2 - b2) / System.Math.Sqrt(a2 + b2);
       }
     }
+
+    /// <summary>
+    /// <para>First flattening.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Flattening"/>
+    /// <seealso href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
+    /// </summary>
+    public double FirstFlattening => (m_a - m_b) / m_a;
+
+    /// <summary>
+    /// <para>Second flattening.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Flattening"/>
+    /// <seealso href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
+    /// </summary>
+    public double SecondFlattening => (m_a - m_b) / m_b;
+
+    /// <summary>
+    /// <para>Third flattening.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Flattening"/>
+    /// <seealso href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
+    /// </summary>
+    public double ThirdFlattening => (m_a - m_b) / (m_a + m_b);
 
     #region Static methods
 

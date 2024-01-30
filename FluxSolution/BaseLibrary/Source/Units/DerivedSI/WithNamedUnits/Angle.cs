@@ -199,13 +199,13 @@
 
       /// <summary>Convert the specified counter-clockwise rotation angle [0, PI*2] (i.e. radians) where 'zero' is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-      public static (double x, double y) RotationAngleToCartesian2(double radAngle)
-        => (System.Math.Cos(radAngle), System.Math.Sin(radAngle));
+      public static (double x, double y) RotationAngleToCartesian2(double radAngle, double? radius = null)
+        => System.Math.SinCos(radAngle) is var (sin, cos) && radius.HasValue ? (cos * radius.Value, sin * radius.Value) : (cos, sin);
 
       /// <summary>Convert the specified clockwise rotation angle [0, PI*2] (i.e. radians) where 'zero' is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-      public static (double x, double y) RotationAngleToCartesian2Ex(double radAngle)
-        => RotationAngleToCartesian2(System.Math.Tau - (radAngle % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2);
+      public static (double x, double y) RotationAngleToCartesian2Ex(double radAngle, double? radius = null)
+        => RotationAngleToCartesian2(System.Math.Tau - (radAngle % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2, radius);
       //=> (-System.Math.Sin(radAngle), System.Math.Cos(radAngle));
 
       public static double SexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds)

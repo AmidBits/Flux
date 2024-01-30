@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net.WebSockets;
+using System.Numerics;
+using System.Runtime.Intrinsics;
 using Flux;
 
 // C# Interactive commands:
@@ -27,14 +31,63 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var sc = Zamplez.TakapauNewZealand.ToSphericalCoordinate();
+      var x = 2d;
+      var y = 3.01;
+      var z = 4;
 
-      var vr = new Flux.ValueRange<double>(5, 16);
+      var s = x * x + y * y + z * z;
+      var sr = System.Math.Sqrt(s);
 
-      foreach (var v in vr.IterateRange(1.15, SortOrder.Ascending, IntervalNotation.HalfOpenRight, 2))
-        System.Console.WriteLine($"{v}");
+      var count1 = System.Numerics.Vector<double>.Count;
+      var count2 = System.Numerics.Vector<int>.Count;
+
+      var v = Flux.Vector.Create(x, y, z);
+
+      var vp2 = v.Pow(4);
+      var vp2sqrt = System.Numerics.Vector.SquareRoot(vp2);
+
+      var rv = v.EuclideanLength();
+
+      var sr2 = System.Numerics.Vector.SquareRoot(new System.Numerics.Vector<double>(System.Numerics.Vector.Sum(System.Numerics.Vector.Multiply(v, v)))).ToScalar();
+
+      var sx = System.Math.Sqrt(x * x);
+      var sy = System.Math.Sqrt(y * y);
+      var sz = System.Math.Sqrt(z * z);
+
+      var s1 = sx + sy + sz;
+      var s2 = sx * sx + sy * sy + sz * sz;
+
+      //var root = (81.5).TestSqrt();
+      //var square = root * root;
+
+      for (var i = 1; i < 10; i++)
+        System.Console.WriteLine($"{i} : {Flux.Geometry.HexagonGeometry.CenteredHexagonalNumber(i)}");
+
+      var ir = Flux.Geometry.HexagonGeometry.ComputeInradius(1);
+      var cr = Flux.Geometry.HexagonGeometry.ComputeCircumradius(ir);
+
+      System.Console.WriteLine($"{1} : {ir} : {cr}");
+
+      for (var i = 1; i < 10; i++)
+      {
+        var chn = Flux.Geometry.HexagonGeometry.CenteredHexagonalNumber(i);
+        var idx = Flux.Geometry.HexagonGeometry.IndexOfCenteredHexagonalNumber(chn);
+        var rs = Flux.Geometry.HexagonGeometry.GetHexagonCountOfRing(i);
+
+        System.Console.WriteLine($"{i} : {chn} : {idx} : {rs}");
+      }
+
+      var ve = new Flux.Geometry.EllipseGeometry(9, 4);
+
+      var vs = new System.Numerics.Vector2(10, 10);
+      var hc = vs.GenerateEllipseVectors(6, 0, 0, null);
+      var hca = hc.ComputeArea();
+      var hcas = hc.ComputeAreaSigned();
+      var hcc = hc.ComputeCentroid();
+      var hcp = hc.ComputePerimeter();
+
     }
 
     private static void WriteFile()

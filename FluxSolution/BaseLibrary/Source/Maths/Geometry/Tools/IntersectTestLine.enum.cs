@@ -2,7 +2,7 @@ using Flux.Random;
 
 namespace Flux
 {
-  public static partial class Geometric
+  public static partial class Tools
   {
     public enum IntersectTestLine
     {

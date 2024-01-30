@@ -56,7 +56,7 @@ namespace Flux
       /// <summary>Returns the angular velocity from the (rotational) frequency.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
 
-      public AngularVelocity ToAngularVelocity()
+      public AngularFrequency ToAngularVelocity()
         => new(System.Math.Tau * m_hertz);
 
       /// <summary>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</summary>
@@ -108,7 +108,7 @@ namespace Flux
       /// <param name="soundVelocity"></param>
       /// <param name="wavelength"></param>
 
-      public static Frequency From(LinearVelocity soundVelocity, Length wavelength)
+      public static Frequency From(Speed soundVelocity, Length wavelength)
         => new(soundVelocity.Value / wavelength.Value);
       #endregion Static methods
 

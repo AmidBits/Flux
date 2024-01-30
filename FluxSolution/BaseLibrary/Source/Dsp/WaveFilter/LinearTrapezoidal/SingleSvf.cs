@@ -55,7 +55,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
       m_gain = gain;
       m_sampleRate = sampleRate;
 
-      double g = System.Math.Tan(System.Math.PI * (cutoff / sampleRate));
+      double g = double.TanPi(cutoff / sampleRate);
       double k = 1.0 / Q;
 
       double A;

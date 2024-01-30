@@ -4,41 +4,153 @@ namespace Flux
   {
     #region 2D vector (non-collection) computations
 
-    /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
+    /// <summary>
+    /// <para>Returns the angle for the source point to the other two specified points.</para>
+    /// </summary>
     public static double AngleBetween(this System.Numerics.Vector2 source, System.Numerics.Vector2 before, System.Numerics.Vector2 after)
       => AngleTo(before - source, after - source);
 
-    /// <summary>(2D) Calculate the angle between the source vector and the specified target vector.
-    /// When dot eq 0 then the vectors are perpendicular.
-    /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
-    /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
+    /// <summary>
+    /// <para>(2D) Calculate the angle between the source vector and the specified target vector.</para>
+    /// <para>When dot eq 0 then the vectors are perpendicular.</para>
+    /// <para>When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).</para>
+    /// <para>When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).</para>
     /// </summary>
     public static double AngleTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target)
       => System.Math.Acos(System.Math.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
 
-    /// <summary>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</summary>
+    /// <summary>
+    /// <para>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</para>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+    /// </summary>
     public static float ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength = 1)
       => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
 
-    /// <summary>Returns the dot product of two non-normalized 3D vectors.</summary>
-    /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
+    /// <summary>
+    /// <para>Returns the dot product of two non-normalized 3D vectors.</para>
     /// <see href="https://gamedev.stackexchange.com/a/89832/129646"/>
+    /// </summary>
+    /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
     public static float DotProductEx(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
       => (float)(System.Numerics.Vector2.Dot(a, b) / System.Math.Sqrt(a.LengthSquared() * b.LengthSquared()));
 
+    /// <summary>
+    /// <para>Computes the perimeter of the specified ellipse.</para>
+    /// </summary>
+    /// <param name="semiMajorAxis">The longer radius.</param>
+    /// <param name="semiMinorAxis">The shorter radius.</param>
+    public static double EllipsePerimeter(this System.Numerics.Vector2 semiAxes)
+    {
+      var circle = System.Math.PI * (semiAxes.X + semiAxes.Y);
+
+      if (semiAxes.X == semiAxes.Y) // For a circle, use (PI * diameter);
+        return circle;
+
+      var h3 = 3 * System.Math.Pow(System.Math.Abs(semiAxes.X - semiAxes.Y), 2) / System.Math.Pow(semiAxes.X + semiAxes.Y, 2);
+
+      var ellipse = circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
+
+      return ellipse;
+    }
+
+    /// <summary>
+    /// <para>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, top pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, double.Tau / 6); // triangle, bottom pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, 0); // rectangle, horizontally and vertically pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, double.Tau / 8); // rectangle, vertically and horizontally flat</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, 0); // pentagon, horizontally pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, double.Tau / 10); // pentagon, vertically pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, 0); // hexagon, vertically flat (or horizontally pointy)</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, double.Tau / 12); // hexagon, horizontally flat (or vertically pointy)</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, 0); // octagon, horizontally and vertically pointy</para>
+    /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, double.Tau / 16); // octagon, vertically and horizontally flat</para>
+    /// </summary>
+    /// <param name="source">The radii (semi-major-axis and semi-minor-axis) which dictates the x and y radius of the vectors.</param>
+    /// <param name="count">The number of vectors to generate.</param>
+    /// <param name="radOffset">The offset in radians to apply to each vector.</param>
+    /// <param name="maxRandomness">The maximum randomness to allow for each vector. Must be in the range [0, 0.5].</param>
+    /// <param name="rng">The random number generator to use, or default if null.</param>
+    /// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
+    public static System.Numerics.Vector2[] GenerateEllipseVectors(this System.Numerics.Vector2 source, double count, double radOffset = 0, double maxRandomness = 0, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      var arc = System.Math.Tau / count;
+
+      var array = new System.Numerics.Vector2[int.CreateChecked(System.Math.Ceiling(count))];
+
+      for (var index = 0; index < count; index++)
+      {
+        var angle = radOffset + index * arc;
+
+        if (maxRandomness > 0)
+          angle += rng.NextDouble(0, arc * maxRandomness);
+
+        var (x, y) = Units.Angle.RotationAngleToCartesian2Ex(angle);
+
+        array[index] = new System.Numerics.Vector2((float)x * source.X, (float)y * source.Y);
+      }
+
+      return array;
+    }
+
+    /// <summary>
+    /// <para>Returns whether a point is inside the circle.</para>
+    /// </summary>
+    public static bool IsInCircle(this System.Numerics.Vector2 source, double radius)
+      => System.Math.Pow(source.X, 2) + System.Math.Pow(source.Y, 2) <= System.Math.Pow(radius, 2);
+
+    /// <summary>
+    /// <para>Returns whether a point (<paramref name="source"/>) is inside the optionally rotated (by <paramref name="rotationAngle"/> in radians, the default 0 means no rotation) ellipse (defined by the specified <paramref name="radii"/>).</para>
+    /// </summary>
+    public static bool IsInEllipse(this System.Numerics.Vector2 source, System.Numerics.Vector2 radii, double rotationAngle = 0)
+      => System.Math.SinCos(rotationAngle) is var (sin, cos) && (radii.X * radii.Y) is var xy && (System.Math.Pow(cos * source.X + sin * source.Y, 2) / xy + System.Math.Pow(sin * source.X - cos * source.Y, 2) / xy) <= 1;
+
+    /// <summary>
+    /// <para>Determines the inclusion of a vector <paramref name="source"/> in the (2D planar) polygon (defined by the specified <paramref name="vertices"/>). This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</para>
+    /// <see href="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
+    /// </summary>
+    public static int IsInPolygon(this System.Numerics.Vector2 source, System.Collections.Generic.IList<System.Numerics.Vector2> vertices)
+    {
+      if (vertices is null || vertices.Count < 3) throw new System.ArgumentNullException(nameof(vertices));
+
+      var wn = 0;
+
+      for (var i = 0; i < vertices.Count; i++)
+      {
+        var a = vertices[i];
+        var b = (i == vertices.Count - 1) ? vertices[0] : vertices[i + 1];
+
+        if (a.Y <= source.Y)
+        {
+          if (b.Y > source.Y && SideTest(source, a, b) > 0)
+            wn++;
+          else if (b.Y <= source.Y && SideTest(source, a, b) < 0)
+            wn--;
+        }
+      }
+
+      return wn;
+    }
+
     public static float LineSlopeX(this System.Numerics.Vector2 source)
       => System.MathF.CopySign(source.X / source.Y, source.X);
+
     public static float LineSlopeY(this System.Numerics.Vector2 source)
       => System.MathF.CopySign(source.Y / source.X, source.Y);
 
-    /// <summary>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</summary>
+    /// <summary>
+    /// <para>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</para>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+    /// </summary>
     public static float ManhattanLength(this System.Numerics.Vector2 source, float edgeLength = 1)
       => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength);
 
-    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    /// <summary>
+    /// <para>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</para>
     /// <see href="https://en.wikipedia.org/wiki/Orthant"/>
+    /// </summary>
     public static int OrthantNumber(this System.Numerics.Vector2 source, System.Numerics.Vector2 center, OrthantNumbering numbering)
       => numbering switch
       {
@@ -48,15 +160,22 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
       };
 
-    /// <summary>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</summary>
+    /// <summary>
+    /// <para>Returns a point -90 degrees perpendicular to the point, i.e. the point rotated 90 degrees counter clockwise. Only X and Y.</para>
+    /// </summary>
     public static System.Numerics.Vector2 PerpendicularCcw(this System.Numerics.Vector2 source)
       => new(-source.Y, source.X);
-    /// <summary>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</summary>
+
+    /// <summary>
+    /// <para>Returns a point 90 degrees perpendicular to the point, i.e. the point rotated 90 degrees clockwise. Only X and Y.</para>
+    /// </summary>
     public static System.Numerics.Vector2 PerpendicularCw(this System.Numerics.Vector2 source)
       => new(source.Y, -source.X);
 
-    /// <summary>Find the perpendicular distance from a point in a 2D plane to a line equation (ax+by+c=0).</summary>
+    /// <summary>
+    /// <para>Find the perpendicular distance from a point in a 2D plane to a line equation (ax+by+c=0).</para>
     /// <see href="https://www.geeksforgeeks.org/perpendicular-distance-between-a-point-and-a-line-in-2-d/"/>
+    /// </summary>
     /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
     /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
     /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
@@ -64,7 +183,9 @@ namespace Flux
     public static double PerpendicularDistance(this System.Numerics.Vector2 source, float a, float b, float c)
       => System.Math.Abs(a * source.X + b * source.Y + c) / System.Math.Sqrt(a * a + b * b);
 
-    /// <summary>Perpendicular distance to the to the line.</summary>
+    /// <summary>
+    /// <para>Perpendicular distance to the to the line.</para>
+    /// </summary>
     public static double PerpendicularDistanceToLine(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
     {
       var bma = b - a;
@@ -72,8 +193,10 @@ namespace Flux
       return (bma * (source - a)).Length() / bma.Length();
     }
 
-    /// <summary>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</summary>
+    /// <summary>
+    /// <para>Find foot of perpendicular from a point in 2D a plane to a line equation (ax+by+c=0).</para>
     /// <see href="https://www.geeksforgeeks.org/find-foot-of-perpendicular-from-a-point-in-2-d-plane-to-a-line/"/>
+    /// </summary>
     /// <param name="a">Represents a of the line equation (ax+by+c=0).</param>
     /// <param name="b">Represents b of the line equation (ax+by+c=0).</param>
     /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
@@ -84,15 +207,20 @@ namespace Flux
     /// <summary>Rotate the vector around the specified axis.</summary>
     public static System.Numerics.Vector2 RotateAroundAxis(this System.Numerics.Vector2 source, System.Numerics.Vector3 axis, float angle)
       => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromAxisAngle(axis, angle));
+
     /// <summary>Rotate the vector around the world axes.</summary>
     public static System.Numerics.Vector2 RotateAroundWorldAxes(this System.Numerics.Vector2 source, float yaw, float pitch, float roll)
       => System.Numerics.Vector2.Transform(source, System.Numerics.Quaternion.CreateFromYawPitchRoll(yaw, pitch, roll));
 
-    /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>
+    /// <summary>
+    /// <para>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</para>
+    /// </summary>
     public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
       => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (source.Y - b.Y) * (a.X - b.X));
 
-    /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
+    /// <summary>
+    /// <para>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</para>
+    /// </summary>
     public static System.Numerics.Vector2 Slerp(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
     {
       var dot = System.Math.Clamp(System.Numerics.Vector2.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
@@ -115,9 +243,6 @@ namespace Flux
 
       return (dx == 0) || (dy == 0) ? (0, 0) : (dx / dy, dy / dx);
     }
-
-    //public static Geometry.Ellipse ToEllipse(this System.Numerics.Vector2 vector2)
-    //  => new Geometry.Ellipse(System.Math.Sqrt(vector2.X * vector2.X + vector2.Y * vector2.Y), System.Math.Atan2(vector2.Y, vector2.X));
 
     #endregion // 2D vector (non-collection) computations
 

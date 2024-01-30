@@ -60,7 +60,7 @@
       m_Q = Q;
       m_sampleRate = sampleRate;
 
-      g = System.Math.Tan(System.Math.PI * (cutoff / sampleRate));
+      g = double.TanPi(cutoff / sampleRate);
       k = 1.0 / Q;
       a1 = 1.0 / (1.0 + g * (g + k));
       a2 = g * a1;

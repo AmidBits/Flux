@@ -22,7 +22,7 @@ namespace Flux
       KilogramPerSquareSecond
     }
 
-    /// <summary>Magnetic flux density unit of tesla.</summary>
+    /// <summary>Magnetic flux density (B), unit of tesla.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
     public readonly record struct MagneticFluxDensity
       : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxDensityUnit>
