@@ -487,16 +487,19 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Radix o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToValueString(string? format, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
+      public string ToValueString(QuantifiableValueStringOptions options = default)
+        => string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", m_value);
 
+      /// <summary>
+      /// <para>The <see cref="Radix.Value"/> property is a radix in the closed interval [<see cref="MinRadix"/>, <see cref="MaxRadix"/>].</para>
+      /// </summary>
       public int Value => m_value;
 
       #endregion Implemented interfaces
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public override string ToString() => ToValueString(null, false, false);
+      public override string ToString() => ToValueString();
     }
   }
 }

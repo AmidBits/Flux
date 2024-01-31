@@ -2,11 +2,11 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.ElectricCurrentUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.ElectricCurrentUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.ElectricCurrentUnit.Ampere => "A",
-        Units.ElectricCurrentUnit.Milliampere => preferUnicode ? "\u3383" : "mA",
+        Units.ElectricCurrentUnit.Milliampere => options.PreferUnicode ? "\u3383" : "mA",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -15,7 +15,7 @@ namespace Flux
   {
     public enum ElectricCurrentUnit
     {
-      /// <summary>This is the default unit for mass.</summary>
+      /// <summary>This is the default unit for <see cref="ElectricCurrent"/>.</summary>
       Ampere,
       Milliampere,
     }
@@ -79,12 +79,14 @@ namespace Flux
       public int CompareTo(ElectricCurrent other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(new(format, formatProvider));
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="ElectricCurrent.Value"/> property is in <see cref="ElectricCurrentUnit.Ampere"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -96,8 +98,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ElectricCurrentUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(ElectricCurrentUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

@@ -139,7 +139,7 @@
     {
       throw new System.NotImplementedException();
 
-      return this;
+      //return this;
     }
 
     public void Not()
@@ -175,7 +175,7 @@
     {
       throw new System.NotImplementedException();
 
-      return this;
+      //return this;
     }
 
     /// <summary>

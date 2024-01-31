@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.EnplethyUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.EnplethyUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
-        Units.EnplethyUnit.Mole => preferUnicode ? "\u33D6" : "mol",
+        Units.EnplethyUnit.Mole => options.PreferUnicode ? "\u33D6" : "mol",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -76,9 +76,11 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Enplethy.Value"/> property is in <see cref="EnplethyUnit.Mole"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -89,8 +91,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(EnplethyUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(EnplethyUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format($"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

@@ -14,12 +14,12 @@ namespace Flux
 
   namespace DataStructures
   {
-    public class IndexKeyValue<TKey, TValue>
+    public readonly record struct IndexKeyValue<TKey, TValue>
       where TKey : notnull
     {
-      private int m_index;
-      private TKey m_key;
-      private TValue m_value;
+      private readonly int m_index;
+      private readonly TKey m_key;
+      private readonly TValue m_value;
 
       public IndexKeyValue(int index, TKey key, TValue value)
       {
@@ -32,7 +32,7 @@ namespace Flux
       public TKey Key => m_key;
       public TValue Value => m_value;
 
-      public System.Collections.Generic.KeyValuePair<TKey, TValue> ToKeyValuePair() => new KeyValuePair<TKey, TValue>(m_key, m_value);
+      public System.Collections.Generic.KeyValuePair<TKey, TValue> ToKeyValuePair() => new(m_key, m_value);
     }
 
     public sealed class OrderedDictionary<TKey, TValue>

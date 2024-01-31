@@ -2,13 +2,13 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.CapacitanceUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.CapacitanceUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.CapacitanceUnit.Farad => "F",
-        Units.CapacitanceUnit.MicroFarad => preferUnicode ? "\u338C" : "\u00B5F",
-        Units.CapacitanceUnit.NanoFarad => preferUnicode ? "\u338B" : "nF",
-        Units.CapacitanceUnit.PicoFarad => preferUnicode ? "\u338A" : "pF",
+        Units.CapacitanceUnit.MicroFarad => options.PreferUnicode ? "\u338C" : "\u00B5F",
+        Units.CapacitanceUnit.NanoFarad => options.PreferUnicode ? "\u338B" : "nF",
+        Units.CapacitanceUnit.PicoFarad => options.PreferUnicode ? "\u338A" : "pF",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -17,7 +17,7 @@ namespace Flux
   {
     public enum CapacitanceUnit
     {
-      /// <summary>Farad.</summary>
+      /// <summary>This is the default unit for <see cref="Capacitance"/>.</summary>
       Farad,
       MicroFarad,
       NanoFarad,
@@ -74,9 +74,11 @@ namespace Flux
       public int CompareTo(Capacitance other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Capacitance.Value"/> property is in <see cref="CapacitanceUnit.Farad"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -90,8 +92,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(CapacitanceUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(CapacitanceUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

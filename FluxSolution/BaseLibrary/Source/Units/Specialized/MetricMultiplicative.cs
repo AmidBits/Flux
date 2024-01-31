@@ -4,8 +4,8 @@ namespace Flux
   {
     public static double GetUnitFactor(this Units.MetricMultiplicativePrefix source)
       => System.Math.Pow(10, (int)source);
-    public static string GetUnitString(this Units.MetricMultiplicativePrefix source, bool preferUnicode, bool useFullName = false)
-      => useFullName ? source.ToString() : source switch
+    public static string GetUnitString(this Units.MetricMultiplicativePrefix source, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? source.ToString() : source switch
       {
         Units.MetricMultiplicativePrefix.Yotta => "Y",
         Units.MetricMultiplicativePrefix.Zetta => "Z",
@@ -16,7 +16,7 @@ namespace Flux
         Units.MetricMultiplicativePrefix.Mega => "M",
         Units.MetricMultiplicativePrefix.Kilo => "k",
         Units.MetricMultiplicativePrefix.Hecto => "h",
-        Units.MetricMultiplicativePrefix.Deca => preferUnicode ? "\u3372" : "da",
+        Units.MetricMultiplicativePrefix.Deca => options.PreferUnicode ? "\u3372" : "da",
         Units.MetricMultiplicativePrefix.One => string.Empty,
         Units.MetricMultiplicativePrefix.Deci => "d",
         Units.MetricMultiplicativePrefix.Centi => "c",
@@ -36,7 +36,11 @@ namespace Flux
   {
     public enum MetricMultiplicativePrefix
     {
+      /// <summary>A.k.a. one.</summary>
+      One = 0,
+      /// <summary></summary>
       Quetta = 30,
+      /// <summary></summary>
       Ronna = 27,
       /// <summary>A.k.a. septillion/quadrillion.</summary>
       Yotta = 24,
@@ -58,8 +62,6 @@ namespace Flux
       Hecto = 2,
       /// <summary>A.k.a. ten.</summary>
       Deca = 1,
-      /// <summary>A.k.a. one.</summary>
-      One = 0,
       /// <summary>A.k.a. tenth.</summary>
       Deci = -1,
       /// <summary>A.k.a. hundredth.</summary>
@@ -80,7 +82,9 @@ namespace Flux
       Zepto = -21,
       /// <summary>A.k.a. septillionth/quadrillionth.</summary>
       Yocto = -24,
+      /// <summary></summary>
       Ronto = -27,
+      /// <summary></summary>
       Quecto = -30,
     }
 
@@ -146,8 +150,8 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(MetricMultiplicativePrefix.One, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default)
+        => ToUnitValueString(MetricMultiplicativePrefix.One, options);
 
       public double Value => m_value;
 
@@ -155,8 +159,8 @@ namespace Flux
       public double GetUnitValue(MetricMultiplicativePrefix multiplicativePrefix)
         => m_value / multiplicativePrefix.GetUnitFactor();
 
-      public string ToUnitValueString(MetricMultiplicativePrefix multiplicativePrefix, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format($"{{0{(format is null ? string.Empty : $":format")}}}", GetUnitValue(multiplicativePrefix))}{(multiplicativePrefix.GetUnitString(preferUnicode, useFullName) is var prefix && prefix.Length > 0 ? $" {prefix}" : string.Empty)}";
+      public string ToUnitValueString(MetricMultiplicativePrefix multiplicativePrefix, QuantifiableValueStringOptions options = default)
+        => $"{string.Format($"{{0{(options.Format is null ? string.Empty : $":format")}}}", GetUnitValue(multiplicativePrefix))}{(multiplicativePrefix.GetUnitString(options) is var prefix && prefix.Length > 0 ? $" {prefix}" : string.Empty)}";
 
       #endregion Implemented interfaces
 

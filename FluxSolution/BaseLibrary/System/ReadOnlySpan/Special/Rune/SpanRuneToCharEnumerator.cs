@@ -27,9 +27,9 @@ namespace Flux
       m_current = default;
     }
 
-    public char Current => m_current;
+    public readonly char Current => m_current;
 
-    public SpanRuneToCharEnumerator GetEnumerator() => this;
+    public readonly SpanRuneToCharEnumerator GetEnumerator() => this;
 
     public bool MoveNext()
     {

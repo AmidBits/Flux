@@ -67,9 +67,12 @@ namespace Flux
       #region Implemented interfaces
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+      public string ToValueString(QuantifiableValueStringOptions options = default)
         => RatioFormat.AcolonB.ToRatioString(m_numerator, m_denominator);
 
+      /// <summary>
+      /// <para>The <see cref="Radio.Value"/> property is the ratio between <see cref="Numerator"/> and <see cref="Denominator"/>, i.e. <see cref="Numerator"/>/<see cref="Denominator"/>.</para>
+      /// </summary>
       public double Value => m_numerator / m_denominator;
 
       #endregion Implemented interfaces

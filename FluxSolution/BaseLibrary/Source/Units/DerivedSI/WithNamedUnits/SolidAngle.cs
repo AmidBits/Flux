@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.SolidAngleUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.SolidAngleUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
-        Units.SolidAngleUnit.Steradian => preferUnicode ? "\u33DB" : "sr",
+        Units.SolidAngleUnit.Steradian => options.PreferUnicode ? "\u33DB" : "sr",
         Units.SolidAngleUnit.Spat => "sp",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -15,7 +15,7 @@ namespace Flux
   {
     public enum SolidAngleUnit
     {
-      /// <summary>Steradian.</summary>
+      /// <summary>This is the default unit for <see cref="SolidAngle"/>.</summary>
       Steradian,
       Spat,
     }
@@ -71,9 +71,11 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="SolidAngle.Value"/> property is in <see cref="SolidAngleUnit.Steradian"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -85,8 +87,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(SolidAngleUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(SolidAngleUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

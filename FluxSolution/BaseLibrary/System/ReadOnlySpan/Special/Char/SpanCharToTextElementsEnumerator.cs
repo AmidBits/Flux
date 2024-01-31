@@ -23,9 +23,9 @@ namespace Flux
       m_current = new Text.TextElement(System.ReadOnlySpan<char>.Empty);
     }
 
-    public Text.TextElement Current => m_current;
+    public readonly Text.TextElement Current => m_current;
 
-    public SpanCharToTextElementEnumerator GetEnumerator() => this;
+    public readonly SpanCharToTextElementEnumerator GetEnumerator() => this;
 
     public bool MoveNext()
     {

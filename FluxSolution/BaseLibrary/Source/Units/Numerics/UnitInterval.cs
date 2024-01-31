@@ -81,9 +81,12 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
+      public string ToValueString(QuantifiableValueStringOptions options = default)
+        => string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", m_value);
 
+      /// <summary>
+      /// <para>The <see cref="UnitInterval.Value"/> property is a value of the unit interval, between <see cref="MinValue"/> and <see cref="MaxValue"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       #endregion Implemented interfaces

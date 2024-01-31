@@ -60,7 +60,7 @@ namespace Flux
     {
       var isNegative = text[0]!.Equals(negativeSymbol);
 
-      var indices = ConvertSymbolsToIndices(text.Slice(isNegative ? 1 : 0).ToList(), alphabet);
+      var indices = ConvertSymbolsToIndices(text[(isNegative ? 1 : 0)..].ToList(), alphabet);
 
       Units.Radix.TryConvertPositionalNotationIndicesToNumber(indices, alphabet.Count, out TSelf value);
 

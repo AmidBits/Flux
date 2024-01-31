@@ -2,13 +2,13 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PartsPerNotationUnit source, bool preferUnicode, bool useFullName = false)
-      => useFullName ? source.ToString() : source switch
+    public static string GetUnitString(this Units.PartsPerNotationUnit source, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? source.ToString() : source switch
       {
         Units.PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
         Units.PartsPerNotationUnit.PartsPerTrillion => "ppt",
         Units.PartsPerNotationUnit.PartsPerBillion => "ppb",
-        Units.PartsPerNotationUnit.PartsPerMillion => preferUnicode ? "\u33D9" : "ppm",
+        Units.PartsPerNotationUnit.PartsPerMillion => options.PreferUnicode ? "\u33D9" : "ppm",
         Units.PartsPerNotationUnit.PerCentMille => "pcm",
         Units.PartsPerNotationUnit.PerMyriad => "\u2031",
         Units.PartsPerNotationUnit.PerMille => "\u2030",
@@ -26,10 +26,10 @@ namespace Flux
   {
     public enum PartsPerNotationUnit
     {
+      /// <summary>This is the default unit for <see cref="PartsPerNotation"/>.</summary>
+      Percent = 2,
       /// <summary>This represents a per one (i.e. so many to one).</summary>
       One = 1,
-      /// <summary>Percent.</summary>
-      Percent = 2,
       /// <summary>Permille.</summary>
       PerMille = 3,
       /// <summary>Permyriad.</summary>
@@ -111,9 +111,11 @@ namespace Flux
       public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="PartsPerNotation.Value"/> property is in <see cref="PartsPerNotationUnit.Percent"/>.</para>
+      /// </summary>
       public double Value => m_parts;
 
       // IUnitQuantifiable<>
@@ -132,8 +134,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PartsPerNotationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(PartsPerNotationUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

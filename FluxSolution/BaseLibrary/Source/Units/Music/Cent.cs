@@ -72,9 +72,12 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Cent o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+      public string ToValueString(QuantifiableValueStringOptions options = default)
         => $"{m_value} cent{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
+      /// <summary>
+      /// <para>The <see cref="Cent.Value"/> property is a musical interval in cents.</para>
+      /// </summary>
       public int Value => m_value;
 
       #endregion Implemented interfaces

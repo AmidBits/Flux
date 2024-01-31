@@ -811,7 +811,7 @@ namespace Flux
       #endregion IConvertible
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+      public string ToValueString(QuantifiableValueStringOptions options = default)
         => IsProper
         ? RatioFormat.AslashB.ToRatioString(m_numerator, m_denominator)
         : TryGetMixedParts(this, out var wholeNumber, out var properNumerator, out var properDenominator)

@@ -16,7 +16,7 @@ namespace Flux.Globalization.EnUs
     public string NXX { get; private set; }
     public string XXXX { get; private set; }
 
-    public bool IsValid
+    public readonly bool IsValid
       => MatchingRegex().IsMatch(ToString()!);
 
     public static NorthAmericanNumberingPlan Parse(string text)
@@ -53,7 +53,7 @@ namespace Flux.Globalization.EnUs
 
     public static string TranslateAlphabeticMnemonics(string phoneNumberWithAlphabeticMnemonics)
     {
-      if (phoneNumberWithAlphabeticMnemonics is null) throw new System.ArgumentNullException(nameof(phoneNumberWithAlphabeticMnemonics));
+      System.ArgumentNullException.ThrowIfNull(phoneNumberWithAlphabeticMnemonics);
 
       var sb = new System.Text.StringBuilder();
 
@@ -76,7 +76,7 @@ namespace Flux.Globalization.EnUs
       return sb.ToString();
     }
 
-    public override string? ToString()
+    public readonly override string? ToString()
       => $"{CC}-{NPA}-{NXX}-{XXXX}";
   }
 }

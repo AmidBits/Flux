@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.EnergyUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.EnergyUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.EnergyUnit.Joule => "J",
         Units.EnergyUnit.ElectronVolt => "eV",
-        Units.EnergyUnit.Calorie => preferUnicode ? "\u3388" : "cal",
+        Units.EnergyUnit.Calorie => options.PreferUnicode ? "\u3388" : "cal",
         Units.EnergyUnit.WattHour => "W\u22C5h",
         Units.EnergyUnit.KilowattHour => "kW\u22C5h",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -18,7 +18,7 @@ namespace Flux
   {
     public enum EnergyUnit
     {
-      /// <summary>Joule.</summary>
+      /// <summary>This is the default unit for <see cref="Energy"/>.</summary>
       Joule,
       ElectronVolt,
       Calorie,
@@ -80,9 +80,11 @@ namespace Flux
       public int CompareTo(Energy other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Energy.Value"/> property is in <see cref="EnergyUnit.Joule"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -97,8 +99,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(EnergyUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(EnergyUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

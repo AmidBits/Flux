@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.MassUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.MassUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
-        Units.MassUnit.Milligram => preferUnicode ? "\u338E" : "mg",
+        Units.MassUnit.Milligram => options.PreferUnicode ? "\u338E" : "mg",
         Units.MassUnit.Gram => "g",
         Units.MassUnit.Ounce => "oz",
         Units.MassUnit.Pound => "lb",
-        Units.MassUnit.Kilogram => preferUnicode ? "\u338F" : "kg",
+        Units.MassUnit.Kilogram => options.PreferUnicode ? "\u338F" : "kg",
         Units.MassUnit.Tonne => "t",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -19,7 +19,7 @@ namespace Flux
   {
     public enum MassUnit
     {
-      /// <summary>This is the default unit for mass.</summary>
+      /// <summary>This is the default unit for <see cref="Mass"/>.</summary>
       Kilogram,
       Milligram,
       Gram,
@@ -89,9 +89,12 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default)
+        => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Mass.Value"/> property is in <see cref="MassUnit.Kilogram"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -107,8 +110,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(MassUnit unit, string? valueFormat = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(valueFormat is null ? string.Empty : $":{valueFormat}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(MassUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

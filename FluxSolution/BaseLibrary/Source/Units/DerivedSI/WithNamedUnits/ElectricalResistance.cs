@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.ElectricalResistanceUnit unit, bool preferUnicode = false, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.ElectricalResistanceUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
-        Units.ElectricalResistanceUnit.Ohm => preferUnicode ? "\u2126" : "ohm",
-        Units.ElectricalResistanceUnit.KiloOhm => preferUnicode ? "\u33C0" : "kiloohm",
-        Units.ElectricalResistanceUnit.MegaOhm => preferUnicode ? "\u33C1" : "megaohm",
+        Units.ElectricalResistanceUnit.Ohm => options.PreferUnicode ? "\u2126" : "ohm",
+        Units.ElectricalResistanceUnit.KiloOhm => options.PreferUnicode ? "\u33C0" : "kiloohm",
+        Units.ElectricalResistanceUnit.MegaOhm => options.PreferUnicode ? "\u33C1" : "megaohm",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -16,11 +16,9 @@ namespace Flux
   {
     public enum ElectricalResistanceUnit
     {
-      /// <summary>Ohm.</summary>
+      /// <summary>This is the default unit for <see cref="ElectricalResistance"/>.</summary>
       Ohm,
-      /// <summary>Kilo-Ohm.</summary>
       KiloOhm,
-      /// <summary>Mega-Ohm.</summary>
       MegaOhm,
     }
 
@@ -104,9 +102,11 @@ namespace Flux
       public int CompareTo(ElectricalResistance other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="ElectricalResistance.Value"/> property is in <see cref="ElectricalResistanceUnit.Ohm"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -119,8 +119,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ElectricalResistanceUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(ElectricalResistanceUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

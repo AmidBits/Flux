@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.ActivityUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.ActivityUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
-        Units.ActivityUnit.Becquerel => preferUnicode ? "\u33C3" : "Bq",
+        Units.ActivityUnit.Becquerel => options.PreferUnicode ? "\u33C3" : "Bq",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -14,7 +14,7 @@ namespace Flux
   {
     public enum ActivityUnit
     {
-      /// <summary>Becquerel.</summary>
+      /// <summary>This is the default unit for <see cref="Activity"/>.</summary>
       Becquerel,
     }
 
@@ -65,9 +65,11 @@ namespace Flux
       public int CompareTo(Activity other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Activity.Value"/> property is in <see cref="ActivityUnit.Becquerel"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -78,8 +80,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ActivityUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(ActivityUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

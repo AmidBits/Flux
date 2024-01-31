@@ -15,7 +15,7 @@ namespace Flux.Globalization.EnUs
     public string GG { get; private set; }
     public string SSSS { get; private set; }
 
-    public bool IsValid
+    public readonly bool IsValid
       => MatchingRegex().IsMatch(ToString()!);
 
     public static SocialSecurityNumber Parse(string text)
@@ -50,7 +50,7 @@ namespace Flux.Globalization.EnUs
       return false;
     }
 
-    public override string? ToString()
+    public readonly override string? ToString()
       => $"{AAA}-{GG}-{SSSS}";
   }
 }

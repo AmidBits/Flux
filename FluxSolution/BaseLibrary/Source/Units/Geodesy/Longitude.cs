@@ -80,23 +80,26 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Longitude o ? CompareTo(o) : -1;
 
     // IQuantifiable<>
-    public string ToValueString(string? format = null, bool preferUnicode = true, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+    public string ToValueString(QuantifiableValueStringOptions options = default)
     {
-      if (format is not null)
+      if (options.Format is not null)
       {
-        if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, preferUnicode, format.EndsWith(' '), culture);
-        if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, preferUnicode, format.EndsWith(' '), culture);
-        if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, preferUnicode, format.EndsWith(' '), culture);
+        if (options.Format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, options.PreferUnicode, options.Format.EndsWith(' '), options.CultureInfo);
+        if (options.Format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, options.PreferUnicode, options.Format.EndsWith(' '), options.CultureInfo);
+        if (options.Format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
+          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, options.PreferUnicode, options.Format.EndsWith(' '), options.CultureInfo);
 
-        return Angle.ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
+        return Angle.ToUnitValueString(AngleUnit.Degree, options);
       }
 
       return ToSexagesimalDegreeString();
     }
 
+    /// <summary>
+    ///  <para>The unit of the <see cref="Longitude.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
+    /// </summary>
     public double Value => m_angle.GetUnitValue(AngleUnit.Degree);
 
     #endregion Implemented interfaces

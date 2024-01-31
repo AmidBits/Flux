@@ -152,16 +152,19 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is MidiNote o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToValueString(string? format, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{GetScientificPitchNotationLabel(preferUnicode)}{GetOctave()}";
+      public string ToValueString(QuantifiableValueStringOptions options = default)
+        => $"{GetScientificPitchNotationLabel(options.PreferUnicode)}{GetOctave()}";
 
+      /// <summary>
+      /// <para>The <see cref="MidiNote.Value"/> property is a MIDI note number of the closed interval [<see cref="MinValue"/>, <see cref="MaxValue"/>].</para>
+      /// </summary>
       public int Value => m_number;
 
       #endregion Implemented interfaces
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public override string ToString() => ToValueString(null, false, false);
+      public override string ToString() => ToValueString();
     }
   }
 }

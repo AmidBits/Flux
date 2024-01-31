@@ -172,9 +172,12 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => format is null ? ToValueString() : m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+      public string ToValueString(QuantifiableValueStringOptions options = default)
         => ToDateString(GetConversionCalendar());
 
+      /// <summary>
+      /// <para>The <see cref="JulianDayNumber.Value"/> property is the Julian day number.</para>
+      /// </summary>
       public int Value => m_value;
 
       #endregion // Implemented interfaces

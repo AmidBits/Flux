@@ -31,7 +31,7 @@ namespace Flux
 
     public SplitEntry<T> Current { get; private set; }
 
-    public SplitEnumerator<T> GetEnumerator() // Compatibility with operator foreach.
+    public readonly SplitEnumerator<T> GetEnumerator() // Compatibility with operator foreach.
       => this;
 
     public bool MoveNext()

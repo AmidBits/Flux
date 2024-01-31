@@ -79,7 +79,7 @@ namespace Flux
 
         return FromAbbreviation(string.Concat(words.Select(s => s[0])));
 
-        bool StartsWith(System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
+        static bool StartsWith(System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
         {
           System.ArgumentNullException.ThrowIfNull(source);
           System.ArgumentNullException.ThrowIfNull(equalityComparer);
@@ -171,9 +171,12 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = true, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => Angle.ToUnitValueString(AngleUnit.Degree, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default)
+        => Angle.ToUnitValueString(AngleUnit.Degree, options);
 
+      /// <summary>
+      ///  <para>The unit of the <see cref="Azimuth.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
+      /// </summary>
       public double Value => m_angle.GetUnitValue(AngleUnit.Degree);
 
       #endregion // Implemented interfaces

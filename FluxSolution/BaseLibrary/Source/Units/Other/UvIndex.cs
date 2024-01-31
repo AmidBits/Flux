@@ -42,9 +42,12 @@ namespace Flux
       public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => string.Format(culture, $"UV Index {{0:{format ?? "N1"}}}", m_value);
+      public string ToValueString(QuantifiableValueStringOptions options = default)
+        => string.Format(options.CultureInfo, $"UV Index {{0:{options.Format ?? "N1"}}}", m_value);
 
+      /// <summary>
+      /// <para>The <see cref="UvIndex.Value"/> property is the ultraviolet index.</para>
+      /// </summary>
       public double Value => m_value;
 
       #endregion Implemented interfaces

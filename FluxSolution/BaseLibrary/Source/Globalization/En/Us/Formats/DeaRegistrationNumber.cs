@@ -22,7 +22,7 @@ namespace Flux.Globalization.EnUs
     public string Checksum { get; private set; }
     public string AffixedID { get; private set; }
 
-    public bool IsValid
+    public readonly bool IsValid
       => MatchingRegex().IsMatch(ToString()!);
 
     public static DeaRegistrationNumber Parse(string text)
@@ -59,7 +59,7 @@ namespace Flux.Globalization.EnUs
       return false;
     }
 
-    public override string? ToString()
+    public readonly override string? ToString()
       => $"{RegistrantType}{RegistrantLastNameOr9}{Digits}{Checksum}-{AffixedID}";
   }
 }

@@ -2,24 +2,24 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.LengthUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.LengthUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
-        Units.LengthUnit.Femtometer => preferUnicode ? "\u3399" : "fm",
-        Units.LengthUnit.Nanometer => preferUnicode ? "\u339A" : "nm",
-        Units.LengthUnit.Micrometer => preferUnicode ? "\u339B" : "µm",
-        Units.LengthUnit.Millimeter => preferUnicode ? "\u339C" : "mm",
-        Units.LengthUnit.Centimeter => preferUnicode ? "\u339D" : "cm",
-        Units.LengthUnit.Inch => preferUnicode ? "\u33CC" : "in",
-        Units.LengthUnit.Decimeter => preferUnicode ? "\u3377" : "dm",
+        Units.LengthUnit.Femtometer => options.PreferUnicode ? "\u3399" : "fm",
+        Units.LengthUnit.Nanometer => options.PreferUnicode ? "\u339A" : "nm",
+        Units.LengthUnit.Micrometer => options.PreferUnicode ? "\u339B" : "µm",
+        Units.LengthUnit.Millimeter => options.PreferUnicode ? "\u339C" : "mm",
+        Units.LengthUnit.Centimeter => options.PreferUnicode ? "\u339D" : "cm",
+        Units.LengthUnit.Inch => options.PreferUnicode ? "\u33CC" : "in",
+        Units.LengthUnit.Decimeter => options.PreferUnicode ? "\u3377" : "dm",
         Units.LengthUnit.Foot => "ft",
         Units.LengthUnit.Yard => "yd",
         Units.LengthUnit.Meter => "m",
-        Units.LengthUnit.Kilometer => preferUnicode ? "\u339E" : "km",
+        Units.LengthUnit.Kilometer => options.PreferUnicode ? "\u339E" : "km",
         Units.LengthUnit.Mile => "mi",
         Units.LengthUnit.NauticalMile => "NM", // There is no single internationally agreed symbol. Others used are "N", "NM", "nmi" and "nm".
-        Units.LengthUnit.AstronomicalUnit => preferUnicode ? "\u3373" : "au",
-        Units.LengthUnit.Parsec => preferUnicode ? "\u3376" : "pc",
+        Units.LengthUnit.AstronomicalUnit => options.PreferUnicode ? "\u3373" : "au",
+        Units.LengthUnit.Parsec => options.PreferUnicode ? "\u3376" : "pc",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -28,7 +28,7 @@ namespace Flux
   {
     public enum LengthUnit
     {
-      /// <summary>This is the default unit for length.</summary>
+      /// <summary>This is the default unit for <see cref="Length"/>.</summary>
       Meter,
       Femtometer,
       Nanometer,
@@ -130,9 +130,11 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Length.Value"/> property is in <see cref="LengthUnit.Meter"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -157,8 +159,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(LengthUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(LengthUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

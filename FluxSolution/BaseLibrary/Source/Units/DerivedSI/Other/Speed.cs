@@ -2,13 +2,13 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.SpeedUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.SpeedUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.SpeedUnit.FootPerSecond => "ft/s",
         Units.SpeedUnit.KilometerPerHour => "km/h",
-        Units.SpeedUnit.Knot => preferUnicode ? "\u33CF" : "knot",
-        Units.SpeedUnit.MeterPerSecond => preferUnicode ? "\u33A7" : "m/s",
+        Units.SpeedUnit.Knot => options.PreferUnicode ? "\u33CF" : "knot",
+        Units.SpeedUnit.MeterPerSecond => options.PreferUnicode ? "\u33A7" : "m/s",
         Units.SpeedUnit.MilePerHour => "mph",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -18,7 +18,8 @@ namespace Flux
   {
     public enum SpeedUnit
     {
-      MeterPerSecond, // DefaultUnit first for actual instatiation defaults.
+      /// <summary>This is the default unit for <see cref="Speed"/>.</summary>
+      MeterPerSecond,
       FootPerSecond,
       KilometerPerHour,
       Knot,
@@ -105,9 +106,11 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      ///  <para>The unit of the <see cref="Speed.Value"/> property is in <see cref="SpeedUnit.MeterPerSecond"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -122,8 +125,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(SpeedUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(SpeedUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

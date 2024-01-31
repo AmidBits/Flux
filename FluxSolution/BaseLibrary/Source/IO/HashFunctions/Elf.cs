@@ -7,7 +7,7 @@ namespace Flux.Hashing
   {
     private uint m_hash;
 
-    public int SimpleHash32 { get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
+    public int SimpleHash32 { readonly get => unchecked((int)m_hash); set => m_hash = unchecked((uint)value); }
 
     public Elf(int hash = 0) => m_hash = unchecked((uint)hash);
 
@@ -33,7 +33,7 @@ namespace Flux.Hashing
     }
 
     #region Object overrides.
-    public override string ToString() => $"{nameof(Elf)} {{ HashCode = {m_hash} }}";
+    public readonly override string ToString() => $"{nameof(Elf)} {{ HashCode = {m_hash} }}";
     #endregion Object overrides.
   }
 }

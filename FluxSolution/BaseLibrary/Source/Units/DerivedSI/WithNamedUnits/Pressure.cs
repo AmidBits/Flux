@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PressureUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.PressureUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.PressureUnit.Millibar => "mbar",
-        Units.PressureUnit.Bar => preferUnicode ? "\u3374" : "bar",
-        Units.PressureUnit.HectoPascal => preferUnicode ? "\u3371" : "hPa",
-        Units.PressureUnit.KiloPascal => preferUnicode ? "\u33AA" : "kPa",
-        Units.PressureUnit.Pascal => preferUnicode ? "\u33A9" : "Pa",
+        Units.PressureUnit.Bar => options.PreferUnicode ? "\u3374" : "bar",
+        Units.PressureUnit.HectoPascal => options.PreferUnicode ? "\u3371" : "hPa",
+        Units.PressureUnit.KiloPascal => options.PreferUnicode ? "\u33AA" : "kPa",
+        Units.PressureUnit.Pascal => options.PreferUnicode ? "\u33A9" : "Pa",
         Units.PressureUnit.Psi => "psi",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -19,7 +19,8 @@ namespace Flux
   {
     public enum PressureUnit
     {
-      Pascal, // DefaultUnit first for actual instatiation defaults.
+      /// <summary>This is the default unit for <see cref="Pressure"/>.</summary>
+      Pascal,
       Millibar,
       Bar,
       HectoPascal,
@@ -85,9 +86,11 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Pressure.Value"/> property is in <see cref="PressureUnit.Pascal"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -103,8 +106,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PressureUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(PressureUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

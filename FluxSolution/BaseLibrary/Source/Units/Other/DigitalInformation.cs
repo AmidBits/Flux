@@ -19,8 +19,8 @@ namespace Flux
       };
     }
 
-    public static string GetUnitString(this Units.DigitalInformationUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.DigitalInformationUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.DigitalInformationUnit.Byte => "B",
         Units.DigitalInformationUnit.kibiByte => "KiB",
@@ -39,7 +39,7 @@ namespace Flux
   {
     public enum DigitalInformationUnit
     {
-      /// <summary>This is the default unit for digital storage.</summary>
+      /// <summary>This is the default unit for <see cref="DigitalInformation"/>.</summary>
       Byte,
       kibiByte,
       mebiByte,
@@ -118,9 +118,11 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is DigitalInformation o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToValueString(string? format, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="DigitalInformationUnit.Value"/> property is in <see cref="DigitalInformationUnit.Byte"/>.</para>
+      /// </summary>
       public System.Numerics.BigInteger Value => m_value;
 
       // IUnitQuantifiable<>
@@ -139,14 +141,14 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(DigitalInformationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(DigitalInformationUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public override string ToString() => ToValueString(null, false, false);
+      public override string ToString() => ToValueString();
     }
   }
 }

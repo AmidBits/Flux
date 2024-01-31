@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.FrequencyUnit unit, bool preferUnicode = false, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.FrequencyUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
-        Units.FrequencyUnit.Hertz => preferUnicode ? "\u3390" : "Hz",
-        Units.FrequencyUnit.KiloHertz => preferUnicode ? "\u3391" : "kHz",
-        Units.FrequencyUnit.MegaHertz => preferUnicode ? "\u3392" : "MHz",
-        Units.FrequencyUnit.GigaHertz => preferUnicode ? "\u3393" : "GHz",
-        Units.FrequencyUnit.TeraHertz => preferUnicode ? "\u3394" : "THz",
+        Units.FrequencyUnit.Hertz => options.PreferUnicode ? "\u3390" : "Hz",
+        Units.FrequencyUnit.KiloHertz => options.PreferUnicode ? "\u3391" : "kHz",
+        Units.FrequencyUnit.MegaHertz => options.PreferUnicode ? "\u3392" : "MHz",
+        Units.FrequencyUnit.GigaHertz => options.PreferUnicode ? "\u3393" : "GHz",
+        Units.FrequencyUnit.TeraHertz => options.PreferUnicode ? "\u3394" : "THz",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -18,7 +18,7 @@ namespace Flux
   {
     public enum FrequencyUnit
     {
-      /// <summary>Hertz.</summary>
+      /// <summary>This is the default unit for <see cref="Frequency"/>.</summary>
       Hertz,
       KiloHertz,
       MegaHertz,
@@ -53,16 +53,17 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      /// <summary>Returns the angular velocity from the (rotational) frequency.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
-
-      public AngularFrequency ToAngularVelocity()
-        => new(System.Math.Tau * m_hertz);
+      /// <summary>In digital signal processing (DSP), a normalized frequency is a ratio of a variable <see cref="Frequency"/> and a constant frequency associated with a system (e.g. sampling rate).</summary>
+      public Time ComputeNormalizedFrequency(double systemFrequency) => new(1.0 / m_hertz);
 
       /// <summary>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</summary>
+      public Time ComputePeriod() => new(1.0 / m_hertz);
 
-      public Time ToPeriod()
-        => new(1.0 / m_hertz);
+      /// <summary>
+      /// <para>Returns the angular velocity from the (rotational) frequency.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/></para>
+      /// </summary>
+      public AngularFrequency ToAngularVelocity() => new(System.Math.Tau * m_hertz);
 
       #region Static methods
       /// <remarks>Revolutions Per Minute (RPM) is officially a frequency and as such measured in Hertz (which is 'per second'). Conversion is a straight forward by a factor of 60 (i.e. seconds per minute)</remarks>
@@ -144,9 +145,11 @@ namespace Flux
 
       // IQuantifiable<>
 
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Frequency.Value"/> property is in <see cref="FrequencyUnit.Hertz"/>.</para>
+      /// </summary>
       public double Value => m_hertz;
 
       // IUnitQuantifiable<>
@@ -162,8 +165,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(FrequencyUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(FrequencyUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

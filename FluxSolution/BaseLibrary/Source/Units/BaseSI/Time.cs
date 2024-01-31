@@ -2,15 +2,15 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.TimeUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.TimeUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.TimeUnit.Second => "s",
-        Units.TimeUnit.Picosecond => preferUnicode ? "\u33B0" : "ps",
-        Units.TimeUnit.Nanosecond => preferUnicode ? "\u33B1" : "ns",
+        Units.TimeUnit.Picosecond => options.PreferUnicode ? "\u33B0" : "ps",
+        Units.TimeUnit.Nanosecond => options.PreferUnicode ? "\u33B1" : "ns",
         Units.TimeUnit.Ticks => "ticks",
-        Units.TimeUnit.Microsecond => preferUnicode ? "\u33B2" : "\u00B5s",
-        Units.TimeUnit.Millisecond => preferUnicode ? "\u33B3" : "ms",
+        Units.TimeUnit.Microsecond => options.PreferUnicode ? "\u33B2" : "\u00B5s",
+        Units.TimeUnit.Millisecond => options.PreferUnicode ? "\u33B3" : "ms",
         Units.TimeUnit.Minute => "min",
         Units.TimeUnit.Hour => "h",
         Units.TimeUnit.Day => "d",
@@ -24,7 +24,7 @@ namespace Flux
   {
     public enum TimeUnit
     {
-      /// <summary>This is the default unit for time.</summary>
+      /// <summary>This is the default unit for <see cref="Time"/>.</summary>
       Second,
       Picosecond,
       Nanosecond,
@@ -121,12 +121,16 @@ namespace Flux
       public int CompareTo(Time other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(format);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(new(format, formatProvider));
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      //public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+      //  => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Time.Value"/> property is in <see cref="TimeUnit.Second"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -147,8 +151,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(TimeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      //public string ToUnitValueString(TimeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+      //  => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(TimeUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

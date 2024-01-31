@@ -2,23 +2,23 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.VolumeUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.VolumeUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
-        Units.VolumeUnit.Microlitre => preferUnicode ? "\u3395" : "µl",
-        Units.VolumeUnit.Millilitre => preferUnicode ? "\u3396" : "ml",
+        Units.VolumeUnit.Microlitre => options.PreferUnicode ? "\u3395" : "µl",
+        Units.VolumeUnit.Millilitre => options.PreferUnicode ? "\u3396" : "ml",
         Units.VolumeUnit.Centilitre => "cl",
-        Units.VolumeUnit.Decilitre => preferUnicode ? "\u3397" : "dl",
+        Units.VolumeUnit.Decilitre => options.PreferUnicode ? "\u3397" : "dl",
         Units.VolumeUnit.Litre => "l",
-        Units.VolumeUnit.ImperialGallon => preferUnicode ? "\u33FF" : "gal (imp)",
+        Units.VolumeUnit.ImperialGallon => options.PreferUnicode ? "\u33FF" : "gal (imp)",
         Units.VolumeUnit.ImperialQuart => "qt (imp)",
-        Units.VolumeUnit.USGallon => preferUnicode ? "\u33FF" : "gal (US)",
+        Units.VolumeUnit.USGallon => options.PreferUnicode ? "\u33FF" : "gal (US)",
         Units.VolumeUnit.USQuart => "qt (US)",
         Units.VolumeUnit.CubicFeet => "ft³",
         Units.VolumeUnit.CubicYard => "yd³",
-        Units.VolumeUnit.CubicMeter => preferUnicode ? "\u33A5" : "m³",
+        Units.VolumeUnit.CubicMeter => options.PreferUnicode ? "\u33A5" : "m³",
         Units.VolumeUnit.CubicMile => "mi³",
-        Units.VolumeUnit.CubicKilometer => preferUnicode ? "\u33A6" : "km³",
+        Units.VolumeUnit.CubicKilometer => options.PreferUnicode ? "\u33A6" : "km³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -27,7 +27,8 @@ namespace Flux
   {
     public enum VolumeUnit
     {
-      CubicMeter, // DefaultUnit first for actual instatiation defaults.
+      /// <summary>This is the default unit for <see cref="Volume"/>.</summary>
+      CubicMeter,
       Microlitre,
       Millilitre,
       Centilitre,
@@ -131,9 +132,11 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      ///  <para>The unit of the <see cref="Volume.Value"/> property is in <see cref="VolumeUnit.CubicMeter"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -156,8 +159,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(VolumeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(VolumeUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

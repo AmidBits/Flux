@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PowerUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.PowerUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.PowerUnit.Watt => "W",
-        Units.PowerUnit.KiloWatt => preferUnicode ? "\u33BE" : "kW",
-        Units.PowerUnit.MegaWatt => preferUnicode ? "\u33BF" : "MW",
+        Units.PowerUnit.KiloWatt => options.PreferUnicode ? "\u33BE" : "kW",
+        Units.PowerUnit.MegaWatt => options.PreferUnicode ? "\u33BF" : "MW",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -16,7 +16,7 @@ namespace Flux
   {
     public enum PowerUnit
     {
-      /// <summary>Watt.</summary>
+      /// <summary>This is the default unit for <see cref="Power"/>.</summary>
       Watt,
       KiloWatt,
       MegaWatt,
@@ -84,9 +84,11 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="Power.Value"/> property is in <see cref="PowerUnit.Watt"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -99,8 +101,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PowerUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(PowerUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

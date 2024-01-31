@@ -2,10 +2,8 @@ namespace Flux
 {
   public static partial class Em
   {
-#pragma warning disable IDE0060 // Remove unused parameter
-    public static string GetUnitString(this Units.RadiationExposureUnit unit, bool preferUnicode, bool useFullName = false)
-#pragma warning restore IDE0060 // Remove unused parameter
-      => useFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.RadiationExposureUnit unit, QuantifiableValueStringOptions options = default)
+      => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.RadiationExposureUnit.CoulombPerKilogram => "C/kg",
         Units.RadiationExposureUnit.Röntgen => "R",
@@ -17,6 +15,7 @@ namespace Flux
   {
     public enum RadiationExposureUnit
     {
+      /// <summary>This is the default unit for <see cref="RadiationExposure"/>.</summary>
       CoulombPerKilogram,
       Röntgen
     }
@@ -69,9 +68,11 @@ namespace Flux
       public int CompareTo(RadiationExposure other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
 
+      /// <summary>
+      /// <para>The unit of the <see cref="RadiationExposure.Value"/> property is in <see cref="RadiationExposureUnit.CoulombPerKilogram"/>.</para>
+      /// </summary>
       public double Value => m_value;
 
       // IUnitQuantifiable<>
@@ -83,8 +84,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(RadiationExposureUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(RadiationExposureUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

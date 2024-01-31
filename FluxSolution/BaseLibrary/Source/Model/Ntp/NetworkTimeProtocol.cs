@@ -11,7 +11,7 @@
       => new System.Collections.Generic.List<string> { @"pool.ntp.org", @"time.nist.gov", @"time-a.nist.gov", @"time-b.nist.gov" };
 
     /// <summary>The 48 byte NTP data structure.</summary>
-    private byte[] m_data = new byte[48];
+    private readonly byte[] m_data = new byte[48];
 
     public NtpLeapIndicator LeapIndicator
       => (NtpLeapIndicator)(m_data[0] >> 6);

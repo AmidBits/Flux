@@ -79,9 +79,12 @@ namespace Flux
       public int CompareTo(Semitone other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+      public string ToValueString(QuantifiableValueStringOptions options = default)
         => $"{m_value} semitone{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
+      /// <summary>
+      /// <para>The <see cref="Semitone.Value"/> property is a musical interval in semitones.</para>
+      /// </summary>
       public int Value => m_value;
 
       #endregion Implemented interfaces

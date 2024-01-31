@@ -153,9 +153,12 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => format is null ? ToValueString() : m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
+      public string ToValueString(QuantifiableValueStringOptions options = default)
         => $"{ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}";
 
+      /// <summary>
+      /// <para>The <see cref="JulianDate.Value"/> property is the Julian date.</para>
+      /// </summary>
       public double Value => m_value;
 
       #endregion // Implemented interfaces

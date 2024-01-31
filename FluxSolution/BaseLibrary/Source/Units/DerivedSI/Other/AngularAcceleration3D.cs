@@ -44,8 +44,7 @@ namespace Flux
 
       #region Implemented interfaces
       // IQuantifiable<>
-      public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => ToUnitValueString(AngularAcceleration.DefaultUnit, format, preferUnicode, useFullName, culture);
+      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(AngularAcceleration.DefaultUnit, options);
 
       public System.Numerics.Vector3 Value { get => m_value; }
 
@@ -57,8 +56,8 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AngularAccelerationUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-        => $"{Value.ToString(format, culture)} {unit.GetUnitString(preferUnicode, useFullName)}";
+      public string ToUnitValueString(AngularAccelerationUnit unit, QuantifiableValueStringOptions options = default)
+        => $"{Value.ToString(options.Format, options.CultureInfo)} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 

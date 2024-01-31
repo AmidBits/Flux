@@ -9,7 +9,7 @@ namespace Flux.Checksum
 
     private uint m_hash;
 
-    public int Checksum32 { get => unchecked((int)(m_hash ^ 0xFFFFFFFF)); set => m_hash = unchecked((uint)value ^ 0xFFFFFFFF); }
+    public int Checksum32 { readonly get => unchecked((int)(m_hash ^ 0xFFFFFFFF)); set => m_hash = unchecked((uint)value ^ 0xFFFFFFFF); }
 
     public Crc32(int hash = unchecked((int)0xFFFFFFFF))
     {
@@ -46,7 +46,7 @@ namespace Flux.Checksum
     }
 
     #region Object overrides.
-    public override string ToString() => $"{nameof(Crc32)} {{ Checksum = {m_hash} }}";
+    public readonly override string ToString() => $"{nameof(Crc32)} {{ Checksum = {m_hash} }}";
     #endregion Object overrides.
   }
 }

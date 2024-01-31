@@ -20,8 +20,11 @@ namespace Flux.Data
       => ansi ? (source.IsWrapped('"', '"') ? source.Unwrap('"', '"') : source) : (source.IsWrapped('[', ']') ? source.Unwrap('[', ']') : source);
   }
 
-  public record struct TsqlName
+  public partial record struct TsqlName
   {
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<!\[[^\]])\.(?![^\[]*\])")]
+    private static partial System.Text.RegularExpressions.Regex QualifiedNameSplitterRegex();
+
     public const string CsApplicationName = @"Application Name";
     public const string CsDatabase = @"Database";
     public const string CsDataSource = @"Data Source";
@@ -47,9 +50,9 @@ namespace Flux.Data
     public string? ApplicationName { get; set; }
 
     /// <summary>Returns the database name.</summary>
-    public string DatabaseName { get => m_parts[1]; set => m_parts[1] = value.TsqlUnenquote(); }
+    public readonly string DatabaseName { get => m_parts[1]; set => m_parts[1] = value.TsqlUnenquote(); }
     /// <summary>Returns the database name quoted.</summary>
-    public string DatabaseNameQuoted
+    public readonly string DatabaseNameQuoted
       => m_parts[1].TsqlEnquote();
 
     /// <summary></summary>
@@ -57,26 +60,26 @@ namespace Flux.Data
       => new() { ServerName = ServerName, DatabaseName = DatabaseName, SchemaName = SchemaName, ObjectName = ObjectName + @"_DE" };
 
     /// <summary>Returns the schema name.</summary>
-    public string SchemaName { get => m_parts[2]; set => m_parts[2] = value.TsqlUnenquote(); }
+    public readonly string SchemaName { get => m_parts[2]; set => m_parts[2] = value.TsqlUnenquote(); }
     /// <summary>Returns the schema name quoted.</summary>
-    public string SchemaNameQuoted
+    public readonly string SchemaNameQuoted
       => m_parts[2].TsqlEnquote();
 
     /// <summary>Returns the object name.</summary>
-    public string ObjectName { get => m_parts[3]; set => m_parts[3] = value.TsqlUnenquote(); }
+    public readonly string ObjectName { get => m_parts[3]; set => m_parts[3] = value.TsqlUnenquote(); }
     /// <summary>Returns the object name quoted.</summary>
-    public string ObjectNameQuoted
+    public readonly string ObjectNameQuoted
       => m_parts[3].TsqlEnquote();
 
     /// <summary>Returns the sql instance.</summary>
-    public string ServerName { get => m_parts[0]; set => m_parts[0] = value.TsqlUnenquote(); }
+    public readonly string ServerName { get => m_parts[0]; set => m_parts[0] = value.TsqlUnenquote(); }
     /// <summary>Returns the sql instance qouted.</summary>
-    public string ServerNameQuoted
+    public readonly string ServerNameQuoted
       => m_parts[0].TsqlEnquote();
 
     /// <summary></summary>
     /// <remarks>return $"Driver=SQL Server;Server={ServerName};Database={DatabaseName};Trusted_Connection=Yes;Application Name={ApplicationName};Workstation ID={WorkstationID};";</remarks>
-    public string TrustedConnectionStringOdbc
+    public readonly string TrustedConnectionStringOdbc
     {
       get
       {
@@ -96,7 +99,7 @@ namespace Flux.Data
     }
     /// <summary></summary>
     /// <remarks>return $"Provider=SQLOLEDB;Data Source={ServerName};Initial Catalog={DatabaseName};Trusted_Connection=Yes;Application Name={ApplicationName};Workstation ID={WorkstationID};";</remarks>
-    public string TrustedConnectionStringOleDb
+    public readonly string TrustedConnectionStringOleDb
     {
       get
       {
@@ -116,7 +119,7 @@ namespace Flux.Data
     }
     /// <summary></summary>
     /// <remarks>return $"Data Source={ServerName};Initial Catalog={DatabaseName};Integrated Security=True;Application Name={ApplicationName};Workstation ID={WorkstationID};";</remarks>
-    public string TrustedConnectionStringSqlClient
+    public readonly string TrustedConnectionStringSqlClient
     {
       get
       {
@@ -137,17 +140,15 @@ namespace Flux.Data
     /// <summary></summary>
     public string? WorkstationID { get; set; }
 
-    public string QualifiedName(int count)
+    public readonly string QualifiedName(int count)
       => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count)) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
-    public string QualifiedNameQuoted(int count)
+    public readonly string QualifiedNameQuoted(int count)
       => (count >= 1 && count <= 4) ? string.Join(".", m_parts.Skip(m_parts.Length - count).Take(count).Select(s => s.TsqlEnquote())) : throw new System.ArgumentOutOfRangeException(nameof(count), "A name consists of 1 to 4 parts.");
 
     #region Static methods
-    private static readonly System.Text.RegularExpressions.Regex m_reQualifiedNameSplitter = new(@"(?<!\[[^\]])\.(?![^\[]*\])");
-
     public static TsqlName Parse(string qualifiedName)
     {
-      var names = m_reQualifiedNameSplitter.Split(qualifiedName);
+      var names = QualifiedNameSplitterRegex().Split(qualifiedName);
 
       if (names.Length >= 1 && names.Length <= 4)
         if (names.Length < 4)
@@ -171,7 +172,7 @@ namespace Flux.Data
     #endregion Static methods
 
     #region Object overrides
-    public override string ToString() => $"{GetType().Name} {{ Name = {QualifiedNameQuoted(4)} }}";
+    public readonly override string ToString() => $"{GetType().Name} {{ Name = {QualifiedNameQuoted(4)} }}";
     #endregion Object overrides
   }
 }

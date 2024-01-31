@@ -10,7 +10,7 @@ namespace Flux.Checksum.Special
 
     private uint m_checkDigit;
 
-    public int CheckDigit { get => (int)m_checkDigit; set => m_checkDigit = (uint)value; }
+    public int CheckDigit { readonly get => (int)m_checkDigit; set => m_checkDigit = (uint)value; }
 
     public Luhn(System.Collections.Generic.IEnumerable<int> numberSequence)
     {
@@ -38,7 +38,7 @@ namespace Flux.Checksum.Special
       => Verify(numberSequence.Select(c => c - '0'));
 
     #region Object overrides.
-    public override string ToString() => $"{GetType().Name} {{ {string.Concat(m_sequence.Select(i => (char)(i + '0')))}{m_checkDigit} }}";
+    public readonly override string ToString() => $"{GetType().Name} {{ {string.Concat(m_sequence.Select(i => (char)(i + '0')))}{m_checkDigit} }}";
     #endregion Object overrides.
   }
 }
