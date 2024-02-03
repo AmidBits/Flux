@@ -34,7 +34,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var t = new Flux.DataStructures.SimpleTrie<char>();
+      var t = new Flux.DataStructures.SimpleTrie<char, string>();
 
       //foreach (var d in System.IO.Directory.GetDirectories(@"C:\Users\Rob\OneDrive\", "*", System.IO.SearchOption.AllDirectories))
       //  t.Insert(d);

@@ -1,12 +1,14 @@
+using System.Net.Http.Headers;
+
 namespace Flux.DataStructures
 {
   /// <summary>A simple implementation of a trie data structure, which essentially is a storage structure for storing sequential data by their smaller components, e.g. <see cref="string"/>s (where the storage unit is <see cref="char"/>).</summary>
   /// <see href="https://en.wikipedia.org/wiki/Trie"/>
   /// <seealso cref="https://github.com/gmamaladze/trienet/tree/master/TrieNet"/>
-  public sealed class SimpleTrie<TKey>
+  public sealed class SimpleTrie<TKey, TValue>
     where TKey : notnull
   {
-    private readonly Node m_root = new(false);
+    private readonly Node m_root = new(false, default!);
 
     public int Count() => TrieCount(m_root);
 
@@ -16,11 +18,13 @@ namespace Flux.DataStructures
 
     /// <summary>Search for an entry set of <typeparamref name="TKey"/>. Optionally accept a partial set (excluding at the end).</summary>
     /// <param name="key"></param>
-    public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key) => acceptStartsWith ? TrieStartsWith(m_root, key) : TrieFind(m_root, key);
+    public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key, out TValue value) => acceptStartsWith ? TrieStartsWith(m_root, key, out value) : TrieFind(m_root, key, out value);
+    public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key) => Find(acceptStartsWith, key, out var _);
 
     /// <summary>Insert an entry set of <typeparamref name="TKey"/>.</summary>
     /// <param name="key"></param>
-    public void Insert(System.ReadOnlySpan<TKey> key) => TrieInsert(m_root, key);
+    public void Insert(System.ReadOnlySpan<TKey> key, TValue value) => TrieInsert(m_root, key, value);
+    public void Insert(System.ReadOnlySpan<TKey> key) => Insert(key, default!);
 
     #region Static methods
 
@@ -60,7 +64,7 @@ namespace Flux.DataStructures
       return node.Children.Count == 0;
     }
 
-    private static bool TrieFind(Node node, System.ReadOnlySpan<TKey> set)
+    private static bool TrieFind(Node node, System.ReadOnlySpan<TKey> set, out TValue value)
     {
       for (int index = 0; index < set.Length; index++)
       {
@@ -70,19 +74,23 @@ namespace Flux.DataStructures
         node = temp;
 
         if (node.IsTerminal && index == set.Length - 1)
+        {
+          value = node.Value;
           return true;
+        }
       }
 
+      value = default!;
       return false;
     }
 
-    private static void TrieInsert(Node node, System.ReadOnlySpan<TKey> set)
+    private static void TrieInsert(Node node, System.ReadOnlySpan<TKey> set, TValue value)
     {
       for (int index = 0; index < set.Length; index++)
       {
         if (!node.Children.TryGetValue(set[index], out var temp))
         {
-          temp = new Node(index == set.Length - 1);
+          temp = new Node(index == set.Length - 1, value);
 
           node.Children.Add(set[index], temp);
         }
@@ -91,16 +99,20 @@ namespace Flux.DataStructures
       }
     }
 
-    private static bool TrieStartsWith(Node node, System.ReadOnlySpan<TKey> set)
+    private static bool TrieStartsWith(Node node, System.ReadOnlySpan<TKey> set, out TValue value)
     {
       for (int index = 0; index < set.Length; index++)
       {
         if (!node.Children.TryGetValue(set[index], out var temp))
+        {
+          value = default!;
           return false;
+        }
 
         node = temp;
       }
 
+      value = node.Value;
       return true;
     }
 
@@ -121,8 +133,10 @@ namespace Flux.DataStructures
           sb.Append(string.Empty.PadLeft(level == 0 ? 0 : level + 1), 1);
           if (level == 0) sb.Append('[', 1);
           sb.Append(childNode.Key.ToString(), 1);
-          if (childNode.Value.IsTerminal) sb.Append("]", 1);
-          else sb.Append($"#{childNode.Value.Children.Count}", 1);
+          sb.Append(childNode.Value.ToString(), 1);
+          //if (childNode.Value.IsTerminal) sb.Append("]", 1);
+          //else sb.Append($"#{childNode.Value.Children.Count}", 1);
+          //sb.Append($" ({childNode.Value.Value})", 1);
           sb.Append(System.Environment.NewLine, 1);
 
           AddString(childNode.Value, level + 1);
@@ -136,14 +150,16 @@ namespace Flux.DataStructures
     {
       public readonly System.Collections.Generic.IDictionary<TKey, Node> Children;
       public bool IsTerminal;
+      public TValue Value;
 
-      public Node(bool isTerminal)
+      public Node(bool isTerminal, TValue value)
       {
         Children = new System.Collections.Generic.Dictionary<TKey, Node>();
         IsTerminal = isTerminal;
+        Value = value;
       }
 
-      //public override string ToString() => $"Children = {Children.Count}, IsTerminal = {IsTerminal}";
+      public override string ToString() => $"{(IsTerminal ? "]" : $"#{Children.Count}")} {(Value is null || Value.Equals(default!) ? string.Empty : $"({Value})")}";
     }
   }
 }
