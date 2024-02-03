@@ -82,7 +82,7 @@ namespace Flux
       {
         try
         {
-          // Additional retrieve for key, to make sure we get the stored value.
+          // Additional retrieve for key, to make sure we get the stored value, and not the key passed.
           // The equality comparer for the dictionary could for example, be case insensitive which would yield a match between say "key" (searched for) and "Key" (stored).
           if (TryGetIndex(key, out var index) && TryGetKey(index, out key) && TryGetValue(key, out var value))
           {
@@ -124,6 +124,7 @@ namespace Flux
           m_dictionary[m_listOfKeys[index]] = value;
         }
       }
+      public System.Collections.Generic.ICollection<int> Indices => System.Linq.Enumerable.Range(0, Count).ToList();
       public bool ContainsValue(TValue value) => m_listOfValues.Contains(value);
       public void Insert(int index, TKey key, TValue value)
       {

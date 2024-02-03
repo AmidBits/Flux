@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-
 namespace Flux.DataStructures
 {
   /// <summary>A simple implementation of a trie data structure, which essentially is a storage structure for storing sequential data by their smaller components, e.g. <see cref="string"/>s (where the storage unit is <see cref="char"/>).</summary>
@@ -10,30 +8,42 @@ namespace Flux.DataStructures
   {
     private readonly Node m_root = new(false, default!);
 
-    /// <summary>Count the number of terminal (complete) <paramref name="key"/>s (sets of <typeparamref name="TKey"/>).</summary>
+    /// <summary>
+    /// <para>Count the number of terminal (complete) <paramref name="key"/>s (sets of <typeparamref name="TKey"/>).</para>
+    /// </summary>
     public int Count() => TrieCount(m_root);
 
-    /// <summary>Delete a <paramref name="key"/> (set of <typeparamref name="TKey"/>).</summary>
+    /// <summary>
+    /// <para>Delete a <paramref name="key"/> (set of <typeparamref name="TKey"/>).</para>
+    /// </summary>
     /// <param name="key"></param>
     public void Delete(System.ReadOnlySpan<TKey> key) => TrieDelete(m_root, key);
 
-    /// <summary>Search for an <paramref name="key"/> (set of <typeparamref name="TKey"/>) with the option to <paramref name="acceptStartsWith"/>. This version also return a <paramref name="value"/> as an out parameter.</summary>
+    /// <summary>
+    /// <para>Search for an <paramref name="key"/> (set of <typeparamref name="TKey"/>) with the option to <paramref name="acceptStartsWith"/>. This version also return a <paramref name="value"/> as an out parameter.</para>
+    /// </summary>
     /// <param name="acceptStartsWith"></param>
     /// <param name="key"></param>
     /// <param name="value"></param>
     public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key, out TValue value) => acceptStartsWith ? TrieStartsWith(m_root, key, out value) : TrieFind(m_root, key, out value);
 
-    /// <summary>Search for an <paramref name="key"/> (set of <typeparamref name="TKey"/>) with the option to <paramref name="acceptStartsWith"/>.</summary>
+    /// <summary>
+    /// <para>Search for an <paramref name="key"/> (set of <typeparamref name="TKey"/>) with the option to <paramref name="acceptStartsWith"/>.</para>
+    /// </summary>
     /// <param name="acceptStartsWith"></param>
     /// <param name="key"></param>
     public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key) => acceptStartsWith ? TrieStartsWith(m_root, key, out var _) : TrieFind(m_root, key, out var _);
 
-    /// <summary>Insert a <paramref name="key"/> (set of <typeparamref name="TKey"/>) with a <paramref name="value"/>.</summary>
+    /// <summary>
+    /// <para>Insert a <paramref name="key"/> (set of <typeparamref name="TKey"/>) with a <paramref name="value"/>.</para>
+    /// </summary>
     /// <param name="key"></param>
     /// <param name="value"></param>
     public void Insert(System.ReadOnlySpan<TKey> key, TValue value) => TrieInsert(m_root, key, value);
 
-    /// <summary>Insert a <paramref name="key"/> (set of <typeparamref name="TKey"/>).</summary>
+    /// <summary>
+    /// <para>Insert a <paramref name="key"/> (set of <typeparamref name="TKey"/>).</para>
+    /// </summary>
     /// <param name="key"></param>
     public void Insert(System.ReadOnlySpan<TKey> key) => TrieInsert(m_root, key, default!);
 
@@ -176,24 +186,37 @@ namespace Flux.DataStructures
 }
 
 /*
-  SimpleTrie<char> st = new SimpleTrie<char>();
+  var t = new Flux.DataStructures.SimpleTrie<char, string>();
 
-  t.Add("abc");
-  t.Add("abgl");
-  t.Add("cdf");
-  t.Add("abcd");
-  t.Add("lmn");
+  //foreach (var d in System.IO.Directory.GetDirectories(@"C:\Users\Rob\OneDrive\", "*", System.IO.SearchOption.AllDirectories))
+  //  t.Insert(d);
 
-  bool findPrefix1 = t.Search("ab", true);
-  bool findPrefix2 = t.Search("lo", true);
+  t.Insert(" ");
+  t.Delete(" ");
 
-  bool findWord1 = t.Search("lmn", false);
-  bool findWord2 = t.Search("ab", false);
-  bool findWord3 = t.Search("cdf", false);
-  bool findWord4 = t.Search("ghi", false);
+  t.Insert("abc");
+  t.Insert("abgl");
+  t.Insert("cdf");
+  t.Insert("abcd");
+  t.Insert("lmn");
+
+  System.Console.WriteLine(t.ToConsoleString());
+
+  bool findPrefix1 = t.Find(true, "ab");
+  bool findPrefix2 = t.Find(true, "lo");
+
+  bool findWord1 = t.Find(false, "lmn");
+  bool findWord2 = t.Find(false, "ab");
+  bool findWord3 = t.Find(false, "cdf");
+  bool findWord4 = t.Find(false, "ghi");
+  bool findWord5 = t.Find(true, "abc");
 
   t.Delete("abc");
+  bool findWord6 = t.Find(true, "abc");
+  bool findWord7 = t.Find(false, "abc");
   t.Delete("abgl");
   t.Delete("abcd");
+  t.Delete("lmn");
   t.Delete("xyz");
+  t.Delete("cdf");
 */

@@ -10,6 +10,12 @@ namespace Flux.DataStructures
     TValue this[int index] { get; set; }
 
     /// <summary>
+    /// <para>Gets an <see cref="ICollection{T}"/> containing the indices of the <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
+    /// </summary>
+    /// <remarks>Added for a more complete symmetry between a <see cref="IDictionary{TKey, TValue}"/>. and a <see cref="IOrderedDictionary{TKey, TValue}"/>.</remarks>
+    public System.Collections.Generic.ICollection<int> Indices { get; }
+
+    /// <summary>
     /// <para>Determines of the <paramref name="value"/> exists in the <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
     /// </summary>
     bool ContainsValue(TValue value);
