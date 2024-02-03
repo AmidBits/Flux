@@ -6,110 +6,144 @@ namespace Flux.DataStructures
   public sealed class SimpleTrie<TKey>
     where TKey : notnull
   {
-    private int m_count;
-    private readonly Node m_root;
+    private readonly Node m_root = new(false);
 
-    public SimpleTrie()
-    {
-      m_count = 0;
-      m_root = new(false);
-    }
-
-    public int Count => m_count;
+    public int Count() => TrieCount(m_root);
 
     /// <summary>Delete an entry set of <typeparamref name="TKey"/>.</summary>
-    /// <param name="entry"></param>
-    public void Delete(System.ReadOnlySpan<TKey> entry)
-    {
-      if (DeleteEntryOrToEnd(m_root, 0, entry))
-        m_count--;
-    }
-    private static bool DeleteEntryOrToEnd(Node root, int index, System.ReadOnlySpan<TKey> array)
-    {
-      if (index == array.Length)
-      {
-        if (root.EndOfEntry && root.SubNodes.Count != 0)
-          return root.EndOfEntry = false;
-
-        return root.SubNodes.Count == 0;
-      }
-
-      if (!root.SubNodes.ContainsKey(array[index]))
-        return false;
-
-      if (DeleteEntryOrToEnd(root.SubNodes[array[index]], index + 1, array))
-      {
-        root.SubNodes.Remove(array[index]);
-
-        if (index > 0 && root.EndOfEntry)
-          return false;
-      }
-
-      return root.SubNodes.Count == 0;
-    }
-
-    /// <summary>Insert an entry set of <typeparamref name="TKey"/>.</summary>
-    /// <param name="entry"></param>
-    public void Insert(System.ReadOnlySpan<TKey> entry)
-    {
-      var temp = m_root;
-
-      for (int index = 0; index < entry.Length; index++)
-      {
-        if (temp.SubNodes.TryGetValue(entry[index], out var value))
-        {
-          temp = value;
-        }
-        else
-        {
-          var node = new Node(index == entry.Length - 1);
-
-          temp.SubNodes.Add(entry[index], node);
-
-          m_count++;
-
-          temp = node;
-        }
-      }
-    }
+    /// <param name="key"></param>
+    public void Delete(System.ReadOnlySpan<TKey> key) => TrieDelete(m_root, key);
 
     /// <summary>Search for an entry set of <typeparamref name="TKey"/>. Optionally accept a partial set (excluding at the end).</summary>
-    /// <param name="entry"></param>
-    public bool Search(bool acceptStartsWith, System.ReadOnlySpan<TKey> entry)
+    /// <param name="key"></param>
+    public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key) => acceptStartsWith ? TrieStartsWith(m_root, key) : TrieFind(m_root, key);
+
+    /// <summary>Insert an entry set of <typeparamref name="TKey"/>.</summary>
+    /// <param name="key"></param>
+    public void Insert(System.ReadOnlySpan<TKey> key) => TrieInsert(m_root, key);
+
+    #region Static methods
+
+    private static int TrieCount(Node node)
     {
-      var node = m_root;
+      var count = 0;
 
-      for (int index = 0; index < entry.Length; index++)
+      foreach (var kvp in node.Children)
       {
-        if (node.SubNodes.TryGetValue(entry[index], out var value))
-        {
-          node = value;
+        if (kvp.Value.IsTerminal)
+          count++;
 
-          if (!acceptStartsWith && node.EndOfEntry && index == entry.Length - 1)
-          {
-            return true;
-          }
-        }
-        else return false;
+        count += TrieCount(kvp.Value);
       }
 
-      return acceptStartsWith;
+      return count;
     }
 
-    public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";
-
-    private sealed record class Node
+    private static bool TrieDelete(Node node, System.ReadOnlySpan<TKey> set)
     {
-      public bool EndOfEntry;
-      public readonly System.Collections.Generic.IDictionary<TKey, Node> SubNodes;
-
-      public Node(bool endOfEntry)
+      if (set.Length == 0) // We have recursed the entire key.
       {
-        EndOfEntry = endOfEntry;
-        SubNodes = new System.Collections.Generic.Dictionary<TKey, Node>();
+        if (node.IsTerminal && node.Children.Count != 0) // We have a full terminal key, but there are subkeys consisting of the same key data..
+          return (node.IsTerminal = false); // ..so we cannot allow the key data to be deleted, instead we mark the terminal key as no longer being terminal.
+
+        return node.Children.Count == 0; // If there is no more key data, there are no subkeys, so we allow all key data to be deleted.
       }
 
-      public override string ToString() => $"{GetType().Name} {{ EndOfEntry = {EndOfEntry}, SubNodes = {SubNodes.Count} }}";
+      var keyStone = set[0];
+
+      if (!node.Children.ContainsKey(keyStone))
+        return false;
+
+      if (TrieDelete(node.Children[keyStone], set[1..]))
+        node.Children.Remove(keyStone);
+
+      return node.Children.Count == 0;
+    }
+
+    private static bool TrieFind(Node node, System.ReadOnlySpan<TKey> set)
+    {
+      for (int index = 0; index < set.Length; index++)
+      {
+        if (!node.Children.TryGetValue(set[index], out var temp))
+          break;
+
+        node = temp;
+
+        if (node.IsTerminal && index == set.Length - 1)
+          return true;
+      }
+
+      return false;
+    }
+
+    private static void TrieInsert(Node node, System.ReadOnlySpan<TKey> set)
+    {
+      for (int index = 0; index < set.Length; index++)
+      {
+        if (!node.Children.TryGetValue(set[index], out var temp))
+        {
+          temp = new Node(index == set.Length - 1);
+
+          node.Children.Add(set[index], temp);
+        }
+
+        node = temp;
+      }
+    }
+
+    private static bool TrieStartsWith(Node node, System.ReadOnlySpan<TKey> set)
+    {
+      for (int index = 0; index < set.Length; index++)
+      {
+        if (!node.Children.TryGetValue(set[index], out var temp))
+          return false;
+
+        node = temp;
+      }
+
+      return true;
+    }
+
+    #endregion // Static methods
+
+    public string ToConsoleString()
+    {
+      var sb = new SpanBuilder<char>();
+
+      AddString(m_root, 0);
+
+      return sb.ToString();
+
+      void AddString(Node node, int level)
+      {
+        foreach (var childNode in node.Children)
+        {
+          sb.Append(string.Empty.PadLeft(level == 0 ? 0 : level + 1), 1);
+          if (level == 0) sb.Append('[', 1);
+          sb.Append(childNode.Key.ToString(), 1);
+          if (childNode.Value.IsTerminal) sb.Append("]", 1);
+          else sb.Append($"#{childNode.Value.Children.Count}", 1);
+          sb.Append(System.Environment.NewLine, 1);
+
+          AddString(childNode.Value, level + 1);
+        }
+      }
+    }
+
+    public override string ToString() => $"{GetType().Name} {{ Count = {Count()} }}";
+
+    private record class Node
+    {
+      public readonly System.Collections.Generic.IDictionary<TKey, Node> Children;
+      public bool IsTerminal;
+
+      public Node(bool isTerminal)
+      {
+        Children = new System.Collections.Generic.Dictionary<TKey, Node>();
+        IsTerminal = isTerminal;
+      }
+
+      //public override string ToString() => $"Children = {Children.Count}, IsTerminal = {IsTerminal}";
     }
   }
 }

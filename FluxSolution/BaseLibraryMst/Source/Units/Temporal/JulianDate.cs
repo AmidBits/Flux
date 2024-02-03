@@ -16,7 +16,7 @@ namespace Units
     {
       var m = new Flux.Units.MomentUtc(-4712, 1, 13, 12, 13, 14).ToJulianDate(Flux.Units.TemporalCalendar.JulianCalendar);
 
-      Assert.AreEqual(794.0000000000000000000000160, Flux.Units.JulianDate.GetTimeSinceNoon(m.Value), 1E-6);
+      Assert.AreEqual(794.0000000000000000000000160, Flux.Units.JulianDate.GetTimeOfDay(m.Value), 1E-6);
     }
 
     [TestMethod]

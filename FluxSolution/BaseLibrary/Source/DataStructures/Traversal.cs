@@ -6,9 +6,9 @@ namespace Flux.DataStructures
     /// <see href="https://en.wikipedia.org/wiki/Binary_search_algorithm"/>
     public static System.Collections.Generic.IEnumerable<T> BinaryTreeSearchDfsR<T>(T node, System.Func<T, T> selectorChildLeft, System.Func<T, T> selectorChildRight, BinaryTreeDepthOrder order, System.Func<T, bool>? predicate = null)
     {
-      if (node is null) throw new System.ArgumentNullException(nameof(node));
-      if (selectorChildLeft is null) throw new System.ArgumentNullException(nameof(selectorChildLeft));
-      if (selectorChildRight is null) throw new System.ArgumentNullException(nameof(selectorChildRight));
+      System.ArgumentNullException.ThrowIfNull(node);
+      System.ArgumentNullException.ThrowIfNull(selectorChildLeft);
+      System.ArgumentNullException.ThrowIfNull(selectorChildRight);
 
       if (!(predicate?.Invoke(node) ?? true))
         yield break;
@@ -41,9 +41,10 @@ namespace Flux.DataStructures
     /// <see href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     public static System.Collections.Generic.IEnumerable<(int depth, T node)> BinaryTreeSearchBfs<T>(T node, System.Func<T, T> selectorChildLeft, System.Func<T, T> selectorChildRight, int maxDepth, System.Func<(int depth, T node), bool>? predicate = null)
     {
-      if (node is null) throw new System.ArgumentNullException(nameof(node));
-      if (selectorChildLeft is null) throw new System.ArgumentNullException(nameof(selectorChildLeft));
-      if (selectorChildRight is null) throw new System.ArgumentNullException(nameof(selectorChildRight));
+      System.ArgumentNullException.ThrowIfNull(node);
+      System.ArgumentNullException.ThrowIfNull(selectorChildLeft);
+      System.ArgumentNullException.ThrowIfNull(selectorChildRight);
+
       if (maxDepth <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxDepth));
 
       var items = new System.Collections.Generic.List<(int depth, T node)>();
@@ -73,10 +74,11 @@ namespace Flux.DataStructures
     /// <see href="https://en.wikipedia.org/wiki/Breadth-first_search"/>
     public static System.Collections.Generic.IEnumerable<(int depth, T node)> BreadthFirstSearch<T>(T node, int maxDepth, System.Func<(int depth, T node), bool> predicate, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildNodes)
     {
-      if (node is null) throw new System.ArgumentNullException(nameof(node));
+      System.ArgumentNullException.ThrowIfNull(node);
+      System.ArgumentNullException.ThrowIfNull(predicate);
+      System.ArgumentNullException.ThrowIfNull(selectorChildNodes);
+
       if (maxDepth <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxDepth));
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-      if (selectorChildNodes is null) throw new System.ArgumentNullException(nameof(selectorChildNodes));
 
       var items = new System.Collections.Generic.List<T> { node };
 
@@ -104,10 +106,11 @@ namespace Flux.DataStructures
     /// <see href="https://en.wikipedia.org/wiki/Depth-first_search"/>
     public static System.Collections.Generic.IEnumerable<(int depth, T node)> DepthFirstSearch<T>(T node, int maxDepth, System.Func<(int depth, T node), bool> predicate, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildNodes)
     {
-      if (node is null) throw new System.ArgumentNullException(nameof(node));
+      System.ArgumentNullException.ThrowIfNull(node);
+      System.ArgumentNullException.ThrowIfNull(predicate);
+      System.ArgumentNullException.ThrowIfNull(selectorChildNodes);
+
       if (maxDepth <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxDepth));
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-      if (selectorChildNodes is null) throw new System.ArgumentNullException(nameof(selectorChildNodes));
 
       var stack = new System.Collections.Generic.Stack<System.Collections.Generic.Queue<T>>();
 
@@ -136,8 +139,8 @@ namespace Flux.DataStructures
     /// <see href="https://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search"/>
     public static T IterativeDeepeningDepthFirstSearch<T>(T node, int maxDepth, System.Func<T, bool> predicateGoal, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildNodes)
     {
-      if (predicateGoal is null) throw new System.ArgumentNullException(nameof(predicateGoal));
-      if (selectorChildNodes is null) throw new System.ArgumentNullException(nameof(selectorChildNodes));
+      System.ArgumentNullException.ThrowIfNull(predicateGoal);
+      System.ArgumentNullException.ThrowIfNull(selectorChildNodes);
 
       for (int depth = 0; depth <= maxDepth; depth++)
       {
@@ -156,8 +159,8 @@ namespace Flux.DataStructures
     /// <seealso cref="https://en.wikipedia.org/wiki/Iterative_deepening_depth-first_search#Algorithm_for_Directed_Graphs"/>
     public static (T itemFound, bool itemsRemaining) DepthLimitedSearch<T>(T node, int depth, System.Func<T, bool> predicateGoal, System.Func<T, System.Collections.Generic.IEnumerable<T>> selectorChildNodes)
     {
-      if (predicateGoal is null) throw new System.ArgumentNullException(nameof(predicateGoal));
-      if (selectorChildNodes is null) throw new System.ArgumentNullException(nameof(selectorChildNodes));
+      System.ArgumentNullException.ThrowIfNull(predicateGoal);
+      System.ArgumentNullException.ThrowIfNull(selectorChildNodes);
 
       if (depth == 0)
       {

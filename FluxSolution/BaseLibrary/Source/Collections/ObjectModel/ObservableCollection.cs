@@ -10,7 +10,7 @@ namespace Flux
     /// <summary>AddItems (with suppressed OnCollectionChanged while adding)</summary>
     public void AddItems(System.Collections.Generic.IEnumerable<T> items)
     {
-      if (items is null) throw new System.ArgumentNullException(nameof(items));
+      System.ArgumentNullException.ThrowIfNull(items);
 
       _suppressOnCollectionChanged = true;
 
@@ -34,7 +34,7 @@ namespace Flux
     /// <summary>Override OnCollectionChanged to manage subscription of to OnPropertyChangedItem to [item].PropertyChanged.</summary>
     protected override void OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-      if (e is null) throw new System.ArgumentNullException(nameof(e));
+      System.ArgumentNullException.ThrowIfNull(e);
 
       if (e.OldItems != null)
         foreach (T item in System.Linq.Enumerable.Cast<T>(e.OldItems))

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Numerics;
@@ -31,7 +32,46 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      var t = new Flux.DataStructures.SimpleTrie<char>();
+
+      //foreach (var d in System.IO.Directory.GetDirectories(@"C:\Users\Rob\OneDrive\", "*", System.IO.SearchOption.AllDirectories))
+      //  t.Insert(d);
+
+
+
+      t.Insert(" ");
+      t.Delete(" ");
+
+      t.Insert("abc");
+      t.Insert("abgl");
+      t.Insert("cdf");
+      t.Insert("abcd");
+      t.Insert("lmn");
+
+      System.Console.WriteLine(t.ToConsoleString());
+
+      bool findPrefix1 = t.Find(true, "ab");
+      bool findPrefix2 = t.Find(true, "lo");
+
+      bool findWord1 = t.Find(false, "lmn");
+      bool findWord2 = t.Find(false, "ab");
+      bool findWord3 = t.Find(false, "cdf");
+      bool findWord4 = t.Find(false, "ghi");
+      bool findWord5 = t.Find(true, "abc");
+
+      t.Delete("abc");
+      bool findWord6 = t.Find(true, "abc");
+      bool findWord7 = t.Find(false, "abc");
+      t.Delete("abgl");
+      t.Delete("abcd");
+      t.Delete("lmn");
+      t.Delete("xyz");
+      t.Delete("cdf");
+
+      return;
+
 
       var qvso = new Flux.QuantifiableValueStringOptions();
 

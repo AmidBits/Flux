@@ -8,9 +8,11 @@ namespace Flux
 
   namespace Units
   {
-    /// <summary>Julian Day Number unit of days.</summary>
+    /// <summary>
+    /// <para>Julian Day Number, unit of days.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Julian_day"/></para>
+    /// </summary>
     /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
-    /// <see href="https://en.wikipedia.org/wiki/Julian_day"/>
     public readonly record struct JulianDayNumber
       : System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, System.IFormattable, IValueQuantifiable<int>
     {
@@ -22,7 +24,7 @@ namespace Flux
 
       /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
       public JulianDayNumber(int year, int month, int day, TemporalCalendar calendar)
-        : this(ConvertFromDateParts(year, month, day, calendar))
+        : this(ConvertDatePartsToJulianDayNumber(year, month, day, calendar))
       { }
 
       /// <summary>Returns a <see cref="System.DayOfWeek"/> from the Julian Day Number.</summary>
@@ -37,7 +39,7 @@ namespace Flux
 
       public TemporalCalendar GetConversionCalendar() => IsGregorianCalendar(m_value) ? TemporalCalendar.GregorianCalendar : TemporalCalendar.JulianCalendar;
 
-      public (int year, int month, int day) GetDateParts(TemporalCalendar calendar) => ConvertToDateParts(m_value, calendar);
+      public (int year, int month, int day) GetDateParts(TemporalCalendar calendar) => ConvertJulianDayNumberToDateParts(m_value, calendar);
 
       /// <summary>Creates a new string from this instance.</summary>
       public string ToDateString(TemporalCalendar calendar)
@@ -63,7 +65,7 @@ namespace Flux
           sb.Append(@", ");
         }
 
-        var (year, month, day) = ConvertToDateParts(m_value, calendar); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
+        var (year, month, day) = ConvertJulianDayNumberToDateParts(m_value, calendar); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
 
         sb.Append(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
         sb.Append(' ');
@@ -87,7 +89,7 @@ namespace Flux
       /// <summary>Creates a new <see cref="MomentUtc"/> from this instance.</summary>
       public MomentUtc ToMomentUtc(TemporalCalendar calendar)
       {
-        var (year, month, day) = ConvertToDateParts((int)(m_value + 0.5), calendar);
+        var (year, month, day) = ConvertJulianDayNumberToDateParts((int)(m_value + 0.5), calendar);
 
         return new MomentUtc(year, month, day);
       }
@@ -95,7 +97,7 @@ namespace Flux
       #region Static methods
 
       /// <summary>Computes the Julian Day Number (JDN) for the specified date components and calendar to use during conversion.</summary>
-      public static int ConvertFromDateParts(int year, int month, int day, TemporalCalendar calendar)
+      public static int ConvertDatePartsToJulianDayNumber(int year, int month, int day, TemporalCalendar calendar)
         => calendar switch
         {
           TemporalCalendar.GregorianCalendar => (1461 * (year + 4800 + (month - 14) / 12)) / 4 + (367 * (month - 2 - 12 * ((month - 14) / 12))) / 12 - (3 * ((year + 4900 + (month - 14) / 12) / 100)) / 4 + day - 32075, // The algorithm is valid for all (possibly proleptic) Gregorian calendar dates after November 23, -4713. Divisions are integer divisions towards zero, fractional parts are ignored.
@@ -104,7 +106,7 @@ namespace Flux
         };
 
       /// <summary>Create a new MomentUtc from the specified Julian Day Number and conversion calendar.</summary>
-      public static (int year, int month, int day) ConvertToDateParts(int julianDayNumber, TemporalCalendar calendar)
+      public static (int year, int month, int day) ConvertJulianDayNumberToDateParts(int julianDayNumber, TemporalCalendar calendar)
       {
         // This is an algorithm by Edward Graham Richards to convert a Julian Day Number, J, to a date in the Gregorian calendar (proleptic, when applicable).
         // Richards states the algorithm is valid for Julian day numbers greater than or equal to 0.
