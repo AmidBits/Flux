@@ -3,7 +3,7 @@
   #region Extension methods
   public static partial class Em
   {
-    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, QuantifiableValueStringOptions options = default)
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, QuantifiableValueStringOptions options)
       where TType : struct, System.IEquatable<TType>
       where TUnit : notnull, System.Enum
     {

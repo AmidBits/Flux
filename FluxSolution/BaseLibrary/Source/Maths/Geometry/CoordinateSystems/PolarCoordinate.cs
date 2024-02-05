@@ -89,7 +89,7 @@ namespace Flux
       #endregion // Static methods
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {m_radius.ToString("N1")}, Azimuth = {new Units.Azimuth(m_azimuth, Units.AngleUnit.Radian).ToValueString(new("N3"))} }}"
+        => $"{GetType().GetNameEx()} {{ Radius = {m_radius.ToString("N1")}, Azimuth = {new Units.Azimuth(m_azimuth, Units.AngleUnit.Radian).ToValueString(new() { Format = "N3" })} }}"
         + $" <{m_radius}, {m_azimuth}>";
 
       public override string ToString() => ToString(null, null);

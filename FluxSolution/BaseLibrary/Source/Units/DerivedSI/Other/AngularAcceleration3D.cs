@@ -44,7 +44,7 @@ namespace Flux
 
       #region Implemented interfaces
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(AngularAcceleration.DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(AngularAcceleration.DefaultUnit, options);
 
       public System.Numerics.Vector3 Value { get => m_value; }
 
@@ -56,12 +56,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AngularAccelerationUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(AngularAccelerationUnit unit, QuantifiableValueStringOptions options)
         => $"{Value.ToString(options.Format, options.CultureInfo)} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

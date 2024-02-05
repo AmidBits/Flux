@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PartsPerNotationUnit source, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.PartsPerNotationUnit source, QuantifiableValueStringOptions options)
       => options.UseFullName ? source.ToString() : source switch
       {
         Units.PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
@@ -111,7 +111,7 @@ namespace Flux
       public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="PartsPerNotation.Value"/> property is in <see cref="PartsPerNotationUnit.Percent"/>.</para>
@@ -134,12 +134,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PartsPerNotationUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(PartsPerNotationUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

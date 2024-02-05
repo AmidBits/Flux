@@ -4,7 +4,7 @@ namespace Flux
   {
     public static double GetUnitFactor(this Units.MetricMultiplicativePrefix source)
       => System.Math.Pow(10, (int)source);
-    public static string GetUnitString(this Units.MetricMultiplicativePrefix source, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.MetricMultiplicativePrefix source, QuantifiableValueStringOptions options)
       => options.UseFullName ? source.ToString() : source switch
       {
         Units.MetricMultiplicativePrefix.Yotta => "Y",
@@ -150,7 +150,7 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
+      public string ToValueString(QuantifiableValueStringOptions options)
         => ToUnitValueString(MetricMultiplicativePrefix.One, options);
 
       public double Value => m_value;
@@ -159,12 +159,12 @@ namespace Flux
       public double GetUnitValue(MetricMultiplicativePrefix multiplicativePrefix)
         => m_value / multiplicativePrefix.GetUnitFactor();
 
-      public string ToUnitValueString(MetricMultiplicativePrefix multiplicativePrefix, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(MetricMultiplicativePrefix multiplicativePrefix, QuantifiableValueStringOptions options)
         => $"{string.Format($"{{0{(options.Format is null ? string.Empty : $":format")}}}", GetUnitValue(multiplicativePrefix))}{(multiplicativePrefix.GetUnitString(options) is var prefix && prefix.Length > 0 ? $" {prefix}" : string.Empty)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

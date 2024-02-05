@@ -171,7 +171,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
+      public string ToValueString(QuantifiableValueStringOptions options)
         => Angle.ToUnitValueString(AngleUnit.Degree, options);
 
       /// <summary>
@@ -181,7 +181,7 @@ namespace Flux
 
       #endregion // Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

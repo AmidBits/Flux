@@ -72,7 +72,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Cent o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
+      public string ToValueString(QuantifiableValueStringOptions options)
         => $"{m_value} cent{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
       /// <summary>
@@ -82,7 +82,7 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.EnplethyUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.EnplethyUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.EnplethyUnit.Mole => options.PreferUnicode ? "\u33D6" : "mol",
@@ -25,14 +25,12 @@ namespace Flux
       /// <summary>The exact number of elementary entities in one mole.</summary>
       public static readonly double AvagadroNumber = 6.02214076e23;
 
-      public const EnplethyUnit DefaultUnit = EnplethyUnit.Mole;
-
       /// <summary>The dimension of the Avagadro constant is the reciprocal of amount of substance.</summary>
       public static readonly Enplethy AvagadroConstant = new(1 / AvagadroNumber);
 
       private readonly double m_value;
 
-      public Enplethy(double value, EnplethyUnit unit = DefaultUnit)
+      public Enplethy(double value, EnplethyUnit unit = EnplethyUnit.Mole)
         => m_value = unit switch
         {
           EnplethyUnit.Mole => value,
@@ -76,7 +74,7 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(EnplethyUnit.Mole, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Enplethy.Value"/> property is in <see cref="EnplethyUnit.Mole"/>.</para>
@@ -91,12 +89,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(EnplethyUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(EnplethyUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format($"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

@@ -67,7 +67,7 @@ namespace Flux
       #region Implemented interfaces
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
+      public string ToValueString(QuantifiableValueStringOptions options)
         => RatioFormat.AcolonB.ToRatioString(m_numerator, m_denominator);
 
       /// <summary>
@@ -77,7 +77,7 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

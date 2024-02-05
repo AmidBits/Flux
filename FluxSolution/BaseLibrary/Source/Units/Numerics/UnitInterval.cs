@@ -81,7 +81,7 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
+      public string ToValueString(QuantifiableValueStringOptions options)
         => string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", m_value);
 
       /// <summary>
@@ -91,7 +91,7 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

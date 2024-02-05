@@ -45,7 +45,7 @@ namespace Flux
       #region Implemented interfaces
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(MagneticFluxDensity.DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MagneticFluxDensity.DefaultUnit, options);
 
       public System.Numerics.Vector2 Value => m_value;
 
@@ -57,12 +57,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(MagneticFluxDensityUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(MagneticFluxDensityUnit unit, QuantifiableValueStringOptions options)
         => $"{Value.ToString(options.Format, options.CultureInfo)} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

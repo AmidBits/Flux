@@ -42,7 +42,7 @@ namespace Flux
       public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
+      public string ToValueString(QuantifiableValueStringOptions options)
         => string.Format(options.CultureInfo, $"UV Index {{0:{options.Format ?? "N1"}}}", m_value);
 
       /// <summary>
@@ -52,7 +52,7 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

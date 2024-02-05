@@ -45,10 +45,10 @@ namespace Flux
       #region Implemented interfaces
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString();
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(Acceleration.DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(Acceleration.DefaultUnit, options);
 
       public System.Numerics.Vector2 Value => m_value;
 
@@ -60,12 +60,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AccelerationUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(AccelerationUnit unit, QuantifiableValueStringOptions options)
         => $"{Value.ToString(options.Format, options.CultureInfo)} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

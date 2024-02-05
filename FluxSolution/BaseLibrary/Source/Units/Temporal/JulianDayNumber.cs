@@ -171,10 +171,10 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is JulianDayNumber o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => format is null ? ToValueString() : m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => format is null ? ToValueString(QuantifiableValueStringOptions.Default) : m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
+      public string ToValueString(QuantifiableValueStringOptions options)
         => ToDateString(GetConversionCalendar());
 
       /// <summary>
@@ -184,7 +184,7 @@ namespace Flux
 
       #endregion // Implemented interfaces
 
-      public override string? ToString() => ToValueString();
+      public override string? ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

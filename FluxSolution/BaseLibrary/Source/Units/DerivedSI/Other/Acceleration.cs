@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.AccelerationUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.AccelerationUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.AccelerationUnit.MeterPerSecondSquared => options.PreferUnicode ? "\u33A8" : "m/s²",
@@ -67,10 +67,10 @@ namespace Flux
       public int CompareTo(Acceleration other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(new(format, formatProvider));
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(new() { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Acceleration.Value"/> property is in <see cref="AccelerationUnit.MeterPerSecondSquared"/>.</para>
@@ -85,12 +85,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AccelerationUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(AccelerationUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

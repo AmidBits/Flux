@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.EquivalentDoseUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.EquivalentDoseUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.EquivalentDoseUnit.Sievert => options.PreferUnicode ? "\u33DC" : "Sv",
@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct EquivalentDose
       : System.IComparable, System.IComparable<EquivalentDose>, IUnitValueQuantifiable<double, EquivalentDoseUnit>
     {
-      public const EquivalentDoseUnit DefaultUnit = EquivalentDoseUnit.Sievert;
-
       private readonly double m_value;
 
-      public EquivalentDose(double value, EquivalentDoseUnit unit = DefaultUnit)
+      public EquivalentDose(double value, EquivalentDoseUnit unit = EquivalentDoseUnit.Sievert)
         => m_value = unit switch
         {
           EquivalentDoseUnit.Sievert => value,
@@ -68,7 +66,7 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(EquivalentDoseUnit.Sievert, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="EquivalentDose.Value"/> property is in <see cref="EquivalentDoseUnit.Sievert"/>.</para>
@@ -83,12 +81,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(EquivalentDoseUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(EquivalentDoseUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

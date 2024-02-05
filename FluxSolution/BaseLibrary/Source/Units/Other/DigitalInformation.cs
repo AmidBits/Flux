@@ -19,7 +19,7 @@ namespace Flux
       };
     }
 
-    public static string GetUnitString(this Units.DigitalInformationUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.DigitalInformationUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.DigitalInformationUnit.Byte => "B",
@@ -118,7 +118,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is DigitalInformation o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="DigitalInformationUnit.Value"/> property is in <see cref="DigitalInformationUnit.Byte"/>.</para>
@@ -141,14 +141,14 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(DigitalInformationUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(DigitalInformationUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

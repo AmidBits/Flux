@@ -25,8 +25,8 @@ namespace Flux.Units
     public double GetMercatorProjectedY()
       => System.Math.Clamp(System.Math.Log(System.Math.Tan(System.Math.PI / 4 + Angle.Value / 2)), -System.Math.PI, System.Math.PI);
 
-    public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool preferUnicode = true, bool useSpaces = false, System.Globalization.CultureInfo? culture = null)
-      => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.NorthSouth, -1, preferUnicode, useSpaces, culture);
+    public string ToSexagesimalDegreeString(QuantifiableValueStringOptions options, AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false)
+      => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.NorthSouth, options, -1, useSpaces);
 
     #region Static methods
 
@@ -105,21 +105,21 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Latitude o ? CompareTo(o) : -1;
 
     // IQuantifiable<>
-    public string ToValueString(QuantifiableValueStringOptions options = default)
+    public string ToValueString(QuantifiableValueStringOptions options)
     {
       if (options.Format is not null)
       {
         if (options.Format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds, options.PreferUnicode, options.Format.EndsWith(' '), options.CultureInfo);
+          return ToSexagesimalDegreeString(options, AngleDmsFormat.DegreesMinutesDecimalSeconds, options.Format.EndsWith(' '));
         if (options.Format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes, options.PreferUnicode, options.Format.EndsWith(' '), options.CultureInfo);
+          return ToSexagesimalDegreeString(options, AngleDmsFormat.DegreesDecimalMinutes, options.Format.EndsWith(' '));
         if (options.Format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees, options.PreferUnicode, options.Format.EndsWith(' '), options.CultureInfo);
+          return ToSexagesimalDegreeString(options, AngleDmsFormat.DecimalDegrees, options.Format.EndsWith(' '));
 
         return Angle.ToUnitValueString(AngleUnit.Degree, options);
       }
 
-      return ToSexagesimalDegreeString();
+      return ToSexagesimalDegreeString(options);
     }
 
     /// <summary>
@@ -129,6 +129,6 @@ namespace Flux.Units
 
     #endregion Implemented interfaces
 
-    public override string ToString() => ToValueString();
+    public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
   }
 }

@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.ElectricCurrentUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.ElectricCurrentUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.ElectricCurrentUnit.Ampere => "A",
@@ -25,11 +25,9 @@ namespace Flux
     public readonly record struct ElectricCurrent
       : System.IComparable, System.IComparable<ElectricCurrent>, System.IFormattable, IUnitValueQuantifiable<double, ElectricCurrentUnit>
     {
-      public const ElectricCurrentUnit DefaultUnit = ElectricCurrentUnit.Ampere;
-
       private readonly double m_value;
 
-      public ElectricCurrent(double value, ElectricCurrentUnit unit = DefaultUnit)
+      public ElectricCurrent(double value, ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
         => m_value = unit switch
         {
           ElectricCurrentUnit.Ampere => value,
@@ -79,10 +77,10 @@ namespace Flux
       public int CompareTo(ElectricCurrent other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(new(format, formatProvider));
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(new() { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(ElectricCurrentUnit.Ampere, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="ElectricCurrent.Value"/> property is in <see cref="ElectricCurrentUnit.Ampere"/>.</para>
@@ -98,12 +96,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ElectricCurrentUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(ElectricCurrentUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

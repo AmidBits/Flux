@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.TemperatureUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.TemperatureUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.TemperatureUnit.Celsius => options.PreferUnicode ? "\u2103" : "\u00B0C",
@@ -29,13 +29,11 @@ namespace Flux
     public readonly record struct Temperature
       : System.IComparable, System.IComparable<Temperature>, System.IFormattable, IUnitValueQuantifiable<double, TemperatureUnit>
     {
-      public const TemperatureUnit DefaultUnit = TemperatureUnit.Kelvin;
-
       public static readonly Temperature AbsoluteZero;
 
       private readonly double m_value;
 
-      public Temperature(double value, TemperatureUnit unit = DefaultUnit)
+      public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin)
         => m_value = unit switch
         {
           TemperatureUnit.Celsius => CelsiusToKelvin(value),
@@ -108,7 +106,7 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(TemperatureUnit.Kelvin, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Temperature.Value"/> property is in <see cref="TemperatureUnit.Kelvin"/>.</para>
@@ -126,12 +124,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(TemperatureUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(TemperatureUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

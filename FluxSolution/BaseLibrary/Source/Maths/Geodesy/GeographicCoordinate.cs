@@ -51,7 +51,7 @@ namespace Flux.Geometry
     /// <param name="altitudeValue">The altitude length value.</param>
     /// <param name="altitudeUnit">The altitude length unit.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public GeographicCoordinate(double latitudeValue, Units.AngleUnit latitudeUnit, double longitudeValue, Units.AngleUnit longitudeUnit, double altitudeValue = 1, Units.LengthUnit altitudeUnit = Units.Length.DefaultUnit)
+    public GeographicCoordinate(double latitudeValue, Units.AngleUnit latitudeUnit, double longitudeValue, Units.AngleUnit longitudeUnit, double altitudeValue = 1, Units.LengthUnit altitudeUnit = Units.LengthUnit.Meter)
       : this(new Units.Latitude(latitudeValue, latitudeUnit).Value, new Units.Longitude(longitudeValue, longitudeUnit).Value, new Units.Length(altitudeValue, altitudeUnit).Value)
     { }
 
@@ -438,7 +438,7 @@ namespace Flux.Geometry
     //#region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"{GetType().Name} {{ {new Units.Latitude(m_latitude, AngleUnit.Degree)}, {new Units.Longitude(m_longitude, AngleUnit.Degree)} ({new Units.Length(m_altitude).ToValueString(new("N0"))}) }}"
+      => $"{GetType().Name} {{ {new Units.Latitude(m_latitude, AngleUnit.Degree)}, {new Units.Longitude(m_longitude, AngleUnit.Degree)} ({new Units.Length(m_altitude).ToValueString(new() { Format = "N0" })}) }}"
       + $" <{m_altitude}, {m_latitude}, {m_longitude}>";
 
     //#endregion Implemented interfaces

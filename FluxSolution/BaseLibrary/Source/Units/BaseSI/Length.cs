@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.LengthUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.LengthUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.LengthUnit.Femtometer => options.PreferUnicode ? "\u3399" : "fm",
@@ -53,11 +53,9 @@ namespace Flux
     {
       public const double OneParsecInMeters = 30856775814913672;
 
-      public const LengthUnit DefaultUnit = LengthUnit.Meter;
-
       private readonly double m_value;
 
-      public Length(double value, LengthUnit unit = DefaultUnit)
+      public Length(double value, LengthUnit unit = LengthUnit.Meter)
         => m_value = unit switch
         {
           LengthUnit.Femtometer => value * 1E-15,
@@ -130,7 +128,7 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(LengthUnit.Meter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Length.Value"/> property is in <see cref="LengthUnit.Meter"/>.</para>
@@ -159,12 +157,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(LengthUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(LengthUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

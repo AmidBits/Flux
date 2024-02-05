@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.ElectricalResistanceUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.ElectricalResistanceUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.ElectricalResistanceUnit.Ohm => options.PreferUnicode ? "\u2126" : "ohm",
@@ -27,13 +27,11 @@ namespace Flux
     public readonly record struct ElectricalResistance
       : System.IComparable, System.IComparable<ElectricalResistance>, IUnitValueQuantifiable<double, ElectricalResistanceUnit>
     {
-      public const ElectricalResistanceUnit DefaultUnit = ElectricalResistanceUnit.Ohm;
-
       public static ElectricalResistance VonKlitzingConstant => new(25812.80745); // 25812.80745;
 
       private readonly double m_value;
 
-      public ElectricalResistance(double value, ElectricalResistanceUnit unit = DefaultUnit)
+      public ElectricalResistance(double value, ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm)
         => m_value = unit switch
         {
           ElectricalResistanceUnit.Ohm => value,
@@ -102,7 +100,7 @@ namespace Flux
       public int CompareTo(ElectricalResistance other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(ElectricalResistanceUnit.Ohm, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="ElectricalResistance.Value"/> property is in <see cref="ElectricalResistanceUnit.Ohm"/>.</para>
@@ -119,12 +117,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ElectricalResistanceUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(ElectricalResistanceUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

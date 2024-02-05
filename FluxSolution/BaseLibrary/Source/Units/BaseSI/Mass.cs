@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.MassUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.MassUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.MassUnit.Milligram => options.PreferUnicode ? "\u338E" : "mg",
@@ -34,13 +34,11 @@ namespace Flux
     public readonly record struct Mass
       : System.IComparable, System.IComparable<Mass>, System.IFormattable, IUnitValueQuantifiable<double, MassUnit>
     {
-      public const MassUnit DefaultUnit = MassUnit.Kilogram;
-
       public static Mass ElectronMass => new(9.109383701528e-31);
 
       private readonly double m_value;
 
-      public Mass(double value, MassUnit unit = DefaultUnit)
+      public Mass(double value, MassUnit unit = MassUnit.Kilogram)
         => m_value = unit switch
         {
           MassUnit.Milligram => value / 1000000,
@@ -89,8 +87,7 @@ namespace Flux
       public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
-        => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MassUnit.Kilogram, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Mass.Value"/> property is in <see cref="MassUnit.Kilogram"/>.</para>
@@ -110,12 +107,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(MassUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(MassUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

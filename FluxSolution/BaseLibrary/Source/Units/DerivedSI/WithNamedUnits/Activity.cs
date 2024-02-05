@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.ActivityUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.ActivityUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.ActivityUnit.Becquerel => options.PreferUnicode ? "\u33C3" : "Bq",
@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct Activity
       : System.IComparable, System.IComparable<Activity>, IUnitValueQuantifiable<double, ActivityUnit>
     {
-      public const ActivityUnit DefaultUnit = ActivityUnit.Becquerel;
-
       private readonly double m_value;
 
-      public Activity(double value, ActivityUnit unit = DefaultUnit)
+      public Activity(double value, ActivityUnit unit = ActivityUnit.Becquerel)
         => m_value = unit switch
         {
           ActivityUnit.Becquerel => value,
@@ -65,7 +63,7 @@ namespace Flux
       public int CompareTo(Activity other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(ActivityUnit.Becquerel, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Activity.Value"/> property is in <see cref="ActivityUnit.Becquerel"/>.</para>
@@ -80,12 +78,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ActivityUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(ActivityUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

@@ -152,7 +152,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is MidiNote o ? CompareTo(o) : -1;
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
+      public string ToValueString(QuantifiableValueStringOptions options)
         => $"{GetScientificPitchNotationLabel(options.PreferUnicode)}{GetOctave()}";
 
       /// <summary>
@@ -164,7 +164,7 @@ namespace Flux
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

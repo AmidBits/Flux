@@ -20,14 +20,23 @@
 
   public readonly record struct QuantifiableValueStringOptions
   {
-    public readonly static QuantifiableValueStringOptions Default;
+    public static QuantifiableValueStringOptions Default => new();
+
+    public QuantifiableValueStringOptions()
+    {
+      CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
+      PreferUnicode = true;
+    }
 
     public QuantifiableValueStringOptions(string? format, System.IFormatProvider? formatProvider)
+      : this()
     {
       Format = format;
       FormatProvider = formatProvider;
     }
+
     public QuantifiableValueStringOptions(string? format)
+      : this()
     {
       Format = format;
     }
@@ -35,7 +44,7 @@
     /// <summary>
     /// <para>The culture info. The default is <see cref="System.Globalization.CultureInfo.InvariantCulture"/>.</para>
     /// </summary>
-    public System.Globalization.CultureInfo? CultureInfo { get; init; } = System.Globalization.CultureInfo.InvariantCulture;
+    public System.Globalization.CultureInfo CultureInfo { get; init; } = System.Globalization.CultureInfo.InvariantCulture;
 
     /// <summary>
     /// <para>The format for the value. The default is <see cref="null"/>.</para>

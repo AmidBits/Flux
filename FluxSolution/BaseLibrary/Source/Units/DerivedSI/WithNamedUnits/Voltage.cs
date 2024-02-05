@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.VoltageUnit unit, QuantifiableValueStringOptions options = default)
+    public static string GetUnitString(this Units.VoltageUnit unit, QuantifiableValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.VoltageUnit.Volt => "V",
@@ -25,11 +25,9 @@ namespace Flux
     public readonly record struct Voltage
       : System.IComparable, System.IComparable<Voltage>, IUnitValueQuantifiable<double, VoltageUnit>
     {
-      public const VoltageUnit DefaultUnit = VoltageUnit.Volt;
-
       private readonly double m_value;
 
-      public Voltage(double value, VoltageUnit unit = DefaultUnit)
+      public Voltage(double value, VoltageUnit unit = VoltageUnit.Volt)
         => m_value = unit switch
         {
           VoltageUnit.Volt => value,
@@ -83,7 +81,7 @@ namespace Flux
       public int CompareTo(Voltage other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(VoltageUnit.Volt, options);
 
       /// <summary>
       ///  <para>The unit of the <see cref="Voltage.Value"/> property is in <see cref="VoltageUnit.Volt"/>.</para>
@@ -99,12 +97,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(VoltageUnit unit, QuantifiableValueStringOptions options = default)
+      public string ToUnitValueString(VoltageUnit unit, QuantifiableValueStringOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

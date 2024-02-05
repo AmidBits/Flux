@@ -79,7 +79,7 @@ namespace Flux
       public int CompareTo(Semitone other) => m_value.CompareTo(other.m_value);
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options = default)
+      public string ToValueString(QuantifiableValueStringOptions options)
         => $"{m_value} semitone{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
       /// <summary>
@@ -89,7 +89,7 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString();
+      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
     }
   }
 }

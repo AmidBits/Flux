@@ -28,7 +28,7 @@ namespace Flux.Formatting
 
             foreach (var unit in (Units.TemperatureUnit[])System.Enum.GetValues(typeof(Units.TemperatureUnit)))
               if (unit.ToString().StartsWith(unitString, System.StringComparison.InvariantCultureIgnoreCase))
-                return string.Format(null, $"{{0:N{decimalPlaces}}}", temperature.GetUnitValue(unit)) + unit.GetUnitString();
+                return string.Format(null, $"{{0:N{decimalPlaces}}}", temperature.GetUnitValue(unit)) + unit.GetUnitString(QuantifiableValueStringOptions.Default);
           }
         }
       }
