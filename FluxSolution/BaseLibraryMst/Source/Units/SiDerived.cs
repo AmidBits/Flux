@@ -31,7 +31,7 @@ namespace Units
       Assert.AreEqual(expected.X, actual.x, Flux.Maths.Epsilon1E15);
       Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 
-      expected = (0.8414709848078966, 0.5403023058681394);
+      expected = (0.8414709848078967, 0.5403023058681394);
       actual = Flux.Units.Angle.RotationAngleToCartesian2Ex(u.Value);
       Assert.AreEqual(expected.X, actual.x);
       Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);

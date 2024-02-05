@@ -221,7 +221,7 @@
       /// <summary></summary>
       /// <see href="https://en.wikipedia.org/wiki/ISO_6709"/>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static string ToDmsString(double decimalDegrees, AngleDmsFormat format, CardinalAxis axis, int decimalPoints = -1, bool preferUnicode = false, bool useSpaces = false, System.Globalization.CultureInfo? culture = null)
+      public static string ToDmsString(double decimalDegrees, AngleDmsFormat format, CardinalAxis axis, int decimalPoints = -1, bool preferUnicode = true, bool useSpaces = false, System.Globalization.CultureInfo? culture = null)
       {
         var (degrees, minutes, decimalSeconds) = DecimalDegreesToDms(decimalDegrees, out var decimalMinutes);
 

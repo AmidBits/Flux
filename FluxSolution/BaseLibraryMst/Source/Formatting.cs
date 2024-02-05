@@ -7,7 +7,7 @@ namespace Formatting
   [TestClass]
   public class Dms
   {
-    readonly string _dms1 = "40\u00B011'15\"";
+    readonly string _dms1 = "40\u00B011\u203215\u2033"; // Default is to use Unicode, so we test with Unicode.
     readonly double _dms1tp = 40.1875;
 
     [TestMethod]
