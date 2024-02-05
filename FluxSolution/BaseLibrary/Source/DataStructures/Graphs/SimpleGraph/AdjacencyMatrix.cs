@@ -27,11 +27,13 @@
     }
     public AdjacencyMatrix() : this(new int[0, 0]) { }
 
+    /// <summary>Returns the basic adjacency matrix.</summary>
+    public int[,] Matrix => m_matrix;
+
     /// <summary>Returns the count of vertices within the adjacency matrix.</summary>
     public int Count => m_matrix.GetLength(0);
 
-    /// <summary>Returns the basic adjacency matrix.</summary>
-    public int[,] Matrix => m_matrix;
+    public IGraph<TVertexValue, TEdgeValue> CloneEmpty() => new AdjacencyMatrix<TVertexValue, TEdgeValue>();
 
     /// <summary>Returns the degree of the vertex x. Loops are not counted.</summary>
     public int GetDegree(int x)
@@ -147,6 +149,8 @@
     /// <summary>Tests whether there is an edge (<paramref name="x"/>, <paramref name="y"/>), either directed or a loop.</summary>
     public bool EdgeExists(int x, int y) => VertexExists(x) && VertexExists(y) && m_matrix[x, y] > 0;
 
+    public bool EdgeExists(int x, int y, TEdgeValue value) => EdgeExists(x, y) && TryGetEdgeValue(x, y, out var _);
+
     /// <summary>Removes the edge (<paramref name="x"/>, <paramref name="y"/>), if it is there.</summary>
     public bool RemoveEdge(int x, int y)
     {
@@ -161,6 +165,8 @@
 
       return false;
     }
+
+    public bool RemoveEdge(int x, int y, TEdgeValue value) => EdgeExists(x, y, value) ? RemoveEdge(x, y) : false;
 
     /// <summary>Returns whether a <paramref name="value"/> for edge (<paramref name="x"/>, <paramref name="y"/>) was found. An edge can exists without a value.</summary>
     public bool TryGetEdgeValue(int x, int y, out TEdgeValue value) => m_edgeValues.TryGetValue((x, y), out value!);
@@ -330,33 +336,16 @@
             yield return (x, y, TryGetEdgeValue(x, y, out var v) ? v : default!);
     }
 
-    public System.Collections.Generic.IEnumerable<int> GetVertices()
+    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value)> GetVertices() => System.Linq.Enumerable.Range(0, Count).Select(x => (x, TryGetVertexValue(x, out var v) ? v : default!));
+    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value, int degree)> GetVerticesWithDegree() => System.Linq.Enumerable.Range(0, Count).Select(x => (x, TryGetVertexValue(x, out var v) ? v : default!, GetDegree(x)));
+
+    public override string ToString()
     {
-      var count = Count;
+      var sb = new System.Text.StringBuilder();
 
-      for (var i = 0; i < count; i++)
-        yield return i;
-    }
-    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value)> GetVerticesWithValue()
-    {
-      var count = Count;
+      sb.AppendLine($"{GetType().Name} {{ Vertices = {Count}, Edges = {System.Linq.Enumerable.Count(GetEdges())} }}");
 
-      for (var i = 0; i < count; i++)
-        yield return (i, TryGetVertexValue(i, out var vv) ? vv : default!);
-    }
-    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value, int degree)> GetVerticesWithValueAndDegree()
-    {
-      var count = Count;
-
-      for (var i = 0; i < count; i++)
-        yield return (i, TryGetVertexValue(i, out var v) ? v : default!, GetDegree(i));
-    }
-
-    public string ToConsoleString()
-    {
-      var sb = new System.Text.StringBuilder(System.Environment.NewLine).AppendLine();
-
-      sb.AppendLine(ToString());
+      sb.AppendLine();
 
       var l0 = m_matrix.GetLength(0);
       var l1 = m_matrix.GetLength(1);
@@ -374,53 +363,38 @@
           grid[i0 + 1, i1 + 1] = m_matrix[i0, i1];
       }
 
-      sb.AppendLine(string.Join(System.Environment.NewLine, grid.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true, CenterContent = true })));
+      sb.Append(string.Join(System.Environment.NewLine, grid.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true, CenterContent = true })));
 
-      sb.AppendLine();
-
-      sb.AppendLine(@"Vertices (x, value, degree):");
-      sb.AppendJoin(System.Environment.NewLine, GetVerticesWithValueAndDegree()).AppendLine();
-
-      sb.AppendLine();
-
-      sb.AppendLine(@"Edges (x, y, value):");
-      sb.AppendJoin(System.Environment.NewLine, GetEdges()).AppendLine();
-
-      return sb.AppendLine().ToString();
+      return sb.ToString();
     }
-
-    public override string ToString() => $"{GetType().Name} {{ Vertices = {Count}, Edges = {System.Linq.Enumerable.Count(GetEdges())} }}";
   }
 }
 
 /*
-      // Adjacent Matrix.
+  var am = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, int>();
 
-      var am = new Flux.Collections.Generic.Graph.AdjacentMatrix<char, int>();
+  am.AddVertex(0, 9);
+  am.AddVertex(1, 8);
+  am.AddVertex(2, 7);
+  am.AddVertex(3, 6);
 
-      am.AddVertex('a');
-      am.AddVertex('b');
-      am.AddVertex('c');
-      am.AddVertex('d');
+  //am.AddEdge(0, 1, 1);
+  //am.AddEdge(0, 2, 1);
+  //am.AddEdge(1, 0, 1);
+  //am.AddEdge(1, 2, 1);
+  //am.AddEdge(2, 0, 1);
+  //am.AddEdge(2, 1, 1);
+  //am.AddEdge(2, 3, 1);
+  //am.AddEdge(3, 2, 1);
 
-      //am.AddDirectedEdge('a', 'b', 1);
-      //am.AddDirectedEdge('a', 'c', 1);
-      //am.AddDirectedEdge('b', 'a', 1);
-      //am.AddDirectedEdge('b', 'c', 1);
-      //am.AddDirectedEdge('c', 'a', 1);
-      //am.AddDirectedEdge('c', 'b', 1);
-      //am.AddDirectedEdge('c', 'd', 1);
-      //am.AddDirectedEdge('d', 'c', 1);
+  am.AddEdge(0, 1, 2);
+  am.AddEdge(0, 2, 1);
+  am.AddEdge(1, 2, 4);
+  am.AddEdge(2, 3, 1);
 
-      am.AddDirectedEdge('a', 'b', 2);
-      am.AddUndirectedEdge('a', 'c', 1);
-      am.AddUndirectedEdge('b', 'c', 1);
-      am.AddUndirectedEdge('c', 'd', 1);
+  System.Console.WriteLine(am.ToConsoleString());
 
-      am.RemoveUndirectedEdge('c', 'b', 1);
+  var amt = (Flux.DataStructures.Graphs.AdjacencyMatrix<int, int>)am.TransposeToCopy();
 
-      System.Console.WriteLine(am.ToConsoleString());
-
-      foreach (var edge in am.GetEdges())
-        System.Console.WriteLine(edge);
+  System.Console.WriteLine(amt.ToConsoleString());
  */

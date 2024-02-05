@@ -1,7 +1,9 @@
 namespace Flux.DataStructures
 {
-  /// <summary></summary>
-  /// <see href="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>
+  /// <summary>
+  /// <para></para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Heap_(data_structure)"/></para>
+  /// </summary>
   public sealed class BinaryHeapMax<T>
     : IHeap<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
     where T : System.IComparable<T>
@@ -20,12 +22,8 @@ namespace Flux.DataStructures
     public System.Collections.Generic.IEnumerable<int> GetIndicesOfDescendantsBFS(int index, int maxIndex)
     {
       for (int baseParentIndex = (index << 1) + 1, ordinalLevel = 1; baseParentIndex <= maxIndex; baseParentIndex = (baseParentIndex << 1) + 1, ordinalLevel++)
-      {
         for (int childIndex = baseParentIndex, maxChildIndex = baseParentIndex + (1 << ordinalLevel); childIndex < maxChildIndex && maxChildIndex <= maxIndex; childIndex++)
-        {
           yield return childIndex;
-        }
-      }
     }
 
     private void HeapifyDown(int index)
@@ -72,7 +70,6 @@ namespace Flux.DataStructures
       int m1 = 0, z = 0, p1 = 0;
 
       foreach (var index in GetIndicesOfDescendantsBFS(1, m_data.Count))
-      {
         switch (m_data[(index - 1) >> 1].CompareTo(m_data[index]))
         {
           case -1:
@@ -85,7 +82,6 @@ namespace Flux.DataStructures
             p1++;
             break;
         }
-      }
 
       return m1 == 0 || p1 == 0;
     }

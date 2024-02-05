@@ -25,6 +25,8 @@
     /// <summary>Returns the count of vertices within the adjacency matrix.</summary>
     public int Count => m_list.Count;
 
+    public IGraph<TVertexValue, TEdgeValue> CloneEmpty() => new AdjacencyList<TVertexValue, TEdgeValue>();
+
     /// <summary>Returns the degree of the vertex x. Loops are not counted.</summary>
     public int GetDegree(int x)
     {
@@ -33,7 +35,7 @@
       foreach (var sk in m_list.Keys)
         foreach (var tk in m_list[sk].Keys)
           if (sk == x || tk == x)
-            degree += sk.Equals(tk) ? 2 : 1;
+            degree += sk == tk ? 2 : 1;
 
       return degree;
     }
@@ -189,29 +191,38 @@
             yield return (x, y, v);
     }
 
-    public System.Collections.Generic.IEnumerable<int> GetVertices() => m_list.Keys;
-    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value)> GetVerticesWithValue() => System.Linq.Enumerable.Select(GetVertices(), x => (x, TryGetVertexValue(x, out var v) ? v : default!));
-    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value, int degree)> GetVerticesWithValueAndDegree() => System.Linq.Enumerable.Select(GetVertices(), x => (x, TryGetVertexValue(x, out var v) ? v : default!, GetDegree(x)));
-
-    public string ToConsoleString()
-    {
-      var sb = new System.Text.StringBuilder(System.Environment.NewLine).AppendLine();
-
-      sb.AppendLine(ToString());
-
-      sb.AppendLine();
-
-      sb.AppendLine(@"Vertices (x, value, degree):");
-      sb.AppendJoin(System.Environment.NewLine, GetVerticesWithValueAndDegree()).AppendLine();
-
-      sb.AppendLine();
-
-      sb.AppendLine(@"Edges (x, y, value):");
-      sb.AppendJoin(System.Environment.NewLine, GetEdges()).AppendLine();
-
-      return sb.AppendLine().ToString();
-    }
+    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value)> GetVertices() => m_list.Keys.Select(x => (x, TryGetVertexValue(x, out var v) ? v : default!));
+    public System.Collections.Generic.IEnumerable<(int x, TVertexValue value, int degree)> GetVerticesWithDegree() => m_list.Keys.Select(x => (x, TryGetVertexValue(x, out var v) ? v : default!, GetDegree(x)));
 
     public override string ToString() => $"{GetType().Name} {{ Vertices = {Count}, Edges = {System.Linq.Enumerable.Count(GetEdges())} }}";
   }
 }
+
+/*
+  var am = new Flux.DataStructures.Graphs.AdjacencyList<int, int>();
+
+  am.AddVertex(0, 9);
+  am.AddVertex(1, 8);
+  am.AddVertex(2, 7);
+  am.AddVertex(3, 6);
+
+  //am.AddEdge(0, 1, 1);
+  //am.AddEdge(0, 2, 1);
+  //am.AddEdge(1, 0, 1);
+  //am.AddEdge(1, 2, 1);
+  //am.AddEdge(2, 0, 1);
+  //am.AddEdge(2, 1, 1);
+  //am.AddEdge(2, 3, 1);
+  //am.AddEdge(3, 2, 1);
+
+  am.AddEdge(0, 1, 2);
+  am.AddEdge(0, 2, 1);
+  am.AddEdge(1, 2, 4);
+  am.AddEdge(2, 3, 1);
+
+  System.Console.WriteLine(am.ToConsoleString());
+
+  var amt = (Flux.DataStructures.Graphs.AdjacencyList<int, int>)am.TransposeToCopy();
+
+  System.Console.WriteLine(amt.ToConsoleString());
+ */

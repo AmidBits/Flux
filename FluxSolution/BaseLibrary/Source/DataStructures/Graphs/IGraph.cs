@@ -1,5 +1,9 @@
+using System.Runtime.CompilerServices;
+
 namespace Flux
 {
+  #region Extension methods
+
   public static partial class Em
   {
     /// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
@@ -7,7 +11,7 @@ namespace Flux
     /// <see href="https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/"/>
     public static System.Collections.Generic.IEnumerable<(int destination, double distance)> GetDijkstraShortestPathTree<TVertexValue, TEdgeValue>(this DataStructures.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, double> distanceSelector)
     {
-      var vertices = System.Linq.Enumerable.ToList(source.GetVertices());
+      var vertices = System.Linq.Enumerable.ToList(source.GetVertices().Select(vt => vt.x));
 
       var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
 
@@ -34,15 +38,82 @@ namespace Flux
         }
       }
     }
+
+    public static string ToConsoleString<TVertexValue, TEdgeValue>(this DataStructures.IGraph<TVertexValue, TEdgeValue> source)
+    {
+      var sb = new System.Text.StringBuilder();
+
+      sb.AppendLine(source.ToString()).AppendLine();
+
+      var v = source.GetVertices().ToList();
+
+      var e = source.GetEdges().ToList();
+
+      sb.AppendLine(@"Vertices (x, value, degree):");
+      sb.AppendJoin(System.Environment.NewLine, v).AppendLine();
+
+      sb.AppendLine();
+
+      sb.AppendLine(@"Edges (x, y, value):");
+      sb.AppendJoin(System.Environment.NewLine, e).AppendLine();
+
+      return sb.ToString();
+    }
+
+    public static DataStructures.IGraph<TVertexValue, TEdgeValue> TransposeToCopy<TVertexValue, TEdgeValue>(this DataStructures.IGraph<TVertexValue, TEdgeValue> source)
+    {
+      var al = source.CloneEmpty();
+
+      foreach (var v in source.GetVertices())
+        al.AddVertex(v.x, v.value);
+
+      foreach (var e in source.GetEdges())
+        al.AddEdge(e.y, e.x, e.value);
+
+      return al;
+    }
   }
+
+  #endregion // Extension methods
 
   namespace DataStructures
   {
     public interface IGraph<TVertexValue, TEdgeValue>
     {
+      IGraph<TVertexValue, TEdgeValue> CloneEmpty();
+
+      /// <summary>Adds the vertex <paramref name="x"/>, if it is not there.</summary>
+      bool AddVertex(int x);
+
+      /// <summary>Adds the vertex <paramref name="x"/> with the <paramref name="value"/>, if it is not there.</summary>
+      bool AddVertex(int x, TVertexValue value);
+
+      /// <summary>Removes vertex <paramref name="x"/>, if it is there.</summary>
+      bool RemoveVertex(int x);
+
+      /// <summary>Returns the <paramref name="value"/> associated with vertex <paramref name="x"/>. A vertex can exists without a value.</summary>
+      bool TryGetVertexValue(int x, out TVertexValue value);
+
+      /// <summary>Removes the value vertex <paramref name="x"/> and whether the removal was successful.</summary>
+      bool RemoveVertexValue(int x);
+
+      /// <summary>Sets the <paramref name="value"/> associated with vertex <paramref name="x"/>.</summary>
+      void SetVertexValue(int x, TVertexValue value);
+
+      /// <summary>Adds the edge (<paramref name="x"/>, <paramref name="y"/>) with the <paramref name="value"/>, if it is not there.</summary>
+      bool AddEdge(int x, int y, TEdgeValue value);
+
+      /// <summary>Tests whether there is an edge (<paramref name="x"/>, <paramref name="y"/>), either directed or a loop.</summary>
+      bool EdgeExists(int x, int y, TEdgeValue value);
+
+      /// <summary>Removes the edge (<paramref name="x"/>, <paramref name="y"/>), if it is there.</summary>
+      bool RemoveEdge(int x, int y, TEdgeValue value);
+
       System.Collections.Generic.IEnumerable<(int x, int y, TEdgeValue value)> GetEdges();
 
-      System.Collections.Generic.IEnumerable<int> GetVertices();
+      System.Collections.Generic.IEnumerable<(int x, TVertexValue value)> GetVertices();
+
+      System.Collections.Generic.IEnumerable<(int x, TVertexValue value, int degree)> GetVerticesWithDegree();
     }
   }
 }

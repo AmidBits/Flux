@@ -9,6 +9,10 @@
 
   namespace DataStructures
   {
+    /// <summary>
+    /// <para>This is an ordered set implementing <see cref="IOrderedSet{T}"/>.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public sealed class OrderedSet<T>
       : IOrderedSet<T>
       where T : notnull
@@ -34,9 +38,16 @@
         : this(collection, System.Collections.Generic.EqualityComparer<T>.Default)
       { }
 
-      /// <summary>
-      /// <para>Adds all non-existing elements in the collection into the <see cref="IOrderedSet{T}"/> and returns the number of elements successfully added.</para>
-      /// </summary>
+      #region Implemented interfaces
+
+      // IOrderedSet<>
+
+      public T this[int index]
+      {
+        get => m_values[index];
+        set => m_values[index] = value;
+      }
+
       public int AddRange(System.Collections.Generic.IEnumerable<T> collection)
       {
         var count = 0;
@@ -48,9 +59,14 @@
         return count;
       }
 
-      /// <summary>
-      /// <para>Inserts all non-existing elements in the collection into the <see cref="IOrderedSet{T}"/> (starting) at the specified index and returns the number of elements successfully inserted.</para>
-      /// </summary>
+      public void Insert(int index, T value)
+      {
+        if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+        m_dictionary.Add(value, index);
+        m_values.Insert(index, value);
+      }
+
       public int InsertRange(int index, System.Collections.Generic.IEnumerable<T> collection)
       {
         var count = 0;
@@ -65,9 +81,14 @@
         return count;
       }
 
-      /// <summary>
-      /// <para>Removes all existing elements in the collection from the <see cref="IOrderedSet{T}"/> and returns the number of elements successfully found and removed.</para>
-      /// </summary>
+      public void RemoveAt(int index)
+      {
+        if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+        m_dictionary.Remove(m_values[index]);
+        m_values.RemoveAt(index);
+      }
+
       public int RemoveRange(System.Collections.Generic.IEnumerable<T> collection)
       {
         var count = 0;
@@ -79,34 +100,8 @@
         return count;
       }
 
-      #region Implemented interfaces
-
-      // IOrderedSet<>
-
-      public T this[int index]
-      {
-        get => m_values[index];
-        set => m_values[index] = value;
-      }
-
       public bool TryGetIndex(T value, out int index)
         => m_dictionary.TryGetValue(value, out index);
-
-      public void Insert(int index, T value)
-      {
-        if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
-
-        m_dictionary.Add(value, index);
-        m_values.Insert(index, value);
-      }
-
-      public void RemoveAt(int index)
-      {
-        if (index < 0 || index > Count) throw new System.ArgumentOutOfRangeException(nameof(index));
-
-        m_dictionary.Remove(m_values[index]);
-        m_values.RemoveAt(index);
-      }
 
       // ICollection<>
 
