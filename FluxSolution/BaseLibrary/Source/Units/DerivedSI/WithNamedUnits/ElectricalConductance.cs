@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Electrical conductance, unit of Siemens.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
     public readonly record struct ElectricalConductance
-      : System.IComparable, System.IComparable<ElectricalConductance>, IUnitValueQuantifiable<double, ElectricalConductanceUnit>
+      : System.IComparable, System.IComparable<ElectricalConductance>, System.IFormattable, IUnitValueQuantifiable<double, ElectricalConductanceUnit>
     {
       private readonly double m_value;
 
@@ -67,6 +67,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(ElectricalConductance other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(ElectricalConductanceUnit.Siemens, options);

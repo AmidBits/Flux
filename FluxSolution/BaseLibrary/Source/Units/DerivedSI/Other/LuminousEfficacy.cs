@@ -23,13 +23,11 @@ namespace Flux
     public readonly record struct LuminousEfficacy
       : System.IComparable, System.IComparable<LuminousEfficacy>, System.IFormattable, IUnitValueQuantifiable<double, LuminousEfficacyUnit>
     {
-      public const LuminousEfficacyUnit DefaultUnit = LuminousEfficacyUnit.LumensPerWatt;
-
       public static readonly LuminousEfficacy LuminousEfficacyOf540THzRadiation = new(683);
 
       private readonly double m_value;
 
-      public LuminousEfficacy(double value, LuminousEfficacyUnit unit = DefaultUnit)
+      public LuminousEfficacy(double value, LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumensPerWatt)
         => m_value = unit switch
         {
           LuminousEfficacyUnit.LumensPerWatt => value,
@@ -73,10 +71,10 @@ namespace Flux
       public int CompareTo(LuminousEfficacy other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(LuminousEfficacyUnit.LumensPerWatt, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="LuminousEfficacy.Value"/> property is in <see cref="LuminousEfficacyUnit.LumensPerWatt"/>.</para>

@@ -98,8 +98,7 @@ namespace Flux
       /// <summary>Creates a new instance of this type.</summary>
       /// <param name="value">The value to represent.</param>
       /// <param name="multiplicativePrefix">The metric multiplicative prefix of the specified value.</param>
-      public MetricMultiplicative(double value, MetricMultiplicativePrefix multiplicativePrefix)
-        => m_value = value * multiplicativePrefix.GetUnitFactor();
+      public MetricMultiplicative(double value, MetricMultiplicativePrefix multiplicativePrefix) => m_value = value * multiplicativePrefix.GetUnitFactor();
 
       #region Static methods
 

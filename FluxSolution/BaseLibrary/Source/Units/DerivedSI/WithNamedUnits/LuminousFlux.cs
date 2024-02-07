@@ -21,13 +21,11 @@ namespace Flux
     /// <summary>Luminous flux unit of lumen.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Luminous_flux"/>
     public readonly record struct LuminousFlux
-      : System.IComparable, System.IComparable<LuminousFlux>, IUnitValueQuantifiable<double, LuminousFluxUnit>
+      : System.IComparable, System.IComparable<LuminousFlux>, System.IFormattable, IUnitValueQuantifiable<double, LuminousFluxUnit>
     {
-      public const LuminousFluxUnit DefaultUnit = LuminousFluxUnit.Lumen;
-
       private readonly double m_value;
 
-      public LuminousFlux(double value, LuminousFluxUnit unit = DefaultUnit)
+      public LuminousFlux(double value, LuminousFluxUnit unit = LuminousFluxUnit.Lumen)
         => m_value = unit switch
         {
           LuminousFluxUnit.Lumen => value,
@@ -64,8 +62,11 @@ namespace Flux
       // IComparable<>
       public int CompareTo(LuminousFlux other) => m_value.CompareTo(other.m_value);
 
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(LuminousFluxUnit.Lumen, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="LuminousFlux.Value"/> property is in <see cref="LuminousFluxUnit.Lumen"/>.</para>

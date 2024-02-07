@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static SpanBuilder<System.Text.Rune> MakeNumbersFixedLength(this SpanBuilder<System.Text.Rune> source, int length, System.Text.Rune padding)
+    public static void MakeNumbersFixedLength(this SpanBuilder<System.Text.Rune> source, int length, System.Text.Rune padding)
     {
       bool wasDigit = false;
       var digitCount = 0;
@@ -22,8 +22,6 @@ namespace Flux
       }
 
       if (wasDigit) source.Insert(0, padding, length - digitCount);
-
-      return source;
     }
   }
 }

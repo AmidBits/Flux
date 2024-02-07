@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct Torque
       : System.IComparable, System.IComparable<Torque>, System.IFormattable, IUnitValueQuantifiable<double, TorqueUnit>
     {
-      public const TorqueUnit DefaultUnit = TorqueUnit.NewtonMeter;
-
       private readonly double m_value;
 
-      public Torque(double value, TorqueUnit unit = DefaultUnit)
+      public Torque(double value, TorqueUnit unit = TorqueUnit.NewtonMeter)
         => m_value = unit switch
         {
           TorqueUnit.NewtonMeter => value,
@@ -71,10 +69,10 @@ namespace Flux
       public int CompareTo(Torque other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(TorqueUnit.NewtonMeter, options);
 
       /// <summary>
       ///  <para>The unit of the <see cref="Torque.Value"/> property is in <see cref="TorqueUnit.NewtonMeter"/>.</para>

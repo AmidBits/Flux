@@ -24,6 +24,7 @@
 
     /// <summary>Returns the maximum value of all samples, or NaN if no data/any entry is NaN.</summary>
     public double Maximum => m_count > 0 ? m_max : double.NaN;
+
     /// <summary>Returns the minimum value of all samples. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double Minimum => m_count > 0 ? m_min : double.NaN;
 
@@ -35,28 +36,34 @@
 
     /// <summary>Evaluates the sample mean, an estimate of the population mean. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double Mean => m_count > 0 ? m_m1 : double.NaN;
+
     /// <summary>Evaluates the geometric mean of the enumerable, in a single pass without memoization. Returns NaN if data is empty or any entry is NaN.</summary>    
     public double GeometricMean => m_count > 0 ? System.Math.Pow(m_product, 1.0 / m_count) : double.NaN;
+
     /// <summary>Evaluates the harmonic mean of the enumerable, in a single pass without memoization. Returns NaN if data is empty or any entry is NaN.</summary>
     public double HarmonicMean => m_count > 0 ? m_count / m_reciprocalSum : double.NaN;
 
     /// <summary>Estimates the unbiased population variance from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction). Returns NaN if data has less than two entries or if any entry is NaN.</summary>
     public double Variance => m_count < 2 ? double.NaN : m_m2 / (m_count - 1);
+
     /// <summary>Evaluates the variance from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double PopulationVariance => m_count < 2 ? double.NaN : m_m2 / m_count;
 
     /// <summary> Estimates the unbiased population standard deviation from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction). Returns NaN if data has less than two entries or if any entry is NaN.</summary>
     public double StandardDeviation => m_count < 2 ? double.NaN : System.Math.Sqrt(m_m2 / (m_count - 1));
+
     /// <summary>Evaluates the standard deviation from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset. Returns NaN if data is empty or if any entry is NaN.</summary>
     public double PopulationStandardDeviation => m_count < 2 ? double.NaN : System.Math.Sqrt(m_m2 / m_count);
 
     /// <summary>Estimates the unbiased population skewness from the provided samples. Uses a normalizer (Bessel's correction; type 2). Returns NaN if data has less than three entries or if any entry is NaN.</summary>
     public double Skewness => m_count < 3 ? double.NaN : (m_count * m_m3 * System.Math.Sqrt(m_m2 / (m_count - 1)) / (m_m2 * m_m2 * (m_count - 2))) * (m_count - 1);
+
     /// <summary>Evaluates the population skewness from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1). Returns NaN if data has less than two entries or if any entry is NaN. </summary>
     public double PopulationSkewness => m_count < 2 ? double.NaN : System.Math.Sqrt(m_count) * m_m3 / System.Math.Pow(m_m2, 1.5);
 
     /// <summary>Estimates the unbiased population kurtosis from the provided samples. Uses a normalizer (Bessel's correction; type 2). Returns NaN if data has less than four entries or if any entry is NaN.</summary>
     public double Kurtosis => m_count < 4 ? double.NaN : ((double)m_count * m_count - 1) / ((m_count - 2) * (m_count - 3)) * (m_count * m_m4 / (m_m2 * m_m2) - 3 + 6.0 / (m_count + 1));
+
     /// <summary>Evaluates the population kurtosis from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1). Returns NaN if data has less than three entries or if any entry is NaN.</summary>
     public double PopulationKurtosis => m_count < 3 ? double.NaN : m_count * m_m4 / (m_m2 * m_m2) - 3.0;
 
@@ -87,7 +94,7 @@
       if (value < m_min || double.IsNaN(value)) m_min = value;
 
       m_product *= value;
-      m_reciprocalSum += 1.0 / value;
+      m_reciprocalSum += 1 / value;
       m_sum += value;
     }
 

@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct Flow
       : System.IComparable, System.IComparable<Flow>, System.IFormattable, IUnitValueQuantifiable<double, FlowUnit>
     {
-      public const FlowUnit DefaultUnit = FlowUnit.CubicMeterPerSecond;
-
       private readonly double m_value;
 
-      public Flow(double value, FlowUnit unit = DefaultUnit)
+      public Flow(double value, FlowUnit unit = FlowUnit.CubicMeterPerSecond)
         => m_value = unit switch
         {
           FlowUnit.CubicMeterPerSecond => value,
@@ -71,10 +69,10 @@ namespace Flux
       public int CompareTo(Flow other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(FlowUnit.CubicMeterPerSecond, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Flow.Value"/> property is in <see cref="FlowUnit.CubicMeterPerSecond"/>.</para>

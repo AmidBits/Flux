@@ -23,19 +23,16 @@ namespace Flux
     public readonly record struct MagneticFluxStrength
       : System.IComparable, System.IComparable<MagneticFluxStrength>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxStrengthUnit>
     {
-      public const MagneticFluxStrengthUnit DefaultUnit = MagneticFluxStrengthUnit.AmperePerMeter;
-
       private readonly double m_value;
 
-      public MagneticFluxStrength(double value, MagneticFluxStrengthUnit unit = DefaultUnit)
+      public MagneticFluxStrength(double value, MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter)
         => m_value = unit switch
         {
           MagneticFluxStrengthUnit.AmperePerMeter => value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public MetricMultiplicative ToMetricMultiplicative()
-        => new(GetUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
+      public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(MagneticFluxStrengthUnit.AmperePerMeter), MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
       public static explicit operator double(MagneticFluxStrength v) => v.m_value;
@@ -68,10 +65,10 @@ namespace Flux
       public int CompareTo(MagneticFluxStrength other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MagneticFluxStrengthUnit.AmperePerMeter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="MagneticFluxStrength.Value"/> property is in <see cref="MagneticFluxStrengthUnit.AmperePerMeter"/>.</para>

@@ -27,7 +27,7 @@ namespace Flux
     /// <summary>Electrical capacitance unit of Farad.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Capacitance"/>
     public readonly record struct Capacitance
-      : System.IComparable, System.IComparable<Capacitance>, IUnitValueQuantifiable<double, CapacitanceUnit>
+      : System.IComparable, System.IComparable<Capacitance>, System.IFormattable, IUnitValueQuantifiable<double, CapacitanceUnit>
     {
       private readonly double m_value;
 
@@ -70,6 +70,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(Capacitance other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(CapacitanceUnit.Farad, options);

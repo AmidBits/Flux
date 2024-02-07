@@ -23,13 +23,11 @@ namespace Flux
     public readonly record struct PowerRatio
       : System.IComparable, System.IComparable<PowerRatio>, System.IFormattable, IUnitValueQuantifiable<double, PowerRatioUnit>
     {
-      public const PowerRatioUnit DefaultUnit = PowerRatioUnit.DecibelWatt;
-
       public const double ScalingFactor = 10;
 
       private readonly double m_value;
 
-      public PowerRatio(double value, PowerRatioUnit unit = DefaultUnit)
+      public PowerRatio(double value, PowerRatioUnit unit = PowerRatioUnit.DecibelWatt)
         => m_value = unit switch
         {
           PowerRatioUnit.DecibelWatt => value,
@@ -96,10 +94,10 @@ namespace Flux
       public int CompareTo(PowerRatio other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(PowerRatioUnit.DecibelWatt, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="PowerRatio.Value"/> property is in <see cref="PowerRatioUnit.DecibelWatt"/>.</para>

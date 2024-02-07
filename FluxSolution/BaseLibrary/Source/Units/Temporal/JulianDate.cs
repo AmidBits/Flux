@@ -15,7 +15,7 @@ namespace Flux
     /// </summary>
     /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
     public readonly record struct JulianDate
-      : System.IFormattable, System.IComparable<JulianDate>, IValueQuantifiable<double>
+      : System.IComparable, System.IComparable<JulianDate>, System.IFormattable, IValueQuantifiable<double>
     {
       private readonly double m_value;
 
@@ -158,7 +158,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is JulianDate o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => format is null ? ToValueString(QuantifiableValueStringOptions.Default) : m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options)

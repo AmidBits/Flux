@@ -73,28 +73,29 @@ namespace Flux
     /// <para><seealso href="https://github.com/bazzilic/BigFraction"/></para>
     /// </summary>
     public readonly record struct BigRational
-    : System.IComparable, System.IComparable<BigRational>
-    , System.IConvertible
-    , System.Numerics.IAdditiveIdentity<BigRational, BigRational>
-    , System.Numerics.IAdditionOperators<BigRational, BigRational, BigRational>, System.Numerics.IAdditionOperators<BigRational, System.Numerics.BigInteger, BigRational>
-    , System.Numerics.IComparisonOperators<BigRational, BigRational, bool>
-    , System.Numerics.IDecrementOperators<BigRational>
-    , System.Numerics.IDivisionOperators<BigRational, BigRational, BigRational>, System.Numerics.IDivisionOperators<BigRational, System.Numerics.BigInteger, BigRational>
-    , System.Numerics.IEqualityOperators<BigRational, BigRational, bool>
-    , System.Numerics.IFloatingPointConstants<BigRational>
-    , System.Numerics.IIncrementOperators<BigRational>
-    , System.Numerics.IModulusOperators<BigRational, BigRational, BigRational>, System.Numerics.IModulusOperators<BigRational, System.Numerics.BigInteger, BigRational>
-    , System.Numerics.IMultiplicativeIdentity<BigRational, BigRational>
-    , System.Numerics.IMultiplyOperators<BigRational, BigRational, BigRational>, System.Numerics.IMultiplyOperators<BigRational, System.Numerics.BigInteger, BigRational>
-    , System.Numerics.INumber<BigRational>
-    , System.Numerics.INumberBase<BigRational>
-    , System.Numerics.IPowerFunctions<BigRational>
-    , System.Numerics.IRootFunctions<BigRational>
-    , System.Numerics.ISignedNumber<BigRational>
-    , System.Numerics.ISubtractionOperators<BigRational, BigRational, BigRational>, System.Numerics.ISubtractionOperators<BigRational, System.Numerics.BigInteger, BigRational>
-    , System.Numerics.IUnaryNegationOperators<BigRational, BigRational>
-    , System.Numerics.IUnaryPlusOperators<BigRational, BigRational>
-    , IValueQuantifiable<double>
+      : System.IComparable, System.IComparable<BigRational>
+      //, System.IConvertible
+      , System.IFormattable
+      , System.Numerics.IAdditiveIdentity<BigRational, BigRational>
+      , System.Numerics.IAdditionOperators<BigRational, BigRational, BigRational>, System.Numerics.IAdditionOperators<BigRational, System.Numerics.BigInteger, BigRational>
+      , System.Numerics.IComparisonOperators<BigRational, BigRational, bool>
+      , System.Numerics.IDecrementOperators<BigRational>
+      , System.Numerics.IDivisionOperators<BigRational, BigRational, BigRational>, System.Numerics.IDivisionOperators<BigRational, System.Numerics.BigInteger, BigRational>
+      , System.Numerics.IEqualityOperators<BigRational, BigRational, bool>
+      , System.Numerics.IFloatingPointConstants<BigRational>
+      , System.Numerics.IIncrementOperators<BigRational>
+      , System.Numerics.IModulusOperators<BigRational, BigRational, BigRational>, System.Numerics.IModulusOperators<BigRational, System.Numerics.BigInteger, BigRational>
+      , System.Numerics.IMultiplicativeIdentity<BigRational, BigRational>
+      , System.Numerics.IMultiplyOperators<BigRational, BigRational, BigRational>, System.Numerics.IMultiplyOperators<BigRational, System.Numerics.BigInteger, BigRational>
+      , System.Numerics.INumber<BigRational>
+      , System.Numerics.INumberBase<BigRational>
+      , System.Numerics.IPowerFunctions<BigRational>
+      , System.Numerics.IRootFunctions<BigRational>
+      , System.Numerics.ISignedNumber<BigRational>
+      , System.Numerics.ISubtractionOperators<BigRational, BigRational, BigRational>, System.Numerics.ISubtractionOperators<BigRational, System.Numerics.BigInteger, BigRational>
+      , System.Numerics.IUnaryNegationOperators<BigRational, BigRational>
+      , System.Numerics.IUnaryPlusOperators<BigRational, BigRational>
+      , IValueQuantifiable<double>
     {
       public static readonly BigRational EpsilonLikeSingle = new(1, 1_000_000, false);
       public static readonly BigRational EpsilonLikeDouble = new(1, 1_000_000_000_000_000, false);
@@ -790,32 +791,38 @@ namespace Flux
       // IComparable
       public int CompareTo(object? other) => other is BigRational o ? CompareTo(o) : -1;
 
-      #region IConvertible
-      public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-      public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
-      public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
-      public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
-      public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
-      public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
-      public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
-      public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
-      public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
-      public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
-      [System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
-      public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-      public string ToString(System.IFormatProvider? provider) => RatioFormat.AslashB.ToRatioString(m_numerator, m_denominator);
-      public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
-      [System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
-      [System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
-      [System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
-      #endregion IConvertible
+      //// IConvertible
+      //#region IConvertible
+
+      //public System.TypeCode GetTypeCode() => System.TypeCode.Object;
+      //public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
+      //public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
+      //public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
+      //public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
+      //public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
+      //public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
+      //public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
+      //public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
+      //public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
+      //[System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
+      //public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
+      //public string ToString(System.IFormatProvider? provider) => ToString(null, provider);
+      //public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
+      //[System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
+      //[System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
+      //[System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
+
+      //#endregion IConvertible
+
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options)
         => IsProper
-        ? RatioFormat.AslashB.ToRatioString(m_numerator, m_denominator)
+        ? RatioDisplay.AslashB.ToRatioString(m_numerator, m_denominator, options)
         : TryGetMixedParts(this, out var wholeNumber, out var properNumerator, out var properDenominator)
-        ? $"{wholeNumber} {RatioFormat.AslashB.ToRatioString(properNumerator, properDenominator)}"
+        ? $"{wholeNumber} {RatioDisplay.AslashB.ToRatioString(properNumerator, properDenominator, options)}"
         : m_numerator.ToString(); // It is a whole number and we return a simple integer string.
 
       public double Value => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);

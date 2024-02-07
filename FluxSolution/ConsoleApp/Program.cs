@@ -34,6 +34,17 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var sb = new Flux.SpanBuilder<char>();
+      sb.Append("This-is-a-test.", 1);
+
+      sb.ReplaceAll(c => c == '-', '=');
+
+      sb.PadRight(20, "Rat");
+      sb.PadLeft(25, "Rat");
+
+      sb.ReplaceAll(c => c == '=', "+++");
+
+      sb.Repeat(3);
 
     }
 

@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct DynamicViscosity
       : System.IComparable, System.IComparable<DynamicViscosity>, System.IFormattable, IUnitValueQuantifiable<double, DynamicViscosityUnit>
     {
-      public const DynamicViscosityUnit DefaultUnit = DynamicViscosityUnit.PascalSecond;
-
       private readonly double m_value;
 
-      public DynamicViscosity(double value, DynamicViscosityUnit unit = DefaultUnit)
+      public DynamicViscosity(double value, DynamicViscosityUnit unit = DynamicViscosityUnit.PascalSecond)
         => m_value = unit switch
         {
           DynamicViscosityUnit.PascalSecond => value,
@@ -71,10 +69,10 @@ namespace Flux
       public int CompareTo(DynamicViscosity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DynamicViscosityUnit.PascalSecond, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="DynamicViscosity.Value"/> property is in <see cref="DynamicViscosityUnit.PascalSecond"/>.</para>

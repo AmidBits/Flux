@@ -2,6 +2,15 @@ namespace Flux.Text
 {
   public static partial class XmlEx
   {
+    public static readonly System.Collections.Generic.Dictionary<char, string> XmlEntityMap = new System.Collections.Generic.Dictionary<char, string>()
+    {
+      { '\u0026' /* & */, "&amp;" },
+      { '\u0027' /* ' */, "&apos;" },
+      { '\u0022' /* " */, "&quot;" },
+      { '\u003e' /* > */, "&gt;" },
+      { '\u003c' /* < */, "&lt;" },
+    };
+
     public const char XmlEntityCharAmp = '\u0026'; // &
     public const char XmlEntityCharApos = '\u0027'; // '
     public const char XmlEntityCharQuot = '\u0022'; // "

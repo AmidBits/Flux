@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Dose equivalent, unit of sievert.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Equivalent_dose"/>
     public readonly record struct EquivalentDose
-      : System.IComparable, System.IComparable<EquivalentDose>, IUnitValueQuantifiable<double, EquivalentDoseUnit>
+      : System.IComparable, System.IComparable<EquivalentDose>, System.IFormattable, IUnitValueQuantifiable<double, EquivalentDoseUnit>
     {
       private readonly double m_value;
 
@@ -63,7 +63,7 @@ namespace Flux
       public int CompareTo(EquivalentDose other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(EquivalentDoseUnit.Sievert, options);

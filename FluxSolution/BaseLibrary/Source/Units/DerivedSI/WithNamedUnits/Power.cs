@@ -27,11 +27,9 @@ namespace Flux
     public readonly record struct Power
       : System.IComparable, System.IComparable<Power>, System.IEquatable<Power>, System.IFormattable, IUnitValueQuantifiable<double, PowerUnit>
     {
-      public const PowerUnit DefaultUnit = PowerUnit.Watt;
-
       private readonly double m_value;
 
-      public Power(double value, PowerUnit unit = DefaultUnit)
+      public Power(double value, PowerUnit unit = PowerUnit.Watt)
         => m_value = unit switch
         {
           PowerUnit.Watt => value,
@@ -81,10 +79,10 @@ namespace Flux
       public int CompareTo(Power other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(PowerUnit.Watt, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Power.Value"/> property is in <see cref="PowerUnit.Watt"/>.</para>

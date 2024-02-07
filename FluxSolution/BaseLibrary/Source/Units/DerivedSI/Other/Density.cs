@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct Density
       : System.IComparable, System.IComparable<Density>, System.IFormattable, IUnitValueQuantifiable<double, DensityUnit>
     {
-      public const DensityUnit DefaultUnit = DensityUnit.KilogramPerCubicMeter;
-
       private readonly double m_value;
 
-      public Density(double value, DensityUnit unit = DefaultUnit)
+      public Density(double value, DensityUnit unit = DensityUnit.KilogramPerCubicMeter)
         => m_value = unit switch
         {
           DensityUnit.KilogramPerCubicMeter => value,
@@ -70,10 +68,10 @@ namespace Flux
       public int CompareTo(Density other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DensityUnit.KilogramPerCubicMeter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Density.Value"/> property is in <see cref="DensityUnit.KilogramPerCubicMeter"/>.</para>

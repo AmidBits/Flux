@@ -21,13 +21,11 @@ namespace Flux
     /// <summary>Illuminance unit of lux.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Illuminance"/>
     public readonly record struct Illuminance
-      : System.IComparable, System.IComparable<Illuminance>, IUnitValueQuantifiable<double, IlluminanceUnit>
+      : System.IComparable, System.IComparable<Illuminance>, System.IFormattable, IUnitValueQuantifiable<double, IlluminanceUnit>
     {
-      public const IlluminanceUnit DefaultUnit = IlluminanceUnit.Lux;
-
       private readonly double m_value;
 
-      public Illuminance(double value, IlluminanceUnit unit = DefaultUnit)
+      public Illuminance(double value, IlluminanceUnit unit = IlluminanceUnit.Lux)
         => m_value = unit switch
         {
           IlluminanceUnit.Lux => value,
@@ -68,8 +66,11 @@ namespace Flux
       // IComparable<>
       public int CompareTo(Illuminance other) => m_value.CompareTo(other.m_value);
 
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(IlluminanceUnit.Lux, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Illuminance.Value"/> property is in <see cref="IlluminanceUnit.Lux"/>.</para>

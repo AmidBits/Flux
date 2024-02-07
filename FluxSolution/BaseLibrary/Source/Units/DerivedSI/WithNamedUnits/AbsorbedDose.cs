@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Force"/>
     public readonly record struct AbsorbedDose
-      : System.IComparable, System.IComparable<AbsorbedDose>, IUnitValueQuantifiable<double, AbsorbedDoseUnit>
+      : System.IComparable, System.IComparable<AbsorbedDose>, System.IFormattable, IUnitValueQuantifiable<double, AbsorbedDoseUnit>
     {
       private readonly double m_value;
 
@@ -61,6 +61,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(AbsorbedDose other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(AbsorbedDoseUnit.Gray, options);

@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Inserts a space in front of any single upper case character, except the first character in the string.</summary>
-    public static SpanBuilder<char> SplitFromCamelCase(this SpanBuilder<char> source, char separator = ' ', System.Globalization.CultureInfo? culture = null)
+    public static void SplitFromCamelCase(this SpanBuilder<char> source, char separator = ' ', System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.InvariantCulture;
 
@@ -22,8 +22,6 @@ namespace Flux
             source.Insert(index, separator, 1);
         }
       }
-
-      return source;
     }
   }
 }

@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct Turbidity
       : System.IComparable, System.IComparable<Turbidity>, System.IFormattable, IUnitValueQuantifiable<double, TurbidityUnit>
     {
-      public const TurbidityUnit DefaultUnit = TurbidityUnit.NephelometricTurbidityUnits;
-
       private readonly double m_value;
 
-      public Turbidity(double value, TurbidityUnit unit = DefaultUnit)
+      public Turbidity(double value, TurbidityUnit unit = TurbidityUnit.NephelometricTurbidityUnits)
         => m_value = unit switch
         {
           TurbidityUnit.NephelometricTurbidityUnits => value,
@@ -71,10 +69,10 @@ namespace Flux
       public int CompareTo(Turbidity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(TurbidityUnit.NephelometricTurbidityUnits, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Turbidity.Value"/> property is in <see cref="TurbidityUnit.TurbidityUnit"/>.</para>

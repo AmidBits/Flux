@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct Impulse
       : System.IComparable, System.IComparable<Impulse>, System.IFormattable, IUnitValueQuantifiable<double, ImpulseUnit>
     {
-      public const ImpulseUnit DefaultUnit = ImpulseUnit.NewtonSecond;
-
       private readonly double m_value;
 
-      public Impulse(double value, ImpulseUnit unit = DefaultUnit)
+      public Impulse(double value, ImpulseUnit unit = ImpulseUnit.NewtonSecond)
         => m_value = unit switch
         {
           ImpulseUnit.NewtonSecond => value,
@@ -71,10 +69,10 @@ namespace Flux
       public int CompareTo(Impulse other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(ImpulseUnit.NewtonSecond, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Impulse.Value"/> property is in <see cref="ImpulseUnit.NewtonSecond"/>.</para>

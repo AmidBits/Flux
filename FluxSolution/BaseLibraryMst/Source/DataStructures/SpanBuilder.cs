@@ -51,7 +51,7 @@ namespace Text
     public void Duplicate()
     {
       var expected = "Roobeert";
-      var actual = new Flux.SpanBuilder<char>("Robert").Duplicate("aeiou", 1);
+      var actual = new Flux.SpanBuilder<char>("Robert").Duplicate(c => c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u', 1);
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -207,7 +207,7 @@ namespace Text
     {
       var expected = @"There is a bee in the soup.";
       var actual = new Flux.SpanBuilder<char>(@"   There  is a  bee in  the soup.");
-      actual.NormalizeAll(char.IsWhiteSpace, c => ' ');
+      actual.NormalizeAll(char.IsWhiteSpace, ' ');
       Assert.AreEqual(expected, actual.ToString());
     }
 

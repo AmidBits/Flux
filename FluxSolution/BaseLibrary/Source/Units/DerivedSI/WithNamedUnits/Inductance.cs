@@ -21,13 +21,11 @@ namespace Flux
     /// <summary>Electrical inductance unit of Henry.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Inductance"/>
     public readonly record struct Inductance
-      : System.IComparable, System.IComparable<Inductance>, IUnitValueQuantifiable<double, InductanceUnit>
+      : System.IComparable, System.IComparable<Inductance>, System.IFormattable, IUnitValueQuantifiable<double, InductanceUnit>
     {
-      public const InductanceUnit DefaultUnit = InductanceUnit.Henry;
-
       private readonly double m_value;
 
-      public Inductance(double value, InductanceUnit unit = DefaultUnit)
+      public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry)
         => m_value = unit switch
         {
           InductanceUnit.Henry => value,
@@ -64,8 +62,11 @@ namespace Flux
       // IComparable<>
       public int CompareTo(Inductance other) => m_value.CompareTo(other.m_value);
 
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(InductanceUnit.Henry, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Inductance.Value"/> property is in <see cref="InductanceUnit.Henry"/>.</para>

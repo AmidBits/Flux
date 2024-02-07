@@ -6,11 +6,11 @@ namespace Flux
     /// <summary>Magnetic flux density unit of tesla.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
     public readonly record struct MagneticFluxDensity2D
-  : IUnitValueQuantifiable<System.Numerics.Vector2, MagneticFluxDensityUnit>
+      : System.IFormattable, IUnitValueQuantifiable<System.Numerics.Vector2, MagneticFluxDensityUnit>
     {
       private readonly System.Numerics.Vector2 m_value;
 
-      public MagneticFluxDensity2D(System.Numerics.Vector2 value, MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
+      public MagneticFluxDensity2D(System.Numerics.Vector2 value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla)
         => m_value = unit switch
         {
           MagneticFluxDensityUnit.Tesla => value,
@@ -44,8 +44,11 @@ namespace Flux
 
       #region Implemented interfaces
 
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MagneticFluxDensity.DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MagneticFluxDensityUnit.Tesla, options);
 
       public System.Numerics.Vector2 Value => m_value;
 

@@ -49,17 +49,15 @@ namespace Flux
     /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Parts-per_notation"/>
     public readonly record struct PartsPerNotation
-      : System.IComparable, System.IComparable<PartsPerNotation>, IUnitValueQuantifiable<double, PartsPerNotationUnit>
+      : System.IComparable, System.IComparable<PartsPerNotation>, System.IFormattable, IUnitValueQuantifiable<double, PartsPerNotationUnit>
     {
-      public const PartsPerNotationUnit DefaultUnit = PartsPerNotationUnit.Percent;
-
       private readonly double m_parts;
       //private readonly PartsPerNotationUnit m_unit;
 
       /// <summary>Creates a new instance of this type.</summary>
       /// <param name="parts">The parts in parts per notation.</param>
       /// <param name="unit">The notation in parts per notation.</param>
-      public PartsPerNotation(double parts, PartsPerNotationUnit unit = DefaultUnit)
+      public PartsPerNotation(double parts, PartsPerNotationUnit unit = PartsPerNotationUnit.Percent)
       {
         m_parts = unit switch
         {
@@ -110,8 +108,11 @@ namespace Flux
       // IComparable<>
       public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
 
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(PartsPerNotationUnit.Percent, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="PartsPerNotation.Value"/> property is in <see cref="PartsPerNotationUnit.Percent"/>.</para>

@@ -6,7 +6,7 @@ namespace Flux
     /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public readonly partial record struct MidiNote
-    : System.IComparable<MidiNote>, IValueQuantifiable<int>
+      : System.IComparable, System.IComparable<MidiNote>, System.IFormattable, IValueQuantifiable<int>
     {
       public const byte MaxValue = 127;
       public const byte MinValue = 0;
@@ -148,8 +148,12 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(MidiNote other) => m_number.CompareTo(other.m_number);
+
       // IComparable
       public int CompareTo(object? other) => other is not null && other is MidiNote o ? CompareTo(o) : -1;
+
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options)

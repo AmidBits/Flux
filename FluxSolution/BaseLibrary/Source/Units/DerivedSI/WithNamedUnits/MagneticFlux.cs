@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct MagneticFlux
       : System.IComparable, System.IComparable<MagneticFlux>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxUnit>
     {
-      public const MagneticFluxUnit DefaultUnit = MagneticFluxUnit.Weber;
-
       private readonly double m_value;
 
-      public MagneticFlux(double value, MagneticFluxUnit unit = DefaultUnit)
+      public MagneticFlux(double value, MagneticFluxUnit unit = MagneticFluxUnit.Weber)
         => m_value = unit switch
         {
           MagneticFluxUnit.Weber => value,
@@ -65,10 +63,10 @@ namespace Flux
       public int CompareTo(MagneticFlux other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MagneticFluxUnit.Weber, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="MagneticFlux.Value"/> property is in <see cref="MagneticFluxUnit.Weber"/>.</para>

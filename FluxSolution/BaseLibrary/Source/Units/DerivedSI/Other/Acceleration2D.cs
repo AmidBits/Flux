@@ -45,7 +45,7 @@ namespace Flux
       #region Implemented interfaces
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(Acceleration.DefaultUnit, options);

@@ -29,7 +29,7 @@ namespace Flux
     /// <summary>Energy unit of Joule.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Energy"/>
     public readonly record struct Energy
-      : System.IComparable, System.IComparable<Energy>, IUnitValueQuantifiable<double, EnergyUnit>
+      : System.IComparable, System.IComparable<Energy>, System.IFormattable, IUnitValueQuantifiable<double, EnergyUnit>
     {
       private readonly double m_value;
 
@@ -76,6 +76,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(Energy other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(EnergyUnit.Joule, options);

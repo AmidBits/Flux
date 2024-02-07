@@ -48,7 +48,7 @@
     /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Angle"/>
     public readonly partial record struct Angle
-      : System.IComparable, System.IComparable<Angle>, IUnitValueQuantifiable<double, AngleUnit>
+      : System.IComparable, System.IComparable<Angle>, System.IFormattable, IUnitValueQuantifiable<double, AngleUnit>
     {
       public static readonly Angle FullTurn = new(System.Math.Tau);
       public static readonly Angle HalfTurn = new(System.Math.PI);
@@ -56,10 +56,11 @@
 
       public static readonly Angle Zero;
 
-      private readonly double m_radAngle;
+      /// <summary>Angle in radians.</summary>
+      private readonly double m_angle;
 
       public Angle(double value, AngleUnit unit = AngleUnit.Radian)
-        => m_radAngle = unit switch
+        => m_angle = unit switch
         {
           AngleUnit.Arcminute => ArcminuteToRadian(value),
           AngleUnit.Arcsecond => ArcsecondToRadian(value),
@@ -73,7 +74,7 @@
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public double Degrees => RadianToDegree(m_radAngle);
+      public double Degrees => RadianToDegree(m_angle);
 
       public AngleNames GetAngleNames()
       {
@@ -432,24 +433,24 @@
 
       #region Overloaded operators
       public static explicit operator Angle(double value) => new(value);
-      public static explicit operator double(Angle value) => value.m_radAngle;
+      public static explicit operator double(Angle value) => value.m_angle;
 
       public static bool operator <(Angle a, Angle b) => a.CompareTo(b) < 0;
       public static bool operator <=(Angle a, Angle b) => a.CompareTo(b) <= 0;
       public static bool operator >(Angle a, Angle b) => a.CompareTo(b) > 0;
       public static bool operator >=(Angle a, Angle b) => a.CompareTo(b) >= 0;
 
-      public static Angle operator -(Angle v) => new(-v.m_radAngle);
-      public static Angle operator +(Angle a, double b) => new(a.m_radAngle + b);
-      public static Angle operator +(Angle a, Angle b) => a + b.m_radAngle;
-      public static Angle operator /(Angle a, double b) => new(a.m_radAngle / b);
-      public static Angle operator /(Angle a, Angle b) => a / b.m_radAngle;
-      public static Angle operator *(Angle a, double b) => new(a.m_radAngle * b);
-      public static Angle operator *(Angle a, Angle b) => a * b.m_radAngle;
-      public static Angle operator %(Angle a, double b) => new(a.m_radAngle % b);
-      public static Angle operator %(Angle a, Angle b) => a % b.m_radAngle;
-      public static Angle operator -(Angle a, double b) => new(a.m_radAngle - b);
-      public static Angle operator -(Angle a, Angle b) => a - b.m_radAngle;
+      public static Angle operator -(Angle v) => new(-v.m_angle);
+      public static Angle operator +(Angle a, double b) => new(a.m_angle + b);
+      public static Angle operator +(Angle a, Angle b) => a + b.m_angle;
+      public static Angle operator /(Angle a, double b) => new(a.m_angle / b);
+      public static Angle operator /(Angle a, Angle b) => a / b.m_angle;
+      public static Angle operator *(Angle a, double b) => new(a.m_angle * b);
+      public static Angle operator *(Angle a, Angle b) => a * b.m_angle;
+      public static Angle operator %(Angle a, double b) => new(a.m_angle % b);
+      public static Angle operator %(Angle a, Angle b) => a % b.m_angle;
+      public static Angle operator -(Angle a, double b) => new(a.m_angle - b);
+      public static Angle operator -(Angle a, Angle b) => a - b.m_angle;
       #endregion Overloaded operators
 
       #region Implemented interfaces
@@ -458,7 +459,10 @@
       public int CompareTo(object? other) => other is not null && other is Angle o ? CompareTo(o) : -1;
 
       // IComparable<>
-      public int CompareTo(Angle other) => m_radAngle.CompareTo(other.m_radAngle);
+      public int CompareTo(Angle other) => m_angle.CompareTo(other.m_angle);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(AngleUnit.Radian, options);
@@ -466,21 +470,21 @@
       /// <summary>
       /// <para>The unit of the <see cref="Angle.Value"/> property is in <see cref="AngleUnit.Radian"/>.</para>
       /// </summary>
-      public double Value => m_radAngle;
+      public double Value => m_angle;
 
       // IUnitQuantifiable<>
       public double GetUnitValue(AngleUnit unit)
         => unit switch
         {
-          AngleUnit.Arcminute => RadianToArcminute(m_radAngle),
-          AngleUnit.Arcsecond => RadianToArcsecond(m_radAngle),
-          AngleUnit.Degree => RadianToDegree(m_radAngle),
-          AngleUnit.Gradian => RadianToGradian(m_radAngle),
-          AngleUnit.NatoMil => RadianToNatoMil(m_radAngle),
-          AngleUnit.Milliradian => RadianToMilliradian(m_radAngle),
-          AngleUnit.Radian => m_radAngle,
-          AngleUnit.Turn => RadianToTurn(m_radAngle),
-          AngleUnit.WarsawPactMil => RadianToWarsawPactMil(m_radAngle),
+          AngleUnit.Arcminute => RadianToArcminute(m_angle),
+          AngleUnit.Arcsecond => RadianToArcsecond(m_angle),
+          AngleUnit.Degree => RadianToDegree(m_angle),
+          AngleUnit.Gradian => RadianToGradian(m_angle),
+          AngleUnit.NatoMil => RadianToNatoMil(m_angle),
+          AngleUnit.Milliradian => RadianToMilliradian(m_angle),
+          AngleUnit.Radian => m_angle,
+          AngleUnit.Turn => RadianToTurn(m_angle),
+          AngleUnit.WarsawPactMil => RadianToWarsawPactMil(m_angle),
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 

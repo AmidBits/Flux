@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct AreaDensity
       : System.IComparable, System.IComparable<AreaDensity>, System.IFormattable, IUnitValueQuantifiable<double, AreaDensityUnit>
     {
-      public const AreaDensityUnit DefaultUnit = AreaDensityUnit.KilogramPerSquareMeter;
-
       private readonly double m_value;
 
-      public AreaDensity(double value, AreaDensityUnit unit = DefaultUnit)
+      public AreaDensity(double value, AreaDensityUnit unit = AreaDensityUnit.KilogramPerSquareMeter)
         => m_value = unit switch
         {
           AreaDensityUnit.KilogramPerSquareMeter => value,
@@ -71,10 +69,10 @@ namespace Flux
       public int CompareTo(AreaDensity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(AreaDensityUnit.KilogramPerSquareMeter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="AreaDensity.Value"/> property is in <see cref="AreaDensityUnit.KilogramPerSquareMeter"/>.</para>

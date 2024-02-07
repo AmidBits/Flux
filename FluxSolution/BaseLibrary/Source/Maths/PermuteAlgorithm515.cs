@@ -24,22 +24,19 @@ namespace Flux
       for (var i = 1; i <= p1; i++)
       {
         if (1 < i)
-        {
           c[i - 1] = c[i - 2];
-        }
 
         for (; ; )
         {
           c[i - 1] = c[i - 1] + 1;
           r = Maths.BinomialCoefficient(n - c[i - 1], p - i);
-          k = k + r;
+          k += r;
 
           if (l <= k)
-          {
             break;
-          }
         }
-        k = k - r;
+
+        k -= r;
       }
 
       c[p - 1] = c[p1 - 1] + l - k;
@@ -55,13 +52,16 @@ namespace Flux
       for (i = 0; i < p - 1; i++)
       {
         c[i] = (i != 0) ? c[i - 1] : 0;
+
         do
         {
           c[i]++;
           r = Maths.BinomialCoefficient(n - c[i], p - (i + 1));
-          k = k + r;
-        } while (k < x);
-        k = k - r;
+          k += r;
+        }
+        while (k < x);
+
+        k -= r;
       }
       c[p - 1] = c[p - 2] + x - k;
 

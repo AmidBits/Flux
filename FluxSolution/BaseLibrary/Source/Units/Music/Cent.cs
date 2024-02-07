@@ -6,7 +6,7 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Cent_(music)"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
     public readonly record struct Cent
-      : System.IComparable<Cent>, IValueQuantifiable<int>
+      : System.IComparable, System.IComparable<Cent>, System.IFormattable, IValueQuantifiable<int>
     {
       public const double FrequencyRatio = 1.0005777895065548592967925757932;
 
@@ -70,6 +70,9 @@ namespace Flux
 
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Cent o ? CompareTo(o) : -1;
+
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options)

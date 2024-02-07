@@ -25,11 +25,9 @@ namespace Flux
     public readonly record struct SolidAngle
       : System.IComparable, System.IComparable<SolidAngle>, System.IFormattable, IUnitValueQuantifiable<double, SolidAngleUnit>
     {
-      public const SolidAngleUnit DefaultUnit = SolidAngleUnit.Steradian;
-
       private readonly double m_value;
 
-      public SolidAngle(double value, SolidAngleUnit unit = DefaultUnit)
+      public SolidAngle(double value, SolidAngleUnit unit = SolidAngleUnit.Steradian)
         => m_value = unit switch
         {
           SolidAngleUnit.Spat => value / (System.Math.Tau + System.Math.Tau),
@@ -68,10 +66,10 @@ namespace Flux
       public int CompareTo(SolidAngle other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(SolidAngleUnit.Steradian, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="SolidAngle.Value"/> property is in <see cref="SolidAngleUnit.Steradian"/>.</para>

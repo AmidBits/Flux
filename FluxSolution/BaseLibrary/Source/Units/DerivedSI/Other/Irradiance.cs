@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct Irradiance
       : System.IComparable, System.IComparable<Irradiance>, System.IFormattable, IUnitValueQuantifiable<double, IrradianceUnit>
     {
-      public const IrradianceUnit DefaultUnit = IrradianceUnit.WattPerSquareMeter;
-
       private readonly double m_value;
 
-      public Irradiance(double value, IrradianceUnit unit = DefaultUnit)
+      public Irradiance(double value, IrradianceUnit unit = IrradianceUnit.WattPerSquareMeter)
         => m_value = unit switch
         {
           IrradianceUnit.WattPerSquareMeter => value,
@@ -71,10 +69,10 @@ namespace Flux
       public int CompareTo(Irradiance other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(IrradianceUnit.WattPerSquareMeter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Irradiance.Value"/> property is in <see cref="IrradianceUnit.WattPerSquareMeter"/>.</para>

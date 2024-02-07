@@ -6,7 +6,7 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Semitone"/>
     /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
     public readonly record struct Semitone
-    : System.IComparable<Semitone>, IValueQuantifiable<int>
+      : System.IComparable, System.IComparable<Semitone>, System.IFormattable, IValueQuantifiable<int>
     {
       public const double FrequencyRatio = 1.0594630943592952645618252949463;
 
@@ -77,6 +77,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(Semitone other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options)

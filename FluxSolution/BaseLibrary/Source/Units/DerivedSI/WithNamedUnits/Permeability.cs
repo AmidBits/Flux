@@ -21,13 +21,11 @@ namespace Flux
     /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Force"/>
     public readonly record struct Permeability
-      : System.IComparable, System.IComparable<Permeability>, IUnitValueQuantifiable<double, PermeabilityUnit>
+      : System.IComparable, System.IComparable<Permeability>, System.IFormattable, IUnitValueQuantifiable<double, PermeabilityUnit>
     {
-      public const PermeabilityUnit DefaultUnit = PermeabilityUnit.HenryPerMeter;
-
       private readonly double m_value;
 
-      public Permeability(double value, PermeabilityUnit unit = DefaultUnit)
+      public Permeability(double value, PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter)
         => m_value = unit switch
         {
           PermeabilityUnit.HenryPerMeter => value,
@@ -64,8 +62,11 @@ namespace Flux
       // IComparable<>
       public int CompareTo(Permeability other) => m_value.CompareTo(other.m_value);
 
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(PermeabilityUnit.HenryPerMeter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Permeability.Value"/> property is in <see cref="PermeabilityUnit.HenryPerMeter"/>.</para>

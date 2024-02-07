@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct SurfaceTension
       : System.IComparable, System.IComparable<SurfaceTension>, System.IFormattable, IUnitValueQuantifiable<double, SurfaceTensionUnit>
     {
-      public const SurfaceTensionUnit DefaultUnit = SurfaceTensionUnit.NewtonPerMeter;
-
       private readonly double m_value;
 
-      public SurfaceTension(double value, SurfaceTensionUnit unit = DefaultUnit)
+      public SurfaceTension(double value, SurfaceTensionUnit unit = SurfaceTensionUnit.NewtonPerMeter)
         => m_value = unit switch
         {
           SurfaceTensionUnit.NewtonPerMeter => value,
@@ -74,10 +72,10 @@ namespace Flux
       public int CompareTo(SurfaceTension other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(SurfaceTensionUnit.NewtonPerMeter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="SurfaceTension.Value"/> property is in <see cref="SurfaceTensionUnit.NewtonPerMeter"/>.</para>

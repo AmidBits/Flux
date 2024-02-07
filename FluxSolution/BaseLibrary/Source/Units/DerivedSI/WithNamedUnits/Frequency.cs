@@ -29,10 +29,8 @@ namespace Flux
     /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Frequency"/>
     public readonly record struct Frequency
-      : System.IComparable, System.IComparable<Frequency>, IUnitValueQuantifiable<double, FrequencyUnit>
+      : System.IComparable, System.IComparable<Frequency>, System.IFormattable, IUnitValueQuantifiable<double, FrequencyUnit>
     {
-      public const FrequencyUnit DefaultUnit = FrequencyUnit.Hertz;
-
       /// <summary>
       /// <para>The fixed numerical value of the caesium frequency (delta)Cs, the unperturbed ground-state hyperfine transition frequency of the caesium 133 atom.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/International_System_of_Units"/></para>
@@ -42,7 +40,7 @@ namespace Flux
 
       private readonly double m_hertz;
 
-      public Frequency(double value, FrequencyUnit unit = DefaultUnit)
+      public Frequency(double value, FrequencyUnit unit = FrequencyUnit.Hertz)
         => m_hertz = unit switch
         {
           FrequencyUnit.Hertz => value,
@@ -143,9 +141,12 @@ namespace Flux
       // IComparable<>
       public int CompareTo(Frequency other) => m_hertz.CompareTo(other.m_hertz);
 
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
 
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(FrequencyUnit.Hertz, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Frequency.Value"/> property is in <see cref="FrequencyUnit.Hertz"/>.</para>

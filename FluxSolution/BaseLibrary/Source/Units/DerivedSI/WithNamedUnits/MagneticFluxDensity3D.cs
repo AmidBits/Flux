@@ -7,11 +7,11 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
     /// <see href="https://en.wikipedia.org/wiki/Magnetic_field_density"/>
     public readonly record struct MagneticFluxDensity3D
-  : System.IFormattable, IUnitValueQuantifiable<System.Numerics.Vector3, MagneticFluxDensityUnit>
+      : System.IFormattable, IUnitValueQuantifiable<System.Numerics.Vector3, MagneticFluxDensityUnit>
     {
       private readonly System.Numerics.Vector3 m_value;
 
-      public MagneticFluxDensity3D(System.Numerics.Vector3 value, MagneticFluxDensityUnit unit = MagneticFluxDensity.DefaultUnit)
+      public MagneticFluxDensity3D(System.Numerics.Vector3 value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla)
         => m_value = unit switch
         {
           MagneticFluxDensityUnit.Tesla => value,
@@ -46,10 +46,10 @@ namespace Flux
       #region Implemented interfaces
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(new() { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MagneticFluxDensity.DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MagneticFluxDensityUnit.Tesla, options);
 
       public System.Numerics.Vector3 Value => m_value;
 

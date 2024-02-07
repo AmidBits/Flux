@@ -25,7 +25,7 @@ namespace Flux
     /// <summary>Electric resistance, unit of Ohm.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
     public readonly record struct ElectricalResistance
-      : System.IComparable, System.IComparable<ElectricalResistance>, IUnitValueQuantifiable<double, ElectricalResistanceUnit>
+      : System.IComparable, System.IComparable<ElectricalResistance>, System.IFormattable, IUnitValueQuantifiable<double, ElectricalResistanceUnit>
     {
       public static ElectricalResistance VonKlitzingConstant => new(25812.80745); // 25812.80745;
 
@@ -98,6 +98,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(ElectricalResistance other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(ElectricalResistanceUnit.Ohm, options);

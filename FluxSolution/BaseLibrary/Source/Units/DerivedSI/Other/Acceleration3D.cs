@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>Acceleration, unit of meters per second square. This is an SI derived quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Acceleration"/>
     public readonly record struct Acceleration3D
-  : IUnitValueQuantifiable<System.Numerics.Vector3, AccelerationUnit>
+      : System.IFormattable, IUnitValueQuantifiable<System.Numerics.Vector3, AccelerationUnit>
     {
       private readonly System.Numerics.Vector3 m_value;
 
@@ -43,6 +43,9 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(Acceleration.DefaultUnit, options);

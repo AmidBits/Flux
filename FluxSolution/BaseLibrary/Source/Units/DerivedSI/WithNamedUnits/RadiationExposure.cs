@@ -23,13 +23,11 @@ namespace Flux
     /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Force"/>
     public readonly record struct RadiationExposure
-      : System.IComparable, System.IComparable<RadiationExposure>, IUnitValueQuantifiable<double, RadiationExposureUnit>
+      : System.IComparable, System.IComparable<RadiationExposure>, System.IFormattable, IUnitValueQuantifiable<double, RadiationExposureUnit>
     {
-      public const RadiationExposureUnit DefaultUnit = RadiationExposureUnit.CoulombPerKilogram;
-
       private readonly double m_value;
 
-      public RadiationExposure(double value, RadiationExposureUnit unit = DefaultUnit)
+      public RadiationExposure(double value, RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram)
         => m_value = unit switch
         {
           RadiationExposureUnit.CoulombPerKilogram => value,
@@ -67,8 +65,11 @@ namespace Flux
       // IComparable<>
       public int CompareTo(RadiationExposure other) => m_value.CompareTo(other.m_value);
 
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(RadiationExposureUnit.CoulombPerKilogram, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="RadiationExposure.Value"/> property is in <see cref="RadiationExposureUnit.CoulombPerKilogram"/>.</para>

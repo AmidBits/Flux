@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Angular_acceleration"/>
     public readonly record struct AngularAcceleration2D
-  : IUnitValueQuantifiable<System.Numerics.Vector2, AngularAccelerationUnit>
+      : IUnitValueQuantifiable<System.Numerics.Vector2, AngularAccelerationUnit>
     {
       private readonly System.Numerics.Vector2 m_value;
 
@@ -43,6 +43,9 @@ namespace Flux
       #endregion Overloaded operators
 
       #region Implemented interfaces
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(AngularAcceleration.DefaultUnit, options);

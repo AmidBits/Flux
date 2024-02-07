@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Probability is a ratio, represented as a closed interval [0, 1], where 0 indicates impossibility of an event and 1 indicates certainty.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Probability"/>
     public readonly record struct Probability
-    : System.IComparable, System.IComparable<Probability>, System.IFormattable, IValueQuantifiable<double>
+      : System.IComparable, System.IComparable<Probability>, System.IFormattable, IValueQuantifiable<double>
     {
       public const double MaxValue = 1;
       public const double MinValue = 0;
@@ -123,7 +123,7 @@ namespace Flux
       public int CompareTo(Probability other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options)

@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>UV index, unit of itself.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Ultraviolet_index"/>
     public readonly record struct UvIndex
-    : System.IComparable, System.IComparable<UvIndex>, IValueQuantifiable<double>
+    : System.IComparable, System.IComparable<UvIndex>, System.IFormattable, IValueQuantifiable<double>
     {
       private readonly double m_value;
 
@@ -40,6 +40,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options)

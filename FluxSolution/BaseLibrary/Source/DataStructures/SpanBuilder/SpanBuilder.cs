@@ -128,21 +128,15 @@ namespace Flux
 
     /// <summary>Duplicates the specified <paramref name="values"/>, <paramref name="count"/> times, throughout. If no values are specified, all characters are duplicated <paramref name="count"/> times. If the string builder is empty, nothing is duplicated. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
     /// <exception cref="System.ArgumentNullException"/>
-    public SpanBuilder<T> Duplicate(System.ReadOnlySpan<T> values, int count, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public SpanBuilder<T> Duplicate(System.Func<T, bool> predicate, int count)
     {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
       for (var index = 0; index < Length; index++)
-      {
-        var sourceValue = this[index];
-
-        if (values.Length == 0 || values.IndexOf(sourceValue, equalityComparer) > -1)
+        if (this[index] is var value && predicate(value))
         {
-          Insert(index, sourceValue, count);
+          Insert(index, value, count);
 
           index += count;
         }
-      }
 
       return this;
     }
@@ -383,28 +377,27 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Normalize any one or more consecutive items satisfied by the <paramref name="predicate"/> with the element returned by <paramref name="replacementSelector"/>.</summary>
+    /// <summary>Normalize any one or more consecutive items satisfied by the <paramref name="predicate"/> to one instance of <paramref name="replacement"/>.</summary>
     /// <example>"".NormalizeAll(char.IsWhiteSpace, ' ');</example>
     /// <example>"".NormalizeAll(c => c == ' ', ' ');</example>
-    /// <remarks>Normalizing (here) means removing leading/trailing (either end of the <see cref="SpanBuilder{T}"/>) and replacing one or more consecutive characters satisfying the <paramref name="predicate"/> within the <see cref="SpanBuilder{T}"/> with <paramref name="replacementSelector"/>. No replacements are performed if elements are on left or right edge.</remarks>
-    public SpanBuilder<T> NormalizeAll(System.Func<T, bool> predicate, System.Func<T, T> replacementSelector)
+    /// <remarks>Normalizing (here) means removing leading/trailing (either end of the <see cref="SpanBuilder{T}"/>) and replacing one or more consecutive characters satisfying the <paramref name="predicate"/> within the <see cref="SpanBuilder{T}"/> to one instance of <paramref name="replacement"/>. No replacements, i.e. only removals, are performed if elements are on left or right edge.</remarks>
+    public SpanBuilder<T> NormalizeAll(System.Func<T, bool> predicate, T replacement)
     {
       System.ArgumentNullException.ThrowIfNull(predicate);
-      System.ArgumentNullException.ThrowIfNull(replacementSelector);
 
       var normalizedMark = m_head;
 
       var isPrevious = true;
 
-      for (var i = m_head; i < m_tail; i++)
+      for (var mark = m_head; mark < m_tail; mark++)
       {
-        var c = m_array[i];
+        var item = m_array[mark];
 
-        var isCurrent = predicate(c);
+        var isCurrent = predicate(item);
 
         if (!(isPrevious && isCurrent))
         {
-          m_array[normalizedMark++] = isCurrent ? replacementSelector(c) : c;
+          m_array[normalizedMark++] = isCurrent ? replacement : item;
 
           isPrevious = isCurrent;
         }
@@ -446,30 +439,16 @@ namespace Flux
     }
 
     /// <summary>Pads this StringBuilder on the left with the specified padding character.</summary>
-    public SpanBuilder<T> PadLeft(int totalWidth, T padding)
-      => Insert(0, padding, totalWidth - Length);
+    public SpanBuilder<T> PadLeft(int totalWidth, T padding) => Insert(0, padding, totalWidth - Length);
 
     /// <summary>Pads this StringBuilder on the left with the specified padding string.</summary>
-    public SpanBuilder<T> PadLeft(int totalWidth, System.ReadOnlySpan<T> padding)
-    {
-      Insert(0, padding, (totalWidth - Length) / padding.Length + 1);
-      Remove(0, Length - totalWidth);
-
-      return this;
-    }
+    public SpanBuilder<T> PadLeft(int totalWidth, System.ReadOnlySpan<T> padding) => Insert(0, padding, (totalWidth - Length) / padding.Length + 1).Remove(0, Length - totalWidth);
 
     /// <summary>Pads this StringBuilder on the right with the specified padding character.</summary>
-    public SpanBuilder<T> PadRight(int totalWidth, T padding)
-      => Append(padding, totalWidth - Length);
+    public SpanBuilder<T> PadRight(int totalWidth, T padding) => Append(padding, totalWidth - Length);
 
     /// <summary>Pads this StringBuilder on the right with the specified padding string.</summary>
-    public SpanBuilder<T> PadRight(int totalWidth, System.ReadOnlySpan<T> padding)
-    {
-      Append(padding, (totalWidth - Length) / padding.Length + 1);
-      Remove(totalWidth, Length - totalWidth);
-
-      return this;
-    }
+    public SpanBuilder<T> PadRight(int totalWidth, System.ReadOnlySpan<T> padding) => Append(padding, (totalWidth - Length) / padding.Length + 1).Remove(totalWidth);
 
     /// <summary>Prepends with a <paramref name="value"/>, <paramref name="count"/> times.</summary>
     public SpanBuilder<T> Prepend(T value, int count)
@@ -529,8 +508,7 @@ namespace Flux
     }
 
     /// <summary>Removes the specified range of values from the builder.</summary>
-    public SpanBuilder<T> Remove(int startIndex)
-      => Remove(startIndex, Length - startIndex);
+    public SpanBuilder<T> Remove(int startIndex) => Remove(startIndex, Length - startIndex);
 
     /// <summary>Removes all items satisfying the <paramref name="predicate"/> from the <see cref="SpanBuilder{T}"/>.</summary>
     /// <example>"".RemoveAll(char.IsWhiteSpace);</example>
@@ -541,8 +519,8 @@ namespace Flux
 
       var removedMark = m_head; // This represents the "lag" mark, and becomes the new m_tail in the end.
 
-      for (var i = m_head; i < m_tail; i++)
-        if (m_array[i] is var c && !predicate(c))
+      for (var mark = m_head; mark < m_tail; mark++)
+        if (m_array[mark] is var c && !predicate(c))
           m_array[removedMark++] = c;
 
       m_tail = removedMark;
@@ -563,24 +541,60 @@ namespace Flux
       return this;
     }
 
-    public SpanBuilder<T> RemoveFirst(int count)
-      => Remove(0, count);
-
-    public SpanBuilder<T> RemoveLast(int count)
-      => Remove(Length - count, count);
-
-    /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
+    /// <summary>Repeats the content of the <see cref="SpanBuilder{T}"/> <paramref name="count"/> times.</summary>
     public SpanBuilder<T> Repeat(int count)
-      => Append(new SpanBuilder<T>(AsReadOnlySpan(), count).AsReadOnlySpan(), 1);
-
-    /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the result of the <paramref name="replacementSelector"/>.</summary>
-    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, System.Func<T, System.Collections.Generic.ICollection<T>> replacementSelector)
     {
-      System.ArgumentNullException.ThrowIfNull(replacementSelector);
+      var length = m_tail - m_head;
 
-      for (var index = Length - 1; index >= 0; index--)
-        if (this[index] is var c && predicate(c))
-          Remove(index, 1).Insert(index, replacementSelector(c), 1);
+      EnsureAppendCapacity(count * length);
+
+      while (count-- > 0)
+      {
+        System.Array.Copy(m_array, m_head, m_array, m_tail, length);
+
+        m_tail += length;
+      }
+
+      return this;
+    }
+
+    /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the <paramref name="replacement"/>.</summary>
+    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, T replacement)
+    {
+      System.ArgumentNullException.ThrowIfNull(predicate);
+
+      for (var mark = m_head; mark < m_tail; mark++)
+        if (predicate(m_array[mark]))
+          m_array[mark] = replacement;
+
+      return this;
+    }
+
+    /// <summary>Replace all characters satisfying the <paramref name="predicate"/> with the <paramref name="replacement"/>.</summary>
+    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, System.ReadOnlySpan<T> replacement)
+    {
+      System.ArgumentNullException.ThrowIfNull(predicate);
+
+      var count = 0; // Count up the characters being replaced.
+
+      for (var mark = m_head; mark < m_tail; mark++)
+        if (predicate(m_array[mark]))
+          count++;
+
+      if (count > 0)
+      {
+        EnsureAppendCapacity(count * replacement.Length);
+
+        for (var mark = m_tail - 1; mark >= m_head; mark--)
+          if (predicate(m_array[mark]))
+          {
+            System.Array.Copy(m_array, mark + 1, m_array, mark + replacement.Length, m_tail - mark - 1);
+
+            replacement.CopyTo(m_array.AsSpan().Slice(mark));
+
+            m_tail += replacement.Length - 1;
+          }
+      }
 
       return this;
     }

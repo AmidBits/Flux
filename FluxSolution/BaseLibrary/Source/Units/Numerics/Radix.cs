@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Radix, unit of natural number.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Radix"/>
     public readonly record struct Radix
-    : System.IComparable<Radix>, IValueQuantifiable<int>
+      : System.IComparable, System.IComparable<Radix>, System.IFormattable, IValueQuantifiable<int>
     {
       public const int MinRadix = 2;
       public const int MaxRadix = 256;
@@ -485,6 +485,9 @@ namespace Flux
 
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Radix o ? CompareTo(o) : -1;
+
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options)

@@ -53,11 +53,9 @@ namespace Flux
     public readonly record struct Volume
       : System.IComparable, System.IComparable<Volume>, System.IFormattable, IUnitValueQuantifiable<double, VolumeUnit>
     {
-      public const VolumeUnit DefaultUnit = VolumeUnit.CubicMeter;
-
       private readonly double m_value;
 
-      public Volume(double value, VolumeUnit unit = DefaultUnit)
+      public Volume(double value, VolumeUnit unit = VolumeUnit.CubicMeter)
         => m_value = unit switch
         {
           VolumeUnit.Millilitre => value / 1000000,
@@ -129,10 +127,10 @@ namespace Flux
       public int CompareTo(Volume other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(VolumeUnit.CubicMeter, options);
 
       /// <summary>
       ///  <para>The unit of the <see cref="Volume.Value"/> property is in <see cref="VolumeUnit.CubicMeter"/>.</para>

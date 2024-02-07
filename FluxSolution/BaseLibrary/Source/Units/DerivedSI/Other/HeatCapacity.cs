@@ -23,13 +23,11 @@ namespace Flux
     public readonly record struct HeatCapacity
       : System.IComparable, System.IComparable<HeatCapacity>, System.IFormattable, IUnitValueQuantifiable<double, HeatCapacityUnit>
     {
-      public const HeatCapacityUnit DefaultUnit = HeatCapacityUnit.JoulePerKelvin;
-
       public static readonly HeatCapacity BoltzmannConstant = new(1.380649e-23);
 
       private readonly double m_value;
 
-      public HeatCapacity(double value, HeatCapacityUnit unit = DefaultUnit)
+      public HeatCapacity(double value, HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin)
         => m_value = unit switch
         {
           HeatCapacityUnit.JoulePerKelvin => value,
@@ -70,10 +68,10 @@ namespace Flux
       public int CompareTo(HeatCapacity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(HeatCapacityUnit.JoulePerKelvin, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="HeatCapacity.Value"/> property is in <see cref="HeatCapacityUnit.JoulePerKelvin"/>.</para>

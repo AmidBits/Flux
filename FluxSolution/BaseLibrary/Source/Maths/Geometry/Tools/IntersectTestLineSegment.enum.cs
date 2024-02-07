@@ -72,9 +72,9 @@ namespace Flux
 
     public static (IntersectTestLineSegment Outcome, System.Numerics.Vector2 Intersection) GivenTwoPointsOnEachLineSegment(System.Numerics.Vector2 v1, System.Numerics.Vector2 v2, System.Numerics.Vector2 v3, System.Numerics.Vector2 v4)
     {
-      var result = GivenTwoPointsOnEachLineSegment(v1.X, v1.Y, v2.X, v2.Y, v3.X, v3.Y, v4.X, v4.Y);
+      var (Outcome, X, Y) = GivenTwoPointsOnEachLineSegment(v1.X, v1.Y, v2.X, v2.Y, v3.X, v3.Y, v4.X, v4.Y);
 
-      return (result.Outcome, new((float)result.X, (float)result.Y));
+      return (Outcome, new((float)X, (float)Y));
     }
   }
 }

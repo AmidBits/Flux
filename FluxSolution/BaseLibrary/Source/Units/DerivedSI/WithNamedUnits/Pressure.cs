@@ -33,11 +33,9 @@ namespace Flux
     public readonly record struct Pressure
       : System.IComparable, System.IComparable<Pressure>, System.IFormattable, IUnitValueQuantifiable<double, PressureUnit>
     {
-      public const PressureUnit DefaultUnit = PressureUnit.Pascal;
-
       private readonly double m_value;
 
-      public Pressure(double value, PressureUnit unit = DefaultUnit)
+      public Pressure(double value, PressureUnit unit = PressureUnit.Pascal)
         => m_value = unit switch
         {
           PressureUnit.Millibar => value * 100,
@@ -83,10 +81,10 @@ namespace Flux
       public int CompareTo(Pressure other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(PressureUnit.Pascal, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Pressure.Value"/> property is in <see cref="PressureUnit.Pascal"/>.</para>

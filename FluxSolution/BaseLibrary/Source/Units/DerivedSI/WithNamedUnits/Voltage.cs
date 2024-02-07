@@ -23,7 +23,7 @@ namespace Flux
     /// <summary>Voltage unit of volt.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Voltage"/>
     public readonly record struct Voltage
-      : System.IComparable, System.IComparable<Voltage>, IUnitValueQuantifiable<double, VoltageUnit>
+      : System.IComparable, System.IComparable<Voltage>, System.IFormattable, IUnitValueQuantifiable<double, VoltageUnit>
     {
       private readonly double m_value;
 
@@ -79,6 +79,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(Voltage other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(VoltageUnit.Volt, options);

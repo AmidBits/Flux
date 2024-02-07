@@ -46,8 +46,8 @@ namespace Flux
       var ucsb = new SpanBuilder<char>(source == System.Globalization.UnicodeCategory.OtherNotAssigned ? source.ToString()[5..] : source.ToString());
       var ucms = source.ToUnicodeCategoryMajor().ToString();
 
-      if (ucsb.AsReadOnlySpan().EndsWith(ucms)) ucsb.RemoveLast(ucms.Length); // Either fix the unicode category that ends with its own category major.
-      else if (ucsb.AsReadOnlySpan().StartsWith(ucms)) ucsb.RemoveFirst(ucms.Length); // Or fix the unicode category that starts with its own category major.
+      if (ucsb.AsReadOnlySpan().EndsWith(ucms)) ucsb.Remove(ucsb.Length - ucms.Length); // Either fix the unicode category that ends with its own category major.
+      else if (ucsb.AsReadOnlySpan().StartsWith(ucms)) ucsb.Remove(0, ucms.Length); // Or fix the unicode category that starts with its own category major.
 
       ucsb.SplitFromCamelCase();
 

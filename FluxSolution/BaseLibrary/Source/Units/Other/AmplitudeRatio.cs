@@ -23,13 +23,11 @@ namespace Flux
     public readonly record struct AmplitudeRatio
       : System.IComparable, System.IComparable<AmplitudeRatio>, System.IFormattable, IUnitValueQuantifiable<double, AmplitudeRatioUnit>
     {
-      public const AmplitudeRatioUnit DefaultUnit = AmplitudeRatioUnit.DecibelVolt;
-
       public const double ScalingFactor = 20;
 
       private readonly double m_value;
 
-      public AmplitudeRatio(double value, AmplitudeRatioUnit unit = DefaultUnit)
+      public AmplitudeRatio(double value, AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt)
         => m_value = unit switch
         {
           AmplitudeRatioUnit.DecibelVolt => value,
@@ -81,10 +79,10 @@ namespace Flux
       public int CompareTo(AmplitudeRatio other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(AmplitudeRatioUnit.DecibelVolt, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="AmplitudeRatio.Value"/> property is in <see cref="AmplitudeRatioUnit.DecibelVolt"/>.</para>

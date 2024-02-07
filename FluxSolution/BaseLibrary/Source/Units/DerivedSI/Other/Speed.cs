@@ -31,8 +31,6 @@ namespace Flux
     public readonly record struct Speed
       : System.IComparable, System.IComparable<Speed>, System.IFormattable, IUnitValueQuantifiable<double, SpeedUnit>
     {
-      public const SpeedUnit DefaultUnit = SpeedUnit.MeterPerSecond;
-
       /// <summary>The speed of light in vacuum.</summary>
       public static Speed SpeedOfLight => new(299792458);
       /// <summary>The speed of sound in air.</summary>
@@ -40,7 +38,7 @@ namespace Flux
 
       private readonly double m_value;
 
-      public Speed(double value, SpeedUnit unit = DefaultUnit)
+      public Speed(double value, SpeedUnit unit = SpeedUnit.MeterPerSecond)
         => m_value = unit switch
         {
           SpeedUnit.FootPerSecond => value * (381.0 / 1250.0),
@@ -103,10 +101,10 @@ namespace Flux
       public int CompareTo(Speed other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(SpeedUnit.MeterPerSecond, options);
 
       /// <summary>
       ///  <para>The unit of the <see cref="Speed.Value"/> property is in <see cref="SpeedUnit.MeterPerSecond"/>.</para>

@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Electric charge unit of Coulomb.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Electric_charge"/>
     public readonly record struct ElectricCharge
-      : System.IComparable, System.IComparable<ElectricCharge>, IUnitValueQuantifiable<double, ElectricChargeUnit>
+      : System.IComparable, System.IComparable<ElectricCharge>, System.IFormattable, IUnitValueQuantifiable<double, ElectricChargeUnit>
     {
       public static ElectricCharge ElementaryCharge => new(1.602176634e-19);
 
@@ -63,6 +63,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(ElectricCharge other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(ElectricChargeUnit.Coulomb, options);

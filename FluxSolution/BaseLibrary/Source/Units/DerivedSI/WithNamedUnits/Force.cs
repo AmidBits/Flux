@@ -21,13 +21,11 @@ namespace Flux
     /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Force"/>
     public readonly record struct Force
-      : System.IComparable, System.IComparable<Force>, IUnitValueQuantifiable<double, ForceUnit>
+      : System.IComparable, System.IComparable<Force>, System.IFormattable, IUnitValueQuantifiable<double, ForceUnit>
     {
-      public const ForceUnit DefaultUnit = ForceUnit.Newton;
-
       private readonly double m_value;
 
-      public Force(double value, ForceUnit unit = DefaultUnit)
+      public Force(double value, ForceUnit unit = ForceUnit.Newton)
         => m_value = unit switch
         {
           ForceUnit.Newton => value,
@@ -64,8 +62,11 @@ namespace Flux
       // IComparable<>
       public int CompareTo(Force other) => m_value.CompareTo(other.m_value);
 
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(ForceUnit.Newton, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Force.Value"/> property is in <see cref="ForceUnit.Newton"/>.</para>

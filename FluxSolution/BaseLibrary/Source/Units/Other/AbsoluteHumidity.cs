@@ -25,11 +25,9 @@ namespace Flux
     public readonly record struct AbsoluteHumidity
       : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IFormattable, IUnitValueQuantifiable<double, AbsoluteHumidityUnit>
     {
-      public const AbsoluteHumidityUnit DefaultUnit = AbsoluteHumidityUnit.GramsPerCubicMeter;
-
       private readonly double m_value;
 
-      public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = DefaultUnit)
+      public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
         => m_value = unit switch
         {
           AbsoluteHumidityUnit.GramsPerCubicMeter => value,
@@ -75,10 +73,10 @@ namespace Flux
       public int CompareTo(AbsoluteHumidity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(AbsoluteHumidityUnit.GramsPerCubicMeter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="AbsoluteHumidity.Value"/> property is in <see cref="AbsoluteHumidityUnit.GramsPerCubicMeter"/>.</para>

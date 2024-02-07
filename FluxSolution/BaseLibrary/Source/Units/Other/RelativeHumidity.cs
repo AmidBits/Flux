@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct RelativeHumidity
       : System.IComparable, System.IComparable<RelativeHumidity>, System.IFormattable, IUnitValueQuantifiable<double, RelativeHumidityUnit>
     {
-      public const RelativeHumidityUnit DefaultUnit = RelativeHumidityUnit.Percent;
-
       private readonly double m_value;
 
-      public RelativeHumidity(double value, RelativeHumidityUnit unit = DefaultUnit)
+      public RelativeHumidity(double value, RelativeHumidityUnit unit = RelativeHumidityUnit.Percent)
         => m_value = unit switch
         {
           RelativeHumidityUnit.Percent => value,
@@ -65,10 +63,10 @@ namespace Flux
       public int CompareTo(RelativeHumidity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(RelativeHumidityUnit.Percent, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="RelativeHumidity.Value"/> property is in <see cref="RelativeHumidityUnit.Percent"/>.</para>

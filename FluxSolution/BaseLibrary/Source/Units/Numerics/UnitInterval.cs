@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Unit interval, unit of rational number between 0 and 1, constrained by the <see cref="IntervalNotation"/>.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Unit_interval"/>
     public readonly record struct UnitInterval
-    : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, IValueQuantifiable<double>
+      : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, IValueQuantifiable<double>
     {
       public const double MaxValue = 1;
       public const double MinValue = 0;
@@ -78,7 +78,7 @@ namespace Flux
       public int CompareTo(UnitInterval other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options)

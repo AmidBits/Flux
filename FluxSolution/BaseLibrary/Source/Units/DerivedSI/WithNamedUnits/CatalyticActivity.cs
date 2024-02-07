@@ -21,7 +21,7 @@ namespace Flux
     /// <summary>Catalytic activity unit of Katal.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Catalysis"/>
     public readonly record struct CatalyticActivity
-      : System.IComparable, System.IComparable<CatalyticActivity>, IUnitValueQuantifiable<double, CatalyticActivityUnit>
+      : System.IComparable, System.IComparable<CatalyticActivity>, System.IFormattable, IUnitValueQuantifiable<double, CatalyticActivityUnit>
     {
       private readonly double m_value;
 
@@ -61,6 +61,9 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(CatalyticActivity other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
       public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(CatalyticActivityUnit.Katal, options);

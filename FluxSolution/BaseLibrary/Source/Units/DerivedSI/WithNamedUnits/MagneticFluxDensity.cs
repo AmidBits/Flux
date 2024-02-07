@@ -25,11 +25,9 @@ namespace Flux
     public readonly record struct MagneticFluxDensity
       : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxDensityUnit>
     {
-      public const MagneticFluxDensityUnit DefaultUnit = MagneticFluxDensityUnit.Tesla;
-
       private readonly double m_value;
 
-      public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = DefaultUnit)
+      public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla)
         => m_value = unit switch
         {
           MagneticFluxDensityUnit.Tesla => value,
@@ -38,7 +36,7 @@ namespace Flux
 
 
       public MetricMultiplicative ToMetricMultiplicative()
-        => new(GetUnitValue(DefaultUnit), MetricMultiplicativePrefix.One);
+        => new(GetUnitValue(MagneticFluxDensityUnit.Tesla), MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
       public static explicit operator double(MagneticFluxDensity v) => v.m_value;
@@ -71,10 +69,10 @@ namespace Flux
       public int CompareTo(MagneticFluxDensity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MagneticFluxDensityUnit.Tesla, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="MagneticFluxDensity.Value"/> property is in <see cref="MagneticFluxDensityUnit.Tesla"/>.</para>

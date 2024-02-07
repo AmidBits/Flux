@@ -54,13 +54,11 @@ namespace Flux
     /// <summary>DigitalStorage, unit of natural number.</summary>
     /// <seealso cref="https://en.wikipedia.org/wiki/Radix"/>
     public readonly record struct DigitalInformation
-    : System.IComparable<DigitalInformation>, IValueQuantifiable<System.Numerics.BigInteger>
+    : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IValueQuantifiable<System.Numerics.BigInteger>
     {
-      public const DigitalInformationUnit DefaultUnit = DigitalInformationUnit.Byte;
-
       private readonly System.Numerics.BigInteger m_value;
 
-      public DigitalInformation(System.Numerics.BigInteger value, DigitalInformationUnit unit = DefaultUnit)
+      public DigitalInformation(System.Numerics.BigInteger value, DigitalInformationUnit unit = DigitalInformationUnit.Byte)
         => m_value = unit switch
         {
           DigitalInformationUnit.Byte => value,
@@ -117,8 +115,11 @@ namespace Flux
       // IComparable
       public int CompareTo(object? other) => other is not null && other is DigitalInformation o ? CompareTo(o) : -1;
 
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DefaultUnit, options);
+      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DigitalInformationUnit.Byte, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="DigitalInformationUnit.Value"/> property is in <see cref="DigitalInformationUnit.Byte"/>.</para>
