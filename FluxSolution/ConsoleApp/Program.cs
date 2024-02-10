@@ -34,6 +34,26 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var seq = new int[] { 5, 3, 3, 3, 3, 3 };
+
+      var cs = seq.CompareSequence();
+
+      var t = new Flux.Units.Time(1500, Flux.Units.TimeUnit.Second);
+      var tm = t.ToMetricValueString(Flux.Units.MetricPrefix.Kilo);
+
+      var target = Flux.Units.MetricPrefix.Deca.FindLargestPrefixAndValue(200);
+
+      //var found = Flux.Units.MetricMultiplicativePrefix.Kilo.FindMetricMultiplicativePrefix(1, out var value);
+      //var newly = found.Convert(value, Flux.Units.MetricMultiplicativePrefix.Kilo);
+      return;
+
+      var period = 2d;
+      var resolution = 20;
+      for (var i = -period; i < period * 2; i += period / resolution)
+        System.Console.WriteLine($"{i:N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.Sawtooth(i, period):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.Sine(i, period):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.Square(i, period):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.Triangle(i, period):N3}");
+
+      return;
+
       var sb = new Flux.SpanBuilder<char>();
       sb.Append("This-is-a-test.", 1);
 

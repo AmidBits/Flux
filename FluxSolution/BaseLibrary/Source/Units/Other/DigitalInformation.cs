@@ -19,7 +19,7 @@ namespace Flux
       };
     }
 
-    public static string GetUnitString(this Units.DigitalInformationUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.DigitalInformationUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.DigitalInformationUnit.Byte => "B",
@@ -52,7 +52,7 @@ namespace Flux
     }
 
     /// <summary>DigitalStorage, unit of natural number.</summary>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Radix"/>
+    /// <seealso cref="https://en.wikipedia.org/wiki/DigitalInformation"/>
     public readonly record struct DigitalInformation
     : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IValueQuantifiable<System.Numerics.BigInteger>
     {
@@ -116,10 +116,10 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is DigitalInformation o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(DigitalInformationUnit.Byte, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(DigitalInformationUnit.Byte, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="DigitalInformationUnit.Value"/> property is in <see cref="DigitalInformationUnit.Byte"/>.</para>
@@ -142,14 +142,14 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(DigitalInformationUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(DigitalInformationUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

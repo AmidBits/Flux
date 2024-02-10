@@ -39,7 +39,7 @@ namespace Flux.Dsp.AudioProcessor
       ? (leftWave * m_scaledAbsInv + rightWave * m_scaledAbs, rightWave * m_positionInvAbs)
       : (leftWave, rightWave);
 
-    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo) => (WaveStereo<double>)ProcessStereoWave(stereo.LeftWave, stereo.RightWave);
+    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo) => (WaveStereo<double>)ProcessStereoWave(stereo.WaveLeft, stereo.WaveRight);
 
     /// <summary>Apply stereo pan across the stereo field.</summary>
     /// <param name="position">Pan position in the range [-1, 1], where -1 means more of the stereo to the left, 1 means more of the stereo to the right and 0 means no change.</param>

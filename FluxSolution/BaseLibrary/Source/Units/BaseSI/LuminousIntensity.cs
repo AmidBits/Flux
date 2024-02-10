@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.LuminousIntensityUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.LuminousIntensityUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.LuminousIntensityUnit.Candela => options.PreferUnicode ? "\u33C5" : "cd",
@@ -20,7 +20,7 @@ namespace Flux
     /// <summary>Luminous intensity. SI unit of candela. This is a base quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Luminous_intensity"/>
     public readonly record struct LuminousIntensity
-      : System.IComparable, System.IComparable<LuminousIntensity>, System.IFormattable, IUnitValueQuantifiable<double, LuminousIntensityUnit>
+      : System.IComparable, System.IComparable<LuminousIntensity>, System.IFormattable, IMetricMultiplicable<double>, IUnitValueQuantifiable<double, LuminousIntensityUnit>
     {
       private readonly double m_value;
 
@@ -65,10 +65,23 @@ namespace Flux
       public int CompareTo(LuminousIntensity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+
+      //IMetricMultiplicable<>
+      public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
+
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(prefix.GetUnitString(true, false));
+        sb.Append(LengthUnit.Meter.GetUnitString(false, false));
+        return sb.ToString();
+      }
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(LuminousIntensityUnit.Candela, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(LuminousIntensityUnit.Candela, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="LuminousIntensity.Value"/> property is in <see cref="LuminousIntensityUnit.Candela"/>.</para>
@@ -83,12 +96,21 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(LuminousIntensityUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(LuminousIntensityUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(unit.GetUnitString());
+        return sb.ToString();
+      }
+
+      public string ToUnitValueString(LuminousIntensityUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

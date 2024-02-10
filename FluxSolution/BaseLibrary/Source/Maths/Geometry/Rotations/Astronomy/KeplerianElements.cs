@@ -34,11 +34,11 @@ namespace Flux
       /// <summary>The amount by which an orbit around another body deviates from a perfect circle.</summary>
       public double Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
       /// <summary>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
-      public double Inclination { get => Units.Angle.RadianToDegree(m_radInclination); init => m_radInclination = Units.Angle.DegreeToRadian(value); }
+      public double Inclination { get => Units.Angle.ConvertRadianToDegree(m_radInclination); init => m_radInclination = Units.Angle.ConvertDegreeToRadian(value); }
       /// <summary>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
-      public double LongitudeOfAscendingNode { get => Units.Angle.RadianToDegree(m_radLongitudeOfAscendingNode); init => m_radLongitudeOfAscendingNode = Units.Angle.DegreeToRadian(value); }
+      public double LongitudeOfAscendingNode { get => Units.Angle.ConvertRadianToDegree(m_radLongitudeOfAscendingNode); init => m_radLongitudeOfAscendingNode = Units.Angle.ConvertDegreeToRadian(value); }
       /// <summary>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
-      public double ArgumentOfPeriapsis { get => Units.Angle.RadianToDegree(m_radArgumentOfPeriapsis); init => m_radArgumentOfPeriapsis = Units.Angle.DegreeToRadian(value); }
+      public double ArgumentOfPeriapsis { get => Units.Angle.ConvertRadianToDegree(m_radArgumentOfPeriapsis); init => m_radArgumentOfPeriapsis = Units.Angle.ConvertDegreeToRadian(value); }
       /// <summary>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</summary>
       public double TrueAnomaly { get => m_trueAnomaly; init => m_trueAnomaly = value; }
 
@@ -102,7 +102,7 @@ namespace Flux
       #endregion Static methods
 
       public override string ToString()
-        => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {new Units.Angle(m_radInclination).ToUnitValueString(Units.AngleUnit.Degree, QuantifiableValueStringOptions.Default)}, LongitudeOfAscendingNode = {new Units.Angle(m_radLongitudeOfAscendingNode).ToUnitValueString(Units.AngleUnit.Degree, QuantifiableValueStringOptions.Default)}, ArgumentOfPeriapsis = {new Units.Angle(m_radArgumentOfPeriapsis).ToUnitValueString(Units.AngleUnit.Degree, QuantifiableValueStringOptions.Default)}, TrueAnomaly = {m_trueAnomaly} }}";
+        => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {new Units.Angle(m_radInclination).ToUnitValueString(Units.AngleUnit.Degree)}, LongitudeOfAscendingNode = {new Units.Angle(m_radLongitudeOfAscendingNode).ToUnitValueString(Units.AngleUnit.Degree)}, ArgumentOfPeriapsis = {new Units.Angle(m_radArgumentOfPeriapsis).ToUnitValueString(Units.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly} }}";
     }
   }
 }

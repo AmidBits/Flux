@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.AbsoluteHumidityUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.AbsoluteHumidityUnit unit, Units.TextOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
@@ -73,10 +73,10 @@ namespace Flux
       public int CompareTo(AbsoluteHumidity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(AbsoluteHumidityUnit.GramsPerCubicMeter, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(AbsoluteHumidityUnit.GramsPerCubicMeter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="AbsoluteHumidity.Value"/> property is in <see cref="AbsoluteHumidityUnit.GramsPerCubicMeter"/>.</para>
@@ -92,12 +92,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AbsoluteHumidityUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(AbsoluteHumidityUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

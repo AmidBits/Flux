@@ -1,9 +1,10 @@
 ﻿namespace Flux
 {
   #region Extension methods
+
   public static partial class Em
   {
-    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, QuantifiableValueStringOptions options)
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, Units.TextOptions options = default)
       where TType : struct, System.IEquatable<TType>
       where TUnit : notnull, System.Enum
     {
@@ -15,6 +16,7 @@
       return d;
     }
   }
+
   #endregion // Extension methods
 
   /// <summary>An interface representing a quantifiable value that can be converted to other units.</summary>
@@ -33,11 +35,11 @@
     /// <returns>A string with the value and any symbols representing the quantity in the specified <typeparamref name="TUnit"/>.</returns>
     //string ToUnitValueString(TUnit unit, string? format, bool preferUnicode, bool useFullName, System.Globalization.CultureInfo? culture);
 
-    string ToUnitValueString(TUnit unit, QuantifiableValueStringOptions options);
+    string ToUnitValueString(TUnit unit, Units.TextOptions options);
 
     /// <summary>Create the value of the quantity in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>
     /// <returns>The value of the quantity based on the specified <typeparamref name="TUnit"/>.</returns>
-    TValue GetUnitValue(TUnit? unit);
+    TValue GetUnitValue(TUnit unit);
   }
 }

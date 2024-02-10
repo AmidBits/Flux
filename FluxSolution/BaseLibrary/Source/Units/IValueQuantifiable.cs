@@ -12,58 +12,9 @@
     /// <returns>A string with the value and any symbols representing the quantity.</returns>
     //string ToValueString(string? format, bool preferUnicode, bool useFullName, System.Globalization.CultureInfo? culture);
 
-    string ToValueString(QuantifiableValueStringOptions options);
+    string ToValueString(Units.TextOptions options);
 
     /// <summary>The value of the quantity.</summary>
     TValue Value { get; }
-  }
-
-  public readonly record struct QuantifiableValueStringOptions
-  {
-    public static QuantifiableValueStringOptions Default => new();
-
-    public QuantifiableValueStringOptions()
-    {
-      CultureInfo = System.Globalization.CultureInfo.InvariantCulture;
-      PreferUnicode = true;
-    }
-
-    public QuantifiableValueStringOptions(string? format, System.IFormatProvider? formatProvider)
-      : this()
-    {
-      Format = format;
-      FormatProvider = formatProvider;
-    }
-
-    public QuantifiableValueStringOptions(string? format)
-      : this()
-    {
-      Format = format;
-    }
-
-    /// <summary>
-    /// <para>The culture info. The default is <see cref="System.Globalization.CultureInfo.InvariantCulture"/>.</para>
-    /// </summary>
-    public System.Globalization.CultureInfo CultureInfo { get; init; } = System.Globalization.CultureInfo.InvariantCulture;
-
-    /// <summary>
-    /// <para>The format for the value. The default is <see cref="null"/>.</para>
-    /// </summary>
-    public string? Format { get; init; }
-
-    /// <summary>
-    /// <para>The format provider. The default is <see cref="null"/>.</para>
-    /// </summary>
-    public System.IFormatProvider? FormatProvider { get; init; }
-
-    /// <summary>
-    /// <para>Whether to prefer Unicode symbols, where and when available. The default is true.</para>
-    /// </summary>
-    public bool PreferUnicode { get; init; } = true;
-
-    /// <summary>
-    /// <para>Whether to use the full actual name of the enum value, rather than symbols or shorter (e.g. acronym) variants. The default is false.</para>
-    /// </summary>
-    public bool UseFullName { get; init; }
   }
 }

@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.MassUnit unit, QuantifiableValueStringOptions options)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.MassUnit unit, bool preferUnicode = true, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        Units.MassUnit.Milligram => options.PreferUnicode ? "\u338E" : "mg",
+        //Units.MassUnit.Milligram => preferUnicode ? "\u338E" : "mg",
         Units.MassUnit.Gram => "g",
         Units.MassUnit.Ounce => "oz",
         Units.MassUnit.Pound => "lb",
-        Units.MassUnit.Kilogram => options.PreferUnicode ? "\u338F" : "kg",
+        Units.MassUnit.Kilogram => preferUnicode ? "\u338F" : "kg",
         Units.MassUnit.Tonne => "t",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -21,7 +21,7 @@ namespace Flux
     {
       /// <summary>This is the default unit for <see cref="Mass"/>.</summary>
       Kilogram,
-      Milligram,
+      //Milligram,
       Gram,
       Ounce,
       Pound,
@@ -41,14 +41,17 @@ namespace Flux
       public Mass(double value, MassUnit unit = MassUnit.Kilogram)
         => m_value = unit switch
         {
-          MassUnit.Milligram => value / 1000000,
+          MassUnit.Kilogram => value,
+
+          //MassUnit.Milligram => value / 1000000,
           MassUnit.Gram => value / 1000,
           MassUnit.Ounce => value / 35.27396195,
           MassUnit.Pound => value * 0.45359237,
-          MassUnit.Kilogram => value,
           MassUnit.Tonne => value * 1000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
+
+      public Mass(MetricPrefix prefix, double gram) => m_value = prefix.Convert(gram, MetricPrefix.Kilo);
 
       #region Static methods
       #endregion Static methods
@@ -84,10 +87,23 @@ namespace Flux
       public int CompareTo(Mass other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+
+      //IMetricMultiplicable<>
+      public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Kilo.Convert(m_value, prefix);
+
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(prefix.GetUnitString(true, false));
+        sb.Append(MassUnit.Gram.GetUnitString(false, false));
+        return sb.ToString();
+      }
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MassUnit.Kilogram, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(MassUnit.Kilogram, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Mass.Value"/> property is in <see cref="MassUnit.Kilogram"/>.</para>
@@ -98,7 +114,7 @@ namespace Flux
       public double GetUnitValue(MassUnit unit)
         => unit switch
         {
-          MassUnit.Milligram => m_value * 1000000,
+          //MassUnit.Milligram => m_value * 1000000,
           MassUnit.Gram => m_value * 1000,
           MassUnit.Ounce => m_value * 35.27396195,
           MassUnit.Pound => m_value / 0.45359237,
@@ -107,12 +123,21 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(MassUnit unit, QuantifiableValueStringOptions options)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      public string ToUnitValueString(MassUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(unit.GetUnitString());
+        return sb.ToString();
+      }
+
+      public string ToUnitValueString(MassUnit unit, TextOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options.PreferUnicode, options.UseFullName)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

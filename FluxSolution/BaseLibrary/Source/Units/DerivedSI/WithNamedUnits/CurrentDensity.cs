@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.CurrentDensityUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.CurrentDensityUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.CurrentDensityUnit.AmperePerSquareMeter => "A/m²",
@@ -32,8 +32,7 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-
-      public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(CurrentDensityUnit.AmperePerSquareMeter), MetricMultiplicativePrefix.One);
+      //public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(CurrentDensityUnit.AmperePerSquareMeter), MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
       public static explicit operator double(CurrentDensity v) => v.m_value;
@@ -66,10 +65,10 @@ namespace Flux
       public int CompareTo(CurrentDensity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(CurrentDensityUnit.AmperePerSquareMeter, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(CurrentDensityUnit.AmperePerSquareMeter, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="CurrentDensity.Value"/> property is in <see cref="CurrentDensityUnit.AmperePerSquareMeter"/>.</para>
@@ -84,12 +83,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(CurrentDensityUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(CurrentDensityUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

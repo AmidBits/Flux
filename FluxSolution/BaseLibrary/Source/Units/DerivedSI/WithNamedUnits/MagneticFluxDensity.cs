@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.MagneticFluxDensityUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.MagneticFluxDensityUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.MagneticFluxDensityUnit.Tesla => "T",
@@ -34,9 +34,7 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-
-      public MetricMultiplicative ToMetricMultiplicative()
-        => new(GetUnitValue(MagneticFluxDensityUnit.Tesla), MetricMultiplicativePrefix.One);
+      //public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(MagneticFluxDensityUnit.Tesla), MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
       public static explicit operator double(MagneticFluxDensity v) => v.m_value;
@@ -69,10 +67,10 @@ namespace Flux
       public int CompareTo(MagneticFluxDensity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(MagneticFluxDensityUnit.Tesla, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(MagneticFluxDensityUnit.Tesla, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="MagneticFluxDensity.Value"/> property is in <see cref="MagneticFluxDensityUnit.Tesla"/>.</para>
@@ -87,12 +85,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(MagneticFluxDensityUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(MagneticFluxDensityUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

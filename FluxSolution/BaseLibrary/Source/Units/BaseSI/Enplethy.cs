@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.EnplethyUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.EnplethyUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.EnplethyUnit.Mole => options.PreferUnicode ? "\u33D6" : "mol",
@@ -20,7 +20,7 @@ namespace Flux
     /// <summary>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Amount_of_substance"/>
     public readonly record struct Enplethy
-      : System.IComparable, System.IComparable<Enplethy>, System.IFormattable, IUnitValueQuantifiable<double, EnplethyUnit>
+      : System.IComparable, System.IComparable<Enplethy>, System.IFormattable, IMetricMultiplicable<double>, IUnitValueQuantifiable<double, EnplethyUnit>
     {
       /// <summary>The exact number of elementary entities in one mole.</summary>
       public static readonly double AvagadroNumber = 6.02214076e23;
@@ -71,10 +71,23 @@ namespace Flux
       public int CompareTo(Enplethy other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+
+      //IMetricMultiplicable<>
+      public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
+
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(prefix.GetUnitString(true, false));
+        sb.Append(LengthUnit.Meter.GetUnitString(false, false));
+        return sb.ToString();
+      }
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(EnplethyUnit.Mole, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(EnplethyUnit.Mole, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Enplethy.Value"/> property is in <see cref="EnplethyUnit.Mole"/>.</para>
@@ -89,12 +102,21 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(EnplethyUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(EnplethyUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(unit.GetUnitString());
+        return sb.ToString();
+      }
+
+      public string ToUnitValueString(EnplethyUnit unit, TextOptions options = default)
         => $"{string.Format($"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

@@ -72,8 +72,8 @@ namespace Flux.Geometry
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     public double Longitude { get => m_longitude; init => m_longitude = value; } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
 
-    public double LatitudeInRadians { get => Units.Angle.DegreeToRadian(m_latitude); }
-    public double LongitudeInRadians { get => Units.Angle.DegreeToRadian(m_longitude); }
+    public double LatitudeInRadians { get => Units.Angle.ConvertDegreeToRadian(m_latitude); }
+    public double LongitudeInRadians { get => Units.Angle.ConvertDegreeToRadian(m_longitude); }
 
     /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
     /// <remarks>All angles in radians.</remarks>

@@ -82,7 +82,7 @@ namespace Flux.Geometry
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, arc * maxRandomness);
 
-        var (x, y) = Units.Angle.RotationAngleToCartesian2Ex(angle);
+        var (x, y) = Units.Angle.ConvertRotationAngleToCartesian2Ex(angle);
 
         // Looking to add rotation angle to the struct. ;)
         //var xy = System.Numerics.Vector2.Transform(new System.Numerics.Vector2((float)x, (float)y), new System.Numerics.Quaternion(System.Numerics.Vector3.Zero, (float)System.Math.PI));

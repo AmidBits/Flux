@@ -87,7 +87,7 @@ namespace Flux
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, arc * maxRandomness);
 
-        var (x, y) = Units.Angle.RotationAngleToCartesian2Ex(angle);
+        var (x, y) = Units.Angle.ConvertRotationAngleToCartesian2Ex(angle);
 
         array[index] = new System.Numerics.Vector2((float)x * source.X, (float)y * source.Y);
       }

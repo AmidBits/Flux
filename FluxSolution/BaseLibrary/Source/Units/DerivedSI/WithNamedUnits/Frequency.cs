@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.FrequencyUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.FrequencyUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.FrequencyUnit.Hertz => options.PreferUnicode ? "\u3390" : "Hz",
@@ -142,11 +142,11 @@ namespace Flux
       public int CompareTo(Frequency other) => m_hertz.CompareTo(other.m_hertz);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
 
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(FrequencyUnit.Hertz, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(FrequencyUnit.Hertz, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Frequency.Value"/> property is in <see cref="FrequencyUnit.Hertz"/>.</para>
@@ -166,12 +166,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(FrequencyUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(FrequencyUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PartsPerNotationUnit source, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.PartsPerNotationUnit source, Units.TextOptions options = default)
       => options.UseFullName ? source.ToString() : source switch
       {
         Units.PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
@@ -18,8 +18,8 @@ namespace Flux
       };
 
     /// <summary>Please note that not all units have an equivalent prefix.</summary>
-    public static Units.MetricMultiplicativePrefix ToMetricMultiplicativePrefix(this Units.PartsPerNotationUnit unit)
-      => (Units.MetricMultiplicativePrefix)(int)unit;
+    public static Units.MetricPrefix ToMetricMultiplicativePrefix(this Units.PartsPerNotationUnit unit)
+      => (Units.MetricPrefix)(int)unit;
   }
 
   namespace Units
@@ -109,10 +109,10 @@ namespace Flux
       public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(PartsPerNotationUnit.Percent, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(PartsPerNotationUnit.Percent, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="PartsPerNotation.Value"/> property is in <see cref="PartsPerNotationUnit.Percent"/>.</para>
@@ -135,12 +135,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PartsPerNotationUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(PartsPerNotationUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

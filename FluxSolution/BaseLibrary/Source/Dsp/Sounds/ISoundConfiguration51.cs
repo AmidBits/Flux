@@ -3,9 +3,7 @@
   /// <summary>Audio channel front center, any format.</summary>
   public interface ISoundConfiguration51<TSelf>
     : IAudioChannelBackLeft<TSelf>, IAudioChannelBackRight<TSelf>, IAudioChannelFrontCenter<TSelf>, IAudioChannelFrontLeft<TSelf>, IAudioChannelFrontRight<TSelf>, IAudioChannelLowFrequencyEffect<TSelf>
-#if NET7_0_OR_GREATER
     where TSelf : System.Numerics.INumber<TSelf>
-#endif
   {
   }
 }

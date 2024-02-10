@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Creates a new string formatted as a ratio string, optionally reducing the ratio, if possible.</summary>
-    public static string ToRatioString<TSelf>(this Units.RatioDisplay display, TSelf numerator, TSelf denominator, QuantifiableValueStringOptions options)
+    public static string ToRatioString<TSelf>(this Units.RatioDisplay display, TSelf numerator, TSelf denominator, Units.TextOptions options = default)
 #if NET7_0_OR_GREATER
       where TSelf : System.Numerics.INumber<TSelf>
 #endif

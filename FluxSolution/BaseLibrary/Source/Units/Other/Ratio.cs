@@ -67,7 +67,7 @@ namespace Flux
       #region Implemented interfaces
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => RatioDisplay.AcolonB.ToRatioString(m_numerator, m_denominator, options);
+      public string ToValueString(TextOptions options = default) => RatioDisplay.AcolonB.ToRatioString(m_numerator, m_denominator, options);
 
       /// <summary>
       /// <para>The <see cref="Radio.Value"/> property is the ratio between <see cref="Numerator"/> and <see cref="Denominator"/>, i.e. <see cref="Numerator"/>/<see cref="Denominator"/>.</para>
@@ -76,7 +76,7 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

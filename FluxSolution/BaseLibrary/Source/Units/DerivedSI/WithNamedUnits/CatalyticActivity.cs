@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.CatalyticActivityUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.CatalyticActivityUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.CatalyticActivityUnit.Katal => options.PreferUnicode ? "\u33CF" : "kat",
@@ -63,10 +63,10 @@ namespace Flux
       public int CompareTo(CatalyticActivity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(CatalyticActivityUnit.Katal, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(CatalyticActivityUnit.Katal, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="CatalyticActivity.Value"/> property is in <see cref="CatalyticActivityUnit.Katal"/>.</para>
@@ -81,12 +81,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(CatalyticActivityUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(CatalyticActivityUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

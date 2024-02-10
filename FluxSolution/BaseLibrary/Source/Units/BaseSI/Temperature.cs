@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.TemperatureUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.TemperatureUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.TemperatureUnit.Celsius => options.PreferUnicode ? "\u2103" : "\u00B0C",
@@ -103,10 +103,10 @@ namespace Flux
       public int CompareTo(Temperature other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(TemperatureUnit.Kelvin, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(TemperatureUnit.Kelvin, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Temperature.Value"/> property is in <see cref="TemperatureUnit.Kelvin"/>.</para>
@@ -124,12 +124,21 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(TemperatureUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(TemperatureUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(unit.GetUnitString());
+        return sb.ToString();
+      }
+
+      public string ToUnitValueString(TemperatureUnit unit, TextOptions options)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

@@ -32,7 +32,7 @@ namespace Flux.Dsp.AudioProcessor
     public (double leftWave, double rightWave) ProcessStereoWave(double leftWave, double rightWave)
       => (leftWave * m_cosC - rightWave * m_sinC, leftWave * m_sinC + rightWave * m_cosC);
 
-    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo) => (WaveStereo<double>)ProcessStereoWave(stereo.LeftWave, stereo.RightWave);
+    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo) => (WaveStereo<double>)ProcessStereoWave(stereo.WaveLeft, stereo.WaveRight);
 
     /// <summary>Apply rotatation of the stereo sample across the stereo field.</summary>
     /// <param name="angle">Rotational angle of the stereo samples [-1, 1] across the stereo field, where -1 = -180 degrees (left), 1 = 180 degrees (right) and 0 = no change.</param>

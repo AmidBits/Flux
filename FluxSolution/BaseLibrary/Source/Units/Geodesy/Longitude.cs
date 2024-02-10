@@ -26,8 +26,8 @@ namespace Flux.Units
     public double GetMercatorProjectedX()
       => Angle.GetUnitValue(AngleUnit.Radian);
 
-    public string ToSexagesimalDegreeString(QuantifiableValueStringOptions options, AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false)
-      => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.EastWest, options, -1, useSpaces);
+    public string ToSexagesimalDegreeString(TextOptions options = default, AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false)
+      => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.EastWest, -1, useSpaces, options);
 
     #region Static methods
 
@@ -80,10 +80,10 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Longitude o ? CompareTo(o) : -1;
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
     // IQuantifiable<>
-    public string ToValueString(QuantifiableValueStringOptions options)
+    public string ToValueString(TextOptions options = default)
     {
       if (options.Format is not null)
       {
@@ -107,6 +107,6 @@ namespace Flux.Units
 
     #endregion Implemented interfaces
 
-    public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+    public override string ToString() => ToValueString();
   }
 }

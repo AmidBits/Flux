@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.RelativeHumidityUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.RelativeHumidityUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.RelativeHumidityUnit.Percent => options.PreferUnicode ? "\u0025" : "\u0025",
@@ -63,10 +63,10 @@ namespace Flux
       public int CompareTo(RelativeHumidity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(RelativeHumidityUnit.Percent, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(RelativeHumidityUnit.Percent, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="RelativeHumidity.Value"/> property is in <see cref="RelativeHumidityUnit.Percent"/>.</para>
@@ -81,12 +81,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(RelativeHumidityUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(RelativeHumidityUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

@@ -34,7 +34,7 @@ namespace Flux.Dsp.AudioProcessor
     public (double left, double right) ProcessStereoWave(double left, double right)
       => (left * m_peakL, right * m_peakR);
 
-    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo) => (WaveStereo<double>)ProcessStereoWave(stereo.LeftWave, stereo.RightWave);
+    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo) => (WaveStereo<double>)ProcessStereoWave(stereo.WaveLeft, stereo.WaveRight);
 
     /// <summary>Apply balance across the stereo field.</summary>
     /// <param name="position">Balance position in the range [-1, 1], where -1 = more left, 1 means more right and 0 means no change.</param>

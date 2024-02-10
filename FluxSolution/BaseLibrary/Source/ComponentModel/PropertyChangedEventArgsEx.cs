@@ -6,10 +6,6 @@ namespace Flux
   {
     public object? Sender { get; private set; }
 
-    public PropertyChangedEventArgsEx(string? propertyName, object? sender)
-      : base(propertyName)
-    {
-      Sender = sender;
-    }
+    public PropertyChangedEventArgsEx(string? propertyName, object? sender) : base(propertyName) => Sender = sender;
   }
 }

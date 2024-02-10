@@ -4,19 +4,14 @@
   {
     /// <summary>Mono wave, range [-1, +1].</summary>
     public readonly record struct WaveMono<TSelf>
-    : IWaveMono<TSelf>
-#if NET7_0_OR_GREATER
-    where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-#endif
+      : IWaveMono<TSelf>
+      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
     {
-      public readonly static IWaveMono<TSelf> Zero = new WaveMono<TSelf>();
+      public readonly static IWaveMono<TSelf> Silence = new WaveMono<TSelf>();
 
       private readonly TSelf m_wave;
 
-      public WaveMono(TSelf value)
-      {
-        m_wave = value;
-      }
+      public WaveMono(TSelf value) => m_wave = value;
 
       public TSelf Wave { get => m_wave; init => m_wave = value; }
 

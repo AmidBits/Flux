@@ -10,15 +10,12 @@ namespace Flux
   {
     private readonly string m_dependencyMemberName;
 
-    public DependsOnAttribute(string dependencyMemberName)
-      => m_dependencyMemberName = dependencyMemberName;
+    public DependsOnAttribute(string dependencyMemberName) => m_dependencyMemberName = dependencyMemberName;
 
-    
-    public string DependencyMemberName
-      => m_dependencyMemberName;
+    public string DependencyMemberName => m_dependencyMemberName;
 
     /// <summary>Reverse dependency names based on the DependsOn attribute.</summary>
-    
+
     public static System.Collections.Generic.IDictionary<string, string[]> MapDependencies(System.Collections.Generic.IEnumerable<System.Reflection.MemberInfo> source)
     {
       // mapping = Dictionary<memberName, dependencyMemberNames[]> (one-to-many)

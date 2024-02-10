@@ -5,27 +5,25 @@
     /// <summary>Stereo (left and right) wave, range [-1, +1].</summary>
     public readonly record struct WaveStereo<TSelf>
       : IWaveStereo<TSelf>
-#if NET7_0_OR_GREATER
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
-#endif
     {
-      public readonly static IWaveStereo<TSelf> Zero = new WaveStereo<TSelf>();
+      public readonly static IWaveStereo<TSelf> Silence = new WaveStereo<TSelf>();
 
-      private readonly TSelf m_leftWave;
-      private readonly TSelf m_rightWave;
+      private readonly TSelf m_waveLeft;
+      private readonly TSelf m_waveRight;
 
-      public WaveStereo(TSelf leftWave, TSelf rightWave)
+      public WaveStereo(TSelf waveLeft, TSelf waveRight)
       {
-        m_leftWave = leftWave;
-        m_rightWave = rightWave;
+        m_waveLeft = waveLeft;
+        m_waveRight = waveRight;
       }
 
-      public TSelf LeftWave { get => m_leftWave; init => m_leftWave = value; }
-      public TSelf RightWave { get => m_rightWave; init => m_rightWave = value; }
+      public TSelf WaveLeft { get => m_waveLeft; init => m_waveLeft = value; }
+      public TSelf WaveRight { get => m_waveRight; init => m_waveRight = value; }
 
       #region Overloaded operators
 
-      public static explicit operator (TSelf, TSelf)(WaveStereo<TSelf> stereo) => (stereo.LeftWave, stereo.RightWave);
+      public static explicit operator (TSelf, TSelf)(WaveStereo<TSelf> stereo) => (stereo.WaveLeft, stereo.WaveRight);
       public static explicit operator WaveStereo<TSelf>((TSelf leftWave, TSelf rightWave) stereo) => new(stereo.leftWave, stereo.rightWave);
 
       #endregion Overloaded operators  

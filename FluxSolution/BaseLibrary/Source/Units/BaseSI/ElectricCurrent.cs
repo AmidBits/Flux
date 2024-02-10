@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.ElectricCurrentUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.ElectricCurrentUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.ElectricCurrentUnit.Ampere => "A",
@@ -23,7 +23,7 @@ namespace Flux
     /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Electric_current"/>
     public readonly record struct ElectricCurrent
-      : System.IComparable, System.IComparable<ElectricCurrent>, System.IFormattable, IUnitValueQuantifiable<double, ElectricCurrentUnit>
+      : System.IComparable, System.IComparable<ElectricCurrent>, System.IFormattable, IMetricMultiplicable<double>, IUnitValueQuantifiable<double, ElectricCurrentUnit>
     {
       private readonly double m_value;
 
@@ -77,10 +77,23 @@ namespace Flux
       public int CompareTo(ElectricCurrent other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+
+      //IMetricMultiplicable<>
+      public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
+
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(prefix.GetUnitString(true, false));
+        sb.Append(LengthUnit.Meter.GetUnitString(false, false));
+        return sb.ToString();
+      }
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(ElectricCurrentUnit.Ampere, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(ElectricCurrentUnit.Ampere, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="ElectricCurrent.Value"/> property is in <see cref="ElectricCurrentUnit.Ampere"/>.</para>
@@ -96,12 +109,21 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ElectricCurrentUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(ElectricCurrentUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(unit.GetUnitString());
+        return sb.ToString();
+      }
+
+      public string ToUnitValueString(ElectricCurrentUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

@@ -5,19 +5,21 @@ namespace Flux
     : System.Collections.ObjectModel.ObservableCollection<T>
     where T : System.ComponentModel.INotifyPropertyChanged
   {
-    private bool _suppressOnCollectionChanged;
+    private bool m_suppressOnCollectionChanged;
+
+    public bool SuppressOnCollectionChanged => m_suppressOnCollectionChanged;
 
     /// <summary>AddItems (with suppressed OnCollectionChanged while adding)</summary>
     public void AddItems(System.Collections.Generic.IEnumerable<T> items)
     {
       System.ArgumentNullException.ThrowIfNull(items);
 
-      _suppressOnCollectionChanged = true;
+      m_suppressOnCollectionChanged = true;
 
       foreach (T item in items)
         Add(item);
 
-      _suppressOnCollectionChanged = false;
+      m_suppressOnCollectionChanged = false;
 
       OnCollectionChanged(new System.Collections.Specialized.NotifyCollectionChangedEventArgs(System.Collections.Specialized.NotifyCollectionChangedAction.Reset));
     }
@@ -44,14 +46,11 @@ namespace Flux
         foreach (T item in System.Linq.Enumerable.Cast<T>(e.NewItems))
           item.PropertyChanged += OnItemPropertyChanged;
 
-      if (!_suppressOnCollectionChanged)
+      if (!m_suppressOnCollectionChanged)
         base.OnCollectionChanged(e);
     }
 
     /// <summary>Event handler hooked to all items PropertyChanged.</summary>
-    private void OnItemPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-      OnPropertyChanged(new PropertyChangedEventArgsEx(e.PropertyName, sender));
-    }
+    private void OnItemPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) => OnPropertyChanged(new PropertyChangedEventArgsEx(e.PropertyName, sender));
   }
 }

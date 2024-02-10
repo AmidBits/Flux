@@ -606,7 +606,7 @@ namespace Flux
 
       #endregion Overloaded operators
 
-      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider) => ToValueString(QuantifiableValueStringOptions.Default);
+      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider) => ToValueString(TextOptions.Default);
 
       #region Implemented interfaces
 
@@ -815,10 +815,10 @@ namespace Flux
       //#endregion IConvertible
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options)
+      public string ToValueString(TextOptions options = default)
         => IsProper
         ? RatioDisplay.AslashB.ToRatioString(m_numerator, m_denominator, options)
         : TryGetMixedParts(this, out var wholeNumber, out var properNumerator, out var properDenominator)
@@ -829,7 +829,7 @@ namespace Flux
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

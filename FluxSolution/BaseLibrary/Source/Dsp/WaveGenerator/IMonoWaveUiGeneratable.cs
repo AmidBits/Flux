@@ -11,9 +11,9 @@ namespace Flux.Dsp
     IWaveMono<double> GenerateMonoWaveUi(double phaseUi);
 
     /// <summary>Returns the absolute phase (negative phase align correctly on positive side) normalized to unit interval [0, 1).</summary>
-    public static double AbsolutePhaseUi(double phaseMu)
-      => phaseMu < 0
-      ? (phaseMu % 1) + 1 // Align phased correctly on positive side.
-      : phaseMu % 1;
+    public static double AbsolutePhaseUi(double phaseUi)
+      => phaseUi < 0
+      ? (phaseUi % 1) + 1 // Align phased correctly on positive side.
+      : phaseUi % 1;
   }
 }

@@ -10,16 +10,13 @@ namespace Flux
     /// <summary>Enforced by INotifyPropertyChanged.</summary>
     public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
 
-    public virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string name = null!)
-      => OnPropertiesChanged(name);
+    public virtual void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string name = null!) => OnPropertiesChanged(name);
 
     /// <summary>Raise the PropertyChanged event chain for the property name.</summary>
     public virtual void OnPropertiesChanged(params string[] names)
     {
       foreach (var name in names)
-      {
         PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(name));
-      }
     }
   }
 

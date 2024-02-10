@@ -2,15 +2,15 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.TimeUnit unit, QuantifiableValueStringOptions options)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.TimeUnit unit, bool preferUnicode = true, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         Units.TimeUnit.Second => "s",
-        Units.TimeUnit.Picosecond => options.PreferUnicode ? "\u33B0" : "ps",
-        Units.TimeUnit.Nanosecond => options.PreferUnicode ? "\u33B1" : "ns",
+        Units.TimeUnit.Picosecond => preferUnicode ? "\u33B0" : "ps",
+        Units.TimeUnit.Nanosecond => preferUnicode ? "\u33B1" : "ns",
         Units.TimeUnit.Ticks => "ticks",
-        Units.TimeUnit.Microsecond => options.PreferUnicode ? "\u33B2" : "\u00B5s",
-        Units.TimeUnit.Millisecond => options.PreferUnicode ? "\u33B3" : "ms",
+        Units.TimeUnit.Microsecond => preferUnicode ? "\u33B2" : "\u00B5s",
+        Units.TimeUnit.Millisecond => preferUnicode ? "\u33B3" : "ms",
         Units.TimeUnit.Minute => "min",
         Units.TimeUnit.Hour => "h",
         Units.TimeUnit.Day => "d",
@@ -45,7 +45,7 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Time"/></para>
     /// </summary>
     public readonly record struct Time
-      : System.IComparable, System.IComparable<Time>, System.IFormattable, IUnitValueQuantifiable<double, TimeUnit>
+      : System.IComparable, System.IComparable<Time>, System.IFormattable, IMetricMultiplicable<double>, IUnitValueQuantifiable<double, TimeUnit>
     {
       ///// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
       //public static readonly Time Flick = new(1.0 / 705600000.0);
@@ -119,12 +119,25 @@ namespace Flux
       public int CompareTo(Time other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+
+      //IMetricMultiplicable<>
+      public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
+
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(prefix.GetUnitString(true, false));
+        sb.Append(TimeUnit.Second.GetUnitString(false, false));
+        return sb.ToString();
+      }
 
       // IQuantifiable<>
       //public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
       //  => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(TimeUnit.Second, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(TimeUnit.Second, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Time.Value"/> property is in <see cref="TimeUnit.Second"/>.</para>
@@ -149,14 +162,21 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      //public string ToUnitValueString(TimeUnit unit, string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-      //  => $"{string.Format(culture, $"{{0{(format is null ? string.Empty : $":{format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(preferUnicode, useFullName)}";
-      public string ToUnitValueString(TimeUnit unit, QuantifiableValueStringOptions options)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      public string ToUnitValueString(TimeUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        sb.Append(spacing.ToChar());
+        sb.Append(unit.GetUnitString());
+        return sb.ToString();
+      }
+
+      public string ToUnitValueString(TimeUnit unit, TextOptions options = default)
+        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options.PreferUnicode, options.UseFullName)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }

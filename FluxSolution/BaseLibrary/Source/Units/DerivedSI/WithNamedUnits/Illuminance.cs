@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.IlluminanceUnit unit, QuantifiableValueStringOptions options)
+    public static string GetUnitString(this Units.IlluminanceUnit unit, Units.TextOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.IlluminanceUnit.Lux => options.PreferUnicode ? "\u33D3" : "lx",
@@ -32,9 +32,7 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-
-      public MetricMultiplicative ToMetricMultiplicative()
-        => new(m_value, MetricMultiplicativePrefix.One);
+      //public MetricMultiplicative ToMetricMultiplicative() => new(m_value, MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
       public static explicit operator double(Illuminance v) => v.m_value;
@@ -67,10 +65,10 @@ namespace Flux
       public int CompareTo(Illuminance other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(QuantifiableValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(QuantifiableValueStringOptions options) => ToUnitValueString(IlluminanceUnit.Lux, options);
+      public string ToValueString(TextOptions options = default) => ToUnitValueString(IlluminanceUnit.Lux, options);
 
       /// <summary>
       /// <para>The unit of the <see cref="Illuminance.Value"/> property is in <see cref="IlluminanceUnit.Lux"/>.</para>
@@ -85,12 +83,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(IlluminanceUnit unit, QuantifiableValueStringOptions options)
+      public string ToUnitValueString(IlluminanceUnit unit, TextOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
 
-      public override string ToString() => ToValueString(QuantifiableValueStringOptions.Default);
+      public override string ToString() => ToValueString();
     }
   }
 }
