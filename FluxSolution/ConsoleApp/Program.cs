@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Numerics;
+using System.Reflection;
 using System.Runtime.Intrinsics;
 using Flux;
 
@@ -34,14 +35,48 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var btg = (0b1011).BinaryToGray();
+      var gtb = btg.GrayToBinary();
+
+      var imvs = int.MinValue.ToBinaryString(32);
+      var bix = (7).GetBitLength();
+
+      var fm = (0x7D).BitMaskFill(7);
+      var fms = fm.ToBinaryString(32);
+      var b0 = fm.GetBitIndex(0);
+      var b1 = fm.GetBitIndex(1);
+      var b31 = fm.ClearLeastSignificant1Bit();
+
+      var cbs = (-1).BitMaskClear(2.BitMaskRight());
+      var cbsb = cbs.SetBitIndex(3);
+      var fbs = (6U).BitMaskFlip(2U.BitMaskRight());
+      var sbs = (6U).BitMaskSet(2U.BitMaskRight());
+
+      var bi = 5.ToBigInteger();
+      var cx = new System.Numerics.Complex(1, 1);
+      //"10110110110110110110110110100000"
+      var types = System.AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.DefinedTypes).Append(typeof(System.Version));
+
+      var ind = 0;
+      foreach (var type in typeof(System.Numerics.INumberBase<>).GetDerivedTypes(types).Where(t => !t.IsInterface).OrderBy(t => new System.Text.StringBuilder(t.Name).MakeNumbersFixedLength(3).ToString()))
+        System.Console.WriteLine($"{++ind:D2} {type.Name} {type.CreateInstance().IsSignedNumber2()}");
+      return;
+
       var seq = new int[] { 5, 3, 3, 3, 3, 3 };
+
+      System.Random.Shared.Shuffle(seq);
 
       var cs = seq.CompareSequence();
 
       var t = new Flux.Units.Time(1500, Flux.Units.TimeUnit.Second);
       var tm = t.ToMetricValueString(Flux.Units.MetricPrefix.Kilo);
 
-      var target = Flux.Units.MetricPrefix.Deca.FindLargestPrefixAndValue(200);
+      var sp = Flux.Units.MetricPrefix.Deca;
+      var sv = 200;
+
+      var (tv, tp) = Flux.Units.MetricPrefix.Deca.FindInfimum(200);
+
+      System.Console.WriteLine($"{sp}: {sv} = {tp}: {tv}");
 
       //var found = Flux.Units.MetricMultiplicativePrefix.Kilo.FindMetricMultiplicativePrefix(1, out var value);
       //var newly = found.Convert(value, Flux.Units.MetricMultiplicativePrefix.Kilo);

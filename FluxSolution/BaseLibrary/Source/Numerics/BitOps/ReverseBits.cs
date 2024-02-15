@@ -1,13 +1,11 @@
 namespace Flux
 {
-  public static partial class Bits
+  public static partial class BitOps
   {
-#if NET7_0_OR_GREATER
-
     /// <summary>
     /// <para>Reverses the bits of an integer. The LSBs (least significant bits) becomes the MSBs (most significant bits) and vice versa, i.e. the bits are mirrored across the integer storage space. It's a reversal of all storage bits.</para>
-    /// See <see cref="ReverseBytes{TSelf}(TSelf)"/> for byte reversal.
     /// </summary>
+    /// <remarks>See <see cref="ReverseBytes{TSelf}(TSelf)"/> for byte reversal.</remarks>
     public static TSelf ReverseBits<TSelf>(this TSelf integer)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
@@ -21,66 +19,22 @@ namespace Flux
       return TSelf.ReadLittleEndian(bytes, !integer.IsSigned()); // Read as LittleEndian (low-to-high).
     }
 
-#else
-    // https://stackoverflow.com/questions/33910399/reverse-the-order-of-bits-in-a-bit-array
-    // http://aggregate.org/MAGIC/
-    // http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetKernighan
-
-    private static System.Collections.Generic.IReadOnlyList<byte>? m_byteReverseBits;
-    public static System.Collections.Generic.IReadOnlyList<byte> ByteReverseBits
-      => m_byteReverseBits ??= System.Linq.Enumerable.ToList(System.Linq.Enumerable.Select(System.Linq.Enumerable.Range(0, 256), n => (byte)(ReverseBits(n) >> 24)));
-
-    /// <summary>Computes the reverse bit mask of a value.</summary>
-    public static System.Numerics.BigInteger ReverseBits(this System.Numerics.BigInteger value)
-    {
-      if (value >= 0 && value <= 255)
-        return ByteReverseBits[(int)value];
-
-      var sourceArray = value.ToByteArrayEx(out var sourceIndex, out var _);
-
-      var targetBytes = new byte[sourceIndex + 1];
-      var targetIndex = 0;
-
-      while (sourceIndex >= 0)
-        targetBytes[targetIndex++] = ByteReverseBits[sourceArray[sourceIndex--]];
-
-      return new System.Numerics.BigInteger(targetBytes);
-    }
-
-    /// <summary>Computes the reverse bit mask of a value.</summary>
-    public static int ReverseBits(this int value)
-    {
-      var v = (uint)value;
-
-      ReverseBits(ref v);
-
-      return unchecked((int)v);
-    }
-
-    /// <summary>Computes the reverse bit mask of a value.</summary>
-    public static long ReverseBits(this long value)
-    {
-      var v = (ulong)value;
-
-      ReverseBits(ref v);
-
-      return unchecked((long)v);
-    }
-
-#endif
-
     //[System.CLSCompliant(false)]
     //public static void ReverseBits(ref this sbyte value) => value = unchecked((sbyte)BitSwap32(BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1((byte)value)))))));
     //public static void ReverseBits(ref this short value) => value = unchecked((short)BitSwap32(BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1((ushort)value)))))));
     //public static void ReverseBits(ref this int value) => value = unchecked((int)BitSwap32(BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1((uint)value)))))));
     //public static void ReverseBits(ref this long value) => value = unchecked((long)BitSwap32(BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1((ulong)value)))))));
 
-    /// <summary>In-place (by ref) mirror the bits (bit-reversal) of a byte, i.e. trade place of bit 7 with bit 0 and bit 6 with bit 1 and so on.</summary>
+    /// <summary>
+    /// <para>In-place (by ref) mirror the bits (bit-reversal) of a byte, i.e. trade place of bit 7 with bit 0 and bit 6 with bit 1 and so on.</para>
     /// <see href="http://www.inwap.com/pdp10/hbaker/hakmem/hakmem.html"/>
+    /// </summary>
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static void ReverseBits(ref this byte value) => value = (byte)(((value * 0x0202020202UL) & 0x010884422010UL) % 1023);
 
-    /// <summary>In-place (by ref) mirror the bits (bit-reversal) of a ushort, i.e. trade place of bit 15 with bit 0 and bit 14 with bit 1 and so on.</summary>
+    /// <summary>
+    /// <para>In-place (by ref) mirror the bits (bit-reversal) of a ushort, i.e. trade place of bit 15 with bit 0 and bit 14 with bit 1 and so on.</para>
+    /// </summary>
     [System.CLSCompliant(false)]
     public static void ReverseBits(ref this ushort value) => value = (ushort)BitSwap8(BitSwap4(BitSwap2(BitSwap1(value))));
     //{
@@ -90,7 +44,9 @@ namespace Flux
     //  value = ((value & 0xff00) >> 0x08) | ((value & 0x00ff) << 0x08);
     //}
 
-    /// <summary>In-place (by ref) mirror the bits (bit-reversal) of a uint, i.e. trade place of bit 31 with bit 0 and bit 30 with bit 1 and so on.</summary>
+    /// <summary>
+    /// <para>In-place (by ref) mirror the bits (bit-reversal) of a uint, i.e. trade place of bit 31 with bit 0 and bit 30 with bit 1 and so on.</para>
+    /// </summary>
     [System.CLSCompliant(false)]
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static void ReverseBits(ref this uint value) => value = (uint)BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1(value)))));
@@ -112,7 +68,9 @@ namespace Flux
     //  value = ((value & 0xffff0000) >> 0x10) | ((value & 0x0000ffff) << 0x10);
     //}
 
-    /// <summary>In-place (by ref) mirror the bits (bit-reversal) of a ulong, i.e. trade place of bit 63 with bit 0 and bit 62 with bit 1 and so on.</summary>
+    /// <summary>
+    /// <para>In-place (by ref) mirror the bits (bit-reversal) of a ulong, i.e. trade place of bit 63 with bit 0 and bit 62 with bit 1 and so on.</para>
+    /// </summary>
     [System.CLSCompliant(false)]
     [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static void ReverseBits(ref this ulong value) => value = BitSwap32(BitSwap16(BitSwap8(BitSwap4(BitSwap2(BitSwap1(value))))));

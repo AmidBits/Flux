@@ -1,5 +1,8 @@
 ﻿namespace Flux
 {
+  /// <summary>
+  /// <para>The bit struct is available to access the bits of primitive types.</para>
+  /// </summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Explicit)]
   public record struct BitStruct
   {

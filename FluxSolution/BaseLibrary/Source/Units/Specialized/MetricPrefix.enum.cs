@@ -2,9 +2,22 @@ namespace Flux
 {
   public static partial class Em
   {
+    /// <summary>
+    /// <para>Convert <paramref name="value"/> from <paramref name="source"/> prefix to <paramref name="target"/> prefix.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="value"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
     public static double Convert(this Units.MetricPrefix source, double value, Units.MetricPrefix target) => value * System.Math.Pow(10, (int)source - (int)target);
 
-    public static (double TargetValue, Units.MetricPrefix TargetPrefix) FindLargestPrefixAndValue(this Units.MetricPrefix source, double value)
+    /// <summary>
+    /// <para>Find the infimum (the largest that is less than) prefix and value from <paramref name="source"/> prefix and <paramref name="value"/>.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static (double TargetValue, Units.MetricPrefix TargetPrefix) FindInfimum(this Units.MetricPrefix source, double value)
     {
       var targetDigits = Units.Radix.DigitCount(new System.Numerics.BigInteger(System.Math.Truncate(value)), 10) + (int)source - 1;
 

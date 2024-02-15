@@ -165,6 +165,22 @@ namespace Flux
         return list;
       }
 
+      /// <summary>
+      /// <para>Computes the max number of digits that can be represented by the <paramref name="bitLength"/> (number of bits) in <paramref name="radix"/> (number base) and whether it <paramref name="isSigned"/>.</para>
+      /// <code>var maxDigitCount = Flux.Bits.GetMaxDigitCount(10, 10, false); // Yields 4, because with 10 bits, a radix of 10 (the decimal system) and unsigned, a max value of 1023 can be represented (all bits can be used, because it is an unsigned value).</code>
+      /// <code>var maxDigitCount = Flux.Bits.GetMaxDigitCount(10, 10, true); // Yields 3, because with 10 bits, a radix of 10 (the decimal system) and signed, a max value of 511 can be represented (excluding the MSB used for negative values of signed types).</code>
+      /// </summary>
+      public static int GetMaxDigitCount<TSelf>(TSelf bitLength, TSelf radix, bool isSigned)
+        where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      {
+        var foldedRight = (TSelf.One << int.CreateChecked(bitLength)) - TSelf.One;
+
+        if (isSigned)
+          foldedRight >>= 1; // Shift to properly represent a most-significant-bit used for negative values.
+
+        return int.CreateChecked(Units.Radix.IntegerLogFloor(foldedRight, radix) + TSelf.One);
+      }
+
       /// <summary>Returns the digit place value components of <paramref name="number"/> using base <paramref name="radix"/>. E.g. 1234 return [4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands)].</summary>
       public static System.Collections.Generic.List<TSelf> GetPlaceValues<TSelf>(TSelf number, TSelf radix)
         where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -369,7 +385,7 @@ namespace Flux
         }
 
         if (radix == (TSelf.One + TSelf.One))
-          return Bits.PowOf2(value, proper);
+          return BitOps.PowOf2(value, proper);
 
         powOfTowardsZero = Maths.IntegerPow(radix, TSelf.CreateChecked(IntegerLogFloor(value, radix)));
         powOfAwayFromZero = powOfTowardsZero != value ? powOfTowardsZero * radix : powOfTowardsZero; // If toward-zero is not equal to value, make away-from-zero the next power-of.

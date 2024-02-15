@@ -2,7 +2,10 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Determines whether the <paramref name="source"/> is a subtype of <paramref name="supertype"/>. Similar functionality as IsSubclassOf but can also handle generics. IsSupertypeOf can be performed by switching the two arguments.</summary>
+    /// <summary>
+    /// <para>Determines whether the <paramref name="source"/> is a subtype of <paramref name="supertype"/>.</para>
+    /// </summary>
+    /// <remarks>Similar functionality as the built-in <see cref="System.Type.IsSubclassOf(Type)"/> but can also handle generics. This is also the same as switching the two arguments for <see cref="IsSupertypeOf(Type, Type)"/>.</remarks>
     public static bool IsSubtypeOf(this System.Type source, System.Type supertype)
     {
       if (source is null || supertype is null || source.Equals(supertype))
@@ -21,7 +24,7 @@ namespace Flux
           return true;
       }
 
-      var sourceInherited = GetInheritance(source);
+      var sourceInherited = GetInheritedBaseTypes(source);
 
       for (var index = sourceInherited.Count - 1; index >= 0; index--)
       {
@@ -37,7 +40,10 @@ namespace Flux
       return false;
     }
 
-    /// <summary>Determines whether the <paramref name="source"/> is a supertype of <paramref name="subtype"/>. Basically switching the two arguments for IsSubtypeOf.</summary>
+    /// <summary>
+    /// <para>Determines whether the <paramref name="source"/> is a supertype of <paramref name="subtype"/>.</para>
+    /// </summary>
+    /// <remarks>This is (literally) the same as switching the two arguments for <see cref="IsSubtypeOf(Type, Type)"/>.</remarks>
     public static bool IsSupertypeOf(this System.Type source, System.Type subtype)
       => subtype.IsSubtypeOf(source);
   }

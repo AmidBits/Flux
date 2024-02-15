@@ -29,8 +29,8 @@ namespace Numerics
     [TestMethod]
     public void GetShortestBitLength()
     {
-      Assert.AreEqual(7, 88.GetShortestBitLength());
-      Assert.AreEqual(8, (-88).GetShortestBitLength());
+      Assert.AreEqual(7, 88.GetBitLength());
+      Assert.AreEqual(8, (-88).GetBitLength());
     }
 
     [TestMethod]
@@ -117,7 +117,7 @@ namespace Numerics
     [TestMethod]
     public void StripLeastSignificant1Bit()
     {
-      Assert.AreEqual(80, 88.StripLeastSignificant1Bit());
+      Assert.AreEqual(80, 88.ClearLeastSignificant1Bit());
     }
 
     [TestMethod]
@@ -147,8 +147,8 @@ namespace Numerics
     [TestMethod]
     public void GetMaxDigitCount()
     {
-      Assert.AreEqual(4, Flux.Bits.GetMaxDigitCount(10, 10, false));
-      Assert.AreEqual(3, Flux.Bits.GetMaxDigitCount(10, 10, true));
+      Assert.AreEqual(4, Flux.Units.Radix.GetMaxDigitCount(10, 10, false));
+      Assert.AreEqual(3, Flux.Units.Radix.GetMaxDigitCount(10, 10, true));
     }
 
     [TestMethod]
@@ -162,8 +162,8 @@ namespace Numerics
     {
       // Somehow BigInteger must differ between .NET version 6 and 7. 
 
-      Assert.AreEqual(0x00010000, Flux.Bits.ReverseBits(0x00008000.ToBigInteger())); // This works on .NET 7, but not on .NET 6.
-      Assert.AreEqual(0x10000000, Flux.Bits.ReverseBits(0x00000008.ToBigInteger())); // This works on .NET 6, but not on .NET 7.
+      Assert.AreEqual(0x00010000, Flux.BitOps.ReverseBits(0x00008000.ToBigInteger())); // This works on .NET 7, but not on .NET 6.
+      Assert.AreEqual(0x10000000, Flux.BitOps.ReverseBits(0x00000008.ToBigInteger())); // This works on .NET 6, but not on .NET 7.
 
       Assert.AreEqual(unchecked((int)0xFFFFFFFE).ToBigInteger(), 0x7FFFFFFF.ToBigInteger().ReverseBits());
     }
@@ -171,7 +171,7 @@ namespace Numerics
     [TestMethod]
     public void ReverseBytes()
     {
-      Assert.AreEqual(0x00010000, Flux.Bits.ReverseBytes(0x00000100));
+      Assert.AreEqual(0x00010000, Flux.BitOps.ReverseBytes(0x00000100));
     }
 
     //public static void Test()

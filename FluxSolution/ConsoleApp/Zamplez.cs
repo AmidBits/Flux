@@ -125,10 +125,10 @@ namespace ConsoleApp
         var amb = new Flux.AmbOps.Amb();
 
         #region Flow & Measurements
-        m_ap.AsSpan().Shuffle(rng);
-        m_rn.AsSpan().Shuffle(rng);
-        m_en.AsSpan().Shuffle(rng);
-        m_on.AsSpan().Shuffle(rng);
+        rng.Shuffle(m_ap);
+        rng.Shuffle(m_rn);
+        rng.Shuffle(m_en);
+        rng.Shuffle(m_on);
 
         //var l = a.Length + b.Length + c.Length + d.Length;
         //System.Console.WriteLine($"Length: {l}");
@@ -330,7 +330,7 @@ namespace ConsoleApp
       System.Console.WriteLine($"  Bit-Fold Right = {bfr}");
       var bfrs = bfr.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfrs}");
-      var bl = n.GetShortestBitLength();
+      //var bsbl = n.GetShortestBitLength();
       var bln = n.GetBitLength();
       //var l2 = bi.IntegerLog2();
       var ms1b = n.MostSignificant1Bit();

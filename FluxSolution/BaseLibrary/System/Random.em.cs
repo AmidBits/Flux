@@ -110,7 +110,7 @@ namespace Flux
 
       if (minValue >= maxValue) throw new System.ArgumentOutOfRangeException(nameof(minValue));
 
-      return new(minValue.Ticks + source.NextInt64(maxValue.Ticks - minValue.Ticks));
+      return new(source.NextInt64(minValue.Ticks, maxValue.Ticks));
     }
 
     /// <summary>Returns a non-negative random double in the interval [0, <paramref name="maxValue"/>).</summary>
@@ -267,7 +267,7 @@ namespace Flux
 
       if (minValue.Ticks >= maxValue.Ticks) throw new System.ArgumentOutOfRangeException(nameof(minValue));
 
-      return new(minValue.Ticks + source.NextInt64(maxValue.Ticks - minValue.Ticks));
+      return new(source.NextInt64(minValue.Ticks, maxValue.Ticks));
     }
 
     /// <summary>Returns a random System.UInt32 in the interval [0, <see cref="System.UInt32.MaxValue"/>), but will never return <see cref="System.UInt32.MaxValue"/>.</summary>
