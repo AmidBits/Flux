@@ -29,8 +29,8 @@ namespace Flux
     /// <summary>The equatorial circumference of Earth is simply the circle perimeter.</summary>
     public double EquatorialCircumference => EquatorialRadius * System.Math.Tau;
 
-    /// <summary>Diameter of Earth's semi-major axis.</summary>
-    public double EquatorialDiameter => EquatorialRadius * 2;
+    ///// <summary>Diameter of Earth's semi-major axis.</summary>
+    //public double EquatorialDiameter => EquatorialRadius * 2;
 
     /// <summary>Radius Earth's semi-major axis.</summary>
     public double EquatorialRadius => m_ellipseGeometry.A;
@@ -41,8 +41,8 @@ namespace Flux
     /// <summary>The polar circumference equals Cp=4mp, i.e. four times the quarter meridian.</summary>
     public double PolarCircumference => m_ellipseGeometry.Circumference;
 
-    /// <summary>Diameter of Earth's semi-minor axis.</summary>
-    public double PolarDiameter => PolarRadius * 2;
+    ///// <summary>Diameter of Earth's semi-minor axis.</summary>
+    //public double PolarDiameter => PolarRadius * 2;
 
     /// <summary>Radius of Earth's semi-minor axis.</summary>
     public double PolarRadius => m_ellipseGeometry.B;

@@ -5,7 +5,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Creates a new <see cref="Geometry.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
-    public static Geometry.ICylindricalCoordinate<double> ToCylindricalCoordinate(this System.Numerics.Vector3 source)
+    public static Geometry.CylindricalCoordinate ToCylindricalCoordinate(this System.Numerics.Vector3 source)
       => new Geometry.CylindricalCoordinate(
         System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
         (System.Math.Atan2(source.Y, source.X) + System.Math.Tau) % System.Math.Tau,
@@ -24,7 +24,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct CylindricalCoordinate
-      : System.IFormattable, ICylindricalCoordinate<double>
+      : System.IFormattable//, ICylindricalCoordinate<double>
     {
       public static readonly CylindricalCoordinate Zero;
 
@@ -59,8 +59,17 @@ namespace Flux
         : this(new Units.Length(radiusValue, radiusUnit), new Units.Azimuth(azimuthValue, azimuthUnit), new Units.Length(heightValue, heightUnit))
       { }
 
+      /// <summary>
+      /// <para>Radius, (length) unit of meter. A.k.a. radial distance, or axial distance.</para>
+      /// </summary>
       public double Radius { get => m_radius; init => m_radius = value; }
+      /// <summary>
+      /// <para>Azimuth angle, unit of radian. A.k.a. angular position.</para>
+      /// </summary>
       public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
+      /// <summary>
+      /// <para>Height, (length) unit of meter. A.k.a. altitude (if the reference plane is considered horizontal), longitudinal position, axial position, or axial coordinate.</para>
+      /// </summary>
       public double Height { get => m_height; init => m_height = value; }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>

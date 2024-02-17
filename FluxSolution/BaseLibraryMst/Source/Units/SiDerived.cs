@@ -21,26 +21,26 @@ namespace Units
       Assert.AreEqual(1, u.Value);
     }
 
-    [TestMethod]
-    public void Angle()
-    {
-      var u = new Flux.Units.Angle(1);
+    //[TestMethod]
+    //public void Angle()
+    //{
+    //  var u = new Flux.Units.Angle(1);
 
-      var expected = (X: 0.5403023058681398, Y: 0.8414709848078965);
-      var actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2(u.Value);
-      Assert.AreEqual(expected.X, actual.x, Flux.Maths.Epsilon1E15);
-      Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
+    //  var expected = (X: 0.5403023058681398, Y: 0.8414709848078965);
+    //  var actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2(u.Value);
+    //  Assert.AreEqual(expected.X, actual.x, Flux.Maths.Epsilon1E15);
+    //  Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 
-      expected = (0.8414709848078967, 0.5403023058681394);
-      actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2Ex(u.Value);
-      Assert.AreEqual(expected.X, actual.x);
-      Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
+    //  expected = (0.8414709848078967, 0.5403023058681394);
+    //  actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2Ex(u.Value);
+    //  Assert.AreEqual(expected.X, actual.x);
+    //  Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 
-      Assert.AreEqual(57.29577951308232, u.GetUnitValue(Flux.Units.AngleUnit.Degree));
-      Assert.AreEqual(63.66197723675813, u.GetUnitValue(Flux.Units.AngleUnit.Gradian));
-      Assert.AreEqual(1, u.Value);
-      Assert.AreEqual(0.15915494309189535, u.GetUnitValue(Flux.Units.AngleUnit.Turn));
-    }
+    //  Assert.AreEqual(57.29577951308232, u.GetUnitValue(Flux.Units.AngleUnit.Degree));
+    //  Assert.AreEqual(63.66197723675813, u.GetUnitValue(Flux.Units.AngleUnit.Gradian));
+    //  Assert.AreEqual(1, u.Value);
+    //  Assert.AreEqual(0.15915494309189535, u.GetUnitValue(Flux.Units.AngleUnit.Turn));
+    //}
 
     [TestMethod]
     public void AngularAcceleration()

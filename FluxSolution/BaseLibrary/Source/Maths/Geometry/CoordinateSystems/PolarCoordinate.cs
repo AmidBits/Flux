@@ -21,31 +21,49 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct PolarCoordinate
-      : System.IFormattable, IPolarCoordinate<double>
+      : System.IFormattable//, IPolarCoordinate<double>
     {
       public static readonly PolarCoordinate Zero;
 
       private readonly double m_radius;
       private readonly double m_azimuth; // In radians.
 
-      public PolarCoordinate(double radius, double azimuth, bool constrain = true)
+      /// <summary>
+      /// <para>Polar coordinates in meters and radians.</para>
+      /// </summary>
+      /// <param name="radius"></param>
+      /// <param name="azimuth"></param>
+      public PolarCoordinate(double radius, double azimuth)
       {
         m_radius = radius;
-        m_azimuth = constrain ? azimuth % System.Math.Tau : azimuth;
+        m_azimuth = azimuth;
       }
 
       /// <summary>Return the <see cref="PolarCoordinate"/> from the specified components.</summary>
-      public PolarCoordinate(Units.Length radius, Units.Azimuth azimuth, bool constrain = true)
-        : this(radius.Value, azimuth.Angle.Value, constrain)
+      public PolarCoordinate(Units.Length radius, Units.Azimuth azimuth)
+        : this(radius.Value, azimuth.Angle.Value)
       { }
 
       /// <summary>Return the <see cref="PolarCoordinate"/> from the specified components.</summary>
-      public PolarCoordinate(double radiusValue, Units.LengthUnit radiusUnit, double azimuthValue, Units.AngleUnit azimuthUnit, bool constrain = true)
-        : this(new Units.Length(radiusValue, radiusUnit), new Units.Azimuth(azimuthValue, azimuthUnit), constrain)
+      public PolarCoordinate(double radiusValue, Units.LengthUnit radiusUnit, double azimuthValue, Units.AngleUnit azimuthUnit)
+        : this(new Units.Length(radiusValue, radiusUnit), new Units.Azimuth(azimuthValue, azimuthUnit))
       { }
 
+      /// <summary>
+      /// <para>Radius, (length) unit of meter. A.k.a. radial coordinate, or radial distance.</para>
+      /// </summary>
       public double Radius { get => m_radius; init => m_radius = value; }
+      /// <summary>
+      /// <para>Azimuth angle, unit of radian. A.k.a. angular coordinate, or polar angle.</para>
+      /// </summary>
+      /// <remarks>The angle is defined to start at 0° from a reference direction, and to increase for rotations in either clockwise (cw) or counterclockwise (ccw) orientation.</remarks>
       public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
+
+      public void Deconstruct(out double radius, out double azimuth)
+      {
+        radius = m_radius;
+        azimuth = m_azimuth;
+      }
 
       /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
       public (double x, double y) ToCartesianCoordinate2()

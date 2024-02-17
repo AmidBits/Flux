@@ -67,10 +67,10 @@ namespace Flux.Geometry
       );
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public double Latitude { get => m_latitude; init => m_latitude = value; } // { get => Units.Angle.ConvertRadianToDegree(m_lat); init => m_lat = new Units.Latitude(value).Radians; }
+    public double Latitude { get => m_latitude; init => m_latitude = value; }
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public double Longitude { get => m_longitude; init => m_longitude = value; } // { get => Units.Angle.ConvertRadianToDegree(m_lon); init => m_lon = new Units.Longitude(value).Radians; }
+    public double Longitude { get => m_longitude; init => m_longitude = value; }
 
     public double LatitudeInRadians { get => Units.Angle.ConvertDegreeToRadian(m_latitude); }
     public double LongitudeInRadians { get => Units.Angle.ConvertDegreeToRadian(m_longitude); }

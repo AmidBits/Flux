@@ -26,7 +26,7 @@ namespace Flux
     /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct SphericalCoordinate
-      : System.IFormattable, ISphericalCoordinate<double>
+      : System.IFormattable//, ISphericalCoordinate<double>
     {
       public static readonly SphericalCoordinate Zero;
 
@@ -49,10 +49,25 @@ namespace Flux
         : this(new Units.Length(radiusValue, radiusUnit), new Units.Angle(inclinationValue, inclinationUnit), new Units.Azimuth(azimuthValue, azimuthUnit))
       { }
 
+      /// <summary>
+      /// <para>Radius, (length) unit of meter. A.k.a. radial distance, radial coordinate.</para>
+      /// </summary>
+      /// <remarks>If the radius is zero, both azimuth and inclination are arbitrary.</remarks>
       public double Radius { get => m_radius; init => m_radius = value; }
+      /// <summary>
+      /// <para>Inclination angle, unit of radian. A.k.a. polar angle, colatitude, zenith angle, normal angle. This is equivalent to latitude in geographical coordinate systems.</para>
+      /// </summary>
+      /// <remarks>If the inclination is zero or 180 degrees (PI radians), the azimuth is arbitrary.</remarks>
       public double Inclination { get => m_inclination; init => m_inclination = value; }
+      /// <summary>
+      /// <para>Azimuth angle, unit of radian. This is equivalent to longitude in geographical coordinate systems.</para>
+      /// </summary>
       public double Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
+      /// <summary>
+      /// <para>Elevation angle, unit of radian. This is an option/alternative to <see cref="Inclination"/>.</para>
+      /// </summary>
+      /// <remarks>The elevation angle is 90 degrees (PI/2 radians) minus the <see cref="Inclination"/> angle.</remarks>
       public double Elevation { get => ConvertInclinationToElevation(m_inclination); init => m_inclination = ConvertElevationToInclination(value); }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="SphericalCoordinate"/>.</summary>
