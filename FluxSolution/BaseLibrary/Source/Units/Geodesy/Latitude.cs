@@ -25,8 +25,8 @@ namespace Flux.Units
     public double GetMercatorProjectedY()
       => System.Math.Clamp(System.Math.Log(System.Math.Tan(System.Math.PI / 4 + Angle.Value / 2)), -System.Math.PI, System.Math.PI);
 
-    public string ToSexagesimalDegreeString(TextOptions options = default, AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, bool useSpaces = false)
-      => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.NorthSouth, -1, useSpaces, options);
+    public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, UnicodeSpacing spacing = UnicodeSpacing.None)
+      => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.NorthSouth, -1, spacing);
 
     #region Static methods
 
@@ -105,33 +105,29 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Latitude o ? CompareTo(o) : -1;
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
-
-    // IQuantifiable<>
-    public string ToValueString(TextOptions options = default)
+    public string ToString(string? format, System.IFormatProvider? formatProvider)
     {
-      if (options.Format is not null)
+      if (format is not null)
       {
-        if (options.Format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
-          return ToSexagesimalDegreeString(options, AngleDmsFormat.DegreesMinutesDecimalSeconds, options.Format.EndsWith(' '));
-        if (options.Format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
-          return ToSexagesimalDegreeString(options, AngleDmsFormat.DegreesDecimalMinutes, options.Format.EndsWith(' '));
-        if (options.Format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
-          return ToSexagesimalDegreeString(options, AngleDmsFormat.DecimalDegrees, options.Format.EndsWith(' '));
+        if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds);
+        if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
+          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes);
+        if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
+          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees);
 
-        return Angle.ToUnitValueString(AngleUnit.Degree, options);
+        return Angle.ToUnitValueString(AngleUnit.Degree, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
       }
 
-      return ToSexagesimalDegreeString(options);
+      return ToSexagesimalDegreeString();
     }
 
+    // IQuantifiable<>
     /// <summary>
     ///  <para>The unit of the <see cref="Latitude.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
     /// </summary>
     public double Value => m_angle.GetUnitValue(AngleUnit.Degree);
 
     #endregion Implemented interfaces
-
-    public override string ToString() => ToValueString();
   }
 }

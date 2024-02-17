@@ -19,7 +19,7 @@ namespace Flux
       };
     }
 
-    public static string GetUnitString(this Units.DigitalInformationUnit unit, Units.TextOptions options = default)
+    public static string GetUnitString(this Units.DigitalInformationUnit unit, Units.UnitValueStringOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.DigitalInformationUnit.Byte => "B",
@@ -116,11 +116,10 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is DigitalInformation o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider)
+        => ToUnitValueString(DigitalInformationUnit.Byte, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(DigitalInformationUnit.Byte, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="DigitalInformationUnit.Value"/> property is in <see cref="DigitalInformationUnit.Byte"/>.</para>
       /// </summary>
@@ -142,14 +141,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(DigitalInformationUnit unit, TextOptions options = default)
+      public string ToUnitValueString(DigitalInformationUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public override string ToString() => ToValueString();
     }
   }
 }

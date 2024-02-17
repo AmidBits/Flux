@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.VoltageUnit unit, Units.TextOptions options = default)
+    public static string GetUnitString(this Units.VoltageUnit unit, Units.UnitValueStringOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.VoltageUnit.Volt => "V",
@@ -81,11 +81,10 @@ namespace Flux
       public int CompareTo(Voltage other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(VoltageUnit.Volt, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(VoltageUnit.Volt, options);
-
       /// <summary>
       ///  <para>The unit of the <see cref="Voltage.Value"/> property is in <see cref="VoltageUnit.Volt"/>.</para>
       /// </summary>
@@ -100,12 +99,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(VoltageUnit unit, TextOptions options = default)
+      public string ToUnitValueString(VoltageUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

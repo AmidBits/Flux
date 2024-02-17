@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.SurfaceTensionUnit unit, Units.TextOptions options = default)
+    public static string GetUnitString(this Units.SurfaceTensionUnit unit, Units.UnitValueStringOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.SurfaceTensionUnit.NewtonPerMeter => "N/m",
@@ -72,11 +72,10 @@ namespace Flux
       public int CompareTo(SurfaceTension other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(SurfaceTensionUnit.NewtonPerMeter, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(SurfaceTensionUnit.NewtonPerMeter, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="SurfaceTension.Value"/> property is in <see cref="SurfaceTensionUnit.NewtonPerMeter"/>.</para>
       /// </summary>
@@ -90,12 +89,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(SurfaceTensionUnit unit, TextOptions options = default)
+      public string ToUnitValueString(SurfaceTensionUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

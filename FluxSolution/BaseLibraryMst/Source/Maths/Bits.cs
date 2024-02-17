@@ -22,15 +22,15 @@ namespace Numerics
     [TestMethod]
     public void GetBitLength()
     {
-      Assert.AreEqual(7, 88.GetBitLength());
-      Assert.AreEqual(32, (-88).GetBitLength());
+      Assert.AreEqual(7, 88.GetBitLengthEx());
+      Assert.AreEqual(32, (-88).GetBitLengthEx());
     }
 
     [TestMethod]
     public void GetShortestBitLength()
     {
-      Assert.AreEqual(7, 88.GetBitLength());
-      Assert.AreEqual(8, (-88).GetBitLength());
+      Assert.AreEqual(7, 88.GetShortestBitLength());
+      Assert.AreEqual(8, (-88).GetShortestBitLength());
     }
 
     [TestMethod]

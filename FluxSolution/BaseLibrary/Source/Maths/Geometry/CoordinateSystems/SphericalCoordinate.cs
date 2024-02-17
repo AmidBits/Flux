@@ -113,10 +113,11 @@ namespace Flux
       #endregion Static methods
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ Radius = {m_radius.ToString("N1")}, Inclination = {new Units.Angle(m_inclination).ToUnitValueString(Units.AngleUnit.Degree, new() { Format = "N3" })} (Elevation = {new Units.Angle(Elevation).ToUnitValueString(Units.AngleUnit.Degree, new() { Format = "N3" })}), Azimuth = {new Units.Azimuth(m_azimuth, Units.AngleUnit.Radian).ToValueString(new() { Format = "N3" })} }}"
-        + $" <{m_radius}, {m_inclination}, {m_azimuth}>";
+      {
+        if (string.IsNullOrWhiteSpace(format)) format = "N6";
 
-      public override string ToString() => ToString(null, null);
+        return $"<{m_radius.ToString(format)}, {new Units.Angle(m_inclination).ToUnitValueString(Units.AngleUnit.Degree, new() { Format = format })} ({m_inclination.ToString(format)}) | {new Units.Angle(Elevation).ToUnitValueString(Units.AngleUnit.Degree, new() { Format = format })} ({Elevation.ToString(format)}), {new Units.Azimuth(m_azimuth, Units.AngleUnit.Radian).ToString(format, null)} ({m_azimuth.ToString(format)})>";
+      }
     }
   }
 }

@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.EnplethyUnit unit, Units.TextOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.EnplethyUnit unit, bool preferUnicode = true, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        Units.EnplethyUnit.Mole => options.PreferUnicode ? "\u33D6" : "mol",
+        Units.EnplethyUnit.Mole => preferUnicode ? "\u33D6" : "mol",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -71,24 +71,23 @@ namespace Flux
       public int CompareTo(Enplethy other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(EnplethyUnit.Mole, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       //IMetricMultiplicable<>
       public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
 
-      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.NarrowNoBreakSpace)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
-        sb.Append(spacing.ToChar());
+        sb.Append(spacing.ToSpacingString());
         sb.Append(prefix.GetUnitString(true, false));
         sb.Append(LengthUnit.Meter.GetUnitString(false, false));
         return sb.ToString();
       }
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(EnplethyUnit.Mole, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="Enplethy.Value"/> property is in <see cref="EnplethyUnit.Mole"/>.</para>
       /// </summary>
@@ -102,21 +101,16 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(EnplethyUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      public string ToUnitValueString(EnplethyUnit unit, UnitValueStringOptions options = default)
       {
         var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-        sb.Append(spacing.ToChar());
-        sb.Append(unit.GetUnitString());
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
         return sb.ToString();
       }
 
-      public string ToUnitValueString(EnplethyUnit unit, TextOptions options = default)
-        => $"{string.Format($"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
-
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

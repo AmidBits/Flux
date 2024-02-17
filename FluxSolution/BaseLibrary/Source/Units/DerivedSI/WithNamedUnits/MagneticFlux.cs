@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.MagneticFluxUnit unit, Units.TextOptions options)
+    public static string GetUnitString(this Units.MagneticFluxUnit unit, Units.UnitValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.MagneticFluxUnit.Weber => options.PreferUnicode ? "\u33DD" : "Wb",
@@ -63,11 +63,10 @@ namespace Flux
       public int CompareTo(MagneticFlux other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(MagneticFluxUnit.Weber, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(MagneticFluxUnit.Weber, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="MagneticFlux.Value"/> property is in <see cref="MagneticFluxUnit.Weber"/>.</para>
       /// </summary>
@@ -81,12 +80,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(MagneticFluxUnit unit, TextOptions options = default)
+      public string ToUnitValueString(MagneticFluxUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

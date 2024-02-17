@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PowerUnit unit, Units.TextOptions options)
+    public static string GetUnitString(this Units.PowerUnit unit, Units.UnitValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.PowerUnit.Watt => "W",
@@ -79,11 +79,10 @@ namespace Flux
       public int CompareTo(Power other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(PowerUnit.Watt, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(PowerUnit.Watt, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="Power.Value"/> property is in <see cref="PowerUnit.Watt"/>.</para>
       /// </summary>
@@ -99,12 +98,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PowerUnit unit, TextOptions options = default)
+      public string ToUnitValueString(PowerUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

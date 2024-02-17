@@ -22,11 +22,11 @@ namespace Flux
         where TSelf : System.Numerics.INumber<TSelf>
         => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix), nameof(radix));
 
-      /// <summary>Asserts the number is a valid <paramref name="radix"/>, with an <paramref name="maxRadix"/> (throws an exception with an optional <paramref name="paramName"/>, if not).</summary>
+      /// <summary>Asserts that <paramref name="radix"/> is valid, with an <paramref name="maxRadix"/> (throws an exception with an optional <paramref name="paramName"/>, if not).</summary>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static TSelf AssertMember<TSelf>(TSelf radix, TSelf maxRadix)
         where TSelf : System.Numerics.INumber<TSelf>
-        => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), maxRadix, nameof(radix));
+        => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), TSelf.Min(maxRadix, TSelf.CreateChecked(MaxRadix)), nameof(radix));
 
       /// <summary>Converts a positional notation list of <paramref name="positionalNotationIndices"/> with <paramref name="radix"/> to a numerical value.</summary>
       public static bool TryConvertPositionalNotationIndicesToNumber<TRadix, TValue>(System.Collections.Generic.IList<int> positionalNotationIndices, TRadix radix, out TValue number)
@@ -503,12 +503,10 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Radix o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider)
+        => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default)
-        => string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", m_value);
-
       /// <summary>
       /// <para>The <see cref="Radix.Value"/> property is a radix in the closed interval [<see cref="MinRadix"/>, <see cref="MaxRadix"/>].</para>
       /// </summary>
@@ -518,7 +516,6 @@ namespace Flux
 
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public override string ToString() => ToValueString();
     }
   }
 }

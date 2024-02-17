@@ -1,3 +1,4 @@
+
 namespace Flux
 {
   namespace Units
@@ -66,8 +67,10 @@ namespace Flux
 
       #region Implemented interfaces
 
+      // IFormattable
+      public string ToString(string? format, IFormatProvider? formatProvider) => RatioDisplay.AcolonB.ToRatioString(m_numerator, m_denominator, format, formatProvider);
+
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => RatioDisplay.AcolonB.ToRatioString(m_numerator, m_denominator, options);
 
       /// <summary>
       /// <para>The <see cref="Radio.Value"/> property is the ratio between <see cref="Numerator"/> and <see cref="Denominator"/>, i.e. <see cref="Numerator"/>/<see cref="Denominator"/>.</para>
@@ -75,8 +78,6 @@ namespace Flux
       public double Value => m_numerator / m_denominator;
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

@@ -4,7 +4,7 @@
 
   public static partial class Em
   {
-    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, Units.TextOptions options = default)
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, Units.UnitValueStringOptions options = default)
       where TType : struct, System.IEquatable<TType>
       where TUnit : notnull, System.Enum
     {
@@ -27,15 +27,21 @@
     where TValue : struct, System.IEquatable<TValue>
     where TUnit : notnull, System.Enum
   {
-    /// <summary>Create a string of the quantity, suffixed with the unit symbol, in the specified unit.</summary>
+    ///// <summary>Create a string of the quantity, suffixed with the unit symbol, in the specified unit.</summary>
+    ///// <param name="unit">The unit to represent.</param>
+    ///// <param name="format">The format.</param>
+    ///// <param name="formatProvider">The format provider.</param>
+    ///// <param name="preferUnicode">Whether to prefer Unicode symbols, where and when available. This typically result in reduced length of the returning string, and also less support for some of those symbols, e.g. fonts.</param>
+    ///// <param name="unicodeSpacing">The Unicode spacing.</param>
+    ///// <param name="useFullName">Whether use the full actual name of the enum, rather than symbols or shorter (e.g. acronym) variants.</param>
+    ///// <returns>A string with the value and any symbols representing the quantity in the specified <typeparamref name="TUnit"/>.</returns>
+    //string ToUnitValueString(TUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName);
+
+    /// <summary>Create a string of the quantity, spacing, and suffixed with the unit symbol, in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>
     /// <param name="options">The options.</param>
-    /// <param name="preferUnicode">Whether to prefer Unicode symbols, where and when available. This typically result in reduced length of the returning string, and also less support for some of those symbols, e.g. fonts.</param>
-    /// <param name="useFullName">Whether use the full actual name of the enum, rather than symbols or shorter (e.g. acronym) variants.</param>
     /// <returns>A string with the value and any symbols representing the quantity in the specified <typeparamref name="TUnit"/>.</returns>
-    //string ToUnitValueString(TUnit unit, string? format, bool preferUnicode, bool useFullName, System.Globalization.CultureInfo? culture);
-
-    string ToUnitValueString(TUnit unit, Units.TextOptions options);
+    string ToUnitValueString(TUnit unit, Units.UnitValueStringOptions options);
 
     /// <summary>Create the value of the quantity in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>

@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PartsPerNotationUnit source, Units.TextOptions options = default)
+    public static string GetUnitString(this Units.PartsPerNotationUnit source, Units.UnitValueStringOptions options = default)
       => options.UseFullName ? source.ToString() : source switch
       {
         Units.PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
@@ -109,11 +109,10 @@ namespace Flux
       public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider)
+        => ToUnitValueString(PartsPerNotationUnit.Percent, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(PartsPerNotationUnit.Percent, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="PartsPerNotation.Value"/> property is in <see cref="PartsPerNotationUnit.Percent"/>.</para>
       /// </summary>
@@ -135,12 +134,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PartsPerNotationUnit unit, TextOptions options = default)
+      public string ToUnitValueString(PartsPerNotationUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

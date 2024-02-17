@@ -167,23 +167,20 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(Azimuth other) => m_angle.CompareTo(other.m_angle);
+
       // IComparable
       public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => Angle.ToUnitValueString(AngleUnit.Degree, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => Angle.ToUnitValueString(AngleUnit.Degree, options);
-
       /// <summary>
       ///  <para>The unit of the <see cref="Azimuth.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
       /// </summary>
       public double Value => m_angle.GetUnitValue(AngleUnit.Degree);
 
       #endregion // Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

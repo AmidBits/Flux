@@ -606,8 +606,6 @@ namespace Flux
 
       #endregion Overloaded operators
 
-      string System.IFormattable.ToString(string? format, System.IFormatProvider? provider) => ToValueString(TextOptions.Default);
-
       #region Implemented interfaces
 
       // System.Numerics.IAdditionOperators<>
@@ -815,21 +813,17 @@ namespace Flux
       //#endregion IConvertible
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
-
-      // IQuantifiable<>
-      public string ToValueString(TextOptions options = default)
+      public string ToString(string? format, IFormatProvider? formatProvider)
         => IsProper
-        ? RatioDisplay.AslashB.ToRatioString(m_numerator, m_denominator, options)
+        ? RatioDisplay.AslashB.ToRatioString(m_numerator, m_denominator, format, formatProvider)
         : TryGetMixedParts(this, out var wholeNumber, out var properNumerator, out var properDenominator)
-        ? $"{wholeNumber} {RatioDisplay.AslashB.ToRatioString(properNumerator, properDenominator, options)}"
+        ? $"{wholeNumber} {RatioDisplay.AslashB.ToRatioString(properNumerator, properDenominator, format, formatProvider)}"
         : m_numerator.ToString(); // It is a whole number and we return a simple integer string.
 
+      // IQuantifiable<>
       public double Value => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

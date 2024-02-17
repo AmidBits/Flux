@@ -10,7 +10,7 @@ namespace Flux
     {
       private readonly System.Numerics.Vector2 m_value;
 
-      public AngularAcceleration2D(System.Numerics.Vector2 value, AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+      public AngularAcceleration2D(System.Numerics.Vector2 value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared)
         => m_value = unit switch
         {
           AngularAccelerationUnit.RadianPerSecondSquared => value,
@@ -45,27 +45,24 @@ namespace Flux
       #region Implemented interfaces
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(AngularAccelerationUnit.RadianPerSecondSquared, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(AngularAcceleration.DefaultUnit, options);
-
       public System.Numerics.Vector2 Value { get => m_value; }
 
       // IUnitQuantifiable<>
-      public System.Numerics.Vector2 GetUnitValue(AngularAccelerationUnit unit = AngularAcceleration.DefaultUnit)
+      public System.Numerics.Vector2 GetUnitValue(AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared)
         => unit switch
         {
           AngularAccelerationUnit.RadianPerSecondSquared => m_value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AngularAccelerationUnit unit, TextOptions options = default)
+      public string ToUnitValueString(AngularAccelerationUnit unit, UnitValueStringOptions options = default)
         => $"{Value.ToString(options.Format, options.CultureInfo)} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

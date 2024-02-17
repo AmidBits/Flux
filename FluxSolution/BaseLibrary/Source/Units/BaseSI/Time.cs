@@ -119,26 +119,23 @@ namespace Flux
       public int CompareTo(Time other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(TimeUnit.Second, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       //IMetricMultiplicable<>
       public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
 
-      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.NarrowNoBreakSpace)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
-        sb.Append(spacing.ToChar());
+        sb.Append(spacing.ToSpacingString());
         sb.Append(prefix.GetUnitString(true, false));
         sb.Append(TimeUnit.Second.GetUnitString(false, false));
         return sb.ToString();
       }
 
       // IQuantifiable<>
-      //public string ToValueString(string? format = null, bool preferUnicode = false, bool useFullName = false, System.Globalization.CultureInfo? culture = null)
-      //  => ToUnitValueString(DefaultUnit, format, preferUnicode, useFullName, culture);
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(TimeUnit.Second, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="Time.Value"/> property is in <see cref="TimeUnit.Second"/>.</para>
       /// </summary>
@@ -162,21 +159,16 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(TimeUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      public string ToUnitValueString(TimeUnit unit, UnitValueStringOptions options = default)
       {
         var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-        sb.Append(spacing.ToChar());
-        sb.Append(unit.GetUnitString());
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
         return sb.ToString();
       }
 
-      public string ToUnitValueString(TimeUnit unit, TextOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options.PreferUnicode, options.UseFullName)}";
-
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

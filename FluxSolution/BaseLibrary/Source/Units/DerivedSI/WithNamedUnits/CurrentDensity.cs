@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.CurrentDensityUnit unit, Units.TextOptions options = default)
+    public static string GetUnitString(this Units.CurrentDensityUnit unit, Units.UnitValueStringOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.CurrentDensityUnit.AmperePerSquareMeter => "A/m²",
@@ -65,11 +65,10 @@ namespace Flux
       public int CompareTo(CurrentDensity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(CurrentDensityUnit.AmperePerSquareMeter, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(CurrentDensityUnit.AmperePerSquareMeter, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="CurrentDensity.Value"/> property is in <see cref="CurrentDensityUnit.AmperePerSquareMeter"/>.</para>
       /// </summary>
@@ -83,12 +82,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(CurrentDensityUnit unit, TextOptions options = default)
+      public string ToUnitValueString(CurrentDensityUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

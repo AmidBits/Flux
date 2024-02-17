@@ -38,9 +38,11 @@ namespace Flux
     /// <param name="maxValue">The upper bound of the interval set.</param>
     /// <returns>0 if within the interval, -1 if less than the interval, and +1 if greater than the interval.</returns>
     /// <exception cref="NotImplementedException"></exception>
-    public static int CompareTo<TSource>(this IntervalNotation source, TSource value, TSource minValue, TSource maxValue)
+    public static int Compare<TSource>(this IntervalNotation source, TSource value, TSource minValue, TSource maxValue)
       where TSource : System.IComparable<TSource>
-      => source switch
+      => maxValue.CompareTo(minValue) < 0
+      ? throw new System.ArgumentOutOfRangeException($"Invalid interval: {source.ToNotationString(minValue, maxValue)}")
+      : source switch
       {
         IntervalNotation.Closed => value.CompareTo(minValue) < 0 ? -1 : value.CompareTo(maxValue) > 0 ? +1 : 0,
         IntervalNotation.Open => value.CompareTo(minValue) <= 0 ? -1 : value.CompareTo(maxValue) >= 0 ? +1 : 0,
@@ -49,9 +51,23 @@ namespace Flux
         _ => throw new NotImplementedException(),
       };
 
-    public static (TSource MinValue, TSource MaxValue) GetExtremum<TSource>(this IntervalNotation source, TSource minValue, TSource maxValue)
-      where TSource : System.Numerics.INumber<TSource>
-      => source switch
+    /// <summary>
+    /// <para>Gets new appropriate (depending on type <typeparamref name="T"/>) values as min-value and max-value using the specified <see cref="IntervalNotation"/>.</para>
+    /// <para>If <typeparamref name="T"/> is an integer, the new values are <paramref name="minValue"/> + 1 and <paramref name="maxValue"/> - 1.</para>
+    /// <para>If <typeparamref name="T"/> is a floating point value, the new values are <paramref name="minValue"/> + epsilon and <paramref name="maxValue"/> - epsilon. In this context epsilon is a value that makes the original value and the new value not equal.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    /// <exception cref="NotImplementedException"></exception>
+    public static (T MinValue, T MaxValue) GetExtremum<T>(this IntervalNotation source, T minValue, T maxValue)
+      where T : System.Numerics.INumber<T>
+      => maxValue.CompareTo(minValue) < 0
+      ? throw new System.ArgumentOutOfRangeException($"Invalid interval: {source.ToNotationString(minValue, maxValue)}")
+      : source switch
       {
         IntervalNotation.Closed => (minValue, maxValue),
         IntervalNotation.Open => (minValue.GetSupremum(), maxValue.GetInfimum()),
@@ -72,12 +88,24 @@ namespace Flux
     /// <exception cref="System.NotImplementedException"></exception>
     public static bool VerifyMember<TSource>(this IntervalNotation source, TSource value, TSource minValue, TSource maxValue)
       where TSource : System.IComparable<TSource>
-      => source switch
+      => maxValue.CompareTo(minValue) < 0
+      ? throw new System.ArgumentOutOfRangeException($"Invalid interval: {source.ToNotationString(minValue, maxValue)}")
+      : source switch
       {
         IntervalNotation.Closed => value.CompareTo(minValue) >= 0 && value.CompareTo(maxValue) <= 0,
         IntervalNotation.Open => value.CompareTo(minValue) > 0 && value.CompareTo(maxValue) < 0,
         IntervalNotation.HalfOpenLeft => value.CompareTo(minValue) >= 0 && value.CompareTo(maxValue) < 0,
         IntervalNotation.HalfOpenRight => value.CompareTo(minValue) > 0 && value.CompareTo(maxValue) <= 0,
+        _ => throw new NotImplementedException(),
+      };
+
+    public static string ToNotationString<TSource>(this IntervalNotation source, TSource minValue, TSource maxValue)
+      => source switch
+      {
+        IntervalNotation.Closed => $"[{minValue}, {maxValue}]",
+        IntervalNotation.Open => $"({minValue}, {maxValue})",
+        IntervalNotation.HalfOpenLeft => $"({minValue}, {maxValue}]",
+        IntervalNotation.HalfOpenRight => $"[{minValue}, {maxValue})",
         _ => throw new NotImplementedException(),
       };
   }

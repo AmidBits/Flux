@@ -36,7 +36,7 @@ namespace Flux
 
       if (alphabet.Length == 2) // Special case for base-2 (radix).
       {
-        for (var bitIndex = number.GetBitLength() - 1; bitIndex >= 0; bitIndex--)
+        for (var bitIndex = number.GetBitLengthEx() - 1; bitIndex >= 0; bitIndex--)
           if ((int.CreateChecked((number >> bitIndex) & TSelf.One) is var position && position > 0) || indices.Count > 0)
             indices.Add(position);
       }
@@ -84,7 +84,7 @@ namespace Flux
     {
       var list = new System.Collections.Generic.List<TSymbol>();
 
-      for (var bitIndex = value.GetBitLength() - 1; bitIndex >= 0; bitIndex--)
+      for (var bitIndex = value.GetBitLengthEx() - 1; bitIndex >= 0; bitIndex--)
         list.Add(alphabet[int.CreateChecked((value >> bitIndex) & TSelf.One)]);
 
       while (list.Count < minLength)

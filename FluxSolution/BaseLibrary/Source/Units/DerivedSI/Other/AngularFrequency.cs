@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.AngularFrequencyUnit unit, Units.TextOptions options = default)
+    public static string GetUnitString(this Units.AngularFrequencyUnit unit, Units.UnitValueStringOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.AngularFrequencyUnit.RadianPerSecond => options.PreferUnicode ? "\u33AE" : "rad/s",
@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct AngularFrequency
       : System.IComparable, System.IComparable<AngularFrequency>, System.IFormattable, IUnitValueQuantifiable<double, AngularFrequencyUnit>
     {
-      public const AngularFrequencyUnit DefaultUnit = AngularFrequencyUnit.RadianPerSecond;
-
       private readonly double m_value;
 
-      public AngularFrequency(double value, AngularFrequencyUnit unit = DefaultUnit)
+      public AngularFrequency(double value, AngularFrequencyUnit unit = AngularFrequencyUnit.RadianPerSecond)
         => m_value = unit switch
         {
           AngularFrequencyUnit.RadianPerSecond => value,
@@ -88,11 +86,10 @@ namespace Flux
       public int CompareTo(AngularFrequency other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(AngularFrequencyUnit.RadianPerSecond, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(DefaultUnit, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="AngularFrequency.Value"/> property is in <see cref="AngularFrequencyUnit.RadianPerSecond"/>.</para>
       /// </summary>
@@ -106,12 +103,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AngularFrequencyUnit unit, TextOptions options = default)
+      public string ToUnitValueString(AngularFrequencyUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

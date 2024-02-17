@@ -1,3 +1,4 @@
+
 namespace Flux
 {
   namespace Units
@@ -5,6 +6,7 @@ namespace Flux
     /// <summary>A rate is the ratio between two related quantities that are measured with different units.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Rate_(mathematics)"/>
     public readonly record struct Rate<TNumerator, TDenominator>
+      : System.IFormattable
       where TNumerator : IValueQuantifiable<double>
       where TDenominator : IValueQuantifiable<double>
     {
@@ -24,7 +26,7 @@ namespace Flux
 
       public double InverseRatio => m_denominator.Value / m_numerator.Value;
 
-      public override string ToString() => $"{m_numerator.ToValueString(default)} / {m_denominator.ToValueString(default)}";
+      public string ToString(string? format, IFormatProvider? formatProvider) => $"{m_numerator.ToString(format, formatProvider)} / {m_denominator.ToString(format, formatProvider)}";
     }
   }
 }

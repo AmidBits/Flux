@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.ActionUnit unit, Units.TextOptions options = default)
+    public static string GetUnitString(this Units.ActionUnit unit, Units.UnitValueStringOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.ActionUnit.JouleSecond => options.PreferUnicode ? "J\u22C5s" : "J·s",
@@ -23,13 +23,11 @@ namespace Flux
     public readonly record struct Action
       : System.IComparable, System.IComparable<Action>, System.IFormattable, IUnitValueQuantifiable<double, ActionUnit>
     {
-      public const ActionUnit DefaultUnit = ActionUnit.JouleSecond;
-
       public static readonly Action PlanckConstant = new(6.62607015e-34);
 
       private readonly double m_value;
 
-      public Action(double value, ActionUnit unit = DefaultUnit)
+      public Action(double value, ActionUnit unit = ActionUnit.JouleSecond)
         => m_value = unit switch
         {
           ActionUnit.JouleSecond => value,
@@ -67,11 +65,10 @@ namespace Flux
       public int CompareTo(Action other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(ActionUnit.JouleSecond, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(DefaultUnit, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="Action.Value"/> property is in <see cref="ActionUnit.JouleSecond"/>.</para>
       /// </summary>
@@ -85,12 +82,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ActionUnit unit, TextOptions options = default)
+      public string ToUnitValueString(ActionUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

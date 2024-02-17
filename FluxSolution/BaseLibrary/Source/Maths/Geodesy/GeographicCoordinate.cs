@@ -438,8 +438,7 @@ namespace Flux.Geometry
     //#region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"{GetType().Name} {{ {new Units.Latitude(m_latitude, AngleUnit.Degree)}, {new Units.Longitude(m_longitude, AngleUnit.Degree)} ({new Units.Length(m_altitude).ToValueString(new() { Format = "N0" })}) }}"
-      + $" <{m_altitude}, {m_latitude}, {m_longitude}>";
+      => $"<{new Units.Latitude(m_latitude, AngleUnit.Degree).ToSexagesimalDegreeString()} ({m_latitude.ToString("N6")}), {new Units.Longitude(m_longitude, AngleUnit.Degree).ToSexagesimalDegreeString()} ({m_longitude.ToString("N6")}), {new Units.Length(m_altitude).ToString("N1", null)}>";
 
     //#endregion Implemented interfaces
 

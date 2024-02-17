@@ -2,15 +2,13 @@
 {
   public static partial class Em
   {
-    public static Units.UnitSpacing GetUnitSpacing(this Units.AngleUnit unit, bool preferUnicode)
-      => (unit == Units.AngleUnit.Degree && preferUnicode)
-      || (unit == Units.AngleUnit.Gradian && preferUnicode)
-      || (unit == Units.AngleUnit.Radian && preferUnicode)
-      || unit == Units.AngleUnit.Arcminute
-      || unit == Units.AngleUnit.Arcsecond
-      ? Units.UnitSpacing.ZeroWidthNoBreakSpace : Units.UnitSpacing.NoBreakSpace;
+    //public static UnicodeSpacing GetUnitSpacing(this Units.AngleUnit unit, bool preferUnicode)
+    //  => unit.HasUnitSpacing(preferUnicode) ? UnicodeSpacing.NoBreakSpace : UnicodeSpacing.None;
 
-    public static string GetUnitString(this Units.AngleUnit unit, bool preferUnicode, bool useFullName)
+    //public static string GetUnitSpacingString(this Units.AngleUnit unit, bool preferUnicode)
+    //  => unit.HasUnitSpacing(preferUnicode) ? unit.GetUnitSpacing(preferUnicode).ToSpacingString() : string.Empty;
+
+    public static string GetUnitString(this Units.AngleUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
         Units.AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
@@ -24,6 +22,13 @@
         Units.AngleUnit.WarsawPactMil => "mils (Warsaw Pact)",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
+
+    public static bool HasUnitSpacing(this Units.AngleUnit unit, bool preferUnicode)
+      => !((unit == Units.AngleUnit.Degree && preferUnicode)
+      || (unit == Units.AngleUnit.Gradian && preferUnicode)
+      || (unit == Units.AngleUnit.Radian && preferUnicode)
+      || unit == Units.AngleUnit.Arcminute
+      || unit == Units.AngleUnit.Arcsecond);
   }
 
   namespace Units
@@ -217,76 +222,6 @@
 
       #endregion // Conversion methods
 
-      /// <summary></summary>
-      /// <see href="https://en.wikipedia.org/wiki/ISO_6709"/>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static string ToDmsString(double decimalDegrees, AngleDmsFormat format, CardinalAxis axis, int decimalPoints = -1, bool useSpaces = false, TextOptions options = default)
-      {
-        var (degrees, minutes, decimalSeconds) = ConvertDecimalDegreesToDms(decimalDegrees, out var decimalMinutes);
-
-        var spacing = useSpaces ? " " : string.Empty;
-
-        var directional = spacing + axis.ToCardinalDirection(degrees < 0).ToString();
-
-        return format switch
-        {
-          AngleDmsFormat.DecimalDegrees
-            => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, options with { Format = $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}" }) + directional, // Show as decimal degrees.
-          AngleDmsFormat.DegreesDecimalMinutes
-            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, options with { Format = "N0" }) + spacing + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, options with { Format = $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}" }) + directional, // Show as degrees and decimal minutes.
-          AngleDmsFormat.DegreesMinutesDecimalSeconds
-            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, options with { Format = "N0" }) + spacing + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, options with { Format = "N0" }).PadLeft(3, '0') + spacing + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitValueString(Units.AngleUnit.Arcsecond, options with { Format = $"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}" }) + directional, // Show as degrees, minutes and decimal seconds.
-          _
-            => throw new System.ArgumentOutOfRangeException(nameof(format)),
-        };
-      }
-
-#if NET7_0_OR_GREATER
-      [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?")]
-      private static partial System.Text.RegularExpressions.Regex ParseDmsRegex();
-#else
-        private static System.Text.RegularExpressions.Regex ParseDmsRegex() => new(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
-#endif
-
-      public static Angle ParseDms(string degreesMinutesSeconds)
-      {
-        var decimalDegrees = 0.0;
-
-        if (ParseDmsRegex().Match(degreesMinutesSeconds) is var m && m.Success)
-        {
-          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var degrees))
-            decimalDegrees += degrees;
-
-          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var minutes))
-            decimalDegrees += minutes / 60;
-
-          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var seconds))
-            decimalDegrees += seconds / 3600;
-
-          if (m.Groups["Direction"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
-            decimalDegrees = -decimalDegrees;
-        }
-        else throw new System.ArgumentOutOfRangeException(nameof(degreesMinutesSeconds));
-
-        return new(ConvertDegreeToRadian(decimalDegrees));
-      }
-
-      public static bool TryParseDms(string dms, out Angle result)
-      {
-        try
-        {
-          result = ParseDms(dms);
-          return true;
-        }
-        catch
-        {
-          result = default;
-          return false;
-        }
-      }
-
-      #endregion Static methods
-
       #region Trigonometry static methods
 
       #region Gudermannian
@@ -431,6 +366,76 @@
 
       #endregion Trigonometry static methods
 
+      /// <summary></summary>
+      /// <see href="https://en.wikipedia.org/wiki/ISO_6709"/>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static string ToDmsString(double decimalDegrees, AngleDmsFormat format, CardinalAxis axis, int decimalPoints = -1, UnicodeSpacing componentSpacing = UnicodeSpacing.None)
+      {
+        var (degrees, minutes, decimalSeconds) = ConvertDecimalDegreesToDms(decimalDegrees, out var decimalMinutes);
+
+        var spacingString = componentSpacing.ToSpacingString();
+
+        var directional = axis.ToCardinalDirection(degrees < 0).ToString();
+
+        return format switch
+        {
+          AngleDmsFormat.DecimalDegrees
+            => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, new($"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 4)}")) + spacingString + directional, // Show as decimal degrees.
+          AngleDmsFormat.DegreesDecimalMinutes
+            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, new("N0")) + spacingString + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, new($"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 2)}")) + spacingString + directional, // Show as degrees and decimal minutes.
+          AngleDmsFormat.DegreesMinutesDecimalSeconds
+            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, new("N0")) + spacingString + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, new("N0")).PadLeft(3, '0') + spacingString + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitValueString(Units.AngleUnit.Arcsecond, new($"N{(decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : 0)}")) + spacingString + directional, // Show as degrees, minutes and decimal seconds.
+          _
+            => throw new System.ArgumentOutOfRangeException(nameof(format)),
+        };
+      }
+
+#if NET7_0_OR_GREATER
+      [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?")]
+      private static partial System.Text.RegularExpressions.Regex ParseDmsRegex();
+#else
+        private static System.Text.RegularExpressions.Regex ParseDmsRegex() => new(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
+#endif
+
+      public static Angle ParseDms(string degreesMinutesSeconds)
+      {
+        var decimalDegrees = 0.0;
+
+        if (ParseDmsRegex().Match(degreesMinutesSeconds) is var m && m.Success)
+        {
+          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value, out var degrees))
+            decimalDegrees += degrees;
+
+          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value, out var minutes))
+            decimalDegrees += minutes / 60;
+
+          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value, out var seconds))
+            decimalDegrees += seconds / 3600;
+
+          if (m.Groups["Direction"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
+            decimalDegrees = -decimalDegrees;
+        }
+        else throw new System.ArgumentOutOfRangeException(nameof(degreesMinutesSeconds));
+
+        return new(ConvertDegreeToRadian(decimalDegrees));
+      }
+
+      public static bool TryParseDms(string dms, out Angle result)
+      {
+        try
+        {
+          result = ParseDms(dms);
+          return true;
+        }
+        catch
+        {
+          result = default;
+          return false;
+        }
+      }
+
+      #endregion Static methods
+
       #region Overloaded operators
       public static explicit operator Angle(double value) => new(value);
       public static explicit operator double(Angle value) => value.m_angle;
@@ -462,11 +467,10 @@
       public int CompareTo(Angle other) => m_angle.CompareTo(other.m_angle);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(AngleUnit.Radian, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(AngleUnit.Radian, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="Angle.Value"/> property is in <see cref="AngleUnit.Radian"/>.</para>
       /// </summary>
@@ -488,12 +492,19 @@
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AngleUnit unit, TextOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))}{unit.GetUnitSpacing(options.PreferUnicode)}{unit.GetUnitString(options.PreferUnicode, options.UseFullName)}";
+      public string ToUnitValueString(AngleUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode = true, UnicodeSpacing unitSpacing = UnicodeSpacing.NarrowNoBreakSpace, bool useFullName = false)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        sb.Append(unit.HasUnitSpacing(preferUnicode) ? unitSpacing.ToSpacingString() : string.Empty);
+        sb.Append(unit.GetUnitString(preferUnicode, useFullName));
+        return sb.ToString();
+      }
+
+      public string ToUnitValueString(AngleUnit unit, UnitValueStringOptions options = default)
+        => $"{string.Format(options.FormatProvider, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))}{(unit.HasUnitSpacing(options.PreferUnicode) ? options.UnitSpacing.ToSpacingString() : string.Empty)}{unit.GetUnitString(options.PreferUnicode, options.UseFullName)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

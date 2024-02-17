@@ -93,7 +93,7 @@ namespace Flux
     public static bool TryFastIntegerSqrt<TSelf>(TSelf number, out TSelf root)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (number.GetBitLength() <= 53)
+      if (number.GetBitLengthEx() <= 53)
       {
         root = TSelf.CreateChecked(double.Sqrt(double.CreateChecked(number)));
         return true;

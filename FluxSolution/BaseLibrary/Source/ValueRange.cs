@@ -214,6 +214,15 @@
     /// <summary>Returns the minimum low value of a and b.</summary>
     public static T SmallerMinimum(ValueRange<T> a, ValueRange<T> b) => a.m_min.CompareTo(b.m_min) <= 0 ? a.m_min : b.m_min;
 
+    public static void AssertEndPoints(T minValue, T maxValue)
+    {
+      if (!VerifyEndPoints(minValue, maxValue))
+        throw new System.ArgumentOutOfRangeException($"Invalid interval/range: minValue ({minValue}) must be less than maxValue ({maxValue}).");
+    }
+
+    public static bool VerifyEndPoints(T minValue, T maxValue)
+      => minValue.CompareTo(maxValue) <= 0 && maxValue.CompareTo(minValue) >= 0;
+
     #endregion Static methods
 
     #region Overloaded operators

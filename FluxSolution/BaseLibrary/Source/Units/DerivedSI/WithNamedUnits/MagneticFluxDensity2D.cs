@@ -45,11 +45,10 @@ namespace Flux
       #region Implemented interfaces
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(MagneticFluxDensityUnit.Tesla, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(MagneticFluxDensityUnit.Tesla, options);
-
       public System.Numerics.Vector2 Value => m_value;
 
       // IUnitQuantifiable<>
@@ -60,12 +59,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(MagneticFluxDensityUnit unit, TextOptions options = default)
+      public string ToUnitValueString(MagneticFluxDensityUnit unit, UnitValueStringOptions options = default)
         => $"{Value.ToString(options.Format, options.CultureInfo)} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

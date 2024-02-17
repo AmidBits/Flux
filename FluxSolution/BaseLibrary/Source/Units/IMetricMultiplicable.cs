@@ -27,6 +27,6 @@
 
     TValue ToMetricValue(MetricPrefix prefix);
 
-    string ToMetricValueString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnitSpacing spacing);
+    string ToMetricValueString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing spacing);
   }
 }

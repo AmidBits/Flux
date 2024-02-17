@@ -106,7 +106,7 @@
     public static bool TryFastIntegerRootN<TSelf>(TSelf number, TSelf nth, out TSelf root)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (number.GetBitLength() <= 53)
+      if (number.GetBitLengthEx() <= 53)
       {
         root = TSelf.CreateChecked(double.RootN(double.CreateChecked(number), int.CreateChecked(nth)));
         return true;

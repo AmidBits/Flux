@@ -33,69 +33,32 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var btg = (0b1011).BinaryToGray();
-      var gtb = btg.GrayToBinary();
+      for (var d = 0; d <= 380; d += 10)
+      {
+        var pc = new Flux.Geometry.PolarCoordinate(10, Flux.Units.Angle.ConvertDegreeToRadian(d));
 
-      var imvs = int.MinValue.ToBinaryString(32);
-      var bix = (7).GetBitLength();
+        var cc = pc.ToCartesianCoordinate2();
+        var ccex = pc.ToCartesianCoordinate2Ex();
+        var fc = Flux.Geometry.PolarCoordinate.FromCartesian2(cc.x, cc.y);
+        var fcex = Flux.Geometry.PolarCoordinate.FromCartesian2Ex(ccex.x, ccex.y);
 
-      var fm = (0x7D).BitMaskFill(7);
-      var fms = fm.ToBinaryString(32);
-      var b0 = fm.GetBitIndex(0);
-      var b1 = fm.GetBitIndex(1);
-      var b31 = fm.ClearLeastSignificant1Bit();
+        System.Console.WriteLine($"{d:D3} : {pc} : ({cc.x:N3}, {cc.y:N3}) : ({ccex.x:N3}, {ccex.y:N3}) : {fc} : {fcex}");
+      }
 
-      var cbs = (-1).BitMaskClear(2.BitMaskRight());
-      var cbsb = cbs.SetBitIndex(3);
-      var fbs = (6U).BitMaskFlip(2U.BitMaskRight());
-      var sbs = (6U).BitMaskSet(2U.BitMaskRight());
+      System.Console.WriteLine(Flux.IntervalNotation.Closed.Compare(4, 4, 9));
+      System.Console.WriteLine(Flux.IntervalNotation.Open.Compare(4, 4, 9));
 
-      var bi = 5.ToBigInteger();
-      var cx = new System.Numerics.Complex(1, 1);
-      //"10110110110110110110110110100000"
-      var types = System.AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.DefinedTypes).Append(typeof(System.Version));
 
-      var ind = 0;
-      foreach (var type in typeof(System.Numerics.INumberBase<>).GetDerivedTypes(types).Where(t => !t.IsInterface).OrderBy(t => new System.Text.StringBuilder(t.Name).MakeNumbersFixedLength(3).ToString()))
-        System.Console.WriteLine($"{++ind:D2} {type.Name} {type.CreateInstance().IsSignedNumber2()}");
-      return;
-
-      var seq = new int[] { 5, 3, 3, 3, 3, 3 };
-
-      System.Random.Shared.Shuffle(seq);
-
-      var cs = seq.CompareSequence();
-
-      var t = new Flux.Units.Time(1500, Flux.Units.TimeUnit.Second);
-      var tm = t.ToMetricValueString(Flux.Units.MetricPrefix.Kilo);
-
-      var sp = Flux.Units.MetricPrefix.Deca;
-      var sv = 200;
-
-      var (tv, tp) = Flux.Units.MetricPrefix.Deca.FindInfimum(200);
-
-      System.Console.WriteLine($"{sp}: {sv} = {tp}: {tv}");
-
-      //var found = Flux.Units.MetricMultiplicativePrefix.Kilo.FindMetricMultiplicativePrefix(1, out var value);
-      //var newly = found.Convert(value, Flux.Units.MetricMultiplicativePrefix.Kilo);
-      return;
-
-      var period = 2d;
-      var resolution = 20;
-      for (var i = -period; i < period * 2; i += period / resolution)
-        System.Console.WriteLine($"{i:N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.Sawtooth(i, period):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.Sine(i, period):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.Square(i, period):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.Triangle(i, period):N3}");
-
-      return;
 
       var sb = new Flux.SpanBuilder<char>();
       sb.Append("This-is-a-test.", 1);
 
       sb.ReplaceAll(c => c == '-', '=');
 
-      sb.PadRight(20, "Rat");
-      sb.PadLeft(25, "Rat");
+      sb.PadRight(21, "Rat");
+      sb.PadLeft(24, "Rat");
 
       sb.ReplaceAll(c => c == '=', "+++");
 

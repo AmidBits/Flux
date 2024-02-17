@@ -21,7 +21,7 @@ namespace Flux
     /// <remarks>Note that for dynamic types, e.g. <see cref="System.Numerics.BigInteger"/>, the number of bits depends on the storage size used for the <paramref name="value"/>.</remarks>
     public static TSelf MostSignificant1Bit<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsZero(value) ? value : TSelf.One << (value.GetBitLength() - 1);
+      => TSelf.IsZero(value) ? value : TSelf.One << (value.GetBitLengthEx() - 1);
 
     /// <summary>
     /// <para>Extracts the lowest numbered element of a bit set (<paramref name="value"/>). Given a 2's complement binary integer value, this is the least-significant-1-bit.</para>

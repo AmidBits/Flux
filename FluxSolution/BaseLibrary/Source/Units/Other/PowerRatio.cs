@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PowerRatioUnit unit, Units.TextOptions options)
+    public static string GetUnitString(this Units.PowerRatioUnit unit, Units.UnitValueStringOptions options)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.PowerRatioUnit.DecibelWatt => "dBW",
@@ -94,11 +94,10 @@ namespace Flux
       public int CompareTo(PowerRatio other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider)
+        => ToUnitValueString(PowerRatioUnit.DecibelWatt, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(PowerRatioUnit.DecibelWatt, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="PowerRatio.Value"/> property is in <see cref="PowerRatioUnit.DecibelWatt"/>.</para>
       /// </summary>
@@ -112,12 +111,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PowerRatioUnit unit, TextOptions options = default)
+      public string ToUnitValueString(PowerRatioUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

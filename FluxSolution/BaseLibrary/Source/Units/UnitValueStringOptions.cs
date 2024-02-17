@@ -1,23 +1,23 @@
 ﻿namespace Flux.Units
 {
-  public readonly record struct TextOptions
+  public readonly record struct UnitValueStringOptions
   {
-    public static TextOptions Default => default;
+    public static UnitValueStringOptions Default => default;
 
     private readonly System.Globalization.CultureInfo? m_cultureInfo;
     private readonly string? m_format;
     private readonly System.IFormatProvider? m_formatProvider;
     private readonly bool? m_preferUnicode;
-    private readonly UnitSpacing? m_unitSpacing;
+    private readonly UnicodeSpacing? m_unitSpacing;
     private readonly bool m_useFullName;
 
-    public TextOptions(string? format, System.IFormatProvider? formatProvider)
+    public UnitValueStringOptions(string? format, System.IFormatProvider? formatProvider)
     {
       Format = format;
       FormatProvider = formatProvider;
     }
 
-    public TextOptions(string? format)
+    public UnitValueStringOptions(string? format)
     {
       Format = format;
     }
@@ -43,9 +43,9 @@
     public bool PreferUnicode { get => m_preferUnicode.HasValue ? m_preferUnicode.Value : true; init => m_preferUnicode = value; }
 
     /// <summary>
-    /// <para>The spacing to use between value and unit. The default is <see cref="UnitSpacing.Space"/>.</para>
+    /// <para>The spacing to use between value and unit. The default is <see cref="UnicodeSpacing.Space"/>.</para>
     /// </summary>
-    public UnitSpacing UnitSpacing { get => m_unitSpacing.HasValue ? m_unitSpacing.Value : UnitSpacing.Space; init => m_unitSpacing = value; }
+    public UnicodeSpacing UnitSpacing { get => m_unitSpacing.HasValue ? m_unitSpacing.Value : UnicodeSpacing.Space; init => m_unitSpacing = value; }
 
     /// <summary>
     /// <para>Whether to use the full actual name of the enum value, rather than symbols or shorter (e.g. acronym) variants. The default is false.</para>

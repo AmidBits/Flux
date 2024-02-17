@@ -331,7 +331,7 @@ namespace ConsoleApp
       var bfrs = bfr.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfrs}");
       //var bsbl = n.GetShortestBitLength();
-      var bln = n.GetBitLength();
+      var bln = n.GetBitLengthEx();
       //var l2 = bi.IntegerLog2();
       var ms1b = n.MostSignificant1Bit();
       var bmr = n.BitMaskRight();

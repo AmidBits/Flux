@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.AngularAccelerationUnit unit, Units.TextOptions options = default)
+    public static string GetUnitString(this Units.AngularAccelerationUnit unit, Units.UnitValueStringOptions options = default)
       => options.UseFullName ? unit.ToString() : unit switch
       {
         Units.AngularAccelerationUnit.RadianPerSecondSquared => options.PreferUnicode ? "\u33AF" : "rad/s²",
@@ -23,11 +23,9 @@ namespace Flux
     public readonly record struct AngularAcceleration
       : System.IComparable, System.IComparable<AngularAcceleration>, System.IFormattable, IUnitValueQuantifiable<double, AngularAccelerationUnit>
     {
-      public const AngularAccelerationUnit DefaultUnit = AngularAccelerationUnit.RadianPerSecondSquared;
-
       private readonly double m_value;
 
-      public AngularAcceleration(double value, AngularAccelerationUnit unit = DefaultUnit)
+      public AngularAcceleration(double value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared)
         => m_value = unit switch
         {
           AngularAccelerationUnit.RadianPerSecondSquared => value,
@@ -65,11 +63,10 @@ namespace Flux
       public int CompareTo(AngularAcceleration other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(AngularAccelerationUnit.RadianPerSecondSquared, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(DefaultUnit, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="AngularAcceleration.Value"/> property is in <see cref="AngularAccelerationUnit.RadianPerSecondSquared"/>.</para>
       /// </summary>
@@ -83,12 +80,10 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AngularAccelerationUnit unit, TextOptions options = default)
+      public string ToUnitValueString(AngularAccelerationUnit unit, UnitValueStringOptions options = default)
         => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

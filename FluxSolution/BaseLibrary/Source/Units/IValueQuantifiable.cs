@@ -3,6 +3,7 @@
   /// <summary>An interface representing a quantifiable value.</summary>
   /// <typeparam name="TValue">The value type.</typeparam>
   public interface IValueQuantifiable<TValue>
+    : System.IFormattable
     where TValue : struct, System.IEquatable<TValue>
   {
     /// <summary>Create a string representing a standard, typical, or common format of the quantity.</summary>
@@ -12,7 +13,7 @@
     /// <returns>A string with the value and any symbols representing the quantity.</returns>
     //string ToValueString(string? format, bool preferUnicode, bool useFullName, System.Globalization.CultureInfo? culture);
 
-    string ToValueString(Units.TextOptions options);
+    //string ToValueString(Units.TextOptions options);
 
     /// <summary>The value of the quantity.</summary>
     TValue Value { get; }

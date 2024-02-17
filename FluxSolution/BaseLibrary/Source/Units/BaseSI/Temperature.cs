@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.TemperatureUnit unit, Units.TextOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.TemperatureUnit unit, bool preferUnicode = true, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        Units.TemperatureUnit.Celsius => options.PreferUnicode ? "\u2103" : "\u00B0C",
-        Units.TemperatureUnit.Fahrenheit => options.PreferUnicode ? "\u2109" : "\u00B0F",
-        Units.TemperatureUnit.Kelvin => options.PreferUnicode ? "\u212A" : "K",
+        Units.TemperatureUnit.Celsius => preferUnicode ? "\u2103" : "\u00B0C",
+        Units.TemperatureUnit.Fahrenheit => preferUnicode ? "\u2109" : "\u00B0F",
+        Units.TemperatureUnit.Kelvin => preferUnicode ? "\u212A" : "K",
         Units.TemperatureUnit.Rankine => $"\u00B0R",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -103,11 +103,10 @@ namespace Flux
       public int CompareTo(Temperature other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => ToUnitValueString(TemperatureUnit.Kelvin, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options = default) => ToUnitValueString(TemperatureUnit.Kelvin, options);
-
       /// <summary>
       /// <para>The unit of the <see cref="Temperature.Value"/> property is in <see cref="TemperatureUnit.Kelvin"/>.</para>
       /// </summary>
@@ -124,21 +123,16 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(TemperatureUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnitSpacing spacing = UnitSpacing.NarrowNoBreakSpace)
+      public string ToUnitValueString(TemperatureUnit unit, UnitValueStringOptions options = default)
       {
         var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-        sb.Append(spacing.ToChar());
-        sb.Append(unit.GetUnitString());
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
         return sb.ToString();
       }
 
-      public string ToUnitValueString(TemperatureUnit unit, TextOptions options)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
-
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }

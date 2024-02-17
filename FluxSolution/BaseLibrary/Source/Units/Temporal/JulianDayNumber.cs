@@ -171,20 +171,15 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is JulianDayNumber o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
+      public string ToString(string? format, IFormatProvider? formatProvider) => ToDateString(GetConversionCalendar());
 
       // IQuantifiable<>
-      public string ToValueString(TextOptions options)
-        => ToDateString(GetConversionCalendar());
-
       /// <summary>
       /// <para>The <see cref="JulianDayNumber.Value"/> property is the Julian day number.</para>
       /// </summary>
       public int Value => m_value;
 
       #endregion // Implemented interfaces
-
-      public override string? ToString() => ToValueString(TextOptions.Default);
     }
   }
 }

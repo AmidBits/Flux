@@ -72,20 +72,16 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Cent o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => ToValueString(TextOptions.Default with { Format = format, FormatProvider = formatProvider });
-
-      // IQuantifiable<>
-      public string ToValueString(TextOptions options = default)
+      public string ToString(string? format, IFormatProvider? formatProvider)
         => $"{m_value} cent{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
+      // IQuantifiable<>
       /// <summary>
       /// <para>The <see cref="Cent.Value"/> property is a musical interval in cents.</para>
       /// </summary>
       public int Value => m_value;
 
       #endregion Implemented interfaces
-
-      public override string ToString() => ToValueString();
     }
   }
 }
