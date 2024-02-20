@@ -65,6 +65,10 @@ namespace Flux.Geometry
 
     public (double x, double y) ToCartesian2()
       => (m_a / 2 + m_c, System.Math.Sqrt(3) * (m_a / 2 + m_r));
+
+    public CartesianCoordinate<double> ToCartesianCoordinate()
+      => (CartesianCoordinate<double>)ToCartesian2();
+
     public System.Numerics.Vector2 ToVector2()
     {
       var (x, y) = ToCartesian2();
@@ -74,18 +78,40 @@ namespace Flux.Geometry
 
     #region Overloaded operators
 
-    /// <summary>HECS addition.</summary>
+    /// <summary>
+    /// <para>HECS addition.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Hexagonal_Efficient_Coordinate_System#Addition"/>
+    /// </summary>
     public static HecsCoordinate operator +(HecsCoordinate a, HecsCoordinate b)
       => new(a.m_a ^ b.m_a, a.m_r + b.m_r + (a.m_a & b.m_a), a.m_c + b.m_c + (a.m_a & b.m_a));
-    /// <summary>HECS negation.</summary>
+
+    /// <summary>
+    /// <para>HECS negation.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Hexagonal_Efficient_Coordinate_System#Negation"/>
+    /// </summary>
     public static HecsCoordinate operator -(HecsCoordinate h)
       => new(h.m_a, -h.m_r - h.m_a, -h.m_c - h.m_a);
-    /// <summary>HECS subtraction.</summary>
+
+    /// <summary>
+    /// <para>HECS subtraction.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Hexagonal_Efficient_Coordinate_System#Subtraction"/>
+    /// </summary>
     public static HecsCoordinate operator -(HecsCoordinate a, HecsCoordinate b)
       => a + -b;
-    /// <summary>HECS scalar multiplication.</summary>
+
+    /// <summary>
+    /// <para>HECS scalar multiplication.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Hexagonal_Efficient_Coordinate_System#Scalar_multiplication"/>
+    /// </summary>
     public static HecsCoordinate operator *(HecsCoordinate h, int k)
-      => int.IsPositive(k) ? new((h.m_a * k) % 2, k * h.m_r + h.m_a * (k / 2), k * h.m_c + h.m_a * (k / 2)) : -h * k;
+    {
+      if (int.IsNegative(k))
+        h = -h; // If k is negative, then negate h before scalar multiplication.
+
+      var ak2 = h.m_a * (k / 2); // This occurs twice, so we can optimize somewhat.
+
+      return new((h.m_a * k) % 2, k * h.m_r + ak2, k * h.m_c + ak2);
+    }
 
     #endregion // Overloaded operators
 

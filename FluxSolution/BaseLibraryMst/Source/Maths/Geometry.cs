@@ -31,8 +31,8 @@ namespace Maths
     {
       var geometry = new Flux.Geometry.EllipseGeometry(5, 7);
 
-      Assert.AreEqual(5, geometry.SemiMinorAxis);
-      Assert.AreEqual(7, geometry.SemiMajorAxis);
+      Assert.AreEqual(5, geometry.B);
+      Assert.AreEqual(7, geometry.A);
     }
 
     [TestMethod]

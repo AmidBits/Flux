@@ -12,44 +12,25 @@ namespace Flux.Geometry
 
     public EllipseGeometry(double a, double b)
     {
-      m_a = System.Math.Max(a, b);
-      m_b = System.Math.Min(a, b);
+      m_a = a;
+      m_b = b;
     }
 
     public void Deconstruct(out double a, out double b) { a = m_a; b = m_b; }
 
-    /// <summary>The x-axis (width) of the ellipse.</summary>
+    /// <summary>The semi-major or a-axis of the ellipse.</summary>
     public double A => m_a;
-    /// <summary>The y-axis (height) of the ellipse.</summary>
+    /// <summary>The semi-minor or b-axis of the ellipse.</summary>
     public double B => m_b;
 
-    /// <summary>The semi-major axis of the ellipse. A semi-major axis is the longest radius.</summary>
-    public double SemiMajorAxis => m_a;
-    /// <summary>The semi-minor axis of the ellipse. A semi-minor axis is the shortest radius.</summary>
-    public double SemiMinorAxis => m_b;
-
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
-    public double Area => System.Math.PI * m_a * m_b;
+    public double Area => ComputeArea(m_a, m_b);
 
     /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-    public double Circumference
-    {
-      get
-      {
-        var circle = System.Math.PI * (m_a + m_b); // (2 * PI * radius)
-
-        if (m_a == m_b) // For a circle, use (PI * diameter);
-          return circle;
-
-        var h3 = 3 * H(SemiMajorAxis, SemiMinorAxis);
-
-        return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
-      }
-    }
+    public double Perimeter => ComputePerimeter(m_a, m_b);
 
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
-    public bool Contains(double x, double y, double rotationAngle = 0)
-      => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (m_a * m_a) + System.Math.Pow(sin * x - cos * y, 2) / (m_b * m_b) <= 1;
+    public bool Contains(double x, double y, double rotationAngle = 0) => ContainsPoint(m_a, m_b, x, y, rotationAngle);
 
     /// <summary>
     /// <para>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).</para>
@@ -153,28 +134,48 @@ namespace Flux.Geometry
 
     #region Static methods
 
-    /// <summary>Returns an Ellipse from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
-    public static (double xAxis, double yAxis) Cartesian2ToEllipse(double x, double y)
+    /// <summary>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</summary>
+    public static double ComputeArea(double a, double b) => System.Math.PI * a * b;
+
+    /// <summary>Returns the approximate circumference of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
+    public static double ComputePerimeter(double a, double b)
+    {
+      var circle = System.Math.PI * (a + b); // (2 * PI * radius)
+
+      if (a == b) // For a circle, use (PI * diameter);
+        return circle;
+
+      var h3 = 3 * H(a, b);
+
+      return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
+    }
+
+    /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</summary>
+    public static bool ContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
+      => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (a * a) + System.Math.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
+
+    /// <summary>Returns an ellipse geometry from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
+    public static (double a, double b) ConvertCartesian2ToEllipse(double x, double y)
       => (
         System.Math.Sqrt(x * x + y * y),
         System.Math.Atan2(y, x)
       );
 
     /// <summary></summary>
-    public static (double x, double y) EllipseToCartesian2(double xAxis, double yAxis, double rotationAngle = 0)
+    public static (double x, double y) ConvertEllipseToCartesian2(double xAxis, double yAxis, double rotationAngle = 0)
       => (
         System.Math.Cos(rotationAngle) * xAxis,
         System.Math.Sin(rotationAngle) * yAxis
       );
 
     /// <summary>
-    /// <para>This is a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses. The parameters <paramref name="semiMajorAxis"/> and <paramref name="semiMinorAxis"/> are the lengths of the semi-major and semi-minor axes, respectively.</para>
+    /// <para>This is a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses. The parameters <paramref name="a"/> and <paramref name="b"/> are the lengths of the semi-major and semi-minor axes, respectively.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Ellipse#Circumference"/></para>
     /// </summary>
-    /// <param name="semiMajorAxis">The semi-major axis.</param>
-    /// <param name="semiMinorAxis">The semi-minor axis.</param>
+    /// <param name="a">The semi-major axis.</param>
+    /// <param name="b">The semi-minor axis.</param>
     /// <returns>pow(a - b, 2) / pow(a + b, 2)</returns>
-    public static double H(double semiMajorAxis, double semiMinorAxis) => System.Math.Pow(semiMajorAxis - semiMinorAxis, 2) / System.Math.Pow(semiMajorAxis + semiMinorAxis, 2);
+    public static double H(double a, double b) => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
 
     #endregion Static methods
   }

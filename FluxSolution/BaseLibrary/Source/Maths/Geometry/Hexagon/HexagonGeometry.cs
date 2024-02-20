@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Geometry
 {
   /// <summary>
@@ -10,28 +8,54 @@ namespace Flux.Geometry
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public record class HexagonGeometry
   {
-    /// <summary>This is the ratio relashionship of maxima to minima.</summary>
-    private static readonly double Ratio = System.Math.Sqrt(3) / 2;
-
     private readonly double m_sideLength;
 
     public HexagonGeometry(double sideLength) => m_sideLength = sideLength;
 
     public double SideLength => m_sideLength;
 
-    public double MaximalRadius => m_sideLength;
+    public double Circumradius => m_sideLength;
 
-    public double MinimalRadius => Ratio * m_sideLength;
+    public double Inradius => m_sideLength * System.Math.Sqrt(3) / 2;
 
     /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public double SurfaceArea => 3 * Ratio * m_sideLength * m_sideLength;
+    public double SurfaceArea => ComputeArea(m_sideLength);
 
     /// <summary>Calculates the surface perimeter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public double SurfacePerimeter => m_sideLength * 6;
+    public double SurfacePerimeter => ComputePerimeter(m_sideLength);
 
     #region Static methods
+
+    /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
+    /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
+    public static double ComputeArea(double sideLength) => 3 * (System.Math.Sqrt(3) / 2) * sideLength * sideLength;
+
+    /// <summary>Calculates the surface perimeter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
+    /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
+    public static double ComputePerimeter(double sideLength) => sideLength * 6;
+
+    /// <summary>
+    /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the hexagon with the specified <paramref name="sideLength"/>.</para>
+    /// <see href="http://www.playchilla.com/how-to-check-if-a-point-is-inside-a-hexagon#:~:text=The%20intuitive%20way%20to%20check%20if%20a%20point,corners%20the%20point%20is%20indeed%20within%20the%20hexagon."/>
+    /// </summary>
+    /// <param name="sideLength"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public static bool ContainsPoint(double sideLength, double x, double y)
+    {
+      var q2x = System.Math.Abs(x);         // transform the test point locally and to quadrant 2
+      var q2y = System.Math.Abs(y);         // transform the test point locally and to quadrant 2
+
+      var v = sideLength;
+      var h = 2 * sideLength * System.Math.Cos(30);
+
+      if (q2x > h || q2y > v * 2) return false;           // bounding test (since q2 is in quadrant 2 only 2 tests are needed)
+
+      return (2 * v * h) - (v * q2x) - (h * q2y) >= 0;   // finally the dot product can be reduced to this due to the hexagon symmetry
+    }
 
     /// <summary>
     /// <para>Find the centered hexagonal number by index. This is the number of hexagons in the "ring" represented by <paramref name="index"/>.</para>
@@ -66,7 +90,7 @@ namespace Flux.Geometry
     /// </summary>
     /// <remarks>Indexing of the centered hexagonal number is 1-based. Index is also referred to as "ring".</remarks>
     public static int IndexOfCenteredHexagonalNumber(int centeredHexagonalNumber)
-      => centeredHexagonalNumber > 0 ? (3 + (int)(System.Math.Sqrt(12 * centeredHexagonalNumber - 3))) / 6 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
+        => centeredHexagonalNumber > 0 ? (3 + (int)(System.Math.Sqrt(12 * centeredHexagonalNumber - 3))) / 6 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
 
     /// <summary>
     /// <para>The number of hexagons in the "<paramref name="ring"/>".</para>

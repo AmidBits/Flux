@@ -33,23 +33,10 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      for (var d = 0; d <= 380; d += 10)
-      {
-        var pc = new Flux.Geometry.PolarCoordinate(10, Flux.Units.Angle.ConvertDegreeToRadian(d));
-
-        var cc = pc.ToCartesianCoordinate2();
-        var ccex = pc.ToCartesianCoordinate2Ex();
-        var fc = Flux.Geometry.PolarCoordinate.FromCartesian2(cc.x, cc.y);
-        var fcex = Flux.Geometry.PolarCoordinate.FromCartesian2Ex(ccex.x, ccex.y);
-
-        System.Console.WriteLine($"{d:D3} : {pc} : ({cc.x:N3}, {cc.y:N3}) : ({ccex.x:N3}, {ccex.y:N3}) : {fc} : {fcex}");
-      }
-
-      System.Console.WriteLine(Flux.IntervalNotation.Closed.Compare(4, 4, 9));
-      System.Console.WriteLine(Flux.IntervalNotation.Open.Compare(4, 4, 9));
-
+      var e = new Flux.Geometry.EllipseGeometry(-10, 5);
+      var f = new Flux.Geometry.EllipseGeometry(5, -10);
 
 
       var sb = new Flux.SpanBuilder<char>();
