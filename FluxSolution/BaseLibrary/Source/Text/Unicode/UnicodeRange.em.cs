@@ -14,7 +14,7 @@ namespace Flux
   public static partial class Unicode
   {
     /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
-    private static System.Collections.Generic.IList<(string name, System.Text.Unicode.UnicodeRange range)> GetUnicodeNamesAndRanges()
+    private static System.Collections.Generic.List<(string name, System.Text.Unicode.UnicodeRange range)> GetUnicodeNamesAndRanges()
     {
       var list = new System.Collections.Generic.List<(string name, System.Text.Unicode.UnicodeRange range)>();
 

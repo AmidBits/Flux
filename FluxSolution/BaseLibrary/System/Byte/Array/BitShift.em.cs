@@ -5,7 +5,8 @@ namespace Flux
     /// <summary>Performs an in-place bit shift <paramref name="count"/> left on all bytes in the <paramref name="source"/> array. Returns the overflow byte with all bits as it would look if rotated with the array.</summary>
     public static byte BitShiftLeft(this byte[] source, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (count < 0 || count > 8) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       var maxIndex = source.Length - 1;
@@ -27,7 +28,8 @@ namespace Flux
     /// <summary>Performs an in-place bit shift <paramref name="count"/> right on all bytes in the <paramref name="source"/> array. Returns the overflow byte with all bits as it would look if rotated with the array.</summary>
     public static byte BitShiftRight(this byte[] source, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (count < 0 || count > 8) throw new System.ArgumentOutOfRangeException(nameof(count));
 
       var maxIndex = source.Length - 1;

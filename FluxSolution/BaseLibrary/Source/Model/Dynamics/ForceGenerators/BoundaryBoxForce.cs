@@ -17,7 +17,7 @@ namespace Flux.Model.Dynamics.ForceGenerators
 
     public void ApplyForce(RigidBody body)
     {
-      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      System.ArgumentNullException.ThrowIfNull(body);
 
       var position = body.ObjectPosition;
       var linearVelocity = body.LinearVelocity;

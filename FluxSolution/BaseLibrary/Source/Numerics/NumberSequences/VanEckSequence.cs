@@ -20,16 +20,26 @@ namespace Flux
 
         TSelf next;
 
-        if (lasts.ContainsKey(last))
+        if (lasts.TryAdd(last, index))
+        {
+          next = TSelf.Zero;
+        }
+        else
         {
           next = index - lasts[last];
           lasts[last] = index;
         }
-        else // The last was new.
-        {
-          next = TSelf.Zero;
-          lasts.Add(last, index);
-        }
+
+        //if (lasts.ContainsKey(last))
+        //{
+        //  next = index - lasts[last];
+        //  lasts[last] = index;
+        //}
+        //else // The last was new.
+        //{
+        //  next = TSelf.Zero;
+        //  lasts.Add(last, index);
+        //}
 
         last = next;
       }

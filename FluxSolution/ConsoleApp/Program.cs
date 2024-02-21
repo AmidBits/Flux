@@ -35,22 +35,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var e = new Flux.Geometry.EllipseGeometry(-10, 5);
-      var f = new Flux.Geometry.EllipseGeometry(5, -10);
+      var templateBitMask = 0b110;
+      var templateBitLength = 3;
 
-
-      var sb = new Flux.SpanBuilder<char>();
-      sb.Append("This-is-a-test.", 1);
-
-      sb.ReplaceAll(c => c == '-', '=');
-
-      sb.PadRight(21, "Rat");
-      sb.PadLeft(24, "Rat");
-
-      sb.ReplaceAll(c => c == '=', "+++");
-
-      sb.Repeat(3);
-
+      var fullBitMask = templateBitMask.BitMaskFillRight(templateBitLength);
     }
 
     #region Puzzle

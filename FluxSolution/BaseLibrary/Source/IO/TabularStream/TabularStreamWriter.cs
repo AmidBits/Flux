@@ -43,7 +43,7 @@ namespace Flux.IO
     /// <summary>Writes a sequence of string values to the stream, unmodified. Proper conversions must be performed prior to calling this method if needed (see WriteRecord/ConvertToString).</summary>
     public void WriteFields(System.Collections.Generic.IEnumerable<string> values)
     {
-      if (values is null) throw new System.ArgumentNullException(nameof(values));
+      System.ArgumentNullException.ThrowIfNull(values);
 
       var fieldIndex = 0;
 

@@ -16,8 +16,8 @@ namespace Flux
     /// <see href="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
     public static System.Net.IPAddress GetBroadcastAddressIPv4(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (subnetMask is null) throw new System.ArgumentNullException(nameof(subnetMask));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(subnetMask);
 
       var sourceBytes = source.GetAddressBytes();
       var subnetMaskBytes = subnetMask.GetAddressBytes();
@@ -34,8 +34,8 @@ namespace Flux
     /// <see href="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/>
     public static System.Net.IPAddress GetNetworkAddress(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (subnetMask is null) throw new System.ArgumentNullException(nameof(subnetMask));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(subnetMask);
 
       var sourceBytes = source.GetAddressBytes();
       var subnetMaskBytes = subnetMask.GetAddressBytes();
@@ -79,7 +79,7 @@ namespace Flux
     /// <summary>Convert the IP address to a BigInteger. Works on both IPv4 and IPv6.</summary>
     public static System.Numerics.BigInteger ToBigInteger(this System.Net.IPAddress source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var addressBytes = source.GetAddressBytes();
       System.Array.Reverse(addressBytes);

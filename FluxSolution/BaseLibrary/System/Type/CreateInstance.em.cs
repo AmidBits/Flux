@@ -22,6 +22,6 @@ namespace Flux
     }
 
     private static readonly System.Reflection.MethodInfo m_getDefaultGeneric = typeof(Fx).GetType().GetMethod(nameof(GetDefaultGeneric))!;
-    public static T? GetDefaultGeneric<T>() => default(T);
+    public static T? GetDefaultGeneric<T>() => default;
   }
 }

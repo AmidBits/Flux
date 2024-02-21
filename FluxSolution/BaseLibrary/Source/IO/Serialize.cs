@@ -38,7 +38,7 @@ namespace Flux
     /// <summary>Serialize the source to an XML string.</summary>
     public static string ToXml(object source, System.Xml.XmlWriterSettings settings)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       using var sw = new System.IO.StringWriter();
       using var xw = System.Xml.XmlWriter.Create(sw, settings);

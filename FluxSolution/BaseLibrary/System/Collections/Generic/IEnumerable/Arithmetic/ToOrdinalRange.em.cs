@@ -4,7 +4,7 @@ namespace Flux
   {
     public static System.Collections.Generic.List<int> ToOrdinalRange(this System.Collections.Generic.IEnumerable<int> source, int maxNumber)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var distinct = System.Linq.Enumerable.ToList(System.Linq.Enumerable.Distinct(source));
 

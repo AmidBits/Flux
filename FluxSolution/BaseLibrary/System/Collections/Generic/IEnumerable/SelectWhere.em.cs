@@ -6,8 +6,8 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> SelectWhere<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, bool> predicate, System.Func<TSource, int, TResult> selector)
     {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
-      if (selector is null) throw new System.ArgumentNullException(nameof(selector));
+      System.ArgumentNullException.ThrowIfNull(predicate);
+      System.ArgumentNullException.ThrowIfNull(selector);
 
       var index = 0;
 

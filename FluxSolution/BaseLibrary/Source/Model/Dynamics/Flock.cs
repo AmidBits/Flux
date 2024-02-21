@@ -152,7 +152,8 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
 
     public void ApplyForce(RigidBody body)
     {
-      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      System.ArgumentNullException.ThrowIfNull(body);
+
       if (Disabled) return;
 
       body.Force += AverageLinearVelocity * Weight;
@@ -170,7 +171,8 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
 
     public void ApplyForce(RigidBody body)
     {
-      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      System.ArgumentNullException.ThrowIfNull(body);
+
       if (Disabled) return;
 
       body.Force += (Centroid - body.ObjectPosition) * (Weight * body.Mass);
@@ -188,7 +190,8 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
 
     public void ApplyForce(RigidBody body)
     {
-      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      System.ArgumentNullException.ThrowIfNull(body);
+
       if (Disabled) return;
 
       body.Force += AverageDifference * (Weight * body.Mass);
@@ -205,7 +208,8 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
 
     public void ApplyForce(RigidBody body)
     {
-      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      System.ArgumentNullException.ThrowIfNull(body);
+
       if (Disabled) return;
 
       body.Force += ((Point - body.ObjectPosition) * (Weight * body.Mass));
@@ -221,7 +225,8 @@ namespace Flux.Model.Dynamics.ForceGenerators.FlockBehaviors
 
     public void ApplyForce(RigidBody body)
     {
-      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      System.ArgumentNullException.ThrowIfNull(body);
+
       if (Disabled) return;
 
       body.Force += (Weight * body.Mass) * new System.Numerics.Vector3((float)Random.NumberGenerators.Crypto.NextDouble() - 0.5f, (float)Random.NumberGenerators.Crypto.NextDouble() - 0.5f, (float)Random.NumberGenerators.Crypto.NextDouble() - 0.5f);

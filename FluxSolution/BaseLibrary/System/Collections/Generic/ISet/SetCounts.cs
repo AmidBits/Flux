@@ -15,10 +15,7 @@ namespace Flux
       while (e.MoveNext())
       {
         if (e.Current is var current && source.Contains(current))
-        {
-          if (!hsUnique.Contains(current))
-            hsUnique.Add(current);
-        }
+          hsUnique.Add(current);
         else
         {
           unfoundCount++;

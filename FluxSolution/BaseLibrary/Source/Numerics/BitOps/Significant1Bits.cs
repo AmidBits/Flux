@@ -11,6 +11,22 @@ namespace Flux
       => value & (value - TSelf.One);
 
     /// <summary>
+    /// <para>Clear <paramref name="value"/> of its least-significant-1-bit.</para>
+    /// </summary>
+    /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
+    public static TSelf ClearMostSignificant1Bit<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => value - value.MostSignificant1Bit();
+
+    /// <summary>
+    /// <para>Extracts the lowest numbered element of a bit set (<paramref name="value"/>). Given a 2's complement binary integer value, this is the least-significant-1-bit.</para>
+    /// </summary>
+    /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
+    public static TSelf LeastSignificant1Bit<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => value & ((~value) + TSelf.One);
+
+    /// <summary>
     /// <para>Extracts the highest numbered element of a bit set (<paramref name="value"/>). Given a 2's complement binary integer value, this is the most-significant-1-bit.</para>
     /// <list type="bullet">
     /// <item>If <paramref name="value"/> equal zero, zero is returned.</item>
@@ -22,13 +38,5 @@ namespace Flux
     public static TSelf MostSignificant1Bit<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsZero(value) ? value : TSelf.One << (value.GetBitLengthEx() - 1);
-
-    /// <summary>
-    /// <para>Extracts the lowest numbered element of a bit set (<paramref name="value"/>). Given a 2's complement binary integer value, this is the least-significant-1-bit.</para>
-    /// </summary>
-    /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-    public static TSelf LeastSignificant1Bit<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value & ((~value) + TSelf.One);
   }
 }

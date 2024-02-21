@@ -17,7 +17,7 @@ namespace Flux
 
     public static System.Data.DataTable GetSchemaTableEx(this System.Data.IDataReader source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var schemaTable = source.GetSchemaTable();
 

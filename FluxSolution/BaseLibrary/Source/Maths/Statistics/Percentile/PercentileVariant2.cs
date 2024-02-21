@@ -23,7 +23,7 @@ namespace Flux.Statistics
       where TScore : System.Numerics.INumber<TScore>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
     {
-      if (distribution is null) throw new System.ArgumentNullException(nameof(distribution));
+      System.ArgumentNullException.ThrowIfNull(distribution);
 
       var sampleCount = distribution.Count();
 

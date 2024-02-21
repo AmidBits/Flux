@@ -76,10 +76,10 @@ namespace Flux.DataStructures
 
       var keyStone = set[0];
 
-      if (!node.Children.ContainsKey(keyStone))
+      if (!node.Children.TryGetValue(keyStone, out SimpleTrie<TKey, TValue>.Node? keyStoneValue))
         return false;
 
-      if (TrieDelete(node.Children[keyStone], set[1..]))
+      if (TrieDelete(keyStoneValue, set[1..]))
         node.Children.Remove(keyStone);
 
       return node.Children.Count == 0;
@@ -169,7 +169,7 @@ namespace Flux.DataStructures
 
     private record class Node
     {
-      public readonly System.Collections.Generic.IDictionary<TKey, Node> Children;
+      public readonly System.Collections.Generic.Dictionary<TKey, Node> Children;
       public bool IsTerminal;
       public TValue Value;
 

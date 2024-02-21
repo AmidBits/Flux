@@ -22,7 +22,7 @@ namespace Flux
 
     /// <summary>Creates a new sequence with network interfaces that report having gateways.</summary>
     public static System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.NetworkInterface> WhereGateway(this System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.NetworkInterface> source)
-      => source.Where(ni => ni.GetIPProperties().GatewayAddresses.Any());
+      => source.Where(ni => ni.GetIPProperties().GatewayAddresses.Count > 0);
 
     //public static System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.NetworkInterface> GetOperational(this System.Collections.Generic.IEnumerable<System.Net.NetworkInformation.NetworkInterface> source, bool includeLoopBacksAndTunnels, bool excludeWithoutGateways)
     //  => source.Where(ni => ni.OperationalStatus == System.Net.NetworkInformation.OperationalStatus.Up && (includeLoopBacksAndTunnels || (ni.NetworkInterfaceType != System.Net.NetworkInformation.NetworkInterfaceType.Loopback && ni.NetworkInterfaceType != System.Net.NetworkInformation.NetworkInterfaceType.Tunnel)) && (!excludeWithoutGateways || ni.GetIPProperties().GatewayAddresses.Any()));

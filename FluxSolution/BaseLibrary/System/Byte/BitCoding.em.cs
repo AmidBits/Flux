@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Decodes chunks of bitsPerByte to bytes.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitDecode(this System.Collections.Generic.IEnumerable<byte> source, int bitsPerByte = 6)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (bitsPerByte > 8) throw new System.ArgumentOutOfRangeException(nameof(bitsPerByte));
 
@@ -33,7 +33,7 @@ namespace Flux
     /// <summary>Decodes chunks of bitsPerByte to bytes.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitDecode(this System.IO.Stream source, int bitsPerByte = 6)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (bitsPerByte > 8) throw new System.ArgumentOutOfRangeException(nameof(bitsPerByte));
 
@@ -62,7 +62,7 @@ namespace Flux
     /// <summary>Encodes bytes to chunks of bitsPerByte.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitEncode(this System.Collections.Generic.IEnumerable<byte> source, int bitsPerByte = 6)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (bitsPerByte > 8) throw new System.ArgumentOutOfRangeException(nameof(bitsPerByte));
 
@@ -98,7 +98,7 @@ namespace Flux
     /// <summary>Encodes bytes to chunks of bitsPerByte.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitEncode(this System.IO.Stream source, int bitsPerByte = 6)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       if (bitsPerByte > 8) throw new System.ArgumentOutOfRangeException(nameof(bitsPerByte));
 

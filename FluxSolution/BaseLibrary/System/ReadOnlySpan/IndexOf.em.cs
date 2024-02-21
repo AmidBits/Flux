@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Reports the index in <paramref name="source"/> of the first occurence that satisfy the <paramref name="predicate"/>.</summary>
     public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
     {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+      System.ArgumentNullException.ThrowIfNull(predicate);
 
       var sourceLength = source.Length;
 

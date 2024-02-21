@@ -51,9 +51,9 @@ namespace Flux
 
     public static (IntersectTestLine Outcome, System.Numerics.Vector2 Intersection) GivenTwoPointsOnEachLine(System.Numerics.Vector2 v1, System.Numerics.Vector2 v2, System.Numerics.Vector2 v3, System.Numerics.Vector2 v4)
     {
-      var result = GivenTwoPointsOnEachLine(v1.X, v1.Y, v2.X, v2.Y, v3.X, v3.Y, v4.X, v4.Y);
+      var (outcome, x, y) = GivenTwoPointsOnEachLine(v1.X, v1.Y, v2.X, v2.Y, v3.X, v3.Y, v4.X, v4.Y);
 
-      return (result.Outcome, new((float)result.X, (float)result.Y));
+      return (outcome, new((float)x, (float)y));
     }
 
     /// <summary>Returns the sign indicating whether the point is Left|On|Right of an infinite line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</summary>

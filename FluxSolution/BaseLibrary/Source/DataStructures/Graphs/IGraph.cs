@@ -64,11 +64,11 @@ namespace Flux
     {
       var al = source.CloneEmpty();
 
-      foreach (var v in source.GetVertices())
-        al.AddVertex(v.x, v.value);
+      foreach (var (x, value) in source.GetVertices())
+        al.AddVertex(x, value);
 
-      foreach (var e in source.GetEdges())
-        al.AddEdge(e.y, e.x, e.value);
+      foreach (var (x, y, value) in source.GetEdges())
+        al.AddEdge(y, x, value);
 
       return al;
     }

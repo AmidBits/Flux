@@ -590,7 +590,7 @@ namespace Flux
           {
             System.Array.Copy(m_array, mark + 1, m_array, mark + replacement.Length, m_tail - mark - 1);
 
-            replacement.CopyTo(m_array.AsSpan().Slice(mark));
+            replacement.CopyTo(m_array.AsSpan()[mark..]);
 
             m_tail += replacement.Length - 1;
           }

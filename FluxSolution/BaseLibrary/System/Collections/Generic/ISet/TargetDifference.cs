@@ -11,10 +11,10 @@ namespace Flux
 
       var ths = new System.Collections.Generic.HashSet<T>(target);
 
-      if (!System.Linq.Enumerable.Any(ths))
+      if (ths.Count == 0)
         return System.Linq.Enumerable.Empty<T>(); // If target is empty, the result must be empty.
 
-      if (System.Linq.Enumerable.Any(source))
+      if (source.Count > 0)
         ths.ExceptWith(source.Intersect(ths)); // If source has elements, adjust target.
 
       return ths;

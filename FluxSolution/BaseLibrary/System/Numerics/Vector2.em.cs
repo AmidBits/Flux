@@ -320,7 +320,7 @@ namespace Flux
     public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, System.Func<double, double, bool> equalityPredicate)
     //=> source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).AllEqual(out _);
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 
@@ -340,7 +340,7 @@ namespace Flux
     public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, System.Func<float, float, bool> equalityPredicate)
     //=> source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).Length()).AllEqual(out _);
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).Length()).GetEnumerator();
 
@@ -360,7 +360,7 @@ namespace Flux
     /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
     public static int IsInsidePolygon(this System.Collections.Generic.IList<System.Numerics.Vector2> source, System.Numerics.Vector2 vector)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       int wn = 0;
 
@@ -391,8 +391,8 @@ namespace Flux
     /// <summary>Determines whether the specified polygons A and B intersect.</summary>
     public static bool IsIntersectingPolygon(System.Collections.Generic.IList<System.Numerics.Vector2> a, System.Collections.Generic.IList<System.Numerics.Vector2> b)
     {
-      if (a is null) throw new System.ArgumentNullException(nameof(a));
-      if (b is null) throw new System.ArgumentNullException(nameof(b));
+      System.ArgumentNullException.ThrowIfNull(a);
+      System.ArgumentNullException.ThrowIfNull(b);
 
       if (Geometry.LineSegment.IntersectionTest(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
         return true;
@@ -508,7 +508,7 @@ namespace Flux
     /// <remarks>Applicable to any shape with more than 3 vertices. (Figure 9, in link)</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitVertexToVertices(this System.Collections.Generic.IList<System.Numerics.Vector2> source, int index)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var vertex = source[index];
 

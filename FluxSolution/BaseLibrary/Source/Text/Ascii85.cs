@@ -73,7 +73,7 @@ namespace Flux
 
       public static string Decode(byte[] bytes)
       {
-        if (bytes == null) throw new System.ArgumentNullException(nameof(bytes));
+        System.ArgumentNullException.ThrowIfNull(bytes);
 
         var sb = new System.Text.StringBuilder((int)System.Math.Ceiling(bytes.Length * 1.25)); // Output will be 125% of the decoded (original) bytes.
 

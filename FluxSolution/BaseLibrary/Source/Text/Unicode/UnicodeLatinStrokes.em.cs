@@ -116,7 +116,7 @@ namespace Flux
     /// <summary>In-place replacement of diacritical latin strokes which are not covered by the normalization forms in NET. Can be done in-place because the diacritical latin stroke characters and their replacements are all exactly a single char.</summary>
     public static System.Text.StringBuilder ReplaceUnicodeLatinStrokes(this System.Text.StringBuilder source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       for (var index = 0; index < source.Length; index++)
         if (IsUnicodeLatinStroke(source[index], out var rc))

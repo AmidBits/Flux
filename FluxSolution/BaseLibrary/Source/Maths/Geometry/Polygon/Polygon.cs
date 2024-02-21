@@ -97,7 +97,7 @@ namespace Flux.Geometry
     /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
     public static int ContainsPoint(System.Collections.Generic.IList<System.Numerics.Vector2> polygon, System.Numerics.Vector2 point)
     {
-      if (polygon is null) throw new System.ArgumentNullException(nameof(polygon));
+      System.ArgumentNullException.ThrowIfNull(polygon);
 
       int wn = 0;
 

@@ -204,7 +204,7 @@ namespace Flux
     /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
     public static bool IsEquiangularPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 
@@ -223,7 +223,7 @@ namespace Flux
     /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
     public static bool IsEquilateralPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       using var e = source.PartitionTuple2(true, (v1, v2, index) => (v2 - v1).Length()).GetEnumerator();
 

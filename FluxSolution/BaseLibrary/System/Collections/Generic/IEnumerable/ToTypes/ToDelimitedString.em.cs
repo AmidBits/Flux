@@ -6,7 +6,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static string ToDelimitedString<T>(System.Collections.Generic.IEnumerable<T> source, System.Func<System.Text.StringBuilder, T, int, System.Text.StringBuilder> builder)
     {
-      if (builder is null) throw new System.ArgumentNullException(nameof(builder));
+      System.ArgumentNullException.ThrowIfNull(builder);
 
       var sb = new System.Text.StringBuilder();
 

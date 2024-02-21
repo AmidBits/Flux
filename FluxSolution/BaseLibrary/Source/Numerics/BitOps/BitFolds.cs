@@ -12,6 +12,8 @@ namespace Flux
     public static TSelf BitFoldLeft<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
+      if (TSelf.IsZero(value)) return value;
+
       var tzc = value.GetTrailingZeroCount();
 
       return BitFoldRight(value << value.GetLeadingZeroCount()) >> tzc << tzc;
@@ -24,7 +26,7 @@ namespace Flux
     public static TSelf BitFoldRight<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsZero(value)
-      ? TSelf.Zero
+      ? value
       : (((value.MostSignificant1Bit() - TSelf.One) << 1) | TSelf.One);
   }
 }

@@ -10,19 +10,34 @@ namespace Flux
       => source &= ~bitMask;
 
     /// <summary>
-    /// <para>Create a bit-mask with <paramref name="bitLength"/> number of least-significant-bits from <paramref name="bitMaskTemplate"/> repeated across the <typeparamref name="TSelf"/>.</para>
+    /// <para>Create a bit-mask with <paramref name="count"/> number of least-significant-bits from <paramref name="bitMask"/> filled repeatedly from left to right across the <typeparamref name="TSelf"/>.</para>
     /// </summary>
-    public static TSelf BitMaskFill<TSelf>(this TSelf bitMaskTemplate, int bitLength)
+    public static TSelf BitMaskFillLeft<TSelf>(this TSelf bitMask, int count)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      bitMaskTemplate &= TSelf.CreateChecked((1 << bitLength) - 1); // Ensure only bit-length number of bits in bitMask.
+      bitMask &= TSelf.CreateChecked((1 << count) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
 
-      var newMask = bitMaskTemplate;
+      var mask = bitMask;
 
-      for (var i = bitMaskTemplate.GetBitCount() / bitLength; i > 0; i--) // Loop bit-count minus the offset divided by bit-length (minus one, because we skip equal-to zero in the condition) times.
-        newMask = (newMask << bitLength) | bitMaskTemplate; // Move new bit-mask a bit-length amount and | (or) in the bitMask.
+      for (var i = bitMask.GetBitCount() / count; i > 0; i--) // Loop bit-count divided by count (minus one, hence we skip equal-to zero in the condition) times.
+        mask = (mask << count) | bitMask; // Shift the mask count bits and | (or) in count least-significant-bits from bit-mask.
 
-      return newMask;
+      return mask;
+    }
+
+    public static TSelf BitMaskFillRight<TSelf>(this TSelf bitMask, int count)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      bitMask &= TSelf.CreateChecked((1 << count) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
+
+      bitMask <<= bitMask.GetBitCount() - count; // Shift the template bit-mask into the most-significant-bits.
+
+      var mask = bitMask;
+
+      for (var i = bitMask.GetBitCount() / count; i > 0; i--) // Loop bit-count divided by count (minus one, hence we skip equal-to zero in the condition) times.
+        mask = bitMask | (mask >>> count); // Shift the mask count bits and | (or) in count most-significant-bits from bit-mask.
+
+      return mask;
     }
 
     /// <summary>
@@ -33,25 +48,25 @@ namespace Flux
       => source ^= bitMask;
 
     /// <summary>
-    /// <para>Create a bit-mask with <paramref name="bitLength"/> most-significant-bits set to 1.</para>
+    /// <para>Create a bit-mask with <paramref name="count"/> most-significant-bits set to 1.</para>
     /// </summary>
-    public static TSelf BitMaskLeft<TSelf>(this TSelf bitLength)
+    public static TSelf BitMaskLeft<TSelf>(this TSelf count)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => bitLength.BitMaskRight() << (bitLength.GetBitCount() - int.CreateChecked(bitLength));
+      => count.BitMaskRight() << (count.GetBitCount() - int.CreateChecked(count));
 
     /// <summary>
-    /// <para>Create a bit-mask with <paramref name="bitLength"/> least-significant-bits set to 1, and the number of <paramref name="trailingZeroCount"/> (least-significant-bits set to zero).</para>
+    /// <para>Create a bit-mask with <paramref name="count"/> least-significant-bits set to 1, and the number of <paramref name="trailingZeroCount"/> (least-significant-bits set to zero).</para>
     /// </summary>
     /// <remarks>This is a specialized version for <see cref="System.Numerics.BigInteger"/>.</remarks>
-    public static System.Numerics.BigInteger BitMaskLeft(this System.Numerics.BigInteger bitLength, int trailingZeroCount)
-      => bitLength.BitMaskRight() << trailingZeroCount;
+    public static System.Numerics.BigInteger BitMaskLeft(this System.Numerics.BigInteger count, int trailingZeroCount)
+      => count.BitMaskRight() << trailingZeroCount;
 
     /// <summary>
-    /// <para>Create a bit-mask with <paramref name="bitLength"/> least-significant-bits set to 1.</para>
+    /// <para>Create a bit-mask with <paramref name="count"/> least-significant-bits set to 1.</para>
     /// </summary>
-    public static TSelf BitMaskRight<TSelf>(this TSelf bitLength)
+    public static TSelf BitMaskRight<TSelf>(this TSelf count)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => (((TSelf.One << (int.CreateChecked(bitLength) - 1)) - TSelf.One) << 1) | TSelf.One;
+      => (((TSelf.One << (int.CreateChecked(count) - 1)) - TSelf.One) << 1) | TSelf.One;
 
     /// <summary>
     /// <para>Set the bits of <paramref name="source"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>

@@ -16,10 +16,7 @@ namespace Flux
         var t = target[index];
 
         if (source.IndexOf(t, equalityComparer) > -1)
-        {
-          if (!unique.Contains(t))
-            unique.Add(t);
-        }
+          unique.Add(t);
         else
         {
           unfoundCount++;

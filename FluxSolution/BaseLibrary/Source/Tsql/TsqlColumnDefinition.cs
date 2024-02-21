@@ -1,7 +1,10 @@
 namespace Flux.Data
 {
-  public record struct TsqlColumnDefinition
+  public partial record struct TsqlColumnDefinition
   {
+    [System.Text.RegularExpressions.GeneratedRegex(@"^\s*?(?<ColumnName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?(?<Nullability>NOT\s+NULL|NULL)\s*?$")]
+    private static partial System.Text.RegularExpressions.Regex ParseRegex();
+
     /// <summary>Returns the column name.</summary>
     public string ColumnName { get; private set; }
 
@@ -36,10 +39,9 @@ namespace Flux.Data
     public static System.Collections.Generic.IEnumerable<string> ToDataTypeArguments(string dataTypeArgumentsAsString)
       => new System.Text.StringBuilder(dataTypeArgumentsAsString).RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, new char[] { ',' });
 
-    private static readonly System.Text.RegularExpressions.Regex m_reParse = new(@"^\s*?(?<ColumnName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeName>\""[^\""]+\""|\[[^\]]+\]|\w+)\s*?(?<DataTypeArguments>\([\w\s\,]+\))?\s*?(?<Nullability>NOT\s+NULL|NULL)\s*?$");
     public static TsqlColumnDefinition Parse(string tsqlColumnDefinition)
     {
-      var match = m_reParse.Match(tsqlColumnDefinition);
+      var match = ParseRegex().Match(tsqlColumnDefinition);
 
       var columnName = match.Groups[nameof(ColumnName)].Value;
       var dataTypeName = match.Groups[nameof(DataTypeName)].Value;
@@ -75,7 +77,9 @@ namespace Flux.Data
     #endregion Static methods
 
     #region Object overrides
+
     public override readonly string ToString() => ToString(false);
+
     #endregion Object overrides
 
     //public static void Validate(string columnName, string dataTypeName, int[] dataTypeArguments, bool isNullable)

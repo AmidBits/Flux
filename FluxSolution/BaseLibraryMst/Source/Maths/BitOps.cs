@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Numerics
 {
   [TestClass]
-  public class Bits
+  public class BitOps
   {
     [TestMethod]
     public void BitFoldLeft()
@@ -31,6 +31,38 @@ namespace Numerics
     {
       Assert.AreEqual(7, 88.GetShortestBitLength());
       Assert.AreEqual(8, (-88).GetShortestBitLength());
+    }
+
+    [TestMethod]
+    public void BitMaskFillLeft()
+    {
+      var templateBitMask = 0b110;
+      var templateBitLength = 3;
+
+      var expected = 0b1011_0110_1101_1011_0110_1101_1011_0110U;
+      var actual = unchecked((uint)templateBitMask.BitMaskFillLeft(templateBitLength));
+
+      // Debug:
+      var e = expected.ToBinaryString();
+      var a = actual.ToBinaryString();
+
+      Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void BitMaskFillRight()
+    {
+      var templateBitMask = 0b110;
+      var templateBitLength = 3;
+
+      var expected = 0b1101_1011_0110_1101_1011_0110_1101_1011U;
+      var actual = unchecked((uint)templateBitMask.BitMaskFillRight(templateBitLength));
+
+      // Debug:
+      var e = expected.ToBinaryString();
+      var a = actual.ToBinaryString();
+
+      Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]

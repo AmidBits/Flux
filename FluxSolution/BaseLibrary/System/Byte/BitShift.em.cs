@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Returns a sequence bit-shifted left by count bits, by extending the array with the necessary number of bytes.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitShiftLeft(this System.Collections.Generic.IEnumerable<byte> source, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var effectiveShift = (count % 8);
       var inverseShift = (8 - effectiveShift);
@@ -29,7 +29,7 @@ namespace Flux
     /// <summary>Returns a sequence bit-shifted right by count bits, by extending the array with the necessary number of bytes.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitShiftRight(this System.Collections.Generic.IEnumerable<byte> source, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       for (var i = count / 8; i > 0; i--)
       {

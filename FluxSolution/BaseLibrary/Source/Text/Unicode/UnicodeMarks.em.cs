@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>Remove diacritical marks.</summary>
     public static SpanBuilder<char> RemoveUnicodeMarks(this string source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var sb = new SpanBuilder<char>();
 

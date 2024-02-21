@@ -48,7 +48,7 @@ namespace Flux
       /// <summary>Determintes whether the address is a multicast address. Works on both IPv4 and IPv6.</summary>
       public static bool IsMulticast(this System.Net.IPAddress source)
       {
-        if (source is null) throw new System.ArgumentNullException(nameof(source));
+        System.ArgumentNullException.ThrowIfNull(source);
 
         if (source.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
           return (source.GetAddressBytes()[0] & 0xF0) == 0xE0;

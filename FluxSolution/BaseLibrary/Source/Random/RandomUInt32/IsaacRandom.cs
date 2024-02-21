@@ -20,7 +20,7 @@ namespace Flux.Random
 
     public void Seed(string seed, bool flag)
     {
-      if (seed is null) throw new System.ArgumentNullException(nameof(seed));
+      System.ArgumentNullException.ThrowIfNull(seed);
 
       for (var i = 0; i < 256; i++)
         m_randmem[i] = 0;

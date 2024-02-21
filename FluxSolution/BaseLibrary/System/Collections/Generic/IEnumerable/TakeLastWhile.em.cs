@@ -6,7 +6,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> TakeLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate)
     {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+      System.ArgumentNullException.ThrowIfNull(predicate);
 
       var buffer = new System.Collections.Generic.List<T>();
 

@@ -6,8 +6,8 @@ namespace Flux
     public static System.Collections.Generic.IDictionary<TKey, System.Collections.Generic.HashSet<int>> CreateIndexMap<T, TKey>(this System.ReadOnlySpan<T> source, System.Func<T, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey>? equalityComparer = null)
       where TKey : notnull
     {
-      if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
-      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
+      System.ArgumentNullException.ThrowIfNull(keySelector);
+      System.ArgumentNullException.ThrowIfNull(equalityComparer);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<TKey>.Default;
 

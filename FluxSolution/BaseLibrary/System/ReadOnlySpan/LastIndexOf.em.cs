@@ -7,7 +7,7 @@ namespace Flux
     /// <summary>Reports the index of the last occurence that satisfies the predicate.</summary>
     public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
     {
-      if (predicate is null) throw new System.ArgumentNullException(nameof(predicate));
+      System.ArgumentNullException.ThrowIfNull(predicate);
 
       for (var index = source.Length - 1; index >= 0; index--)
         if (predicate(source[index], index))

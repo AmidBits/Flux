@@ -50,7 +50,7 @@ namespace Flux
     /// <summary>Folds all bits from least significant bit (LSB) of all bytes, throughout the array.</summary>
     public static byte[] FoldLeastSignificantBits(this byte[] source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var index = source.Length;
 
@@ -74,7 +74,7 @@ namespace Flux
     /// <summary>Folds all bits from most significant bit (MSB) of all bytes, throughout the array.</summary>
     public static byte[] FoldMostSignificantBits(this byte[] source)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var index = -1;
 

@@ -9,7 +9,7 @@ namespace Flux
     {
       if (indexA != indexB) // No need to do anything, if the indices are the same.
       {
-        if (source is null) throw new System.ArgumentNullException(nameof(source));
+        System.ArgumentNullException.ThrowIfNull(source);
 
         (source[indexB], source[indexA]) = (source[indexA], source[indexB]);
       }

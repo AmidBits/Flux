@@ -6,9 +6,9 @@ namespace Flux
     public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, System.Collections.Generic.IEqualityComparer<char> equalityComparer, System.ReadOnlySpan<char> characters)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(equalityComparer);
 
       if (maxAdjacentLength < 1) throw new System.ArgumentNullException(nameof(maxAdjacentLength));
-      if (equalityComparer is null) throw new System.ArgumentNullException(nameof(equalityComparer));
 
       var index = 0;
       var previous = '\0';

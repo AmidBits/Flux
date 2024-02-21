@@ -10,7 +10,7 @@ namespace Flux.Model.Dynamics.ForceGenerators
 
     public void ApplyForce(RigidBody body)
     {
-      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      System.ArgumentNullException.ThrowIfNull(body);
 
       var dragForce = 0.5f * DragDensity * (float)System.Math.Pow(body.LinearVelocity.Length(), 2) * body.CoefficientOfDrag;
 

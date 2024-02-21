@@ -40,12 +40,12 @@
     /// <summary>
     /// <para>Whether to prefer Unicode symbols, where and when available. The default is true.</para>
     /// </summary>
-    public bool PreferUnicode { get => m_preferUnicode.HasValue ? m_preferUnicode.Value : true; init => m_preferUnicode = value; }
+    public bool PreferUnicode { get => m_preferUnicode ?? true; init => m_preferUnicode = value; }
 
     /// <summary>
     /// <para>The spacing to use between value and unit. The default is <see cref="UnicodeSpacing.Space"/>.</para>
     /// </summary>
-    public UnicodeSpacing UnitSpacing { get => m_unitSpacing.HasValue ? m_unitSpacing.Value : UnicodeSpacing.Space; init => m_unitSpacing = value; }
+    public UnicodeSpacing UnitSpacing { get => m_unitSpacing ?? UnicodeSpacing.Space; init => m_unitSpacing = value; }
 
     /// <summary>
     /// <para>Whether to use the full actual name of the enum value, rather than symbols or shorter (e.g. acronym) variants. The default is false.</para>

@@ -7,8 +7,8 @@ namespace Flux
     public static System.Collections.Generic.SortedDictionary<TKey, TValue> ToSortedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, int, TKey> keySelector, System.Func<TSource, int, TValue> valueSelector, System.Collections.Generic.IComparer<TKey>? comparer = null)
       where TKey : notnull
     {
-      if (keySelector is null) throw new System.ArgumentNullException(nameof(keySelector));
-      if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
+      System.ArgumentNullException.ThrowIfNull(keySelector);
+      System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       comparer ??= System.Collections.Generic.Comparer<TKey>.Default;
 

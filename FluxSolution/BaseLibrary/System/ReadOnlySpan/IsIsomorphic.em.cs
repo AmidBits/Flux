@@ -20,9 +20,9 @@ namespace Flux
         var c1 = source[i];
         var c2 = target[i];
 
-        if (map1.ContainsKey(c1))
+        if (map1.TryGetValue(c1, out T? value))
         {
-          if (!equalityComparer.Equals(c2, map1[c1]))
+          if (!equalityComparer.Equals(c2, value))
             return false;
         }
         else

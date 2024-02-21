@@ -19,7 +19,7 @@
     /// <param name="direction">Transformation direction.</param>
     public static void DFT(System.Numerics.Complex[] data, Direction direction)
     {
-      if (data is null) throw new System.ArgumentNullException(nameof(data));
+      System.ArgumentNullException.ThrowIfNull(data);
 
       var n = data.Length;
       double arg, cos, sin;
@@ -65,7 +65,7 @@
     /// 
     public static void DFT2(System.Numerics.Complex[,] data, Direction direction)
     {
-      if (data is null) throw new System.ArgumentNullException(nameof(data));
+      System.ArgumentNullException.ThrowIfNull(data);
 
       var n = data.GetLength(0);  // rows
       var m = data.GetLength(1);  // columns
@@ -147,7 +147,7 @@
     /// <exception cref="ArgumentException">Incorrect data length.</exception>
     public static void FFT(System.Numerics.Complex[] data, Direction direction)
     {
-      if (data is null) throw new System.ArgumentNullException(nameof(data));
+      System.ArgumentNullException.ThrowIfNull(data);
 
       var n = data.Length;
       var m = System.Math.Log2(n);
@@ -201,7 +201,7 @@
     /// <exception cref="ArgumentException">Incorrect data length.</exception>
     public static void FFT2(System.Numerics.Complex[,] data, Direction direction)
     {
-      if (data is null) throw new System.ArgumentNullException(nameof(data));
+      System.ArgumentNullException.ThrowIfNull(data);
 
       var k = data.GetLength(0);
       var n = data.GetLength(1);

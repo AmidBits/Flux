@@ -40,7 +40,7 @@ namespace Flux
     /// </summary>
     public static T[] InsertToCopy<T>(this T[] source, int index, params T[] values)
     {
-      if (values is null) throw new System.ArgumentNullException(nameof(values));
+      System.ArgumentNullException.ThrowIfNull(values);
 
       var target = InsertToCopy(source, index, values.Length);
       System.Array.Copy(values, 0, target, index, values.Length);

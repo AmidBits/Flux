@@ -5,8 +5,8 @@ namespace Flux
     /// <summary>Creates a new byte[count] of bitwise AND values using source[sourceStartAt..count] and other[otherStartAt..count].</summary>
     public static byte[] BitwiseAnd(this byte[] source, int startAt, byte[] other, int otherStartAt, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (other is null) throw new System.ArgumentNullException(nameof(other));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(other);
 
       var target = new byte[count];
       for (var index = 0; index < count; count++, startAt++, otherStartAt++)
@@ -17,7 +17,7 @@ namespace Flux
     /// <summary>Performs an in-place negating of source[sourceStartIndex..count].</summary>
     public static byte[] BitwiseNot(this byte[] source, int startAt, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
+      System.ArgumentNullException.ThrowIfNull(source);
 
       var target = new byte[count];
       for (var index = 0; index < count; count++, startAt++)
@@ -31,8 +31,8 @@ namespace Flux
     /// <summary>Creates a new byte[count] of bitwise OR values using source[sourceStartAt..count] and other[otherStartAt..count].</summary>
     public static byte[] BitwiseOr(this byte[] source, int startAt, byte[] other, int otherStartAt, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (other is null) throw new System.ArgumentNullException(nameof(other));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(other);
 
       var target = new byte[count];
       for (var index = 0; index < count; count++, startAt++, otherStartAt++)
@@ -43,8 +43,8 @@ namespace Flux
     /// <summary>Creates a new byte[count] of bitwise XOR values using source[sourceStartAt..count] and other[otherStartAt..count].</summary>
     public static byte[] BitwiseXor(this byte[] source, int startAt, byte[] other, int otherStartAt, int count)
     {
-      if (source is null) throw new System.ArgumentNullException(nameof(source));
-      if (other is null) throw new System.ArgumentNullException(nameof(other));
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(other);
 
       var target = new byte[count];
       for (var index = 0; index < count; count++, startAt++, otherStartAt++)

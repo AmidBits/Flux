@@ -13,7 +13,7 @@ namespace Flux.Model.Dynamics.ForceGenerators
 
     public void ApplyForce(RigidBody body)
     {
-      if (body is null) throw new System.ArgumentNullException(nameof(body));
+      System.ArgumentNullException.ThrowIfNull(body);
 
       // Dot product: >0 = <90, <0 = >90, =0 = 90, =1 = parallel same dir, =-1 = parallel opposite dir.
       // If the gravitational pull and the body position is within 90 degrees then apply gravity.

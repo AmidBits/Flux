@@ -6,7 +6,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static (int ltIndex, TSource? ltItem, int gtIndex, TSource? gtItem) GetInfimumAndSupremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, TValue targetValue, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
-      if (valueSelector is null) throw new System.ArgumentNullException(nameof(valueSelector));
+      System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
