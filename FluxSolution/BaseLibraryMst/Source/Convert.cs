@@ -21,13 +21,16 @@ namespace Static
     }
 
     [TestMethod]
-    public void BinaryStrings()
+    public void BinaryString1()
     {
       string binS102 = @"1100110";
       System.Numerics.BigInteger binI102 = 0b1100110;
 
-      Assert.AreEqual(binS102, Flux.PositionalNotation.NumberToText(binI102, Flux.PositionalNotation.Base64.Substring(0, 2), '\u002D').ToString());
-      Assert.AreEqual(binI102, Flux.PositionalNotation.TextToNumber(binS102, Flux.PositionalNotation.Base64.Substring(0, 2).ToCharArray(), '\u002D', out System.Numerics.BigInteger _));
+      var ntt = Flux.PositionalNotation.NumberToText(binI102, Flux.PositionalNotation.Base64.Substring(0, 2), '\u002D').ToString();
+      var ttn = Flux.PositionalNotation.TextToNumber(binS102, Flux.PositionalNotation.Base64.Substring(0, 2).ToCharArray(), '\u002D', out System.Numerics.BigInteger _);
+
+      Assert.AreEqual(binS102, ntt);
+      Assert.AreEqual(binI102, ttn);
     }
 
     [TestMethod]

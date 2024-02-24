@@ -27,7 +27,7 @@ namespace Flux
 
       try
       {
-        for (var i = 0; i < alphabet.Length; i++)
+        for (var i = 0; i < positionalNotationIndices.Count; i++)
           symbols.Add(alphabet[positionalNotationIndices[i]]);
 
         return true;
