@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.AngularAccelerationUnit unit, Units.UnitValueStringOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.AngularAccelerationUnit unit, bool preferUnicode = false, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        Units.AngularAccelerationUnit.RadianPerSecondSquared => options.PreferUnicode ? "\u33AF" : "rad/s²",
+        Units.AngularAccelerationUnit.RadianPerSecondSquared => preferUnicode ? "\u33AF" : "rad/s²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -81,7 +81,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(AngularAccelerationUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

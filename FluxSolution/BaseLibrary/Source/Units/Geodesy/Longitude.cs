@@ -26,7 +26,7 @@ namespace Flux.Units
     public double GetMercatorProjectedX()
       => Angle.GetUnitValue(AngleUnit.Radian);
 
-    public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, UnicodeSpacing spacing = UnicodeSpacing.None)
+    public string ToSexagesimalDegreeString(DmsNotation format = DmsNotation.DegreesMinutesDecimalSeconds, UnicodeSpacing spacing = UnicodeSpacing.None)
       => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.EastWest, -1, spacing);
 
     #region Static methods
@@ -84,12 +84,8 @@ namespace Flux.Units
     {
       if (format is not null)
       {
-        if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds);
-        if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes);
-        if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees);
+        if (Angle.TryConvertFormatToDmsNotation(format, out var dmsFormat))
+          return ToSexagesimalDegreeString(dmsFormat);
 
         return Angle.ToUnitValueString(AngleUnit.Degree, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
       }

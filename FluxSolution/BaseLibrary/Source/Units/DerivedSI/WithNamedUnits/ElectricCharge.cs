@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.ElectricChargeUnit unit, Units.UnitValueStringOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.ElectricChargeUnit unit, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         Units.ElectricChargeUnit.Coulomb => "C",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -18,7 +18,7 @@ namespace Flux
       Coulomb,
     }
 
-    /// <summary>Electric charge unit of Coulomb.</summary>
+    /// <summary>Electric charge, unit of Coulomb.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Electric_charge"/>
     public readonly record struct ElectricCharge
       : System.IComparable, System.IComparable<ElectricCharge>, System.IFormattable, IUnitValueQuantifiable<double, ElectricChargeUnit>
@@ -83,7 +83,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(ElectricChargeUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(' ');
+        sb.Append(unit.GetUnitString(options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

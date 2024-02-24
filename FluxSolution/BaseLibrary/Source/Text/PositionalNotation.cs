@@ -20,13 +20,39 @@ namespace Flux
 
     #region Static methods
 
-    /// <summary>Converts <paramref name="symbols"/> with <paramref name="alphabet"/> to a positional notation list of indices.</summary>
-    public static System.Collections.Generic.List<int> ConvertSymbolsToIndices<TSymbol>(System.Collections.Generic.IList<TSymbol> symbols, System.Collections.Generic.IList<TSymbol> alphabet)
-      => symbols.Select(character => alphabet.IndexOf(character)).ToList();
+    /// <summary>Converts a <paramref name="number"/> to a list of <paramref name="symbols"/>, based on the specified <paramref name="radix"/> and <paramref name="alphabet"/>.</summary>
+    public static bool TryConvertPositionalNotationIndicesToSymbols<TSymbol>(System.Collections.Generic.IList<int> positionalNotationIndices, System.ReadOnlySpan<TSymbol> alphabet, out System.Collections.Generic.List<TSymbol> symbols)
+    {
+      symbols = new();
 
-    /// <summary>Converts <paramref name="indices"/> using <paramref name="alphabet"/> to a positional notation list of indices.</summary>
-    public static System.Collections.Generic.List<TSymbol> ConvertIndicesToSymbols<TSymbol>(System.Collections.Generic.IList<int> indices, System.Collections.Generic.IList<TSymbol> alphabet)
-      => indices.Select(index => alphabet[index]).ToList();
+      try
+      {
+        for (var i = 0; i < alphabet.Length; i++)
+          symbols.Add(alphabet[positionalNotationIndices[i]]);
+
+        return true;
+      }
+      catch { }
+
+      return false;
+    }
+
+    /// <summary>Converts a list of <paramref name="symbols"/> to a <paramref name="number"/>, based on the specified <paramref name="radix"/> and <paramref name="alphabet"/>.</summary>
+    public static bool TryConvertSymbolsToPositionalNotationIndices<TSymbol>(System.ReadOnlySpan<TSymbol> symbols, System.ReadOnlySpan<TSymbol> alphabet, out System.Collections.Generic.List<int> positionalNotationIndices)
+    {
+      positionalNotationIndices = new();
+
+      try
+      {
+        for (var i = 0; i < symbols.Length; i++)
+          positionalNotationIndices.Add(alphabet.IndexOf(symbols[i]));
+
+        return true;
+      }
+      catch { }
+
+      return false;
+    }
 
     /// <summary>Converts <paramref name="number"/> to a positional notation text string with the specified <paramref name="minLength"/>.</summary>
     public static System.ReadOnlySpan<TSymbol> NumberToText<TSelf, TSymbol>(TSelf number, System.ReadOnlySpan<TSymbol> alphabet, TSymbol negativeSymbol, int minLength = 1)
@@ -46,7 +72,7 @@ namespace Flux
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      var symbols = ConvertIndicesToSymbols(indices, alphabet.ToArray());
+      TryConvertPositionalNotationIndicesToSymbols(indices, alphabet, out var symbols);
 
       if (TSelf.IsNegative(number) && alphabet.Length == 10)
         symbols.Insert(0, negativeSymbol); // If the value is negative AND base-2 (radix) is 10 (decimal)...
@@ -55,14 +81,14 @@ namespace Flux
     }
 
     /// <summary>Convert a positional notation <paramref name="text"/> string to a number using <paramref name="alphabet"/> and <paramref name="negativeSymbol"/>.</summary>
-    public static TSelf TextToNumber<TSelf, TSymbol>(System.ReadOnlySpan<TSymbol> text, System.Collections.Generic.IList<TSymbol> alphabet, TSymbol negativeSymbol, out TSelf number)
+    public static TSelf TextToNumber<TSelf, TSymbol>(System.ReadOnlySpan<TSymbol> text, System.ReadOnlySpan<TSymbol> alphabet, TSymbol negativeSymbol, out TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       var isNegative = text[0]!.Equals(negativeSymbol);
 
-      var indices = ConvertSymbolsToIndices(text[(isNegative ? 1 : 0)..].ToList(), alphabet);
+      TryConvertSymbolsToPositionalNotationIndices(text[(isNegative ? 1 : 0)..], alphabet.AsSpan(), out var indices);
 
-      Units.Radix.TryConvertPositionalNotationIndicesToNumber(indices, alphabet.Count, out TSelf value);
+      Units.Radix.TryConvertPositionalNotationIndicesToNumber(indices, alphabet.Length, out TSelf value);
 
       return number = isNegative ? -value : value;
     }
@@ -121,7 +147,8 @@ namespace Flux
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      var symbols = ConvertIndicesToSymbols(indices, alphabet.ToArray());
+      TryConvertPositionalNotationIndicesToSymbols(indices, alphabet, out var symbols);
+      //var symbols = ConvertIndicesToSymbols(indices, alphabet.ToArray());
 
       if (TSelf.IsNegative(value))
         symbols.Insert(0, negativeSymbol);
@@ -157,7 +184,9 @@ namespace Flux
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      return ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
+      TryConvertPositionalNotationIndicesToSymbols(indices, alphabet, out var symbols);
+
+      return symbols.AsSpan();
     }
 
     /// <summary>Creates a hexadecimal (base 16) text string with <paramref name="minLength"/> from <paramref name="value"/>.</summary>
@@ -188,7 +217,9 @@ namespace Flux
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      return ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
+      TryConvertPositionalNotationIndicesToSymbols(indices, alphabet, out var symbols);
+
+      return symbols.AsSpan();
     }
 
     /// <summary>Creates an octal (base 8) text string with <paramref name="minLength"/> from <paramref name="value"/>.</summary>
@@ -227,7 +258,9 @@ namespace Flux
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
 
-      return ConvertIndicesToSymbols(indices, alphabet.ToArray()).AsSpan();
+      TryConvertPositionalNotationIndicesToSymbols(indices, alphabet, out var symbols);
+
+      return symbols.AsSpan();
     }
 
     /// <summary>Creates a base <paramref name="radix"/> text string from <paramref name="value"/>, with an optional <paramref name="minLength"/> of digits in the resulting string (padded with zeroes if needed).</summary>

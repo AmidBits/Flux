@@ -2,11 +2,11 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.AreaUnit unit, Units.UnitValueStringOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.AreaUnit unit, bool preferUnicode = false, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        Units.AreaUnit.SquareMeter => options.PreferUnicode ? "\u33A1" : "m²",
-        Units.AreaUnit.Hectare => options.PreferUnicode ? "\u33CA" : "ha",
+        Units.AreaUnit.SquareMeter => preferUnicode ? "\u33A1" : "m²",
+        Units.AreaUnit.Hectare => preferUnicode ? "\u33CA" : "ha",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -89,7 +89,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(AreaUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

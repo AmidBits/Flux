@@ -4,7 +4,7 @@
   {
     public static ValueRange<TSelf> Create<TSelf>(this IntervalNotation notation, TSelf min, TSelf max)
       where TSelf : System.Numerics.INumber<TSelf>
-      => (ValueRange<TSelf>)notation.GetExtremum(min, max);
+      => (ValueRange<TSelf>)notation.GetInfimumAndSupremum(min, max);
 
     /// <summary>Creates a sequence of numbers alternating back and forth over the <see cref="ValueRange{TSelf}"/>, controlled by a <paramref name="stepSize"/>, <paramref name="initialOrder"/>, <paramref name="notation"/> and loop <paramref name="count"/>.</summary>
     /// <param name="source">The <see cref="ValueRange{TSelf}"/>.</param>
@@ -61,7 +61,7 @@
       if (stepSize <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(stepSize));
       if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
 
-      var (min, max) = notation.GetExtremum(source.Min, source.Max);
+      var (min, max) = notation.GetInfimumAndSupremum(source.Min, source.Max);
 
       switch (order)
       {

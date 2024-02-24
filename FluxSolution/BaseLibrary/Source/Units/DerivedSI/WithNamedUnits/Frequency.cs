@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.FrequencyUnit unit, Units.UnitValueStringOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.FrequencyUnit unit, bool preferUnicode, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        Units.FrequencyUnit.Hertz => options.PreferUnicode ? "\u3390" : "Hz",
-        Units.FrequencyUnit.KiloHertz => options.PreferUnicode ? "\u3391" : "kHz",
-        Units.FrequencyUnit.MegaHertz => options.PreferUnicode ? "\u3392" : "MHz",
-        Units.FrequencyUnit.GigaHertz => options.PreferUnicode ? "\u3393" : "GHz",
-        Units.FrequencyUnit.TeraHertz => options.PreferUnicode ? "\u3394" : "THz",
+        Units.FrequencyUnit.Hertz => preferUnicode ? "\u3390" : "Hz",
+        Units.FrequencyUnit.KiloHertz => preferUnicode ? "\u3391" : "kHz",
+        Units.FrequencyUnit.MegaHertz => preferUnicode ? "\u3392" : "MHz",
+        Units.FrequencyUnit.GigaHertz => preferUnicode ? "\u3393" : "GHz",
+        Units.FrequencyUnit.TeraHertz => preferUnicode ? "\u3394" : "THz",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -164,7 +164,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(FrequencyUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

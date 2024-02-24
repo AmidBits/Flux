@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PowerUnit unit, Units.UnitValueStringOptions options)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.PowerUnit unit, bool preferUnicode, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         Units.PowerUnit.Watt => "W",
-        Units.PowerUnit.KiloWatt => options.PreferUnicode ? "\u33BE" : "kW",
-        Units.PowerUnit.MegaWatt => options.PreferUnicode ? "\u33BF" : "MW",
+        Units.PowerUnit.KiloWatt => preferUnicode ? "\u33BE" : "kW",
+        Units.PowerUnit.MegaWatt => preferUnicode ? "\u33BF" : "MW",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -99,7 +99,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(PowerUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

@@ -2,13 +2,14 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.SpeedUnit unit, Units.UnitValueStringOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.SpeedUnit unit, bool preferUnicode = false, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
+        Units.SpeedUnit.MeterPerSecond => preferUnicode ? "\u33A7" : "m/s",
         Units.SpeedUnit.FootPerSecond => "ft/s",
         Units.SpeedUnit.KilometerPerHour => "km/h",
-        Units.SpeedUnit.Knot => options.PreferUnicode ? "\u33CF" : "knot",
-        Units.SpeedUnit.MeterPerSecond => options.PreferUnicode ? "\u33A7" : "m/s",
+        Units.SpeedUnit.Knot => preferUnicode ? "\u33CF" : "knot",
+        Units.SpeedUnit.Mach => "Mach",
         Units.SpeedUnit.MilePerHour => "mph",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -23,6 +24,7 @@ namespace Flux
       FootPerSecond,
       KilometerPerHour,
       Knot,
+      Mach,
       MilePerHour,
     }
 
@@ -31,9 +33,10 @@ namespace Flux
     public readonly record struct Speed
       : System.IComparable, System.IComparable<Speed>, System.IFormattable, IUnitValueQuantifiable<double, SpeedUnit>
     {
-      /// <summary>The speed of light in vacuum.</summary>
+      /// <summary>The speed of light in vacuum (symbol c).</summary>
       public static Speed SpeedOfLight => new(299792458);
-      /// <summary>The speed of sound in air.</summary>
+
+      /// <summary>The speed of sound in dry air at sea-level pressure and 20 °C.</summary>
       public static Speed SpeedOfSound => new(343);
 
       private readonly double m_value;
@@ -41,10 +44,11 @@ namespace Flux
       public Speed(double value, SpeedUnit unit = SpeedUnit.MeterPerSecond)
         => m_value = unit switch
         {
+          SpeedUnit.MeterPerSecond => value,
           SpeedUnit.FootPerSecond => value * (381.0 / 1250.0),
           SpeedUnit.KilometerPerHour => value * (5.0 / 18.0),
           SpeedUnit.Knot => value * (1852.0 / 3600.0),
-          SpeedUnit.MeterPerSecond => value,
+          SpeedUnit.Mach => value * SpeedOfSound.Value,
           SpeedUnit.MilePerHour => value * (1397.0 / 3125.0),
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
@@ -114,16 +118,31 @@ namespace Flux
       public double GetUnitValue(SpeedUnit unit)
         => unit switch
         {
+          SpeedUnit.MeterPerSecond => m_value,
           SpeedUnit.FootPerSecond => m_value * (1250.0 / 381.0),
           SpeedUnit.KilometerPerHour => m_value * (18.0 / 5.0),
           SpeedUnit.Knot => m_value * (3600.0 / 1852.0),
-          SpeedUnit.MeterPerSecond => m_value,
+          SpeedUnit.Mach => m_value / SpeedOfSound.Value,
           SpeedUnit.MilePerHour => m_value * (3125.0 / 1397.0),
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
       public string ToUnitValueString(SpeedUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        if (unit == SpeedUnit.Mach)
+        {
+          sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
+          sb.Append(options.UnitSpacing.ToSpacingString());
+        }
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        if (unit != SpeedUnit.Mach)
+        {
+          sb.Append(options.UnitSpacing.ToSpacingString());
+          sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
+        }
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

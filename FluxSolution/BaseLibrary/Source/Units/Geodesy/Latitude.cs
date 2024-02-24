@@ -25,7 +25,7 @@ namespace Flux.Units
     public double GetMercatorProjectedY()
       => System.Math.Clamp(System.Math.Log(System.Math.Tan(System.Math.PI / 4 + Angle.Value / 2)), -System.Math.PI, System.Math.PI);
 
-    public string ToSexagesimalDegreeString(AngleDmsFormat format = AngleDmsFormat.DegreesMinutesDecimalSeconds, UnicodeSpacing spacing = UnicodeSpacing.None)
+    public string ToSexagesimalDegreeString(DmsNotation format = DmsNotation.DegreesMinutesDecimalSeconds, UnicodeSpacing spacing = UnicodeSpacing.None)
       => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.NorthSouth, -1, spacing);
 
     #region Static methods
@@ -109,12 +109,8 @@ namespace Flux.Units
     {
       if (format is not null)
       {
-        if (format.StartsWith(AngleDmsFormat.DegreesMinutesDecimalSeconds.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesMinutesDecimalSeconds);
-        if (format.StartsWith(AngleDmsFormat.DegreesDecimalMinutes.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DegreesDecimalMinutes);
-        if (format.StartsWith(AngleDmsFormat.DecimalDegrees.GetAcronym()))
-          return ToSexagesimalDegreeString(AngleDmsFormat.DecimalDegrees);
+        if (Angle.TryConvertFormatToDmsNotation(format, out var dmsNotation))
+          return ToSexagesimalDegreeString(dmsNotation);
 
         return Angle.ToUnitValueString(AngleUnit.Degree, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
       }

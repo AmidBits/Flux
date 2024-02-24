@@ -66,8 +66,8 @@ namespace Flux.Geometry
     public (double x, double y) ToCartesian2()
       => (m_a / 2 + m_c, System.Math.Sqrt(3) * (m_a / 2 + m_r));
 
-    public CartesianCoordinate<double> ToCartesianCoordinate()
-      => (CartesianCoordinate<double>)ToCartesian2();
+    //public CartesianCoordinate<double> ToCartesianCoordinate()
+    //  => (CartesianCoordinate<double>)ToCartesian2();
 
     public System.Numerics.Vector2 ToVector2()
     {

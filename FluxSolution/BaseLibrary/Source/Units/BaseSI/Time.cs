@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.TimeUnit unit, bool preferUnicode = true, bool useFullName = false)
+    public static string GetUnitString(this Units.TimeUnit unit, bool preferUnicode = false, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
         Units.TimeUnit.Second => "s",

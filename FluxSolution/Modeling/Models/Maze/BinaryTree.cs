@@ -3,7 +3,7 @@ namespace Flux.Model.Maze
   public sealed class BinaryTreeMaze
     : AMaze
   {
-    public Units.InterCardinalDirection Diagonal { get; set; } = Units.InterCardinalDirection.NE;
+    public InterCardinalDirection Diagonal { get; set; } = InterCardinalDirection.NE;
 
     public override void CarveMaze(MazeGrid grid)
     {

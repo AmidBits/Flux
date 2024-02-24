@@ -1,5 +1,7 @@
 namespace Flux
 {
+  #region ExtensionMethods
+
   public static partial class Em
   {
     /// <summary>
@@ -38,7 +40,7 @@ namespace Flux
     /// <param name="maxValue">The upper bound of the interval set.</param>
     /// <returns>0 if within the interval, -1 if less than the interval, and +1 if greater than the interval.</returns>
     /// <exception cref="NotImplementedException"></exception>
-    public static int Compare<TSource>(this IntervalNotation source, TSource value, TSource minValue, TSource maxValue)
+    public static int CompareWith<TSource>(this IntervalNotation source, TSource value, TSource minValue, TSource maxValue)
       where TSource : System.IComparable<TSource>
       => maxValue.CompareTo(minValue) < 0
       ? throw new System.ArgumentOutOfRangeException($"Invalid interval: {source.ToNotationString(minValue, maxValue)}")
@@ -63,7 +65,7 @@ namespace Flux
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     /// <exception cref="NotImplementedException"></exception>
-    public static (T MinValue, T MaxValue) GetExtremum<T>(this IntervalNotation source, T minValue, T maxValue)
+    public static (T MinValue, T MaxValue) GetInfimumAndSupremum<T>(this IntervalNotation source, T minValue, T maxValue)
       where T : System.Numerics.INumber<T>
       => maxValue.CompareTo(minValue) < 0
       ? throw new System.ArgumentOutOfRangeException($"Invalid interval: {source.ToNotationString(minValue, maxValue)}")
@@ -109,6 +111,8 @@ namespace Flux
         _ => throw new NotImplementedException(),
       };
   }
+
+  #endregion // ExtensionMethods
 
   /// <summary>
   /// <para></para>

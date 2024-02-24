@@ -2,13 +2,13 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PartsPerNotationUnit source, Units.UnitValueStringOptions options = default)
-      => options.UseFullName ? source.ToString() : source switch
+    public static string GetUnitString(this Units.PartsPerNotationUnit source, bool preferUnicode = false, bool useFullName = false)
+      => useFullName ? source.ToString() : source switch
       {
         Units.PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
         Units.PartsPerNotationUnit.PartsPerTrillion => "ppt",
         Units.PartsPerNotationUnit.PartsPerBillion => "ppb",
-        Units.PartsPerNotationUnit.PartsPerMillion => options.PreferUnicode ? "\u33D9" : "ppm",
+        Units.PartsPerNotationUnit.PartsPerMillion => preferUnicode ? "\u33D9" : "ppm",
         Units.PartsPerNotationUnit.PerCentMille => "pcm",
         Units.PartsPerNotationUnit.PerMyriad => "\u2031",
         Units.PartsPerNotationUnit.PerMille => "\u2030",
@@ -135,7 +135,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(PartsPerNotationUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

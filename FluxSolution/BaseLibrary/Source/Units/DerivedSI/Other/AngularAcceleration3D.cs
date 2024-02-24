@@ -60,7 +60,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(AngularAccelerationUnit unit, UnitValueStringOptions options = default)
-        => $"{Value.ToString(options.Format, options.CultureInfo)} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

@@ -532,7 +532,7 @@ namespace Flux
 
       #region Methods to read and write binary.
 
-      // Read Binary representation of BigRational.
+      //// Read Binary representation of BigRational.
       public static BigRational ReadBytes(ReadOnlySpan<byte> source, bool isUnsigned = false, bool isBigEndian = true)
       {
         var bytesInNumerator = System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(source[..4]);

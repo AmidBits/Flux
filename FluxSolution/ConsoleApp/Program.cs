@@ -35,10 +35,30 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var templateBitMask = 0b110;
-      var templateBitLength = 3;
+      var pu = new Flux.Units.PerUnit<Flux.Units.ElectricCharge, Flux.Units.Volume>(new Flux.Units.ElectricCharge(12), new Flux.Units.Volume(1.5));
 
-      var fullBitMask = templateBitMask.BitMaskFillRight(templateBitLength);
+      System.Console.WriteLine(pu);
+
+      var frequency = 343;
+      var waveLength = (Flux.Units.Speed.SpeedOfSound / frequency).Value;
+
+      var time = 1;
+      var amplitude = 16;
+
+
+      var we1 = Flux.Dsp.WaveformGenerator.PeriodicWaveform.WaveEquation(0, 4);
+      var cos1 = System.Math.Cos(we1);
+      var amp1 = cos1 * amplitude;
+
+      var we = Flux.Dsp.WaveformGenerator.PeriodicWaveform.WaveEquation(3, 1, 4, 8, 0);
+
+      var cos = System.Math.Cos(we);
+      var y = 3 * cos;
+
+      var s = $"{we} : {cos:N10} : {y:N10}";
+
+      for (var phase = 0.0; phase <= System.Math.Tau + 1; phase += System.Math.Tau / 20)
+        System.Console.WriteLine($"{phase:N4} : {frequency:N3} : {waveLength:N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.SineWave(time, waveLength, amplitude, phase):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.SquareWave(time, waveLength, amplitude, phase):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.TriangleWave(time, waveLength, amplitude, phase):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.SawtoothWave(time, waveLength, amplitude, phase):N3}");
     }
 
     #region Puzzle

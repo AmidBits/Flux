@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.AreaDensityUnit unit, Units.UnitValueStringOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.AreaDensityUnit unit, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         Units.AreaDensityUnit.KilogramPerSquareMeter => "kg/m²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -18,7 +18,7 @@ namespace Flux
       KilogramPerSquareMeter,
     }
 
-    /// <summary>Surface density, unit of kilograms per square meter.</summary>
+    /// <summary>Area mass density, unit of kilograms per square meter.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Surface_density"/>
     public readonly record struct AreaDensity
       : System.IComparable, System.IComparable<AreaDensity>, System.IFormattable, IUnitValueQuantifiable<double, AreaDensityUnit>
@@ -87,7 +87,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(AreaDensityUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

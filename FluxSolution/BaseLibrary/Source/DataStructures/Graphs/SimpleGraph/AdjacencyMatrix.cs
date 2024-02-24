@@ -166,7 +166,7 @@
       return false;
     }
 
-    public bool RemoveEdge(int x, int y, TEdgeValue value) => EdgeExists(x, y, value) ? RemoveEdge(x, y) : false;
+    public bool RemoveEdge(int x, int y, TEdgeValue value) => EdgeExists(x, y, value) && RemoveEdge(x, y);
 
     /// <summary>Returns whether a <paramref name="value"/> for edge (<paramref name="x"/>, <paramref name="y"/>) was found. An edge can exists without a value.</summary>
     public bool TryGetEdgeValue(int x, int y, out TEdgeValue value) => m_edgeValues.TryGetValue((x, y), out value!);

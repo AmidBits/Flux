@@ -6,7 +6,7 @@ namespace Flux
   {
     /// <summary>Creates a new <see cref="Geometry.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
     public static Geometry.CylindricalCoordinate ToCylindricalCoordinate(this System.Numerics.Vector3 source)
-      => new Geometry.CylindricalCoordinate(
+      => new(
         System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
         (System.Math.Atan2(source.Y, source.X) + System.Math.Tau) % System.Math.Tau,
         source.Z

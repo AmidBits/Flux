@@ -40,7 +40,7 @@
     /// <summary>
     /// <para>Whether to prefer Unicode symbols, where and when available. The default is true.</para>
     /// </summary>
-    public bool PreferUnicode { get => m_preferUnicode ?? true; init => m_preferUnicode = value; }
+    public bool PreferUnicode { get => m_preferUnicode ?? false; init => m_preferUnicode = value; }
 
     /// <summary>
     /// <para>The spacing to use between value and unit. The default is <see cref="UnicodeSpacing.Space"/>.</para>

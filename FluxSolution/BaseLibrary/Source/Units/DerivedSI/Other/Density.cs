@@ -2,8 +2,8 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.DensityUnit unit, Units.UnitValueStringOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.DensityUnit unit, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
         Units.DensityUnit.KilogramPerCubicMeter => "kg/m³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -18,7 +18,7 @@ namespace Flux
       KilogramPerCubicMeter,
     }
 
-    /// <summary>Density unit of kilograms per cubic meter.</summary>
+    /// <summary>Volumetric mass density, unit of kilograms per cubic meter.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Density"/>
     public readonly record struct Density
       : System.IComparable, System.IComparable<Density>, System.IFormattable, IUnitValueQuantifiable<double, DensityUnit>
@@ -86,7 +86,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(DensityUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }

@@ -2,7 +2,7 @@ namespace Flux.Text
 {
   public static partial class XmlEx
   {
-    public static readonly System.Collections.Generic.Dictionary<char, string> XmlEntityMap = new System.Collections.Generic.Dictionary<char, string>()
+    public static readonly System.Collections.Generic.Dictionary<char, string> XmlEntityMap = new()
     {
       { '\u0026' /* & */, "&amp;" },
       { '\u0027' /* ' */, "&apos;" },

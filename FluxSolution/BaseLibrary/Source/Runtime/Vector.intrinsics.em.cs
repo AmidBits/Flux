@@ -1,4 +1,4 @@
-#if !EXCLUDE_INTRINSIC_OPS_FOR_NOW
+#if EXCLUDE_INTRINSIC_OPS_FOR_NOW
 
 #region Up to 4D intrinsic ops
 

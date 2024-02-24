@@ -34,18 +34,18 @@ namespace Flux.Model.Maze
 
           if (orthogonal)
           {
-            if (n) cell.Edges.Add((int)Units.EightWindCompassRose.N, this[y - 1, x]);
-            if (e) cell.Edges.Add((int)Units.EightWindCompassRose.E, this[y, x + 1]);
-            if (s) cell.Edges.Add((int)Units.EightWindCompassRose.S, this[y + 1, x]);
-            if (w) cell.Edges.Add((int)Units.EightWindCompassRose.W, this[y, x - 1]);
+            if (n) cell.Edges.Add((int)EightWindCompassRose.N, this[y - 1, x]);
+            if (e) cell.Edges.Add((int)EightWindCompassRose.E, this[y, x + 1]);
+            if (s) cell.Edges.Add((int)EightWindCompassRose.S, this[y + 1, x]);
+            if (w) cell.Edges.Add((int)EightWindCompassRose.W, this[y, x - 1]);
           }
 
           if (diagonal)
           {
-            if (n && e) cell.Edges.Add((int)Units.EightWindCompassRose.NE, this[y - 1, x + 1]);
-            if (s && e) cell.Edges.Add((int)Units.EightWindCompassRose.SE, this[y + 1, x + 1]);
-            if (s && w) cell.Edges.Add((int)Units.EightWindCompassRose.SW, this[y + 1, x - 1]);
-            if (n && w) cell.Edges.Add((int)Units.EightWindCompassRose.NW, this[y - 1, x - 1]);
+            if (n && e) cell.Edges.Add((int)EightWindCompassRose.NE, this[y - 1, x + 1]);
+            if (s && e) cell.Edges.Add((int)EightWindCompassRose.SE, this[y + 1, x + 1]);
+            if (s && w) cell.Edges.Add((int)EightWindCompassRose.SW, this[y + 1, x - 1]);
+            if (n && w) cell.Edges.Add((int)EightWindCompassRose.NW, this[y - 1, x - 1]);
           }
         }
       }

@@ -65,24 +65,6 @@ namespace Flux
         azimuth = m_azimuth;
       }
 
-      /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
-      public (double x, double y) ToCartesianCoordinate2()
-      {
-        var (sin, cos) = System.Math.SinCos(m_azimuth);
-
-        return (m_radius * cos, m_radius * sin);
-      }
-
-      /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
-      public (double x, double y) ToCartesianCoordinate2Ex()
-      {
-        var adjustedAzimuth = System.Math.Tau - (m_azimuth % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2;
-
-        var (sin, cos) = System.Math.SinCos(adjustedAzimuth);
-
-        return (m_radius * cos, m_radius * sin);
-      }
-
       /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="PolarCoordinate"/> by adding the third component <paramref name="height"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
       public CylindricalCoordinate ToCylindricalCoordinate(double height)
@@ -104,7 +86,7 @@ namespace Flux
       /// <remarks>All angles in radians.</remarks>
       public System.Numerics.Vector2 ToVector2()
       {
-        var (x, y) = ToCartesianCoordinate2();
+        var (x, y) = ConvertPolarToCartesian2(m_radius, m_azimuth);
 
         return new((float)x, (float)y);
       }
@@ -113,7 +95,7 @@ namespace Flux
 
       /// <summary>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-      public static PolarCoordinate FromCartesian2(double x, double y)
+      public static (double radius, double azimuth) ConvertCartesian2ToPolar(double x, double y)
         => new(
           System.Math.Sqrt(x * x + y * y),
           System.Math.Atan2(y, x)
@@ -121,11 +103,29 @@ namespace Flux
 
       /// <summary>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
-      public static PolarCoordinate FromCartesian2Ex(double x, double y)
-        => new(
+      public static (double radius, double azimuth) ConvertCartesian2ToPolarEx(double x, double y)
+        => (
           System.Math.Sqrt(x * x + y * y),
           System.Math.Tau - System.Math.Atan2(-x, y) is var atan2 && atan2 < 0 ? System.Math.Tau + atan2 : atan2
         );
+
+      /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
+      public static (double x, double y) ConvertPolarToCartesian2(double radius, double azimuth)
+      {
+        var (sin, cos) = System.Math.SinCos(azimuth);
+
+        return (radius * cos, radius * sin);
+      }
+
+      /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
+      public static (double x, double y) ConvertPolarToCartesian2Ex(double radius, double azimuth)
+      {
+        var adjustedAzimuth = System.Math.Tau - (azimuth % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2;
+
+        var (sin, cos) = System.Math.SinCos(adjustedAzimuth);
+
+        return (radius * cos, radius * sin);
+      }
 
       #endregion // Static methods
 

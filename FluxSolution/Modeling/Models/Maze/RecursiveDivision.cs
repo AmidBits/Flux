@@ -32,7 +32,7 @@ namespace Flux.Model.Maze
         {
           var cell = grid[row + divideSouthOf, column + i];
 
-          cell.DisconnectPath(cell.Edges[(int)Units.EightWindCompassRose.S], true);
+          cell.DisconnectPath(cell.Edges[(int)EightWindCompassRose.S], true);
         }
       }
 
@@ -50,7 +50,7 @@ namespace Flux.Model.Maze
         {
           var cell = grid[row + i, column + divideEastOf];
 
-          cell.DisconnectPath(cell.Edges[(int)Units.EightWindCompassRose.E], true);
+          cell.DisconnectPath(cell.Edges[(int)EightWindCompassRose.E], true);
         }
       }
 

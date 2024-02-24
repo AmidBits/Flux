@@ -58,7 +58,7 @@ namespace Flux.Geometry
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, circularArc * maxRandomness);
 
-        var (x, y) = new Flux.Geometry.PolarCoordinate(radius, angle).ToCartesianCoordinate2Ex();
+        var (x, y) = Flux.Geometry.PolarCoordinate.ConvertPolarToCartesian2Ex(radius, angle);
 
         yield return resultSelector(x, y);
       }

@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.EnplethyUnit unit, bool preferUnicode = true, bool useFullName = false)
+    public static string GetUnitString(this Units.EnplethyUnit unit, bool preferUnicode = false, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
         Units.EnplethyUnit.Mole => preferUnicode ? "\u33D6" : "mol",

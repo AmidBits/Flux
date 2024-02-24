@@ -421,11 +421,11 @@ namespace Flux.Geometry
     }
 
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
-    public static bool TryParse(string latitudeDMS, string longitudeDMS, out GeographicCoordinate result, double earthRadius)
+    public static bool TryParse(string latitudeDms, string longitudeDms, out GeographicCoordinate result, double earthRadius)
     {
-      if (Units.Angle.TryParseDms(latitudeDMS, out var lat) && Units.Angle.TryParseDms(longitudeDMS, out var lon))
+      if (Angle.TryParseDms(latitudeDms, out var latitudeAngle) && Angle.TryParseDms(longitudeDms, out var longitudeAngle))
       {
-        result = new GeographicCoordinate(lat.Value, AngleUnit.Radian, lon.Value, AngleUnit.Radian, earthRadius);
+        result = new GeographicCoordinate(latitudeAngle.Value, AngleUnit.Radian, longitudeAngle.Value, AngleUnit.Radian, earthRadius);
         return true;
       }
 

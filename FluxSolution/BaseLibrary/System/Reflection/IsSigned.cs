@@ -17,8 +17,7 @@ namespace Flux
     public static bool IsSignedNumber2<TSelf>(this TSelf source)
     {
       var type = source?.GetType();
-      var property = type?.GetProperty("NegativeOne", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-      if (property is null) property = type?.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).FirstOrDefault(dp => dp.Name.EndsWith(".NegativeOne"));
+      var property = (type?.GetProperty("NegativeOne", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)) ?? (type?.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).FirstOrDefault(dp => dp.Name.EndsWith(".NegativeOne")));
       var value = (property?.GetValue(null) ?? 0);
       return !0.Equals(value);
     }

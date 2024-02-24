@@ -2,23 +2,23 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.VolumeUnit unit, Units.UnitValueStringOptions options = default)
-      => options.UseFullName ? unit.ToString() : unit switch
+    public static string GetUnitString(this Units.VolumeUnit unit, bool preferUnicode = false, bool useFullName = false)
+      => useFullName ? unit.ToString() : unit switch
       {
-        Units.VolumeUnit.Microlitre => options.PreferUnicode ? "\u3395" : "µl",
-        Units.VolumeUnit.Millilitre => options.PreferUnicode ? "\u3396" : "ml",
+        Units.VolumeUnit.Microlitre => preferUnicode ? "\u3395" : "µl",
+        Units.VolumeUnit.Millilitre => preferUnicode ? "\u3396" : "ml",
         Units.VolumeUnit.Centilitre => "cl",
-        Units.VolumeUnit.Decilitre => options.PreferUnicode ? "\u3397" : "dl",
+        Units.VolumeUnit.Decilitre => preferUnicode ? "\u3397" : "dl",
         Units.VolumeUnit.Litre => "l",
-        Units.VolumeUnit.ImperialGallon => options.PreferUnicode ? "\u33FF" : "gal (imp)",
+        Units.VolumeUnit.ImperialGallon => preferUnicode ? "\u33FF" : "gal (imp)",
         Units.VolumeUnit.ImperialQuart => "qt (imp)",
-        Units.VolumeUnit.USGallon => options.PreferUnicode ? "\u33FF" : "gal (US)",
+        Units.VolumeUnit.USGallon => preferUnicode ? "\u33FF" : "gal (US)",
         Units.VolumeUnit.USQuart => "qt (US)",
         Units.VolumeUnit.CubicFeet => "ft³",
         Units.VolumeUnit.CubicYard => "yd³",
-        Units.VolumeUnit.CubicMeter => options.PreferUnicode ? "\u33A5" : "m³",
+        Units.VolumeUnit.CubicMeter => preferUnicode ? "\u33A5" : "m³",
         Units.VolumeUnit.CubicMile => "mi³",
-        Units.VolumeUnit.CubicKilometer => options.PreferUnicode ? "\u33A6" : "km³",
+        Units.VolumeUnit.CubicKilometer => preferUnicode ? "\u33A6" : "km³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -157,7 +157,13 @@ namespace Flux
         };
 
       public string ToUnitValueString(VolumeUnit unit, UnitValueStringOptions options = default)
-        => $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
+        sb.Append(options.UnitSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
+        return sb.ToString();
+      }
 
       #endregion Implemented interfaces
     }
