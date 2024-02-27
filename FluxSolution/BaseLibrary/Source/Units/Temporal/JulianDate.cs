@@ -167,6 +167,8 @@ namespace Flux
       public double Value => m_value;
 
       #endregion // Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

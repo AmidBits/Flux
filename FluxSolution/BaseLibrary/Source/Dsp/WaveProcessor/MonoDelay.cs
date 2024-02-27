@@ -57,7 +57,7 @@ namespace Flux.Dsp.AudioProcessor
 
     private double _time;
     private int m_timeIndex;
-    /// <summary>The amount of buffer time [0, 1] (percent) used of the maximum delay time, where 0 means no delay abd 1 means maximum delay.</summary>
+    /// <summary>The amount of buffer time [0, 1] (percent) used of the maximum delay time, where 0 = no delay and 1 = maximum delay.</summary>
     public double Time { get => _time; set => m_timeIndex = (int)(m_buffer.Length * (_time = System.Math.Clamp(value, 0.0, 1.0))); }
 
     public MonoDelay(int maxDelayTimeInSeconds, double sampleRate)

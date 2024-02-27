@@ -2,7 +2,7 @@
 {
   namespace Dsp
   {
-    /// <summary>Mono wave, range [-1, +1].</summary>
+    /// <summary>A mono wave, range [-1.0, +1.0].</summary>
     public readonly record struct WaveMono<TSelf>
       : IWaveMono<TSelf>
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
@@ -17,8 +17,8 @@
 
       #region Overloaded operators
 
-      public static explicit operator TSelf(WaveMono<TSelf> value) => value.Wave;
-      public static explicit operator WaveMono<TSelf>(TSelf value) => new(value);
+      public static explicit operator TSelf(WaveMono<TSelf> mono) => mono.Wave;
+      public static explicit operator WaveMono<TSelf>(TSelf mono) => new(mono);
 
       #endregion Overloaded operators
     }

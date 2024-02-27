@@ -77,7 +77,7 @@ namespace Flux
         sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
         sb.Append(spacing.ToSpacingString());
         sb.Append(prefix.GetUnitString(true, false));
-        sb.Append(LengthUnit.Meter.GetUnitString(false, false));
+        sb.Append(LengthUnit.Metre.GetUnitString(false, false));
         return sb.ToString();
       }
 
@@ -105,6 +105,8 @@ namespace Flux
       }
 
       #endregion Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

@@ -29,7 +29,7 @@
       {
         dst[i] = System.Numerics.Complex.Zero;
 
-        arg = -(int)direction * Maths.PiOver2 * (double)i / (double)n;
+        arg = -(int)direction * (System.Math.PI / 2) * (double)i / (double)n;
 
         for (var j = 0; j < n; j++) // sum value elements
         {
@@ -78,7 +78,7 @@
         {
           dst[j] = System.Numerics.Complex.Zero;
 
-          arg = -(int)direction * Maths.PiOver2 * (double)j / (double)m;
+          arg = -(int)direction * (System.Math.PI / 2) * (double)j / (double)m;
 
           for (var k = 0; k < m; k++) // sum value elements
           {
@@ -111,7 +111,7 @@
         {
           dst[i] = System.Numerics.Complex.Zero;
 
-          arg = -(int)direction * Maths.PiOver2 * (double)i / (double)n;
+          arg = -(int)direction * (System.Math.PI / 2) * (double)i / (double)n;
 
           for (var k = 0; k < n; k++) // sum value elements
           {

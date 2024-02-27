@@ -27,16 +27,16 @@ namespace Units
     {
       var u = new Flux.Units.Length(1);
 
-      Assert.AreEqual(1000, u.GetUnitValue(Flux.Units.LengthUnit.Millimeter));
-      Assert.AreEqual(100, u.GetUnitValue(Flux.Units.LengthUnit.Centimeter));
+      Assert.AreEqual(1000, u.GetUnitValue(Flux.Units.LengthUnit.Millimetre));
+      Assert.AreEqual(100, u.GetUnitValue(Flux.Units.LengthUnit.Centimetre));
       Assert.AreEqual(39.37007874015748, u.GetUnitValue(Flux.Units.LengthUnit.Inch));
-      Assert.AreEqual(10, u.GetUnitValue(Flux.Units.LengthUnit.Decimeter));
+      Assert.AreEqual(10, u.GetUnitValue(Flux.Units.LengthUnit.Decimetre));
       Assert.AreEqual(3.280839895013123, u.GetUnitValue(Flux.Units.LengthUnit.Foot));
       Assert.AreEqual(1.0936132983377078, u.GetUnitValue(Flux.Units.LengthUnit.Yard));
-      Assert.AreEqual(1, u.GetUnitValue(Flux.Units.LengthUnit.Meter));
+      Assert.AreEqual(1, u.GetUnitValue(Flux.Units.LengthUnit.Metre));
       Assert.AreEqual(0.0005399568034557236, u.GetUnitValue(Flux.Units.LengthUnit.NauticalMile));
       Assert.AreEqual(0.0006213711922373339, u.GetUnitValue(Flux.Units.LengthUnit.Mile));
-      Assert.AreEqual(0.001, u.GetUnitValue(Flux.Units.LengthUnit.Kilometer));
+      Assert.AreEqual(0.001, u.GetUnitValue(Flux.Units.LengthUnit.Kilometre));
     }
 
     [TestMethod]

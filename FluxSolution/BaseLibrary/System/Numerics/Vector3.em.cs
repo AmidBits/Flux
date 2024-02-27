@@ -100,7 +100,7 @@ namespace Flux
 
       System.Numerics.Vector3 w;
 
-      if (real_part < Maths.Epsilon1E7 * norm_u_norm_v)
+      if (real_part < 1E-7 * norm_u_norm_v)
       {
         real_part = 0;
 
@@ -261,6 +261,8 @@ namespace Flux
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector3>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, Geometry.TriangulationType mode, System.Random? rng = null)
     {
+      const double halfPi = System.Math.PI / 2;
+
       var copy = source.ToList();
 
       (System.Numerics.Vector3 v1, System.Numerics.Vector3 v2, System.Numerics.Vector3 v3, int index, double angle) triplet = default;
@@ -273,8 +275,8 @@ namespace Flux
           Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).Random(rng),
           Geometry.TriangulationType.SmallestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle < b.angle ? a : b),
           Geometry.TriangulationType.LargestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle > b.angle ? a : b),
-          Geometry.TriangulationType.LeastSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
-          Geometry.TriangulationType.MostSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b),
+          Geometry.TriangulationType.LeastSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - halfPi) > System.Math.Abs(b.angle - halfPi) ? a : b),
+          Geometry.TriangulationType.MostSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - halfPi) < System.Math.Abs(b.angle - halfPi) ? a : b),
           _ => throw new System.Exception(),
         };
 

@@ -10,9 +10,10 @@ namespace Flux.Dsp
     /// <summary>The field quantity scalar for conversions.</summary>
     public const double FieldQuantity = 20;
 
-    /// <summary>Convert a bipolar [-1, 1] sample to a unipolar [0, 1] sample. The sample is scaled down to fit the smaller range.</summary>
+    /// <summary>Convert a bipolar [-1.0, 1.0] sample to a unipolar [0.0, 1.0] sample. The sample is scaled down to fit the smaller range.</summary>
     public static double BipolarToUnipolar(double sample) => sample / 2 + 0.5;
-    /// <summary>Convert a unipolar [0, 1] sample to a bipolar [-1, 1] sample. The sample is scaled up to match the larger range.</summary>
+
+    /// <summary>Convert a unipolar [0.0, 1.0] sample to a bipolar [-1.0, 1.0] sample. The sample is scaled up to match the larger range.</summary>
     public static double UnipolarToBipolar(double sample) => sample * 2 - 1;
 
     /// <summary>Conversion from gain (decibels) to a factor (ratio)</summary>
@@ -34,6 +35,7 @@ namespace Flux.Dsp
 
     /// <summary>Convert a mono sample into a set of stereo samples.</summary>
     public static (double sampleL, double sampleR) MonoToStereo(double sampleM) => (sampleM, sampleM);
+
     /// <summary>Convert a set of stereo samples into a mono sample.</summary>
     public static double StereoToMono(double sampleL, double sampleR) => (sampleL + sampleR) / 2;
 

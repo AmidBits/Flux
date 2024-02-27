@@ -93,6 +93,8 @@ namespace Flux
       //=> $"{string.Format(options.CultureInfo, $"{{0{(options.Format is null ? string.Empty : $":{options.Format}")}}}", GetUnitValue(unit))} {unit.GetUnitString(options)}";
 
       #endregion Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

@@ -181,6 +181,8 @@ namespace Flux
       public double Value => m_angle.GetUnitValue(AngleUnit.Degree);
 
       #endregion // Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

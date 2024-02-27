@@ -37,15 +37,26 @@ namespace Flux
     /// <summary>Represents the cube root of 2.</summary>
     public const double DeliansConstant = 1.2599210498948731647672106072782;
 
-    /// <summary>Presented in standard unit of meters per second.</summary>
-    public const double EarthNullGravity = 9.80665;
+    /// <summary>
+    /// <para>The 'machine' epsilon, constant for System.Single, from the 32-bit float CPP definition.</para>
+    /// <example>
+    /// <code>System.Math.Exp(-23 * System.Math.Log(2));</code>
+    /// <code>System.Math.Pow(2, -23);</code>
+    /// <code>1.1920928955078125E-07f</code>
+    /// </example>
+    /// </summary>
+    public const float EpsilonCpp32 = 1.1920928955078125E-07f;
 
-    /// <summary>The 'machine' epsilon, constant for System.Single, from the 32-bit float CPP definition of epsilon.</summary>
-    /// <remarks>System.Math.Exp(-23 * System.Math.Log(2)); System.Math.Pow(2, -23);</remarks>
-    public const float EpsilonCpp32 = 1.1920929E-07F;
-    /// <summary>The 'machine' epsilon, constant for System.Double, from the 64-bit double CPP definition of epsilon.</summary>
-    /// <remarks>System.Math.Exp(-52 * System.Math.Log(2)); System.Math.Pow(2, -52);</remarks>
-    public const double EpsilonCpp64 = 2.2204460492503131E-016;
+    /// <summary>
+    /// <para>The 'machine' epsilon, constant for System.Double, from the 64-bit double CPP definition.</para>
+    /// <example>
+    /// <code>System.Math.Exp(-52 * System.Math.Log(2));</code>
+    /// <code>System.Math.Pow(2, -52);</code>
+    /// <code>2.220446049250313E-16d</code>
+    /// </example>
+    /// </summary>
+    public const double EpsilonCpp64 = 2.220446049250313E-16d;
+
     /// <summary>A C# epsilon for System.Single.</summary>
     public const float Epsilon1E7 = 1E-7f;
     /// <summary>A C# epsilon for System.Double.</summary>
@@ -58,26 +69,6 @@ namespace Flux
     /// <summary>Represents the ratio of two quantities being the same as the ratio of their sum to their maximum. (~1.618)</summary>
     /// <see href="https://en.wikipedia.org/wiki/Golden_ratio"/>
     public const double GoldenRatio = 1.6180339887498948482045868343656381177203091798057628621354486227052604628189024497072072041893911374;
-
-    /// <summary>Represents (180 / PI)</summary>
-    public const double PiInto180 = 180 / System.Math.PI;
-    /// <summary>Represents (2 / PI)</summary>
-    public const double PiInto2 = 2 / System.Math.PI;
-    /// <summary>Represents (200 / PI)</summary>
-    public const double PiInto200 = 200 / System.Math.PI;
-
-    /// <summary>Represents (PI / 180).</summary>
-    public const double PiOver180 = System.Math.PI / 180;
-    /// <summary>Represents (PI / 2)</summary>
-    public const double PiOver2 = System.Math.PI / 2;
-    /// <summary>Represents (PI / 200)</summary>
-    public const double PiOver200 = System.Math.PI / 200;
-
-    /// <summary>Represents (PI / 4)</summary>
-    public const double PiOver4 = System.Math.PI / 4;
-
-    /// <summary>Represents (PI * (4.0 / 3.0)).</summary>
-    public const double PiTimesFourThirds = System.Math.PI * 4.0 / 3.0;
 
     /// <summary>Represents the square root of 2.</summary>
     public const double PythagorasConstant = 1.414213562373095048801688724209698078569671875376948073176679737990732478462;

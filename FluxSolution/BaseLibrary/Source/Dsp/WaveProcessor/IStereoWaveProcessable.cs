@@ -1,9 +1,9 @@
 ﻿namespace Flux.Dsp
 {
-  /// <summary>A bipolar stereo floating point sample wave processor in the range [-1.0, 1.0].</summary>
+  /// <summary>A bipolar [-1.0, 1.0] stereo floating point sample wave processor.</summary>
   public interface IStereoWaveProcessable
   {
-    /// <summary>Process the stereo sample wave. The range is [-1.0, 1.0].</summary>
+    /// <summary>Process the stereo sample wave. The range is [-1.0, 1.0], in and out.</summary>
     IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> wave);
   }
 }

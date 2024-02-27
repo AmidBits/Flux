@@ -512,7 +512,6 @@ namespace Flux.Units
 
     #endregion Implemented interfaces
 
-    /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
+    public override string ToString() => ToString(null, null);
   }
 }

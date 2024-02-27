@@ -50,6 +50,6 @@ namespace Flux
     public double PolarRadius => m_semiMinorAxis;
 
     /// <summary>Approximate volume of the Earth's oblate sphere.</summary>
-    public double Volume => Maths.PiTimesFourThirds * System.Math.Pow(EquatorialRadius, 2) * PolarRadius;
+    public double Volume => (System.Math.PI * 4.0 / 3.0) * System.Math.Pow(EquatorialRadius, 2) * PolarRadius;
   }
 }

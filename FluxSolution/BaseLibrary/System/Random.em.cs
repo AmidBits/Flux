@@ -239,7 +239,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      return System.Math.Sqrt(-2 * System.Math.Log(NextUniform(source))) * System.Math.Sin(Maths.PiOver2 * NextUniform(source));
+      return System.Math.Sqrt(-2 * System.Math.Log(NextUniform(source))) * System.Math.Sin((System.Math.PI / 2) * NextUniform(source));
     }
 
     /// <summary>Get normal (Gaussian) random sample with specified mean and standard deviation.</summary>

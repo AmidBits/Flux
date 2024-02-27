@@ -78,6 +78,8 @@ namespace Flux
       public double Value => m_numerator / m_denominator;
 
       #endregion Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

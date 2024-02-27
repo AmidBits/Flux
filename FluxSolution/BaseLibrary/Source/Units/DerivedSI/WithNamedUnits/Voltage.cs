@@ -36,18 +36,17 @@ namespace Flux
         };
 
       #region Static methods
+
       /// <summary>Creates a new Voltage instance from the specified current and resistance.</summary>
       /// <param name="current"></param>
       /// <param name="resistance"></param>
+      public static Voltage From(ElectricCurrent current, ElectricalResistance resistance) => new(current.Value * resistance.Value);
 
-      public static Voltage From(ElectricCurrent current, ElectricalResistance resistance)
-        => new(current.Value * resistance.Value);
       /// <summary>Creates a new Voltage instance from the specified power and current.</summary>
       /// <param name="power"></param>
       /// <param name="current"></param>
+      public static Voltage From(Power power, ElectricCurrent current) => new(power.Value / current.Value);
 
-      public static Voltage From(Power power, ElectricCurrent current)
-        => new(power.Value / current.Value);
       #endregion Static methods
 
       #region Overloaded operators
@@ -109,6 +108,8 @@ namespace Flux
       }
 
       #endregion Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

@@ -38,6 +38,8 @@ namespace Flux
       Week,
       /// <summary>This represents two weeks.</summary>
       Fortnight,
+      /// <summary>Represents the musical BPM.</summary>
+      BeatsPerMinute
     }
 
     /// <summary>
@@ -76,6 +78,7 @@ namespace Flux
           TimeUnit.Day => value * 86400,
           TimeUnit.Week => value * 604800,
           TimeUnit.Fortnight => value * 1209600,
+          TimeUnit.BeatsPerMinute => ConvertBpmToSeconds(value),
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
       /// <summary>Creates a new Time instance from the specified <paramref name="timeSpan"/>.</summary>
@@ -86,6 +89,25 @@ namespace Flux
       public System.TimeSpan ToTimeSpan() => System.TimeSpan.FromSeconds(m_value);
 
       #region Static methods
+
+      #region Conversions
+
+      /// <summary>
+      /// <para>Convert beats-per-minute to seconds.</para>
+      /// </summary>
+      /// <param name="bpm"></param>
+      /// <returns></returns>
+      public static double ConvertBpmToSeconds(double bpm) => 60 / bpm;
+
+      /// <summary>
+      /// <para>Convert seconds to beats-per-minute.</para>
+      /// </summary>
+      /// <param name="seconds"></param>
+      /// <returns></returns>
+      public static double ConvertSecondsToBpm(double seconds) => 60 / seconds;
+
+      #endregion // Conversions
+
       #endregion Static methods
 
       #region Overloaded operators
@@ -156,6 +178,7 @@ namespace Flux
           TimeUnit.Day => m_value / 86400,
           TimeUnit.Week => m_value / 604800,
           TimeUnit.Fortnight => m_value / 1209600,
+          TimeUnit.BeatsPerMinute => ConvertSecondsToBpm(m_value),
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
@@ -169,6 +192,8 @@ namespace Flux
       }
 
       #endregion Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

@@ -19,7 +19,7 @@
     /// <summary>Generates a triangle wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2)
       => Tools.AbsolutePhasePi2(phasePi2) is var phaseAbs && phaseAbs < System.Math.PI
-      ? phaseAbs / Maths.PiOver2 - 1
-      : 3 - phaseAbs / Maths.PiOver2;
+      ? phaseAbs / (System.Math.PI / 2) - 1
+      : 3 - phaseAbs / (System.Math.PI / 2);
   }
 }

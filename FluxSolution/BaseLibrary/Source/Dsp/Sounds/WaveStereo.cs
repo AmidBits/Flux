@@ -2,7 +2,7 @@
 {
   namespace Dsp
   {
-    /// <summary>Stereo (left and right) wave, range [-1, +1].</summary>
+    /// <summary>A stereo (left and right) wave, range [-1.0, +1.0].</summary>
     public readonly record struct WaveStereo<TSelf>
       : IWaveStereo<TSelf>
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
@@ -23,7 +23,7 @@
 
       #region Overloaded operators
 
-      public static explicit operator (TSelf, TSelf)(WaveStereo<TSelf> stereo) => (stereo.WaveLeft, stereo.WaveRight);
+      public static explicit operator (TSelf leftWave, TSelf rightWave)(WaveStereo<TSelf> stereo) => (stereo.WaveLeft, stereo.WaveRight);
       public static explicit operator WaveStereo<TSelf>((TSelf leftWave, TSelf rightWave) stereo) => new(stereo.leftWave, stereo.rightWave);
 
       #endregion Overloaded operators  

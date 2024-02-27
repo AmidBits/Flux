@@ -1,5 +1,6 @@
 namespace Flux.Dsp.AudioProcessor
 {
+  /// <summary>Apply curvature with a contour [-1 = convex/logarithmic, 0 = linear, +1 = concave/exponential] to an arbitrary mono signal sample.</summary>
   public record class MonoCurvature
     : IMonoWaveProcessable
   {

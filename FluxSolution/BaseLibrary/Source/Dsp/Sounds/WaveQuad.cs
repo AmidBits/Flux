@@ -2,7 +2,7 @@
 {
   namespace Dsp
   {
-    /// <summary>Quad wave (back left, back right, front left and front right), range [-1, +1].</summary>
+    /// <summary>A quadrophonic wave (back left, back right, front left and front right), range [-1.0, +1.0].</summary>
     public readonly record struct WaveQuad<TSelf>
       : IWaveQuad<TSelf>
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
@@ -29,8 +29,8 @@
 
       #region Overloaded operators
 
-      public static explicit operator (TSelf, TSelf, TSelf, TSelf)(WaveQuad<TSelf> wave) => (wave.WaveBackLeft, wave.WaveBackRight, wave.WaveFrontLeft, wave.WaveFrontRight);
-      public static explicit operator WaveQuad<TSelf>((TSelf leftBackWave, TSelf rightBackWave, TSelf leftFrontWave, TSelf rightFrontWave) wave) => new(wave.leftBackWave, wave.rightBackWave, wave.leftFrontWave, wave.rightFrontWave);
+      public static explicit operator (TSelf leftBackWave, TSelf rightBackWave, TSelf leftFrontWave, TSelf rightFrontWave)(WaveQuad<TSelf> quad) => (quad.WaveBackLeft, quad.WaveBackRight, quad.WaveFrontLeft, quad.WaveFrontRight);
+      public static explicit operator WaveQuad<TSelf>((TSelf leftBackWave, TSelf rightBackWave, TSelf leftFrontWave, TSelf rightFrontWave) quad) => new(quad.leftBackWave, quad.rightBackWave, quad.leftFrontWave, quad.rightFrontWave);
 
       #endregion Overloaded operators  
     }

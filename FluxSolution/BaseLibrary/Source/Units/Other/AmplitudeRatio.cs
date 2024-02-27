@@ -34,23 +34,22 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-
-      public PowerRatio ToPowerRatio()
-        => new(System.Math.Pow(m_value, 2));
+      public PowerRatio ToPowerRatio() => new(System.Math.Pow(m_value, 2));
 
       #region Static methods
+
       /// <summary>Creates a new AmplitudeRatio instance from the difference of the specified voltages (numerator and denominator).</summary>
       /// <param name="numerator"></param>
       /// <param name="denominator"></param>
-      public static AmplitudeRatio From(Voltage numerator, Voltage denominator)
-        => new(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
+      public static AmplitudeRatio From(Voltage numerator, Voltage denominator) => new(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
       /// <summary>Creates a new AmplitudeRatio instance from the specified decibel change (i.e. a decibel interval).</summary>
       /// <param name="decibelChange"></param>
-      public static AmplitudeRatio FromDecibelChange(double decibelChange)
-        => new(System.Math.Pow(10, decibelChange / ScalingFactor)); // Inverse of Log10.
+      public static AmplitudeRatio FromDecibelChange(double decibelChange) => new(System.Math.Pow(10, decibelChange / ScalingFactor)); // Inverse of Log10.
+
       #endregion Static methods
 
       #region Overloaded operators
+
       public static explicit operator double(AmplitudeRatio v) => v.m_value;
       public static explicit operator AmplitudeRatio(double v) => new(v);
 
@@ -68,6 +67,7 @@ namespace Flux
       public static AmplitudeRatio operator *(AmplitudeRatio a, AmplitudeRatio b) => a * b.m_value;
       public static AmplitudeRatio operator -(AmplitudeRatio a, double b) => new(ScalingFactor * System.Math.Log10(System.Math.Pow(10, a.m_value / ScalingFactor) - System.Math.Pow(10, b / ScalingFactor)));
       public static AmplitudeRatio operator -(AmplitudeRatio a, AmplitudeRatio b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces
@@ -106,6 +106,8 @@ namespace Flux
       }
 
       #endregion Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

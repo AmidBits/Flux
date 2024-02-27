@@ -35,30 +35,27 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var pu = new Flux.Units.PerUnit<Flux.Units.ElectricCharge, Flux.Units.Volume>(new Flux.Units.ElectricCharge(12), new Flux.Units.Volume(1.5));
+      //if (Zamplez.IsSupported) { Zamplez.RunReflection(); return; }
 
-      System.Console.WriteLine(pu);
+      var xyz = 1.0 + double.Epsilon == 1.0;
 
-      var frequency = 343;
-      var waveLength = (Flux.Units.Speed.SpeedOfSound / frequency).Value;
+      var a = 16.67;
+      var x = a;
+      x += a;
+      x += a;
+      x += a;
+      x += a;
+      x += a;
+      var xs = x.ToString("N15");
+      var b = 100.02;
+      var y = b;
+      var ys = y.ToString("N15");
 
-      var time = 1;
-      var amplitude = 16;
+      var z = Flux.Maths.EqualsWithinAbsoluteTolerance(x, y, 1E-14);
 
+      var m = 0.0;
+      var n = m.GetSupremum();
 
-      var we1 = Flux.Dsp.WaveformGenerator.PeriodicWaveform.WaveEquation(0, 4);
-      var cos1 = System.Math.Cos(we1);
-      var amp1 = cos1 * amplitude;
-
-      var we = Flux.Dsp.WaveformGenerator.PeriodicWaveform.WaveEquation(3, 1, 4, 8, 0);
-
-      var cos = System.Math.Cos(we);
-      var y = 3 * cos;
-
-      var s = $"{we} : {cos:N10} : {y:N10}";
-
-      for (var phase = 0.0; phase <= System.Math.Tau + 1; phase += System.Math.Tau / 20)
-        System.Console.WriteLine($"{phase:N4} : {frequency:N3} : {waveLength:N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.SineWave(time, waveLength, amplitude, phase):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.SquareWave(time, waveLength, amplitude, phase):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.TriangleWave(time, waveLength, amplitude, phase):N3} : {Flux.Dsp.WaveformGenerator.PeriodicWaveform.SawtoothWave(time, waveLength, amplitude, phase):N3}");
     }
 
     #region Puzzle

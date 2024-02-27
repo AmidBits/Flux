@@ -51,7 +51,7 @@ namespace Flux.Geometry
     /// <param name="altitudeValue">The altitude length value.</param>
     /// <param name="altitudeUnit">The altitude length unit.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public GeographicCoordinate(double latitudeValue, Units.AngleUnit latitudeUnit, double longitudeValue, Units.AngleUnit longitudeUnit, double altitudeValue = 1, Units.LengthUnit altitudeUnit = Units.LengthUnit.Meter)
+    public GeographicCoordinate(double latitudeValue, Units.AngleUnit latitudeUnit, double longitudeValue, Units.AngleUnit longitudeUnit, double altitudeValue = 1, Units.LengthUnit altitudeUnit = Units.LengthUnit.Metre)
       : this(new Units.Latitude(latitudeValue, latitudeUnit).Value, new Units.Longitude(longitudeValue, longitudeUnit).Value, new Units.Length(altitudeValue, altitudeUnit).Value)
     { }
 
@@ -122,11 +122,11 @@ namespace Flux.Geometry
       latMin = lat - angularDistance;
       latMax = lat + angularDistance;
 
-      if (latMin <= -Maths.PiOver2 || latMax >= Maths.PiOver2) // A pole is within the given distance.
+      if (latMin <= -(System.Math.PI / 2) || latMax >= (System.Math.PI / 2)) // A pole is within the given distance.
       {
-        latMin = System.Math.Max(latMin, -Maths.PiOver2);
+        latMin = System.Math.Max(latMin, -(System.Math.PI / 2));
         lonMin = -System.Math.PI;
-        latMax = System.Math.Min(latMax, Maths.PiOver2);
+        latMax = System.Math.Min(latMax, (System.Math.PI / 2));
         lonMax = System.Math.PI;
 
         return false;

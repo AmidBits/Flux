@@ -1,18 +1,9 @@
 ﻿namespace Flux.Dsp
 {
-  /// <summary>A bipolar [-1, 1] sample audio processor in quadrophonic.</summary>
-  //public interface IAudioProcessorQuad
-  //{
-  //  /// <returns>Process the shaped samples in the [-1, 1] range in quad.</returns>
-  //  ISampleQuad ProcessAudio(ISampleQuad sample);
-
-  //  private class EmptyAudioProcessorQuad
-  //    : IAudioProcessorQuad
-  //  {
-  //    public static IAudioProcessorQuad Instance = new EmptyAudioProcessorQuad();
-
-  //    public ISampleQuad ProcessAudio(ISampleQuad sample)
-  //      => throw new System.NotImplementedException(nameof(EmptyAudioProcessorQuad));
-  //  }
-  //}
+  /// <summary>A bipolar [-1.0, 1.0] quadrophonic floating point sample wave processor.</summary>
+  public interface IQuadWaveProcessable
+  {
+    /// <summary>Process the quad sample wave. The range is [-1.0, 1.0], in and out.</summary>
+    IWaveQuad<double> ProcessQuadWave(IWaveQuad<double> sample);
+  }
 }

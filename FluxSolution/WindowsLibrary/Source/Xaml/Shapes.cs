@@ -15,7 +15,7 @@ namespace Flux.Wpf
 
       public static System.Collections.Generic.IEnumerable<System.Windows.Point> CreateHexagonHorizontal(double radius)
       {
-        return CreateCircular(6, radius, Maths.PiOver2);
+        return CreateCircular(6, radius, System.Math.PI / 2);
       }
       public static System.Collections.Generic.IEnumerable<System.Windows.Point> CreateHexagonVertical(double radius)
       {

@@ -824,6 +824,8 @@ namespace Flux
       public double Value => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);
 
       #endregion Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }
