@@ -602,7 +602,7 @@ namespace Flux
 
       #region Overloaded operators
 
-      public static explicit operator double(BigRational v) => v.Value;
+
 
       #endregion Overloaded operators
 

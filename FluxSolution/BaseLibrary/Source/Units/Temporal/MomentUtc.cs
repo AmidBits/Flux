@@ -57,7 +57,11 @@ namespace Flux
       }
 
       public TemporalCalendar GetConversionCalendar()
-        => IsGregorianCalendar(m_year, m_month, m_day) ? TemporalCalendar.GregorianCalendar : IsJulianCalendar(m_year, m_month, m_day) ? TemporalCalendar.JulianCalendar : throw new System.NotImplementedException(@"Not a Julian/Gregorian Calendar date.");
+        => IsGregorianCalendar(m_year, m_month, m_day)
+        ? TemporalCalendar.GregorianCalendar
+        : IsJulianCalendar(m_year, m_month, m_day)
+        ? TemporalCalendar.JulianCalendar
+        : throw new System.NotImplementedException(@"Not a Julian/Gregorian Calendar date.");
 
 #if NET6_0_OR_GREATER
       /// <summary>Creates a new <see cref="System.DateOnly"/> from the date components in this instance.</summary>

@@ -50,9 +50,6 @@ namespace Flux
 
       #region Overloaded operators
 
-      public static explicit operator double(AmplitudeRatio v) => v.m_value;
-      public static explicit operator AmplitudeRatio(double v) => new(v);
-
       public static bool operator <(AmplitudeRatio a, AmplitudeRatio b) => a.CompareTo(b) < 0;
       public static bool operator <=(AmplitudeRatio a, AmplitudeRatio b) => a.CompareTo(b) <= 0;
       public static bool operator >(AmplitudeRatio a, AmplitudeRatio b) => a.CompareTo(b) > 0;

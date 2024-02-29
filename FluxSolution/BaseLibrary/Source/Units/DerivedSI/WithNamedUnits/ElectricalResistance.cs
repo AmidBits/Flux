@@ -56,7 +56,7 @@ namespace Flux
         var sum = 0.0;
         foreach (var resistor in resistors)
           sum += 1 / resistor;
-        return (ElectricalResistance)(1 / sum);
+        return new(1 / sum);
       }
 
       /// <summary>Converts resistor values as if in serial configuration.</summary>
@@ -65,13 +65,11 @@ namespace Flux
         var sum = 0.0;
         foreach (var resistor in resistors)
           sum += resistor;
-        return (ElectricalResistance)sum;
+        return new(sum);
       }
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(ElectricalResistance v) => v.m_value;
-      public static explicit operator ElectricalResistance(double v) => new(v);
 
       public static bool operator <(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) < 0;
       public static bool operator <=(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) <= 0;
@@ -89,6 +87,7 @@ namespace Flux
       public static ElectricalResistance operator %(ElectricalResistance a, ElectricalResistance b) => a % b.m_value;
       public static ElectricalResistance operator -(ElectricalResistance a, double b) => new(a.m_value - b);
       public static ElectricalResistance operator -(ElectricalResistance a, ElectricalResistance b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

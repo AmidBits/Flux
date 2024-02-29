@@ -39,8 +39,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Turbidity v) => v.m_value;
-      public static explicit operator Turbidity(double v) => new(v);
 
       public static bool operator <(Turbidity a, Turbidity b) => a.CompareTo(b) < 0;
       public static bool operator <=(Turbidity a, Turbidity b) => a.CompareTo(b) <= 0;
@@ -58,6 +56,7 @@ namespace Flux
       public static Turbidity operator %(Turbidity a, Turbidity b) => a % b.m_value;
       public static Turbidity operator -(Turbidity a, double b) => new(a.m_value - b);
       public static Turbidity operator -(Turbidity a, Turbidity b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

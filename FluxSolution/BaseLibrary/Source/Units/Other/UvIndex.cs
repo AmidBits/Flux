@@ -12,8 +12,6 @@ namespace Flux
       public UvIndex(double value) => m_value = value > 0 ? value : throw new System.ArgumentOutOfRangeException(nameof(value));
 
       #region Overloaded operators
-      public static explicit operator double(UvIndex v) => v.m_value;
-      public static explicit operator UvIndex(double v) => new(v);
 
       public static bool operator <(UvIndex a, UvIndex b) => a.CompareTo(b) < 0;
       public static bool operator <=(UvIndex a, UvIndex b) => a.CompareTo(b) <= 0;
@@ -31,6 +29,7 @@ namespace Flux
       public static UvIndex operator %(UvIndex a, UvIndex b) => a % b.m_value;
       public static UvIndex operator -(UvIndex a, double b) => new(a.m_value - b);
       public static UvIndex operator -(UvIndex a, UvIndex b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

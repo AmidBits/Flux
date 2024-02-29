@@ -35,8 +35,6 @@ namespace Flux
       //public MetricMultiplicative ToMetricMultiplicative() => new(m_value, MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
-      public static explicit operator double(Illuminance v) => v.m_value;
-      public static explicit operator Illuminance(double v) => new(v);
 
       public static bool operator <(Illuminance a, Illuminance b) => a.CompareTo(b) < 0;
       public static bool operator <=(Illuminance a, Illuminance b) => a.CompareTo(b) <= 0;
@@ -54,6 +52,7 @@ namespace Flux
       public static Illuminance operator %(Illuminance a, Illuminance b) => a % b.m_value;
       public static Illuminance operator -(Illuminance a, double b) => new(a.m_value - b);
       public static Illuminance operator -(Illuminance a, Illuminance b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

@@ -18,28 +18,19 @@ namespace Flux
         };
 
       #region Overloaded operators
-      public static MagneticFluxDensity2D operator -(MagneticFluxDensity2D v)
-        => new(-v.m_value);
-      public static MagneticFluxDensity2D operator +(MagneticFluxDensity2D a, float b)
-        => new(a.m_value + new System.Numerics.Vector2(b));
-      public static MagneticFluxDensity2D operator +(MagneticFluxDensity2D a, MagneticFluxDensity2D b)
-        => new(a.m_value + b.m_value);
-      public static MagneticFluxDensity2D operator /(MagneticFluxDensity2D a, float b)
-        => new(a.m_value / b);
-      public static MagneticFluxDensity2D operator /(MagneticFluxDensity2D a, MagneticFluxDensity2D b)
-        => new(a.m_value / b.m_value);
-      public static MagneticFluxDensity2D operator *(MagneticFluxDensity2D a, float b)
-        => new(a.m_value * b);
-      public static MagneticFluxDensity2D operator *(MagneticFluxDensity2D a, MagneticFluxDensity2D b)
-        => new(a.m_value * b.m_value);
-      public static MagneticFluxDensity2D operator %(MagneticFluxDensity2D a, float b)
-        => new(new System.Numerics.Vector2(a.m_value.X % b, a.m_value.Y % b));
-      public static MagneticFluxDensity2D operator %(MagneticFluxDensity2D a, MagneticFluxDensity2D b)
-        => new(new System.Numerics.Vector2(a.m_value.X % b.m_value.X, a.m_value.Y % b.m_value.Y));
-      public static MagneticFluxDensity2D operator -(MagneticFluxDensity2D a, float b)
-        => new(a.m_value - new System.Numerics.Vector2(b));
-      public static MagneticFluxDensity2D operator -(MagneticFluxDensity2D a, MagneticFluxDensity2D b)
-        => new(a.m_value - b.m_value);
+
+      public static MagneticFluxDensity2D operator -(MagneticFluxDensity2D v) => new(-v.m_value);
+      public static MagneticFluxDensity2D operator +(MagneticFluxDensity2D a, float b) => new(a.m_value + new System.Numerics.Vector2(b));
+      public static MagneticFluxDensity2D operator +(MagneticFluxDensity2D a, MagneticFluxDensity2D b) => new(a.m_value + b.m_value);
+      public static MagneticFluxDensity2D operator /(MagneticFluxDensity2D a, float b) => new(a.m_value / b);
+      public static MagneticFluxDensity2D operator /(MagneticFluxDensity2D a, MagneticFluxDensity2D b) => new(a.m_value / b.m_value);
+      public static MagneticFluxDensity2D operator *(MagneticFluxDensity2D a, float b) => new(a.m_value * b);
+      public static MagneticFluxDensity2D operator *(MagneticFluxDensity2D a, MagneticFluxDensity2D b) => new(a.m_value * b.m_value);
+      public static MagneticFluxDensity2D operator %(MagneticFluxDensity2D a, float b) => new(new System.Numerics.Vector2(a.m_value.X % b, a.m_value.Y % b));
+      public static MagneticFluxDensity2D operator %(MagneticFluxDensity2D a, MagneticFluxDensity2D b) => new(new System.Numerics.Vector2(a.m_value.X % b.m_value.X, a.m_value.Y % b.m_value.Y));
+      public static MagneticFluxDensity2D operator -(MagneticFluxDensity2D a, float b) => new(a.m_value - new System.Numerics.Vector2(b));
+      public static MagneticFluxDensity2D operator -(MagneticFluxDensity2D a, MagneticFluxDensity2D b) => new(a.m_value - b.m_value);
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

@@ -18,28 +18,19 @@ namespace Flux
         };
 
       #region Overloaded operators
-      public static Acceleration3D operator -(Acceleration3D v)
-        => new(-v.m_value);
-      public static Acceleration3D operator +(Acceleration3D a, float b)
-        => new(a.m_value + new System.Numerics.Vector3(b));
-      public static Acceleration3D operator +(Acceleration3D a, Acceleration3D b)
-        => new(a.m_value + b.m_value);
-      public static Acceleration3D operator /(Acceleration3D a, float b)
-        => new(a.m_value / b);
-      public static Acceleration3D operator /(Acceleration3D a, Acceleration3D b)
-        => new(a.m_value / b.m_value);
-      public static Acceleration3D operator *(Acceleration3D a, float b)
-        => new(a.m_value * b);
-      public static Acceleration3D operator *(Acceleration3D a, Acceleration3D b)
-        => new(a.m_value * b.m_value);
-      public static Acceleration3D operator %(Acceleration3D a, float b)
-        => new(new System.Numerics.Vector3(a.m_value.X % b, a.m_value.Y % b, a.m_value.Z % b));
-      public static Acceleration3D operator %(Acceleration3D a, Acceleration3D b)
-        => new(new System.Numerics.Vector3(a.m_value.X % b.m_value.X, a.m_value.Y % b.m_value.Y, a.m_value.Z % b.m_value.Z));
-      public static Acceleration3D operator -(Acceleration3D a, float b)
-        => new(a.m_value - new System.Numerics.Vector3(b));
-      public static Acceleration3D operator -(Acceleration3D a, Acceleration3D b)
-        => new(a.m_value - b.m_value);
+
+      public static Acceleration3D operator -(Acceleration3D v) => new(-v.m_value);
+      public static Acceleration3D operator +(Acceleration3D a, float b) => new(a.m_value + new System.Numerics.Vector3(b));
+      public static Acceleration3D operator +(Acceleration3D a, Acceleration3D b) => new(a.m_value + b.m_value);
+      public static Acceleration3D operator /(Acceleration3D a, float b) => new(a.m_value / b);
+      public static Acceleration3D operator /(Acceleration3D a, Acceleration3D b) => new(a.m_value / b.m_value);
+      public static Acceleration3D operator *(Acceleration3D a, float b) => new(a.m_value * b);
+      public static Acceleration3D operator *(Acceleration3D a, Acceleration3D b) => new(a.m_value * b.m_value);
+      public static Acceleration3D operator %(Acceleration3D a, float b) => new(new System.Numerics.Vector3(a.m_value.X % b, a.m_value.Y % b, a.m_value.Z % b));
+      public static Acceleration3D operator %(Acceleration3D a, Acceleration3D b) => new(new System.Numerics.Vector3(a.m_value.X % b.m_value.X, a.m_value.Y % b.m_value.Y, a.m_value.Z % b.m_value.Z));
+      public static Acceleration3D operator -(Acceleration3D a, float b) => new(a.m_value - new System.Numerics.Vector3(b));
+      public static Acceleration3D operator -(Acceleration3D a, Acceleration3D b) => new(a.m_value - b.m_value);
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

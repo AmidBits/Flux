@@ -43,8 +43,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(AbsoluteHumidity v) => v.m_value;
-      public static explicit operator AbsoluteHumidity(double v) => new(v);
 
       public static bool operator <(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) < 0;
       public static bool operator <=(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) <= 0;
@@ -62,6 +60,7 @@ namespace Flux
       public static AbsoluteHumidity operator %(AbsoluteHumidity a, AbsoluteHumidity b) => a % b.m_value;
       public static AbsoluteHumidity operator -(AbsoluteHumidity a, double b) => new(a.m_value - b);
       public static AbsoluteHumidity operator -(AbsoluteHumidity a, AbsoluteHumidity b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

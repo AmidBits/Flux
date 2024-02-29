@@ -474,8 +474,6 @@
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator Angle(double value) => new(value);
-      public static explicit operator double(Angle value) => value.m_angle;
 
       public static bool operator <(Angle a, Angle b) => a.CompareTo(b) < 0;
       public static bool operator <=(Angle a, Angle b) => a.CompareTo(b) <= 0;
@@ -493,6 +491,7 @@
       public static Angle operator %(Angle a, Angle b) => a % b.m_angle;
       public static Angle operator -(Angle a, double b) => new(a.m_angle - b);
       public static Angle operator -(Angle a, Angle b) => a - b.m_angle;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

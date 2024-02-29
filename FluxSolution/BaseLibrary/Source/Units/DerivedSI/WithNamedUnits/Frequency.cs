@@ -112,8 +112,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator Frequency(double value) => new(value);
-      public static explicit operator double(Frequency value) => value.m_hertz;
 
       public static bool operator <(Frequency a, Frequency b) => a.CompareTo(b) < 0;
       public static bool operator <=(Frequency a, Frequency b) => a.CompareTo(b) <= 0;
@@ -131,6 +129,7 @@ namespace Flux
       public static Frequency operator %(Frequency a, Frequency b) => a % b.m_hertz;
       public static Frequency operator -(Frequency a, double b) => new(a.m_hertz - b);
       public static Frequency operator -(Frequency a, Frequency b) => a - b.m_hertz;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

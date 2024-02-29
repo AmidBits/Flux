@@ -49,9 +49,6 @@ namespace Flux.Units
 
     #region Overloaded operators
 
-    public static explicit operator double(Longitude v) => v.m_angle.GetUnitValue(AngleUnit.Degree);
-    public static explicit operator Longitude(double v) => new(v);
-
     public static bool operator <(Longitude a, Longitude b) => a.CompareTo(b) < 0;
     public static bool operator <=(Longitude a, Longitude b) => a.CompareTo(b) <= 0;
     public static bool operator >(Longitude a, Longitude b) => a.CompareTo(b) > 0;
@@ -59,15 +56,15 @@ namespace Flux.Units
 
     public static Longitude operator -(Longitude v) => new(-v.m_angle.GetUnitValue(AngleUnit.Degree));
     public static Longitude operator +(Longitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) + b);
-    public static Longitude operator +(Longitude a, Longitude b) => a + b.Value;
+    public static Longitude operator +(Longitude a, Longitude b) => a + b.m_angle.GetUnitValue(AngleUnit.Degree);
     public static Longitude operator /(Longitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) / b);
-    public static Longitude operator /(Longitude a, Longitude b) => a / b.Value;
+    public static Longitude operator /(Longitude a, Longitude b) => a / b.m_angle.GetUnitValue(AngleUnit.Degree);
     public static Longitude operator *(Longitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) * b);
-    public static Longitude operator *(Longitude a, Longitude b) => a * b.Value;
+    public static Longitude operator *(Longitude a, Longitude b) => a * b.m_angle.GetUnitValue(AngleUnit.Degree);
     public static Longitude operator %(Longitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) % b);
-    public static Longitude operator %(Longitude a, Longitude b) => a % b.Value;
+    public static Longitude operator %(Longitude a, Longitude b) => a % b.m_angle.GetUnitValue(AngleUnit.Degree);
     public static Longitude operator -(Longitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) - b);
-    public static Longitude operator -(Longitude a, Longitude b) => a - b.Value;
+    public static Longitude operator -(Longitude a, Longitude b) => a - b.m_angle.GetUnitValue(AngleUnit.Degree);
 
     #endregion Overloaded operators
 

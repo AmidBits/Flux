@@ -75,8 +75,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Speed v) => v.m_value;
-      public static explicit operator Speed(double v) => new(v);
 
       public static bool operator <(Speed a, Speed b) => a.CompareTo(b) < 0;
       public static bool operator <=(Speed a, Speed b) => a.CompareTo(b) <= 0;
@@ -94,6 +92,7 @@ namespace Flux
       public static Speed operator %(Speed a, Speed b) => a % b.m_value;
       public static Speed operator -(Speed a, double b) => new(a.m_value - b);
       public static Speed operator -(Speed a, Speed b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

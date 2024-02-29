@@ -47,8 +47,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(ElectricCurrent v) => v.m_value;
-      public static explicit operator ElectricCurrent(double v) => new(v);
 
       public static bool operator <(ElectricCurrent a, ElectricCurrent b) => a.CompareTo(b) < 0;
       public static bool operator <=(ElectricCurrent a, ElectricCurrent b) => a.CompareTo(b) <= 0;
@@ -66,6 +64,7 @@ namespace Flux
       public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b) => a % b.m_value;
       public static ElectricCurrent operator -(ElectricCurrent a, double b) => new(a.m_value - b);
       public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

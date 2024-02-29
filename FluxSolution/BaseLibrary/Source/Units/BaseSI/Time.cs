@@ -111,8 +111,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Time v) => v.m_value;
-      public static explicit operator Time(double v) => new(v);
 
       public static bool operator <(Time a, Time b) => a.CompareTo(b) < 0;
       public static bool operator <=(Time a, Time b) => a.CompareTo(b) <= 0;
@@ -130,6 +128,7 @@ namespace Flux
       public static Time operator %(Time a, Time b) => a % b.m_value;
       public static Time operator -(Time a, double b) => new(a.m_value - b);
       public static Time operator -(Time a, Time b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

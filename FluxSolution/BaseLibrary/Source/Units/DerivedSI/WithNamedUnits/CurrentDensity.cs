@@ -35,8 +35,6 @@ namespace Flux
       //public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(CurrentDensityUnit.AmperePerSquareMeter), MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
-      public static explicit operator double(CurrentDensity v) => v.m_value;
-      public static explicit operator CurrentDensity(double v) => new(v);
 
       public static bool operator <(CurrentDensity a, CurrentDensity b) => a.CompareTo(b) < 0;
       public static bool operator <=(CurrentDensity a, CurrentDensity b) => a.CompareTo(b) <= 0;
@@ -54,6 +52,7 @@ namespace Flux
       public static CurrentDensity operator %(CurrentDensity a, CurrentDensity b) => a % b.m_value;
       public static CurrentDensity operator -(CurrentDensity a, double b) => new(a.m_value - b);
       public static CurrentDensity operator -(CurrentDensity a, CurrentDensity b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

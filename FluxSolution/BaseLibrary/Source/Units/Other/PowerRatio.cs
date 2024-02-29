@@ -48,8 +48,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(PowerRatio v) => v.m_value;
-      public static explicit operator PowerRatio(double v) => new(v);
 
       public static bool operator <(PowerRatio a, PowerRatio b) => a.CompareTo(b) < 0;
       public static bool operator <=(PowerRatio a, PowerRatio b) => a.CompareTo(b) <= 0;

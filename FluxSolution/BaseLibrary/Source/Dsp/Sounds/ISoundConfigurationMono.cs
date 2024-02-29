@@ -1,8 +1,8 @@
 ﻿namespace Flux.Dsp
 {
-  /// <summary>Mono sample, any format.</summary>
+  /// <summary>Sound configuration mono 1.0.</summary>
   public interface ISoundConfigurationMono<TSelf>
-    : IAudioChannelFrontCenter<TSelf>
+    : IAudioChannelCenter<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
   }

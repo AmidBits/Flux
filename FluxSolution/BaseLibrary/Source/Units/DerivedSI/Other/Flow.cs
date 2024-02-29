@@ -39,8 +39,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Flow v) => v.m_value;
-      public static explicit operator Flow(double v) => new(v);
 
       public static bool operator <(Flow a, Flow b) => a.CompareTo(b) < 0;
       public static bool operator <=(Flow a, Flow b) => a.CompareTo(b) <= 0;
@@ -58,6 +56,7 @@ namespace Flux
       public static Flow operator %(Flow a, Flow b) => a % b.m_value;
       public static Flow operator -(Flow a, double b) => new(a.m_value - b);
       public static Flow operator -(Flow a, Flow b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

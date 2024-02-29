@@ -75,9 +75,6 @@ namespace Flux.Units
 
     #region Overloaded operators
 
-    public static explicit operator double(Latitude v) => v.m_angle.GetUnitValue(AngleUnit.Degree);
-    public static explicit operator Latitude(double v) => new(v);
-
     public static bool operator <(Latitude a, Latitude b) => a.CompareTo(b) < 0;
     public static bool operator <=(Latitude a, Latitude b) => a.CompareTo(b) <= 0;
     public static bool operator >(Latitude a, Latitude b) => a.CompareTo(b) > 0;
@@ -85,15 +82,15 @@ namespace Flux.Units
 
     public static Latitude operator -(Latitude v) => new(-v.m_angle.GetUnitValue(AngleUnit.Degree));
     public static Latitude operator +(Latitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) + b);
-    public static Latitude operator +(Latitude a, Latitude b) => a + b.Value;
+    public static Latitude operator +(Latitude a, Latitude b) => a + b.m_angle.GetUnitValue(AngleUnit.Degree);
     public static Latitude operator /(Latitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) / b);
-    public static Latitude operator /(Latitude a, Latitude b) => a / b.Value;
+    public static Latitude operator /(Latitude a, Latitude b) => a / b.m_angle.GetUnitValue(AngleUnit.Degree);
     public static Latitude operator *(Latitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) * b);
-    public static Latitude operator *(Latitude a, Latitude b) => a * b.Value;
+    public static Latitude operator *(Latitude a, Latitude b) => a * b.m_angle.GetUnitValue(AngleUnit.Degree);
     public static Latitude operator %(Latitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) % b);
-    public static Latitude operator %(Latitude a, Latitude b) => a % b.Value;
+    public static Latitude operator %(Latitude a, Latitude b) => a % b.m_angle.GetUnitValue(AngleUnit.Degree);
     public static Latitude operator -(Latitude a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) - b);
-    public static Latitude operator -(Latitude a, Latitude b) => a - b.Value;
+    public static Latitude operator -(Latitude a, Latitude b) => a - b.m_angle.GetUnitValue(AngleUnit.Degree);
     #endregion Overloaded operators
 
     #region Implemented interfaces

@@ -39,8 +39,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(ElectricalConductance v) => v.m_value;
-      public static explicit operator ElectricalConductance(double v) => new(v);
 
       public static bool operator <(ElectricalConductance a, ElectricalConductance b) => a.CompareTo(b) < 0;
       public static bool operator <=(ElectricalConductance a, ElectricalConductance b) => a.CompareTo(b) <= 0;
@@ -58,6 +56,7 @@ namespace Flux
       public static ElectricalConductance operator %(ElectricalConductance a, ElectricalConductance b) => a % b.m_value;
       public static ElectricalConductance operator -(ElectricalConductance a, double b) => new(a.m_value - b);
       public static ElectricalConductance operator -(ElectricalConductance a, ElectricalConductance b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

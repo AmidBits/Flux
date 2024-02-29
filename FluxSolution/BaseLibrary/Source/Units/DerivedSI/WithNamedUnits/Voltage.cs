@@ -50,8 +50,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Voltage v) => v.m_value;
-      public static explicit operator Voltage(double v) => new(v);
 
       public static bool operator <(Voltage a, Voltage b) => a.CompareTo(b) < 0;
       public static bool operator <=(Voltage a, Voltage b) => a.CompareTo(b) <= 0;
@@ -69,6 +67,7 @@ namespace Flux
       public static Voltage operator %(Voltage a, Voltage b) => a % b.m_value;
       public static Voltage operator -(Voltage a, double b) => new(a.m_value - b);
       public static Voltage operator -(Voltage a, Voltage b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

@@ -465,14 +465,6 @@ namespace Flux.Units
     #endregion Static methods
 
     #region Overloaded operators
-    public static implicit operator Radix(System.Byte v) => new(v);
-    public static implicit operator Radix(System.Int16 v) => new(v);
-    public static implicit operator Radix(System.Int32 v) => new(v);
-    public static implicit operator Radix(System.Int64 v) => new((int)v);
-#if NET7_0_OR_GREATER
-    public static implicit operator Radix(System.Int128 v) => new((int)v);
-#endif
-    public static implicit operator Radix(System.Numerics.BigInteger v) => new((int)v);
 
     public static bool operator <(Radix a, Radix b) => a.CompareTo(b) < 0;
     public static bool operator <=(Radix a, Radix b) => a.CompareTo(b) <= 0;
@@ -490,6 +482,7 @@ namespace Flux.Units
     public static Radix operator %(Radix a, Radix b) => a % b.m_value;
     public static Radix operator -(Radix a, int b) => new(a.m_value - b);
     public static Radix operator -(Radix a, Radix b) => a - b.m_value;
+
     #endregion Overloaded operators
 
     #region Implemented interfaces

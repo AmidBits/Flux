@@ -74,9 +74,9 @@ namespace Flux
 
         var minutes = (int)julianDateFraction;
 
-        julianDateFraction -= minutes;
+        julianDateFraction = (julianDateFraction - minutes) * 60;
 
-        var seconds = julianDateFraction * 60;
+        var seconds = julianDateFraction;
 
         return (days, hours, minutes, seconds);
       }

@@ -33,8 +33,6 @@ namespace Flux
         };
 
       #region Overloaded operators
-      public static explicit operator double(EquivalentDose v) => v.m_value;
-      public static explicit operator EquivalentDose(double v) => new(v);
 
       public static bool operator <(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) < 0;
       public static bool operator <=(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) <= 0;
@@ -52,6 +50,7 @@ namespace Flux
       public static EquivalentDose operator %(EquivalentDose a, EquivalentDose b) => a % b.m_value;
       public static EquivalentDose operator -(EquivalentDose a, double b) => new(a.m_value - b);
       public static EquivalentDose operator -(EquivalentDose a, EquivalentDose b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

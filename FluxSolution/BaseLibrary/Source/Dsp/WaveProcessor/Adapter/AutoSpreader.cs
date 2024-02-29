@@ -58,7 +58,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       left /= WaveProcessors.Count;
       right /= WaveProcessors.Count;
 
-      return new WaveStereo<double>(stereo.WaveLeft * m_dryMix + left * m_wetMix, stereo.WaveRight * m_dryMix + right * m_wetMix);
+      return new WaveStereo<double>(stereo.SampleLeft * m_dryMix + left * m_wetMix, stereo.SampleRight * m_dryMix + right * m_wetMix);
     }
   }
 }

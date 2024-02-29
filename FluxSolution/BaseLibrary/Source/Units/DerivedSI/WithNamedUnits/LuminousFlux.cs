@@ -33,8 +33,6 @@ namespace Flux
         };
 
       #region Overloaded operators
-      public static explicit operator double(LuminousFlux v) => v.m_value;
-      public static explicit operator LuminousFlux(double v) => new(v);
 
       public static bool operator <(LuminousFlux a, LuminousFlux b) => a.CompareTo(b) < 0;
       public static bool operator <=(LuminousFlux a, LuminousFlux b) => a.CompareTo(b) <= 0;
@@ -52,6 +50,7 @@ namespace Flux
       public static LuminousFlux operator %(LuminousFlux a, LuminousFlux b) => a % b.m_value;
       public static LuminousFlux operator -(LuminousFlux a, double b) => new(a.m_value - b);
       public static LuminousFlux operator -(LuminousFlux a, LuminousFlux b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

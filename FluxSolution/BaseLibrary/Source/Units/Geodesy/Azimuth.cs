@@ -141,9 +141,6 @@ namespace Flux
 
       #region Overloaded operators
 
-      public static explicit operator double(Azimuth v) => v.m_angle.GetUnitValue(AngleUnit.Degree);
-      public static explicit operator Azimuth(double v) => new(v);
-
       public static bool operator <(Azimuth a, Azimuth b) => a.CompareTo(b) < 0;
       public static bool operator <=(Azimuth a, Azimuth b) => a.CompareTo(b) <= 0;
       public static bool operator >(Azimuth a, Azimuth b) => a.CompareTo(b) > 0;
@@ -151,15 +148,15 @@ namespace Flux
 
       public static Azimuth operator -(Azimuth v) => new(-v.m_angle.GetUnitValue(AngleUnit.Degree));
       public static Azimuth operator +(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) + b);
-      public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.Value;
+      public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.m_angle.GetUnitValue(AngleUnit.Degree);
       public static Azimuth operator /(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) / b);
-      public static Azimuth operator /(Azimuth a, Azimuth b) => a / b.Value;
+      public static Azimuth operator /(Azimuth a, Azimuth b) => a / b.m_angle.GetUnitValue(AngleUnit.Degree);
       public static Azimuth operator *(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) * b);
-      public static Azimuth operator *(Azimuth a, Azimuth b) => a * b.Value;
+      public static Azimuth operator *(Azimuth a, Azimuth b) => a * b.m_angle.GetUnitValue(AngleUnit.Degree);
       public static Azimuth operator %(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) % b);
-      public static Azimuth operator %(Azimuth a, Azimuth b) => a % b.Value;
+      public static Azimuth operator %(Azimuth a, Azimuth b) => a % b.m_angle.GetUnitValue(AngleUnit.Degree);
       public static Azimuth operator -(Azimuth a, double b) => new(a.m_angle.GetUnitValue(AngleUnit.Degree) - b);
-      public static Azimuth operator -(Azimuth a, Azimuth b) => a - b.Value;
+      public static Azimuth operator -(Azimuth a, Azimuth b) => a - b.m_angle.GetUnitValue(AngleUnit.Degree);
 
       #endregion // Overloaded operators
 

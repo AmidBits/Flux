@@ -80,7 +80,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(PartsPerNotation v) => v.Value;
 
       public static bool operator <(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) < 0;
       public static bool operator <=(PartsPerNotation a, PartsPerNotation b) => a.CompareTo(b) <= 0;
@@ -98,6 +97,7 @@ namespace Flux
       public static PartsPerNotation operator %(PartsPerNotation a, PartsPerNotation b) => a % b.m_parts;
       public static PartsPerNotation operator -(PartsPerNotation a, double b) => new(a.m_parts - b);
       public static PartsPerNotation operator -(PartsPerNotation a, PartsPerNotation b) => a - b.m_parts;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

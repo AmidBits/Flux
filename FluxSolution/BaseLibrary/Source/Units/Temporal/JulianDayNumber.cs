@@ -30,9 +30,6 @@ namespace Flux
       /// <summary>Returns a <see cref="System.DayOfWeek"/> from the Julian Day Number.</summary>
       public System.DayOfWeek DayOfWeek => (System.DayOfWeek)(GetDayOfWeekISO8601(m_value) % 7);
 
-      /// <summary>Returns a day of week [1 (Monday), 7 (Sunday)] from the specified Julian Day Number. Julian Day Number 0 was Monday. For US day-of-week numbering, <see cref="DayOfWeek"/> or simply do: <code>GetDayOfWeekISO8601(JDN) % 7</code></summary>
-      public int DayOfWeekISO8601 => GetDayOfWeekISO8601(m_value);
-
       public JulianDayNumber AddWeeks(int weeks) => this + (weeks * 7);
 
       public JulianDayNumber AddDays(int days) => this + days;
@@ -127,7 +124,7 @@ namespace Flux
         return (year, month, day);
       }
 
-      /// <summary>Returns the ISO day of the week from the Julian Day Number. The US day of the week can be determined by: GetDayOfWeekISO(JDN) % 7.</summary>
+      /// <summary>Returns the ISO day of the week [1 (Monday), 7 (Sunday)] from the Julian Day Number. Julian Day Number 0 was Monday. The US day of the week can be computed by: <code>GetDayOfWeekISO(JDN) % 7</code></summary>
       public static int GetDayOfWeekISO8601(int julianDayNumber)
         => (julianDayNumber % 7 is var dow && dow < 0 ? dow + 7 : dow) + 1;
 

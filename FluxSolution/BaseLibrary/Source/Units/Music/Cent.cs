@@ -42,8 +42,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator int(Cent v) => v.m_value;
-      public static explicit operator Cent(int v) => new(v);
 
       public static bool operator <(Cent a, Cent b) => a.CompareTo(b) < 0;
       public static bool operator <=(Cent a, Cent b) => a.CompareTo(b) <= 0;
@@ -61,6 +59,7 @@ namespace Flux
       public static Cent operator %(Cent a, Cent b) => a % b.m_value;
       public static Cent operator -(Cent a, int b) => new(a.m_value - b);
       public static Cent operator -(Cent a, Cent b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

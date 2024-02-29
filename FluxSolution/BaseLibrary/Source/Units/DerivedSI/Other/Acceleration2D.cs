@@ -18,28 +18,19 @@ namespace Flux
         };
 
       #region Overloaded operators
-      public static Acceleration2D operator -(Acceleration2D v)
-        => new(-v.m_value);
-      public static Acceleration2D operator +(Acceleration2D a, float b)
-        => new(a.m_value + new System.Numerics.Vector2(b));
-      public static Acceleration2D operator +(Acceleration2D a, Acceleration2D b)
-        => new(a.m_value + b.m_value);
-      public static Acceleration2D operator /(Acceleration2D a, float b)
-        => new(a.m_value / b);
-      public static Acceleration2D operator /(Acceleration2D a, Acceleration2D b)
-        => new(a.m_value / b.m_value);
-      public static Acceleration2D operator *(Acceleration2D a, float b)
-        => new(a.m_value * b);
-      public static Acceleration2D operator *(Acceleration2D a, Acceleration2D b)
-        => new(a.m_value * b.m_value);
-      public static Acceleration2D operator %(Acceleration2D a, float b)
-        => new(new System.Numerics.Vector2(a.m_value.X % b, a.m_value.Y % b));
-      public static Acceleration2D operator %(Acceleration2D a, Acceleration2D b)
-        => new(new System.Numerics.Vector2(a.m_value.X % b.m_value.X, a.m_value.Y % b.m_value.Y));
-      public static Acceleration2D operator -(Acceleration2D a, float b)
-        => new(a.m_value - new System.Numerics.Vector2(b));
-      public static Acceleration2D operator -(Acceleration2D a, Acceleration2D b)
-        => new(a.m_value - b.m_value);
+
+      public static Acceleration2D operator -(Acceleration2D v) => new(-v.m_value);
+      public static Acceleration2D operator +(Acceleration2D a, float b) => new(a.m_value + new System.Numerics.Vector2(b));
+      public static Acceleration2D operator +(Acceleration2D a, Acceleration2D b) => new(a.m_value + b.m_value);
+      public static Acceleration2D operator /(Acceleration2D a, float b) => new(a.m_value / b);
+      public static Acceleration2D operator /(Acceleration2D a, Acceleration2D b) => new(a.m_value / b.m_value);
+      public static Acceleration2D operator *(Acceleration2D a, float b) => new(a.m_value * b);
+      public static Acceleration2D operator *(Acceleration2D a, Acceleration2D b) => new(a.m_value * b.m_value);
+      public static Acceleration2D operator %(Acceleration2D a, float b) => new(new System.Numerics.Vector2(a.m_value.X % b, a.m_value.Y % b));
+      public static Acceleration2D operator %(Acceleration2D a, Acceleration2D b) => new(new System.Numerics.Vector2(a.m_value.X % b.m_value.X, a.m_value.Y % b.m_value.Y));
+      public static Acceleration2D operator -(Acceleration2D a, float b) => new(a.m_value - new System.Numerics.Vector2(b));
+      public static Acceleration2D operator -(Acceleration2D a, Acceleration2D b) => new(a.m_value - b.m_value);
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

@@ -97,8 +97,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Volume v) => v.m_value;
-      public static explicit operator Volume(double v) => new(v);
 
       public static bool operator <(Volume a, Volume b) => a.CompareTo(b) < 0;
       public static bool operator <=(Volume a, Volume b) => a.CompareTo(b) <= 0;
@@ -116,6 +114,7 @@ namespace Flux
       public static Volume operator %(Volume a, Volume b) => a % b.m_value;
       public static Volume operator -(Volume a, double b) => new(a.m_value - b);
       public static Volume operator -(Volume a, Volume b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

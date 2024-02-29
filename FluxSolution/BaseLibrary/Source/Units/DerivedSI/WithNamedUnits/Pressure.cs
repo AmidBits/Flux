@@ -51,8 +51,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Pressure v) => v.m_value;
-      public static explicit operator Pressure(double v) => new(v);
 
       public static bool operator <(Pressure a, Pressure b) => a.CompareTo(b) < 0;
       public static bool operator <=(Pressure a, Pressure b) => a.CompareTo(b) <= 0;
@@ -70,6 +68,7 @@ namespace Flux
       public static Pressure operator %(Pressure a, Pressure b) => a % b.m_value;
       public static Pressure operator -(Pressure a, double b) => new(a.m_value - b);
       public static Pressure operator -(Pressure a, Pressure b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

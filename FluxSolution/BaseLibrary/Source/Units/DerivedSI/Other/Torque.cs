@@ -39,8 +39,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Torque v) => v.m_value;
-      public static explicit operator Torque(double v) => new(v);
 
       public static bool operator <(Torque a, Torque b) => a.CompareTo(b) < 0;
       public static bool operator <=(Torque a, Torque b) => a.CompareTo(b) <= 0;
@@ -58,6 +56,7 @@ namespace Flux
       public static Torque operator %(Torque a, Torque b) => a % b.m_value;
       public static Torque operator -(Torque a, double b) => new(a.m_value - b);
       public static Torque operator -(Torque a, Torque b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

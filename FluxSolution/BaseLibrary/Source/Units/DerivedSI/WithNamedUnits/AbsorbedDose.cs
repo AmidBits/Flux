@@ -33,8 +33,6 @@ namespace Flux
         };
 
       #region Overloaded operators
-      public static explicit operator double(AbsorbedDose v) => v.m_value;
-      public static explicit operator AbsorbedDose(double v) => new(v);
 
       public static bool operator <(AbsorbedDose a, AbsorbedDose b) => a.CompareTo(b) < 0;
       public static bool operator <=(AbsorbedDose a, AbsorbedDose b) => a.CompareTo(b) <= 0;
@@ -52,6 +50,7 @@ namespace Flux
       public static AbsorbedDose operator %(AbsorbedDose a, AbsorbedDose b) => a % b.m_value;
       public static AbsorbedDose operator -(AbsorbedDose a, double b) => new(a.m_value - b);
       public static AbsorbedDose operator -(AbsorbedDose a, AbsorbedDose b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

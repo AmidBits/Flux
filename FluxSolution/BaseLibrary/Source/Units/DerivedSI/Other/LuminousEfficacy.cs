@@ -41,8 +41,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(LuminousEfficacy v) => v.m_value;
-      public static explicit operator LuminousEfficacy(double v) => new(v);
 
       public static bool operator <(LuminousEfficacy a, LuminousEfficacy b) => a.CompareTo(b) < 0;
       public static bool operator <=(LuminousEfficacy a, LuminousEfficacy b) => a.CompareTo(b) <= 0;
@@ -60,6 +58,7 @@ namespace Flux
       public static LuminousEfficacy operator %(LuminousEfficacy a, LuminousEfficacy b) => a % b.m_value;
       public static LuminousEfficacy operator -(LuminousEfficacy a, double b) => new(a.m_value - b);
       public static LuminousEfficacy operator -(LuminousEfficacy a, LuminousEfficacy b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

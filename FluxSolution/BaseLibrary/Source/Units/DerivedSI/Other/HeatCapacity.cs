@@ -38,8 +38,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(HeatCapacity v) => v.m_value;
-      public static explicit operator HeatCapacity(double v) => new(v);
 
       public static bool operator <(HeatCapacity a, HeatCapacity b) => a.CompareTo(b) < 0;
       public static bool operator <=(HeatCapacity a, HeatCapacity b) => a.CompareTo(b) <= 0;
@@ -57,6 +55,7 @@ namespace Flux
       public static HeatCapacity operator %(HeatCapacity a, HeatCapacity b) => a % b.m_value;
       public static HeatCapacity operator -(HeatCapacity a, double b) => new(a.m_value - b);
       public static HeatCapacity operator -(HeatCapacity a, HeatCapacity b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

@@ -48,8 +48,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator int(Semitone v) => v.m_value;
-      public static explicit operator Semitone(int v) => new(v);
 
       public static bool operator <(Semitone a, Semitone b) => a.CompareTo(b) < 0;
       public static bool operator <=(Semitone a, Semitone b) => a.CompareTo(b) <= 0;

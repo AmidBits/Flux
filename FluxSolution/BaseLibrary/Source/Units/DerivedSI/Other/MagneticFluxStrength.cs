@@ -35,8 +35,6 @@ namespace Flux
       //public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(MagneticFluxStrengthUnit.AmperePerMeter), MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
-      public static explicit operator double(MagneticFluxStrength v) => v.m_value;
-      public static explicit operator MagneticFluxStrength(double v) => new(v);
 
       public static bool operator <(MagneticFluxStrength a, MagneticFluxStrength b) => a.CompareTo(b) < 0;
       public static bool operator <=(MagneticFluxStrength a, MagneticFluxStrength b) => a.CompareTo(b) <= 0;
@@ -54,6 +52,7 @@ namespace Flux
       public static MagneticFluxStrength operator %(MagneticFluxStrength a, MagneticFluxStrength b) => a % b.m_value;
       public static MagneticFluxStrength operator -(MagneticFluxStrength a, double b) => new(a.m_value - b);
       public static MagneticFluxStrength operator -(MagneticFluxStrength a, MagneticFluxStrength b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

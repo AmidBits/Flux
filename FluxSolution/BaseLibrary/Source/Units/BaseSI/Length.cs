@@ -124,8 +124,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Length v) => v.m_value;
-      public static explicit operator Length(double v) => new(v);
 
       public static bool operator <(Length a, Length b) => a.CompareTo(b) < 0;
       public static bool operator <=(Length a, Length b) => a.CompareTo(b) <= 0;
@@ -143,6 +141,7 @@ namespace Flux
       public static Length operator %(Length a, Length b) => a % b.m_value;
       public static Length operator -(Length a, double b) => new(a.m_value - b);
       public static Length operator -(Length a, Length b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

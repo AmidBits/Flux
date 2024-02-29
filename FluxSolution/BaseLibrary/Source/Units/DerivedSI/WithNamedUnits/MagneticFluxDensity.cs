@@ -37,8 +37,6 @@ namespace Flux
       //public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(MagneticFluxDensityUnit.Tesla), MetricMultiplicativePrefix.One);
 
       #region Overloaded operators
-      public static explicit operator double(MagneticFluxDensity v) => v.m_value;
-      public static explicit operator MagneticFluxDensity(double v) => new(v);
 
       public static bool operator <(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) < 0;
       public static bool operator <=(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) <= 0;
@@ -56,6 +54,7 @@ namespace Flux
       public static MagneticFluxDensity operator %(MagneticFluxDensity a, MagneticFluxDensity b) => a % b.m_value;
       public static MagneticFluxDensity operator -(MagneticFluxDensity a, double b) => new(a.m_value - b);
       public static MagneticFluxDensity operator -(MagneticFluxDensity a, MagneticFluxDensity b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

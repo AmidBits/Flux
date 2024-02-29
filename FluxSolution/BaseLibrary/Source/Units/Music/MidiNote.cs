@@ -123,8 +123,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator int(MidiNote v) => v.m_number;
-      public static explicit operator MidiNote(int v) => new(v);
 
       public static bool operator <(MidiNote a, MidiNote b) => a.CompareTo(b) < 0;
       public static bool operator <=(MidiNote a, MidiNote b) => a.CompareTo(b) <= 0;
@@ -142,6 +140,7 @@ namespace Flux
       public static MidiNote operator %(MidiNote a, MidiNote b) => a % b.m_number;
       public static MidiNote operator -(MidiNote a, int b) => new(a.m_number - b);
       public static MidiNote operator -(MidiNote a, MidiNote b) => a - b.m_number;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

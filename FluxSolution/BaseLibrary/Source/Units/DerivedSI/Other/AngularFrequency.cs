@@ -55,8 +55,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(AngularFrequency v) => v.m_value;
-      public static explicit operator AngularFrequency(double v) => new(v);
 
       public static bool operator <(AngularFrequency a, AngularFrequency b) => a.CompareTo(b) < 0;
       public static bool operator <=(AngularFrequency a, AngularFrequency b) => a.CompareTo(b) <= 0;
@@ -75,6 +73,7 @@ namespace Flux
       public static AngularFrequency operator *(AngularFrequency a, double b) => new(a.m_value * b);
       public static AngularFrequency operator %(AngularFrequency a, double b) => new(a.m_value % b);
       public static AngularFrequency operator -(AngularFrequency a, double b) => new(a.m_value - b);
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

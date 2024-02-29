@@ -33,8 +33,6 @@ namespace Flux
         };
 
       #region Overloaded operators
-      public static explicit operator double(Permeability v) => v.m_value;
-      public static explicit operator Permeability(double v) => new(v);
 
       public static bool operator <(Permeability a, Permeability b) => a.CompareTo(b) < 0;
       public static bool operator <=(Permeability a, Permeability b) => a.CompareTo(b) <= 0;
@@ -52,6 +50,7 @@ namespace Flux
       public static Permeability operator %(Permeability a, Permeability b) => a % b.m_value;
       public static Permeability operator -(Permeability a, double b) => new(a.m_value - b);
       public static Permeability operator -(Permeability a, Permeability b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

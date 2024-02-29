@@ -38,8 +38,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Density v) => v.m_value;
-      public static explicit operator Density(double v) => new(v);
 
       public static bool operator <(Density a, Density b) => a.CompareTo(b) < 0;
       public static bool operator <=(Density a, Density b) => a.CompareTo(b) <= 0;
@@ -57,6 +55,7 @@ namespace Flux
       public static Density operator %(Density a, Density b) => a % b.m_value;
       public static Density operator -(Density a, double b) => new(a.m_value - b);
       public static Density operator -(Density a, Density b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

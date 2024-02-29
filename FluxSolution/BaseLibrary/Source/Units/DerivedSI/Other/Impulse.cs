@@ -39,8 +39,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Impulse v) => v.m_value;
-      public static explicit operator Impulse(double v) => new(v);
 
       public static bool operator <(Impulse a, Impulse b) => a.CompareTo(b) < 0;
       public static bool operator <=(Impulse a, Impulse b) => a.CompareTo(b) <= 0;
@@ -58,6 +56,7 @@ namespace Flux
       public static Impulse operator %(Impulse a, Impulse b) => a % b.m_value;
       public static Impulse operator -(Impulse a, double b) => new(a.m_value - b);
       public static Impulse operator -(Impulse a, Impulse b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

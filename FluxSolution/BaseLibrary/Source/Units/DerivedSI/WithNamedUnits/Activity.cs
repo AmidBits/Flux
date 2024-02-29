@@ -33,8 +33,6 @@ namespace Flux
         };
 
       #region Overloaded operators
-      public static explicit operator double(Activity v) => v.m_value;
-      public static explicit operator Activity(double v) => new(v);
 
       public static bool operator <(Activity a, Activity b) => a.CompareTo(b) < 0;
       public static bool operator <=(Activity a, Activity b) => a.CompareTo(b) <= 0;
@@ -52,6 +50,7 @@ namespace Flux
       public static Activity operator %(Activity a, Activity b) => a % b.m_value;
       public static Activity operator -(Activity a, double b) => new(a.m_value - b);
       public static Activity operator -(Activity a, Activity b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

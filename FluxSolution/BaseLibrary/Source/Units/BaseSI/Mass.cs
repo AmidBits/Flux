@@ -57,8 +57,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(Mass v) => v.m_value;
-      public static explicit operator Mass(double v) => new(v);
 
       public static bool operator <(Mass a, Mass b) => a.CompareTo(b) < 0;
       public static bool operator <=(Mass a, Mass b) => a.CompareTo(b) <= 0;
@@ -76,6 +74,7 @@ namespace Flux
       public static Mass operator %(Mass a, Mass b) => a % b.m_value;
       public static Mass operator -(Mass a, double b) => new(a.m_value - b);
       public static Mass operator -(Mass a, Mass b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

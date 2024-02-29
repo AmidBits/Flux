@@ -61,7 +61,7 @@ namespace Flux
 
       #region Overloaded operators
 
-      public static explicit operator double(Ratio v) => v.Value;
+
 
       #endregion Overloaded operators
 

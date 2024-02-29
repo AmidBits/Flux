@@ -42,8 +42,6 @@ namespace Flux
       #endregion Static methods
 
       #region Overloaded operators
-      public static explicit operator double(SurfaceTension v) => v.m_value;
-      public static explicit operator SurfaceTension(double v) => new(v);
 
       public static bool operator <(SurfaceTension a, SurfaceTension b) => a.CompareTo(b) < 0;
       public static bool operator <=(SurfaceTension a, SurfaceTension b) => a.CompareTo(b) <= 0;
@@ -61,6 +59,7 @@ namespace Flux
       public static SurfaceTension operator %(SurfaceTension a, SurfaceTension b) => a % b.m_value;
       public static SurfaceTension operator -(SurfaceTension a, double b) => new(a.m_value - b);
       public static SurfaceTension operator -(SurfaceTension a, SurfaceTension b) => a - b.m_value;
+
       #endregion Overloaded operators
 
       #region Implemented interfaces

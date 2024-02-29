@@ -2,7 +2,7 @@ namespace Flux.Dsp.WaveGenerator
 {
   /// <see href="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sine_wave"/>
   public record class SineWave
-    : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
+    : /*IMonoWaveGeneratable,*/ IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
     public IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
       => (WaveMono<double>)SampleUi(phaseUi);
@@ -15,5 +15,7 @@ namespace Flux.Dsp.WaveGenerator
     /// <summary>Generates a sine wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2)
       => System.Math.Sin(phasePi2);
+
+    //public IWaveMono<double> GenerateMonoWave(double phase, double cycle) => (WaveMono<double>)System.Math.Sin(phase);
   }
 }

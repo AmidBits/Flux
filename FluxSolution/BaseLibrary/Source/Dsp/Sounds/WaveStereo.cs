@@ -18,12 +18,12 @@
         m_waveRight = waveRight;
       }
 
-      public TSelf WaveLeft { get => m_waveLeft; init => m_waveLeft = value; }
-      public TSelf WaveRight { get => m_waveRight; init => m_waveRight = value; }
+      public TSelf SampleLeft { get => m_waveLeft; init => m_waveLeft = value; }
+      public TSelf SampleRight { get => m_waveRight; init => m_waveRight = value; }
 
       #region Overloaded operators
 
-      public static explicit operator (TSelf leftWave, TSelf rightWave)(WaveStereo<TSelf> stereo) => (stereo.WaveLeft, stereo.WaveRight);
+      public static explicit operator (TSelf leftWave, TSelf rightWave)(WaveStereo<TSelf> stereo) => (stereo.SampleLeft, stereo.SampleRight);
       public static explicit operator WaveStereo<TSelf>((TSelf leftWave, TSelf rightWave) stereo) => new(stereo.leftWave, stereo.rightWave);
 
       #endregion Overloaded operators  
