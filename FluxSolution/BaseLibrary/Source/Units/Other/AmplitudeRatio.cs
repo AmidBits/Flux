@@ -76,7 +76,7 @@ namespace Flux
       public int CompareTo(AmplitudeRatio other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider)
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
         => ToUnitValueString(AmplitudeRatioUnit.DecibelVolt, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>

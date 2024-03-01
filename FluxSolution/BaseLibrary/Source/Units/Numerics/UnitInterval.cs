@@ -77,7 +77,7 @@ namespace Flux
       public int CompareTo(UnitInterval other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider)
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
         => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
 
       // IQuantifiable<>

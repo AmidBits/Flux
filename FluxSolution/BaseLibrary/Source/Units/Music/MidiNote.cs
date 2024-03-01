@@ -154,7 +154,7 @@ namespace Flux
       // IFormattable
       /// <summary>Creates a string containing the scientific pitch notation of the specified MIDI note.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
-      public string ToString(string? format, IFormatProvider? formatProvider)
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
         => $"{GetScientificPitchNotationLabel()}{GetOctave()}";
 
       // IQuantifiable<>

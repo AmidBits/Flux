@@ -71,7 +71,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Cent o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider)
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
         => $"{m_value} cent{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
       // IQuantifiable<>

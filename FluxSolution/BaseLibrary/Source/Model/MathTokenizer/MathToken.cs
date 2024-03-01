@@ -16,7 +16,7 @@ namespace Flux.Text
       Index = textIndex;
     }
 
-    public virtual string ToString(string? format, IFormatProvider? formatProvider) => string.Format(formatProvider, $"{{0}}{(format is null ? string.Empty : $":{format}")}", Value);
+    public virtual string ToString(string? format, System.IFormatProvider? formatProvider) => string.Format(formatProvider, $"{{0}}{(format is null ? string.Empty : $":{format}")}", Value);
 
     public virtual string ToTokenString() => $"{GetType().Name} {{ \"{ToString()}\", Index = {Index} }}";
 

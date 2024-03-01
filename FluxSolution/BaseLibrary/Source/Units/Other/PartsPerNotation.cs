@@ -109,7 +109,7 @@ namespace Flux
       public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider)
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
         => ToUnitValueString(PartsPerNotationUnit.Percent, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>

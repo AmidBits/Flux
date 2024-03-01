@@ -173,7 +173,7 @@ namespace Flux
     //  public int CompareTo(MetricMultiplicative other) => m_value.CompareTo(other.m_value);
 
     //  // IFormattable
-    //  public string ToString(string? format, IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
+    //  public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
     //  // IQuantifiable<>
     //  public string ToValueString(TextOptions options = default)

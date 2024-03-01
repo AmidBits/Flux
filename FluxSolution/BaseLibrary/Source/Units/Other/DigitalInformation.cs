@@ -107,7 +107,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is DigitalInformation o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider)
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
         => ToUnitValueString(DigitalInformationUnit.Byte, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>

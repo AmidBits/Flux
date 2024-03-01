@@ -686,8 +686,8 @@ namespace Flux
       public static BigRational MaxMagnitudeNumber(BigRational a, BigRational b) => a >= b ? a : b;
       public static BigRational MinMagnitude(BigRational a, BigRational b) => a <= b ? a : b;
       public static BigRational MinMagnitudeNumber(BigRational a, BigRational b) => a <= b ? a : b;
-      public static BigRational Parse(ReadOnlySpan<char> s, System.Globalization.NumberStyles style, IFormatProvider? provider) => throw new NotImplementedException();
-      public static BigRational Parse(string s, System.Globalization.NumberStyles style, IFormatProvider? provider) => throw new NotImplementedException();
+      public static BigRational Parse(ReadOnlySpan<char> s, System.Globalization.NumberStyles style, System.IFormatProvider? provider) => throw new NotImplementedException();
+      public static BigRational Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider? provider) => throw new NotImplementedException();
       public static BigRational Parse(System.ReadOnlySpan<char> s, System.IFormatProvider? provider) => throw new NotImplementedException();
       public static BigRational Parse(string s, System.IFormatProvider? provider) => throw new NotImplementedException();
       public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, System.IFormatProvider? provider)
@@ -813,7 +813,7 @@ namespace Flux
       //#endregion IConvertible
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider)
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
         => IsProper
         ? RatioDisplay.AslashB.ToRatioString(m_numerator, m_denominator, format, formatProvider)
         : TryGetMixedParts(this, out var wholeNumber, out var properNumerator, out var properDenominator)

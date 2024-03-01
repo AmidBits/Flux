@@ -68,7 +68,7 @@ namespace Flux
       #region Implemented interfaces
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider) => RatioDisplay.AcolonB.ToRatioString(m_numerator, m_denominator, format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => RatioDisplay.AcolonB.ToRatioString(m_numerator, m_denominator, format, formatProvider);
 
       // IQuantifiable<>
 

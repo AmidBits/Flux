@@ -72,7 +72,7 @@ namespace Flux
       public int CompareTo(AbsoluteHumidity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider)
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
         => ToUnitValueString(AbsoluteHumidityUnit.GramsPerCubicMeter, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
 
       // IQuantifiable<>

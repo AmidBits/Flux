@@ -494,7 +494,7 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Radix o ? CompareTo(o) : -1;
 
     // IFormattable
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
 
     // IQuantifiable<>

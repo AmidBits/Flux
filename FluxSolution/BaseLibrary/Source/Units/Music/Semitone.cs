@@ -77,7 +77,7 @@ namespace Flux
       public int CompareTo(Semitone other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, IFormatProvider? formatProvider)
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
         => $"{m_value} semitone{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
       // IQuantifiable<>
