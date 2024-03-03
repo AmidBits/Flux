@@ -7,11 +7,11 @@ namespace Flux
     /// <summary>Compute the Chebyshev length of a vector.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static T ChebyshevLength<T>(this System.Numerics.Vector<T> source, T edgeLength)
-      where T : System.Numerics.INumber<T>
+      where T : struct, System.Numerics.INumber<T>
       => System.Numerics.Vector.Abs(source).Max() / edgeLength;
 
     public static System.Numerics.Vector<T> Create<T>(params T[] source)
-      where T : System.Numerics.INumber<T>
+      where T : struct, System.Numerics.INumber<T>
     {
       var a = new T[System.Numerics.Vector<T>.Count];
       System.Array.Copy(source, a, source.Length);
@@ -21,7 +21,7 @@ namespace Flux
     }
 
     public static System.Numerics.Vector<T> CreateVector<T>(this T source)
-      where T : System.Numerics.INumber<T>
+      where T : struct, System.Numerics.INumber<T>
     {
       var a = new T[System.Numerics.Vector<T>.Count];
       for (var i = 0; i < a.Length; i++)
@@ -30,7 +30,7 @@ namespace Flux
     }
 
     public static System.Numerics.Vector<T> CreateVector<T>(this T source, int index)
-      where T : System.Numerics.INumber<T>
+      where T : struct, System.Numerics.INumber<T>
     {
       var a = new T[System.Numerics.Vector<T>.Count];
       a[index] = source;
@@ -38,33 +38,33 @@ namespace Flux
     }
 
     public static T EuclideanLengthSquared<T>(this System.Numerics.Vector<T> v)
-      where T : System.Numerics.INumber<T>
+      where T : struct, System.Numerics.INumber<T>
       => System.Numerics.Vector.Sum(System.Numerics.Vector.Multiply(v, v));
 
-    public static T EuclideanLength<T>(this System.Numerics.Vector<T> source)
-      where T : System.Numerics.INumber<T>
-      => System.Numerics.Vector.SquareRoot(EuclideanLengthSquared(source).CreateVector()).GetElement(0);
+    public static System.Numerics.Vector<T> EuclideanLength<T>(this System.Numerics.Vector<T> source)
+      where T : struct, System.Numerics.INumber<T>
+      => System.Numerics.Vector.SquareRoot(EuclideanLengthSquared(source).CreateVector());
 
     public static bool IsZero<T>(this System.Numerics.Vector<T> source)
-      where T : System.Numerics.INumber<T>
+      where T : struct, System.Numerics.INumber<T>
       => System.Numerics.Vector.EqualsAll(source, System.Numerics.Vector<T>.Zero);
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static T ManhattanLength<T>(this System.Numerics.Vector<T> source, T edgeLength)
-      where T : System.Numerics.INumber<T>
+      where T : struct, System.Numerics.INumber<T>
       => System.Numerics.Vector.Sum(System.Numerics.Vector.Abs(source)) / edgeLength;
 
     public static T Max<T>(this System.Numerics.Vector<T> source)
-      where T : System.Numerics.INumber<T>
-      => T.Max(T.Max(source.GetElement(0), source.GetElement(1)), T.Max(source.GetElement(2), source.GetElement(3)));
+      where T : struct, System.Numerics.INumber<T>
+      => T.Max(T.Max(source[0], source[1]), T.Max(source[2], source[3]));
 
     public static T Min<T>(this System.Numerics.Vector<T> source)
-      where T : System.Numerics.INumber<T>
-      => T.Min(T.Min(source.GetElement(0), source.GetElement(1)), T.Min(source.GetElement(2), source.GetElement(3)));
+      where T : struct, System.Numerics.INumber<T>
+      => T.Min(T.Min(source[0], source[1]), T.Min(source[2], source[3]));
 
     public static System.Numerics.Vector<T> Normalized<T>(this System.Numerics.Vector<T> source)
-      where T : System.Numerics.INumber<T>
+      where T : struct, System.Numerics.INumber<T>
       => System.Numerics.Vector.Divide(source, source.EuclideanLength());
 
     /// <summary>
@@ -73,7 +73,7 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
     /// </summary>
     public static System.Numerics.Vector<T> Pow<T>(this System.Numerics.Vector<T> source, T exponent)
-      where T : System.Numerics.INumber<T>
+      where T : struct, System.Numerics.INumber<T>
     {
       if (source.IsZero() || T.IsZero(exponent))
         return System.Numerics.Vector<T>.One; // If either value or exponent is zero, one is customary.

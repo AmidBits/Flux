@@ -190,7 +190,7 @@
       var sb = text.RemoveUnicodeMarks();
       sb.ReplaceUnicodeLatinStrokes();
       sb.RemoveAll(char.IsLetter);
-      return sb.AsSpan().ToUpperCase(System.Globalization.CultureInfo.CurrentCulture).ToString();
+      return sb.ToUpperCase(System.Globalization.CultureInfo.CurrentCulture).ToString();
     }
   }
 }

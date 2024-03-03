@@ -638,7 +638,9 @@ namespace Flux
     public System.Collections.Generic.List<T> ToList(int startIndex, int count)
     {
       var list = new System.Collections.Generic.List<T>(count);
-      list.AddRange(AsReadOnlySpan().Slice(startIndex, count));
+      var slice = AsReadOnlySpan().Slice(startIndex, count);
+      for (var i = 0; i < slice.Length; i++)
+        list.Add(slice[i]);
       return list;
     }
 

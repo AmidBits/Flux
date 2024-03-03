@@ -94,14 +94,14 @@ namespace Flux
     }
 
     /// <summary>In-place replacement of diacritical latin strokes which are not covered by the normalization forms in NET. Can be done in-place because the diacritical latin stroke characters and their replacements are all exactly a single char.</summary>
-    public static SpanBuilder<char> ReplaceUnicodeLatinStrokes(this SpanBuilder<char> source)
-    {
-      for (var index = 0; index < source.Length; index++)
-        if (IsUnicodeLatinStroke(source[index], out var rc))
-          source[index] = rc;
+    //public static SpanBuilder<char> ReplaceUnicodeLatinStrokes(this SpanBuilder<char> source)
+    //{
+    //  for (var index = 0; index < source.Length; index++)
+    //    if (IsUnicodeLatinStroke(source[index], out var rc))
+    //      source[index] = rc;
 
-      return source;
-    }
+    //  return source;
+    //}
 
     /// <summary>In-place replacement of diacritical latin strokes which are not covered by the normalization forms in NET. Can be done in-place because the diacritical latin stroke characters and their replacements are all exactly a single char.</summary>
     public static SpanBuilder<System.Text.Rune> ReplaceUnicodeLatinStrokes(this SpanBuilder<System.Text.Rune> source)

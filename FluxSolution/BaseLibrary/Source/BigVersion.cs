@@ -2,7 +2,7 @@ namespace Flux
 {
   /// <summary>Represents a general version implementation, similar to the built-in Version, but can handle more parts.</summary>
   public readonly partial record struct BigVersion
-    : IComparable<BigVersion>, IEquatable<BigVersion>
+    : System.IComparable<BigVersion>, System.IEquatable<BigVersion>, System.IFormattable
   {
 #if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"[^0-9]+")] private static partial System.Text.RegularExpressions.Regex RegexSplit();
@@ -84,8 +84,12 @@ namespace Flux
       return sl == tl ? 0 : (sl > tl ? 1 : -1);
     }
 
+    // IFormattable
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => string.Join('.', m_parts);
+
+
     #endregion Implemented interfaces
 
-    public override string? ToString() => string.Join('.', m_parts);
+    public override string? ToString() => ToString(null, null);
   }
 }

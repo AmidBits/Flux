@@ -141,7 +141,7 @@ namespace Flux.DataStructures
 
     public string ToConsoleString()
     {
-      var sb = new SpanBuilder<char>();
+      var sb = new System.Text.StringBuilder();
 
       AddString(m_root, 0);
 
@@ -151,14 +151,14 @@ namespace Flux.DataStructures
       {
         foreach (var childNode in node.Children)
         {
-          sb.Append(string.Empty.PadLeft(level == 0 ? 0 : level + 1), 1);
+          sb.Append(string.Empty.PadLeft(level == 0 ? 0 : level + 1));
           if (level == 0) sb.Append('[', 1);
-          sb.Append(childNode.Key.ToString(), 1);
-          sb.Append(childNode.Value.ToString(), 1);
+          sb.Append(childNode.Key.ToString());
+          sb.Append(childNode.Value.ToString());
           //if (childNode.Value.IsTerminal) sb.Append("]", 1);
           //else sb.Append($"#{childNode.Value.Children.Count}", 1);
           //sb.Append($" ({childNode.Value.Value})", 1);
-          sb.Append(System.Environment.NewLine, 1);
+          sb.AppendLine();
 
           AddString(childNode.Value, level + 1);
         }

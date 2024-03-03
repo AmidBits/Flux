@@ -9,7 +9,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(name);
 
-      return new SpanBuilder<char>(name).AsSpan().ToLowerCase().ReplaceAll((e, i) => !char.IsLetterOrDigit(e), (e, i) => e == '.' ? e : '_').ToString();
+      return new System.Text.StringBuilder(name).ToLowerCase().ReplaceAll(e => e == '.' ? e : '_').ToString();
     }
 
     /// <summary>Returns the name with various extended functionalities, e.g. "<T1, T2, T3>" for generics instead of "`3".</summary>
