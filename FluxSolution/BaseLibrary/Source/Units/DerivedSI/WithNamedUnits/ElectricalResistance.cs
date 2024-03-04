@@ -118,6 +118,15 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(ElectricalResistanceUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        sb.Append(unicodeSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(preferUnicode, useFullName));
+        return sb.ToString();
+      }
+
       public string ToUnitValueString(ElectricalResistanceUnit unit, UnitValueStringOptions options = default)
       {
         var sb = new System.Text.StringBuilder();

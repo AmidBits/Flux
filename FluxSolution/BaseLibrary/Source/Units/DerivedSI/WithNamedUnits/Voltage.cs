@@ -97,6 +97,15 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(VoltageUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        sb.Append(unicodeSpacing.ToSpacingString());
+        sb.Append(unit.GetUnitString(preferUnicode, useFullName));
+        return sb.ToString();
+      }
+
       public string ToUnitValueString(VoltageUnit unit, UnitValueStringOptions options = default)
       {
         var sb = new System.Text.StringBuilder();

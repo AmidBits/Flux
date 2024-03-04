@@ -126,6 +126,23 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public string ToUnitValueString(SpeedUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+      {
+        var sb = new System.Text.StringBuilder();
+        if (unit == SpeedUnit.Mach)
+        {
+          sb.Append(unit.GetUnitString(preferUnicode, useFullName));
+          sb.Append(unicodeSpacing.ToSpacingString());
+        }
+        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+        if (unit != SpeedUnit.Mach)
+        {
+          sb.Append(unicodeSpacing.ToSpacingString());
+          sb.Append(unit.GetUnitString(preferUnicode, useFullName));
+        }
+        return sb.ToString();
+      }
+
       public string ToUnitValueString(SpeedUnit unit, UnitValueStringOptions options = default)
       {
         var sb = new System.Text.StringBuilder();
