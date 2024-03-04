@@ -4,17 +4,29 @@
 
   public static partial class Em
   {
-    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, Units.UnitValueStringOptions options = default)
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
       where TType : struct, System.IEquatable<TType>
       where TUnit : notnull, System.Enum
     {
       var d = new System.Collections.Generic.Dictionary<TUnit, string>();
 
       foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
-        d.Add(unit, source.ToUnitValueString(unit, options));
+        d.Add(unit, source.ToUnitValueString(unit, format, formatProvider, preferUnicode, unicodeSpacing, useFullName));
 
       return d;
     }
+
+    //public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, Units.UnitValueStringOptions options = default)
+    //  where TType : struct, System.IEquatable<TType>
+    //  where TUnit : notnull, System.Enum
+    //{
+    //  var d = new System.Collections.Generic.Dictionary<TUnit, string>();
+
+    //  foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
+    //    d.Add(unit, source.ToUnitValueString(unit, options));
+
+    //  return d;
+    //}
   }
 
   #endregion // Extension methods
@@ -41,7 +53,7 @@
     /// <param name="unit">The unit to represent.</param>
     /// <param name="options">The options.</param>
     /// <returns>A string with the value and any symbols representing the quantity in the specified <typeparamref name="TUnit"/>.</returns>
-    string ToUnitValueString(TUnit unit, Units.UnitValueStringOptions options);
+    //string ToUnitValueString(TUnit unit, Units.UnitValueStringOptions options);
 
     /// <summary>Create the value of the quantity in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>
