@@ -63,7 +63,7 @@ namespace Flux
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(ForceUnit.Newton, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+        => ToUnitValueString(ForceUnit.Newton, format, formatProvider);
 
       // IQuantifiable<>
       /// <summary>
@@ -79,21 +79,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ForceUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+      public string ToUnitValueString(ForceUnit unit = ForceUnit.Newton, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         sb.Append(unicodeSpacing.ToSpacingString());
         sb.Append(unit.GetUnitString(useFullName));
-        return sb.ToString();
-      }
-
-      public string ToUnitValueString(ForceUnit unit, UnitValueStringOptions options = default)
-      {
-        var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
-        sb.Append(options.UnitSpacing.ToSpacingString());
-        sb.Append(unit.GetUnitString(options.UseFullName));
         return sb.ToString();
       }
 

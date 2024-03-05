@@ -66,7 +66,7 @@ namespace Flux
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(SolidAngleUnit.Steradian, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+        => ToUnitValueString(SolidAngleUnit.Steradian, format, formatProvider);
 
       // IQuantifiable<>
       /// <summary>
@@ -83,21 +83,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(SolidAngleUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+      public string ToUnitValueString(SolidAngleUnit unit = SolidAngleUnit.Steradian, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         sb.Append(unicodeSpacing.ToSpacingString());
         sb.Append(unit.GetUnitString(preferUnicode, useFullName));
-        return sb.ToString();
-      }
-
-      public string ToUnitValueString(SolidAngleUnit unit, UnitValueStringOptions options = default)
-      {
-        var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
-        sb.Append(options.UnitSpacing.ToSpacingString());
-        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
         return sb.ToString();
       }
 

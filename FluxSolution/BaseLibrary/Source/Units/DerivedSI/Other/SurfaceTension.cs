@@ -72,7 +72,7 @@ namespace Flux
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(SurfaceTensionUnit.NewtonPerMeter, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+        => ToUnitValueString(SurfaceTensionUnit.NewtonPerMeter, format, formatProvider);
 
       // IQuantifiable<>
       /// <summary>
@@ -88,21 +88,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(SurfaceTensionUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+      public string ToUnitValueString(SurfaceTensionUnit unit = SurfaceTensionUnit.NewtonPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         sb.Append(unicodeSpacing.ToSpacingString());
         sb.Append(unit.GetUnitString(useFullName));
-        return sb.ToString();
-      }
-
-      public string ToUnitValueString(SurfaceTensionUnit unit, UnitValueStringOptions options = default)
-      {
-        var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
-        sb.Append(options.UnitSpacing.ToSpacingString());
-        sb.Append(unit.GetUnitString(options.UseFullName));
         return sb.ToString();
       }
 

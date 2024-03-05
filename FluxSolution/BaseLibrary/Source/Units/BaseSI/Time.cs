@@ -141,15 +141,15 @@ namespace Flux
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(TimeUnit.Second, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+        => ToUnitValueString(TimeUnit.Second, format, formatProvider);
 
       //IMetricMultiplicable<>
-      public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
+      public double GetMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
 
       public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.NarrowNoBreakSpace)
       {
         var sb = new System.Text.StringBuilder();
-        sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
+        sb.Append(GetMetricValue(prefix).ToString(format, formatProvider));
         sb.Append(spacing.ToSpacingString());
         sb.Append(prefix.GetUnitString(true, false));
         sb.Append(TimeUnit.Second.GetUnitString(false, false));
@@ -181,21 +181,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(TimeUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+      public string ToUnitValueString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         sb.Append(unicodeSpacing.ToSpacingString());
         sb.Append(unit.GetUnitString(preferUnicode, useFullName));
-        return sb.ToString();
-      }
-
-      public string ToUnitValueString(TimeUnit unit, UnitValueStringOptions options = default)
-      {
-        var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
-        sb.Append(options.UnitSpacing.ToSpacingString());
-        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
         return sb.ToString();
       }
 

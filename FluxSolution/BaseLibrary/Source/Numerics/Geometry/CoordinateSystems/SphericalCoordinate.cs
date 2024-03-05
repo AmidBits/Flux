@@ -131,7 +131,7 @@ namespace Flux
       {
         if (string.IsNullOrWhiteSpace(format)) format = "N6";
 
-        return $"<{m_radius.ToString(format)}, {new Units.Angle(m_inclination).ToUnitValueString(Units.AngleUnit.Degree, new() { Format = format })} ({m_inclination.ToString(format)}) | {new Units.Angle(Elevation).ToUnitValueString(Units.AngleUnit.Degree, new() { Format = format })} ({Elevation.ToString(format)}), {new Units.Azimuth(m_azimuth, Units.AngleUnit.Radian).ToString(format, null)} ({m_azimuth.ToString(format)})>";
+        return $"<{m_radius.ToString(format)}, {new Units.Angle(m_inclination).ToUnitValueString(Units.AngleUnit.Degree, format)} ({m_inclination.ToString(format)}) | {new Units.Angle(Elevation).ToUnitValueString(Units.AngleUnit.Degree, format)} ({Elevation.ToString(format)}), {new Units.Azimuth(m_azimuth, Units.AngleUnit.Radian).ToString(format, null)} ({m_azimuth.ToString(format)})>";
       }
     }
   }

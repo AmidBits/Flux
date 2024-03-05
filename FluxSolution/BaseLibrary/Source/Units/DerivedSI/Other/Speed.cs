@@ -105,7 +105,7 @@ namespace Flux
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(SpeedUnit.MeterPerSecond, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+        => ToUnitValueString(SpeedUnit.MeterPerSecond, format, formatProvider);
 
       // IQuantifiable<>
       /// <summary>
@@ -126,7 +126,7 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(SpeedUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+      public string ToUnitValueString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         if (unit == SpeedUnit.Mach)
@@ -139,23 +139,6 @@ namespace Flux
         {
           sb.Append(unicodeSpacing.ToSpacingString());
           sb.Append(unit.GetUnitString(preferUnicode, useFullName));
-        }
-        return sb.ToString();
-      }
-
-      public string ToUnitValueString(SpeedUnit unit, UnitValueStringOptions options = default)
-      {
-        var sb = new System.Text.StringBuilder();
-        if (unit == SpeedUnit.Mach)
-        {
-          sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
-          sb.Append(options.UnitSpacing.ToSpacingString());
-        }
-        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
-        if (unit != SpeedUnit.Mach)
-        {
-          sb.Append(options.UnitSpacing.ToSpacingString());
-          sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
         }
         return sb.ToString();
       }

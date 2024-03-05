@@ -404,8 +404,6 @@
 
         var directional = axis.ToCardinalDirection(degrees < 0).ToString();
 
-        var uvso = UnitValueStringOptions.Default with { PreferUnicode = true };
-
         decimalPoints = decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : dmsNotation switch
         {
           DmsNotation.DecimalDegrees => 4,
@@ -417,11 +415,11 @@
         return dmsNotation switch
         {
           DmsNotation.DecimalDegrees
-            => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, uvso with { Format = $"N{decimalPoints}" }) + spacingString + directional, // Show as decimal degrees.
+            => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, $"N{decimalPoints}") + spacingString + directional, // Show as decimal degrees.
           DmsNotation.DegreesDecimalMinutes
-            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, uvso with { Format = "N0" }) + spacingString + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, uvso with { Format = $"N{decimalPoints}" }) + spacingString + directional, // Show as degrees and decimal minutes.
+            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0") + spacingString + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, $"N{decimalPoints}") + spacingString + directional, // Show as degrees and decimal minutes.
           DmsNotation.DegreesMinutesDecimalSeconds
-            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, uvso with { Format = "N0" }) + spacingString + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, uvso with { Format = "N0" }).PadLeft(3, '0') + spacingString + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitValueString(Units.AngleUnit.Arcsecond, uvso with { Format = $"N{decimalPoints}" }) + spacingString + directional, // Show as degrees, minutes and decimal seconds.
+            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0") + spacingString + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, "N0").PadLeft(3, '0') + spacingString + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitValueString(Units.AngleUnit.Arcsecond, $"N{decimalPoints}") + spacingString + directional, // Show as degrees, minutes and decimal seconds.
           _
             => throw new System.ArgumentOutOfRangeException(nameof(dmsNotation)),
         };
@@ -504,7 +502,7 @@
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(AngleUnit.Radian, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+        => ToUnitValueString(AngleUnit.Radian, format, formatProvider);
 
       // IQuantifiable<>
       /// <summary>
@@ -528,21 +526,12 @@
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AngleUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode = true, UnicodeSpacing unitSpacing = UnicodeSpacing.NarrowNoBreakSpace, bool useFullName = false)
+      public string ToUnitValueString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = true, UnicodeSpacing unitSpacing = UnicodeSpacing.None, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         sb.Append(unit.HasUnitSpacing(preferUnicode) ? unitSpacing.ToSpacingString() : string.Empty);
         sb.Append(unit.GetUnitString(preferUnicode, useFullName));
-        return sb.ToString();
-      }
-
-      public string ToUnitValueString(AngleUnit unit, UnitValueStringOptions options = default)
-      {
-        var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
-        sb.Append(unit.HasUnitSpacing(options.PreferUnicode) ? options.UnitSpacing.ToSpacingString() : string.Empty);
-        sb.Append(unit.GetUnitString(options.PreferUnicode, options.UseFullName));
         return sb.ToString();
       }
 

@@ -23,10 +23,21 @@
     : IValueQuantifiable<TValue>
     where TValue : struct, System.Numerics.INumber<TValue>
   {
-    //abstract static TValue FromMetricValue(MetricMultiplicativePrefix prefix, TValue value);
+    /// <summary>
+    /// <para>Gets the metric value in the <see cref="MetricPrefix"/> multiplicable specified by <paramref name="prefix"/>.</para>
+    /// </summary>
+    /// <param name="prefix"></param>
+    /// <returns></returns>
+    TValue GetMetricValue(MetricPrefix prefix);
 
-    TValue ToMetricValue(MetricPrefix prefix);
-
+    /// <summary>
+    /// <para>Creates the metric value string in the <see cref="MetricPrefix"/> multiplicable specified by <paramref name="prefix"/>, <paramref name="format"/>, <paramref name="formatProvider"/> and <paramref name="spacing"/>.</para>
+    /// </summary>
+    /// <param name="prefix"></param>
+    /// <param name="format"></param>
+    /// <param name="formatProvider"></param>
+    /// <param name="spacing"></param>
+    /// <returns></returns>
     string ToMetricValueString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing spacing);
   }
 }

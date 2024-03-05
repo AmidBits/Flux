@@ -37,6 +37,10 @@ namespace ConsoleApp
 
       //if (Zamplez.IsSupported) { Zamplez.RunReflection(); return; }
 
+      var avl = Flux.DataStructures.ImmutableAvlTree<string, System.Guid>.Empty;
+      var trie = new Flux.DataStructures.SimpleTrie<string, System.Guid>();
+
+
       var mutc = new Flux.Units.MomentUtc(1700, 6, 7, 12, 0, 0);
       var jd = mutc.ToJulianDate();
       var jdn = mutc.ToJulianDayNumber();

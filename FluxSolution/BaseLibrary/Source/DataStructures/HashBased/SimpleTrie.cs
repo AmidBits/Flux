@@ -11,13 +11,15 @@ namespace Flux.DataStructures
     /// <summary>
     /// <para>Count the number of terminal (complete) <paramref name="key"/>s (sets of <typeparamref name="TKey"/>).</para>
     /// </summary>
-    public int Count() => TrieCount(m_root);
+    public int Count()
+      => TrieCount(m_root);
 
     /// <summary>
     /// <para>Delete a <paramref name="key"/> (set of <typeparamref name="TKey"/>).</para>
     /// </summary>
     /// <param name="key"></param>
-    public void Delete(System.ReadOnlySpan<TKey> key) => TrieDelete(m_root, key);
+    public void Delete(System.ReadOnlySpan<TKey> key)
+      => TrieDelete(m_root, key);
 
     /// <summary>
     /// <para>Search for an <paramref name="key"/> (set of <typeparamref name="TKey"/>) with the option to <paramref name="acceptStartsWith"/>. This version also return a <paramref name="value"/> as an out parameter.</para>
@@ -25,27 +27,31 @@ namespace Flux.DataStructures
     /// <param name="acceptStartsWith"></param>
     /// <param name="key"></param>
     /// <param name="value"></param>
-    public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key, out TValue value) => acceptStartsWith ? TrieStartsWith(m_root, key, out value) : TrieFind(m_root, key, out value);
+    public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key, out TValue value)
+      => acceptStartsWith ? TrieStartsWith(m_root, key, out value) : TrieFind(m_root, key, out value);
 
     /// <summary>
     /// <para>Search for an <paramref name="key"/> (set of <typeparamref name="TKey"/>) with the option to <paramref name="acceptStartsWith"/>.</para>
     /// </summary>
     /// <param name="acceptStartsWith"></param>
     /// <param name="key"></param>
-    public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key) => acceptStartsWith ? TrieStartsWith(m_root, key, out var _) : TrieFind(m_root, key, out var _);
+    public bool Find(bool acceptStartsWith, System.ReadOnlySpan<TKey> key)
+      => acceptStartsWith ? TrieStartsWith(m_root, key, out var _) : TrieFind(m_root, key, out var _);
 
     /// <summary>
     /// <para>Insert a <paramref name="key"/> (set of <typeparamref name="TKey"/>) with a <paramref name="value"/>.</para>
     /// </summary>
     /// <param name="key"></param>
     /// <param name="value"></param>
-    public void Insert(System.ReadOnlySpan<TKey> key, TValue value) => TrieInsert(m_root, key, value);
+    public void Insert(System.ReadOnlySpan<TKey> key, TValue value)
+      => TrieInsert(m_root, key, value);
 
     /// <summary>
     /// <para>Insert a <paramref name="key"/> (set of <typeparamref name="TKey"/>).</para>
     /// </summary>
     /// <param name="key"></param>
-    public void Insert(System.ReadOnlySpan<TKey> key) => TrieInsert(m_root, key, default!);
+    public void Insert(System.ReadOnlySpan<TKey> key)
+      => TrieInsert(m_root, key, default!);
 
     #region Static methods
 

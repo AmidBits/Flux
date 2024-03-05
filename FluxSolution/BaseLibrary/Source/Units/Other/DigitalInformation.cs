@@ -108,7 +108,7 @@ namespace Flux
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(DigitalInformationUnit.Byte, UnitValueStringOptions.Default with { Format = format, FormatProvider = formatProvider });
+        => ToUnitValueString(DigitalInformationUnit.Byte, format, formatProvider);
 
       // IQuantifiable<>
       /// <summary>
@@ -132,21 +132,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(DigitalInformationUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+      public string ToUnitValueString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         sb.Append(unicodeSpacing.ToSpacingString());
         sb.Append(unit.GetUnitString(useFullName));
-        return sb.ToString();
-      }
-
-      public string ToUnitValueString(DigitalInformationUnit unit, UnitValueStringOptions options = default)
-      {
-        var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(options.Format, options.FormatProvider));
-        sb.Append(options.UnitSpacing.ToSpacingString());
-        sb.Append(unit.GetUnitString(options.UseFullName));
         return sb.ToString();
       }
 

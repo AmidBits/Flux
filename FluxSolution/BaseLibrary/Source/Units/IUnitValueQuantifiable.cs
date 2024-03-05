@@ -4,7 +4,7 @@
 
   public static partial class Em
   {
-    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName)
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
       where TType : struct, System.IEquatable<TType>
       where TUnit : notnull, System.Enum
     {
@@ -15,18 +15,6 @@
 
       return d;
     }
-
-    //public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, Units.UnitValueStringOptions options = default)
-    //  where TType : struct, System.IEquatable<TType>
-    //  where TUnit : notnull, System.Enum
-    //{
-    //  var d = new System.Collections.Generic.Dictionary<TUnit, string>();
-
-    //  foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
-    //    d.Add(unit, source.ToUnitValueString(unit, options));
-
-    //  return d;
-    //}
   }
 
   #endregion // Extension methods
@@ -39,6 +27,11 @@
     where TValue : struct, System.IEquatable<TValue>
     where TUnit : notnull, System.Enum
   {
+    /// <summary>Gets the value of the quantity in the specified unit.</summary>
+    /// <param name="unit">The unit to represent.</param>
+    /// <returns>The value of the quantity based on the specified <typeparamref name="TUnit"/>.</returns>
+    TValue GetUnitValue(TUnit unit);
+
     /// <summary>Create a string of the quantity, suffixed with the unit symbol, in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>
     /// <param name="format">The format.</param>
@@ -47,17 +40,6 @@
     /// <param name="unicodeSpacing">The Unicode spacing to apply.</param>
     /// <param name="useFullName">Whether use the full actual name of the enum, rather than symbols or shorter (e.g. acronym) variants.</param>
     /// <returns>A string with the value and any symbols representing the quantity in the specified <typeparamref name="TUnit"/>.</returns>
-    string ToUnitValueString(TUnit unit, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unicodeSpacing, bool useFullName);
-
-    /// <summary>Create a string of the quantity, spacing, and suffixed with the unit symbol, in the specified unit.</summary>
-    /// <param name="unit">The unit to represent.</param>
-    /// <param name="options">The options.</param>
-    /// <returns>A string with the value and any symbols representing the quantity in the specified <typeparamref name="TUnit"/>.</returns>
-    //string ToUnitValueString(TUnit unit, Units.UnitValueStringOptions options);
-
-    /// <summary>Create the value of the quantity in the specified unit.</summary>
-    /// <param name="unit">The unit to represent.</param>
-    /// <returns>The value of the quantity based on the specified <typeparamref name="TUnit"/>.</returns>
-    TValue GetUnitValue(TUnit unit);
+    string ToUnitValueString(TUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false);
   }
 }

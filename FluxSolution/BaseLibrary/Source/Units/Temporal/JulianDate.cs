@@ -25,7 +25,7 @@ namespace Flux
 
       /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
       public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, TemporalCalendar calendar)
-        : this(JulianDayNumber.ConvertDatePartsToJulianDayNumber(year, month, day, calendar) + ConvertTimePartsToTimeOfDay(hour, minute, second, millisecond))
+        : this(Units.JulianDayNumber.ConvertDatePartsToJulianDayNumber(year, month, day, calendar) + ConvertTimePartsToTimeOfDay(hour, minute, second, millisecond))
       { }
 
       public JulianDate AddWeeks(int weeks) => this + (weeks * 7);
@@ -42,16 +42,16 @@ namespace Flux
 
       public void GetParts(TemporalCalendar calendar, out int year, out int month, out int day, out int hour, out int minute, out int second, out int millisecond)
       {
-        (year, month, day) = ToJulianDayNumber().GetDateParts(calendar);
+        (year, month, day) = JulianDayNumber.GetDateParts(calendar);
 
         (hour, minute, second, millisecond) = ConvertTimeOfDayToTimeParts(m_value);
       }
 
-      public JulianDayNumber ToJulianDayNumber() => new((int)(m_value + 0.5));
+      public JulianDayNumber JulianDayNumber => new((int)(m_value + 0.5));
 
       public MomentUtc ToMomentUtc(TemporalCalendar calendar)
       {
-        var (year, month, day) = ToJulianDayNumber().GetDateParts(calendar);
+        var (year, month, day) = JulianDayNumber.GetDateParts(calendar);
         var (hour, minute, second, millisecond) = ConvertTimeOfDayToTimeParts(m_value);
 
         return new(year, month, day, hour, minute, second, millisecond);
@@ -158,7 +158,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is JulianDate o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => $"{ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()}";
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => $"{JulianDayNumber.ToDateString(GetConversionCalendar())}, {ToTimeString()}";
 
       // IQuantifiable<>
       /// <summary>
