@@ -40,11 +40,12 @@ namespace ConsoleApp
       var avl = Flux.DataStructures.ImmutableAvlTree<string, System.Guid>.Empty;
       var trie = new Flux.DataStructures.SimpleTrie<string, System.Guid>();
 
-
       var mutc = new Flux.Units.MomentUtc(1700, 6, 7, 12, 0, 0);
       var jd = mutc.ToJulianDate();
       var jdn = mutc.ToJulianDayNumber();
-      var dt = mutc.ToDateTime();
+      var tdo = mutc.ToDateOnly();
+      var tdt = mutc.ToDateTime();
+      var tto = mutc.ToTimeOnly();
 
       var xyz = 1.0 + double.Epsilon == 1.0;
 

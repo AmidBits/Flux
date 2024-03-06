@@ -63,18 +63,14 @@ namespace Flux
         ? TemporalCalendar.JulianCalendar
         : throw new System.NotImplementedException(@"Not a Julian/Gregorian Calendar date.");
 
-#if NET6_0_OR_GREATER
       /// <summary>Creates a new <see cref="System.DateOnly"/> from the date components in this instance.</summary>
       public System.DateOnly ToDateOnly() => new(m_year, m_month, m_day);
-#endif
 
       /// <summary>Creates a new <see cref="System.DateTime"/> from all components in this instance.</summary>
       public System.DateTime ToDateTime() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, m_millisecond);
 
-#if NET6_0_OR_GREATER
       /// <summary>Creates a new <see cref="System.TimeOnly"/> from the time components in this instance.</summary>
       public System.TimeOnly ToTimeOnly() => new(m_hour, m_minute, m_second, m_millisecond);
-#endif
 
       /// <summary>Creates a new <see cref="System.TimeSpan"/> from the day and all time components in this instance.</summary>
       public System.TimeSpan ToTimeSpan() => new(m_day, m_hour, m_minute, m_second, m_millisecond);

@@ -12,7 +12,7 @@
   /// </summary>
   public enum UnicodeSpacing
   {
-    /// <summary>Represents no spacing.</summary>
+    /// <summary>Represents no spacing. I.e. conversions to string should result in <see cref="string.Empty"/>.</summary>
     None = 0,
     /// <summary>Depends on font, typically 1/4 em, often adjusted.</summary>
     Space = 0x0020,

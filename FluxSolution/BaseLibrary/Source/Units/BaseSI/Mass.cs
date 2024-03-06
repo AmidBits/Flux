@@ -92,7 +92,7 @@ namespace Flux
       //IMetricMultiplicable<>
       public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Kilo.Convert(m_value, prefix);
 
-      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.NarrowNoBreakSpace)
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.None)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));

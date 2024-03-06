@@ -26,7 +26,7 @@ namespace Flux.Units
     public double GetMercatorProjectedX()
       => Angle.GetUnitValue(AngleUnit.Radian);
 
-    public string ToSexagesimalDegreeString(DmsNotation format = DmsNotation.DegreesMinutesDecimalSeconds, UnicodeSpacing spacing = UnicodeSpacing.None)
+    public string ToSexagesimalDegreeString(AngleDmsNotation format = AngleDmsNotation.DegreesMinutesDecimalSeconds, UnicodeSpacing spacing = UnicodeSpacing.None)
       => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.EastWest, -1, spacing);
 
     #region Static methods

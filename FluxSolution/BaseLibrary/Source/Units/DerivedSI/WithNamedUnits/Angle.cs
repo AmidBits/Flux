@@ -366,25 +366,25 @@
 
       #endregion Trigonometry static methods
 
-      public static bool TryConvertFormatToDmsNotation(string? format, out DmsNotation result)
+      public static bool TryConvertFormatToDmsNotation(string? format, out AngleDmsNotation result)
       {
         if (!string.IsNullOrWhiteSpace(format))
         {
-          if (format.StartsWith(DmsNotation.DegreesMinutesDecimalSeconds.GetAcronym()))
+          if (format.StartsWith(AngleDmsNotation.DegreesMinutesDecimalSeconds.GetAcronym()))
           {
-            result = DmsNotation.DegreesMinutesDecimalSeconds;
+            result = AngleDmsNotation.DegreesMinutesDecimalSeconds;
             return true;
           }
 
-          if (format.StartsWith(DmsNotation.DegreesDecimalMinutes.GetAcronym()))
+          if (format.StartsWith(AngleDmsNotation.DegreesDecimalMinutes.GetAcronym()))
           {
-            result = DmsNotation.DegreesDecimalMinutes;
+            result = AngleDmsNotation.DegreesDecimalMinutes;
             return true;
           }
 
-          if (format.StartsWith(DmsNotation.DecimalDegrees.GetAcronym()))
+          if (format.StartsWith(AngleDmsNotation.DecimalDegrees.GetAcronym()))
           {
-            result = DmsNotation.DecimalDegrees;
+            result = AngleDmsNotation.DecimalDegrees;
             return true;
           }
         }
@@ -396,7 +396,7 @@
       /// <summary></summary>
       /// <see href="https://en.wikipedia.org/wiki/ISO_6709"/>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static string ToDmsString(double decimalDegrees, DmsNotation dmsNotation, CardinalAxis axis, int decimalPoints = -1, UnicodeSpacing componentSpacing = UnicodeSpacing.None)
+      public static string ToDmsString(double decimalDegrees, AngleDmsNotation dmsNotation, CardinalAxis axis, int decimalPoints = -1, UnicodeSpacing componentSpacing = UnicodeSpacing.None)
       {
         var (degrees, minutes, decimalSeconds) = ConvertDecimalDegreesToDms(decimalDegrees, out var decimalMinutes);
 
@@ -406,19 +406,19 @@
 
         decimalPoints = decimalPoints >= 0 && decimalPoints <= 15 ? decimalPoints : dmsNotation switch
         {
-          DmsNotation.DecimalDegrees => 4,
-          DmsNotation.DegreesDecimalMinutes => 2,
-          DmsNotation.DegreesMinutesDecimalSeconds => 0,
+          AngleDmsNotation.DecimalDegrees => 4,
+          AngleDmsNotation.DegreesDecimalMinutes => 2,
+          AngleDmsNotation.DegreesMinutesDecimalSeconds => 0,
           _ => throw new NotImplementedException(),
         };
 
         return dmsNotation switch
         {
-          DmsNotation.DecimalDegrees
+          AngleDmsNotation.DecimalDegrees
             => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, $"N{decimalPoints}") + spacingString + directional, // Show as decimal degrees.
-          DmsNotation.DegreesDecimalMinutes
+          AngleDmsNotation.DegreesDecimalMinutes
             => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0") + spacingString + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, $"N{decimalPoints}") + spacingString + directional, // Show as degrees and decimal minutes.
-          DmsNotation.DegreesMinutesDecimalSeconds
+          AngleDmsNotation.DegreesMinutesDecimalSeconds
             => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0") + spacingString + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, "N0").PadLeft(3, '0') + spacingString + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitValueString(Units.AngleUnit.Arcsecond, $"N{decimalPoints}") + spacingString + directional, // Show as degrees, minutes and decimal seconds.
           _
             => throw new System.ArgumentOutOfRangeException(nameof(dmsNotation)),
