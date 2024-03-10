@@ -18,8 +18,11 @@ namespace Flux
       KilogramPerCubicMeter,
     }
 
-    /// <summary>Volumetric mass density, unit of kilograms per cubic meter.</summary>
+    /// <summary>
+    /// <para>Volumetric mass density, unit of kilograms per cubic meter.</para>
     /// <see href="https://en.wikipedia.org/wiki/Density"/>
+    /// </summary>
+    /// <remarks>Dimensional relationship: <see cref="LinearDensity"/>, <see cref="AreaDensity"/> and <see cref="Density"/>.</remarks>
     public readonly record struct Density
       : System.IComparable, System.IComparable<Density>, System.IFormattable, IUnitValueQuantifiable<double, DensityUnit>
     {

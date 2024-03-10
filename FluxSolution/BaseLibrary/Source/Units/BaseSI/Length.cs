@@ -48,8 +48,11 @@ namespace Flux
       Ångström,
     }
 
-    /// <summary>Length. SI unit of meter. This is a base quantity.</summary>
+    /// <summary>
+    /// <para>Length. SI unit of meter. This is a base quantity.</para>
     /// <see href="https://en.wikipedia.org/wiki/Length"/>
+    /// </summary>
+    /// <remarks>Dimensional relationship: <see cref="Length"/>, <see cref="Area"/> and <see cref="Volume"/>.</remarks>
     public readonly record struct Length
       : System.IComparable, System.IComparable<Length>, System.IFormattable, IMetricMultiplicable<double>, IUnitValueQuantifiable<double, LengthUnit>
     {

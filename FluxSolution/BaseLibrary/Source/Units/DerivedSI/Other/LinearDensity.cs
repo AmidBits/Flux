@@ -18,8 +18,11 @@ namespace Flux
       KilogramPerMeter,
     }
 
-    /// <summary>Linear mass density, unit of kilograms per cubic meter.</summary>
+    /// <summary>
+    /// <para>Linear mass density, unit of kilograms per meter.</para>
     /// <see href="https://en.wikipedia.org/wiki/Linear_density"/>
+    /// </summary>
+    /// <remarks>Dimensional relationship: <see cref="LinearDensity"/>, <see cref="AreaDensity"/> and <see cref="Density"/>.</remarks>
     public readonly record struct LinearDensity
       : System.IComparable, System.IComparable<LinearDensity>, System.IFormattable, IUnitValueQuantifiable<double, LinearDensityUnit>
     {

@@ -99,6 +99,10 @@ namespace Flux
       /// <returns></returns>
       public static double ConvertBpmToSeconds(double bpm) => 60 / bpm;
 
+      public static int ConvertMillisecondToNanosecond(int millisecond) => millisecond * 1000000;
+
+      public static int ConvertNanosecondToMillisecond(int nanosecond) => nanosecond / 1000000;
+
       /// <summary>
       /// <para>Convert seconds to beats-per-minute.</para>
       /// </summary>

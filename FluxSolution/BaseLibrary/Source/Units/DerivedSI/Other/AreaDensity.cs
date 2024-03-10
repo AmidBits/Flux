@@ -18,8 +18,11 @@ namespace Flux
       KilogramPerSquareMeter,
     }
 
-    /// <summary>Area mass density, unit of kilograms per square meter.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Surface_density"/>
+    /// <summary>
+    /// <para>Area mass density, unit of kilograms per square meter.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Area_density"/>
+    /// </summary>
+    /// <remarks>Dimensional relationship: <see cref="LinearDensity"/>, <see cref="AreaDensity"/> and <see cref="Density"/>.</remarks>
     public readonly record struct AreaDensity
       : System.IComparable, System.IComparable<AreaDensity>, System.IFormattable, IUnitValueQuantifiable<double, AreaDensityUnit>
     {

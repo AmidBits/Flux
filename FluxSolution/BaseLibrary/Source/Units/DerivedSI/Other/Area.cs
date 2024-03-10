@@ -20,8 +20,11 @@ namespace Flux
       Hectare,
     }
 
-    /// <summary>Area, unit of square meter. This is an SI derived quantity.</summary>
+    /// <summary>
+    /// <para>Area, unit of square meter. This is an SI derived quantity.</para>
     /// <see href="https://en.wikipedia.org/wiki/Area"/>
+    /// </summary>
+    /// <remarks>Dimensional relationship: <see cref="Length"/>, <see cref="Area"/> and <see cref="Volume"/>.</remarks>
     public readonly record struct Area
       : System.IComparable, System.IComparable<Area>, System.IFormattable, IUnitValueQuantifiable<double, AreaUnit>
     {
