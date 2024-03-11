@@ -24,8 +24,10 @@ namespace Flux
       Rankine,
     }
 
-    /// <summary>Temperature. SI unit of Kelvin. This is a base quantity.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Temperature"/>
+    /// <summary>
+    /// <para>Temperature. SI unit of Kelvin. This is a base quantity.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Temperature"/></para>
+    /// </summary>
     public readonly record struct Temperature
       : System.IComparable, System.IComparable<Temperature>, System.IFormattable, IUnitValueQuantifiable<double, TemperatureUnit>
     {

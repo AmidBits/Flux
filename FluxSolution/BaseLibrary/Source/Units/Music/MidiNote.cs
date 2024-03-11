@@ -2,9 +2,11 @@ namespace Flux
 {
   namespace Units
   {
-    /// <summary>MIDI note unit of byte [0, 127], is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</summary>
-    /// <seealso cref="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
+    /// <summary>
+    /// <para>MIDI note unit of byte [0, 127], is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/MIDI_tuning_standard"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/></para>
+    /// </summary>
     public readonly partial record struct MidiNote
       : System.IComparable, System.IComparable<MidiNote>, System.IFormattable, IValueQuantifiable<int>
     {

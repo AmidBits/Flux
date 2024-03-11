@@ -1,7 +1,9 @@
 namespace Flux.Units
 {
-  /// <summary>Radix, unit of natural number.</summary>
-  /// <seealso cref="https://en.wikipedia.org/wiki/Radix"/>
+  /// <summary>
+  /// <para>Radix, unit of natural number, in the range [<see cref="Radix.MinRadix"/>, <see cref="Radix.MaxRadix"/>].</para>
+  /// <para><seealso cref="https://en.wikipedia.org/wiki/Radix"/></para>
+  /// </summary>
   public readonly record struct Radix
     : System.IComparable, System.IComparable<Radix>, System.IFormattable, IValueQuantifiable<int>
   {
@@ -14,17 +16,17 @@ namespace Flux.Units
 
     #region Static methods
 
-    /// <summary>Asserts the number is a valid <paramref name="radix"/> (throws an exception with an optional <paramref name="paramName"/>, if not).</summary>
+    /// <summary>Asserts the number is a valid <paramref name="radix"/> (throws an exception if not).</summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf AssertMember<TSelf>(TSelf radix)
+    public static TSelf AssertMember<TSelf>(TSelf radix, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix), nameof(radix));
+      => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix), paramName ?? nameof(radix));
 
-    /// <summary>Asserts that <paramref name="radix"/> is valid, with an <paramref name="maxRadix"/> (throws an exception with an optional <paramref name="paramName"/>, if not).</summary>
+    /// <summary>Asserts that <paramref name="radix"/> is valid, with an <paramref name="alernativeMaxRadix"/> (throws an exception, if not).</summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf AssertMember<TSelf>(TSelf radix, TSelf maxRadix)
+    public static TSelf AssertMember<TSelf>(TSelf radix, TSelf alernativeMaxRadix, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), TSelf.Min(maxRadix, TSelf.CreateChecked(MaxRadix)), nameof(radix));
+      => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), TSelf.Min(alernativeMaxRadix, TSelf.CreateChecked(MaxRadix)), paramName ?? nameof(radix));
 
     /// <summary>
     /// <para>Convert a value to a Gray code with the given base and digits. Iterating through a sequence of values would result in a sequence of Gray codes in which only one digit changes at a time.</para>
@@ -457,10 +459,10 @@ namespace Flux.Units
       where TSelf : System.Numerics.INumber<TSelf>
       => IntervalNotation.Closed.VerifyMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix));
 
-    /// <summary>Returns whether the number is a valid <paramref name="radix"/>, with an <paramref name="maxRadix"/>.</summary>
-    public static bool VerifyMember<TSelf>(TSelf radix, TSelf maxRadix)
+    /// <summary>Returns whether the number is a valid <paramref name="radix"/>, with an <paramref name="alernativeMaxRadix"/>.</summary>
+    public static bool VerifyMember<TSelf>(TSelf radix, TSelf alernativeMaxRadix)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.VerifyMember(radix, TSelf.CreateChecked(MinRadix), maxRadix);
+      => IntervalNotation.Closed.VerifyMember(radix, TSelf.CreateChecked(MinRadix), alernativeMaxRadix);
 
     #endregion Static methods
 

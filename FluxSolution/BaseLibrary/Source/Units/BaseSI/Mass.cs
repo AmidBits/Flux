@@ -29,8 +29,10 @@ namespace Flux
       Tonne,
     }
 
-    /// <summary>Mass. SI unit of kilogram. This is a base quantity.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Mass"/>
+    /// <summary>
+    /// <para>Mass. SI unit of kilogram. This is a base quantity.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Mass"/></para>
+    /// </summary>
     public readonly record struct Mass
       : System.IComparable, System.IComparable<Mass>, System.IFormattable, IUnitValueQuantifiable<double, MassUnit>
     {

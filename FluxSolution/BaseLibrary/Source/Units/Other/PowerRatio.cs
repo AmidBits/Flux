@@ -18,8 +18,10 @@ namespace Flux
       DecibelWatt,
     }
 
-    /// <summary>Power ratio unit of decibel watts, defined as ten times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one watt. A.k.a. logarithmic power ratio.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Decibel"/>
+    /// <summary>
+    /// <para>Power ratio unit of decibel watts, defined as ten times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one watt. A.k.a. logarithmic power ratio.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Decibel"/></para>
+    /// </summary>
     public readonly record struct PowerRatio
       : System.IComparable, System.IComparable<PowerRatio>, System.IFormattable, IUnitValueQuantifiable<double, PowerRatioUnit>
     {

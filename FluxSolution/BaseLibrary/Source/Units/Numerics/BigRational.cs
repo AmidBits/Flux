@@ -1,6 +1,8 @@
 #if NET7_0_OR_GREATER
 namespace Flux
 {
+  #region ExtensionMethods
+
   public static partial class Em
   {
     public static Units.BigRational ToBigRational<TSelf>(this TSelf value, int maxIterations = 101)
@@ -54,6 +56,8 @@ namespace Flux
       return new(a, b);
     }
   }
+
+  #endregion // ExtensionMethods
 
   namespace Units
   {

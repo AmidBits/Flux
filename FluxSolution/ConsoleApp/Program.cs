@@ -37,14 +37,17 @@ namespace ConsoleApp
 
       //if (Zamplez.IsSupported) { Zamplez.RunReflection(); return; }
 
+      var uvi = new Flux.Units.UvIndex(4.1);
+
       var time = new Flux.Units.Time(1, Flux.Units.TimeUnit.Millisecond);
 
       var times = time.ToMetricValueString(Flux.Units.MetricPrefix.Nano);
 
       var avl = Flux.DataStructures.ImmutableAvlTree<string, System.Guid>.Empty;
+      avl = avl.Add("Test", System.Guid.NewGuid());
       var trie = new Flux.DataStructures.SimpleTrie<string, System.Guid>();
 
-      var mutc = new Flux.Units.MomentUtc(1967, 5, 30, 18, 52, 1, (int)time.GetMetricValue(Flux.Units.MetricPrefix.Milli));
+      var mutc = new Flux.Units.MomentUtc(1967, 5, 30, 6, 12, 1, (int)time.GetMetricValue(Flux.Units.MetricPrefix.Milli));
       var mutcu = mutc.GetTotalApproximateSeconds();
       var tutc = mutc.ToTimestampUtc();
       var tutcu = tutc.GetTotalApproximateSeconds();

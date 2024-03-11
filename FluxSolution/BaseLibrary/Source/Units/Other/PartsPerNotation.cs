@@ -46,8 +46,11 @@ namespace Flux
       PartsPerQuadrillion = 15,
     }
 
-    /// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Parts-per_notation"/>
+    /// <summary>
+    /// <para>Parts per notation.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Parts-per_notation"/></para>
+    /// </summary>
+    /// <remarks>In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</remarks>
     public readonly record struct PartsPerNotation
       : System.IComparable, System.IComparable<PartsPerNotation>, System.IFormattable, IUnitValueQuantifiable<double, PartsPerNotationUnit>
     {

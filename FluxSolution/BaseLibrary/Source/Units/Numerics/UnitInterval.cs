@@ -2,8 +2,10 @@ namespace Flux
 {
   namespace Units
   {
-    /// <summary>Unit interval, unit of rational number between 0 and 1, constrained by the <see cref="IntervalNotation"/>.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Unit_interval"/>
+    /// <summary>
+    /// <para>Unit interval, unit of rational number, with the interval 0.0 (<see cref="UnitInterval.MinValue"/>) and 1.0 (<see cref="UnitInterval.MaxValue"/>), constrained by the <see cref="IntervalNotation"/>.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Unit_interval"/></para>
+    /// </summary>
     public readonly record struct UnitInterval
       : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, IValueQuantifiable<double>
     {
@@ -30,20 +32,20 @@ namespace Flux
       #region Static methods
 
       /// <summary>
-      /// <para>Asserts that the <paramref name="value"/> is a member of the unit interval constrained by <paramref name="notation"/>. If not, it throws an exception with the <paramref name="paramName"/>.</para>
+      /// <para>Asserts that the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>. If not, it throws an exception.</para>
       /// </summary>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TSelf AssertMember<TSelf>(TSelf value, IntervalNotation notation, string? paramName = null)
+      public static TSelf AssertMember<TSelf>(TSelf unitInterval, IntervalNotation notation, string? paramName = null)
         where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => notation.AssertMember(value, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName);
+        => notation.AssertMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(unitInterval));
 
       /// <summary>
-      /// <para>Returns whether the <paramref name="value"/> is a member of the unit interval constrained by <paramref name="notation"/>.</para>
+      /// <para>Returns whether the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>.</para>
       /// </summary>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static bool VerifyMember<TSelf>(TSelf value, IntervalNotation notation)
+      public static bool VerifyMember<TSelf>(TSelf unitInterval, IntervalNotation notation)
         where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => notation.VerifyMember(value, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+        => notation.VerifyMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
 
       #endregion Static methods
 

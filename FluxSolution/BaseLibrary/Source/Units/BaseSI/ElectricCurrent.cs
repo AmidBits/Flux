@@ -20,8 +20,10 @@ namespace Flux
       Milliampere,
     }
 
-    /// <summary>Electric current. SI unit of ampere. This is a base quantity.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Electric_current"/>
+    /// <summary>
+    /// <para>Electric current. SI unit of ampere. This is a base quantity.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Electric_current"/></para>
+    /// </summary>
     public readonly record struct ElectricCurrent
       : System.IComparable, System.IComparable<ElectricCurrent>, System.IFormattable, IMetricMultiplicable<double>, IUnitValueQuantifiable<double, ElectricCurrentUnit>
     {

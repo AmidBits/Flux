@@ -18,8 +18,10 @@ namespace Flux
       DecibelVolt,
     }
 
-    /// <summary>Amplitude ratio unit of decibel volt, defined as twenty times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one volt RMS. A.k.a. logarithmic root-power ratio.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Decibel"/>
+    /// <summary>
+    /// <para>Amplitude ratio, unit of decibel volt, defined as twenty times the logarithm in base 10, is the strength of a signal expressed in decibels (dB) relative to one volt RMS. A.k.a. logarithmic root-power ratio.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Decibel"/></para>
+    /// </summary>
     public readonly record struct AmplitudeRatio
       : System.IComparable, System.IComparable<AmplitudeRatio>, System.IFormattable, IUnitValueQuantifiable<double, AmplitudeRatioUnit>
     {

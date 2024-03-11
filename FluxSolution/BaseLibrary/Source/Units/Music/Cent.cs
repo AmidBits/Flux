@@ -2,9 +2,11 @@ namespace Flux
 {
   namespace Units
   {
-    /// <summary>Cent, unit of itself. Musical interval equal to one hundredth of one semitone.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Cent_(music)"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Interval_(music)"/>
+    /// <summary>
+    /// <para>Cent, unit of itself. Musical interval equal to one hundredth of one semitone.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Cent_(music)"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Interval_(music)"/></para>
+    /// </summary>
     public readonly record struct Cent
       : System.IComparable, System.IComparable<Cent>, System.IFormattable, IValueQuantifiable<int>
     {

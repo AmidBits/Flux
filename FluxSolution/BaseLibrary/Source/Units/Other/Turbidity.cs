@@ -18,8 +18,10 @@ namespace Flux
       NephelometricTurbidityUnits,
     }
 
-    /// <summary>Turbidity, unit of NTU (nephelometric turbidity units).</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Turbidity"/>
+    /// <summary>
+    /// <para>Turbidity, unit of NTU (nephelometric turbidity units).</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Turbidity"/></para>
+    /// </summary>
     public readonly record struct Turbidity
       : System.IComparable, System.IComparable<Turbidity>, System.IFormattable, IUnitValueQuantifiable<double, TurbidityUnit>
     {

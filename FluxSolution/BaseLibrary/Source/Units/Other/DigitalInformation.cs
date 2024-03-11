@@ -51,8 +51,10 @@ namespace Flux
       yobiByte,
     }
 
-    /// <summary>DigitalStorage, unit of natural number.</summary>
-    /// <seealso cref="https://en.wikipedia.org/wiki/DigitalInformation"/>
+    /// <summary>
+    /// <para>DigitalStorage, unit of natural number.</para>
+    /// <para><seealso cref="https://en.wikipedia.org/wiki/DigitalInformation"/></para>
+    /// </summary>
     public readonly record struct DigitalInformation
     : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IValueQuantifiable<System.Numerics.BigInteger>
     {

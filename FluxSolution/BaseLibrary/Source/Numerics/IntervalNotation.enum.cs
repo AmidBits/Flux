@@ -5,7 +5,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>
-    /// <para>Asserts that the <paramref name="value"/> is a member of the interval set <paramref name="minValue"/>..<paramref name="maxValue"/> using the specified <see cref="IntervalNotation"/>, and throws an exception if it's not.</para>
+    /// <para>Asserts that the <paramref name="value"/> is a member of the interval <paramref name="minValue"/>..<paramref name="maxValue"/> using the specified <see cref="IntervalNotation"/>, and throws an exception if it's not.</para>
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <param name="source">The interval notation to apply when asserting the value.</param>
@@ -31,7 +31,7 @@ namespace Flux
       };
 
     /// <summary>
-    /// <para>Compares <paramref name="value"/> with the interval set <paramref name="minValue"/>..<paramref name="maxValue"/> using the specified <see cref="IntervalNotation"/>.</para>
+    /// <para>Compares <paramref name="value"/> with the interval <paramref name="minValue"/>..<paramref name="maxValue"/> using the specified <see cref="IntervalNotation"/>.</para>
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <param name="source">The interval notation to apply when comparing to the interval set.</param>
@@ -79,7 +79,7 @@ namespace Flux
       };
 
     /// <summary>
-    /// <para>Determines whether the <paramref name="value"/> is a member of the interval set <paramref name="minValue"/>..<paramref name="maxValue"/> based on the <paramref name="source"/> <see cref="IntervalNotation"/>.</para>
+    /// <para>Determines whether the <paramref name="value"/> is a member of the interval <paramref name="minValue"/>..<paramref name="maxValue"/> based on the <paramref name="source"/> <see cref="IntervalNotation"/>.</para>
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <param name="source">The interval notation to apply when determining membership of the interval set.</param>
@@ -101,6 +101,15 @@ namespace Flux
         _ => throw new NotImplementedException(),
       };
 
+    /// <summary>
+    /// <para>Creates a string of <see cref="IntervalNotation"/> (specified by <paramref name="source"/>) of the interval <paramref name="minValue"/>..<paramref name="maxValue"/>.</para>
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     public static string ToNotationString<TSource>(this IntervalNotation source, TSource minValue, TSource maxValue)
       => source switch
       {
