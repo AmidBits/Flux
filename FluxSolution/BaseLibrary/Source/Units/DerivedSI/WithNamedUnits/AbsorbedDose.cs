@@ -18,8 +18,10 @@ namespace Flux
       Gray,
     }
 
-    /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Force"/>
+    /// <summary>
+    /// <para>Force, unit of newton. This is an SI derived quantity.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Force"/></para>
+    /// </summary>
     public readonly record struct AbsorbedDose
       : System.IComparable, System.IComparable<AbsorbedDose>, System.IFormattable, IUnitValueQuantifiable<double, AbsorbedDoseUnit>
     {
@@ -79,11 +81,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AbsorbedDoseUnit unit = AbsorbedDoseUnit.Gray, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
+      public string ToUnitValueString(AbsorbedDoseUnit unit = AbsorbedDoseUnit.Gray, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-        sb.Append(unicodeSpacing.ToSpacingString());
+        sb.Append(unitSpacing.ToSpacingString());
         sb.Append(unit.GetUnitString(useFullName));
         return sb.ToString();
       }

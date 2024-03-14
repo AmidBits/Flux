@@ -13,7 +13,7 @@ namespace Flux
 
       integer.WriteBigEndian(bytes); // Write as BigEndian (high-to-low).
 
-      return TSelf.ReadLittleEndian(bytes, !integer.IsSigned()); // Read as LittleEndian (low-to-high).
+      return TSelf.ReadLittleEndian(bytes, !integer.IsSignedNumber()); // Read as LittleEndian (low-to-high).
     }
   }
 }

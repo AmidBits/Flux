@@ -16,7 +16,7 @@ namespace Flux
       for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
         ReverseBits(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-      return TSelf.ReadLittleEndian(bytes, !integer.IsSigned()); // Read as LittleEndian (low-to-high).
+      return TSelf.ReadLittleEndian(bytes, !integer.IsSignedNumber()); // Read as LittleEndian (low-to-high).
     }
 
     //[System.CLSCompliant(false)]

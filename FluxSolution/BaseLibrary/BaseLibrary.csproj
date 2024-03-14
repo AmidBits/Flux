@@ -197,6 +197,9 @@
 	  <None Update="Resources\Dictionaries\Ipa\zh_hant.csv">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Resources\responses.txt">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 	<!--<ItemGroup>

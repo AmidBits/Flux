@@ -149,6 +149,6 @@ namespace Flux
       => System.Environment.UserName;
 
     public static System.Collections.Generic.IDictionary<string, object?> GetProperties()
-      => FxReflection.GetPropertyInfos(typeof(Locale)).ToOrderedDictionary(pi => pi.Name, pi => pi.GetValue(null));
+      => Fx.GetPropertyInfos(typeof(Locale)).ToOrderedDictionary(pi => pi.Name, pi => pi.GetValue(null));
   }
 }

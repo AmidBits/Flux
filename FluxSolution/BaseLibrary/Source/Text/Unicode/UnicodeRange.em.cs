@@ -18,7 +18,7 @@ namespace Flux
     {
       var list = new System.Collections.Generic.List<(string name, System.Text.Unicode.UnicodeRange range)>();
 
-      foreach (var pi in Flux.FxReflection.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges)).Where(pi => pi.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && pi.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
+      foreach (var pi in Flux.Fx.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges)).Where(pi => pi.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && pi.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
         if (pi.GetValue(null, null) is System.Text.Unicode.UnicodeRange ur)
           list.Add((pi.Name, ur));
 

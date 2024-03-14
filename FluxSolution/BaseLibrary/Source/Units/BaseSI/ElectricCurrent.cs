@@ -84,11 +84,11 @@ namespace Flux
       //IMetricMultiplicable<>
       public double GetMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
 
-      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.None)
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetMetricValue(prefix).ToString(format, formatProvider));
-        sb.Append(spacing.ToSpacingString());
+        sb.Append(unitSpacing.ToSpacingString());
         sb.Append(prefix.GetUnitString(true, false));
         sb.Append(LengthUnit.Metre.GetUnitString(false, false));
         return sb.ToString();
@@ -109,11 +109,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
+      public string ToUnitValueString(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-        sb.Append(unicodeSpacing.ToSpacingString());
+        sb.Append(unitSpacing.ToSpacingString());
         sb.Append(unit.GetUnitString(preferUnicode, useFullName));
         return sb.ToString();
       }

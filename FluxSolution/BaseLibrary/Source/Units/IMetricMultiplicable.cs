@@ -31,13 +31,13 @@
     TValue GetMetricValue(MetricPrefix prefix);
 
     /// <summary>
-    /// <para>Creates the metric value string in the <see cref="MetricPrefix"/> multiplicable specified by <paramref name="prefix"/>, <paramref name="format"/>, <paramref name="formatProvider"/> and <paramref name="spacing"/>.</para>
+    /// <para>Creates the metric value string in the <see cref="MetricPrefix"/> multiplicable specified by <paramref name="prefix"/>, <paramref name="format"/>, <paramref name="formatProvider"/> and <paramref name="unitSpacing"/>.</para>
     /// </summary>
     /// <param name="prefix"></param>
     /// <param name="format"></param>
     /// <param name="formatProvider"></param>
-    /// <param name="spacing"></param>
+    /// <param name="unitSpacing"></param>
     /// <returns></returns>
-    string ToMetricValueString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing spacing);
+    string ToMetricValueString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing);
   }
 }

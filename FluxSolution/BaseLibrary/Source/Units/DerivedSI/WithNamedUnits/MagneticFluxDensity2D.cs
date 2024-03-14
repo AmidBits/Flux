@@ -50,11 +50,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
+      public string ToUnitValueString(MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-        sb.Append(unicodeSpacing.ToSpacingString());
+        sb.Append(unitSpacing.ToSpacingString());
         sb.Append(unit.GetUnitString(useFullName));
         return sb.ToString();
       }

@@ -33,54 +33,135 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //if (Zamplez.IsSupported) { Zamplez.RunReflection(); return; }
+      var c = 0;
+      for (var v = 0.0; v < 1e-322; v = v.GetSupremum())
+        c++;
 
-      var uvi = new Flux.Units.UvIndex(4.1);
+    }
 
-      var time = new Flux.Units.Time(1, Flux.Units.TimeUnit.Millisecond);
+    static void ElizaExample()
+    {
+      var reflections = new System.Collections.Generic.Dictionary<string, string>
+      {
+        ["am"] = "are",
+        ["was"] = "were",
+        ["i"] = "you",
+        ["i'd"] = "you would",
+        ["i've"] = "you have",
+        ["i'll"] = "you will",
+        ["my"] = "your",
+        ["are"] = "am",
+        ["you've"] = "I have",
+        ["you'll"] = "I will",
+        ["your"] = "my",
+        ["yours"] = "mine",
+        ["you"] = "me",
+        ["me"] = "you"
+      };
 
-      var times = time.ToMetricValueString(Flux.Units.MetricPrefix.Nano);
+      var responses = setupResponses();
 
-      var avl = Flux.DataStructures.ImmutableAvlTree<string, System.Guid>.Empty;
-      avl = avl.Add("Test", System.Guid.NewGuid());
-      var trie = new Flux.DataStructures.SimpleTrie<string, System.Guid>();
+      System.Console.WriteLine("Therapist\n---------");
+      System.Console.WriteLine("Talk to the program by typing in plain English, using normal upper-");
+      System.Console.WriteLine("and lower-case letters and punctuation.  Enter 'quit' when done.");
+      System.Console.WriteLine(new String('=', 72));
+      System.Console.WriteLine("Hello.  How are you feeling today?");
 
-      var mutc = new Flux.Units.MomentUtc(1967, 5, 30, 6, 12, 1, (int)time.GetMetricValue(Flux.Units.MetricPrefix.Milli));
-      var mutcu = mutc.GetTotalApproximateSeconds();
-      var tutc = mutc.ToTimestampUtc();
-      var tutcu = tutc.GetTotalApproximateSeconds();
-      var tutcs = tutc.ToString();
-      var mutcr = tutc.ToMomentUtc();
-      var mutcrs = mutcr.ToString();
-      var tts = mutc.ToTimeSpan();
-      var jd = mutc.ToJulianDate();
-      var jdn = mutc.ToJulianDayNumber();
-      var tdo = mutc.ToDateOnly();
-      var tdt = mutc.ToDateTime();
-      var mu = tdt.ToMomentUtc();
-      var tto = mutc.ToTimeOnly();
+      bool exit = false;
 
-      var xyz = 1.0 + double.Epsilon == 1.0;
+      Random rnd = new Random();
 
-      var a = 16.67;
-      var x = a;
-      x += a;
-      x += a;
-      x += a;
-      x += a;
-      x += a;
-      var xs = x.ToString("N15");
-      var b = 100.02;
-      var y = b;
-      var ys = y.ToString("N15");
+      while (!exit)
+      {
+        string chosenResponse = "";
+        string userInput = System.Console.ReadLine().ToLower();
+        // remove punctuation at end of input
+        userInput = System.Text.RegularExpressions.Regex.Replace(userInput, @"[^\w\s]{1,}$", "");
 
-      var z = Flux.Maths.EqualsWithinAbsoluteTolerance(x, y, 1E-14);
+        // test all regexes in turn
+        foreach (System.Collections.Generic.List<String> possibleResponses in responses)
+        {
+          // right to left as we only need the last match
+          var pattern = new System.Text.RegularExpressions.Regex(possibleResponses[0]);
+          // got a bite?
+          if (pattern.IsMatch(userInput))
+          {
+            // pick a random response
+            int randomIdx = rnd.Next(1, possibleResponses.Count);
+            chosenResponse = possibleResponses[randomIdx];
 
-      var m = 0.0;
-      var n = m.GetSupremum();
+            // if there's a %1, we need to include part of what the user said
+            if (chosenResponse.Contains("%1"))
+            {
+              // get the bit of the text we're going to include
+              var matchedTextGroups = pattern.Match(userInput).Groups;
+              string reflectedInput = "";
+              foreach (System.Text.RegularExpressions.Group g in matchedTextGroups)
+              {
+                reflectedInput = g.ToString();
+              }
+              // check all words, flip using reflections (i.e. I am -> you are)
+              String[] reflectedInputArray = reflectedInput.Split();
+              for (int i = 0; i < reflectedInputArray.Length; i++)
+              {
+                // element and potential dictionary key are different
+                string word = reflectedInputArray[i];
+                // strip punctuation so "am," still becomes "are,"
+                string possibleKey = System.Text.RegularExpressions.Regex.Replace(word, @"\p{P}", "");
+                if (reflections.ContainsKey(possibleKey))
+                {
+                  word = word.Replace(possibleKey, reflections[possibleKey]);
+                  reflectedInputArray[i] = word;
+                }
+              }
+              // join it up again and stick the last matched group into the placeholder
+              reflectedInput = String.Join(" ", reflectedInputArray);
+              chosenResponse = chosenResponse.Replace("%1", reflectedInput);
+              // strip duplicate punctuation
+              chosenResponse = System.Text.RegularExpressions.Regex.Replace(chosenResponse, @"([^\w\s])(\1){1,}", @"$2");
+              // capitalize first letter
+              chosenResponse = Char.ToUpper(chosenResponse[0]).ToString() + chosenResponse.Substring(1);
+            }
+            break;
+          }
+        }
 
+        System.Console.WriteLine(chosenResponse);
+        if (userInput == "quit")
+        {
+          exit = true;
+        }
+      }
+
+      static System.Collections.Generic.List<System.Collections.Generic.List<string>> setupResponses()
+      {
+        // list of lists - first option in each sub-list is the regex to match,
+        // the rest are possible responses
+        var allResponses = new System.Collections.Generic.List<System.Collections.Generic.List<string>>();
+        var uri = new System.Uri(@"file://\Resources\responses.txt");
+        using var stream = uri.GetStream();
+        using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
+
+        string txtLine = "";
+        var tempResponseCollector = new System.Collections.Generic.List<string>();
+        while ((txtLine = reader.ReadLine()) != null)
+        {
+          if (txtLine == "-")
+          {
+            allResponses.Add(tempResponseCollector);
+            // .Clear() gives some odd results here
+            tempResponseCollector = new System.Collections.Generic.List<string>();
+          }
+          else
+          {
+            tempResponseCollector.Add(txtLine.ToString());
+          }
+        }
+
+        return allResponses;
+      }
     }
 
     #region Puzzle

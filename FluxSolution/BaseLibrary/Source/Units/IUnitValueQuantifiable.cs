@@ -4,14 +4,14 @@
 
   public static partial class Em
   {
-    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       where TType : struct, System.IEquatable<TType>
       where TUnit : notnull, System.Enum
     {
       var d = new System.Collections.Generic.Dictionary<TUnit, string>();
 
       foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
-        d.Add(unit, source.ToUnitValueString(unit, format, formatProvider, preferUnicode, unicodeSpacing, useFullName));
+        d.Add(unit, source.ToUnitValueString(unit, format, formatProvider, preferUnicode, unitSpacing, useFullName));
 
       return d;
     }
@@ -37,9 +37,9 @@
     /// <param name="format">The format.</param>
     /// <param name="formatProvider">The format provider.</param>
     /// <param name="preferUnicode">Whether to prefer Unicode symbols, where and when available. This typically result in reduced length of the returning string, and also less support for some of those symbols, e.g. fonts.</param>
-    /// <param name="unicodeSpacing">The Unicode spacing to apply.</param>
+    /// <param name="unitSpacing">The Unicode spacing to apply.</param>
     /// <param name="useFullName">Whether use the full actual name of the enum, rather than symbols or shorter (e.g. acronym) variants.</param>
     /// <returns>A string with the value and any symbols representing the quantity in the specified <typeparamref name="TUnit"/>.</returns>
-    string ToUnitValueString(TUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false);
+    string ToUnitValueString(TUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false);
   }
 }

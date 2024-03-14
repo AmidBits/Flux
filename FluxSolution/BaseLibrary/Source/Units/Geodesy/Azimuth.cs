@@ -171,7 +171,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => Angle.ToUnitValueString(AngleUnit.Degree, format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => Angle.ToUnitValueString(AngleUnit.Degree, format, formatProvider, true);
 
       // IQuantifiable<>
       /// <summary>

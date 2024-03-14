@@ -126,18 +126,18 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unicodeSpacing = UnicodeSpacing.None, bool useFullName = false)
+      public string ToUnitValueString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         if (unit == SpeedUnit.Mach)
         {
           sb.Append(unit.GetUnitString(preferUnicode, useFullName));
-          sb.Append(unicodeSpacing.ToSpacingString());
+          sb.Append(unitSpacing.ToSpacingString());
         }
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         if (unit != SpeedUnit.Mach)
         {
-          sb.Append(unicodeSpacing.ToSpacingString());
+          sb.Append(unitSpacing.ToSpacingString());
           sb.Append(unit.GetUnitString(preferUnicode, useFullName));
         }
         return sb.ToString();

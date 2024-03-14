@@ -50,8 +50,10 @@
       WarsawPactMil,
     }
 
-    /// <summary>Plane angle, unit of radian. This is an SI derived quantity.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Angle"/>
+    /// <summary>
+    /// <para>Plane angle, unit of radian. This is an SI derived quantity.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Angle"/></para>
+    /// </summary>
     public readonly partial record struct Angle
       : System.IComparable, System.IComparable<Angle>, System.IFormattable, IUnitValueQuantifiable<double, AngleUnit>
     {
@@ -415,11 +417,11 @@
         return dmsNotation switch
         {
           AngleDmsNotation.DecimalDegrees
-            => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, $"N{decimalPoints}") + spacingString + directional, // Show as decimal degrees.
+            => new Units.Angle(System.Math.Abs(decimalDegrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, $"N{decimalPoints}", null, true) + spacingString + directional, // Show as decimal degrees.
           AngleDmsNotation.DegreesDecimalMinutes
-            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0") + spacingString + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, $"N{decimalPoints}") + spacingString + directional, // Show as degrees and decimal minutes.
+            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0", null, true) + spacingString + new Units.Angle(decimalMinutes, Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, $"N{decimalPoints}", null, true) + spacingString + directional, // Show as degrees and decimal minutes.
           AngleDmsNotation.DegreesMinutesDecimalSeconds
-            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0") + spacingString + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, "N0").PadLeft(3, '0') + spacingString + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitValueString(Units.AngleUnit.Arcsecond, $"N{decimalPoints}") + spacingString + directional, // Show as degrees, minutes and decimal seconds.
+            => new Units.Angle(System.Math.Abs(degrees), Units.AngleUnit.Degree).ToUnitValueString(Units.AngleUnit.Degree, "N0", null, true) + spacingString + new Units.Angle(System.Math.Abs(minutes), Units.AngleUnit.Arcminute).ToUnitValueString(Units.AngleUnit.Arcminute, "N0", null, true) + spacingString + new Units.Angle(decimalSeconds, Units.AngleUnit.Arcsecond).ToUnitValueString(Units.AngleUnit.Arcsecond, $"N{decimalPoints}", null, true) + spacingString + directional, // Show as degrees, minutes and decimal seconds.
           _
             => throw new System.ArgumentOutOfRangeException(nameof(dmsNotation)),
         };
@@ -526,7 +528,7 @@
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = true, UnicodeSpacing unitSpacing = UnicodeSpacing.None, bool useFullName = false)
+      public string ToUnitValueString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));

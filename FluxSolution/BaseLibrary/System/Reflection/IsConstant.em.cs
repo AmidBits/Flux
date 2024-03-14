@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class FxReflection
+  public static partial class Fx
   {
     /// <summary>Returns whether the FieldInfo represents a constant. A constant is a field that is a literal and cannot be initialized.</summary>
     public static bool IsConstant(this System.Reflection.FieldInfo source)
