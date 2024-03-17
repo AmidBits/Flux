@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructures.Immutable
 {
   /// <summary>
   /// <para>An immutable binary tree.</para>
@@ -32,15 +32,15 @@ namespace Flux.DataStructures
     /// <returns></returns>
     public static Flux.DataStructures.IBinaryTree<TValue> Create(TValue[] inOrder, TValue[] levelOrder)
     {
-      return ConstructTree(Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty, levelOrder, inOrder, 0, inOrder.Length - 1);
+      return ConstructTree(ImmutableBinaryTree<TValue>.Empty, levelOrder, inOrder, 0, inOrder.Length - 1);
 
       static Flux.DataStructures.IBinaryTree<TValue> ConstructTree(Flux.DataStructures.IBinaryTree<TValue> startNode, TValue[] levelOrder, TValue[] inOrder, int inStart, int inEnd)
       {
         if (inStart > inEnd)
-          return Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty;
+          return ImmutableBinaryTree<TValue>.Empty;
 
         if (inStart == inEnd)
-          return new Flux.DataStructures.ImmutableBinaryTree<TValue>(inOrder[inStart], Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty, Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty);
+          return new ImmutableBinaryTree<TValue>(inOrder[inStart], ImmutableBinaryTree<TValue>.Empty, ImmutableBinaryTree<TValue>.Empty);
 
         var found = false;
         var index = 0;
@@ -53,7 +53,7 @@ namespace Flux.DataStructures
           {
             if (data.Equals(inOrder[j]))
             {
-              startNode = new Flux.DataStructures.ImmutableBinaryTree<TValue>(data, Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty, Flux.DataStructures.ImmutableBinaryTree<TValue>.Empty);
+              startNode = new ImmutableBinaryTree<TValue>(data, ImmutableBinaryTree<TValue>.Empty, ImmutableBinaryTree<TValue>.Empty);
               index = j;
               found = true;
               break;
@@ -64,7 +64,7 @@ namespace Flux.DataStructures
             break;
         }
 
-        startNode = new Flux.DataStructures.ImmutableBinaryTree<TValue>(
+        startNode = new ImmutableBinaryTree<TValue>(
           startNode.Value,
           ConstructTree(startNode, levelOrder, inOrder, inStart, index - 1), // Elements before index are part of left child of startNode.
           ConstructTree(startNode, levelOrder, inOrder, index + 1, inEnd) // Elements after index are part of right child of startNode.

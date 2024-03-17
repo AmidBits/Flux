@@ -3,7 +3,7 @@ namespace Flux
   #region ExtensionMethods
   public static partial class Em
   {
-    public static Geometry.EulerAngles ToEulerAngles(this Geometry.AxisAngle source)
+    public static Geometry.Rotations.EulerAngles ToEulerAngles(this Geometry.Rotations.AxisAngle source)
     {
       var (s, c) = System.Math.SinCos(source.Angle);
 
@@ -39,13 +39,13 @@ namespace Flux
         );
     }
 
-    public static (System.Numerics.Vector3 axis, Units.Angle angle) ToQuantities(this Geometry.AxisAngle source)
+    public static (System.Numerics.Vector3 axis, Units.Angle angle) ToQuantities(this Geometry.Rotations.AxisAngle source)
       => (
         new System.Numerics.Vector3((float)source.X, (float)source.Y, (float)source.Z),
         new Units.Angle(source.Angle)
       );
 
-    public static System.Numerics.Quaternion ToQuaternion(this Geometry.AxisAngle source)
+    public static System.Numerics.Quaternion ToQuaternion(this Geometry.Rotations.AxisAngle source)
     {
       var (s, w) = System.Math.SinCos(source.Angle / 2);
 
@@ -59,7 +59,7 @@ namespace Flux
 
   #endregion ExtensionMethods
 
-  namespace Geometry
+  namespace Geometry.Rotations
   {
     /// <summary>Axis-angle 3D rotation.</summary>
     /// <remarks>All angles in radians.</remarks>

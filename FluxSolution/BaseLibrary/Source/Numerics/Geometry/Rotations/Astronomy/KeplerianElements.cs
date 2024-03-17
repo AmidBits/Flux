@@ -10,41 +10,64 @@ namespace Flux
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct KeplerianElements
     {
+      /// <summary>
+      /// <para><see href="https://ssd.jpl.nasa.gov/horizons/app.html#/"/></para>
+      /// </summary>
+      public static readonly KeplerianElements Mars = new KeplerianElements(new Units.OrbitalEccentricity(9.327987858487280E-02), new Units.Length(2.279325209790799E+08, Units.LengthUnit.Kilometre), new Units.Angle(1.847854452956304E+00, Units.AngleUnit.Degree), new Units.Angle(4.948935675287289E+01, Units.AngleUnit.Degree), new Units.Angle(2.866702002890120E+02, Units.AngleUnit.Degree), new Units.Angle(3.270334666858926E+02, Units.AngleUnit.Degree));
+
       public static readonly double TheObliquityOfTheEclipticInDegrees = 23.4;
 
-      private readonly double m_eccentricity;
-      private readonly double m_semiMajorAxis;
-      private readonly double m_radInclination; // Stored internally as radians.
-      private readonly double m_radLongitudeOfAscendingNode; // Stored internally as radians.
-      private readonly double m_radArgumentOfPeriapsis; // Stored internally as radians.
-      private readonly double m_trueAnomaly;
+      private readonly Units.OrbitalEccentricity m_eccentricity;
+      private readonly Units.Length m_semiMajorAxis;
+      private readonly Units.Angle m_inclination;
+      private readonly Units.Angle m_longitudeOfAscendingNode;
+      private readonly Units.Angle m_argumentOfPeriapsis;
+      private readonly Units.Angle m_trueAnomaly;
 
-      public KeplerianElements(double semiMajorAxis, double eccentricity, double inclination, double longitudeOfAscendingNode, double argumentOfPeriapsis, double trueAnomaly)
+      public KeplerianElements(Units.OrbitalEccentricity eccentricity, Units.Length semiMajorAxis, Units.Angle inclination, Units.Angle longitudeOfAscendingNode, Units.Angle argumentOfPeriapsis, Units.Angle trueAnomaly)
       {
-        m_semiMajorAxis = semiMajorAxis;
         m_eccentricity = eccentricity;
-        m_radInclination = inclination;
-        m_radLongitudeOfAscendingNode = longitudeOfAscendingNode;
-        m_radArgumentOfPeriapsis = argumentOfPeriapsis;
+        m_semiMajorAxis = semiMajorAxis;
+        m_inclination = inclination;
+        m_longitudeOfAscendingNode = longitudeOfAscendingNode;
+        m_argumentOfPeriapsis = argumentOfPeriapsis;
         m_trueAnomaly = trueAnomaly;
       }
 
-      /// <summary>The longest diameter of an ellipse.</summary>
-      public double SemiMajorAxis { get => m_semiMajorAxis; init => m_semiMajorAxis = value; }
-      /// <summary>The amount by which an orbit around another body deviates from a perfect circle.</summary>
-      public double Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
-      /// <summary>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
-      public double Inclination { get => Units.Angle.ConvertRadianToDegree(m_radInclination); init => m_radInclination = Units.Angle.ConvertDegreeToRadian(value); }
-      /// <summary>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
-      public double LongitudeOfAscendingNode { get => Units.Angle.ConvertRadianToDegree(m_radLongitudeOfAscendingNode); init => m_radLongitudeOfAscendingNode = Units.Angle.ConvertDegreeToRadian(value); }
-      /// <summary>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
-      public double ArgumentOfPeriapsis { get => Units.Angle.ConvertRadianToDegree(m_radArgumentOfPeriapsis); init => m_radArgumentOfPeriapsis = Units.Angle.ConvertDegreeToRadian(value); }
-      /// <summary>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</summary>
-      public double TrueAnomaly { get => m_trueAnomaly; init => m_trueAnomaly = value; }
+      /// <summary>
+      /// <para>The amount by which an orbit around another body deviates from a perfect circle.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Orbital_eccentricity"/></para>
+      /// </summary>
+      public Units.OrbitalEccentricity Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
+      /// <summary>
+      /// <para>The longest diameter of an ellipse.</para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Semi-major_and_semi-minor_axes"/></para>
+      /// </summary>
+      public Units.Length SemiMajorAxis { get => m_semiMajorAxis; init => m_semiMajorAxis = value; }
+      /// <summary>
+      /// <para>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Orbital_inclination"/></para>
+      /// </summary>
+      public Units.Angle Inclination { get => m_inclination; init => m_inclination = value; }
+      /// <summary>
+      /// <para>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Longitude_of_the_ascending_node"/></para>
+      /// </summary>
+      public Units.Angle LongitudeOfAscendingNode { get => m_longitudeOfAscendingNode; init => m_longitudeOfAscendingNode = value; }
+      /// <summary>
+      /// <para>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Argument_of_periapsis"/></para>
+      /// </summary>
+      public Units.Angle ArgumentOfPeriapsis { get => m_argumentOfPeriapsis; init => m_argumentOfPeriapsis = value; }
+      /// <summary>
+      /// <para>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/True_anomaly"/></para>
+      /// </summary>
+      public Units.Angle TrueAnomaly { get => m_trueAnomaly; init => m_trueAnomaly = value; }
 
       public System.Numerics.Matrix4x4 ToMatrix4()
       {
-        ToRotationMatrix(m_radLongitudeOfAscendingNode, m_radInclination, m_radArgumentOfPeriapsis, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
+        ToRotationMatrix(m_longitudeOfAscendingNode.Value, m_inclination.Value, m_argumentOfPeriapsis.Value, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
 
         return new(
           (float)x1, (float)x2, (float)x3, 0,
@@ -102,7 +125,7 @@ namespace Flux
       #endregion Static methods
 
       public override string ToString()
-        => $"{GetType().Name} {{ SemiMajorAxis = {m_semiMajorAxis}, Eccentricity = {m_eccentricity}, Inclination = {new Units.Angle(m_radInclination).ToUnitValueString(Units.AngleUnit.Degree)}, LongitudeOfAscendingNode = {new Units.Angle(m_radLongitudeOfAscendingNode).ToUnitValueString(Units.AngleUnit.Degree)}, ArgumentOfPeriapsis = {new Units.Angle(m_radArgumentOfPeriapsis).ToUnitValueString(Units.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly} }}";
+        => $"{GetType().Name} {{ Eccentricity = {m_eccentricity.Value} ({m_eccentricity.GetOrbitalEccentricityClass()}), SemiMajorAxis = {m_semiMajorAxis}, Inclination = {m_inclination.ToUnitValueString(Units.AngleUnit.Degree)}, LongitudeOfAscendingNode = {m_longitudeOfAscendingNode.ToUnitValueString(Units.AngleUnit.Degree)}, ArgumentOfPeriapsis = {m_argumentOfPeriapsis.ToUnitValueString(Units.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly.ToUnitValueString(Units.AngleUnit.Degree)} }}";
     }
   }
 }

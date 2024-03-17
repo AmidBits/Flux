@@ -5,7 +5,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Creates a new <see cref="Geometry.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
-    public static Geometry.CylindricalCoordinate ToCylindricalCoordinate(this System.Numerics.Vector3 source)
+    public static Geometry.Coordinates.CylindricalCoordinate ToCylindricalCoordinate(this System.Numerics.Vector3 source)
       => new(
         System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
         (System.Math.Atan2(source.Y, source.X) + System.Math.Tau) % System.Math.Tau,
@@ -15,7 +15,7 @@ namespace Flux
 
   #endregion
 
-  namespace Geometry
+  namespace Geometry.Coordinates
   {
     /// <summary>
     /// <para>Cylindrical coordinate. It is assumed that the reference plane is the Cartesian xy-plane (with equation z/height = 0), and the cylindrical axis is the Cartesian z-axis, i.e. the z-coordinate is the same in both systems, and the correspondence between cylindrical (radius, azimuth, height) and Cartesian (x, y, z) are the same as for polar coordinates.</para>

@@ -7,7 +7,7 @@ namespace Flux.Geometry.MapProjections
   {
     public static readonly EquirectangularProjection Default;
 
-    public GeographicCoordinate CenterOfMap { get; init; }
+    public Coordinates.GeographicCoordinate CenterOfMap { get; init; }
     public double StandardParallels { get; init; }
 
     public System.Numerics.Vector3 ProjectForward(IGeographicCoordinate project)
@@ -17,7 +17,7 @@ namespace Flux.Geometry.MapProjections
         (float)project.Altitude
       );
     public IGeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
-      => new GeographicCoordinate(
+      => new Coordinates.GeographicCoordinate(
         project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.LongitudeInRadians,
         Units.AngleUnit.Radian,
         project.Y / project.Z + CenterOfMap.LatitudeInRadians,

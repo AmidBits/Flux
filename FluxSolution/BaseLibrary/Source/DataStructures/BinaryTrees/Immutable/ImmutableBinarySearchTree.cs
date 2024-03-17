@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructures.Immutable
 {
   /// <summary>
 	/// <para>A binary search tree (BST) implementation.</para>

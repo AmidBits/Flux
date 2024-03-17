@@ -385,15 +385,15 @@ namespace ConsoleApp
     #region RunCoordinateSystems
 
     /// <summary>This is a reference coordinate for Madrid, Spain, which is antipodal to Takapau, New Zeeland.</summary>
-    public static Flux.Geometry.GeographicCoordinate MadridSpain => new(40.416944, Flux.Units.AngleUnit.Degree, -3.703333, Flux.Units.AngleUnit.Degree, 650);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate MadridSpain => new(40.416944, Flux.Units.AngleUnit.Degree, -3.703333, Flux.Units.AngleUnit.Degree, 650);
 
     /// <summary>This is a reference coordinate for Takapau, New Zeeland, which is antipodal to Madrid, Spain.</summary>
-    public static Flux.Geometry.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Units.AngleUnit.Degree, 176.35, Flux.Units.AngleUnit.Degree, 235);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Units.AngleUnit.Degree, 176.35, Flux.Units.AngleUnit.Degree, 235);
 
     /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Units.AngleUnit.Degree, -112.073889, Flux.Units.AngleUnit.Degree, 331);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Units.AngleUnit.Degree, -112.073889, Flux.Units.AngleUnit.Degree, 331);
     /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Units.AngleUnit.Degree, -110.926389, Flux.Units.AngleUnit.Degree, 728);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Units.AngleUnit.Degree, -110.926389, Flux.Units.AngleUnit.Degree, 728);
 
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
@@ -407,22 +407,22 @@ namespace ConsoleApp
       Draw(TakapauNewZealand, nameof(TakapauNewZealand));
       Draw(TucsonAzUsa, nameof(TucsonAzUsa));
 
-      static void Draw(Flux.Geometry.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
+      static void Draw(Flux.Geometry.Coordinates.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
       {
         Flux.Console.WriteInformationLine($"{label.ToString()}:");
 
-        System.Console.WriteLine(gc);
+        System.Console.WriteLine($"Geographical: {gc}");
 
-        var sca = gc.ToSphericalCoordinate(); System.Console.WriteLine(sca);
-        var cca = sca.ToCylindricalCoordinate(); System.Console.WriteLine(cca);
-        var cc3a = cca.ToVector3(); System.Console.WriteLine(cc3a);
+        var sca = gc.ToSphericalCoordinate(); System.Console.WriteLine($"Spherical: {sca}");
+        var cca = sca.ToCylindricalCoordinate(); System.Console.WriteLine($"Cylindrical: {cca}");
+        var cc3a = cca.ToVector3(); System.Console.WriteLine($"Vector: {cc3a}");
 
         Flux.Console.WriteWarningLine($" Sub 2D coordinate show-case from the 3D components X and Y."); // Show 2D coordinate systems also.
-        var pca = cca.ToPolarCoordinate(); System.Console.Write(' '); System.Console.WriteLine(pca);
+        var pca = cca.ToPolarCoordinate(); System.Console.Write(' '); System.Console.WriteLine($"Polar: {pca}");
 
-        var ccb = pca.ToCylindricalCoordinate(cca.Height); System.Console.WriteLine(ccb);
-        var scb = ccb.ToSphericalCoordinate(); System.Console.WriteLine(scb);
-        var gcb = scb.ToGeographicCoordinate(); System.Console.WriteLine(gcb);
+        var ccb = pca.ToCylindricalCoordinate(cca.Height); System.Console.WriteLine($"Cylindrical: {ccb}");
+        var scb = ccb.ToSphericalCoordinate(); System.Console.WriteLine($"Spherical: {scb}");
+        var gcb = scb.ToGeographicCoordinate(); System.Console.WriteLine($"Geographical: {gcb}");
 
         System.Console.WriteLine();
       }
@@ -444,7 +444,7 @@ namespace ConsoleApp
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunAvlTree()
     {
-      var bst = Flux.DataStructures.ImmutableAvlTree<int, string>.Empty;
+      var bst = Flux.DataStructures.Immutable.ImmutableAvlTree<int, string>.Empty;
 
       for (var index = 0; bst.GetTreeCount() < 16; index++)
       {

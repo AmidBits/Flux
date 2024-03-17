@@ -2,12 +2,12 @@
 {
   public static partial class Em
   {
-    public static DataStructures.OrderedSet<T> ToOrderedSet<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static DataStructures.HashBased.OrderedSet<T> ToOrderedSet<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
       => new(source, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default);
   }
 
-  namespace DataStructures
+  namespace DataStructures.HashBased
   {
     /// <summary>
     /// <para>This is an ordered set implementing <see cref="IOrderedSet{T}"/>.</para>

@@ -2,17 +2,17 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static DataStructures.OrderedDictionary<TKey, TValue> ToOrderedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IEqualityComparer<TKey>? equalityComparer = null)
+    public static DataStructures.HashBased.OrderedDictionary<TKey, TValue> ToOrderedDictionary<TSource, TKey, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IEqualityComparer<TKey>? equalityComparer = null)
       where TKey : notnull
     {
-      var od = new DataStructures.OrderedDictionary<TKey, TValue>(equalityComparer ?? System.Collections.Generic.EqualityComparer<TKey>.Default);
+      var od = new DataStructures.HashBased.OrderedDictionary<TKey, TValue>(equalityComparer ?? System.Collections.Generic.EqualityComparer<TKey>.Default);
       foreach (var item in source)
         od.Add(keySelector(item), valueSelector(item));
       return od;
     }
   }
 
-  namespace DataStructures
+  namespace DataStructures.HashBased
   {
     public readonly record struct IndexKeyValue<TKey, TValue>
       where TKey : notnull

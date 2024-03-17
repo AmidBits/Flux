@@ -2,17 +2,17 @@
 {
   public static partial class Em
   {
-    public static DataStructures.OrderedKeySet<T> ToOrderedHashSet<T>(this System.Collections.Generic.IEnumerable<T> source)
+    public static DataStructures.HashBased.OrderedKeySet<T> ToOrderedHashSet<T>(this System.Collections.Generic.IEnumerable<T> source)
       where T : notnull
     {
-      var ohs = new DataStructures.OrderedKeySet<T>();
+      var ohs = new DataStructures.HashBased.OrderedKeySet<T>();
       foreach (var item in source)
         ohs.Add(item);
       return ohs;
     }
   }
 
-  namespace DataStructures
+  namespace DataStructures.HashBased
   {
     /// <summary>
     /// <para>This is an ordered key set, based on the .NET built-in <see cref="System.Collections.ObjectModel.KeyedCollection{TKey, TItem}"/> which is then extended by the <see cref="IOrderedSet{T}"/>.</para>

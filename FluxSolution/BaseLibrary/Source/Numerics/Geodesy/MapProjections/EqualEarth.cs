@@ -61,7 +61,7 @@ namespace Flux.Geometry.MapProjections
       var lon = M * location.X * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new GeographicCoordinate(
+      return new Coordinates.GeographicCoordinate(
         lat,
         Units.AngleUnit.Radian,
         lon,

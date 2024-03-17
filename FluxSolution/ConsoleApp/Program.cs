@@ -33,13 +33,23 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var c = 0;
-      for (var v = 0.0; v < 1e-322; v = v.GetSupremum())
-        c++;
+      var mars = Flux.Geometry.KeplerianElements.Mars;
+
+      for (int i = 0; i <= 361; i += 10)
+      {
+        var r = Flux.Units.Angle.ConvertDegreeToRadian(i);
+        var c2 = Flux.Geometry.Coordinates.PolarCoordinate.ConvertPolarToCartesian2(1, r);
+        var a2ccw = Flux.Units.Angle.Atan2Cw(c2.y, c2.x);
+        System.Console.WriteLine($"{i} = {r:N3} : {c2.x:N3}, {c2.y:N3} : {Flux.Units.Angle.ConvertRadianToDegree(a2ccw):N3}");
+      }
+
+
 
     }
+
+    #region Eliza example
 
     static void ElizaExample()
     {
@@ -163,6 +173,8 @@ namespace ConsoleApp
         return allResponses;
       }
     }
+
+    #endregion // Eliza example
 
     #region Puzzle
 

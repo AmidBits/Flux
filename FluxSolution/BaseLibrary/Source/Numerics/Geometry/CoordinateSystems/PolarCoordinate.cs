@@ -4,7 +4,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Creates a new <see cref="Geometry.PolarCoordinate"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
-    public static Geometry.PolarCoordinate ToPolarCoordinate(this System.Numerics.Vector2 source)
+    public static Geometry.Coordinates.PolarCoordinate ToPolarCoordinate(this System.Numerics.Vector2 source)
       => new(
         System.Math.Sqrt(source.X * source.X + source.Y * source.Y),
         System.Math.Atan2(source.Y, source.X)
@@ -12,7 +12,7 @@ namespace Flux
   }
   #endregion
 
-  namespace Geometry
+  namespace Geometry.Coordinates
   {
     /// <summary>
     /// <para>Polar coordinate. Please note that polar coordinates are two dimensional.</para>
@@ -106,7 +106,8 @@ namespace Flux
       public static (double radius, double azimuth) ConvertCartesian2ToPolarEx(double x, double y)
         => (
           System.Math.Sqrt(x * x + y * y),
-          System.Math.Tau - System.Math.Atan2(-x, y) is var atan2 && atan2 < 0 ? System.Math.Tau + atan2 : atan2
+          //System.Math.Tau - System.Math.Atan2(-x, y) is var atan2 && atan2 < 0 ? System.Math.Tau + atan2 : atan2
+          System.Math.Atan2(x, y) is var atan2 && atan2 < 0 ? System.Math.Tau + atan2 : atan2
         );
 
       /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
@@ -119,13 +120,15 @@ namespace Flux
 
       /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
       public static (double x, double y) ConvertPolarToCartesian2Ex(double radius, double azimuth)
-      {
-        var adjustedAzimuth = System.Math.Tau - (azimuth % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2;
+        => ConvertPolarToCartesian2(radius, (System.Math.Tau * 1.25) - (azimuth % System.Math.Tau) is var h && h > System.Math.Tau ? h - System.Math.Tau : h); // Adjust azimuth.
+      //{
+      //  var adjustedAzimuth = (System.Math.Tau * 1.25) - (azimuth % System.Math.Tau) is var h && h > System.Math.Tau ? h - System.Math.Tau : h;
+      //  //var adjustedAzimuth = System.Math.Tau - (azimuth % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2;
 
-        var (sin, cos) = System.Math.SinCos(adjustedAzimuth);
+      //  var (sin, cos) = System.Math.SinCos(adjustedAzimuth);
 
-        return (radius * cos, radius * sin);
-      }
+      //  return (radius * cos, radius * sin);
+      //}
 
       #endregion // Static methods
 

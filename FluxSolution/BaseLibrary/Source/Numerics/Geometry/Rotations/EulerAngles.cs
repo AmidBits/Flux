@@ -4,7 +4,7 @@ namespace Flux
 
   public static partial class Em
   {
-    public static Geometry.AxisAngle ToAxisAngle(this Geometry.EulerAngles source)
+    public static Geometry.Rotations.AxisAngle ToAxisAngle(this Geometry.Rotations.EulerAngles source)
     {
       var halfYaw = source.Yaw / 2;
       var halfPitch = source.Pitch / 2;
@@ -38,7 +38,7 @@ namespace Flux
       return new(x, y, z, angle);
     }
 
-    public static System.Numerics.Matrix4x4 ToMatrixTaitBryanXYZ(this Geometry.EulerAngles source)
+    public static System.Numerics.Matrix4x4 ToMatrixTaitBryanXYZ(this Geometry.Rotations.EulerAngles source)
     {
       var (s1, c1) = System.Math.SinCos(source.Yaw);
       var (s2, c2) = System.Math.SinCos(source.Pitch);
@@ -52,7 +52,7 @@ namespace Flux
       );
     }
 
-    public static System.Numerics.Matrix4x4 ToMatrixLhTaitBryanYXZ(this Geometry.EulerAngles source)
+    public static System.Numerics.Matrix4x4 ToMatrixLhTaitBryanYXZ(this Geometry.Rotations.EulerAngles source)
     {
       var (s1, c1) = System.Math.SinCos(source.Yaw);
       var (s2, c2) = System.Math.SinCos(source.Pitch);
@@ -66,7 +66,7 @@ namespace Flux
       );
     }
 
-    public static System.Numerics.Matrix4x4 ToMatrixLhTaitBryanZYX(this Geometry.EulerAngles source)
+    public static System.Numerics.Matrix4x4 ToMatrixLhTaitBryanZYX(this Geometry.Rotations.EulerAngles source)
     {
       var (s3, c3) = System.Math.SinCos(source.Yaw);
       var (s2, c2) = System.Math.SinCos(source.Pitch);
@@ -80,7 +80,7 @@ namespace Flux
       );
     }
 
-    public static System.Numerics.Matrix4x4 ToMatrixLhProperEulerZXZ(this Geometry.EulerAngles source)
+    public static System.Numerics.Matrix4x4 ToMatrixLhProperEulerZXZ(this Geometry.Rotations.EulerAngles source)
     {
       var (s1, c1) = System.Math.SinCos(source.Yaw);
       var (s2, c2) = System.Math.SinCos(source.Pitch);
@@ -94,14 +94,14 @@ namespace Flux
       );
     }
 
-    public static (Units.Angle yaw, Units.Angle pitch, Units.Angle roll) ToQuantities(this Geometry.EulerAngles source)
+    public static (Units.Angle yaw, Units.Angle pitch, Units.Angle roll) ToQuantities(this Geometry.Rotations.EulerAngles source)
       => (
         new Units.Angle(source.Yaw),
         new Units.Angle(source.Pitch),
         new Units.Angle(source.Roll)
       );
 
-    public static System.Numerics.Quaternion ToQuaternion(this Geometry.EulerAngles source)
+    public static System.Numerics.Quaternion ToQuaternion(this Geometry.Rotations.EulerAngles source)
     {
       var halfYaw = source.Yaw / 2;
       var halfPitch = source.Pitch / 2;
@@ -122,7 +122,7 @@ namespace Flux
 
   #endregion ExtensionMethods
 
-  namespace Geometry
+  namespace Geometry.Rotations
   {
     /// <summary>Euler-angles 3D orientation.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Euler_angles"/>

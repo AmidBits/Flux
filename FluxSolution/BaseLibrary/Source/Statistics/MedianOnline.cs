@@ -6,8 +6,8 @@ namespace Flux
   public sealed record class MedianOnline<TSelf>
     where TSelf : System.Numerics.INumber<TSelf>
   {
-    private readonly DataStructures.BinaryHeapMax<TSelf> m_maxHeap = new();
-    private readonly DataStructures.BinaryHeapMin<TSelf> m_minHeap = new();
+    private readonly DataStructures.Heaps.BinaryHeapMax<TSelf> m_maxHeap = new();
+    private readonly DataStructures.Heaps.BinaryHeapMin<TSelf> m_minHeap = new();
 
     public void Add(TSelf value)
     {

@@ -4,7 +4,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
-    public static Geometry.SphericalCoordinate ToSphericalCoordinate(this System.Numerics.Vector3 source)
+    public static Geometry.Coordinates.SphericalCoordinate ToSphericalCoordinate(this System.Numerics.Vector3 source)
     {
       var x2y2 = source.X * source.X + source.Y * source.Y;
 
@@ -17,7 +17,7 @@ namespace Flux
   }
   #endregion
 
-  namespace Geometry
+  namespace Geometry.Coordinates
   {
     /// <summary>
     /// <para>Spherical coordinate.</para>

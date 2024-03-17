@@ -227,6 +227,7 @@
       #region Trigonometry static methods
 
       #region Gudermannian
+
       /// <summary>Returns the Gudermannian of the specified value.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Gudermannian_function"/>
       public static double Gd(double value) => System.Math.Atan(System.Math.Sinh(value));
@@ -238,17 +239,57 @@
       /// <remarks>The integral of the secant function defines the inverse of the Gudermannian function.</remarks>
       /// <remarks>The lambertian function (lam) is a notation for the inverse of the gudermannian which is encountered in the theory of map projections.</remarks>
       public static double Agd(double value) => System.Math.Atanh(System.Math.Sin(value));
+
       #endregion Gudermannian
 
+      #region Atan2 options
+
+      /// <summary>
+      /// <para>Convenience implementation that returns <see cref="double.Atan2(double, double)"/> as [0, +Tau) instead of [-Pi, +Pi], with 0 being 3 o'clock and rotating counter-clockwise.</para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Atan2"/></para>
+      /// </summary>
+      /// <param name="y"></param>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      /// <remarks>
+      /// <para>The method consists of one conditional branch which may incur an extra add operation.</para>
+      /// <para>This uses <see cref="double.Atan2(double, double)"/> in the traditional sense, but without any negative return values.</para>
+      /// </remarks>
+      public static double Atan2Ccw(double y, double x)
+        => double.Atan2(y, x) is var atan2 && atan2 < 0 // Call Atan2 as usual, which means 0 is at 3 o'clock and rotating counter-clockwise.
+        ? (atan2 + double.Tau) % double.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
+        : atan2; // The positive range is already 0..+Pi, so return it.
+
+      /// <summary>
+      /// <para>Convenience implementation that returns <see cref="double.Atan2(double, double)"/> as [0, +Tau) instead of [-Pi, +Pi], with 0 being noon and rotating clockwise.</para>
+      /// <para><seealsoww href="https://en.wikipedia.org/wiki/Atan2"/></para>
+      /// </summary>
+      /// <param name="y"></param>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      /// <remarks>
+      /// <para>The method consists of one conditional branch which may incur an extra add operation.</para>
+      /// <para>This the reverse rotation and 90 degree offset is done by passing (x, y) rather than (y, x) into <see cref="double.Atan2(double, double)"/>.</para>
+      /// </remarks>
+      public static double Atan2Cw(double y, double x)
+        => double.Atan2(x, y) is var atan2s && atan2s < 0 // Call Atan2 with the arguments switched, which results in a transposition, where 0 is at noon and rotation is clockwise.
+        ? (atan2s + double.Tau) % double.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
+        : atan2s; // The positive range is already 0..+Pi, so return it.
+
+      #endregion // Atan2 options
+
       #region Hyperbolic Reciprocals/Inverse
+
       // Hyperbolic reciprocals (1 divided by):
 
       /// <summary>Returns the hyperbolic cosecant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
       public static double Csch(double v) => 1 / System.Math.Sinh(v);
+
       /// <summary>Returns the hyperbolic secant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
       public static double Sech(double v) => 1 / System.Math.Cosh(v);
+
       /// <summary>Returns the hyperbolic cotangent of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
       public static double Coth(double v) => System.Math.Cosh(v) / System.Math.Sinh(v);
@@ -258,15 +299,19 @@
       /// <summary>Returns the inverse hyperbolic cosecant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
       public static double Acsch(double v) => System.Math.Asinh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log(1 / x + System.Math.Sqrt(1 / x * x + 1));
+
       /// <summary>Returns the inverse hyperbolic secant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
       public static double Asech(double v) => System.Math.Acosh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log((1 + System.Math.Sqrt(1 - x * x)) / x);
+
       /// <summary>Returns the inverse hyperbolic cotangent of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
       public static double Acoth(double v) => System.Math.Atanh(1 / v); // Cheaper versions than using log functions: System.Math.Log((x + 1) / (x - 1)) / 2;
+
       #endregion Hyperbolic Reciprocals/Inverse
 
       #region Reciprocals/Inverse
+
       // Reciprocals (1 divided by):
 
       /// <summary>Returns the cosecant of the specified angle.</summary>
@@ -275,6 +320,7 @@
       /// <summary>Returns the secant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
       public static double Sec(double v) => 1 / System.Math.Cos(v);
+
       /// <summary>Returns the cotangent of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
       public static double Cot(double v) => 1 / System.Math.Tan(v);
@@ -284,15 +330,19 @@
       /// <summary>Returns the inverse cosecant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
       public static double Acsc(double v) => System.Math.Asin(1 / v);
+
       /// <summary>Returns the inverse secant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
       public static double Asec(double v) => System.Math.Acos(1 / v);
+
       /// <summary>Returns the inverse cotangent of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
       public static double Acot(double v) => System.Math.Atan(1 / v);
+
       #endregion Reciprocals/Inverse
 
       #region Sinc
+
       /// <summary>Returns the normalized sinc of the specified value.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Sinc_function"/>
       public static double Sincn(double value) => Sincu(System.Math.PI * value);
@@ -300,9 +350,11 @@
       /// <summary>Returns the unnormalized sinc of the specified value.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Sinc_function"/>
       public static double Sincu(double value) => value != 0 ? System.Math.Sin(value) / value : 1;
+
       #endregion Sinc
 
       #region Versed/Inverse
+
       // Versed functions.
 
       /// <summary>Returns the versed sine of the specified angle.</summary>
@@ -332,9 +384,11 @@
       /// <summary>Returns the inverse of coversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Acvcos(double y) => System.Math.Asin(y - 1);
+
       #endregion Versed/Inverse
 
       #region Haversed/Inverse
+
       // Haversed functions (half of the versed versions above):
 
       /// <summary>Returns the haversed sine of the specified angle. This is the famous Haversin function.</summary>
@@ -364,6 +418,7 @@
       /// <summary>Returns the inverse of cohaversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static double Ahcvcos(double y) => System.Math.Asin(2 * y - 1);
+
       #endregion Versine/Haversine
 
       #endregion Trigonometry static methods

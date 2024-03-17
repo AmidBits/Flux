@@ -5,7 +5,7 @@ namespace Flux
   /// </summary>
   public static partial class CartesianCoordinates
   {
-    /// <summary>Returns a new vector with the Chebyshev length (using the specified edgeLength) of the cartesian coordinates.</summary>
+    /// <summary>Comptue the Chebyshev length (using the specified edgeLength) of the cartesian coordinates.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static TSelf ChebyshevLength<TSelf>(TSelf edgeLength, params TSelf[] cartesianCoordinates)
       where TSelf : System.Numerics.INumber<TSelf>
@@ -53,8 +53,7 @@ namespace Flux
       );
     }
 
-
-    /// <summary>Compute the Manhattan length of the vector.</summary>
+    /// <summary>Compute the Manhattan length (using the specified edgeLength) of the cartesian coordinates.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static TSelf ManhattanLength<TSelf>(TSelf edgeLength, params TSelf[] cartesianCoordinates)
       where TSelf : System.Numerics.INumber<TSelf>
@@ -66,7 +65,5 @@ namespace Flux
 
       return sum / edgeLength;
     }
-
-
   }
 }

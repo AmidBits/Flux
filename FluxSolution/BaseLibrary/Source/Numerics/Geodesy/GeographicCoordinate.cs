@@ -1,6 +1,6 @@
 using Flux.Units;
 
-namespace Flux.Geometry
+namespace Flux.Geometry.Coordinates
 {
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
@@ -77,7 +77,7 @@ namespace Flux.Geometry
 
     /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
     /// <remarks>All angles in radians.</remarks>
-    public Geometry.SphericalCoordinate ToSphericalCoordinate()
+    public Geometry.Coordinates.SphericalCoordinate ToSphericalCoordinate()
       => new(
         m_altitude,
         System.Math.PI - (LatitudeInRadians + (System.Math.PI / 2)),

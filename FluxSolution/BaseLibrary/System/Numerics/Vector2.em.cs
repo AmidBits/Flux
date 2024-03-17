@@ -87,7 +87,7 @@ namespace Flux
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, arc * maxRandomness);
 
-        var (x, y) = Flux.Geometry.PolarCoordinate.ConvertPolarToCartesian2Ex(1, angle);
+        var (x, y) = Geometry.Coordinates.PolarCoordinate.ConvertPolarToCartesian2Ex(1, angle);
 
         array[index] = new System.Numerics.Vector2((float)x * source.X, (float)y * source.Y);
       }

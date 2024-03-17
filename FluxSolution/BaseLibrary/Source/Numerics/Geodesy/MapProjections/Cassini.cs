@@ -15,7 +15,7 @@ namespace Flux.Geometry.MapProjections
         (float)project.Altitude
       );
     public IGeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
-      => new GeographicCoordinate(
+      => new Coordinates.GeographicCoordinate(
         System.Math.Asin(System.Math.Sin(project.Y) * System.Math.Cos(project.X)),
         Units.AngleUnit.Radian,
         System.Math.Atan2(System.Math.Tan(project.X), System.Math.Cos(project.Y)),

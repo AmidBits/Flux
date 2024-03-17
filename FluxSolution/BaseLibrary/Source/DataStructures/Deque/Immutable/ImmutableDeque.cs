@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructures.Immutable
 {
   /// <summary>
   /// <para>An immutable double ended queue implementation.</para>

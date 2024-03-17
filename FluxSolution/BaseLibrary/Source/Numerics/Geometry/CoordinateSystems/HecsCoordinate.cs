@@ -1,4 +1,4 @@
-namespace Flux.Geometry
+namespace Flux.Geometry.Coordinates
 {
   /// <summary>The HECS coordinate system.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Hexagonal_Efficient_Coordinate_System"/>
