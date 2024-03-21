@@ -3,7 +3,7 @@ namespace Flux.Checksum
   /// <summary></summary>
   /// <see href="https://en.wikipedia.org/wiki/BSD_checksum"/>
   public record struct Bsd
-    : IChecksumGenerator32
+    : IChecksum32Generatable
   {
     private uint m_hash;
 

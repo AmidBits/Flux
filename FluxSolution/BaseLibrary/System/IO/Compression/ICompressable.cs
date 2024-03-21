@@ -1,7 +1,7 @@
 namespace Flux.Compression
 {
   /// <summary>Compression interface.</summary>
-  public interface ICompression
+  public interface ICompressable
   {
     /// <summary>Compress the <paramref name="input"/> stream to the <paramref name="output"/> stream.</summary>
     abstract void Compress(System.IO.Stream input, System.IO.Stream output);

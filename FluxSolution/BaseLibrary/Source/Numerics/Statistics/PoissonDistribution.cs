@@ -1,10 +1,10 @@
 namespace Flux.Statistics
 {
   ///// <summary>
-  ///// <para>In probability theory and statistics, the binomial distribution with parameters n and p is the discrete probability distribution of the number of successes in a sequence of n independent experiments, each asking a yes–no question, and each with its own Boolean-valued outcome: success (with probability p) or failure (with probability q=1-p).</para>
-  ///// <example>Suppose a biased coin comes up heads with probability 0.3 when tossed. The probability of seeing exactly 4 heads in 6 tosses is Flux.GenericMath.ProbabilityMassFunctionBinomialDistribution(4, 6, 0.3); which results in: 0.005953499999999999.</example>
+  ///// <para>Poisson distribution is a discrete probability distribution that expresses the probability of a given number of events occurring in a fixed interval of time if these events occur with a known constant mean rate and independently of the time since the last event.</para>
+  ///// <example>Consider a call center which receives, randomly, an average of a = 3 calls per minute at all times of day. If the calls are independent, receiving one does not change the probability of when the next one will arrive. Under these assumptions, the number k of calls received during any minute has a Poisson probability distribution. Receiving k = 1 to 4 calls then has a probability of about 0.77, while receiving 0 or at least 5 calls has a probability of about 0.23.</example>
   ///// <para><see href="https://en.wikipedia.org/wiki/Probability_mass_function"/></para>
-  ///// <para><see href="https://en.wikipedia.org/wiki/Geometric_distribution"/></para>
+  ///// <para><see href="https://en.wikipedia.org/wiki/Poisson_distribution"/></para>
   ///// </summary>
   public static class PoissonDistribution
   {

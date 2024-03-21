@@ -3,7 +3,7 @@ namespace Flux.Checksum
   /// <summary></summary>
   /// <see href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"/>
   public record struct Crc32
-    : IChecksumGenerator32
+    : IChecksum32Generatable
   {
     private readonly uint[] m_lookupTable;
 

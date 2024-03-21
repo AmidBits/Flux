@@ -3,7 +3,7 @@ namespace Flux.Checksum
   /// <summary></summary>
   /// <see href="https://en.wikipedia.org/wiki/Fletcher%27s_checksum"/>
   public record struct Fletcher32
-    : IChecksumGenerator32
+    : IChecksum32Generatable
   {
     private uint m_hash;
 

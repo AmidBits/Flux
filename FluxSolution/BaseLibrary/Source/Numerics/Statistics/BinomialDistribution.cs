@@ -8,8 +8,6 @@ namespace Flux.Statistics
   /// </summary>
   public static class BinomialDistribution
   {
-#if NET7_0_OR_GREATER
-
     /// <summary>The probability of getting exactly <paramref name="k"/> successes in <paramref name="n"/> independent Bernoulli trials (each with success probability <paramref name="p"/>).</summary>
     /// <param name="k">The exact number of successes of an outcome inquired.</param>
     /// <param name="n">The number of trials.</param>
@@ -17,16 +15,5 @@ namespace Flux.Statistics
     public static TSelf ProbabilityMassFunction<TSelf>(this TSelf k, TSelf n, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
       => (n / k) * TSelf.Pow(p, k) * TSelf.Pow(TSelf.One - p, n - k);
-
-#else
-
-    /// <summary>The probability of getting exactly <paramref name="k"/> successes in <paramref name="n"/> independent Bernoulli trials (each with success probability <paramref name="p"/>).</summary>
-    /// <param name="k">The exact number of successes of an outcome inquired.</param>
-    /// <param name="n">The number of trials.</param>
-    /// <param name="p">The success probability for each trial.</param>
-    public static double ProbabilityMassFunction(this double k, double n, double p)
-      => (n / k) * System.Math.Pow(p, k) * System.Math.Pow(1 - p, n - k);
-
-#endif
   }
 }

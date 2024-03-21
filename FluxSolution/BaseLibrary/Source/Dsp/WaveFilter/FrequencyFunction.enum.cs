@@ -1,4 +1,4 @@
-namespace Flux.Dsp
+namespace Flux.Dsp.WaveFilter
 {
   /// <see href="https://en.wikipedia.org/wiki/Filter_design"/>
   public enum FrequencyFunction

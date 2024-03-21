@@ -5,6 +5,7 @@ using System.Net.WebSockets;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.Intrinsics;
+using System.Xml.XPath;
 using Flux;
 
 // C# Interactive commands:
@@ -35,6 +36,13 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var sourceText = "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.";
+      var sourceBytes = System.Text.Encoding.ASCII.GetBytes(sourceText);
+
+      var targetText = Flux.Text.Ascii85.EncodeCharacters(sourceBytes);
+      var targetBytes = Flux.Text.Ascii85.DecodeCharacters(targetText);
+
+
       var mars = Flux.Geometry.KeplerianElements.Mars;
 
       for (int i = 0; i <= 361; i += 10)
@@ -42,10 +50,11 @@ namespace ConsoleApp
         var r = Flux.Units.Angle.ConvertDegreeToRadian(i);
         var c2 = Flux.Geometry.Coordinates.PolarCoordinate.ConvertPolarToCartesian2(1, r);
         var a2ccw = Flux.Units.Angle.Atan2Cw(c2.y, c2.x);
-        System.Console.WriteLine($"{i} = {r:N3} : {c2.x:N3}, {c2.y:N3} : {Flux.Units.Angle.ConvertRadianToDegree(a2ccw):N3}");
+        System.Console.WriteLine($"{new Flux.Units.Angle(i, Flux.Units.AngleUnit.Degree).ToUnitValueString(Flux.Units.AngleUnit.Degree, "N0")} = {new Flux.Units.Angle(r).ToUnitValueString(format: "N3")} --- ({c2.x:N3}, {c2.y:N3}) --- {Flux.Units.Angle.ConvertRadianToDegree(a2ccw):N3}");
       }
 
 
+      Flux.Net.UdpCast.ConsoleChat(Flux.Net.UdpCast.MulticastTestEndPoint);
 
     }
 

@@ -1,15 +1,107 @@
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Flux
 {
   namespace Text
   {
     /// <see href="https://en.wikipedia.org/wiki/Ascii85"/>
+    /// <seealso cref="https://github.com/ssg/SimpleBase/blob/main/src/Base85.cs"/>
     public static class Ascii85
     {
       private static readonly uint[] m_powersOf85 = new uint[] { 52200625U, 614125U, 7225U, 85U, 1U };
 
-      public static readonly char[] Characters = System.Linq.Enumerable.Range(33, 85).Select(i => System.Convert.ToChar(i)).ToArray();
+      public static readonly char[] Characters = new char[85] { '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u' };
+
+      public static char[] EncodeCharacters(byte[] bytes)
+      {
+        var padding = bytes.Length % 4 > 0 ? 4 - (bytes.Length % 4) : 0;
+
+        var s = new byte[bytes.Length + padding];
+        var t = new char[s.Length + s.Length / 4];
+
+        System.Array.Copy(bytes, s, bytes.Length);
+
+        var si = 0;
+        var ti = 0;
+
+        while (si < s.Length)
+        {
+          var block = 0U;
+
+          for (var i = 0; i < 4 && (si + i) is var sii && sii < s.Length; i++)
+          {
+            block |= (uint)s[sii] << ((3 - i) * 8);
+          }
+
+          si += 4;
+
+          for (var i = 4; i >= 0 && (ti + i) is var tii && tii < t.Length; i--)
+          {
+            block = (uint)Math.DivRem(block, 85, out long remainder);
+
+            t[tii] = Characters[(int)remainder];
+          }
+
+          ti += 5;
+        }
+
+        if (padding > 0)
+        {
+          System.Array.Clear(t, t.Length - padding, padding);
+
+          System.Array.Resize(ref t, t.Length - padding);
+        }
+
+        return t;
+      }
+
+      public static byte[] DecodeCharacters(char[] characters)
+      {
+        var padding = characters.Length % 5 > 0 ? 5 - (characters.Length % 5) : 0;
+
+        var s = new char[characters.Length + padding];
+        var t = new byte[s.Length - s.Length / 5];
+
+        System.Array.Copy(characters, s, characters.Length);
+
+        var si = 0;
+        var ti = 0;
+
+        var value = 0;
+
+        while (si < s.Length)
+        {
+          for (var i = 0; i < 5 && (si + i) is var sii && sii < s.Length; i++)
+          {
+            var c = s[sii];
+
+            var index = System.Array.IndexOf(Characters, c);
+
+            value = (value * 85) + index;
+          }
+
+          si += 5;
+
+          for (var i = 4; i >= 0 && (ti + i) is var tii && tii < t.Length; i--)
+          {
+            var b = (byte)((value >> (i * 8)) & 0xFF);
+
+            t[tii] = b;
+          }
+
+          ti += 4;
+        }
+
+        if (padding > 0)
+        {
+          System.Array.Clear(t, t.Length - padding, padding);
+
+          System.Array.Resize(ref t, t.Length - padding);
+        }
+
+        return t;
+      }
 
       public static byte[] Encode(System.ReadOnlySpan<char> characters)
       {

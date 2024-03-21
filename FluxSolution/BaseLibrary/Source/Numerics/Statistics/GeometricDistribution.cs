@@ -1,8 +1,8 @@
 namespace Flux.Statistics
 {
   ///// <summary>
-  ///// <para>In probability theory and statistics, the binomial distribution with parameters n and p is the discrete probability distribution of the number of successes in a sequence of n independent experiments, each asking a yes–no question, and each with its own Boolean-valued outcome: success (with probability p) or failure (with probability q=1-p).</para>
-  ///// <example>Suppose a biased coin comes up heads with probability 0.3 when tossed. The probability of seeing exactly 4 heads in 6 tosses is Flux.GenericMath.ProbabilityMassFunctionBinomialDistribution(4, 6, 0.3); which results in: 0.005953499999999999.</example>
+  ///// <para>The geometric distribution gives the probability that the first occurrence of success requires k independent trials, each with success probability p.</para>
+  ///// <example>Suppose an ordinary die is thrown repeatedly until the first time a "1" appears. The probability distribution of the number of times it is thrown is supported on the infinite set {1,2,3,...} and is a geometric distribution with p = 1/6.</example>
   ///// <para><see href="https://en.wikipedia.org/wiki/Probability_mass_function"/></para>
   ///// <para><see href="https://en.wikipedia.org/wiki/Geometric_distribution"/></para>
   ///// </summary>

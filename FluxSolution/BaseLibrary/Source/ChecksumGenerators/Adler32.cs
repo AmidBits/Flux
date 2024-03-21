@@ -3,7 +3,7 @@ namespace Flux.Checksum
   /// <summary></summary>
   /// <see href="https://en.wikipedia.org/wiki/Adler-32"/>
   public record struct Adler32
-    : IChecksumGenerator32
+    : IChecksum32Generatable
   {
     private uint m_hash;// = 1;
 

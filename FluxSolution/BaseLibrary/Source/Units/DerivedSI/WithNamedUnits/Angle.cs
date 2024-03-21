@@ -594,6 +594,19 @@
 
       #endregion Implemented interfaces
 
+      public string ToVerboseString(string? format, System.IFormatProvider? formatProvider)
+      {
+        var sb = new System.Text.StringBuilder();
+        sb.Append(Value.ToString(format, formatProvider));
+        sb.Append(AngleUnit.Radian.HasUnitSpacing(false) ? UnicodeSpacing.Space.ToSpacingString() : string.Empty);
+        sb.Append(AngleUnit.Radian.GetUnitString(false, false));
+        sb.Append(" = ");
+        sb.Append(Value.ToString(format, formatProvider));
+        sb.Append(AngleUnit.Degree.HasUnitSpacing(false) ? UnicodeSpacing.Space.ToSpacingString() : string.Empty);
+        sb.Append(AngleUnit.Degree.GetUnitString(false, false));
+        return sb.ToString();
+      }
+
       public override string ToString() => ToString(null, null);
     }
   }

@@ -1,15 +1,15 @@
 namespace Flux.Compression
 {
-  /// <summary>Deflate compression algorithm.</summary>
-  public class Deflate
-    : ICompression
+  /// <summary>ZLib compression algorithm.</summary>
+  public class ZLib
+    : ICompressable
   {
     public void Compress(System.IO.Stream input, System.IO.Stream output)
     {
       System.ArgumentNullException.ThrowIfNull(input);
       System.ArgumentNullException.ThrowIfNull(output);
 
-      using var compressor = new System.IO.Compression.DeflateStream(output, System.IO.Compression.CompressionMode.Compress, true);
+      using var compressor = new System.IO.Compression.ZLibStream(output, System.IO.Compression.CompressionMode.Compress);
       input.CopyTo(compressor);
 
       output.Flush();
@@ -20,7 +20,7 @@ namespace Flux.Compression
       System.ArgumentNullException.ThrowIfNull(input);
       System.ArgumentNullException.ThrowIfNull(output);
 
-      using var decompressor = new System.IO.Compression.DeflateStream(input, System.IO.Compression.CompressionMode.Decompress);
+      using var decompressor = new System.IO.Compression.ZLibStream(input, System.IO.Compression.CompressionMode.Decompress);
       decompressor.CopyTo(output);
 
       output.Flush();

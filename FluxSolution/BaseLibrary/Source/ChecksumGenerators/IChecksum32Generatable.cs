@@ -1,6 +1,6 @@
 namespace Flux.Checksum
 {
-  public interface IChecksumGenerator32
+  public interface IChecksum32Generatable
   {
     /// <summary>The current checksum.</summary>
     int Checksum32 { get; }

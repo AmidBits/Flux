@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp
+﻿namespace Flux.Dsp.Synthesis
 {
   /// <summary>An interface with the purpose of producing complex waves in the range [-1, 1].</summary>
   /// <seealso cref="https://en.wikipedia.org/wiki/Wave"/>
