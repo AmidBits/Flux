@@ -12,6 +12,6 @@ namespace Flux
     /// <summary>Matches palindromes of any length.</summary>
     /// <see href="https://www.regular-expressions.info/balancing.html"/>
     public static bool IsPalindrome(this System.ReadOnlySpan<char> text)
-      => PalindromeRegex().IsMatch(text.ToString());
+      => PalindromeRegex().IsMatch(text);
   }
 }

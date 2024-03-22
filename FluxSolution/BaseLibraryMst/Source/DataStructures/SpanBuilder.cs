@@ -153,6 +153,15 @@ namespace Text
     }
 
     [TestMethod]
+    public void JoinToCamelCase()
+    {
+      var expected = @"join1To2Camel3Case4";
+      var actual = new Flux.SpanBuilder<char>(@"join1 to2 camel3 case4");
+      actual.JoinToCamelCase(char.IsWhiteSpace);
+      Assert.AreEqual(expected, actual.ToString());
+    }
+
+    [TestMethod]
     public void LastIndexOf()
     {
       var expected = 8;
@@ -269,6 +278,15 @@ namespace Text
       var expected = @"daeheldooD";
       var actual = new Flux.SpanBuilder<char>(@"Doodlehead");
       actual.Reverse();
+      Assert.AreEqual(expected, actual.ToString());
+    }
+
+    [TestMethod]
+    public void SplitFromCamelCase()
+    {
+      var expected = @"split from camel2 case1";
+      var actual = new Flux.SpanBuilder<char>(@"SplitFromCamel2Case1");
+      actual.SplitFromCamelCase();
       Assert.AreEqual(expected, actual.ToString());
     }
 

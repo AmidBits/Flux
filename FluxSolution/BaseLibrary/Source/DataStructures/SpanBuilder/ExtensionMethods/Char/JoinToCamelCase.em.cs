@@ -3,17 +3,17 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
-    public static void JoinToCamelCase(this SpanBuilder<char> source, char separator = ' ', System.Globalization.CultureInfo? culture = null)
+    public static void JoinToCamelCase(this ref SpanBuilder<char> source, System.Func<char, bool> predicate, System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
       for (var index = 0; index < source.Length; index++)
-        if (index == 0 || source[index] == separator)
+        if (index == 0 || predicate(source[index]))
         {
           if (index == 0)
             source[index] = char.ToLower(source[index], culture);
 
-          while (source[index] == separator)
+          while (predicate(source[index]))
             source.Remove(index, 1);
 
           if (index > 0 && index < source.Length)

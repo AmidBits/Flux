@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public record class SpanBuilder<T>
+  public record struct SpanBuilder<T>
   {
     private const int DefaultBufferSize = 64;
 

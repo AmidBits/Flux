@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Reverse all ranged characters sort of in-place. Handles surrogates.</summary>
-    public static Flux.SpanBuilder<char> Reverse(this Flux.SpanBuilder<char> source, int startIndex, int endIndex)
+    public static Flux.SpanBuilder<char> Reverse(this ref Flux.SpanBuilder<char> source, int startIndex, int endIndex)
     {
       var s = source.AsSpan();
       s = s.Slice(startIndex, endIndex - startIndex + 1);
@@ -12,7 +12,7 @@ namespace Flux
       return source;
     }
     /// <summary>Reverse all characters sort of in-place. Handles surrogates.</summary>
-    public static Flux.SpanBuilder<char> Reverse(this Flux.SpanBuilder<char> source)
+    public static Flux.SpanBuilder<char> Reverse(this ref Flux.SpanBuilder<char> source)
       => source.Reverse(0, source.Length - 1);
   }
 }
