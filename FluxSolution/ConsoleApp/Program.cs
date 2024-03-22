@@ -39,9 +39,10 @@ namespace ConsoleApp
       var sourceText = "Man is distinguished, not only by his reason, but by this singular passion from other animals, which is a lust of the mind, that by a perseverance of delight in the continued and indefatigable generation of knowledge, exceeds the short vehemence of any carnal pleasure.";
       var sourceBytes = System.Text.Encoding.ASCII.GetBytes(sourceText);
 
-      var targetText = Flux.Text.Ascii85.EncodeCharacters(sourceBytes);
-      var targetBytes = Flux.Text.Ascii85.DecodeCharacters(targetText);
+      var middleText = Flux.Text.BinaryToText.EncodeBase85(sourceBytes);
 
+      var targetBytes = Flux.Text.BinaryToText.DecodeBase85(middleText);
+      var targetText = System.Text.Encoding.ASCII.GetString(targetBytes);
 
       var mars = Flux.Geometry.KeplerianElements.Mars;
 
