@@ -1,8 +1,8 @@
-namespace Flux.Hashing
+namespace Flux.IO.Hashing
 {
   /// <summary></summary>
   /// <see href="https://en.wikipedia.org/wiki/Fowler-Noll-Vo_hash_function"/>
-  public record struct Fnv1a
+  public record struct Fnv1
     : ISimpleHash32Generatable
   {
     [System.CLSCompliant(false)] public const uint DefaultHash = 2166136261U;
@@ -16,13 +16,13 @@ namespace Flux.Hashing
     public int Prime { readonly get => (int)m_primeMultiplier; set => m_primeMultiplier = (uint)value; }
 
     [System.CLSCompliant(false)]
-    public Fnv1a(uint hash, uint primeMultiplier)
+    public Fnv1(uint hash, uint primeMultiplier)
     {
       m_hash = hash;
       m_primeMultiplier = primeMultiplier;
     }
-    public Fnv1a(int hash, int primeMultiplier) : this(unchecked((uint)hash), unchecked((uint)primeMultiplier)) { }
-    public Fnv1a() : this(DefaultHash, DefaultPrimeMultiplier) { }
+    public Fnv1(int hash, int primeMultiplier) : this(unchecked((uint)hash), unchecked((uint)primeMultiplier)) { }
+    public Fnv1() : this(DefaultHash, DefaultPrimeMultiplier) { }
 
     public int GenerateSimpleHash32(byte[] bytes, int offset, int count)
     {
@@ -32,8 +32,8 @@ namespace Flux.Hashing
       {
         for (int index = offset, maxIndex = offset + count; index < maxIndex; index++)
         {
-          m_hash ^= bytes[index];
           m_hash *= m_primeMultiplier;
+          m_hash ^= bytes[index];
         }
       }
 
@@ -41,7 +41,7 @@ namespace Flux.Hashing
     }
 
     #region Object overrides.
-    public override readonly string ToString() => $"{nameof(Fnv1a)} {{ HashCode = {m_hash} }}";
+    public readonly override string ToString() => $"{nameof(Fnv1)} {{ HashCode = {m_hash} }}";
     #endregion Object overrides.
   }
 }

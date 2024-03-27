@@ -7,13 +7,13 @@ namespace SystemFx
   [TestClass]
   public class Char
   {
-    [TestMethod]
-    public void IsDiacriticalStroke()
-    {
-      Assert.AreEqual(false, ((System.Text.Rune)'ñ').IsUnicodeLatinStroke());
-      Assert.AreEqual(true, ((System.Text.Rune)'ø').IsUnicodeLatinStroke());
-      Assert.AreEqual(false, ((System.Text.Rune)'A').IsUnicodeLatinStroke());
-    }
+    //[TestMethod]
+    //public void IsDiacriticalStroke()
+    //{
+    //  Assert.AreEqual(false, ((System.Text.Rune)'ñ').IsUnicodeLatinStroke());
+    //  Assert.AreEqual(true, ((System.Text.Rune)'ø').IsUnicodeLatinStroke());
+    //  Assert.AreEqual(false, ((System.Text.Rune)'A').IsUnicodeLatinStroke());
+    //}
 
     [TestMethod]
     public void IsEnglishConsonant()

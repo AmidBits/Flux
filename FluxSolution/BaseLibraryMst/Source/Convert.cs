@@ -10,7 +10,7 @@ namespace Static
     {
       var c = 'A';
 
-      Assert.AreEqual(65, Flux.Convert.ChangeType<byte>(c, null));
+      Assert.AreEqual(65, Flux.Convert.ChangeType(c, null));
       Assert.AreEqual(65D, Flux.Convert.ChangeType(c, null, new System.Type[] { typeof(int), typeof(double) }));
     }
 

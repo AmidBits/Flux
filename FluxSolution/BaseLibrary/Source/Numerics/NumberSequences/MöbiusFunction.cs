@@ -50,7 +50,6 @@ namespace Flux.NumberSequences
     {
     }
 
-
     private System.Numerics.BigInteger GetMöbiusNumber(int number)
       => m_sieve[number].ToBigInteger();
 

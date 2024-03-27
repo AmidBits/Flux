@@ -1,4 +1,4 @@
-namespace Flux.Checksum
+namespace Flux.IO.Checksum
 {
   /// <summary></summary>
   /// <see href="https://en.wikipedia.org/wiki/Cyclic_redundancy_check"/>

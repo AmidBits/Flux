@@ -1,4 +1,4 @@
-namespace Flux.Hashing
+namespace Flux.IO.Hashing
 {
   /// <summary></summary>
   /// <see href="https://en.wikipedia.org/wiki/PJW_hash_function"/>

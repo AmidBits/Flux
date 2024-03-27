@@ -14,41 +14,40 @@ namespace Flux
   public static partial class Unicode
   {
     /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
-    private static System.Collections.Generic.List<(string name, System.Text.Unicode.UnicodeRange range)> GetUnicodeNamesAndRanges()
+    private static System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string> GetUnicodeRangeAndNames()
     {
-      var list = new System.Collections.Generic.List<(string name, System.Text.Unicode.UnicodeRange range)>();
+      var dictionary = new System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string>();
 
       foreach (var pi in Flux.Fx.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges)).Where(pi => pi.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && pi.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
         if (pi.GetValue(null, null) is System.Text.Unicode.UnicodeRange ur)
-          list.Add((pi.Name, ur));
+          dictionary.Add(ur, pi.Name);
+
+      return dictionary;
+    }
+
+    /// <summary>Creates a new sequence with all runes in the <paramref name="unicodeRange"/>.</summary>
+    public static System.Collections.Generic.List<System.Text.Rune> GetRunes(this System.Text.Unicode.UnicodeRange unicodeRange)
+    {
+      var list = new System.Collections.Generic.List<System.Text.Rune>();
+
+      for (int codePoint = unicodeRange.FirstCodePoint, length = unicodeRange.Length; length > 0; codePoint++, length--)
+        if (System.Text.Rune.IsValid(codePoint))
+          list.Add(new System.Text.Rune(codePoint));
 
       return list;
     }
 
-    /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
-    public static readonly System.Collections.Generic.IReadOnlyList<(string name, System.Text.Unicode.UnicodeRange range)> UnicodeNamesAndRanges
-      = (System.Collections.Generic.IReadOnlyList<(string name, System.Text.Unicode.UnicodeRange range)>)GetUnicodeNamesAndRanges();
-
-    /// <summary>Creates a new sequence with all runes in the <paramref name="unicodeRange"/>.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetRunes(this System.Text.Unicode.UnicodeRange unicodeRange)
-    {
-      for (int codePoint = unicodeRange.FirstCodePoint, length = unicodeRange.Length; length > 0; codePoint++, length--)
-        if (System.Text.Rune.IsValid(codePoint))
-          yield return new System.Text.Rune(codePoint);
-    }
-
     /// <summary>Locates the Unicode range and block name of the <paramref name="character"/>.</summary>
-    public static (string name, System.Text.Unicode.UnicodeRange range) FindUnicodeRange(this System.Char character)
-      => FindUnicodeRange((System.Text.Rune)character);
+    public static System.Collections.Generic.KeyValuePair<System.Text.Unicode.UnicodeRange, string> FindUnicodeRange(this System.Char character) => FindUnicodeRange((System.Text.Rune)character);
 
     /// <summary>Locates the Unicode range and block name of the <paramref name="rune"/>.</summary>
-    public static (string name, System.Text.Unicode.UnicodeRange range) FindUnicodeRange(this System.Text.Rune rune)
+    public static System.Collections.Generic.KeyValuePair<System.Text.Unicode.UnicodeRange, string> FindUnicodeRange(this System.Text.Rune rune)
     {
-      for (var index = 0; index < UnicodeNamesAndRanges.Count; index++)
-        if (UnicodeNamesAndRanges[index] is var unar && unar.range is var ur && rune.Value >= ur.FirstCodePoint && rune.Value < ur.FirstCodePoint + ur.Length)
-          return unar;
+      foreach (var kvp in GetUnicodeRangeAndNames())
+        if (rune.Value >= kvp.Key.FirstCodePoint && rune.Value < (kvp.Key.FirstCodePoint + kvp.Key.Length))
+          return kvp;
 
-      return (nameof(System.Text.Unicode.UnicodeRanges.None), System.Text.Unicode.UnicodeRanges.None);
+      return new(System.Text.Unicode.UnicodeRanges.None, nameof(System.Text.Unicode.UnicodeRanges.None));
     }
   }
 }

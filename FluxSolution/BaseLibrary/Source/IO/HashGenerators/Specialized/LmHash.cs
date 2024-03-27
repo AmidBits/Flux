@@ -1,4 +1,4 @@
-namespace Flux.Hashing.Special
+namespace Flux.IO.Hashing.Special
 {
   /// <summary>The LM hash algorithm.</summary>
   /// <see href="https://en.wikipedia.org/wiki/LAN_Manager#LM_hash_details"/>

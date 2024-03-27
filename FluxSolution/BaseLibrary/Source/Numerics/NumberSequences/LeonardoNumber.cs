@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class NumberSequence
@@ -18,54 +17,3 @@ namespace Flux
     }
   }
 }
-#endif
-
-//#if NET7_0_OR_GREATER
-//namespace Flux.NumberSequences
-//{
-//  /// <summary>Creates a new sequence with Leonardo numbers.</summary>
-//  /// <see href="https://en.wikipedia.org/wiki/Leonardo_number"/>
-//  /// <remarks>This function runs indefinitely, if allowed.</remarks>
-//  public record class LeonardoNumber
-//    : INumericSequence<System.Numerics.BigInteger>
-//  {
-//    /// <summary>This is the first number in the sequence (L0).</summary>
-//    public System.Numerics.BigInteger FirstNumber { get; init; } = 1;
-//    /// <summary>This is the second number in the sequence (L1).</summary>
-//    public System.Numerics.BigInteger SecondNumber { get; init; } = 1;
-
-//    /// <summary>This is size of increase between each iteration.</summary>
-//    public System.Numerics.BigInteger StepSize { get; init; } = 1;
-
-//    #region Static methods
-
-//    /// <summary>Creates a new sequence with Leonardo numbers.</summary>
-//    /// <see href="https://en.wikipedia.org/wiki/Leonardo_number"/>
-//    /// <remarks>This function runs indefinitely, if allowed.</remarks>
-//    public static System.Collections.Generic.IEnumerable<TSelf> GetLeonardoNumbers<TSelf>(TSelf first, TSelf second, TSelf step)
-//      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-//    {
-//      while (true)
-//      {
-//        yield return first;
-
-//        (first, second) = (second, first + second + step);
-//      }
-//    }
-
-//    #endregion Static methods
-
-//    #region Implemented interfaces
-//    // INumberSequence
-//    public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetSequence()
-//      => GetLeonardoNumbers(FirstNumber, SecondNumber, StepSize);
-
-//    public System.Collections.Generic.IEnumerator<System.Numerics.BigInteger> GetEnumerator()
-//      => GetSequence().GetEnumerator();
-
-//    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-//      => GetEnumerator();
-//    #endregion Implemented interfaces
-//  }
-//}
-//#endif

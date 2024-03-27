@@ -19,12 +19,11 @@ namespace Flux
         var previousCode = '\0';
 
         for (var index = 0; index < name.Length; index++)
-        {
-          if (char.ToUpper(name[index], System.Globalization.CultureInfo.CurrentCulture) is var letter && letter >= 'A' && letter <= 'Z')
+          if (char.ToUpper(name[index]) is var c && c >= 'A' && c <= 'Z')
           {
-            if (refinedSoundex.Length == 0) refinedSoundex.Append(letter);
+            if (refinedSoundex.Length == 0) refinedSoundex.Append(c);
 
-            var letterCode = LetterCodeMap[letter - 'A'];
+            var letterCode = LetterCodeMap[c - 'A'];
 
             if (letterCode != previousCode)
             {
@@ -33,19 +32,9 @@ namespace Flux
               previousCode = letterCode;
             }
           }
-        }
 
         return refinedSoundex.ToString(0, System.Math.Min(MaxCodeLength, refinedSoundex.Length));
       }
-
-      public static System.Collections.Generic.Dictionary<string, string> Samples => new()
-    {
-      { "Braz", "B1905" },
-      { "Corwin", "C30908" },
-      { "Hayers", "H093" },
-      { "Lambert", "L7081096" },
-      { "Nolton", "N807608" },
-    };
     }
   }
 }

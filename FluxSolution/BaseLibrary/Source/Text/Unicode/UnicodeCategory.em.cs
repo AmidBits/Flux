@@ -13,12 +13,12 @@ namespace Flux
 
   public static partial class Unicode
   {
-    public static System.Collections.Generic.IEnumerable<System.Text.Rune> GetRunes(this System.Globalization.UnicodeCategory unicodeCategory)
+    public static System.Collections.Generic.IEnumerable<char> GetRunes(this System.Globalization.UnicodeCategory unicodeCategory)
     {
       for (var i = 0; i <= 0x10FFFF; i++)
         if (System.Text.Rune.IsValid(i))
           if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(i) == unicodeCategory)
-            yield return new System.Text.Rune(i);
+            yield return (char)i;
     }
 
     /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajor"/> enum value.</summary>
@@ -37,8 +37,7 @@ namespace Flux
       };
 
     /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajorMinor"/> enum value.</summary>
-    public static UnicodeCategoryMajorMinor ToUnicodeCategoryMajorMinor(this System.Globalization.UnicodeCategory unicodeCategory)
-      => (UnicodeCategoryMajorMinor)unicodeCategory;
+    public static UnicodeCategoryMajorMinor ToUnicodeCategoryMajorMinor(this System.Globalization.UnicodeCategory unicodeCategory) => (UnicodeCategoryMajorMinor)unicodeCategory;
 
     /// <summary>Creates a new string in a more readable format, e.g. "DecimalDigitNumber" becomes "decimal digit" (i.e. drop the ending Unicode category major, make lower case and add word spacing).</summary>
     public static string ToUnicodeCategoryMinorFriendlyString(this System.Globalization.UnicodeCategory source)

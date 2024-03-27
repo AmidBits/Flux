@@ -10,19 +10,20 @@ namespace Flux.Geometry.MapProjections
     public Coordinates.GeographicCoordinate CenterOfMap { get; init; }
     public double StandardParallels { get; init; }
 
-    public System.Numerics.Vector3 ProjectForward(IGeographicCoordinate project)
+    public System.Numerics.Vector3 ProjectForward(Coordinates.GeographicCoordinate project)
       => new(
-        (float)(project.Altitude * (project.LongitudeInRadians - CenterOfMap.LongitudeInRadians) * System.Math.Cos(StandardParallels)),
-        (float)(project.Altitude * (project.LatitudeInRadians - CenterOfMap.LatitudeInRadians)),
-        (float)project.Altitude
+        (float)(project.Altitude.Value * (project.Longitude.Value - CenterOfMap.Longitude.Value) * System.Math.Cos(StandardParallels)),
+        (float)(project.Altitude.Value * (project.Latitude.Value - CenterOfMap.Latitude.Value)),
+        (float)project.Altitude.Value
       );
-    public IGeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
+    public Coordinates.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new Coordinates.GeographicCoordinate(
-        project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.LongitudeInRadians,
+        project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Value,
         Units.AngleUnit.Radian,
-        project.Y / project.Z + CenterOfMap.LatitudeInRadians,
+        project.Y / project.Z + CenterOfMap.Latitude.Value,
         Units.AngleUnit.Radian,
-        project.Z
+        project.Z,
+        Units.LengthUnit.Metre
       );
   }
 

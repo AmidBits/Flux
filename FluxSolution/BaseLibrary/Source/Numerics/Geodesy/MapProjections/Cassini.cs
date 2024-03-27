@@ -8,19 +8,20 @@ namespace Flux.Geometry.MapProjections
     public static readonly CassiniProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public System.Numerics.Vector3 ProjectForward(IGeographicCoordinate project)
+    public System.Numerics.Vector3 ProjectForward(Coordinates.GeographicCoordinate project)
       => new(
-        (float)System.Math.Asin(System.Math.Cos(project.LatitudeInRadians) * System.Math.Sin(project.LongitudeInRadians)),
-        (float)System.Math.Atan(System.Math.Tan(project.LatitudeInRadians) / System.Math.Cos(project.LongitudeInRadians)),
-        (float)project.Altitude
+        (float)System.Math.Asin(System.Math.Cos(project.Latitude.Value) * System.Math.Sin(project.Longitude.Value)),
+        (float)System.Math.Atan(System.Math.Tan(project.Latitude.Value) / System.Math.Cos(project.Longitude.Value)),
+        (float)project.Altitude.Value
       );
-    public IGeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
+    public Coordinates.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new Coordinates.GeographicCoordinate(
         System.Math.Asin(System.Math.Sin(project.Y) * System.Math.Cos(project.X)),
         Units.AngleUnit.Radian,
         System.Math.Atan2(System.Math.Tan(project.X), System.Math.Cos(project.Y)),
         Units.AngleUnit.Radian,
-        project.Z
+        project.Z,
+        Units.LengthUnit.Metre
       );
     //#pragma warning restore CA1822 // Mark members as static
   }

@@ -1,4 +1,4 @@
-namespace Flux.Hashing
+namespace Flux.IO.Hashing
 {
   public interface ISimpleHash32Generatable
   {

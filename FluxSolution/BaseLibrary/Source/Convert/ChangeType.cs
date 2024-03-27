@@ -2,19 +2,13 @@ namespace Flux
 {
   public static partial class Convert
   {
-    /// <summary>Complement the built-in System.IConvertible functionality.</summary>
-    /// <see href="https://docs.microsoft.com/en-us/dotnet/api/system.convert.changetype"/>
-    [System.CLSCompliant(false)]
-    public static T ChangeType<T>(System.IConvertible value, System.IFormatProvider? provider)
-      => (T)System.Convert.ChangeType(value, typeof(T), provider);
-
     /// <summary>Complement the built-in System.IConvertible functionality using the Try paradigm.</summary>
     [System.CLSCompliant(false)]
     public static bool TryChangeType<T>(System.IConvertible value, out T result, System.IFormatProvider? provider = null)
     {
       try
       {
-        result = ChangeType<T>(value, provider);
+        result = (T)System.Convert.ChangeType(value, typeof(T), provider);
         return true;
       }
       catch { }
@@ -23,21 +17,17 @@ namespace Flux
       return false;
     }
 
-    private static readonly System.Reflection.MethodInfo m_changeTypeOfT = System.Linq.Enumerable.Single(typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static), mi => mi.IsGenericMethod && mi.Name.Equals(nameof(ChangeType), System.StringComparison.Ordinal) && mi.GetParameters().Length == 2);
-
     /// <summary>Complement the built-in System.IConvertible functionality with a sequential conversion chain.</summary>
     [System.CLSCompliant(false)]
     public static object ChangeType(System.IConvertible value, System.IFormatProvider? provider, params System.Type[] conversionSequence)
     {
-      var parameters = new object[] { value ?? throw new System.ArgumentNullException(nameof(value)), provider! };
-
       var result = default(object);
 
       foreach (var type in conversionSequence)
       {
-        result = m_changeTypeOfT.MakeGenericMethod(type).Invoke(null, parameters);
+        result = System.Convert.ChangeType(value, type, provider);
 
-        parameters[0] = (System.IConvertible)result!;
+        value = (System.IConvertible)result!;
       }
 
       return result!;

@@ -507,7 +507,7 @@ namespace ConsoleApp
       System.Console.WriteLine();
 
       var ipaes = typeof(Flux.Text.IPhoneticAlgorithmEncoder).GetDerivedTypes().Select(t => (Flux.Text.IPhoneticAlgorithmEncoder)System.Activator.CreateInstance(t));
-      var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley" };
+      var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley", "Ashcraft", "Ashcroft", "Asicroft", "Schmidt", "Schneider", "Lloyd", "Pfister" };
 
       foreach (var ipae in ipaes)
         foreach (var name in names)

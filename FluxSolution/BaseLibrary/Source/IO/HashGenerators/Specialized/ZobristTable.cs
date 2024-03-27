@@ -1,4 +1,4 @@
-namespace Flux.Hashing
+namespace Flux.IO.Hashing
 {
   // https://en.wikipedia.org/wiki/Zobrist_hashing
   public readonly record struct ZobristTable

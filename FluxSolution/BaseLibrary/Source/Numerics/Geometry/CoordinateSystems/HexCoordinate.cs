@@ -115,7 +115,7 @@ namespace Flux
       where TSelf : System.Numerics.INumber<TSelf>
       => new(double.CreateChecked(source.Q), double.CreateChecked(source.R), double.CreateChecked(source.S));
 
-    public static Geometry.IHexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this Geometry.Coordinates.HexCoordinate<TSelf> source, out Geometry.Coordinates.HexCoordinate<TResult> result)
+    public static Geometry.Coordinates.HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this Geometry.Coordinates.HexCoordinate<TSelf> source, out Geometry.Coordinates.HexCoordinate<TResult> result)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TResult : System.Numerics.INumber<TResult>
       => result = new Geometry.Coordinates.HexCoordinate<TResult>(
@@ -124,7 +124,7 @@ namespace Flux
         TResult.CreateChecked(source.S)
       );
 
-    public static Geometry.IHexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this Geometry.Coordinates.HexCoordinate<TSelf> source, RoundingMode mode, out Geometry.Coordinates.HexCoordinate<TResult> result)
+    public static Geometry.Coordinates.HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this Geometry.Coordinates.HexCoordinate<TSelf> source, RoundingMode mode, out Geometry.Coordinates.HexCoordinate<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
       => result = Round<TSelf, TResult>(source, mode);
@@ -160,7 +160,7 @@ namespace Flux
     /// <see href="https://www.redblobgames.com/grids/hexagons/"/>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct HexCoordinate<TSelf>
-      : System.IFormattable, IHexCoordinate<TSelf>
+      : System.IFormattable
       where TSelf : System.Numerics.INumber<TSelf>
     {
       public static readonly HexCoordinate<TSelf> Zero;
@@ -202,7 +202,7 @@ namespace Flux
 
       /// <summary>Computes the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
       public static int ComputeRangeCount(int radius)
-        => Iteration.Iterate(0, 6, radius + 1).AsParallel().Sum() + 1;
+        => Iteration.LoopRange(0, 6, radius + 1).AsParallel().Sum() + 1;
 
       /// <summary>Computes the count of hexes in the ring of the specified radius.</summary>
       public static int ComputeRingCount(int radius)
@@ -265,10 +265,10 @@ namespace Flux
 
       #region Overloaded operators
 
-      public static HexCoordinate<TSelf> operator +(HexCoordinate<TSelf> a, IHexCoordinate<TSelf> b) => new(a.m_q + b.Q, a.m_r + b.R, a.m_s + b.S);
+      public static HexCoordinate<TSelf> operator +(HexCoordinate<TSelf> a, HexCoordinate<TSelf> b) => new(a.m_q + b.Q, a.m_r + b.R, a.m_s + b.S);
       public static HexCoordinate<TSelf> operator *(HexCoordinate<TSelf> h, TSelf scalar) => new(h.m_q * scalar, h.m_r * scalar, h.m_s * scalar);
       public static HexCoordinate<TSelf> operator /(HexCoordinate<TSelf> h, TSelf scalar) => TSelf.IsZero(scalar) ? throw new System.DivideByZeroException() : new(h.m_q / scalar, h.m_r / scalar, h.m_s / scalar);
-      public static HexCoordinate<TSelf> operator -(HexCoordinate<TSelf> a, IHexCoordinate<TSelf> b) => new(a.m_q - b.Q, a.m_r - b.R, a.m_s - b.S);
+      public static HexCoordinate<TSelf> operator -(HexCoordinate<TSelf> a, HexCoordinate<TSelf> b) => new(a.m_q - b.Q, a.m_r - b.R, a.m_s - b.S);
 
       #endregion Overloaded operators
 

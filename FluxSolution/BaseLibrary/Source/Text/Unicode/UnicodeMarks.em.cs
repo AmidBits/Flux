@@ -25,29 +25,5 @@ namespace Flux
 
       return sb;
     }
-
-    /// <summary>Remove diacritical marks.</summary>
-    public static SpanBuilder<System.Text.Rune> RemoveUnicodeMarks(this System.ReadOnlySpan<System.Text.Rune> source)
-    {
-      var sb = new SpanBuilder<System.Text.Rune>();
-
-      for (var index = 0; index < source.Length; index++)
-      {
-        var rune = source[index];
-
-        switch (System.Text.Rune.GetUnicodeCategory(rune))
-        {
-          case System.Globalization.UnicodeCategory.NonSpacingMark:
-          case System.Globalization.UnicodeCategory.SpacingCombiningMark:
-          case System.Globalization.UnicodeCategory.EnclosingMark:
-            break;
-          default:
-            sb.Append(rune, 1);
-            break;
-        }
-      }
-
-      return sb;
-    }
   }
 }

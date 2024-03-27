@@ -8,7 +8,7 @@ namespace Flux.Geometry.MapProjections
     public static readonly EqualEarthProjection Default;
 
     //#pragma warning disable CA1822 // Mark members as static
-    public System.Numerics.Vector3 ProjectForward(IGeographicCoordinate location)
+    public System.Numerics.Vector3 ProjectForward(Coordinates.GeographicCoordinate location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -18,8 +18,8 @@ namespace Flux.Geometry.MapProjections
       const double A37 = A3 * 7;
       const double A49 = A4 * 9;
 
-      var lat = location.LatitudeInRadians;
-      var lon = location.LongitudeInRadians;
+      var lat = location.Latitude.Value;
+      var lon = location.Longitude.Value;
 
       var M = System.Math.Sqrt(3) / 2;
       var p = System.Math.Asin(M * System.Math.Sin(lat)); // parametric latitude
@@ -28,9 +28,9 @@ namespace Flux.Geometry.MapProjections
       var x = lon * System.Math.Cos(p) / (M * (A1 + A23 * p2 + p6 * (A37 + A49 * p2)));
       var y = p * (A1 + A2 * p2 + p6 * (A3 + A4 * p2));
 
-      return new((float)x, (float)y, (float)location.Altitude);
+      return new((float)x, (float)y, (float)location.Altitude.Value);
     }
-    public IGeographicCoordinate ProjectReverse(System.Numerics.Vector3 location)
+    public Coordinates.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -66,7 +66,8 @@ namespace Flux.Geometry.MapProjections
         Units.AngleUnit.Radian,
         lon,
         Units.AngleUnit.Radian,
-        location.Z
+        location.Z,
+        Units.LengthUnit.Metre
       );
     }
     //#pragma warning restore CA1822 // Mark members as static

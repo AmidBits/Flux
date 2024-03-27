@@ -32,10 +32,8 @@ namespace Flux
       public RuneEnumerator(string text, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
         : this(new System.IO.StringReader(text), bufferSize, minLength) { }
 
-      public System.Collections.Generic.IEnumerator<System.Text.Rune> GetEnumerator()
-        => new RuneIterator(this);
-      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        => GetEnumerator();
+      public System.Collections.Generic.IEnumerator<System.Text.Rune> GetEnumerator() => new RuneIterator(this);
+      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
       protected override void DisposeManaged() => m_textReader.Dispose();
 

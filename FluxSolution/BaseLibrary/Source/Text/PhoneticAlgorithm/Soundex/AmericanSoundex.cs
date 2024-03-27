@@ -20,14 +20,13 @@ namespace Flux
         var wasLastLetterHW = false;
 
         for (var index = 0; index < name.Length; index++)
-        {
-          if (char.ToUpper(name[index], System.Globalization.CultureInfo.CurrentCulture) is var letter && letter >= 'A' && letter <= 'Z')
+          if (char.ToUpper(name[index]) is var c && c >= 'A' && c <= 'Z')
           {
-            var code = LetterCodeMap[letter - 'A'];
+            var code = LetterCodeMap[c - 'A'];
 
             if (soundex.Length == 0)
             {
-              soundex.Append(letter);
+              soundex.Append(c);
 
               lastUsedCode = code;
             }
@@ -39,9 +38,8 @@ namespace Flux
               lastUsedCode = code;
             }
 
-            wasLastLetterHW = letter == 'H' || letter == 'W';
+            wasLastLetterHW = c == 'H' || c == 'W';
           }
-        }
 
         if (soundex.Length < MaxCodeLength)
           return soundex.Append('0', MaxCodeLength - soundex.Length).ToString();
@@ -77,18 +75,6 @@ namespace Flux
 
         return result == 0 ? 1 : result;
       }
-
-      public static System.Collections.Generic.Dictionary<string, string> Samples => new()
-    {
-      { "Robert", "R163" },
-      { "Rupert", "R163" },
-      { "Rubin", "R150" },
-      { "Ashcraft", "A261" },
-      { "Ashcroft", "A261" },
-      { "Tymczak", "T522" },
-      { "Pfister", "P236" },
-      { "Honeyman", "H555" },
-    };
     }
   }
 }

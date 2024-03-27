@@ -1,4 +1,4 @@
-namespace Flux.Hashing
+namespace Flux.IO.Hashing
 {
   /// <summary></summary>
   /// <see href="https://en.wikipedia.org/wiki/Jenkins_hash_function"/>

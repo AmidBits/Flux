@@ -12,11 +12,11 @@ namespace Flux
     /// <param name="minValue"></param>
     /// <param name="maxValue"></param>
     /// <exception cref="System.ArgumentException"></exception>
-    public static void AssertValidInterval<TSource>(this IntervalNotation source, TSource minValue, TSource maxValue)
+    public static void AssertValidInterval<TSource>(this IntervalNotation source, TSource minValue, TSource maxValue, string? paramName = "minValue/maxValue")
       where TSource : System.IComparable<TSource>
     {
       if (!source.IsValidInterval(minValue, maxValue))
-        throw new System.ArgumentException($"Invalid interval: {source.ToNotationString(minValue, maxValue)}.");
+        throw new System.ArgumentException($"Invalid interval: {source.ToNotationString(minValue, maxValue)}.", paramName);
     }
 
     /// <summary>
@@ -60,13 +60,14 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Determines whether the interval is degenerate, i.e. whether it consists of only a single value.</para>
+    /// <para>Determines whether the interval <paramref name="minValue"/>..<paramref name="maxValue"/> is a degenerate interval, i.e. the interval consists of only a single value.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="minValue"></param>
     /// <param name="maxValue"></param>
     /// <returns></returns>
+    /// <remarks>If <paramref name="source"/> is <see cref="IntervalNotation.Closed"/> and <paramref name="minValue"/> equals <paramref name="maxValue"/>, then it is a degenerate interval.</remarks>
     public static bool IsDegenerateInterval<T>(this IntervalNotation source, T minValue, T maxValue)
       where T : System.IComparable<T>
     {
@@ -76,13 +77,14 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Determines whether the interval is the empty set.</para>
+    /// <para>Determines whether the interval <paramref name="minValue"/>..<paramref name="maxValue"/> represents the empty set.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="minValue"></param>
     /// <param name="maxValue"></param>
     /// <returns></returns>
+    /// <remarks>If <paramref name="minValue"/> equals <paramref name="maxValue"/> and <paramref name="source"/> notation is not closed, or if <paramref name="minValue"/> is greater than <paramref name="maxValue"/>, then the interval is the empty set.</remarks>
     public static bool IsEmptySet<T>(this IntervalNotation source, T minValue, T maxValue)
       where T : System.IComparable<T>
     {
@@ -124,12 +126,12 @@ namespace Flux
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     /// <exception cref="NotImplementedException"></exception>
-    public static (T MinValue, T MaxValue) GetInfimumAndSupremum<T>(this IntervalNotation source, T minValue, T maxValue)
+    public static (T MinExtent, T MaxExtent) GetExtentInterval<T>(this IntervalNotation source, T minValue, T maxValue)
       where T : System.Numerics.INumber<T>
     {
       source.AssertValidInterval(minValue, maxValue);
 
-      return source switch
+      var (minExtent, maxExtent) = source switch
       {
         IntervalNotation.Closed => (minValue, maxValue),
         IntervalNotation.Open => (minValue.GetSupremum(), maxValue.GetInfimum()),
@@ -137,6 +139,61 @@ namespace Flux
         IntervalNotation.HalfOpenRight => (minValue, maxValue.GetInfimum()),
         _ => throw new NotImplementedException(),
       };
+
+      IntervalNotation.Closed.AssertValidInterval(minExtent, maxExtent, "minExtent/maxExtent");
+
+      return (minExtent, maxExtent);
+    }
+
+    public static bool TryGetExtentInterval<T>(this IntervalNotation source, T minValue, T maxValue, out T minExtent, out T maxExtent)
+      where T : System.Numerics.INumber<T>
+    {
+      try
+      {
+        (minExtent, maxExtent) = source.GetExtentInterval(minValue, maxValue);
+        return true;
+      }
+      catch { }
+
+      minExtent = default!;
+      maxExtent = default!;
+      return false;
+    }
+
+    public static (T MinMargin, T MaxMargin) GetMarginInterval<T>(this IntervalNotation source, T minValue, T maxValue, T size)
+      where T : System.Numerics.INumber<T>
+    {
+      if (T.IsNegative(size)) throw new System.ArgumentOutOfRangeException(nameof(size));
+
+      source.AssertValidInterval(minValue, maxValue);
+
+      var (minMargin, maxMargin) = source switch
+      {
+        IntervalNotation.Closed => (minValue, maxValue),
+        IntervalNotation.Open => (minValue + size, maxValue - size),
+        IntervalNotation.HalfOpenLeft => (minValue + size, maxValue),
+        IntervalNotation.HalfOpenRight => (minValue, maxValue - size),
+        _ => throw new NotImplementedException(),
+      };
+
+      IntervalNotation.Closed.AssertValidInterval(minMargin, maxMargin, "minMargin/maxMargin");
+
+      return (minMargin, maxMargin);
+    }
+
+    public static bool TryGetMarginInterval<T>(this IntervalNotation source, T minValue, T maxValue, T size, out T minMargin, out T maxMargin)
+      where T : System.Numerics.INumber<T>
+    {
+      try
+      {
+        (minMargin, maxMargin) = source.GetMarginInterval(minValue, maxValue, size);
+        return true;
+      }
+      catch { }
+
+      minMargin = default!;
+      maxMargin = default!;
+      return false;
     }
 
     /// <summary>
@@ -174,8 +231,8 @@ namespace Flux
     /// <param name="maxValue"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public static string ToNotationString<TSource>(this IntervalNotation source, TSource minValue, TSource maxValue)
-      => $"{source.ToNotationCharLeft()}{minValue}, {maxValue}{source.ToNotationCharRight()}";
+    public static string ToNotationString<TSource>(this IntervalNotation source, TSource minValue, TSource maxValue, string? format = null, System.IFormatProvider? formatProvider = null)
+      => $"{source.ToNotationCharLeft()}{string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", minValue)}, {string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", maxValue)}{source.ToNotationCharRight()}";
 
     /// <summary>
     /// <para>Determines whether the <paramref name="value"/> is a member of the interval <paramref name="minValue"/>..<paramref name="maxValue"/> based on the <paramref name="source"/> <see cref="IntervalNotation"/>.</para>

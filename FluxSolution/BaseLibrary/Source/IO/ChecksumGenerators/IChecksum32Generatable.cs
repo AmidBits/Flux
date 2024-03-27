@@ -1,4 +1,4 @@
-namespace Flux.Checksum
+namespace Flux.IO.Checksum
 {
   public interface IChecksum32Generatable
   {

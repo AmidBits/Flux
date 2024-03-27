@@ -20,14 +20,12 @@ namespace Flux.NumberSequences
     /// <summary>Creates a new sequence of n-smooth numbers.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Smooth_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-
     public System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetNsmoothNumbers()
     {
       for (var number = System.Numerics.BigInteger.One; true; number++)
         if (IsNsmoothNumber(number))
           yield return number;
     }
-
 
     public bool IsNsmoothNumber(System.Numerics.BigInteger number)
     {

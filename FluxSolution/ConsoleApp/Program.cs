@@ -36,8 +36,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var ei = IntervalNotation.Open.CreateIntervalByExtent(0, 8);
+      var mi = IntervalNotation.Open.CreateIntervalByMargin(0, 4, 2);
 
-
+      var a = ei.LoopInterval(2, SortOrder.Ascending, IntervalNotation.Open).ToArray();
     }
 
     #region Eliza example
