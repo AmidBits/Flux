@@ -19,25 +19,11 @@ namespace Flux
 
         TSelf next;
 
-        if (lasts.TryAdd(last, index))
-        {
-          next = TSelf.Zero;
-        }
+        if (lasts.TryAdd(last, index)) next = TSelf.Zero;
         else
         {
           next = index - lasts[last];
           lasts[last] = index;
-        }
-
-        if (lasts.TryGetValue(last, out var value))
-        {
-          next = index - value;
-          lasts[last] = index;
-        }
-        else // The last was new.
-        {
-          next = TSelf.Zero;
-          lasts.Add(last, index);
         }
 
         last = next;

@@ -10,14 +10,17 @@ namespace Static
     {
       var c = 'A';
 
-      Assert.AreEqual(65, Flux.Convert.ChangeType(c, null));
-      Assert.AreEqual(65D, Flux.Convert.ChangeType(c, null, new System.Type[] { typeof(int), typeof(double) }));
+      Assert.AreEqual(65, Flux.Convert.ChangeType(c, null, typeof(int)));
+      Assert.AreEqual(65D, Flux.Convert.ChangeType(c, null, typeof(int), typeof(double)));
     }
 
     [TestMethod]
     public void Em_Convert_TypeConverter()
     {
-      Assert.AreEqual("5/30/1967", Flux.Convert.TypeConverter<string>(System.DateTime.Parse("05/30/1967"), null));
+      var expected = "5/30/1967";
+      var actual = Flux.Convert.TypeConverter<string>(System.DateTime.Parse(expected), null);
+
+      Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
