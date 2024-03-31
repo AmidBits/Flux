@@ -32,7 +32,9 @@ namespace Flux
     public static string GetUnitString(this Units.MetricPrefix source, bool preferUnicode, bool useFullName)
       => useFullName ? source.ToString() : source switch
       {
-        Units.MetricPrefix.Count => string.Empty,
+        Units.MetricPrefix.NoPrefix => string.Empty,
+        Units.MetricPrefix.Quetta => "Q",
+        Units.MetricPrefix.Ronna => "R",
         Units.MetricPrefix.Yotta => "Y",
         Units.MetricPrefix.Zetta => "Z",
         Units.MetricPrefix.Exa => "E",
@@ -46,13 +48,15 @@ namespace Flux
         Units.MetricPrefix.Deci => "d",
         Units.MetricPrefix.Centi => "c",
         Units.MetricPrefix.Milli => "m",
-        Units.MetricPrefix.Micro => "\u00B5",
+        Units.MetricPrefix.Micro => preferUnicode ? "\u03BC" : "\u00B5",
         Units.MetricPrefix.Nano => "n",
         Units.MetricPrefix.Pico => "p",
         Units.MetricPrefix.Femto => "f",
         Units.MetricPrefix.Atto => "a",
         Units.MetricPrefix.Zepto => "z",
         Units.MetricPrefix.Yocto => "y",
+        Units.MetricPrefix.Ronto => "r",
+        Units.MetricPrefix.Quecto => "q",
         _ => string.Empty,
       };
   }
@@ -62,7 +66,7 @@ namespace Flux
     public enum MetricPrefix
     {
       /// <summary>Represents a value that is not a metric multiple. A.k.a. one.</summary>
-      Count = 0,
+      NoPrefix = 0,
       /// <summary></summary>
       Quetta = 30,
       /// <summary></summary>

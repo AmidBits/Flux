@@ -4,9 +4,9 @@
 
   public static partial class Em
   {
-    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
-      where TType : struct, System.IEquatable<TType>
-      where TUnit : notnull, System.Enum
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringsOfAllUnits<TValue, TUnit>(this IUnitValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
+      where TValue : struct, System.IEquatable<TValue>
+      where TUnit : System.Enum
     {
       var d = new System.Collections.Generic.Dictionary<TUnit, string>();
 
@@ -20,13 +20,18 @@
   #endregion // Extension methods
 
   /// <summary>An interface representing a quantifiable value that can be converted to other units.</summary>
-  /// <typeparam name="TValue">The value type.</typeparam>
-  /// <typeparam name="TUnit">The unit enum.</typeparam>
+  /// <typeparam name="TValue">The type of value.</typeparam>
+  /// <typeparam name="TUnit">The type of unit enum.</typeparam>
+  /// <remarks>
+  /// <para>If use of <see cref="System.IConvertible"/> is desirable, use <see cref="IUnitValueQuantifiable{TValue, TUnit}.GetUnitValue(TUnit)"/> return value as a parameter for such functionality.</para>
+  /// </remarks>
   public interface IUnitValueQuantifiable<TValue, TUnit>
     : IValueQuantifiable<TValue>
     where TValue : struct, System.IEquatable<TValue>
-    where TUnit : notnull, System.Enum
+    where TUnit : System.Enum
   {
+    TUnit MetricUnprefixedUnit { get => default(TUnit)!; } // By default we use the System.Enum default which is zero (0  ).
+
     /// <summary>Gets the value of the quantity in the specified unit.</summary>
     /// <param name="unit">The unit to represent.</param>
     /// <returns>The value of the quantity based on the specified <typeparamref name="TUnit"/>.</returns>

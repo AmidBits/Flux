@@ -54,7 +54,7 @@ namespace Flux
     /// </summary>
     /// <remarks>Dimensional relationship: <see cref="Length"/>, <see cref="Area"/> and <see cref="Volume"/>.</remarks>
     public readonly record struct Length
-      : System.IComparable, System.IComparable<Length>, System.IFormattable, IMetricMultiplicable<double>, IUnitValueQuantifiable<double, LengthUnit>
+      : System.IComparable, System.IComparable<Length>, System.IFormattable, IMetricMultiplicable<double, LengthUnit>, IUnitValueQuantifiable<double, LengthUnit>
     {
       public const double OneParsecInMeters = 30856775814913672;
 
@@ -74,18 +74,23 @@ namespace Flux
           LengthUnit.Parsec => ConvertParsecToMetre(value),
           LengthUnit.Ångström => ConvertÅngströmToMetre(value),
 
-          LengthUnit.Femtometre => Flux.Units.MetricPrefix.Femto.Convert(value, Flux.Units.MetricPrefix.Count), // value * 1E-15,
-          LengthUnit.Nanometre => Flux.Units.MetricPrefix.Nano.Convert(value, Flux.Units.MetricPrefix.Count), // value * 1E-9,
-          LengthUnit.Micrometre => Flux.Units.MetricPrefix.Micro.Convert(value, Flux.Units.MetricPrefix.Count), // value * 1E-6,
-          LengthUnit.Millimetre => Flux.Units.MetricPrefix.Milli.Convert(value, Flux.Units.MetricPrefix.Count), // value * 1E-3,
-          LengthUnit.Centimetre => Flux.Units.MetricPrefix.Centi.Convert(value, Flux.Units.MetricPrefix.Count), // value * 1E-2,
-          LengthUnit.Decimetre => Flux.Units.MetricPrefix.Deci.Convert(value, Flux.Units.MetricPrefix.Count), // value * 1E-1,
-          LengthUnit.Kilometre => Flux.Units.MetricPrefix.Kilo.Convert(value, Flux.Units.MetricPrefix.Count), // value * 1E+3,
+          LengthUnit.Femtometre => Flux.Units.MetricPrefix.Femto.Convert(value, Flux.Units.MetricPrefix.NoPrefix), // value * 1E-15,
+          LengthUnit.Nanometre => Flux.Units.MetricPrefix.Nano.Convert(value, Flux.Units.MetricPrefix.NoPrefix), // value * 1E-9,
+          LengthUnit.Micrometre => Flux.Units.MetricPrefix.Micro.Convert(value, Flux.Units.MetricPrefix.NoPrefix), // value * 1E-6,
+          LengthUnit.Millimetre => Flux.Units.MetricPrefix.Milli.Convert(value, Flux.Units.MetricPrefix.NoPrefix), // value * 1E-3,
+          LengthUnit.Centimetre => Flux.Units.MetricPrefix.Centi.Convert(value, Flux.Units.MetricPrefix.NoPrefix), // value * 1E-2,
+          LengthUnit.Decimetre => Flux.Units.MetricPrefix.Deci.Convert(value, Flux.Units.MetricPrefix.NoPrefix), // value * 1E-1,
+          LengthUnit.Kilometre => Flux.Units.MetricPrefix.Kilo.Convert(value, Flux.Units.MetricPrefix.NoPrefix), // value * 1E+3,
 
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public Length(MetricPrefix prefix, double meter) => m_value = prefix.Convert(meter, MetricPrefix.Count);
+      /// <summary>
+      /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="TimeUnit.Meter"/>, e.g. <see cref="MetricPrefix.Centi"/> for centimeter.</para>
+      /// </summary>
+      /// <param name="metres"></param>
+      /// <param name="prefix"></param>
+      public Length(double metres, MetricPrefix prefix) => m_value = prefix.Convert(metres, MetricPrefix.NoPrefix);
 
       #region Static methods
 
@@ -160,15 +165,15 @@ namespace Flux
         => ToUnitValueString(LengthUnit.Metre, format, formatProvider);
 
       //IMetricMultiplicable<>
-      public double GetMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
+      public double GetMetricValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
-      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space)
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetMetricValue(prefix).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(prefix.GetUnitString(true, false));
-        sb.Append(LengthUnit.Metre.GetUnitString(false, false));
+        sb.Append(prefix.GetUnitString(preferUnicode, useFullName));
+        sb.Append(LengthUnit.Metre.GetUnitString(preferUnicode, useFullName));
         return sb.ToString();
       }
 

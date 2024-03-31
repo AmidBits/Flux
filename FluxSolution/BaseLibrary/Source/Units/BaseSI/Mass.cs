@@ -34,12 +34,18 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Mass"/></para>
     /// </summary>
     public readonly record struct Mass
-      : System.IComparable, System.IComparable<Mass>, System.IFormattable, IUnitValueQuantifiable<double, MassUnit>
+      : System.IComparable, System.IComparable<Mass>, System.IFormattable, IMetricMultiplicable<double, MassUnit>, IUnitValueQuantifiable<double, MassUnit>
     {
       public static Mass ElectronMass => new(9.109383701528e-31);
 
       private readonly double m_value;
 
+      /// <summary>
+      /// <para>Creates a new instance from the specified <paramref name="value"/> of <paramref name="unit"/>. The default <paramref name="unit"/> is <see cref="MassUnit.Kilogram"/></para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="unit"></param>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public Mass(double value, MassUnit unit = MassUnit.Kilogram)
         => m_value = unit switch
         {
@@ -53,7 +59,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public Mass(MetricPrefix prefix, double gram) => m_value = prefix.Convert(gram, MetricPrefix.Kilo);
+      /// <summary>
+      /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="MassUnit.Gram"/>, e.g. <see cref="MetricPrefix.Kilo"/> for kilogram.</para>
+      /// </summary>
+      /// <param name="grams"></param>
+      /// <param name="prefix"></param>
+      public Mass(double grams, MetricPrefix prefix) => m_value = prefix.Convert(grams, MetricPrefix.Kilo);
 
       #region Static methods
       #endregion Static methods
@@ -92,15 +103,15 @@ namespace Flux
         => ToUnitValueString(MassUnit.Kilogram, format, formatProvider);
 
       //IMetricMultiplicable<>
-      public double ToMetricValue(MetricPrefix prefix) => MetricPrefix.Kilo.Convert(m_value, prefix);
+      public double GetMetricValue(MetricPrefix prefix) => MetricPrefix.Kilo.Convert(m_value, prefix);
 
-      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space)
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
-        sb.Append(ToMetricValue(prefix).ToString(format, formatProvider));
+        sb.Append(GetMetricValue(prefix).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(prefix.GetUnitString(true, false));
-        sb.Append(MassUnit.Gram.GetUnitString(false, false));
+        sb.Append(prefix.GetUnitString(preferUnicode, useFullName));
+        sb.Append(MassUnit.Gram.GetUnitString(preferUnicode, useFullName));
         return sb.ToString();
       }
 
@@ -111,6 +122,8 @@ namespace Flux
       public double Value => m_value;
 
       // IUnitQuantifiable<>
+      public MassUnit MetricUnprefixedUnit => MassUnit.Gram;
+
       public double GetUnitValue(MassUnit unit)
         => unit switch
         {

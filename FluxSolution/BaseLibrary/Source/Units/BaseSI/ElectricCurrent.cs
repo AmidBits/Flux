@@ -25,7 +25,7 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Electric_current"/></para>
     /// </summary>
     public readonly record struct ElectricCurrent
-      : System.IComparable, System.IComparable<ElectricCurrent>, System.IFormattable, IMetricMultiplicable<double>, IUnitValueQuantifiable<double, ElectricCurrentUnit>
+      : System.IComparable, System.IComparable<ElectricCurrent>, System.IFormattable, IMetricMultiplicable<double, ElectricCurrentUnit>, IUnitValueQuantifiable<double, ElectricCurrentUnit>
     {
       private readonly double m_value;
 
@@ -36,6 +36,13 @@ namespace Flux
           ElectricCurrentUnit.Milliampere => value / 1000,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
+
+      /// <summary>
+      /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="ElectricCurrentUnit.Ampere"/>, e.g. <see cref="MetricPrefix.Milli"/> for milliamperes.</para>
+      /// </summary>
+      /// <param name="amperes"></param>
+      /// <param name="prefix"></param>
+      public ElectricCurrent(double amperes, MetricPrefix prefix) => m_value = prefix.Convert(amperes, MetricPrefix.NoPrefix);
 
       #region Static methods
       /// <summary>Creates a new ElectricCurrent instance from power and voltage.</summary>
@@ -82,15 +89,15 @@ namespace Flux
         => ToUnitValueString(ElectricCurrentUnit.Ampere, format, formatProvider);
 
       //IMetricMultiplicable<>
-      public double GetMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
+      public double GetMetricValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
-      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space)
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetMetricValue(prefix).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(prefix.GetUnitString(true, false));
-        sb.Append(LengthUnit.Metre.GetUnitString(false, false));
+        sb.Append(prefix.GetUnitString(preferUnicode, useFullName));
+        sb.Append(LengthUnit.Metre.GetUnitString(preferUnicode, useFullName));
         return sb.ToString();
       }
 

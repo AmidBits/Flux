@@ -3,7 +3,7 @@
   public static partial class Em
   {
     /// <summary>
-    /// <para>Creates a new <see cref="Flux.Interval{T}"/> by padding the <paramref name="source"/> interval notation <paramref name="minValue"/>..<paramref name="maxValue"/> with its inner extent (i.e. infimum and supremum).</para>
+    /// <para>Creates a new <see cref="Flux.Interval{T}"/> by padding the <paramref name="source"/> interval notation <paramref name="minValue"/>..<paramref name="maxValue"/> with its (potentionally inner) extent (i.e. infimum and supremum).</para>
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
     /// <param name="source"></param>

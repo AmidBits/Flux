@@ -22,7 +22,7 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Amount_of_substance"/></para>
     /// </summary>
     public readonly record struct Enplethy
-      : System.IComparable, System.IComparable<Enplethy>, System.IFormattable, IMetricMultiplicable<double>, IUnitValueQuantifiable<double, EnplethyUnit>
+      : System.IComparable, System.IComparable<Enplethy>, System.IFormattable, IMetricMultiplicable<double, EnplethyUnit>, IUnitValueQuantifiable<double, EnplethyUnit>
     {
       /// <summary>The exact number of elementary entities in one mole.</summary>
       public static readonly double AvagadroNumber = 6.02214076e23;
@@ -38,6 +38,13 @@ namespace Flux
           EnplethyUnit.Mole => value,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
+
+      /// <summary>
+      /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="EnplethyUnit.Mole"/>, e.g. <see cref="MetricPrefix.Yocto"/> for yoctomoles.</para>
+      /// </summary>
+      /// <param name="moles"></param>
+      /// <param name="prefix"></param>
+      public Enplethy(double moles, MetricPrefix prefix) => m_value = prefix.Convert(moles, MetricPrefix.NoPrefix);
 
       #region Static methods
       #endregion Static methods
@@ -76,15 +83,15 @@ namespace Flux
         => ToUnitValueString(EnplethyUnit.Mole, format, formatProvider);
 
       //IMetricMultiplicable<>
-      public double GetMetricValue(MetricPrefix prefix) => MetricPrefix.Count.Convert(m_value, prefix);
+      public double GetMetricValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
-      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space)
+      public string ToMetricValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetMetricValue(prefix).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(prefix.GetUnitString(true, false));
-        sb.Append(LengthUnit.Metre.GetUnitString(false, false));
+        sb.Append(prefix.GetUnitString(preferUnicode, useFullName));
+        sb.Append(LengthUnit.Metre.GetUnitString(preferUnicode, useFullName));
         return sb.ToString();
       }
 

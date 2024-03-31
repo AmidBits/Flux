@@ -4,24 +4,25 @@
 
   public static partial class Em
   {
-    //  public static System.Collections.Generic.Dictionary<TUnit, string> ToStringOfAllUnits<TType, TUnit>(this IUnitValueQuantifiable<TType, TUnit> source, TextOptions options = default)
-    //    where TType : struct, System.IEquatable<TType>
-    //    where TUnit : notnull, System.Enum
-    //  {
-    //    var d = new System.Collections.Generic.Dictionary<TUnit, string>();
+    public static System.Collections.Generic.Dictionary<(MetricPrefix, TUnit), string> ToStringsOfMetricPrefixes<TValue, TUnit>(this IMetricMultiplicable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
+      where TValue : struct, System.Numerics.INumber<TValue>
+      where TUnit : System.Enum
+    {
+      var d = new System.Collections.Generic.Dictionary<(MetricPrefix, TUnit), string>();
 
-    //    foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
-    //      d.Add(unit, source.ToUnitValueString(unit, options));
+      foreach (MetricPrefix mp in System.Enum.GetValues<MetricPrefix>().OrderDescending())
+        d.Add((mp, source.MetricUnprefixedUnit), source.ToMetricValueString(mp, format, formatProvider, preferUnicode, unitSpacing, useFullName));
 
-    //    return d;
-    //  }
+      return d;
+    }
   }
 
   #endregion // Extension methods
 
-  public interface IMetricMultiplicable<TValue>
-    : IValueQuantifiable<TValue>
+  public interface IMetricMultiplicable<TValue, TUnit>
+    : IUnitValueQuantifiable<TValue, TUnit>
     where TValue : struct, System.Numerics.INumber<TValue>
+    where TUnit : System.Enum
   {
     /// <summary>
     /// <para>Gets the metric value in the <see cref="MetricPrefix"/> multiplicable specified by <paramref name="prefix"/>.</para>
@@ -38,6 +39,6 @@
     /// <param name="formatProvider"></param>
     /// <param name="unitSpacing"></param>
     /// <returns></returns>
-    string ToMetricValueString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing);
+    string ToMetricValueString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, bool preferUnicode, UnicodeSpacing unitSpacing, bool useFullName);
   }
 }

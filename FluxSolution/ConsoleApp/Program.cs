@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Runtime.Intrinsics;
 using System.Xml.XPath;
 using Flux;
+using Flux.Units;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -35,6 +36,20 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      var q = new Flux.Units.Time(5954484981710000, TimeUnit.Ticks);
+      System.Console.WriteLine(q.ToUnitValueString());
+      System.Console.WriteLine();
+
+      var qsu = q.ToStringsOfAllUnits();
+      foreach (var unit in qsu)
+        System.Console.WriteLine($"{unit} ({unit.Key.ToString().ToLower()})");
+      System.Console.WriteLine();
+
+      var qsmp = q.ToStringsOfMetricPrefixes();
+      foreach (var mp in qsmp)
+        System.Console.WriteLine($"{mp} ({mp.Key.Item1.ToString().ToLower()}{mp.Key.Item2.ToString().ToLower()})");
+      System.Console.WriteLine();
 
       var ei = IntervalNotation.Open.CreateIntervalByExtent(0, 8);
       var mi = IntervalNotation.Open.CreateIntervalByMargin(0, 4, 2);
