@@ -19,11 +19,11 @@ namespace Flux.Geometry.MapProjections
     public Coordinates.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new Coordinates.GeographicCoordinate(
         project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Value,
-        Units.AngleUnit.Radian,
+        Quantities.AngleUnit.Radian,
         project.Y / project.Z + CenterOfMap.Latitude.Value,
-        Units.AngleUnit.Radian,
+        Quantities.AngleUnit.Radian,
         project.Z,
-        Units.LengthUnit.Metre
+        Quantities.LengthUnit.Metre
       );
   }
 

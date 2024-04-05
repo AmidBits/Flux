@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace Units
+  namespace Quantities
   {
     /// <summary>
     /// <para>MIDI note unit of byte [0, 127], is an integer value in the range [1, 127]. It enables conversions to and from MIDI note numbers and other relative data points, e.g. pitch notations and frequencies.</para>
@@ -27,7 +27,7 @@ namespace Flux
       public int GetOctave() => (m_number / 12) - 1;
 
       /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
-      public Units.Frequency ToFrequency() => new(ConvertToFrequency(m_number));
+      public Quantities.Frequency ToFrequency() => new(ConvertToFrequency(m_number));
 
       #region Static methods
       /// <summary>Convert the specified frequency to the corresponding note number depending on the specified reference frequency and note number.</summary>
@@ -49,11 +49,11 @@ namespace Flux
 
       /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
 
-      public static MidiNote FromFrequency(Units.Frequency frequency)
+      public static MidiNote FromFrequency(Quantities.Frequency frequency)
         => new(ConvertFromFrequency(frequency.Value));
       /// <summary>Determines the MIDI note from the specified frequency, using the try paradigm.</summary>
 
-      public static bool TryFromFrequency(Units.Frequency frequency, out MidiNote result)
+      public static bool TryFromFrequency(Quantities.Frequency frequency, out MidiNote result)
       {
         try
         {

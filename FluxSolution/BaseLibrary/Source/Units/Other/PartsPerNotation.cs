@@ -2,27 +2,27 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PartsPerNotationUnit source, bool preferUnicode = false, bool useFullName = false)
+    public static string GetUnitString(this Quantities.PartsPerNotationUnit source, bool preferUnicode = false, bool useFullName = false)
       => useFullName ? source.ToString() : source switch
       {
-        Units.PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
-        Units.PartsPerNotationUnit.PartsPerTrillion => "ppt",
-        Units.PartsPerNotationUnit.PartsPerBillion => "ppb",
-        Units.PartsPerNotationUnit.PartsPerMillion => preferUnicode ? "\u33D9" : "ppm",
-        Units.PartsPerNotationUnit.PerCentMille => "pcm",
-        Units.PartsPerNotationUnit.PerMyriad => "\u2031",
-        Units.PartsPerNotationUnit.PerMille => "\u2030",
-        Units.PartsPerNotationUnit.Percent => "\u0025",
-        Units.PartsPerNotationUnit.One => "pp1",
+        Quantities.PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
+        Quantities.PartsPerNotationUnit.PartsPerTrillion => "ppt",
+        Quantities.PartsPerNotationUnit.PartsPerBillion => "ppb",
+        Quantities.PartsPerNotationUnit.PartsPerMillion => preferUnicode ? "\u33D9" : "ppm",
+        Quantities.PartsPerNotationUnit.PerCentMille => "pcm",
+        Quantities.PartsPerNotationUnit.PerMyriad => "\u2031",
+        Quantities.PartsPerNotationUnit.PerMille => "\u2030",
+        Quantities.PartsPerNotationUnit.Percent => "\u0025",
+        Quantities.PartsPerNotationUnit.One => "pp1",
         _ => string.Empty,
       };
 
     /// <summary>Please note that not all units have an equivalent prefix.</summary>
-    public static Units.MetricPrefix ToMetricMultiplicativePrefix(this Units.PartsPerNotationUnit unit)
-      => (Units.MetricPrefix)(int)unit;
+    public static Quantities.MetricPrefix ToMetricMultiplicativePrefix(this Quantities.PartsPerNotationUnit unit)
+      => (Quantities.MetricPrefix)(int)unit;
   }
 
-  namespace Units
+  namespace Quantities
   {
     public enum PartsPerNotationUnit
     {
@@ -122,6 +122,8 @@ namespace Flux
       public double Value => m_parts;
 
       // IUnitQuantifiable<>
+      public string GetUnitSymbol(PartsPerNotationUnit unit, bool preferUnicode, bool useFullName) => unit.GetUnitString(preferUnicode, useFullName);
+
       public double GetUnitValue(PartsPerNotationUnit unit)
         => unit switch
         {
@@ -137,12 +139,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PartsPerNotationUnit unit = PartsPerNotationUnit.One, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
+      public string ToUnitValueString(PartsPerNotationUnit unit = PartsPerNotationUnit.One, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(unit.GetUnitString(preferUnicode, useFullName));
+        sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
         return sb.ToString();
       }
 

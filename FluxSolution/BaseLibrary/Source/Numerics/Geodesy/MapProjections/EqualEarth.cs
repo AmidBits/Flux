@@ -63,11 +63,11 @@ namespace Flux.Geometry.MapProjections
 
       return new Coordinates.GeographicCoordinate(
         lat,
-        Units.AngleUnit.Radian,
+        Quantities.AngleUnit.Radian,
         lon,
-        Units.AngleUnit.Radian,
+        Quantities.AngleUnit.Radian,
         location.Z,
-        Units.LengthUnit.Metre
+        Quantities.LengthUnit.Metre
       );
     }
     //#pragma warning restore CA1822 // Mark members as static

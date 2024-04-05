@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace Units
+  namespace Quantities
   {
     /// <summary>
     /// <para>Azimuth, a.k.a. bearing, unit of degree. The internal unit here is defined in the range [0, +360). Values are always wrapped within that range.</para>
@@ -15,7 +15,7 @@ namespace Flux
       /// <summary>MinValue is a closed (included) endpoint.</summary>
       public const double MinValue = 0;
 
-      private readonly Units.Angle m_angle;
+      private readonly Quantities.Angle m_angle;
 
       /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
       public Azimuth(double angle, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(angle, unit);
@@ -171,7 +171,7 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => Angle.ToUnitValueString(AngleUnit.Degree, format, formatProvider, true);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => Angle.ToUnitValueString(AngleUnit.Degree, format, formatProvider, preferUnicode: true);
 
       // IQuantifiable<>
       /// <summary>

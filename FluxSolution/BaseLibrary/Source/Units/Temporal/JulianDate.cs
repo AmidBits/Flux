@@ -2,11 +2,11 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static Units.JulianDate ToJulianDate(this System.DateTime source, Units.TemporalCalendar calendar = Units.TemporalCalendar.GregorianCalendar)
+    public static Quantities.JulianDate ToJulianDate(this System.DateTime source, Quantities.TemporalCalendar calendar = Quantities.TemporalCalendar.GregorianCalendar)
       => new(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond, calendar);
   }
 
-  namespace Units
+  namespace Quantities
   {
     /// <summary>
     /// <para>Julian Date, unit of days with time-of-day as the fraction. The time-of-day fraction is the time from the preceeding noon. This is why it is necessary to add 0.5 to a julian-date in order to obtain a correct julian-day-number based on midnight.</para>
@@ -25,7 +25,7 @@ namespace Flux
 
       /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
       public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, TemporalCalendar calendar)
-        : this(Units.JulianDayNumber.ConvertDatePartsToJulianDayNumber(year, month, day, calendar) + ConvertTimePartsToTimeOfDay(hour, minute, second, millisecond))
+        : this(Quantities.JulianDayNumber.ConvertDatePartsToJulianDayNumber(year, month, day, calendar) + ConvertTimePartsToTimeOfDay(hour, minute, second, millisecond))
       { }
 
       public JulianDate AddWeeks(int weeks) => this + (weeks * 7);
@@ -141,8 +141,8 @@ namespace Flux
       public static JulianDate operator %(JulianDate a, int b) => new(a.m_value % b);
       public static JulianDate operator -(JulianDate a, int b) => new(a.m_value - b);
 
-      public static JulianDate operator +(JulianDate a, Units.Time b) => a + (b.Value / 86400);
-      public static JulianDate operator -(JulianDate a, Units.Time b) => a - (b.Value / 86400);
+      public static JulianDate operator +(JulianDate a, Quantities.Time b) => a + (b.Value / 86400);
+      public static JulianDate operator -(JulianDate a, Quantities.Time b) => a - (b.Value / 86400);
 
       public static JulianDate operator +(JulianDate a, System.TimeSpan b) => a + (b.TotalSeconds / 86400);
       public static JulianDate operator -(JulianDate a, System.TimeSpan b) => a - (b.TotalSeconds / 86400);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace Units
+  namespace Quantities
   {
     /// <summary>Specifies one or more days of the week, using a <see cref="System.FlagsAttribute"/> bitmask.</summary>
     [System.Flags]

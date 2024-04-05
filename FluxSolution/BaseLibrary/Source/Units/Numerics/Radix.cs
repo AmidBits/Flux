@@ -1,4 +1,4 @@
-namespace Flux.Units
+namespace Flux.Quantities
 {
   /// <summary>
   /// <para>Radix, unit of natural number, in the range [<see cref="Radix.MinRadix"/>, <see cref="Radix.MaxRadix"/>].</para>
@@ -157,7 +157,7 @@ namespace Flux.Units
       if (isSigned)
         foldedRight >>= 1; // Shift to properly represent a most-significant-bit used for negative values.
 
-      return int.CreateChecked(Units.Radix.IntegerLogFloor(foldedRight, radix) + TSelf.One);
+      return int.CreateChecked(Quantities.Radix.IntegerLogFloor(foldedRight, radix) + TSelf.One);
     }
 
     /// <summary>Returns the digit place value components of <paramref name="number"/> using base <paramref name="radix"/>. E.g. 1234 return [4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands)].</summary>

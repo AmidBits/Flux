@@ -2,15 +2,15 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.PowerRatioUnit unit, bool useFullName = false)
+    public static string GetUnitString(this Quantities.PowerRatioUnit unit, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        Units.PowerRatioUnit.DecibelWatt => "dBW",
+        Quantities.PowerRatioUnit.DecibelWatt => "dBW",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  namespace Units
+  namespace Quantities
   {
     public enum PowerRatioUnit
     {
@@ -87,6 +87,8 @@ namespace Flux
       public double Value => m_value;
 
       // IUnitQuantifiable<>
+      public string GetUnitSymbol(PowerRatioUnit unit, bool preferUnicode, bool useFullName) => unit.GetUnitString(useFullName);
+
       public double GetUnitValue(PowerRatioUnit unit)
         => unit switch
         {
@@ -94,12 +96,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
+      public string ToUnitValueString(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(unit.GetUnitString(useFullName));
+        sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
         return sb.ToString();
       }
 

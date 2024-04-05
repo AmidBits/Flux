@@ -2,11 +2,11 @@ namespace Flux
 {
   public static partial class Em
   {
-    /// <summary>Returns an extrapolated Azimuth, i.e. a value in the set [0, 90, 180, 270] (every 90° notch, starting at 0°), from <paramref name="source"/> (<see cref="Units.CardinalAxis"/>) and <paramref name="isNegative"/>, converted into one of the four <see cref="Units.CardinalDirection"/> compass points.</summary>
-    public static Units.Azimuth GetAzimuth(this CardinalAxis source, bool isNegative)
+    /// <summary>Returns an extrapolated Azimuth, i.e. a value in the set [0, 90, 180, 270] (every 90° notch, starting at 0°), from <paramref name="source"/> (<see cref="Quantities.CardinalAxis"/>) and <paramref name="isNegative"/>, converted into one of the four <see cref="Quantities.CardinalDirection"/> compass points.</summary>
+    public static Quantities.Azimuth GetAzimuth(this CardinalAxis source, bool isNegative)
       => source.ToCardinalDirection(isNegative).GetAzimuth();
 
-    /// <summary>Returns a <see cref="Units.CardinalDirection"/> from <paramref name="source"/> (<see cref="Units.CardinalAxis"/>) and <paramref name="isNegative"/>.</summary>
+    /// <summary>Returns a <see cref="Quantities.CardinalDirection"/> from <paramref name="source"/> (<see cref="Quantities.CardinalAxis"/>) and <paramref name="isNegative"/>.</summary>
     public static CardinalDirection ToCardinalDirection(this CardinalAxis source, bool isNegative)
       => source switch
       {

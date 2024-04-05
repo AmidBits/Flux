@@ -2,16 +2,16 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static double AverageDaysInYear(this Units.TemporalCalendar source)
+    public static double AverageDaysInYear(this Quantities.TemporalCalendar source)
       => source switch
       {
-        Units.TemporalCalendar.GregorianCalendar => 365.2425,
-        Units.TemporalCalendar.JulianCalendar => 365.25,
+        Quantities.TemporalCalendar.GregorianCalendar => 365.2425,
+        Quantities.TemporalCalendar.JulianCalendar => 365.25,
         _ => throw new System.NotImplementedException(),
       };
   }
 
-  namespace Units
+  namespace Quantities
   {
     /// <summary>Conversion calendar enum for Julian Date (JD) and MomentUtc conversions.</summary>
     public enum TemporalCalendar

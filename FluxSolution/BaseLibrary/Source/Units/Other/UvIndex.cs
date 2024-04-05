@@ -1,4 +1,4 @@
-using Flux.Units;
+using Flux.Quantities;
 
 namespace Flux
 {
@@ -6,7 +6,7 @@ namespace Flux
 
   public static partial class Em
   {
-    public static System.Drawing.Color GetMediaGraphicColor(this Units.UvIndexRisk source)
+    public static System.Drawing.Color GetMediaGraphicColor(this Quantities.UvIndexRisk source)
       => source switch
       {
         UvIndexRisk.Low => System.Drawing.Color.Green,
@@ -20,7 +20,7 @@ namespace Flux
 
   #endregion // ExtensionMethods
 
-  namespace Units
+  namespace Quantities
   {
     public enum UvIndexRisk
     {

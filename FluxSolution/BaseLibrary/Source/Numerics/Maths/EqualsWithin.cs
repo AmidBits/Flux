@@ -26,7 +26,7 @@ namespace Flux
     public static bool EqualsWithinSignificantDigits<TValue>(this TValue a, TValue b, int significantDigits, int radix = 10)
       where TValue : System.Numerics.INumber<TValue>
       => a == b
-      || (double.CreateChecked(TValue.Abs(a - b)) <= System.Math.Pow(Units.Radix.AssertMember(radix), -significantDigits));
+      || (double.CreateChecked(TValue.Abs(a - b)) <= System.Math.Pow(Quantities.Radix.AssertMember(radix), -significantDigits));
   }
 }
 #endif

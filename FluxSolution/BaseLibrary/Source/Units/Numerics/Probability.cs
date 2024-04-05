@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace Units
+  namespace Quantities
   {
     /// <summary>
     /// <para>Probability is a ratio, represented as a closed interval [0.0, 1.0], where 0.0 indicates impossibility of an event and 1.0 indicates certainty.</para>

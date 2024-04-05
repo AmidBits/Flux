@@ -2,16 +2,16 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static string GetUnitString(this Units.AbsoluteHumidityUnit unit, bool useFullName = false)
+    public static string GetUnitString(this Quantities.AbsoluteHumidityUnit unit, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch
       {
-        Units.AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
-        Units.AbsoluteHumidityUnit.KilogramsPerCubicMeter => "kg/m³",
+        Quantities.AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
+        Quantities.AbsoluteHumidityUnit.KilogramsPerCubicMeter => "kg/m³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
 
-  namespace Units
+  namespace Quantities
   {
     public enum AbsoluteHumidityUnit
     {
@@ -84,6 +84,8 @@ namespace Flux
       public double Value => m_value;
 
       // IUnitQuantifiable<>
+      public string GetUnitSymbol(AbsoluteHumidityUnit unit, bool preferUnicode, bool useFullName) => unit.GetUnitString(useFullName);
+
       public double GetUnitValue(AbsoluteHumidityUnit unit)
         => unit switch
         {
@@ -92,12 +94,12 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
+      public string ToUnitValueString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
       {
         var sb = new System.Text.StringBuilder();
         sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(unit.GetUnitString(useFullName));
+        sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
         return sb.ToString();
       }
 

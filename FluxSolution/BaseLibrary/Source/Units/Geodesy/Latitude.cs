@@ -1,4 +1,4 @@
-namespace Flux.Units
+namespace Flux.Quantities
 {
   /// <summary>
   /// <para>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</para>
@@ -18,7 +18,7 @@ namespace Flux.Units
     /// <summary>Creates a new Latitude from the specified number of degrees. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
     public Latitude(double latitude, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(latitude, unit);
 
-    /// <summary>The <see cref="Units.Angle"/> of the latitude.</summary>
+    /// <summary>The <see cref="Quantities.Angle"/> of the latitude.</summary>
     public Angle Angle { get => m_angle; init => m_angle = new(FoldExtremum(value.GetUnitValue(AngleUnit.Degree)), AngleUnit.Degree); }
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
@@ -111,7 +111,7 @@ namespace Flux.Units
         if (Angle.TryConvertFormatToDmsNotation(format, out var dmsNotation))
           return ToSexagesimalDegreeString(dmsNotation);
 
-        return Angle.ToUnitValueString(AngleUnit.Degree, format, formatProvider, true);
+        return Angle.ToUnitValueString(AngleUnit.Degree, format, formatProvider, preferUnicode: true);
       }
 
       return ToSexagesimalDegreeString();

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 
 using Flux;
+using Flux.Quantities;
 
 namespace ConsoleApp
 {
@@ -276,7 +277,7 @@ namespace ConsoleApp
 
       var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
-      var rtp = Flux.Units.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
+      var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
       var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
 
@@ -385,15 +386,15 @@ namespace ConsoleApp
     #region RunCoordinateSystems
 
     /// <summary>This is a reference coordinate for Madrid, Spain, which is antipodal to Takapau, New Zeeland.</summary>
-    public static Flux.Geometry.Coordinates.GeographicCoordinate MadridSpain => new(40.416944, Flux.Units.AngleUnit.Degree, -3.703333, Flux.Units.AngleUnit.Degree, 650);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate MadridSpain => new(40.416944, Flux.Quantities.AngleUnit.Degree, -3.703333, Flux.Quantities.AngleUnit.Degree, 650);
 
     /// <summary>This is a reference coordinate for Takapau, New Zeeland, which is antipodal to Madrid, Spain.</summary>
-    public static Flux.Geometry.Coordinates.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Units.AngleUnit.Degree, 176.35, Flux.Units.AngleUnit.Degree, 235);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Quantities.AngleUnit.Degree, 176.35, Flux.Quantities.AngleUnit.Degree, 235);
 
     /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.Coordinates.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Units.AngleUnit.Degree, -112.073889, Flux.Units.AngleUnit.Degree, 331);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Quantities.AngleUnit.Degree, -112.073889, Flux.Quantities.AngleUnit.Degree, 331);
     /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.Coordinates.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Units.AngleUnit.Degree, -110.926389, Flux.Units.AngleUnit.Degree, 728);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Quantities.AngleUnit.Degree, -110.926389, Flux.Quantities.AngleUnit.Degree, 728);
 
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
@@ -529,8 +530,9 @@ namespace ConsoleApp
 
       Write(typeof(System.IConvertible));
 
-      Write(typeof(IUnitValueQuantifiable<,>));
       Write(typeof(IValueQuantifiable<>));
+      Write(typeof(IUnitValueQuantifiable<,>));
+      Write(typeof(ISiPrefixValueQuantifiable<,>));
 
       static void Write(System.Type type, params System.Type[] excludingTypes)
       {
@@ -541,7 +543,12 @@ namespace ConsoleApp
         System.Console.WriteLine();
       }
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(IValueQuantifiable<>).GetDerivedTypes().Append(typeof(Flux.Units.Rate<Flux.Units.Length, Flux.Units.Time>)).OrderBy(t => t.Name).Where(t => !t.IsInterface && !t.Name.Contains("Fraction")).Select(q => q.Name + " = " + q.GetDefaultValue()?.ToString() ?? "Null")));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(IValueQuantifiable<>)
+        .GetDerivedTypes()
+        .Append(typeof(Flux.Quantities.Rate<Flux.Quantities.Length, Flux.Quantities.Time>))
+        .OrderBy(t => t.Name)
+        .Where(t => !t.IsInterface && !t.Name.Contains("Fraction"))
+        .Select(q => q.Name + " = " + (q.GetDefaultValue()?.ToString() ?? "Null"))));
     }
 
     #endregion
@@ -817,24 +824,24 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunTemporal));
       System.Console.WriteLine();
 
-      var dt = new Flux.Units.MomentUtc(1100, 04, 28, 13, 30, 31);
+      var dt = new Flux.Quantities.MomentUtc(1100, 04, 28, 13, 30, 31);
       System.Console.WriteLine($"{dt}");
 
-      var jdgc = dt.ToJulianDate(Flux.Units.TemporalCalendar.GregorianCalendar);
+      var jdgc = dt.ToJulianDate(Flux.Quantities.TemporalCalendar.GregorianCalendar);
       System.Console.WriteLine($"{jdgc.ToTimeString()}");
       var jdngc = jdgc.JulianDayNumber;
-      System.Console.WriteLine($"{jdngc.ToDateString(Flux.Units.TemporalCalendar.GregorianCalendar)}");
-      var mugc = jdgc.ToMomentUtc(Flux.Units.TemporalCalendar.GregorianCalendar);
+      System.Console.WriteLine($"{jdngc.ToDateString(Flux.Quantities.TemporalCalendar.GregorianCalendar)}");
+      var mugc = jdgc.ToMomentUtc(Flux.Quantities.TemporalCalendar.GregorianCalendar);
       //System.Console.WriteLine($"{mugc}, {mugc.ToDateOnly()}, {mugc.ToDateTime()}, {mugc.ToTimeOnly()}, {mugc.ToTimeSpan()}");
       System.Console.WriteLine($"{mugc}, {mugc.ToDateTime()}, {mugc.ToTimeSpan()}");
 
       //var mugc1 = mugc with { Year = Year + 1 };
 
-      var jdjc = dt.ToJulianDate(Flux.Units.TemporalCalendar.JulianCalendar);
+      var jdjc = dt.ToJulianDate(Flux.Quantities.TemporalCalendar.JulianCalendar);
       System.Console.WriteLine($"{jdjc.ToTimeString()}");
       var jdnjc = jdjc.JulianDayNumber;
-      System.Console.WriteLine($"{jdnjc.ToDateString(Flux.Units.TemporalCalendar.JulianCalendar)}");
-      var mujc = jdjc.ToMomentUtc(Flux.Units.TemporalCalendar.JulianCalendar);
+      System.Console.WriteLine($"{jdnjc.ToDateString(Flux.Quantities.TemporalCalendar.JulianCalendar)}");
+      var mujc = jdjc.ToMomentUtc(Flux.Quantities.TemporalCalendar.JulianCalendar);
       //System.Console.WriteLine($"{mujc}, {mujc.ToDateOnly()}, {mujc.ToDateTime()}, {mujc.ToTimeOnly()}, {mujc.ToTimeSpan()}");
       System.Console.WriteLine($"{mujc}, {mujc.ToDateTime()}, {mujc.ToTimeSpan()}");
 

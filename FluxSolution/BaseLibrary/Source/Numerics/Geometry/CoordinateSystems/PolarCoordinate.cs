@@ -6,8 +6,8 @@ namespace Flux
     /// <summary>Creates a new <see cref="Geometry.PolarCoordinate"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
     public static Geometry.Coordinates.PolarCoordinate ToPolarCoordinate(this System.Numerics.Vector2 source)
       => new(
-        System.Math.Sqrt(source.X * source.X + source.Y * source.Y), Units.LengthUnit.Metre,
-        System.Math.Atan2(source.Y, source.X), Units.AngleUnit.Radian
+        System.Math.Sqrt(source.X * source.X + source.Y * source.Y), Quantities.LengthUnit.Metre,
+        System.Math.Atan2(source.Y, source.X), Quantities.AngleUnit.Radian
       );
   }
   #endregion
@@ -25,8 +25,8 @@ namespace Flux
     {
       public static readonly PolarCoordinate Zero;
 
-      private readonly Units.Length m_radius;
-      private readonly Units.Angle m_azimuth;
+      private readonly Quantities.Length m_radius;
+      private readonly Quantities.Angle m_azimuth;
 
       /// <summary>
       /// <para>Polar coordinates in meters and radians.</para>
@@ -40,28 +40,28 @@ namespace Flux
       //}
 
       /// <summary>Return the <see cref="PolarCoordinate"/> from the specified components.</summary>
-      public PolarCoordinate(Units.Length radius, Units.Angle azimuth)
+      public PolarCoordinate(Quantities.Length radius, Quantities.Angle azimuth)
       {
         m_radius = radius;
         m_azimuth = azimuth;
       }
 
       /// <summary>Return the <see cref="PolarCoordinate"/> from the specified components.</summary>
-      public PolarCoordinate(double radiusValue, Units.LengthUnit radiusUnit, double azimuthValue, Units.AngleUnit azimuthUnit)
-        : this(new Units.Length(radiusValue, radiusUnit), new Units.Angle(azimuthValue, azimuthUnit))
+      public PolarCoordinate(double radiusValue, Quantities.LengthUnit radiusUnit, double azimuthValue, Quantities.AngleUnit azimuthUnit)
+        : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(azimuthValue, azimuthUnit))
       { }
 
       /// <summary>
       /// <para>Radius, (length) unit of meter. A.k.a. radial coordinate, or radial distance.</para>
       /// </summary>
-      public Units.Length Radius { get => m_radius; init => m_radius = value; }
+      public Quantities.Length Radius { get => m_radius; init => m_radius = value; }
       /// <summary>
       /// <para>Azimuth angle, unit of radian. A.k.a. angular coordinate, or polar angle.</para>
       /// </summary>
       /// <remarks>The angle is defined to start at 0° from a reference direction, and to increase for rotations in either clockwise (cw) or counterclockwise (ccw) orientation.</remarks>
-      public Units.Angle Azimuth { get => m_azimuth; init => m_azimuth = value; }
+      public Quantities.Angle Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
-      public void Deconstruct(out Units.Length radius, out Units.Angle azimuth)
+      public void Deconstruct(out Quantities.Length radius, out Quantities.Angle azimuth)
       {
         radius = m_radius;
         azimuth = m_azimuth;
@@ -69,7 +69,7 @@ namespace Flux
 
       /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="PolarCoordinate"/> by adding the third component <paramref name="height"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
-      public CylindricalCoordinate ToCylindricalCoordinate(Units.Length height)
+      public CylindricalCoordinate ToCylindricalCoordinate(Quantities.Length height)
         => new(
           m_radius,
           m_azimuth,
@@ -78,11 +78,11 @@ namespace Flux
 
       /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="PolarCoordinate"/> by adding the third component <paramref name="height"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
-      public CylindricalCoordinate ToCylindricalCoordinate(double height, Units.LengthUnit heightUnit)
+      public CylindricalCoordinate ToCylindricalCoordinate(double height, Quantities.LengthUnit heightUnit)
         => new(
           m_radius,
           m_azimuth,
-          new Units.Length(height, heightUnit)
+          new Quantities.Length(height, heightUnit)
         );
 
       /// <summary>Creates a <see cref="System.Numerics.Complex"/> from the <see cref="PolarCoordinate"/>.</summary>
@@ -147,7 +147,7 @@ namespace Flux
       {
         if (string.IsNullOrWhiteSpace(format)) format = "N3";
 
-        return $"<{m_radius.Value.ToString(format)}, {new Units.Azimuth(m_azimuth.Value, Units.AngleUnit.Radian).ToString(format, null)} ({m_azimuth.Value.ToString(format)})>";
+        return $"<{m_radius.Value.ToString(format)}, {new Quantities.Azimuth(m_azimuth.Value, Quantities.AngleUnit.Radian).ToString(format, null)} ({m_azimuth.Value.ToString(format)})>";
       }
     }
   }

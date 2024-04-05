@@ -458,7 +458,7 @@ namespace Flux
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see href="https://en.wikipedia.org/wiki/List_of_prime_numbers#Additive_primes"/>
     public static bool IsAlsoAdditivePrime(System.Numerics.BigInteger primeNumber)
-      => IsPrimeNumber(Units.Radix.DigitSum(primeNumber, 10));
+      => IsPrimeNumber(Quantities.Radix.DigitSum(primeNumber, 10));
 
     /// <summary>Indicates whether the prime number is also a congruent modulo prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>

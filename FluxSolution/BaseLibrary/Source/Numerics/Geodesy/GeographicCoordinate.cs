@@ -10,14 +10,14 @@ namespace Flux.Geometry.Coordinates
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
 
-    public readonly static GeographicCoordinate GreenwichMeridian = new(51.477811, Units.AngleUnit.Degree, -0.001475, Units.AngleUnit.Degree);
+    public readonly static GeographicCoordinate GreenwichMeridian = new(51.477811, Quantities.AngleUnit.Degree, -0.001475, Quantities.AngleUnit.Degree);
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    private readonly Units.Length m_altitude;
+    private readonly Quantities.Length m_altitude;
     /// <summary>The latitude component of the geographic position in radians. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    private readonly Units.Angle m_latitude;
+    private readonly Quantities.Angle m_latitude;
     /// <summary>The longitude component of the geographic position in radians. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    private readonly Units.Angle m_longitude;
+    private readonly Quantities.Angle m_longitude;
 
     /// <summary></summary>
     /// <param name="latitude">The latitude in degrees.</param>
@@ -36,7 +36,7 @@ namespace Flux.Geometry.Coordinates
     /// <param name="longitude">The longitude angle.</param>
     /// <param name="altitude">The altitude length.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public GeographicCoordinate(Units.Angle latitude, Units.Angle longitude, Units.Length altitude)
+    public GeographicCoordinate(Quantities.Angle latitude, Quantities.Angle longitude, Quantities.Length altitude)
     //      : this(latitude.Value, longitude.Value, altitude.Value)
     {
       m_latitude = latitude;
@@ -52,12 +52,12 @@ namespace Flux.Geometry.Coordinates
     /// <param name="altitudeValue">The altitude length value.</param>
     /// <param name="altitudeUnit">The altitude length unit.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public GeographicCoordinate(double latitudeValue, Units.AngleUnit latitudeUnit, double longitudeValue, Units.AngleUnit longitudeUnit, double altitudeValue = 1, Units.LengthUnit altitudeUnit = Units.LengthUnit.Metre)
-      : this(new Units.Angle(latitudeValue, latitudeUnit), new Units.Angle(longitudeValue, longitudeUnit), new Units.Length(altitudeValue, altitudeUnit))
+    public GeographicCoordinate(double latitudeValue, Quantities.AngleUnit latitudeUnit, double longitudeValue, Quantities.AngleUnit longitudeUnit, double altitudeValue = 1, Quantities.LengthUnit altitudeUnit = Quantities.LengthUnit.Metre)
+      : this(new Quantities.Angle(latitudeValue, latitudeUnit), new Quantities.Angle(longitudeValue, longitudeUnit), new Quantities.Length(altitudeValue, altitudeUnit))
     { }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public Units.Length Altitude { get => m_altitude; init => m_altitude = value; }
+    public Quantities.Length Altitude { get => m_altitude; init => m_altitude = value; }
 
     /// <summary>The diametrical opposite of the <see cref="GeographicCoordinate"/>, i.e. the opposite side of Earth's surface. This is a plain mathematical antipode.</summary>
     public GeographicCoordinate Antipode
@@ -68,10 +68,10 @@ namespace Flux.Geometry.Coordinates
       );
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public Units.Angle Latitude { get => m_latitude; init => m_latitude = value; }
+    public Quantities.Angle Latitude { get => m_latitude; init => m_latitude = value; }
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public Units.Angle Longitude { get => m_longitude; init => m_longitude = value; }
+    public Quantities.Angle Longitude { get => m_longitude; init => m_longitude = value; }
 
     //public double LatitudeInRadians { get => Units.Angle.ConvertDegreeToRadian(m_latitude); }
     //public double LongitudeInRadians { get => Units.Angle.ConvertDegreeToRadian(m_longitude); }
@@ -80,9 +80,9 @@ namespace Flux.Geometry.Coordinates
     /// <remarks>All angles in radians.</remarks>
     public Geometry.Coordinates.SphericalCoordinate ToSphericalCoordinate()
       => new(
-        m_altitude.Value, Units.LengthUnit.Metre,
-        System.Math.PI - (Latitude.Value + (System.Math.PI / 2)), Units.AngleUnit.Radian,
-        Longitude.Value + System.Math.PI, Units.AngleUnit.Radian
+        m_altitude.Value, Quantities.LengthUnit.Metre,
+        System.Math.PI - (Latitude.Value + (System.Math.PI / 2)), Quantities.AngleUnit.Radian,
+        Longitude.Value + System.Math.PI, Quantities.AngleUnit.Radian
       );
 
     #region Static members
@@ -159,7 +159,7 @@ namespace Flux.Geometry.Coordinates
     /// <para>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</para>
     /// </remarks>
     public static double GetCentralAngleHaversineFormula(double lat1, double lon1, double lat2, double lon2)
-      => Units.Angle.Ahvsin(Units.Angle.Hvsin(lat2 - lat1) + System.Math.Cos(lat1) * System.Math.Cos(lat2) * Units.Angle.Hvsin(lon2 - lon1));
+      => Quantities.Angle.Ahvsin(Quantities.Angle.Hvsin(lat2 - lat1) + System.Math.Cos(lat1) * System.Math.Cos(lat2) * Quantities.Angle.Hvsin(lon2 - lon1));
 
     /// <summary>
     /// <para>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</para>
@@ -424,9 +424,9 @@ namespace Flux.Geometry.Coordinates
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
     public static bool TryParse(string latitudeDms, string longitudeDms, out GeographicCoordinate result, double earthRadius)
     {
-      if (Units.Angle.TryParseDms(latitudeDms, out var latitudeAngle) && Units.Angle.TryParseDms(longitudeDms, out var longitudeAngle))
+      if (Quantities.Angle.TryParseDms(latitudeDms, out var latitudeAngle) && Quantities.Angle.TryParseDms(longitudeDms, out var longitudeAngle))
       {
-        result = new GeographicCoordinate(latitudeAngle.Value, Units.AngleUnit.Radian, longitudeAngle.Value, Units.AngleUnit.Radian, earthRadius);
+        result = new GeographicCoordinate(latitudeAngle.Value, Quantities.AngleUnit.Radian, longitudeAngle.Value, Quantities.AngleUnit.Radian, earthRadius);
         return true;
       }
 
@@ -439,7 +439,7 @@ namespace Flux.Geometry.Coordinates
     //#region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{new Units.Latitude(m_latitude.Value, Units.AngleUnit.Radian).ToSexagesimalDegreeString()} ({m_latitude.ToString(format ?? "N6", formatProvider)}), {new Units.Longitude(m_longitude.Value, Units.AngleUnit.Radian).ToSexagesimalDegreeString()} ({m_longitude.ToString(format ?? "N6", formatProvider)}), {m_altitude.ToString(format ?? "N1", formatProvider)}>";
+      => $"<{new Quantities.Latitude(m_latitude.Value, Quantities.AngleUnit.Radian).ToSexagesimalDegreeString()} ({m_latitude.ToString(format ?? "N6", formatProvider)}), {new Quantities.Longitude(m_longitude.Value, Quantities.AngleUnit.Radian).ToSexagesimalDegreeString()} ({m_longitude.ToString(format ?? "N6", formatProvider)}), {m_altitude.ToString(format ?? "N1", formatProvider)}>";
 
     //#endregion Implemented interfaces
 

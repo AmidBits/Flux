@@ -9,7 +9,7 @@ namespace Flux
     /// <param name="value"></param>
     /// <param name="target"></param>
     /// <returns></returns>
-    public static double Convert(this Units.MetricPrefix source, double value, Units.MetricPrefix target) => value * System.Math.Pow(10, (int)source - (int)target);
+    public static double Convert(this Quantities.MetricPrefix source, double value, Quantities.MetricPrefix target) => value * System.Math.Pow(10, (int)source - (int)target);
 
     /// <summary>
     /// <para>Find the infimum (the largest that is less than) prefix and value from <paramref name="source"/> prefix and <paramref name="value"/>.</para>
@@ -17,51 +17,51 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static (double TargetValue, Units.MetricPrefix TargetPrefix) FindInfimum(this Units.MetricPrefix source, double value)
+    public static (double TargetValue, Quantities.MetricPrefix TargetPrefix) FindInfimum(this Quantities.MetricPrefix source, double value)
     {
-      var targetDigits = Units.Radix.DigitCount(new System.Numerics.BigInteger(System.Math.Truncate(value)), 10) + (int)source - 1;
+      var targetDigits = Quantities.Radix.DigitCount(new System.Numerics.BigInteger(System.Math.Truncate(value)), 10) + (int)source - 1;
 
-      var targetPrefix = (Units.MetricPrefix)System.Enum.GetValues<Units.MetricPrefix>().Select(p => (int)p).Order().Last(p => targetDigits >= p);
+      var targetPrefix = (Quantities.MetricPrefix)System.Enum.GetValues<Quantities.MetricPrefix>().Select(p => (int)p).Order().Last(p => targetDigits >= p);
       var targetValue = source.Convert(value, targetPrefix);
 
       return (targetValue, targetPrefix);
     }
 
-    public static double GetUnitFactor(this Units.MetricPrefix source) => System.Math.Pow(10, (int)source);
+    public static double GetUnitFactor(this Quantities.MetricPrefix source) => System.Math.Pow(10, (int)source);
 
-    public static string GetUnitString(this Units.MetricPrefix source, bool preferUnicode, bool useFullName)
+    public static string GetUnitString(this Quantities.MetricPrefix source, bool preferUnicode, bool useFullName)
       => useFullName ? source.ToString() : source switch
       {
-        Units.MetricPrefix.NoPrefix => string.Empty,
-        Units.MetricPrefix.Quetta => "Q",
-        Units.MetricPrefix.Ronna => "R",
-        Units.MetricPrefix.Yotta => "Y",
-        Units.MetricPrefix.Zetta => "Z",
-        Units.MetricPrefix.Exa => "E",
-        Units.MetricPrefix.Peta => "P",
-        Units.MetricPrefix.Tera => "T",
-        Units.MetricPrefix.Giga => "G",
-        Units.MetricPrefix.Mega => "M",
-        Units.MetricPrefix.Kilo => "k",
-        Units.MetricPrefix.Hecto => "h",
-        Units.MetricPrefix.Deca => preferUnicode ? "\u3372" : "da",
-        Units.MetricPrefix.Deci => "d",
-        Units.MetricPrefix.Centi => "c",
-        Units.MetricPrefix.Milli => "m",
-        Units.MetricPrefix.Micro => preferUnicode ? "\u03BC" : "\u00B5",
-        Units.MetricPrefix.Nano => "n",
-        Units.MetricPrefix.Pico => "p",
-        Units.MetricPrefix.Femto => "f",
-        Units.MetricPrefix.Atto => "a",
-        Units.MetricPrefix.Zepto => "z",
-        Units.MetricPrefix.Yocto => "y",
-        Units.MetricPrefix.Ronto => "r",
-        Units.MetricPrefix.Quecto => "q",
+        Quantities.MetricPrefix.NoPrefix => string.Empty,
+        Quantities.MetricPrefix.Quetta => "Q",
+        Quantities.MetricPrefix.Ronna => "R",
+        Quantities.MetricPrefix.Yotta => "Y",
+        Quantities.MetricPrefix.Zetta => "Z",
+        Quantities.MetricPrefix.Exa => "E",
+        Quantities.MetricPrefix.Peta => "P",
+        Quantities.MetricPrefix.Tera => "T",
+        Quantities.MetricPrefix.Giga => "G",
+        Quantities.MetricPrefix.Mega => "M",
+        Quantities.MetricPrefix.Kilo => "k",
+        Quantities.MetricPrefix.Hecto => "h",
+        Quantities.MetricPrefix.Deca => preferUnicode ? "\u3372" : "da",
+        Quantities.MetricPrefix.Deci => "d",
+        Quantities.MetricPrefix.Centi => "c",
+        Quantities.MetricPrefix.Milli => "m",
+        Quantities.MetricPrefix.Micro => preferUnicode ? "\u03BC" : "\u00B5",
+        Quantities.MetricPrefix.Nano => "n",
+        Quantities.MetricPrefix.Pico => "p",
+        Quantities.MetricPrefix.Femto => "f",
+        Quantities.MetricPrefix.Atto => "a",
+        Quantities.MetricPrefix.Zepto => "z",
+        Quantities.MetricPrefix.Yocto => "y",
+        Quantities.MetricPrefix.Ronto => "r",
+        Quantities.MetricPrefix.Quecto => "q",
         _ => string.Empty,
       };
   }
 
-  namespace Units
+  namespace Quantities
   {
     public enum MetricPrefix
     {
@@ -116,6 +116,14 @@ namespace Flux
       /// <summary></summary>
       Quecto = -30,
     }
+
+    //public static partial class MetricMultiplicative
+    //{
+    //  public static double MetricUnit1PerUnit2<TUnit1, TUnit2>(double value, IUnitValueQuantifiable<double, TUnit1> m1, IUnitValueQuantifiable<double, TUnit2> m2)
+    //  {
+
+    //  }
+    //}
 
     ///// <summary>Parts per notation. In science and engineering, the parts-per notation is a set of pseudo-units to describe small values of miscellaneous dimensionless quantities, e.g. mole fraction or mass fraction. Since these fractions are quantity-per-quantity measures, they are pure numbers with no associated units of measurement.</summary>
     ///// <see href="https://en.wikipedia.org/wiki/Metric_prefix"/>

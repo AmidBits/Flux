@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace Units
+  namespace Quantities
   {
     /// <summary>
     /// <para>Unit interval, unit of rational number, with the interval 0.0 (<see cref="UnitInterval.MinValue"/>) and 1.0 (<see cref="UnitInterval.MaxValue"/>), constrained by the <see cref="IntervalNotation"/>.</para>

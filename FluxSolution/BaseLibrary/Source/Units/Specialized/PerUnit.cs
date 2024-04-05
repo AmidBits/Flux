@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace Units
+  namespace Quantities
   {
     /// <summary>A rate is the ratio between two related quantities that are measured with different units.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Rate_(mathematics)"/>

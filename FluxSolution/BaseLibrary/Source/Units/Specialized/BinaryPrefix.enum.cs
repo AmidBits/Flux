@@ -2,27 +2,27 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static double Convert(this Units.BinaryPrefix source, double value, Units.BinaryPrefix target) => value * System.Math.Pow(10, (int)source - (int)target);
+    public static double Convert(this Quantities.BinaryPrefix source, double value, Quantities.BinaryPrefix target) => value * System.Math.Pow(10, (int)source - (int)target);
 
-    public static double GetUnitFactor(this Units.BinaryPrefix source) => System.Math.Pow(2, (int)source);
+    public static double GetUnitFactor(this Quantities.BinaryPrefix source) => System.Math.Pow(2, (int)source);
 
-    public static string GetUnitString(this Units.BinaryPrefix source, bool useFullName)
+    public static string GetUnitString(this Quantities.BinaryPrefix source, bool useFullName)
       => useFullName ? source.ToString() : source switch
       {
-        Units.BinaryPrefix.Count => string.Empty,
-        Units.BinaryPrefix.Kibi => "Ki",
-        Units.BinaryPrefix.Mebi => "Mi",
-        Units.BinaryPrefix.Gibi => "Gi",
-        Units.BinaryPrefix.Tebi => "Ti",
-        Units.BinaryPrefix.Pebi => "Pi",
-        Units.BinaryPrefix.Exbi => "Ei",
-        Units.BinaryPrefix.Zebi => "Zi",
-        Units.BinaryPrefix.Yobi => "Yi",
+        Quantities.BinaryPrefix.Count => string.Empty,
+        Quantities.BinaryPrefix.Kibi => "Ki",
+        Quantities.BinaryPrefix.Mebi => "Mi",
+        Quantities.BinaryPrefix.Gibi => "Gi",
+        Quantities.BinaryPrefix.Tebi => "Ti",
+        Quantities.BinaryPrefix.Pebi => "Pi",
+        Quantities.BinaryPrefix.Exbi => "Ei",
+        Quantities.BinaryPrefix.Zebi => "Zi",
+        Quantities.BinaryPrefix.Yobi => "Yi",
         _ => string.Empty,
       };
   }
 
-  namespace Units
+  namespace Quantities
   {
     public enum BinaryPrefix
     {

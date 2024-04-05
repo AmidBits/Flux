@@ -1,6 +1,6 @@
 namespace Flux
 {
-  namespace Units
+  namespace Quantities
   {
     /// <summary>
     /// <para>Semitone, unit of itself. A musical interval equal to one hundred cents.</para>
@@ -17,7 +17,7 @@ namespace Flux
       public Semitone(int semitones) => m_value = semitones;
 
       /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
-      public Units.Frequency ShiftPitch(Units.Frequency frequency) => new(PitchShift(frequency.Value, m_value));
+      public Quantities.Frequency ShiftPitch(Quantities.Frequency frequency) => new(PitchShift(frequency.Value, m_value));
 
       public Cent ToCent() => new(ConvertSemitoneToCent(m_value));
 
@@ -41,7 +41,7 @@ namespace Flux
 #if NET7_0_OR_GREATER
       /// <summary>Creates a new Cent instance from the specified ratio.</summary>
       /// <param name="ratio"></param>
-      public static Semitone FromRatio(Units.Ratio ratio) => FromFrequencyRatio(ratio.Value);
+      public static Semitone FromRatio(Quantities.Ratio ratio) => FromFrequencyRatio(ratio.Value);
 #endif
 
       /// <summary>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>

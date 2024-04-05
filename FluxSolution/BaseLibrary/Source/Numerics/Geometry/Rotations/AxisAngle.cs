@@ -39,10 +39,10 @@ namespace Flux
         );
     }
 
-    public static (System.Numerics.Vector3 axis, Units.Angle angle) ToQuantities(this Geometry.Rotations.AxisAngle source)
+    public static (System.Numerics.Vector3 axis, Quantities.Angle angle) ToQuantities(this Geometry.Rotations.AxisAngle source)
       => (
         new System.Numerics.Vector3((float)source.X, (float)source.Y, (float)source.Z),
-        new Units.Angle(source.Angle)
+        new Quantities.Angle(source.Angle)
       );
 
     public static System.Numerics.Quaternion ToQuaternion(this Geometry.Rotations.AxisAngle source)

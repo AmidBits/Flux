@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.Intrinsics;
 using System.Xml.XPath;
 using Flux;
-using Flux.Units;
+using Flux.Quantities;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -37,10 +37,19 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var q = new Flux.Units.Time(5954484981710000, TimeUnit.Ticks);
+      var m = new Flux.Quantities.Mass(50, MassUnit.Kilogram);
+      var a = Flux.Quantities.Acceleration.StandardGravity;
+
+      var f = new Flux.Quantities.Force(m.Value * a.Value);
+
+      var q = new Flux.Quantities.Mass(5000, MassUnit.Gram);
+
+      var qis = q.IsAssignableToGenericType(typeof(Flux.Quantities.ISiPrefixValueQuantifiable<,>));
+
       System.Console.WriteLine(q.ToUnitValueString());
       System.Console.WriteLine();
-
+      System.Console.WriteLine(q.ToSiPrefixValueString(MetricPrefix.Hecto));
+      System.Console.WriteLine();
       var qsu = q.ToStringsOfAllUnits();
       foreach (var unit in qsu)
         System.Console.WriteLine($"{unit} ({unit.Key.ToString().ToLower()})");
@@ -54,7 +63,7 @@ namespace ConsoleApp
       var ei = IntervalNotation.Open.CreateIntervalByExtent(0, 8);
       var mi = IntervalNotation.Open.CreateIntervalByMargin(0, 4, 2);
 
-      var a = ei.LoopInterval(2, SortOrder.Ascending, IntervalNotation.Open).ToArray();
+      // var a = ei.LoopInterval(2, SortOrder.Ascending, IntervalNotation.Open).ToArray();
     }
 
     #region Eliza example

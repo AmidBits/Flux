@@ -3,20 +3,20 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Creates a new string formatted as a ratio string, optionally reducing the ratio, if possible.</summary>
-    public static string ToRatioString<TSelf>(this Units.RatioDisplay display, TSelf numerator, TSelf denominator, string? format, System.IFormatProvider? formatProvider = null)
+    public static string ToRatioString<TSelf>(this Quantities.RatioDisplay display, TSelf numerator, TSelf denominator, string? format, System.IFormatProvider? formatProvider = null)
 #if NET7_0_OR_GREATER
       where TSelf : System.Numerics.INumber<TSelf>
 #endif
       => display switch
       {
-        Units.RatioDisplay.AcolonB => $"{numerator.ToString(format, formatProvider)}\u2236{denominator.ToString(format, formatProvider)}", // As a ratio (colon).
-        Units.RatioDisplay.AslashB => $"{numerator.ToString(format, formatProvider)}\u2044{denominator.ToString(format, formatProvider)}", // With a ratio slash.
-        Units.RatioDisplay.AtoB => $"{numerator.ToString(format, formatProvider)} to {denominator.ToString(format, formatProvider)}", // As textual "A to B".
+        Quantities.RatioDisplay.AcolonB => $"{numerator.ToString(format, formatProvider)}\u2236{denominator.ToString(format, formatProvider)}", // As a ratio (colon).
+        Quantities.RatioDisplay.AslashB => $"{numerator.ToString(format, formatProvider)}\u2044{denominator.ToString(format, formatProvider)}", // With a ratio slash.
+        Quantities.RatioDisplay.AtoB => $"{numerator.ToString(format, formatProvider)} to {denominator.ToString(format, formatProvider)}", // As textual "A to B".
         _ => throw new System.ArgumentOutOfRangeException(nameof(display))
       };
   }
 
-  namespace Units
+  namespace Quantities
   {
     public enum RatioDisplay
     {

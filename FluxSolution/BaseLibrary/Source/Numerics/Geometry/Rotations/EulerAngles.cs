@@ -94,11 +94,11 @@ namespace Flux
       );
     }
 
-    public static (Units.Angle yaw, Units.Angle pitch, Units.Angle roll) ToQuantities(this Geometry.Rotations.EulerAngles source)
+    public static (Quantities.Angle yaw, Quantities.Angle pitch, Quantities.Angle roll) ToQuantities(this Geometry.Rotations.EulerAngles source)
       => (
-        new Units.Angle(source.Yaw),
-        new Units.Angle(source.Pitch),
-        new Units.Angle(source.Roll)
+        new Quantities.Angle(source.Yaw),
+        new Quantities.Angle(source.Pitch),
+        new Quantities.Angle(source.Roll)
       );
 
     public static System.Numerics.Quaternion ToQuaternion(this Geometry.Rotations.EulerAngles source)

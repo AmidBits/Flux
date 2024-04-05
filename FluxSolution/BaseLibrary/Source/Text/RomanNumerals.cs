@@ -71,7 +71,7 @@ namespace Flux
       /// <seealso href="https://www.geeksforgeeks.org/python-program-to-convert-integer-to-roman/"/>
       public static System.ReadOnlySpan<char> NumberToText(int number)
       {
-        var div = (int)Units.Radix.PowOf(number.ToBigInteger(), 10, false).powOfTowardsZero;
+        var div = (int)Quantities.Radix.PowOf(number.ToBigInteger(), 10, false).powOfTowardsZero;
 
         var sb = new SpanBuilder<string>();
 

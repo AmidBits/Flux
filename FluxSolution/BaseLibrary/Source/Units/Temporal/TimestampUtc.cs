@@ -3,18 +3,18 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Returns the approximate number of computed seconds for the instance pro-rata rate. This is by not an exact measurement and used only to compare two instances.</summary>
-    public static long GetTotalApproximateNanoseconds(this Units.TimestampUtc source)
+    public static long GetTotalApproximateNanoseconds(this Quantities.TimestampUtc source)
       => (source.Year * 31536000L + source.Month * 2628000L + source.Day * 86400L + source.Hour * 3600L + source.Minute * 60L + source.Second) * 1000000000L + source.Nanosecond;
 
     /// <summary>Returns the approximate number of computed seconds for the instance pro-rata rate. This is by not an exact measurement and used only to compare two instances.</summary>
-    public static double GetTotalApproximateSeconds(this Units.TimestampUtc source)
+    public static double GetTotalApproximateSeconds(this Quantities.TimestampUtc source)
       => System.Math.CopySign(System.Math.Abs(source.Year) * 31536000L + source.Month * 2628000L + source.Day * 86400L + source.Hour * 3600L + source.Minute * 60L + source.Second + source.Nanosecond / 1e9, source.Year);
 
-    public static Units.TimestampUtc ToTimestampUtc(this System.DateTime source)
+    public static Quantities.TimestampUtc ToTimestampUtc(this System.DateTime source)
       => new(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond * 1000000);
   }
 
-  namespace Units
+  namespace Quantities
   {
     /// <summary>A <see cref="TimestampUtc"/> is a specific point in time down to the nanosecond.</summary>
     public readonly record struct TimestampUtc
@@ -70,10 +70,10 @@ namespace Flux
       public System.DateOnly ToDateOnly() => new(m_year, m_month, m_day);
 
       /// <summary>Creates a new <see cref="System.DateTime"/> from all components in this instance.</summary>
-      public System.DateTime ToDateTime() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Units.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
+      public System.DateTime ToDateTime() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
 
       /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the specified conversion calendar.</summary>
-      public JulianDate ToJulianDate(TemporalCalendar calendar) => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Units.Time.ConvertNanosecondToMillisecond(m_nanosecond)), calendar);
+      public JulianDate ToJulianDate(TemporalCalendar calendar) => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)), calendar);
 
       /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the default conversion calendar.</summary>
       public JulianDate ToJulianDate() => ToJulianDate(GetConversionCalendar());
@@ -85,13 +85,13 @@ namespace Flux
       public JulianDayNumber ToJulianDayNumber() => ToJulianDayNumber(GetConversionCalendar());
 
       /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the specified conversion calendar.</summary>
-      public MomentUtc ToMomentUtc() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Units.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
+      public MomentUtc ToMomentUtc() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
 
       /// <summary>Creates a new <see cref="System.TimeOnly"/> from the time components in this instance.</summary>
-      public System.TimeOnly ToTimeOnly() => new(m_hour, m_minute, m_second, System.Convert.ToInt32(Units.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
+      public System.TimeOnly ToTimeOnly() => new(m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
 
       /// <summary>Creates a new <see cref="System.TimeSpan"/> from the day and all time components in this instance.</summary>
-      public System.TimeSpan ToTimeSpan() => new(m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Units.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
+      public System.TimeSpan ToTimeSpan() => new(m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
 
       #region Static methods
 

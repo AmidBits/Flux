@@ -1,4 +1,4 @@
-namespace Flux.Units
+namespace Flux.Quantities
 {
   /// <summary>
   /// <para></para>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</para>
@@ -10,12 +10,12 @@ namespace Flux.Units
     public const double MaxValue = +180;
     public const double MinValue = -180;
 
-    private readonly Units.Angle m_angle;
+    private readonly Quantities.Angle m_angle;
 
     /// <summary>Creates a new Longitude from the specified number of degrees. The value is wrapped within the degree range [-180, +180].</summary>
     public Longitude(double longitude, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(longitude, unit);
 
-    /// <summary>The <see cref="Units.Angle"/> of the longitude.</summary>
+    /// <summary>The <see cref="Quantities.Angle"/> of the longitude.</summary>
     public Angle Angle { get => m_angle; init => m_angle = new(WrapExtremum(value.GetUnitValue(AngleUnit.Degree)), AngleUnit.Degree); }
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>

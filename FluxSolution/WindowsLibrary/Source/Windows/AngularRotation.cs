@@ -1,4 +1,4 @@
-using Flux.Units;
+using Flux.Quantities;
 
 namespace Flux.Wpf
 {
@@ -9,13 +9,13 @@ namespace Flux.Wpf
     {
       var (_, azimuth) = Flux.Geometry.Coordinates.PolarCoordinate.ConvertCartesian2ToPolarEx(point.X, point.Y);
 
-      return inDegrees ? Units.Angle.ConvertRadianToDegree(azimuth) : azimuth;
+      return inDegrees ? Quantities.Angle.ConvertRadianToDegree(azimuth) : azimuth;
     }
 
     /// <summary>Returns a unit point of the specified angle, in radians. Zero is to the top.</summary>
     public static System.Windows.Point AngularRotationToPoint(this double angularRotation, double magnitude = 1, bool inDegrees = false)
     {
-      var (x, y) = Flux.Geometry.Coordinates.PolarCoordinate.ConvertPolarToCartesian2Ex(magnitude, inDegrees ? Units.Angle.ConvertDegreeToRadian(angularRotation) : angularRotation);
+      var (x, y) = Flux.Geometry.Coordinates.PolarCoordinate.ConvertPolarToCartesian2Ex(magnitude, inDegrees ? Quantities.Angle.ConvertDegreeToRadian(angularRotation) : angularRotation);
 
       return new System.Windows.Point(x, y);
     }

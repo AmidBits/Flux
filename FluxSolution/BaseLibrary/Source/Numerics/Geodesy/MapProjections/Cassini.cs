@@ -17,11 +17,11 @@ namespace Flux.Geometry.MapProjections
     public Coordinates.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new Coordinates.GeographicCoordinate(
         System.Math.Asin(System.Math.Sin(project.Y) * System.Math.Cos(project.X)),
-        Units.AngleUnit.Radian,
+        Quantities.AngleUnit.Radian,
         System.Math.Atan2(System.Math.Tan(project.X), System.Math.Cos(project.Y)),
-        Units.AngleUnit.Radian,
+        Quantities.AngleUnit.Radian,
         project.Z,
-        Units.LengthUnit.Metre
+        Quantities.LengthUnit.Metre
       );
     //#pragma warning restore CA1822 // Mark members as static
   }

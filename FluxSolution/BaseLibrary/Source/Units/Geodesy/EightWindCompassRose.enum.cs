@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 45, 90, 135, 180, 225, 270, 315] (every 45° notch, starting at 0), from an eight value compass point [0, 1, 2, 3, 4, 5, 6, 7].</summary>
-    public static Units.Azimuth GetAzimuth(this EightWindCompassRose source)
+    public static Quantities.Azimuth GetAzimuth(this EightWindCompassRose source)
       => ((ThirtytwoWindCompassRose)(int)source).GetAzimuth();
     public static string ToStringOfWords(this EightWindCompassRose source)
       => ((ThirtytwoWindCompassRose)source).ToStringOfWords();

@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static double GetFrequencyRatios(this Units.TwelveToneEqualTemperament source)
-      => Units.Semitone.ConvertSemitoneToFrequencyRatio((int)source);
+    public static double GetFrequencyRatios(this Quantities.TwelveToneEqualTemperament source)
+      => Quantities.Semitone.ConvertSemitoneToFrequencyRatio((int)source);
 
-    public static int GetCents(this Units.TwelveToneEqualTemperament source)
-      => Units.Semitone.ConvertSemitoneToCent((int)source);
+    public static int GetCents(this Quantities.TwelveToneEqualTemperament source)
+      => Quantities.Semitone.ConvertSemitoneToCent((int)source);
   }
 
-  namespace Units
+  namespace Quantities
   {
     public enum TwelveToneEqualTemperament
     {

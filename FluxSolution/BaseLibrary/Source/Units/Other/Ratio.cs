@@ -1,7 +1,7 @@
 
 namespace Flux
 {
-  namespace Units
+  namespace Quantities
   {
     /// <summary>A ratio, using real numbers is an irrational number, indicates how many times one number contains another. It is two related quantities measured with the same unit, it is a dimensionless number (value). This struct stores both constituting numbers of the ratio (numerator and denominator) and returns the quotient as a value.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Ratio"/>

@@ -5,11 +5,11 @@ namespace Flux
 
   public static partial class Em
   {
-    public static Units.BigRational ToBigRational<TSelf>(this TSelf value, int maxIterations = 101)
+    public static Quantities.BigRational ToBigRational<TSelf>(this TSelf value, int maxIterations = 101)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
-      if (TSelf.IsZero(value)) return Units.BigRational.Zero;
-      if (TSelf.IsInteger(value)) return new Units.BigRational(System.Numerics.BigInteger.CreateChecked(value));
+      if (TSelf.IsZero(value)) return Quantities.BigRational.Zero;
+      if (TSelf.IsInteger(value)) return new Quantities.BigRational(System.Numerics.BigInteger.CreateChecked(value));
 
       var Am = (Item1: System.Numerics.BigInteger.Zero, Item2: System.Numerics.BigInteger.One);
       var Bm = (Item1: System.Numerics.BigInteger.One, Item2: System.Numerics.BigInteger.Zero);
@@ -59,7 +59,7 @@ namespace Flux
 
   #endregion // ExtensionMethods
 
-  namespace Units
+  namespace Quantities
   {
     // A rational number (commonly called a fraction) is a ratio between two integers. For example (3/6) = (2/4) = (1/2)
     //

@@ -78,8 +78,8 @@ namespace Maths
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, Flux.Units.Radix.IsPowOf(100.ToBigInteger(), 10));
-      Assert.AreEqual(false, Flux.Units.Radix.IsPowOf(101.ToBigInteger(), 10));
+      Assert.AreEqual(true, Flux.Quantities.Radix.IsPowOf(100.ToBigInteger(), 10));
+      Assert.AreEqual(false, Flux.Quantities.Radix.IsPowOf(101.ToBigInteger(), 10));
     }
 
     [TestMethod]
