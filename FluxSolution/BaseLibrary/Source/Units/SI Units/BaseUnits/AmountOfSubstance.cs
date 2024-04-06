@@ -25,10 +25,10 @@ namespace Flux
       : System.IComparable, System.IComparable<AmountOfSubstance>, System.IFormattable, ISiPrefixValueQuantifiable<double, AmountOfSubstanceUnit>
     {
       /// <summary>The exact number of elementary entities in one mole.</summary>
-      public static readonly double AvagadroNumber = 6.02214076e23;
+      public static readonly double AvogadroNumber = 6.02214076e23;
 
       /// <summary>The dimension of the Avagadro constant is the reciprocal of amount of substance.</summary>
-      public static readonly AmountOfSubstance AvagadroConstant = new(1 / AvagadroNumber);
+      public static readonly AmountOfSubstance AvogadroConstant = new(1 / AvogadroNumber);
 
       private readonly double m_value;
 
