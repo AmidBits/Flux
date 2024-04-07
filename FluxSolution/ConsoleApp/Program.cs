@@ -37,6 +37,12 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var value = 0.35M;
+      var parts = value.GetParts();
+      var str = value.ToCardinalNumeralCompoundString();
+
+      var sow = Flux.Quantities.CompassRose32Wind.NEbN.ToWords();
+
       var m = new Flux.Quantities.Mass(50, MassUnit.Kilogram);
       var a = Flux.Quantities.Acceleration.StandardGravity;
 
@@ -45,23 +51,6 @@ namespace ConsoleApp
       var q = new Flux.Quantities.Mass(5000, MassUnit.Gram);
 
       var qis = q.IsAssignableToGenericType(typeof(Flux.Quantities.ISiPrefixValueQuantifiable<,>));
-
-      System.Console.WriteLine(q.ToUnitValueString());
-      System.Console.WriteLine();
-      System.Console.WriteLine(q.ToSiPrefixValueString(MetricPrefix.Hecto));
-      System.Console.WriteLine();
-      var qsu = q.ToStringsOfAllUnits();
-      foreach (var unit in qsu)
-        System.Console.WriteLine($"{unit} ({unit.Key.ToString().ToLower()})");
-      System.Console.WriteLine();
-
-      var qsmp = q.ToStringsOfMetricPrefixes();
-      foreach (var mp in qsmp)
-        System.Console.WriteLine($"{mp} ({mp.Key.Item1.ToString().ToLower()}{mp.Key.Item2.ToString().ToLower()})");
-      System.Console.WriteLine();
-
-      var ei = IntervalNotation.Open.CreateIntervalByExtent(0, 8);
-      var mi = IntervalNotation.Open.CreateIntervalByMargin(0, 4, 2);
 
       // var a = ei.LoopInterval(2, SortOrder.Ascending, IntervalNotation.Open).ToArray();
     }

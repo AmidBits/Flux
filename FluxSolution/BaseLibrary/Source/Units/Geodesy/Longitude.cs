@@ -29,7 +29,7 @@ namespace Flux.Quantities
       => Angle.GetUnitValue(AngleUnit.Radian);
 
     public string ToSexagesimalDegreeString(AngleDmsNotation format = AngleDmsNotation.DegreesMinutesDecimalSeconds, UnicodeSpacing componentSpacing = UnicodeSpacing.None)
-      => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CardinalAxis.EastWest, -1, componentSpacing);
+      => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CompassCardinalAxis.EastWest, -1, componentSpacing);
 
     #region Static methods
 

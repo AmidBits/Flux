@@ -11,11 +11,15 @@ namespace Flux
 
       var result = (value, -1);
 
-      var index = 0;
+      var index = 1; // Starting at 1 because random is up to but not including.
 
       foreach (var item in source)
-        if (rng.Next(++index) == 0)
+      {
+        if (rng.Next(index) == 0)
           result = (item, index - 1);
+
+        index++;
+      }
 
       return result;
     }

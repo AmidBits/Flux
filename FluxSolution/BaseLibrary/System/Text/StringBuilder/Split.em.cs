@@ -3,9 +3,11 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Creates a sequence of substrings, as a split of the StringBuilder content based on the characters in an array. There is no change to the StringBuilder content.</summary>
-    public static System.Collections.Generic.IEnumerable<string> Split(this System.Text.StringBuilder source, System.StringSplitOptions options, System.Collections.Generic.IList<char> separators, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
+    public static System.Collections.Generic.List<string> Split(this System.Text.StringBuilder source, System.StringSplitOptions options, System.ReadOnlySpan<char> separators)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+
+      var list = new System.Collections.Generic.List<string>();
 
       var startIndex = 0;
 
@@ -13,19 +15,19 @@ namespace Flux
 
       for (var index = startIndex; index < sourceLength; index++)
       {
-        if (separators.Any(c => equalityComparer.Equals(c, source[index])))
+        if (separators.Contains(source[index]))
         {
-          if (index != startIndex || options != System.StringSplitOptions.RemoveEmptyEntries) yield return source.ToString(startIndex, index - startIndex);
+          if (index != startIndex || options != System.StringSplitOptions.RemoveEmptyEntries)
+            list.Add(source.ToString(startIndex, index - startIndex));
 
           startIndex = index + 1;
         }
       }
 
       if (startIndex < sourceLength)
-        yield return source.ToString(startIndex, sourceLength - startIndex);
+        list.Add(source.ToString(startIndex, sourceLength - startIndex));
+
+      return list;
     }
-    /// <summary>Creates a sequence of substrings, as a split of the StringBuilder content based on the characters in an array. There is no change to the StringBuilder content. Uses the default comparer.</summary>
-    public static System.Collections.Generic.IEnumerable<string> Split(this System.Text.StringBuilder source, System.StringSplitOptions options, System.Collections.Generic.IList<char> separators)
-      => Split(source, options, separators, System.Collections.Generic.EqualityComparer<char>.Default);
   }
 }

@@ -24,7 +24,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Unit interval, unit of rational number, with the interval 0.0 (<see cref="OrbitalEccentricity.MinValue"/>) and 1.0 (<see cref="OrbitalEccentricity.MaxValue"/>), constrained by the <see cref="IntervalNotation"/>.</para>
+    /// <para>Unit interval, unit of rational number, with the interval 0.0 and 1.0.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Orbital_eccentricity"/></para>
     /// </summary>
     public readonly record struct OrbitalEccentricity

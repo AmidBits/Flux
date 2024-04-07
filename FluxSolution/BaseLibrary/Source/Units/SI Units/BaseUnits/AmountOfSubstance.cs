@@ -18,17 +18,17 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Enplethy, or amount of substance. SI unit of mole. This is a base quantity.</para>
+    /// <para>Amount of substance. SI unit of mole. This is a base quantity.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Amount_of_substance"/></para>
     /// </summary>
     public readonly record struct AmountOfSubstance
       : System.IComparable, System.IComparable<AmountOfSubstance>, System.IFormattable, ISiPrefixValueQuantifiable<double, AmountOfSubstanceUnit>
     {
       /// <summary>The exact number of elementary entities in one mole.</summary>
-      public static readonly double AvogadroNumber = 6.02214076e23;
+      public const double AvogadroNumber = 6.02214076e23;
 
       /// <summary>The dimension of the Avagadro constant is the reciprocal of amount of substance.</summary>
-      public static readonly AmountOfSubstance AvogadroConstant = new(1 / AvogadroNumber);
+      public const double AvogadroConstant = 1 / AvogadroNumber;
 
       private readonly double m_value;
 
@@ -45,6 +45,8 @@ namespace Flux
       /// <param name="moles"></param>
       /// <param name="prefix"></param>
       public AmountOfSubstance(double moles, MetricPrefix prefix) => m_value = prefix.Convert(moles, MetricPrefix.NoPrefix);
+
+      public double NumberOfParticles => m_value * AvogadroNumber;
 
       #region Static methods
       #endregion Static methods

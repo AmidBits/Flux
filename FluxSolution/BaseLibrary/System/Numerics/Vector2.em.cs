@@ -151,12 +151,12 @@ namespace Flux
     /// <para>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</para>
     /// <see href="https://en.wikipedia.org/wiki/Orthant"/>
     /// </summary>
-    public static int OrthantNumber(this System.Numerics.Vector2 source, System.Numerics.Vector2 center, OrthantNumbering numbering)
+    public static int OrthantNumber(this System.Numerics.Vector2 source, System.Numerics.Vector2 center, Geometry.OrthantNumbering numbering)
       => numbering switch
       {
-        OrthantNumbering.Traditional => source.Y >= center.Y ? (source.X >= center.X ? 0 : 1) : (source.X >= center.X ? 3 : 2),
-        OrthantNumbering.BinaryNegativeAs1 => (source.X >= center.X ? 0 : 1) + (source.Y >= center.Y ? 0 : 2),
-        OrthantNumbering.BinaryPositiveAs1 => (source.X < center.X ? 0 : 1) + (source.Y < center.Y ? 0 : 2),
+        Geometry.OrthantNumbering.Traditional => source.Y >= center.Y ? (source.X >= center.X ? 0 : 1) : (source.X >= center.X ? 3 : 2),
+        Geometry.OrthantNumbering.BinaryNegativeAs1 => (source.X >= center.X ? 0 : 1) + (source.Y >= center.Y ? 0 : 2),
+        Geometry.OrthantNumbering.BinaryPositiveAs1 => (source.X < center.X ? 0 : 1) + (source.Y < center.Y ? 0 : 2),
         _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
       };
 

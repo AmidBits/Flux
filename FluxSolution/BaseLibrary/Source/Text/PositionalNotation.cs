@@ -1,12 +1,12 @@
 namespace Flux
 {
-  public enum NumericBitSize
-  {
-    /// <summary>The total number of bits used by a type in order to represent a number.</summary>
-    BitCount,
-    /// <summary>The minimum number of bits (a.k.a. shortest-bit-length) needed to represent a number.</summary>
-    BitLength
-  }
+  //public enum NumericBitSize
+  //{
+  //  /// <summary>The total number of bits used by a type in order to represent a number.</summary>
+  //  BitCount,
+  //  /// <summary>The minimum number of bits (a.k.a. shortest-bit-length) needed to represent a number.</summary>
+  //  BitLength
+  //}
 
 #if NET7_0_OR_GREATER
 

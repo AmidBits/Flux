@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Quantities
 {
   /// <summary>The compass point directions.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Points_of_the_compass"/>

@@ -1,3 +1,5 @@
+using Flux.Quantities;
+
 namespace Flux.Model.Maze
 {
   public sealed class RecursiveDivisionMaze
@@ -32,7 +34,7 @@ namespace Flux.Model.Maze
         {
           var cell = grid[row + divideSouthOf, column + i];
 
-          cell.DisconnectPath(cell.Edges[(int)EightWindCompassRose.S], true);
+          cell.DisconnectPath(cell.Edges[(int)CompassCardinalDirection.S], true);
         }
       }
 
@@ -50,7 +52,7 @@ namespace Flux.Model.Maze
         {
           var cell = grid[row + i, column + divideEastOf];
 
-          cell.DisconnectPath(cell.Edges[(int)EightWindCompassRose.E], true);
+          cell.DisconnectPath(cell.Edges[(int)CompassRose08Wind.E], true);
         }
       }
 

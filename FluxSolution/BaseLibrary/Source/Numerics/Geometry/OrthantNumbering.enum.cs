@@ -1,4 +1,4 @@
-﻿namespace Flux
+﻿namespace Flux.Geometry
 {
   public enum OrthantNumbering
   {

@@ -37,19 +37,19 @@ namespace Flux
       /// <param name="precision">The precision, or resolution to adhere to, 4 = the four cardinal directions, 8 = the four cardinals and four intercardinal together (a.k.a. the eight principal winds) form the 8-wind compass rose, 16 = the eight principal winds and the eight half-winds together form the 16-wind compass rose, 32 = the eight principal winds, eight half-winds and sixteen quarter-winds form the 32-wind compass rose.</param>
       /// <param name="notch">The integer notch that is closest to the <paramref name="azimuth"/> scaled by <paramref name="precision"/>.</param>
       /// <returns></returns>
-      public static ThirtytwoWindCompassRose CompassPoint(double azimuth, PointsOfTheCompass precision, out double notch)
-        => (ThirtytwoWindCompassRose)(int)((notch = LatchNeedle(azimuth, (int)precision)) * (32 / (int)precision));
+      public static CompassRose32Wind CompassPoint(double azimuth, PointsOfTheCompass precision, out double notch)
+        => (CompassRose32Wind)(int)((notch = LatchNeedle(azimuth, (int)precision)) * (32 / (int)precision));
 
       /// <summary>Finding the angle between two bearings.</summary>
       public static double DeltaBearing(double azimuth1, double azimuth2)
         => WrapExtremum(azimuth2 - azimuth1);
 
       public static Azimuth FromAbbreviation(string compassPointAbbreviated)
-        => System.Enum.TryParse<ThirtytwoWindCompassRose>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
+        => System.Enum.TryParse<CompassRose32Wind>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
 
       public static Azimuth FromWords(string compassPointInWords)
       {
-        var wordsOfTheCompassPoints = System.Enum.GetNames<WordsOfTheCompassPoints>();
+        var wordsOfTheCompassPoints = System.Enum.GetNames<WordsOfTheCompass>();
 
         var words = new System.Collections.Generic.List<string>();
 

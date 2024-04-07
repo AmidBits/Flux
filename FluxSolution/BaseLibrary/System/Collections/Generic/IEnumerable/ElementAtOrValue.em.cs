@@ -11,8 +11,12 @@ namespace Flux
       var internalIndex = 0;
 
       foreach (var item in source)
-        if (internalIndex++ == index)
+      {
+        if (internalIndex == index)
           return (item, index);
+
+        internalIndex++;
+      }
 
       return (value, -1);
     }

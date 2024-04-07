@@ -1,18 +1,39 @@
+using Flux.Quantities;
+
 namespace Flux
 {
   /// <summary>Supporting class for breaking down and translating numbers to strings.</summary>
   public static partial class NumeralComposition
   {
-#if NET7_0_OR_GREATER
+    /// <summary>
+    /// <para>Convert the <paramref name="number"/> into a word string.</para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="number"></param>
+    /// <returns></returns>
+    //public static string ToCardinalNumeralCompoundString<TSelf>(this TSelf number)
+    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    //  => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
+    public static string ToCardinalNumeralCompoundString<TSelf>(this TSelf number, string decimalPointWord = "Point")
+      where TSelf : System.Numerics.INumber<TSelf>
+    {
+      var sb = new System.Text.StringBuilder();
 
-    public static string ToCardinalNumeralCompoundString<TSelf>(this TSelf number)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
+      sb.AppendJoin(' ', GetCardinalNumerals(GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(number))));
 
-#else
-    public static string ToCardinalNumeralCompoundString(this System.Numerics.BigInteger number)
-      => string.Join(' ', GetCardinalNumerals(GetCompoundNumbers(number)));
-#endif
+      if (!TSelf.IsInteger(number))
+      {
+        var parts = decimal.CreateChecked(number).GetParts();
+
+        sb.Append(' ');
+        sb.Append(decimalPointWord.Trim());
+        sb.Append(' ');
+
+        sb.AppendJoin(' ', GetCardinalNumerals(GetCompoundNumbers(System.Numerics.BigInteger.CreateChecked(parts.FractionalPartAsWholeNumber))));
+      }
+
+      return sb.ToString();
+    }
 
     /// <summary>This is step two. It translates <paramref name="compoundNumbers"/> into cardinal numerals.</summary>
     public static System.Collections.Generic.List<string> GetCardinalNumerals(System.Collections.Generic.List<System.Numerics.BigInteger> compoundNumbers)
