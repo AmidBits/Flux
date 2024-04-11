@@ -1,4 +1,4 @@
-namespace Flux.Globalization.EnUs
+namespace Flux.Globalization.En.Us
 {
   /// <summary>A regular expression that complies with SSN regulations.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Social_Security_number#Structure"/>

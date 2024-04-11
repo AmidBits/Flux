@@ -1,4 +1,4 @@
-namespace Flux.Globalization.EnUs
+namespace Flux.Globalization.En.Us
 {
   /// <summary>The North American Numbering Plan (NANP) is a telephone numbering plan that encompasses 25 distinct regions.</summary>
   /// <see href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"/>

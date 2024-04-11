@@ -2,18 +2,15 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static System.Collections.Generic.IEnumerable<Text.TextElement> EnumerateTextElements(this System.IO.Stream source, System.Text.Encoding encoding)
-      => new Text.TextElementEnumerator(source, encoding);
-    public static System.Collections.Generic.IEnumerable<Text.TextElement> EnumerateTextElements(this System.IO.TextReader source)
-      => new Text.TextElementEnumerator(source);
+    public static System.Collections.Generic.IEnumerable<Text.TextElement> EnumerateTextElements(this System.IO.TextReader source) => new Text.TextElementEnumerator(source);
   }
 
   namespace Text
   {
     /// <summary>Creates an enumerator of <see cref="Text.TextElement"/> from a stream of <see cref="System.Char"/>.</summary>
     /// <remarks>Can be used for larger text segments by utilizing a (text) stream.</remarks>
-    public sealed class TextElementEnumerator
-    : Disposable, System.Collections.Generic.IEnumerable<TextElement>
+    internal sealed class TextElementEnumerator
+      : Disposable, System.Collections.Generic.IEnumerable<TextElement>
     {
       internal const int DefaultBufferSize = 4096;
       internal const int DefaultMinLength = 16;
@@ -28,10 +25,6 @@ namespace Flux
         m_bufferSize = bufferSize >= 128 ? bufferSize : throw new System.ArgumentOutOfRangeException(nameof(bufferSize));
         m_minLength = minLength >= 8 ? minLength : throw new System.ArgumentOutOfRangeException(nameof(minLength));
       }
-      public TextElementEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
-        : this(new System.IO.StreamReader(stream, encoding), bufferSize, minLength) { }
-      public TextElementEnumerator(string text, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
-        : this(new System.IO.StringReader(text), bufferSize, minLength) { }
 
       public System.Collections.Generic.IEnumerator<TextElement> GetEnumerator() => new TextElementIterator(this);
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();

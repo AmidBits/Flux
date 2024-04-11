@@ -1,4 +1,4 @@
-namespace Flux.Globalization.EnUs.Az.PimaCounty
+namespace Flux.Globalization.En.Us.Az.PimaCounty
 {
   /// <summary>The pay period usage of Pima county, as described below, was in use and stable between the years 2014 and 2022.</summary>
   public readonly record struct PimaCountyPayPeriod

@@ -8,6 +8,7 @@ using System.Runtime.Intrinsics;
 using System.Xml.XPath;
 using Flux;
 using Flux.Quantities;
+using Flux.Text;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -37,9 +38,17 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var value = 0.35M;
-      var parts = value.GetParts();
-      var str = value.ToCardinalNumeralCompoundString();
+      System.Collections.Generic.List<char> RomanNumerals = new() { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
+
+      var sourceNumber = 1912;
+      sourceNumber.TryConvertNumberToIndices(out var sourceIndices);
+      var sourceString = sourceIndices.Select(v => RomanNumerals[v]).ToList().AsSpan().ToString();
+      var targetIndices = sourceString.Select(c => RomanNumerals.IndexOf(c)).ToList();
+      targetIndices.TryConvertIndicesToNumber(out int targetNumber);
+
+      var value = 1234567890;
+      //var parts = value.GetParts();
+      var tcncs = value.ToCardinalNumeralCompoundString(includeAnd: true);
 
       var sow = Flux.Quantities.CompassRose32Wind.NEbN.ToWords();
 

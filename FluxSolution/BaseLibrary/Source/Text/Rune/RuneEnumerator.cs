@@ -2,16 +2,13 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunes(this System.IO.Stream source, System.Text.Encoding encoding)
-      => new Text.RuneEnumerator(source, encoding);
-    public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunes(this System.IO.TextReader source)
-      => new Text.RuneEnumerator(source);
+    public static System.Collections.Generic.IEnumerable<System.Text.Rune> EnumerateRunes(this System.IO.TextReader source) => new Text.RuneEnumerator(source);
   }
 
   namespace Text
   {
     /// <summary>Creates an enumerator of <see cref="System.Text.Rune"/> from a stream of <see cref="System.Char"/>.</summary>
-    public sealed class RuneEnumerator
+    internal sealed class RuneEnumerator
       : Disposable, System.Collections.Generic.IEnumerable<System.Text.Rune>
     {
       internal const int DefaultBufferSize = 4096;
@@ -27,10 +24,6 @@ namespace Flux
         m_bufferSize = bufferSize >= 128 ? bufferSize : throw new System.ArgumentOutOfRangeException(nameof(bufferSize));
         m_minLength = minLength >= 8 ? minLength : throw new System.ArgumentOutOfRangeException(nameof(minLength));
       }
-      public RuneEnumerator(System.IO.Stream stream, System.Text.Encoding encoding, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
-        : this(new System.IO.StreamReader(stream, encoding), bufferSize, minLength) { }
-      public RuneEnumerator(string text, int bufferSize = DefaultBufferSize, int minLength = DefaultMinLength)
-        : this(new System.IO.StringReader(text), bufferSize, minLength) { }
 
       public System.Collections.Generic.IEnumerator<System.Text.Rune> GetEnumerator() => new RuneIterator(this);
       System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();

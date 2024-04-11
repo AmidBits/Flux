@@ -1,5 +1,5 @@
 using System.Linq;
-using Flux.Text;
+using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Text

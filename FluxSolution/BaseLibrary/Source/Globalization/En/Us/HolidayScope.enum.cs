@@ -2,11 +2,11 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.DateTime>> GetHolidays(this Globalization.EnUs.HolidayScope source, System.DateTime timestamp)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.DateTime>> GetHolidays(this Globalization.En.Us.HolidayScope source, System.DateTime timestamp)
     {
       switch (source)
       {
-        case Globalization.EnUs.HolidayScope.Federal:
+        case Globalization.En.Us.HolidayScope.Federal:
           yield return System.Collections.Generic.KeyValuePair.Create(@"New Year's Day", new System.DateTime(timestamp.Year, 1, 1));
           yield return System.Collections.Generic.KeyValuePair.Create(@"Birthday of Martin Luther King, Jr", new System.DateTime(timestamp.Year, 1, 1).NextDayOfWeek(System.DayOfWeek.Monday, true).AddDays(14));
           yield return System.Collections.Generic.KeyValuePair.Create(@"Washington's Birthday", new System.DateTime(timestamp.Year, 2, 1).NextDayOfWeek(System.DayOfWeek.Monday, true).AddDays(14));
@@ -25,7 +25,7 @@ namespace Flux
     }
   }
 
-  namespace Globalization.EnUs
+  namespace Globalization.En.Us
   {
     public enum HolidayScope
     {

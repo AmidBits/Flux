@@ -3,10 +3,11 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
-    public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, System.Collections.Generic.IEqualityComparer<char> equalityComparer, System.ReadOnlySpan<char> characters)
+    public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, System.ReadOnlySpan<char> characters, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
-      System.ArgumentNullException.ThrowIfNull(equalityComparer);
+
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
       if (maxAdjacentLength < 1) throw new System.ArgumentNullException(nameof(maxAdjacentLength));
 
@@ -34,8 +35,9 @@ namespace Flux
 
       return source.Remove(index, source.Length - index);
     }
+
     /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the default comparer.</summary>
     public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, params char[] characters)
-      => NormalizeAdjacent(source, maxAdjacentLength, System.Collections.Generic.EqualityComparer<char>.Default, characters);
+      => NormalizeAdjacent(source, maxAdjacentLength, characters.AsSpan());
   }
 }

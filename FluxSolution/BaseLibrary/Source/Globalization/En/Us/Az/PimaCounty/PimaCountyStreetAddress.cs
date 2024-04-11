@@ -1,4 +1,4 @@
-namespace Flux.Globalization.EnUs.Az.PimaCounty
+namespace Flux.Globalization.En.Us.Az.PimaCounty
 {
   /// <summary>The usage below was active and working on and before the year 2023. Much of the guidelines for the naming in Pima county was done by Pima Association of Governments (PAG).</summary>
   /// <see href="https://pagregion.com/"/>

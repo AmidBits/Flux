@@ -1,5 +1,5 @@
 
-namespace Flux.Globalization.EnUs
+namespace Flux.Globalization.En.Us
 {
   /// <summary>A DEA number (DEA Registration Number) is an identifier assigned to a health care provider (such as a physician, optometrist, dentist, or veterinarian) by the United States Drug Enforcement Administration allowing them to write prescriptions for controlled substances.</summary>
   /// <see href="https://en.wikipedia.org/wiki/DEA_number"/>
