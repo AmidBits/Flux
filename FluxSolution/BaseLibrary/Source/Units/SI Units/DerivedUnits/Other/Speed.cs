@@ -53,26 +53,25 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      #region Static methods
       /// <summary>Create a new Speed instance representing phase velocity from the specified frequency and wavelength.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Phase_velocity"/>
       /// <param name="frequency"></param>
       /// <param name="wavelength"></param>
-      public static Speed ComputePhaseVelocity(Frequency frequency, Length wavelength)
-        => new(frequency.Value * wavelength.Value);
+      public Speed(Frequency frequency, Length wavelength) : this(frequency.Value * wavelength.Value) { }
 
-      /// <summary>Creates a new Speed instance from the specified length and time.</summary>
-      /// <param name="length"></param>
+      /// <summary>Creates a new Speed instance from the specified distance and time.</summary>
+      /// <param name="distance"></param>
       /// <param name="time"></param>
-      public static Speed From(Length length, Time time)
-        => new(length.Value / time.Value);
+      public Speed(Length distance, Time time) : this(distance.Value / time.Value) { }
 
       /// <summary>Creates a new <see cref="Speed">tangential/linear speed</see> instance from the specified <see cref="AngularFrequency"/> and <see cref="Length">Radius</see>.</summary>
       /// <param name="angularVelocity"></param>
       /// <param name="radius"></param>
-      public static Speed From(AngularFrequency angularVelocity, Length radius)
-        => new(angularVelocity.Value * radius.Value);
-      #endregion Static methods
+      public Speed(AngularFrequency angularVelocity, Length radius) : this(angularVelocity.Value * radius.Value) { }
+
+      #region Static methods
+
+      #endregion // Static methods
 
       #region Overloaded operators
 

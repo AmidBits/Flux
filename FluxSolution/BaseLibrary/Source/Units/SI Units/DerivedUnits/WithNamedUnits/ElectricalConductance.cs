@@ -32,8 +32,7 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public ElectricalResistance ToElectricResistance()
-        => new(1 / m_value);
+      public ElectricalResistance ToElectricResistance() => new(1 / m_value);
 
       #region Static methods
       #endregion Static methods

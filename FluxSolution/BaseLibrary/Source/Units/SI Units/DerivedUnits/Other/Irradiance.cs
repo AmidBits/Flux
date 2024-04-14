@@ -34,11 +34,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public Irradiance(Power power, Area area) : this(power.Value / area.Value) { }
+
       #region Static methods
 
-      public static Irradiance From(Power power, Area area)
-        => new(power.Value / area.Value);
-      #endregion Static methods
+      #endregion // Static methods
 
       #region Overloaded operators
 

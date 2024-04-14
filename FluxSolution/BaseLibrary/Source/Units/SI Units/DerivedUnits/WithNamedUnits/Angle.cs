@@ -526,7 +526,7 @@
         }
       }
 
-      #endregion Static methods
+      #endregion // Static methods
 
       #region Overloaded operators
 

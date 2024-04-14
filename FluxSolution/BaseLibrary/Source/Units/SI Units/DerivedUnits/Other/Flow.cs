@@ -32,11 +32,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public Flow(Volume volume, Time time) : this(volume.Value / time.Value) { }
+
       #region Static methods
 
-      public static Flow From(Volume volume, Time time)
-        => new(volume.Value / time.Value);
-      #endregion Static methods
+      #endregion // Static methods
 
       #region Overloaded operators
 

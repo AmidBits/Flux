@@ -32,11 +32,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public DynamicViscosity(Pressure pressure, Time time) : this(pressure.Value * time.Value) { }
+
       #region Static methods
 
-      public static DynamicViscosity From(Pressure pressure, Time time)
-        => new(pressure.Value * time.Value);
-      #endregion Static methods
+      #endregion // Static methods
 
       #region Overloaded operators
 

@@ -32,11 +32,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public Torque(Energy energy, Angle angle) : this(energy.Value / angle.Value) { }
+
       #region Static methods
 
-      public static Torque From(Energy energy, Angle angle)
-        => new(energy.Value / angle.Value);
-      #endregion Static methods
+      #endregion // Static methods
 
       #region Overloaded operators
 

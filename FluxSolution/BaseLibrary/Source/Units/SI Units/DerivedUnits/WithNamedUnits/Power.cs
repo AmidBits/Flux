@@ -39,15 +39,14 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      #region Static methods
-
       /// <summary>Creates a new Power instance from the specified <paramref name="current"/> and <paramref name="voltage"/>.</summary>
       /// <param name="current"></param>
       /// <param name="voltage"></param>
-      public static Power From(ElectricCurrent current, Voltage voltage)
-        => new(current.Value * voltage.Value);
+      public Power(ElectricCurrent current, Voltage voltage) : this(current.Value * voltage.Value) { }
 
-      #endregion Static methods
+      #region Static methods
+
+      #endregion // Static methods
 
       #region Overloaded operators
 

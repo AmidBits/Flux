@@ -32,26 +32,29 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public Frequency ToFrequency()
-        => new(m_value / System.Math.Tau);
+      /// <summary>Creates a new <see cref="AngularFrequency"/> instance from <see cref="Speed">tangential/linear speed</see> and <see cref="Length">radius</see></summary>
+      public AngularFrequency(Speed tangentialSpeed, Length radius) : this(tangentialSpeed.Value / radius.Value) { }
+
+      public Frequency ToFrequency() => new(m_value / System.Math.Tau);
 
       #region Static methods
+
+      /// <summary>
+      /// <para></para>
       /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
-      public static double ConvertAngularVelocityToRotationalSpeed(double radPerSecond)
-        => radPerSecond / System.Math.Tau;
+      /// </summary>
+      /// <param name="radianPerSecond"></param>
+      /// <returns></returns>
+      public static double ConvertAngularVelocityToRpm(double radianPerSecond) => radianPerSecond / System.Math.Tau;
 
+      /// <summary>
+      /// <para></para>
       /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
-      public static double ConvertRotationalSpeedToAngularVelocity(double revolutionPerMinute)
-        => revolutionPerMinute / 60;
+      /// </summary>
+      /// <param name="revolutionPerMinute"></param>
+      /// <returns></returns>
+      public static double ConvertRpmToAngularVelocity(double revolutionPerMinute) => revolutionPerMinute / 60;
 
-      public static AngularFrequency From(Angle angle, Time time)
-        => new(angle.Value / time.Value);
-
-      /// <summary>Creates a new <see cref="AngularFrequency"/> instance from <see cref="Speed">tangential/linear speed</see> and <see cref="Length">radius</see></summary>
-      /// <param name="tangentialSpeed"></param>
-      /// <param name="radius"></param>
-      public static AngularFrequency From(Speed tangentialSpeed, Length radius)
-        => new(tangentialSpeed.Value / radius.Value);
       #endregion Static methods
 
       #region Overloaded operators

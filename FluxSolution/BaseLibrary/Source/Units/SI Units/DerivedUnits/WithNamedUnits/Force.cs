@@ -6,6 +6,8 @@ namespace Flux
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.ForceUnit.Newton => "N",
+        Quantities.ForceUnit.KilogramForce => "kgf",
+        Quantities.ForceUnit.PoundForce => "lbf",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
   }
@@ -16,6 +18,8 @@ namespace Flux
     {
       /// <summary>This is the default unit for <see cref="Force"/>.</summary>
       Newton,
+      KilogramForce,
+      PoundForce,
     }
 
     /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
@@ -29,12 +33,14 @@ namespace Flux
         => m_value = unit switch
         {
           ForceUnit.Newton => value,
+          ForceUnit.KilogramForce => value / 0.101971621,
+          ForceUnit.PoundForce => value / 0.224808943,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      #region Static methods
+      public Force(Mass mass, Acceleration acceleration) : this(mass.Value * acceleration.Value) { }
 
-      public static Force From(Mass mass, Acceleration acceleration) => new(mass.Value * acceleration.Value);
+      #region Static methods
 
       #endregion // Static methods
 
@@ -103,6 +109,8 @@ namespace Flux
         => unit switch
         {
           ForceUnit.Newton => m_value,
+          ForceUnit.KilogramForce => m_value * 0.101971621,
+          ForceUnit.PoundForce => m_value * 0.224808943,
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 

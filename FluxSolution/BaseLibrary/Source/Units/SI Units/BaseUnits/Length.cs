@@ -92,6 +92,15 @@ namespace Flux
       /// <param name="prefix"></param>
       public Length(double metres, MetricPrefix prefix) => m_value = prefix.Convert(metres, MetricPrefix.NoPrefix);
 
+      /// <summary>
+      /// <para>Computes the wavelength from the specified phase velocity and frequency. A wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per second) for the wavelength distance.</para>
+      /// </summary>
+      /// <param name="phaseVelocity">The constant speed of the traveling wave. If these are sound waves then typically this is the speed of sound. If electromagnetic radiation (e.g. light) in free space then speed of light.</param>
+      /// <param name="frequency"></param>
+      /// <returns>The wavelength of the frequency cycle at the phase velocity.</returns>
+      /// <see href="https://en.wikipedia.org/wiki/Wavelength"/>
+      public Length(Speed phaseVelocity, Frequency frequency) : this(phaseVelocity.Value / frequency.Value) { }
+
       #region Static methods
 
       #region Conversion methods
@@ -118,16 +127,7 @@ namespace Flux
       /// <summary>Creates a new <see cref="Length"/> instance from <see cref="Speed"/> and <see cref="AngularFrequency"/></summary>
       /// <param name="speed"></param>
       /// <param name="angularVelocity"></param>
-      public static Length From(Speed speed, AngularFrequency angularVelocity)
-        => new(speed.Value / angularVelocity.Value);
-
-      /// <summary>Computes the wavelength from the specified phase velocity and frequency. A wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per second) for the wavelength distance.</summary>
-      /// <param name="phaseVelocity">The constant speed of the traveling wave. If these are sound waves then typically this is the speed of sound. If electromagnetic radiation (e.g. light) in free space then speed of light.</param>
-      /// <param name="frequency"></param>
-      /// <returns>The wavelength of the frequency cycle at the phase velocity.</returns>
-      /// <see href="https://en.wikipedia.org/wiki/Wavelength"/>
-      public static Length Wavelength(Speed phaseVelocity, Frequency frequency)
-        => new(phaseVelocity.Value / frequency.Value);
+      public static Length From(Speed speed, AngularFrequency angularVelocity) => new(speed.Value / angularVelocity.Value);
 
       #endregion Static methods
 

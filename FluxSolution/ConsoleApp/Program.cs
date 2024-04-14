@@ -38,12 +38,10 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      System.Collections.Generic.List<char> RomanNumerals = new() { 'I', 'V', 'X', 'L', 'C', 'D', 'M' };
-
       var sourceNumber = 1912;
       sourceNumber.TryConvertNumberToIndices(out var sourceIndices);
-      var sourceString = sourceIndices.Select(v => RomanNumerals[v]).ToList().AsSpan().ToString();
-      var targetIndices = sourceString.Select(c => RomanNumerals.IndexOf(c)).ToList();
+      var sourceString = Flux.Text.RomanNumerals.ConvertIndicesToSymbols(sourceIndices, Flux.Text.RomanNumerals.UpperLatinNumerals);
+      var targetIndices = Flux.Text.RomanNumerals.ConvertSymbolsToIndices(sourceString, Flux.Text.RomanNumerals.UpperLatinNumerals);
       targetIndices.TryConvertIndicesToNumber(out int targetNumber);
 
       var value = 1234567890;
@@ -56,6 +54,9 @@ namespace ConsoleApp
       var a = Flux.Quantities.Acceleration.StandardGravity;
 
       var f = new Flux.Quantities.Force(m.Value * a.Value);
+
+      var fau = f.ToStringsOfAllUnits();
+      var fmp = f.ToStringsOfMetricPrefixes();
 
       var q = new Flux.Quantities.Mass(5000, MassUnit.Gram);
 

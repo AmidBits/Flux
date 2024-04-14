@@ -40,8 +40,7 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public ElectricalConductance ToElectricalConductance()
-        => new(1 / m_value);
+      public ElectricalConductance ToElectricalConductance() => new(1 / m_value);
 
       #region Static methods
       /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>

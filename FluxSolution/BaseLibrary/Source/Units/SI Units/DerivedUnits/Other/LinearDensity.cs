@@ -35,10 +35,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public LinearDensity(Mass mass, Volume volume) : this(mass.Value / volume.Value) { }
+
       #region Static methods
-      public static LinearDensity From(Mass mass, Volume volume)
-        => new(mass.Value / volume.Value);
-      #endregion Static methods
+
+      #endregion // Static methods
 
       #region Overloaded operators
 

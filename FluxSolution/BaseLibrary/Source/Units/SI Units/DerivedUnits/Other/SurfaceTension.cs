@@ -32,14 +32,13 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public SurfaceTension(Force force, Length length) : this(force.Value / length.Value) { }
+
+      public SurfaceTension(Energy energy, Area area) : this(energy.Value / area.Value) { }
+
       #region Static methods
 
-      public static SurfaceTension From(Force force, Length length)
-        => new(force.Value / length.Value);
-
-      public static SurfaceTension From(Energy energy, Area area)
-        => new(energy.Value / area.Value);
-      #endregion Static methods
+      #endregion // Static methods
 
       #region Overloaded operators
 

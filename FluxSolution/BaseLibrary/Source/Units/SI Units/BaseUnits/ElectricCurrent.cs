@@ -45,14 +45,17 @@ namespace Flux
       public ElectricCurrent(double amperes, MetricPrefix prefix) => m_value = prefix.Convert(amperes, MetricPrefix.NoPrefix);
 
       #region Static methods
+
       /// <summary>Creates a new ElectricCurrent instance from power and voltage.</summary>
       /// <param name="power"></param>
       /// <param name="voltage"></param>
       public static ElectricCurrent From(Power power, Voltage voltage) => new(power.Value / voltage.Value);
+
       /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
       /// <param name="voltage"></param>
       /// <param name="resistance"></param>
       public static ElectricCurrent From(Voltage voltage, ElectricalResistance resistance) => new(voltage.Value / resistance.Value);
+
       #endregion Static methods
 
       #region Overloaded operators

@@ -47,6 +47,8 @@ namespace Flux
 
       #region Static methods
 
+      #region Conversions
+
       /// <summary>Convert the temperature specified in Celsius to Fahrenheit.</summary>
       public static double CelsiusToFahrenheit(double celsius) => celsius * 1.8 + 32;
       /// <summary>Convert the temperature specified in Celsius to Kelvin.</summary>
@@ -71,6 +73,8 @@ namespace Flux
       public static double RankineToKelvin(double rankine) => rankine / 1.8;
       /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
       public static double RankineToFahrenheit(double rankine) => rankine - 491.67;
+
+      #endregion // Conversions
 
       #endregion Static methods
 

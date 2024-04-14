@@ -51,6 +51,13 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      /// <summary>
+      /// <para>Constructs a frequency from sound-velocity and wavelength.</para>
+      /// </summary>
+      /// <param name="soundVelocity"></param>
+      /// <param name="wavelength"></param>
+      public Frequency(Speed soundVelocity, Length wavelength) : this(soundVelocity.Value / wavelength.Value) { }
+
       /// <summary>In digital signal processing (DSP), a normalized frequency is a ratio of a variable <see cref="Frequency"/> and a constant frequency associated with a system (e.g. sampling rate).</summary>
       public Time ComputeNormalizedFrequency(double systemFrequency) => new(1.0 / m_value);
 
@@ -107,8 +114,6 @@ namespace Flux
       /// <param name="soundVelocity"></param>
       /// <param name="wavelength"></param>
 
-      public static Frequency From(Speed soundVelocity, Length wavelength)
-        => new(soundVelocity.Value / wavelength.Value);
       #endregion Static methods
 
       #region Overloaded operators

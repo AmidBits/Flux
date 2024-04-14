@@ -32,11 +32,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
+      public Impulse(Force force, Time time) : this(force.Value / time.Value) { }
+
       #region Static methods
 
-      public static Impulse From(Force force, Time time)
-        => new(force.Value / time.Value);
-      #endregion Static methods
+      #endregion // Static methods
 
       #region Overloaded operators
 

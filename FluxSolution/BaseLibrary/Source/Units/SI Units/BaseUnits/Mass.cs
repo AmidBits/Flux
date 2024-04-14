@@ -67,7 +67,8 @@ namespace Flux
       public Mass(double grams, MetricPrefix prefix) => m_value = prefix.Convert(grams, MetricPrefix.Kilo);
 
       #region Static methods
-      #endregion Static methods
+
+      #endregion // Static methods
 
       #region Overloaded operators
 
