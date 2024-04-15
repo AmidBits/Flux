@@ -39,11 +39,9 @@ namespace Flux.Geometry
     }
 
     /// <summary>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>
-    public double AreaSigned
-      => Vertices.ComputeAreaSigned();
+    public double AreaSigned => Vertices.ComputeAreaSigned();
     /// <summary>The surface area of the polygon.</summary>
-    public double Area
-      => Vertices.ComputeArea();
+    public double Area => Vertices.ComputeArea();
 
     ///// <summary>The centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     //public System.Numerics.Vector3 GetSurfaceCentroid()
@@ -57,8 +55,7 @@ namespace Flux.Geometry
     //  => Vertices.ComputeNormal();
 
     /// <summary>Compute the perimeter length of the polygon.</summary>
-    public double Perimeter
-      => Vertices.ComputePerimeter();
+    public double Perimeter => Vertices.ComputePerimeter();
 
     #region Static methods
     /// <summary>Returns all vertices interlaced with all midpoints (halfway) of the polygon.</summary>

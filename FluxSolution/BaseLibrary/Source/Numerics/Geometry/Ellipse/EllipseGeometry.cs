@@ -24,13 +24,13 @@ namespace Flux.Geometry
     public double B => m_b;
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
-    public double Area => ComputeArea(m_a, m_b);
+    public double Area => AreaOfEllipse(m_a, m_b);
 
     /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-    public double Perimeter => ComputePerimeter(m_a, m_b);
+    public double Perimeter => PerimeterOfEllipse(m_a, m_b);
 
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
-    public bool Contains(double x, double y, double rotationAngle = 0) => ContainsPoint(m_a, m_b, x, y, rotationAngle);
+    public bool Contains(double x, double y, double rotationAngle = 0) => EllipseContainsPoint(m_a, m_b, x, y, rotationAngle);
 
     /// <summary>
     /// <para>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).</para>
@@ -135,23 +135,10 @@ namespace Flux.Geometry
     #region Static methods
 
     /// <summary>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</summary>
-    public static double ComputeArea(double a, double b) => System.Math.PI * a * b;
-
-    /// <summary>Returns the approximate circumference of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-    public static double ComputePerimeter(double a, double b)
-    {
-      var circle = System.Math.PI * (a + b); // (2 * PI * radius)
-
-      if (a == b) // For a circle, use (PI * diameter);
-        return circle;
-
-      var h3 = 3 * H(a, b);
-
-      return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
-    }
+    public static double AreaOfEllipse(double a, double b) => System.Math.PI * a * b;
 
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</summary>
-    public static bool ContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
+    public static bool EllipseContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
       => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (a * a) + System.Math.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
 
     /// <summary>Returns an ellipse geometry from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
@@ -176,6 +163,19 @@ namespace Flux.Geometry
     /// <param name="b">The semi-minor axis.</param>
     /// <returns>pow(a - b, 2) / pow(a + b, 2)</returns>
     public static double H(double a, double b) => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
+
+    /// <summary>Returns the approximate circumference of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
+    public static double PerimeterOfEllipse(double a, double b)
+    {
+      var circle = System.Math.PI * (a + b); // (2 * PI * radius)
+
+      if (a == b) // For a circle, use (PI * diameter);
+        return circle;
+
+      var h3 = 3 * H(a, b);
+
+      return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
+    }
 
     #endregion Static methods
   }

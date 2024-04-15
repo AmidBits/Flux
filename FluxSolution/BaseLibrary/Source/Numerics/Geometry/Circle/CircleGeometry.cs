@@ -17,10 +17,10 @@ namespace Flux.Geometry
     public double Radius => m_radius;
 
     /// <summary>Returns the area of circle.</summary>
-    public double Area => ComputeArea(m_radius);
+    public double Area => AreaOfCircle(m_radius);
 
     /// <summary>Returns the circumference of the circle.</summary>
-    public double Circumference => ComputePerimeter(m_radius);
+    public double Circumference => PerimeterOfCircle(m_radius);
 
     /// <summary>Returns whether a point is inside the circle.</summary>
     public bool Contains(double x, double y) => ContainsPoint(m_radius, x, y);
@@ -67,10 +67,7 @@ namespace Flux.Geometry
     #region Static methods
 
     /// <summary>Returns the area of a circle with the specified <paramref name="radius"/>.</summary>
-    public static double ComputeArea(double radius) => System.Math.PI * radius * radius;
-
-    /// <summary>Returns the circumference of a circle with the specified <paramref name="radius"/>.</summary>
-    public static double ComputePerimeter(double radius) => 2 * System.Math.PI * radius;
+    public static double AreaOfCircle(double radius) => System.Math.PI * radius * radius;
 
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</summary>
     public static bool ContainsPoint(double radius, double x, double y) => System.Math.Pow(x, 2) + System.Math.Pow(y, 2) <= System.Math.Pow(radius, 2);
@@ -88,6 +85,9 @@ namespace Flux.Geometry
         System.Math.Cos(rotationAngle) * radius,
         System.Math.Sin(rotationAngle) * radius
       );
+
+    /// <summary>Returns the circumference of a circle with the specified <paramref name="radius"/>.</summary>
+    public static double PerimeterOfCircle(double radius) => 2 * System.Math.PI * radius;
 
     #endregion // Static methods
   }

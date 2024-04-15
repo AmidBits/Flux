@@ -5,6 +5,17 @@ namespace Flux
   /// </summary>
   public static partial class CartesianCoordinates
   {
+    /// <summary>Computes the area of the specified cuboid.</summary>
+    /// <param name="length">The length of a rectangle.</param>
+    /// <param name="width">The width of a rectangle.</param>
+    /// <param name="height">The width of a rectangle.</param>
+    public static double AreaOfCuboid(double length, double width, double height) => 2 * length * width + 2 * length * height + 2 * width * height;
+
+    /// <summary>Computes the area of the specified rectangle.</summary>
+    /// <param name="length">The length of a rectangle.</param>
+    /// <param name="width">The width of a rectangle.</param>
+    public static double AreaOfRectangle(double length, double width) => length * width;
+
     /// <summary>Comptue the Chebyshev length (using the specified edgeLength) of the cartesian coordinates.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static TSelf ChebyshevLength<TSelf>(TSelf edgeLength, params TSelf[] cartesianCoordinates)
@@ -65,5 +76,10 @@ namespace Flux
 
       return sum / edgeLength;
     }
+
+    /// <summary>Computes the perimeter of the specified rectangle.</summary>
+    /// <param name="length">The length of a rectangle.</param>
+    /// <param name="width">The width of a rectangle.</param>
+    public static double PerimeterOfRectangle(double length, double width) => 2 * length + 2 * width;
   }
 }

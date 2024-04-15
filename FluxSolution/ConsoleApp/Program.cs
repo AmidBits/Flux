@@ -38,6 +38,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var hg = new Flux.Geometry.HexagonGeometry(1);
+
+      var oft = Flux.Geometry.HexagonOrientation.FlatTop.ToOrientation();
+      var opt = Flux.Geometry.HexagonOrientation.PointyTop.ToOrientation();
+
       var sourceNumber = 1912;
       sourceNumber.TryConvertNumberToIndices(out var sourceIndices);
       var sourceString = Flux.Text.RomanNumerals.ConvertIndicesToSymbols(sourceIndices, Flux.Text.RomanNumerals.UpperLatinNumerals);

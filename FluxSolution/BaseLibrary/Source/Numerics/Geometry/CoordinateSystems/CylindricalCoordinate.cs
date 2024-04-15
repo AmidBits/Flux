@@ -126,6 +126,11 @@ namespace Flux
 
       #region Static methods
 
+      /// <summary>Computes the area of the specified cylinder.</summary>
+      /// <param name="radius">The radius of a cylinder.</param>
+      /// <param name="height">The height of a cylinder.</param>
+      public static double AreaOfCylinder(double radius, double height) => 2 * System.Math.PI * radius * (radius + height);
+
       #endregion // Static methods
 
       public string ToString(string? format, System.IFormatProvider? provider)

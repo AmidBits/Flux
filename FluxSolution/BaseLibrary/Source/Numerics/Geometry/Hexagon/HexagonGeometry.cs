@@ -20,21 +20,21 @@ namespace Flux.Geometry
 
     /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public double SurfaceArea => ComputeArea(m_sideLength);
+    public double SurfaceArea => AreaOfHexagon(m_sideLength);
 
     /// <summary>Calculates the surface perimeter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public double SurfacePerimeter => ComputePerimeter(m_sideLength);
+    public double SurfacePerimeter => PerimeterOfHexagon(m_sideLength);
+
+    public System.Numerics.Vector2[] FlatTopped => CircleGeometry.CreateVectors(6, (x, y) => new System.Numerics.Vector2((float)x, (float)y), m_sideLength, Quantities.Angle.ConvertDegreeToRadian(90)).ToArray();
+
+    public System.Numerics.Vector2[] PointyTopped => CircleGeometry.CreateVectors(6, (x, y) => new System.Numerics.Vector2((float)x, (float)y), m_sideLength).ToArray();
 
     #region Static methods
 
     /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double ComputeArea(double sideLength) => 3 * (System.Math.Sqrt(3) / 2) * sideLength * sideLength;
-
-    /// <summary>Calculates the surface perimeter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
-    /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double ComputePerimeter(double sideLength) => sideLength * 6;
+    public static double AreaOfHexagon(double sideLength) => 3 * (System.Math.Sqrt(3) / 2) * sideLength * sideLength;
 
     /// <summary>
     /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the hexagon with the specified <paramref name="sideLength"/>.</para>
@@ -90,7 +90,7 @@ namespace Flux.Geometry
     /// </summary>
     /// <remarks>Indexing of the centered hexagonal number is 1-based. Index is also referred to as "ring".</remarks>
     public static int IndexOfCenteredHexagonalNumber(int centeredHexagonalNumber)
-        => centeredHexagonalNumber > 0 ? (3 + (int)(System.Math.Sqrt(12 * centeredHexagonalNumber - 3))) / 6 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
+        => centeredHexagonalNumber > 0 ? (3 + (int)System.Math.Sqrt(12 * centeredHexagonalNumber - 3)) / 6 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
 
     /// <summary>
     /// <para>The number of hexagons in the "<paramref name="ring"/>".</para>
@@ -100,6 +100,10 @@ namespace Flux.Geometry
     /// <remarks>Ring is simply a 1-based index.</remarks>
     public static int GetHexagonCountOfRing(int ring)
       => ring == 1 ? 1 : ring > 1 ? ((ring - 1) * 6) : throw new System.ArgumentOutOfRangeException(nameof(ring));
+
+    /// <summary>Calculates the surface perimeter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
+    /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
+    public static double PerimeterOfHexagon(double sideLength) => sideLength * 6;
 
     #endregion // Static methods
   }

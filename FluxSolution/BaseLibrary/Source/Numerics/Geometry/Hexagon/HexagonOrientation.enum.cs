@@ -5,8 +5,8 @@ namespace Flux
     public static Geometry.HexOrientation ToOrientation(this Geometry.HexagonOrientation orientation)
       => orientation switch
       {
-        Geometry.HexagonOrientation.FlatTopped => Geometry.HexOrientation.FlatTopped,
-        Geometry.HexagonOrientation.PointyTopped => Geometry.HexOrientation.PointyTopped,
+        Geometry.HexagonOrientation.FlatTop => Geometry.HexOrientation.FlatTopped,
+        Geometry.HexagonOrientation.PointyTop => Geometry.HexOrientation.PointyTopped,
         _ => throw new NotImplementedException(),
       };
   }
@@ -16,9 +16,9 @@ namespace Flux
     public enum HexagonOrientation
     {
       /// <summary>The hexagon orientation has the flat parallel sides are vertical (at top/bottom) and the points are horizontal (on left/right).</summary>
-      FlatTopped,
+      FlatTop,
       /// <summary>The hexagon orientation has the points are vertical (at top/bottom) and the flat parallel sides are horizontal (on left/right).</summary>
-      PointyTopped
+      PointyTop
     }
   }
 }

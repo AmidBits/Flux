@@ -119,6 +119,10 @@ namespace Flux
 
       #region Static methods
 
+      /// <summary>Computes the area of the specified sphere.</summary>
+      /// <param name="radius">The radius of a sphere.</param>
+      public static double AreaOfSphere(double radius) => 4d * System.Math.PI * System.Math.Pow(radius, 2);
+
       /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
       public static double ConvertInclinationToElevation(double inclination)
         => System.Math.PI / 2 - inclination;
