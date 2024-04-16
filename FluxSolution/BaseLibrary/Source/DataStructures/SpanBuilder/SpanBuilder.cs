@@ -298,15 +298,15 @@ namespace Flux
     }
 
     /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
-    public SpanBuilder<T> InsertEvery(T insert, int interval, Flux.Geometry.EgocentricCoordinateAxisX alignment = Geometry.EgocentricCoordinateAxisX.Left)
+    public SpanBuilder<T> InsertEvery(T insert, int interval, Coordinates.EgocentricCoordinateAxisX alignment = Coordinates.EgocentricCoordinateAxisX.Left)
     {
       switch (alignment)
       {
-        case Geometry.EgocentricCoordinateAxisX.Left:
+        case Coordinates.EgocentricCoordinateAxisX.Left:
           for (var index = interval; index < Length; index += interval + 1)
             Insert(index, insert, 1);
           break;
-        case Geometry.EgocentricCoordinateAxisX.Right:
+        case Coordinates.EgocentricCoordinateAxisX.Right:
           for (var index = Length - interval; index >= 0; index -= interval)
             Insert(index, insert, 1);
           break;

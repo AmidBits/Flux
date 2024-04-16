@@ -1,5 +1,3 @@
-using Flux.Geometry;
-
 namespace Flux.Model
 {
   public enum ChessPieceType

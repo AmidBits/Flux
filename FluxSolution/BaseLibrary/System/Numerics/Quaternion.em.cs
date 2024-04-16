@@ -5,7 +5,7 @@ namespace Flux
   {
     /// <summary></summary>
     /// <remarks>The quaternion must be normalized.</remarks>
-    public static Geometry.Rotations.AxisAngle ToAxisAngle(this System.Numerics.Quaternion source)
+    public static Rotations.AxisAngle ToAxisAngle(this System.Numerics.Quaternion source)
     {
       var n = System.Numerics.Quaternion.Normalize(source); // If w>1 acos and sqrt will produce errors, this will not happen if quaternion is normalized.
 
@@ -22,7 +22,7 @@ namespace Flux
       return new(n.X / s, n.Y / s, n.Z / s, angle);
     }
 
-    public static Geometry.Rotations.EulerAngles ToEulerAngles(this System.Numerics.Quaternion source) // yaw (Z), pitch (Y), roll (X)
+    public static Rotations.EulerAngles ToEulerAngles(this System.Numerics.Quaternion source) // yaw (Z), pitch (Y), roll (X)
     {
       var x = source.X;
       var y = source.Y;

@@ -38,29 +38,29 @@ namespace Maths
     [TestMethod]
     public void GivenTwoPointsOnEachLine()
     {
-      var expected = (Flux.Tools.IntersectTestLine.LinesIntersect, 17d / 11d, 14d / 11d);
-      var actual = Flux.Tools.GivenTwoPointsOnEachLine(1, 1, 3, 2, 1, 4, 2, -1);
+      var expected = (Flux.Geometry.LineIntersectTest.LinesIntersect, 17d / 11d, 14d / 11d);
+      var actual = Flux.Geometry.LineGeometries.GivenTwoPointsOnEachLine(1, 1, 3, 2, 1, 4, 2, -1);
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void GivenTwoPointsOnEachLineSegment()
     {
-      var expected = (Flux.Tools.IntersectTestLineSegment.IntersectWithinFirst, 17d / 11d, 14d / 11d);
-      var actual = Flux.Tools.GivenTwoPointsOnEachLineSegment(1, 1, 3, 2, 1, 4, 2, -1);
+      var expected = (Flux.Geometry.LineSegmentIntersectTest.IntersectWithinFirst, 17d / 11d, 14d / 11d);
+      var actual = Flux.Geometry.LineGeometries.GivenTwoPointsOnEachLineSegment(1, 1, 3, 2, 1, 4, 2, -1);
       Assert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void Line()
-    {
-      var geometry = new Flux.Geometry.LineSegment(5, 7, 11, 13);
+    //[TestMethod]
+    //public void Line()
+    //{
+    //  var geometry = new Flux.Geometry.LineSegment(5, 7, 11, 13);
 
-      Assert.AreEqual(5, geometry.X1);
-      Assert.AreEqual(7, geometry.Y1);
-      Assert.AreEqual(11, geometry.X2);
-      Assert.AreEqual(13, geometry.Y2);
-    }
+    //  Assert.AreEqual(5, geometry.X1);
+    //  Assert.AreEqual(7, geometry.Y1);
+    //  Assert.AreEqual(11, geometry.X2);
+    //  Assert.AreEqual(13, geometry.Y2);
+    //}
 
     //[TestMethod]
     //public void Point2()

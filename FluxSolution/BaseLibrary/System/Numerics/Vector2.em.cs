@@ -87,7 +87,7 @@ namespace Flux
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, arc * maxRandomness);
 
-        var (x, y) = Geometry.Coordinates.PolarCoordinate.ConvertPolarToCartesian2Ex(1, angle);
+        var (x, y) = Coordinates.PolarCoordinate.ConvertPolarToCartesian2Ex(1, angle);
 
         array[index] = new System.Numerics.Vector2((float)x * source.X, (float)y * source.Y);
       }
@@ -394,17 +394,17 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(a);
       System.ArgumentNullException.ThrowIfNull(b);
 
-      if (Geometry.LineSegment.IntersectionTest(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
+      if (Geometry.LineGeometries.GivenTwoPointsOnEachLine(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.LineIntersectTest.LinesIntersect)
         return true;
 
       for (int i = 1; i < a.Count; i++)
       {
-        if (Geometry.LineSegment.IntersectionTest(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
+        if (Geometry.LineGeometries.GivenTwoPointsOnEachLine(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.LineIntersectTest.LinesIntersect)
           return true;
 
         for (int p = 1; p < b.Count; p++)
         {
-          if (Geometry.LineSegment.IntersectionTest(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.LineTestOutcome.LinesIntersecting)
+          if (Geometry.LineGeometries.GivenTwoPointsOnEachLine(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.LineIntersectTest.LinesIntersect)
             return true;
         }
       }

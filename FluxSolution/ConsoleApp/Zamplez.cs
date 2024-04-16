@@ -386,15 +386,15 @@ namespace ConsoleApp
     #region RunCoordinateSystems
 
     /// <summary>This is a reference coordinate for Madrid, Spain, which is antipodal to Takapau, New Zeeland.</summary>
-    public static Flux.Geometry.Coordinates.GeographicCoordinate MadridSpain => new(40.416944, Flux.Quantities.AngleUnit.Degree, -3.703333, Flux.Quantities.AngleUnit.Degree, 650);
+    public static Flux.Coordinates.GeographicCoordinate MadridSpain => new(40.416944, Flux.Quantities.AngleUnit.Degree, -3.703333, Flux.Quantities.AngleUnit.Degree, 650);
 
     /// <summary>This is a reference coordinate for Takapau, New Zeeland, which is antipodal to Madrid, Spain.</summary>
-    public static Flux.Geometry.Coordinates.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Quantities.AngleUnit.Degree, 176.35, Flux.Quantities.AngleUnit.Degree, 235);
+    public static Flux.Coordinates.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Quantities.AngleUnit.Degree, 176.35, Flux.Quantities.AngleUnit.Degree, 235);
 
     /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.Coordinates.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Quantities.AngleUnit.Degree, -112.073889, Flux.Quantities.AngleUnit.Degree, 331);
+    public static Flux.Coordinates.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Quantities.AngleUnit.Degree, -112.073889, Flux.Quantities.AngleUnit.Degree, 331);
     /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.Coordinates.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Quantities.AngleUnit.Degree, -110.926389, Flux.Quantities.AngleUnit.Degree, 728);
+    public static Flux.Coordinates.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Quantities.AngleUnit.Degree, -110.926389, Flux.Quantities.AngleUnit.Degree, 728);
 
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
@@ -408,7 +408,7 @@ namespace ConsoleApp
       Draw(TakapauNewZealand, nameof(TakapauNewZealand));
       Draw(TucsonAzUsa, nameof(TucsonAzUsa));
 
-      static void Draw(Flux.Geometry.Coordinates.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
+      static void Draw(Flux.Coordinates.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
       {
         Flux.Console.WriteInformationLine($"{label.ToString()}:");
 
