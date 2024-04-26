@@ -7,7 +7,7 @@ namespace Flux
       => System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(source, rule, firstDayOfWeek);
 
     /// <summary>Determines the week of year for the <paramref name="source"/>.</summary>
-    public static int GetWeekOfYear(this System.DateTime source)
-      => GetWeekOfYear(source, System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule, System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek);
+    public static int GetWeekOfYear(this System.DateTime source, System.Globalization.CultureInfo? culture = null)
+      => GetWeekOfYear(source, (culture ?? System.Globalization.CultureInfo.CurrentCulture).DateTimeFormat.CalendarWeekRule, (culture ?? System.Globalization.CultureInfo.CurrentCulture).DateTimeFormat.FirstDayOfWeek);
   }
 }

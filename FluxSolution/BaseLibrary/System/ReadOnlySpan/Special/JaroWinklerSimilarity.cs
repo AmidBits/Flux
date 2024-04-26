@@ -16,7 +16,7 @@ namespace Flux
     /// <param name="prefixSize">PrefixSize is the size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static double GetJaroWinklerSimilarity<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, double boostThreshold = 0.7, int prefixSize = 4)
+    public static double JaroWinklerSimilarity<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, double boostThreshold = 0.7, int prefixSize = 4)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

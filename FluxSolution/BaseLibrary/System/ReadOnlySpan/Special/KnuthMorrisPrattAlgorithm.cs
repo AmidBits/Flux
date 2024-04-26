@@ -6,7 +6,7 @@
     /// <para>Creates a map of the amount of safely skippable elements in target (word).</para>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
     /// </summary>
-    public static System.Collections.Generic.Dictionary<int, int> KnuthMorrisPrattCreateTable<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static System.Collections.Generic.Dictionary<int, int> KnuthMorrisPrattTable<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -45,11 +45,11 @@
     /// <para>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the specified equality comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
     /// </summary>
-    public static System.Collections.Generic.List<int> KnuthMorrisPrattFindIndices<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static System.Collections.Generic.List<int> KnuthMorrisPrattIndices<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var table = KnuthMorrisPrattCreateTable(target, equalityComparer);
+      var table = KnuthMorrisPrattTable(target, equalityComparer);
 
       var indices = new System.Collections.Generic.List<int>();
 

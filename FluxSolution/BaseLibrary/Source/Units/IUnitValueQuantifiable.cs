@@ -5,7 +5,7 @@
   public static partial class Em
   {
     public static System.Collections.Generic.Dictionary<TUnit, string> ToStringsOfAllUnits<TValue, TUnit>(this IUnitValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
-      where TValue : struct, System.IEquatable<TValue>
+      where TValue : struct, System.IEquatable<TValue>, System.IComparable<TValue>
       where TUnit : System.Enum
     {
       var d = new System.Collections.Generic.Dictionary<TUnit, string>();
@@ -29,7 +29,7 @@
   /// </remarks>
   public interface IUnitValueQuantifiable<TValue, TUnit>
     : IValueQuantifiable<TValue>
-    where TValue : System.IEquatable<TValue>
+    where TValue : System.IEquatable<TValue>, System.IComparable<TValue>
     where TUnit : System.Enum
   {
     /// <summary>

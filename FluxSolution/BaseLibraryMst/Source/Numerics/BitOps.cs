@@ -138,22 +138,22 @@ namespace Numerics
     }
 
     [TestMethod]
-    public void IntegerLog2Ceiling()
+    public void IntegerLog2AwayFromZero()
     {
-      Assert.AreEqual(8, 215.IntegerLog2Ceiling());
+      Assert.AreEqual(8, 215.IntegerLog2AwayFromZero());
     }
 
     [TestMethod]
-    public void IntegerLog2Floor()
+    public void IntegerLog2TowardZero()
     {
-      Assert.AreEqual(7, 215.IntegerLog2Floor());
+      Assert.AreEqual(7, 215.IntegerLog2TowardZero());
     }
 
-    [TestMethod]
-    public void IntegerLog2()
-    {
-      Assert.AreEqual((7, 8), 215.IntegerLog2());
-    }
+    //[TestMethod]
+    //public void IntegerLog2()
+    //{
+    //  Assert.AreEqual((7, 8), 215.IntegerLog2());
+    //}
 
     [TestMethod]
     public void IsPowOf2()

@@ -8,13 +8,13 @@ namespace Flux
     /// </summary>
     /// <remarks>Implemented based on the Wiki article.</remarks>
 
-    public static double GetLevenshteinDistanceDerivedSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => 1d - GetLevenshteinDistanceDerivedSmd(source, target, equalityComparer);
-    public static double GetLevenshteinDistanceDerivedSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)GetLevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+    public static double LevenshteinDistanceSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => 1d - LevenshteinDistanceSmd(source, target, equalityComparer);
+    public static double LevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => (double)LevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-    public static int[,] GetLevenshteinDistanceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int[,] LevenshteinDistanceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -62,7 +62,7 @@ namespace Flux
     //  return ldg;
     //}
 
-    public static int GetLevenshteinDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int LevenshteinDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -154,7 +154,7 @@ namespace Flux
       #endregion Another optimized version with one vector and temp variables this time, not yet tested!
     }
 
-    public static double[,] GetCustomLevenshteinDistanceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static double[,] LevenshteinDistanceMatrixCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -178,7 +178,7 @@ namespace Flux
       return ldg;
     }
 
-    public static double GetCustomLevenshteinDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static double LevenshteinDistanceMetricCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

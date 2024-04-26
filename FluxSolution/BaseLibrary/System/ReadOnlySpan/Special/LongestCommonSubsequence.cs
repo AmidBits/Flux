@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static double GetLongestCommonSubsequenceDerivedSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => 1d - GetLongestCommonSubsequenceDerivedSmd(source, target, equalityComparer);
-    public static double GetLongestCommonSubsequenceDerivedSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)GetLongestCommonSubsequenceEditDistance(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+    public static double LongestCommonSubsequenceSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => 1d - LongestCommonSubsequenceSmd(source, target, equalityComparer);
+    public static double LongestCommonSubsequenceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => (double)LongestCommonSubsequenceEditDistance(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
     /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/> 
@@ -13,7 +13,7 @@ namespace Flux
     /// <seealso cref="https://www.ics.uci.edu/~eppstein/161/960229.html"/>
     /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
     /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
-    public static int[,] GetLongestCommonSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int[,] LongestCommonSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -32,11 +32,11 @@ namespace Flux
     }
 
     /// <summary>Returns the items comprising the longest sub-sequence.</summary>
-    public static System.Collections.Generic.List<T> GetLongestCommonSubsequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static System.Collections.Generic.List<T> LongestCommonSubsequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      matrix = GetLongestCommonSubsequenceMatrix(source, target);
+      matrix = LongestCommonSubsequenceMatrix(source, target);
 
       var lcs = new System.Collections.Generic.List<T>();
 
@@ -61,7 +61,7 @@ namespace Flux
       return lcs;
     }
 
-    public static int GetLongestCommonSubsequenceLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int LongestCommonSubsequenceLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -82,7 +82,7 @@ namespace Flux
     }
 
     /// <summary>Compute the edit distance when only insertion and deletion is allowed (no substitution), or when the cost of the substitution is the double of the cost of an insertion or deletion.</summary>
-    public static int GetLongestCommonSubsequenceEditDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (source.Length + target.Length) - 2 * GetLongestCommonSubsequenceLength(source, target, equalityComparer);
+    public static int LongestCommonSubsequenceEditDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => (source.Length + target.Length) - 2 * LongestCommonSubsequenceLength(source, target, equalityComparer);
   }
 }

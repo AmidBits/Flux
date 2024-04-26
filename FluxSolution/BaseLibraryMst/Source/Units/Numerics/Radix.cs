@@ -79,25 +79,25 @@ namespace Units
         Assert.AreEqual(expected[i], actual[i], $"{nameof(GetPlaceValues)} index {i}, expected {expected[i]} != actual {expected[i]}");
     }
 
-    [TestMethod]
-    public void IntegerLog()
-    {
-      var (logFloor, logCeiling) = Flux.Quantities.Radix.IntegerLog(512.ToBigInteger(), 10);
+    //[TestMethod]
+    //public void IntegerLog()
+    //{
+    //  var (logFloor, logCeiling) = Flux.Quantities.Radix.IntegerLog(512.ToBigInteger(), 10);
 
-      Assert.AreEqual(2.ToBigInteger(), logFloor);
-      Assert.AreEqual(3.ToBigInteger(), logCeiling);
+    //  Assert.AreEqual(2.ToBigInteger(), logFloor);
+    //  Assert.AreEqual(3.ToBigInteger(), logCeiling);
+    //}
+
+    [TestMethod]
+    public void IntegerLogAwayFromZero()
+    {
+      Assert.AreEqual(3, Flux.Quantities.Radix.IntegerLogAwayFromZero(512.ToBigInteger() - 1, 10));
     }
 
     [TestMethod]
-    public void IntegerLogCeiling()
+    public void IntegerLogTowardZero()
     {
-      Assert.AreEqual(3, Flux.Quantities.Radix.IntegerLog(512.ToBigInteger() - 1, 10).ilogAwayFromZero);
-    }
-
-    [TestMethod]
-    public void IntegerLogFloor()
-    {
-      Assert.AreEqual(2, Flux.Quantities.Radix.IntegerLog(512, 10).ilogTowardZero);
+      Assert.AreEqual(2, Flux.Quantities.Radix.IntegerLogTowardZero(512, 10));
     }
 
     [TestMethod]
@@ -140,10 +140,13 @@ namespace Units
     [TestMethod]
     public void LocateIntegerPowOf()
     {
-      Flux.Quantities.Radix.PowOf(1234567.ToBigInteger(), 10, false, RoundingMode.HalfAwayFromZero, out var nearestTowardsZero, out var nearestAwayFromZero);
+      var value = 1234567;
 
-      Assert.AreEqual(1000000, nearestTowardsZero);
-      Assert.AreEqual(10000000, nearestAwayFromZero);
+      var pow10tz = Flux.Quantities.Radix.PowOfTowardZero(value, 10, false);
+      var pow10afz = Flux.Quantities.Radix.PowOfAwayFromZero(value, 10, false);
+
+      Assert.AreEqual(1000000, pow10tz);
+      Assert.AreEqual(10000000, pow10afz);
     }
 
     //[TestMethod]

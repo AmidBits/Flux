@@ -28,7 +28,7 @@ namespace SystemFx
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
       var expected = 3;
-      var actual = span.BoyerMooreHorspoolFindIndex(new int[] { 10, 20, 30 });
+      var actual = span.BoyerMooreHorspoolIndex(new int[] { 10, 20, 30 });
 
       Assert.AreEqual(expected, actual);
     }
@@ -39,7 +39,7 @@ namespace SystemFx
       var text1 = "CA".AsSpan();
       var text2 = "ABC".AsSpan();
       var expected = 2;
-      var actual = text1.GetDamerauLevenshteinDistanceMetric(text2);
+      var actual = text1.DamerauLevenshteinDistanceMetric(text2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -77,25 +77,25 @@ namespace SystemFx
       var text1 = "karolin".AsSpan();
       var text2 = "kathrin".AsSpan();
       var expected = 3;
-      var actual = text1.GetHammingDistance(text2);
+      var actual = text1.HammingDistance(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "karolin".AsSpan();
       text2 = "kerstin".AsSpan();
       expected = 3;
-      actual = text1.GetHammingDistance(text2);
+      actual = text1.HammingDistance(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "kathrin".AsSpan();
       text2 = "kerstin".AsSpan();
       expected = 4;
-      actual = text1.GetHammingDistance(text2);
+      actual = text1.HammingDistance(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "2173896".AsSpan();
       text2 = "2233796".AsSpan();
       expected = 3;
-      actual = text1.GetHammingDistance(text2);
+      actual = text1.HammingDistance(text2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -127,25 +127,25 @@ namespace SystemFx
       var text1 = "FAREMVIEL".AsSpan();
       var text2 = "FARMVILLE".AsSpan();
       var expected = 0.9189814814814814;
-      var actual = text1.GetJaroWinklerSimilarity(text2);
+      var actual = text1.JaroWinklerSimilarity(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "CRATE".AsSpan();
       text2 = "TRACE".AsSpan();
       expected = 0.7333333333333334;
-      actual = text1.GetJaroWinklerSimilarity(text2);
+      actual = text1.JaroWinklerSimilarity(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "DwAyNE".AsSpan();
       text2 = "DuANE".AsSpan();
       expected = 0.8400000000000001;
-      actual = text1.GetJaroWinklerSimilarity(text2);
+      actual = text1.JaroWinklerSimilarity(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "TRATE".AsSpan();
       text2 = "TRACE".AsSpan();
       expected = 0.9066666666666667;
-      actual = text1.GetJaroWinklerSimilarity(text2);
+      actual = text1.JaroWinklerSimilarity(text2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -155,7 +155,7 @@ namespace SystemFx
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
       var expected = new int[] { 3, 11 };
-      var actual = span.KnuthMorrisPrattFindIndices(new int[] { 10, 20, 30 });
+      var actual = span.KnuthMorrisPrattIndices(new int[] { 10, 20, 30 });
 
       Assert.AreEqual(expected.Length, actual.Count, "Element count is different.");
       CollectionAssert.AreEqual(expected, actual, "Values are different.");
@@ -167,19 +167,19 @@ namespace SystemFx
       var text1 = "kitten".AsSpan();
       var text2 = "sitten".AsSpan();
       var expected = 1;
-      var actual = text1.GetLevenshteinDistanceMetric(text2);
+      var actual = text1.LevenshteinDistanceMetric(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "sitten".AsSpan();
       text2 = "sittin".AsSpan();
       expected = 1;
-      actual = text1.GetLevenshteinDistanceMetric(text2);
+      actual = text1.LevenshteinDistanceMetric(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "sittin".AsSpan();
       text2 = "sitting".AsSpan();
       expected = 1;
-      actual = text1.GetLevenshteinDistanceMetric(text2);
+      actual = text1.LevenshteinDistanceMetric(text2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -189,7 +189,7 @@ namespace SystemFx
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
       var expected = new int[] { 45, 60, 10, 20, 70, 80, 40, 20 }.ToList();
-      var actual = span.GetLongestAlternatingSubsequenceValues(out var _).ToList();
+      var actual = span.LongestAlternatingSubsequenceValues(out var _).ToList();
 
       Assert.AreEqual(expected.Count, actual.Count, "Element count is different.");
       CollectionAssert.AreEqual(expected, actual, "Values are different.");
@@ -201,7 +201,7 @@ namespace SystemFx
       var text1 = "ABCD".AsSpan();
       var text2 = "ACBAD".AsSpan();
       var expected = 3;
-      var actual = text1.GetLongestCommonSubsequenceLength(text2);
+      var actual = text1.LongestCommonSubsequenceLength(text2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -211,7 +211,7 @@ namespace SystemFx
       var text1 = "ABABC".AsSpan();
       var text2 = "BABCA".AsSpan();
       var expected = 4;
-      var actual = text1.GetLongestCommonSubstringLength(text2);
+      var actual = text1.LongestCommonSubstringLength(text2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -221,7 +221,7 @@ namespace SystemFx
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
       var expected = new int[] { 10, 20, 30, 50, 70, 80 };
-      var actual = span.GetLongestIncreasingSubsequenceValues(out var _);
+      var actual = span.LongestIncreasingSubsequenceValues(out var _);
 
       Assert.AreEqual(expected.Length, actual.Length, "Element count is different.");
       CollectionAssert.AreEqual(expected, actual, "Values are different.");
@@ -246,7 +246,7 @@ namespace SystemFx
       var text1 = "CA".AsSpan();
       var text2 = "ABC".AsSpan();
       var expected = 3;
-      var actual = text1.GetOptimalStringAlignmentMetric(text2);
+      var actual = text1.OptimalStringAlignmentMetric(text2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -295,7 +295,7 @@ namespace SystemFx
       var text1 = "abcbdab".AsSpan();
       var text2 = "bdcaba".AsSpan();
       var expectedLength = 9;
-      text1.GetShortestCommonSupersequenceMatrix(text2, out var actualLength);
+      text1.ShortestCommonSupersequenceMatrix(text2, out var actualLength);
       Assert.AreEqual(expectedLength, actualLength);
     }
 

@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static double GetOptimalStringAlignmentDerivedSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => 1d - GetOptimalStringAlignmentDerivedSmd(source, target, equalityComparer);
-    public static double GetOptimalStringAlignmentDerivedSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)GetOptimalStringAlignmentMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+    public static double OptimalStringAlignmentSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => 1d - OptimalStringAlignmentSmd(source, target, equalityComparer);
+    public static double OptimalStringAlignmentSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => (double)OptimalStringAlignmentMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
     /// <summary>
     /// <para>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</para>
@@ -14,7 +14,7 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Edit_distance"/></para>
     /// </summary>
     /// <remarks>Implemented based on the Wiki article.</remarks>
-    public static int[,] GetOptimalStringAlignmentMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int[,] OptimalStringAlignmentMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -52,7 +52,7 @@ namespace Flux
       return ldg;
     }
 
-    public static int GetOptimalStringAlignmentMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int OptimalStringAlignmentMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -102,7 +102,7 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Edit_distance"/></para>
     /// </summary>
     /// <remarks>Implemented based on the Wiki article.</remarks>
-    public static double[,] GetCustomOptimalStringAlignmentMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static double[,] OptimalStringAlignmentMatrixCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -140,7 +140,7 @@ namespace Flux
       return ldg;
     }
 
-    public static double GetCustomOptimalStringAlignmentMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static double OptimalStringAlignmentMetricCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

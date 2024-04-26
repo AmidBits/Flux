@@ -11,7 +11,7 @@ namespace Flux
     /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
     /// <remarks>This is the same routine as longest common subsequence (LCS).</remarks>
     /// </summary>
-    public static int[,] GetShortestCommonSupersequenceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int lengthScs, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int[,] ShortestCommonSupersequenceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int lengthScs, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -40,11 +40,11 @@ namespace Flux
     /// <para><seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/></para>
     /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
     /// </summary>
-    public static System.Collections.Generic.List<T> GetShortestCommonSupersequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static System.Collections.Generic.List<T> ShortestCommonSupersequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      matrix = GetShortestCommonSupersequenceMatrix(source, target, out var _, equalityComparer);
+      matrix = ShortestCommonSupersequenceMatrix(source, target, out var _, equalityComparer);
 
       return GetSupersequence(matrix, source, target, source.Length, target.Length, equalityComparer);
 

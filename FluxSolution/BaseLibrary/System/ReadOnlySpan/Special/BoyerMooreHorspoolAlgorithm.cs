@@ -6,7 +6,7 @@
     /// <para>Creates a map of the amount of safely skippable elements.</para>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
     /// </summary>
-    public static System.Collections.Generic.Dictionary<T, int> BoyerMooreHorspoolCreateTable<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static System.Collections.Generic.Dictionary<T, int> BoyerMooreHorspoolTable<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -34,12 +34,12 @@
     /// <para>Searches a text (source) for the index of a substring (target). Returns -1 if not found. Uses the specified equality comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
     /// </summary>
-    public static int BoyerMooreHorspoolFindIndex<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int BoyerMooreHorspoolIndex<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var skippable = BoyerMooreHorspoolCreateTable(source, target, equalityComparer);
+      var skippable = BoyerMooreHorspoolTable(source, target, equalityComparer);
 
       var skip = 0;
 

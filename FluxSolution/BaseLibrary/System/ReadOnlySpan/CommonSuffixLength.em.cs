@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Reports the count of elements equal at the end of the sequences. Using the specified comparer (null for default).</summary>
     /// <param name="minLength">The smaller length of the two spans.</param>
-    public static int CountEqualAtEnd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

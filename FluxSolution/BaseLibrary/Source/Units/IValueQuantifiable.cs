@@ -9,7 +9,7 @@
   /// </remarks>
   public interface IValueQuantifiable<TValue>
     : System.IFormattable
-    where TValue : System.IEquatable<TValue>
+    where TValue : System.IEquatable<TValue>, System.IComparable<TValue>
   {
     /// <summary>
     /// <para>The value of the quantity.</para>

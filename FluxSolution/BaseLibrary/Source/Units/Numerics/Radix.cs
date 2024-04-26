@@ -128,7 +128,7 @@ namespace Flux.Quantities
       AssertMember(radix);
 
       if (TSelf.IsNegative(number))
-        number = -number;
+        number = TSelf.Abs(number);
 
       var list = new System.Collections.Generic.List<TSelf>();
 
@@ -142,22 +142,6 @@ namespace Flux.Quantities
         }
 
       return list;
-    }
-
-    /// <summary>
-    /// <para>Computes the max number of digits that can be represented by the <paramref name="bitLength"/> (number of bits) in <paramref name="radix"/> (number base) and whether it <paramref name="isSigned"/>.</para>
-    /// <code>var maxDigitCount = Flux.Bits.GetMaxDigitCount(10, 10, false); // Yields 4, because with 10 bits, a radix of 10 (the decimal system) and unsigned, a max value of 1023 can be represented (all bits can be used, because it is an unsigned value).</code>
-    /// <code>var maxDigitCount = Flux.Bits.GetMaxDigitCount(10, 10, true); // Yields 3, because with 10 bits, a radix of 10 (the decimal system) and signed, a max value of 511 can be represented (excluding the MSB used for negative values of signed types).</code>
-    /// </summary>
-    public static int GetMaxDigitCount<TSelf>(TSelf bitLength, TSelf radix, bool isSigned)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      var foldedRight = (TSelf.One << int.CreateChecked(bitLength)) - TSelf.One;
-
-      if (isSigned)
-        foldedRight >>= 1; // Shift to properly represent a most-significant-bit used for negative values.
-
-      return int.CreateChecked(Quantities.Radix.IntegerLogFloor(foldedRight, radix) + TSelf.One);
     }
 
     /// <summary>Returns the digit place value components of <paramref name="number"/> using base <paramref name="radix"/>. E.g. 1234 return [4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands)].</summary>
@@ -179,55 +163,46 @@ namespace Flux.Quantities
     }
 
     /// <summary>
-    /// <para>Computes the floor integer-log-<paramref name="radix"/> of <paramref name="value"/>.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Logarithm"/></para>
+    /// <para>Integer-log mitigates approximations with floating point logs.</para>
+    /// <para>A.k.a. the integer-log floor of <paramref name="value"/> in base <paramref name="radix"/>.</para>
     /// </summary>
-    /// <remarks>The ceiling integer log: (<paramref name="value"/> >= 1 ? IntegerLogFloor(<paramref name="value"/> - 1, <paramref name="radix"/>) + 1 : 0).</remarks>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf IntegerLogFloor<TSelf>(TSelf value, TSelf radix)
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="radix"></param>
+    /// <returns></returns>
+    /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero simply returns zero.</remarks>
+    public static TSelf IntegerLogTowardZero<TSelf>(TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      Maths.AssertNonNegative(value);
       AssertMember(radix);
+
+      var v = TSelf.Abs(value);
 
       var ilog = TSelf.Zero;
 
-      if (!TSelf.IsZero(value))
-        while (value >= radix)
+      if (!TSelf.IsZero(v))
+        while (v >= radix)
         {
-          value /= radix;
+          v /= radix;
 
           ilog++;
         }
 
-      return ilog;
+      return TSelf.CopySign(ilog, value);
     }
 
     /// <summary>
-    /// <para>Computes the integer log <paramref name="ilogTowardZero"/> and <paramref name="ilogAwayFromZero"/> of <paramref name="value"/> in <paramref name="radix"/>. Optionally <paramref name="proper"/>.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Logarithm"/></para>
+    /// <para>Integer-log mitigates approximations with floating point logs.</para>
+    /// <para>A.k.a. the integer-log ceiling of <paramref name="value"/> in base <paramref name="radix"/>.</para>
     /// </summary>
-    /// <param name="value">The value for which <paramref name="ilogTowardZero"/> and <paramref name="ilogAwayFromZero"/> will be found.</param>
-    /// <param name="radix">The power of alignment.</param>
-    /// <param name="ilogTowardZero"></param>
-    /// <param name="ilogAwayFromZero"></param>
-    public static (TSelf ilogTowardZero, TSelf ilogAwayFromZero) IntegerLog<TSelf>(TSelf value, TSelf radix)
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="radix"></param>
+    /// <returns></returns>
+    /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero simply returns zero.</remarks>
+    public static TSelf IntegerLogAwayFromZero<TSelf>(TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      TSelf ilogTowardZero, ilogAwayFromZero;
-
-      if (TSelf.IsNegative(value))
-      {
-        (ilogTowardZero, ilogAwayFromZero) = IntegerLog(TSelf.Abs(value), radix);
-
-        return (-ilogTowardZero, -ilogAwayFromZero);
-      }
-
-      ilogTowardZero = IntegerLogFloor(value, radix);
-      ilogAwayFromZero = IsPowOf(value, radix) ? ilogTowardZero : ilogTowardZero + TSelf.One;
-
-      return (ilogTowardZero, ilogAwayFromZero);
-    }
+      => TSelf.CopySign(TSelf.Abs(IntegerLogTowardZero(value, radix)) is var tz && IsPowOf(value, radix) ? tz : tz + TSelf.One, value);
 
     /// <summary>Indicates whether <paramref name="number"/> using base <paramref name="radix"/> is jumbled (i.e. no neighboring digits having a difference larger than 1).</summary>
     /// <see cref="http://www.geeksforgeeks.org/check-if-a-number-is-jumbled-or-not/"/>
@@ -261,7 +236,7 @@ namespace Flux.Quantities
       if (value == radix) // If the value is equal to the radix, then it's a power of the radix.
         return true;
 
-      if (radix == (TSelf.One + TSelf.One)) // Special case for binary numbers, we can use dedicated IsPow2().
+      if (radix == (TSelf.One << 1)) // Special case for binary numbers, we can use dedicated IsPow2().
         return TSelf.IsPow2(value);
 
       if (value > TSelf.One)
@@ -307,55 +282,41 @@ namespace Flux.Quantities
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => value / Maths.IntegerPow(radix, DigitCount(value, radix) - count);
 
-    ///// <summary>Compute the floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
-    ///// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
-    ///// <param name="radix">The power of alignment.</param>
-    ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-    ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    //public static TSelf PowOf<TSelf>(TSelf value, TSelf radix)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //  => Maths.IntegerPow(radix, TSelf.CreateChecked(IntegerLogFloor(value, radix)));
-
-    /// <summary>Compute the two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/> of <paramref name="value"/>. Specify <paramref name="proper"/> to ensure results that are not equal to value.</summary>
-    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
-    /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-<paramref name="radix"/> will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    /// <returns>The two closest (toward-zero and away-from-zero) power-of-<paramref name="radix"/> to <paramref name="value"/>.</returns>
-    public static (TSelf powOfTowardsZero, TSelf powOfAwayFromZero) PowOf<TSelf>(TSelf value, TSelf radix, bool proper)
+    /// <summary>
+    /// <para>Computes the max number of digits that can be represented by the <paramref name="bitLength"/> (number of bits) in <paramref name="radix"/> (number base) and whether it <paramref name="isSigned"/>.</para>
+    /// <code>var maxDigitCount = Flux.Bits.GetMaxDigitCount(10, 10, false); // Yields 4, because with 10 bits, a radix of 10 (the decimal system) and unsigned, a max value of 1023 can be represented (all bits can be used, because it is an unsigned value).</code>
+    /// <code>var maxDigitCount = Flux.Bits.GetMaxDigitCount(10, 10, true); // Yields 3, because with 10 bits, a radix of 10 (the decimal system) and signed, a max value of 511 can be represented (excluding the MSB used for negative values of signed types).</code>
+    /// </summary>
+    public static int MaxDigitCount<TSelf>(TSelf bitLength, TSelf radix, bool isSigned)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      TSelf powOfTowardsZero, powOfAwayFromZero;
+      var foldedRight = (TSelf.One << int.CreateChecked(bitLength)) - TSelf.One;
 
-      if (TSelf.IsNegative(value))
-      {
-        (powOfTowardsZero, powOfAwayFromZero) = PowOf(TSelf.Abs(value), radix, proper);
+      if (isSigned)
+        foldedRight >>= 1; // Shift to properly represent a most-significant-bit used for negative values.
 
-        return (-powOfTowardsZero, -powOfAwayFromZero);
-      }
-
-      if (radix == (TSelf.One + TSelf.One))
-        return BitOps.PowOf2(value, proper);
-
-      powOfTowardsZero = Maths.IntegerPow(radix, TSelf.CreateChecked(IntegerLogFloor(value, radix)));
-      powOfAwayFromZero = powOfTowardsZero != value ? powOfTowardsZero * radix : powOfTowardsZero; // If toward-zero is not equal to value, make away-from-zero the next power-of.
-
-      return proper && powOfTowardsZero == powOfAwayFromZero
-        ? (powOfTowardsZero /= radix, powOfAwayFromZero *= radix)
-        : (powOfTowardsZero, powOfAwayFromZero);
+      return int.CreateChecked(Quantities.Radix.IntegerLogTowardZero(foldedRight, radix) + TSelf.One);
     }
 
-    /// <summary>Compute the nearest power-of-<paramref name="radix"/> from <paramref name="powOfTowardsZero"/>/<paramref name="powOfAwayFromZero"/> of <paramref name="value"/>. Specify <paramref name="proper"/> to ensure results that are not equal to value.</summary>
-    /// <param name="value">The value for which the nearest power-of-radix will be found.</param>
+    /// <summary>Compute the away-from-zero power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
+    /// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
     /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Proper means nearest but do not include <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-<paramref name="radix"/> will be properly nearest (but not the same) or LT/GT rather than LTE/GTE.</param>
-    /// <returns>The nearest power-of-<paramref name="radix"/> to <paramref name="value"/>.</returns>
-    public static TSelf PowOf<TSelf>(TSelf value, TSelf radix, bool proper, RoundingMode mode, out TSelf powOfTowardsZero, out TSelf powOfAwayFromZero)
+    /// <param name="proper">Whether the power-of-<paramref name="radix"/> must not be the same as <paramref name="value"/>.</param>
+    /// <returns>The away-from-zero (ceiling, if <paramref name="value"/> is positive) power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static TSelf PowOfAwayFromZero<TSelf>(TSelf value, TSelf radix, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      (powOfTowardsZero, powOfAwayFromZero) = PowOf(value, radix, proper);
+      => TSelf.CopySign(TSelf.Abs(value) is var v && radix.IntegerPow(TSelf.CreateChecked(IntegerLogTowardZero(v, radix))) is var tz && (tz != v ? tz * radix : tz) is var afz && proper && afz == v ? afz * radix : afz, value);
 
-      return value.RoundToBoundaries(mode, powOfTowardsZero, powOfAwayFromZero);
-    }
+    /// <summary>Compute the toward-zero power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
+    /// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
+    /// <param name="radix">The power of alignment.</param>
+    /// <param name="proper">Whether the power-of-<paramref name="radix"/> must not be the same as <paramref name="value"/>.</param>
+    /// <returns>The toward-zero (floor, if <paramref name="value"/> is positive) power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static TSelf PowOfTowardZero<TSelf>(TSelf value, TSelf radix, bool proper)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.IsZero(value) ? value : TSelf.CopySign(TSelf.Abs(value) is var v && radix.IntegerPow(IntegerLogTowardZero(v, radix)) is var tz && proper && tz == v ? tz / radix : tz, value);
 
     /// <summary>Reverse the digits of <paramref name="number"/> using base <paramref name="radix"/>, obtaining a new number.</summary>
     public static TSelf ReverseDigits<TSelf>(TSelf number, TSelf radix)
@@ -381,25 +342,21 @@ namespace Flux.Quantities
     {
       if (value <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-      var logRadix = TSelf.CreateChecked(IntegerLogFloor(value, radix));
+      var logRadix = TSelf.CreateChecked(IntegerLogTowardZero(value, radix));
       var maxDistinct = (TSelf.CreateChecked(9) * logRadix) + (value / Maths.IntegerPow(radix, logRadix));
 
       return TSelf.Max(value - maxDistinct, TSelf.Zero);
     }
 
-    private static readonly string m_subscriptDecimalDigits = "\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089";
-
     /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static string ToSubscriptString<TSelf>(TSelf number, int radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => PositionalNotation.NumberToText(number, m_subscriptDecimalDigits.AsSpan()[..AssertMember(radix, m_subscriptDecimalDigits.Length)], '\u002D').ToString();
-
-    private static readonly string m_superscriptDecimalDigits = "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";
+      => PositionalNotation.NumberToText(number, "\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089".AsSpan()[..AssertMember(radix, 10)], '\u002D').ToString();
 
     /// <summary>Converts <paramref name="number"/> to text using base <paramref name="radix"/>.</summary>
     public static string ToSuperscriptString<TSelf>(TSelf number, int radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => PositionalNotation.NumberToText(number, m_superscriptDecimalDigits.AsSpan()[..AssertMember(radix, m_superscriptDecimalDigits.Length)], '\u002D').ToString();
+      => PositionalNotation.NumberToText(number, "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079".AsSpan()[..AssertMember(radix, 10)], '\u002D').ToString();
 
     /// <summary>Converts a <paramref name="number"/> to a list of <paramref name="positionalNotationIndices"/>, based on the specified <paramref name="radix"/>.</summary>
     public static bool TryConvertNumberToPositionalNotationIndices<TValue, TRadix>(TValue number, TRadix radix, out System.Collections.Generic.List<int> positionalNotationIndices)

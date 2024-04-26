@@ -19,7 +19,7 @@ namespace SystemFx
     public void DamerauLevenstein_Default()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetDamerauLevenshteinDistanceMetric(target);
+      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -27,7 +27,7 @@ namespace SystemFx
     public void DamerauLevenstein_IgnoreCase()
     {
       var expected = 1;
-      var actual = source.AsSpan().GetDamerauLevenshteinDistanceMetric(target, comparerIgnoreCase);
+      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -35,7 +35,7 @@ namespace SystemFx
     public void DamerauLevenstein_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = source.AsSpan().GetDamerauLevenshteinDistanceMetric(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -43,7 +43,7 @@ namespace SystemFx
     public void DamerauLevenstein_None()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetDamerauLevenshteinDistanceMetric(target, comparerNone);
+      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -51,7 +51,7 @@ namespace SystemFx
     public void HammingDistance_Default()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetHammingDistance(target);
+      var actual = source.AsSpan().HammingDistance(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -59,7 +59,7 @@ namespace SystemFx
     public void HammingDistance_IgnoreCase()
     {
       var expected = 1;
-      var actual = source.AsSpan().GetHammingDistance(target, comparerIgnoreCase);
+      var actual = source.AsSpan().HammingDistance(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -67,7 +67,7 @@ namespace SystemFx
     public void HammingDistance_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = source.AsSpan().GetHammingDistance(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().HammingDistance(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -75,7 +75,7 @@ namespace SystemFx
     public void HammingDistance_None()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetHammingDistance(target, comparerNone);
+      var actual = source.AsSpan().HammingDistance(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -83,7 +83,7 @@ namespace SystemFx
     public void JaroWinklerSimilarity_Default()
     {
       var expected = 0.7999999999999999;
-      var actual = source.AsSpan().GetJaroWinklerSimilarity(target);
+      var actual = source.AsSpan().JaroWinklerSimilarity(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -91,7 +91,7 @@ namespace SystemFx
     public void JaroWinklerSimilarity_IgnoreCase()
     {
       var expected = 0.9466666666666665;
-      var actual = source.AsSpan().GetJaroWinklerSimilarity(target, comparerIgnoreCase);
+      var actual = source.AsSpan().JaroWinklerSimilarity(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -99,7 +99,7 @@ namespace SystemFx
     public void JaroWinklerSimilarity_IgnoreNonSpace()
     {
       var expected = 0.8666666666666667;
-      var actual = source.AsSpan().GetJaroWinklerSimilarity(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().JaroWinklerSimilarity(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -107,7 +107,7 @@ namespace SystemFx
     public void JaroWinklerSimilarity_None()
     {
       var expected = 0.7999999999999999;
-      var actual = source.AsSpan().GetJaroWinklerSimilarity(target, comparerNone);
+      var actual = source.AsSpan().JaroWinklerSimilarity(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -115,7 +115,7 @@ namespace SystemFx
     public void LevenshteinDistance_Default()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetLevenshteinDistanceMetric(target);
+      var actual = source.AsSpan().LevenshteinDistanceMetric(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -123,7 +123,7 @@ namespace SystemFx
     public void LevenshteinDistance_IgnoreCase()
     {
       var expected = 1;
-      var actual = source.AsSpan().GetLevenshteinDistanceMetric(target, comparerIgnoreCase);
+      var actual = source.AsSpan().LevenshteinDistanceMetric(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -131,7 +131,7 @@ namespace SystemFx
     public void LevenshteinDistance_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = source.AsSpan().GetLevenshteinDistanceMetric(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().LevenshteinDistanceMetric(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -139,7 +139,7 @@ namespace SystemFx
     public void LevenshteinDistance_None()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetLevenshteinDistanceMetric(target, comparerNone);
+      var actual = source.AsSpan().LevenshteinDistanceMetric(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -147,7 +147,7 @@ namespace SystemFx
     public void LongestCommonSubsequence_Default()
     {
       var expected = 7;
-      var actual = source.AsSpan().GetLongestCommonSubsequenceLength(target);
+      var actual = source.AsSpan().LongestCommonSubsequenceLength(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -155,7 +155,7 @@ namespace SystemFx
     public void LongestCommonSubsequence_IgnoreCase()
     {
       var expected = 9;
-      var actual = source.AsSpan().GetLongestCommonSubsequenceLength(target, comparerIgnoreCase);
+      var actual = source.AsSpan().LongestCommonSubsequenceLength(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -163,7 +163,7 @@ namespace SystemFx
     public void LongestCommonSubsequence_IgnoreNonSpace()
     {
       var expected = 8;
-      var actual = source.AsSpan().GetLongestCommonSubsequenceLength(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().LongestCommonSubsequenceLength(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -171,7 +171,7 @@ namespace SystemFx
     public void LongestCommonSubsequence_None()
     {
       var expected = 7;
-      var actual = source.AsSpan().GetLongestCommonSubsequenceLength(target, comparerNone);
+      var actual = source.AsSpan().LongestCommonSubsequenceLength(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -179,7 +179,7 @@ namespace SystemFx
     public void LongestCommonSubstring_Default()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetLongestCommonSubstringLength(target);
+      var actual = source.AsSpan().LongestCommonSubstringLength(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -187,7 +187,7 @@ namespace SystemFx
     public void LongestCommonSubstring_IgnoreCase()
     {
       var expected = 7;
-      var actual = source.AsSpan().GetLongestCommonSubstringLength(target, comparerIgnoreCase);
+      var actual = source.AsSpan().LongestCommonSubstringLength(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -195,7 +195,7 @@ namespace SystemFx
     public void LongestCommonSubstring_IgnoreNonSpace()
     {
       var expected = 5;
-      var actual = source.AsSpan().GetLongestCommonSubstringLength(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().LongestCommonSubstringLength(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -203,7 +203,7 @@ namespace SystemFx
     public void LongestCommonSubstring_None()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetLongestCommonSubstringLength(target, comparerNone);
+      var actual = source.AsSpan().LongestCommonSubstringLength(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 
@@ -243,7 +243,7 @@ namespace SystemFx
     public void OptimalStringAlignment_Default()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetOptimalStringAlignmentMetric(target);
+      var actual = source.AsSpan().OptimalStringAlignmentMetric(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -251,7 +251,7 @@ namespace SystemFx
     public void OptimalStringAlignment_IgnoreCase()
     {
       var expected = 1;
-      var actual = source.AsSpan().GetOptimalStringAlignmentMetric(target, comparerIgnoreCase);
+      var actual = source.AsSpan().OptimalStringAlignmentMetric(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -259,7 +259,7 @@ namespace SystemFx
     public void OptimalStringAlignment_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = source.AsSpan().GetOptimalStringAlignmentMetric(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().OptimalStringAlignmentMetric(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -267,7 +267,7 @@ namespace SystemFx
     public void OptimalStringAlignment_None()
     {
       var expected = 3;
-      var actual = source.AsSpan().GetOptimalStringAlignmentMetric(target, comparerNone);
+      var actual = source.AsSpan().OptimalStringAlignmentMetric(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
   }

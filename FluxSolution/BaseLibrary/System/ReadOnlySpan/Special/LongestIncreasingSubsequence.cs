@@ -2,9 +2,9 @@
 {
   public static partial class Fx
   {
-    public static int GetLongestIncreasingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
+    public static int LongestIncreasingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
-      matrix = GetLongestAlternatingSubsequenceMatrix(source, out var length, comparer);
+      matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
 
       return length;
     }
@@ -13,7 +13,7 @@
     /// <para>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
     /// </summary>
-    public static int[,] GetLongestIncreasingSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T>? comparer = null)
+    public static int[,] LongestIncreasingSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
@@ -54,9 +54,9 @@
     /// <para>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
     /// </summary>
-    public static T[] GetLongestIncreasingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
+    public static T[] LongestIncreasingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
-      matrix = GetLongestIncreasingSubsequenceMatrix(source, out var length, comparer);
+      matrix = LongestIncreasingSubsequenceMatrix(source, out var length, comparer);
 
       var result = new T[length];
       for (int i = length - 1, k = matrix[0, length]; i >= 0; i--, k = matrix[1, k])

@@ -277,7 +277,10 @@ namespace ConsoleApp
 
       var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
-      var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
+      var rtpTowardsZero = Flux.Quantities.Radix.PowOfTowardZero(value, radix, true);
+      var rtpAwayFromZero = Flux.Quantities.Radix.PowOfAwayFromZero(value, radix, true);
+      var rtp = value.RoundToBoundaries(Flux.RoundingMode.AwayFromZero, rtpTowardsZero, rtpAwayFromZero);
+      //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
       var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
 

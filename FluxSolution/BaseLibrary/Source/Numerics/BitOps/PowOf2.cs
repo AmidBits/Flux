@@ -12,13 +12,35 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsPow2(value);
 
-    ///// <summary>Compute the floor power-of-2 of <paramref name="value"/>.</summary>
-    ///// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
-    ///// <returns>The floor power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
-    ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    //public static TSelf PowOf2<TSelf>(this TSelf value)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //  => value.MostSignificant1Bit();
+    /// <summary>
+    /// <para>Computes the closest power-of-2 in the direction away-from-zero.</para>
+    /// <example>
+    /// <para>In order to process for example floating point types:</para>
+    /// <code>TSelf.CreateChecked(PowOf2AwayFromZero(System.Numerics.BigInteger.CreateChecked(value), proper &amp;&amp; TSelf.IsInteger(value)))</code>
+    /// </example>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="proper"></param>
+    /// <returns></returns>
+    public static TSelf PowOf2AwayFromZero<TSelf>(this TSelf value, bool proper)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.CopySign(TSelf.Abs(value) is var v && TSelf.IsPow2(v) ? (proper ? v << 1 : v) : v.MostSignificant1Bit() << 1, value);
+
+    /// <summary>
+    /// <para>Computes the closest power-of-2 in the direction toward-zero.</para>
+    /// <example>
+    /// <para>In order to process for example a double:</para>
+    /// <code><see cref="double"/>.CreateChecked(PowOf2TowardZero(System.Numerics.BigInteger.CreateChecked(value), proper &amp;&amp; <see cref="double"/>.IsInteger(value)))</code>
+    /// </example>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="proper"></param>
+    /// <returns></returns>
+    public static TSelf PowOf2TowardZero<TSelf>(this TSelf value, bool proper)
+       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+       => TSelf.CopySign(TSelf.Abs(value) is var v && TSelf.IsPow2(v) && proper ? v >> 1 : v.MostSignificant1Bit(), value);
 
     /// <summary>
     /// <para>Compute the two closest (toward-zero and away-from-zero) power-of-2 of <paramref name="value"/>. Specify <paramref name="proper"/> to ensure results that are not equal to value.</para>
@@ -29,21 +51,21 @@ namespace Flux
     public static (TSelf powOf2TowardsZero, TSelf powOf2AwayFromZero) PowOf2<TSelf>(this TSelf value, bool proper)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      TSelf powOf2TowardsZero, powOf2AwayFromZero;
+      var powOf2TowardsZero = TSelf.Abs(value);
+      var powOf2AwayFromZero = powOf2TowardsZero;
 
-      if (TSelf.IsNegative(value))
+      if (!TSelf.IsPow2(powOf2TowardsZero) && powOf2TowardsZero.MostSignificant1Bit() is var ms1b)
       {
-        (powOf2TowardsZero, powOf2AwayFromZero) = PowOf2(TSelf.Abs(value), proper);
-
-        return (-powOf2TowardsZero, -powOf2AwayFromZero);
+        powOf2TowardsZero = ms1b;
+        powOf2AwayFromZero = ms1b << 1;
+      }
+      else if (proper)
+      {
+        powOf2TowardsZero >>= 1;
+        powOf2AwayFromZero <<= 1;
       }
 
-      powOf2TowardsZero = value.MostSignificant1Bit();
-      powOf2AwayFromZero = powOf2TowardsZero != value ? powOf2TowardsZero << 1 : powOf2TowardsZero;
-
-      return proper && powOf2TowardsZero == powOf2AwayFromZero
-        ? (powOf2TowardsZero >>= 1, powOf2AwayFromZero <<= 1)
-        : (powOf2TowardsZero, powOf2AwayFromZero);
+      return (TSelf.CopySign(powOf2TowardsZero, value), TSelf.CopySign(powOf2AwayFromZero, value));
     }
 
     /// <summary>

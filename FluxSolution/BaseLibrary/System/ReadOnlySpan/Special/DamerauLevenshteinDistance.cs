@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static double GetDamerauLevenshteinDistanceDerivedSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static double DamerauLevenshteinDistanceSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
-      => 1d - GetDamerauLevenshteinDistanceDerivedSmd(source, target, equalityComparer);
-    public static double GetDamerauLevenshteinDistanceDerivedSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => 1d - DamerauLevenshteinDistanceSmd(source, target, equalityComparer);
+    public static double DamerauLevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
-      => (double)GetDamerauLevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+      => (double)DamerauLevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
     /// <summary>
     /// <para>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</para>
@@ -16,7 +16,7 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Triangle_inequality"/></para>
     /// </summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
-    public static int[,] GetDamerauLevenshteinDistanceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int[,] DamerauLevenshteinDistanceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -88,7 +88,7 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Triangle_inequality"/></para>
     /// </summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
-    public static int GetDamerauLevenshteinDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int DamerauLevenshteinDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -98,7 +98,7 @@ namespace Flux
       if (source.Length == 0) return target.Length;
       else if (target.Length == 0) return source.Length;
 
-      var matrix = GetDamerauLevenshteinDistanceMatrix(source, target, equalityComparer);
+      var matrix = DamerauLevenshteinDistanceMatrix(source, target, equalityComparer);
 
       return matrix[source.Length + 1, target.Length + 1];
     }
@@ -110,7 +110,7 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Triangle_inequality"/></para>
     /// </summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
-    public static double[,] GetCustomDamerauLevenshteinDistanceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static double[,] DamerauLevenshteinDistanceMatrixCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -182,7 +182,7 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Triangle_inequality"/></para>
     /// </summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
-    public static double GetCustomDamerauLevenshteinEditDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static double DamerauLevenshteinDistanceMetricCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -192,7 +192,7 @@ namespace Flux
       if (source.Length == 0) return target.Length;
       else if (target.Length == 0) return source.Length;
 
-      var matrix = GetCustomDamerauLevenshteinDistanceMatrix(source, target, costOfDeletion, costOfInsertion, costOfSubstitution, costOfTransposition, equalityComparer);
+      var matrix = DamerauLevenshteinDistanceMatrixCustom(source, target, costOfDeletion, costOfInsertion, costOfSubstitution, costOfTransposition, equalityComparer);
 
       return matrix[source.Length + 1, target.Length + 1];
     }

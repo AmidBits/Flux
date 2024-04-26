@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   #region ExtensionMethods
@@ -116,7 +115,9 @@ namespace Flux
       /// <param name="reduceIfPossible">If true, reduce if possible, and if false, do not attempt to reduce.</param>
       private BigRational(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, bool reduceIfPossible) // Private shortcut for speed when known operations produce already reduced fractions.
       {
-        AdjustSignum(numerator, denominator, out numerator, out denominator);
+        if (denominator.IsZero) throw new System.DivideByZeroException();
+
+        TryAdjustSignum(numerator, denominator, out numerator, out denominator);
 
         if (reduceIfPossible)
           TryReduce(numerator, denominator, out numerator, out denominator);
@@ -148,14 +149,8 @@ namespace Flux
 
       public string ToImproperString() => $"{m_numerator}\u2044{m_denominator}";
 
-#if NET7_0_OR_GREATER
       /// <summary>Convert the ratio to a fraction. If numerator and/or denominator are not integers, the fraction is approximated.</summary>
-      public Ratio ToRatio()
-        => new(double.CreateChecked(m_numerator), double.CreateChecked(m_denominator));
-#endif
-
-      ///// <summary>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</summary>
-      //public bool IsProper => System.Numerics.BigInteger.Abs(m_numerator) < m_denominator;
+      public Ratio ToRatio() => new(double.CreateChecked(m_numerator), double.CreateChecked(m_denominator));
 
       //public bool IsMixed => m_denominator > System.Numerics.BigInteger.One && System.Numerics.BigInteger.Abs(m_numerator) > m_denominator;
 
@@ -189,8 +184,11 @@ namespace Flux
       //  return IsMixed;
       //}
 
-      public int GetByteCount()
-        => 4 + m_numerator.GetByteCount() + 4 + m_denominator.GetByteCount();
+      /// <summary>
+      /// <para>One 32-bit integer (numerator count) + the actual numerator byte count + another 32-bit integer (denominator count) + the actual denominator byte count.</para>
+      /// </summary>
+      /// <returns></returns>
+      public int GetByteCount() => 4 + m_numerator.GetByteCount() + 4 + m_denominator.GetByteCount();
 
       #region Static methods
 
@@ -285,10 +283,16 @@ namespace Flux
         throw new System.NotSupportedException();
       }
 
-      public static bool AdjustSignum(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger adjustedNumerator, out System.Numerics.BigInteger adjustedDenominator)
+      /// <summary>
+      /// <para>Tries to adjust the sign of the <paramref name="numerator"/>/<paramref name="denominator"/> into <paramref name="adjustedNumerator"/>/<paramref name="adjustedDenominator"/> and returns whether successful.</para>
+      /// </summary>
+      /// <param name="numerator"></param>
+      /// <param name="denominator"></param>
+      /// <param name="adjustedNumerator"></param>
+      /// <param name="adjustedDenominator"></param>
+      /// <returns></returns>
+      public static bool TryAdjustSignum(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger adjustedNumerator, out System.Numerics.BigInteger adjustedDenominator)
       {
-        if (denominator.IsZero) throw new System.DivideByZeroException();
-
         if (System.Numerics.BigInteger.IsNegative(denominator)) // Ensure denominator remain positivity.
         {
           adjustedNumerator = -numerator;
@@ -321,24 +325,38 @@ namespace Flux
             true
           );
 
-      /// <summary>Determines whether the rational represents a mixed numbered fraction.</summary>
+      /// <summary>Determines whether <paramref name="value"/> represents a mixed numbered fraction.</summary>
       public static bool IsMixedNumber(BigRational value)
         => value.m_denominator > System.Numerics.BigInteger.One // If the denominator is one, it is a whole number, not a mixed number.
           && System.Numerics.BigInteger.Abs(value.m_numerator) > value.m_denominator;
 
-      /// <summary>Determines whether the <paramref name="numerator"/> / <paramref name="denominator"/> represents a reducible fraction, and if so, returns the <paramref name="greatestCommonDivisor"/> (Greatest Common Denominator) as an out parameter.</summary>
+      /// <summary>
+      /// <para>Determines whether the <paramref name="numerator"/>/<paramref name="denominator"/> represents a reducible fraction, and if so, outputs the <paramref name="greatestCommonDivisor"/> (a.k.a. Greatest Common Denominator or GCD) of the fraction parts.</para>
+      /// </summary>
+      /// <param name="numerator"></param>
+      /// <param name="denominator"></param>
+      /// <param name="greatestCommonDivisor"></param>
+      /// <returns></returns>
+      /// <exception cref="System.DivideByZeroException"></exception>
       public static bool IsReducible(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger greatestCommonDivisor)
       {
-        AdjustSignum(numerator, denominator, out numerator, out denominator);
+        if (denominator.IsZero)
+        {
+          greatestCommonDivisor = denominator;
+
+          return false;
+        }
+
+        TryAdjustSignum(numerator, denominator, out numerator, out denominator);
 
         return (greatestCommonDivisor = System.Numerics.BigInteger.GreatestCommonDivisor(numerator, denominator)) > System.Numerics.BigInteger.One;
       }
 
-      /// <summary>Determines whether the <paramref name="numerator"/> / <paramref name="denominator"/> represents a unit fraction.</summary>
+      /// <summary>Determines whether <paramref name="value"/> represents a unit fraction.</summary>
       /// <remarks>A fraction is a unit fraction if its <paramref name="numerator"/> is equal to 1.</remarks>
       public static bool IsUnitFraction(BigRational value) => value.m_numerator == System.Numerics.BigInteger.One;
 
-      /// <summary>Determines whether the <paramref name="numerator"/> / <paramref name="denominator"/> represents a whole numbered fraction.</summary>
+      /// <summary>Determines whether <paramref name="value"/> represents a whole numbered fraction.</summary>
       public static bool IsWholeNumber(BigRational value) => value.m_denominator == System.Numerics.BigInteger.One;
 
       /// <summary>Returns the least common multiple (LCM) of <paramref name="a"/> and <paramref name="b"/>.</summary>
@@ -496,24 +514,23 @@ namespace Flux
 
       public static bool TryGetMixedParts(BigRational value, out System.Numerics.BigInteger wholeNumber, out System.Numerics.BigInteger properNumerator, out System.Numerics.BigInteger properDenominator)
       {
-        try
+        if (IsMixedNumber(value))
         {
-          if (IsMixedNumber(value))
-          {
-            (wholeNumber, properNumerator) = System.Numerics.BigInteger.DivRem(value.m_numerator, value.m_denominator);
+          (wholeNumber, properNumerator) = System.Numerics.BigInteger.DivRem(value.m_numerator, value.m_denominator);
 
-            if (System.Numerics.BigInteger.IsNegative(properNumerator)) properNumerator = System.Numerics.BigInteger.Abs(properNumerator);
+          if (System.Numerics.BigInteger.IsNegative(properNumerator))
+            properNumerator = System.Numerics.BigInteger.Abs(properNumerator);
 
-            properDenominator = value.m_denominator;
+          properDenominator = value.m_denominator;
 
-            return true;
-          }
+          return true;
         }
-        catch { }
+        else
+        {
+          wholeNumber = properNumerator = properDenominator = System.Numerics.BigInteger.Zero;
 
-        wholeNumber = properNumerator = properDenominator = System.Numerics.BigInteger.Zero;
-
-        return false;
+          return false;
+        }
       }
 
       public static bool TryReduce(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger reducedNumerator, out System.Numerics.BigInteger reducedDenominator)
@@ -833,4 +850,3 @@ namespace Flux
     }
   }
 }
-#endif

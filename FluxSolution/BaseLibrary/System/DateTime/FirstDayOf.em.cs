@@ -3,8 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Determines the first day of the month in the source.</summary>
-    public static System.DateTime FirstDayOfMonth(this System.DateTime source)
-      => new(source.Year, source.Month, 1);
+    public static System.DateTime FirstDayOfMonth(this System.DateTime source) => new(source.Year, source.Month, 1);
 
     /// <summary>Determines the first day of the specified quarter in the source.</summary>
     public static System.DateTime FirstDayOfQuarter(this System.DateTime source, int quarter)
@@ -17,18 +16,20 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(quarter)),
       };
     /// <summary>Determines the first day of the current calendar quarter in the source.</summary>
-    public static System.DateTime FirstDayOfQuarter(this System.DateTime source)
-      => FirstDayOfQuarter(source, source.QuarterOfYear());
+    public static System.DateTime FirstDayOfQuarter(this System.DateTime source) => FirstDayOfQuarter(source, source.QuarterOfYear());
 
     /// <summary>Determines the first day of the week in the source, based on the current DateTimeFormatInfo.</summary>
-    public static System.DateTime FirstDayOfWeek(this System.DateTime source)
-      => source.FirstDayOfWeek(System.Globalization.DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek);
+    public static System.DateTime FirstDayOfWeek(this System.DateTime source, System.Globalization.DateTimeFormatInfo? dateTimeFormatInfo = null)
+    {
+      dateTimeFormatInfo ??= System.Globalization.DateTimeFormatInfo.CurrentInfo;
+
+      return source.FirstDayOfWeek(dateTimeFormatInfo.FirstDayOfWeek);
+    }
+
     /// <summary>Determines the first day of the week in the source, based on the specified DateTimeFormatInfo.</summary>
-    public static System.DateTime FirstDayOfWeek(this System.DateTime source, System.DayOfWeek firstDayOfWeek)
-      => source.PreviousDayOfWeek(firstDayOfWeek, true);
+    public static System.DateTime FirstDayOfWeek(this System.DateTime source, System.DayOfWeek firstDayOfWeek) => source.PreviousDayOfWeek(firstDayOfWeek, true);
 
     /// <summary>Determines the first day of the year in the source.</summary>
-    public static System.DateTime FirstDayOfYear(this System.DateTime source)
-      => new(source.Year, 1, 1);
+    public static System.DateTime FirstDayOfYear(this System.DateTime source) => new(source.Year, 1, 1);
   }
 }

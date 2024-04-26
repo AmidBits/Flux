@@ -41,10 +41,10 @@ namespace Flux
       return lcsg;
     }
 
-    public static int[,] GetLongestCommonSubstringMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int[,] LongestCommonSubstringMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => GetLongestCommonSubstringMatrix(source, target, out var _, out var _, out var _, equalityComparer);
 
-    public static T[] GetLongestCommonSubstringValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static T[] LongestCommonSubstringValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       matrix = GetLongestCommonSubstringMatrix(source, target, out var length, out var sourceIndex, out var targetIndex, equalityComparer);
 
@@ -64,7 +64,7 @@ namespace Flux
       return lcs;
     }
 
-    public static int GetLongestCommonSubstringLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int LongestCommonSubstringLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

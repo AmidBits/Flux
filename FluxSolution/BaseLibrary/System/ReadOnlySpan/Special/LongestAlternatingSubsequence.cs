@@ -2,11 +2,11 @@
 {
   public static partial class Fx
   {
-    public static int GetLongestAlternatingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
+    public static int LongestAlternatingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
-      matrix = GetLongestAlternatingSubsequenceMatrix(source, out var length, comparer);
+      matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
 
       return length;
     }
@@ -19,7 +19,7 @@
     /// <param name="length">The length of the longest alternating subsequence that was found.</param>
     /// <param name="comparer">Uses the specified comparer, default if null.</param>
     /// <returns>The matrix of the longest alternating subsequence that was found, using dynamic programming.</returns>
-    public static int[,] GetLongestAlternatingSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T>? comparer = null)
+    public static int[,] LongestAlternatingSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
@@ -60,9 +60,9 @@
     /// <param name="matrix">The matrix of the longest alternating subsequence that was found, using dynamic programming.</param>
     /// <param name="comparer">Uses the specified comparer, default if null.</param>
     /// <returns>The longest alternating subsequence that was found.</returns>
-    public static System.Collections.Generic.IList<T> GetLongestAlternatingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
+    public static System.Collections.Generic.IList<T> LongestAlternatingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
-      matrix = GetLongestAlternatingSubsequenceMatrix(source, out var length, comparer);
+      matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
 
       var subsequence = new T[length];
 

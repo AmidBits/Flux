@@ -3,8 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Determines the last day of the month in the source.</summary>
-    public static System.DateTime LastDayOfMonth(this System.DateTime source)
-      => new(source.Year, source.Month, System.DateTime.DaysInMonth(source.Year, source.Month));
+    public static System.DateTime LastDayOfMonth(this System.DateTime source) => new(source.Year, source.Month, System.DateTime.DaysInMonth(source.Year, source.Month));
 
     /// <summary>Determines the last day of the quarter in the source.</summary>
     public static System.DateTime LastDayOfQuarter(this System.DateTime source, int quarter)
@@ -19,18 +18,20 @@ namespace Flux
       };
     }
     /// <summary>Determines the last day of the specified quarter.</summary>
-    public static System.DateTime LastDayOfQuarter(this System.DateTime source)
-      => LastDayOfQuarter(source, source.QuarterOfYear());
+    public static System.DateTime LastDayOfQuarter(this System.DateTime source) => LastDayOfQuarter(source, source.QuarterOfYear());
 
     /// <summary>Determines the last day of the week in the source, based on the current DateTimeFormatInfo.</summary>
-    public static System.DateTime LastDayOfWeek(this System.DateTime source)
-      => LastDayOfWeek(source, (System.DayOfWeek)(((int)System.Globalization.DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek + 6) % 7));
+    public static System.DateTime LastDayOfWeek(this System.DateTime source, System.Globalization.DateTimeFormatInfo? dateTimeFormatInfo = null)
+    {
+      dateTimeFormatInfo ??= System.Globalization.DateTimeFormatInfo.CurrentInfo;
+
+      return LastDayOfWeek(source, (System.DayOfWeek)(((int)(dateTimeFormatInfo.FirstDayOfWeek + 6) % 7)));
+    }
+
     /// <summary>Determines the last day of the week in the source, based on the specified DateTimeFormatInfo.</summary>
-    public static System.DateTime LastDayOfWeek(this System.DateTime source, System.DayOfWeek lastDayOfWeek)
-      => NextDayOfWeek(source, lastDayOfWeek, true);
+    public static System.DateTime LastDayOfWeek(this System.DateTime source, System.DayOfWeek lastDayOfWeek) => NextDayOfWeek(source, lastDayOfWeek, true);
 
     /// <summary>Determines the last day of the year in the source.</summary>
-    public static System.DateTime LastDayOfYear(this System.DateTime source)
-      => new(source.Year, 12, 31);
+    public static System.DateTime LastDayOfYear(this System.DateTime source) => new(source.Year, 12, 31);
   }
 }

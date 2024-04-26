@@ -32,18 +32,10 @@ namespace Text
     //}
 
     [TestMethod]
-    public void CountEqualAtEnd()
+    public void CommonSuffixLength()
     {
       var expected = 3;
-      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().CountEqualAtEnd("Rupert");
-      Assert.AreEqual(expected, actual);
-    }
-
-    [TestMethod]
-    public void CountEqualAtStart()
-    {
-      var expected = 2;
-      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().CountEqualAtStart("Rommel");
+      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().CommonSuffixLength("Rupert");
       Assert.AreEqual(expected, actual);
     }
 

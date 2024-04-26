@@ -7,7 +7,9 @@
   /// <remarks><see cref="EgocentricCoordinateIO"/> represent the directions, i.e. <see cref="EgocentricCoordinateIO.Inward"/>/<see cref="EgocentricCoordinateIO.Outward"/>.</remarks>
   public enum EgocentricCoordinateIO
   {
+    /// <summary>Inward, i.e. toward the self.</summary>
     Inward,
+    /// <summary>Outward, i.e. away from the self.</summary>
     Outward,
   }
 }

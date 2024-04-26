@@ -5,6 +5,7 @@ using System.Net.WebSockets;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.Intrinsics;
+using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using Flux;
 using Flux.Quantities;
@@ -38,36 +39,25 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var hg = new Flux.Geometry.HexagonGeometry(1);
+      var s1 = "GAC";
+      var s2 = "AGCAT";
 
-      var oft = Flux.Geometry.HexagonOrientation.FlatTop.ToOrientation();
-      var opt = Flux.Geometry.HexagonOrientation.PointyTop.ToOrientation();
+      var m = s1.AsSpan().LongestCommonSubsequenceEditDistance(s2);
 
-      var sourceNumber = 1912;
-      sourceNumber.TryConvertNumberToIndices(out var sourceIndices);
-      var sourceString = Flux.Text.RomanNumerals.ConvertIndicesToSymbols(sourceIndices, Flux.Text.RomanNumerals.UpperLatinNumerals);
-      var targetIndices = Flux.Text.RomanNumerals.ConvertSymbolsToIndices(sourceString, Flux.Text.RomanNumerals.UpperLatinNumerals);
-      targetIndices.TryConvertIndicesToNumber(out int targetNumber);
+      //      System.Console.WriteLine(m.Rank2ToConsoleString());
 
-      var value = 1234567890;
-      //var parts = value.GetParts();
-      var tcncs = value.ToCardinalNumeralCompoundString(includeAnd: true);
+      var r = 2;
 
-      var sow = Flux.Quantities.CompassRose32Wind.NEbN.ToWords();
+      for (var i = 999; i <= 1025; i++)
+      {
+        //System.Console.WriteLine($"{i} : {i.IntegerLog2()} : {i.IntegerLog2Ex()}");
+        //System.Console.WriteLine($"{i} : {i.PowOf2TowardZero(false)} : {i.PowOf2AwayFromZero(false)} : {i.PowOf2TowardZero(true)} : {i.PowOf2AwayFromZero(true)}");
+        System.Console.WriteLine($"{i} : {Flux.Quantities.Radix.PowOfTowardZero(i, r, false)} : {Flux.Quantities.Radix.PowOfAwayFromZero(i, r, false)} : {Flux.Quantities.Radix.PowOfTowardZero(i, r, true)} : {Flux.Quantities.Radix.PowOfAwayFromZero(i, r, true)}");
 
-      var m = new Flux.Quantities.Mass(50, MassUnit.Kilogram);
-      var a = Flux.Quantities.Acceleration.StandardGravity;
+        //if (i != 0)
+        System.Console.WriteLine($"{i} : {Flux.Quantities.Radix.IntegerLogTowardZero(i, r)} : {Flux.Quantities.Radix.IntegerLogAwayFromZero(i, r)} : {System.Numerics.BigInteger.Log(i, r)} : {i.IntegerLog2TowardZero()} : {i.IntegerLog2AwayFromZero()}");
+      }
 
-      var f = new Flux.Quantities.Force(m.Value * a.Value);
-
-      var fau = f.ToStringsOfAllUnits();
-      var fmp = f.ToStringsOfMetricPrefixes();
-
-      var q = new Flux.Quantities.Mass(5000, MassUnit.Gram);
-
-      var qis = q.IsAssignableToGenericType(typeof(Flux.Quantities.ISiPrefixValueQuantifiable<,>));
-
-      // var a = ei.LoopInterval(2, SortOrder.Ascending, IntervalNotation.Open).ToArray();
     }
 
     #region Eliza example
@@ -102,7 +92,7 @@ namespace ConsoleApp
 
       bool exit = false;
 
-      Random rnd = new Random();
+      Random rnd = new();
 
       while (!exit)
       {
@@ -129,7 +119,7 @@ namespace ConsoleApp
               // get the bit of the text we're going to include
               var matchedTextGroups = pattern.Match(userInput).Groups;
               string reflectedInput = "";
-              foreach (System.Text.RegularExpressions.Group g in matchedTextGroups)
+              foreach (System.Text.RegularExpressions.Group g in matchedTextGroups.Cast<Group>())
               {
                 reflectedInput = g.ToString();
               }
@@ -153,7 +143,7 @@ namespace ConsoleApp
               // strip duplicate punctuation
               chosenResponse = System.Text.RegularExpressions.Regex.Replace(chosenResponse, @"([^\w\s])(\1){1,}", @"$2");
               // capitalize first letter
-              chosenResponse = Char.ToUpper(chosenResponse[0]).ToString() + chosenResponse.Substring(1);
+              chosenResponse = Char.ToUpper(chosenResponse[0]).ToString() + chosenResponse[1..];
             }
             break;
           }
