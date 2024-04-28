@@ -7,7 +7,6 @@ namespace Flux
       where TKey : notnull
     {
       System.ArgumentNullException.ThrowIfNull(keySelector);
-      System.ArgumentNullException.ThrowIfNull(equalityComparer);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<TKey>.Default;
 
@@ -17,10 +16,14 @@ namespace Flux
       {
         var key = keySelector(source[index]);
 
-        if (!map.ContainsKey(key))
-          map[key] = new System.Collections.Generic.HashSet<int>();
+        if (!map.TryGetValue(key, out var value))
+        {
+          value = new();
 
-        map[key].Add(index);
+          map[key] = value;
+        }
+
+        value.Add(index);
       }
 
       return map;

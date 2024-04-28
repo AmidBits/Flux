@@ -45,7 +45,7 @@ namespace Flux
       try
       {
         for (var i = 0; i < symbols.Length; i++)
-          positionalNotationIndices.Add(alphabet.IndexOf(symbols[i]));
+          positionalNotationIndices.Add(alphabet.IndexOf(symbols[i], null));
 
         return true;
       }

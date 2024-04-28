@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Indicates whether the sequence ends with the other sequence. Uses the specified comparer.</summary>
-    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

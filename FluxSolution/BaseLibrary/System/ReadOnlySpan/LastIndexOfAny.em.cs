@@ -8,8 +8,8 @@ namespace Flux
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
-        for (var valueIndex = 0; valueIndex < values.Length; valueIndex++)
-          if (equalityComparer.Equals(source[sourceIndex], values[valueIndex]))
+        for (var valuesIndex = 0; valuesIndex < values.Length; valuesIndex++)
+          if (equalityComparer.Equals(source[sourceIndex], values[valuesIndex]))
             return sourceIndex;
 
       return -1;

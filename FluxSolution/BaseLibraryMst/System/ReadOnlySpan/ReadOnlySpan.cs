@@ -102,14 +102,14 @@ namespace SystemFx
     [TestMethod]
     public void JackardIndex()
     {
-      var collection1 = new int[] { 1, 2, 3 }.AsSpan().AsReadOnlySpan();
-      var collection2 = new int[] { 2, 3, 4, 5, 6 }.AsSpan().AsReadOnlySpan();
+      var collection1 = (ReadOnlySpan<int>)new int[] { 1, 2, 3 }.AsSpan();
+      var collection2 = (ReadOnlySpan<int>)new int[] { 2, 3, 4, 5, 6 }.AsSpan();
       var expected = 0.3333333333333333;
       var actual = collection1.JackardIndex(collection2);
       Assert.AreEqual(expected, actual);
 
-      collection1 = new int[] { 1, 2, 3, 4, 5 }.AsSpan().AsReadOnlySpan();
-      collection2 = new int[] { 4, 5, 6, 7, 8, 9, 10 }.AsSpan().AsReadOnlySpan();
+      collection1 = (ReadOnlySpan<int>)new int[] { 1, 2, 3, 4, 5 }.AsSpan();
+      collection2 = (ReadOnlySpan<int>)new int[] { 4, 5, 6, 7, 8, 9, 10 }.AsSpan();
       expected = 0.2;
       actual = collection1.JackardIndex(collection2);
       Assert.AreEqual(expected, actual);
@@ -230,7 +230,7 @@ namespace SystemFx
     [TestMethod]
     public void MaximumSumSubarray()
     {
-      var collection = new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }.AsSpan().AsReadOnlySpan();
+      var collection = (ReadOnlySpan<int>)new int[] { -2, 1, -3, 4, -1, 2, 1, -5, 4 }.AsSpan();
       var expectedStartIndex = 3;
       var expectedCount = 4;
       var expectedSum = 6;
@@ -253,8 +253,8 @@ namespace SystemFx
     [TestMethod]
     public void OverlapCoefficient()
     {
-      var collection1 = new int[] { 1, 2, 3 }.AsSpan().AsReadOnlySpan();
-      var collection2 = new int[] { 2, 3, 4, 5, 6 }.AsSpan().AsReadOnlySpan();
+      var collection1 = (ReadOnlySpan<int>)new int[] { 1, 2, 3 }.AsSpan();
+      var collection2 = (ReadOnlySpan<int>)new int[] { 2, 3, 4, 5, 6 }.AsSpan();
       var expected = 0.6666666666666666;
       var actual = collection1.OverlapCoefficient(collection2);
       Assert.AreEqual(expected, actual);
@@ -282,8 +282,8 @@ namespace SystemFx
     [TestMethod]
     public void ShortestBalancingSubstring()
     {
-      var collection1 = new int[] { 'G', 'A', 'A', 'A', 'T', 'A', 'A', 'A' }.AsSpan().AsReadOnlySpan();
-      var collection2 = new int[] { 'A', 'C', 'T', 'G' }.AsSpan().AsReadOnlySpan();
+      var collection1 = (ReadOnlySpan<int>)new int[] { 'G', 'A', 'A', 'A', 'T', 'A', 'A', 'A' }.AsSpan();
+      var collection2 = (ReadOnlySpan<int>)new int[] { 'A', 'C', 'T', 'G' }.AsSpan();
       var expected = (1, 5);
       var actual = collection1.ShortestBalancingSubstring(collection2);
       Assert.AreEqual(expected, actual);
@@ -302,12 +302,12 @@ namespace SystemFx
     [TestMethod]
     public void SubsetSumMatrix()
     {
-      var text = new int[] { 3, 34, 4, 12, 5, 2 }.AsSpan().AsReadOnlySpan();
+      var text = (ReadOnlySpan<int>)new int[] { 3, 34, 4, 12, 5, 2 }.AsSpan();
       var expected = true;
       var actual = text.IsSubsetSum(9);
       Assert.AreEqual(expected, actual);
 
-      text = new int[] { 3, 34, 4, 12, 5, 2 }.AsSpan().AsReadOnlySpan();
+      text = (ReadOnlySpan<int>)new int[] { 3, 34, 4, 12, 5, 2 }.AsSpan();
       expected = false;
       actual = text.IsSubsetSum(30);
       Assert.AreEqual(expected, actual);
@@ -316,8 +316,8 @@ namespace SystemFx
     [TestMethod]
     public void SørensenDiceCoefficient()
     {
-      var collection1 = new int[] { 1, 2, 3 }.AsSpan().AsReadOnlySpan();
-      var collection2 = new int[] { 2, 3, 4, 5, 6 }.AsSpan().AsReadOnlySpan();
+      var collection1 = (ReadOnlySpan<int>)new int[] { 1, 2, 3 }.AsSpan();
+      var collection2 = (ReadOnlySpan<int>)new int[] { 2, 3, 4, 5, 6 }.AsSpan();
       var expected = 0.5;
       var actual = collection1.SørensenDiceCoefficient(collection2);
       Assert.AreEqual(expected, actual);

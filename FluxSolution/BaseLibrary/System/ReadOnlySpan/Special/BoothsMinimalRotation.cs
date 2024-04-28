@@ -3,24 +3,22 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Find the rotation of a sequence possessing the lowest lexicographical order of all such rotation. Uses the specified comparer.</para>
+    /// <para>Find the rotation of the <paramref name="source"/> possessing the lowest lexicographical order of all such rotation. Uses the specified comparer, or default if null.</para>
     /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
     /// </summary>
     public static int BoothsMinimalRotation<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
-      var lengthX2 = source.Length * 2;
-
-      var s = new T[lengthX2]; // Double up the string, to avoid modular arithmetic (using index remainder).
+      var s = new T[source.Length * 2]; // Double up the string, to avoid modular arithmetic (using index remainder).
       source.CopyTo(s);
       source.CopyTo(s, source.Length);
 
-      var f = new int[lengthX2]; System.Array.Fill(f, -1); // Failure function.
+      var f = new int[s.Length]; System.Array.Fill(f, -1); // Failure function.
 
       var k = 0; // Minimal (least) rotation of string found so far.
 
-      for (var j = 1; j < lengthX2; j++)
+      for (var j = 1; j < s.Length; j++)
       {
         var sj = s[j];
 

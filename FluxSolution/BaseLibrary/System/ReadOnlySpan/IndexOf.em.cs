@@ -2,22 +2,8 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Reports the index in <paramref name="source"/> of the first occurence that satisfy the <paramref name="predicate"/>.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
-    {
-      System.ArgumentNullException.ThrowIfNull(predicate);
-
-      var sourceLength = source.Length;
-
-      for (var index = 0; index < sourceLength; index++)
-        if (predicate(source[index], index))
-          return index;
-
-      return -1;
-    }
-
     /// <summary>Reports the first index of the specified <paramref name="value"/> in <paramref name="source"/>, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -28,17 +14,15 @@ namespace Flux
       return -1;
     }
 
-    /// <summary>Returns the first index of the specified <paramref name="target"/> in <paramref name="source"/>, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    /// <summary>Returns the first index of the specified <paramref name="value"/> in <paramref name="source"/>, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</summary>
+    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var targetLength = target.Length;
+      var maxIndex = source.Length - value.Length;
 
-      var maxLength = source.Length - targetLength;
-
-      for (var index = 0; index < maxLength; index++)
-        if (EqualsAt(source, index, target, 0, targetLength, equalityComparer))
+      for (var index = 0; index < maxIndex; index++)
+        if (EqualsAt(source, index, value, 0, value.Length, equalityComparer))
           return index;
 
       return -1;

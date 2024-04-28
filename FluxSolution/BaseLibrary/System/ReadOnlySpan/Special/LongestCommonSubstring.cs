@@ -5,8 +5,7 @@ namespace Flux
     /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
     /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
-
-    private static int[,] GetLongestCommonSubstringMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    private static int[,] LongestCommonSubstringMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int length, out int sourceMaxIndex, out int targetMaxIndex, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -41,12 +40,18 @@ namespace Flux
       return lcsg;
     }
 
+    /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
+    /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
     public static int[,] LongestCommonSubstringMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => GetLongestCommonSubstringMatrix(source, target, out var _, out var _, out var _, equalityComparer);
+      => LongestCommonSubstringMatrix(source, target, out var _, out var _, out var _, equalityComparer);
 
+    /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
+    /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
     public static T[] LongestCommonSubstringValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      matrix = GetLongestCommonSubstringMatrix(source, target, out var length, out var sourceIndex, out var targetIndex, equalityComparer);
+      matrix = LongestCommonSubstringMatrix(source, target, out var length, out var sourceIndex, out var targetIndex, equalityComparer);
 
       var lcs = new T[length];
 
@@ -64,6 +69,9 @@ namespace Flux
       return lcs;
     }
 
+    /// <summary>Finding the longest consecutive sequence of elements common to two or more sequences.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Longest_common_substring_problem" /
+    /// <seealso cref="http://www.geeksforgeeks.org/longest-common-substring/"/>
     public static int LongestCommonSubstringLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;

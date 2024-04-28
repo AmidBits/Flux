@@ -2,6 +2,14 @@
 {
   public static partial class Fx
   {
+    /// <summary>
+    /// <para>The longest alternating subsequence problem, one wants to find a subsequence of a given <paramref name="source"/> in which the elements are in alternating order, and in which the sequence is as long as possible. Uses the specified <paramref name="comparer"/>, default if null.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Longest_alternating_subsequence"/>
+    /// </summary>
+    /// <param name="source">Source sequence in which to find the longest alternating subsequence.</param>
+    /// <param name="length">The length of the longest alternating subsequence that was found.</param>
+    /// <param name="comparer">Uses the specified comparer, default if null.</param>
+    /// <returns>The matrix of the longest alternating subsequence that was found, using dynamic programming.</returns>
     public static int LongestAlternatingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;

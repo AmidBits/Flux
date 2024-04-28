@@ -2,7 +2,10 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Locate the index and value of both the minimum element and the maximum element of the sequence. Uses the specified comparer (null for default).</summary>
+    /// <summary>
+    /// <para>Locate the index and value of both the minimum element and the maximum element of the sequence. Uses the specified comparer (null for default).</para>
+    /// <see href="https://en.wikipedia.org/wiki/Maximum_and_minimum"/>
+    /// </summary>
     public static (int IndexMin, TValue ValueMin, int IndexMax, TValue ValueMax) GetExtremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       System.ArgumentNullException.ThrowIfNull(valueSelector);

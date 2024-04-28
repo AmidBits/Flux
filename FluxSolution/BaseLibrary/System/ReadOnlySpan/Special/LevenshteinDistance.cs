@@ -7,9 +7,14 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// </summary>
     /// <remarks>Implemented based on the Wiki article.</remarks>
-
     public static double LevenshteinDistanceSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => 1d - LevenshteinDistanceSmd(source, target, equalityComparer);
+
+    /// <summary>
+    /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
+    /// </summary>
+    /// <remarks>Implemented based on the Wiki article.</remarks>
     public static double LevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => (double)LevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
@@ -61,7 +66,6 @@ namespace Flux
 
     //  return ldg;
     //}
-
     public static int LevenshteinDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -154,6 +158,11 @@ namespace Flux
       #endregion Another optimized version with one vector and temp variables this time, not yet tested!
     }
 
+    /// <summary>
+    /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
+    /// </summary>
+    /// <remarks>Implemented based on the Wiki article.</remarks>
     public static double[,] LevenshteinDistanceMatrixCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -178,6 +187,11 @@ namespace Flux
       return ldg;
     }
 
+    /// <summary>
+    /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
+    /// </summary>
+    /// <remarks>Implemented based on the Wiki article.</remarks>
     public static double LevenshteinDistanceMetricCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -213,6 +227,5 @@ namespace Flux
 
       return v0[target.Length];
     }
-
   }
 }

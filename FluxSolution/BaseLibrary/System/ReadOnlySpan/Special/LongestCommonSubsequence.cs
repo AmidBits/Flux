@@ -2,15 +2,34 @@ namespace Flux
 {
   public static partial class Fx
   {
+    /// <summary>
+    /// <para>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/></para>
+    /// <para><seealso href="http://www.geeksforgeeks.org/longest-common-subsequence/"/></para>
+    /// <para><seealso href="https://www.ics.uci.edu/~eppstein/161/960229.html"/></para>
+    /// </summary>
+    /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
+    /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
     public static double LongestCommonSubsequenceSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => 1d - LongestCommonSubsequenceSmd(source, target, equalityComparer);
+
+    /// <summary>
+    /// <para>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/></para>
+    /// <para><seealso href="http://www.geeksforgeeks.org/longest-common-subsequence/"/></para>
+    /// <para><seealso href="https://www.ics.uci.edu/~eppstein/161/960229.html"/></para>
+    /// </summary>
+    /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
+    /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
     public static double LongestCommonSubsequenceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => (double)LongestCommonSubsequenceEditDistance(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
 
-    /// <summary>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/> 
-    /// <seealso cref="http://www.geeksforgeeks.org/longest-common-subsequence/"/>
-    /// <seealso cref="https://www.ics.uci.edu/~eppstein/161/960229.html"/>
+    /// <summary>
+    /// <para>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/></para>
+    /// <para><seealso href="http://www.geeksforgeeks.org/longest-common-subsequence/"/></para>
+    /// <para><seealso href="https://www.ics.uci.edu/~eppstein/161/960229.html"/></para>
+    /// </summary>
     /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
     /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
     public static int[,] LongestCommonSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
@@ -31,7 +50,13 @@ namespace Flux
       return lcsg;
     }
 
-    /// <summary>Returns the items comprising the longest sub-sequence.</summary>
+    /// <summary>
+    /// <para>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</para>
+    /// <para>Returns the items comprising the longest sub-sequence.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/></para>
+    /// <para><seealso href="http://www.geeksforgeeks.org/longest-common-subsequence/"/></para>
+    /// <para><seealso href="https://www.ics.uci.edu/~eppstein/161/960229.html"/></para>
+    /// </summary>
     public static System.Collections.Generic.List<T> LongestCommonSubsequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -61,6 +86,14 @@ namespace Flux
       return lcs;
     }
 
+    /// <summary>
+    /// <para>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/></para>
+    /// <para><seealso href="http://www.geeksforgeeks.org/longest-common-subsequence/"/></para>
+    /// <para><seealso href="https://www.ics.uci.edu/~eppstein/161/960229.html"/></para>
+    /// </summary>
+    /// <remarks>It differs from problems of finding common subsequences: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</remarks>
+    /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
     public static int LongestCommonSubsequenceLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -81,7 +114,10 @@ namespace Flux
       return v0[0] + equalAtStart + equalAtEnd;
     }
 
-    /// <summary>Compute the edit distance when only insertion and deletion is allowed (no substitution), or when the cost of the substitution is the double of the cost of an insertion or deletion.</summary>
+    /// <summary>
+    /// <para>Compute the edit distance when only insertion and deletion is allowed (no substitution), or when the cost of the substitution is  double of the cost of an insertion or deletion.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/></para>
+    /// </summary>
     public static int LongestCommonSubsequenceEditDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => (source.Length + target.Length) - 2 * LongestCommonSubsequenceLength(source, target, equalityComparer);
   }

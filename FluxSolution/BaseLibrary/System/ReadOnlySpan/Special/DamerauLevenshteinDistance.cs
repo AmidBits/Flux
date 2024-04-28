@@ -2,9 +2,24 @@ namespace Flux
 {
   public static partial class Fx
   {
+    /// <summary>
+    /// <para>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</para>
+    /// <para>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Triangle_inequality"/></para>
+    /// </summary>
+    /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
     public static double DamerauLevenshteinDistanceSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
       => 1d - DamerauLevenshteinDistanceSmd(source, target, equalityComparer);
+
+    /// <summary>
+    /// <para>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</para>
+    /// <para>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Triangle_inequality"/></para>
+    /// </summary>
+    /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
     public static double DamerauLevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
       => (double)DamerauLevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);

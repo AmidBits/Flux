@@ -7,13 +7,10 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      for (var index = 0; index < source.Length; index++)
-      {
-        var character = source[index];
-
-        if (System.Array.Exists(values, c => equalityComparer.Equals(c, character)))
-          return index;
-      }
+      for (var sourceIndex = 0; sourceIndex < source.Length; sourceIndex++)
+        for (var valuesIndex = 0; valuesIndex < values.Length; valuesIndex++)
+          if (equalityComparer.Equals(source[sourceIndex], values[valuesIndex]))
+            return sourceIndex;
 
       return -1;
     }

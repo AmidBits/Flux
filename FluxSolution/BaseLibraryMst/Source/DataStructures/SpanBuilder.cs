@@ -138,7 +138,7 @@ namespace Text
     [TestMethod]
     public void IsPalindrome()
     {
-      var palindrome = new SpanBuilder<char>("Poor Dan is in a droop").RemoveAll(char.IsWhiteSpace).AsSpan().ToLowerCase().AsReadOnlySpan();
+      var palindrome = (ReadOnlySpan<char>)new SpanBuilder<char>("Poor Dan is in a droop").RemoveAll(char.IsWhiteSpace).AsSpan().ToLowerCase();
       var expected = true;
       var actual = palindrome.IsPalindrome();
       Assert.AreEqual(expected, actual);
