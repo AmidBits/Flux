@@ -24,7 +24,7 @@ namespace Flux.Geometry
     public double B => m_b;
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
-    public double Area => AreaOfEllipse(m_a, m_b);
+    public double Area => SurfaceAreaOfEllipse(m_a, m_b);
 
     /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
     public double Perimeter => PerimeterOfEllipse(m_a, m_b);
@@ -134,9 +134,6 @@ namespace Flux.Geometry
 
     #region Static methods
 
-    /// <summary>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</summary>
-    public static double AreaOfEllipse(double a, double b) => System.Math.PI * a * b;
-
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</summary>
     public static bool EllipseContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
       => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (a * a) + System.Math.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
@@ -149,10 +146,10 @@ namespace Flux.Geometry
       );
 
     /// <summary></summary>
-    public static (double x, double y) ConvertEllipseToCartesian2(double xAxis, double yAxis, double rotationAngle = 0)
+    public static (double x, double y) ConvertEllipseToCartesian2(double a, double b, double rotationAngle = 0)
       => (
-        System.Math.Cos(rotationAngle) * xAxis,
-        System.Math.Sin(rotationAngle) * yAxis
+        System.Math.Cos(rotationAngle) * a,
+        System.Math.Sin(rotationAngle) * b
       );
 
     /// <summary>
@@ -176,6 +173,9 @@ namespace Flux.Geometry
 
       return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
     }
+
+    /// <summary>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</summary>
+    public static double SurfaceAreaOfEllipse(double a, double b) => System.Math.PI * a * b;
 
     #endregion Static methods
   }

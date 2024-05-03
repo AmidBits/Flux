@@ -17,10 +17,12 @@ namespace Flux
 
       private readonly Quantities.Angle m_angle;
 
-      /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
-      public Azimuth(double angle, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(angle, unit);
+      public Azimuth(Quantities.Angle angle) => m_angle = WrapExtremum(angle);
 
-      public Angle Angle { get => m_angle; init => m_angle = new(WrapExtremum(value.GetUnitValue(AngleUnit.Degree)), AngleUnit.Degree); }
+      /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360].</summary>
+      public Azimuth(double angle, AngleUnit unit = AngleUnit.Degree) : this(new Angle(angle, unit)) { }
+
+      public Angle Angle { get => m_angle; init => m_angle = WrapExtremum(value); }
 
       #region Static methods
 
@@ -42,7 +44,7 @@ namespace Flux
 
       /// <summary>Finding the angle between two bearings.</summary>
       public static double DeltaBearing(double azimuth1, double azimuth2)
-        => WrapExtremum(azimuth2 - azimuth1);
+        => WrapExtremum(new Angle(azimuth2 - azimuth1, AngleUnit.Degree)).GetUnitValue(AngleUnit.Degree);
 
       public static Azimuth FromAbbreviation(string compassPointAbbreviated)
         => System.Enum.TryParse<CompassRose32Wind>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
@@ -102,7 +104,7 @@ namespace Flux
 
       /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
       public static int LatchNeedle(double azimuth, int positions)
-        => System.Convert.ToInt32(System.Math.Round(WrapExtremum(azimuth) / (MaxValue / positions) % positions));
+        => System.Convert.ToInt32(System.Math.Round(WrapExtremum(new Angle(azimuth)).GetUnitValue(AngleUnit.Degree) / (MaxValue / positions) % positions));
 
       public static Azimuth Parse(string compassPointInWordsOrAbbreviation)
         => FromAbbreviation(compassPointInWordsOrAbbreviation) is Azimuth fromAbbreviation
@@ -132,7 +134,8 @@ namespace Flux
       }
 
       /// <summary>An azimuth is wrapped over the half-open interval [<see cref="MinValue"/> = 0, <see cref="MaxValue"/> = 360). I.e. azimuth can be any value between <see cref="MinValue"/> (inclusive) but never <see cref="MaxValue"/> (exclusive).</summary>
-      public static double WrapExtremum(double azimuth) => azimuth.Wrap(MinValue, MaxValue) % MaxValue;
+      //public static double WrapExtremum(double azimuth) => azimuth.Wrap(MinValue, MaxValue) % MaxValue;
+      public static Angle WrapExtremum(Angle angle) => new(angle.GetUnitValue(AngleUnit.Degree).Wrap(MinValue, MaxValue) % MaxValue, AngleUnit.Degree);
       //=> (azimuth < MinValue // Closed side, allow MinValue.
       //? MaxValue - (MinValue - azimuth) % (MaxValue - MinValue)
       //: azimuth >= MaxValue // Half-open side, disallow MaxValue.

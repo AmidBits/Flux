@@ -1,17 +1,28 @@
+
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
+
 namespace Flux
 {
   #region ExtensionMethods
   public static partial class Em
   {
-    /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
+    /// <summary>Creates a new <see cref="Coordinates.SphericalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
     public static Coordinates.SphericalCoordinate ToSphericalCoordinate(this System.Numerics.Vector3 source)
     {
-      var x2y2 = source.X * source.X + source.Y * source.Y;
+      var x = source.X;
+      var y = source.Y;
+      var z = source.Z;
+
+      var x2y2 = x * x + y * y;
 
       return new(
-        System.Math.Sqrt(x2y2 + source.Z * source.Z), Quantities.LengthUnit.Metre,
-        System.Math.Atan2(System.Math.Sqrt(x2y2), source.Z) + System.Math.PI, Quantities.AngleUnit.Radian,
-        System.Math.Atan2(source.Y, source.X) + System.Math.PI, Quantities.AngleUnit.Radian
+        System.Math.Sqrt(x2y2 + z * z), Quantities.LengthUnit.Metre,
+        System.Math.Atan2(System.Math.Sqrt(x2y2), z) + System.Math.PI, Quantities.AngleUnit.Radian,
+        System.Math.Atan2(y, x) + System.Math.PI, Quantities.AngleUnit.Radian
       );
     }
   }
@@ -23,7 +34,7 @@ namespace Flux
     /// <para>Spherical coordinate.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Spherical_coordinate_system"/></para>
     /// </summary>
-    /// <remarks>This implementation follows the ISO physics convention. All angles in radians, unless noted otherwise.</remarks>
+    /// <remarks>This implementation follows the ISO physics convention.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct SphericalCoordinate
       : System.IFormattable
@@ -41,34 +52,50 @@ namespace Flux
         m_azimuth = azimuth;
       }
 
-      //public SphericalCoordinate(Units.Length radius, Units.Angle inclination, Units.Azimuth azimuth)
-      //  : this(radius.Value, inclination.Value, azimuth.Angle.Value)
-      //{ }
-
       public SphericalCoordinate(double radiusValue, Quantities.LengthUnit radiusUnit, double inclinationValue, Quantities.AngleUnit inclinationUnit, double azimuthValue, Quantities.AngleUnit azimuthUnit)
-        : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(inclinationValue, inclinationUnit), new Quantities.Angle(azimuthValue, azimuthUnit))
-      { }
+        : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(inclinationValue, inclinationUnit), new Quantities.Angle(azimuthValue, azimuthUnit)) { }
+
+      public SphericalCoordinate(double radiusMeter, double inclinationRadian, double azimuthRadian)
+        : this(radiusMeter, Quantities.LengthUnit.Metre, inclinationRadian, Quantities.AngleUnit.Radian, azimuthRadian, Quantities.AngleUnit.Radian) { }
+
+      public void Deconstruct(out double radiusMeter, out double inclinationRadian, out double azimuthRadian)
+      {
+        radiusMeter = m_radius.Value;
+        inclinationRadian = m_inclination.Value;
+        azimuthRadian = m_azimuth.Value;
+      }
 
       /// <summary>
-      /// <para>Radius, (length) unit of meter. A.k.a. radial distance, radial coordinate.</para>
+      /// <para>The radius or radial distance is the Euclidean distance from the origin.</para>
       /// </summary>
       /// <remarks>If the radius is zero, both azimuth and inclination are arbitrary.</remarks>
       public Quantities.Length Radius { get => m_radius; init => m_radius = value; }
+
       /// <summary>
-      /// <para>Inclination angle, unit of radian. A.k.a. polar angle, colatitude, zenith angle, normal angle. This is equivalent to latitude in geographical coordinate systems.</para>
+      /// <para>The inclination (or polar angle) is the signed angle from the zenith reference direction. (Elevation may be used as the polar angle instead of inclination). A.k.a. polar angle, colatitude, zenith angle, normal angle. This is equivalent to latitudinal or vertical angle in geographical coordinate systems.</para>
       /// </summary>
       /// <remarks>If the inclination is zero or 180 degrees (PI radians), the azimuth is arbitrary.</remarks>
       public Quantities.Angle Inclination { get => m_inclination; init => m_inclination = value; }
+
       /// <summary>
-      /// <para>Azimuth angle, unit of radian. This is equivalent to longitude in geographical coordinate systems.</para>
+      /// <para>The azimuth (or azimuthal angle) is the signed angle measured from the azimuth reference direction to the orthogonal projection of the radial line segment on the reference plane. This is equivalent to longitudinal or horizontal angle in geographical coordinate systems.</para>
       /// </summary>
       public Quantities.Angle Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
       /// <summary>
-      /// <para>Elevation angle, unit of radian. This is an option/alternative to <see cref="Inclination"/>.</para>
+      /// <para>The elevation is the signed angle from the x-y reference plane to the radial line segment, where positive angles are designated as upward, towards the zenith reference. This is an option/alternative to <see cref="Inclination"/>.</para>
       /// </summary>
       /// <remarks>The elevation angle is 90 degrees (PI/2 radians) minus the <see cref="Inclination"/> angle.</remarks>
       public Quantities.Angle Elevation { get => new(ConvertInclinationToElevation(m_inclination.Value)); init => m_inclination = new(ConvertElevationToInclination(value.Value)); }
+
+      public double SphereSurfaceArea => SphericalCoordinate.SurfaceAreaOfSphere(m_radius.Value);
+
+      public CartesianCoordinate ToCartesianCoordinate()
+      {
+        var (x, y, z) = ToCartesianCoordinate3();
+
+        return new(x, y, z);
+      }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="SphericalCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
@@ -102,9 +129,10 @@ namespace Flux
       /// <summary>Creates a new <see cref="GeographicCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
       public GeographicCoordinate ToGeographicCoordinate()
+        // Translates the spherical coordinate to geographic coordinate transparently. I cannot recall the reason for the System.Math.PI involvement (see remarks).
         => new(
-          System.Math.PI - m_inclination.Value - System.Math.PI / 2, Quantities.AngleUnit.Radian,
-          m_azimuth.Value - System.Math.PI, Quantities.AngleUnit.Radian,
+          /*System.Math.PI -*/ m_inclination.Value - System.Math.PI / 2, Quantities.AngleUnit.Radian,
+          m_azimuth.Value /*- System.Math.PI*/, Quantities.AngleUnit.Radian,
           m_radius.Value, Quantities.LengthUnit.Metre
         );
 
@@ -119,10 +147,6 @@ namespace Flux
 
       #region Static methods
 
-      /// <summary>Computes the area of the specified sphere.</summary>
-      /// <param name="radius">The radius of a sphere.</param>
-      public static double AreaOfSphere(double radius) => 4d * System.Math.PI * System.Math.Pow(radius, 2);
-
       /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
       public static double ConvertInclinationToElevation(double inclination)
         => System.Math.PI / 2 - inclination;
@@ -131,14 +155,30 @@ namespace Flux
       public static double ConvertElevationToInclination(double elevation)
         => System.Math.PI / 2 - elevation;
 
-      #endregion Static methods
+      /// <summary>
+      /// <para>Computes the surface area of a hemisphere with the specified <paramref name="radius"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
+      /// </summary>
+      /// <param name="radius">The radius of the hemisphere.</param>
+      public static double SurfaceAreaOfHemisphere(double radius) => 3 * System.Math.PI * radius * radius;
+
+      /// <summary>
+      /// <para>Computes the surface area of a sphere with the specified <paramref name="radius"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
+      /// </summary>
+      /// <param name="radius">The radius of the sphere.</param>
+      public static double SurfaceAreaOfSphere(double radius) => 4 * System.Math.PI * radius * radius;
+
+      #endregion // Static methods
+
+      #region Implemented interfaces
 
       public string ToString(string? format, System.IFormatProvider? provider)
-      {
-        if (string.IsNullOrWhiteSpace(format)) format = "N6";
+        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_inclination.ToUnitValueString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)} / {Elevation.ToUnitValueString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)}, {m_azimuth.ToUnitValueString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)}>";
 
-        return $"<{m_radius.Value.ToString(format)}, {m_inclination.ToUnitValueString(Quantities.AngleUnit.Degree, format)} ({m_inclination.Value.ToString(format)}) | {Elevation.ToUnitValueString(Quantities.AngleUnit.Degree, format)} ({Elevation.Value.ToString(format)}), {new Quantities.Azimuth(m_azimuth.Value, Quantities.AngleUnit.Radian).ToString(format, null)} ({m_azimuth.Value.ToString(format)})>";
-      }
+      #endregion // Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

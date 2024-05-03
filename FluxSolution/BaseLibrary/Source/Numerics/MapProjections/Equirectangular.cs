@@ -16,8 +16,9 @@ namespace Flux.MapProjections
         (float)(project.Altitude.Value * (project.Latitude.Value - CenterOfMap.Latitude.Value)),
         (float)project.Altitude.Value
       );
+
     public Coordinates.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
-      => new Coordinates.GeographicCoordinate(
+      => new(
         project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Value,
         Quantities.AngleUnit.Radian,
         project.Y / project.Z + CenterOfMap.Latitude.Value,

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux
+﻿namespace Flux
 {
   /// <summary>Dependancy attribute to build automatic dependency notifications using INotifyPropertyChanged for methods and properties.</summary>
   /// <remarks>When used on ICommand.Execute then the Parameters will always be null.</remarks>

@@ -19,7 +19,7 @@
       {
         for (var c = m_cellGrid.X - 1; c >= 0; c--)
         {
-          var index = CartesianCoordinates.ConvertCartesian2ToLinearIndex(c, r, m_cellGrid.X);
+          var index = Coordinates.CartesianCoordinate.ConvertCartesian2ToLinearIndex(c, r, m_cellGrid.X);
 
           m_deadOrAlive[(int)index] = random.NextDouble() < probabilityOfBeingInitiallyAlive;
         }
@@ -42,7 +42,7 @@
       {
         for (var c = m_cellGrid.X - 1; c >= 0; c--)
         {
-          var index = CartesianCoordinates.ConvertCartesian2ToLinearIndex(c, r, m_cellGrid.X);
+          var index = Coordinates.CartesianCoordinate.ConvertCartesian2ToLinearIndex(c, r, m_cellGrid.X);
 
           var state = m_deadOrAlive[(int)index];
 
@@ -75,13 +75,13 @@
 
           var x1 = (x + c + m_cellGrid.X) % m_cellGrid.X; // Loop around the edges if x+i is off the board.
 
-          var pointIndex = CartesianCoordinates.ConvertCartesian2ToLinearIndex(x1, y1, m_cellGrid.X);
+          var pointIndex = Coordinates.CartesianCoordinate.ConvertCartesian2ToLinearIndex(x1, y1, m_cellGrid.X);
 
           cn += m_deadOrAlive[(int)pointIndex] ? 1 : 0;
         }
       }
 
-      var positionIndex = CartesianCoordinates.ConvertCartesian2ToLinearIndex(x, y, m_cellGrid.X);
+      var positionIndex = Coordinates.CartesianCoordinate.ConvertCartesian2ToLinearIndex(x, y, m_cellGrid.X);
 
       cn -= m_deadOrAlive[(int)positionIndex] ? 1 : 0;
 
@@ -96,7 +96,7 @@
 
         for (var x = 0; x < m_cellGrid.X; x++)
         {
-          var index = CartesianCoordinates.ConvertCartesian2ToLinearIndex(x, y, m_cellGrid.X);
+          var index = Coordinates.CartesianCoordinate.ConvertCartesian2ToLinearIndex(x, y, m_cellGrid.X);
 
           var c = m_deadOrAlive[(int)index] ? '\u2588' : ' ';
 

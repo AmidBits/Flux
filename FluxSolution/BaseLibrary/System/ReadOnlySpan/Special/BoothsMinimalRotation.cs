@@ -14,7 +14,9 @@ namespace Flux
       source.CopyTo(s);
       source.CopyTo(s, source.Length);
 
-      var f = new int[s.Length]; System.Array.Fill(f, -1); // Failure function.
+      var f = new int[s.Length];
+
+      System.Array.Fill(f, -1); // Failure function.
 
       var k = 0; // Minimal (least) rotation of string found so far.
 

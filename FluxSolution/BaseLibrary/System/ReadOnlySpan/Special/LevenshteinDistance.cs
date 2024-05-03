@@ -7,16 +7,70 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// </summary>
     /// <remarks>Implemented based on the Wiki article.</remarks>
-    public static double LevenshteinDistanceSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => 1d - LevenshteinDistanceSmd(source, target, equalityComparer);
+    public static double[,] LevenshteinDistanceCustomMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      var ldg = new double[source.Length + 1, target.Length + 1];
+
+      for (var si = 1; si <= source.Length; si++)
+        ldg[si, 0] = si * costOfInsertion;
+      for (var ti = 1; ti <= target.Length; ti++)
+        ldg[0, ti] = ti * costOfInsertion;
+
+      for (var si = 1; si <= source.Length; si++)
+        for (var ti = 1; ti <= target.Length; ti++)
+          ldg[si, ti] = System.Math.Min(
+            ldg[si - 1, ti] + costOfDeletion,
+            System.Math.Min(
+              ldg[si, ti - 1] + costOfInsertion,
+              equalityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution
+            )
+          );
+
+      return ldg;
+    }
 
     /// <summary>
     /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
     /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// </summary>
     /// <remarks>Implemented based on the Wiki article.</remarks>
-    public static double LevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)LevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+    public static double LevenshteinDistanceCustomMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      TrimCommonEnds(source, target, out source, out target, out var _, out var _, equalityComparer);
+
+      if (source.Length == 0) return target.Length;
+      else if (target.Length == 0) return source.Length;
+
+      var v1 = new double[target.Length + 1]; // Row of costs, one row back (previous row).
+      var v0 = new double[target.Length + 1]; // Row of costs, current row.
+
+      for (var j = 0; j <= target.Length; j++)
+        v0[j] = j * costOfInsertion; // Initialize the 'previous' (swapped to 'v1' in loop) row.
+
+      for (var i = 0; i < source.Length; i++)
+      {
+        (v0, v1) = (v1, v0);
+
+        v0[0] = i + costOfDeletion; // The first element is delete (i + 1) chars from source to match empty target.
+
+        for (var j = 0; j < target.Length; j++)
+        {
+          v0[j + 1] = System.Math.Min(
+            v1[j + 1] + costOfDeletion, // Deletion.
+            System.Math.Min(
+              v0[j] + costOfInsertion, // Insertion.
+              equalityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + costOfSubstitution // Substitution.
+            )
+          );
+        }
+      }
+
+      return v0[target.Length];
+    }
 
     /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
     public static int[,] LevenshteinDistanceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
@@ -163,69 +217,15 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// </summary>
     /// <remarks>Implemented based on the Wiki article.</remarks>
-    public static double[,] LevenshteinDistanceMatrixCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-      var ldg = new double[source.Length + 1, target.Length + 1];
-
-      for (var si = 1; si <= source.Length; si++)
-        ldg[si, 0] = si * costOfInsertion;
-      for (var ti = 1; ti <= target.Length; ti++)
-        ldg[0, ti] = ti * costOfInsertion;
-
-      for (var si = 1; si <= source.Length; si++)
-        for (var ti = 1; ti <= target.Length; ti++)
-          ldg[si, ti] = System.Math.Min(
-            ldg[si - 1, ti] + costOfDeletion,
-            System.Math.Min(
-              ldg[si, ti - 1] + costOfInsertion,
-              equalityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution
-            )
-          );
-
-      return ldg;
-    }
+    public static double LevenshteinDistanceSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => 1d - LevenshteinDistanceSmd(source, target, equalityComparer);
 
     /// <summary>
     /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
     /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// </summary>
     /// <remarks>Implemented based on the Wiki article.</remarks>
-    public static double LevenshteinDistanceMetricCustom<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-      TrimCommonEnds(source, target, out source, out target, out var _, out var _, equalityComparer);
-
-      if (source.Length == 0) return target.Length;
-      else if (target.Length == 0) return source.Length;
-
-      var v1 = new double[target.Length + 1]; // Row of costs, one row back (previous row).
-      var v0 = new double[target.Length + 1]; // Row of costs, current row.
-
-      for (var j = 0; j <= target.Length; j++)
-        v0[j] = j * costOfInsertion; // Initialize the 'previous' (swapped to 'v1' in loop) row.
-
-      for (var i = 0; i < source.Length; i++)
-      {
-        (v0, v1) = (v1, v0);
-
-        v0[0] = i + costOfDeletion; // The first element is delete (i + 1) chars from source to match empty target.
-
-        for (var j = 0; j < target.Length; j++)
-        {
-          v0[j + 1] = System.Math.Min(
-            v1[j + 1] + costOfDeletion, // Deletion.
-            System.Math.Min(
-              v0[j] + costOfInsertion, // Insertion.
-              equalityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + costOfSubstitution // Substitution.
-            )
-          );
-        }
-      }
-
-      return v0[target.Length];
-    }
+    public static double LevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => (double)LevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
   }
 }

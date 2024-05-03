@@ -3,12 +3,17 @@ namespace Flux
   #region ExtensionMethods
   public static partial class Em
   {
-    /// <summary>Creates a new <see cref="Geometry.PolarCoordinate"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
+    /// <summary>Creates a new <see cref="Coordinates.PolarCoordinate"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
     public static Coordinates.PolarCoordinate ToPolarCoordinate(this System.Numerics.Vector2 source)
-      => new(
-        System.Math.Sqrt(source.X * source.X + source.Y * source.Y), Quantities.LengthUnit.Metre,
-        System.Math.Atan2(source.Y, source.X), Quantities.AngleUnit.Radian
+    {
+      var x = source.X;
+      var y = source.Y;
+
+      return new(
+        System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Metre,
+        System.Math.Atan2(y, x), Quantities.AngleUnit.Radian
       );
+    }
   }
   #endregion
 
@@ -18,7 +23,6 @@ namespace Flux
     /// <para>Polar coordinate. Please note that polar coordinates are two dimensional.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Polar_coordinate_system"/></para>
     /// </summary>
-    /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct PolarCoordinate
       : System.IFormattable
@@ -27,17 +31,6 @@ namespace Flux
 
       private readonly Quantities.Length m_radius;
       private readonly Quantities.Angle m_azimuth;
-
-      /// <summary>
-      /// <para>Polar coordinates in meters and radians.</para>
-      /// </summary>
-      /// <param name="radius"></param>
-      /// <param name="azimuth"></param>
-      //public PolarCoordinate(double radius, double azimuth)
-      //{
-      //  m_radius = radius;
-      //  m_azimuth = azimuth;
-      //}
 
       /// <summary>Return the <see cref="PolarCoordinate"/> from the specified components.</summary>
       public PolarCoordinate(Quantities.Length radius, Quantities.Angle azimuth)
@@ -48,23 +41,38 @@ namespace Flux
 
       /// <summary>Return the <see cref="PolarCoordinate"/> from the specified components.</summary>
       public PolarCoordinate(double radiusValue, Quantities.LengthUnit radiusUnit, double azimuthValue, Quantities.AngleUnit azimuthUnit)
-        : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(azimuthValue, azimuthUnit))
-      { }
+        : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(azimuthValue, azimuthUnit)) { }
+
+      public PolarCoordinate(double radiusMeter, double azimuthRadian)
+        : this(radiusMeter, Quantities.LengthUnit.Metre, azimuthRadian, Quantities.AngleUnit.Radian) { }
+
+      public void Deconstruct(out double radiusMeter, out double azimuthRadian)
+      {
+        radiusMeter = m_radius.Value;
+        azimuthRadian = m_azimuth.Value;
+      }
 
       /// <summary>
       /// <para>Radius, (length) unit of meter. A.k.a. radial coordinate, or radial distance.</para>
       /// </summary>
+      /// <remarks>If the radius is zero, azimuth is arbitrary.</remarks>
       public Quantities.Length Radius { get => m_radius; init => m_radius = value; }
+
       /// <summary>
       /// <para>Azimuth angle, unit of radian. A.k.a. angular coordinate, or polar angle.</para>
       /// </summary>
       /// <remarks>The angle is defined to start at 0° from a reference direction, and to increase for rotations in either clockwise (cw) or counterclockwise (ccw) orientation.</remarks>
       public Quantities.Angle Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
-      public void Deconstruct(out Quantities.Length radius, out Quantities.Angle azimuth)
+      public double CirclePerimeter => PolarCoordinate.PerimeterOfCircle(m_radius.Value);
+
+      public double CircleSurfaceArea => PolarCoordinate.SurfaceAreaOfCircle(m_radius.Value);
+
+      public CartesianCoordinate ToCartesianCoordinate()
       {
-        radius = m_radius;
-        azimuth = m_azimuth;
+        var (x, y) = ConvertPolarToCartesian2(m_radius.Value, m_azimuth.Value);
+
+        return new(x, y);
       }
 
       /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="PolarCoordinate"/> by adding the third component <paramref name="height"/>.</summary>
@@ -103,9 +111,6 @@ namespace Flux
       }
 
       #region Static methods
-
-      /// <summary>Returns the area of a circle with the specified <paramref name="radius"/>.</summary>
-      public static double AreaOfCircle(double radius) => System.Math.PI * radius * radius;
 
       /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</summary>
       public static bool CircleContainsPoint(double radius, double x, double y) => System.Math.Pow(x, 2) + System.Math.Pow(y, 2) <= System.Math.Pow(radius, 2);
@@ -153,6 +158,10 @@ namespace Flux
         return list;
       }
 
+      /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</summary>
+      public static bool EllipseContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
+        => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (a * a) + System.Math.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
+
       #region Conversions
 
       /// <summary>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
@@ -195,17 +204,50 @@ namespace Flux
 
       #endregion // Conversions
 
-      /// <summary>Returns the circumference of a circle with the specified <paramref name="radius"/>.</summary>
+      /// <summary>
+      /// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
+      /// </summary>
       public static double PerimeterOfCircle(double radius) => 2 * System.Math.PI * radius;
+
+      /// <summary>Returns the approximate perimeter (circumference) of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
+      public static double PerimeterOfEllipse(double a, double b)
+      {
+        var circle = System.Math.PI * (a + b); // (2 * PI * radius)
+
+        if (a == b) // For a circle, use (PI * diameter);
+          return circle;
+
+        var h3 = 3 * (System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2)); // H function.
+
+        return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
+      }
+
+      /// <summary>
+      /// <para>Computes the perimeter of a semicircle with the specified <paramref name="radius"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
+      /// </summary>
+      public static double PerimeterOfSemicircle(double radius) => (System.Math.PI + 2) * radius;
+
+      /// <summary>
+      /// <para>Computes the surface area of a circle with the specified <paramref name="radius"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
+      /// </summary>
+      public static double SurfaceAreaOfCircle(double radius) => System.Math.PI * radius * radius;
+
+      /// <summary>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</summary>
+      public static double SurfaceAreaOfEllipse(double a, double b) => System.Math.PI * a * b;
 
       #endregion // Static methods
 
-      public string ToString(string? format, System.IFormatProvider? provider)
-      {
-        if (string.IsNullOrWhiteSpace(format)) format = "N3";
+      #region Implemented interfaces
 
-        return $"<{m_radius.Value.ToString(format)}, {new Quantities.Azimuth(m_azimuth.Value, Quantities.AngleUnit.Radian).ToString(format, null)} ({m_azimuth.Value.ToString(format)})>";
-      }
+      public string ToString(string? format, System.IFormatProvider? provider)
+        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_azimuth.ToUnitValueString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)}>";
+
+      #endregion // Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

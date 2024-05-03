@@ -6,6 +6,7 @@ namespace Flux.Coordinates
   /// <remarks>Abbreviated angles are in radians, and full names are in degrees.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct GeographicCoordinate
+    : System.IFormattable
   {
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
@@ -14,8 +15,10 @@ namespace Flux.Coordinates
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     private readonly Quantities.Length m_altitude;
+
     /// <summary>The latitude component of the geographic position in radians. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     private readonly Quantities.Angle m_latitude;
+
     /// <summary>The longitude component of the geographic position in radians. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     private readonly Quantities.Angle m_longitude;
 
@@ -56,6 +59,15 @@ namespace Flux.Coordinates
       : this(new Quantities.Angle(latitudeValue, latitudeUnit), new Quantities.Angle(longitudeValue, longitudeUnit), new Quantities.Length(altitudeValue, altitudeUnit))
     { }
 
+    public GeographicCoordinate(double latitudeRadian, double longitudeRadian, double altitudeMeter) : this(latitudeRadian, Quantities.AngleUnit.Radian, longitudeRadian, Quantities.AngleUnit.Radian, altitudeMeter, Quantities.LengthUnit.Metre) { }
+
+    public void Deconstruct(out double latitudeRadian, out double longitudeRadian, out double altitudeMeter)
+    {
+      latitudeRadian = m_latitude.Value;
+      longitudeRadian = m_longitude.Value;
+      altitudeMeter = m_altitude.Value;
+    }
+
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
     public Quantities.Length Altitude { get => m_altitude; init => m_altitude = value; }
 
@@ -73,17 +85,18 @@ namespace Flux.Coordinates
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     public Quantities.Angle Longitude { get => m_longitude; init => m_longitude = value; }
 
-    //public double LatitudeInRadians { get => Units.Angle.ConvertDegreeToRadian(m_latitude); }
-    //public double LongitudeInRadians { get => Units.Angle.ConvertDegreeToRadian(m_longitude); }
-
-    /// <summary>Creates a new <see cref="Geometry.SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
-    /// <remarks>All angles in radians.</remarks>
+    /// <summary>Creates a new <see cref="Coordinates.SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
     public Coordinates.SphericalCoordinate ToSphericalCoordinate()
-      => new(
-        m_altitude.Value, Quantities.LengthUnit.Metre,
-        System.Math.PI - (Latitude.Value + (System.Math.PI / 2)), Quantities.AngleUnit.Radian,
-        Longitude.Value + System.Math.PI, Quantities.AngleUnit.Radian
+    // Translates the geographic coordinate to spherical coordinate transparently. I cannot recall the reason for the System.Math.PI involvement (see remarks).
+    {
+      var (lat, lon, alt) = this;
+
+      return new(
+        alt, Quantities.LengthUnit.Metre,
+        /*System.Math.PI -*/ (lat + (System.Math.PI / 2)), Quantities.AngleUnit.Radian,
+        lon /*+ System.Math.PI*/, Quantities.AngleUnit.Radian
       );
+    }
 
     #region Static members
 
@@ -436,12 +449,12 @@ namespace Flux.Coordinates
 
     #endregion Static members
 
-    //#region Implemented interfaces
+    #region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{new Quantities.Latitude(m_latitude.Value, Quantities.AngleUnit.Radian).ToSexagesimalDegreeString()} ({m_latitude.ToString(format ?? "N6", formatProvider)}), {new Quantities.Longitude(m_longitude.Value, Quantities.AngleUnit.Radian).ToSexagesimalDegreeString()} ({m_longitude.ToString(format ?? "N6", formatProvider)}), {m_altitude.ToString(format ?? "N1", formatProvider)}>";
+      => $"<{new Quantities.Latitude(m_latitude.Value, Quantities.AngleUnit.Radian).ToSexagesimalDegreeString()} {new Quantities.Longitude(m_longitude.Value, Quantities.AngleUnit.Radian).ToSexagesimalDegreeString()} ({m_latitude.GetUnitValue(Quantities.AngleUnit.Degree).ToString(format ?? "N6", formatProvider)}, {m_longitude.GetUnitValue(Quantities.AngleUnit.Degree).ToString(format ?? "N6", formatProvider)}), {m_altitude.ToString(format ?? "N1", formatProvider)}>";
 
-    //#endregion Implemented interfaces
+    #endregion Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

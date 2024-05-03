@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux.MapProjections
+﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Natural_Earth_projection
   public readonly record struct NaturalEarthProjection
@@ -7,7 +6,6 @@ namespace Flux.MapProjections
   {
     public static readonly NaturalEarthProjection Default;
 
-    //#pragma warning disable CA1822 // Mark members as static
     public System.Numerics.Vector3 ProjectForward(Coordinates.GeographicCoordinate project)
     {
       var lat = project.Latitude.Value;
@@ -25,8 +23,6 @@ namespace Flux.MapProjections
 
       return new((float)x, (float)y, (float)project.Altitude.Value);
     }
-    //#pragma warning restore CA1822 // Mark members as static
   }
 
 }
-#endif

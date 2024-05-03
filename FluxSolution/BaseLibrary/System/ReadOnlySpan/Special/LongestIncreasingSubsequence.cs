@@ -3,7 +3,7 @@
   public static partial class Fx
   {
     /// <summary>
-    /// <para>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
+    /// <para>The longest increasing subsequence is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
     /// </summary>
     public static int LongestIncreasingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
@@ -14,7 +14,7 @@
     }
 
     /// <summary>
-    /// <para>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
+    /// <para>The longest increasing subsequence is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
     /// </summary>
     public static int[,] LongestIncreasingSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T>? comparer = null)
@@ -55,17 +55,24 @@
     }
 
     /// <summary>
-    /// <para>The longest increasing subsequence (LIS) is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
+    /// <para>The longest increasing subsequence is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
     /// </summary>
     public static T[] LongestIncreasingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       matrix = LongestIncreasingSubsequenceMatrix(source, out var length, comparer);
 
-      var result = new T[length];
-      for (int i = length - 1, k = matrix[0, length]; i >= 0; i--, k = matrix[1, k])
-        result[i] = source[k];
-      return result;
+      if (length > 0)
+      {
+        var lisv = new T[length];
+
+        for (int i = length - 1, k = matrix[0, length]; i >= 0; i--, k = matrix[1, k])
+          lisv[i] = source[k];
+
+        return lisv;
+      }
+
+      return System.Array.Empty<T>();
     }
   }
 }

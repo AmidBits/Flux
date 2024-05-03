@@ -112,18 +112,19 @@ namespace Flux.Colors
       hue2 = Quantities.Angle.ConvertRadianToDegree(System.Math.Atan2(beta, alpha)).Wrap(0, 360);
     }
 
-    /// <summary>Converts the RGB color to grayscale using the specified method.</summary>
+    /// <summary>Converts the RGB color to grayscale using the specified method.
+    /// <para><see href="https://onlinetools.com/image/grayscale-image"/></para>
+    /// </summary>
     public Rgb ToGrayscale(GrayscaleMethod method)
     {
-      var gray = method switch
+      switch (method)
       {
-        GrayscaleMethod.Average => System.Convert.ToByte((m_red + m_green + m_blue) / 3),
-        GrayscaleMethod.Lightness => System.Convert.ToByte((System.Math.Max(System.Math.Max(m_red, m_green), m_blue) + System.Math.Min(System.Math.Min(m_red, m_green), m_blue)) / 2),
-        GrayscaleMethod.Luminosity => System.Convert.ToByte(m_red * 0.21 + m_green * 0.72 + m_blue * 0.07),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(method)),
+        case GrayscaleMethod.Average: return new(m_red / 3, m_green / 3, m_blue / 3);
+        //case GrayscaleMethod.Lightness: new((System.Math.Max(System.Math.Max(m_red, m_green), m_blue) + System.Math.Min(System.Math.Min(m_red, m_green), m_blue)) / 2);
+        case GrayscaleMethod.Luminosity601: return new Rgb((byte)(m_red * 0.30), (byte)(m_green * 0.59), (byte)(m_blue * 0.11));
+        case GrayscaleMethod.Luminosity709: return new Rgb((byte)(m_red * 0.21), (byte)(m_green * 0.72), (byte)(m_blue * 0.07));
+        default: throw new System.ArgumentOutOfRangeException(nameof(method));
       };
-
-      return new Rgb(gray, gray, gray);
     }
 
     /// <summary>Creates a CMYK color corresponding to the RGB instance.</summary>
@@ -144,7 +145,7 @@ namespace Flux.Colors
       var h = GetHue(out var min, out var _, out var r, out var g, out var b, out var _);
       var i = (r + g + b) / 3;
       var s = i == 0 ? 0 : 1 - (min / i);
-      return new Hsi(h, s, i);
+      return new(h, s, i);
     }
 
     /// <summary>Creates an HSL color corresponding to the RGB instance.</summary>
@@ -153,24 +154,26 @@ namespace Flux.Colors
       var h = GetHue(out var min, out var max, out var _, out var _, out var _, out var chroma);
       var l = 0.5 * (max + min);
       var s = l == 0 || l == 1 ? 0 : System.Math.Clamp(chroma / (1 - System.Math.Abs(2 * l - 1)), 0, 1);
-      return new Hsl(h, s, l);
+      return new(h, s, l);
     }
 
     /// <summary>Creates an HSV color corresponding to the RGB instance.</summary>
     public Hsv ToHsv()
-      => new(
-        GetHue(out _, out var max, out _, out _, out _, out var chroma),
-        max == 0 ? 0 : chroma / max,
-        max
-      );
+    {
+      var h = GetHue(out _, out var max, out _, out _, out _, out var chroma);
+      var s = max == 0 ? 0 : chroma / max;
+      var v = max;
+      return new(h, s, v);
+    }
 
     /// <summary>Creates an HWB color corresponding to the RGB instance.</summary>
     public Hwb ToHwb()
-      => new(
-        GetHue(out var min, out var max, out _, out _, out _, out _),
-        min,
-        1 - max
-      );
+    {
+      var h = GetHue(out var min, out var max, out _, out _, out _, out _);
+      var w = min;
+      var b = 1 - max;
+      return new(h, w, b);
+    }
 
     //https://stackoverflow.com/questions/29832317/converting-hsb-to-rgb
     // http://alvyray.com/Papers/CG/HWB_JGTv208.pdf#:~:text=HWB%20To%20and%20From%20RGB%20The%20full%20transforms,min%28%20R%20%2C%20G%20%2C%20B%20%29.%20

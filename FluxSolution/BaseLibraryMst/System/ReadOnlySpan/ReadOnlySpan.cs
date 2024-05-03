@@ -77,25 +77,25 @@ namespace SystemFx
       var text1 = "karolin".AsSpan();
       var text2 = "kathrin".AsSpan();
       var expected = 3;
-      var actual = text1.HammingDistance(text2);
+      var actual = text1.HammingDistanceMetric(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "karolin".AsSpan();
       text2 = "kerstin".AsSpan();
       expected = 3;
-      actual = text1.HammingDistance(text2);
+      actual = text1.HammingDistanceMetric(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "kathrin".AsSpan();
       text2 = "kerstin".AsSpan();
       expected = 4;
-      actual = text1.HammingDistance(text2);
+      actual = text1.HammingDistanceMetric(text2);
       Assert.AreEqual(expected, actual);
 
       text1 = "2173896".AsSpan();
       text2 = "2233796".AsSpan();
       expected = 3;
-      actual = text1.HammingDistance(text2);
+      actual = text1.HammingDistanceMetric(text2);
       Assert.AreEqual(expected, actual);
     }
 

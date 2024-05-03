@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux.MapProjections
+﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Equal_Earth_projection
   public readonly record struct EqualEarthProjection
@@ -7,7 +6,6 @@ namespace Flux.MapProjections
   {
     public static readonly EqualEarthProjection Default;
 
-    //#pragma warning disable CA1822 // Mark members as static
     public System.Numerics.Vector3 ProjectForward(Coordinates.GeographicCoordinate location)
     {
       const double A1 = 1.340264;
@@ -61,7 +59,7 @@ namespace Flux.MapProjections
       var lon = M * location.X * dy / System.Math.Cos(p);
       var lat = System.Math.Asin(System.Math.Sin(p) / M);
 
-      return new Coordinates.GeographicCoordinate(
+      return new(
         lat,
         Quantities.AngleUnit.Radian,
         lon,
@@ -70,7 +68,5 @@ namespace Flux.MapProjections
         Quantities.LengthUnit.Metre
       );
     }
-    //#pragma warning restore CA1822 // Mark members as static
   }
 }
-#endif

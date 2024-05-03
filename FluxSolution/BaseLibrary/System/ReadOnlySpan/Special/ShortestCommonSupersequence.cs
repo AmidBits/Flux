@@ -5,7 +5,23 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Create a dunamic programming matrix of shortest common supersequence (SCS) between two sequences.</para>
+    /// <para>Find the length of the shortest common supersequence (SCS) between two sequences.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Shortest_common_supersequence_problem"/></para>
+    /// <para><seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/></para>
+    /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
+    /// <remarks>This is the same routine as longest common subsequence (LCS).</remarks>
+    /// </summary>
+    public static int ShortestCommonSupersequenceLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+      matrix = ShortestCommonSupersequenceMatrix(source, target, out var length, equalityComparer);
+
+      return length;
+    }
+
+    /// <summary>
+    /// <para>Create a dynamic programming matrix of shortest common supersequence (SCS) between two sequences.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Shortest_common_supersequence_problem"/></para>
     /// <para><seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/></para>
     /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>

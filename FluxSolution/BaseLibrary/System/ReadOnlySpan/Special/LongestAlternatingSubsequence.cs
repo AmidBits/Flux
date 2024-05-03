@@ -68,25 +68,30 @@
     /// <param name="matrix">The matrix of the longest alternating subsequence that was found, using dynamic programming.</param>
     /// <param name="comparer">Uses the specified comparer, default if null.</param>
     /// <returns>The longest alternating subsequence that was found.</returns>
-    public static System.Collections.Generic.IList<T> LongestAlternatingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
+    public static T[] LongestAlternatingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
 
-      var subsequence = new T[length];
-
-      for (int i = 0, mark = 0; i < source.Length; i++)
+      if (length > 0)
       {
-        var max = System.Math.Max(matrix[i, 0], matrix[i, 1]);
+        var lasv = new T[length];
 
-        if (max > mark)
+        for (int i = 0, mark = 0; i < source.Length; i++)
         {
-          subsequence[mark] = source[i];
+          var max = System.Math.Max(matrix[i, 0], matrix[i, 1]);
 
-          mark++;
+          if (max > mark)
+          {
+            lasv[mark] = source[i];
+
+            mark++;
+          }
         }
+
+        return lasv;
       }
 
-      return subsequence;
+      return System.Array.Empty<T>();
     }
   }
 }

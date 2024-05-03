@@ -4,13 +4,19 @@ namespace Flux
 
   public static partial class Em
   {
-    /// <summary>Creates a new <see cref="Geometry.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
+    /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
     public static Coordinates.CylindricalCoordinate ToCylindricalCoordinate(this System.Numerics.Vector3 source)
-      => new(
-        System.Math.Sqrt(source.X * source.X + source.Y * source.Y), Quantities.LengthUnit.Metre,
-        (System.Math.Atan2(source.Y, source.X) + System.Math.Tau) % System.Math.Tau, Quantities.AngleUnit.Radian,
-        source.Z, Quantities.LengthUnit.Metre
+    {
+      var x = source.X;
+      var y = source.Y;
+      var z = source.Z;
+
+      return new(
+        System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Metre,
+        (System.Math.Atan2(y, x) + System.Math.Tau) % System.Math.Tau, Quantities.AngleUnit.Radian,
+        z, Quantities.LengthUnit.Metre
       );
+    }
   }
 
   #endregion
@@ -21,7 +27,6 @@ namespace Flux
     /// <para>Cylindrical coordinate. It is assumed that the reference plane is the Cartesian xy-plane (with equation z/height = 0), and the cylindrical axis is the Cartesian z-axis, i.e. the z-coordinate is the same in both systems, and the correspondence between cylindrical (radius, azimuth, height) and Cartesian (x, y, z) are the same as for polar coordinates.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system"/></para>
     /// </summary>
-    /// <remarks>All angles in radians, unless noted otherwise.</remarks>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct CylindricalCoordinate
       : System.IFormattable
@@ -38,21 +43,7 @@ namespace Flux
       /// <param name="radius"></param>
       /// <param name="azimuth"></param>
       /// <param name="height"></param>
-      //public CylindricalCoordinate(double radius, double azimuth, double height)
-      //{
-      //  m_radius = radius;
-      //  m_azimuth = azimuth;
-      //  m_height = height;
-      //}
-
-      /// <summary>
-      /// 
-      /// </summary>
-      /// <param name="radius"></param>
-      /// <param name="azimuth"></param>
-      /// <param name="height"></param>
       public CylindricalCoordinate(Quantities.Length radius, Quantities.Angle azimuth, Quantities.Length height)
-      //  : this(radius.Value, azimuth.Angle.Value, height.Value)
       {
         m_radius = radius;
         m_azimuth = azimuth;
@@ -60,21 +51,41 @@ namespace Flux
       }
 
       public CylindricalCoordinate(double radiusValue, Quantities.LengthUnit radiusUnit, double azimuthValue, Quantities.AngleUnit azimuthUnit, double heightValue, Quantities.LengthUnit heightUnit)
-        : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(azimuthValue, azimuthUnit), new Quantities.Length(heightValue, heightUnit))
-      { }
+        : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(azimuthValue, azimuthUnit), new Quantities.Length(heightValue, heightUnit)) { }
+
+      public CylindricalCoordinate(double radiusMeter, double azimuthRadian, double heightMeter)
+        : this(radiusMeter, Quantities.LengthUnit.Metre, azimuthRadian, Quantities.AngleUnit.Radian, heightMeter, Quantities.LengthUnit.Metre) { }
+
+      public void Deconstruct(out double radiusMeter, out double azimuthRadian, out double heightMeter)
+      {
+        radiusMeter = m_radius.Value;
+        azimuthRadian = m_azimuth.Value;
+        heightMeter = m_height.Value;
+      }
 
       /// <summary>
       /// <para>Radius, (length) unit of meter. A.k.a. radial distance, or axial distance.</para>
       /// </summary>
       public Quantities.Length Radius { get => m_radius; init => m_radius = value; }
+
       /// <summary>
       /// <para>Azimuth angle, unit of radian. A.k.a. angular position.</para>
       /// </summary>
       public Quantities.Angle Azimuth { get => m_azimuth; init => m_azimuth = value; }
+
       /// <summary>
       /// <para>Height, (length) unit of meter. A.k.a. altitude (if the reference plane is considered horizontal), longitudinal position, axial position, or axial coordinate.</para>
       /// </summary>
       public Quantities.Length Height { get => m_height; init => m_height = value; }
+
+      public double CylinderSurfaceArea => CylindricalCoordinate.SurfaceAreaOfCylinder(m_radius.Value, m_height.Value);
+
+      public CartesianCoordinate ToCartesianCoordinate()
+      {
+        var (x, y, z) = ToCartesianCoordinate3();
+
+        return new(x, y, z);
+      }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
@@ -126,19 +137,24 @@ namespace Flux
 
       #region Static methods
 
-      /// <summary>Computes the area of the specified cylinder.</summary>
+      /// <summary>
+      /// <para>Computes the area of a cylinder with the specified <paramref name="radius"/> and <paramref name="height"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
+      /// </summary>
       /// <param name="radius">The radius of a cylinder.</param>
       /// <param name="height">The height of a cylinder.</param>
-      public static double AreaOfCylinder(double radius, double height) => 2 * System.Math.PI * radius * (radius + height);
+      public static double SurfaceAreaOfCylinder(double radius, double height) => 2 * System.Math.PI * radius * (radius + height);
 
       #endregion // Static methods
 
-      public string ToString(string? format, System.IFormatProvider? provider)
-      {
-        if (string.IsNullOrWhiteSpace(format)) format = "N3";
+      #region Implemented interfaces
 
-        return $"<{m_radius.Value.ToString(format)}, {new Quantities.Azimuth(m_azimuth.Value, Quantities.AngleUnit.Radian).ToString(format, null)} ({m_azimuth.Value.ToString(format)}), {m_height.Value.ToString(format)}>";
-      }
+      public string ToString(string? format, System.IFormatProvider? provider)
+        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_azimuth.ToUnitValueString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)}, {m_height.Value.ToString(format ?? "N3", provider)}>";
+
+      #endregion // Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }
