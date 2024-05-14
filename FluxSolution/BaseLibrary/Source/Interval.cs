@@ -15,17 +15,18 @@
       => (Interval<TSelf>)source.GetExtentInterval(minValue, maxValue);
 
     /// <summary>
-    /// <para>Creates a new <see cref="Flux.Interval{T}"/> by padding the <paramref name="source"/> interval notation <paramref name="minValue"/>..<paramref name="maxValue"/> with <paramref name="marginSize"/>.</para>
+    /// <para>Creates a new <see cref="Flux.Interval{T}"/> by padding the <paramref name="source"/> interval notation <paramref name="minValue"/>..<paramref name="maxValue"/> with <paramref name="minMargin"/>/<paramref name="maxMargin"/>.</para>
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
     /// <param name="source"></param>
     /// <param name="minValue"></param>
     /// <param name="maxValue"></param>
-    /// <param name="marginSize"></param>
+    /// <param name="minMargin"></param>
+    /// <param name="maxMargin"></param>
     /// <returns></returns>
-    public static Interval<TSelf> CreateIntervalByMargin<TSelf>(this IntervalNotation source, TSelf minValue, TSelf maxValue, TSelf marginSize)
+    public static Interval<TSelf> CreateIntervalByMargin<TSelf>(this IntervalNotation source, TSelf minValue, TSelf maxValue, TSelf minMargin, TSelf maxMargin)
       where TSelf : System.Numerics.INumber<TSelf>
-      => (Interval<TSelf>)source.GetMarginInterval(minValue, maxValue, marginSize);
+      => (Interval<TSelf>)source.GetMarginInterval(minValue, maxValue, minMargin, maxMargin);
 
     /// <summary>
     /// <para>Creates a new sequence of values by iterating over the <paramref name="source"/> <see cref="Interval{TSelf}"/> using the <paramref name="constraint"/> .</para>
@@ -36,28 +37,21 @@
     /// <param name="notation">Specified by <see cref="IntervalNotation"/>.</param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.Collections.Generic.IEnumerable<TSelf> LoopInterval<TSelf>(this Interval<TSelf> source, TSelf step, SortOrder order, IntervalNotation notation = IntervalNotation.Closed)
+    public static System.Collections.Generic.IEnumerable<TSelf> Range<TSelf>(this Interval<TSelf> source, TSelf step, IntervalNotation notation = IntervalNotation.Closed)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      if (step <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(step));
-
-      var (minMargin, maxMargin) = notation.GetMarginInterval(source.MinValue, source.MaxValue, TSelf.Abs(step));
+      var (minMargin, maxMargin) = notation.GetMarginInterval(source.MinValue, source.MaxValue, TSelf.Abs(step), TSelf.Abs(step));
 
       var count = System.Numerics.BigInteger.One;
 
-      switch (order)
-      {
-        case SortOrder.Ascending:
-          for (var number = minMargin; number <= maxMargin; number = minMargin + step * TSelf.CreateChecked(count), count++)
-            yield return number;
-          break;
-        case SortOrder.Descending:
-          for (var number = maxMargin; number >= minMargin; number = maxMargin + step * TSelf.CreateChecked(count), count++)
-            yield return number;
-          break;
-        default:
-          throw new System.ArgumentOutOfRangeException(nameof(order));
-      }
+      if (TSelf.IsNegative(step)) // A negative number yields a descending sequence from maxValue to minValue of the interval.
+        for (var number = maxMargin; number >= minMargin; number = maxMargin + step * TSelf.CreateChecked(count), count++)
+          yield return number;
+      else if (!TSelf.IsZero(step)) // Any positive number but zero yields an ascending sequence from minValue to maxValue of the interval.
+        for (var number = minMargin; number <= maxMargin; number = minMargin + step * TSelf.CreateChecked(count), count++)
+          yield return number;
+      else // The argument "step" is zero and that is an invalid value.
+        throw new System.ArgumentOutOfRangeException(nameof(step));
     }
   }
 
@@ -83,21 +77,14 @@
       m_maxValue = maxValue;
     }
 
+    public void Deconstruct(out T minValue, out T maxValue)
+    {
+      minValue = m_minValue;
+      maxValue = m_maxValue;
+    }
+
     public T MaxValue => m_maxValue;
     public T MinValue => m_minValue;
-
-    /// <summary>
-    /// <para>Asserts that the value is a member of the interval set (throws an exception if it's not).</para>
-    /// </summary>
-    /// <exception cref="System.NotImplementedException"></exception>
-    public T AssertMember(T value, IntervalNotation notation = IntervalNotation.Closed, string? paramName = null) => notation.AssertMember(value, m_minValue, m_maxValue, paramName);
-
-    /// <summary>
-    /// <para>Returns whether the value is a member of the interval set.</para>
-    /// </summary>
-    /// <exception cref="System.ArgumentOutOfRangeException"/>
-    /// <exception cref="System.NotImplementedException"/>
-    public bool VerifyMember(T value, IntervalNotation notation = IntervalNotation.Closed) => notation.VerifyMember(value, m_minValue, m_maxValue);
 
     #region Static methods
 

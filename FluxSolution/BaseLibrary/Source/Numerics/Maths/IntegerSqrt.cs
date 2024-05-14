@@ -84,7 +84,7 @@ namespace Flux
       && TSelf.IsZero(number % root); // Is perfect integer root?
 
     /// <summary>
-    /// <para>Attempts to compute the (floor) square root of <paramref name="number"/> into the out parameter <paramref name="root"/>. This is a faster but limited version.</para>
+    /// <para>Attempts to compute the (floor) square root of <paramref name="number"/> into the out parameter <paramref name="root"/>. This is a faster but limited to integer of 53 bits.</para>
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
     /// <param name="number">The square number to find the square-<paramref name="root"/> of.</param>

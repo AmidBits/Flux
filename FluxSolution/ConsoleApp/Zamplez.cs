@@ -316,9 +316,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)n.PowOf2(false, Flux.RoundingMode.TowardsZero, out var p2TowardsZerolo, out var p2TowardsZerohi);
+      var np2TowardsZero = (int)n.RoundToBoundaries(Flux.RoundingMode.TowardsZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)n.PowOf2(false, Flux.RoundingMode.AwayFromZero, out var p2AwayFromZerolo, out var p2AwayFromZerohi);
+      var np2AwayFromZero = (int)n.RoundToBoundaries(Flux.RoundingMode.AwayFromZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = n.ReverseBits();

@@ -165,16 +165,22 @@ namespace Numerics
     [TestMethod]
     public void PowOf2()
     {
-      var (towardsZero, awayFromZero) = 88.PowOf2(false);
+      var towardZero = 88.Pow2TowardZero(false);
+      var awayFromZero = 88.Pow2AwayFromZero(false);
 
-      Assert.AreEqual(64, towardsZero);
+      Assert.AreEqual(64, towardZero);
       Assert.AreEqual(128, awayFromZero);
     }
 
     [TestMethod]
     public void PowOf2WithRounding()
     {
-      var rounded = 88.PowOf2(false, RoundingMode.HalfAwayFromZero, out var towardsZero, out var awayFromZero);
+      var value = 88;
+
+      var towardsZero = value.Pow2TowardZero(false);
+      var awayFromZero = value.Pow2AwayFromZero(false);
+
+      var rounded = 88.RoundToBoundaries(RoundingMode.HalfAwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64, rounded);
 
@@ -185,7 +191,12 @@ namespace Numerics
     [TestMethod]
     public void PowOf2AwayFromZeroProperWithRounding()
     {
-      var actual = 88.ToBigInteger().PowOf2(true, RoundingMode.AwayFromZero, out var _, out var _);
+      var value = 88;
+
+      var towardsZero = value.Pow2TowardZero(true);
+      var awayFromZero = value.Pow2AwayFromZero(true);
+
+      var actual = 88.RoundToBoundaries(RoundingMode.AwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -193,7 +204,12 @@ namespace Numerics
     [TestMethod]
     public void PowOf2AwayFromZeroWithRounding()
     {
-      var actual = 88.ToBigInteger().PowOf2(false, RoundingMode.AwayFromZero, out var _, out var _);
+      var value = 88;
+
+      var towardsZero = value.Pow2TowardZero(false);
+      var awayFromZero = value.Pow2AwayFromZero(false);
+
+      var actual = 88.RoundToBoundaries(RoundingMode.AwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -201,7 +217,12 @@ namespace Numerics
     [TestMethod]
     public void PowOf2TowardZeroProperWithRounding()
     {
-      var actual = 88.ToBigInteger().PowOf2(true, RoundingMode.TowardsZero, out var _, out var _);
+      var value = 88;
+
+      var towardsZero = value.Pow2TowardZero(true);
+      var awayFromZero = value.Pow2AwayFromZero(true);
+
+      var actual = 88.RoundToBoundaries(RoundingMode.TowardsZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }
@@ -209,7 +230,12 @@ namespace Numerics
     [TestMethod]
     public void PowOf2TowardZeroWithRounding()
     {
-      var actual = 88.ToBigInteger().PowOf2(false, RoundingMode.TowardsZero, out var _, out var _);
+      var value = 88;
+
+      var towardsZero = value.Pow2TowardZero(false);
+      var awayFromZero = value.Pow2AwayFromZero(false);
+
+      var actual = 88.RoundToBoundaries(RoundingMode.TowardsZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }

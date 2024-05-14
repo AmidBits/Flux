@@ -18,7 +18,7 @@ namespace Flux
 
       public UnitInterval(double unitInterval, IntervalNotation notation)
       {
-        m_value = notation.AssertMember(unitInterval, MinValue, MaxValue, nameof(unitInterval));
+        m_value = notation.AssertValidMember(unitInterval, MinValue, MaxValue, nameof(unitInterval));
 
         m_notation = notation;
       }
@@ -37,7 +37,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static TSelf AssertMember<TSelf>(TSelf unitInterval, IntervalNotation notation, string? paramName = null)
         where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => notation.AssertMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(unitInterval));
+        => notation.AssertValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(unitInterval));
 
       /// <summary>
       /// <para>Returns whether the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>.</para>
@@ -45,7 +45,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static bool VerifyMember<TSelf>(TSelf unitInterval, IntervalNotation notation)
         where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => notation.VerifyMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+        => notation.IsValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
 
       #endregion Static methods
 

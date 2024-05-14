@@ -224,6 +224,57 @@
 
       #endregion // Conversion methods
 
+      /// <summary>
+      /// <para>Ensure <paramref name="angle"/> is an azimuth, i.e. a value in the interval [0, 360). Note that 360 as a value is excluded and is represented as 0.</para>
+      /// </summary>
+      /// <param name="angle"></param>
+      /// <returns></returns>
+      /// <remarks>Values outside the interval [0, 360)) are wrapped, i.e. 370 = 10, -10 = 350, etc.</remarks>
+      public static Angle AsAzimuth(Angle angle) => new(angle.Value.Wrap(0, double.Tau) % double.Tau);
+
+      /// <summary>
+      /// <para>Creates an azimuth <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [0, 360].</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="unit"></param>
+      /// <returns></returns>
+      /// <remarks>Values outside the interval [0, 360] are wrapped, i.e. 370 = 10, -10 = 350, etc.</remarks>
+      public static Angle AsAzimuth(double value, AngleUnit unit) => AsAzimuth(new(value, unit));
+
+      /// <summary>
+      /// <para>Ensure <paramref name="angle"/> is a latitude, i.e. a value in the interval [-90, +90].</para>
+      /// </summary>
+      /// <param name="angle"></param>
+      /// <returns></returns>
+      /// <remarks>Values outside the interval [-90, +90] are folded, i.e. +100 = +80, -100 = -80, etc.</remarks>
+      public static Angle AsLatitude(Angle angle) => new(angle.Value.Fold(double.Pi / -2, double.Pi / 2));
+
+      /// <summary>
+      /// <para>Creates a longitude <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [-90, +90].</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="unit"></param>
+      /// <returns></returns>
+      /// <remarks>Values outside the interval [-90, +90] are folded, i.e. +100 = +80, -100 = -80, etc.</remarks>
+      public static Angle AsLatitude(double value, AngleUnit unit) => AsLatitude(new(value, unit));
+
+      /// <summary>
+      /// <para>Ensure <paramref name="angle"/> is a longitude, i.e. a value in the interval [-180, +180].</para>
+      /// </summary>
+      /// <param name="angle"></param>
+      /// <returns></returns>
+      /// <remarks>Values outside the interval [-180, +180] are wrapped, i.e. 190 = -170, -190 = +170, etc.</remarks>
+      public static Angle AsLongitude(Angle angle) => new(angle.Value.Wrap(-double.Pi, double.Pi));
+
+      /// <summary>
+      /// <para>Creates a longitude <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [-180, +180].</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="unit"></param>
+      /// <returns></returns>
+      /// <remarks>Values outside the interval [-180, +180] are wrapped, i.e. 190 = -170, -190 = +170, etc.</remarks>
+      public static Angle AsLongitude(double value, AngleUnit unit) => AsLongitude(new(value, unit));
+
       #region Trigonometry static methods
 
       #region Gudermannian

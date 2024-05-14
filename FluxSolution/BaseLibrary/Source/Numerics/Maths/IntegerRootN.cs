@@ -5,32 +5,32 @@
 #if NET7_0_OR_GREATER
 
     /// <summary>
-    /// <para>Returns the the largest integer less than or equal (i.e. floor) to the <paramref name="nth"/> (radix) root of <paramref name="number"/>.</para>
+    /// <para>Returns the the largest integer less than or equal (i.e. floor) to the <paramref name="nth"/> (radix) root of <paramref name="value"/>.</para>
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
-    /// <param name="number">The number to find the root of.</param>
+    /// <param name="value">The number to find the root of.</param>
     /// <param name="nth">Essentially the radix.</param>
-    /// <returns>The integer <paramref name="nth"/> root of <paramref name="number"/>.</returns>
-    public static TSelf IntegerRootN<TSelf>(this TSelf number, TSelf nth)
+    /// <returns>The integer <paramref name="nth"/> root of <paramref name="value"/>.</returns>
+    public static TSelf IntegerRootN<TSelf>(this TSelf value, TSelf nth)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      AssertNonNegative(number, nameof(number));
+      AssertNonNegative(value, nameof(value));
 
       if (nth <= TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(nth), "Must be an integer, greater than or equal to 2.");
 
-      if (TryFastIntegerRootN(number, nth, out TSelf root)) // Testing!
+      if (TryFastIntegerRootN(value, nth, out TSelf root)) // Testing!
         return root;
 
       var nM1 = nth - TSelf.One;
       var c = TSelf.One;
-      var d = (nM1 + number) / nth;
-      var e = (nM1 * d + number / IntegerPow(d, nM1)) / nth;
+      var d = (nM1 + value) / nth;
+      var e = (nM1 * d + value / IntegerPow(d, nM1)) / nth;
 
       while (c != d && c != e)
       {
         c = d;
         d = e;
-        e = (nM1 * d + number / IntegerPow(d, nM1)) / nth;
+        e = (nM1 * d + value / IntegerPow(d, nM1)) / nth;
       }
 
       return d < e ? d : e;
@@ -130,15 +130,12 @@
       try
       {
         root = IntegerRootN(number, nth);
-
         return true;
       }
-      catch
-      {
-        root = TSelf.Zero;
+      catch { }
 
-        return false;
-      }
+      root = TSelf.Zero;
+      return false;
     }
 
 #else

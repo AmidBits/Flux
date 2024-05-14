@@ -90,13 +90,31 @@
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Ceiling(x);
 
-    public static TSelf RoundToPow2AwayFromZero<TSelf>(this TSelf x, bool proper = false)
+    public static TSelf RoundToMultipleOfAwayFromZero<TSelf>(this TSelf value, TSelf multiple, bool unequal)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.CreateChecked(System.Numerics.BigInteger.CreateChecked(x).PowOf2AwayFromZero(proper && TSelf.IsInteger(x)));
+      => TSelf.CopySign(multiple, value) is var msv && value - (value % multiple) is var motz && (motz != value || unequal) ? motz + msv : motz;
 
-    public static TSelf RoundToPow2TowardZero<TSelf>(this TSelf x, bool proper = false)
+    public static TSelf RoundToMultipleOfTowardZero<TSelf>(this TSelf value, TSelf multiple, bool unequal)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => TSelf.CreateChecked(System.Numerics.BigInteger.CreateChecked(x).PowOf2TowardZero(proper && TSelf.IsInteger(x)));
+      => value - (value % multiple) is var motz && unequal && motz == value ? motz - TSelf.CopySign(multiple, value) : motz;
+
+    public static TSelf RoundToPow2AwayFromZero<TSelf>(this TSelf x, bool unequal)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => TSelf.CreateChecked(System.Numerics.BigInteger.CreateChecked(x).Pow2AwayFromZero(unequal || !TSelf.IsInteger(x)));
+
+    public static TSelf RoundToPow2TowardZero<TSelf>(this TSelf x, bool unequal)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => TSelf.CreateChecked(System.Numerics.BigInteger.CreateChecked(x).Pow2TowardZero(unequal && TSelf.IsInteger(x)));
+
+    public static TSelf RoundToPowOfAwayFromZero<TSelf, TRadix>(this TSelf x, TRadix radix, bool unequal)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      => TSelf.CreateChecked(Quantities.Radix.PowOfAwayFromZero(System.Numerics.BigInteger.CreateChecked(x), System.Numerics.BigInteger.CreateChecked(radix), unequal || !TSelf.IsInteger(x)));
+
+    public static TSelf RoundToPowOfTowardZero<TSelf, TRadix>(this TSelf x, TRadix radix, bool unequal)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      => TSelf.CreateChecked(Quantities.Radix.PowOfTowardZero(System.Numerics.BigInteger.CreateChecked(x), System.Numerics.BigInteger.CreateChecked(radix), unequal && TSelf.IsInteger(x)));
 
     #endregion // Unconditional rounding functions
   }

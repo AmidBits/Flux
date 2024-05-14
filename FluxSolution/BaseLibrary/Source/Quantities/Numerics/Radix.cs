@@ -12,7 +12,7 @@ namespace Flux.Quantities
 
     private readonly int m_value;
 
-    public Radix(int radix) => m_value = IntervalNotation.Closed.AssertMember(radix, MinRadix, MaxRadix, nameof(radix));
+    public Radix(int radix) => m_value = IntervalNotation.Closed.AssertValidMember(radix, MinRadix, MaxRadix, nameof(radix));
 
     #region Static methods
 
@@ -20,13 +20,13 @@ namespace Flux.Quantities
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf AssertMember<TSelf>(TSelf radix, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix), paramName ?? nameof(radix));
+      => IntervalNotation.Closed.AssertValidMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix), paramName ?? nameof(radix));
 
     /// <summary>Asserts that <paramref name="radix"/> is valid, with an <paramref name="alernativeMaxRadix"/> (throws an exception, if not).</summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf AssertMember<TSelf>(TSelf radix, TSelf alernativeMaxRadix, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.AssertMember(radix, TSelf.CreateChecked(MinRadix), TSelf.Min(alernativeMaxRadix, TSelf.CreateChecked(MaxRadix)), paramName ?? nameof(radix));
+      => IntervalNotation.Closed.AssertValidMember(radix, TSelf.CreateChecked(MinRadix), TSelf.Min(alernativeMaxRadix, TSelf.CreateChecked(MaxRadix)), paramName ?? nameof(radix));
 
     /// <summary>
     /// <para>Convert a value to a Gray code with the given base and digits. Iterating through a sequence of values would result in a sequence of Gray codes in which only one digit changes at a time.</para>
@@ -226,20 +226,21 @@ namespace Flux.Quantities
       return true;
     }
 
-    /// <summary>Determines if <paramref name="value"/> is a power of <paramref name="radix"/>.</summary>
+    /// <summary>
+    /// <para>Determines if <paramref name="value"/> is a power of <paramref name="radix"/>.</para>
+    /// </summary>
+    /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero simply returns false.</remarks>
     public static bool IsPowOf<TSelf>(TSelf value, TSelf radix)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      Maths.AssertNonNegative(value);
       AssertMember(radix);
 
-      if (value == radix) // If the value is equal to the radix, then it's a power of the radix.
-        return true;
+      value = TSelf.Abs(value);
 
-      if (radix == (TSelf.One << 1)) // Special case for binary numbers, we can use dedicated IsPow2().
+      if (radix == TSelf.CreateChecked(2)) // Special case for binary numbers, we can use dedicated IsPow2().
         return TSelf.IsPow2(value);
 
-      if (value > TSelf.One)
+      if (value >= radix)
         while (TSelf.IsZero(value % radix))
           value /= radix;
 
@@ -298,25 +299,25 @@ namespace Flux.Quantities
       return int.CreateChecked(Quantities.Radix.IntegerLogTowardZero(foldedRight, radix) + TSelf.One);
     }
 
-    /// <summary>Compute the away-from-zero power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
+    /// <summary>Computes the away-from-zero power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
     /// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
     /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Whether the power-of-<paramref name="radix"/> must not be the same as <paramref name="value"/>.</param>
+    /// <param name="unequal">Whether the power-of-<paramref name="radix"/> must be unequal to <paramref name="value"/>.</param>
     /// <returns>The away-from-zero (ceiling, if <paramref name="value"/> is positive) power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf PowOfAwayFromZero<TSelf>(TSelf value, TSelf radix, bool proper)
+    public static TSelf PowOfAwayFromZero<TSelf>(TSelf value, TSelf radix, bool unequal)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.CopySign(TSelf.Abs(value) is var v && radix.IntegerPow(TSelf.CreateChecked(IntegerLogTowardZero(v, radix))) is var tz && (tz != v ? tz * radix : tz) is var afz && proper && afz == v ? afz * radix : afz, value);
+      => TSelf.IsZero(value) ? value : TSelf.CopySign(TSelf.Abs(value) is var v && radix.IntegerPow(IntegerLogTowardZero(v, radix)) is var ipow && (ipow == v ? ipow : ipow * radix) is var afz && unequal && afz == v ? afz * radix : afz, value);
 
-    /// <summary>Compute the toward-zero power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
+    /// <summary>Computes the toward-zero power-of-<paramref name="radix"/> of <paramref name="value"/>.</summary>
     /// <param name="value">The value for which the toward-zero (floor if positive) power-of-<paramref name="radix"/> will be found.</param>
     /// <param name="radix">The power of alignment.</param>
-    /// <param name="proper">Whether the power-of-<paramref name="radix"/> must not be the same as <paramref name="value"/>.</param>
+    /// <param name="unequal">Whether the power-of-<paramref name="radix"/> must be unequal to <paramref name="value"/>.</param>
     /// <returns>The toward-zero (floor, if <paramref name="value"/> is positive) power-of-<paramref name="radix"/> of <paramref name="value"/>.</returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf PowOfTowardZero<TSelf>(TSelf value, TSelf radix, bool proper)
+    public static TSelf PowOfTowardZero<TSelf>(TSelf value, TSelf radix, bool unequal)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsZero(value) ? value : TSelf.CopySign(TSelf.Abs(value) is var v && radix.IntegerPow(IntegerLogTowardZero(v, radix)) is var tz && proper && tz == v ? tz / radix : tz, value);
+      => TSelf.IsZero(value) ? value : TSelf.CopySign(TSelf.Abs(value) is var v && radix.IntegerPow(IntegerLogTowardZero(v, radix)) is var ipow && unequal && ipow == v ? ipow / radix : ipow, value);
 
     /// <summary>Reverse the digits of <paramref name="number"/> using base <paramref name="radix"/>, obtaining a new number.</summary>
     public static TSelf ReverseDigits<TSelf>(TSelf number, TSelf radix)
@@ -414,12 +415,12 @@ namespace Flux.Quantities
     /// <summary>Returns whether the number is a valid <paramref name="radix"/>.</summary>
     public static bool VerifyMember<TSelf>(TSelf radix)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.VerifyMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix));
+      => IntervalNotation.Closed.IsValidMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix));
 
     /// <summary>Returns whether the number is a valid <paramref name="radix"/>, with an <paramref name="alernativeMaxRadix"/>.</summary>
     public static bool VerifyMember<TSelf>(TSelf radix, TSelf alernativeMaxRadix)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.VerifyMember(radix, TSelf.CreateChecked(MinRadix), alernativeMaxRadix);
+      => IntervalNotation.Closed.IsValidMember(radix, TSelf.CreateChecked(MinRadix), alernativeMaxRadix);
 
     #endregion Static methods
 

@@ -40,10 +40,5 @@ namespace Flux
     /// <summary>Round up to the number greater-than-or-equal to value.</summary>
     /// <remarks>This is the same as Math.Ceiling of the number. Common rounding: round up, bias: positive infinity.</remarks>
     ToPositiveInfinity = 14,
-
-    ///// <summary>Round up to the power-of-2 number greater-than-or-equal to value.</summary>
-    //ToPowOf2AwayFromZero = 21,
-    ///// <summary>Round down to the power-of-2 number less-than-or-equal to value.</summary>
-    //ToPowOf2TowardsZero = 22,
   }
 }

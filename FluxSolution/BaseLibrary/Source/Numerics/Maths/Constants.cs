@@ -70,6 +70,8 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Golden_ratio"/>
     public const double GoldenRatio = 1.6180339887498948482045868343656381177203091798057628621354486227052604628189024497072072041893911374;
 
+    public const double HalfPi = System.Math.PI / 2;
+
     /// <summary>Represents the square root of 2.</summary>
     public const double PythagorasConstant = 1.414213562373095048801688724209698078569671875376948073176679737990732478462;
 

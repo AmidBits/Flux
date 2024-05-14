@@ -39,12 +39,6 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var s1 = "abcbdab";
-      var s2 = "bdcaba";
-
-      var m = s1.AsSpan().ShortestCommonSupersequenceLength(s2, out var _);
-
-      //      System.Console.WriteLine(m.Rank2ToConsoleString());
 
       var r = 2;
 

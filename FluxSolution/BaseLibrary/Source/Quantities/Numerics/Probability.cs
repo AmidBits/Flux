@@ -15,7 +15,7 @@ namespace Flux
       private readonly double m_value;
 
       public Probability(double ratio)
-        => m_value = IntervalNotation.Closed.AssertMember(ratio, MinValue, MaxValue, nameof(ratio));
+        => m_value = IntervalNotation.Closed.AssertValidMember(ratio, MinValue, MaxValue, nameof(ratio));
 
       #region Static methods
 
@@ -23,13 +23,13 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static TSelf AssertMember<TSelf>(TSelf probability, string? paramName = null)
         where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => IntervalNotation.Closed.AssertMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(probability));
+        => IntervalNotation.Closed.AssertValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(probability));
 
       /// <summary>Returns whether the value is a member of the probability.</summary>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static bool VerifyMember<TSelf>(TSelf probability)
         where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => IntervalNotation.Closed.VerifyMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+        => IntervalNotation.Closed.IsValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
 
       /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
       /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
