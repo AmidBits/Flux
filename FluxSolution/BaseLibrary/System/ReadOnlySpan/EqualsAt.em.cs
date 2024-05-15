@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Indicates whether the specified part of the target is found at the specified index in the source, using the specified comparer.</summary>
+    /// <summary>
+    /// <para>Indicates whether the specified part of the <paramref name="target"/> is found at the specified <paramref name="targetIndex"/> in the <paramref name="source"/> at <paramref name="sourceIndex"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
     public static bool EqualsAt<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.ReadOnlySpan<T> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;

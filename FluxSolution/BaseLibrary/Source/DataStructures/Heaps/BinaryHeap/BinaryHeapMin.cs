@@ -87,7 +87,10 @@ namespace Flux.DataStructures.Heaps
     }
 
     // IHeap<T>
+    public int Count => m_data.Count;
     public bool IsEmpty => m_data.Count == 0;
+    public void Clear() => m_data.Clear();
+    public bool Contains(T item) => m_data.Contains(item);
     public T Extract()
     {
       var min = m_data[0];
@@ -111,7 +114,6 @@ namespace Flux.DataStructures.Heaps
     public object Clone() => new BinaryHeapMin<T>(m_data);
 
     // IReadOnlyCollection<>
-    public int Count => m_data.Count;
     public System.Collections.Generic.IEnumerator<T> GetEnumerator() => ((IHeap<T>)Clone()).ExtractAll().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 

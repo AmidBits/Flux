@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Returns the index within source where the rotation of the target begins, or -1 if not found.</summary>
+    /// <summary>
+    /// <para>Returns the index in <paramref name="source"/> where the rotation of the target begins, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
     public static int CircularIndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;

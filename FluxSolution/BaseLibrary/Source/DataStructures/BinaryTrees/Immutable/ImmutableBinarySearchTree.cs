@@ -37,7 +37,12 @@ namespace Flux.DataStructures.Immutable
     public TKey Key => m_key;
     public IBinarySearchTree<TKey, TValue> Left => m_left;
     public IBinarySearchTree<TKey, TValue> Right => m_right;
-    public IBinarySearchTree<TKey, TValue> Add(TKey key, TValue value) => key.CompareTo(Key) > 0 ? new ImmutableBinarySearchTree<TKey, TValue>(Key, Value, Left, Right.Add(key, value)) : new ImmutableBinarySearchTree<TKey, TValue>(Key, Value, Left.Add(key, value), Right);
+
+    public IBinarySearchTree<TKey, TValue> Add(TKey key, TValue value)
+      => key.CompareTo(Key) > 0
+      ? new ImmutableBinarySearchTree<TKey, TValue>(Key, Value, Left, Right.Add(key, value))
+      : new ImmutableBinarySearchTree<TKey, TValue>(Key, Value, Left.Add(key, value), Right);
+
     public IBinarySearchTree<TKey, TValue> Remove(TKey key)
     {
       switch (key.CompareTo(Key))
@@ -58,7 +63,11 @@ namespace Flux.DataStructures.Immutable
           }
       }
     }
-    public IBinarySearchTree<TKey, TValue> Search(TKey key) => IsEmpty ? Empty : (key.CompareTo(Key) switch { var gt when gt > 0 => Right.Search(key), var lt when lt < 0 => Left.Search(key), _ => this });
+
+    public IBinarySearchTree<TKey, TValue> Search(TKey key)
+      => IsEmpty
+      ? Empty
+      : (key.CompareTo(Key) switch { var gt when gt > 0 => Right.Search(key), var lt when lt < 0 => Left.Search(key), _ => this });
 
     // IMap<TKey, TValue>
     public System.Collections.Generic.IEnumerable<TKey> Keys => this.TraverseInOrder().Select(t => ((IBinarySearchTree<TKey, TValue>)t).Key);
@@ -66,7 +75,10 @@ namespace Flux.DataStructures.Immutable
     public System.Collections.Generic.IEnumerable<TValue> Values => this.TraverseInOrder().Select(t => t.Value);
     IMap<TKey, TValue> IMap<TKey, TValue>.Add(TKey key, TValue value) => Add(key, value);
     public bool Contains(TKey key) => !Search(key).IsEmpty;
-    public TValue Lookup(TKey key) => Search(key) is var tree && tree.IsEmpty ? throw new System.Exception(@"Key not found.") : tree.Value;
+    public TValue Lookup(TKey key)
+      => Search(key) is var tree && tree.IsEmpty
+      ? throw new System.Exception(@"Key not found.")
+      : tree.Value;
     IMap<TKey, TValue> IMap<TKey, TValue>.Remove(TKey key) => Remove(key);
 
     public override string ToString() => $"{GetType().Name} {{ Left = {(Left.IsEmpty ? '-' : 'L')}, Right = {(Right.IsEmpty ? '-' : 'R')}, Key = {m_key}, Value = {m_value} }}";

@@ -51,7 +51,7 @@ namespace Flux
               var isBalancing = true; // True (by default) if substring can be the string that needs to be replaced.
 
               foreach (var sc in surplusCharacter)
-                if (subString.Count(sc) < frequencies[sc] - balancedCount)
+                if (subString.Count(sc, null) < frequencies[sc] - balancedCount)
                 {
                   isBalancing = false;
                   break;

@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Reports the count of elements equal at the end of the sequences. Using the specified comparer (null for default).</summary>
+    /// <summary>
+    /// <para>Reports the count of elements equal at the end of the sequences. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
     /// <param name="minLength">The smaller length of the two spans.</param>
     public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {

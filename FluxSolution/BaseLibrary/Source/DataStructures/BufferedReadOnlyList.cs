@@ -15,6 +15,7 @@ namespace Flux.DataStructures
     {
       m_enumerator?.Dispose();
       m_enumerator = null;
+      m_buffer.Clear();
     }
 
     /// <summary>Exhausts the source of all its elements into the <see cref="BufferedReadOnlyList{T}"/> for consumption as a whole.</summary>

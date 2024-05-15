@@ -37,7 +37,9 @@ namespace Flux
       return target;
     }
 
-    /// <summary>Creates a new <see cref="System.Collections.Generic.HashSet{T}"/> from <paramref name="source"/> and the specified <paramref name="equalityComparer"/>, default if null.</summary>
+    /// <summary>
+    /// <para>Creates a new <see cref="System.Collections.Generic.HashSet{T}"/> from <paramref name="source"/> and the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
     public static System.Collections.Generic.HashSet<T> ToHashSet<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       var target = new System.Collections.Generic.HashSet<T>(equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default);
@@ -45,7 +47,9 @@ namespace Flux
       return target;
     }
 
-    /// <summary>Creates a new <see cref="System.Collections.Generic.List{T}"/> from <paramref name="source"/> and optionally selected <paramref name="indices"/>.</summary>
+    /// <summary>
+    /// <para>Creates a new <see cref="System.Collections.Generic.List{T}"/> from <paramref name="source"/> and optionally selected <paramref name="indices"/>.</para>
+    /// </summary>
     public static System.Collections.Generic.List<T> ToList<T>(this System.ReadOnlySpan<T> source, params int[] indices)
     {
       var target = new System.Collections.Generic.List<T>(source.Length);
@@ -65,11 +69,18 @@ namespace Flux
       return target;
     }
 
-    public static string ToString<T>(this System.ReadOnlySpan<T> source)
+    public static string ToString<T>(this System.ReadOnlySpan<T> source, string separator)
     {
       var sb = new System.Text.StringBuilder();
+
       for (var index = 0; index < source.Length; index++)
+      {
+        if (index > 0)
+          sb.Append(separator);
+
         sb.Append(source[index]?.ToString() ?? string.Empty);
+      }
+
       return sb.ToString();
     }
   }

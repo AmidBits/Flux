@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a new dictionary with all indices of all occurences in the source. Uses the specified equality comparer.</summary>
+    /// <summary>
+    /// <para>Creates a new dictionary with all keys (by <paramref name="keySelector"/>) and indices of all occurences in the <paramref name="source"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
     public static System.Collections.Generic.IDictionary<TKey, System.Collections.Generic.HashSet<int>> CreateIndexMap<T, TKey>(this System.ReadOnlySpan<T> source, System.Func<T, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey>? equalityComparer = null)
       where TKey : notnull
     {

@@ -40,6 +40,9 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
+
+      var s1 = " \r\nHello World\r\n ".AsSpan();
+      s1.IndexOfAny(null, "", "");
       var r = 2;
 
       for (var i = 999; i <= 1025; i++)

@@ -42,11 +42,31 @@ namespace Flux.DataStructures.Immutable
     public IBinarySearchTree<TKey, TValue> Left => m_left;
     public IBinarySearchTree<TKey, TValue> Right => m_right;
     public IBinarySearchTree<TKey, TValue> Add(TKey key, TValue value)
-      => MakeBalanced(key.CompareTo(Key) > 0 ? new ImmutableAvlTree<TKey, TValue>(Key, Value, Left, Right.Add(key, value)) : new ImmutableAvlTree<TKey, TValue>(Key, Value, Left.Add(key, value), Right));
+      => MakeBalanced(key.CompareTo(Key) > 0
+        ? new ImmutableAvlTree<TKey, TValue>(Key, Value, Left, Right.Add(key, value))
+        : new ImmutableAvlTree<TKey, TValue>(Key, Value, Left.Add(key, value), Right));
     public IBinarySearchTree<TKey, TValue> Remove(TKey key)
-      => MakeBalanced(key.CompareTo(Key) is var cmp && cmp < 0 ? new ImmutableAvlTree<TKey, TValue>(Key, Value, Left.Remove(key), Right) : cmp > 0 ? new ImmutableAvlTree<TKey, TValue>(Key, Value, Left, Right.Remove(key)) : Right.IsEmpty && Left.IsEmpty ? Empty : Right.IsEmpty && !Left.IsEmpty ? Left : Left.IsEmpty && !Right.IsEmpty ? Right : this.GetSuccessorNode() is var successor && !successor.IsEmpty ? new ImmutableAvlTree<TKey, TValue>(successor.Key, successor.Value, Left, Right.Remove(successor.Key)) : Empty);
+      => MakeBalanced(key.CompareTo(Key) is var cmp && cmp < 0
+        ? new ImmutableAvlTree<TKey, TValue>(Key, Value, Left.Remove(key), Right)
+        : cmp > 0
+        ? new ImmutableAvlTree<TKey, TValue>(Key, Value, Left, Right.Remove(key))
+        : Right.IsEmpty && Left.IsEmpty
+        ? Empty
+        : Right.IsEmpty && !Left.IsEmpty
+        ? Left
+        : Left.IsEmpty && !Right.IsEmpty
+        ? Right
+        : this.GetSuccessorNode() is var successor && !successor.IsEmpty
+        ? new ImmutableAvlTree<TKey, TValue>(successor.Key, successor.Value, Left, Right.Remove(successor.Key)) : Empty
+      );
+
     public IBinarySearchTree<TKey, TValue> Search(TKey key)
-      => (key.CompareTo(Key)) switch { var cmp when cmp > 0 => Right.Search(key), var cmp when cmp < 0 => Left.Search(key), _ => this, };
+      => (key.CompareTo(Key)) switch
+      {
+        var cmp when cmp > 0 => Right.Search(key),
+        var cmp when cmp < 0 => Left.Search(key),
+        _ => this,
+      };
 
     // IMap<TKey, TValue>
     public System.Collections.Generic.IEnumerable<TKey> Keys => this.TraverseInOrder().Select(t => (IBinarySearchTree<TKey, TValue>)t).Select(t => t.Key);

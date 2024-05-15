@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Determines whether the sequence is a palindrome. Uses the specified comparer.</summary>
+    /// <summary>
+    /// <para>Determines whether the <paramref name="source"/> is a palindrome. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
     public static bool IsPalindrome<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
