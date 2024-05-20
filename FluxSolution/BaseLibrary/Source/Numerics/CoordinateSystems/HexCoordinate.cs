@@ -187,11 +187,15 @@ namespace Flux
 
       public readonly TSelf Length() => (TSelf.Abs(m_q) + TSelf.Abs(m_r) + TSelf.Abs(m_s)) / TSelf.CreateChecked(2);
 
-      public readonly System.Drawing.Point ToPoint()
-        => new(int.CreateChecked(m_q), int.CreateChecked(m_r));
+      public CartesianCoordinate ToCartesianCoordinate(double w = 0) => new(double.CreateChecked(m_q), double.CreateChecked(m_r), double.CreateChecked(m_s), w);
 
-      public readonly System.Numerics.Vector3 ToVector3()
-        => new(float.CreateChecked(m_q), float.CreateChecked(m_r), float.CreateChecked(m_s));
+      public (double x, double y) ToCartesianCoordinate2() => (double.CreateChecked(m_q), double.CreateChecked(m_r));
+
+      public (double x, double y, double z) ToCartesianCoordinate3() => (double.CreateChecked(m_q), double.CreateChecked(m_r), double.CreateChecked(m_s));
+
+      public readonly System.Drawing.Point ToPoint() => new(int.CreateChecked(m_q), int.CreateChecked(m_r));
+
+      public readonly System.Numerics.Vector3 ToVector3() => new(float.CreateChecked(m_q), float.CreateChecked(m_r), float.CreateChecked(m_s));
 
       #region Static methods
 
@@ -251,8 +255,7 @@ namespace Flux
         };
 
       /// <summary>Returns whether the coordinate make up a valid cube hex, i.e. it satisfies the required cube constraint.</summary>
-      public static bool IsCubeCoordinate(TSelf q, TSelf r, TSelf s)
-        => TSelf.IsZero(q + r + s);
+      public static bool IsCubeCoordinate(TSelf q, TSelf r, TSelf s) => TSelf.IsZero(q + r + s);
 
       public static Coordinates.HexCoordinate<TSelf> Lerp(Coordinates.HexCoordinate<TSelf> source, Coordinates.HexCoordinate<TSelf> target, TSelf mu)
         => new(
@@ -275,7 +278,11 @@ namespace Flux
       #region Implemented interfaces
 
       public readonly string ToString(string? format, System.IFormatProvider? provider)
-        => $"<{m_q.ToString(format ?? "N6", provider)}, {m_r.ToString(format ?? "N6", provider)}, {m_s.ToString(format ?? "N6", provider)}>";
+      {
+        format ??= "N6";
+
+        return $"<{m_q.ToString(format, provider)}, {m_r.ToString(format, provider)}, {m_s.ToString(format, provider)}>";
+      }
 
       #endregion // Implemented interfaces
 

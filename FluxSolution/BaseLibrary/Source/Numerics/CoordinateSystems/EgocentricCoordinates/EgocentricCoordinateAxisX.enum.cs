@@ -7,7 +7,13 @@
   /// <remarks><see cref="EgocentricCoordinateAxisX"/> represent the x-axis, i.e. <see cref="EgocentricCoordinateAxisX.Left"/>/<see cref="EgocentricCoordinateAxisX.Right"/>.</remarks>
   public enum EgocentricCoordinateAxisX
   {
+    /// <summary>
+    /// <para>Toward the proper left of some reference.</para>
+    /// </summary>
     Left = 1,
+    /// <summary>
+    /// <para>Toward the proper right of some reference.</para>
+    /// </summary>
     Right = 2,
   }
 }

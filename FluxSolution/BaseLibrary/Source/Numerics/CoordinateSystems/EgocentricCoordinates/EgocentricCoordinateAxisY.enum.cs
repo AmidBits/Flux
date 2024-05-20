@@ -7,7 +7,13 @@
   /// <remarks><see cref="EgocentricCoordinateAxisY"/> represent the y-axis, i.e. <see cref="EgocentricCoordinateAxisY.Forward"/>/<see cref="EgocentricCoordinateAxisY.Backward"/>.</remarks>
   public enum EgocentricCoordinateAxisY
   {
+    /// <summary>
+    /// <para>In the direction in front (proper ahead) of some reference.</para>
+    /// </summary>
     Forward = 4,
+    /// <summary>
+    /// <para>In the direction in back of (proper behind) some reference.</para>
+    /// </summary>
     Backward = 8,
   }
 }

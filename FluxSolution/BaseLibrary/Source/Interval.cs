@@ -3,32 +3,6 @@
   public static partial class Em
   {
     /// <summary>
-    /// <para>Creates a new <see cref="Flux.Interval{T}"/> by padding the <paramref name="source"/> interval notation <paramref name="minValue"/>..<paramref name="maxValue"/> with its (potentionally inner) extent (i.e. infimum and supremum).</para>
-    /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="minValue"></param>
-    /// <param name="maxValue"></param>
-    /// <returns></returns>
-    public static Interval<TSelf> CreateIntervalByExtent<TSelf>(this IntervalNotation source, TSelf minValue, TSelf maxValue)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => (Interval<TSelf>)source.GetExtentInterval(minValue, maxValue);
-
-    /// <summary>
-    /// <para>Creates a new <see cref="Flux.Interval{T}"/> by padding the <paramref name="source"/> interval notation <paramref name="minValue"/>..<paramref name="maxValue"/> with <paramref name="minMargin"/>/<paramref name="maxMargin"/>.</para>
-    /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="minValue"></param>
-    /// <param name="maxValue"></param>
-    /// <param name="minMargin"></param>
-    /// <param name="maxMargin"></param>
-    /// <returns></returns>
-    public static Interval<TSelf> CreateIntervalByMargin<TSelf>(this IntervalNotation source, TSelf minValue, TSelf maxValue, TSelf minMargin, TSelf maxMargin)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => (Interval<TSelf>)source.GetMarginInterval(minValue, maxValue, minMargin, maxMargin);
-
-    /// <summary>
     /// <para>Creates a new sequence of values by iterating over the <paramref name="source"/> <see cref="Interval{TSelf}"/> using the <paramref name="constraint"/> .</para>
     /// </summary>
     /// <param name="source">The <see cref="Interval{TSelf}"/>.</param>

@@ -3,8 +3,9 @@
   public static partial class Em
   {
     /// <summary>
-    /// <para></para>
+    /// <para>Indicates whether an object is marked with a certain attribute.</para>
     /// <para><see href="https://stackoverflow.com/a/37803935/3178666"/></para>
+    /// <example><code>if (o.HasAttribute&lt;SomeAssignableAttribute&gt;()) { }</code></example>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="self"></param>
@@ -14,8 +15,9 @@
       => self.GetCustomAttributes(true).Any(o => o is T);
 
     /// <summary>
-    /// <para></para>
+    /// <para>Indicates whether an object is marked with a certain attribute.</para>
     /// <para><see href="https://stackoverflow.com/a/37803935/3178666"/></para>
+    /// <example><code>if (o.HasAttribute&lt;SomeAssignableAttribute&gt;()) { }</code></example>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="self"></param>
