@@ -2,8 +2,6 @@ namespace Flux
 {
   public static partial class Permutation
   {
-#if NET7_0_OR_GREATER
-
     public static int[] PermuteAlgorithm515b(int n, int p, int l)
     {
       int r;
@@ -104,43 +102,5 @@ namespace Flux
 
       return c;
     }
-
-#else
-
-    /// <summary>
-    /// Permutation indices of algorithm 515.
-    /// <para><see href="https://github.com/sleeepyjack/alg515"/></para>
-    /// <para><seealso href="https://stackoverflow.com/questions/561/how-to-use-combinations-of-sets-as-test-data#794"/></para>
-    /// </summary>
-    /// <param name="n"></param>
-    /// <param name="p"></param>
-    /// <param name="l"></param>
-    /// <returns></returns>
-    public static int[] PermuteAlgorithm515(int n, int p, int l)
-    {
-      var c = new int[p];
-
-      int x = 0, r, k = 0;
-
-      for (var i = 1; i < p; i++)
-      {
-        do
-        {
-          x++;
-          r = (int)Maths.BinomialCoefficient(n - x, p - i);
-          k += r;
-        }
-        while (k <= l);
-
-        k -= r;
-        c[i - 1] = x - 1;
-      }
-
-      c[p - 1] = x + l - k;
-
-      return c;
-    }
-
-#endif
   }
 }

@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux
 {
   public static partial class Interpolation
@@ -109,4 +108,3 @@ namespace Flux
       => (TSelf.One - mu) * y1 + mu * y2;
   }
 }
-#endif
