@@ -39,7 +39,16 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var cc = new Flux.Coordinates.CartesianCoordinate(5.5, 11.5);
+      var v256 = cc.ToVector256();
+      var v256p = v256.AddHorizontal();
+      var cc256 = v256p.ToCartesianCoordinate1();
 
+      var di = new Flux.Interval<double>(5.5, 11.5);
+
+      var diei = di.ToExtentInterval(IntervalNotation.Open);
+
+      var dieis = diei.ToString("N8", null);
 
       var s1 = " \r\nHello World\r\n ".AsSpan();
       s1.IndexOfAny(null, "", "");

@@ -30,6 +30,18 @@ namespace Flux
         source.Z, Quantities.LengthUnit.Metre,
         source.W, Quantities.LengthUnit.Metre
       );
+
+    /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Runtime.Intrinsics.Vector256{T}"/> (with all components).</summary>
+    public static Coordinates.CartesianCoordinate ToCartesianCoordinate(this System.Runtime.Intrinsics.Vector256<double> source) => new(source[0], source[1], source[2], source[3]);
+
+    /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Runtime.Intrinsics.Vector256{T}"/> (with 1 [index 0] + 3 optional components).</summary>
+    public static Coordinates.CartesianCoordinate ToCartesianCoordinate1(this System.Runtime.Intrinsics.Vector256<double> source, double y = 0, double z = 0, double w = 0) => new(source[0], y, z, w);
+
+    /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Runtime.Intrinsics.Vector256{T}"/> (with 2 [indices 0 and 1] + 2 optional components).</summary>
+    public static Coordinates.CartesianCoordinate ToCartesianCoordinate2(this System.Runtime.Intrinsics.Vector256<double> source, double z = 0, double w = 0) => new(source[0], source[1], z, w);
+
+    /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Runtime.Intrinsics.Vector256{T}"/> (with 3 [indices 0, 1 and 2] + 1 optional component).</summary>
+    public static Coordinates.CartesianCoordinate ToCartesianCoordinate3(this System.Runtime.Intrinsics.Vector256<double> source, double w = 0) => new(source[0], source[1], source[2], w);
   }
 
   #endregion // ExtensionMethods
@@ -92,11 +104,23 @@ namespace Flux
       public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit, double yValue, Quantities.LengthUnit yUnit)
         : this(xValue, xUnit, yValue, yUnit, 0, Quantities.LengthUnit.Metre, 0, Quantities.LengthUnit.Metre) { }
 
+      /// <summary>
+      /// <para>Initialize as a 1D cartesian coordinate with the Y, Z and W components = 0.</para>
+      /// </summary>
+      /// <param name="xValue"></param>
+      /// <param name="xUnit"></param>
+      /// <param name="yValue"></param>
+      /// <param name="yUnit"></param>
+      public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit)
+        : this(xValue, xUnit, 0, Quantities.LengthUnit.Metre, 0, Quantities.LengthUnit.Metre, 0, Quantities.LengthUnit.Metre) { }
+
       public CartesianCoordinate(double x, double y, double z, double w) : this(x, Quantities.LengthUnit.Metre, y, Quantities.LengthUnit.Metre, z, Quantities.LengthUnit.Metre, w, Quantities.LengthUnit.Metre) { }
 
       public CartesianCoordinate(double x, double y, double z) : this(x, Quantities.LengthUnit.Metre, y, Quantities.LengthUnit.Metre, z, Quantities.LengthUnit.Metre) { }
 
       public CartesianCoordinate(double x, double y) : this(x, Quantities.LengthUnit.Metre, y, Quantities.LengthUnit.Metre) { }
+
+      public CartesianCoordinate(double x) : this(x, Quantities.LengthUnit.Metre) { }
 
       public void Deconstruct(out double x, out double y)
       {
@@ -211,6 +235,18 @@ namespace Flux
           (float)w
         );
       }
+
+      /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with all 4 components).</summary>
+      public System.Runtime.Intrinsics.Vector256<double> ToVector256() => System.Runtime.Intrinsics.Vector256.Create(m_x.Value, m_y.Value, m_z.Value, m_w.Value);
+
+      /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with 1 (x) + 3 optional components).</summary>
+      public System.Runtime.Intrinsics.Vector256<double> ToVector256WithX(double y = 0, double z = 0, double w = 0) => System.Runtime.Intrinsics.Vector256.Create(m_x.Value, y, z, w);
+
+      /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with 2 (x, y) + 2 optional components).</summary>
+      public System.Runtime.Intrinsics.Vector256<double> ToVector256WithXY(double z = 0, double w = 0) => System.Runtime.Intrinsics.Vector256.Create(m_x.Value, m_y.Value, z, w);
+
+      /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with 3 (x, y, z) + 1 optional component).</summary>
+      public System.Runtime.Intrinsics.Vector256<double> ToVector256WithXYZ(double w = 0) => System.Runtime.Intrinsics.Vector256.Create(m_x.Value, m_y.Value, m_z.Value, w);
 
       #region Static methods
 

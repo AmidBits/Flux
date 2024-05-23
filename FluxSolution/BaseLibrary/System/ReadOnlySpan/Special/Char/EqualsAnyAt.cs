@@ -18,10 +18,10 @@ namespace Flux
 		// public static bool EqualsAnyAt(this string source, int startAt, int count, System.StringComparison comparisonType, System.Collections.Generic.IEnumerable<string> values) => values.Any(value => source.IndexOf(value, startAt, count > -1 ? count : System.Math.Min(source.Length - startAt, value.Length), comparisonType) == startAt);
     public static bool EqualsAnyAt(this System.ReadOnlySpan<char> source, int startAt, int count, System.StringComparison comparisonType, System.Collections.Generic.IEnumerable<string> targets)
     {
-      System.ArgumentNullException.ThrowIfNull(targets);
-
       if (startAt < 0 || startAt >= source.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(startAt));
       if (count >= 0 && startAt + count >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(count));
+
+      System.ArgumentNullException.ThrowIfNull(targets);
 
       foreach (var target in targets)
       {

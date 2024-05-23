@@ -141,23 +141,26 @@ namespace Flux
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     /// <exception cref="NotImplementedException"></exception>
-    public static (T Minimum, T Maximum) GetExtentInterval<T>(this IntervalNotation source, T minValue, T maxValue)
+    public static (T Minimum, T Maximum) GetExtentInterval<T>(this IntervalNotation source, T minValue, T maxValue, int magnitude = 1)
       where T : System.Numerics.INumber<T>
     {
+      Maths.AssertNonNegative(magnitude, nameof(magnitude));
+
       source.AssertValidInterval(minValue, maxValue);
 
-      var (minExtent, maxExtent) = source switch
-      {
-        IntervalNotation.Closed => (minValue, maxValue),
-        IntervalNotation.Open => (minValue.GetSupremum(), maxValue.GetInfimum()),
-        IntervalNotation.HalfOpenLeft => (minValue.GetSupremum(), maxValue),
-        IntervalNotation.HalfOpenRight => (minValue, maxValue.GetInfimum()),
-        _ => throw new NotImplementedException(),
-      };
+      while (--magnitude >= 0)
+        (minValue, maxValue) = source switch
+        {
+          IntervalNotation.Closed => (minValue, maxValue),
+          IntervalNotation.Open => (minValue.GetSupremum(), maxValue.GetInfimum()),
+          IntervalNotation.HalfOpenLeft => (minValue.GetSupremum(), maxValue),
+          IntervalNotation.HalfOpenRight => (minValue, maxValue.GetInfimum()),
+          _ => throw new NotImplementedException(),
+        };
 
-      IntervalNotation.Closed.AssertValidInterval(minExtent, maxExtent, "minExtent/maxExtent");
+      IntervalNotation.Closed.AssertValidInterval(minValue, maxValue, "minExtent/maxExtent");
 
-      return (minExtent, maxExtent);
+      return (minValue, maxValue);
     }
 
     public static bool TryGetExtentInterval<T>(this IntervalNotation source, T minValue, T maxValue, out T minExtent, out T maxExtent)

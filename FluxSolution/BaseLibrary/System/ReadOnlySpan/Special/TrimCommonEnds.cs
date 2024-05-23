@@ -4,8 +4,6 @@ namespace Flux
   {
     private static void TrimCommonEnds<T>(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out System.ReadOnlySpan<T> sourceSlice, out System.ReadOnlySpan<T> targetSlice, out int atStart, out int atEnd, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
     {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
       sourceSlice = source;
       targetSlice = target;
 

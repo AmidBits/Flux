@@ -27,6 +27,30 @@
       else // The argument "step" is zero and that is an invalid value.
         throw new System.ArgumentOutOfRangeException(nameof(step));
     }
+
+    /// <summary>
+    /// <para>Create a new <see cref="Interval{T}"/> with the <see cref="Interval{T}.MinValue"/>/<see cref="Interval{T}.MaxValue"/> set to the <paramref name="notation"/> extents (+- 1 for integers, +- EPSILON for floating point) of <paramref name="source"/>.</para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="notation"></param>
+    /// <returns></returns>
+    public static Interval<TSelf> ToExtentInterval<TSelf>(this Interval<TSelf> source, IntervalNotation notation)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => (Interval<TSelf>)notation.GetExtentInterval(source.MinValue, source.MaxValue);
+
+    /// <summary>
+    /// <para>Create a new <see cref="Interval{T}"/> with the <see cref="Interval{T}.MinValue"/>/<see cref="Interval{T}.MaxValue"/> set to the <paramref name="notation"/> margins (<paramref name="minMargin"/>/<paramref name="maxMargin"/>) of <paramref name="source"/></para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="minMargin"></param>
+    /// <param name="maxMargin"></param>
+    /// <param name="notation"></param>
+    /// <returns></returns>
+    public static Interval<TSelf> ToMarginInterval<TSelf>(this Interval<TSelf> source, TSelf minMargin, TSelf maxMargin, IntervalNotation notation)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => (Interval<TSelf>)notation.GetMarginInterval(source.MinValue, source.MaxValue, minMargin, maxMargin);
   }
 
   /// <summary>

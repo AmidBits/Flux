@@ -12,8 +12,6 @@
     /// <returns>The matrix of the longest alternating subsequence that was found, using dynamic programming.</returns>
     public static int LongestAlternatingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
-      comparer ??= System.Collections.Generic.Comparer<T>.Default;
-
       matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
 
       return length;

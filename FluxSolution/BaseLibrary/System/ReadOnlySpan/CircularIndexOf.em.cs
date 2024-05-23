@@ -7,10 +7,10 @@ namespace Flux
     /// </summary>
     public static int CircularIndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
       if (source.Length != target.Length)
         return -1; // If length is different, target cannot be a rotation in source. They have to be equal in length.
+
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       var ros = new T[source.Length * 2];
 

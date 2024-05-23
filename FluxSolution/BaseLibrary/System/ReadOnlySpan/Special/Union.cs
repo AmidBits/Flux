@@ -18,6 +18,8 @@ namespace Flux
     /// </summary>
     public static System.Collections.Generic.HashSet<T> UnionDistinct<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
       source.ToHashSet(equalityComparer).UnionWith(target.ToHashSet());
       var set = new System.Collections.Generic.HashSet<T>(equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default);
       set.AddSpan(source);

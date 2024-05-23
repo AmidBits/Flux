@@ -7,8 +7,6 @@ namespace Flux
     /// </summary>
     public static bool EqualsAt<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.ReadOnlySpan<T> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
       //if (sourceIndex < 0 || sourceIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
       //if (targetIndex < 0 || targetIndex >= target.Length) throw new System.ArgumentOutOfRangeException(nameof(targetIndex));
 
@@ -16,6 +14,8 @@ namespace Flux
 
       if (sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length)
         return false;
+
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       while (length-- > 0)
         if (!equalityComparer.Equals(source[sourceIndex++], target[targetIndex++]))
