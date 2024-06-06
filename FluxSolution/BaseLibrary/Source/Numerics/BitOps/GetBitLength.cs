@@ -12,7 +12,9 @@ namespace Flux
       ? value.GetBitCount() // When value is negative, return the bit-count (i.e. based on the storage strategy).
       : value.GetShortestBitLength(); // Otherwise, return the .NET shortest-bit-length.
 
-    /// <summary>Uses the built-in <see cref="System.Numerics.IBinaryInteger{TSelf}.GetShortestBitLength()"/>.</summary>
+    /// <summary>
+    /// <para>Uses the built-in <see cref="System.Numerics.IBinaryInteger{TSelf}.GetShortestBitLength()"/>.</para>
+    /// </summary>
     public static int GetShortestBitLength<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => value.GetShortestBitLength(); // Otherwise, return the .NET shortest-bit-length.

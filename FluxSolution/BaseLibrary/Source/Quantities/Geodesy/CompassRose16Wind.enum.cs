@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the range [0, 359] (every 22.5° notch, starting at 0), from a fifteen value compass point [0, 15].</summary>
     public static Quantities.Azimuth GetAzimuth(this Quantities.CompassRose16Wind source) => new(22.5 * (int)source);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Computes the number of nodes in the <paramref name="source"/> tree (including <paramref name="source"/>).</para>

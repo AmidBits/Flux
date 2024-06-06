@@ -1,7 +1,7 @@
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class Em
+  public static partial class Fx
   {
     public static Rotations.EulerAngles ToEulerAngles(this Rotations.AxisAngle source)
     {

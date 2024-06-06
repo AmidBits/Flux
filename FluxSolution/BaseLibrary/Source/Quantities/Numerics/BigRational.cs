@@ -2,7 +2,7 @@ namespace Flux
 {
   #region ExtensionMethods
 
-  public static partial class Em
+  public static partial class Fx
   {
     public static Quantities.BigRational ToBigRational<TSelf>(this TSelf value, int maxIterations = 101)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>

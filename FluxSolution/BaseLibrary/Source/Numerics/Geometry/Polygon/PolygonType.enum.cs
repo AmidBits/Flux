@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary></summary>
     /// <param name="source"></param>

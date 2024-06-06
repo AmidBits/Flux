@@ -2,7 +2,7 @@
 {
   #region Extension methods
 
-  public static partial class Em
+  public static partial class Fx
   {
     public static System.Collections.Generic.Dictionary<TUnit, string> ToStringsOfAllUnits<TValue, TUnit>(this Quantities.IUnitValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       where TValue : struct, System.IEquatable<TValue>, System.IComparable<TValue>

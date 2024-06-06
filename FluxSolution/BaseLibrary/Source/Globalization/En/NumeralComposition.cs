@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Create a string of words from the <paramref name="number"/>. The <paramref name="decimalPointWord"/> is added as a decimal separator word if it's not a whole number.</para>

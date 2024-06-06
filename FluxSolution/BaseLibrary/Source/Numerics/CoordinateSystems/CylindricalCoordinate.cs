@@ -2,7 +2,7 @@ namespace Flux
 {
   #region ExtensionMethods
 
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
     public static Coordinates.CylindricalCoordinate ToCylindricalCoordinate(this System.Numerics.Vector3 source)

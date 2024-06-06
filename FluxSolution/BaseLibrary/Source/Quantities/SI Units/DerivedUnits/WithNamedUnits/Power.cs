@@ -1,7 +1,7 @@
 
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static string GetUnitString(this Quantities.PowerUnit unit, bool preferUnicode, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch

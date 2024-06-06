@@ -8,7 +8,7 @@ namespace Flux.DataStructures.Immutable
   /// <typeparam name="TKey">The type of key for the immutable AVL tree node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
   /// <typeparam name="TValue">The type of value for the immutable AVL tree node.</typeparam>
   /// <remarks>
-  /// <para>This implementation is courtesy Eric Lippert.</para>
+  /// <para>The original implementation is courtesy Eric Lippert.</para>
   /// </remarks>
   public sealed class ImmutableAvlTree<TKey, TValue>
     : IBinarySearchTree<TKey, TValue>

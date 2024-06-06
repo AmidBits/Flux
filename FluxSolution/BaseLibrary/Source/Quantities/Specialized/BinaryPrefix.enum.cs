@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static double Convert(this Quantities.BinaryPrefix source, double value, Quantities.BinaryPrefix target) => value * System.Math.Pow(10, (int)source - (int)target);
 

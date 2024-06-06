@@ -29,7 +29,7 @@ namespace Flux
     }
 
     /// <summary>Determines the last day of the week in the source, based on the specified DateTimeFormatInfo.</summary>
-    public static System.DateTime LastDayOfWeek(this System.DateTime source, System.DayOfWeek lastDayOfWeek) => NextDayOfWeek(source, lastDayOfWeek, true);
+    public static System.DateTime LastDayOfWeek(this System.DateTime source, System.DayOfWeek lastDayOfWeek) => DayOfWeekNext(source, lastDayOfWeek, true);
 
     /// <summary>Determines the last day of the year in the source.</summary>
     public static System.DateTime LastDayOfYear(this System.DateTime source) => new(source.Year, 12, 31);

@@ -25,7 +25,7 @@ namespace SystemFx
     [TestMethod]
     public void DayOfWeekClosest()
     {
-      var closest = source.Closest(System.DayOfWeek.Friday, out var secondClosest);
+      var (closest, secondClosest) = source.DayOfWeekClosest(System.DayOfWeek.Friday, false);
 
       var expectedClosest = new System.DateTime(1967, 6, 2);
       var expectedSecondClosest = new System.DateTime(1967, 5, 26);
@@ -36,7 +36,7 @@ namespace SystemFx
     [TestMethod]
     public void DayOfWeekNext()
     {
-      var next = source.NextDayOfWeek(System.DayOfWeek.Friday, false);
+      var next = source.DayOfWeekNext(System.DayOfWeek.Friday, false);
 
       var expected = new System.DateTime(1967, 6, 2);
 
@@ -45,7 +45,7 @@ namespace SystemFx
     [TestMethod]
     public void DayOfWeekPrevious()
     {
-      var next = source.PreviousDayOfWeek(System.DayOfWeek.Friday, false);
+      var next = source.DayOfWeekLast(System.DayOfWeek.Friday, false);
 
       var expected = new System.DateTime(1967, 5, 26);
 

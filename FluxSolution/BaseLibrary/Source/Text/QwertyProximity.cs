@@ -53,6 +53,7 @@ namespace Flux
   //  [System.Runtime.InteropServices.DllImport("user32.dll")]
   //  private static extern int ToAscii(uint uVirtKey, uint uScanCode, byte[] lpKeyState, [System.Runtime.InteropServices.Out] System.Text.StringBuilder lpChar, uint uFlags);
   //}
+
   public static class QwertyProximity
   {
     //public static void Distance(char source, char target)
@@ -105,6 +106,7 @@ namespace Flux
       { 'x', "sdcz " },
       { 'y', "thug67" },
       { 'z', "asx" },
+      { '`', "1\t" },
       { '1', "2`\tq" },
       { '2', "31qw" },
       { '3', "42we" },

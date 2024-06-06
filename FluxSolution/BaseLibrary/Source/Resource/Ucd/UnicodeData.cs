@@ -19,8 +19,10 @@ namespace Flux.Resources.Ucd
       using var stream = uri.GetStream();
       using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-      foreach (var fields in reader.ReadLines(s => s.Length > 0, s => s.Split(';')))
-        yield return fields;
+      return reader.ReadCsv(";");
+
+      //foreach (var fields in reader.ReadLines(s => s.Length > 0, s => s.Split(';')))
+      //  yield return fields;
     }
 
     #region Implemented interfaces

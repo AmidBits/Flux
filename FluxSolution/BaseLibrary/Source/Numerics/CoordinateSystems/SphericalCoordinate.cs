@@ -8,7 +8,7 @@ using System.Runtime.Intrinsics;
 namespace Flux
 {
   #region ExtensionMethods
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>Creates a new <see cref="Coordinates.SphericalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
     public static Coordinates.SphericalCoordinate ToSphericalCoordinate(this System.Numerics.Vector3 source)

@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     //public static UnicodeSpacing GetUnitSpacing(this Units.AngleUnit unit, bool preferUnicode)
     //  => unit.HasUnitSpacing(preferUnicode) ? UnicodeSpacing.NoBreakSpace : UnicodeSpacing.None;

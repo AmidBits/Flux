@@ -27,7 +27,7 @@ namespace Flux
     }
 
     /// <summary>Determines the first day of the week in the source, based on the specified DateTimeFormatInfo.</summary>
-    public static System.DateTime FirstDayOfWeek(this System.DateTime source, System.DayOfWeek firstDayOfWeek) => source.PreviousDayOfWeek(firstDayOfWeek, true);
+    public static System.DateTime FirstDayOfWeek(this System.DateTime source, System.DayOfWeek firstDayOfWeek) => source.DayOfWeekLast(firstDayOfWeek, true);
 
     /// <summary>Determines the first day of the year in the source.</summary>
     public static System.DateTime FirstDayOfYear(this System.DateTime source) => new(source.Year, 1, 1);

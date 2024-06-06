@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static string GetUnitString(this Quantities.LinearDensityUnit unit, bool useFullName = false)
       => useFullName ? unit.ToString() : unit switch

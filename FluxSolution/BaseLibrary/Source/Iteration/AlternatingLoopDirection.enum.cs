@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static System.Collections.Generic.IEnumerable<TNumber> ForAlternating<TNumber, TCount>(this AlternatingLoopDirection source, TNumber mean, TNumber step, TCount count)
       where TNumber : System.Numerics.INumber<TNumber>

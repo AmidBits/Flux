@@ -8,6 +8,7 @@ using System.Runtime.Intrinsics;
 using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using Flux;
+using Flux.DataStructures.UnionFind;
 using Flux.Quantities;
 using Flux.Text;
 
@@ -39,29 +40,32 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var cc = new Flux.Coordinates.CartesianCoordinate(5.5, 11.5);
-      var v256 = cc.ToVector256();
-      var v256p = v256.AddHorizontal();
-      var cc256 = v256p.ToCartesianCoordinate1();
+      //static int Find(char )
+      //Flux.QwertyProximity.English
 
-      var di = new Flux.Interval<double>(5.5, 11.5);
+      var left = 0b11011.BitMaskFillLeft(5, 14);
+      var leftS = left.ToBinaryString();
+      var right = 0b11011.BitMaskFillRight(5, 14);
+      var rightS = right.ToBinaryString();
 
-      var diei = di.ToExtentInterval(IntervalNotation.Open);
+      var unequal = true;
 
-      var dieis = diei.ToString("N8", null);
+      for (var d = System.DateTime.Today; d < System.DateTime.Today.AddDays(15); d = d.AddDays(1))
+        System.Console.WriteLine($"{d.DayOfWeekLast(DayOfWeek.Friday, unequal).ToStringISO8601Date()} : {d.ToStringISO8601Date()} ({d.DayOfWeek.ToString().Substring(0, 3)}) : {d.DayOfWeekNext(DayOfWeek.Friday, unequal).ToStringISO8601Date()} : {d.DayOfWeekClosest(DayOfWeek.Friday, unequal)}");
 
-      var s1 = " \r\nHello World\r\n ".AsSpan();
-      s1.IndexOfAny(null, "", "");
-      var r = 2;
+      var cc = new Flux.Coordinates.CartesianCoordinate(1, 1, 0, 0).ToVector256().MinkowskiLength(1);
 
-      for (var i = 999; i <= 1025; i++)
+      for (var radix = 2; radix < 64; radix++)
       {
-        //System.Console.WriteLine($"{i} : {i.IntegerLog2()} : {i.IntegerLog2Ex()}");
-        //System.Console.WriteLine($"{i} : {i.PowOf2TowardZero(false)} : {i.PowOf2AwayFromZero(false)} : {i.PowOf2TowardZero(true)} : {i.PowOf2AwayFromZero(true)}");
-        System.Console.WriteLine($"{i} : {Flux.Quantities.Radix.PowOfTowardZero(i, r, false)} : {Flux.Quantities.Radix.PowOfAwayFromZero(i, r, false)} : {Flux.Quantities.Radix.PowOfTowardZero(i, r, true)} : {Flux.Quantities.Radix.PowOfAwayFromZero(i, r, true)}");
+        var multi = radix.IntegerPow(4);
 
-        //if (i != 0)
-        System.Console.WriteLine($"{i} : {Flux.Quantities.Radix.IntegerLogTowardZero(i, r)} : {Flux.Quantities.Radix.IntegerLogAwayFromZero(i, r)} : {System.Numerics.BigInteger.Log(i, r)} : {i.IntegerLog2TowardZero()} : {i.IntegerLog2AwayFromZero()}");
+        for (var index = radix; index <= multi; index *= radix)
+        {
+          var prfafz = Flux.Quantities.Radix.PowOfAwayFromZero(index, radix, false);
+          var prftz = Flux.Quantities.Radix.PowOfTowardZero(index, radix, false);
+          var prtafz = Flux.Quantities.Radix.PowOfAwayFromZero(index, radix, true);
+          var prttz = Flux.Quantities.Radix.PowOfTowardZero(index, radix, true);
+        }
       }
 
     }
@@ -137,9 +141,9 @@ namespace ConsoleApp
                 string word = reflectedInputArray[i];
                 // strip punctuation so "am," still becomes "are,"
                 string possibleKey = System.Text.RegularExpressions.Regex.Replace(word, @"\p{P}", "");
-                if (reflections.ContainsKey(possibleKey))
+                if (reflections.TryGetValue(possibleKey, out var possibleValue))
                 {
-                  word = word.Replace(possibleKey, reflections[possibleKey]);
+                  word = word.Replace(possibleKey, possibleValue);
                   reflectedInputArray[i] = word;
                 }
               }

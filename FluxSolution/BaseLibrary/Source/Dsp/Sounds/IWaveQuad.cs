@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static Dsp.IWaveMono<TSelf> ToMonoWave<TSelf>(this Dsp.IWaveQuad<TSelf> wave)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>

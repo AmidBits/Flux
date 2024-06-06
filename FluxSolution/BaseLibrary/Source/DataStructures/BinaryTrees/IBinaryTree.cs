@@ -6,7 +6,7 @@ namespace Flux.DataStructures
   /// <para><seealso href="https://ericlippert.com/2007/12/18/immutability-in-c-part-six-a-simple-binary-tree/"/></para>
   /// </summary>
   /// <typeparam name="TValue">The type of value for the binary tree node.</typeparam>
-  /// <remarks>This implementation is courtesy Eric Lippert.</remarks>
+  /// <remarks>The original implementation is courtesy Eric Lippert.</remarks>
   public interface IBinaryTree<TValue>
   {
     /// <summary>Determines whether the binary tree is empty.</summary>

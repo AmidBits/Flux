@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Indicates whether an object is marked with a certain attribute.</para>

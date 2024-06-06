@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static System.Collections.Generic.List<System.Text.Rune> EnumerateRunes(this SpanBuilder<char> source)
     {

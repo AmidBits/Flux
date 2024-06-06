@@ -1,4 +1,4 @@
-namespace Flux.Globalization.EnUs
+namespace Flux.Globalization.En.Us
 {
   public static partial class Language
   {

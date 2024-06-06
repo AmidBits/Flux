@@ -2,6 +2,12 @@ namespace Flux
 {
   public static partial class Em
   {
+    /// <summary>
+    /// <para>Retrieves the MIDI time code rate.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static double GetTimeCodeRate(this Music.Midi.MidiTimeCodeType source)
       => source switch
       {

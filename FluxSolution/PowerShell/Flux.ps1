@@ -54,13 +54,13 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 
 # "Prime numbers: $([Flux.NumberSequences.PrimeNumber]::GetAscendingPrimes[int](2) | Select-Object -First 25 | Join-String -Separator ',')$([System.Environment]::NewLine)"
 
-"GetLevenshteinDistanceMatrix(`"sitting`", `"kitten`")$([System.Environment]::NewLine)"
-$m = [Flux.Fx]::GetLevenshteinDistanceMatrix[char]("sitting", "kitten")
+"LevenshteinDistanceMatrix(`"sitting`", `"kitten`")$([System.Environment]::NewLine)"
+$m = [Flux.Fx]::LevenshteinDistanceMatrix[char]("sitting", "kitten")
 $s = [Flux.Fx]::Rank2ToConsoleString[int]($m)
 "$($s)$([System.Environment]::NewLine)"
 
-"GetLevenshteinDistanceMatrix(`"Sunday`", `"Saturday`")$([System.Environment]::NewLine)"
-$m = [Flux.Fx]::GetLevenshteinDistanceMatrix[char]("Sunday", "Saturday")
+"LevenshteinDistanceMatrix(`"Sunday`", `"Saturday`")$([System.Environment]::NewLine)"
+$m = [Flux.Fx]::LevenshteinDistanceMatrix[char]("Sunday", "Saturday")
 $s = [Flux.Fx]::Rank2ToConsoleString[int]($m)
 "$($s)$([System.Environment]::NewLine)"
 

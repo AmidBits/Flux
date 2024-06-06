@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static string GetUnitString(this Quantities.PartsPerNotationUnit source, bool preferUnicode = false, bool useFullName = false)
       => useFullName ? source.ToString() : source switch

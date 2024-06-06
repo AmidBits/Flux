@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static void MakeNumbersFixedLength(this ref SpanBuilder<System.Text.Rune> source, int length, System.Text.Rune padding)
     {

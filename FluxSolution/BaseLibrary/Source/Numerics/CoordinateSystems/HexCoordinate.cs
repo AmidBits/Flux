@@ -3,7 +3,7 @@ namespace Flux
 {
   #region ExtensionMethods
 
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>Returns the diagonal neighbor two cells over on-the-line and in-between two adjacent cells.</summary>
     /// <param name = "direction" > The hexagon direction [-5, 5] (either direction).</param>

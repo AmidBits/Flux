@@ -6,7 +6,7 @@ namespace Flux.DataStructures
   /// </summary>
   /// <typeparam name="TKey">The type of key for the MAP node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
   /// <typeparam name="TValue">The type of value for the MAP node.</typeparam>
-  /// <remarks>This implementation is courtesy Eric Lippert.</remarks>
+  /// <remarks>The original implementation is courtesy Eric Lippert.</remarks>
   public interface IMap<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {
@@ -22,6 +22,7 @@ namespace Flux.DataStructures
 
     /// <summary>Gets the value of the key in the map.</summary>
     TValue Lookup(TKey key);
+
     /// <summary>Add the key with the value to the map.</summary>
     IMap<TKey, TValue> Add(TKey key, TValue value);
     /// <summary>Remove the key from the map.</summary>

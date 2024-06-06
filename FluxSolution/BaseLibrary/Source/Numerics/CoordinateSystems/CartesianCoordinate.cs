@@ -2,7 +2,7 @@ namespace Flux
 {
   #region ExtensionMethods
 
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
     public static Coordinates.CartesianCoordinate ToCartesianCoordinate(this System.Numerics.Vector2 source, double z = 0, double w = 0)
@@ -57,6 +57,11 @@ namespace Flux
       : System.IFormattable
     {
       public static readonly CartesianCoordinate Zero;
+
+      public static readonly CartesianCoordinate UnitX = new(1, 0, 0);
+      public static readonly CartesianCoordinate UnitY = new(0, 1, 0);
+      public static readonly CartesianCoordinate UnitZ = new(0, 0, 1);
+      public static readonly CartesianCoordinate UnitW = new(0, 0, 0, 1);
 
       private readonly Quantities.Length m_x;
       private readonly Quantities.Length m_y;
@@ -367,7 +372,7 @@ namespace Flux
       #region Implemented interfaces
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"<{m_x.Value.ToString(format ?? "N6", provider)}, {m_y.Value.ToString(format ?? "N6", provider)}, {m_z.Value.ToString(format ?? "N6", provider)}, {m_w.Value.ToString(format ?? "N6", provider)}>";
+        => $"<{m_x.Value.ToString(format, provider)}, {m_y.Value.ToString(format, provider)}, {m_z.Value.ToString(format, provider)}, {m_w.Value.ToString(format, provider)}>";
 
       #endregion // Implemented interfaces
 

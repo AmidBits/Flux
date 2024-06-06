@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>The average absolute deviation, or mean absolute deviation (MAD), of a data set is the average of the absolute deviations from a central point, in the case of this function, all of mean, median and mode are computed simoultaneously.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Average_absolute_deviation"/>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>Creates a new string formatted as a ratio string, optionally reducing the ratio, if possible.</summary>
     public static string ToRatioString<TSelf>(this Quantities.RatioDisplay display, TSelf numerator, TSelf denominator, string? format, System.IFormatProvider? formatProvider = null)

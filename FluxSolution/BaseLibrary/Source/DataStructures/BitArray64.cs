@@ -1,7 +1,7 @@
 ﻿namespace Flux.DataStructures
 {
   /// <summary>
-  /// <para>BitArray64 maintains the same functionality as <see cref="System.Collections.BitArray"/>.</para>
+  /// <para>BitArray64 maintains the same functionality as <see cref="System.Collections.BitArray"/> with the exception of 64-bit bit-addressing.</para>
   /// </summary>
   /// <remarks>In .NET there is currently a maximum index limit for an array: 2,146,435,071 (0X7FEFFFFF). That number times 64 (137,371,844,544) is the practical limit of <see cref="BitArray64"/>.</remarks>
   public sealed class BitArray64
@@ -16,6 +16,16 @@
 
       m_bitArray = new ulong[((bitLength - 1L) / 64) + 1];
       m_bitLength = bitLength;
+    }
+
+    public BitArray64(bool[] values)
+      : this(values.Length)
+    {
+      System.ArgumentNullException.ThrowIfNull(values);
+
+      for (var i = 0; i < values.Length; i++)
+        if (values[i])
+          Set(i, true);
     }
 
     /// <summary>
@@ -98,7 +108,10 @@
         m_bitArray[^1] &= bitMask;
     }
 
-    public bool Get(long bitIndex) => (m_bitArray[bitIndex >> 6] & (1UL << (int)(bitIndex % 64))) != 0;
+    public bool Get(long bitIndex)
+      => (bitIndex < 0 || bitIndex >= m_bitLength)
+      ? throw new System.ArgumentOutOfRangeException(nameof(bitIndex))
+      : (m_bitArray[bitIndex >> 6] & (1UL << (int)(bitIndex % 64))) != 0;
 
     [System.CLSCompliant(false)] public byte GetByte(long index) => (byte)((m_bitArray[index >> 3] >> (int)((index % 8) << 3)) & 0xFF);
     public short GetInt16(long index) => unchecked((short)GetUInt16(index));

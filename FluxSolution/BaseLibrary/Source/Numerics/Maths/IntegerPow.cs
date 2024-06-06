@@ -49,7 +49,7 @@ namespace Flux
     /// <param name="exponent">The exponent with which to raise the <paramref name="radix"/>.</param>
     /// <param name="reciprocal">The reciprocal of <paramref name="radix"/> raised to the power-of-<paramref name="exponent"/>, i.e. 1 divided by the resulting value.</param>
     /// <returns>The <paramref name="radix"/> raised to the power-of-<paramref name="exponent"/>.</returns>
-    /// <remarks>If <paramref name="radix"/> and/or <paramref name="exponent"/> are zero, 1 is returned. I.e. 0&#x2070;, x&#x2070; and 0&#x02E3; all return 1 in this version.</remarks>
+    /// <remarks>If <paramref name="radix"/> and/or <paramref name="exponent"/> are zero, 1 is returned.</remarks>
     public static TSelf IntegerPowRec<TSelf, TReciprocal>(this TSelf radix, TSelf exponent, out TReciprocal reciprocal)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TReciprocal : System.Numerics.IFloatingPoint<TReciprocal>

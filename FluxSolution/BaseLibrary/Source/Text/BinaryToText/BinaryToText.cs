@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Encodes <paramref name="text"/> (using the specified <paramref name="encoding"/>) into Base85/ASCII85 <paramref name="encodedBase85"/>.</para>

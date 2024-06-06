@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the set [0, 90, 180, 270] (every 90° notch, starting at 0°), from <paramref name="source"/> (<see cref="Quantities.CardinalAxis"/>) and <paramref name="isNegative"/>, converted into one of the four <see cref="Quantities.CardinalDirection"/> compass points.</summary>
     public static Quantities.Azimuth GetAzimuth(this Quantities.CompassCardinalAxis source, bool isNegative)

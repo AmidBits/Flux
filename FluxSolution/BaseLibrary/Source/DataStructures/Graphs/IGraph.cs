@@ -4,7 +4,7 @@ namespace Flux
 {
   #region Extension methods
 
-  public static partial class Em
+  public static partial class Fx
   {
     /// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
     /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>

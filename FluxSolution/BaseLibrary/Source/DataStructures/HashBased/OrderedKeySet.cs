@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static DataStructures.HashBased.OrderedKeySet<T> ToOrderedHashSet<T>(this System.Collections.Generic.IEnumerable<T> source)
       where T : notnull

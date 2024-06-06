@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class Fx
   {
     public static string ToSpacingString(this UnicodeSpacing spacing) => spacing == UnicodeSpacing.None ? string.Empty : $"{(char)(int)spacing}";
 

@@ -55,8 +55,8 @@ namespace Numerics
       var templateBitMask = 0b110;
       var templateBitLength = 3;
 
-      var expected = 0b1011_0110_1101_1011_0110_1101_1011_0110U;
-      var actual = unchecked((uint)templateBitMask.BitMaskFillLeft(templateBitLength));
+      var expected = 0b1101_1011_0110_1101_1011_0110_1101_1011U;
+      var actual = unchecked((uint)templateBitMask.BitMaskFillLeft(templateBitLength, expected.GetShortestBitLength()));
 
       // Debug:
       var e = expected.ToBinaryString();
@@ -71,8 +71,8 @@ namespace Numerics
       var templateBitMask = 0b110;
       var templateBitLength = 3;
 
-      var expected = 0b1101_1011_0110_1101_1011_0110_1101_1011U;
-      var actual = unchecked((uint)templateBitMask.BitMaskFillRight(templateBitLength));
+      var expected = 0b1011_0110_1101_1011_0110_1101_1011_0110U;
+      var actual = unchecked((uint)templateBitMask.BitMaskFillRight(templateBitLength, expected.GetShortestBitLength()));
 
       // Debug:
       var e = expected.ToBinaryString();

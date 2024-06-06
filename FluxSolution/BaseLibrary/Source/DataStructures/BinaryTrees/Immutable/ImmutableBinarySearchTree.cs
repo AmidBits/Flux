@@ -7,7 +7,7 @@ namespace Flux.DataStructures.Immutable
   /// </summary>
   /// <typeparam name="TKey">The type of key of the immutable BST node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
   /// <typeparam name="TValue">The type of value of the immutable BST node.</typeparam>
-  /// <remarks>This implementation courtesy Eric Lippert.</remarks>
+  /// <remarks>The original implementation courtesy Eric Lippert.</remarks>
   public sealed class ImmutableBinarySearchTree<TKey, TValue>
     : IBinarySearchTree<TKey, TValue>
     where TKey : System.IComparable<TKey>

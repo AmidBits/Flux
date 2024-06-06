@@ -18,8 +18,10 @@ namespace Flux.Resources.Scrape
       using var stream = uri.GetStream();
       using var reader = new StreamReader(stream);
 
-      foreach (var fields in reader.ReadCsv())
-        yield return fields;
+      return reader.ReadCsv();
+
+      //foreach (var fields in reader.ReadCsv())
+      //  yield return fields;
     }
 
     #region Implemented interfaces

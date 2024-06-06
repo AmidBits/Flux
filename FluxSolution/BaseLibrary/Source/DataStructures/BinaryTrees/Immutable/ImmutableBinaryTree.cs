@@ -6,7 +6,7 @@ namespace Flux.DataStructures.Immutable
   /// <para><seealso href="https://en.wikipedia.org/wiki/Binary_tree"/></para>
   /// </summary>
   /// <typeparam name="TValue">The type of value of the immutable binary tree node.</typeparam>
-  /// <remarks>This implementation is courtesy Eric Lippert.</remarks>
+  /// <remarks>The original implementation is courtesy Eric Lippert.</remarks>
   public sealed class ImmutableBinaryTree<TValue>
     : IBinaryTree<TValue>
     where TValue : System.IEquatable<TValue>
