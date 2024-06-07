@@ -19,7 +19,8 @@ namespace Flux
     public static TSelf FixedRateMortgageMonthlyPayment<TSelf>(this TSelf fixedYearlyNominalInterestRate, TSelf numberOfYears, TSelf loanAmount)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
     {
-      var r = fixedYearlyNominalInterestRate / TSelf.CreateChecked(100) / TSelf.CreateChecked(12);
+      //var r = fixedYearlyNominalInterestRate / TSelf.CreateChecked(100) / TSelf.CreateChecked(12);
+      var r = fixedYearlyNominalInterestRate / TSelf.CreateChecked(12); // Was divide by 100 just to make it a decimal percent?
 
       return r / (TSelf.One - TSelf.Pow(TSelf.One + r, -numberOfYears * TSelf.CreateChecked(12))) * loanAmount;
     }

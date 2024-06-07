@@ -53,7 +53,7 @@ namespace Flux
     }
 
     public static System.Boolean ReadBoolean(this System.ReadOnlySpan<byte> buffer, int offset, Endianess endianess) => System.BitConverter.ToBoolean(buffer);
-    public static System.Byte ReadByte(this System.Span<byte> buffer, int offset, Endianess endianess) => buffer[offset];
+    public static System.Byte ReadByte(this System.ReadOnlySpan<byte> buffer, int offset, Endianess endianess) => buffer[offset];
     public static System.Char ReadChar(this byte[] buffer, int offset, Endianess endianess) => unchecked((System.Char)ReadValue(buffer, offset, 2, endianess));
     public static System.Decimal ReadDecimal(this byte[] buffer, int offset, Endianess endianess)
     {

@@ -33,6 +33,29 @@ namespace ConsoleApp
       RunISetOps();
       RunStatistics();
       RunTemporal();
+
+#if INCLUDE_SWAR
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.SwarFoldLeft()));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.BitFoldLeft()));
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.SwarFoldRight()));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.BitFoldRight()));
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.SwarIntegerLog2()));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.IntegerLog2TowardZero()));
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.SwarLeadingZeroCount()));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.GetLeadingZeroCount()));
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.SwarMostSignificant1Bit()));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.MostSignificant1Bit()));
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.SwarNextLargestPow2()));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => xx.NextLargestPow2()));
+
+#endif
+
 #else
       throw new System.NotImplementedException(@"/define:ZAMPLEZ");
 #endif

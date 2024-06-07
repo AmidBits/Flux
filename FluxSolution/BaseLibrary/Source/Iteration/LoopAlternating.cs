@@ -26,7 +26,7 @@ namespace Flux
           }
           break;
         case AlternatingLoopDirection.TowardsCenter:
-          source += step * Maths.TruncMod(TNumber.CreateChecked(count), TNumber.One + TNumber.One); // Setup the inital outer edge value for inward iteration.
+          source += step * Maths.TruncMod(TNumber.CreateChecked(count), TNumber.One + TNumber.One, out TNumber _); // Setup the inital outer edge value for inward iteration.
 
           for (var index = count - TCount.One; index >= TCount.Zero; index--)
           {

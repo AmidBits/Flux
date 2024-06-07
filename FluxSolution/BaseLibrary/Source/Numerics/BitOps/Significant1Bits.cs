@@ -25,6 +25,7 @@ namespace Flux
     public static TSelf LeastSignificant1Bit<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => value & ((~value) + TSelf.One);
+    //=> (value & -value); // This optimized version does not work on unsigned integers.
 
     /// <summary>
     /// <para>Extracts the highest numbered element of a bit set (<paramref name="value"/>). Given a 2's complement binary integer value, this is the most-significant-1-bit.</para>
@@ -38,5 +39,18 @@ namespace Flux
     public static TSelf MostSignificant1Bit<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsZero(value) ? value : TSelf.One << (value.GetBitLengthEx() - 1);
+
+#if INCLUDE_SWAR
+
+    public static TSelf SwarMostSignificant1Bit<TSelf>(this TSelf source)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    {
+      source = source.SwarFoldRight();
+
+      return (source & ~(source >> 1));
+    }
+
+#endif
+
   }
 }

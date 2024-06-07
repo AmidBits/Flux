@@ -6,7 +6,7 @@ namespace Flux
     /// <para>Clear the bits of <paramref name="source"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
     /// </summary>
     public static TSelf BitMaskClear<TSelf>(this TSelf source, TSelf bitMask)
-      where TSelf : System.Numerics.IBitwiseOperators<TSelf, TSelf, TSelf>
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => source &= ~bitMask;
 
     /// <summary>
@@ -55,7 +55,7 @@ namespace Flux
     /// <para>Flip the bits in <paramref name="source"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
     /// </summary>
     public static TSelf BitMaskFlip<TSelf>(this TSelf source, TSelf bitMask)
-      where TSelf : System.Numerics.IBitwiseOperators<TSelf, TSelf, TSelf>
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => source ^= bitMask;
 
     /// <summary>
@@ -93,7 +93,7 @@ namespace Flux
     /// <para>Set the bits of <paramref name="source"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
     /// </summary>
     public static TSelf BitMaskSet<TSelf>(this TSelf source, TSelf bitMask)
-      where TSelf : System.Numerics.IBitwiseOperators<TSelf, TSelf, TSelf>
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => source |= bitMask;
   }
 }

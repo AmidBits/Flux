@@ -122,7 +122,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Returns the remainder in reverse, i.e. instead of [0, divisor), we get (divisor, 0], a reversal of the modulo/remainder output image (range). The function also returns the normal modulo/remainder.</para>
+    /// <para>Returns the <paramref name="remainder"/> in reverse, i.e. instead of [0, divisor), we get (divisor, 0], a reversal of the modulo/remainder output image (range). The function also returns the normal <paramref name="remainder"/>.</para>
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
     /// <param name="dividend"></param>
@@ -137,10 +137,10 @@ namespace Flux
       return TSelf.IsZero(remainder) ? remainder : -remainder + divisor;
     }
 
-    /// <summary>Computes the integer (i.e. truncated/floor) quotient.</summary>
-    public static TSelf TruncMod<TSelf>(this TSelf dividend, TSelf divisor)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => (dividend - (dividend % divisor)) / divisor;
+    ///// <summary>Computes the integer (i.e. truncated/floor) quotient.</summary>
+    //public static TSelf TruncMod<TSelf>(this TSelf dividend, TSelf divisor)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //  => (dividend - (dividend % divisor)) / divisor;
 
     /// <summary>Computes the integer (i.e. truncated/floor) quotient and also returns the <paramref name="remainder"/> (<paramref name="dividend"/> modulo <paramref name="divisor"/>) as an output parameter.</summary>
     public static TSelf TruncMod<TSelf>(this TSelf dividend, TSelf divisor, out TSelf remainder)

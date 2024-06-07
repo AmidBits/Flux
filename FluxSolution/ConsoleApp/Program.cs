@@ -40,8 +40,8 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //static int Find(char )
-      //Flux.QwertyProximity.English
+      var rm = (31).RevMod(5, out var rem);
+      var tm = (31).TruncMod(5, out var _);
 
       var left = 0b11011.BitMaskFillLeft(5, 14);
       var leftS = left.ToBinaryString();

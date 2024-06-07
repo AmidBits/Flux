@@ -12,6 +12,10 @@ namespace Flux
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.IsPow2(value);
 
+    public static TSelf NextLargestPow2<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => value.BitFoldRight() + TSelf.One;
+
     /// <summary>
     /// <para>Computes the closest power-of-2 in the direction away-from-zero.</para>
     /// <example>
@@ -41,5 +45,14 @@ namespace Flux
     public static TSelf Pow2TowardZero<TSelf>(this TSelf value, bool unequal)
        where TSelf : System.Numerics.IBinaryInteger<TSelf>
        => TSelf.CopySign(TSelf.Abs(value) is var v && TSelf.IsPow2(v) && unequal ? v >> 1 : v.MostSignificant1Bit(), value);
+
+#if INCLUDE_SWAR
+
+    public static TSelf SwarNextLargestPow2<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => value.SwarFoldRight() + TSelf.One;
+
+#endif
+
   }
 }

@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace Flux
 {
   public static partial class Vector

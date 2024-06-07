@@ -17,5 +17,14 @@ namespace Flux
     public static int GetTrailingZeroCount<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => int.CreateChecked(TSelf.TrailingZeroCount(value));
+
+#if INCLUDE_SWAR
+
+    public static int SwarLeadingZeroCount<TSelf>(this TSelf value)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => value.GetBitCount() - value.SwarFoldRight().GetPopCount();
+
+#endif
+
   }
 }
