@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static bool TryToFileInfo(this System.Uri source, out System.IO.FileInfo fileInfo)
+    public static bool TryGetDirectoryInfo(this System.Uri source, out System.IO.DirectoryInfo directoryInfo)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -13,16 +13,13 @@ namespace Flux
         if (localPath.StartsWith('/'))
           localPath = localPath[1..];
 
-        if (localPath.EndsWith('/'))
-          localPath = localPath[..^1];
+        directoryInfo = new System.IO.DirectoryInfo(localPath);
 
-        fileInfo = new System.IO.FileInfo(localPath);
-
-        if (fileInfo.Exists) // Check and fall through on non-existent.
+        if (directoryInfo.Exists) // Check and fall through on non-existent.
           return true;
       }
 
-      fileInfo = default!;
+      directoryInfo = default!;
       return false;
     }
   }

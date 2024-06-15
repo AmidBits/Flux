@@ -117,8 +117,12 @@ namespace Flux
 
       #endregion // Overloaded operators
 
+      #region Implemented interfaces
+
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
         => $"{GetType().GetNameEx()} {{ A = {string.Format($"{{0:{format ?? "N6"}}}", A)}, R = {string.Format($"{{0:{format ?? "N6"}}}", R)}, C = {string.Format($"{{0:{format ?? "N6"}}}", C)} }}";
+
+      #endregion // Implemented interfaces
 
       public override string ToString() => ((System.IFormattable)this).ToString(null, null);
     }

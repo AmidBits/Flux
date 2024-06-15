@@ -32,7 +32,7 @@ namespace Flux
         var cpl = new System.Collections.Generic.SortedDictionary<int, DataStructures.CumulativeDistributionFunction<char, double>>();
 
         foreach (var i in Iteration.LoopRange(0, 1, maxLength))
-          cpl[(int)i + 1] = list.Where(n => i < n.Length).ToHistogram(k => k[(int)i], f => System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(f[(int)i]) ? 1 : 1).ToCumulativeDistributionFunction(1.0);
+          cpl[(int)i + 1] = list.Where(n => i < n.Length).ToHistogram(k => k[(int)i], f => f[(int)i].IsVowelOf(System.Globalization.CultureInfo.CurrentCulture) ? 1 : 1).ToCumulativeDistributionFunction(1.0);
 
         var p1 = m_rng.NextDouble();
         var length = lengths.OrderBy(kvp => kvp.Key).First(kvp => p1 <= kvp.Value);

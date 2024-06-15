@@ -25,7 +25,7 @@ namespace Flux
 
     public static TSelf SwarIntegerLog2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.PopCount(value.SwarFoldRight() >> 1);
+      => TSelf.PopCount(SwarFoldRight(value) >> 1);
 
 #endif
 

@@ -40,20 +40,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var rm = (31).RevMod(5, out var rem);
-      var tm = (31).TruncMod(5, out var _);
+      var ja = new int[][] { new int[] { 1, 2 }, new int[] { 3, 4 }, new int[] { 5, 6 } };
 
-      var left = 0b11011.BitMaskFillLeft(5, 14);
-      var leftS = left.ToBinaryString();
-      var right = 0b11011.BitMaskFillRight(5, 14);
-      var rightS = right.ToBinaryString();
+      var a2 = ja.ToTwoDimensionalArray();
 
-      var unequal = true;
-
-      for (var d = System.DateTime.Today; d < System.DateTime.Today.AddDays(15); d = d.AddDays(1))
-        System.Console.WriteLine($"{d.DayOfWeekLast(DayOfWeek.Friday, unequal).ToStringISO8601Date()} : {d.ToStringISO8601Date()} ({d.DayOfWeek.ToString().Substring(0, 3)}) : {d.DayOfWeekNext(DayOfWeek.Friday, unequal).ToStringISO8601Date()} : {d.DayOfWeekClosest(DayOfWeek.Friday, unequal)}");
-
-      var cc = new Flux.Coordinates.CartesianCoordinate(1, 1, 0, 0).ToVector256().MinkowskiLength(1);
+      a2.GraphBellmanFordMaxFlowMinCost(0, 0, cs => (double)cs, cost => 7 - (double)cost);
 
       for (var radix = 2; radix < 64; radix++)
       {

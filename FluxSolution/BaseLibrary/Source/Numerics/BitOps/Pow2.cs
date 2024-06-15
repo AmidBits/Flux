@@ -50,7 +50,7 @@ namespace Flux
 
     public static TSelf SwarNextLargestPow2<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value.SwarFoldRight() + TSelf.One;
+      => SwarFoldRight(value) + TSelf.One;
 
 #endif
 

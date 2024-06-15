@@ -45,7 +45,7 @@ namespace Flux
     public static TSelf SwarMostSignificant1Bit<TSelf>(this TSelf source)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      source = source.SwarFoldRight();
+      source = SwarFoldRight(source);
 
       return (source & ~(source >> 1));
     }

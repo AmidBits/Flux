@@ -49,7 +49,7 @@ namespace Flux
       //source |= (source << 2);
       //source |= (source << 1);
 
-      for (var shift = source.GetBitCount(); shift > 0; shift >>= 1)
+      for (var shift = GetBitCount(source); shift > 0; shift >>= 1)
         source |= source << shift;
 
       return source;
@@ -71,7 +71,7 @@ namespace Flux
       //source |= (source >> 2);
       //source |= (source >> 1);
 
-      for (var shift = source.GetBitCount(); shift > 0; shift >>= 1)
+      for (var shift = GetBitCount(source); shift > 0; shift >>= 1)
         source |= source >>> shift; // Unsigned shift right.
 
       return source;

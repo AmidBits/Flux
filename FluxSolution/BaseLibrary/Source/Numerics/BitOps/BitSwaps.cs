@@ -36,6 +36,6 @@ namespace Flux
     /// <para>Swap adjacent 32-bits (UInt32).</para>
     /// </summary>
     [System.CLSCompliant(false)]
-    public static ulong BitSwap32(ulong value) => (value >> 32) | (value << 32); // No need to AND bits, we can simply swap the two halfs for a UInt64.
+    public static ulong BitSwap32(ulong value) => (value >> 32) | (value << 32); // For a 64-bit type (e.g. ulong/System.UInt64), there is no need to AND bits, we can simply swap the two halfs.
   }
 }

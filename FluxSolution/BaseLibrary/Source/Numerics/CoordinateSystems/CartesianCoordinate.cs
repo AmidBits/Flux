@@ -58,10 +58,10 @@ namespace Flux
     {
       public static readonly CartesianCoordinate Zero;
 
-      public static readonly CartesianCoordinate UnitX = new(1, 0, 0);
-      public static readonly CartesianCoordinate UnitY = new(0, 1, 0);
-      public static readonly CartesianCoordinate UnitZ = new(0, 0, 1);
-      public static readonly CartesianCoordinate UnitW = new(0, 0, 0, 1);
+      public static readonly CartesianCoordinate UnitX = new(1d, 0d, 0d, 0d);
+      public static readonly CartesianCoordinate UnitY = new(0d, 1d, 0d, 0d);
+      public static readonly CartesianCoordinate UnitZ = new(0d, 0d, 1d, 0d);
+      public static readonly CartesianCoordinate UnitW = new(0d, 0d, 0d, 1d);
 
       private readonly Quantities.Length m_x;
       private readonly Quantities.Length m_y;

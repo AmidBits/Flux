@@ -10,7 +10,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      if (source.TryToFileInfo(out var fi))
+      if (source.TryGetFileInfo(out var fi))
         return fi.OpenRead();
 
       //if (source.IsFile) // If the URI is a file, create a local FileStream from the URI data.

@@ -22,7 +22,7 @@ namespace Flux
 
     public static int SwarLeadingZeroCount<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value.GetBitCount() - value.SwarFoldRight().GetPopCount();
+      => GetBitCount(value) - GetPopCount(SwarFoldRight(value));
 
 #endif
 

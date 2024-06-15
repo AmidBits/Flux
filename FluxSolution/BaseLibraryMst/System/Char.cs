@@ -18,9 +18,9 @@ namespace SystemFx
     [TestMethod]
     public void IsEnglishConsonant()
     {
-      Assert.AreEqual(false, System.Globalization.CultureInfo.CurrentCulture.IsConsonantOf((System.Text.Rune)'ñ'));
-      Assert.AreEqual(true, System.Globalization.CultureInfo.CurrentCulture.IsConsonantOf((System.Text.Rune)'t'));
-      Assert.AreEqual(false, System.Globalization.CultureInfo.CurrentCulture.IsConsonantOf((System.Text.Rune)'A'));
+      Assert.AreEqual(false, ((System.Text.Rune)'ñ').IsConsonantOf(System.Globalization.CultureInfo.CurrentCulture));
+      Assert.AreEqual(true, ((System.Text.Rune)'t').IsConsonantOf(System.Globalization.CultureInfo.CurrentCulture));
+      Assert.AreEqual(false, ((System.Text.Rune)'A').IsConsonantOf(System.Globalization.CultureInfo.CurrentCulture));
     }
 
     //[TestMethod]
@@ -48,10 +48,10 @@ namespace SystemFx
     [TestMethod]
     public void IsEnglishVowel()
     {
-      Assert.AreEqual(false, System.Globalization.CultureInfo.CurrentCulture.IsVowelOf((System.Text.Rune)'ñ'));
-      Assert.AreEqual(false, !((System.Text.Rune)'y').IsBasicLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf((System.Text.Rune)'y'));
-      Assert.AreEqual(true, System.Globalization.CultureInfo.CurrentCulture.IsVowelOf((System.Text.Rune)'y'));
-      Assert.AreEqual(true, System.Globalization.CultureInfo.CurrentCulture.IsVowelOf((System.Text.Rune)'A'));
+      Assert.AreEqual(false, ((System.Text.Rune)'ñ').IsVowelOf(System.Globalization.CultureInfo.CurrentCulture));
+      Assert.AreEqual(false, !((System.Text.Rune)'y').IsBasicLatinLetterY() && ((System.Text.Rune)'y').IsVowelOf(System.Globalization.CultureInfo.CurrentCulture));
+      Assert.AreEqual(true, ((System.Text.Rune)'y').IsVowelOf(System.Globalization.CultureInfo.CurrentCulture));
+      Assert.AreEqual(true, ((System.Text.Rune)'A').IsVowelOf(System.Globalization.CultureInfo.CurrentCulture));
     }
   }
 }

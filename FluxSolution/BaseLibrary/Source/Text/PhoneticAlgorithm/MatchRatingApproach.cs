@@ -20,10 +20,10 @@ namespace Flux
 
           if (index > 0)
           {
-            if (!currentRune.IsBasicLatinLetterY() && System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(currentRune))
+            if (!currentRune.IsBasicLatinLetterY() && currentRune.IsVowelOf(System.Globalization.CultureInfo.CurrentCulture))
               continue;
 
-            if (System.Globalization.CultureInfo.CurrentCulture.IsVowelOf(currentRune) && currentRune == previousRune)
+            if (currentRune.IsVowelOf(System.Globalization.CultureInfo.CurrentCulture) && currentRune == previousRune)
               continue;
           }
 

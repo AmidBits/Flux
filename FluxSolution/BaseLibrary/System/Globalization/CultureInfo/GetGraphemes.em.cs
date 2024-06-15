@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Contains all English graphemes from the 'main system' and the rest including the minor patterns and oddities.</summary>
-    public static readonly string[][][] Graphemes_en = new string[][][]
+    private static readonly string[][][] Graphemes_en = new string[][][]
     {
       new string[][] { new string[] { "a", "a.e", "ai", "air", "ar", "are", "au", "aw", "ay", }, new string[] { "aa", "aar", "ach", "ae", "aer", "ah", "aigh", "aire", "ais", "ait", "al", "alf", "anc", "ao", "aoh", "aow", "arr", "arre", "arrh", "as", "at", "augh", "aul", "aur", "awe", "aye", "ayer", "ayor", }, },
       new string[][] { new string[] { "b", "bb", }, new string[] { "bh", "bd", "bp", "bt", "bu", "bv", }, },
