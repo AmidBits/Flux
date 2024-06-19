@@ -7,6 +7,10 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<(int destination, double distance)> GraphDijkstraShortestPathTree<T>(this T[,] source, int origin, System.Func<object, double> distanceSelector)
       where T : System.IEquatable<T>
     {
+      GraphAssertProperty(source, out var length);
+
+      System.ArgumentNullException.ThrowIfNull(distanceSelector);
+
       var vertices = System.Linq.Enumerable.ToList(GraphGetVertices(source));
 
       var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);

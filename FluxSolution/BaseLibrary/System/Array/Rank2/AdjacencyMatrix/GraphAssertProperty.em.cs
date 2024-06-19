@@ -6,8 +6,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
-      if (!TryGetSymmetricalLength(source, out length)) throw new System.ArgumentException($"An asymmetrical array does not represent an adjacency matrix.");
+      if (!source.TryGetSymmetricalLength(out length) || source.Rank != 2) throw new System.ArgumentException($"An asymmetrical array does not represent an adjacency matrix.");
     }
   }
 }

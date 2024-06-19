@@ -40,24 +40,6 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var ja = new int[][] { new int[] { 1, 2 }, new int[] { 3, 4 }, new int[] { 5, 6 } };
-
-      var a2 = ja.ToTwoDimensionalArray();
-
-      a2.GraphBellmanFordMaxFlowMinCost(0, 0, cs => (double)cs, cost => 7 - (double)cost);
-
-      for (var radix = 2; radix < 64; radix++)
-      {
-        var multi = radix.IntegerPow(4);
-
-        for (var index = radix; index <= multi; index *= radix)
-        {
-          var prfafz = Flux.Quantities.Radix.PowOfAwayFromZero(index, radix, false);
-          var prftz = Flux.Quantities.Radix.PowOfTowardZero(index, radix, false);
-          var prtafz = Flux.Quantities.Radix.PowOfAwayFromZero(index, radix, true);
-          var prttz = Flux.Quantities.Radix.PowOfTowardZero(index, radix, true);
-        }
-      }
 
     }
 

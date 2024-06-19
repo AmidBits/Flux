@@ -23,6 +23,7 @@ namespace ConsoleApp
       RunBits();
       RunColors();
       RunCoordinateSystems();
+      RunDataStructuresGraph();
       RunImmutableDataStructures();
       RunLocale();
       ParallelVsSerial.Run();
@@ -458,6 +459,80 @@ namespace ConsoleApp
     }
 
     #endregion
+
+    #region DataStructuresGraph
+
+    public static void RunDataStructuresGraph()
+    {
+      System.Console.WriteLine();
+      System.Console.WriteLine(nameof(RunDataStructuresGraph));
+      System.Console.WriteLine();
+
+      RunDataStructuresGraphAdjacencyList();
+      RunDataStructuresGraphAdjacencyMatrix();
+    }
+
+    public static void RunDataStructuresGraphAdjacencyList()
+    {
+      var al = new Flux.DataStructures.Graphs.AdjacencyList<int, int>();
+
+      al.AddVertex(0, 9);
+      al.AddVertex(1, 8);
+      al.AddVertex(2, 7);
+      al.AddVertex(3, 6);
+
+      //am.AddEdge(0, 1, 1);
+      //am.AddEdge(0, 2, 1);
+      //am.AddEdge(1, 0, 1);
+      //am.AddEdge(1, 2, 1);
+      //am.AddEdge(2, 0, 1);
+      //am.AddEdge(2, 1, 1);
+      //am.AddEdge(2, 3, 1);
+      //am.AddEdge(3, 2, 1);
+
+      al.AddEdge(0, 1, 2);
+      al.AddEdge(0, 2, 1);
+      al.AddEdge(1, 2, 4);
+      al.AddEdge(2, 3, 1);
+
+      System.Console.WriteLine(al.ToConsoleString());
+
+      var amt = (Flux.DataStructures.Graphs.AdjacencyList<int, int>)al.TransposeToCopy();
+
+      System.Console.WriteLine(amt.ToConsoleString());
+    }
+
+    public static void RunDataStructuresGraphAdjacencyMatrix()
+    {
+      var am = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, int>();
+
+      am.AddVertex(0, 9);
+      am.AddVertex(1, 8);
+      am.AddVertex(2, 7);
+      am.AddVertex(3, 6);
+
+      //am.AddEdge(0, 1, 1);
+      //am.AddEdge(0, 2, 1);
+      //am.AddEdge(1, 0, 1);
+      //am.AddEdge(1, 2, 1);
+      //am.AddEdge(2, 0, 1);
+      //am.AddEdge(2, 1, 1);
+      //am.AddEdge(2, 3, 1);
+      //am.AddEdge(3, 2, 1);
+
+      am.AddEdge(0, 1, 2);
+      am.AddEdge(0, 2, 1);
+      am.AddEdge(1, 2, 4);
+      am.AddEdge(2, 3, 1);
+
+      System.Console.WriteLine(am.ToConsoleString());
+
+      var amt = (Flux.DataStructures.Graphs.AdjacencyMatrix<int, int>)am.TransposeToCopy();
+
+      System.Console.WriteLine(amt.ToConsoleString());
+    }
+
+    #endregion DataStructuresGraph
 
     #region RunImmutableDataStructures
 
