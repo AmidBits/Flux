@@ -36,14 +36,14 @@ namespace Flux
     //public T[] InternalArray { get => m_array; init => m_array = value; }
 
     /// <summary>The current total capacity of the builder buffer.</summary>
-    public int Capacity => m_array.Length;
+    public readonly int Capacity => m_array.Length;
     /// <summary>The current partial capacity of the builder buffer right-side (append).</summary>
-    private int CapacityAppend => m_array.Length - m_tail;
+    private readonly int CapacityAppend => m_array.Length - m_tail;
     /// <summary>The current partial capacity of the builder buffer left-side (prepend).</summary>
-    private int CapacityPrepend => m_head;
+    private readonly int CapacityPrepend => m_head;
 
     /// <summary>The number of elements in the <see cref="SpanBuilder{T}"/>.</summary>
-    public int Length => m_tail - m_head;
+    public readonly int Length => m_tail - m_head;
 
     /// <summary>Append <paramref name="count"/> of <paramref name="value"/>.</summary>
     public SpanBuilder<T> Append(T value, int count)
@@ -76,7 +76,7 @@ namespace Flux
 
       while (count-- > 0)
       {
-        values.CopyTo(m_array, m_tail);
+        values.CopyTo(m_array.AsSpan().Slice(m_tail, values.Length));
 
         m_tail += values.Length;
       }
@@ -85,13 +85,11 @@ namespace Flux
     }
 
     /// <summary>Creates a non-allocating <see cref="System.ReadOnlySpan{T}"/> of the elements in the <see cref="SpanBuilder{T}"/>.</summary>
-    public System.ReadOnlySpan<T> AsReadOnlySpan()
-      => new(m_array, m_head, m_tail - m_head);
+    public System.ReadOnlySpan<T> AsReadOnlySpan() => new(m_array, m_head, m_tail - m_head);
 
     /// <summary>Creates a non-allocating <see cref="System.Span{T}"/> of the elements in the <see cref="SpanBuilder{T}"/>. This provides partial direct access into the underlying array storage for the SpanBuilder.</summary>
     /// <remarks>Use with caution!</remarks>
-    public System.Span<T> AsSpan()
-      => new(m_array, m_head, m_tail - m_head);
+    public System.Span<T> AsSpan() => new(m_array, m_head, m_tail - m_head);
 
     public SpanBuilder<T> Clear()
     {
@@ -292,8 +290,11 @@ namespace Flux
       m_head -= totalLength;
 
       while (count-- > 0)
-        span.CopyTo(m_array, startIndex -= span.Length);
+      {
+        startIndex -= span.Length;
 
+        span.CopyTo(m_array.AsSpan()[startIndex..]);
+      }
       return this;
     }
 
@@ -478,7 +479,11 @@ namespace Flux
       EnsurePrependCapacity(span.Length * count);
 
       while (count-- > 0)
-        span.CopyTo(m_array, m_head -= span.Length);
+      {
+        m_head -= span.Length;
+
+        span.CopyTo(m_array.AsSpan()[m_head..]);
+      }
 
       return this;
     }

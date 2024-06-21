@@ -8,13 +8,9 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(predicate);
       System.ArgumentNullException.ThrowIfNull(replacementSelector);
 
-      for (var index = 0; index < source.Length; index++)
-      {
-        var item = source[index];
-
-        if (predicate(item, index))
+      for (var index = source.Length - 1; index >= 0; index--)
+        if (source[index] is var item && predicate(item, index))
           source[index] = replacementSelector(item, index);
-      }
 
       return source;
     }

@@ -3,12 +3,12 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Copies the specified <paramref name="count"/> from <paramref name="source"/> into <paramref name="target"/> at the specified <paramref name="offset"/>. If the <paramref name="count"/> wraps the <paramref name="target"/>, it will be wrapped to the beginning in a circular fashion. The <paramref name="source"/> is treated the same way.</para>
+    /// <para>Copies the specified <paramref name="count"/> from <paramref name="source"/> starting at <paramref name="sourceIndex"/> into <paramref name="target"/> at the specified <paramref name="targetIndex"/>. If the <paramref name="count"/> wraps the <paramref name="target"/>, it will be wrapped to the beginning in a circular fashion. The <paramref name="source"/> is treated the same way.</para>
     /// </summary>
-    public static void CircularCopyTo<T>(this System.ReadOnlySpan<T> source, System.Span<T> target, int offset, int count)
+    public static void CircularCopyTo<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.Span<T> target, int targetIndex, int count)
     {
       for (var index = 0; index < count; index++)
-        target[(offset + index) % target.Length] = source[index % source.Length];
+        target[(targetIndex + index) % target.Length] = source[(sourceIndex + index) % source.Length];
     }
   }
 }

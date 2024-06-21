@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Locate the nearest (less than/greater than) elements and indices to <paramref name="targetValue"/>, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified (default if null) <paramref name="comparer"/>.</summary>
+    /// <summary>Locate the nearest (less than/greater than) elements and indices to <paramref name="targetValue"/>, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</summary>
     /// <exception cref="System.ArgumentNullException"/>
     public static (int ltIndex, TSource? ltItem, int gtIndex, TSource? gtItem) GetInfimumAndSupremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, TValue targetValue, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {

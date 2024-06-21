@@ -15,7 +15,7 @@ namespace Flux
       var ros = new T[source.Length * 2];
 
       source.CopyTo(ros);
-      source.CopyTo(ros, source.Length);
+      source.CopyTo(ros.AsSpan()[source.Length..]);
 
       return new System.ReadOnlySpan<T>(ros).IndexOf(target, equalityComparer);
     }

@@ -55,33 +55,24 @@ namespace Flux
       var target = new System.Collections.Generic.List<T>(source.Length);
 
       for (var index = 0; index < source.Length; index++)
-      {
-        if (indices is null || indices.Length == 0)
-          target.Add(source[index]);
-        else
-        {
-          var sourceIndex = indices[index];
-
-          target.Add(source[sourceIndex]);
-        }
-      }
+        target.Add(indices is null || indices.Length == 0 ? source[index] : source[indices[index]]);
 
       return target;
     }
 
-    public static string ToString<T>(this System.ReadOnlySpan<T> source, string separator)
-    {
-      var sb = new System.Text.StringBuilder();
+    //public static string ToString<T>(this System.ReadOnlySpan<T> source, string separator)
+    //{
+    //  var sb = new System.Text.StringBuilder();
 
-      for (var index = 0; index < source.Length; index++)
-      {
-        if (index > 0)
-          sb.Append(separator);
+    //  for (var index = 0; index < source.Length; index++)
+    //  {
+    //    if (index > 0)
+    //      sb.Append(separator);
 
-        sb.Append(source[index]?.ToString() ?? string.Empty);
-      }
+    //    sb.Append(source[index]?.ToString() ?? string.Empty);
+    //  }
 
-      return sb.ToString();
-    }
+    //  return sb.ToString();
+    //}
   }
 }

@@ -25,7 +25,8 @@ namespace Flux
 
       var targetIndex = target.Length;
 
-      if (source.Length < targetIndex) return false;
+      if (source.Length < targetIndex)
+        return false;
 
       while (--targetIndex >= 0)
         if (!equalityComparer.Equals(source[targetIndex], target[targetIndex]))

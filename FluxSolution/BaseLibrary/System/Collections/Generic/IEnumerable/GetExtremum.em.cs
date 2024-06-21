@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Locate the minimum/maximum elements and indices, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified (default if null) <paramref name="comparer"/>.</summary>
+    /// <summary>Locate the minimum/maximum elements and indices, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</summary>
     /// <exception cref="System.ArgumentNullException"/>
     public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) GetExtremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {

@@ -12,7 +12,7 @@ namespace Flux
 
       var s = new T[source.Length * 2]; // Double up the string, to avoid modular arithmetic (using index remainder).
       source.CopyTo(s);
-      source.CopyTo(s, source.Length);
+      source.CopyTo(s.AsSpan(source.Length));
 
       var f = new int[s.Length];
 

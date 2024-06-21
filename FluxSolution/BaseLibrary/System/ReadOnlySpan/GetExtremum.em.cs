@@ -6,35 +6,35 @@ namespace Flux
     /// <para>Locate the index and value of both the minimum element and the maximum element of the sequence. Uses the specified comparer (null for default).</para>
     /// <see href="https://en.wikipedia.org/wiki/Maximum_and_minimum"/>
     /// </summary>
-    public static (int IndexMin, TValue ValueMin, int IndexMax, TValue ValueMax) GetExtremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
+    public static (int MinimumIndex, TValue MinimumValue, int MaximumIndex, TValue MaximumValue) GetExtremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
-      var indexMin = -1;
-      var valueMin = default(TValue);
-      var indexMax = -1;
-      var valueMax = default(TValue);
+      var minIndex = -1;
+      var minValue = default(TValue);
+      var maxIndex = -1;
+      var maxValue = default(TValue);
 
       for (var index = source.Length - 1; index >= 0; index--)
       {
         var value = valueSelector(source[index]);
 
-        if (indexMin < 0 || comparer.Compare(value, valueMin) < 0)
+        if (minIndex < 0 || comparer.Compare(value, minValue) < 0)
         {
-          indexMin = index;
-          valueMin = value;
+          minIndex = index;
+          minValue = value;
         }
 
-        if (indexMax < 0 || comparer.Compare(value, valueMax) > 0)
+        if (maxIndex < 0 || comparer.Compare(value, maxValue) > 0)
         {
-          indexMax = index;
-          valueMax = value;
+          maxIndex = index;
+          maxValue = value;
         }
       }
 
-      return (indexMin, valueMin!, indexMax, valueMax!);
+      return (minIndex, minValue!, maxIndex, maxValue!);
     }
   }
 }
