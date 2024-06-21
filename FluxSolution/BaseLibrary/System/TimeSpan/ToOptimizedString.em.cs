@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static string ToOptimizedString(this System.TimeSpan source)
-      => System.Text.RegularExpressions.Regex.Replace(source.ToString(), @"^(00.)(00\:)+0+(?=.)", string.Empty);
+    [System.Text.RegularExpressions.GeneratedRegex(@"^(00.)(00\:)+0+(?=.)")]
+    private static partial System.Text.RegularExpressions.Regex RegexTimeSpanOptimizedString();
+
+    public static string ToOptimizedString(this System.TimeSpan source) => RegexTimeSpanOptimizedString().Replace(source.ToString(), string.Empty);
   }
 }
