@@ -10,9 +10,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(keySelector);
 
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<TKey>.Default;
-
-      var map = new System.Collections.Generic.Dictionary<TKey, System.Collections.Generic.HashSet<int>>(equalityComparer);
+      var map = new System.Collections.Generic.Dictionary<TKey, System.Collections.Generic.HashSet<int>>(equalityComparer ?? System.Collections.Generic.EqualityComparer<TKey>.Default);
 
       for (var index = 0; index < source.Length; index++)
       {

@@ -10,10 +10,10 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
+      var count = 0;
+
       var sourceIndex = source.Length;
       var targetIndex = target.Length;
-
-      var count = 0;
 
       while (--sourceIndex >= 0 && --targetIndex >= 0 && equalityComparer.Equals(source[sourceIndex], target[targetIndex]))
         count++;

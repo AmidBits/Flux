@@ -11,6 +11,8 @@ namespace Flux
     /// <returns></returns>
     public static System.ReadOnlySpan<T> TrimEnd<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
     {
+      System.ArgumentNullException.ThrowIfNull(predicate);
+
       var index = source.Length - 1;
       while (index >= 0 && predicate(source[index]))
         index--;

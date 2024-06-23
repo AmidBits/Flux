@@ -7,6 +7,10 @@ namespace Flux
     /// </summary>
     public static void CircularCopyTo<T>(this System.ReadOnlySpan<T> source, int sourceIndex, System.Span<T> target, int targetIndex, int count)
     {
+      if (sourceIndex < 0 || sourceIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
+      if (targetIndex < 0 || targetIndex >= target.Length) throw new System.ArgumentOutOfRangeException(nameof(targetIndex));
+      if (count < 0) throw new System.ArgumentOutOfRangeException(nameof(count));
+
       for (var index = 0; index < count; index++)
         target[(targetIndex + index) % target.Length] = source[(sourceIndex + index) % source.Length];
     }

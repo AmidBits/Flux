@@ -41,9 +41,6 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var s = "Robert Hugo ";
-      var t = new char[s.Length];
-      s.AsSpan().CircularCopyTo(0, t, 5, 12);
 
     }
 

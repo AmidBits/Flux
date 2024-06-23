@@ -7,15 +7,12 @@ namespace Flux
     /// </summary>
     public static int CommonLengthAt<T>(this System.ReadOnlySpan<T> source, int sourceStartIndex, System.ReadOnlySpan<T> target, int targetStartIndex, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      var sourceLength = source.Length;
-      var targetLength = target.Length;
-
-      if (sourceStartIndex < 0 || sourceStartIndex >= sourceLength) throw new System.ArgumentOutOfRangeException(nameof(sourceStartIndex));
-      if (targetStartIndex < 0 || targetStartIndex >= targetLength) throw new System.ArgumentOutOfRangeException(nameof(targetStartIndex));
+      if (sourceStartIndex < 0 || sourceStartIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(sourceStartIndex));
+      if (targetStartIndex < 0 || targetStartIndex >= target.Length) throw new System.ArgumentOutOfRangeException(nameof(targetStartIndex));
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var minLength = System.Math.Min(sourceLength - sourceStartIndex, targetLength - targetStartIndex);
+      var minLength = System.Math.Min(source.Length - sourceStartIndex, target.Length - targetStartIndex);
 
       var count = 0;
       while (count < minLength && equalityComparer.Equals(source[sourceStartIndex++], target[targetStartIndex++]))

@@ -7,6 +7,8 @@ namespace Flux
     /// </summary>
     public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
     {
+      System.ArgumentNullException.ThrowIfNull(predicate);
+
       for (var index = 0; index < source.Length; index++)
         if (predicate(source[index]))
           return index;

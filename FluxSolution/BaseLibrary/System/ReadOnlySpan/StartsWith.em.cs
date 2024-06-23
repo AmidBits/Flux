@@ -7,6 +7,8 @@ namespace Flux
     /// </summary>
     public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, int count, System.Func<T, bool> predicate)
     {
+      System.ArgumentNullException.ThrowIfNull(predicate);
+
       if (source.Length < count) return false;
 
       for (var index = 0; count > 0; count--, index++)
