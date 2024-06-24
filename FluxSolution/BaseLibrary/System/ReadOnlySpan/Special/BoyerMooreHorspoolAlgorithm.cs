@@ -3,7 +3,7 @@
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Searches a text (source) for the index of a substring (target). Returns -1 if not found. Uses the specified equality comparer.</para>
+    /// <para>Searches a text (source) for the index of a substring (target). Returns -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
     /// </summary>
     public static int BoyerMooreHorspoolIndex<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
@@ -39,7 +39,7 @@
     }
 
     /// <summary>
-    /// <para>Creates a map of the amount of safely skippable elements.</para>
+    /// <para>Creates a map of the amount of safely skippable elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
     /// </summary>
     public static System.Collections.Generic.Dictionary<T, int> BoyerMooreHorspoolTable<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)

@@ -30,10 +30,8 @@ namespace Flux
     public static T[] ToArray<T>(this System.ReadOnlySpan<T> source, int preLength, int postLength, params int[] indices)
     {
       var target = new T[preLength + indices.Length + postLength];
-
       for (var index = 0; index < indices.Length; index++)
         target[preLength + index] = source[indices[index]];
-
       return target;
     }
 
@@ -53,10 +51,8 @@ namespace Flux
     public static System.Collections.Generic.List<T> ToList<T>(this System.ReadOnlySpan<T> source, params int[] indices)
     {
       var target = new System.Collections.Generic.List<T>(source.Length);
-
       for (var index = 0; index < source.Length; index++)
         target.Add(indices is null || indices.Length == 0 ? source[index] : source[indices[index]]);
-
       return target;
     }
 

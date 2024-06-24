@@ -5,14 +5,15 @@ namespace Flux
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> ends with <paramref name="count"/> elements that satisfy the <paramref name="predicate"/>.</para>
     /// </summary>
-    public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, int count, System.Func<T, bool> predicate)
+    public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, int count, System.Func<T, int, bool> predicate)
     {
       System.ArgumentNullException.ThrowIfNull(predicate);
 
-      if (source.Length < count) return false;
+      if (source.Length < count)
+        return false;
 
       for (var index = source.Length - 1; count > 0; count--, index--)
-        if (!predicate(source[index]))
+        if (!predicate(source[index], index))
           return false;
 
       return true;

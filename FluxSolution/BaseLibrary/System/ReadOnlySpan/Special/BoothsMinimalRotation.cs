@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Find the rotation of the <paramref name="source"/> possessing the lowest lexicographical order of all such rotation. Uses the specified comparer, or default if null.</para>
+    /// <para>Find the rotation of the <paramref name="source"/> possessing the lowest lexicographical order of all such rotation. Uses the specified <paramref name="comparer"/>, or default if null.</para>
     /// <see href="https://en.wikipedia.org/wiki/Lexicographically_minimal_string_rotation#Booth's_Algorithm"/>
     /// </summary>
     public static int BoothsMinimalRotation<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IComparer<T>? comparer = null)

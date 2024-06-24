@@ -5,14 +5,15 @@ namespace Flux
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> starts with <paramref name="count"/> elements that satisfies the <paramref name="predicate"/>.</para>
     /// </summary>
-    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, int count, System.Func<T, bool> predicate)
+    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, int count, System.Func<T, int, bool> predicate)
     {
       System.ArgumentNullException.ThrowIfNull(predicate);
 
-      if (source.Length < count) return false;
+      if (source.Length < count)
+        return false;
 
       for (var index = 0; count > 0; count--, index++)
-        if (!predicate(source[index]))
+        if (!predicate(source[index], index))
           return false;
 
       return true;
