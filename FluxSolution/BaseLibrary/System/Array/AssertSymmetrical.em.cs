@@ -39,5 +39,18 @@ namespace Flux
 
       return true;
     }
+
+    /// <summary>
+    /// <para>Assert <paramref name="source"/> as a two-dimensional array.</para>
+    /// </summary>
+    public static System.Array AssertTwoDimensional<T>(this System.Array source)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+
+      if (source.Rank != 2)
+        throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
+
+      return source;
+    }
   }
 }
