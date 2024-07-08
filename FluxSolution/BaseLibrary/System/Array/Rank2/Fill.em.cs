@@ -8,9 +8,7 @@ namespace Flux
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static void Fill<T>(this T[,] source, int index0, int index1, int count0, int count1, params T[] pattern)
     {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
+      source.ThrowIfUnequalRank(2);
 
       var length0 = source.GetLength(0);
       if (index0 < 0 || index0 > length0) throw new System.ArgumentOutOfRangeException(nameof(index0));
