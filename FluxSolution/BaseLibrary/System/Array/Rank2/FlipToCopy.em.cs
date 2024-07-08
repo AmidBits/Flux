@@ -3,17 +3,6 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Assert <paramref name="source"/> as a two-dimensional array.</para>
-    /// </summary>
-    public static void AssertNonNullTwoDimensional<T>(this System.Array source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      if (source.Rank != 2)
-        throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
-    }
-
-    /// <summary>
     /// <para>Create a new two-dimensional array from <paramref name="source"/> with the strands of the specified <paramref name="dimension"/> (rows or columns) flipped.</para>
     /// </summary>
     /// <remarks>
@@ -22,11 +11,7 @@ namespace Flux
     /// </remarks>
     public static T[,] FlipToCopy<T>(this T[,] source, int dimension)
     {
-      //System.ArgumentNullException.ThrowIfNull(source);
-
-      //if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
-
-      AssertNonNullTwoDimensional(source);
+      source.ThrowIfUnequalRank(2);
       
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
