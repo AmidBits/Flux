@@ -1,0 +1,16 @@
+namespace Flux
+{
+  public static partial class Fx
+  {
+    /// <summary>
+    /// <para>Throw an exception if <paramref name="source"/>.Rank is unequal to rank.</para>
+    /// </summary>
+    public static void ThrowIfUnequalRank<T>(this System.Array source, int rank)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+
+      if (source.Rank != rank)
+        throw new System.ArgumentException($"Invalid rank ({source.Rank} != {rank}).", nameof(source));
+    }
+  }
+}
