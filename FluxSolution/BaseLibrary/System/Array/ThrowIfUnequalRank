@@ -3,6 +3,12 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
+    /// <para>Indicates whether <paramref name="source"/> is null or <paramref name="source"/>.Rank is unequal to <paramref name="rank"/>.</para>
+    /// </summary>
+    public static void IsUnequalRank<T>(this System.Array source, int rank)
+      => source is null || source.Rank != rank;
+
+    /// <summary>
     /// <para>Throws an exception if <paramref name="source"/>.Rank is unequal to <paramref name="rank"/>.</para>
     /// </summary>
     public static void ThrowIfUnequalRank<T>(this System.Array source, int rank)
