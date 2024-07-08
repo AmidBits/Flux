@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Throw an exception if <paramref name="source"/>.Rank is unequal to rank.</para>
+    /// <para>Throws an exception if <paramref name="source"/>.Rank is unequal to <paramref name="rank"/>.</para>
     /// </summary>
     public static void ThrowIfUnequalRank<T>(this System.Array source, int rank)
     {
