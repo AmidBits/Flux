@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>
     /// <para>Flip the order of the strands, in-place, along the specified <paramref name="dimension"/> in <paramref name="source"/>.</para>
     /// </summary>
-    /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
+    /// <remarks>An array is arbitrary in terms of rows and columns, we simply adopt the concept of considering dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static void FlipInPlace<T>(this T[,] source, int dimension)
     {
       System.ArgumentNullException.ThrowIfNull(source);
