@@ -1,9 +1,9 @@
 namespace Flux
 {
   // <summary>
-  // <para>Two dimensional arrays are arbitrary in terms of row/column orientation, we choose the native storage orientation.</para>
-  // <para>This just happens to be row-major order, i.e. the array consists of elements by row then by column, as opposed to first by column then by row.</para>
-  // <para>This is also how .NET yield elements using the IEnumerate interface of such an array.</para>
+  // <para>Two-dimensional arrays are arbitrary in terms of rows and columns, we simply choose the "native storage orientation".</para>
+  // <para>The native storage orientation is row-major order (see link). I.e. the array consists of elements by row then by column, as opposed to first by column then by row.</para>
+  // <para>This is the order in which .NET yield elements using the IEnumerate interface of such an array.</para>
   // <see href="https://en.wikipedia.org/wiki/Row-_and_column-major_order"/>
   // </summary>
   public enum ArrayDimension
