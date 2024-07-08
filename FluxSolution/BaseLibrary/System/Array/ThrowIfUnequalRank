@@ -13,10 +13,12 @@ namespace Flux
     /// </summary>
     public static void ThrowIfUnequalRank<T>(this System.Array source, int rank)
     {
-      System.ArgumentNullException.ThrowIfNull(source);
+      if(IsUnequalRank(source, rank))
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
 
-      if (source.Rank != rank)
         throw new System.ArgumentException($"Invalid rank ({source.Rank} != {rank}).", nameof(source));
+      }
     }
   }
 }
