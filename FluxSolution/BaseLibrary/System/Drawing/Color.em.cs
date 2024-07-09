@@ -17,5 +17,16 @@ namespace Flux
 
       return (r, g, b, min, max, chroma);
     }
+
+    /// <summary>Returns the luma for the RGB value, using the specified coefficients.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Luma_(video)"/>
+    public double GetLuma(double rc, double gc, double bc)
+    {
+      var r = m_red / 255d;
+      var g = m_green / 255d;
+      var b = m_blue / 255d;
+
+      return rc * r + gc * g + bc * b;
+    }
   }
 }
