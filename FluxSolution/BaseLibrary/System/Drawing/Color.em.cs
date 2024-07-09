@@ -33,7 +33,7 @@ namespace Flux
       if (hue < 0)
         hue += 360; // If negative wrap-around to a positive degree in the [0, 360] range.
 
-      return hue;
+      return System.Math.Clamp(hue, 0, 360);
     }
 
     /// <summary>Returns the chroma and associated values for the RGB value.</summary>
