@@ -2,16 +2,6 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Returns the ARGB unit values.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Chrominance"/>
-    public (double A, double R, double G, double B) ComputeArgb(this System.Drawing.Color source)
-      => (
-        System.Math.Clamp(source.A / 255d, 0, 1),
-        System.Math.Clamp(source.R / 255d, 0, 1),
-        System.Math.Clamp(source.G / 255d, 0, 1),
-        System.Math.Clamp(source.B / 255d, 0, 1)
-      );
-
     /// <summary>Returns the chroma and associated values for the RGB value.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chrominance"/>
     public double ComputeChroma(this System.Drawing.Color source, out double a, out double r, out double g, out double b, out double min, out double max)
@@ -50,7 +40,7 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Chrominance"/>
     public (double Min, double Max) ComputeMinMax(this System.Drawing.Color source, out double a, out double r, out double g, out double b)
     {
-      (a, r, g, b) = ComputeArgb(source);
+      (a, r, g, b) = ToArgb(source);
 
       return (
         System.Math.Min(System.Math.Min(r, g), b),
@@ -98,6 +88,16 @@ namespace Flux
       
       return (a, source.GetHue(), min, 1 - max);
     }
+
+    /// <summary>Returns the ARGB unit values.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Chrominance"/>
+    public (double A, double R, double G, double B) ToArgb(this System.Drawing.Color source)
+      => (
+        System.Math.Clamp(source.A / 255d, 0, 1),
+        System.Math.Clamp(source.R / 255d, 0, 1),
+        System.Math.Clamp(source.G / 255d, 0, 1),
+        System.Math.Clamp(source.B / 255d, 0, 1)
+      );
 
     /// <summary>Converts the RGB color to grayscale using the specified method.
     /// <para><see href="https://onlinetools.com/image/grayscale-image"/></para>
