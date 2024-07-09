@@ -52,13 +52,13 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Luma_(video)"/>
     public double ComputeLuma(this System.Drawing.Color source, double rc, double gc, double bc) => rc * source.R + gc * source.G + bc * source.B;
 
-    /// <summary>Returns the luma for the RGB value, using Rec.601 coefficients.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Rec._601"/>
-    public double ComputeLuma601(this System.Drawing.Color source) => ComputeLuma(source, 0.2989, 0.5870, 0.1140);
-
     /// <summary>Returns the luma for the RGB value, using Adobe/SMPTE 240M coefficients.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Adobe_RGB_color_space"/>
     public double ComputeLuma240(this System.Drawing.Color source) => ComputeLuma(source, 0.212, 0.701, 0.087);
+
+    /// <summary>Returns the luma for the RGB value, using Rec.601 coefficients.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Rec._601"/>
+    public double ComputeLuma601(this System.Drawing.Color source) => ComputeLuma(source, 0.2989, 0.5870, 0.1140);
 
     /// <summary>Returns the luma for the RGB value, using Rec.709 coefficients.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Rec._709"/>
@@ -67,7 +67,7 @@ namespace Flux
     /// <summary>Returns the luma for the RGB value, using Rec.2020 coefficients.</summary>
     public double ComputeLuma2020(this System.Drawing.Color source) => ComputeLuma(source, 0.2627, 0.6780, 0.0593);
 
-    /// <summary>Creates a CMYK color corresponding to the RGB instance.</summary>
+    /// <summary>Creates a ACMYK color of unit values corresponding to the <see cref="System.Drawing.Color"/> instance.</summary>
     public (double A, double C, double M, double Y, double K) ToAcmyk(this System.Drawing.Color source)
     {
       var (_, max) = ComputeMinMax(source, out var a, out var r, out var g, out var b);
@@ -81,7 +81,7 @@ namespace Flux
       return (a, c, m, y, k);
     }
 
-    /// <summary>Creates an HWB color corresponding to the RGB instance.</summary>
+    /// <summary>Creates an AHWB color of unit values corresponding to the <see cref="System.Drawing.Color"/> instance.</summary>
     public (double A, double H, double W, double B) ToAhwb(this System.Drawing.Color source)
     {
       var (min, max) = ComputeMinMax(source, out var a, out var _, out var _, out var _);
@@ -89,7 +89,7 @@ namespace Flux
       return (a, source.GetHue(), min, 1 - max);
     }
 
-    /// <summary>Returns the ARGB unit values.</summary>
+    /// <summary>Creates an ARGB color of unit values.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chrominance"/>
     public (double A, double R, double G, double B) ToArgb(this System.Drawing.Color source)
       => (
@@ -99,20 +99,31 @@ namespace Flux
         System.Math.Clamp(source.B / 255d, 0, 1)
       );
 
-    /// <summary>Converts the RGB color to grayscale using the specified method.
+    /// <summary>
+    /// <para>Creates a grayscale ARGB color of unit values from the <see cref="System.Drawing.Color"/> using the specified grayscale method.</para>
     /// <para><see href="https://onlinetools.com/image/grayscale-image"/></para>
     /// </summary>
     public (double A, double R, double G, double B) ToArgbGrayscale(this System.Drawing.Color source, GrayscaleMethod method)
     {
-      (a, r, g, b) = ComputeArgb(source);
+      const double OneThird = 1d / 3d;
 
       return method switch
       {
-        GrayscaleMethod.Average => (a, r / 3d, g / 3d, b / 3d),
-        GrayscaleMethod.Luminosity601 => (a, r * 0.30, g * 0.59, b * 0.11),
-        GrayscaleMethod.Luminosity709 => (a, r * 0.21, g * 0.72, b * 0.07),
+        GrayscaleMethod.Average => ToArgbScaled(source, 1, OneThird, OneThird, OneThird),
+        GrayscaleMethod.Luminosity601 => ToArgbScaled(source, 1, 0.30, 0.59, 0.11),
+        GrayscaleMethod.Luminosity709 => ToArgbScaled(source, 1, 0.21, 0.72, 0.07),
         _ => throw new System.ArgumentOutOfRangeException(nameof(method))
       };
+    }
+
+    /// <summary>
+    /// <para>Creates a scaled ARGB color of unit values from the <see cref="System.Drawing.Color"/>.</para>
+    /// </summary>
+    public (double A, double R, double G, double B) ToArgbScaled(this System.Drawing.Color source, double sa, double sr, double sg, double sb)
+    {
+      (a, r, g, b) = ComputeArgb(source);
+
+      return (a * sa, r * sr, g * sg, b * sb);
     }
   }
 }
