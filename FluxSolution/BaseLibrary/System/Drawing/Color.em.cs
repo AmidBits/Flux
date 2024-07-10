@@ -98,6 +98,16 @@ namespace Flux
       return (a, c, m, y, k);
     }
 
+    /// <summary>Creates an HSI color corresponding to the RGB instance.</summary>
+    public (double A, double H, double W, double B) ToAhsi()
+    {
+      var (min, _) = ComputeMinMax(source, out var a, out var r, out var g, out var b);
+
+      var i = (r + g + b) / 3;
+      var s = i == 0 ? 0 : 1 - (min / i);
+      return new(h, s, i);
+    }
+
     /// <summary>
     /// <para>Creates AHWB unit color values corresponding to the <see cref="System.Drawing.Color"/>.</para>
     /// </summary>
