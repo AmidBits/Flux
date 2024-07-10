@@ -99,7 +99,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Creates ACMYK unit color values corresponding to the <see cref="System.Drawing.Color"/>.</para>
+    /// <para>Creates ACMYK unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
     /// </summary>
     public (double A, double C, double M, double Y, double K) ToAcmyk(this System.Drawing.Color source)
     {
@@ -114,18 +114,59 @@ namespace Flux
       return (a, c, m, y, k);
     }
 
-    /// <summary>Creates an HSI color corresponding to the RGB instance.</summary>
-    public (double A, double H, double W, double B) ToAhsi()
+    /// <summary>
+    /// <para>Creates AHSI unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
+    /// </summary>
+    public (double A, double H, double S, double I) ToAhsi()
     {
-      var (min, _) = ComputeMinMax(source, out var a, out var r, out var g, out var b);
+      var (min, _) = ComputeMinMax(source, out var alpha, out var red, out var green, out var blue);
 
-      var i = (r + g + b) / 3;
+      var i = (red + green + blue) / 3;
       var s = i == 0 ? 0 : 1 - (min / i);
-      return new(h, s, i);
+      
+      return (
+        alpha,
+        source.GetHue(),
+        s,
+        i
+      );
     }
 
     /// <summary>
-    /// <para>Creates AHWB unit color values corresponding to the <see cref="System.Drawing.Color"/>.</para>
+    /// <para>Creates AHSL unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
+    /// </summary>
+    public (double A, double H, double S, double L) ToAhsl()
+    {
+      var chroma = ComputeChroma(out var alpha, out var red, out var green, out var blue, out var min, out var max)
+
+      var l = 0.5 * (max + min);
+      var s = l == 0 || l == 1 ? 0 : System.Math.Clamp(chroma / (1 - System.Math.Abs(2 * l - 1)), 0, 1);
+
+      return (
+        alpha,
+        source.GetHue(),
+        s,
+        l
+      );
+    }
+
+    /// <summary>
+    /// <para>Creates AHSV unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
+    /// </summary>
+    public (double A, double H, double S, double V) ToAhsv()
+    {
+      var chroma = ComputeChroma(out var alpha, out var red, out var green, out var blue, out var min, out var max)
+
+      return (
+        alpha,
+        source.GetHue(),
+        max == 0 ? 0 : chroma / max, // S
+        max // V
+      );
+    }
+
+    /// <summary>
+    /// <para>Creates AHWB unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
     /// </summary>
     public (double A, double H, double W, double B) ToAhwb(this System.Drawing.Color source)
     {
@@ -135,7 +176,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Creates ARGB unit color values corresponding to the <see cref="System.Drawing.Color"/>.</para>
+    /// <para>Creates ARGB unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
     /// </summary>
     public (double A, double R, double G, double B) ToArgb(this System.Drawing.Color source)
       => (
@@ -146,7 +187,7 @@ namespace Flux
       );
 
     /// <summary>
-    /// <para>Creates grayscale ARGB unit color values corresponding to the <see cref="System.Drawing.Color"/> using the specified grayscale method.</para>
+    /// <para>Creates grayscale ARGB unit values corresponding to the <see cref="System.Drawing.Color"/> using the specified grayscale method.</para>
     /// <para><see href="https://onlinetools.com/image/grayscale-image"/></para>
     /// </summary>
     public (double A, double R, double G, double B) ToArgbGrayscale(this System.Drawing.Color source, GrayscaleMethod method)
@@ -163,7 +204,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Creates scaled ARGB unit color values corresponding to the <see cref="System.Drawing.Color"/>.</para>
+    /// <para>Creates scaled ARGB unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
     /// </summary>
     public (double A, double R, double G, double B) ToArgbScaled(this System.Drawing.Color source, double sa, double sr, double sg, double sb)
     {
