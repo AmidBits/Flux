@@ -83,6 +83,22 @@ namespace Flux
     public double ComputeLuma2020(this System.Drawing.Color source) => ComputeLuma(source, 0.2627, 0.6780, 0.0593);
 
     /// <summary>
+    /// <para>Returns the chroma and hue [0.0, 360.0] for the RGB value.</para>
+    /// </summary>
+    public (double Chroma2, double Hue2) ComputeSecondaryChromaAndHue()
+    {
+      var (a, r, g, b) = ToArgb();
+
+      var alpha = (2 * r - g - b) / 2;
+      var beta = (System.Math.Sqrt(3) / 2) * (g - b);
+
+      return (
+        System.Math.Sqrt(alpha * alpha + beta * beta),
+        Quantities.Angle.ConvertRadianToDegree(System.Math.Atan2(beta, alpha)).Wrap(0, 360)
+      );
+    }
+
+    /// <summary>
     /// <para>Creates ACMYK unit color values corresponding to the <see cref="System.Drawing.Color"/>.</para>
     /// </summary>
     public (double A, double C, double M, double Y, double K) ToAcmyk(this System.Drawing.Color source)
