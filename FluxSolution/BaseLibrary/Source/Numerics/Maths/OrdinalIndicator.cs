@@ -2,20 +2,6 @@ namespace Flux
 {
   public static partial class OrdinalIndicator
   {
-    public static string GetOrdinalIndicatorSuffix(this System.Text.Rune onesDigit, System.Text.Rune tensDigit)
-    {
-      if(System.Text.Rune.IsDigit(onesDigit) && System.Text.Rune.IsDigit(tensDigit))
-      {
-        var zeroValue = ((System.Text.Rune)'0').Value;
-        
-        return ((tensDigit.Value - zeroValue) != 1)
-          ? (onesDigit.Value - zeroValue) switch { 1 => "st", 2 => "nd", 3 => "rd" }
-          : return "th";
-      }
-
-      return string.Empty;
-    }
-
     /// <summary>Gets the ordinal indicator suffix for <paramref name="value"/>. E.g. "st" for 1 and "nd" for 122.</summary>
     public static string GetOrdinalIndicatorSuffix<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
