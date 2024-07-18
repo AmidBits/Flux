@@ -6,7 +6,15 @@ namespace Flux
     TSelf StepBackward();
     TSelf StepForward();
 
-    // System.Collections.Generic.IEnumerable<TSelf> EnumerateBackward();
-    // System.Collections.Generic.IEnumerable<TSelf> EnumerateForward();
+    System.Collections.Generic.IEnumerable<TSelf> EnumerateBackward()
+    {
+      while(true)
+        yield return StepBackward();
+    }
+    System.Collections.Generic.IEnumerable<TSelf> EnumerateForward()
+    {
+      while(true)
+        yield return StepForward();
+    }
   }
 }
