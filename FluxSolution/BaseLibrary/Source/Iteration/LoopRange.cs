@@ -21,16 +21,6 @@ namespace Flux
 
     public System.Numerics.BigInteger StepIndex { get => m_stepIndex; set => m_stepIndex = value; }
 
-    public static System.Collections.Generic.IEnumerable<TSelf> LoopRange(TSelf startAt, TSelf stepSize, System.Numerics.BigInteger count)
-    {
-      if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
-
-      var iterator = new IterateRange<TSelf>(startAt, stepSize);
-
-      for (var i = count - 1; i >= 0; i--)
-        yield return TSelf.IsNegative(stepSize) ? iterator.StepBackward() : iterator.StepForward();
-    }
-
     public TSelf StepBackward() => m_startAt + TSelf.CreateChecked(--m_stepIndex) * m_stepSize;
     public TSelf StepForward() => m_startAt + TSelf.CreateChecked(++m_stepIndex) * m_stepSize;
   }
