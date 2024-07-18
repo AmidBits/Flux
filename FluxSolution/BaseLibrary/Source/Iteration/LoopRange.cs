@@ -1,5 +1,45 @@
 namespace Flux
 {
+  public interface IIterable<TSelf>
+    where TSelf : System.Numerics.INumber<TSelf>
+  {
+    TSelf IterateBackward();
+    TSelf IterateForward();
+  }
+
+  public struct IterateRange<TSelf>
+    : IIterable<TSelf>
+    where TSelf : System.Numerics.INumber<TSelf>
+  {
+    private System.Numerics.BigInteger m_step;
+
+    private TSelf m_startAt;
+    private TSelf m_stepSize;
+    
+    public IterateRange(TSelf startAt, TSelf stepSize)
+    {
+      if (TSelf.IsZero(stepSize)) throw new System.ArgumentOutOfRangeException(nameof(stepSize));
+
+      m_step = System.Numerics.BigInteger.Zero;
+
+      m_startAt = startAt;
+      m_stepSize = TSelf.Abs(stepSize);
+    }
+
+    public static System.Collections.Generic.IEnumerable<TSelf> LoopRange(TSelf startAt, TSelf stepSize, System.Numerics.BigInteger count)
+    {
+      if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
+
+      var iterator = new IterateRange<TSelf>(startAt, stepSize);
+
+      for (var i = count - 1; i >= 0; i--)
+        yield return TSelf.IsNegative(stepSize) ? iterator.IterateBackward() : iterator.IterateForward();
+    }
+
+    public TSelf IterateBackward() => m_startAt + TSelf.CreateChecked(--m_step) * m_stepSize;
+    public TSelf IterateForward() => m_startAt + TSelf.CreateChecked(++m_step) * m_stepSize;
+  }
+
   public static partial class Iteration
   {
     /// <summary>
