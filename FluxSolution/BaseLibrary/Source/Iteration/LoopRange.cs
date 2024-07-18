@@ -19,6 +19,8 @@ namespace Flux
       m_stepSize = TSelf.Abs(stepSize);
     }
 
+    public System.Numerics.BigInteger StepIndex { get => m_stepIndex; set => m_stepIndex = value; }
+
     public static System.Collections.Generic.IEnumerable<TSelf> LoopRange(TSelf startAt, TSelf stepSize, System.Numerics.BigInteger count)
     {
       if (count <= 0) throw new System.ArgumentOutOfRangeException(nameof(count));
@@ -28,9 +30,6 @@ namespace Flux
       for (var i = count - 1; i >= 0; i--)
         yield return TSelf.IsNegative(stepSize) ? iterator.StepBackward() : iterator.StepForward();
     }
-
-    public System.Collections.Generic.IEnumerable<TSelf> EnumerateBackward() { while(true) yield return StepBackward(); }
-    public System.Collections.Generic.IEnumerable<TSelf> EnumerateForward() { while(true) yield return StepForward(); }
 
     public TSelf StepBackward() => m_startAt + TSelf.CreateChecked(--m_stepIndex) * m_stepSize;
     public TSelf StepForward() => m_startAt + TSelf.CreateChecked(++m_stepIndex) * m_stepSize;
