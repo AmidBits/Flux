@@ -5,10 +5,10 @@ namespace Flux.Quantities
   /// <para><seealso cref="https://en.wikipedia.org/wiki/Radix"/></para>
   /// </summary>
   public readonly record struct Radix
-    : System.IComparable, System.IComparable<Radix>, System.IFormattable, IValueQuantifiable<int>
+    : System.IComparable, System.IComparable<Radix>, System.IFormattable, System.Numerics.IMinMaxValue<int>, IValueQuantifiable<int>
   {
-    public const int MinRadix = 2;
-    public const int MaxRadix = 256;
+    //public const int MinRadix = 2;
+    //public const int MaxRadix = 256;
 
     private readonly int m_value;
 
@@ -456,6 +456,9 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
+
+    public readonly int MinRadix => 2;
+    public readonly int MaxRadix => 256;
 
     // IQuantifiable<>
     /// <summary>
