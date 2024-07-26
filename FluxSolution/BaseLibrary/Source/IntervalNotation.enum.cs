@@ -123,11 +123,19 @@ namespace Flux
     /// <param name="minValue">The lower bound of the interval set.</param>
     /// <param name="maxValue">The upper bound of the interval set.</param>
     /// <returns>Whether the <paramref name="value"/> is a member of the interval set <paramref name="minValue"/>..<paramref name="maxValue"/> using the <see cref="IntervalNotation"/>.</returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"/>
-    /// <exception cref="System.NotImplementedException"/>
+    ///// <exception cref="System.ArgumentOutOfRangeException"/>
+    ///// <exception cref="System.NotImplementedException"/>
     public static bool IsValidMember<T>(this IntervalNotation source, T value, T minValue, T maxValue)
       where T : System.IComparable<T>
-      => source.CompareWith(value, minValue, maxValue) == 0;
+    {
+      try
+      {
+        return source.CompareWith(value, minValue, maxValue) == 0;
+      }
+      catch { }
+
+      return false;
+    }
 
     /// <summary>
     /// <para>Gets new appropriate (depending on type <typeparamref name="T"/>) values as min-value and max-value using the specified <see cref="IntervalNotation"/>.</para>
