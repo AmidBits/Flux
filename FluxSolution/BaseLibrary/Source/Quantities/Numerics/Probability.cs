@@ -7,10 +7,10 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Probability"/></para>
     /// </summary>
     public readonly record struct Probability
-      : System.IComparable, System.IComparable<Probability>, System.IFormattable, IValueQuantifiable<double>
+      : System.IComparable, System.IComparable<Probability>, System.IFormattable, System.Numerics.IMinMaxValue<double>, IValueQuantifiable<double>
     {
-      public const double MaxValue = 1;
-      public const double MinValue = 0;
+      //public const double MaxValue = 1;
+      //public const double MinValue = 0;
 
       private readonly double m_value;
 
@@ -126,6 +126,9 @@ namespace Flux
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
         => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
+
+      public readonly double MaxValue => 1;
+      public readonly double MinValue => 0;
 
       // IQuantifiable<>
       /// <summary>
