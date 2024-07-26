@@ -16,11 +16,11 @@ namespace Flux.Quantities
 
     #region Static methods
 
-    /// <summary>Asserts the number is a valid <paramref name="radix"/> (throws an exception if not).</summary>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf AssertMember<TSelf>(TSelf radix, string? paramName = null)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.AssertValidMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix), paramName ?? nameof(radix));
+    ///// <summary>Asserts the number is a valid <paramref name="radix"/> (throws an exception if not).</summary>
+    ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    //public static TSelf AssertMember<TSelf>(TSelf radix, string? paramName = null)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //  => IntervalNotation.Closed.AssertValidMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix), paramName ?? nameof(radix));
 
     /// <summary>Asserts that <paramref name="radix"/> is valid, with an <paramref name="alernativeMaxRadix"/> (throws an exception, if not).</summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
