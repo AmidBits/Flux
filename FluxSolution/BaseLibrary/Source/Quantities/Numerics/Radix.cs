@@ -420,9 +420,7 @@ namespace Flux.Quantities
     /// <summary>Returns whether the number is a valid <paramref name="radix"/>, with an <paramref name="alernativeMaxRadix"/>.</summary>
     public static bool VerifyMember<TSelf>(TSelf radix, TSelf alernativeMaxRadix)
       where TSelf : System.Numerics.INumber<TSelf>
-      => TSelf.CreateChecked(MinRadix) is var minRadix && alternativeMaxRadix < minRadix
-      ? throw new System.ArgumentOutOfRangeException(nameof(alernativeMaxRadix));
-      : IntervalNotation.Closed.IsValidMember(radix, minRadix, alernativeMaxRadix);
+      => TSelf.CreateChecked(MinRadix) is var minRadix && alternativeMaxRadix >= minRadix && IntervalNotation.Closed.IsValidMember(radix, minRadix, alernativeMaxRadix);
 
     #endregion Static methods
 
