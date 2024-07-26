@@ -19,17 +19,17 @@ namespace Flux
 
       #region Static methods
 
-      /// <summary>Asserts that the value is a member of the probability (throws an exception if not).</summary>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TSelf AssertMember<TSelf>(TSelf probability, string? paramName = null)
-        where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => IntervalNotation.Closed.AssertValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(probability));
+      ///// <summary>Asserts that the value is a member of the probability (throws an exception if not).</summary>
+      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      //public static TSelf AssertMember<TSelf>(TSelf probability, string? paramName = null)
+      //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      //  => IntervalNotation.Closed.AssertValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(probability));
 
-      /// <summary>Returns whether the value is a member of the probability.</summary>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static bool VerifyMember<TSelf>(TSelf probability)
-        where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => IntervalNotation.Closed.IsValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+      ///// <summary>Returns whether the value is a member of the probability.</summary>
+      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      //public static bool VerifyMember<TSelf>(TSelf probability)
+      //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      //  => IntervalNotation.Closed.IsValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
 
       /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
       /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
