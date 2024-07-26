@@ -7,10 +7,10 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Unit_interval"/></para>
     /// </summary>
     public readonly record struct UnitInterval
-      : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, IValueQuantifiable<double>
+      : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, System.Numerics.IMinMaxValue<double>, IValueQuantifiable<double>
     {
-      public const double MaxValue = 1;
-      public const double MinValue = 0;
+      //public const double MaxValue = 1;
+      //public const double MinValue = 0;
 
       private readonly IntervalNotation m_notation;
 
@@ -81,6 +81,9 @@ namespace Flux
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
         => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
+
+      public readonly double MaxValue => 1;
+      public readonly double MinValue => 0;
 
       // IQuantifiable<>
       /// <summary>
