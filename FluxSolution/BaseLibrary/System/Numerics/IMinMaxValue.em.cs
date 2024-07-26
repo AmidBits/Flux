@@ -32,6 +32,6 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static bool VerifyMember<TSelf>(this System.Numerics.IMinMaxValue<TSelf> source, TSelf value)
       where TSelf : System.Numerics.IMinMaxValue<TSelf>
-      => IntervalNotation.Closed.IsValidMember(value, TSelf.CreateChecked(source.MinValue), TSelf.CreateChecked(source.MaxValue));
+      => source.VerifyMember(value, IntervalNotation.Closed);
   }
 }
