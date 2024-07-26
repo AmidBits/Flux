@@ -412,15 +412,17 @@ namespace Flux.Quantities
       return false;
     }
 
-    /// <summary>Returns whether the number is a valid <paramref name="radix"/>.</summary>
-    public static bool VerifyMember<TSelf>(TSelf radix)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.IsValidMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix));
+    ///// <summary>Returns whether the number is a valid <paramref name="radix"/>.</summary>
+    //public static bool VerifyMember<TSelf>(TSelf radix)
+    //  where TSelf : System.Numerics.INumber<TSelf>
+    //  => IntervalNotation.Closed.IsValidMember(radix, TSelf.CreateChecked(MinRadix), TSelf.CreateChecked(MaxRadix));
 
     /// <summary>Returns whether the number is a valid <paramref name="radix"/>, with an <paramref name="alernativeMaxRadix"/>.</summary>
     public static bool VerifyMember<TSelf>(TSelf radix, TSelf alernativeMaxRadix)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.IsValidMember(radix, TSelf.CreateChecked(MinRadix), alernativeMaxRadix);
+      => TSelf.CreateChecked(MinRadix) is var minRadix && alternativeMaxRadix < minRadix
+      ? throw new System.ArgumentOutOfRangeException(nameof(alernativeMaxRadix));
+      : IntervalNotation.Closed.IsValidMember(radix, minRadix, alernativeMaxRadix);
 
     #endregion Static methods
 
