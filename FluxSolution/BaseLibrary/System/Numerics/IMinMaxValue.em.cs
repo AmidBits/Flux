@@ -16,7 +16,7 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf AssertMember<TSelf>(this System.Numerics.IMinMaxValue<TSelf> source, TSelf value, string? paramName = null)
       where TSelf : System.Numerics.IMinMaxValue<TSelf>
-      => IntervalNotation.Closed.AssertValidMember(value, TSelf.CreateChecked(source.MinValue), TSelf.CreateChecked(source.MaxValue), paramName ?? nameof(value));
+      => source.AssertMember(value, IntervalNotation.Closed, paramName);
 
     /// <summary>
     /// <para>Returns whether the <paramref name="value"/> is a member of the System.Numerics.IMinMaxValue in <paramref name="source"/> constrained by <paramref name="notation"/>.</para>
