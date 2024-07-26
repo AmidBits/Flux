@@ -31,21 +31,21 @@ namespace Flux
 
       #region Static methods
 
-      /// <summary>
-      /// <para>Asserts that the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>. If not, it throws an exception.</para>
-      /// </summary>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TSelf AssertMember<TSelf>(TSelf unitInterval, IntervalNotation notation, string? paramName = null)
-        where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => notation.AssertValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(unitInterval));
+      ///// <summary>
+      ///// <para>Asserts that the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>. If not, it throws an exception.</para>
+      ///// </summary>
+      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      //public static TSelf AssertMember<TSelf>(TSelf unitInterval, IntervalNotation notation, string? paramName = null)
+      //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      //  => notation.AssertValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(unitInterval));
 
-      /// <summary>
-      /// <para>Returns whether the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>.</para>
-      /// </summary>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static bool VerifyMember<TSelf>(TSelf unitInterval, IntervalNotation notation)
-        where TSelf : System.Numerics.IFloatingPoint<TSelf>
-        => notation.IsValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+      ///// <summary>
+      ///// <para>Returns whether the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>.</para>
+      ///// </summary>
+      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      //public static bool VerifyMember<TSelf>(TSelf unitInterval, IntervalNotation notation)
+      //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      //  => notation.IsValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
 
       #endregion Static methods
 
