@@ -29,7 +29,7 @@ namespace Flux
     /// <para>This uses <see cref="double.Atan2(double, double)"/> in the traditional sense, but without any negative return values.</para>
     /// </remarks>
     public static TSelf Atan2Ccw<TSelf>(TSelf y, TSelf x)
-      : System.Numerics.ITrigonometricFunctions<TSelf>
+      : System.Numerics.IFloatingPointConstants<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
       => Atan2(y, x) is var atan2 && atan2 < 0 // Call Atan2 as usual, which means 0 is at 3 o'clock and rotating counter-clockwise.
       ? (atan2 + double.Tau) % double.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
       : atan2; // The positive range is already 0..+Pi, so return it.
@@ -46,7 +46,7 @@ namespace Flux
     /// <para>This the reverse rotation and 90 degree offset is done by passing (x, y) rather than (y, x) into <see cref="double.Atan2(double, double)"/>.</para>
     /// </remarks>
     public static TSelf Atan2Cw<TSelf>(TSelf y, TSelf x)
-      : System.Numerics.ITrigonometricFunctions<TSelf>
+      : System.Numerics.IFloatingPointConstants<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
       => Atan2(x, y) is var atan2s && atan2s < 0 // Call Atan2 with the arguments switched, which results in a transposition, where 0 is at noon and rotation is clockwise.
       ? (atan2s + double.Tau) % double.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
       : atan2s; // The positive range is already 0..+Pi, so return it.
