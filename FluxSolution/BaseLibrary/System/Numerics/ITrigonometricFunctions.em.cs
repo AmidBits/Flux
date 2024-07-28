@@ -2,6 +2,53 @@ namespace Flux
 {
   public static partial class Fx
   {
+    #region Atan2 functions
+
+    public static TSelf Atan2<TSelf>(TSelf y, TSelf x)
+      : System.Numerics.IFloatingPointConstants<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
+      => x > TSelf.Zero ? TSelf.Atan(y / x)
+      : x < 0 && y >= 0 ? TSelf.Atan(y / x) + TSelf.Pi
+      : x < 0 && y < 0 ? TSelf.Atan(y / x) - TSelf.Pi
+      : x = 0 && y > 0 ? +(TSelf.Pi / (TSelf.One + TSelf.One))
+      : x = 0 && y < 0 ? -(TSelf.Pi / (TSelf.One + TSelf.One))
+      : TSelf.Zero // Undefined
+
+    /// <summary>
+    /// <para>Convenience implementation that returns <see cref="double.Atan2(double, double)"/> as [0, +Tau) instead of [-Pi, +Pi], with 0 being 3 o'clock and rotating counter-clockwise.</para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Atan2"/></para>
+    /// </summary>
+    /// <param name="y"></param>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// <para>The method consists of one conditional branch which may incur an extra add operation.</para>
+    /// <para>This uses <see cref="double.Atan2(double, double)"/> in the traditional sense, but without any negative return values.</para>
+    /// </remarks>
+    public static TSelf Atan2Ccw<TSelf>(TSelf y, TSelf x)
+      : System.Numerics.ITrigonometricFunctions<TSelf>
+      => Atan2(y, x) is var atan2 && atan2 < 0 // Call Atan2 as usual, which means 0 is at 3 o'clock and rotating counter-clockwise.
+      ? (atan2 + double.Tau) % double.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
+      : atan2; // The positive range is already 0..+Pi, so return it.
+
+    /// <summary>
+    /// <para>Convenience implementation that returns <see cref="double.Atan2(double, double)"/> as [0, +Tau) instead of [-Pi, +Pi], with 0 being noon and rotating clockwise.</para>
+    /// <para><seealsoww href="https://en.wikipedia.org/wiki/Atan2"/></para>
+    /// </summary>
+    /// <param name="y"></param>
+    /// <param name="x"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// <para>The method consists of one conditional branch which may incur an extra add operation.</para>
+    /// <para>This the reverse rotation and 90 degree offset is done by passing (x, y) rather than (y, x) into <see cref="double.Atan2(double, double)"/>.</para>
+    /// </remarks>
+    public static TSelf Atan2Cw<TSelf>(TSelf y, TSelf x)
+      : System.Numerics.ITrigonometricFunctions<TSelf>
+      => Atan2(x, y) is var atan2s && atan2s < 0 // Call Atan2 with the arguments switched, which results in a transposition, where 0 is at noon and rotation is clockwise.
+      ? (atan2s + double.Tau) % double.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
+      : atan2s; // The positive range is already 0..+Pi, so return it.
+
+    #endregion // Atan2 functions
+
     #region Gudermannian functions
 
     /// <summary>Returns the Gudermannian of the specified value.</summary>
