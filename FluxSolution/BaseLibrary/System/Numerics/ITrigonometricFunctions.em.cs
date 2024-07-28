@@ -8,13 +8,14 @@ namespace Flux
     /// <para>Implementation of Atan2(y, x) resulting in [-Pi, +Pi].</para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Atan2"/></para>
     /// </summary>
+    // Rough first draft, needs examination.
     public static TSelf Atan2<TSelf>(TSelf y, TSelf x)
       : System.Numerics.IFloatingPointConstants<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
       => x > TSelf.Zero ? TSelf.Atan(y / x)
-      : x < 0 && y >= 0 ? TSelf.Atan(y / x) + TSelf.Pi
-      : x < 0 && y < 0 ? TSelf.Atan(y / x) - TSelf.Pi
-      : x = 0 && y > 0 ? +(TSelf.Pi / (TSelf.One + TSelf.One))
-      : x = 0 && y < 0 ? -(TSelf.Pi / (TSelf.One + TSelf.One))
+      : x < TSelf.Zero && y >= TSelf.Zero ? TSelf.Atan(y / x) + TSelf.Pi
+      : x < TSelf.Zero && y < TSelf.Zero ? TSelf.Atan(y / x) - TSelf.Pi
+      : x = TSelf.Zero && y > TSelf.Zero ? +(TSelf.Pi / (TSelf.One + TSelf.One))
+      : x = TSelf.Zero && y < TSelf.Zero ? -(TSelf.Pi / (TSelf.One + TSelf.One))
       : TSelf.Zero // Undefined
 
     /// <summary>
@@ -78,11 +79,13 @@ namespace Flux
     /// <summary>Returns the cotangent of the specified angle.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
     public static TSelf Cot<TSelf>(this TSelf v)
+      : System.Numerics.ITrigonometricFunctions<TSelf>
       => TSelf.One / TSelf.Tan(v);
 
     /// <summary>Returns the secant of the specified angle.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
     public static TSelf Sec<TSelf>(this TSelf v)
+      : System.Numerics.ITrigonometricFunctions<TSelf>
       => TSelf.One / TSelf.Cos(v);
 
     /// <summary>Returns the cosecant of the specified angle.</summary>
