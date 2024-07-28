@@ -4,6 +4,10 @@ namespace Flux
   {
     #region Atan2 functions
 
+    /// <summary>
+    /// <para>Implementation of Atan2(y, x) resulting in [-Pi, +Pi].</para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Atan2"/></para>
+    /// </summary>
     public static TSelf Atan2<TSelf>(TSelf y, TSelf x)
       : System.Numerics.IFloatingPointConstants<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
       => x > TSelf.Zero ? TSelf.Atan(y / x)
