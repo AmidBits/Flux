@@ -1,8 +1,6 @@
-using System.Linq;
-
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>Returns the least common multiple of all values.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Least_common_multiple"/>
