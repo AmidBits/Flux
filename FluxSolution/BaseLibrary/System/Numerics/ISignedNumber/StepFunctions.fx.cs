@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     ///// <summary>The half sign step function. Only for numeric types derived from <see cref="System.Numerics.IUnsignedNumber{TSelf}"/>.</summary>
     ///// <remarks>EQ 0 = 0 and GT 0 = +1.</remarks>
