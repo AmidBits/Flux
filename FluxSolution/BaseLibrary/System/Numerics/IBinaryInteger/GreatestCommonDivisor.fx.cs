@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>Returns the greatest common divisor of all values.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
@@ -25,10 +25,10 @@ namespace Flux
       return TSelf.Abs(a);
     }
 
-    /// <summary>The extended GCD (or Euclidean algorithm) yields in addition the GCD of <paramref name="a"/> and <paramref name="b"/>, also the addition the coefficients of Bézout's identity.</summary>
+    /// <summary>The extended GCD (or Euclidean algorithm) yields in addition the GCD of <paramref name="a"/> and <paramref name="b"/>, also the addition the coefficients of BÃ©zout's identity.</summary>
     /// <remarks>When a and b are coprime (i.e. GCD equals 1), x is the modular multiplicative inverse of a modulo b, and y is the modular multiplicative inverse of b modulo a.</remarks>
     /// <see href="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm"/>
-    /// <seealso href="https://en.wikipedia.org/wiki/Bézout%27s_identity"/>
+    /// <seealso href="https://en.wikipedia.org/wiki/BÃ©zout%27s_identity"/>
     public static TSelf GreatestCommonDivisorEx<TSelf>(this TSelf a, TSelf b, out TSelf x, out TSelf y)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
