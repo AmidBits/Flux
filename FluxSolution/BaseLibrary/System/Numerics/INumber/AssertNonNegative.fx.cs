@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>Asserts the number is non-negative (throws an exception if it's negative).</summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
