@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class BitOps
   {
     public static byte BitShiftLeft<TSelf>(this TSelf source, bool lsb)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
