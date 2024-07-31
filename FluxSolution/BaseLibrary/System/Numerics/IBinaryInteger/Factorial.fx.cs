@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Compute the factorial of <paramref name="value"/>.</para>
