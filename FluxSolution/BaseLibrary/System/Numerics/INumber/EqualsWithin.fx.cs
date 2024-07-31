@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>Perform a comparison where the tolerance is the same, no matter how small or large the compared numbers.</summary>
     public static bool EqualsWithinAbsoluteTolerance<TValue>(this TValue a, TValue b, TValue absoluteTolerance)
