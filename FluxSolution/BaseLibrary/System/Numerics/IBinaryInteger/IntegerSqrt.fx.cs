@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     // Testing Stuff
     //public static TSelf GenericSquareRoot<TSelf>(this TSelf number)
@@ -88,7 +88,7 @@ namespace Flux
     /// <param name="number">The square number to find the square-<paramref name="root"/> of.</param>
     /// <param name="root">The resulting square-root of <paramref name="number"/>.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryFastIntegerSqrt<TSelf>(TSelf number, out TSelf root)
+    public static bool TryFastIntegerSqrt<TSelf>(this TSelf number, out TSelf root)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (number.GetBitLengthEx() <= 53)
