@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class OrdinalIndicator
+  public static partial class Fx
   {
     /// <summary>Gets the ordinal indicator suffix for <paramref name="value"/>. E.g. "st" for 1 and "nd" for 122.</summary>
     public static string GetOrdinalIndicatorSuffix<TSelf>(this TSelf value)
