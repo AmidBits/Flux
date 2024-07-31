@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>Returns the integer (i.e. floor/truncate for floating point) quotient and also returns the <paramref name="remainder"/> (<paramref name="dividend"/> modulo <paramref name="divisor"/>) as an output parameter.</summary>
     /// <remarks>This function is equivalent to the DivRem() function, only provided for here for all INumber<> types.</remarks>
