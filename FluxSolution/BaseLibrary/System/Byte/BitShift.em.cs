@@ -2,6 +2,12 @@ namespace Flux
 {
   public static partial class Fx
   {
+    public static bool BitFlagCarryLsb<TSelf>(this TSelf source) => !TSelf.IsZero(source & TSelf.One);
+    public static bool BitFlagCarryMsb<TSelf>(this TSelf source) => !TSelf.IsZero(source & TSelf.RotateRight(TSelf.One, 1));
+
+    public static byte BitShiftLeft<TSelf>(this TSelf source, bool lsb) => (source << 1) | (lsb ? 1 : 0);
+    public static byte BitShiftRight<TSelf>(this TSelf source, bool msb) => (msb ? TSelf.RotateRight(TSelf.One, 1) : 0) | (source >> 1);
+
     /// <summary>Returns a sequence bit-shifted left by count bits, by extending the array with the necessary number of bytes.</summary>
     public static System.Collections.Generic.IEnumerable<byte> BitShiftLeft(this System.Collections.Generic.IEnumerable<byte> source, int count)
     {
