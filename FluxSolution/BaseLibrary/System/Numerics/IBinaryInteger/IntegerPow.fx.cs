@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Computes <paramref name="radix"/> raised to the power of <paramref name="exponent"/>, using exponentiation by squaring.</para>
