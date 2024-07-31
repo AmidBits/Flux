@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class BitOps
   {
     public static bool BitFlagCarryLsb<TSelf>(this TSelf source)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
