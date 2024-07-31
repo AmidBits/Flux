@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Interpolation
+  public static partial class Fx
   {
     /// <summary>Cosine interpolation is a smoother and perhaps simplest function. A suitable orientated piece of a cosine function serves to provide a smooth transition between adjacent segments.</summary>
     /// <param name="y1">Source point.</param>
