@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Determines whether the <paramref name="value"/> is of a <paramref name="multiple"/>.</para>
