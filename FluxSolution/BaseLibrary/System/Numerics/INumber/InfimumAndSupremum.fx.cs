@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Gets the infimum (the largest value that is less than <paramref name="value"/>).</para>
