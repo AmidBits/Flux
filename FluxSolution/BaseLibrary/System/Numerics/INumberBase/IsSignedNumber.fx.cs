@@ -7,7 +7,7 @@ namespace Flux
     /// <para><seealso href="https://stackoverflow.com/a/13609383/3178666"/></para>
     /// </summary>
     public static bool IsSignedNumber<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.INumber<TSelf>
+      where TSelf : System.Numerics.INumberBase<TSelf>
       => source is System.Decimal
       || source is System.Double
       || source is System.Half
