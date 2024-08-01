@@ -17,7 +17,7 @@
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf RoundByTruncatedPrecision<TSelf>(this TSelf value, RoundingMode mode, int significantDigits, int radix = 10)
-      where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IPowerFunctions<TSelf>
     {
       if (significantDigits < 0) throw new System.ArgumentOutOfRangeException(nameof(significantDigits));
 
