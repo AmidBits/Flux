@@ -5,8 +5,18 @@ namespace Flux
     /// <summary>Represents the Champernowne constant. A transcendental real constant whose decimal expansion has important properties.</summary>
     public const double C10 = 0.123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960;
 
-#if NET7_0_OR_GREATER
+    /// <summary>Compute (machine) epsilon in negative direction.</summary>
+    public static TSelf ComputeMachineEpsilonNegative<TSelf>()
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    {
+      var epsilonNegative = -TSelf.One;
 
+      while (epsilonNegative / TSelf.CreateChecked(2) is var halfEpsilonNegative && (-TSelf.One + halfEpsilonNegative) < -TSelf.One)
+        epsilonNegative = halfEpsilonNegative;
+
+      return epsilonNegative;
+    }
+    
     /// <summary>Computed on the fly.</summary>
     public static TSelf ComputeMachineEpsilon<TSelf>()
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
@@ -18,21 +28,6 @@ namespace Flux
 
       return epsilon;
     }
-
-#else
-
-    /// <summary>Computed on the fly.</summary>
-    public static double ComputeMachineEpsilon()
-    {
-      var epsilon = 1d;
-
-      while (epsilon / 2 is var half && (1 + half) > 1)
-        epsilon = half;
-
-      return epsilon;
-    }
-
-#endif
 
     /// <summary>Represents the cube root of 2.</summary>
     public const double DeliansConstant = 1.2599210498948731647672106072782;
