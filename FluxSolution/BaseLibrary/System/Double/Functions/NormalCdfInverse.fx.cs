@@ -1,12 +1,12 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>Implementation see reference.</summary>
     /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
     /// <see href="https://www.johndcook.com/blog/normal_cdf_inverse/"/>
     /// <seealso href="https://en.wikipedia.org/wiki/Horner%27s_method"/>
-    public static double RationalApproximation(double t)
+    public static double RationalApproximation(this double t)
     {
       // Abramowitz and Stegun formula 26.2.23. The absolute value of the error should be less than 4.5 e-4.
 
