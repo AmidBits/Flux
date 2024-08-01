@@ -15,7 +15,7 @@
     /// <param name="radix"></param>
     /// <returns></returns>
     public static TValue RoundByPrecision<TValue>(this TValue value, RoundingMode mode, int significantDigits, int radix = 10)
-      where TValue : System.Numerics.IFloatingPointIeee754<TValue>
+      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IPowerFunctions<TSelf>
     {
       var scalar = TValue.Pow(TValue.CreateChecked(radix), TValue.CreateChecked(significantDigits));
 
