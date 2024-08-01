@@ -8,7 +8,7 @@ namespace Flux
     /// </summary>
     /// <remarks>For types not covered by type-specific overloads, this function uses reflection to find whether the <paramref name="source"/> type implements <see cref="System.Numerics.IBinaryInteger{TSelf}"/>.</remarks>
     public static bool IsBinaryInteger<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.INumber<TSelf>
+      where TSelf : System.Numerics.INumberBase<TSelf>
       => source is System.Byte
       || source is System.Char
       || source is System.Int16
