@@ -3,17 +3,22 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Asserts that the <paramref name="value"/> is a member of the System.Numerics.IMinMaxValue in <paramref name="source"/> constrained by <paramref name="notation"/>. If not, it throws an exception.</para>
+    /// <para>The centre of the System.Numerics.IMinMaxValue in <paramref name="source"/>.</para>
     /// </summary>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf MinMaxCentre<TSelf>(this TSelf source)
       where TSelf : System.Numerics.IMinMaxValue<TSelf>
       => (source.MinValue + source.MaxValue) / TSelf.CreateChecked(2);
 
     /// <summary>
-    /// <para>Asserts that the <paramref name="value"/> is a member of the System.Numerics.IMinMaxValue in <paramref name="source"/> constrained by IntervalNotation.Closed enum value. If not, it throws an exception.</para>
+    /// <para>The diameter of the System.Numerics.IMinMaxValue in <paramref name="source"/>.</para>
     /// </summary>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static TSelf MinMaxDiameter<TSelf>(this TSelf source)
+      where TSelf : System.Numerics.IMinMaxValue<TSelf>
+      => TSelf.Abs(source.MinValue - source.MaxValue);
+
+    /// <summary>
+    /// <para>The radius of the System.Numerics.IMinMaxValue in <paramref name="source"/>.</para>
+    /// </summary>
     public static TSelf MinMaxRadius<TSelf>(this TSelf source)
       where TSelf : System.Numerics.IMinMaxValue<TSelf>
       => TSelf.Abs(source.MinValue - source.MaxValue) / TSelf.CreateChecked(2);
