@@ -76,7 +76,7 @@ namespace Flux
     /// <param name="p">The subset size (K).</param>
     /// <param name="l">The index of the subset (or index array) to generate.</param>
     /// <returns></returns>
-    public static TSelf[] PermuteAlgorithm515<TSelf>(TSelf n, TSelf p, TSelf l)
+    public static TSelf[] PermuteAlgorithm515<TSelf>(this TSelf n, TSelf p, TSelf l)
        where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       var c = new TSelf[int.CreateChecked(p)];
