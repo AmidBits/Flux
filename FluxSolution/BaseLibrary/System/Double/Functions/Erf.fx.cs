@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>Implementation see reference.</summary>
     /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
