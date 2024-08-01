@@ -7,6 +7,11 @@ namespace Flux.Quantities
   public readonly record struct Radix
     : System.IComparable, System.IComparable<Radix>, System.IFormattable, System.Numerics.IMinMaxValue<int>, IValueQuantifiable<int>
   {
+    public static Radix Binary => new(2);
+    public static Radix Octal => new(8);
+    public static Radix Decimal => new(10);
+    public static Radix Hexadecimal => new(16);
+  
     //public const int MinRadix = 2;
     //public const int MaxRadix = 256;
 
