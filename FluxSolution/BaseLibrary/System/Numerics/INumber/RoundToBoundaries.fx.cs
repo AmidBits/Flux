@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Rounds the <paramref name="source"/> to the nearest boundary according to the strategy <paramref name="mode"/>. The mode specifies how to round when halfway between two boundaries.</para>
