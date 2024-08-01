@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>A third-degree polynomial.</summary>
     /// <param name="a">a != 0</param>
