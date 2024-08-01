@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Rounds the <paramref name="value"/> to the nearest <paramref name="significantDigits"/> in base <paramref name="radix"/>. The <paramref name="mode"/> specifies the halfway rounding strategy to use.</para>
