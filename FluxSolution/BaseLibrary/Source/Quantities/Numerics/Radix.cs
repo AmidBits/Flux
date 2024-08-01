@@ -164,6 +164,19 @@ namespace Flux.Quantities
 
     /// <summary>
     /// <para>Integer-log mitigates approximations with floating point logs.</para>
+    /// <para>A.k.a. the integer-log ceiling of <paramref name="value"/> in base <paramref name="radix"/>.</para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="radix"></param>
+    /// <returns></returns>
+    /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero simply returns zero.</remarks>
+    public static TSelf IntegerLogAwayFromZero<TSelf>(TSelf value, TSelf radix)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.CopySign(TSelf.Abs(IntegerLogTowardZero(value, radix)) is var tz && IsPowOf(value, radix) ? tz : tz + TSelf.One, value);
+
+    /// <summary>
+    /// <para>Integer-log mitigates approximations with floating point logs.</para>
     /// <para>A.k.a. the integer-log floor of <paramref name="value"/> in base <paramref name="radix"/>.</para>
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
@@ -190,19 +203,6 @@ namespace Flux.Quantities
 
       return TSelf.CopySign(ilog, value);
     }
-
-    /// <summary>
-    /// <para>Integer-log mitigates approximations with floating point logs.</para>
-    /// <para>A.k.a. the integer-log ceiling of <paramref name="value"/> in base <paramref name="radix"/>.</para>
-    /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="radix"></param>
-    /// <returns></returns>
-    /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero simply returns zero.</remarks>
-    public static TSelf IntegerLogAwayFromZero<TSelf>(TSelf value, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.CopySign(TSelf.Abs(IntegerLogTowardZero(value, radix)) is var tz && IsPowOf(value, radix) ? tz : tz + TSelf.One, value);
 
     /// <summary>Indicates whether <paramref name="number"/> using base <paramref name="radix"/> is jumbled (i.e. no neighboring digits having a difference larger than 1).</summary>
     /// <see cref="http://www.geeksforgeeks.org/check-if-a-number-is-jumbled-or-not/"/>
