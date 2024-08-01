@@ -8,7 +8,7 @@ namespace Flux
     /// <param name="mu">The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points, the mu range is [0, 1]. Values of mu outside the range result in extrapolation.</param>
     /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
     public static TSelf InterpolateCosine<TSelf>(this TSelf y1, TSelf y2, TSelf mu)
-      where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ITrigonometricFunctions<TSelf>
     {
       var mu2 = (TSelf.One - TSelf.CosPi(mu)) / TSelf.CreateChecked(2);
 
@@ -26,7 +26,7 @@ namespace Flux
     /// <param name="mu"></param>
     /// <returns></returns>
     public static TSelf InterpolateCubic<TSelf>(this TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu)
-      where TSelf : System.Numerics.INumber<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       var mu2 = mu * mu;
 
@@ -49,7 +49,7 @@ namespace Flux
     /// <param name="mu"></param>
     /// <returns></returns>
     public static TSelf InterpolateCubicPb<TSelf>(this TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu)
-      where TSelf : System.Numerics.INumber<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       var two = TSelf.One + TSelf.One;
       var half = TSelf.One / two;
@@ -78,7 +78,7 @@ namespace Flux
     /// <param name="bias"></param>
     /// <returns></returns>
     public static TSelf InterpolateHermite<TSelf>(this TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu, TSelf tension, TSelf bias)
-      where TSelf : System.Numerics.INumber<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       var one = TSelf.One;
       var two = one + one;
@@ -104,7 +104,7 @@ namespace Flux
     /// <summary>Linear interpolation (a.k.a. lerp) is the simplest method of getting values at positions in between the data points. The points are simply joined by straight line segments. Each segment (bounded by two data points) can be interpolated independently. The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points mu ranges between 0 and 1. Values of mu outside the range result in extrapolation.</summary>
     /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
     public static TSelf InterpolateLinear<TSelf>(this TSelf y1, TSelf y2, TSelf mu)
-      where TSelf : System.Numerics.INumber<TSelf>
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => (TSelf.One - mu) * y1 + mu * y2;
   }
 }
