@@ -4,11 +4,13 @@ namespace Flux
   {
     public static System.Xml.Linq.XElement? Copy(this System.Xml.Linq.XElement source)
     {
+      System.ArgumentNullException.ThrowIfNull(source);
+      
       var xd = new System.Xml.Linq.XDocument();
 
       using (var xw = xd.CreateWriter())
       {
-        (source ?? throw new System.ArgumentNullException(nameof(source))).WriteTo(xw);
+        source.WriteTo(xw);
       }
 
       return xd.Root;
