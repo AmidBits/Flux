@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Maths
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Rounds the <paramref name="value"/> to the closest <paramref name="multiple"/> (i.e. of <paramref name="multipleOfTowardsZero"/> and <paramref name="multipleOfAwayFromZero"/> which are computed and returned as out parameters) according to <paramref name="unequal"/> and the strategy <paramref name="mode"/>. Negative <paramref name="value"/> resilient.</para>
