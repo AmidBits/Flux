@@ -7,7 +7,7 @@ namespace Flux
     ///// <see href="https://en.wikipedia.org/wiki/Step_function"/>
     ///// <seealso href="https://en.wikipedia.org/wiki/Sign_function"/>
     //public static TSelf HalfSign<TSelf>(this TSelf x)
-    //  where TSelf : System.Numerics.IUnsignedNumber<TSelf>
+    //  where TSelf : System.Numerics.INumber<TSelf>
     //  => TSelf.IsZero(x) ? TSelf.Zero : TSelf.One;
 
     /// <summary>The sign step function.</summary>
