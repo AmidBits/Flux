@@ -18,7 +18,7 @@ namespace Flux.Numerics
     /// <param name="n">Greater than or equal to <paramref name="k"/>.</param>
     /// <param name="k">Greater than or equal to 0.</param>
     /// <returns></returns>
-    public static TSelf BinomialCoefficient<TSelf>(TSelf n, TSelf k)
+    public static TSelf BinomialCoefficient<TSelf>(this TSelf n, TSelf k)
        where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       if (TSelf.IsNegative(k) || k > n)
