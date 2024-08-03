@@ -8,6 +8,20 @@ namespace Flux.Statistics
   ///// </summary>
   public static class GeometricDistribution
   {
+    public static System.Collections.Generic.IEnumerable<TSelf> GeometricSequence<TSelf>(this TSelf a, TSelf r)
+      where TSelf : System.Numerics.INumber<TSelf>
+    {
+      if(a == 0) throw new System.ArgumentExceptionOutOfRange(nameof(a));
+      if(r == 0) throw new System.ArgumentExceptionOutOfRange(nameof(r));
+
+      while(true)
+      {
+        yield return a;
+
+        a *= r;
+      }
+    }
+    
     /// <summary>The probability that the first occurrence of success requires <paramref name="k"/> independent trials, each with success probability <paramref name="p"/>.</summary>
     /// <param name="k">The number of trials [1, ..].</param>
     /// <param name="p">The success probability (0, 1].</param>
