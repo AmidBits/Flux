@@ -37,13 +37,13 @@
     {
       /// <summary>
       /// <para>The metric base unit for <typeparamref name="TUnit"/>.</para>
-      /// <para>E.g. the base unit for mass is "kilogram", i.e. a unit (gram) with a metric prefix (kilo).</para>
+      /// <para>E.g. the base SI unit for mass is "kilogram", i.e. a unit (gram) with a metric prefix (kilo). It is the only base SI unit to include an SI prefix.</para>
       /// </summary>
       TUnit BaseUnit { get; }
 
       /// <summary>
       /// <para>The metric unprefixed unit for <typeparamref name="TUnit"/>.</para>
-      /// <para>E.g. the unprefixed unit for mass is "gram", i.e. the base unit without metric prefix.</para>
+      /// <para>E.g. the unprefixed unit for mass is "gram", i.e. the base SI unit without metric prefix.</para>
       /// </summary>
       TUnit UnprefixedUnit { get; }
 
