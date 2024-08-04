@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Complement the built-in System.IConvertible functionality using the Try paradigm.</summary>
     [System.CLSCompliant(false)]
-    public static bool TryChangeType<T>(System.IConvertible value, out T result, System.IFormatProvider? provider = null)
+    public static bool TryChangeType<T>(this System.IConvertible value, out T result, System.IFormatProvider? provider = null)
     {
       try
       {
@@ -19,7 +19,7 @@ namespace Flux
 
     /// <summary>Complement the built-in System.IConvertible functionality with a sequential conversion chain.</summary>
     [System.CLSCompliant(false)]
-    public static object ChangeType(System.IConvertible value, System.IFormatProvider? provider, params System.Type[] conversionSequence)
+    public static object ChangeType(this System.IConvertible value, System.IFormatProvider? provider, params System.Type[] conversionSequence)
     {
       var result = default(object);
 
@@ -34,7 +34,7 @@ namespace Flux
     }
     /// <summary>Complement the built-in System.IConvertible functionality with a sequential conversion chain using the Try paradigm.</summary>
     [System.CLSCompliant(false)]
-    public static bool TryChangeType(System.IConvertible value, out object result, System.IFormatProvider? provider, params System.Type[] conversionSequence)
+    public static bool TryChangeType(this System.IConvertible value, out object result, System.IFormatProvider? provider, params System.Type[] conversionSequence)
     {
       try
       {
