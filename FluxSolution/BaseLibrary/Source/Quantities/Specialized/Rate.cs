@@ -27,6 +27,8 @@ namespace Flux
       public double InverseRatio => m_denominator.Value / m_numerator.Value;
 
       public string ToString(string? format, System.IFormatProvider? formatProvider) => $"{m_numerator.ToString(format, formatProvider)} / {m_denominator.ToString(format, formatProvider)}";
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }
