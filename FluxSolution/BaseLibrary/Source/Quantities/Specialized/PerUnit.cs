@@ -22,6 +22,8 @@ namespace Flux
       public TDistribution Distribution { get => m_distribution; init => m_distribution = value; }
 
       public string ToString(string? format, System.IFormatProvider? formatProvider) => $"{m_amount.ToString(format, formatProvider)} per unit {m_distribution.ToString(format, formatProvider)} = {m_amount.Value / m_distribution.Value} {m_amount.ToString(format, formatProvider).Split(' ')[1]}/{m_distribution.ToString(format, formatProvider).Split(' ')[1]}";
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }
