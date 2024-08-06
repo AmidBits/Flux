@@ -26,7 +26,7 @@ namespace Flux.Numerics
       if (TSelf.IsZero(k) || k == n)
         return TSelf.One;
 
-      k = TSelf.Min(k, n - k);
+      k = TSelf.Min(k, n - k); // Optimize for the loop below.
 
       var c = TSelf.One;
 
@@ -48,8 +48,16 @@ namespace Flux.Numerics
     /// <param name="k">The exact number of successes of an outcome inquired.</param>
     /// <param name="n">The number of trials.</param>
     /// <param name="p">The success probability for each trial.</param>
-    public static TSelf ProbabilityMassFunction<TSelf>(this TSelf k, TSelf n, TSelf p)
+    public static TSelf BinomialPmf<TSelf>(this TSelf k, TSelf n, TSelf p)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
-      => (n / k) * TSelf.Pow(p, k) * TSelf.Pow(TSelf.One - p, n - k);
+      => BinomialCoefficient(n, k) * TSelf.Pow(p, k) * TSelf.Pow(TSelf.One - p, n - k);
+
+    ///// <summary>The the number of failures in a sequence of independent and identically distributed Bernoulli trials before a specified (non-random) number of successes (denoted r) occurs.</summary>
+    ///// <param name="k">The number of failures.</param>
+    ///// <param name="r">The number of successes.</param>
+    ///// <param name="p">The success probability for each trial.</param>
+    //public static TSelf NegativeBinomialPmf<TSelf>(this TSelf k, TSelf r, TSelf p)
+    //  where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+    //  => BinomialCoefficient(k + r - TSelf.One, k) * TSelf.Pow(TSelf.One - p, k) * TSelf.Pow(p, r);
   }
 }
