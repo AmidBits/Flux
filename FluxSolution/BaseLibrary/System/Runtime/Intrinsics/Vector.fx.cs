@@ -6,7 +6,7 @@ using System.Runtime.Intrinsics;
 
 namespace Flux
 {
-  public static partial class Vectors
+  public static partial class Fx
   {
     internal const byte ShuffleYXYX = (0 << 6) | (1 << 4) | (0 << 2) | 1;
     internal const byte ShuffleYZXW = (3 << 6) | (0 << 4) | (2 << 2) | 1;
