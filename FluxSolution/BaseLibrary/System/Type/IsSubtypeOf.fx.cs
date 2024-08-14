@@ -24,7 +24,7 @@ namespace Flux
           return true;
       }
 
-      var sourceInherited = GetInheritedBaseTypes(source);
+      var sourceInherited = GetInheritedBaseTypes(source, false);
 
       for (var index = sourceInherited.Count - 1; index >= 0; index--)
       {

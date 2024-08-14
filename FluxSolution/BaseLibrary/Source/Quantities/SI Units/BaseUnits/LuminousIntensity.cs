@@ -77,11 +77,9 @@ namespace Flux
         => ToUnitValueString(LuminousIntensityUnit.Candela, format, formatProvider);
 
       // ISiUnitValueQuantifiable<>
-      public LuminousIntensityUnit BaseUnit => LuminousIntensityUnit.Candela;
+      public (MetricPrefix Prefix, LuminousIntensityUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, LuminousIntensityUnit.Candela);
 
-      public LuminousIntensityUnit UnprefixedUnit => LuminousIntensityUnit.Candela;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 

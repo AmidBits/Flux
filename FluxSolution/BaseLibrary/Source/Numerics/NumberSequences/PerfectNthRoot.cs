@@ -2,7 +2,12 @@ namespace Flux
 {
   public static partial class NumberSequence
   {
-    /// <summary>Creates a sequence of powers-of-radix values.</summary>
+    /// <summary>
+    /// <para>Creates a sequence of powers-of-radix values.</para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="nth"></param>
+    /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<TSelf> GetPerfectNthRootSequence<TSelf>(int nth)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

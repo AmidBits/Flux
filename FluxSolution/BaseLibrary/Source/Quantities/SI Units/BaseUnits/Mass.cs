@@ -104,11 +104,9 @@ namespace Flux
         => ToUnitValueString(MassUnit.Kilogram, format, formatProvider);
 
       // ISiUnitValueQuantifiable<>
-      public MassUnit BaseUnit => MassUnit.Kilogram;
+      public (MetricPrefix Prefix, MassUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, MassUnit.Gram);
 
-      public MassUnit UnprefixedUnit => MassUnit.Gram;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Kilo.Convert(m_value, prefix);
 

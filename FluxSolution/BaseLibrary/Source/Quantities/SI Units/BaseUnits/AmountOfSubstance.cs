@@ -85,11 +85,9 @@ namespace Flux
         => ToUnitValueString(AmountOfSubstanceUnit.Mole, format, formatProvider);
 
       // ISiUnitValueQuantifiable<>
-      public AmountOfSubstanceUnit BaseUnit => AmountOfSubstanceUnit.Mole;
+      public (MetricPrefix Prefix, AmountOfSubstanceUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, AmountOfSubstanceUnit.Mole);
 
-      public AmountOfSubstanceUnit UnprefixedUnit => AmountOfSubstanceUnit.Mole;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 

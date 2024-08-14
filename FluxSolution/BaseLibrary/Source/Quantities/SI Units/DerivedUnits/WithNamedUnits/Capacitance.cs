@@ -75,11 +75,9 @@ namespace Flux
         => ToUnitValueString(CapacitanceUnit.Farad, format, formatProvider);
 
       // ISiUnitValueQuantifiable<>
-      public CapacitanceUnit BaseUnit => CapacitanceUnit.Farad;
+      public (MetricPrefix Prefix, CapacitanceUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, CapacitanceUnit.Farad);
 
-      public CapacitanceUnit UnprefixedUnit => CapacitanceUnit.Farad;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
@@ -88,8 +86,7 @@ namespace Flux
         var sb = new System.Text.StringBuilder();
         sb.Append(GetSiPrefixValue(prefix).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(prefix.GetUnitString(preferUnicode, useFullName));
-        sb.Append(UnprefixedUnit.GetUnitString(preferUnicode, useFullName));
+        sb.Append(GetSiPrefixSymbol(prefix, preferUnicode, useFullName));
         return sb.ToString();
       }
 

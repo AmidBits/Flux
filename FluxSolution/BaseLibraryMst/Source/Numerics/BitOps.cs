@@ -22,25 +22,25 @@ namespace Numerics
     [TestMethod]
     public void ClearBitIndex()
     {
-      Assert.AreEqual(0x0U, 0x4U.ClearBitIndex(2));
+      Assert.AreEqual(0x0U, 0x4U.BitIndexClear(2));
     }
 
     [TestMethod]
     public void FlipBitIndex()
     {
-      Assert.AreEqual(0x2U, 0x6U.ClearBitIndex(2));
+      Assert.AreEqual(0x2U, 0x6U.BitIndexClear(2));
     }
 
     [TestMethod]
     public void GetBitIndex()
     {
-      Assert.AreEqual(true, 0x6U.GetBitIndex(2));
+      Assert.AreEqual(true, 0x6U.BitIndexGet(2));
     }
 
     [TestMethod]
     public void SetBitIndex()
     {
-      Assert.AreEqual(0x4U, 0b00000000U.SetBitIndex(2));
+      Assert.AreEqual(0x4U, 0b00000000U.BitIndexSet(2));
     }
 
     [TestMethod]
@@ -260,13 +260,13 @@ namespace Numerics
     [TestMethod]
     public void ClearLeastSignificant1Bit()
     {
-      Assert.AreEqual(0b1010000, 0b1011000.ClearLeastSignificant1Bit());
+      Assert.AreEqual(0b1010000, 0b1011000.LeastSignificant1BitClear());
     }
 
     [TestMethod]
     public void ClearMostSignificant1Bit()
     {
-      Assert.AreEqual(0b11000, 0b1011000.ClearMostSignificant1Bit());
+      Assert.AreEqual(0b11000, 0b1011000.MostSignificant1BitClear());
     }
 
     [TestMethod]

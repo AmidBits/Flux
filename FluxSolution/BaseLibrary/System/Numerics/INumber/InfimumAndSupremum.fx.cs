@@ -12,15 +12,15 @@ namespace Flux
     public static TSelf GetInfimum<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      if (value.IsBinaryInteger())
+      if (value.IsBinaryInteger()) // All integers are the same, and therefor subtract one.
         return value - TSelf.One;
-      else if (value is System.Double d)
+      else if (value is System.Double d) // All floating point types has different structures, and therefor their own bit-decrement.
         return TSelf.CreateChecked(System.Double.BitDecrement(d));
-      else if (value is System.Half h)
+      else if (value is System.Half h) // All floating point types has different structures, and therefor their own bit-decrement.
         return TSelf.CreateChecked(System.Half.BitDecrement(h));
-      else if (value is System.Single f)
+      else if (value is System.Single f) // All floating point types has different structures, and therefor their own bit-decrement.
         return TSelf.CreateChecked(System.Single.BitDecrement(f));
-      else if (value is System.Runtime.InteropServices.NFloat nf)
+      else if (value is System.Runtime.InteropServices.NFloat nf) // All floating point types has different structures, and therefor their own bit-decrement.
         return TSelf.CreateChecked(System.Runtime.InteropServices.NFloat.BitDecrement(nf));
       else
         throw new System.NotImplementedException();
@@ -36,15 +36,15 @@ namespace Flux
     public static TSelf GetSupremum<TSelf>(this TSelf value)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      if (value.IsBinaryInteger())
+      if (value.IsBinaryInteger()) // All integers are the same, and therefor add one.
         return value + TSelf.One;
-      else if (value is System.Double d)
+      else if (value is System.Double d) // All floating point types has different structures, and therefor their own bit-increment.
         return TSelf.CreateChecked(System.Double.BitIncrement(d));
-      else if (value is System.Half h)
+      else if (value is System.Half h) // All floating point types has different structures, and therefor their own bit-increment.
         return TSelf.CreateChecked(System.Half.BitIncrement(h));
-      else if (value is System.Single f)
+      else if (value is System.Single f) // All floating point types has different structures, and therefor their own bit-increment.
         return TSelf.CreateChecked(System.Single.BitIncrement(f));
-      else if (value is System.Runtime.InteropServices.NFloat nf)
+      else if (value is System.Runtime.InteropServices.NFloat nf) // All floating point types has different structures, and therefor their own bit-increment.
         return TSelf.CreateChecked(System.Runtime.InteropServices.NFloat.BitIncrement(nf));
       else
         throw new System.NotImplementedException();

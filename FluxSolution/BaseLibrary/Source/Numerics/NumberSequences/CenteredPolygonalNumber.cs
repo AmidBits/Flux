@@ -2,8 +2,14 @@ namespace Flux
 {
   public static partial class NumberSequence
   {
-    /// <summary></summary>
+    /// <summary>
+    /// <para>Creates a new sequence of </para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/></para>
+    /// </summary>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="numberOfSides"></param>
+    /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<(TSelf minCenteredNumber, TSelf maxCenteredNumber, TSelf count)> GetLayers<TSelf>(TSelf numberOfSides)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

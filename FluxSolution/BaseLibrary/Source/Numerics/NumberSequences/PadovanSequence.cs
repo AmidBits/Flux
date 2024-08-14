@@ -2,9 +2,13 @@ namespace Flux
 {
   public static partial class NumberSequence
   {
-    /// <summary>Creates a new sequence with padovan numbers.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Padovan_sequence"/>
+    /// <summary>
+    /// <para>Creates a new sequence with Padovan numbers.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Padovan_sequence"/></para>
+    /// </summary>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<TSelf> GetPadovanSequence<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

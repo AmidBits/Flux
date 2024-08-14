@@ -11,7 +11,7 @@
       var d = new System.Collections.Generic.Dictionary<(Quantities.MetricPrefix, TUnit), string>();
 
       foreach (Quantities.MetricPrefix mp in System.Enum.GetValues<Quantities.MetricPrefix>().OrderDescending())
-        d.Add((mp, source.UnprefixedUnit), source.ToSiPrefixValueString(mp, format, formatProvider, unitSpacing, preferUnicode, useFullName));
+        d.Add(source.GetSiPrefixUnit(mp), source.ToSiPrefixValueString(mp, format, formatProvider, unitSpacing, preferUnicode, useFullName));
 
       return d;
     }
@@ -35,17 +35,19 @@
       where TValue : System.Numerics.INumber<TValue>
       where TUnit : System.Enum
     {
-      /// <summary>
-      /// <para>The metric base unit for <typeparamref name="TUnit"/>.</para>
-      /// <para>E.g. the base SI unit for mass is "kilogram", i.e. a unit (gram) with a metric prefix (kilo). It is the only base SI unit to include an SI prefix.</para>
-      /// </summary>
-      TUnit BaseUnit { get; }
+      ///// <summary>
+      ///// <para>The metric base unit for <typeparamref name="TUnit"/>.</para>
+      ///// <para>E.g. the base SI unit for mass is "kilogram", i.e. an unprefixed unit (gram) with a metric prefix (kilo). It is the only base SI unit to include an SI prefix.</para>
+      ///// </summary>
+      //TUnit BaseUnit { get; }
 
-      /// <summary>
-      /// <para>The metric unprefixed unit for <typeparamref name="TUnit"/>.</para>
-      /// <para>E.g. the unprefixed unit for mass is "gram", i.e. the base SI unit without metric prefix.</para>
-      /// </summary>
-      TUnit UnprefixedUnit { get; }
+      ///// <summary>
+      ///// <para>The metric unprefixed unit for <typeparamref name="TUnit"/>.</para>
+      ///// <para>E.g. the unprefixed unit for mass is "gram", i.e. the base SI unit without metric prefix.</para>
+      ///// </summary>
+      //TUnit UnprefixedUnit { get; }
+
+      (MetricPrefix Prefix, TUnit Unit) GetSiPrefixUnit(MetricPrefix prefix);
 
       /// <summary>
       /// <para>Returns the symbol of the specified metric <paramref name="prefix"/> and <paramref name="preferUnicode"/>/<paramref name="useFullName"/>.</para>

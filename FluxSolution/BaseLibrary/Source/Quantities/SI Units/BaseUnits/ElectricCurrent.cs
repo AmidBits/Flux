@@ -92,11 +92,9 @@ namespace Flux
         => ToUnitValueString(ElectricCurrentUnit.Ampere, format, formatProvider);
 
       //IMetricMultiplicable<>
-      public ElectricCurrentUnit BaseUnit => ElectricCurrentUnit.Ampere;
+      public (MetricPrefix Prefix, ElectricCurrentUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, ElectricCurrentUnit.Ampere);
 
-      public ElectricCurrentUnit UnprefixedUnit => ElectricCurrentUnit.Ampere;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 

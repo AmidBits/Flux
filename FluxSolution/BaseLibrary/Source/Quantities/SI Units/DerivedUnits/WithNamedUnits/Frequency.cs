@@ -150,11 +150,9 @@ namespace Flux
         => ToUnitValueString(FrequencyUnit.Hertz, format, formatProvider);
 
       // ISiUnitValueQuantifiable<>
-      public FrequencyUnit BaseUnit => FrequencyUnit.Hertz;
+      public (MetricPrefix Prefix, FrequencyUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, FrequencyUnit.Hertz);
 
-      public FrequencyUnit UnprefixedUnit => FrequencyUnit.Hertz;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
@@ -163,8 +161,7 @@ namespace Flux
         var sb = new System.Text.StringBuilder();
         sb.Append(GetSiPrefixValue(prefix).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(prefix.GetUnitString(preferUnicode, useFullName));
-        sb.Append(UnprefixedUnit.GetUnitString(preferUnicode, useFullName));
+        sb.Append(GetSiPrefixSymbol(prefix, preferUnicode, useFullName));
         return sb.ToString();
       }
 

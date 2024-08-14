@@ -82,11 +82,9 @@ namespace Flux
         => ToUnitValueString(PowerUnit.Watt, format, formatProvider);
 
       // ISiUnitValueQuantifiable<>
-      public PowerUnit BaseUnit => PowerUnit.Watt;
+      public (MetricPrefix Prefix, PowerUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, PowerUnit.Watt);
 
-      public PowerUnit UnprefixedUnit => PowerUnit.Watt;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
@@ -95,8 +93,7 @@ namespace Flux
         var sb = new System.Text.StringBuilder();
         sb.Append(GetSiPrefixValue(prefix).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(prefix.GetUnitString(preferUnicode, useFullName));
-        sb.Append(UnprefixedUnit.GetUnitString(preferUnicode, useFullName));
+        sb.Append(GetSiPrefixSymbol(prefix, preferUnicode, useFullName));
         return sb.ToString();
       }
 

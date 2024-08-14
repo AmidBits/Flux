@@ -9,15 +9,11 @@ namespace Flux
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static void TransposeInPlace<T>(this T[,] source)
     {
-      source.ThrowIfUnequalRank(2);
+      source.AssertEqualRank(2);
+      source.AssertDimensionallySymmetrical();
 
-      var sourceLength0 = source.GetLength(0);
-      var sourceLength1 = source.GetLength(1);
-
-      if (sourceLength0 != sourceLength1) throw new System.ArgumentException("In-place transposition requires dimensions of equal length.");
-
-      var sl0m2 = sourceLength0 - 2;
-      var sl1m1 = sourceLength1 - 1;
+      var sl0m2 = source.GetLength(0) - 2;
+      var sl1m1 = source.GetLength(1) - 1;
 
       for (var s0 = 0; s0 <= sl0m2; s0++)
         for (var s1 = s0 + 1; s1 <= sl1m1; s1++)

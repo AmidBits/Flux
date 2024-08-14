@@ -67,7 +67,7 @@ namespace Flux
             indices.Add(position);
       }
       else // Otherwise use generic algorithm.
-        Quantities.Radix.TryConvertNumberToPositionalNotationIndices(number, TSelf.CreateChecked(alphabet.Length), out indices);
+        number.TryConvertNumberToPositionalNotationIndices(TSelf.CreateChecked(alphabet.Length), out indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
@@ -88,7 +88,7 @@ namespace Flux
 
       TryConvertSymbolsToPositionalNotationIndices(text[(isNegative ? 1 : 0)..], alphabet.AsSpan(), out var indices);
 
-      Quantities.Radix.TryConvertPositionalNotationIndicesToNumber(indices, alphabet.Length, out TSelf value);
+      indices.TryConvertPositionalNotationIndicesToNumber(alphabet.Length, out TSelf value);
 
       return number = isNegative ? -value : value;
     }
@@ -142,7 +142,7 @@ namespace Flux
     {
       if (alphabet.Length < 10) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      Quantities.Radix.TryConvertNumberToPositionalNotationIndices(value, 10, out var indices);
+      value.TryConvertNumberToPositionalNotationIndices(10, out var indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
@@ -166,7 +166,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 10 digit string for an 32-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToDecimalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToDecimalString(value, Quantities.Radix.MaxDigitCount(value.GetBitCount(), 10, value.IsSignedNumber()));
+      => ToDecimalString(value, value.GetBitCount().MaxDigitsOfBitLength(10, value.IsSignedNumber()));
 
     #endregion // Decimal strings
 
@@ -179,7 +179,7 @@ namespace Flux
     {
       if (alphabet.Length < 16) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      Quantities.Radix.TryConvertNumberToPositionalNotationIndices(value, 16, out var indices);
+      value.TryConvertNumberToPositionalNotationIndices(16, out var indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
@@ -199,7 +199,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 8 digit string for an 32-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToHexadecimalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToHexadecimalString(value, Quantities.Radix.MaxDigitCount(value.GetBitCount(), 16, value.IsSignedNumber()));
+      => ToHexadecimalString(value, value.GetBitCount().MaxDigitsOfBitLength(16, value.IsSignedNumber()));
 
     #endregion // Hexadecimal strings
 
@@ -212,7 +212,7 @@ namespace Flux
     {
       if (alphabet.Length < 8) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      Quantities.Radix.TryConvertNumberToPositionalNotationIndices(value, 8, out var indices);
+      value.TryConvertNumberToPositionalNotationIndices(8, out var indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.
@@ -232,7 +232,7 @@ namespace Flux
     /// <remarks>This function evaluates and returns the most fitting string length, e.g. a 3 digit string for an 8-bit integer.</remarks>
     public static System.ReadOnlySpan<char> ToOctalString<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => ToOctalString(value, Quantities.Radix.MaxDigitCount(value.GetBitCount(), 8, value.IsSignedNumber()));
+      => ToOctalString(value, value.GetBitCount().MaxDigitsOfBitLength(8, value.IsSignedNumber()));
 
     #endregion // Octal strings
 
@@ -253,7 +253,7 @@ namespace Flux
 
       // Otherwise use generic algorithm.
 
-      Quantities.Radix.TryConvertNumberToPositionalNotationIndices(value, TSelf.CreateChecked(alphabet.Length), out var indices);
+      value.TryConvertNumberToPositionalNotationIndices(TSelf.CreateChecked(alphabet.Length), out var indices);
 
       while (indices.Count < minLength)
         indices.Insert(0, 0); // Pad left with zeroth element.

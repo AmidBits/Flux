@@ -11,7 +11,7 @@ namespace Flux
     /// </remarks>
     public static T[,] FlipToCopy<T>(this T[,] source, int dimension)
     {
-      source.ThrowIfUnequalRank(2);
+      source.AssertEqualRank(2);
       
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);

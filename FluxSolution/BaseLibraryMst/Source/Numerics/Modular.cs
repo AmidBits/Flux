@@ -37,10 +37,10 @@ namespace Maths
     [TestMethod]
     public void ModInv()
     {
-      var mi4and7 = Flux.Maths.ModInv(4, 7); // mi = 2, i.e. "2 is the modular multiplicative inverse of 4 (and vice versa), mod 7".;
+      var mi4and7 = 4.ModInv(7); // mi = 2, i.e. "2 is the modular multiplicative inverse of 4 (and vice versa), mod 7".;
       Assert.AreEqual(2, mi4and7);
 
-      var mi8and11 = Flux.Maths.ModInv(8, 11); // mi = 7, i.e. "7 is the modular inverse of 8, mod 11".
+      var mi8and11 = 8.ModInv(11); // mi = 7, i.e. "7 is the modular inverse of 8, mod 11".
       Assert.AreEqual(7, mi8and11);
     }
 

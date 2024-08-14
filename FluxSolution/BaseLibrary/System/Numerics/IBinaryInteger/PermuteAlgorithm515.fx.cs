@@ -27,7 +27,7 @@ namespace Flux
         for (; ; )
         {
           c[i - 1] = c[i - 1] + 1;
-          r = Maths.BinomialCoefficient(n - c[i - 1], p - i);
+          r = (n - c[i - 1]).BinomialCoefficient(p - i);
           k += r;
 
           if (l <= k)
@@ -54,7 +54,7 @@ namespace Flux
         do
         {
           c[i]++;
-          r = Maths.BinomialCoefficient(n - c[i], p - (i + 1));
+          r = (n - c[i]).BinomialCoefficient(p - (i + 1));
           k += r;
         }
         while (k < x);
@@ -88,7 +88,7 @@ namespace Flux
         do
         {
           x++;
-          var bc = Maths.BinomialCoefficient(ulong.CreateChecked(n - c[int.CreateChecked(i) - 1]), ulong.CreateChecked(p - i));
+          var bc = ulong.CreateChecked(n - c[int.CreateChecked(i) - 1]).BinomialCoefficient(ulong.CreateChecked(p - i));
           r = TSelf.CreateChecked(bc);
           k += r;
         }

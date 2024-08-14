@@ -85,9 +85,9 @@ namespace Flux
     /// <summary>
     /// <para>Returns the chroma and hue [0.0, 360.0] for the RGB value.</para>
     /// </summary>
-    public static (double Chroma2, double Hue2) ComputeSecondaryChromaAndHue()
+    public static (double Chroma2, double Hue2) ComputeSecondaryChromaAndHue(this System.Drawing.Color source)
     {
-      var (a, r, g, b) = ToArgb();
+      var (a, r, g, b) = ToArgb(source);
 
       var alpha = (2 * r - g - b) / 2;
       var beta = (System.Math.Sqrt(3) / 2) * (g - b);
@@ -117,13 +117,13 @@ namespace Flux
     /// <summary>
     /// <para>Creates AHSI unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
     /// </summary>
-    public static (double A, double H, double S, double I) ToAhsi()
+    public static (double A, double H, double S, double I) ToAhsi(this System.Drawing.Color source)
     {
-      var (min, _) = ComputeMinMax(source, out var alpha, out var red, out var green, out var blue);
+      var (min, _) = source.ComputeMinMax(out var alpha, out var red, out var green, out var blue);
 
       var i = (red + green + blue) / 3;
       var s = i == 0 ? 0 : 1 - (min / i);
-      
+
       return (
         alpha,
         source.GetHue(),
@@ -135,9 +135,9 @@ namespace Flux
     /// <summary>
     /// <para>Creates AHSL unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
     /// </summary>
-    public static (double A, double H, double S, double L) ToAhsl()
+    public static (double A, double H, double S, double L) ToAhsl(this System.Drawing.Color source)
     {
-      var chroma = ComputeChroma(out var alpha, out var red, out var green, out var blue, out var min, out var max)
+      var chroma = source.ComputeChroma(out var alpha, out var red, out var green, out var blue, out var min, out var max);
 
       var l = 0.5 * (max + min);
       var s = l == 0 || l == 1 ? 0 : System.Math.Clamp(chroma / (1 - System.Math.Abs(2 * l - 1)), 0, 1);
@@ -153,9 +153,9 @@ namespace Flux
     /// <summary>
     /// <para>Creates AHSV unit values corresponding to the <see cref="System.Drawing.Color"/>.</para>
     /// </summary>
-    public static (double A, double H, double S, double V) ToAhsv()
+    public static (double A, double H, double S, double V) ToAhsv(this System.Drawing.Color source)
     {
-      var chroma = ComputeChroma(out var alpha, out var red, out var green, out var blue, out var min, out var max)
+      var chroma = source.ComputeChroma(out var alpha, out var red, out var green, out var blue, out var min, out var max);
 
       return (
         alpha,
@@ -171,7 +171,7 @@ namespace Flux
     public static (double A, double H, double W, double B) ToAhwb(this System.Drawing.Color source)
     {
       var (min, max) = ComputeMinMax(source, out var a, out var _, out var _, out var _);
-      
+
       return (a, source.GetHue(), min, 1 - max);
     }
 
@@ -190,15 +190,15 @@ namespace Flux
     /// <para>Creates grayscale ARGB unit values corresponding to the <see cref="System.Drawing.Color"/> using the specified grayscale method.</para>
     /// <para><see href="https://onlinetools.com/image/grayscale-image"/></para>
     /// </summary>
-    public static (double A, double R, double G, double B) ToArgbGrayscale(this System.Drawing.Color source, GrayscaleMethod method)
+    public static (double A, double R, double G, double B) ToArgbGrayscale(this System.Drawing.Color source, Flux.Colors.GrayscaleMethod method)
     {
       const double OneThird = 1d / 3d;
 
       return method switch
       {
-        GrayscaleMethod.Average => ToArgbScaled(source, 1, OneThird, OneThird, OneThird),
-        GrayscaleMethod.Luminosity601 => ToArgbScaled(source, 1, 0.30, 0.59, 0.11),
-        GrayscaleMethod.Luminosity709 => ToArgbScaled(source, 1, 0.21, 0.72, 0.07),
+        Flux.Colors.GrayscaleMethod.Average => ToArgbScaled(source, 1, OneThird, OneThird, OneThird),
+        Flux.Colors.GrayscaleMethod.Luminosity601 => ToArgbScaled(source, 1, 0.30, 0.59, 0.11),
+        Flux.Colors.GrayscaleMethod.Luminosity709 => ToArgbScaled(source, 1, 0.21, 0.72, 0.07),
         _ => throw new System.ArgumentOutOfRangeException(nameof(method))
       };
     }
@@ -208,9 +208,9 @@ namespace Flux
     /// </summary>
     public static (double A, double R, double G, double B) ToArgbScaled(this System.Drawing.Color source, double sa, double sr, double sg, double sb)
     {
-      (a, r, g, b) = ComputeArgb(source);
+      (sa, sr, sg, sb) = ToArgb(source);
 
-      return (a * sa, r * sr, g * sg, b * sb);
+      return (sa * sa, sr * sr, sg * sg, sb * sb);
     }
 
     public static string ToHtmlColorString(this System.Drawing.Color source) => $"rgb({source.R}, {source.G}, {source.B})";

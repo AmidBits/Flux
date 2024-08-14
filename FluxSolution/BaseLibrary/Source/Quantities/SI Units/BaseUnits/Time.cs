@@ -210,11 +210,9 @@ namespace Flux
         => ToUnitValueString(TimeUnit.Second, format, formatProvider);
 
       // ISiUnitValueQuantifiable<>
-      public TimeUnit BaseUnit => TimeUnit.Second;
+      public (MetricPrefix Prefix, TimeUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, TimeUnit.Second);
 
-      public TimeUnit UnprefixedUnit => TimeUnit.Second;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 

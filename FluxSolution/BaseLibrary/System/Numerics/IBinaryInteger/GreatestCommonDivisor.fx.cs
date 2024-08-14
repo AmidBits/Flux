@@ -4,11 +4,11 @@ namespace Flux
   {
     /// <summary>Returns the greatest common divisor of all values.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
-    public static TSelf Gcd<TSelf>(this TSelf[] values)
+    public static TSelf Gcd<TSelf>(this TSelf a, params TSelf[] other)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => values.Length >= 2
-      ? values.Aggregate((a, b) => a.GreatestCommonDivisor(b))
-      : throw new System.ArgumentOutOfRangeException(nameof(values));
+      => other.Length >= 1
+      ? a.GreatestCommonDivisor(other.Aggregate((b, c) => b.GreatestCommonDivisor(c)))
+      : throw new System.ArgumentOutOfRangeException(nameof(other));
 
     /// <summary>Returns the greatest common divisor of <paramref name="a"/> and <paramref name="b"/>.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>

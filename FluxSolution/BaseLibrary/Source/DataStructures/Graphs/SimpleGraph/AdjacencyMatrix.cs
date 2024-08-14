@@ -20,7 +20,7 @@
 
     public AdjacencyMatrix(int[,] matrix)
     {
-      m_matrix = (int[,])matrix.AssertSymmetrical(); // matrix.IsSymmetrical() ? matrix : throw new System.ArgumentOutOfRangeException(nameof(matrix));
+      m_matrix = (int[,])matrix.AssertDimensionallySymmetrical(); // matrix.IsSymmetrical() ? matrix : throw new System.ArgumentOutOfRangeException(nameof(matrix));
 
       m_vertexValues = new();
       m_edgeValues = new();

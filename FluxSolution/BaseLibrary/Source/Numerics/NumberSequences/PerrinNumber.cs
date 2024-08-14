@@ -2,14 +2,23 @@ namespace Flux
 {
   public static partial class NumberSequence
   {
-    /// <summary>Yields a Perrin number of the specified value number.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Perrin_number"/>
+    /// <summary>
+    /// <para>Yields a Perrin number of the specified value number.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Perrin_number"/></para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="index"></param>
+    /// <returns></returns>
     public static TSelf GetPerrinNumber<TSelf>(TSelf index)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => System.Linq.Enumerable.First(System.Linq.Enumerable.Where(GetPerrinNumbers<TSelf>(), (e, i) => TSelf.CreateChecked(i) == index));
 
-    /// <summary>Creates an indefinite sequence of Perrin numbers.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Perrin_number"/>
+    /// <summary>
+    /// <para>Creates an indefinite sequence of Perrin numbers.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Perrin_number"/></para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<TSelf> GetPerrinNumbers<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

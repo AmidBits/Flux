@@ -165,11 +165,9 @@ namespace Flux
         => ToUnitValueString(LengthUnit.Metre, format, formatProvider);
 
       // ISiUnitValueQuantifiable<>
-      public LengthUnit BaseUnit => LengthUnit.Metre;
+      public (MetricPrefix Prefix, LengthUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, LengthUnit.Metre);
 
-      public LengthUnit UnprefixedUnit => LengthUnit.Metre;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 

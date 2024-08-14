@@ -11,7 +11,7 @@ namespace Flux.Statistics
     /// <summary>With the expectation of <paramref name="a"/> events in a given interval, the probability of <paramref name="k"/> events in the same interval is.</summary>
     /// <param name="a">The number of expected events [1, ..] in a given interval.</param>
     /// <param name="k">The number of events [1, ..] in the same interval.</param>
-    public static double ProbabilityMassFunction(this double a, int k)
-      => System.Math.Pow(a, k) * System.Math.Pow(System.Math.E, -a) / Maths.Factorial(k);
+    public static double PoissonDistributionPmf(this double a, int k)
+      => System.Math.Pow(a, k) * System.Math.Pow(System.Math.E, -a) / k.Factorial();
   }
 }

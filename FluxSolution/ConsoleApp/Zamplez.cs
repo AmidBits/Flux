@@ -301,8 +301,8 @@ namespace ConsoleApp
 
       var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
-      var rtpTowardsZero = Flux.Quantities.Radix.PowOfTowardZero(value, radix, true);
-      var rtpAwayFromZero = Flux.Quantities.Radix.PowOfAwayFromZero(value, radix, true);
+      var rtpTowardsZero = value.PowOfTowardZero(radix, true);
+      var rtpAwayFromZero = value.PowOfAwayFromZero(radix, true);
       var rtp = value.RoundToBoundaries(Flux.RoundingMode.AwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
@@ -651,7 +651,7 @@ namespace ConsoleApp
         .Append(typeof(Flux.Quantities.Rate<Flux.Quantities.Length, Flux.Quantities.Time>))
         .OrderBy(t => t.Name)
         .Where(t => !t.IsInterface && !t.Name.Contains("Fraction"))
-        .Select(q => q.Name + " = " + (q.GetDefaultValue()?.ToString() ?? "Null"))));
+        .Select(q => q.Name + " = " + (q.CreateInstance()?.ToString() ?? "Null"))));
     }
 
     #endregion

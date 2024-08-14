@@ -41,11 +41,35 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var s = "";
-      var ros = s.AsSpan();
+      var siv = new Flux.Quantities.Mass(1);
 
 
+      var sid = siv.ToStringsOfMetricPrefixes();
 
+      var fp = 0.ToBigInteger();
+      var na = 0.ToBigInteger();
+
+      for (var n = 0.ToBigInteger(); n < 102; n++)
+      {
+        var f = n.Factorial();
+        var sf = n.SplitFactorial();
+
+        System.Console.WriteLine($"{n} = {f} : {sf}");
+
+        fp += f;
+        na += n;
+      }
+
+      System.Console.WriteLine(string.Join(", ", Flux.NumberSequence.GetSphenicNumbers(166)));
+
+      var number = 60;
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => string.Join(", ", number.PrimeFactors())));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => number.PrimeFactors().Count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => number.PrimeFactors().Sum()));
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => string.Join(",", number.Factors(false)), 10));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => string.Join(",", number.Factors(true)), 10));
     }
 
     #region Eliza example

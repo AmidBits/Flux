@@ -16,7 +16,7 @@ namespace Flux
     /// <seealso href="https://en.wikipedia.org/wiki/Sign_function"/>
     public static TSelf Sign<TSelf>(this TSelf x)
       where TSelf : System.Numerics.INumber<TSelf>
-      => TSelf.Sign(x);
+      => TSelf.CreateChecked(TSelf.Sign(x));
 
     /// <summary>The unit sign step function.</summary>
     /// <remarks>LT 0 = -1, GTE 0 = +1.</remarks>

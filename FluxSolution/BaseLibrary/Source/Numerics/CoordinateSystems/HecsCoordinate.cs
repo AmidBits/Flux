@@ -120,7 +120,21 @@ namespace Flux
       #region Implemented interfaces
 
       string System.IFormattable.ToString(string? format, System.IFormatProvider? provider)
-        => $"{GetType().GetNameEx()} {{ A = {string.Format($"{{0:{format ?? "N6"}}}", A)}, R = {string.Format($"{{0:{format ?? "N6"}}}", R)}, C = {string.Format($"{{0:{format ?? "N6"}}}", C)} }}";
+      {
+        format ??= "N6";
+
+        var sb = new System.Text.StringBuilder();
+        sb.Append('<');
+        sb.Append(m_a.ToString(format, provider));
+        sb.Append(',');
+        sb.Append(' ');
+        sb.Append(m_r.ToString(format, provider));
+        sb.Append(',');
+        sb.Append(' ');
+        sb.Append(m_c.ToString(format, provider));
+        sb.Append('>');
+        return sb.ToString();
+      }
 
       #endregion // Implemented interfaces
 

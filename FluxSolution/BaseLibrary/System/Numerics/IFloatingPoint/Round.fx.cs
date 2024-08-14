@@ -197,7 +197,7 @@
     public static TSelf RoundToPowOfAwayFromZero<TSelf, TRadix>(this TSelf value, TRadix radix, bool unequal = false)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TSelf.CreateChecked(Quantities.Radix.PowOfAwayFromZero(System.Numerics.BigInteger.CreateChecked(value), System.Numerics.BigInteger.CreateChecked(radix), unequal || !TSelf.IsInteger(value)));
+      => TSelf.CreateChecked(System.Numerics.BigInteger.CreateChecked(value).PowOfAwayFromZero(System.Numerics.BigInteger.CreateChecked(radix), unequal || !TSelf.IsInteger(value)));
 
     /// <summary>
     /// <para></para>
@@ -210,7 +210,7 @@
     public static TSelf RoundToPowOfTowardZero<TSelf, TRadix>(this TSelf value, TRadix radix, bool unequal = false)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TSelf.CreateChecked(Quantities.Radix.PowOfTowardZero(System.Numerics.BigInteger.CreateChecked(value), System.Numerics.BigInteger.CreateChecked(radix), unequal && TSelf.IsInteger(value)));
+      => TSelf.CreateChecked(System.Numerics.BigInteger.CreateChecked(value).PowOfTowardZero(System.Numerics.BigInteger.CreateChecked(radix), unequal && TSelf.IsInteger(value)));
 
     #endregion // Specialty
 

@@ -2,16 +2,22 @@ namespace Flux
 {
   public static partial class NumberSequence
   {
-    /// <summary>Creates a Van Eck's sequence, starting with the specified number (where 0 yields the original sequence).</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/>
+    /// <summary>
+    /// <para>Creates a new Van Eck's sequence, starting with the specified <paramref name="number"/> (where 0 yields the original sequence).</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/></para>
+    /// </summary>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public static System.Collections.Generic.IEnumerable<TSelf> GetVanEckSequence<TSelf>(TSelf startWith)
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="number"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static System.Collections.Generic.IEnumerable<TSelf> GetVanEckSequence<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (startWith < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(startWith));
+      if (number < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(number));
 
       var lasts = new System.Collections.Generic.Dictionary<TSelf, TSelf>();
-      var last = startWith;
+      var last = number;
 
       for (var index = TSelf.Zero; ; index++)
       {

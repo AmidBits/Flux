@@ -19,7 +19,7 @@ namespace Flux
     /// <returns></returns>
     public static (double TargetValue, Quantities.MetricPrefix TargetPrefix) FindInfimum(this Quantities.MetricPrefix source, double value)
     {
-      var targetDigits = Quantities.Radix.DigitCount(new System.Numerics.BigInteger(System.Math.Truncate(value)), 10) + (int)source - 1;
+      var targetDigits = new System.Numerics.BigInteger(System.Math.Truncate(value)).DigitCount(10) + (int)source - 1;
 
       var targetPrefix = (Quantities.MetricPrefix)System.Enum.GetValues<Quantities.MetricPrefix>().Select(p => (int)p).Order().Last(p => targetDigits >= p);
       var targetValue = source.Convert(value, targetPrefix);

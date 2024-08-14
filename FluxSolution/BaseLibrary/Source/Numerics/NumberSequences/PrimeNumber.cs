@@ -3,22 +3,40 @@ namespace Flux
 {
   public static partial class NumberSequence
   {
-    /// <summary>Creates a new sequence of ascending potential primes, greater-than-or-equal-to the specified number.</summary>
-    public static System.Collections.Generic.IEnumerable<TSelf> GetAscendingPotentialPrimes<TSelf>(TSelf startAt)
+    public static TSelf PrimeCandidateAwayFromZero<TSelf>(this TSelf number, bool unequal)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => PrimeMultipleAwayFromZero(number) is var tz && tz - TSelf.One is var tzM1 && ((unequal && number == tzM1) || number >= tz) ? tz + TSelf.One : tzM1;
+
+    public static TSelf PrimeCandidateTowardZero<TSelf>(this TSelf number, bool unequal)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => PrimeMultipleTowardZero(number) is var tz && tz + TSelf.One is var tzP1 && ((unequal && number == tzP1) || number <= tz) ? tz - TSelf.One : tzP1;
+
+    public static TSelf PrimeMultipleAwayFromZero<TSelf>(this TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.CreateChecked(6) is var six && number % six is var r && TSelf.IsZero(r) ? number : number + (six - r);
+
+    public static TSelf PrimeMultipleTowardZero<TSelf>(this TSelf number)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => TSelf.CreateChecked(6) is var six && number % six is var r && TSelf.IsZero(r) ? number : number - r;
+
+    /// <summary>
+    /// <para>Creates a new sequence of ascending potential primes, greater-than-or-equal-to the specified <paramref name="number"/>.</para>
+    /// </summary>
+    public static System.Collections.Generic.IEnumerable<TSelf> GetAscendingPrimeCandidates<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (TSelf.CreateChecked(2) is var two && startAt <= two)
+      if (TSelf.CreateChecked(2) is var two && number <= two)
         yield return two;
 
-      if (TSelf.CreateChecked(3) is var three && startAt <= three)
+      if (TSelf.CreateChecked(3) is var three && number <= three)
         yield return three;
 
-      if (TSelf.CreateChecked(5) is var five && startAt <= five)
-        startAt = five;
+      if (TSelf.CreateChecked(5) is var five && number <= five)
+        number = five;
 
       var six = TSelf.CreateChecked(6);
 
-      var (quotient, remainder) = TSelf.DivRem(startAt, six);
+      var (quotient, remainder) = TSelf.DivRem(number, six);
 
       var multiple = (quotient + (remainder > TSelf.One ? TSelf.One : TSelf.Zero)) * six;
 
@@ -66,20 +84,22 @@ namespace Flux
     //  }
     //}
 
-    /// <summary>Creates a new sequence ascending prime numbers, greater-than-or-equal-to the specified number.</summary>
-    public static System.Collections.Generic.IEnumerable<TSelf> GetAscendingPrimes<TSelf>(TSelf startAt)
+    /// <summary>
+    /// <para>Creates a new sequence ascending prime numbers, greater-than-or-equal-to the specified <paramref name="number"/>.</para>
+    /// </summary>
+    public static System.Collections.Generic.IEnumerable<TSelf> GetAscendingPrimes<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => GetAscendingPotentialPrimes(startAt).AsParallel().AsOrdered().Where(IsPrimeNumber);
+      => GetAscendingPrimeCandidates(number).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
-    /// <summary>Creates a new sequence of descending potential primes, less than the specified number.</summary>
-    public static System.Collections.Generic.IEnumerable<TSelf> GetDescendingPotentialPrimes<TSelf>(TSelf startAt)
+    /// <summary>Creates a new sequence of descending potential primes, less than the specified <paramref name="number"/>.</summary>
+    public static System.Collections.Generic.IEnumerable<TSelf> GetDescendingPrimeCandidates<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (TSelf.CreateChecked(5) is var five && startAt >= five)
+      if (TSelf.CreateChecked(5) is var five && number >= five)
       {
         var six = TSelf.CreateChecked(6);
 
-        var (quotient, remainder) = TSelf.DivRem(startAt, six);
+        var (quotient, remainder) = TSelf.DivRem(number, six);
 
         var multiple = (quotient + (remainder == five ? TSelf.One : TSelf.Zero)) * six;
 
@@ -99,102 +119,21 @@ namespace Flux
         }
       }
 
-      if (TSelf.CreateChecked(3) is var three && startAt >= three)
+      if (TSelf.CreateChecked(3) is var three && number >= three)
         yield return three;
 
-      if (TSelf.CreateChecked(2) is var two && startAt >= two)
+      if (TSelf.CreateChecked(2) is var two && number >= two)
         yield return two;
     }
 
-    /// <summary>Creates a new sequence descending prime numbers, less-than-or-equal-to the specified number.</summary>
-    public static System.Collections.Generic.IEnumerable<TSelf> GetDescendingPrimes<TSelf>(TSelf startAt)
+    /// <summary>
+    /// <para>Creates a new sequence descending prime numbers, less-than-or-equal-to the specified <paramref name="number"/>.</para>
+    /// </summary>
+    public static System.Collections.Generic.IEnumerable<TSelf> GetDescendingPrimes<TSelf>(this TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => GetDescendingPotentialPrimes(startAt).AsParallel().AsOrdered().Where(IsPrimeNumber);
+      => GetDescendingPrimeCandidates(number).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
-    //public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetClosestPotentialPrimes2(System.Numerics.BigInteger number)
-    //{
-    //  if (number < 0) throw new System.ArgumentOutOfRangeException(nameof(number));
-
-    //  var nm = GenericMath.NearestMultiple(number, 6, false, RoundingMode.HalfTowardZero, out var tz, out var afz);
-
-    //  Flux.BoundaryRounding<System.Numerics.BigInteger, System.Numerics.BigInteger>.MeasureDistanceToBoundaries(number, tz, afz, out System.Numerics.BigInteger dtz, out System.Numerics.BigInteger dafz);
-
-    //  if (number <= 2)
-    //  {
-    //    yield return 2;
-    //    yield return 3;
-    //    tz = -6;
-    //  }
-    //  else if (number <= 3)
-    //  {
-    //    yield return 3;
-    //    yield return 2;
-    //    tz = -6;
-    //  }
-
-    //  if (nm == afz)
-    //  {
-    //    while (true)
-    //    {
-    //      //if (tz < 0) break;
-    //      yield return afz - 1;
-    //      if (tz >= 6) yield return tz + 1;
-    //      else if (tz == 0) yield return 3;
-    //      yield return afz + 1;
-    //      if (tz >= 6) yield return tz - 1;
-    //      else if (tz == 0) yield return 2;
-    //      afz += 6;
-    //      tz -= 6;
-    //    }
-    //  }
-    //  else // Assumption here.
-    //  {
-    //    while (true)
-    //    {
-    //      //if (tz < 0) break;
-    //      if (tz > 0) yield return tz + 1;
-    //      else if (tz == 0) yield return 3;
-    //      yield return afz - 1;
-    //      if (tz > 0) yield return tz - 1;
-    //      else if (tz == 0) yield return 2;
-    //      yield return afz + 1;
-    //      tz -= 6;
-    //      afz += 6;
-    //    }
-    //  }
-
-    //  while (true)
-    //  {
-    //    yield return afz - 1;
-    //    yield return afz + 1;
-    //    afz += 6;
-    //  }
-    //}
-
-    /// <summary>Finds the nearest potential prime multiple (i.e. a multiple of 6) of <paramref name="number"/>, and if needed, apply the specified rounding <paramref name="mode"/>. Also returns the <paramref name="nearestPotentialPrimeMultipleOffset"/> as an output parameter.</summary>
-    /// <param name="number">The target number.</param>
-    /// <param name="mode">The <see cref="RoundingMode"/> to use if exactly between two multiples.</param>
-    /// <param name="nearestPotentialPrimeMultipleOffset">The offset direction from the returned potential prime multiple, or the multiple itself: +1 = nearer TZ, -1 = nearer AFZ, 0 = exactly halfway between TZ and AFZ, or <paramref name="number"/> if it is a potential prime multiple.</param>
-    /// <returns></returns>
-    //public static System.Numerics.BigInteger GetNearestPotentialPrimeMultiple(System.Numerics.BigInteger number, RoundingMode mode, out System.Numerics.BigInteger nearestPotentialPrimeMultipleOffset)
-    //{
-    //  number.RoundToMultipleOf(6, false, RoundingMode.HalfTowardZero, out var multipleTowardsZero, out var multipleAwayFromZero);
-
-    //  var nm = ((double)number).RoundToBoundaries(mode, (double)multipleTowardsZero, (double)multipleAwayFromZero);
-
-    //  var binm = new System.Numerics.BigInteger(nm);
-    //  var binmtz = multipleTowardsZero;
-    //  var binmafz = multipleAwayFromZero;
-
-    //  nearestPotentialPrimeMultipleOffset = binmtz == binmafz ? number // If TZ and AFZ are equal (i.e. NearestMultiple(), above, returns number for both TZ and AFZ, if number is a multiple, and 'proper' is false), so number is a multiple.
-    //    : number - binmtz <= 3 ? +1 // The difference between TZ and number is less than 3, therefor closer to TZ.
-    //    : binmafz - number <= 3 ? -1 // The difference between AFZ and number is less than 3, therefor closer to AFZ.
-    //    : 0; // The difference between either TZ/AFZ and number is exactly 3, therefor number is exactly halfway between TZ and AFZ.
-
-    //  return binm;
-    //}
-
-    public static System.Collections.Generic.IEnumerable<TSelf> GetClosestPotentialPrimes<TSelf>(TSelf number)
+    public static System.Collections.Generic.IEnumerable<TSelf> GetClosestPrimeCandidates<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       var two = TSelf.CreateChecked(2);
@@ -253,7 +192,7 @@ namespace Flux
 
     public static System.Collections.Generic.IEnumerable<TSelf> GetClosestPrimes<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => GetClosestPotentialPrimes(number).AsParallel().AsOrdered().Where(IsPrimeNumber);
+      => GetClosestPrimeCandidates(number).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
     /// <summary>Returns a sequence of cousine primes, each of which is a pair of primes that differ by four.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Cousin_prime"/>
@@ -279,7 +218,7 @@ namespace Flux
     /// <param name="number">The target for locating the bounds.</param>
     /// <returns></returns>
     /// <remarks>Any number below 2, simply returns 2 for both infimum and supremum.</remarks>
-    public static (TSelf Infimum, TSelf Supremum) GetInfimumAndSupremumOfPotentialPrimes<TSelf>(TSelf number)
+    public static (TSelf Infimum, TSelf Supremum) GetInfimumAndSupremumOfPrimeCandidates<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       => TSelf.CreateChecked(2) is var two && number <= two // If the number is two, or less.
       ? (two, two)
@@ -290,65 +229,6 @@ namespace Flux
       : TSelf.CreateChecked(5) is var five && (r == TSelf.One || r == five) // If the remainder is either a one or a five, i.e. a potential prime.
       ? (number, number)
       : (number - r + TSelf.One, number - r + five); // Otherwise locate the potential prime using the remainder.
-
-    /// <summary></summary>
-    /// <see href="https://en.wikipedia.org/wiki/Factorization"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Wheel_factorization"/>
-    public static System.Collections.Generic.IEnumerable<TSelf> GetPrimeFactors2<TSelf>(TSelf number)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      if (number < TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(number));
-
-      var two = TSelf.CreateChecked(2);
-      var three = TSelf.CreateChecked(3);
-      var four = TSelf.CreateChecked(4);
-      var five = TSelf.CreateChecked(5);
-      var six = TSelf.CreateChecked(6);
-      var seven = TSelf.CreateChecked(7);
-
-      var m_primeFactorWheelIncrements = new TSelf[] { four, two, four, two, four, six, two, six };
-
-      while (TSelf.IsZero(number % two))
-      {
-        yield return two;
-        number /= two;
-      }
-
-      while (TSelf.IsZero(number % three))
-      {
-        yield return three;
-        number /= three;
-      }
-
-      while (TSelf.IsZero(number % five))
-      {
-        yield return five;
-        number /= five;
-      }
-
-      TSelf k = seven, k2 = k * k;
-      var index = 0;
-
-      while (k2 <= number)
-      {
-        if (TSelf.IsZero(number % k))
-        {
-          yield return k;
-          number /= k;
-        }
-        else
-        {
-          k += m_primeFactorWheelIncrements[index++];
-          k2 = k * k;
-
-          if (index >= m_primeFactorWheelIncrements.Length)
-            index = 0;
-        }
-      }
-
-      if (number > TSelf.One)
-        yield return number;
-    }
 
     /// <summary>Results in an ascending sequence of gaps between prime numbers starting with the specified number.</summary>
     public static System.Collections.Generic.IEnumerable<TSelf> GetPrimeGaps<TSelf>(TSelf startAt)
@@ -458,7 +338,7 @@ namespace Flux
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
     /// <see href="https://en.wikipedia.org/wiki/List_of_prime_numbers#Additive_primes"/>
     public static bool IsAlsoAdditivePrime(System.Numerics.BigInteger primeNumber)
-      => IsPrimeNumber(Quantities.Radix.DigitSum(primeNumber, 10));
+      => IsPrimeNumber(primeNumber.DigitSum(10));
 
     /// <summary>Indicates whether the prime number is also a congruent modulo prime.</summary>
     /// <param name="primeNumber">A prime number. If this number is not a prime number, the result is unpredictable.</param>
@@ -520,12 +400,6 @@ namespace Flux
     public static bool IsAlsoSophieGermainPrime(System.Numerics.BigInteger primeNumber)
       => IsPrimeNumber((primeNumber * 2) + 1);
 
-    /// <summary>Returns whether <paramref name="a"/> and <paramref name="b"/> are co-prime.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
-    public static bool IsCoprime<TSelf>(TSelf a, TSelf b)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Maths.GreatestCommonDivisor(a, b) == TSelf.One;
-
     ///// <summary>Indicates whether a specified number is a prime candidate.</summary>
 
     //public static bool IsPrimeCandidate(System.Numerics.BigInteger number)
@@ -546,9 +420,11 @@ namespace Flux
     //  else return offset == 1;
     //}
 
-    ///// <summary>Indicates whether a specified number is a prime.</summary>
-    ///// <see href="https://en.wikipedia.org/wiki/Primality_test"/>
-    ///// <seealso cref="https://en.wikipedia.org/wiki/Prime_number"/>
+    /// <summary>
+    /// <para>Indicates whether a <paramref name="number"/> is a prime.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Primality_test"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Prime_number"/></para>
+    /// </summary>
     public static bool IsPrimeNumber<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

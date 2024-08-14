@@ -2,17 +2,26 @@ namespace Flux
 {
   public static partial class NumberSequence
   {
-    /// <summary>Returns the Catalan number for the specified number.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Catalan_number"/>
+    /// <summary>
+    /// <para>Returns the Catalan number for the specified <paramref name="number"/>.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Catalan_number"/></para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="number"></param>
+    /// <returns></returns>
     public static TSelf GetCatalanNumber<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => number < TSelf.CreateChecked(200)
-      ? Maths.Factorial(number + number) / (Maths.Factorial(number + TSelf.One) * Maths.Factorial(number))
-      : Maths.SplitFactorial(number + number) / (Maths.SplitFactorial(number + TSelf.One) * Maths.SplitFactorial(number));
+      => number < TSelf.CreateChecked(211)
+      ? (number + number).Factorial() / ((number + TSelf.One).Factorial() * number.Factorial())
+      : (number + number).SplitFactorial() / ((number + TSelf.One).SplitFactorial() * number.SplitFactorial());
 
-    /// <summary>Creates a new sequence with Catalan numbers.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Catalan_number"/>
+    /// <summary>
+    /// <para>Creates a new sequence with Catalan numbers.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Catalan_number"/></para>
+    /// </summary>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<TSelf> GetCatalanSequence<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {

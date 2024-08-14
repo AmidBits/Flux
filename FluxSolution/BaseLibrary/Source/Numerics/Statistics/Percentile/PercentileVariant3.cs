@@ -13,7 +13,7 @@ namespace Flux.Statistics
     public static TPercent PercentileRank<TCount, TPercent>(TCount count, TPercent percent)
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      => Quantities.UnitInterval.AssertMember(percent, IntervalNotation.Closed, nameof(percent)) * TPercent.CreateChecked(Maths.AssertNonNegative(count) + TCount.One);
+      => Quantities.UnitInterval.AssertMember(percent, IntervalNotation.Closed, nameof(percent)) * TPercent.CreateChecked(count.AssertNonNegative() + TCount.One);
 
     /// <summary>
     /// <para>Inverse of empirical distribution function.</para>
@@ -26,7 +26,6 @@ namespace Flux.Statistics
       System.ArgumentNullException.ThrowIfNull(distribution);
 
       var sampleCount = distribution.Count();
-
       var x = PercentileRank(sampleCount, Quantities.UnitInterval.AssertMember(p, IntervalNotation.Closed, nameof(p)));
       var m = x % TPercent.One;
 

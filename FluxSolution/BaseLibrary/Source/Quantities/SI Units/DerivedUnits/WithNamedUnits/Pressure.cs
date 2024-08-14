@@ -84,11 +84,9 @@ namespace Flux
         => ToUnitValueString(PressureUnit.Pascal, format, formatProvider);
 
       // ISiUnitValueQuantifiable<>
-      public PressureUnit BaseUnit => PressureUnit.Pascal;
+      public (MetricPrefix Prefix, PressureUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, PressureUnit.Pascal);
 
-      public PressureUnit UnprefixedUnit => PressureUnit.Pascal;
-
-      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(UnprefixedUnit, preferUnicode, useFullName);
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
@@ -97,8 +95,7 @@ namespace Flux
         var sb = new System.Text.StringBuilder();
         sb.Append(GetSiPrefixValue(prefix).ToString(format, formatProvider));
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(prefix.GetUnitString(preferUnicode, useFullName));
-        sb.Append(UnprefixedUnit.GetUnitString(preferUnicode, useFullName));
+        sb.Append(GetSiPrefixSymbol(prefix, preferUnicode, useFullName));
         return sb.ToString();
       }
 

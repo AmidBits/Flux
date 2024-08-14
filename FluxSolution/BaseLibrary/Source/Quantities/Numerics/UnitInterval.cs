@@ -7,10 +7,10 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Unit_interval"/></para>
     /// </summary>
     public readonly record struct UnitInterval
-      : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, System.Numerics.IMinMaxValue<double>, IValueQuantifiable<double>
+      : System.IComparable, System.IComparable<UnitInterval>, System.IFormattable, IValueQuantifiable<double>
     {
-      //public const double MaxValue = 1;
-      //public const double MinValue = 0;
+      public const double MaxValue = 1;
+      public const double MinValue = 0;
 
       private readonly IntervalNotation m_notation;
 
@@ -31,21 +31,21 @@ namespace Flux
 
       #region Static methods
 
-      ///// <summary>
-      ///// <para>Asserts that the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>. If not, it throws an exception.</para>
-      ///// </summary>
-      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      //public static TSelf AssertMember<TSelf>(TSelf unitInterval, IntervalNotation notation, string? paramName = null)
-      //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      //  => notation.AssertValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(unitInterval));
+      /// <summary>
+      /// <para>Asserts that the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>. If not, it throws an exception.</para>
+      /// </summary>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static TSelf AssertMember<TSelf>(TSelf unitInterval, IntervalNotation notation, string? paramName = null)
+        where TSelf : System.Numerics.IFloatingPoint<TSelf>
+        => notation.AssertValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(unitInterval));
 
-      ///// <summary>
-      ///// <para>Returns whether the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>.</para>
-      ///// </summary>
-      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      //public static bool VerifyMember<TSelf>(TSelf unitInterval, IntervalNotation notation)
-      //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      //  => notation.IsValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+      /// <summary>
+      /// <para>Returns whether the <paramref name="unitInterval"/> is a member of the unit interval constrained by <paramref name="notation"/>.</para>
+      /// </summary>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static bool VerifyMember<TSelf>(TSelf unitInterval, IntervalNotation notation)
+        where TSelf : System.Numerics.IFloatingPoint<TSelf>
+        => notation.IsValidMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
 
       #endregion Static methods
 
@@ -81,9 +81,6 @@ namespace Flux
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
         => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
-
-      public readonly double MaxValue => 1;
-      public readonly double MinValue => 0;
 
       // IQuantifiable<>
       /// <summary>

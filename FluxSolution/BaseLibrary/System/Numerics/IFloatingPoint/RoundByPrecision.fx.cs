@@ -8,16 +8,16 @@
     /// <code>var r = RoundByPrecision(99.96535789, 2, HalfwayRounding.ToEven); // = 99.97 (compare with the corresponding <see cref="RoundByTruncatedPrecision{TSelf}(TSelf, RoundingMode, int, int)"/> method)</code>
     /// </example>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TSelf"></typeparam>
     /// <param name="value"></param>
     /// <param name="mode"></param>
     /// <param name="significantDigits"></param>
     /// <param name="radix"></param>
     /// <returns></returns>
-    public static TValue RoundByPrecision<TValue>(this TValue value, RoundingMode mode, int significantDigits, int radix = 10)
-      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IPowerFunctions<TSelf>
+    public static TSelf RoundByPrecision<TSelf>(this TSelf value, RoundingMode mode, int significantDigits, int radix = 10)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
     {
-      var scalar = TValue.Pow(TValue.CreateChecked(radix), TValue.CreateChecked(significantDigits));
+      var scalar = TSelf.Pow(TSelf.CreateChecked(radix), TSelf.CreateChecked(significantDigits));
 
       return Round(value * scalar, mode) / scalar;
     }

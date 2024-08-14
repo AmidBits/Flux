@@ -38,10 +38,10 @@ namespace Maths
     [TestMethod]
     public void Factorial()
     {
-      Assert.AreEqual(362880, Flux.Maths.Factorial(9), nameof(Flux.Maths.Factorial));
-      Assert.AreEqual(362880, Flux.Maths.SplitFactorial(9), nameof(Flux.Maths.SplitFactorial));
-      Assert.AreEqual(479001600, Flux.Maths.Factorial(12), nameof(Flux.Maths.Factorial));
-      Assert.AreEqual(479001600, Flux.Maths.SplitFactorial(12), nameof(Flux.Maths.SplitFactorial));
+      Assert.AreEqual(362880, 9.Factorial(), nameof(Flux.Fx.Factorial));
+      Assert.AreEqual(362880, 9.SplitFactorial(), nameof(Flux.Fx.SplitFactorial));
+      Assert.AreEqual(479001600, 12.Factorial(), nameof(Flux.Fx.Factorial));
+      Assert.AreEqual(479001600, 12.SplitFactorial(), nameof(Flux.Fx.SplitFactorial));
     }
 
     [TestMethod]
@@ -78,8 +78,8 @@ namespace Maths
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, Flux.Quantities.Radix.IsPowOf(100.ToBigInteger(), 10));
-      Assert.AreEqual(false, Flux.Quantities.Radix.IsPowOf(101.ToBigInteger(), 10));
+      Assert.AreEqual(true, 100.ToBigInteger().IsPowOf(10));
+      Assert.AreEqual(false, 101.ToBigInteger().IsPowOf(10));
     }
 
     [TestMethod]

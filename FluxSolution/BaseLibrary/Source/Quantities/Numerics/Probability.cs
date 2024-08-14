@@ -7,10 +7,10 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Probability"/></para>
     /// </summary>
     public readonly record struct Probability
-      : System.IComparable, System.IComparable<Probability>, System.IFormattable, System.Numerics.IMinMaxValue<double>, IValueQuantifiable<double>
+      : System.IComparable, System.IComparable<Probability>, System.IFormattable, IValueQuantifiable<double>
     {
-      //public const double MaxValue = 1;
-      //public const double MinValue = 0;
+      public const double MaxValue = 1;
+      public const double MinValue = 0;
 
       private readonly double m_value;
 
@@ -19,17 +19,80 @@ namespace Flux
 
       #region Static methods
 
-      ///// <summary>Asserts that the value is a member of the probability (throws an exception if not).</summary>
-      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      //public static TSelf AssertMember<TSelf>(TSelf probability, string? paramName = null)
-      //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      //  => IntervalNotation.Closed.AssertValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(probability));
+      /// <summary>Asserts that the value is a member of the probability (throws an exception if not).</summary>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static TSelf AssertMember<TSelf>(TSelf probability, string? paramName = null)
+        where TSelf : System.Numerics.IFloatingPoint<TSelf>
+        => IntervalNotation.Closed.AssertValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(probability));
 
-      ///// <summary>Returns whether the value is a member of the probability.</summary>
-      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      //public static bool VerifyMember<TSelf>(TSelf probability)
-      //  where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      //  => IntervalNotation.Closed.IsValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+      /// <summary>Returns whether the value is a member of the probability.</summary>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static bool VerifyMember<TSelf>(TSelf probability)
+        where TSelf : System.Numerics.IFloatingPoint<TSelf>
+        => IntervalNotation.Closed.IsValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+
+      #region Bernoulli distribution
+
+      /// <summary>
+      /// <para>In probability theory and statistics, the Bernoulli distribution, is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability q = 1 - p. Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question.</para>
+      /// <example>It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads (or vice versa where 1 would represent tails and p would be the probability of tails). In particular, unfair coins would have p != 1/2.</example>
+      /// <para><see href="https://en.wikipedia.org/wiki/Bernoulli_distribution"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Probability_mass_function"/></para>
+      /// </summary>
+      /// <param name="p">The probability.</param>
+      /// <param name="k">A value of 0 or 1.</param>
+      /// <returns></returns>
+      public static TProbability BernoulliDistributionPmf<TProbability, TCount>(TProbability p, TCount k)
+        where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
+        where TCount : System.Numerics.IBinaryInteger<TCount>
+        => p * TProbability.CreateChecked(k) + (TProbability.One - p) * TProbability.CreateChecked(TCount.One - k);
+
+      /// <summary>
+      /// <para>In probability theory and statistics, the Bernoulli distribution, is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability q = 1 - p. Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question.</para>
+      /// <example>It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads (or vice versa where 1 would represent tails and p would be the probability of tails). In particular, unfair coins would have p != 1/2.</example>
+      /// <para><see href="https://en.wikipedia.org/wiki/Bernoulli_distribution"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Probability_mass_function"/></para>
+      /// </summary>
+      /// <param name="p">The probability.</param>
+      /// <param name="k">True (1) or false (0).</param>
+      /// <returns></returns>
+      public static TProbability BernoulliDistributionPmf<TProbability>(TProbability p, bool k)
+        where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
+        => BernoulliDistributionPmf(p, k ? 1 : 0);
+
+      #endregion // Bernoulli distribution
+
+      #region Binomial distribution
+
+      /// <summary>
+      /// <para>The probability of getting exactly <paramref name="k"/> successes in <paramref name="n"/> independent Bernoulli trials (each with success probability <paramref name="p"/>).</para>
+      /// </summary>
+      /// <typeparam name="TProbability"></typeparam>
+      /// <typeparam name="TCount"></typeparam>
+      /// <param name="p">The success probability for each trial.</param>
+      /// <param name="k">The exact number of successes of an outcome inquired.</param>
+      /// <param name="n">The number of trials.</param>
+      /// <returns></returns>
+      public static TProbability BinomialDistributionPmf<TProbability, TCount>(TProbability p, TCount k, TCount n)
+        where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
+        where TCount : System.Numerics.IBinaryInteger<TCount>
+        => TProbability.CreateChecked(n.BinomialCoefficient(k)) * TProbability.Pow(p, TProbability.CreateChecked(k)) * TProbability.Pow(TProbability.One - p, TProbability.CreateChecked(n - k));
+
+      /// <summary>
+      /// <para>The the number of <paramref name="k"/> failures in a sequence of independent and identically distributed Bernoulli (each with success probability <paramref name="p"/>) trials before a specified (non-random) number of successes (denoted <paramref name="r"/>) occurs.</para>
+      /// </summary>
+      /// <typeparam name="TProbability"></typeparam>
+      /// <typeparam name="TCount"></typeparam>
+      /// <param name="p">The success probability for each trial.</param>
+      /// <param name="k">The number of failures.</param>
+      /// <param name="r">The number of successes.</param>
+      /// <returns></returns>
+      public static TProbability NegativeBinomialDistributionPmf<TProbability, TCount>(TProbability p, TCount k, TCount r)
+        where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
+        where TCount : System.Numerics.IBinaryInteger<TCount>
+        => TProbability.CreateChecked((k + r - TCount.One).BinomialCoefficient(k)) * TProbability.Pow(TProbability.One - p, TProbability.CreateChecked(k)) * TProbability.Pow(p, TProbability.CreateChecked(r));
+
+      #endregion // Binomial distribution
 
       /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
       /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
@@ -40,15 +103,78 @@ namespace Flux
       /// <returns></returns>
       public static Probability FromRandom(System.Random? rng = null) => new((rng ?? System.Random.Shared).Next() / (double)int.MaxValue);
 
-      /// <summary>A logistic function or logistic curve is a common "S" shape (sigmoid curve).</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Logistic_function"/>
-      /// <seealso cref="https://en.wikipedia.org/wiki/Sigmoid_function"/>
+      #region Geometric distribution
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <param name="p"></param>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      public static TSelf GeometricDistributionCdf1<TSelf>(TSelf p, TSelf x)
+        where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+        => x >= TSelf.One ? TSelf.One - TSelf.Pow(TSelf.One - p, TSelf.Floor(x)) : TSelf.Zero;
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <param name="p"></param>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      public static TSelf GeometricDistributionCdf2<TSelf>(TSelf p, TSelf x)
+        where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+        => x < TSelf.Zero ? TSelf.Zero : TSelf.One - TSelf.Pow(TSelf.One - p, TSelf.Floor(x) + TSelf.One);
+
+      /// <summary>
+      /// <para>The probability distribution of the number <paramref name="k"/> of Bernoulli trials needed to get one success, each with success probability <paramref name="p"/>.</para>
+      /// <para><example>Suppose an ordinary die is thrown repeatedly until the first time a "1" appears. The probability distribution of the number of times it is thrown is supported on the infinite set {1,2,3,...} and is a geometric distribution with p = 1/6.</example></para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_distribution"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Probability_mass_function"/></para>
+      /// </summary>
+      /// <typeparam name="TProbability"></typeparam>
+      /// <typeparam name="TCount"></typeparam>
+      /// <param name="p">The success probability (0, 1].</param>
+      /// <param name="k">The number of trials [1, ..].</param>
+      /// <returns></returns>
+      public static TProbability GeometricDistributionPmf1<TProbability, TCount>(TProbability p, TCount k)
+        where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
+        where TCount : System.Numerics.IBinaryInteger<TCount>
+        => TProbability.Pow(TProbability.One - p, TProbability.CreateChecked(k - TCount.One)) * p;
+
+      /// <summary>
+      /// <para>The probability distribution of the number <paramref name="k"/> of failures before the first success, each with success probability <paramref name="p"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_distribution"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Probability_mass_function"/></para>
+      /// </summary>
+      /// <typeparam name="TProbability"></typeparam>
+      /// <typeparam name="TCount"></typeparam>
+      /// <param name="p">The success probability (0, 1].</param>
+      /// <param name="k">The number of failures [0, ..].</param>
+      /// <returns></returns>
+      public static TProbability GeometricDistributionPmf2<TProbability, TCount>(TProbability p, TCount k)
+        where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
+        where TCount : System.Numerics.IBinaryInteger<TCount>
+        => TProbability.Pow(TProbability.One - p, TProbability.CreateChecked(k)) * p;
+
+      #endregion // Geometric distribution
+
+      /// <summary>
+      /// <para>A logistic function or logistic curve is a common "S" shape (sigmoid curve).</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Logistic_function"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Sigmoid_function"/></para>
+      /// </summary>
       /// <remarks>The standard logistic function is the logistic function with parameters (k = 1, x0 = 0, L = 1), a.k.a. sigmoid function.</remarks>
+      /// <typeparam name="TSelf"></typeparam>
       /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity] (x).</param>
-      /// <param name="k">The logistic growth rate or steepness of the curve (k).</param>
-      /// <param name="x0">The x-value of the sigmoid's midpoint (x0).</param>
+      /// <param name="k">The logistic growth rate or steepness of the curve (k). Default of (1).</param>
+      /// <param name="x0">The x-value of the sigmoid's midpoint (x0). Default of (0)</param>
       /// <param name="L">The curve's maximum value (L).</param>
-      public static double Logistic(double x, double k = 1, double x0 = 0, double L = 1) => L / (System.Math.Exp(-(k * (x - x0))) + 1);
+      /// <returns></returns>
+      public static TSelf Logistic<TSelf>(TSelf x, TSelf k, TSelf x0, TSelf L)
+        where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IExponentialFunctions<TSelf>
+        => L / (TSelf.Exp(-(k * (x - x0))) + TSelf.One);
 
       /// <summary>This nonlinear difference equation is intended to capture two effects.<list type="number"><item>Reproduction where the population will increase at a rate proportional to the current population when the population size is small.</item><item>Starvation (density-dependent mortality) where the growth rate will decrease at a rate proportional to the value obtained by taking the theoretical "carrying capacity" of the environment less the current population.</item></list></summary>
       /// <param name="Xn">The ratio of existing population to maximum possible population (Xn).</param>
@@ -88,6 +214,18 @@ namespace Flux
       /// <returns>The probability, which is in the range [0, 1].</returns>
       public static Probability OfDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount) => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_value);
 
+      /// <summary>
+      /// <para>A sigmoid function is any mathematical function whose graph has a characteristic S-shaped or sigmoid curve.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Sigmoid_function"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Logistic_function"/></para>
+      /// </summary>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      public static TSelf Sigmoid<TSelf>(TSelf x)
+        where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IExponentialFunctions<TSelf>
+        => Logistic(x, TSelf.One, TSelf.Zero, TSelf.One);
+
       /// <summary>Computes the odds (p / (1 - p)) ratio of the probability.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Odds"/>
       public Ratio ToOdds() => new(m_value, 1 - m_value);
@@ -126,9 +264,6 @@ namespace Flux
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
         => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
-
-      public readonly double MaxValue => 1;
-      public readonly double MinValue => 0;
 
       // IQuantifiable<>
       /// <summary>

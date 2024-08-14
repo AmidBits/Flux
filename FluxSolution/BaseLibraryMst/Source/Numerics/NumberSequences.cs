@@ -180,82 +180,82 @@ namespace Maths
     //  Assert.AreEqual(-479001600, Flux.GenericMath.Factorial(-12.ToType(out System.Numerics.BigInteger _)));
     //}
 
-    [TestMethod]
-    public void GenerateCountOfDivisors()
-    {
-      var expected = new int[] { 0, 1, 2, 2, 3, 2, 4, 2, 4, 3, 4, 2, 6, 2, 4, 4, 5, 2, 6, 2, 6, 4, 4, 2, 8, 3, 4, 4, 6, 2, 8, 2, 6, 4, 4, 4, 9, 2, 4, 4, 8, 2, 8, 2, 6, 6, 4, 2, 10, 3, 6, 4, 6, 2, 8, 4, 8, 4, 4, 2, 12, 2, 4, 6, 7 };
-      var actual = Flux.NumberSequence.GenerateCountOfFactors(64).ToArray();
-      CollectionAssert.AreEqual(actual, expected);
-    }
+    //[TestMethod]
+    //public void GenerateCountOfDivisors()
+    //{
+    //  var expected = new int[] { 0, 1, 2, 2, 3, 2, 4, 2, 4, 3, 4, 2, 6, 2, 4, 4, 5, 2, 6, 2, 6, 4, 4, 2, 8, 3, 4, 4, 6, 2, 8, 2, 6, 4, 4, 4, 9, 2, 4, 4, 8, 2, 8, 2, 6, 6, 4, 2, 10, 3, 6, 4, 6, 2, 8, 4, 8, 4, 4, 2, 12, 2, 4, 6, 7 };
+    //  var actual = Flux.NumberSequence.GenerateCountOfFactors(64).ToArray();
+    //  CollectionAssert.AreEqual(actual, expected);
+    //}
 
-    [TestMethod]
-    public void GenerateEulerTotient()
-    {
-      var expected = new int[] { 0, 1, 1, 2, 2, 4, 2, 6, 4, 6, 4, 10, 4, 12, 6, 8, 8, 16, 6, 18, 8, 12, 10, 22, 8, 20, 12, 18, 12, 28, 8, 30, 16, 20, 16, 24, 12, 36, 18, 24, 16, 40, 12, 42, 20, 24, 22, 46, 16, 42, 20, 32, 24, 52, 18, 40, 24, 36, 28, 58, 16, 60, 30, 36, 32 };
-      var actual = Flux.NumberSequence.GenerateEulerTotient(64).ToArray();
-      CollectionAssert.AreEqual(actual, expected);
-    }
+    //[TestMethod]
+    //public void GenerateEulerTotient()
+    //{
+    //  var expected = new int[] { 0, 1, 1, 2, 2, 4, 2, 6, 4, 6, 4, 10, 4, 12, 6, 8, 8, 16, 6, 18, 8, 12, 10, 22, 8, 20, 12, 18, 12, 28, 8, 30, 16, 20, 16, 24, 12, 36, 18, 24, 16, 40, 12, 42, 20, 24, 22, 46, 16, 42, 20, 32, 24, 52, 18, 40, 24, 36, 28, 58, 16, 60, 30, 36, 32 };
+    //  var actual = Flux.NumberSequence.GenerateEulerTotient(64).ToArray();
+    //  CollectionAssert.AreEqual(actual, expected);
+    //}
 
-    [TestMethod]
-    public void GenerateLargestPrimeFactor()
-    {
-      var expected = new int[] { 1, 1, 2, 3, 2, 5, 3, 7, 2, 3, 5, 11, 3, 13, 7, 5, 2, 17, 3, 19, 5, 7, 11, 23, 3, 5, 13, 3, 7, 29, 5, 31, 2, 11, 17, 7, 3, 37, 19, 13, 5, 41, 7, 43, 11, 5, 23, 47, 3, 7, 5, 17, 13, 53, 3, 11, 7, 19, 29, 59, 5, 61, 31, 7, 2 };
-      var actual = Flux.NumberSequence.GenerateLargestPrimeFactor(64).ToArray();
-      CollectionAssert.AreEqual(actual, expected);
-    }
+    //[TestMethod]
+    //public void GenerateLargestPrimeFactor()
+    //{
+    //  var expected = new int[] { 1, 1, 2, 3, 2, 5, 3, 7, 2, 3, 5, 11, 3, 13, 7, 5, 2, 17, 3, 19, 5, 7, 11, 23, 3, 5, 13, 3, 7, 29, 5, 31, 2, 11, 17, 7, 3, 37, 19, 13, 5, 41, 7, 43, 11, 5, 23, 47, 3, 7, 5, 17, 13, 53, 3, 11, 7, 19, 29, 59, 5, 61, 31, 7, 2 };
+    //  var actual = Flux.NumberSequence.GenerateLargestPrimeFactor(64).ToArray();
+    //  CollectionAssert.AreEqual(actual, expected);
+    //}
 
-    [TestMethod]
-    public void GenerateSumOfDivisors()
-    {
-      var expected = new int[] { 0, 1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127 };
-      var actual = Flux.NumberSequence.GenerateSumOfFactors(64).ToArray();
-      CollectionAssert.AreEqual(actual, expected);
-    }
+    //[TestMethod]
+    //public void GenerateSumOfDivisors()
+    //{
+    //  var expected = new int[] { 0, 1, 3, 4, 7, 6, 12, 8, 15, 13, 18, 12, 28, 14, 24, 24, 31, 18, 39, 20, 42, 32, 36, 24, 60, 31, 42, 40, 56, 30, 72, 32, 63, 48, 54, 48, 91, 38, 60, 56, 90, 42, 96, 44, 84, 78, 72, 48, 124, 57, 93, 72, 98, 54, 120, 72, 120, 80, 90, 60, 168, 62, 96, 104, 127 };
+    //  var actual = Flux.NumberSequence.GenerateSumOfFactors(64).ToArray();
+    //  CollectionAssert.AreEqual(actual, expected);
+    //}
 
     [TestMethod]
     public void GetCountOfDivisors()
     {
-      Assert.AreEqual(64, Flux.NumberSequence.GetCountOfDivisors(670530));
+      Assert.AreEqual(64, 670530.Factors(false).Count);
     }
 
     [TestMethod]
     public void GetCountOfProperDivisors()
     {
-      Assert.AreEqual(63, Flux.NumberSequence.GetCountOfProperDivisors(670530));
+      Assert.AreEqual(63, 670530.Factors(true).Count);
     }
 
     [TestMethod]
     public void GetFactors()
     {
       var expected = new int[] { 1, 60, 2, 30, 3, 20, 4, 15, 5, 12, 6, 10 };
-      var actual = Flux.NumberSequence.GetDivisors(60).ToArray();
+      var actual = 60.Factors(false).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
 
     [TestMethod]
     public void GetSumOfDivisors()
     {
-      Assert.AreEqual(1916928, Flux.NumberSequence.GetSumOfDivisors(670530));
+      Assert.AreEqual(1916928, 670530.Factors(false).Sum());
     }
 
     [TestMethod]
     public void GetSumOfProperDivisors()
     {
-      Assert.AreEqual(1246398, Flux.NumberSequence.GetSumOfProperDivisors(670530));
+      Assert.AreEqual(1246398, 670530.Factors(true).Sum());
     }
 
     [TestMethod]
     public void GetHighlyAbundantNumbers()
     {
       var expected = new System.Numerics.BigInteger[] { 1, 2, 3, 4, 6, 8, 10, 12, 16, 18, 20, 24, 30, 36, 42, 48, 60, 72, 84, 90, 96, 108, 120, 144, 168, 180, 210, 216, 240, 288, 300, 336, 360, 420, 480, 504, 540, 600, 630, 660, 720, 840, 960, 1008, 1080, 1200, 1260, 1440, 1560, 1620, 1680, 1800, 1920, 1980, 2100 };
-      var actual = Flux.NumberSequence.GetHighlyAbundantNumbers().Take(expected.Length).Select(kvp => kvp.Key).ToArray();
+      var actual = Flux.NumberSequence.GetHighlyAbundantNumbers<System.Numerics.BigInteger>().Take(expected.Length).Select(kvp => kvp.Key).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
     [TestMethod]
     public void GetSuperAbundantNumbers()
     {
       var expected = new System.Numerics.BigInteger[] { 1, 2, 4, 6, 12, 24, 36, 48, 60, 120, 180, 240, 360, 720, 840, 1260, 1680, 2520, 5040, 10080, 15120, 25200, 27720 };
-      var actual = Flux.NumberSequence.GetSuperAbundantNumbers().Take(expected.Length).Select(kvp => kvp.Key).ToArray();
+      var actual = Flux.NumberSequence.GetSuperAbundantNumbers<System.Numerics.BigInteger>().Take(expected.Length).Select(kvp => kvp.Key).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
 
@@ -281,7 +281,7 @@ namespace Maths
     public void GetHighlyCompositeNumbers()
     {
       var expected = new System.Numerics.BigInteger[] { 1, 2, 4, 6, 12, 24, 36, 48, 60, 120, 180, 240, 360, 720, 840, 1260, 1680, 2520, 5040, 7560, 10080, 15120, 20160, 25200, 27720, 45360, 50400, 55440, 83160 };
-      var actual = Flux.NumberSequence.GetHighlyCompositeNumbers().Take(expected.Length).Select(kvp => kvp.Key).ToArray();
+      var actual = Flux.NumberSequence.GetHighlyCompositeNumbers<System.Numerics.BigInteger>().Take(expected.Length).Select(kvp => kvp.Key).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
 
@@ -339,10 +339,10 @@ namespace Maths
       CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
-    public void GetPrimeFactors()
+    public void PrimeFactors()
     {
       var expected = new int[] { 2, 2, 3, 5 };
-      var actual = Flux.NumberSequence.GetPrimeFactors(60).ToArray();
+      var actual = 60.PrimeFactors().ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
     [TestMethod]

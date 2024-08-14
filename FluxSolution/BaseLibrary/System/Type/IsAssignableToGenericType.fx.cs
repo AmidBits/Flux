@@ -19,6 +19,6 @@ namespace Flux
       return source.BaseType?.IsAssignableToGenericType(genericType) ?? false;
     }
 
-    public static bool IsAssignableToGenericType<T>(this T source, System.Type genericType) where T : notnull => source.GetType().IsAssignableToGenericType(genericType);
+    public static bool IsAssignableToGenericType<T>(this T source, System.Type genericType) => typeof(T).IsAssignableToGenericType(genericType);
   }
 }
