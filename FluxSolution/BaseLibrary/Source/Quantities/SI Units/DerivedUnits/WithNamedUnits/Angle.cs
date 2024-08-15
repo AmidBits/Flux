@@ -2,27 +2,6 @@
 {
   public static partial class Fx
   {
-    //public static UnicodeSpacing GetUnitSpacing(this Units.AngleUnit unit, bool preferUnicode)
-    //  => unit.HasUnitSpacing(preferUnicode) ? UnicodeSpacing.NoBreakSpace : UnicodeSpacing.None;
-
-    //public static string GetUnitSpacingString(this Units.AngleUnit unit, bool preferUnicode)
-    //  => unit.HasUnitSpacing(preferUnicode) ? unit.GetUnitSpacing(preferUnicode).ToSpacingString() : string.Empty;
-
-    public static string GetUnitString(this Quantities.AngleUnit unit, bool preferUnicode, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
-      {
-        Quantities.AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
-        Quantities.AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
-        Quantities.AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
-        Quantities.AngleUnit.Gradian => preferUnicode ? "\u1D4D" : "gon",
-        Quantities.AngleUnit.NatoMil => "mils (NATO)",
-        Quantities.AngleUnit.Milliradian => "mrad",
-        Quantities.AngleUnit.Radian => preferUnicode ? "\u33AD" : "rad",
-        Quantities.AngleUnit.Turn => "turns",
-        Quantities.AngleUnit.WarsawPactMil => "mils (Warsaw Pact)",
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
     public static bool HasUnitSpacing(this Quantities.AngleUnit unit, bool preferUnicode)
       => !((unit == Quantities.AngleUnit.Degree && preferUnicode)
       || (unit == Quantities.AngleUnit.Gradian && preferUnicode)
@@ -619,7 +598,20 @@
       public double Value => m_angle;
 
       // IUnitQuantifiable<>
-      public string GetUnitSymbol(AngleUnit unit, bool preferUnicode, bool useFullName) => unit.GetUnitString(preferUnicode, useFullName);
+      public string GetUnitSymbol(AngleUnit unit, bool preferUnicode, bool useFullName)
+        => GetUnitValue(unit).PluralStringSuffix() is var suffix && useFullName ? unit.ToString() + suffix : unit switch
+        {
+          Quantities.AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
+          Quantities.AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
+          Quantities.AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
+          Quantities.AngleUnit.Gradian => preferUnicode ? "\u1D4D" : "gon",
+          Quantities.AngleUnit.NatoMil => $"mil{suffix} (NATO)",
+          Quantities.AngleUnit.Milliradian => "mrad",
+          Quantities.AngleUnit.Radian => preferUnicode ? "\u33AD" : "rad",
+          Quantities.AngleUnit.Turn => "turn" + suffix,
+          Quantities.AngleUnit.WarsawPactMil => $"mil{suffix} (Warsaw Pact)",
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       public double GetUnitValue(AngleUnit unit)
         => unit switch
@@ -652,11 +644,11 @@
         var sb = new System.Text.StringBuilder();
         sb.Append(Value.ToString(format, formatProvider));
         sb.Append(AngleUnit.Radian.HasUnitSpacing(false) ? UnicodeSpacing.Space.ToSpacingString() : string.Empty);
-        sb.Append(AngleUnit.Radian.GetUnitString(false, false));
+        sb.Append(GetUnitSymbol(AngleUnit.Radian, false, false));
         sb.Append(" = ");
         sb.Append(Value.ToString(format, formatProvider));
         sb.Append(AngleUnit.Degree.HasUnitSpacing(false) ? UnicodeSpacing.Space.ToSpacingString() : string.Empty);
-        sb.Append(AngleUnit.Degree.GetUnitString(false, false));
+        sb.Append(GetUnitSymbol(AngleUnit.Degree, false, false));
         return sb.ToString();
       }
 

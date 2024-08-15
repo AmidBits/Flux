@@ -18,21 +18,6 @@ namespace Flux
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
     }
-
-    public static string GetUnitString(this Quantities.DigitalInformationUnit unit, bool useFullName = false)
-      => useFullName ? unit.ToString() : unit switch
-      {
-        Quantities.DigitalInformationUnit.Byte => "B",
-        Quantities.DigitalInformationUnit.kibiByte => "KiB",
-        Quantities.DigitalInformationUnit.mebiByte => "MiB",
-        Quantities.DigitalInformationUnit.gibiByte => "GiB",
-        Quantities.DigitalInformationUnit.tebiByte => "TiB",
-        Quantities.DigitalInformationUnit.pebiByte => "PiB",
-        Quantities.DigitalInformationUnit.exbiByte => "EiB",
-        Quantities.DigitalInformationUnit.zebiByte => "ZiB",
-        Quantities.DigitalInformationUnit.yobiByte => "YiB",
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
   }
 
   namespace Quantities
@@ -119,7 +104,20 @@ namespace Flux
       public System.Numerics.BigInteger Value => m_value;
 
       // IUnitQuantifiable<>
-      public string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode, bool useFullName) => unit.GetUnitString(useFullName);
+      public string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode, bool useFullName)
+        => useFullName ? unit.ToString() : unit switch
+        {
+          Quantities.DigitalInformationUnit.Byte => "B",
+          Quantities.DigitalInformationUnit.kibiByte => "KiB",
+          Quantities.DigitalInformationUnit.mebiByte => "MiB",
+          Quantities.DigitalInformationUnit.gibiByte => "GiB",
+          Quantities.DigitalInformationUnit.tebiByte => "TiB",
+          Quantities.DigitalInformationUnit.pebiByte => "PiB",
+          Quantities.DigitalInformationUnit.exbiByte => "EiB",
+          Quantities.DigitalInformationUnit.zebiByte => "ZiB",
+          Quantities.DigitalInformationUnit.yobiByte => "YiB",
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
 
       public System.Numerics.BigInteger GetUnitValue(DigitalInformationUnit unit)
         => unit switch

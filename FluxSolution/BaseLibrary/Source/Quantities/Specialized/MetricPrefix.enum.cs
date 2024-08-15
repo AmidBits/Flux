@@ -30,7 +30,7 @@ namespace Flux
     public static double GetUnitFactor(this Quantities.MetricPrefix source) => System.Math.Pow(10, (int)source);
 
     public static string GetUnitString(this Quantities.MetricPrefix source, bool preferUnicode, bool useFullName)
-      => useFullName ? source.ToString() : source switch
+      => useFullName ? source != Quantities.MetricPrefix.NoPrefix ? source.ToString() : string.Empty : source switch
       {
         Quantities.MetricPrefix.NoPrefix => string.Empty,
         Quantities.MetricPrefix.Quetta => "Q",

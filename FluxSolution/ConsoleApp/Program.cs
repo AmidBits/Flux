@@ -41,10 +41,12 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var siv = new Flux.Quantities.Mass(1);
+      var t = new Flux.Quantities.Pressure(131072);
 
+      System.Console.WriteLine(t.ToSiPrefixValueString(MetricPrefix.NoPrefix, useFullName: true));
 
-      var sid = siv.ToStringsOfMetricPrefixes();
+      return;
+
 
       var fp = 0.ToBigInteger();
       var na = 0.ToBigInteger();

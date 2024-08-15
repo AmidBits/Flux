@@ -1,111 +1,104 @@
-namespace Flux
+namespace Flux.Quantities
 {
-  public static partial class Fx
+  public enum AbsoluteHumidityUnit
   {
-    public static string GetUnitString(this Quantities.AbsoluteHumidityUnit unit, bool useFullName = false)
+    /// <summary>This is the default unit for <see cref="AbsoluteHumidity"/>.</summary>
+    GramsPerCubicMeter,
+    KilogramsPerCubicMeter,
+  }
+
+  /// <summary>
+  /// <para>Absolute humidity, unit of grams per cubic meter.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/></para>
+  /// </summary>
+  public readonly record struct AbsoluteHumidity
+    : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IFormattable, IUnitValueQuantifiable<double, AbsoluteHumidityUnit>
+  {
+    private readonly double m_value;
+
+    public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
+      => m_value = unit switch
+      {
+        AbsoluteHumidityUnit.GramsPerCubicMeter => value,
+        AbsoluteHumidityUnit.KilogramsPerCubicMeter => value / 1000.0,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+
+    #region Static methods
+    public static AbsoluteHumidity From(double grams, Volume volume)
+      => new(grams / volume.Value);
+    public static AbsoluteHumidity From(Mass mass, Volume volume)
+      => From(mass.Value * 1000, volume);
+    #endregion Static methods
+
+    #region Overloaded operators
+
+    public static bool operator <(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) < 0;
+    public static bool operator <=(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) <= 0;
+    public static bool operator >(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) > 0;
+    public static bool operator >=(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) >= 0;
+
+    public static AbsoluteHumidity operator -(AbsoluteHumidity v) => new(-v.m_value);
+    public static AbsoluteHumidity operator +(AbsoluteHumidity a, double b) => new(a.m_value + b);
+    public static AbsoluteHumidity operator +(AbsoluteHumidity a, AbsoluteHumidity b) => a + b.m_value;
+    public static AbsoluteHumidity operator /(AbsoluteHumidity a, double b) => new(a.m_value / b);
+    public static AbsoluteHumidity operator /(AbsoluteHumidity a, AbsoluteHumidity b) => a / b.m_value;
+    public static AbsoluteHumidity operator *(AbsoluteHumidity a, double b) => new(a.m_value * b);
+    public static AbsoluteHumidity operator *(AbsoluteHumidity a, AbsoluteHumidity b) => a * b.m_value;
+    public static AbsoluteHumidity operator %(AbsoluteHumidity a, double b) => new(a.m_value % b);
+    public static AbsoluteHumidity operator %(AbsoluteHumidity a, AbsoluteHumidity b) => a % b.m_value;
+    public static AbsoluteHumidity operator -(AbsoluteHumidity a, double b) => new(a.m_value - b);
+    public static AbsoluteHumidity operator -(AbsoluteHumidity a, AbsoluteHumidity b) => a - b.m_value;
+
+    #endregion Overloaded operators
+
+    #region Implemented interfaces
+
+    // IComparable
+    public int CompareTo(object? other) => other is not null && other is AbsoluteHumidity o ? CompareTo(o) : -1;
+
+    // IComparable<>
+    public int CompareTo(AbsoluteHumidity other) => m_value.CompareTo(other.m_value);
+
+    // IFormattable
+    public string ToString(string? format, System.IFormatProvider? formatProvider)
+      => ToUnitValueString(AbsoluteHumidityUnit.GramsPerCubicMeter, format, formatProvider);
+
+    // IQuantifiable<>
+    /// <summary>
+    /// <para>The unit of the <see cref="AbsoluteHumidity.Value"/> property is in <see cref="AbsoluteHumidityUnit.GramsPerCubicMeter"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    // IUnitQuantifiable<>
+    public string GetUnitSymbol(AbsoluteHumidityUnit unit, bool preferUnicode, bool useFullName)
       => useFullName ? unit.ToString() : unit switch
       {
         Quantities.AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
         Quantities.AbsoluteHumidityUnit.KilogramsPerCubicMeter => "kg/m³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
-  }
 
-  namespace Quantities
-  {
-    public enum AbsoluteHumidityUnit
-    {
-      /// <summary>This is the default unit for <see cref="AbsoluteHumidity"/>.</summary>
-      GramsPerCubicMeter,
-      KilogramsPerCubicMeter,
-    }
 
-    /// <summary>
-    /// <para>Absolute humidity, unit of grams per cubic meter.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/></para>
-    /// </summary>
-    public readonly record struct AbsoluteHumidity
-      : System.IComparable, System.IComparable<AbsoluteHumidity>, System.IFormattable, IUnitValueQuantifiable<double, AbsoluteHumidityUnit>
-    {
-      private readonly double m_value;
-
-      public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
-        => m_value = unit switch
-        {
-          AbsoluteHumidityUnit.GramsPerCubicMeter => value,
-          AbsoluteHumidityUnit.KilogramsPerCubicMeter => value / 1000.0,
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
-
-      #region Static methods
-      public static AbsoluteHumidity From(double grams, Volume volume)
-        => new(grams / volume.Value);
-      public static AbsoluteHumidity From(Mass mass, Volume volume)
-        => From(mass.Value * 1000, volume);
-      #endregion Static methods
-
-      #region Overloaded operators
-
-      public static bool operator <(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) < 0;
-      public static bool operator <=(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) <= 0;
-      public static bool operator >(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) > 0;
-      public static bool operator >=(AbsoluteHumidity a, AbsoluteHumidity b) => a.CompareTo(b) >= 0;
-
-      public static AbsoluteHumidity operator -(AbsoluteHumidity v) => new(-v.m_value);
-      public static AbsoluteHumidity operator +(AbsoluteHumidity a, double b) => new(a.m_value + b);
-      public static AbsoluteHumidity operator +(AbsoluteHumidity a, AbsoluteHumidity b) => a + b.m_value;
-      public static AbsoluteHumidity operator /(AbsoluteHumidity a, double b) => new(a.m_value / b);
-      public static AbsoluteHumidity operator /(AbsoluteHumidity a, AbsoluteHumidity b) => a / b.m_value;
-      public static AbsoluteHumidity operator *(AbsoluteHumidity a, double b) => new(a.m_value * b);
-      public static AbsoluteHumidity operator *(AbsoluteHumidity a, AbsoluteHumidity b) => a * b.m_value;
-      public static AbsoluteHumidity operator %(AbsoluteHumidity a, double b) => new(a.m_value % b);
-      public static AbsoluteHumidity operator %(AbsoluteHumidity a, AbsoluteHumidity b) => a % b.m_value;
-      public static AbsoluteHumidity operator -(AbsoluteHumidity a, double b) => new(a.m_value - b);
-      public static AbsoluteHumidity operator -(AbsoluteHumidity a, AbsoluteHumidity b) => a - b.m_value;
-
-      #endregion Overloaded operators
-
-      #region Implemented interfaces
-
-      // IComparable
-      public int CompareTo(object? other) => other is not null && other is AbsoluteHumidity o ? CompareTo(o) : -1;
-
-      // IComparable<>
-      public int CompareTo(AbsoluteHumidity other) => m_value.CompareTo(other.m_value);
-
-      // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(AbsoluteHumidityUnit.GramsPerCubicMeter, format, formatProvider);
-
-      // IQuantifiable<>
-      /// <summary>
-      /// <para>The unit of the <see cref="AbsoluteHumidity.Value"/> property is in <see cref="AbsoluteHumidityUnit.GramsPerCubicMeter"/>.</para>
-      /// </summary>
-      public double Value => m_value;
-
-      // IUnitQuantifiable<>
-      public string GetUnitSymbol(AbsoluteHumidityUnit unit, bool preferUnicode, bool useFullName) => unit.GetUnitString(useFullName);
-
-      public double GetUnitValue(AbsoluteHumidityUnit unit)
-        => unit switch
-        {
-          AbsoluteHumidityUnit.GramsPerCubicMeter => m_value,
-          AbsoluteHumidityUnit.KilogramsPerCubicMeter => m_value * 1000.0,
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
-
-      public string ToUnitValueString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
+    public double GetUnitValue(AbsoluteHumidityUnit unit)
+      => unit switch
       {
-        var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-        sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
-        return sb.ToString();
-      }
+        AbsoluteHumidityUnit.GramsPerCubicMeter => m_value,
+        AbsoluteHumidityUnit.KilogramsPerCubicMeter => m_value * 1000.0,
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
-      #endregion Implemented interfaces
-
-      public override string ToString() => ToString(null, null);
+    public string ToUnitValueString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
+    {
+      var sb = new System.Text.StringBuilder();
+      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+      sb.Append(unitSpacing.ToSpacingString());
+      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
+      return sb.ToString();
     }
+
+    #endregion Implemented interfaces
+
+    public override string ToString() => ToString(null, null);
   }
 }

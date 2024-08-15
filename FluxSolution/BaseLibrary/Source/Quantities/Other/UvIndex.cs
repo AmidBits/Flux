@@ -1,5 +1,3 @@
-using Flux.Quantities;
-
 namespace Flux
 {
   #region ExtensionMethods
@@ -9,11 +7,11 @@ namespace Flux
     public static System.Drawing.Color GetMediaGraphicColor(this Quantities.UvIndexRisk source)
       => source switch
       {
-        UvIndexRisk.Low => System.Drawing.Color.Green,
-        UvIndexRisk.Moderate => System.Drawing.Color.Yellow,
-        UvIndexRisk.High => System.Drawing.Color.Orange,
-        UvIndexRisk.VeryHigh => System.Drawing.Color.Red,
-        UvIndexRisk.Extreme => System.Drawing.Color.Violet,
+        Quantities.UvIndexRisk.Low => System.Drawing.Color.Green,
+        Quantities.UvIndexRisk.Moderate => System.Drawing.Color.Yellow,
+        Quantities.UvIndexRisk.High => System.Drawing.Color.Orange,
+        Quantities.UvIndexRisk.VeryHigh => System.Drawing.Color.Red,
+        Quantities.UvIndexRisk.Extreme => System.Drawing.Color.Violet,
         _ => throw new System.ArgumentOutOfRangeException(nameof(source))
       };
   }
