@@ -53,7 +53,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(RelativeHumidityUnit.Percent, format, formatProvider);
+      => ToUnitValueSymbolString(RelativeHumidityUnit.Percent, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -62,8 +62,11 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(RelativeHumidityUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(RelativeHumidityUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(RelativeHumidityUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.RelativeHumidityUnit.Percent => preferUnicode ? "\u0025" : "\u0025",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -76,12 +79,21 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public string ToUnitValueString(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
+    public string ToUnitValueNameString(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
     {
       var sb = new System.Text.StringBuilder();
       sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
       sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
+      sb.Append(GetUnitName(unit, preferPlural));
+      return sb.ToString();
+    }
+
+    public string ToUnitValueSymbolString(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    {
+      var sb = new System.Text.StringBuilder();
+      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+      sb.Append(unitSpacing.ToSpacingString());
+      sb.Append(GetUnitSymbol(unit, preferUnicode));
       return sb.ToString();
     }
 

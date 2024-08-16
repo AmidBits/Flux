@@ -11,7 +11,7 @@ namespace Flux
       if (source.Days > 0)
       {
         var td = new Quantities.Time(source.Days, Quantities.TimeUnit.Day);
-        sb.Append(td.ToUnitValueString(Quantities.TimeUnit.Day, preferUnicode: false, useFullName: useFullNames));
+        sb.Append(td.ToUnitValueSymbolString(Quantities.TimeUnit.Day, preferUnicode: false));
       }
 
       sb.Append(' ');
@@ -19,7 +19,7 @@ namespace Flux
       if (source.Hours > 0)
       {
         var th = new Quantities.Time(source.Hours, Quantities.TimeUnit.Hour);
-        sb.Append(th.ToUnitValueString(Quantities.TimeUnit.Hour, preferUnicode: false, useFullName: useFullNames));
+        sb.Append(th.ToUnitValueSymbolString(Quantities.TimeUnit.Hour, preferUnicode: false));
       }
 
       sb.Append(' ');
@@ -27,7 +27,7 @@ namespace Flux
       if (source.Minutes > 0)
       {
         var tm = new Quantities.Time(source.Minutes, Quantities.TimeUnit.Minute);
-        sb.Append(tm.ToUnitValueString(Quantities.TimeUnit.Minute, preferUnicode: false, useFullName: useFullNames));
+        sb.Append(tm.ToUnitValueSymbolString(Quantities.TimeUnit.Minute, preferUnicode: false));
       }
 
       sb.Append(' ');
@@ -35,7 +35,7 @@ namespace Flux
       if (source.Seconds > 0)
       {
         var ts = new Quantities.Time(source.Seconds, Quantities.TimeUnit.Second);
-        sb.Append(ts.ToUnitValueString(Quantities.TimeUnit.Second, preferUnicode: false, useFullName: useFullNames));
+        sb.Append(ts.ToUnitValueSymbolString(Quantities.TimeUnit.Second, preferUnicode: false));
       }
 
       return sb.ToString();

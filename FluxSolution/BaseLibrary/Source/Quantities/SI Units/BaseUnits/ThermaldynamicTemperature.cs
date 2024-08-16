@@ -94,7 +94,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(ThermaldynamicTemperatureUnit.Kelvin, format, formatProvider);
+      => ToUnitValueSymbolString(ThermaldynamicTemperatureUnit.Kelvin, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -103,8 +103,11 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(ThermaldynamicTemperatureUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(ThermaldynamicTemperatureUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(ThermaldynamicTemperatureUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.ThermaldynamicTemperatureUnit.Celsius => preferUnicode ? "\u2103" : "\u00B0C",
         Quantities.ThermaldynamicTemperatureUnit.Fahrenheit => preferUnicode ? "\u2109" : "\u00B0F",
@@ -123,14 +126,11 @@ namespace Flux.Quantities
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-    public string ToUnitValueString(ThermaldynamicTemperatureUnit unit = ThermaldynamicTemperatureUnit.Kelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
-    {
-      var sb = new System.Text.StringBuilder();
-      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-      sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
-      return sb.ToString();
-    }
+    public string ToUnitValueNameString(ThermaldynamicTemperatureUnit unit = ThermaldynamicTemperatureUnit.Kelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+
+    public string ToUnitValueSymbolString(ThermaldynamicTemperatureUnit unit = ThermaldynamicTemperatureUnit.Kelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
 
     #endregion Implemented interfaces
 

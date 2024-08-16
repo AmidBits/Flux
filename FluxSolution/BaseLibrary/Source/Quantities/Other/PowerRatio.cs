@@ -66,7 +66,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(PowerRatioUnit.DecibelWatt, format, formatProvider);
+      => ToUnitValueSymbolString(PowerRatioUnit.DecibelWatt, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -75,8 +75,11 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(PowerRatioUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(PowerRatioUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(PowerRatioUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.PowerRatioUnit.DecibelWatt => "dBW",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -89,12 +92,21 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public string ToUnitValueString(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
+    public string ToUnitValueNameString(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
     {
       var sb = new System.Text.StringBuilder();
       sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
       sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
+      sb.Append(GetUnitName(unit, preferPlural));
+      return sb.ToString();
+    }
+
+    public string ToUnitValueSymbolString(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    {
+      var sb = new System.Text.StringBuilder();
+      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+      sb.Append(unitSpacing.ToSpacingString());
+      sb.Append(GetUnitSymbol(unit, preferUnicode));
       return sb.ToString();
     }
 

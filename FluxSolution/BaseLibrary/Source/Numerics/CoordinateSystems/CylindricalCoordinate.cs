@@ -150,7 +150,7 @@ namespace Flux
       #region Implemented interfaces
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_azimuth.ToUnitValueString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)}, {m_height.Value.ToString(format ?? "N3", provider)}>";
+        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_azimuth.ToUnitValueSymbolString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)}, {m_height.Value.ToString(format ?? "N3", provider)}>";
 
       #endregion // Implemented interfaces
 

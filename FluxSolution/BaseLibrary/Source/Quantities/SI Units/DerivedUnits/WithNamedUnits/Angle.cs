@@ -502,11 +502,11 @@
         return dmsNotation switch
         {
           AngleDmsNotation.DecimalDegrees
-            => new Quantities.Angle(System.Math.Abs(decimalDegrees), Quantities.AngleUnit.Degree).ToUnitValueString(Quantities.AngleUnit.Degree, $"N{decimalPoints}", null, preferUnicode: true) + spacingString + directional, // Show as decimal degrees.
+            => new Quantities.Angle(System.Math.Abs(decimalDegrees), Quantities.AngleUnit.Degree).ToUnitValueSymbolString(Quantities.AngleUnit.Degree, $"N{decimalPoints}", null, preferUnicode: true) + spacingString + directional, // Show as decimal degrees.
           AngleDmsNotation.DegreesDecimalMinutes
-            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitValueString(Quantities.AngleUnit.Degree, "N0", null, preferUnicode: true) + spacingString + new Quantities.Angle(decimalMinutes, Quantities.AngleUnit.Arcminute).ToUnitValueString(Quantities.AngleUnit.Arcminute, $"N{decimalPoints}", null, preferUnicode: true) + spacingString + directional, // Show as degrees and decimal minutes.
+            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitValueSymbolString(Quantities.AngleUnit.Degree, "N0", null, preferUnicode: true) + spacingString + new Quantities.Angle(decimalMinutes, Quantities.AngleUnit.Arcminute).ToUnitValueSymbolString(Quantities.AngleUnit.Arcminute, $"N{decimalPoints}", null, preferUnicode: true) + spacingString + directional, // Show as degrees and decimal minutes.
           AngleDmsNotation.DegreesMinutesDecimalSeconds
-            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitValueString(Quantities.AngleUnit.Degree, "N0", null, preferUnicode: true) + spacingString + new Quantities.Angle(System.Math.Abs(minutes), Quantities.AngleUnit.Arcminute).ToUnitValueString(Quantities.AngleUnit.Arcminute, "N0", null, preferUnicode: true) + spacingString + new Quantities.Angle(decimalSeconds, Quantities.AngleUnit.Arcsecond).ToUnitValueString(Quantities.AngleUnit.Arcsecond, $"N{decimalPoints}", null, preferUnicode: true) + spacingString + directional, // Show as degrees, minutes and decimal seconds.
+            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitValueSymbolString(Quantities.AngleUnit.Degree, "N0", null, preferUnicode: true) + spacingString + new Quantities.Angle(System.Math.Abs(minutes), Quantities.AngleUnit.Arcminute).ToUnitValueSymbolString(Quantities.AngleUnit.Arcminute, "N0", null, preferUnicode: true) + spacingString + new Quantities.Angle(decimalSeconds, Quantities.AngleUnit.Arcsecond).ToUnitValueSymbolString(Quantities.AngleUnit.Arcsecond, $"N{decimalPoints}", null, preferUnicode: true) + spacingString + directional, // Show as degrees, minutes and decimal seconds.
           _
             => throw new System.ArgumentOutOfRangeException(nameof(dmsNotation)),
         };
@@ -589,7 +589,7 @@
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(AngleUnit.Radian, format, formatProvider);
+        => ToUnitValueSymbolString(AngleUnit.Radian, format, formatProvider);
 
       // IQuantifiable<>
       /// <summary>
@@ -598,18 +598,21 @@
       public double Value => m_angle;
 
       // IUnitQuantifiable<>
-      public string GetUnitSymbol(AngleUnit unit, bool preferUnicode, bool useFullName)
-        => GetUnitValue(unit).PluralStringSuffix() is var suffix && useFullName ? unit.ToString() + suffix : unit switch
+      public string GetUnitName(AngleUnit unit, bool preferPlural)
+        => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+      public string GetUnitSymbol(AngleUnit unit, bool preferUnicode)
+        => unit switch
         {
           Quantities.AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
           Quantities.AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
           Quantities.AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
           Quantities.AngleUnit.Gradian => preferUnicode ? "\u1D4D" : "gon",
-          Quantities.AngleUnit.NatoMil => $"mil{suffix} (NATO)",
+          Quantities.AngleUnit.NatoMil => $"mil{GetUnitValue(unit).PluralStringSuffix()} (NATO)",
           Quantities.AngleUnit.Milliradian => "mrad",
           Quantities.AngleUnit.Radian => preferUnicode ? "\u33AD" : "rad",
-          Quantities.AngleUnit.Turn => "turn" + suffix,
-          Quantities.AngleUnit.WarsawPactMil => $"mil{suffix} (Warsaw Pact)",
+          Quantities.AngleUnit.Turn => "turn" + GetUnitValue(unit).PluralStringSuffix(),
+          Quantities.AngleUnit.WarsawPactMil => $"mil{GetUnitValue(unit).PluralStringSuffix()} (Warsaw Pact)",
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
@@ -628,14 +631,11 @@
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
-      {
-        var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-        sb.Append(unit.HasUnitSpacing(preferUnicode) ? unitSpacing.ToSpacingString() : string.Empty);
-        sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
-        return sb.ToString();
-      }
+      public string ToUnitValueNameString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+
+      public string ToUnitValueSymbolString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
 
       #endregion Implemented interfaces
 
@@ -644,11 +644,11 @@
         var sb = new System.Text.StringBuilder();
         sb.Append(Value.ToString(format, formatProvider));
         sb.Append(AngleUnit.Radian.HasUnitSpacing(false) ? UnicodeSpacing.Space.ToSpacingString() : string.Empty);
-        sb.Append(GetUnitSymbol(AngleUnit.Radian, false, false));
+        sb.Append(GetUnitSymbol(AngleUnit.Radian, false));
         sb.Append(" = ");
         sb.Append(Value.ToString(format, formatProvider));
         sb.Append(AngleUnit.Degree.HasUnitSpacing(false) ? UnicodeSpacing.Space.ToSpacingString() : string.Empty);
-        sb.Append(GetUnitSymbol(AngleUnit.Degree, false, false));
+        sb.Append(GetUnitSymbol(AngleUnit.Degree, false));
         return sb.ToString();
       }
 

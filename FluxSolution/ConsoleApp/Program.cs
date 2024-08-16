@@ -43,7 +43,7 @@ namespace ConsoleApp
 
       var t = new Flux.Quantities.Pressure(131072);
 
-      System.Console.WriteLine(t.ToSiPrefixValueString(MetricPrefix.NoPrefix, useFullName: true));
+      System.Console.WriteLine(t.ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix));
 
       return;
 

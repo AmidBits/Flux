@@ -67,7 +67,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(AmplitudeRatioUnit.DecibelVolt, format, formatProvider);
+      => ToUnitValueSymbolString(AmplitudeRatioUnit.DecibelVolt, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -76,8 +76,11 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(AmplitudeRatioUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(AmplitudeRatioUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(AmplitudeRatioUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.AmplitudeRatioUnit.DecibelVolt => "dBV",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -90,12 +93,21 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public string ToUnitValueString(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
+    public string ToUnitValueNameString(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
     {
       var sb = new System.Text.StringBuilder();
       sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
       sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
+      sb.Append(GetUnitName(unit, preferPlural));
+      return sb.ToString();
+    }
+
+    public string ToUnitValueSymbolString(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    {
+      var sb = new System.Text.StringBuilder();
+      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+      sb.Append(unitSpacing.ToSpacingString());
+      sb.Append(GetUnitSymbol(unit, preferUnicode));
       return sb.ToString();
     }
 

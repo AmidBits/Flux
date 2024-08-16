@@ -86,7 +86,7 @@ namespace Flux.Quantities
         if (Angle.TryConvertFormatToDmsNotation(format, out var dmsFormat))
           return ToSexagesimalDegreeString(dmsFormat);
 
-        return Angle.ToUnitValueString(AngleUnit.Degree, format, formatProvider);
+        return Angle.ToUnitValueSymbolString(AngleUnit.Degree, format, formatProvider);
       }
 
       return ToSexagesimalDegreeString();

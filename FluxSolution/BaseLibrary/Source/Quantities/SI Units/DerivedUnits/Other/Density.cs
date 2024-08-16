@@ -60,7 +60,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(DensityUnit.KilogramPerCubicMeter, format, formatProvider);
+      => ToUnitValueSymbolString(DensityUnit.KilogramPerCubicMeter, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -69,8 +69,11 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(DensityUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(DensityUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(DensityUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.DensityUnit.KilogramPerCubicMeter => "kg/m³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -83,14 +86,11 @@ namespace Flux.Quantities
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-    public string ToUnitValueString(DensityUnit unit = DensityUnit.KilogramPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
-    {
-      var sb = new System.Text.StringBuilder();
-      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-      sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
-      return sb.ToString();
-    }
+    public string ToUnitValueNameString(DensityUnit unit = DensityUnit.KilogramPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+
+    public string ToUnitValueSymbolString(DensityUnit unit = DensityUnit.KilogramPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
 
     #endregion Implemented interfaces
 

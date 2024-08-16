@@ -51,21 +51,21 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(CatalyticActivityUnit.Katal, format, formatProvider);
+      => ToUnitValueSymbolString(CatalyticActivityUnit.Katal, format, formatProvider);
 
     // ISiUnitValueQuantifiable<>
     public (MetricPrefix Prefix, CatalyticActivityUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, CatalyticActivityUnit.Katal);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode);
 
     public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
-    public string ToSiPrefixValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
     {
       var sb = new System.Text.StringBuilder();
       sb.Append(GetSiPrefixValue(prefix).ToString(format, formatProvider));
       sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetSiPrefixSymbol(prefix, preferUnicode, useFullName));
+      sb.Append(GetSiPrefixSymbol(prefix, preferUnicode));
       return sb.ToString();
     }
 
@@ -76,8 +76,11 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(CatalyticActivityUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(CatalyticActivityUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(CatalyticActivityUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.CatalyticActivityUnit.Katal => preferUnicode ? "\u33CF" : "kat",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -90,14 +93,11 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public string ToUnitValueString(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
-    {
-      var sb = new System.Text.StringBuilder();
-      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-      sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
-      return sb.ToString();
-    }
+    public string ToUnitValueNameString(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+
+    public string ToUnitValueSymbolString(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
 
     #endregion Implemented interfaces
 

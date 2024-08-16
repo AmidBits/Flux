@@ -125,7 +125,7 @@ namespace Flux
       #endregion Static methods
 
       public override string ToString()
-        => $"{GetType().Name} {{ Eccentricity = {m_eccentricity.Value} ({m_eccentricity.GetOrbitalEccentricityClass()}), SemiMajorAxis = {m_semiMajorAxis}, Inclination = {m_inclination.ToUnitValueString(Quantities.AngleUnit.Degree)}, LongitudeOfAscendingNode = {m_longitudeOfAscendingNode.ToUnitValueString(Quantities.AngleUnit.Degree)}, ArgumentOfPeriapsis = {m_argumentOfPeriapsis.ToUnitValueString(Quantities.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly.ToUnitValueString(Quantities.AngleUnit.Degree)} }}";
+        => $"{GetType().Name} {{ Eccentricity = {m_eccentricity.Value} ({m_eccentricity.GetOrbitalEccentricityClass()}), SemiMajorAxis = {m_semiMajorAxis}, Inclination = {m_inclination.ToUnitValueSymbolString(Quantities.AngleUnit.Degree)}, LongitudeOfAscendingNode = {m_longitudeOfAscendingNode.ToUnitValueSymbolString(Quantities.AngleUnit.Degree)}, ArgumentOfPeriapsis = {m_argumentOfPeriapsis.ToUnitValueSymbolString(Quantities.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly.ToUnitValueSymbolString(Quantities.AngleUnit.Degree)} }}";
     }
   }
 }

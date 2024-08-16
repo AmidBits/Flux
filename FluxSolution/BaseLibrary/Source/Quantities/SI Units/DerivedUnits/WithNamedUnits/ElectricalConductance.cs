@@ -56,7 +56,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(ElectricalConductanceUnit.Siemens, format, formatProvider);
+      => ToUnitValueSymbolString(ElectricalConductanceUnit.Siemens, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -65,13 +65,15 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(ElectricalConductanceUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(ElectricalConductanceUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(ElectricalConductanceUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.ElectricalConductanceUnit.Siemens => preferUnicode ? "\u2127" : "S",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
-
 
     public double GetUnitValue(ElectricalConductanceUnit unit)
       => unit switch
@@ -80,14 +82,11 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public string ToUnitValueString(ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
-    {
-      var sb = new System.Text.StringBuilder();
-      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-      sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
-      return sb.ToString();
-    }
+    public string ToUnitValueNameString(ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+
+    public string ToUnitValueSymbolString(ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
 
     #endregion Implemented interfaces
 

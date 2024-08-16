@@ -102,7 +102,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(VolumeUnit.CubicMeter, format, formatProvider);
+      => ToUnitValueSymbolString(VolumeUnit.CubicMeter, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -111,8 +111,11 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(VolumeUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(VolumeUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(VolumeUnit unit, bool preferUnicode)
+      => unit switch
       {
         //Units.VolumeUnit.Microlitre => preferUnicode ? "\u3395" : "µl",
         Quantities.VolumeUnit.Millilitre => preferUnicode ? "\u3396" : "ml",
@@ -150,14 +153,11 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public string ToUnitValueString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
-    {
-      var sb = new System.Text.StringBuilder();
-      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-      sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
-      return sb.ToString();
-    }
+    public string ToUnitValueNameString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+
+    public string ToUnitValueSymbolString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
 
     #endregion Implemented interfaces
 

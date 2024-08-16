@@ -87,7 +87,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(SpeedUnit.MeterPerSecond, format, formatProvider);
+      => ToUnitValueSymbolString(SpeedUnit.MeterPerSecond, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -96,8 +96,11 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(SpeedUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(SpeedUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(SpeedUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.SpeedUnit.MeterPerSecond => preferUnicode ? "\u33A7" : "m/s",
         Quantities.SpeedUnit.FootPerSecond => "ft/s",
@@ -120,19 +123,36 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public string ToUnitValueString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
+    public string ToUnitValueNameString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
     {
       var sb = new System.Text.StringBuilder();
       if (unit == SpeedUnit.Mach)
       {
-        sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
+        sb.Append(GetUnitName(unit, preferPlural));
         sb.Append(unitSpacing.ToSpacingString());
       }
       sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
       if (unit != SpeedUnit.Mach)
       {
         sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
+        sb.Append(GetUnitName(unit, preferPlural));
+      }
+      return sb.ToString();
+    }
+
+    public string ToUnitValueSymbolString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    {
+      var sb = new System.Text.StringBuilder();
+      if (unit == SpeedUnit.Mach)
+      {
+        sb.Append(GetUnitSymbol(unit, preferUnicode));
+        sb.Append(unitSpacing.ToSpacingString());
+      }
+      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+      if (unit != SpeedUnit.Mach)
+      {
+        sb.Append(unitSpacing.ToSpacingString());
+        sb.Append(GetUnitSymbol(unit, preferUnicode));
       }
       return sb.ToString();
     }

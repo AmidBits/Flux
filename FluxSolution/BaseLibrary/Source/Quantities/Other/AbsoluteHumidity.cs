@@ -62,7 +62,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(AbsoluteHumidityUnit.GramsPerCubicMeter, format, formatProvider);
+      => ToUnitValueSymbolString(AbsoluteHumidityUnit.GramsPerCubicMeter, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -71,14 +71,16 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(AbsoluteHumidityUnit unit, bool preferUnicode, bool useFullName)
-      => useFullName ? unit.ToString() : unit switch
+    public string GetUnitName(AbsoluteHumidityUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(AbsoluteHumidityUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
         Quantities.AbsoluteHumidityUnit.KilogramsPerCubicMeter => "kg/m³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
-
 
     public double GetUnitValue(AbsoluteHumidityUnit unit)
       => unit switch
@@ -88,12 +90,21 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public string ToUnitValueString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
+    public string ToUnitValueNameString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
     {
       var sb = new System.Text.StringBuilder();
       sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
       sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
+      sb.Append(GetUnitName(unit, preferPlural));
+      return sb.ToString();
+    }
+
+    public string ToUnitValueSymbolString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    {
+      var sb = new System.Text.StringBuilder();
+      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+      sb.Append(unitSpacing.ToSpacingString());
+      sb.Append(GetUnitSymbol(unit, preferUnicode));
       return sb.ToString();
     }
 

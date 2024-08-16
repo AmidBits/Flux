@@ -11,7 +11,7 @@
       var d = new System.Collections.Generic.Dictionary<(Quantities.MetricPrefix, TUnit), string>();
 
       foreach (Quantities.MetricPrefix mp in System.Enum.GetValues<Quantities.MetricPrefix>().OrderDescending())
-        d.Add(source.GetSiPrefixUnit(mp), source.ToSiPrefixValueString(mp, format, formatProvider, unitSpacing, preferUnicode, useFullName));
+        d.Add(source.GetSiPrefixUnit(mp), source.ToSiPrefixValueSymbolString(mp, format, formatProvider, unitSpacing, preferUnicode));
 
       return d;
     }
@@ -56,7 +56,7 @@
       /// <param name="preferUnicode"></param>
       /// <param name="useFullName"></param>
       /// <returns></returns>
-      string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName);
+      string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode);
 
       /// <summary>
       /// <para>Gets the value of the quantity in the <see cref="MetricPrefix"/> multiplicable specified by <paramref name="prefix"/>.</para>
@@ -75,7 +75,7 @@
       /// <param name="preferUnicode"></param>
       /// <param name="useFullName"></param>
       /// <returns></returns>
-      string ToSiPrefixValueString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferUnicode, bool useFullName);
+      string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferUnicode);
     }
   }
 }

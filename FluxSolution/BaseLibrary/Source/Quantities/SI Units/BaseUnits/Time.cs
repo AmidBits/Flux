@@ -184,21 +184,21 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueString(TimeUnit.Second, format, formatProvider);
+      => ToUnitValueSymbolString(TimeUnit.Second, format, formatProvider);
 
     // ISiUnitValueQuantifiable<>
     public (MetricPrefix Prefix, TimeUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, TimeUnit.Second);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode, bool useFullName) => prefix.GetUnitString(preferUnicode, useFullName) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode, useFullName);
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode);
 
     public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
-    public string ToSiPrefixValueString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
     {
       var sb = new System.Text.StringBuilder();
       sb.Append(GetSiPrefixValue(prefix).ToString(format, formatProvider));
       sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetSiPrefixSymbol(prefix, preferUnicode, useFullName));
+      sb.Append(GetSiPrefixSymbol(prefix, preferUnicode));
       return sb.ToString();
     }
 
@@ -209,20 +209,23 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitSymbol(TimeUnit unit, bool preferUnicode, bool useFullName)
-      => GetUnitValue(unit).PluralStringSuffix() is var suffix && useFullName ? unit.ToString() + suffix : unit switch
+    public string GetUnitName(TimeUnit unit, bool preferPlural)
+      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+
+    public string GetUnitSymbol(TimeUnit unit, bool preferUnicode)
+      => unit switch
       {
         Quantities.TimeUnit.Second => "s",
         Quantities.TimeUnit.Picosecond => preferUnicode ? "\u33B0" : "ps",
         Quantities.TimeUnit.Nanosecond => preferUnicode ? "\u33B1" : "ns",
-        Quantities.TimeUnit.Ticks => "tick" + suffix,
+        Quantities.TimeUnit.Ticks => "tick" + GetUnitValue(unit).PluralStringSuffix(),
         Quantities.TimeUnit.Microsecond => preferUnicode ? "\u33B2" : "\u00B5s",
         Quantities.TimeUnit.Millisecond => preferUnicode ? "\u33B3" : "ms",
-        Quantities.TimeUnit.Minute => "min" + suffix,
+        Quantities.TimeUnit.Minute => "min",
         Quantities.TimeUnit.Hour => "h",
         Quantities.TimeUnit.Day => "d",
-        Quantities.TimeUnit.Week => "week" + suffix,
-        Quantities.TimeUnit.Fortnight => "fortnight" + suffix,
+        Quantities.TimeUnit.Week => "week" + GetUnitValue(unit).PluralStringSuffix(),
+        Quantities.TimeUnit.Fortnight => "fortnight" + GetUnitValue(unit).PluralStringSuffix(),
         Quantities.TimeUnit.BeatsPerMinute => "bpm",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
@@ -245,14 +248,11 @@ namespace Flux.Quantities
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-    public string ToUnitValueString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false, bool useFullName = false)
-    {
-      var sb = new System.Text.StringBuilder();
-      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-      sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
-      return sb.ToString();
-    }
+    public string ToUnitValueNameString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+
+    public string ToUnitValueSymbolString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
 
     #endregion Implemented interfaces
 
