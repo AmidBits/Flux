@@ -77,7 +77,7 @@ namespace Flux.Quantities
 
     // IUnitQuantifiable<>
     public string GetUnitName(AmplitudeRatioUnit unit, bool preferPlural)
-      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(AmplitudeRatioUnit unit, bool preferUnicode)
       => unit switch

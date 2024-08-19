@@ -2,14 +2,52 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static double Convert(this Quantities.BinaryPrefix source, double value, Quantities.BinaryPrefix target) => value * System.Math.Pow(10, (int)source - (int)target);
+    /// <summary>
+    /// <para>Convert <paramref name="value"/> from <paramref name="source"/> prefix to <paramref name="target"/> prefix.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="value"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public static T Convert<T>(this Quantities.BinaryPrefix source, T value, Quantities.BinaryPrefix target)
+      where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
+      => value * T.Pow(T.CreateChecked(2), T.CreateChecked((int)source) - T.CreateChecked((int)target));
 
-    public static double GetUnitFactor(this Quantities.BinaryPrefix source) => System.Math.Pow(2, (int)source);
-
-    public static string GetUnitString(this Quantities.BinaryPrefix source, bool useFullName)
-      => useFullName ? source.ToString() : source switch
+    /// <summary>
+    /// <para>Find the infimum (the largest that is less than) and supremum (the smallest that is greater than) prefixes with adjusted value of the specified <paramref name="source"/> prefix and <paramref name="value"/>.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static (T InfimumValue, Quantities.BinaryPrefix InfimumMetricPrefix, T SupremumValue, Quantities.BinaryPrefix SupremumMetricPrefix) GetInfimumAndSupremum<T>(this Quantities.BinaryPrefix source, T value, bool proper)
+      where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
+    {
+      if (value < T.Zero)
       {
-        Quantities.BinaryPrefix.Count => string.Empty,
+        var (iv, imp, sv, smp) = GetInfimumAndSupremum(source, T.Abs(value), proper);
+
+        return (T.CopySign(iv, value), imp, T.CopySign(sv, value), smp);
+      }
+
+      var binaryPrefixes = System.Enum.GetValues<Quantities.BinaryPrefix>();
+
+      var adjustedValue = source.Convert(value, Quantities.BinaryPrefix.NoPrefix);
+
+      var (InfimumIndex, InfimumItem, InfimumValue, SupremumIndex, SupremumItem, SupremumValue) = binaryPrefixes.AsReadOnlySpan().GetInfimumAndSupremum(adjustedValue, e => T.CopySign(T.Pow(T.CreateChecked(2), T.Abs(T.CreateChecked((int)e))), T.CreateChecked((int)e)), proper);
+
+      var ltValue = source.Convert(value, InfimumItem);
+      var gtValue = source.Convert(value, SupremumItem);
+
+      return (ltValue, InfimumItem, gtValue, SupremumItem);
+    }
+
+    public static string GetUnitName(this Quantities.BinaryPrefix source)
+      => source != Quantities.BinaryPrefix.NoPrefix ? source.ToString() : string.Empty;
+
+    public static string GetUnitSymbol(this Quantities.BinaryPrefix source, bool preferUnicode)
+      => source switch
+      {
+        Quantities.BinaryPrefix.NoPrefix => string.Empty,
         Quantities.BinaryPrefix.Kibi => "Ki",
         Quantities.BinaryPrefix.Mebi => "Mi",
         Quantities.BinaryPrefix.Gibi => "Gi",
@@ -20,14 +58,20 @@ namespace Flux
         Quantities.BinaryPrefix.Yobi => "Yi",
         _ => string.Empty,
       };
+
+    public static double GetUnitValue(this Quantities.BinaryPrefix source) => System.Math.Pow(2, (int)source);
   }
 
   namespace Quantities
   {
+    /// <summary>
+    /// <para>The BinaryPrefix enum represents the binary (base 2) multiples.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Binary_prefix"/></para>
+    /// </summary>
     public enum BinaryPrefix
     {
       /// <summary>Represents a value that is not a metric multiple. A.k.a. One.</summary>
-      Count = 0,
+      NoPrefix = 0,
       /// <summary>A.k.a. kiloByte.</summary>
       Kibi = 10,
       /// <summary>A.k.a. megaByte.</summary>

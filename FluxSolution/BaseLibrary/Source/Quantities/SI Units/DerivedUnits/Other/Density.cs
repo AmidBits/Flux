@@ -70,7 +70,7 @@ namespace Flux.Quantities
 
     // IUnitQuantifiable<>
     public string GetUnitName(DensityUnit unit, bool preferPlural)
-      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(DensityUnit unit, bool preferUnicode)
       => unit switch

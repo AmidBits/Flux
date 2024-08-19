@@ -45,6 +45,7 @@ namespace Flux.Quantities
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="MassUnit.Gram"/>, e.g. <see cref="MetricPrefix.Kilo"/> for kilogram.</para>
     /// </summary>
+    /// <remarks>Mass is the only </remarks>
     /// <param name="grams"></param>
     /// <param name="prefix"></param>
     public Mass(double grams, MetricPrefix prefix) => m_value = prefix.Convert(grams, MetricPrefix.Kilo);
@@ -110,7 +111,7 @@ namespace Flux.Quantities
 
     // IUnitQuantifiable<>
     public string GetUnitName(MassUnit unit, bool preferPlural)
-      => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(MassUnit unit, bool preferUnicode)
       => unit switch

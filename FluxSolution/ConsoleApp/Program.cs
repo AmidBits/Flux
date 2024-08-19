@@ -36,14 +36,97 @@ namespace ConsoleApp
 
     #endregion // Presets
 
+    private static int TestExcept(int[] a, int[] b) => a.AsReadOnlySpan().Except(b.AsReadOnlySpan()).Count;
+    private static int TestIntersect(int[] a, int[] b) => a.AsReadOnlySpan().Intersect(b.AsReadOnlySpan()).Count;
+    private static int TestSourceDifference(int[] a, int[] b) => a.AsReadOnlySpan().SourceDifference(b.AsReadOnlySpan()).Count;
+    private static int TestSymmetricDifference(int[] a, int[] b) => a.AsReadOnlySpan().SymmetricDifference(b.AsReadOnlySpan()).Count;
+    private static int TestTargetDifference(int[] a, int[] b) => a.AsReadOnlySpan().TargetDifference(b.AsReadOnlySpan()).Count;
+    private static int TestTargetExcept(int[] a, int[] b) => b.AsReadOnlySpan().Except(a.AsReadOnlySpan()).Count;
+    private static int TestUnion(int[] a, int[] b) => a.AsReadOnlySpan().Union(b.AsReadOnlySpan()).Count;
+    private static int TestUnionAll(int[] a, int[] b) => a.AsReadOnlySpan().UnionAll(b.AsReadOnlySpan()).Count;
+
+    static void RunHashSet(int[] a, int[] b, int count = 1000)
+    {
+      var c = a.ToHashSet();
+      var d = b.ToHashSet();
+
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Except(d).Count(), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => d.Except(c).Count(), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Intersect(d).Count(), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => d.Intersect(c).Count(), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.SourceDifference(d).Count(), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.SymmetricDifference(d).Count(), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => d.SymmetricDifference(c).Count(), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.TargetDifference(d).Count(), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Union(d).Count(), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => d.Union(c).Count(), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.UnionAll(d).Count()));
+    }
+
+    static void RunReadOnlySpan(int[] a, int[] b, int count = 1000)
+    {
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestExcept(a, b), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestExcept(b, a), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestIntersect(a, b), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestIntersect(b, a), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestSourceDifference(a, b), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestSymmetricDifference(a, b), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestSymmetricDifference(b, a), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestTargetDifference(a, b), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestUnion(a, b), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestUnion(b, a), count));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestUnionAll(a, b), count));
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var t = new Flux.Quantities.Pressure(131072);
+      //var ns = System.Enum.GetValues<Flux.Quantities.MetricPrefix>().Select(mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(10, int.Abs((int)mp)), (int)mp)).ToArray();
+      //var ns = System.Enum.GetValues<Flux.Quantities.MetricPrefix>().Select(mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(10, int.Abs((int)mp)), (int)mp)).ToArray();
+      var ns = System.Enum.GetValues<Flux.Quantities.BinaryPrefix>()/*.OrderBy(mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(10, int.Abs((int)mp)), (int)mp))*/.ToArray();
+      //System.Array.Sort(ns);
 
-      System.Console.WriteLine(t.ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix));
+      //var dupes = new int[] { 1, 2, 3, 2, 3, 4, 3, 4, 5, 4, 5, 6, 5, 6, 7, 6, 7, 8, 7, 8, 9 }.ToList();
+      //dupes.RemoveAll(i => i == 3);
+      //var nodup = )
+
+      var a = System.Linq.Enumerable.Range(1, 50000).ToArray();
+      var b = System.Linq.Enumerable.Range(30001, 600000).ToArray();
+
+      var count = 10000;
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => RunReadOnlySpan(a, b, count), 1));
+      System.Console.WriteLine();
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => RunHashSet(a, b, count), 1));
+      System.Console.WriteLine();
+
+      return;
+
+      var v = -(1000.0d);
+
+      var mpe = ns.AsReadOnlySpan().GetExtremum(mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(2, int.Abs((int)mp)), (int)mp));
+      var mpis = ns.AsReadOnlySpan().GetInfimumAndSupremum(1024, mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(2, int.Abs((int)mp)), (int)mp), true);
+
+      var mp = Flux.Quantities.MetricPrefix.NoPrefix;
+      var bp = Flux.Quantities.BinaryPrefix.NoPrefix;
+
+      var mpvt = mp.GetInfimumAndSupremum(v, true);
+      var bpvt = bp.GetInfimumAndSupremum(v, true);
+
+      //var inf = p.GetInfimum(v);
+      //System.Console.WriteLine(inf);
+
+      //var sup = p.GetSupremum(v);
+      //System.Console.WriteLine(sup);
+
+      //var t = new Flux.Quantities.Time(v);
+
+      //System.Console.WriteLine($"{t.GetSiPrefixSymbol(MetricPrefix.NoPrefix, false)}, {t.GetSiPrefixUnit(MetricPrefix.NoPrefix)}, {t.GetSiPrefixValue(MetricPrefix.NoPrefix)}, {t.ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix)}");
+      //System.Console.WriteLine($"{t.GetUnitName(TimeUnit.Second, false)}, {t.GetUnitSymbol(TimeUnit.Second, false)}, {t.GetUnitValue(TimeUnit.Second)}, {t.ToUnitValueSymbolString(TimeUnit.Second)}");
+
+      //System.Console.WriteLine(t.ToSiPrefixValueSymbolString(MetricPrefix.Kilo));
 
       return;
 

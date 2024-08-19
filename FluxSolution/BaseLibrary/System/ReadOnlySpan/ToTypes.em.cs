@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Creates a new <see cref="System.Array"/> from <paramref name="source"/> with a <paramref name="preLength"/> and a <paramref name="postLength"/>.</para>
+    /// <para>Creates a new <see cref="System.Array"/> with all elements from <paramref name="source"/>, and a <paramref name="preLength"/> and a <paramref name="postLength"/> number of default slots.</para>
     /// </summary>
     /// <param name="source"></param>
     /// <param name="preLength">The number of array slots to add before the <paramref name="source"/> elements in the new <see cref="System.Array"/>.</param>
@@ -15,60 +15,28 @@ namespace Flux
       if (postLength < 0) throw new System.ArgumentOutOfRangeException(nameof(postLength));
 
       var target = new T[preLength + source.Length + postLength];
-      source.CopyTo(new System.Span<T>(target).Slice(preLength, source.Length));
+      source.CopyTo(new System.Span<T>(target, preLength, source.Length));
       return target;
     }
 
     /// <summary>
-    /// <para>Creates a new <see cref="System.Array"/> from <paramref name="source"/> with a <paramref name="preLength"/>, the <paramref name="source"/> elements at the <paramref name="indices"/>, and a <paramref name="postLength"/>.</para>
+    /// <para>Creates a new <see cref="System.Collections.Generic.HashSet{T}"/> with all elements from <paramref name="source"/> and the specified <paramref name="equalityComparer"/> (or default if null).</para>
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="preLength">The number of array slots to add before the <paramref name="source"/> elements in the new <see cref="System.Array"/>.</param>
-    /// <param name="postLength">The number of array slots to add after the <paramref name="source"/> elements in the new <see cref="System.Array"/>.</param>
-    /// <param name="indices">The indices and their order to copy to the new <see cref="System.Array"/>.</param>
-    /// <returns></returns>
-    public static T[] ToArray<T>(this System.ReadOnlySpan<T> source, int preLength, int postLength, params int[] indices)
+    public static System.Collections.Generic.HashSet<T> ToHashSet<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int additionalCapacity = 0)
     {
-      var target = new T[preLength + indices.Length + postLength];
-      for (var index = 0; index < indices.Length; index++)
-        target[preLength + index] = source[indices[index]];
-      return target;
-    }
-
-    /// <summary>
-    /// <para>Creates a new <see cref="System.Collections.Generic.HashSet{T}"/> from <paramref name="source"/> and the specified <paramref name="equalityComparer"/>, or default if null.</para>
-    /// </summary>
-    public static System.Collections.Generic.HashSet<T> ToHashSet<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    {
-      var target = new System.Collections.Generic.HashSet<T>(equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default);
+      var target = new System.Collections.Generic.HashSet<T>(source.Length + additionalCapacity, equalityComparer ?? System.Collections.Generic.EqualityComparer<T>.Default);
       target.AddSpan(source);
       return target;
     }
 
     /// <summary>
-    /// <para>Creates a new <see cref="System.Collections.Generic.List{T}"/> from <paramref name="source"/> and optionally selected <paramref name="indices"/>.</para>
+    /// <para>Creates a new <see cref="System.Collections.Generic.List{T}"/> with all elements from <paramref name="source"/>.</para>
     /// </summary>
-    public static System.Collections.Generic.List<T> ToList<T>(this System.ReadOnlySpan<T> source, params int[] indices)
+    public static System.Collections.Generic.List<T> ToList<T>(this System.ReadOnlySpan<T> source, int additionalCapacity = 0)
     {
-      var target = new System.Collections.Generic.List<T>(source.Length);
-      for (var index = 0; index < source.Length; index++)
-        target.Add(indices is null || indices.Length == 0 ? source[index] : source[indices[index]]);
+      var target = new System.Collections.Generic.List<T>(source.Length + additionalCapacity);
+      target.AddRange(source);
       return target;
     }
-
-    //public static string ToString<T>(this System.ReadOnlySpan<T> source, string separator)
-    //{
-    //  var sb = new System.Text.StringBuilder();
-
-    //  for (var index = 0; index < source.Length; index++)
-    //  {
-    //    if (index > 0)
-    //      sb.Append(separator);
-
-    //    sb.Append(source[index]?.ToString() ?? string.Empty);
-    //  }
-
-    //  return sb.ToString();
-    //}
   }
 }

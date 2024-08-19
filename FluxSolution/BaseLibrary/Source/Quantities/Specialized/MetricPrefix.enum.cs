@@ -9,27 +9,32 @@ namespace Flux
     /// <param name="value"></param>
     /// <param name="target"></param>
     /// <returns></returns>
-    public static double Convert(this Quantities.MetricPrefix source, double value, Quantities.MetricPrefix target) => value * System.Math.Pow(10, (int)source - (int)target);
+    public static T Convert<T>(this Quantities.MetricPrefix source, T value, Quantities.MetricPrefix target)
+      where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
+      => value * T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target));
 
     /// <summary>
-    /// <para>Find the infimum (the largest that is less than) prefix and value from <paramref name="source"/> prefix and <paramref name="value"/>.</para>
+    /// <para>Find the infimum (the largest that is less than) and supremum (the smallest that is greater than) prefixes with adjusted value of the specified <paramref name="source"/> prefix and <paramref name="value"/>.</para>
     /// </summary>
     /// <param name="source"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static (double TargetValue, Quantities.MetricPrefix TargetPrefix) FindInfimum(this Quantities.MetricPrefix source, double value)
+    public static (T TowardZeroValue, Quantities.MetricPrefix TowardZeroPrefix, T AwayFromValue, Quantities.MetricPrefix AwayFromPrefix) GetInfimumAndSupremum<T>(this Quantities.MetricPrefix source, T value, bool proper)
+      where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
     {
-      var targetDigits = new System.Numerics.BigInteger(System.Math.Truncate(value)).DigitCount(10) + (int)source - 1;
+      var metricPrefixes = System.Enum.GetValues<Quantities.MetricPrefix>();
 
-      var targetPrefix = (Quantities.MetricPrefix)System.Enum.GetValues<Quantities.MetricPrefix>().Select(p => (int)p).Order().Last(p => targetDigits >= p);
-      var targetValue = source.Convert(value, targetPrefix);
+      var adjustedValue = source.Convert(value, Quantities.MetricPrefix.NoPrefix);
 
-      return (targetValue, targetPrefix);
+      var (InfimumIndex, InfimumItem, InfimumValue, SupremumIndex, SupremumItem, SupremumValue) = metricPrefixes.AsReadOnlySpan().GetInfimumAndSupremum(adjustedValue, e => T.CopySign(T.Pow(T.CreateChecked(10), T.Abs(T.CreateChecked((int)e))), T.CreateChecked((int)e)), proper);
+
+      var ltValue = Quantities.MetricPrefix.NoPrefix.Convert(value, InfimumItem);
+      var gtValue = Quantities.MetricPrefix.NoPrefix.Convert(value, SupremumItem);
+
+      return (ltValue, InfimumItem, gtValue, SupremumItem);
     }
 
-    public static double GetUnitFactor(this Quantities.MetricPrefix source) => System.Math.Pow(10, (int)source);
-
-    public static string GetUnitName(this Quantities.MetricPrefix source, bool preferUnicode)
+    public static string GetUnitName(this Quantities.MetricPrefix source)
       => source != Quantities.MetricPrefix.NoPrefix ? source.ToString() : string.Empty;
 
     public static string GetUnitSymbol(this Quantities.MetricPrefix source, bool preferUnicode)
@@ -62,10 +67,17 @@ namespace Flux
         Quantities.MetricPrefix.Quecto => "q",
         _ => string.Empty,
       };
+
+    public static double GetUnitValue(this Quantities.MetricPrefix source) => System.Math.Pow(10, (int)source);
   }
 
   namespace Quantities
   {
+    /// <summary>
+    /// <para>The MetricPrefix enum represents the SI metrix prefix decimal (base 10) multiples.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Metric_prefix#SI_prefixes_table"/></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/International_System_of_Units#Prefixes"/></para>
+    /// </summary>
     public enum MetricPrefix
     {
       /// <summary>Represents a value that is not a metric multiple. A.k.a. one.</summary>

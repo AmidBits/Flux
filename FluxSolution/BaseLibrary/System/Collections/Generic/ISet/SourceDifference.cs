@@ -9,7 +9,7 @@ namespace Flux
       if (ReferenceEquals(source, target))
         return System.Linq.Enumerable.Empty<T>(); // A set minus itself is an empty set.
 
-      if (!System.Linq.Enumerable.Any(source))
+      if (!source.Any())
         return System.Linq.Enumerable.Empty<T>(); // If source is empty, the result must be empty.
 
       var ths = new System.Collections.Generic.HashSet<T>(target);

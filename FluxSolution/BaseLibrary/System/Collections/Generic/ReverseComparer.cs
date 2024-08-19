@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static System.Collections.Generic.IComparer<T> CreateReverseComparer<T>(this System.Collections.Generic.IComparer<T> source)
+    public static System.Collections.Generic.Comparer<T> CreateReverseComparer<T>(this System.Collections.Generic.IComparer<T> source)
       => new ReverseComparer<T>(source);
   }
 

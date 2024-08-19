@@ -599,7 +599,7 @@
 
       // IUnitQuantifiable<>
       public string GetUnitName(AngleUnit unit, bool preferPlural)
-        => unit.ToString() + GetUnitValue(unit).PluralStringSuffix();
+        => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
       public string GetUnitSymbol(AngleUnit unit, bool preferUnicode)
         => unit switch
