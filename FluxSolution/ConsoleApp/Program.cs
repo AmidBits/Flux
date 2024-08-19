@@ -38,9 +38,7 @@ namespace ConsoleApp
 
     private static int TestExcept(int[] a, int[] b) => a.AsReadOnlySpan().Except(b.AsReadOnlySpan()).Count;
     private static int TestIntersect(int[] a, int[] b) => a.AsReadOnlySpan().Intersect(b.AsReadOnlySpan()).Count;
-    private static int TestSourceDifference(int[] a, int[] b) => a.AsReadOnlySpan().SourceDifference(b.AsReadOnlySpan()).Count;
     private static int TestSymmetricDifference(int[] a, int[] b) => a.AsReadOnlySpan().SymmetricDifference(b.AsReadOnlySpan()).Count;
-    private static int TestTargetDifference(int[] a, int[] b) => a.AsReadOnlySpan().TargetDifference(b.AsReadOnlySpan()).Count;
     private static int TestTargetExcept(int[] a, int[] b) => b.AsReadOnlySpan().Except(a.AsReadOnlySpan()).Count;
     private static int TestUnion(int[] a, int[] b) => a.AsReadOnlySpan().Union(b.AsReadOnlySpan()).Count;
     private static int TestUnionAll(int[] a, int[] b) => a.AsReadOnlySpan().UnionAll(b.AsReadOnlySpan()).Count;
@@ -50,31 +48,19 @@ namespace ConsoleApp
       var c = a.ToHashSet();
       var d = b.ToHashSet();
 
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Except(d).Count(), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => d.Except(c).Count(), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Intersect(d).Count(), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => d.Intersect(c).Count(), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.SourceDifference(d).Count(), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Except(d).Count(), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Intersect(d).Count(), count));
       System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.SymmetricDifference(d).Count(), count));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => d.SymmetricDifference(c).Count(), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.TargetDifference(d).Count(), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Union(d).Count(), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => d.Union(c).Count(), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Union(d).Count(), count));
       //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.UnionAll(d).Count()));
     }
 
     static void RunReadOnlySpan(int[] a, int[] b, int count = 1000)
     {
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestExcept(a, b), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestExcept(b, a), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestIntersect(a, b), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestIntersect(b, a), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestSourceDifference(a, b), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestExcept(a, b), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestIntersect(a, b), count));
       System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestSymmetricDifference(a, b), count));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestSymmetricDifference(b, a), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestTargetDifference(a, b), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestUnion(a, b), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestUnion(b, a), count));
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestUnion(a, b), count));
       //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestUnionAll(a, b), count));
     }
 

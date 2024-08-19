@@ -7,7 +7,7 @@ namespace Flux
     /// </summary>
     public static System.Collections.Generic.HashSet<T> Except<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int additionalCapacity = 0)
     {
-      if (source == target || source.Length == 0) return new System.Collections.Generic.HashSet<T>(additionalCapacity, equalityComparer); // A set minus itself or if source is empty is an empty set.
+      if (source == target) return new System.Collections.Generic.HashSet<T>(additionalCapacity, equalityComparer); // A set minus itself is an empty set.
 
       var except = source.ToHashSet(equalityComparer, additionalCapacity);
 

@@ -772,16 +772,8 @@ namespace ConsoleApp
       System.Console.WriteLine($"{string.Join(", ", os2)}");
       System.Console.WriteLine();
 
-      System.Console.WriteLine($"Source-Diff.");
-      System.Console.WriteLine($"{string.Join(", ", os1.SourceDifference(os2))}");
-      System.Console.WriteLine();
-
       System.Console.WriteLine($"Sym-Diff.");
       System.Console.WriteLine($"{string.Join(", ", os1.SymmetricDifference(os2))}");
-      System.Console.WriteLine();
-
-      System.Console.WriteLine($"Target-Diff.");
-      System.Console.WriteLine($"{string.Join(", ", os1.TargetDifference(os2))}");
       System.Console.WriteLine();
 
       System.Console.WriteLine($"Cartesian-Product");
