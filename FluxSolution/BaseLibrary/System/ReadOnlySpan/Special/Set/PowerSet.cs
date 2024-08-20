@@ -7,7 +7,7 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Power_set"/>
     public static System.Collections.Generic.List<T[]> PowerSet<T>(this System.ReadOnlySpan<T> source)
     {
-      var list = new System.Collections.Generic.List<T[]>();
+      var powerSet = new System.Collections.Generic.List<T[]>();
 
       var powerCount = (int)System.Numerics.BigInteger.Pow(2, source.Length);
 
@@ -21,10 +21,10 @@ namespace Flux
           if ((o & (1L << i)) > 0)
             subsetList.Add(source[i]);
 
-        list.Add(subsetList.ToArray());
+        powerSet.Add(subsetList.ToArray());
       }
 
-      return list;
+      return powerSet;
     }
   }
 }

@@ -38,8 +38,7 @@ namespace ConsoleApp
 
     private static int TestExcept(int[] a, int[] b) => a.AsReadOnlySpan().Except(b.AsReadOnlySpan()).Count;
     private static int TestIntersect(int[] a, int[] b) => a.AsReadOnlySpan().Intersect(b.AsReadOnlySpan()).Count;
-    private static int TestSymmetricDifference(int[] a, int[] b) => a.AsReadOnlySpan().SymmetricDifference(b.AsReadOnlySpan()).Count;
-    private static int TestTargetExcept(int[] a, int[] b) => b.AsReadOnlySpan().Except(a.AsReadOnlySpan()).Count;
+    private static int TestSymmetricDifference(int[] a, int[] b) => a.AsReadOnlySpan().SymmetricExcept(b.AsReadOnlySpan()).Count;
     private static int TestUnion(int[] a, int[] b) => a.AsReadOnlySpan().Union(b.AsReadOnlySpan()).Count;
     private static int TestUnionAll(int[] a, int[] b) => a.AsReadOnlySpan().UnionAll(b.AsReadOnlySpan()).Count;
 
