@@ -211,34 +211,34 @@ namespace ConsoleApp
         return x;
       };
 
-      void IsUnequal(params Flux.AmbOps.IValue<int>[] values) => amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
+      void AreUnique(params Flux.AmbOps.IValue<int>[] values) => amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
       void IsSame(Flux.AmbOps.IValue<int> left, Flux.AmbOps.IValue<int> right) => amb.Require(() => left.Value == right.Value);
       void IsLeftOf(Flux.AmbOps.IValue<int> left, Flux.AmbOps.IValue<int> right) => amb.Require(() => right.Value - left.Value == 1);
       void IsIn(Flux.AmbOps.IValue<int> attrib, int house) => amb.Require(() => attrib.Value == house);
       void IsNextTo(Flux.AmbOps.IValue<int> left, Flux.AmbOps.IValue<int> right) => amb.Require(() => System.Math.Abs(left.Value - right.Value) == 1);
 
       Flux.AmbOps.IValue<int> english = Term(nameof(english)), swede = Term(nameof(swede)), dane = Term(nameof(dane)), norwegian = Term(nameof(norwegian)), german = Term(nameof(german));
+      AreUnique(english, swede, german, dane, norwegian); // Unique values.
       IsIn(norwegian, 1); // 10
-      IsUnequal(english, swede, german, dane, norwegian);
 
       Flux.AmbOps.IValue<int> red = Term(nameof(red)), green = Term(nameof(green)), white = Term(nameof(white)), blue = Term(nameof(blue)), yellow = Term(nameof(yellow));
-      IsUnequal(red, green, white, blue, yellow);
+      AreUnique(red, green, white, blue, yellow); // Unique values.
       IsNextTo(norwegian, blue); // 15
       IsLeftOf(green, white); // 5
       IsSame(english, red); // 2
 
       Flux.AmbOps.IValue<int> tea = Term(nameof(tea)), coffee = Term(nameof(coffee)), milk = Term(nameof(milk)), beer = Term(nameof(beer)), water = Term(nameof(water));
+      AreUnique(tea, coffee, milk, beer, water); // Unique values.
       IsIn(milk, 3); // 9
-      IsUnequal(tea, coffee, milk, beer, water);
       IsSame(dane, tea); // 4
       IsSame(green, coffee); // 6
 
       Flux.AmbOps.IValue<int> dog = Term(nameof(dog)), cat = Term(nameof(cat)), birds = Term(nameof(birds)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
-      IsUnequal(dog, cat, birds, horse, zebra);
+      AreUnique(dog, cat, birds, horse, zebra); // Unique values.
       IsSame(swede, dog); // 3
 
       Flux.AmbOps.IValue<int> pallmall = Term(nameof(pallmall)), dunhill = Term(nameof(dunhill)), blend = Term(nameof(blend)), bluemaster = Term(nameof(bluemaster)), prince = Term(nameof(prince));
-      IsUnequal(pallmall, dunhill, bluemaster, prince, blend);
+      AreUnique(pallmall, dunhill, bluemaster, prince, blend); // Unique values.
       IsSame(pallmall, birds); // 7
       IsSame(dunhill, yellow); // 8
       IsNextTo(blend, cat); // 11
@@ -780,9 +780,9 @@ namespace ConsoleApp
       System.Console.WriteLine($"{string.Join("; ", os1.CartesianProduct(new System.Collections.Generic.HashSet<int>[] { os2 }).Select(v => string.Join(',', v)))}");
       System.Console.WriteLine();
 
-      System.Console.WriteLine($"Power-Set");
-      System.Console.WriteLine($"{string.Join("; ", os1.PowerSet().Where(list => list.Count > 0).Select(list => string.Join(',', list)))}");
-      System.Console.WriteLine();
+      //System.Console.WriteLine($"Power-Set");
+      //System.Console.WriteLine($"{string.Join("; ", os1.PowerSet().Where(list => list.Count > 0).Select(list => string.Join(',', list)))}");
+      //System.Console.WriteLine();
 
       //var (minLeft, minTop, maxLeft, maxTop) = os1.Select(v => v.ToString()).Prepend("Set:1").WriteToConsole();
       //(minLeft, minTop, maxLeft, maxTop) = os2.Select(v => v.ToString()).Prepend("Set:2").WriteToConsole(maxLeft + padding, minTop);

@@ -635,7 +635,7 @@
       => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
 
       public string ToUnitValueSymbolString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
+      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unit.HasUnitSpacing(preferUnicode) ? unitSpacing.ToSpacingString() : UnicodeSpacing.None.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
 
       #endregion Implemented interfaces
 

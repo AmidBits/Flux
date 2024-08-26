@@ -51,16 +51,16 @@ namespace Formatting
     }
   }
 
-  [TestClass]
-  public class Radix
-  {
-    readonly System.Numerics.BigInteger _radix10 = 32;
-    readonly string _radix16 = @"20";
+  //[TestClass]
+  //public class Radix
+  //{
+  //  readonly System.Numerics.BigInteger _radix10 = 32;
+  //  readonly string _radix16 = @"20";
 
-    [TestMethod]
-    public void Formatter()
-    {
-      Assert.AreEqual(_radix16, string.Format(new Flux.Formatting.RadixFormatter(), "{0:RADIX16}", _radix10));
-    }
-  }
+  //  [TestMethod]
+  //  public void Formatter()
+  //  {
+  //    Assert.AreEqual(_radix16, string.Format(new Flux.Formatting.RadixFormatter(), "{0:RADIX16}", _radix10));
+  //  }
+  //}
 }

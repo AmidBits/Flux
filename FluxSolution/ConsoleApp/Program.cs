@@ -36,110 +36,99 @@ namespace ConsoleApp
 
     #endregion // Presets
 
-    private static int TestExcept(int[] a, int[] b) => a.AsReadOnlySpan().Except(b.AsReadOnlySpan()).Count;
-    private static int TestIntersect(int[] a, int[] b) => a.AsReadOnlySpan().Intersect(b.AsReadOnlySpan()).Count;
-    private static int TestSymmetricDifference(int[] a, int[] b) => a.AsReadOnlySpan().SymmetricExcept(b.AsReadOnlySpan()).Count;
-    private static int TestUnion(int[] a, int[] b) => a.AsReadOnlySpan().Union(b.AsReadOnlySpan()).Count;
-    private static int TestUnionAll(int[] a, int[] b) => a.AsReadOnlySpan().UnionAll(b.AsReadOnlySpan()).Count;
-
-    static void RunHashSet(int[] a, int[] b, int count = 1000)
-    {
-      var c = a.ToHashSet();
-      var d = b.ToHashSet();
-
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Except(d).Count(), count));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Intersect(d).Count(), count));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.SymmetricDifference(d).Count(), count));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.Union(d).Count(), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => c.UnionAll(d).Count()));
-    }
-
-    static void RunReadOnlySpan(int[] a, int[] b, int count = 1000)
-    {
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestExcept(a, b), count));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestIntersect(a, b), count));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestSymmetricDifference(a, b), count));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestUnion(a, b), count));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => TestUnionAll(a, b), count));
-    }
-
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //var ns = System.Enum.GetValues<Flux.Quantities.MetricPrefix>().Select(mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(10, int.Abs((int)mp)), (int)mp)).ToArray();
-      //var ns = System.Enum.GetValues<Flux.Quantities.MetricPrefix>().Select(mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(10, int.Abs((int)mp)), (int)mp)).ToArray();
-      var ns = System.Enum.GetValues<Flux.Quantities.BinaryPrefix>()/*.OrderBy(mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(10, int.Abs((int)mp)), (int)mp))*/.ToArray();
-      //System.Array.Sort(ns);
-
-      //var dupes = new int[] { 1, 2, 3, 2, 3, 4, 3, 4, 5, 4, 5, 6, 5, 6, 7, 6, 7, 8, 7, 8, 9 }.ToList();
-      //dupes.RemoveAll(i => i == 3);
-      //var nodup = )
-
-      var a = System.Linq.Enumerable.Range(1, 50000).ToArray();
-      var b = System.Linq.Enumerable.Range(30001, 600000).ToArray();
-
-      var count = 10000;
-
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => RunReadOnlySpan(a, b, count), 1));
-      System.Console.WriteLine();
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => RunHashSet(a, b, count), 1));
-      System.Console.WriteLine();
-
-      return;
-
-      var v = -(1000.0d);
-
-      var mpe = ns.AsReadOnlySpan().GetExtremum(mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(2, int.Abs((int)mp)), (int)mp));
-      var mpis = ns.AsReadOnlySpan().GetInfimumAndSupremum(1024, mp => System.Numerics.BigInteger.CopySign(System.Numerics.BigInteger.Pow(2, int.Abs((int)mp)), (int)mp), true);
-
-      var mp = Flux.Quantities.MetricPrefix.NoPrefix;
-      var bp = Flux.Quantities.BinaryPrefix.NoPrefix;
-
-      var mpvt = mp.GetInfimumAndSupremum(v, true);
-      var bpvt = bp.GetInfimumAndSupremum(v, true);
-
-      //var inf = p.GetInfimum(v);
-      //System.Console.WriteLine(inf);
-
-      //var sup = p.GetSupremum(v);
-      //System.Console.WriteLine(sup);
-
-      //var t = new Flux.Quantities.Time(v);
-
-      //System.Console.WriteLine($"{t.GetSiPrefixSymbol(MetricPrefix.NoPrefix, false)}, {t.GetSiPrefixUnit(MetricPrefix.NoPrefix)}, {t.GetSiPrefixValue(MetricPrefix.NoPrefix)}, {t.ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix)}");
-      //System.Console.WriteLine($"{t.GetUnitName(TimeUnit.Second, false)}, {t.GetUnitSymbol(TimeUnit.Second, false)}, {t.GetUnitValue(TimeUnit.Second)}, {t.ToUnitValueSymbolString(TimeUnit.Second)}");
-
-      //System.Console.WriteLine(t.ToSiPrefixValueSymbolString(MetricPrefix.Kilo));
-
-      return;
+      System.Console.WriteLine("12345678901234567890123456789012");
 
 
-      var fp = 0.ToBigInteger();
-      var na = 0.ToBigInteger();
+      //var mdoblt = 32.MaxDigitsOfBitLength(2, true);
+      //var mdoblf = 32.MaxDigitsOfBitLength(2, false);
 
-      for (var n = 0.ToBigInteger(); n < 102; n++)
+      ////var maxDigitCountf = 1000000.MaxDigitsOfBitLength(10, false); // 301030
+      //var maxDigitCountt = System.Numerics.BigInteger.Log((System.Numerics.BigInteger.One << (10 - 1)).BitFoldRight() is var swar && true ? swar >>> 1 : swar, 10).RoundAwayFromZero();
+
+      var n = 0b1_0001_0001;
+
+
+      //System.Console.WriteLine($"{n.ToBinaryString()} : {n.ToBinaryString(12)}");
+      //System.Console.WriteLine($"{n.ToDecimalString(4)} : {n.ToDecimalString()}");
+      //System.Console.WriteLine($"{n.ToHexadecimalString(4)} : {n.ToHexadecimalString()}");
+      //System.Console.WriteLine($"{n.ToOctalString(12)} : {n.ToOctalString()}");
+      //System.Console.WriteLine();
+
+      var bl = n.GetBitLengthEx();
+
+      System.Console.WriteLine("   : 01234567890123456789012345678901");
+      for (var i = 2; i < 11; i++)
       {
-        var f = n.Factorial();
-        var sf = n.SplitFactorial();
+        if (i != 0)
+          for (var r = 2; r < 7; r++)
+            System.Console.WriteLine($"{i:D2} {r:D2} = L ({i.FastLogTowardZero(r)}, {i.FastLogAwayFromZero(r)}) : P ({i.FastPowTowardZero(r)}, {i.FastPowAwayFromZero(r)}) : R ({i.FastRootTowardZero(r)}, {i.FastPowAwayFromZero(r)}) : Sqrt ({i.FastSqrtTowardZero()}, {i.FastSqrtAwayFromZero()})");
 
-        System.Console.WriteLine($"{n} = {f} : {sf}");
-
-        fp += f;
-        na += n;
+        //System.Console.WriteLine($"{i:D2} = F: {bl.MaxDigitsOfBitLength(i, false)} ({(0b111111111.TryConvertNumberToPositionalNotationIndices(i, out var f9) ? f9.Count : -1)}), T: {bl.MaxDigitsOfBitLength(i, true)} ({(0b011111111.TryConvertNumberToPositionalNotationIndices(i, out var f8) ? f8.Count : -1)})");
+        //System.Console.WriteLine($"{i:D2} = {n.ToRadixString(i, 0)}");
       }
 
-      System.Console.WriteLine(string.Join(", ", Flux.NumberSequence.GetSphenicNumbers(166)));
+      return;
 
-      var number = 60;
+      //System.Console.WriteLine($" 2: 0b{(n.TryConvertNumberToCharSpan(2, out var symbols2) ? symbols2.ToString() : "Fail!")}");
+      //System.Console.WriteLine($" 8: 0o{(n.TryConvertNumberToCharSpan(8, out var symbols8) ? symbols8.ToString() : "Fail!")}");
+      //System.Console.WriteLine($"10: 0d{(n.TryConvertNumberToCharSpan(10, out var symbols10) ? symbols10.ToString() : "Fail!")}");
+      //System.Console.WriteLine($"16: 0x{(n.TryConvertNumberToCharSpan(16, out var symbols16) ? symbols16.ToString() : "Fail!")}");
 
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => string.Join(", ", number.PrimeFactors())));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => number.PrimeFactors().Count));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => number.PrimeFactors().Sum()));
+      //var a = Flux.Quantities.Radix.Base64.AsSpan().Slice(0, 2);
 
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => string.Join(",", number.Factors(false)), 10));
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => string.Join(",", number.Factors(true)), 10));
+      //n.TryConvertNumberToSymbols(a, '-', 1, out var ns);
+
+      //System.Console.WriteLine(ns.ToString());
+
+      //ns.TryConvertSymbolsToNumber(a, '-', out int sn);
+
+      //System.Console.WriteLine(sn);
+
+      //return;
+
+      var test = new char[] { 'A', 'B', 'C' };
+
+      System.Console.WriteLine(test.GetPermutationsKnuthsAlgorithmL().ToArray().JaggedToConsoleString());
+
+      var s = new int[] { 1, 2, 3, 4/*, 5, 6, 7, 8, 9, 10, 11, 12, 13*/ };
+
+
+
+      //var bs = true;
+      //var count = 0;
+      //do
+      //{
+      //  count++;
+      //  //System.Console.WriteLine(string.Join(',', s));
+      //  bs = NextPermutation(s);
+      //}
+      //while (bs);
+
+      var count = 0L;
+      foreach (var p in Flux.PermutationKnuthsAlgorithmL.GeneratePermutationIndices(new int[] { 1, 1, 2, 2 }))
+      {
+        System.Console.WriteLine(string.Join(',', p));
+        count++;
+      }
+
+      System.Console.WriteLine(count);
+      return;
+      var sal = s.PermuteAlgorithmL(null).ToArray().JaggedToConsoleString(null);
+      var sall = sal.Length;
+      //var sha = s.PermuteHeapsAlgorithm().Select(a => a.ToArray()).ToArray();
+      //var shal = sha.Length;
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => s.PermuteAlgorithmL(null).ToArray().JaggedToConsoleString(null), 100));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => s.PermuteAlgorithmL(null).ToArray().JaggedToConsoleString(null), 100));
+      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => s.PermuteHeapsAlgorithm().Select(a => a.ToArray()).ToArray().Length, 100));
+      //return;
+      ////dupes.RemoveAll(i => i == 3);
+      ////var nodup = )
+
     }
 
     #region Eliza example

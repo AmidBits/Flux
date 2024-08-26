@@ -196,13 +196,13 @@ namespace Units
     [TestMethod]
     public void ToSubscriptString()
     {
-      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToBigInteger().ToSubscriptString(10));
+      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToBigInteger().ToSubscriptString(10).ToString());
     }
 
     [TestMethod]
     public void ToSuperscriptString()
     {
-      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToBigInteger().ToSuperscriptString(10));
+      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToBigInteger().ToSuperscriptString(10).ToString());
     }
   }
 }

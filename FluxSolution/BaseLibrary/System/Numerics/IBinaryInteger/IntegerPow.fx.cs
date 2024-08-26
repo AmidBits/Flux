@@ -74,7 +74,7 @@ namespace Flux
     {
       try
       {
-        fipow = TSelf.CreateChecked(System.Math.Round(System.Math.Pow(double.CreateChecked(radix), double.CreateChecked(exponent))));
+        fipow = TSelf.CreateChecked(double.Round(double.Pow(double.CreateChecked(radix), double.CreateChecked(exponent))));
 
         if (fipow.GetBitLengthEx() <= 53)
           return true;

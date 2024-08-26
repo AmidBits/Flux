@@ -99,41 +99,29 @@
     #region Unconditional rounding functions
 
     /// <summary>
-    /// <para>Symmetric rounding: round up, bias: away from zero.</para>
-    /// </summary>
-    /// <remarks>
     /// <para>Equivalent to the opposite effect of the Truncate() function (also <see cref="RoundTowardZero{TSelf}(TSelf)"/>).</para>
-    /// </remarks>
+    /// </summary>
     public static TSelf RoundAwayFromZero<TSelf>(this TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.IsNegative(x) ? TSelf.Floor(x) : TSelf.Ceiling(x);
 
     /// <summary>
-    /// <para>Symmetric rounding: round down, bias: towards zero.</para>
-    /// </summary>
-    /// <remarks>
     /// <para>Equivalent to the Truncate() function.</para>
-    /// </remarks>
+    /// </summary>
     public static TSelf RoundTowardZero<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Truncate(value);
 
     /// <summary>
-    /// <para>Common rounding: round down, bias: negative infinity.</para>
-    /// </summary>
-    /// <remarks>
     /// <para>Equivalent to the Floor() function.</para>
-    /// </remarks>
+    /// </summary>
     public static TSelf RoundToNegativeInfinity<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Floor(value);
 
     /// <summary>
-    /// <para>Common rounding: round up, bias: positive infinity.</para>
-    /// </summary>
-    /// <remarks>
     /// <para>Equivalent to the ceil()/Ceiling() function.</para>
-    /// </remarks>
+    /// </summary>
     public static TSelf RoundToPositiveInfinity<TSelf>(this TSelf value)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => TSelf.Ceiling(value);
@@ -215,5 +203,7 @@
     #endregion // Specialty
 
     #endregion // Unconditional rounding functions
+
+
   }
 }

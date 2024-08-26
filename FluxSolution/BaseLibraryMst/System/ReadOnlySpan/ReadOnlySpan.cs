@@ -44,6 +44,16 @@ namespace SystemFx
     }
 
     [TestMethod]
+    public void DiceSørensenCoefficient()
+    {
+      var collection1 = (ReadOnlySpan<int>)new int[] { 1, 2, 3 }.AsSpan();
+      var collection2 = (ReadOnlySpan<int>)new int[] { 2, 3, 4, 5, 6 }.AsSpan();
+      var expected = 0.5;
+      var actual = collection1.DiceSørensenCoefficient(collection2);
+      Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
     public void GetExtremum()
     {
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
@@ -62,11 +72,11 @@ namespace SystemFx
     {
       var span = new System.ReadOnlySpan<int>([45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30]);
 
-      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.GetInfimumAndSupremum(60, n => n, false);
+      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.GetInfimumAndSupremum(60, n => n, true);
       Assert.AreEqual(6, actualIndexMin);
       Assert.AreEqual(8, actualIndexMax);
 
-      (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.GetInfimumAndSupremum(55, n => n, true);
+      (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.GetInfimumAndSupremum(55, n => n, false);
       Assert.AreEqual(6, actualIndexMin);
       Assert.AreEqual(1, actualIndexMax);
     }
@@ -280,6 +290,81 @@ namespace SystemFx
     }
 
     [TestMethod]
+    public void SetExcept()
+    {
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+
+      var expected = new int[] { 1, 2, 3 };
+      var actual = a.Except(b).ToArray();
+
+      CollectionAssert.AreEqual(expected, actual, "SetExcept");
+    }
+
+    [TestMethod]
+    public void SetIntersect()
+    {
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+
+      var expected = new int[] { 4, 5 };
+      var actual = a.Intersect(b).ToArray();
+
+      CollectionAssert.AreEqual(expected, actual, "SetIntersect");
+    }
+
+    //[TestMethod]
+    //public void SetPowerSet()
+    //{
+    //  var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
+    //  var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+
+    //  var expected = new int[] { 4, 5 };
+
+    //  var actual = a.PowerSet();
+
+    //  CollectionAssert.AreEqual(expected, actual, "SetPowerSet");
+
+    //  actual = b.PowerSet();
+    //}
+
+    [TestMethod]
+    public void SetSymmetricExcept()
+    {
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+
+      var expected = new int[] { 1, 2, 3, 6, 7, 8, 9, 10, 11, 12 };
+      var actual = a.SymmetricExcept(b).ToArray(); System.Array.Sort(actual);
+
+      CollectionAssert.AreEqual(expected, actual, "SetIntersect");
+    }
+
+    [TestMethod]
+    public void SetUnion()
+    {
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+
+      var expected = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+      var actual = a.Union(b).ToArray();
+
+      CollectionAssert.AreEqual(expected, actual, "SetUnion");
+    }
+
+    [TestMethod]
+    public void SetUnionAll()
+    {
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+
+      var expected = new int[] { 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+      var actual = a.UnionAll(b);
+
+      CollectionAssert.AreEqual(expected, actual, "SetUnionAll");
+    }
+
+    [TestMethod]
     public void ShortestBalancingSubstring()
     {
       var collection1 = (ReadOnlySpan<int>)new int[] { 'G', 'A', 'A', 'A', 'T', 'A', 'A', 'A' }.AsSpan();
@@ -310,16 +395,6 @@ namespace SystemFx
       text = (ReadOnlySpan<int>)new int[] { 3, 34, 4, 12, 5, 2 }.AsSpan();
       expected = false;
       actual = text.IsSubsetSum(30);
-      Assert.AreEqual(expected, actual);
-    }
-
-    [TestMethod]
-    public void SørensenDiceCoefficient()
-    {
-      var collection1 = (ReadOnlySpan<int>)new int[] { 1, 2, 3 }.AsSpan();
-      var collection2 = (ReadOnlySpan<int>)new int[] { 2, 3, 4, 5, 6 }.AsSpan();
-      var expected = 0.5;
-      var actual = collection1.SørensenDiceCoefficient(collection2);
       Assert.AreEqual(expected, actual);
     }
 

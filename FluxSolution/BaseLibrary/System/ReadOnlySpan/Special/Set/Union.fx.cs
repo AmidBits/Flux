@@ -9,7 +9,7 @@ namespace Flux
     public static System.Collections.Generic.List<T> UnionAll<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int additionalCapacity = 0)
     {
       var unionAll = source.ToList(target.Length + additionalCapacity);
-      unionAll.AddSpan(target);
+      unionAll.AddRange(target);
       return unionAll;
     }
 

@@ -7,6 +7,8 @@ namespace Flux.Quantities
   public readonly record struct Radix
     : System.IComparable, System.IComparable<Radix>, System.IFormattable, IValueQuantifiable<int>
   {
+    public const string Base64 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+
     public const int MinValue = 2;
     public const int MaxValue = 256;
 

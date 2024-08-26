@@ -51,7 +51,7 @@ namespace Flux
     public static TSelf InterpolateCubicPb<TSelf>(this TSelf y0, TSelf y1, TSelf y2, TSelf y3, TSelf mu)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
-      var two = TSelf.One + TSelf.One;
+      var two = TSelf.CreateChecked(2);
       var half = TSelf.One / two;
       var oneAndHalf = two - half;
 

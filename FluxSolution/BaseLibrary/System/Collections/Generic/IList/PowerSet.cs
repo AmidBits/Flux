@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
@@ -7,7 +5,7 @@ namespace Flux
     /// <summary>Creates a new sequence, a set of all subsets (as lists) of the source set, including the empty set and the source itself.</summary>
     /// <exception cref="System.ArgumentNullException"/>
     /// <see href="https://en.wikipedia.org/wiki/Power_set"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<T>> PowerSet<T>(this System.Collections.Generic.IList<T> source)
+    public static System.Collections.Generic.IEnumerable<T[]> PowerSet<T>(this System.Collections.Generic.IList<T> source)
     {
       var powerCount = (int)System.Numerics.BigInteger.Pow(2, source.Count);
 
@@ -24,8 +22,5 @@ namespace Flux
         yield return subsetList.ToArray();
       }
     }
-
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<T>> PowerSet<T>(this System.Collections.Generic.ISet<T> source)
-      => source.ToList().PowerSet();
   }
 }
