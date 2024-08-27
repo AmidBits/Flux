@@ -43,6 +43,11 @@ namespace ConsoleApp
 
       System.Console.WriteLine("12345678901234567890123456789012");
 
+      var val = 94;
+
+      //val.MaxDigitsOfBitLength
+
+      var bfl = val.BitFoldLeft();
 
       //var mdoblt = 32.MaxDigitsOfBitLength(2, true);
       //var mdoblf = 32.MaxDigitsOfBitLength(2, false);

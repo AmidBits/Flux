@@ -168,7 +168,7 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToDecimalString<TNumber>(this TNumber number, int minLength = 1, char negativeSymbol = '\u002D', char[]? alphabet = null)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      if (minLength <= 0) minLength = number.GetBitCount().MaxDigitsOfBitLength(10, number.IsSignedNumber());
+      if (minLength <= 0) minLength = number.GetBitCount().MaxDigitsForBitCount(10, number.IsSignedNumber());
 
       alphabet ??= Base64Alphabet;
 
@@ -201,7 +201,7 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToHexadecimalString<TNumber>(this TNumber number, int minLength = 1, char[]? alphabet = null)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      if (minLength <= 0) minLength = number.GetBitCount().MaxDigitsOfBitLength(16, number.IsSignedNumber());
+      if (minLength <= 0) minLength = number.GetBitCount().MaxDigitsForBitCount(16, number.IsSignedNumber());
 
       alphabet ??= Base64Alphabet;
 
@@ -234,7 +234,7 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToOctalString<TNumber>(this TNumber number, int minLength = 1, char[]? alphabet = null)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      if (minLength <= 0) minLength = number.GetBitCount().MaxDigitsOfBitLength(8, number.IsSignedNumber());
+      if (minLength <= 0) minLength = number.GetBitCount().MaxDigitsForBitCount(8, number.IsSignedNumber());
 
       alphabet ??= Base64Alphabet;
 
@@ -277,7 +277,7 @@ namespace Flux
         return number.ToHexadecimalString(minLength, alphabet);
       else
       {
-        if (minLength <= 0) minLength = number.GetBitCount().MaxDigitsOfBitLength(rdx, number.IsSignedNumber());
+        if (minLength <= 0) minLength = number.GetBitCount().MaxDigitsForBitCount(rdx, number.IsSignedNumber());
 
         alphabet ??= Base64Alphabet;
 
