@@ -6,18 +6,18 @@ namespace Flux
     /// <para>Extracts the lowest numbered element of a bit set (<paramref name="value"/>). Given a 2's complement binary integer value, this is the least-significant-1-bit.</para>
     /// </summary>
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-    public static TSelf LeastSignificant1Bit<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value & ((~value) + TSelf.One);
+    public static TValue LeastSignificant1Bit<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => value & ((~value) + TValue.One);
     //=> (value & -value); // This optimized version does not work on unsigned integers.
 
     /// <summary>
     /// <para>Clear <paramref name="value"/> of its least-significant-1-bit.</para>
     /// </summary>
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-    public static TSelf LeastSignificant1BitClear<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => value & (value - TSelf.One);
+    public static TValue LeastSignificant1BitClear<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => value & (value - TValue.One);
 
     /// <summary>
     /// <para>Extracts the highest numbered element of a bit set (<paramref name="value"/>). Given a 2's complement binary integer value, this is the most-significant-1-bit.</para>
@@ -28,22 +28,22 @@ namespace Flux
     /// </list>
     /// </summary>
     /// <remarks>Note that for dynamic types, e.g. <see cref="System.Numerics.BigInteger"/>, the number of bits depends on the storage size used for the <paramref name="value"/>.</remarks>
-    public static TSelf MostSignificant1Bit<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsZero(value) ? value : TSelf.One << (value.GetBitLengthEx() - 1);
+    public static TValue MostSignificant1Bit<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => TValue.IsZero(value) ? value : TValue.One << (value.GetBitLengthEx() - 1);
 
     /// <summary>
     /// <para>Clear <paramref name="value"/> of its least-significant-1-bit.</para>
     /// </summary>
     /// <see href="http://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-    public static TSelf MostSignificant1BitClear<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue MostSignificant1BitClear<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
       => value - value.MostSignificant1Bit();
 
 #if INCLUDE_SWAR
 
-    public static TSelf SwarMostSignificant1Bit<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue SwarMostSignificant1Bit<TValue>(this TValue source)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       source = SwarFoldRight(source);
 

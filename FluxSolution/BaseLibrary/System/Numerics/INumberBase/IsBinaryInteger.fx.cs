@@ -3,26 +3,26 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Determines whether the <paramref name="source"/> number is a binary integer.</para>
+    /// <para>Determines whether the <paramref name="numberBase"/> number is a binary integer.</para>
     /// <para><seealso href="https://stackoverflow.com/a/13609383/3178666"/></para>
     /// </summary>
-    /// <remarks>For types not covered by type-specific overloads, this function uses reflection to find whether the <paramref name="source"/> type implements <see cref="System.Numerics.IBinaryInteger{TSelf}"/>.</remarks>
-    public static bool IsBinaryInteger<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.INumberBase<TSelf>
-      => source is System.Byte
-      || source is System.Char
-      || source is System.Int16
-      || source is System.Int32
-      || source is System.Int64
-      || source is System.Int128
-      || source is System.IntPtr
-      || source is System.Numerics.BigInteger
-      || source is System.SByte
-      || source is System.UInt16
-      || source is System.UInt32
-      || source is System.UInt64
-      || source is System.UInt128
-      || source is System.UIntPtr
-      || typeof(TSelf).IsAssignableToGenericType(typeof(System.Numerics.IBinaryInteger<>)); // By being assignable to System.Numerics.IBinaryInteger<>.
+    /// <remarks>For types not covered by type-specific overloads, this function uses reflection to find whether the <paramref name="numberBase"/> type implements <see cref="System.Numerics.IBinaryInteger{TSelf}"/>.</remarks>
+    public static bool IsBinaryInteger<TNumberBase>(this TNumberBase numberBase)
+      where TNumberBase : System.Numerics.INumberBase<TNumberBase>
+      => numberBase is System.Byte
+      || numberBase is System.Char
+      || numberBase is System.Int16
+      || numberBase is System.Int32
+      || numberBase is System.Int64
+      || numberBase is System.Int128
+      || numberBase is System.IntPtr
+      || numberBase is System.Numerics.BigInteger
+      || numberBase is System.SByte
+      || numberBase is System.UInt16
+      || numberBase is System.UInt32
+      || numberBase is System.UInt64
+      || numberBase is System.UInt128
+      || numberBase is System.UIntPtr
+      || typeof(TNumberBase).IsAssignableToGenericType(typeof(System.Numerics.IBinaryInteger<>)); // By being assignable to System.Numerics.IBinaryInteger<>.
   }
 }

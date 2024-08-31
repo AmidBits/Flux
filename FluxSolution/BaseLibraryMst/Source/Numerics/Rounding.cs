@@ -43,13 +43,13 @@ namespace Maths
     [TestMethod]
     public void RoundToPrecision()
     {
-      Assert.AreEqual(99.97, (99.96535789).RoundByPrecision(Flux.RoundingMode.HalfToEven, 2));
+      Assert.AreEqual(99.97, (99.96535789).RoundByPrecision(Flux.RoundingMode.HalfToEven, 2, 10));
     }
 
     [TestMethod]
     public void RoundToTruncatedPrecision()
     {
-      Assert.AreEqual(99.96, (99.96535789).RoundByTruncatedPrecision(Flux.RoundingMode.HalfToEven, 2));
+      Assert.AreEqual(99.96, (99.96535789).RoundByTruncatedPrecision(Flux.RoundingMode.HalfToEven, 2, 10));
     }
   }
 }

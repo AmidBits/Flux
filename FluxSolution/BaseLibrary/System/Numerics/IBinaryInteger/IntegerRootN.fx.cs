@@ -5,22 +5,22 @@
     /// <summary>
     /// <para>Returns the the largest integer less than or equal (i.e. floor) to the <paramref name="nth"/> (radix) root of <paramref name="value"/>.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="value">The number to find the root of.</param>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="value">The value to find the root of.</param>
     /// <param name="nth">Essentially the radix.</param>
     /// <returns>The integer <paramref name="nth"/> root of <paramref name="value"/>.</returns>
-    public static TSelf IntegerRootN<TSelf>(this TSelf value, TSelf nth)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue IntegerRootN<TValue>(this TValue value, TValue nth)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      AssertNonNegative(value, nameof(value));
+      value.AssertNonNegativeRealNumber();
 
-      if (nth <= TSelf.One) throw new System.ArgumentOutOfRangeException(nameof(nth), "Must be an integer, greater than or equal to 2.");
+      if (nth <= TValue.One) throw new System.ArgumentOutOfRangeException(nameof(nth), "Must be an integer, greater than or equal to 2.");
 
-      if (TryFastIntegerRootN(value, nth, out TSelf root)) // Testing!
+      if (TryFastIntegerRootN(value, nth, out TValue root)) // Testing!
         return root;
 
-      var nM1 = nth - TSelf.One;
-      var c = TSelf.One;
+      var nM1 = nth - TValue.One;
+      var c = TValue.One;
       var d = (nM1 + value) / nth;
       var e = (nM1 * d + value / IntegerPow(d, nM1)) / nth;
 
@@ -36,15 +36,15 @@
       #region First brackets the answer between lo and hi by repeatedly multiplying hi by 2 until n is between lo and hi, then uses binary search to compute the exact answer.
       // 
 
-      //var hi = TSelf.One;
-      //var two = TSelf.One + TSelf.One;
+      //var hi = TValue.One;
+      //var two = TValue.One + TValue.One;
 
       //while (IntegerPow(hi, y) < n)
       //  hi *= two;
 
       //var lo = hi / two;
 
-      //while (hi - lo > TSelf.One)
+      //while (hi - lo > TValue.One)
       //{
       //  var mid = (lo + hi) / two;
       //  var midToK = IntegerPow(mid, y);
@@ -66,9 +66,9 @@
       #region Newton's method, division-by-zero at the IntegerPow.
       // 
 
-      //var u = TSelf.Zero;
+      //var u = TValue.Zero;
       //var s = n;
-      //var yM1 = (y - TSelf.One);
+      //var yM1 = (y - TValue.One);
 
       //while (u < s)
       //{
@@ -82,57 +82,57 @@
     }
 
     /// <summary>
-    /// <para>Returns whether <paramref name="root"/> is a perfect <paramref name="nth"/> (radix) root of <paramref name="number"/>.</para>
+    /// <para>Returns whether <paramref name="root"/> is a perfect <paramref name="nth"/> (radix) root of <paramref name="value"/>.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="number">The number to </param>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="value">The value to </param>
     /// <param name="nth">Essentially the radix.</param>
-    /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="number"/>.</param>
+    /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
     /// <returns></returns>
-    public static bool IsPerfectIntegerRootN<TSelf>(TSelf number, TSelf nth, TSelf root)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => number == IntegerPow(root, nth);
+    public static bool IsPerfectIntegerRootN<TValue>(TValue value, TValue nth, TValue root)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => value == IntegerPow(root, nth);
 
     /// <summary>
-    /// <para>Attempts to compute the (floor) <paramref name="nth"/> (radix) root of <paramref name="number"/> into the out parameter <paramref name="root"/>. This is a faster but limited version.</para>
+    /// <para>Attempts to compute the (floor) <paramref name="nth"/> (radix) root of <paramref name="value"/> into the out parameter <paramref name="root"/>. This is a faster but limited version.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="number">The number to find the root of.</param>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="value">The value to find the root of.</param>
     /// <param name="nth">Essentially the radix.</param>
-    /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="number"/>.</param>
+    /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryFastIntegerRootN<TSelf>(TSelf number, TSelf nth, out TSelf root)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static bool TryFastIntegerRootN<TValue>(TValue value, TValue nth, out TValue root)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (number.GetBitLengthEx() <= 53)
+      if (value.GetBitLengthEx() <= 53)
       {
-        root = TSelf.CreateChecked(double.RootN(double.CreateChecked(number), int.CreateChecked(nth)));
+        root = TValue.CreateChecked(double.RootN(double.CreateChecked(value), int.CreateChecked(nth)));
         return true;
       }
 
-      root = TSelf.Zero;
+      root = TValue.Zero;
       return false;
     }
 
     /// <summary>
-    /// <para>Attempts to compute the (floor) <paramref name="nth"/> (radix) root of <paramref name="number"/> into the out parameter <paramref name="root"/>.</para>
+    /// <para>Attempts to compute the (floor) <paramref name="nth"/> (radix) root of <paramref name="value"/> into the out parameter <paramref name="root"/>.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="number">The number to find the root of.</param>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="value">The value to find the root of.</param>
     /// <param name="nth">Essentially the radix.</param>
-    /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="number"/>.</param>
+    /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryIntegerRootN<TSelf>(TSelf number, TSelf nth, out TSelf root)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static bool TryIntegerRootN<TValue>(TValue value, TValue nth, out TValue root)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       try
       {
-        root = IntegerRootN(number, nth);
+        root = IntegerRootN(value, nth);
         return true;
       }
       catch { }
 
-      root = TSelf.Zero;
+      root = TValue.Zero;
       return false;
     }
   }

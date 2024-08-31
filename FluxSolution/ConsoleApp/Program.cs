@@ -41,99 +41,29 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      System.Console.WriteLine("12345678901234567890123456789012");
-
-      var val = 94;
-
-      //val.MaxDigitsOfBitLength
-
-      var bfl = val.BitFoldLeft();
-
-      //var mdoblt = 32.MaxDigitsOfBitLength(2, true);
-      //var mdoblf = 32.MaxDigitsOfBitLength(2, false);
-
-      ////var maxDigitCountf = 1000000.MaxDigitsOfBitLength(10, false); // 301030
-      //var maxDigitCountt = System.Numerics.BigInteger.Log((System.Numerics.BigInteger.One << (10 - 1)).BitFoldRight() is var swar && true ? swar >>> 1 : swar, 10).RoundAwayFromZero();
-
-      var n = 0b1_0001_0001;
-
-
-      //System.Console.WriteLine($"{n.ToBinaryString()} : {n.ToBinaryString(12)}");
-      //System.Console.WriteLine($"{n.ToDecimalString(4)} : {n.ToDecimalString()}");
-      //System.Console.WriteLine($"{n.ToHexadecimalString(4)} : {n.ToHexadecimalString()}");
-      //System.Console.WriteLine($"{n.ToOctalString(12)} : {n.ToOctalString()}");
-      //System.Console.WriteLine();
-
-      var bl = n.GetBitLengthEx();
-
-      System.Console.WriteLine("   : 01234567890123456789012345678901");
-      for (var i = 2; i < 11; i++)
+      for (var i = 0; i < 10; i++)
       {
-        if (i != 0)
-          for (var r = 2; r < 7; r++)
-            System.Console.WriteLine($"{i:D2} {r:D2} = L ({i.FastLogTowardZero(r)}, {i.FastLogAwayFromZero(r)}) : P ({i.FastPowTowardZero(r)}, {i.FastPowAwayFromZero(r)}) : R ({i.FastRootTowardZero(r)}, {i.FastPowAwayFromZero(r)}) : Sqrt ({i.FastSqrtTowardZero()}, {i.FastSqrtAwayFromZero()})");
+        var rm = i.RevMod(6, out var rem);
 
-        //System.Console.WriteLine($"{i:D2} = F: {bl.MaxDigitsOfBitLength(i, false)} ({(0b111111111.TryConvertNumberToPositionalNotationIndices(i, out var f9) ? f9.Count : -1)}), T: {bl.MaxDigitsOfBitLength(i, true)} ({(0b011111111.TryConvertNumberToPositionalNotationIndices(i, out var f8) ? f8.Count : -1)})");
-        //System.Console.WriteLine($"{i:D2} = {n.ToRadixString(i, 0)}");
+        System.Console.WriteLine($"{i} RevMod 6 = {rm} ({rem})");
       }
 
-      return;
+      var value = 100000;
 
-      //System.Console.WriteLine($" 2: 0b{(n.TryConvertNumberToCharSpan(2, out var symbols2) ? symbols2.ToString() : "Fail!")}");
-      //System.Console.WriteLine($" 8: 0o{(n.TryConvertNumberToCharSpan(8, out var symbols8) ? symbols8.ToString() : "Fail!")}");
-      //System.Console.WriteLine($"10: 0d{(n.TryConvertNumberToCharSpan(10, out var symbols10) ? symbols10.ToString() : "Fail!")}");
-      //System.Console.WriteLine($"16: 0x{(n.TryConvertNumberToCharSpan(16, out var symbols16) ? symbols16.ToString() : "Fail!")}");
+      var rtlafz = value.RoundToLogOfAwayFromZero(10);
+      var rtltz = value.RoundToLogOfTowardZero(10);
 
-      //var a = Flux.Quantities.Radix.Base64.AsSpan().Slice(0, 2);
+      var rtmafz = value.RoundToMultipleOfAwayFromZero(10, true);
+      var rtmtz = value.RoundToMultipleOfTowardZero(10, true);
 
-      //n.TryConvertNumberToSymbols(a, '-', 1, out var ns);
+      var rtmafzf = value.RoundToMultipleOfAwayFromZero(10);
+      var rtmtzf = value.RoundToMultipleOfTowardZero(10);
 
-      //System.Console.WriteLine(ns.ToString());
+      var rtpafz = value.RoundToPowOfAwayFromZero(10, true);
+      var rtptz = value.RoundToPowOfTowardZero(10, true);
 
-      //ns.TryConvertSymbolsToNumber(a, '-', out int sn);
-
-      //System.Console.WriteLine(sn);
-
-      //return;
-
-      var test = new char[] { 'A', 'B', 'C' };
-
-      System.Console.WriteLine(test.GetPermutationsKnuthsAlgorithmL().ToArray().JaggedToConsoleString());
-
-      var s = new int[] { 1, 2, 3, 4/*, 5, 6, 7, 8, 9, 10, 11, 12, 13*/ };
-
-
-
-      //var bs = true;
-      //var count = 0;
-      //do
-      //{
-      //  count++;
-      //  //System.Console.WriteLine(string.Join(',', s));
-      //  bs = NextPermutation(s);
-      //}
-      //while (bs);
-
-      var count = 0L;
-      foreach (var p in Flux.PermutationKnuthsAlgorithmL.GeneratePermutationIndices(new int[] { 1, 1, 2, 2 }))
-      {
-        System.Console.WriteLine(string.Join(',', p));
-        count++;
-      }
-
-      System.Console.WriteLine(count);
-      return;
-      var sal = s.PermuteAlgorithmL(null).ToArray().JaggedToConsoleString(null);
-      var sall = sal.Length;
-      //var sha = s.PermuteHeapsAlgorithm().Select(a => a.ToArray()).ToArray();
-      //var shal = sha.Length;
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => s.PermuteAlgorithmL(null).ToArray().JaggedToConsoleString(null), 100));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => s.PermuteAlgorithmL(null).ToArray().JaggedToConsoleString(null), 100));
-      //System.Console.WriteLine(Flux.Services.Performance.Measure(() => s.PermuteHeapsAlgorithm().Select(a => a.ToArray()).ToArray().Length, 100));
-      //return;
-      ////dupes.RemoveAll(i => i == 3);
-      ////var nodup = )
-
+      var rtpafzf = value.RoundToPowOfAwayFromZero(10);
+      var rtptzf = value.RoundToPowOfTowardZero(10);
     }
 
     #region Eliza example

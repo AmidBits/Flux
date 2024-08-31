@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class BitOps
   {
-    public static bool BitFlagCarryLsb<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => !TSelf.IsZero(source & TSelf.One);
+    public static bool BitFlagCarryLsb<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => !TValue.IsZero(value & TValue.One);
 
-    public static bool BitFlagCarryMsb<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => !TSelf.IsZero(source & TSelf.RotateRight(TSelf.One, 1));
+    public static bool BitFlagCarryMsb<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => !TValue.IsZero(value & (TValue.One << (value.GetBitCount() - 1)));
   }
 }

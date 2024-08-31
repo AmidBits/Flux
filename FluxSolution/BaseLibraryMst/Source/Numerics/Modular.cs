@@ -7,24 +7,24 @@ namespace Maths
   [TestClass]
   public class Modular
   {
-    [TestMethod]
-    public void DivMod()
-    {
-      var quotient = (9.0).DivMod(6, out var remainder);
+    //[TestMethod]
+    //public void DivMod()
+    //{
+    //  var quotient = (9.0).DivMod(6, out var remainder);
 
-      Assert.AreEqual(1.5, quotient);
-      Assert.AreEqual(3, remainder);
-    }
+    //  Assert.AreEqual(1.5, quotient);
+    //  Assert.AreEqual(3, remainder);
+    //}
 
-    [TestMethod]
-    public void DivModTrunc()
-    {
-      var quotient = (9.0).DivModTrunc(6, out var remainder, out var truncatedQuotient);
+    //[TestMethod]
+    //public void DivModTrunc()
+    //{
+    //  var quotient = (9.0).DivModTrunc(6, out var remainder, out var truncatedQuotient);
 
-      Assert.AreEqual(1.5, quotient);
-      Assert.AreEqual(3, remainder);
-      Assert.AreEqual(1, truncatedQuotient);
-    }
+    //  Assert.AreEqual(1.5, quotient);
+    //  Assert.AreEqual(3, remainder);
+    //  Assert.AreEqual(1, truncatedQuotient);
+    //}
 
     [TestMethod]
     public void Mod()

@@ -3,8 +3,8 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>https://en.wikipedia.org/wiki/Vincenty%27s_formulae</summary>
-    public static TSelf HelmertsExpansionParameterK1<TSelf>(this TSelf u)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IRootFunctions<TSelf>
-      => TSelf.Sqrt(TSelf.One + u * u) is var k ? (k - TSelf.One) / (k + TSelf.One) : throw new System.ArithmeticException();
+    public static TValue HelmertsExpansionParameterK1<TValue>(this TValue u)
+      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IRootFunctions<TValue>
+      => TValue.Sqrt(TValue.One + u * u) is var k ? (k - TValue.One) / (k + TValue.One) : throw new System.ArithmeticException();
   }
 }

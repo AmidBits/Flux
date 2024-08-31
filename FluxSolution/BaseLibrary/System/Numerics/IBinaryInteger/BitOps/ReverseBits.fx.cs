@@ -5,18 +5,18 @@ namespace Flux
     /// <summary>
     /// <para>Reverses the bits of an integer. The LSBs (least significant bits) becomes the MSBs (most significant bits) and vice versa, i.e. the bits are mirrored across the integer storage space. It's a reversal of all storage bits.</para>
     /// </summary>
-    /// <remarks>See <see cref="ReverseBytes{TSelf}(TSelf)"/> for byte reversal.</remarks>
-    public static TSelf ReverseBits<TSelf>(this TSelf integer)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    /// <remarks>See <see cref="ReverseBytes{TValue}(TValue)"/> for byte reversal.</remarks>
+    public static TValue ReverseBits<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      var bytes = new byte[integer.GetByteCount()]; // Retrieve the byte size of the number, which will be the basis for the bit reversal.
+      var bytes = new byte[value.GetByteCount()]; // Retrieve the byte size of the number, which will be the basis for the bit reversal.
 
-      integer.WriteBigEndian(bytes); // Write as BigEndian (high-to-low).
+      value.WriteBigEndian(bytes); // Write as BigEndian (high-to-low).
 
       for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
         ReverseBits(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-      return TSelf.ReadLittleEndian(bytes, !integer.IsSignedNumber()); // Read as LittleEndian (low-to-high).
+      return TValue.ReadLittleEndian(bytes, !value.IsSignedNumber()); // Read as LittleEndian (low-to-high).
     }
 
     //[System.CLSCompliant(false)]

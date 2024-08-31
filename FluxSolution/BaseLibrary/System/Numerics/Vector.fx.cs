@@ -76,7 +76,7 @@ namespace Flux
       if (source.IsZero() || T.IsZero(exponent))
         return System.Numerics.Vector<T>.One; // If either value or exponent is zero, one is customary.
 
-      exponent.AssertNonNegative(nameof(exponent));
+      exponent.AssertNonNegativeRealNumber(nameof(exponent));
 
       var result = System.Numerics.Vector<T>.One;
 

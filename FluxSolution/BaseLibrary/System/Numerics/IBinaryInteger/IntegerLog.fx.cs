@@ -5,36 +5,36 @@ namespace Flux
 
     /// <summary>
     /// <para>Integer-log mitigates approximations with floating point logs.</para>
-    /// <para>A.k.a. the integer-log ceiling of <paramref name="number"/> in base <paramref name="radix"/>.</para>
+    /// <para>A.k.a. the integer-log ceiling of <paramref name="value"/> in base <paramref name="radix"/>.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="number"></param>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="value"></param>
     /// <param name="radix"></param>
     /// <returns></returns>
     /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero simply returns zero.</remarks>
-    public static TSelf IntegerLogAwayFromZero<TSelf>(this TSelf number, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.CopySign(TSelf.Abs(IntegerLogTowardZero(number, radix)) is var tz && number.IsPowOf(radix) ? tz : tz + TSelf.One, number);
+    public static TValue IntegerLogAwayFromZero<TValue>(this TValue value, TValue radix)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => TValue.CopySign(TValue.Abs(IntegerLogTowardZero(value, radix)) is var tz && value.IsPowOf(radix) ? tz : tz + TValue.One, value);
 
     /// <summary>
     /// <para>Integer-log mitigates approximations with floating point logs.</para>
-    /// <para>A.k.a. the integer-log floor of <paramref name="number"/> in base <paramref name="radix"/>.</para>
+    /// <para>A.k.a. the integer-log floor of <paramref name="value"/> in base <paramref name="radix"/>.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="number"></param>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="value"></param>
     /// <param name="radix"></param>
     /// <returns></returns>
     /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero simply returns zero.</remarks>
-    public static TSelf IntegerLogTowardZero<TSelf>(this TSelf number, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue IntegerLogTowardZero<TValue>(this TValue value, TValue radix)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       Quantities.Radix.AssertMember(radix);
 
-      var v = TSelf.Abs(number);
+      var v = TValue.Abs(value);
 
-      var ilog = TSelf.Zero;
+      var ilog = TValue.Zero;
 
-      if (!TSelf.IsZero(v))
+      if (!TValue.IsZero(v))
         while (v >= radix)
         {
           v /= radix;
@@ -42,7 +42,7 @@ namespace Flux
           ilog++;
         }
 
-      return TSelf.CopySign(ilog, number);
+      return TValue.CopySign(ilog, value);
     }
   }
 }

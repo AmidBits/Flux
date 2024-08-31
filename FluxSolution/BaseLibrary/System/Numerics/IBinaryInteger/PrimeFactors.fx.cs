@@ -2,84 +2,94 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a new list of factors (a.k.a. divisors) for the specified <paramref name="number"/>.</summary>
+    /// <summary>
+    /// <para>Creates a new list of factors (a.k.a. divisors) for the specified <paramref name="value"/>.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Divisor"/></para>
+    /// </summary>
     /// <remarks>This implementaion does not order the result.</remarks>
-    /// <see href="https://en.wikipedia.org/wiki/Divisor"/>
-    public static System.Collections.Generic.List<TSelf> Factors<TSelf>(this TSelf number, bool proper)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="proper"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.List<TValue> Factors<TValue>(this TValue value, bool proper)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      var list = new System.Collections.Generic.List<TSelf>();
+      var list = new System.Collections.Generic.List<TValue>();
 
-      if (number > TSelf.Zero)
+      if (value > TValue.Zero)
       {
-        var sqrt = number.IntegerSqrt();
+        var sqrt = value.IntegerSqrt();
 
-        for (var counter = TSelf.One; counter <= sqrt; counter++)
-          if (TSelf.IsZero(number % counter))
+        for (var counter = TValue.One; counter <= sqrt; counter++)
+          if (TValue.IsZero(value % counter))
           {
             list.Add(counter);
 
-            if (number / counter is var quotient && quotient != counter)
+            if (value / counter is var quotient && quotient != counter)
               list.Add(quotient);
           }
       }
 
-      if (proper) list.Remove(number);
+      if (proper) list.Remove(value);
 
       return list;
     }
 
     /// <summary>
-    /// <para>Creates a list of prime factors for the <paramref name="number"/> using wheel factorization.</para>
+    /// <para>Creates a list of prime factors (a.k.a. divisors) for the <paramref name="value"/> using wheel factorization.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Factorization"/></para>
     /// <para><see href="https://en.wikipedia.org/wiki/Wheel_factorization"/></para>
     /// <para><see href="https://en.wikipedia.org/wiki/Integer_factorization"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Divisor"/></para>
     /// </summary>
-    public static System.Collections.Generic.List<TSelf> PrimeFactors<TSelf>(this TSelf number)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static System.Collections.Generic.List<TValue> PrimeFactors<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (number <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(number));
+      if (value <= TValue.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-      var list = new System.Collections.Generic.List<TSelf>();
+      var list = new System.Collections.Generic.List<TValue>();
 
-      var two = TSelf.CreateChecked(2);
-      var three = TSelf.CreateChecked(3);
-      var four = TSelf.CreateChecked(4);
-      var five = TSelf.CreateChecked(5);
-      var six = TSelf.CreateChecked(6);
-      var seven = TSelf.CreateChecked(7);
+      var two = TValue.CreateChecked(2);
+      var three = TValue.CreateChecked(3);
+      var four = TValue.CreateChecked(4);
+      var five = TValue.CreateChecked(5);
+      var six = TValue.CreateChecked(6);
+      var seven = TValue.CreateChecked(7);
 
-      var m_primeFactorWheelIncrements = new TSelf[] { four, two, four, two, four, six, two, six };
+      var m_primeFactorWheelIncrements = new TValue[] { four, two, four, two, four, six, two, six };
 
-      while (TSelf.IsZero(number % two))
+      while (TValue.IsZero(value % two))
       {
         list.Add(two);
-        number /= two;
+        value /= two;
       }
 
-      while (TSelf.IsZero(number % three))
+      while (TValue.IsZero(value % three))
       {
         list.Add(three);
-        number /= three;
+        value /= three;
       }
 
-      while (TSelf.IsZero(number % five))
+      while (TValue.IsZero(value % five))
       {
         list.Add(five);
-        number /= five;
+        value /= five;
       }
 
-      TSelf k = seven, k2 = k * k;
+      TValue k = seven, k2 = k * k;
 
       var index = 0;
 
-      while (k2 <= number)
+      while (k2 <= value)
       {
-        if (TSelf.IsZero(number % k))
+        if (TValue.IsZero(value % k))
         {
           list.Add(k);
-          number /= k;
+          value /= k;
         }
         else
         {
@@ -91,132 +101,10 @@ namespace Flux
         }
       }
 
-      if (number > TSelf.One)
-        list.Add(number);
+      if (value > TValue.One)
+        list.Add(value);
 
       return list;
     }
-
-    //public static TSelf CountOfPrimeFactors<TSelf>(this TSelf number)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //{
-    //  if (number <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(number));
-
-    //  var count = TSelf.Zero;
-
-    //  var two = TSelf.CreateChecked(2);
-    //  var three = TSelf.CreateChecked(3);
-    //  var four = TSelf.CreateChecked(4);
-    //  var five = TSelf.CreateChecked(5);
-    //  var six = TSelf.CreateChecked(6);
-    //  var seven = TSelf.CreateChecked(7);
-
-    //  var m_primeFactorWheelIncrements = new TSelf[] { four, two, four, two, four, six, two, six };
-
-    //  while (TSelf.IsZero(number % two))
-    //  {
-    //    count++;
-    //    number /= two;
-    //  }
-
-    //  while (TSelf.IsZero(number % three))
-    //  {
-    //    count++;
-    //    number /= three;
-    //  }
-
-    //  while (TSelf.IsZero(number % five))
-    //  {
-    //    count++;
-    //    number /= five;
-    //  }
-
-    //  TSelf k = seven, k2 = k * k;
-
-    //  var index = 0;
-
-    //  while (k2 <= number)
-    //  {
-    //    if (TSelf.IsZero(number % k))
-    //    {
-    //      count++;
-    //      number /= k;
-    //    }
-    //    else
-    //    {
-    //      k += m_primeFactorWheelIncrements[index++];
-    //      k2 = k * k;
-
-    //      if (index >= m_primeFactorWheelIncrements.Length)
-    //        index = 0;
-    //    }
-    //  }
-
-    //  if (number > TSelf.One)
-    //    count++;
-
-    //  return count;
-    //}
-
-    //public static TSelf SumOfPrimeFactors<TSelf>(this TSelf number)
-    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    //{
-    //  if (number <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(number));
-
-    //  var sum = TSelf.Zero;
-
-    //  var two = TSelf.CreateChecked(2);
-    //  var three = TSelf.CreateChecked(3);
-    //  var four = TSelf.CreateChecked(4);
-    //  var five = TSelf.CreateChecked(5);
-    //  var six = TSelf.CreateChecked(6);
-    //  var seven = TSelf.CreateChecked(7);
-
-    //  var m_primeFactorWheelIncrements = new TSelf[] { four, two, four, two, four, six, two, six };
-
-    //  while (TSelf.IsZero(number % two))
-    //  {
-    //    sum += two;
-    //    number /= two;
-    //  }
-
-    //  while (TSelf.IsZero(number % three))
-    //  {
-    //    sum += three;
-    //    number /= three;
-    //  }
-
-    //  while (TSelf.IsZero(number % five))
-    //  {
-    //    sum += five;
-    //    number /= five;
-    //  }
-
-    //  TSelf k = seven, k2 = k * k;
-
-    //  var index = 0;
-
-    //  while (k2 <= number)
-    //  {
-    //    if (TSelf.IsZero(number % k))
-    //    {
-    //      sum += k;
-    //      number /= k;
-    //    }
-    //    else
-    //    {
-    //      k += m_primeFactorWheelIncrements[index++];
-    //      k2 = k * k;
-
-    //      if (index >= m_primeFactorWheelIncrements.Length)
-    //        index = 0;
-    //    }
-    //  }
-
-    //  if (number > TSelf.One)
-    //    sum += number;
-
-    //  return sum;
-    //}
   }
 }

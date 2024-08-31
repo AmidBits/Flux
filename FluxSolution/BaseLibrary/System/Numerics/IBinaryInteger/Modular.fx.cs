@@ -3,18 +3,18 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Returns the remainder of the Euclidean division of <paramref name="dividend"/> and <paramref name="divisor"/>, i.e. the remainder of modular division of a and b.</summary>
-    public static TSelf Mod<TSelf>(this TSelf dividend, TSelf divisor)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue Mod<TValue>(this TValue dividend, TValue divisor)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (TSelf.IsZero(divisor)) throw new System.DivideByZeroException();
+      if (TValue.IsZero(divisor)) throw new System.DivideByZeroException();
 
-      if (divisor == -TSelf.One)
-        return TSelf.Zero;
+      if (divisor == -TValue.One)
+        return TValue.Zero;
 
       var m = dividend % divisor;
 
-      if (TSelf.IsNegative(m))
-        return TSelf.IsNegative(divisor) ? m - divisor : m + divisor;
+      if (TValue.IsNegative(m))
+        return TValue.IsNegative(divisor) ? m - divisor : m + divisor;
 
       return m;
     }
@@ -25,21 +25,21 @@ namespace Flux
     /// <para>var mi = ModInv(4, 7); // mi = 2, i.e. "2 is the modular multiplicative inverse of 4 (and vice versa), mod 7".</para>
     /// <para>var mi = ModInv(8, 11); // mi = 7, i.e. "7 is the modular inverse of 8, mod 11".</para>
     /// </remarks>
-    public static TSelf ModInv<TSelf>(this TSelf a, TSelf modulus)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue ModInv<TValue>(this TValue a, TValue modulus)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (TSelf.IsNegative(modulus))
+      if (TValue.IsNegative(modulus))
         modulus = -modulus;
 
-      if (TSelf.IsNegative(a))
+      if (TValue.IsNegative(a))
         a = modulus - (-a % modulus);
 
-      var t = TSelf.Zero;
-      var nt = TSelf.One;
+      var t = TValue.Zero;
+      var nt = TValue.One;
       var r = modulus;
       var nr = a % modulus;
 
-      while (!TSelf.IsZero(nr))
+      while (!TValue.IsZero(nr))
       {
         var q = r / nr;
 
@@ -47,10 +47,10 @@ namespace Flux
         (nr, r) = (r - q * nr, nr); // var tmp2 = nr; nr = r - q * nr; r = tmp2;
       }
 
-      if (r > TSelf.One)
-        return -TSelf.One; // No inverse.
+      if (r > TValue.One)
+        return -TValue.One; // No inverse.
 
-      if (TSelf.IsNegative(t))
+      if (TValue.IsNegative(t))
         t += modulus;
 
       return t;
@@ -60,12 +60,12 @@ namespace Flux
     /// <para>Modular multiplication of <paramref name="dividend"/> and <paramref name="divisor"/>.</para>
     /// <see href="https://en.wikipedia.org/wiki/Modular_arithmetic"/>
     /// </summary>
-    public static TSelf MulMod<TSelf>(this TSelf dividend, TSelf divisor, TSelf modulus)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue MulMod<TValue>(this TValue dividend, TValue divisor, TValue modulus)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      AssertNonNegative(dividend, nameof(dividend));
-      AssertNonNegative(divisor, nameof(divisor));
-      AssertNonNegative(modulus, nameof(modulus));
+      AssertNonNegativeRealNumber(dividend, nameof(dividend));
+      AssertNonNegativeRealNumber(divisor, nameof(divisor));
+      AssertNonNegativeRealNumber(modulus, nameof(modulus));
 
       if (dividend >= modulus) dividend %= modulus;
       if (divisor >= modulus) divisor %= modulus;
@@ -74,25 +74,25 @@ namespace Flux
       var c = x * divisor / modulus;
       var r = (dividend * divisor - c * modulus) % modulus;
 
-      return TSelf.IsNegative(r) ? r + modulus : r;
+      return TValue.IsNegative(r) ? r + modulus : r;
     }
 
     /// <summary>
     /// <para>Modular exponentiation of <paramref name="dividend"/> and <paramref name="divisor"/>.</para>
     /// <see href="https://en.wikipedia.org/wiki/Modular_arithmetic"/>
     /// </summary>
-    public static TSelf PowMod<TSelf>(this TSelf dividend, TSelf divisor, TSelf modulus)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue PowMod<TValue>(this TValue dividend, TValue divisor, TValue modulus)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (dividend < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(dividend));
-      if (divisor < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(divisor));
-      if (modulus < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(modulus));
+      if (dividend < TValue.Zero) throw new System.ArgumentOutOfRangeException(nameof(dividend));
+      if (divisor < TValue.Zero) throw new System.ArgumentOutOfRangeException(nameof(divisor));
+      if (modulus < TValue.Zero) throw new System.ArgumentOutOfRangeException(nameof(modulus));
 
-      var r = modulus == TSelf.One ? TSelf.Zero : TSelf.One;
+      var r = modulus == TValue.One ? TValue.Zero : TValue.One;
 
-      while (divisor > TSelf.Zero)
+      while (divisor > TValue.Zero)
       {
-        if (TSelf.IsOddInteger(divisor)) // if ((b & TSelf.One) != TSelf.Zero)
+        if (TValue.IsOddInteger(divisor)) // if ((b & TValue.One) != TValue.Zero)
           r = MulMod(r, dividend, modulus);
 
         divisor >>= 1;
@@ -100,22 +100,6 @@ namespace Flux
       }
 
       return r;
-    }
-
-    /// <summary>
-    /// <para>Returns the <paramref name="remainder"/> in reverse, i.e. instead of [0, divisor), we get (divisor, 0], a reversal of the modulo/remainder output image (range). The function also returns the normal <paramref name="remainder"/>.</para>
-    /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="dividend"></param>
-    /// <param name="divisor"></param>
-    /// <param name="remainder"></param>
-    /// <returns></returns>
-    public static TSelf RevMod<TSelf>(this TSelf dividend, TSelf divisor, out TSelf remainder)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      remainder = dividend % divisor;
-
-      return TSelf.IsZero(remainder) ? remainder : -remainder + divisor;
     }
   }
 }

@@ -7,31 +7,31 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Exponentiation"/>
     /// <see href="https://en.wikipedia.org/wiki/Exponentiation_by_squaring"/>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     /// <param name="radix">The radix (base) to be raised to the power-of-<paramref name="exponent"/>.</param>
     /// <param name="exponent">The exponent with which to raise the <paramref name="radix"/>.</param>
     /// <returns>The <paramref name="radix"/> raised to the power-of-<paramref name="exponent"/>.</returns>
     /// <remarks>If <paramref name="radix"/> and/or <paramref name="exponent"/> are zero, 1 is returned. I.e. 0&#x2070;, x&#x2070; and 0&#x02E3; all return 1 in this version.</remarks>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf IntegerPow<TSelf>(this TSelf radix, TSelf exponent)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue IntegerPow<TValue>(this TValue radix, TValue exponent)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       if (TryFastIntegerPow(radix, exponent, out var ipow)) // Testing!
         return ipow;
 
-      if (TSelf.IsZero(radix) || TSelf.IsZero(exponent))
-        return TSelf.One; // If either value or exponent is zero, one is customary.
+      if (TValue.IsZero(radix) || TValue.IsZero(exponent))
+        return TValue.One; // If either value or exponent is zero, one is customary.
 
-      AssertNonNegative(exponent, nameof(exponent));
+      exponent.AssertNonNegativeRealNumber(nameof(exponent));
 
-      if (radix == (TSelf.One + TSelf.One))
-        return TSelf.One << int.CreateChecked(exponent);
+      if (radix == (TValue.One + TValue.One))
+        return TValue.One << int.CreateChecked(exponent);
 
-      var result = TSelf.One;
+      var result = TValue.One;
 
-      while (exponent != TSelf.One)
+      while (exponent != TValue.One)
       {
-        if (TSelf.IsOddInteger(exponent)) // Only act on set bits in exponent.
+        if (TValue.IsOddInteger(exponent)) // Only act on set bits in exponent.
           result *= radix; // Multiply by the current corresponding power-of-radix (adjusts value/exponent below for each iteration).
 
         exponent >>= 1; // Half the exponent for the next iteration.
@@ -44,17 +44,17 @@ namespace Flux
     /// <summary>
     /// <para>Computes <paramref name="radix"/> raised to the power of absolute(<paramref name="exponent"/>), using exponentiation by squaring, and also returns the <paramref name="reciprocal"/> of the result (i.e. 1.0 / result) as an out parameter. The reciprocal is the same as specifying a negative exponent to <see cref="System.Math.Pow"/>.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     /// <param name="radix">The radix (base) to be raised to the power-of-<paramref name="exponent"/>.</param>
     /// <param name="exponent">The exponent with which to raise the <paramref name="radix"/>.</param>
     /// <param name="reciprocal">The reciprocal of <paramref name="radix"/> raised to the power-of-<paramref name="exponent"/>, i.e. 1 divided by the resulting value.</param>
     /// <returns>The <paramref name="radix"/> raised to the power-of-<paramref name="exponent"/>.</returns>
     /// <remarks>If <paramref name="radix"/> and/or <paramref name="exponent"/> are zero, 1 is returned.</remarks>
-    public static TSelf IntegerPowRec<TSelf, TReciprocal>(this TSelf radix, TSelf exponent, out TReciprocal reciprocal)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue IntegerPowRec<TValue, TReciprocal>(this TValue radix, TValue exponent, out TReciprocal reciprocal)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
       where TReciprocal : System.Numerics.IFloatingPoint<TReciprocal>
     {
-      var ipow = IntegerPow(radix, TSelf.Abs(exponent));
+      var ipow = IntegerPow(radix, TValue.Abs(exponent));
 
       reciprocal = TReciprocal.One / TReciprocal.CreateChecked(ipow);
 
@@ -64,24 +64,24 @@ namespace Flux
     /// <summary>
     /// <para>Computes <paramref name="radix"/> raised to the power of <paramref name="exponent"/>, using the .NET built-in functionality. This is a faster but limited version.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     /// <param name="radix">The radix (base) to be raised to the power-of-<paramref name="exponent"/>.</param>
     /// <param name="exponent">The exponent with which to raise the <paramref name="radix"/>.</param>
     /// <param name="fipow">The result as an out parameter, if successful. Undefined in unsuccessful.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryFastIntegerPow<TSelf>(this TSelf radix, TSelf exponent, out TSelf fipow)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static bool TryFastIntegerPow<TValue>(this TValue radix, TValue exponent, out TValue fipow)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       try
       {
-        fipow = TSelf.CreateChecked(double.Round(double.Pow(double.CreateChecked(radix), double.CreateChecked(exponent))));
+        fipow = TValue.CreateChecked(double.Round(double.Pow(double.CreateChecked(radix), double.CreateChecked(exponent))));
 
         if (fipow.GetBitLengthEx() <= 53)
           return true;
       }
       catch { }
 
-      fipow = TSelf.Zero;
+      fipow = TValue.Zero;
       return false;
     }
   }

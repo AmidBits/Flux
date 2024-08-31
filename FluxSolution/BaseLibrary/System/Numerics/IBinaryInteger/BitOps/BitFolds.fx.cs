@@ -10,10 +10,10 @@ namespace Flux
     /// <para>The process yields a bit vector with the same least-significant-1-bit as <paramref name="value"/>, and all 1's above it.</para>
     /// </summary>
     /// <returns>All bits set from LSB up, or -1 if the value is less than zero.</returns>
-    public static TSelf BitFoldLeft<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue BitFoldLeft<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (TSelf.IsZero(value)) return value;
+      if (TValue.IsZero(value)) return value;
 
       var tzc = value.GetTrailingZeroCount();
 
@@ -25,22 +25,22 @@ namespace Flux
     /// <para>The process yields a bit vector with the same most-significant-1-bit as <paramref name="value"/>, and all 1's below it.</para>
     /// </summary>
     /// <returns>All bits set from MSB down, or -1 (all bits) if the value is less than zero.</returns>
-    public static TSelf BitFoldRight<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => TSelf.IsZero(value)
+    public static TValue BitFoldRight<TValue>(this TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => TValue.IsZero(value)
       ? value
-      : (((value.MostSignificant1Bit() - TSelf.One) << 1) | TSelf.One);
+      : (((value.MostSignificant1Bit() - TValue.One) << 1) | TValue.One);
 
 #if INCLUDE_SWAR
 
     /// <summary>
     /// <para>This is the traditional SWAR algorithm that recursively "folds" the upper bits into the lower bits.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static TSelf SwarFoldLeft<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue SwarFoldLeft<TValue>(this TValue source)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       // Loop to accomodate dynamic data types, but works like traditional unrolled 32-bit SWAR:
       //source |= (source << 16);
@@ -58,11 +58,11 @@ namespace Flux
     /// <summary>
     /// <para>This is the traditional SWAR algorithm that recursively "folds" the upper bits into the lower bits.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static TSelf SwarFoldRight<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue SwarFoldRight<TValue>(this TValue source)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       // Loop to accomodate dynamic data types, but works like traditional unrolled 32-bit SWAR:
       //source |= (source >> 16);

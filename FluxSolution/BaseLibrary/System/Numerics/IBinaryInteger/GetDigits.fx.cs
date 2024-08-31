@@ -2,34 +2,34 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Returns a maximum of <paramref name="count"/> digits (as <typeparamref name="TSelf"/>) of <paramref name="number"/> using base <paramref name="radix"/>.</summary>
-    public static System.Collections.Generic.List<TSelf> GetDigits<TSelf>(this TSelf number, TSelf radix, int count = int.MaxValue)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    /// <summary>Returns a maximum of <paramref name="count"/> digits (as <typeparamref name="TValue"/>) of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
+    public static System.Collections.Generic.List<TValue> GetDigits<TValue>(this TValue value, TValue radix, int count = int.MaxValue)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      var reversed = GetDigitsReversed(number, radix, count);
+      var reversed = GetDigitsReversed(value, radix, count);
       reversed.Reverse();
       return reversed;
     }
 
-    /// <summary>Returns a maximum of <paramref name="count"/> digits (as <typeparamref name="TSelf"/>) of <paramref name="number"/> using base <paramref name="radix"/>, in reverse order.</summary>
-    public static System.Collections.Generic.List<TSelf> GetDigitsReversed<TSelf>(this TSelf number, TSelf radix, int count = int.MaxValue)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    /// <summary>Returns a maximum of <paramref name="count"/> digits (as <typeparamref name="TValue"/>) of <paramref name="value"/> using base <paramref name="radix"/>, in reverse order.</summary>
+    public static System.Collections.Generic.List<TValue> GetDigitsReversed<TValue>(this TValue value, TValue radix, int count = int.MaxValue)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       Quantities.Radix.AssertMember(radix);
 
-      if (TSelf.IsNegative(number))
-        number = TSelf.Abs(number);
+      if (TValue.IsNegative(value))
+        value = TValue.Abs(value);
 
-      var list = new System.Collections.Generic.List<TSelf>();
+      var list = new System.Collections.Generic.List<TValue>();
 
-      if (TSelf.IsZero(number))
-        list.Add(TSelf.Zero);
+      if (TValue.IsZero(value))
+        list.Add(TValue.Zero);
       else
-        while (!TSelf.IsZero(number) && list.Count < count)
+        while (!TValue.IsZero(value) && list.Count < count)
         {
-          list.Add(number % radix);
+          list.Add(value % radix);
 
-          number /= radix;
+          value /= radix;
         }
 
       return list;

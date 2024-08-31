@@ -2,28 +2,28 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Returns whether <paramref name="number"/> using base <paramref name="radix"/> is a self number. A self number, Colombian number or Devlali number, in a given number base (radix) is a natural number that cannot be written as the sum of any other natural number n and the individual digits of n.</summary>
+    /// <summary>Returns whether <paramref name="value"/> using base <paramref name="radix"/> is a self value. A self value, Colombian value or Devlali value, in a given value base (radix) is a natural value that cannot be written as the sum of any other natural value n and the individual digits of n.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Self_number"/>
-    public static bool IsSelfNumber<TSelf>(this TSelf number, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static bool IsSelfNumber<TValue>(this TValue value, TValue radix)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      for (var value = SelfNumberLowBound(number, radix); value < number; value++)
-        if (DigitSum(value, radix) + value == number)
+      for (var sn = SelfNumberLowBound(value, radix); sn < value; sn++)
+        if (DigitSum(sn, radix) + sn == value)
           return false;
 
       return true;
     }
 
-    /// <summary>Returns the minimum possible number that can make <paramref name="number"/> a self number using base <paramref name="radix"/>.</summary>
-    public static TSelf SelfNumberLowBound<TSelf>(this TSelf number, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    /// <summary>Returns the minimum possible value that can make <paramref name="value"/> a self value using base <paramref name="radix"/>.</summary>
+    public static TValue SelfNumberLowBound<TValue>(this TValue value, TValue radix)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (number <= TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(number));
+      if (value <= TValue.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-      var logRadix = TSelf.CreateChecked(IntegerLogTowardZero(number, radix));
-      var maxDistinct = (TSelf.CreateChecked(9) * logRadix) + (number / radix.IntegerPow(logRadix));
+      var logRadix = TValue.CreateChecked(IntegerLogTowardZero(value, radix));
+      var maxDistinct = (TValue.CreateChecked(9) * logRadix) + (value / radix.IntegerPow(logRadix));
 
-      return TSelf.Max(number - maxDistinct, TSelf.Zero);
+      return TValue.Max(value - maxDistinct, TValue.Zero);
     }
   }
 }

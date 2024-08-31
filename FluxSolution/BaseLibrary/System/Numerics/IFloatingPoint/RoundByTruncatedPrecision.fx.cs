@@ -9,21 +9,22 @@
     /// <code>var r = RoundByTruncatedPrecision(99.96535789, 2, HalfwayRounding.ToEven); // = 99.96 (compare with the corresponding <see cref="RoundByPrecision{TValue}(TValue, RoundingMode, int, int)"/> method)</code>
     /// </example>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
     /// <param name="value"></param>
     /// <param name="mode"></param>
     /// <param name="significantDigits"></param>
     /// <param name="radix"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf RoundByTruncatedPrecision<TSelf>(this TSelf value, RoundingMode mode, int significantDigits, int radix = 10)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IPowerFunctions<TSelf>
+    public static TValue RoundByTruncatedPrecision<TValue, TRadix>(this TValue value, RoundingMode mode, int significantDigits, TRadix radix)
+      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IPowerFunctions<TValue>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       if (significantDigits < 0) throw new System.ArgumentOutOfRangeException(nameof(significantDigits));
 
-      var scalar = TSelf.Pow(TSelf.CreateChecked(radix), TSelf.CreateChecked(significantDigits + 1));
+      var scalar = TValue.Pow(TValue.CreateChecked(radix), TValue.CreateChecked(significantDigits + 1));
 
-      return RoundByPrecision(TSelf.Truncate(value * scalar) / scalar, mode, significantDigits, radix);
+      return RoundByPrecision(TValue.Truncate(value * scalar) / scalar, mode, significantDigits, radix);
     }
   }
 }

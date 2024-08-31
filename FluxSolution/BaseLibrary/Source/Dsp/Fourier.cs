@@ -327,7 +327,7 @@
         throw new System.ArgumentException("Incorrect data length.");
       }
 
-      var rBits = GetReversedBits(len.IntegerLog2TowardZero());
+      var rBits = GetReversedBits(len.Log2TowardZero());
 
       for (var i = 0; i < len; i++)
       {

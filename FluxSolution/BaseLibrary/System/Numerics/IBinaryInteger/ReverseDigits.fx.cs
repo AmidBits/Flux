@@ -2,19 +2,19 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Reverse the digits of the <paramref name="number"/> using base <paramref name="radix"/>, obtaining a new number.</summary>
-    public static TSelf ReverseDigits<TSelf>(this TSelf number, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    /// <summary>Reverse the digits of the <paramref name="value"/> using base <paramref name="radix"/>, obtaining a new number.</summary>
+    public static TValue ReverseDigits<TValue>(this TValue value, TValue radix)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       Quantities.Radix.AssertMember(radix);
 
-      var reversed = TSelf.Zero;
+      var reversed = TValue.Zero;
 
-      while (!TSelf.IsZero(number))
+      while (!TValue.IsZero(value))
       {
-        reversed = (reversed * radix) + (number % radix);
+        reversed = (reversed * radix) + (value % radix);
 
-        number /= radix;
+        value /= radix;
       }
 
       return reversed;

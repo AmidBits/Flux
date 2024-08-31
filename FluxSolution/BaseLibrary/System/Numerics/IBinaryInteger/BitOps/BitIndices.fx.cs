@@ -3,31 +3,31 @@ namespace Flux
   public static partial class BitOps
   {
     /// <summary>
-    /// <para>Clear a bit of <paramref name="source"/> based on the zero-based <paramref name="index"/>.</para>
+    /// <para>Clear a bit of <paramref name="value"/> based on the zero-based <paramref name="index"/>.</para>
     /// </summary>
-    public static TSelf BitIndexClear<TSelf>(this TSelf source, int index)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => source &= ~(TSelf.One << index);
+    public static TValue BitIndexClear<TValue>(this TValue value, int index)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => value &= ~(TValue.One << index);
 
     /// <summary>
-    /// <para>Flip a bit of <paramref name="source"/> based on the zero-based <paramref name="index"/>.</para>
+    /// <para>Flip a bit of <paramref name="value"/> based on the zero-based <paramref name="index"/>.</para>
     /// </summary>
-    public static TSelf BitIndexFlip<TSelf>(this TSelf source, int index)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => source ^= TSelf.One << index;
+    public static TValue BitIndexFlip<TValue>(this TValue value, int index)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => value ^= TValue.One << index;
 
     /// <summary>
-    /// <para>Determine the state of a bit in <paramref name="source"/> based on the zero-based <paramref name="index"/>.</para>
+    /// <para>Determine the state of a bit in <paramref name="value"/> based on the zero-based <paramref name="index"/>.</para>
     /// </summary>
-    public static bool BitIndexGet<TSelf>(this TSelf source, int index)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => (source &= TSelf.One << index) != TSelf.Zero;
+    public static bool BitIndexGet<TValue>(this TValue value, int index)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => (value &= TValue.One << index) != TValue.Zero;
 
     /// <summary>
-    /// <para>Set a bit of <paramref name="source"/> based on the zero-based <paramref name="index"/>.</para>
+    /// <para>Set a bit of <paramref name="value"/> based on the zero-based <paramref name="index"/>.</para>
     /// </summary>
-    public static TSelf BitIndexSet<TSelf>(this TSelf source, int index)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => source |= TSelf.One << index;
+    public static TValue BitIndexSet<TValue>(this TValue value, int index)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => value |= TValue.One << index;
   }
 }

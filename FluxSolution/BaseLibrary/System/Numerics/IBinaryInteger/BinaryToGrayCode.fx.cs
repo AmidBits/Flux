@@ -8,23 +8,23 @@ namespace Flux
     /// </summary>
     /// <remarks>Experimental adaption from wikipedia.</remarks>
     /// <exception cref="System.ArgumentNullException"></exception>
-    public static TSelf[] BinaryToGrayCode<TSelf>(this TSelf number, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue[] BinaryToGrayCode<TValue>(this TValue value, TValue radix)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (number < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(number));
+      if (value < TValue.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-      var gray = new TSelf[int.CreateChecked(number.DigitCount(radix))];
+      var gray = new TValue[int.CreateChecked(value.DigitCount(radix))];
 
-      var baseN = new TSelf[gray.Length]; // Stores the ordinary base-N number, one digit per entry
+      var baseN = new TValue[gray.Length]; // Stores the ordinary base-N number, one digit per entry
 
       for (var index = 0; index < gray.Length; index++) // Put the normal baseN number into the baseN array. For base 10, 109 would be stored as [9,0,1]
       {
-        baseN[index] = number % radix;
+        baseN[index] = value % radix;
 
-        number /= radix;
+        value /= radix;
       }
 
-      var shift = TSelf.Zero; // Convert the normal baseN number into the Gray code equivalent. Note that the loop starts at the most significant digit and goes down.
+      var shift = TValue.Zero; // Convert the normal baseN number into the Gray code equivalent. Note that the loop starts at the most significant digit and goes down.
 
       for (var index = gray.Length - 1; index >= 0; index--) // The Gray digit gets shifted down by the sum of the higher digits.
       {

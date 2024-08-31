@@ -2,26 +2,26 @@ namespace Flux
 {
   public static partial class Fx
   {
-    //public static string AppendPluralStringSuffix(this string source, bool isPlural) => isPlural ? source + 's'.ToString() : source;
+    //public static string AppendPluralStringSuffix(this string number, bool isPlural) => isPlural ? number + 's'.ToString() : number;
 
     /// <summary>
     /// <para></para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="source"></param>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <param name="number"></param>
     /// <returns></returns>
-    public static bool IsPluralString<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => source != TSelf.One;
+    public static bool IsPluralString<TNumber>(this TNumber number)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => number != TNumber.One;
 
     /// <summary>
     /// <para></para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="source"></param>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <param name="number"></param>
     /// <returns></returns>
-    public static string PluralStringSuffix<TSelf>(this TSelf source)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => source.IsPluralString() ? 's'.ToString() : string.Empty;
+    public static string PluralStringSuffix<TNumber>(this TNumber number)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => number.IsPluralString() ? 's'.ToString() : string.Empty;
   }
 }

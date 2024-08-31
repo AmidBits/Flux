@@ -6,10 +6,11 @@ namespace Flux
   public static class PermutationKnuthsAlgorithmL
   {
     /// <summary>
-    /// <para></para>
+    /// <para>Creates a new sequence of permutations on the <paramref name="initialIndices"/>. The array <paramref name="initialIndices"/> is re-used for each iteration.</para>
     /// </summary>
     /// <param name="initialIndices"></param>
     /// <returns></returns>
+    /// <remarks>The array is mutated each iteration to reflect the next permutation.</remarks>
     public static System.Collections.Generic.IEnumerable<int[]> GeneratePermutationIndices(int[] initialIndices)
     {
       do

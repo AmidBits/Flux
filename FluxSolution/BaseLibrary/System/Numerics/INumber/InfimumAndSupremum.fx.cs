@@ -3,49 +3,49 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Gets the infimum (the largest value that is less than <paramref name="value"/>).</para>
+    /// <para>Gets the infimum (the largest number that is less than <paramref name="number"/>).</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="value"></param>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <param name="number"></param>
     /// <returns></returns>
-    /// <remarks>Infimum, for integer types equal (<paramref name="value"/> - 1) and for floating point types equal (<paramref name="value"/> - epsilon). Other types are not implemented at this time.</remarks>
-    public static TSelf GetInfimum<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.INumber<TSelf>
+    /// <remarks>Infimum, for integer types equal (<paramref name="number"/> - 1) and for floating point types equal (<paramref name="number"/> - epsilon). Other types are not implemented at this time.</remarks>
+    public static TNumber GetInfimum<TNumber>(this TNumber number)
+      where TNumber : System.Numerics.INumber<TNumber>
     {
-      if (value.IsBinaryInteger()) // All integers are the same, and therefor subtract one.
-        return value - TSelf.One;
-      else if (value is System.Double d) // All floating point types has different structures, and therefor their own bit-decrement.
-        return TSelf.CreateChecked(System.Double.BitDecrement(d));
-      else if (value is System.Half h) // All floating point types has different structures, and therefor their own bit-decrement.
-        return TSelf.CreateChecked(System.Half.BitDecrement(h));
-      else if (value is System.Single f) // All floating point types has different structures, and therefor their own bit-decrement.
-        return TSelf.CreateChecked(System.Single.BitDecrement(f));
-      else if (value is System.Runtime.InteropServices.NFloat nf) // All floating point types has different structures, and therefor their own bit-decrement.
-        return TSelf.CreateChecked(System.Runtime.InteropServices.NFloat.BitDecrement(nf));
+      if (number.IsBinaryInteger()) // All integers are the same, and therefor subtract one.
+        return number - TNumber.One;
+      else if (number is System.Double d) // All floating point types has different structures, and therefor their own bit-decrement.
+        return TNumber.CreateChecked(System.Double.BitDecrement(d));
+      else if (number is System.Half h) // All floating point types has different structures, and therefor their own bit-decrement.
+        return TNumber.CreateChecked(System.Half.BitDecrement(h));
+      else if (number is System.Single f) // All floating point types has different structures, and therefor their own bit-decrement.
+        return TNumber.CreateChecked(System.Single.BitDecrement(f));
+      else if (number is System.Runtime.InteropServices.NFloat nf) // All floating point types has different structures, and therefor their own bit-decrement.
+        return TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.BitDecrement(nf));
       else
         throw new System.NotImplementedException();
     }
 
     /// <summary>
-    /// <para>Gets the supremum (the smallest value that is greater than <paramref name="value"/>).</para>
+    /// <para>Gets the supremum (the smallest number that is greater than <paramref name="number"/>).</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="value"></param>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <param name="number"></param>
     /// <returns></returns>
-    /// <remarks>Supremum, for integer types equal (<paramref name="value"/> + 1) and for floating point types equal (<paramref name="value"/> + epsilon). Other types are not implemented at this time.</remarks>
-    public static TSelf GetSupremum<TSelf>(this TSelf value)
-      where TSelf : System.Numerics.INumber<TSelf>
+    /// <remarks>Supremum, for integer types equal (<paramref name="number"/> + 1) and for floating point types equal (<paramref name="number"/> + epsilon). Other types are not implemented at this time.</remarks>
+    public static TNumber GetSupremum<TNumber>(this TNumber number)
+      where TNumber : System.Numerics.INumber<TNumber>
     {
-      if (value.IsBinaryInteger()) // All integers are the same, and therefor add one.
-        return value + TSelf.One;
-      else if (value is System.Double d) // All floating point types has different structures, and therefor their own bit-increment.
-        return TSelf.CreateChecked(System.Double.BitIncrement(d));
-      else if (value is System.Half h) // All floating point types has different structures, and therefor their own bit-increment.
-        return TSelf.CreateChecked(System.Half.BitIncrement(h));
-      else if (value is System.Single f) // All floating point types has different structures, and therefor their own bit-increment.
-        return TSelf.CreateChecked(System.Single.BitIncrement(f));
-      else if (value is System.Runtime.InteropServices.NFloat nf) // All floating point types has different structures, and therefor their own bit-increment.
-        return TSelf.CreateChecked(System.Runtime.InteropServices.NFloat.BitIncrement(nf));
+      if (number.IsBinaryInteger()) // All integers are the same, and therefor add one.
+        return number + TNumber.One;
+      else if (number is System.Double d) // All floating point types has different structures, and therefor their own bit-increment.
+        return TNumber.CreateChecked(System.Double.BitIncrement(d));
+      else if (number is System.Half h) // All floating point types has different structures, and therefor their own bit-increment.
+        return TNumber.CreateChecked(System.Half.BitIncrement(h));
+      else if (number is System.Single f) // All floating point types has different structures, and therefor their own bit-increment.
+        return TNumber.CreateChecked(System.Single.BitIncrement(f));
+      else if (number is System.Runtime.InteropServices.NFloat nf) // All floating point types has different structures, and therefor their own bit-increment.
+        return TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.BitIncrement(nf));
       else
         throw new System.NotImplementedException();
     }

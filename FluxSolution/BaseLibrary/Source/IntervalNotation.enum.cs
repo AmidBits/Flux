@@ -152,7 +152,7 @@ namespace Flux
     public static (T Minimum, T Maximum) GetExtentInterval<T>(this IntervalNotation source, T minValue, T maxValue, int magnitude = 1)
       where T : System.Numerics.INumber<T>
     {
-      magnitude.AssertNonNegative(nameof(magnitude));
+      magnitude.AssertNonNegativeRealNumber(nameof(magnitude));
 
       source.AssertValidInterval(minValue, maxValue);
 

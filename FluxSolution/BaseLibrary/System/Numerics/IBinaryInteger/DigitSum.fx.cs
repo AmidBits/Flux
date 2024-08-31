@@ -2,20 +2,20 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Returns the sum of all single digits in <paramref name="number"/> using base <paramref name="radix"/>.</summary>
+    /// <summary>Returns the sum of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static TSelf DigitSum<TSelf>(this TSelf number, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue DigitSum<TValue>(this TValue value, TValue radix)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       Quantities.Radix.AssertMember(radix);
 
-      var sum = TSelf.Zero;
+      var sum = TValue.Zero;
 
-      while (!TSelf.IsZero(number))
+      while (!TValue.IsZero(value))
       {
-        sum += number % radix;
+        sum += value % radix;
 
-        number /= radix;
+        value /= radix;
       }
 
       return sum;

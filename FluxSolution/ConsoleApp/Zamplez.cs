@@ -301,12 +301,12 @@ namespace ConsoleApp
 
       var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
-      var rtpTowardsZero = value.PowOfTowardZero(radix, true);
-      var rtpAwayFromZero = value.PowOfAwayFromZero(radix, true);
+      var rtpTowardsZero = value.RoundToPowOfTowardZero(radix, true);
+      var rtpAwayFromZero = value.RoundToPowOfAwayFromZero(radix, true);
       var rtp = value.RoundToBoundaries(Flux.RoundingMode.AwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
-      var quotient = int.CreateChecked(value.AssertNonNegative().TruncMod(1, out var remainder));
+      var quotient = int.CreateChecked(value.AssertNonNegativeRealNumber().TruncMod(1, out var remainder));
 
       var p2TowardsZero = quotient.MostSignificant1Bit();
       var p2AwayFromZero = (p2TowardsZero < quotient || remainder > 0) ? (p2TowardsZero == 0 ? 1 : p2TowardsZero << 1) : p2TowardsZero;

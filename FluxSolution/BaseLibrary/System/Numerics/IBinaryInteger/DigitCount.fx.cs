@@ -2,19 +2,19 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Gets the count of all single digits in <paramref name="number"/> using base <paramref name="radix"/>.</summary>
-    public static TSelf DigitCount<TSelf>(this TSelf number, TSelf radix)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    /// <summary>Gets the count of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
+    public static TValue DigitCount<TValue>(this TValue value, TValue radix)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
     {
       Quantities.Radix.AssertMember(radix);
 
-      var count = TSelf.Zero;
+      var count = TValue.Zero;
 
-      while (!TSelf.IsZero(number))
+      while (!TValue.IsZero(value))
       {
         count++;
 
-        number /= radix;
+        value /= radix;
       }
 
       return count;

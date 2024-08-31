@@ -1,104 +1,51 @@
+using System.Security.Cryptography;
+
 namespace Flux
 {
   public static partial class Permutation
   {
-    public static int[] PermuteAlgorithm515b(int n, int p, int l)
-    {
-      int r;
-
-      var c = new int[p];
-
-      if (p == 1)
-      {
-        c[0] = l;
-        return c;
-      }
-
-      var k = 0;
-
-      var p1 = p - 1;
-      c[0] = 0;
-
-      for (var i = 1; i <= p1; i++)
-      {
-        if (1 < i)
-          c[i - 1] = c[i - 2];
-
-        for (; ; )
-        {
-          c[i - 1] = c[i - 1] + 1;
-          r = (n - c[i - 1]).BinomialCoefficient(p - i);
-          k += r;
-
-          if (l <= k)
-            break;
-        }
-
-        k -= r;
-      }
-
-      c[p - 1] = c[p1 - 1] + l - k;
-
-      return c;
-    }
-
-    public static int[] PermuteAlgorithm515a(int n, int p, int x)
-    {
-      var c = new int[p];
-
-      int i, r, k = 0;
-      for (i = 0; i < p - 1; i++)
-      {
-        c[i] = (i != 0) ? c[i - 1] : 0;
-
-        do
-        {
-          c[i]++;
-          r = (n - c[i]).BinomialCoefficient(p - (i + 1));
-          k += r;
-        }
-        while (k < x);
-
-        k -= r;
-      }
-      c[p - 1] = c[p - 2] + x - k;
-
-      return c;
-    }
-
     /// <summary>
-    /// <para>Creates a list of the subsets (as indices) of size <paramref name="p"/> selected from a set of size <paramref name="n"/>.</para>
+    /// <para>Find the <paramref name="index"/>th (1-based) lexicographically ordered subset of <paramref name="subsetSize"/> (K) elements in set <paramref name="setSize"/> (N).</para>
     /// <para><seealso href="https://github.com/sleeepyjack/alg515"/></para>
     /// <para><seealso href="https://stackoverflow.com/questions/561/how-to-use-combinations-of-sets-as-test-data#794"/></para>
     /// <para><seealso href="https://people.math.sc.edu/Burkardt/f_src/toms515/toms515.html"/></para>
     /// </summary>
-    /// <param name="n">The size (N) of the entire set.</param>
-    /// <param name="p">The subset size (K).</param>
-    /// <param name="l">The index of the subset (or index array) to generate.</param>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="setSize">The size (N) of the entire set.</param>
+    /// <param name="subsetSize">The subset size (K).</param>
+    /// <param name="index">The 1-based index of the subset (or index array) to generate.</param>
     /// <returns></returns>
-    public static TSelf[] PermuteAlgorithm515<TSelf>(this TSelf n, TSelf p, TSelf l)
-       where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    /// <remarks>
+    /// <para>Note that <paramref name="index"/> is 1-based.</para>
+    /// <para>The <paramref name="setSize"/> is the <see langword="this"/> argument for the extension method.</para>
+    /// </remarks>
+    public static TValue[] PermuteAlgorithm515<TValue>(this TValue setSize, TValue subsetSize, TValue index)
+       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      var c = new TSelf[int.CreateChecked(p)];
+      var p = int.CreateChecked(subsetSize);
 
-      TSelf x = TSelf.Zero, r, k = TSelf.Zero;
+      var c = new TValue[p];
 
-      for (var i = TSelf.One; i < p; i++)
+      TValue r;
+
+      var k = TValue.Zero;
+
+      for (var i = 0; i < p - 1; i++)
       {
+        c[i] = (i != 0) ? c[i - 1] : TValue.Zero;
+
         do
         {
-          x++;
-          var bc = ulong.CreateChecked(n - c[int.CreateChecked(i) - 1]).BinomialCoefficient(ulong.CreateChecked(p - i));
-          r = TSelf.CreateChecked(bc);
-          k += r;
+          c[i]++;
+          r = (setSize - c[i]).BinomialCoefficient(subsetSize - TValue.CreateChecked(i + 1));
+          k = k + r;
         }
-        while (k <= l);
+        while (k < index);
 
-        k -= r;
-        c[int.CreateChecked(i - TSelf.One)] = x - TSelf.One;
+        k = k - r;
       }
 
-      c[int.CreateChecked(p - TSelf.One)] = x + l - k;
+      c[p - 1] = c[p - 2] + index - k;
 
       return c;
     }

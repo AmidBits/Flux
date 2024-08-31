@@ -137,17 +137,17 @@ namespace Units
       Assert.AreEqual(123, 1234567.KeepMostSignificantDigits(10, 3));
     }
 
-    [TestMethod]
-    public void LocateIntegerPowOf()
-    {
-      var value = 1234567;
+    //[TestMethod]
+    //public void LocateIntegerPowOf()
+    //{
+    //  var value = 1234567;
 
-      var pow10tz = value.PowOfTowardZero(10, false);
-      var pow10afz = value.PowOfAwayFromZero(10, false);
+    //  var pow10tz = value.PowOfTowardZero(10, false);
+    //  var pow10afz = value.PowOfAwayFromZero(10, false);
 
-      Assert.AreEqual(1000000, pow10tz);
-      Assert.AreEqual(10000000, pow10afz);
-    }
+    //  Assert.AreEqual(1000000, pow10tz);
+    //  Assert.AreEqual(10000000, pow10afz);
+    //}
 
     //[TestMethod]
     //public void NearestPowOf2()

@@ -4,16 +4,16 @@ namespace Flux
   {
     /// <summary>Returns the least common multiple of all values.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Least_common_multiple"/>
-    public static TSelf Lcm<TSelf>(this TSelf a, params TSelf[] other)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue Lcm<TValue>(this TValue a, params TValue[] other)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
       => other.Length >= 1
       ? a.LeastCommonMultiple(other.Aggregate((b, c) => b.LeastCommonMultiple(c)))
       : throw new System.ArgumentOutOfRangeException(nameof(other));
 
     /// <summary>Returns the least common multiple of <paramref name="a"/> and <paramref name="b"/>.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Least_common_multiple"/>
-    public static TSelf LeastCommonMultiple<TSelf>(this TSelf a, TSelf b)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+    public static TValue LeastCommonMultiple<TValue>(this TValue a, TValue b)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
       => a / a.GreatestCommonDivisor(b) * b;
   }
 }

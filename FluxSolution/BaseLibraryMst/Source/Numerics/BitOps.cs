@@ -140,13 +140,13 @@ namespace Numerics
     [TestMethod]
     public void IntegerLog2AwayFromZero()
     {
-      Assert.AreEqual(8, 215.IntegerLog2AwayFromZero());
+      Assert.AreEqual(8, 215.Log2AwayFromZero());
     }
 
     [TestMethod]
     public void IntegerLog2TowardZero()
     {
-      Assert.AreEqual(7, 215.IntegerLog2TowardZero());
+      Assert.AreEqual(7, 215.Log2TowardZero());
     }
 
     //[TestMethod]

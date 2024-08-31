@@ -4,8 +4,8 @@ namespace Flux
   {
     /// <summary>Usually used with integers, but can really be applied to any equatable object.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Kronecker_delta"/>
-    public static TSelf KroneckerDelta<TSelf>(this TSelf a, TSelf b)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => a == b ? TSelf.One : TSelf.Zero;
+    public static TNumber KroneckerDelta<TNumber>(this TNumber a, TNumber b)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => a == b ? TNumber.One : TNumber.Zero;
   }
 }
