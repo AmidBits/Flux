@@ -74,7 +74,7 @@
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => TNumber.CreateChecked(Quantities.Radix.AssertMember(radix)) is var r && TNumber.IsZero(number)
       ? number
-      : TNumber.CopySign(TNumber.Abs(number) is var v && r.FastPowAwayFromZero(v.FastLogOfTowardZero(r)) is var p && (p == v ? p : p * r) is var afz && (unequal || !TNumber.IsInteger(number)) && afz == v ? afz * r : afz, number);
+      : TNumber.CopySign(TNumber.Abs(number) is var v && r.FastPow(v.FastLogOfTowardZero(r, out var _), out var _) is var p && (p == v ? p : p * r) is var afz && (unequal || !TNumber.IsInteger(number)) && afz == v ? afz * r : afz, number);
 
     /// <summary>
     /// <para>Round a <paramref name="number"/> to the nearest power-of-<paramref name="radix"/> toward-zero and whether to ensure it is <paramref name="unequal"/>.</para>
@@ -90,6 +90,6 @@
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => TNumber.CreateChecked(Quantities.Radix.AssertMember(radix)) is var r && TNumber.IsZero(number)
       ? number
-      : TNumber.CopySign(TNumber.Abs(number) is var v && r.FastPowTowardZero(v.FastLogOfTowardZero(r)) is var p && (unequal && TNumber.IsInteger(number)) && p == v ? p / r : p, number);
+      : TNumber.CopySign(TNumber.Abs(number) is var v && r.FastPow(v.FastLogOfTowardZero(r, out var _), out var _) is var p && (unequal && TNumber.IsInteger(number)) && p == v ? p / r : p, number);
   }
 }

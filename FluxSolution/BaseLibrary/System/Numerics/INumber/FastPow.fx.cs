@@ -2,14 +2,13 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static TNumber FastPowAwayFromZero<TNumber, TExponent>(this TNumber number, TExponent power)
+    public static TNumber FastPow<TNumber, TExponent>(this TNumber number, TExponent power, out double pow)
       where TNumber : System.Numerics.INumber<TNumber>
       where TExponent : System.Numerics.INumber<TExponent>
-      => TNumber.CopySign(TNumber.CreateChecked(double.Pow(double.CreateChecked(TNumber.Abs(number)), int.CreateChecked(power)).RoundAwayFromZero()), number);
+    {
+      pow = double.Pow(double.CreateChecked(TNumber.Abs(number)), int.CreateChecked(power));
 
-    public static TNumber FastPowTowardZero<TNumber, TExponent>(this TNumber number, TExponent power)
-      where TNumber : System.Numerics.INumber<TNumber>
-      where TExponent : System.Numerics.INumber<TExponent>
-      => TNumber.CopySign(TNumber.CreateChecked(double.Pow(double.CreateChecked(TNumber.Abs(number)), int.CreateChecked(power)).RoundTowardZero()), number);
+      return TNumber.CopySign(TNumber.CreateChecked(double.Round(pow)), number);
+    }
   }
 }

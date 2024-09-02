@@ -41,29 +41,25 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      for (var i = 0; i < 10; i++)
-      {
-        var rm = i.RevMod(6, out var rem);
+      //      var cncs = (-123.456).;
+      var cncs = (1899).BinaryToGrayCode(10);
 
-        System.Console.WriteLine($"{i} RevMod 6 = {rm} ({rem})");
+      for (var i = 1.ToBigInteger(); i < 102; i++)
+      {
+        //System.Console.WriteLine($"{i:D3} : LOG : {i.FastLogOfTowardZero(7, out var logtz)} ({logtz}) / {i.FastLogOfAwayFromZero(7, out var logafz)} ({logafz})");
+        //System.Console.WriteLine($"{i:D3} : POW : {i.FastPow(7, out var pow)} ({pow})");
+        System.Console.WriteLine($"{i:D3} : {i.RoundToPowOfTowardZero(2, true)} / {i.RoundToPowOfAwayFromZero(2, true)}");
       }
 
-      var value = 100000;
+      return;
 
-      var rtlafz = value.RoundToLogOfAwayFromZero(10);
-      var rtltz = value.RoundToLogOfTowardZero(10);
+      for (var value = 2; value < 25; value++)
+      {
+        var d = value.GetDigits(10);
+        var dr = value.GetDigitsReversed(10);
 
-      var rtmafz = value.RoundToMultipleOfAwayFromZero(10, true);
-      var rtmtz = value.RoundToMultipleOfTowardZero(10, true);
-
-      var rtmafzf = value.RoundToMultipleOfAwayFromZero(10);
-      var rtmtzf = value.RoundToMultipleOfTowardZero(10);
-
-      var rtpafz = value.RoundToPowOfAwayFromZero(10, true);
-      var rtptz = value.RoundToPowOfTowardZero(10, true);
-
-      var rtpafzf = value.RoundToPowOfAwayFromZero(10);
-      var rtptzf = value.RoundToPowOfTowardZero(10);
+        System.Console.WriteLine($"{value:D2} : {string.Join(", ", d)} : {string.Join(", ", dr)}");
+      }
     }
 
     #region Eliza example

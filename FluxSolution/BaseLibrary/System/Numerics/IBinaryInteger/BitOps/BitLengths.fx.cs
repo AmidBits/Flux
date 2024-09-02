@@ -30,6 +30,8 @@ namespace Flux
     where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
     where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
+      if (bitLength <= TBitLength.One) return 1;
+
       var ms1b = System.Numerics.BigInteger.One << (int.CreateChecked(bitLength) - 1); // Create the most-significant-1-bit of the bit-length.
 
       var swar = ms1b.BitFoldRight();

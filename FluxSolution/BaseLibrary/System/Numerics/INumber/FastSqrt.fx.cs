@@ -2,12 +2,20 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static TNumber FastSqrtAwayFromZero<TNumber>(this TNumber number)
+    public static TNumber FastSqrtAwayFromZero<TNumber>(this TNumber number, out double sqrt)
       where TNumber : System.Numerics.INumber<TNumber>
-      => TNumber.CopySign(TNumber.CreateChecked(double.Sqrt(double.CreateChecked(TNumber.Abs(number))).RoundAwayFromZero()), number);
+    {
+      sqrt = double.Sqrt(double.CreateChecked(TNumber.Abs(number)));
 
-    public static TNumber FastSqrtTowardZero<TNumber>(this TNumber number)
+      return TNumber.CopySign(TNumber.CreateChecked(sqrt.RoundAwayFromZero()), number);
+    }
+
+    public static TNumber FastSqrtTowardZero<TNumber>(this TNumber number, out double sqrt)
       where TNumber : System.Numerics.INumber<TNumber>
-      => TNumber.CopySign(TNumber.CreateChecked(double.Sqrt(double.CreateChecked(TNumber.Abs(number))).RoundTowardZero()), number);
+    {
+      sqrt = double.Sqrt(double.CreateChecked(TNumber.Abs(number)));
+
+      return TNumber.CopySign(TNumber.CreateChecked(sqrt.RoundTowardZero()), number);
+    }
   }
 }

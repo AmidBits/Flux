@@ -6,19 +6,20 @@ namespace Flux
     /// <para>Determines if <paramref name="value"/> is a power of <paramref name="radix"/>.</para>
     /// </summary>
     /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero simply returns false.</remarks>
-    public static bool IsPowOf<TValue>(this TValue value, TValue radix)
+    public static bool IsPowOf<TValue, TRadix>(this TValue value, TRadix radix)
       where TValue : System.Numerics.IBinaryInteger<TValue>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      Quantities.Radix.AssertMember(radix);
+      var rdx = TValue.CreateChecked(Quantities.Radix.AssertMember(radix));
 
       value = TValue.Abs(value);
 
-      if (radix == TValue.CreateChecked(2)) // Special case for binary numbers, we can use dedicated IsPow2().
+      if (rdx == TValue.CreateChecked(2)) // Special case for binary numbers, we can use dedicated IsPow2().
         return TValue.IsPow2(value);
 
-      if (value >= radix)
-        while (TValue.IsZero(value % radix))
-          value /= radix;
+      if (value >= rdx)
+        while (TValue.IsZero(value % rdx))
+          value /= rdx;
 
       return value == TValue.One;
     }

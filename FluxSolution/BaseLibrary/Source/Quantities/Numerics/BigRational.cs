@@ -4,7 +4,7 @@ namespace Flux
 
   public static partial class Fx
   {
-    public static Quantities.BigRational ToBigRational<TSelf>(this TSelf value, int maxIterations = 101)
+    public static Quantities.BigRational ToBigRational<TSelf>(this TSelf value, int maxApproximationIterations = 101)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
     {
       if (TSelf.IsZero(value)) return Quantities.BigRational.Zero;
@@ -23,14 +23,14 @@ namespace Flux
       {
         var xW = TSelf.Truncate(value);
 
-        var ar = ToBigRational(value - xW, maxIterations);
+        var ar = ToBigRational(value - xW, maxApproximationIterations);
 
         return ar + System.Numerics.BigInteger.CreateChecked(xW);
       }
 
       var counter = 0;
 
-      for (; counter < maxIterations && !TSelf.IsZero(value); counter++)
+      for (; counter < maxApproximationIterations && !TSelf.IsZero(value); counter++)
       {
         var r = TSelf.One / value;
         var rR = TSelf.Round(r);

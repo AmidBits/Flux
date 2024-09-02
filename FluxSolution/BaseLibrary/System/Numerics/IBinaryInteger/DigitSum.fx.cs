@@ -4,18 +4,19 @@ namespace Flux
   {
     /// <summary>Returns the sum of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Digit_sum"/>
-    public static TValue DigitSum<TValue>(this TValue value, TValue radix)
+    public static TValue DigitSum<TValue, TRadix>(this TValue value, TRadix radix)
       where TValue : System.Numerics.IBinaryInteger<TValue>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      Quantities.Radix.AssertMember(radix);
+      var rdx = TValue.CreateChecked(Quantities.Radix.AssertMember(radix));
 
       var sum = TValue.Zero;
 
       while (!TValue.IsZero(value))
       {
-        sum += value % radix;
+        sum += value % rdx;
 
-        value /= radix;
+        value /= rdx;
       }
 
       return sum;
