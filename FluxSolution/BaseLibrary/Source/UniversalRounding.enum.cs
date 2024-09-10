@@ -5,7 +5,7 @@ namespace Flux
   /// <para><seealso href="http://www.jackleitch.net/2010/06/adventures-in-net-rounding-part-2-exotic-rounding-algorithms/"/></para>
   /// <para><seealso href="http://www.cplusplus.com/articles/1UCRko23/"/></para>
   /// </summary>
-  public enum RoundingMode
+  public enum UniversalRounding
   {
     /// <summary>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round to the nearest even number, if possible.</para>
@@ -62,22 +62,22 @@ namespace Flux
     HalfToOdd = 10,
 
     /// <summary>
-    /// <para>Round to the number away-from-zero.</para>
+    /// <para>Round to the number that is away-from-zero.</para>
     /// </summary>
     /// <remarks>
     /// <para>This mode is the opposite of truncating.</para>
     /// <para>Symmetric rounding: round up, bias: away from zero.</para>
     /// </remarks>
-    AwayFromZero = 11,
+    FullAwayFromZero = FullRounding.AwayFromZero,
 
     /// <summary>
-    /// <para>Round to the number towards-zero.</para>
+    /// <para>Round to the number that is towards-zero.</para>
     /// </summary>
     /// <remarks>
     /// <para>This is the same as Math.Truncate of the number.</para>
     /// <para>Symmetric rounding: round down, bias: towards zero.</para>
     /// </remarks>
-    TowardsZero = 12,
+    FullTowardZero = FullRounding.TowardZero,
 
     /// <summary>
     /// <para>Round down to the number less-than-or-equal to value.</para>
@@ -86,7 +86,7 @@ namespace Flux
     /// <para>This is the same as Math.Floor of the number.</para>
     /// <para>Common rounding: round down, bias: negative infinity.</para>
     /// </remarks>
-    ToNegativeInfinity = 13,
+    FullToNegativeInfinity = FullRounding.ToNegativeInfinity,
 
     /// <summary>
     /// <para>Round up to the number greater-than-or-equal to value.</para>
@@ -95,6 +95,6 @@ namespace Flux
     /// <para>This is the same as Math.Ceiling of the number.</para>
     /// <para>Common rounding: round up, bias: positive infinity.</para>
     /// </remarks>
-    ToPositiveInfinity = 14,
+    FullToPositiveInfinity = FullRounding.ToPositiveInfinity,
   }
 }

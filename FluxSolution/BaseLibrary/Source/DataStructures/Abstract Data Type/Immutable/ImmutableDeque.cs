@@ -5,6 +5,7 @@ namespace Flux.DataStructures.Immutable
   /// <para><see href="https://ericlippert.com/2008/01/22/immutability-in-c-part-ten-a-double-ended-queue/"/></para>
   /// <para><see href="https://ericlippert.com/2008/02/12/immutability-in-c-part-eleven-a-working-double-ended-queue/"/></para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/Double-ended_queue"/></para>
+  /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
   /// </summary>
   /// <typeparam name="TValue">The type of value for the immutable double-ended queue node.</typeparam>
   /// <remarks>This implementation is courtesy Eric Lippert.</remarks>

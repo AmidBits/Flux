@@ -17,8 +17,8 @@
 
       if (nth <= TNth.One) throw new System.ArgumentOutOfRangeException(nameof(nth), "Must be an integer, greater than or equal to 2.");
 
-      if (TryFastIntegerRootN(value, nth, out TValue root)) // Testing!
-        return root;
+      if (TryFastIntegerNthRoot(value, nth, UniversalRounding.FullTowardZero, out TValue iRoot, out var _)) // Testing!
+        return iRoot;
 
       var n = TValue.CreateChecked(nth);
 
@@ -97,52 +97,5 @@
       where TNth : System.Numerics.IBinaryInteger<TNth>
       where TRoot : System.Numerics.IBinaryInteger<TRoot>
       => value == TValue.CreateChecked(IntegerPow(root, nth));
-
-    /// <summary>
-    /// <para>Attempts to compute the (floor) <paramref name="nth"/> (radix) root of <paramref name="value"/> into the out parameter <paramref name="root"/>. This is a faster but limited version.</para>
-    /// </summary>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="value">The value to find the root of.</param>
-    /// <param name="nth">Essentially the radix.</param>
-    /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
-    /// <returns>Whether the operation was successful.</returns>
-    public static bool TryFastIntegerRootN<TValue, TNth, TRoot>(TValue value, TNth nth, out TRoot root)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      where TNth : System.Numerics.IBinaryInteger<TNth>
-      where TRoot : System.Numerics.IBinaryInteger<TRoot>
-    {
-      if (value.GetBitLengthEx() <= 53)
-      {
-        root = TRoot.CreateChecked(value.FastRootNthTowardZero(nth, out var _));
-        return true;
-      }
-
-      root = TRoot.Zero;
-      return false;
-    }
-
-    /// <summary>
-    /// <para>Attempts to compute the (floor) <paramref name="nth"/> (radix) root of <paramref name="value"/> into the out parameter <paramref name="root"/>.</para>
-    /// </summary>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="value">The value to find the root of.</param>
-    /// <param name="nth">Essentially the radix.</param>
-    /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
-    /// <returns>Whether the operation was successful.</returns>
-    public static bool TryIntegerRootN<TValue, TNth, TRoot>(TValue value, TNth nth, out TRoot root)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      where TNth : System.Numerics.IBinaryInteger<TNth>
-      where TRoot : System.Numerics.IBinaryInteger<TRoot>
-    {
-      try
-      {
-        root = TRoot.CreateChecked(IntegerRootN(value, nth));
-        return true;
-      }
-      catch { }
-
-      root = TRoot.Zero;
-      return false;
-    }
   }
 }

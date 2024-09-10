@@ -5,7 +5,8 @@ namespace Flux.DataStructures.HashBased
   /// <para>This data structure is good for things like file paths and names (e.g. street names) where many variations of similar names exists.</para>
   /// </summary>
   /// <see href="https://en.wikipedia.org/wiki/Trie"/>
-  /// <seealso cref="https://github.com/gmamaladze/trienet/tree/master/TrieNet"/>
+  /// <seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Bit-slice_trees"/>
+  /// <seealso href="https://github.com/gmamaladze/trienet/tree/master/TrieNet"/>
   public sealed class SimpleTrie<TKey, TValue>
     where TKey : notnull
   {

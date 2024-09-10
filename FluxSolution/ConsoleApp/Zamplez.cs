@@ -299,11 +299,11 @@ namespace ConsoleApp
       //var mAwayFromZeropf = value.MultipleOfAwayFromZero(multiple, false);
       //var mAwayFromZeropt = value.MultipleOfAwayFromZero(multiple, true);
 
-      var rtmo = value.RoundToMultipleOf(multiple, true, Flux.RoundingMode.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
+      var rtmo = value.RoundToMultipleOf(multiple, true, Flux.UniversalRounding.FullAwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
       var rtpTowardsZero = value.RoundToPowOfTowardZero(radix, true);
       var rtpAwayFromZero = value.RoundToPowOfAwayFromZero(radix, true);
-      var rtp = value.RoundToBoundaries(Flux.RoundingMode.AwayFromZero, rtpTowardsZero, rtpAwayFromZero);
+      var rtp = value.RoundToBoundary(Flux.UniversalRounding.FullAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
       var quotient = int.CreateChecked(value.AssertNonNegativeRealNumber().TruncMod(1, out var remainder));
@@ -340,9 +340,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)n.RoundToBoundaries(Flux.RoundingMode.TowardsZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
+      var np2TowardsZero = (int)n.RoundToBoundary(Flux.UniversalRounding.FullTowardZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)n.RoundToBoundaries(Flux.RoundingMode.AwayFromZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
+      var np2AwayFromZero = (int)n.RoundToBoundary(Flux.UniversalRounding.FullAwayFromZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = n.ReverseBits();
@@ -362,10 +362,10 @@ namespace ConsoleApp
       var bln = n.GetBitLengthEx();
       //var l2 = bi.IntegerLog2();
       var ms1b = n.MostSignificant1Bit();
-      var bmr = n.BitMaskRight();
+      var bmr = Flux.Numerics.GenericMath.BitMaskRight(n);
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = n.BitMaskLeft();
+      var bml = Flux.Numerics.GenericMath.BitMaskLeft(n);
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }

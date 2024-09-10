@@ -10,23 +10,23 @@ namespace Maths
     [TestMethod]
     public void Round()
     {
-      Assert.AreEqual(6, (5.5).RoundAwayFromZero());
-      Assert.AreEqual(5, (5.5).RoundTowardZero());
-      Assert.AreEqual(5, (5.5).RoundToNegativeInfinity());
-      Assert.AreEqual(6, (5.5).RoundToPositiveInfinity());
+      Assert.AreEqual(6, (5.5).RoundFullAwayFromZero());
+      Assert.AreEqual(5, (5.5).RoundFullTowardZero());
+      Assert.AreEqual(5, (5.5).RoundFullToNegativeInfinity());
+      Assert.AreEqual(6, (5.5).RoundFullToPositiveInfinity());
+      Assert.AreEqual(6, (5.5).Round(UniversalRounding.HalfToEven));
+      Assert.AreEqual(6, (5.5).Round(UniversalRounding.HalfAwayFromZero));
+      Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfTowardZero));
+      Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfToNegativeInfinity));
+      Assert.AreEqual(6, (5.5).Round(UniversalRounding.HalfToPositiveInfinity));
       Assert.AreEqual(5, (5.5).RoundHalfToOdd());
-      Assert.AreEqual(6, (5.5).RoundHalfToEven());
-      Assert.AreEqual(6, (5.5).RoundHalfAwayFromZero());
-      Assert.AreEqual(5, (5.5).RoundHalfTowardZero());
-      Assert.AreEqual(5, (5.5).RoundHalfToNegativeInfinity());
-      Assert.AreEqual(6, (5.5).RoundHalfToPositiveInfinity());
     }
 
     [TestMethod]
     public void RoundToBoundary()
     {
-      Assert.AreEqual(17, (12.ToBigInteger()).RoundToBoundaries(RoundingMode.HalfAwayFromZero, 7, 17), RoundingMode.HalfAwayFromZero.ToString());
-      Assert.AreEqual(7, (12.ToBigInteger()).RoundToBoundaries(RoundingMode.HalfTowardZero, 7, 17), RoundingMode.HalfTowardZero.ToString());
+      Assert.AreEqual(17, (12.ToBigInteger()).RoundToBoundary(UniversalRounding.HalfAwayFromZero, 7, 17), UniversalRounding.HalfAwayFromZero.ToString());
+      Assert.AreEqual(7, (12.ToBigInteger()).RoundToBoundary(UniversalRounding.HalfTowardZero, 7, 17), UniversalRounding.HalfTowardZero.ToString());
     }
 
     [TestMethod]
@@ -35,21 +35,21 @@ namespace Maths
       var n = 1.75;
       var m = 0.45;
 
-      n.RoundToMultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.RoundToMultipleOf(m, false, UniversalRounding.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      Assert.AreEqual(1.8, n.RoundToBoundaries(Flux.RoundingMode.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(RoundToMultipleOf)} {Flux.RoundingMode.HalfAwayFromZero}");
+      Assert.AreEqual(1.8, n.RoundToBoundary(Flux.UniversalRounding.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(RoundToMultipleOf)} {Flux.UniversalRounding.HalfAwayFromZero}");
     }
 
     [TestMethod]
     public void RoundToPrecision()
     {
-      Assert.AreEqual(99.97, (99.96535789).RoundByPrecision(Flux.RoundingMode.HalfToEven, 2, 10));
+      Assert.AreEqual(99.97, (99.96535789).RoundByPrecision(Flux.UniversalRounding.HalfToEven, 2, 10));
     }
 
     [TestMethod]
     public void RoundToTruncatedPrecision()
     {
-      Assert.AreEqual(99.96, (99.96535789).RoundByTruncatedPrecision(Flux.RoundingMode.HalfToEven, 2, 10));
+      Assert.AreEqual(99.96, (99.96535789).RoundByTruncatedPrecision(Flux.UniversalRounding.HalfToEven, 2, 10));
     }
   }
 }

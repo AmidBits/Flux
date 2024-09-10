@@ -11,13 +11,13 @@
     /// <param name="multipleOfTowardsZero">Outputs the multiple of that is closer to zero.</param>
     /// <param name="multipleOfAwayFromZero">Outputs the multiple of that is farther from zero.</param>
     /// <returns>The nearest two multiples to value as out parameters.</returns>
-    public static TNumber RoundToMultipleOf<TNumber>(this TNumber number, TNumber multiple, bool unequal, RoundingMode mode, out TNumber multipleOfTowardsZero, out TNumber multipleOfAwayFromZero)
+    public static TNumber RoundToMultipleOf<TNumber>(this TNumber number, TNumber multiple, bool unequal, UniversalRounding mode, out TNumber multipleOfTowardsZero, out TNumber multipleOfAwayFromZero)
       where TNumber : System.Numerics.INumber<TNumber>
     {
       multipleOfTowardsZero = number.RoundToMultipleOfTowardZero(multiple, unequal);
       multipleOfAwayFromZero = number.RoundToMultipleOfAwayFromZero(multiple, unequal);
 
-      return number.RoundToBoundaries(mode, multipleOfTowardsZero, multipleOfAwayFromZero);
+      return number.RoundToBoundary(mode, multipleOfTowardsZero, multipleOfAwayFromZero);
     }
   }
 }

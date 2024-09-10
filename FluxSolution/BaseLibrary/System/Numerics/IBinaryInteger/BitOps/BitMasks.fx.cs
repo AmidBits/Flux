@@ -51,49 +51,36 @@ namespace Flux
       return result;
     }
 
-    /// <summary>
-    /// <para>Flip the bits in <paramref name="value"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
-    /// </summary>
-    public static TValue BitMaskFlip<TValue>(this TValue value, TValue bitMask)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => value ^= bitMask;
+    ///// <summary>
+    ///// <para>Create a bit-mask with <paramref name="count"/> most-significant-bits set to 1.</para>
+    ///// </summary>
+    ///// <typeparam name="TValue"></typeparam>
+    ///// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TValue"/>.</param>
+    ///// <returns></returns>
+    //public static TValue BitMaskLeft<TValue>(this TValue count)
+    //  where TValue : System.Numerics.IBinaryInteger<TValue>
+    //  => count.BitMaskRight() << (count.GetBitCount() - int.CreateChecked(count));
 
-    /// <summary>
-    /// <para>Create a bit-mask with <paramref name="count"/> most-significant-bits set to 1.</para>
-    /// </summary>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="count">Can be up to the number of storage bits available in <typeparamref name="TValue"/>.</param>
-    /// <returns></returns>
-    public static TValue BitMaskLeft<TValue>(this TValue count)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => count.BitMaskRight() << (count.GetBitCount() - int.CreateChecked(count));
+    ///// <summary>
+    ///// <para>Create a bit-mask with <paramref name="count"/> least-significant-bits set to 1, and the number of <paramref name="trailingZeroCount"/> (least-significant-bits set to zero).</para>
+    ///// </summary>
+    ///// <typeparam name="TValue"></typeparam>
+    ///// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TValue"/>.</param>
+    ///// <param name="trailingZeroCount">The number of least-significant-bits set to zero after the most-significant-1-bits set by <paramref name="count"/>.</param>
+    ///// <returns></returns>
+    ///// <remarks>This is a specialized version for <see cref="System.Numerics.BigInteger"/> which has a dynamic bit-storage.</remarks>
+    //public static TValue BitMaskRight<TValue>(this TValue count, int trailingZeroCount)
+    //  where TValue : System.Numerics.IBinaryInteger<TValue>
+    //  => count.BitMaskRight() << trailingZeroCount;
 
-    /// <summary>
-    /// <para>Create a bit-mask with <paramref name="count"/> least-significant-bits set to 1, and the number of <paramref name="trailingZeroCount"/> (least-significant-bits set to zero).</para>
-    /// </summary>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="count">Can be up to the number of storage bits available in <typeparamref name="TValue"/>.</param>
-    /// <param name="trailingZeroCount">The number of least-significant-bits set to zero after the most-significant-1-bits set by <paramref name="count"/>.</param>
-    /// <returns></returns>
-    /// <remarks>This is a specialized version for <see cref="System.Numerics.BigInteger"/> which has a dynamic bit-storage.</remarks>
-    public static System.Numerics.BigInteger BitMaskLeft(this System.Numerics.BigInteger count, int trailingZeroCount)
-      => count.BitMaskRight() << trailingZeroCount;
-
-    /// <summary>
-    /// <para>Create a bit-mask with <paramref name="count"/> most-significant-bits set to 1.</para>
-    /// </summary>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="count">Can be up to the number of storage bits available in <typeparamref name="TValue"/>.</param>
-    /// <returns></returns>
-    public static TValue BitMaskRight<TValue>(this TValue count)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => (((TValue.One << (int.CreateChecked(count) - 1)) - TValue.One) << 1) | TValue.One;
-
-    /// <summary>
-    /// <para>Set the bits of <paramref name="value"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
-    /// </summary>
-    public static TValue BitMaskSet<TValue>(this TValue value, TValue bitMask)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => value |= bitMask;
+    ///// <summary>
+    ///// <para>Create a bit-mask with <paramref name="count"/> least-significant-bits set to 1.</para>
+    ///// </summary>
+    ///// <typeparam name="TValue"></typeparam>
+    ///// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TValue"/>.</param>
+    ///// <returns></returns>
+    //public static TValue BitMaskRight<TValue>(this TValue count)
+    //  where TValue : System.Numerics.IBinaryInteger<TValue>
+    //  => (((TValue.One << (int.CreateChecked(count) - 1)) - TValue.One) << 1) | TValue.One;
   }
 }

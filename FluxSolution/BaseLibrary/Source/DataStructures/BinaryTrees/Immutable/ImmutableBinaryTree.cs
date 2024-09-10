@@ -9,7 +9,6 @@ namespace Flux.DataStructures.Immutable
   /// <remarks>The original implementation is courtesy Eric Lippert.</remarks>
   public sealed class ImmutableBinaryTree<TValue>
     : IBinaryTree<TValue>
-    where TValue : System.IEquatable<TValue>
   {
     public static readonly IBinaryTree<TValue> Empty = new EmptyBinaryTree();
 
@@ -74,21 +73,28 @@ namespace Flux.DataStructures.Immutable
       }
     }
 
-    // IBinaryTree<TValue>
+    #region IBinaryTree<TValue>
+
     public bool IsEmpty => false;
     public IBinaryTree<TValue> Left => m_left;
     public IBinaryTree<TValue> Right => m_right;
     public TValue Value => m_value;
 
+    #endregion // IBinaryTree<TValue>
+
     public override string ToString() => $"{GetType().Name} {{ Left = {(Left.IsEmpty ? '-' : 'L')}, Right = {(Right.IsEmpty ? '-' : 'R')}, Value = {m_value} }}";
 
-    private sealed class EmptyBinaryTree : IBinaryTree<TValue>
+    private sealed class EmptyBinaryTree
+      : IBinaryTree<TValue>
     {
-      // IBinaryTree<TValue>
+      #region IBinaryTree<TValue>
+
       public bool IsEmpty => true;
       public IBinaryTree<TValue> Left => throw new System.Exception(nameof(EmptyBinaryTree));
       public IBinaryTree<TValue> Right => throw new System.Exception(nameof(EmptyBinaryTree));
       public TValue Value => throw new System.Exception(nameof(EmptyBinaryTree));
+
+      #endregion // IBinaryTree<TValue>
 
       public override string ToString() => $"{GetType().Name}{System.Environment.NewLine}{this.ToConsoleBlock()}";
     }

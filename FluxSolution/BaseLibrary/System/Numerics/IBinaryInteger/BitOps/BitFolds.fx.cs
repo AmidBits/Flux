@@ -12,13 +12,11 @@ namespace Flux
     /// <returns>All bits set from LSB up, or -1 if the value is less than zero.</returns>
     public static TValue BitFoldLeft<TValue>(this TValue value)
       where TValue : System.Numerics.IBinaryInteger<TValue>
-    {
-      if (TValue.IsZero(value)) return value;
-
-      var tzc = value.GetTrailingZeroCount();
-
-      return BitFoldRight(value << value.GetLeadingZeroCount()) >> tzc << tzc;
-    }
+      => TValue.IsZero(value)
+      ? value
+      : (value is System.Numerics.BigInteger ? Numerics.GenericMath.BitMaskRight(TValue.CreateChecked(value.GetBitCount())) : ~TValue.Zero) << value.GetTrailingZeroCount();
+    //var tzc = value.GetTrailingZeroCount();
+    //return BitFoldRight(value << value.GetLeadingZeroCount()) >> tzc << tzc;
 
     /// <summary>
     /// <para>Recursively "folds" all 1-bits into lower (right) 0-bits, by taking the most-significant-1-bits (MS1B) and OR it with (MS1B - 1), ending with bottom (right) bits (from MS1B on) set to 1.</para>

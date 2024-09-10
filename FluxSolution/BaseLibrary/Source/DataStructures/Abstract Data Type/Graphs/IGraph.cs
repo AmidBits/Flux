@@ -78,6 +78,12 @@ namespace Flux
 
   namespace DataStructures
   {
+    /// <summary>
+    /// <para></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
+    /// </summary>
+    /// <typeparam name="TVertexValue"></typeparam>
+    /// <typeparam name="TEdgeValue"></typeparam>
     public interface IGraph<TVertexValue, TEdgeValue>
     {
       IGraph<TVertexValue, TEdgeValue> CloneEmpty();

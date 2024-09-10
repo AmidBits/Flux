@@ -6,7 +6,7 @@
     private readonly int m_rows;
     private readonly int m_columns;
 
-    private readonly Flux.DataStructures.HashBased.OrderedDictionary<(int row, int column), TValue> m_data = new();
+    private readonly Flux.DataStructures.OrderedDictionary<(int row, int column), TValue> m_data = new();
 
     public Grid(int rows, int columns)
     {

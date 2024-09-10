@@ -16,28 +16,28 @@
     /// <param name="distanceAwayFromZero"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TBound RoundToBoundaries<TNumber, TBound>(this TNumber number, RoundingMode mode, TBound boundaryTowardsZero, TBound boundaryAwayFromZero)
+    public static TBound RoundToBoundary<TNumber, TBound>(this TNumber number, UniversalRounding mode, TBound boundaryTowardsZero, TBound boundaryAwayFromZero)
       where TNumber : System.Numerics.INumber<TNumber>
       where TBound : System.Numerics.INumber<TBound>
       => mode switch
       {
         // First we take care of the direct rounding cases.
-        RoundingMode.AwayFromZero => boundaryAwayFromZero,
-        RoundingMode.TowardsZero => boundaryTowardsZero,
-        RoundingMode.ToNegativeInfinity => TNumber.IsNegative(number) ? boundaryAwayFromZero : boundaryTowardsZero,
-        RoundingMode.ToPositiveInfinity => TNumber.IsNegative(number) ? boundaryTowardsZero : boundaryAwayFromZero,
+        UniversalRounding.FullAwayFromZero => boundaryAwayFromZero,
+        UniversalRounding.FullTowardZero => boundaryTowardsZero,
+        UniversalRounding.FullToNegativeInfinity => TNumber.IsNegative(number) ? boundaryAwayFromZero : boundaryTowardsZero,
+        UniversalRounding.FullToPositiveInfinity => TNumber.IsNegative(number) ? boundaryTowardsZero : boundaryAwayFromZero,
         // If not applicable, and since we're comparing a value against two boundaries, if the distances from the value to the two boundaries are not equal, we can avoid halfway checks.
         _ => TNumber.Abs(number - TNumber.CreateChecked(boundaryTowardsZero)) is var distanceTowardsZero && TNumber.Abs(TNumber.CreateChecked(boundaryAwayFromZero) - number) is var distanceAwayFromZero
           && (distanceTowardsZero < distanceAwayFromZero) ? boundaryTowardsZero // A clear win for towards-zero.
           : (distanceTowardsZero > distanceAwayFromZero) ? boundaryAwayFromZero // A clear win for away-from-zero.
           : mode switch // If the distances are equal, i.e. exactly halfway, we use the appropriate rounding strategy to resolve a winner.
           {
-            RoundingMode.HalfToEven => TBound.IsEvenInteger(boundaryTowardsZero) ? boundaryTowardsZero : boundaryAwayFromZero,
-            RoundingMode.HalfAwayFromZero => boundaryAwayFromZero,
-            RoundingMode.HalfTowardZero => boundaryTowardsZero,
-            RoundingMode.HalfToNegativeInfinity => TNumber.IsNegative(number) ? boundaryAwayFromZero : boundaryTowardsZero,
-            RoundingMode.HalfToPositiveInfinity => TNumber.IsNegative(number) ? boundaryTowardsZero : boundaryAwayFromZero,
-            RoundingMode.HalfToOdd => TBound.IsOddInteger(boundaryAwayFromZero) ? boundaryAwayFromZero : boundaryTowardsZero,
+            UniversalRounding.HalfToEven => TBound.IsEvenInteger(boundaryTowardsZero) ? boundaryTowardsZero : boundaryAwayFromZero,
+            UniversalRounding.HalfAwayFromZero => boundaryAwayFromZero,
+            UniversalRounding.HalfTowardZero => boundaryTowardsZero,
+            UniversalRounding.HalfToNegativeInfinity => TNumber.IsNegative(number) ? boundaryAwayFromZero : boundaryTowardsZero,
+            UniversalRounding.HalfToPositiveInfinity => TNumber.IsNegative(number) ? boundaryTowardsZero : boundaryAwayFromZero,
+            UniversalRounding.HalfToOdd => TBound.IsOddInteger(boundaryAwayFromZero) ? boundaryAwayFromZero : boundaryTowardsZero,
             _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
           }
       };

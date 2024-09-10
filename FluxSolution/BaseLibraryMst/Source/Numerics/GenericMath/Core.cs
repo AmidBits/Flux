@@ -28,11 +28,11 @@ namespace Maths
     [TestMethod]
     public void Envelop()
     {
-      Assert.AreEqual(-1, (-0.5).RoundAwayFromZero());
-      Assert.AreEqual(1, (0.5).RoundAwayFromZero());
+      Assert.AreEqual(-1, (-0.5).RoundFullAwayFromZero());
+      Assert.AreEqual(1, (0.5).RoundFullAwayFromZero());
 
-      Assert.AreEqual(-13, (-12.5).RoundAwayFromZero());
-      Assert.AreEqual(13, (12.5).RoundAwayFromZero());
+      Assert.AreEqual(-13, (-12.5).RoundFullAwayFromZero());
+      Assert.AreEqual(13, (12.5).RoundFullAwayFromZero());
     }
 
     [TestMethod]
@@ -78,8 +78,8 @@ namespace Maths
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, 100.ToBigInteger().IsPowOf(10));
-      Assert.AreEqual(false, 101.ToBigInteger().IsPowOf(10));
+      Assert.AreEqual(true, 100.ToBigInteger().IsIntegerPowOf(10));
+      Assert.AreEqual(false, 101.ToBigInteger().IsIntegerPowOf(10));
     }
 
     [TestMethod]
@@ -125,9 +125,9 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      n.RoundToMultipleOf(m, false, RoundingMode.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.RoundToMultipleOf(m, false, UniversalRounding.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      var nearestMultiple = n.RoundToBoundaries(RoundingMode.HalfTowardZero, multipleTowardsZero, multipleAwayFromZero);
+      var nearestMultiple = n.RoundToBoundary(UniversalRounding.HalfTowardZero, multipleTowardsZero, multipleAwayFromZero);
 
       Assert.AreEqual(520, nearestMultiple);
 

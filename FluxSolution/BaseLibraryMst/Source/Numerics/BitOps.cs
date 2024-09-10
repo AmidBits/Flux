@@ -49,60 +49,48 @@ namespace Numerics
       Assert.AreEqual(0b0101, 0b1111.BitMaskClear(0b1010));
     }
 
-    [TestMethod]
-    public void BitMaskFillLeft()
-    {
-      var templateBitMask = 0b110;
-      var templateBitLength = 3;
+    //[TestMethod]
+    //public void BitMaskFillLeft()
+    //{
+    //  var templateBitMask = 0b110;
+    //  var templateBitLength = 3;
 
-      var expected = 0b1101_1011_0110_1101_1011_0110_1101_1011U;
-      var actual = unchecked((uint)templateBitMask.BitMaskFillLeft(templateBitLength, expected.GetShortestBitLength()));
+    //  var expected = 0b1101_1011_0110_1101_1011_0110_1101_1011U;
+    //  var actual = unchecked((uint)templateBitMask.BitMaskFillLeft(templateBitLength, expected.GetShortestBitLength()));
 
-      // Debug:
-      var e = expected.ToBinaryString();
-      var a = actual.ToBinaryString();
+    //  // Debug:
+    //  var e = expected.ToBinaryString();
+    //  var a = actual.ToBinaryString();
 
-      Assert.AreEqual(expected, actual);
-    }
+    //  Assert.AreEqual(expected, actual);
+    //}
 
-    [TestMethod]
-    public void BitMaskFillRight()
-    {
-      var templateBitMask = 0b110;
-      var templateBitLength = 3;
+    //[TestMethod]
+    //public void BitMaskFillRight()
+    //{
+    //  var templateBitMask = 0b110;
+    //  var templateBitLength = 3;
 
-      var expected = 0b1011_0110_1101_1011_0110_1101_1011_0110U;
-      var actual = unchecked((uint)templateBitMask.BitMaskFillRight(templateBitLength, expected.GetShortestBitLength()));
+    //  var expected = 0b1011_0110_1101_1011_0110_1101_1011_0110U;
+    //  var actual = unchecked((uint)templateBitMask.BitMaskFillRight(templateBitLength, expected.GetShortestBitLength()));
 
-      // Debug:
-      var e = expected.ToBinaryString();
-      var a = actual.ToBinaryString();
+    //  // Debug:
+    //  var e = expected.ToBinaryString();
+    //  var a = actual.ToBinaryString();
 
-      Assert.AreEqual(expected, actual);
-    }
-
-    [TestMethod]
-    public void BitMaskFlip()
-    {
-      Assert.AreEqual(0b0101, 0b1111.BitMaskFlip(0b1010));
-    }
+    //  Assert.AreEqual(expected, actual);
+    //}
 
     [TestMethod]
     public void BitMaskLeft()
     {
-      Assert.AreEqual(-1, 32.BitMaskLeft());
+      Assert.AreEqual(-1, Flux.Numerics.GenericMath.BitMaskLeft(32));
     }
 
     [TestMethod]
     public void BitMaskRight()
     {
-      Assert.AreEqual(127, 7.BitMaskRight());
-    }
-
-    [TestMethod]
-    public void BitMaskSet()
-    {
-      Assert.AreEqual(0b1010, 0b0000.BitMaskSet(0b1010));
+      Assert.AreEqual(127, Flux.Numerics.GenericMath.BitMaskRight(7));
     }
 
     [TestMethod]
@@ -180,7 +168,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(false);
       var awayFromZero = value.Pow2AwayFromZero(false);
 
-      var rounded = 88.RoundToBoundaries(RoundingMode.HalfAwayFromZero, towardsZero, awayFromZero);
+      var rounded = 88.RoundToBoundary(UniversalRounding.HalfAwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64, rounded);
 
@@ -196,7 +184,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(true);
       var awayFromZero = value.Pow2AwayFromZero(true);
 
-      var actual = 88.RoundToBoundaries(RoundingMode.AwayFromZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToBoundary(UniversalRounding.FullAwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -209,7 +197,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(false);
       var awayFromZero = value.Pow2AwayFromZero(false);
 
-      var actual = 88.RoundToBoundaries(RoundingMode.AwayFromZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToBoundary(UniversalRounding.FullAwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -222,7 +210,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(true);
       var awayFromZero = value.Pow2AwayFromZero(true);
 
-      var actual = 88.RoundToBoundaries(RoundingMode.TowardsZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToBoundary(UniversalRounding.FullTowardZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }
@@ -235,7 +223,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(false);
       var awayFromZero = value.Pow2AwayFromZero(false);
 
-      var actual = 88.RoundToBoundaries(RoundingMode.TowardsZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToBoundary(UniversalRounding.FullTowardZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }

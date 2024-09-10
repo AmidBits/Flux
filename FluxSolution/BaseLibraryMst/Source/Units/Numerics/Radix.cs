@@ -103,8 +103,8 @@ namespace Units
     [TestMethod]
     public void IsIntegerPowOf()
     {
-      Assert.AreEqual(false, 511.IsPowOf(2));
-      Assert.AreEqual(true, 512.IsPowOf(2));
+      Assert.AreEqual(false, 511.IsIntegerPowOf(2));
+      Assert.AreEqual(true, 512.IsIntegerPowOf(2));
     }
 
     [TestMethod]

@@ -41,24 +41,19 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //      var cncs = (-123.456).;
-      var cncs = (1899).BinaryToGrayCode(10);
+      var si = Flux.DataStructures.Immutable.ImmutableStack<int>.Empty;
 
-      for (var i = 1.ToBigInteger(); i < 102; i++)
+      si = si.Push(2);
+      si = si.Push(0);
+      si = si.Push(3);
+      si = si.Push(9);
+
+      foreach (var sii in si)
+        System.Console.WriteLine(sii);
+
+      for (var l = -23; l <= 23; l++)
       {
-        //System.Console.WriteLine($"{i:D3} : LOG : {i.FastLogOfTowardZero(7, out var logtz)} ({logtz}) / {i.FastLogOfAwayFromZero(7, out var logafz)} ({logafz})");
-        //System.Console.WriteLine($"{i:D3} : POW : {i.FastPow(7, out var pow)} ({pow})");
-        System.Console.WriteLine($"{i:D3} : {i.RoundToPowOfTowardZero(2, true)} / {i.RoundToPowOfAwayFromZero(2, true)}");
-      }
-
-      return;
-
-      for (var value = 2; value < 25; value++)
-      {
-        var d = value.GetDigits(10);
-        var dr = value.GetDigitsReversed(10);
-
-        System.Console.WriteLine($"{value:D2} : {string.Join(", ", d)} : {string.Join(", ", dr)}");
+        System.Console.WriteLine($"{l:D2} = {l.RoundToPrimeMultiple(UniversalRounding.HalfTowardZero)} = {l.RoundToPrimeCandidate(UniversalRounding.HalfTowardZero)}");
       }
     }
 

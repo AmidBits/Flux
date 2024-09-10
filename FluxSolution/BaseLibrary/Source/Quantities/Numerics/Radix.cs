@@ -23,27 +23,39 @@ namespace Flux.Quantities
 
     #region Static methods
 
-    /// <summary>Asserts the number is a valid <paramref name="radix"/> (throws an exception if not).</summary>
+    /// <summary>
+    /// <para>Asserts that the <paramref name="radix"/> with an <paramref name="alternativeMaxRadix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <paramref name="alternativeMaxRadix"/>], and throws an exception if it's not.</para>
+    /// </summary>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static TSelf AssertMember<TSelf>(TSelf radix, TSelf alternativeMaxRadix, string? paramName = null)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => VerifyMember(radix, alternativeMaxRadix)
+      ? radix
+      : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"The radix ({radix}) is out of range: {IntervalNotation.Closed.ToNotationString(TSelf.CreateChecked(MinValue), alternativeMaxRadix)}.");
+
+    /// <summary>
+    /// <para>Asserts that the <paramref name="radix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <see cref="MaxValue"/>], and throws an exception if it's not.</para>
+    /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf AssertMember<TSelf>(TSelf radix, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.AssertValidMember(radix, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(radix));
+      => VerifyMember(radix)
+      ? radix
+      : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"The radix ({radix}) is out of range: {IntervalNotation.Closed.ToNotationString(TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue))}.");
 
-    /// <summary>Asserts that <paramref name="radix"/> is valid, with an <paramref name="alernativeMaxRadix"/> (throws an exception, if not).</summary>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf AssertMember<TSelf>(TSelf radix, TSelf alernativeMaxRadix, string? paramName = null)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.AssertValidMember(radix, TSelf.CreateChecked(MinValue), TSelf.Min(alernativeMaxRadix, TSelf.CreateChecked(MaxValue)), paramName ?? nameof(radix));
-
-    /// <summary>Returns whether the number is a valid <paramref name="radix"/>.</summary>
-    public static bool VerifyMember<TSelf>(TSelf radix)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => IntervalNotation.Closed.IsValidMember(radix, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
-
-    /// <summary>Returns whether the number is a valid <paramref name="radix"/>, with an <paramref name="alternativeMaxRadix"/>.</summary>
+    /// <summary>
+    /// <para>Determines whether the <paramref name="radix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <paramref name="alternativeMaxRadix"/>].</para>
+    /// </summary>
     public static bool VerifyMember<TSelf>(TSelf radix, TSelf alternativeMaxRadix)
       where TSelf : System.Numerics.INumber<TSelf>
-      => TSelf.CreateChecked(MinValue) is var minRadix && alternativeMaxRadix >= minRadix && IntervalNotation.Closed.IsValidMember(radix, minRadix, alternativeMaxRadix);
+      => TSelf.IsInteger(radix) && TSelf.CreateChecked(MinValue) is var minRadix && alternativeMaxRadix >= minRadix && IntervalNotation.Closed.IsValidMember(radix, minRadix, alternativeMaxRadix);
+
+    /// <summary>
+    /// <para>Determines whether the <paramref name="radix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <see cref="MaxValue"/>].</para>
+    /// </summary>
+    public static bool VerifyMember<TSelf>(TSelf radix)
+      where TSelf : System.Numerics.INumber<TSelf>
+      => VerifyMember(radix, TSelf.CreateChecked(MaxValue));
 
     #endregion Static methods
 

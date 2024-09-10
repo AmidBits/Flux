@@ -4,19 +4,19 @@ namespace Flux.DataStructures.Heaps
   /// <para></para>
   /// <para><see href="https://en.wikipedia.org/wiki/Heap_(data_structure)"/></para>
   /// </summary>
-  public sealed class DarityHeapMax<T>
-    : IHeap<T>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<T>
-    where T : System.IComparable<T>
+  public sealed class DarityHeapMax<TValue>
+    : IHeap<TValue>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<TValue>
+    where TValue : System.IComparable<TValue>
   {
     private readonly int m_arity;
 
-    private System.Collections.Generic.List<T> m_data = new();
+    private System.Collections.Generic.List<TValue> m_data = new();
 
     public DarityHeapMax(int arity)
     {
       m_arity = arity;
     }
-    public DarityHeapMax(int arity, System.Collections.Generic.IEnumerable<T> collection)
+    public DarityHeapMax(int arity, System.Collections.Generic.IEnumerable<TValue> collection)
       : this(arity)
     {
       System.ArgumentNullException.ThrowIfNull(collection);
@@ -94,8 +94,8 @@ namespace Flux.DataStructures.Heaps
     public int Count => m_data.Count;
     public bool IsEmpty => m_data.Count == 0;
     public void Clear() => m_data.Clear();
-    public bool Contains(T item) => m_data.Contains(item);
-    public T Extract()
+    public bool Contains(TValue item) => m_data.Contains(item);
+    public TValue Extract()
     {
       var min = m_data[0];
 
@@ -106,7 +106,7 @@ namespace Flux.DataStructures.Heaps
 
       return min;
     }
-    public void Insert(T item)
+    public void Insert(TValue item)
     {
       m_data ??= new();
 
@@ -114,13 +114,13 @@ namespace Flux.DataStructures.Heaps
 
       HeapifyUp(m_data.Count - 1);
     }
-    public T Peek() => m_data[0];
+    public TValue Peek() => m_data[0];
 
     // ICloneable
-    public object Clone() => new DarityHeapMax<T>(m_arity, m_data);
+    public object Clone() => new DarityHeapMax<TValue>(m_arity, m_data);
 
     // IReadOnlyCollection<T>
-    public System.Collections.Generic.IEnumerator<T> GetEnumerator() => ((IHeap<T>)Clone()).ExtractAll().GetEnumerator();
+    public System.Collections.Generic.IEnumerator<TValue> GetEnumerator() => ((IHeap<TValue>)Clone()).ExtractAll().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
     public override string ToString() => $"{GetType().Name} {{ Arity = {m_arity}, Count = {m_data.Count} }}";

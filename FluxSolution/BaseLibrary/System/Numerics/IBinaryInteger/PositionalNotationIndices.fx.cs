@@ -168,7 +168,7 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToDecimalString<TValue>(this TValue value, int minLength = 1, char negativeSymbol = '\u002D', char[]? alphabet = null)
       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (minLength <= 0) minLength = value.GetBitCount().GetMaxDigitCountOfBitLength(10, value.IsSignedNumber());
+      if (minLength <= 0) minLength = Numerics.GenericMath.GetMaxDigitCountOfBitLength(value.GetBitCount(), 10, value.IsSignedNumber());
 
       alphabet ??= Base64Alphabet;
 
@@ -201,7 +201,7 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToHexadecimalString<TValue>(this TValue value, int minLength = 1, char[]? alphabet = null)
       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (minLength <= 0) minLength = value.GetBitCount().GetMaxDigitCountOfBitLength(16, value.IsSignedNumber());
+      if (minLength <= 0) minLength = Numerics.GenericMath.GetMaxDigitCountOfBitLength(value.GetBitCount(), 16, value.IsSignedNumber());
 
       alphabet ??= Base64Alphabet;
 
@@ -211,7 +211,7 @@ namespace Flux
 
       for (var nibbleIndex = (value.GetByteCount() << 1) - 1; nibbleIndex >= 0; nibbleIndex--)
       {
-        var nibbleValue = int.CreateChecked(value >>> (nibbleIndex << 2)) & 0xF;
+        var nibbleValue = int.CreateChecked((value >>> (nibbleIndex << 2)) & TValue.CreateChecked(0xF));
 
         if (nibbleValue > 0 || indices.Count > 0 || nibbleIndex < minLength)
           indices.Add(nibbleValue);
@@ -234,7 +234,7 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToOctalString<TValue>(this TValue value, int minLength = 1, char[]? alphabet = null)
       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (minLength <= 0) minLength = value.GetBitCount().GetMaxDigitCountOfBitLength(8, value.IsSignedNumber());
+      if (minLength <= 0) minLength = Numerics.GenericMath.GetMaxDigitCountOfBitLength(value.GetBitCount(), 8, value.IsSignedNumber());
 
       alphabet ??= Base64Alphabet;
 
@@ -277,7 +277,7 @@ namespace Flux
         return value.ToHexadecimalString(minLength, alphabet);
       else
       {
-        if (minLength <= 0) minLength = value.GetBitCount().GetMaxDigitCountOfBitLength(rdx, value.IsSignedNumber());
+        if (minLength <= 0) minLength = Numerics.GenericMath.GetMaxDigitCountOfBitLength(value.GetBitCount(), rdx, value.IsSignedNumber());
 
         alphabet ??= Base64Alphabet;
 

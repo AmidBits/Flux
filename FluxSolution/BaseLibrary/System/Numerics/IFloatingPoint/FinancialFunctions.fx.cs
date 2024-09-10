@@ -1,28 +1,40 @@
+using System.Net.Http.Headers;
+
 namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Compound interest is the addition of interest to the principal sum of a loan or deposit, or in other words, interest on interest.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Compound_interest"/>
-    public static TValue CompoundInterestRate<TValue>(this TValue nominalInterestRate, TValue compoundingPeriodsPerYear, TValue numberOfYears)
+    /// <summary>
+    /// <para>The interest on loans and mortgages that are amortized, i.e. have a smooth monthly payment until the loan has been paid off, is often compounded monthly.</para>
+    /// <para>The fixed monthly payment for a fixed rate mortgage is the amount paid by the borrower every month that ensures that the loan is paid off in full with interest at the end of its term. The monthly payment formula is based on the annuity formula.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Compound_interest#Monthly_amortized_loan_or_mortgage_payments"/></para>
+    /// <example>For example, for a home loan of $200,000 with a fixed yearly interest rate of 6.5% for 30 years, the principal is <param name="p"/> = 200,000, the monthly interest rate is <paramref name="r"/> = 0.065 / 12, the number of monthly payments is <paramref name="n"/> = 30 * 12 = 360, the fixed monthly payment equals $1,264.14: <code>AmortizedMonthlyPayment(200000, 0.065 / 12, 30 * 12);</code></example>
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="p">The principal. The amount borrowed, known as the loan's principal.</param>
+    /// <param name="r">The monthly interest rate. Since the quoted yearly percentage rate is not a compounded rate, the monthly percentage rate is simply the yearly percentage rate divided by 12.</param>
+    /// <param name="n">The number of payment periods. (E.g. the number of monthly payments, called the loan's term.)</param>
+    /// <returns>The monthly payment (c).</returns>
+    public static TValue AmortizedMonthlyPayment<TValue>(this TValue p, TValue r, TValue n)
       where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IPowerFunctions<TValue>
-      => TValue.Pow(TValue.One + nominalInterestRate / compoundingPeriodsPerYear, compoundingPeriodsPerYear * numberOfYears);
+      => r * p / (TValue.One - (TValue.One / TValue.Pow(TValue.One + r, n)));
 
-    /// <summary>The interest rate on a loan or financial product restated from the nominal interest rate as an interest rate with annual compound interest payable in arrears.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Effective_interest_rate"/>
-    public static TValue EffectiveInterestRate<TValue>(this TValue nominalRate, TValue compoundingPeriods)
+    /// <summary>
+    /// <para>Compound interest is interest accumulated from a principal sum and previously accumulated interest. It is the result of reinvesting or retaining interest that would otherwise be paid out, or of the accumulation of debts from a borrower.</para>
+    /// <para>The accumulation function shows what $1 grows to after any length of time.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Compound_interest#Accumulation_function"/></para>
+    /// </summary>
+    /// <remarks>
+    /// <para>The total accumulated value, including the principal sum P plus compounded interest I is given by: <code>A = P * CompoundInterest(r, n, t);</code></para>
+    /// <para>The total compound interest generated is the final value (A) minus the initial principal: <code>I = P * CompoundInterest(r, n, t) - P;</code> or <code>I = A - P;</code></para>
+    /// </remarks>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="r">The nominal annual interest rate.</param>
+    /// <param name="n">The compounding frequency.</param>
+    /// <param name="t">The overall length of time the interest is applied (expressed using the same time units as r, usually years).</param>
+    /// <returns>The accumulative compound interest of <paramref name="r"/>.</returns>
+    public static TValue CompoundInterest<TValue>(this TValue r, TValue n, TValue t)
       where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IPowerFunctions<TValue>
-      => TValue.Pow(TValue.One + nominalRate / compoundingPeriods, compoundingPeriods) - TValue.One;
-
-    /// <summary>An amortizing mortgage loan where the interest rate on the note remains the same through the term of the loan, as opposed to loans where the interest rate may adjust or "float".</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Fixed-rate_mortgage"/>
-    public static TValue FixedRateMortgageMonthlyPayment<TValue>(this TValue fixedYearlyNominalInterestRate, TValue numberOfYears, TValue loanAmount)
-      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IPowerFunctions<TValue>
-    {
-      //var r = fixedYearlyNominalInterestRate / TValue.CreateChecked(100) / TValue.CreateChecked(12);
-      var r = fixedYearlyNominalInterestRate / TValue.CreateChecked(12); // Was divide by 100 just to make it a decimal percent?
-
-      return r / (TValue.One - TValue.Pow(TValue.One + r, -numberOfYears * TValue.CreateChecked(12))) * loanAmount;
-    }
+      => TValue.Pow(TValue.One + (r / n), t * n);
   }
 }

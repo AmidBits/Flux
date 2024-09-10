@@ -85,7 +85,7 @@ namespace Flux
       where TSelf : System.Numerics.INumber<TSelf>
       => new(-source.R, -source.S, -source.Q);
 
-    public static Coordinates.HexCoordinate<TResult> Round<TSelf, TResult>(this Coordinates.HexCoordinate<TSelf> source, RoundingMode mode)
+    public static Coordinates.HexCoordinate<TResult> Round<TSelf, TResult>(this Coordinates.HexCoordinate<TSelf> source, UniversalRounding mode)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
     {
@@ -124,7 +124,7 @@ namespace Flux
         TResult.CreateChecked(source.S)
       );
 
-    public static Coordinates.HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this Coordinates.HexCoordinate<TSelf> source, RoundingMode mode, out Coordinates.HexCoordinate<TResult> result)
+    public static Coordinates.HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this Coordinates.HexCoordinate<TSelf> source, UniversalRounding mode, out Coordinates.HexCoordinate<TResult> result)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
       => result = Round<TSelf, TResult>(source, mode);

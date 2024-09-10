@@ -3,17 +3,17 @@ namespace Flux
   public static partial class NumberSequence
   {
     /// <summary>
-    /// <para>Computes the Mersenne number for the specified <paramref name="number"/>.</para>
+    /// <para>Computes the Mersenne number for the specified <paramref name="value"/>.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Mersenne_number"/></para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="number"></param>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="value"></param>
     /// <returns></returns>
-    public static TSelf GetMersenneNumber<TSelf>(TSelf number)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => (TSelf.One + TSelf.One).IntegerPow(number) - TSelf.One;
+    public static TValue GetMersenneNumber<TValue>(TValue value)
+      where TValue : System.Numerics.IBinaryInteger<TValue>
+      => checked((TValue.One << int.CreateChecked(value)) - TValue.One);
 
-    /// <summary>
+    /// <summary>`
     /// <para>Creates a new sequence of Mersenne numbers.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Mersenne_number"/></para>
     /// </summary>

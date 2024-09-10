@@ -27,13 +27,17 @@ namespace Flux.DataStructures.Immutable
       m_value = value;
     }
 
-    // IBinaryTree<TValue>
+    #region IBinaryTree<TValue>
+
     public bool IsEmpty => false;
     IBinaryTree<TValue> IBinaryTree<TValue>.Left => m_left;
     IBinaryTree<TValue> IBinaryTree<TValue>.Right => m_right;
     public TValue Value => m_value;
 
-    // IBinarySearchTree<TKey, TValue>
+    #endregion // IBinaryTree<TValue>
+
+    #region IBinarySearchTree<TKey, TValue>
+
     public TKey Key => m_key;
     public IBinarySearchTree<TKey, TValue> Left => m_left;
     public IBinarySearchTree<TKey, TValue> Right => m_right;
@@ -69,7 +73,10 @@ namespace Flux.DataStructures.Immutable
       ? Empty
       : (key.CompareTo(Key) switch { var gt when gt > 0 => Right.Search(key), var lt when lt < 0 => Left.Search(key), _ => this });
 
-    // IMap<TKey, TValue>
+    #endregion // IBinarySearchTree<TKey, TValue>
+
+    #region IMap<TKey, TValue>
+
     public System.Collections.Generic.IEnumerable<TKey> Keys => this.TraverseInOrder().Select(t => ((IBinarySearchTree<TKey, TValue>)t).Key);
     public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs => this.TraverseInOrder().Select(t => new System.Collections.Generic.KeyValuePair<TKey, TValue>(((IBinarySearchTree<TKey, TValue>)t).Key, t.Value));
     public System.Collections.Generic.IEnumerable<TValue> Values => this.TraverseInOrder().Select(t => t.Value);
@@ -81,18 +88,24 @@ namespace Flux.DataStructures.Immutable
       : tree.Value;
     IMap<TKey, TValue> IMap<TKey, TValue>.Remove(TKey key) => Remove(key);
 
+    #endregion // IMap<TKey, TValue>
+
     public override string ToString() => $"{GetType().Name} {{ Left = {(Left.IsEmpty ? '-' : 'L')}, Right = {(Right.IsEmpty ? '-' : 'R')}, Key = {m_key}, Value = {m_value} }}";
 
     private sealed class EmptyBinarySearchTree
       : IBinarySearchTree<TKey, TValue>
     {
-      // IBinaryTree<TValue>
+      #region IBinaryTree<TValue>
+
       public bool IsEmpty => true;
       IBinaryTree<TValue> IBinaryTree<TValue>.Left => throw new System.Exception(nameof(EmptyBinarySearchTree));
       IBinaryTree<TValue> IBinaryTree<TValue>.Right => throw new System.Exception(nameof(EmptyBinarySearchTree));
       public TValue Value => throw new System.Exception(nameof(EmptyBinarySearchTree));
 
-      // IBinarySearchTree<TKey, TValue>
+      #endregion // IBinaryTree<TValue>
+
+      #region IBinarySearchTree<TKey, TValue>
+
       public TKey Key => throw new System.Exception(nameof(EmptyBinarySearchTree));
       public IBinarySearchTree<TKey, TValue> Left => throw new System.Exception(nameof(EmptyBinarySearchTree));
       public IBinarySearchTree<TKey, TValue> Right => throw new System.Exception(nameof(EmptyBinarySearchTree));
@@ -100,7 +113,10 @@ namespace Flux.DataStructures.Immutable
       public IBinarySearchTree<TKey, TValue> Remove(TKey key) => throw new System.Exception(nameof(EmptyBinarySearchTree));
       public IBinarySearchTree<TKey, TValue> Search(TKey key) => this;
 
-      // IMap<TKey, TValue>
+      #endregion // IBinarySearchTree<TKey, TValue>
+
+      #region IMap<TKey, TValue>
+
       public System.Collections.Generic.IEnumerable<TKey> Keys { get { yield break; } }
       public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs { get { yield break; } }
       public System.Collections.Generic.IEnumerable<TValue> Values { get { yield break; } }
@@ -108,6 +124,8 @@ namespace Flux.DataStructures.Immutable
       public bool Contains(TKey key) => false;
       public TValue Lookup(TKey key) => throw new System.Exception(nameof(EmptyBinarySearchTree));
       IMap<TKey, TValue> IMap<TKey, TValue>.Remove(TKey key) => Remove(key);
+
+      #endregion // IMap<TKey, TValue>
 
       public override string ToString() => $"{GetType().Name}{System.Environment.NewLine}{this.ToConsoleBlock()}";
     }

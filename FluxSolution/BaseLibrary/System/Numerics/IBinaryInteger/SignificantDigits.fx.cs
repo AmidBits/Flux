@@ -12,13 +12,13 @@ namespace Flux
     public static TValue DropLeastSignificantDigits<TValue, TRadix>(this TValue value, TRadix radix, TValue count)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value / TValue.CreateChecked(Quantities.Radix.AssertMember(radix).IntegerPow(count));
+      => value / TValue.CreateChecked(Quantities.Radix.AssertMember(radix).FastIntegerPow(count, UniversalRounding.FullTowardZero, out var _));
 
     /// <summary>Drop <paramref name="count"/> leading (most significant) digits of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public static TValue DropMostSignificantDigits<TValue, TRadix>(this TValue value, TRadix radix, TValue count)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value % TValue.CreateChecked(radix.IntegerPow(DigitCount(value, radix) - count));
+      => value % TValue.CreateChecked(radix.FastIntegerPow(DigitCount(value, radix) - count, UniversalRounding.FullTowardZero, out var _));
 
     /// <summary>Retreive <paramref name="count"/> least significant digits of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public static TValue KeepLeastSignificantDigit<TValue, TRadix>(this TValue value, TRadix radix)
@@ -30,12 +30,12 @@ namespace Flux
     public static TValue KeepLeastSignificantDigits<TValue, TRadix>(this TValue value, TRadix radix, TValue count)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value % TValue.CreateChecked(Quantities.Radix.AssertMember(radix).IntegerPow(count));
+      => value % TValue.CreateChecked(Quantities.Radix.AssertMember(radix).FastIntegerPow(count, UniversalRounding.FullTowardZero, out var _));
 
     /// <summary>Drop the leading digit of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public static TValue KeepMostSignificantDigits<TValue, TRadix>(this TValue value, TRadix radix, TValue count)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value / TValue.CreateChecked(radix.IntegerPow(value.DigitCount(radix) - count));
+      => value / TValue.CreateChecked(radix.FastIntegerPow(value.DigitCount(radix) - count, UniversalRounding.FullTowardZero, out var _));
   }
 }

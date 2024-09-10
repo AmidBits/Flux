@@ -12,7 +12,7 @@ namespace DataStructures
     [TestMethod]
     public void SieveOfEratosthenes1()
     {
-      var data = new Flux.DataStructures.HashBased.OrderedDictionary<int, int>()
+      var data = new Flux.DataStructures.OrderedDictionary<int, int>()
       {
         { 10, 4 },
         { 100, 25 },

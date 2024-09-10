@@ -296,8 +296,8 @@ namespace Maths
     [TestMethod]
     public void GetMersennePrimes()
     {
-      var expected = new int[] { 3, 7, 31, 127, 8191, 131071, 524287, 2147483647 };
-      var actual = Flux.NumberSequence.GetMersennePrimes<int>().Take(expected.Length).ToArray();
+      var expected = new long[] { 3, 7, 31, 127, 8191, 131071, 524287, 2147483647 };
+      var actual = Flux.NumberSequence.GetMersennePrimes<long>().Take(expected.Length).ToArray();
       Assert.IsTrue(actual.SequenceEqual(expected));
     }
 
@@ -370,7 +370,7 @@ namespace Maths
     [TestMethod]
     public void SieveOfEratosthenes1()
     {
-      var data = new Flux.DataStructures.HashBased.OrderedDictionary<int, int>()
+      var data = new Flux.DataStructures.OrderedDictionary<int, int>()
       {
         { 10, 4 },
         { 100, 25 },

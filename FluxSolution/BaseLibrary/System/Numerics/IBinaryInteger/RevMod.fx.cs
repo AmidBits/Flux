@@ -15,7 +15,7 @@ namespace Flux
     {
       remainder = dividend % divisor;
 
-      return TValue.IsZero(remainder) ? remainder : -remainder + divisor;
+      return TValue.IsZero(remainder) ? remainder : TValue.CopySign(divisor, remainder) - remainder;
     }
   }
 }

@@ -20,9 +20,12 @@ namespace Flux
 
       while (true)
       {
-        yield return number;
+        checked
+        {
+          yield return number;
 
-        number *= commonRatio;
+          number *= commonRatio;
+        }
       }
     }
   }

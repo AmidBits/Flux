@@ -1,5 +1,11 @@
 namespace Flux.DataStructures
 {
+  /// <summary>
+  /// <para></para>
+  /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
+  /// </summary>
+  /// <typeparam name="TKey"></typeparam>
+  /// <typeparam name="TValue"></typeparam>
   public interface IOrderedDictionary<TKey, TValue>
     : System.Collections.Generic.IDictionary<TKey, TValue>
     where TKey : notnull

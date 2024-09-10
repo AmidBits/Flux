@@ -2,32 +2,6 @@ namespace Flux
 {
   public static partial class Fx
   {
-    // Testing Stuff
-    //public static TValue GenericSquareRoot<TValue>(this TValue value)
-    //  where TValue : System.Numerics.INumber<TValue>
-    //{
-    //  AssertNonNegative(value);
-
-    //  //if (TryFastIntegerSqrt(value, out var root)) // Testing!
-    //  //  return root;
-
-
-
-    //  var x0 = TValue.CreateChecked(System.Numerics.BigInteger.One << (System.Numerics.BigInteger.CreateChecked(value).GetShortestBitLength() / 2 + 1)); // The least power of two bigger than the square value.
-
-    //  if (!TValue.IsZero(x0))
-    //  {
-    //    while (((x0 + value / x0) / (TValue.One + TValue.One)) is var x1 && x1 < x0)
-    //      x0 = x1;
-
-    //    return x0;
-    //  }
-
-    //  return value;
-    //}
-
-
-
     /// <summary>
     /// <para>Returns the (floor) square root of the <paramref name="value"/>, using Newton's method.</para>
     /// <see href="https://en.wikipedia.org/wiki/Square_root"/>
@@ -40,8 +14,8 @@ namespace Flux
     {
       value.AssertNonNegativeRealNumber();
 
-      if (TryFastSqrtTowardZero(value, out var root)) // Testing!
-        return root;
+      if (TryFastIntegerSqrt(value, UniversalRounding.FullTowardZero, out TValue integerSqrt, out var _)) // Testing!
+        return integerSqrt;
 
       var x0 = TValue.One << (value.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square value.
 
@@ -82,49 +56,5 @@ namespace Flux
       where TRoot : System.Numerics.IBinaryInteger<TRoot>
       => TValue.CreateChecked(root) is var r && value / r == r // Is integer root?
       && TValue.IsZero(value % r); // Is perfect integer root?
-
-    /// <summary>
-    /// <para>Attempts to compute the (floor) square root of <paramref name="value"/> into the out parameter <paramref name="root"/>. This is a faster but limited to integer of 53 bits.</para>
-    /// </summary>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
-    /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
-    /// <returns>Whether the operation was successful.</returns>
-    public static bool TryFastSqrtTowardZero<TValue>(this TValue value, out TValue root)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-    {
-      if (value.GetBitLengthEx() <= 53)
-      {
-        root = value.FastSqrtTowardZero(out var _);
-        return true;
-      }
-
-      root = TValue.Zero;
-      return false;
-    }
-
-    /// <summary>
-    /// <para>Attempts to compute the (floor) square root of <paramref name="value"/> into the out parameter <paramref name="root"/>, using Newton's method.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Square_root"/>
-    /// </summary>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
-    /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
-    /// <returns>Whether the operation was successful.</returns>
-    public static bool TryIntegerSqrt<TValue>(this TValue value, out TValue root)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-    {
-      try
-      {
-        root = IntegerSqrt(value);
-
-        return true;
-      }
-      catch { }
-
-      root = TValue.Zero;
-
-      return false;
-    }
   }
 }

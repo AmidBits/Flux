@@ -14,7 +14,7 @@ namespace Flux
     public static TValue IntegerLogAwayFromZero<TValue, TRadix>(this TValue value, TRadix radix)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TValue.CopySign(TValue.Abs(IntegerLogTowardZero(value, radix)) is var tz && value.IsPowOf(radix) ? tz : tz + TValue.One, value);
+      => TValue.CopySign(TValue.Abs(IntegerLogTowardZero(value, radix)) is var tz && value.IsIntegerPowOf(radix) ? tz : tz + TValue.One, value);
 
     /// <summary>
     /// <para>Integer-log mitigates approximations with floating point logs.</para>
@@ -31,19 +31,16 @@ namespace Flux
     {
       var rdx = TValue.CreateChecked(Quantities.Radix.AssertMember(radix));
 
-      var v = TValue.Abs(value);
+      if (!TValue.IsZero(value)) // If not zero...
+      {
+        var log = TValue.Zero;
 
-      var ilog = TValue.Zero;
+        for (var val = TValue.Abs(value); val >= rdx; val /= rdx)
+          log++;
 
-      if (!TValue.IsZero(v))
-        while (v >= rdx)
-        {
-          v /= rdx;
-
-          ilog++;
-        }
-
-      return TValue.CopySign(ilog, value);
+        return TValue.CopySign(log, value);
+      }
+      else return value; // ...otherwise return zero.
     }
   }
 }
