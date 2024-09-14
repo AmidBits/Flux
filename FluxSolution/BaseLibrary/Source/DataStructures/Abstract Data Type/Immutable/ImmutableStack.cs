@@ -20,14 +20,14 @@
     /// <summary>
     /// <para>An immutable stack.</para>
     /// <para><see href="https://ericlippert.com/2007/12/04/immutability-in-c-part-two-a-simple-immutable-stack/"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Stack_(abstract_data_type)"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     public sealed class ImmutableStack<TValue>
       : IStack<TValue>
     {
-      private static readonly IStack<TValue> m_empty = new EmptyImmutableStack();
-      public static IStack<TValue> Empty => m_empty;
+      public static IStack<TValue> Empty { get; } = new EmptyImmutableStack();
 
       private readonly TValue m_head;
       private readonly IStack<TValue> m_tail;

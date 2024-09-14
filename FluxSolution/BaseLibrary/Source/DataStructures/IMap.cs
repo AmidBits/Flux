@@ -10,22 +10,39 @@ namespace Flux.DataStructures
   public interface IMap<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {
-    /// <summary>Get all keys in the map.</summary>
+    /// <summary>
+    /// <para>Creates a new sequence of all <typeparamref name="TKey"/> items in the <see cref="IMap{TKey, TValue}"/>.</para>
+    /// </summary>
     System.Collections.Generic.IEnumerable<TKey> Keys { get; }
-    /// <summary>Get all key/value pairs in the map.</summary>
+
+    /// <summary>
+    /// <para>Creates a new sequence of all <see cref="System.Collections.Generic.KeyValuePair{TKey, TValue}"/> items in the <see cref="IMap{TKey, TValue}"/>.</para>
+    /// </summary>
     System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs { get; }
-    /// <summary>Get all values in the map.</summary>
+
+    /// <summary>
+    /// <para>Creates a new sequence of all <typeparamref name="TValue"/> items in the <see cref="IMap{TKey, TValue}"/>.</para>
+    /// </summary>
     System.Collections.Generic.IEnumerable<TValue> Values { get; }
 
-    /// <summary>Determines whether the key exists in the map.</summary>
+    /// <summary>
+    /// <para>Add the <paramref name="key"/> with the <paramref name="value"/> to the <see cref="IMap{TKey, TValue}"/>.</para>
+    /// </summary>
+    IMap<TKey, TValue> Add(TKey key, TValue value);
+
+    /// <summary>
+    /// <para>Indicates whether the <paramref name="key"/> exists in the <see cref="IMap{TKey, TValue}"/>.</para>
+    /// </summary>
     bool Contains(TKey key);
 
-    /// <summary>Gets the value of the key in the map.</summary>
+    /// <summary>
+    /// <para>Gets the <typeparamref name="TValue"/> of the <paramref name="key"/> in the <see cref="IMap{TKey, TValue}"/>.</para>
+    /// </summary>
     TValue Lookup(TKey key);
 
-    /// <summary>Add the key with the value to the map.</summary>
-    IMap<TKey, TValue> Add(TKey key, TValue value);
-    /// <summary>Remove the key from the map.</summary>
+    /// <summary>
+    /// <para>Remove the <paramref name="key"/> from the <see cref="IMap{TKey, TValue}"/>.</para>
+    /// </summary>
     IMap<TKey, TValue> Remove(TKey key);
   }
 }

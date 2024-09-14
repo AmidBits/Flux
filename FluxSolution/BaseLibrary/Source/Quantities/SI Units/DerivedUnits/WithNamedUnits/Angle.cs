@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Fx
+  public static partial class Em
   {
     public static bool HasUnitSpacing(this Quantities.AngleUnit unit, bool preferUnicode)
       => !((unit == Quantities.AngleUnit.Degree && preferUnicode)
@@ -66,14 +66,14 @@
       {
         var angleNames = AngleNames.Unknown;
 
-        if (AngleNames.ZeroAngle.Is(this)) angleNames |= AngleNames.ZeroAngle;
-        if (AngleNames.AcuteAngle.Is(this)) angleNames |= AngleNames.AcuteAngle;
-        if (AngleNames.RightAngle.Is(this)) angleNames |= AngleNames.RightAngle;
-        if (AngleNames.ObtuseAngle.Is(this)) angleNames |= AngleNames.ObtuseAngle;
-        if (AngleNames.StraightAngle.Is(this)) angleNames |= AngleNames.StraightAngle;
-        if (AngleNames.ReflexAngle.Is(this)) angleNames |= AngleNames.ReflexAngle;
-        if (AngleNames.PerigonAngle.Is(this)) angleNames |= AngleNames.PerigonAngle;
-        if (AngleNames.ObliqueAngle.Is(this)) angleNames |= AngleNames.ObliqueAngle;
+        if (AngleNames.ZeroAngle.IsNamedAngle(this)) angleNames |= AngleNames.ZeroAngle;
+        if (AngleNames.AcuteAngle.IsNamedAngle(this)) angleNames |= AngleNames.AcuteAngle;
+        if (AngleNames.RightAngle.IsNamedAngle(this)) angleNames |= AngleNames.RightAngle;
+        if (AngleNames.ObtuseAngle.IsNamedAngle(this)) angleNames |= AngleNames.ObtuseAngle;
+        if (AngleNames.StraightAngle.IsNamedAngle(this)) angleNames |= AngleNames.StraightAngle;
+        if (AngleNames.ReflexAngle.IsNamedAngle(this)) angleNames |= AngleNames.ReflexAngle;
+        if (AngleNames.PerigonAngle.IsNamedAngle(this)) angleNames |= AngleNames.PerigonAngle;
+        if (AngleNames.ObliqueAngle.IsNamedAngle(this)) angleNames |= AngleNames.ObliqueAngle;
 
         return angleNames;
       }

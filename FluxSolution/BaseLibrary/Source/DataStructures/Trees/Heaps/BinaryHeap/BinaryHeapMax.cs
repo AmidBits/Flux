@@ -4,31 +4,25 @@ namespace Flux.DataStructures.Heaps
   /// <para></para>
   /// <para><see href="https://en.wikipedia.org/wiki/Heap_(data_structure)"/></para>
   /// </summary>
-  public sealed class DarityHeapMax<TValue>
+  public sealed class BinaryHeapMax<TValue>
     : IHeap<TValue>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<TValue>
     where TValue : System.IComparable<TValue>
   {
-    private readonly int m_arity;
+    private readonly System.Collections.Generic.List<TValue> m_data = new();
 
-    private System.Collections.Generic.List<TValue> m_data = new();
-
-    public DarityHeapMax(int arity)
-    {
-      m_arity = arity;
-    }
-    public DarityHeapMax(int arity, System.Collections.Generic.IEnumerable<TValue> collection)
-      : this(arity)
+    public BinaryHeapMax() { }
+    public BinaryHeapMax(System.Collections.Generic.IEnumerable<TValue> collection)
     {
       System.ArgumentNullException.ThrowIfNull(collection);
 
-      foreach (var t in collection)
-        Insert(t);
+      foreach (var item in collection)
+        Insert(item);
     }
 
-    private static System.Collections.Generic.IEnumerable<int> GetIndicesOfDescendantsBFS(int index, int maxIndex)
+    public System.Collections.Generic.IEnumerable<int> GetIndicesOfDescendantsBFS(int index, int maxIndex)
     {
-      for (int baseChildIndex = (index << 1) + 1, ordinalLevel = 1; baseChildIndex <= maxIndex; baseChildIndex = (baseChildIndex << 1) + 1, ordinalLevel++)
-        for (int childIndex = baseChildIndex, maxChildIndex = baseChildIndex + (1 << ordinalLevel); childIndex < maxChildIndex && maxChildIndex <= maxIndex; childIndex++)
+      for (int baseParentIndex = (index << 1) + 1, ordinalLevel = 1; baseParentIndex <= maxIndex; baseParentIndex = (baseParentIndex << 1) + 1, ordinalLevel++)
+        for (int childIndex = baseParentIndex, maxChildIndex = baseParentIndex + (1 << ordinalLevel); childIndex < maxChildIndex && maxChildIndex <= maxIndex; childIndex++)
           yield return childIndex;
     }
 
@@ -47,9 +41,10 @@ namespace Flux.DataStructures.Heaps
           if (m_data[childIndexR].CompareTo(m_data[smallerIndex]) > 0)
             smallerIndex = childIndexR;
 
-        if (smallerIndex == index) break;
+        if (smallerIndex == index)
+          break;
 
-        (m_data[smallerIndex], m_data[index]) = (m_data[index], m_data[smallerIndex]);
+        m_data.Swap(index, smallerIndex);
       }
     }
     private void HeapifyUp(int index)
@@ -58,9 +53,10 @@ namespace Flux.DataStructures.Heaps
       {
         var parentIndex = (index - 1) >> 1;
 
-        if (m_data[parentIndex].CompareTo(m_data[index]) >= 0) break;
+        if (m_data[parentIndex].CompareTo(m_data[index]) >= 0)
+          break;
 
-        (m_data[parentIndex], m_data[index]) = (m_data[index], m_data[parentIndex]);
+        m_data.Swap(index, parentIndex);
 
         index = parentIndex;
       }
@@ -87,42 +83,60 @@ namespace Flux.DataStructures.Heaps
             break;
         }
 
-      return (m1 == 0 || p1 == 0);
+      return m1 == 0 || p1 == 0;
     }
 
-    // IDarityHeap<T>
+    #region Implemented interfaces
+
+    #region IHeap<>
+
     public int Count => m_data.Count;
+
     public bool IsEmpty => m_data.Count == 0;
+
     public void Clear() => m_data.Clear();
+
     public bool Contains(TValue item) => m_data.Contains(item);
+
     public TValue Extract()
     {
-      var min = m_data[0];
+      var item = m_data[0];
 
       m_data[0] = m_data[^1];
       m_data.RemoveAt(m_data.Count - 1);
 
       HeapifyDown(0);
 
-      return min;
+      return item;
     }
+
     public void Insert(TValue item)
     {
-      m_data ??= new();
-
       m_data.Add(item);
 
       HeapifyUp(m_data.Count - 1);
     }
+
     public TValue Peek() => m_data[0];
 
-    // ICloneable
-    public object Clone() => new DarityHeapMax<TValue>(m_arity, m_data);
+    #endregion // IHeap<>
 
-    // IReadOnlyCollection<T>
+    #region IClonable<>
+
+    public object Clone() => new BinaryHeapMax<TValue>(m_data);
+
+    #endregion // IClonable<>
+
+    #region IReadOnlyCollection<>
+
     public System.Collections.Generic.IEnumerator<TValue> GetEnumerator() => ((IHeap<TValue>)Clone()).ExtractAll().GetEnumerator();
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public override string ToString() => $"{GetType().Name} {{ Arity = {m_arity}, Count = {m_data.Count} }}";
+    #endregion // IReadOnlyCollection<>
+
+    #endregion // Implemented interfaces
+
+    public override string ToString() => $"{GetType().Name} {{ Count = {m_data.Count} }}";
   }
 }

@@ -6,6 +6,8 @@ namespace Flux.Random
   public sealed class Xoshiro128P
     : ARandomUInt32
   {
+    new public static System.Random Shared { get; } = new Xoshiro128P();
+
     private uint m_state0, m_state1, m_state2, m_state3, m_t;
 
     [System.CLSCompliant(false)]

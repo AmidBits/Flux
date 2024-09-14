@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Em
   {
     public static Quantities.JulianDate ToJulianDate(this System.DateTime source, Quantities.TemporalCalendar calendar = Quantities.TemporalCalendar.GregorianCalendar)
       => new(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond, calendar);

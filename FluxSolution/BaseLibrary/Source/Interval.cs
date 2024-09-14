@@ -1,6 +1,8 @@
 ﻿namespace Flux
 {
-  public static partial class Fx
+  #region ExtensionMethods
+
+  public static partial class Em
   {
     /// <summary>
     /// <para>Creates a new sequence of values by iterating over the <paramref name="source"/> <see cref="Interval{TSelf}"/> using the <paramref name="constraint"/> .</para>
@@ -52,6 +54,8 @@
       where TSelf : System.Numerics.INumber<TSelf>
       => (Interval<TSelf>)notation.GetMarginInterval(source.MinValue, source.MaxValue, minMargin, maxMargin);
   }
+
+  #endregion // ExtensionMethods
 
   /// <summary>
   /// <para>Represents a closed interval or value set, for various set operations, e.g. difference, intersect, union, min, max, etc. Uses IComparable to operate.</para>

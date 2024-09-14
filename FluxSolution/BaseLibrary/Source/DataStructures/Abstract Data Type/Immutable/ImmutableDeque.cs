@@ -1,7 +1,7 @@
 namespace Flux.DataStructures.Immutable
 {
   /// <summary>
-  /// <para>An immutable double ended queue implementation.</para>
+  /// <para>An immutable double ended queue.</para>
   /// <para><see href="https://ericlippert.com/2008/01/22/immutability-in-c-part-ten-a-double-ended-queue/"/></para>
   /// <para><see href="https://ericlippert.com/2008/02/12/immutability-in-c-part-eleven-a-working-double-ended-queue/"/></para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/Double-ended_queue"/></para>
@@ -12,7 +12,7 @@ namespace Flux.DataStructures.Immutable
   public sealed class ImmutableDeque<TValue>
     : IDeque<TValue>
   {
-    public static readonly IDeque<TValue> Empty = new EmptyDeque();
+    public static IDeque<TValue> Empty { get; } = new EmptyDeque();
 
     private readonly Dequelette m_left;
     private readonly IDeque<Dequelette> m_middle;

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Flux
+﻿namespace Flux
 {
   namespace Text.PhoneticAlgorithm
   {

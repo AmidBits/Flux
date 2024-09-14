@@ -7,8 +7,7 @@ namespace Flux.Random
   public class IsaacRandom
     : ARandomUInt32
   {
-    //public static System.Random Default
-    //  => new IsaacRandom();
+    new public static System.Random Shared { get; } = new IsaacRandom();
 
     #region Isaac
     private uint m_randcnt;

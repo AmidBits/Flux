@@ -2,7 +2,7 @@
 {
   #region Extension methods
 
-  public static partial class Fx
+  public static partial class Em
   {
     public static System.Collections.Generic.Dictionary<TUnit, string> ToStringsOfAllUnits<TValue, TUnit>(this Quantities.IUnitValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       where TValue : System.Numerics.INumber<TValue> // struct, System.IEquatable<TValue>, System.IComparable<TValue>
@@ -35,32 +35,32 @@
     where TUnit : System.Enum
     {
       /// <summary>
-      /// <para>Returns the name of the specified <paramref name="unit"/> and <paramref name="preferPlural"/>.</para>
+      /// <para>Gets the name for the specified <paramref name="unit"/> and whether to <paramref name="preferPlural"/>.</para>
       /// </summary>
       /// <param name="unit"></param>
       /// <param name="preferPlural">Whether to use plural of the name, if applicable.</param>
-      /// <returns></returns>
+      /// <returns>The name for the <paramref name="unit"/>.</returns>
       string GetUnitName(TUnit unit, bool preferPlural);
 
       /// <summary>
-      /// <para>Returns the symbol of the specified <paramref name="unit"/> and <paramref name="preferUnicode"/>.</para>
+      /// <para>Gets the symbol for the specified <paramref name="unit"/> and whether to <paramref name="preferUnicode"/>.</para>
       /// </summary>
       /// <param name="unit">The unit to represent.</param>
       /// <param name="preferUnicode">Whether to prefer Unicode symbols, where and when available. This typically result in reduced length of the returning string, and also less support for some of those symbols, e.g. fonts.</param>
-      /// <returns></returns>
+      /// <returns>The symbol for the <paramref name="unit"/>.</returns>
       string GetUnitSymbol(TUnit unit, bool preferUnicode);
 
       /// <summary>
       /// <para>Gets the value of the quantity in the specified <paramref name="unit"/>.</para>
       /// </summary>
       /// <param name="unit">The unit to represent.</param>
-      /// <returns>The value of the quantity based on the specified <typeparamref name="TUnit"/>.</returns>
+      /// <returns>The value of the quantity based on the specified <paramref name="unit"/>.</returns>
       TValue GetUnitValue(TUnit unit);
 
       string ToUnitValueNameString(TUnit unit, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferPlural);
 
       /// <summary>
-      /// <para>Creates an quantity string specified by <paramref name="unit"/>, <paramref name="format"/>, <paramref name="formatProvider"/>, <paramref name="unitSpacing"/>, <paramref name="preferUnicode"/> and <paramref name="useFullName"/>.</para>
+      /// <para>Creates an quantity string for the <paramref name="unit"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>
       /// </summary>
       /// <param name="unit">The unit to represent.</param>
       /// <param name="format">The format.</param>

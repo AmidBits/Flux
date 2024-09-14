@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Em
   {
     public static double GetFrequencyRatios(this Quantities.TwelveToneEqualTemperament source)
       => Quantities.Semitone.ConvertSemitoneToFrequencyRatio((int)source);

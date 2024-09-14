@@ -2,7 +2,7 @@ namespace Flux
 {
   #region ExtensionMethods
 
-  public static partial class Fx
+  public static partial class Em
   {
     /// <summary>
     /// <para>Asserts whether the interval is valid, i.e. throws an exception if it is not.</para>

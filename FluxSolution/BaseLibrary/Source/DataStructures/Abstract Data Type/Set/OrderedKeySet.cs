@@ -15,9 +15,11 @@
   namespace DataStructures
   {
     /// <summary>
-    /// <para>This is an ordered key set, based on the .NET built-in <see cref="System.Collections.ObjectModel.KeyedCollection{TKey, TItem}"/> which is then extended by the <see cref="IOrderedSet{T}"/>.</para>
+    /// <para>This is an ordered key set, based on the built-in <see cref="System.Collections.ObjectModel.KeyedCollection{TKey, TItem}"/>, and extended by the <see cref="IOrderedSet{T}"/>.</para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
+    /// <remarks>An ordered data structure maintains an indexed order, i.e. like a <see cref="System.Collections.Generic.List{TValue}"/> or a <typeparamref name="TValue"/>[].</remarks>
     public sealed class OrderedKeySet<TValue>
       : System.Collections.ObjectModel.KeyedCollection<TValue, TValue>, IOrderedSet<TValue>
       where TValue : notnull

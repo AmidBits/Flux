@@ -1,7 +1,7 @@
 namespace Flux.DataStructures.Immutable
 {
   /// <summary>
-	/// <para>A binary search tree (BST) implementation.</para>
+	/// <para>An immutable binary search tree (BST).</para>
   /// <para><see href="https://ericlippert.com/2008/01/18/immutability-in-c-part-eight-even-more-on-binary-trees/"/></para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/Binary_search_tree"/></para>
   /// </summary>
@@ -12,7 +12,7 @@ namespace Flux.DataStructures.Immutable
     : IBinarySearchTree<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {
-    public static readonly IBinarySearchTree<TKey, TValue> Empty = new EmptyBinarySearchTree();
+    public static IBinarySearchTree<TKey, TValue> Empty { get; } = new EmptyBinarySearchTree();
 
     private readonly TKey m_key;
     private readonly IBinarySearchTree<TKey, TValue> m_left;

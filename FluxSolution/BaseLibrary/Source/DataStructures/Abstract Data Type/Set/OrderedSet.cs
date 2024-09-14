@@ -10,9 +10,11 @@
   namespace DataStructures
   {
     /// <summary>
-    /// <para>This is an ordered set implementing <see cref="IOrderedSet{T}"/>.</para>
+    /// <para>This is an ordered set implementing <see cref="IOrderedSet{TValue}"/>.</para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
+    /// <remarks>An ordered data structure maintains an indexed order, i.e. like a <see cref="System.Collections.Generic.List{TValue}"/> or a <typeparamref name="TValue"/>[].</remarks>
     public sealed class OrderedSet<TValue>
       : IOrderedSet<TValue>
       where TValue : notnull

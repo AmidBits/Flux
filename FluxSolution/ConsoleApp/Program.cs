@@ -41,6 +41,47 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var tr = new Flux.DataStructures.Trie<char, string>();
+
+      foreach (var d in System.IO.Directory.GetDirectories(@"C:\Users\Rob\OneDrive\", "*", System.IO.SearchOption.AllDirectories).Take(10))
+        System.Console.WriteLine($"{tr.Insert(d, null)}");
+
+      System.Console.WriteLine(tr.ToConsoleString());
+
+      var trie = new Flux.DataStructures.Trie<char, int>();
+
+      trie.Insert("abcd", 1);
+      trie.Insert("abc", 2);
+      trie.Insert("abgl", 3);
+      trie.Insert("cdf", 4);
+      trie.Insert("lmn", 5);
+
+      trie.Find("xyz", out var cdfVal);
+
+      trie.Delete("abc");
+      trie.Delete("abcd");
+      trie.Delete("abgl");
+      trie.Delete("cdf");
+      trie.Delete("lmn");
+      trie.Delete("xyz");
+
+      System.Console.WriteLine(trie.ToConsoleString());
+
+      return;
+
+      var rng = Flux.Random.PakaRng.Shared;
+
+      var h = System.Linq.Enumerable.Range(0, 100000000).Select(i => Flux.Random.PakaRng.Shared.Next(6) + 1).ToHistogram(i => i, i => 1);
+      System.Console.WriteLine(h.ToConsoleString());
+      return;
+
+      for (var i = 0; i < 120; i++)
+      {
+        System.Console.WriteLine($"{i:D2} : {Flux.Random.PakaRng.Shared.Next(i + 1)}");
+      }
+
+      return;
+
       var si = Flux.DataStructures.Immutable.ImmutableStack<int>.Empty;
 
       si = si.Push(2);

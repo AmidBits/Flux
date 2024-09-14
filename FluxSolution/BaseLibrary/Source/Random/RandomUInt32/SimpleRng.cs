@@ -5,8 +5,7 @@ namespace Flux.Random
   public sealed class SimpleRng
     : ARandomUInt32
   {
-    //public static System.Random Default
-    //  => new SimpleRng();
+    new public static System.Random Shared { get; } = new SimpleRng();
 
     public enum SeedEnum
     {
@@ -23,9 +22,11 @@ namespace Flux.Random
       m_w = seed1;
       m_z = seed2;
     }
+
     public SimpleRng(int seed1, int seed2)
       : this(unchecked((uint)seed1), unchecked((uint)seed2))
     { }
+
     public SimpleRng(SeedEnum seed)
     {
       switch (seed)
@@ -40,6 +41,7 @@ namespace Flux.Random
           break;
       }
     }
+
     public SimpleRng()
       : this(SeedEnum.TimerMechanism)
     { }

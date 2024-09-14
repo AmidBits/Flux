@@ -1,7 +1,7 @@
 namespace Flux.DataStructures
 {
   /// <summary>
-  /// <para></para>
+  /// <para>This interface represents an ordered dictionary.</para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
   /// </summary>
   /// <typeparam name="TKey"></typeparam>
@@ -16,13 +16,13 @@ namespace Flux.DataStructures
     TValue this[int index] { get; set; }
 
     /// <summary>
-    /// <para>Gets an <see cref="ICollection{T}"/> containing the indices of the <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
+    /// <para>Creates a new sequence of all indices in the <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
     /// </summary>
-    /// <remarks>Added for a more complete symmetry between a <see cref="IDictionary{TKey, TValue}"/>. and a <see cref="IOrderedDictionary{TKey, TValue}"/>.</remarks>
-    public System.Collections.Generic.ICollection<int> Indices { get; }
+    /// <remarks>Added for a more complete symmetry between a <see cref="IDictionary{TKey, TValue}"/> and a <see cref="IOrderedDictionary{TKey, TValue}"/>.</remarks>
+    public System.Collections.Generic.IEnumerable<int> Indices { get; }
 
     /// <summary>
-    /// <para>Determines of the <paramref name="value"/> exists in the <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
+    /// <para>Determines if the <paramref name="value"/> exists in the <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
     /// </summary>
     bool ContainsValue(TValue value);
 

@@ -5,14 +5,14 @@
     /// <summary>
     /// <para>An immutable queue. O(1) for all but one entry which is O(n).</para>
     /// <para><see href="https://ericlippert.com/2007/12/10/immutability-in-c-part-four-an-immutable-queue/"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Queue_(abstract_data_type)"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     public sealed class ImmutableQueue<TValue>
       : IQueue<TValue>
     {
-      private static readonly IQueue<TValue> m_empty = new EmptyImmutableQueue();
-      public static IQueue<TValue> Empty => m_empty;
+      public static IQueue<TValue> Empty { get; } = new EmptyImmutableQueue();
 
       private readonly IStack<TValue> m_backwards;
       private readonly IStack<TValue> m_forwards;

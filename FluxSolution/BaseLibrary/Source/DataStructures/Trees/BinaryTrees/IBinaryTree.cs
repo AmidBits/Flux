@@ -9,15 +9,24 @@ namespace Flux.DataStructures
   /// <remarks>The original implementation is courtesy Eric Lippert.</remarks>
   public interface IBinaryTree<TValue>
   {
-    /// <summary>Determines whether the binary tree is empty.</summary>
+    /// <summary>
+    /// <para>Indicates whether this <see cref="IBinaryTree{TValue}"/> is empty.</para>
+    /// </summary>
     bool IsEmpty { get; }
 
-    /// <summary>The left child of the binary tree.</summary>
+    /// <summary>
+    /// <para>The left child of the <see cref="IBinaryTree{TValue}"/>.</para>
+    /// </summary>
     IBinaryTree<TValue> Left { get; }
-    /// <summary>The right child of the binary tree.</summary>
+
+    /// <summary>
+    /// <para>The right child of the <see cref="IBinaryTree{TValue}"/>.</para>
+    /// </summary>
     IBinaryTree<TValue> Right { get; }
 
-    /// <summary>The value of the binary tree.</summary>
+    /// <summary>
+    /// <para>The value of the <see cref="IBinaryTree{TValue}"/>.</para>
+    /// </summary>
     TValue Value { get; }
   }
 }

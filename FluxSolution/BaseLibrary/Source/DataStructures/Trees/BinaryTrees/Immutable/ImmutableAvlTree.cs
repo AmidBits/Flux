@@ -1,7 +1,7 @@
 namespace Flux.DataStructures.Immutable
 {
   /// <summary>
-  /// <para>The AVL tree (named after inventors Adelson-Velsky and Landis) is a self-balancing binary search tree.</para>
+  /// <para>An immutable AVL tree (named after inventors Adelson-Velsky and Landis) is a self-balancing binary search tree.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/AVL_tree"/></para>
   /// <para><see href="https://ericlippert.com/2008/01/21/immutability-in-c-part-nine-academic-plus-my-avl-tree-implementation/"/></para>
   /// </summary>
@@ -14,7 +14,7 @@ namespace Flux.DataStructures.Immutable
     : IBalancedBinarySearchTree<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {
-    public static readonly IBinarySearchTree<TKey, TValue> Empty = new EmptyAvlTree();
+    public static IBinarySearchTree<TKey, TValue> Empty { get; } = new EmptyAvlTree();
 
     private readonly int m_height;
     private readonly TKey m_key;

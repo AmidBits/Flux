@@ -12,20 +12,34 @@ namespace Flux.DataStructures
     : IBinaryTree<TValue>, IMap<TKey, TValue>
     where TKey : System.IComparable<TKey>
   {
-    /// <summary>The key of the BST node.</summary>
+    /// <summary>
+    /// <para>The key of the <see cref="IBinarySearchTree{TKey, TValue}"/>.</para>
+    /// </summary>
     TKey Key { get; }
 
-    /// <summary>The left child of the BST node.</summary>
+    /// <summary>
+    /// <para>The left child of the <see cref="IBinarySearchTree{TKey, TValue}"/>.</para>
+    /// </summary>
     new IBinarySearchTree<TKey, TValue> Left { get; }
-    /// <summary>The right child of the BST node.</summary>
+
+    /// <summary>
+    /// <para>The right child of the <see cref="IBinarySearchTree{TKey, TValue}"/>.</para>
+    /// </summary>
     new IBinarySearchTree<TKey, TValue> Right { get; }
 
-    /// <summary>Add a key with a value to the BST.</summary>
+    /// <summary>
+    /// <para>Adds a <paramref name="key"/> with a <paramref name="value"/> to <see cref="IBinarySearchTree{TKey, TValue}"/>.</para>
+    /// </summary>
     new IBinarySearchTree<TKey, TValue> Add(TKey key, TValue value);
-    /// <summary>Remove a key from the BST.</summary>
+
+    /// <summary>
+    /// <para>Remove a <paramref name="key"/> from the <see cref="IBinarySearchTree{TKey, TValue}"/>.</para>
+    /// </summary>
     new IBinarySearchTree<TKey, TValue> Remove(TKey key);
 
-    /// <summary>Search for a key in the BST.</summary>
+    /// <summary>
+    /// <para>Search for a <paramref name="key"/> in the <see cref="IBinarySearchTree{TKey, TValue}"/>.</para>
+    /// </summary>
     IBinarySearchTree<TKey, TValue> Search(TKey key);
   }
 }

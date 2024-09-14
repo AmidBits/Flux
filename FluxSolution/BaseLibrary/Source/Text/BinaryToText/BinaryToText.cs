@@ -1,6 +1,8 @@
 namespace Flux
 {
-  public static partial class Fx
+  #region ExtensionMethods
+
+  public static partial class Em
   {
     /// <summary>
     /// <para>Encodes <paramref name="text"/> (using the specified <paramref name="encoding"/>) into Base85/ASCII85 <paramref name="encodedBase85"/>.</para>
@@ -34,6 +36,8 @@ namespace Flux
       return rv;
     }
   }
+
+  #endregion // ExtensionMethods
 
   namespace Text
   {

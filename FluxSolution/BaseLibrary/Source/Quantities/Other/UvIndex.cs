@@ -2,7 +2,7 @@ namespace Flux
 {
   #region ExtensionMethods
 
-  public static partial class Fx
+  public static partial class Em
   {
     public static System.Drawing.Color GetMediaGraphicColor(this Quantities.UvIndexRisk source)
       => source switch

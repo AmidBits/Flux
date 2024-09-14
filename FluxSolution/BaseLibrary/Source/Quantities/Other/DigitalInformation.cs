@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Em
   {
     public static System.Numerics.BigInteger GetUnitMultiple(this Quantities.DigitalInformationUnit unit)
     {

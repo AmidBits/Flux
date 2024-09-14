@@ -46,11 +46,11 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 "Flux.Locale.EnvironmentVariables: (This dictionary is projected directly from the `"System.Environment.GetEnvironmentVariables()`" method.)"
 [Flux.Locale]::EnvironmentVariables | Format-Table
 
-"Flux.Locale.GetProperties(): (This dictionary is compiled from various sources within the system. They can also be accessed as properties of the Flux.Locale, using the same names as the keys in the dictionary.)"
-[Flux.Locale]::GetProperties() | Format-Table
-
 "Flux.Locale.SpecialFolders: (This dictionary represents the names and values of the `"System.Environment.SpecialFolder`" enum.)"
 [Flux.Locale]::SpecialFolders | Format-Table
+
+"Flux.Locale.GetProperties(): (This dictionary is compiled from various sources within the system. They can also be accessed as properties of the Flux.Locale, using the same names as the keys in the dictionary.)"
+[Flux.Locale]::GetProperties() | Format-Table
 
 # "Prime numbers: $([Flux.NumberSequences.PrimeNumber]::GetAscendingPrimes[int](2) | Select-Object -First 25 | Join-String -Separator ',')$([System.Environment]::NewLine)"
 

@@ -86,11 +86,16 @@ namespace Flux.DataStructures.Heaps
       return (m1 == 0 || p1 == 0);
     }
 
-    // IDarityHeap<T>
+    #region IDarityHeap<T>
+
     public int Count => m_data.Count;
+
     public bool IsEmpty => m_data.Count == 0;
+
     public void Clear() => m_data.Clear();
+
     public bool Contains(TValue item) => m_data.Contains(item);
+
     public TValue Extract()
     {
       var min = m_data[0];
@@ -102,6 +107,7 @@ namespace Flux.DataStructures.Heaps
 
       return min;
     }
+
     public void Insert(TValue item)
     {
       m_data ??= new();
@@ -110,14 +116,24 @@ namespace Flux.DataStructures.Heaps
 
       HeapifyUp(m_data.Count - 1);
     }
+
     public TValue Peek() => m_data[0];
 
-    // ICloneable
+    #endregion // IDarityHeap<T>
+
+    #region ICloneable
+
     public object Clone() => new DarityHeapMin<TValue>(m_arity, m_data);
 
-    // IReadOnlyCollection<T>
+    #endregion // ICloneable
+
+    #region IReadOnlyCollection<T>
+
     public System.Collections.Generic.IEnumerator<TValue> GetEnumerator() => ((IHeap<TValue>)Clone()).ExtractAll().GetEnumerator();
+
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+
+    #endregion // IReadOnlyCollection<T>
 
     public override string ToString() => $"{GetType().Name} {{ Arity = {m_arity}, Count = {m_data.Count} }}";
   }

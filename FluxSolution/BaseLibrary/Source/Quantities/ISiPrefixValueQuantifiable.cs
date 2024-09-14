@@ -2,7 +2,7 @@
 {
   #region Extension methods
 
-  public static partial class Fx
+  public static partial class Em
   {
     public static System.Collections.Generic.Dictionary<(Quantities.MetricPrefix, TUnit), string> ToStringsOfMetricPrefixes<TValue, TUnit>(this Quantities.ISiPrefixValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       where TValue : struct, System.Numerics.INumber<TValue>
@@ -47,14 +47,18 @@
       ///// </summary>
       //TUnit UnprefixedUnit { get; }
 
+      /// <summary>
+      /// <para>Gets the <see cref="MetricPrefix"/> and <see cref="TUnit"/> for the <paramref name="prefix"/>.</para>
+      /// </summary>
+      /// <param name="prefix"></param>
+      /// <returns></returns>
       (MetricPrefix Prefix, TUnit Unit) GetSiPrefixUnit(MetricPrefix prefix);
 
       /// <summary>
-      /// <para>Returns the symbol of the specified metric <paramref name="prefix"/> and <paramref name="preferUnicode"/>/<paramref name="useFullName"/>.</para>
+      /// <para>Gets the symbol of the <paramref name="prefix"/> and whether to <paramref name="preferUnicode"/>.</para>
       /// </summary>
       /// <param name="prefix">The prefix to project.</param>
       /// <param name="preferUnicode"></param>
-      /// <param name="useFullName"></param>
       /// <returns></returns>
       string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode);
 
@@ -66,14 +70,13 @@
       TValue GetSiPrefixValue(MetricPrefix prefix);
 
       /// <summary>
-      /// <para>Creates an SI quantity string specified by <paramref name="prefix"/>, <paramref name="format"/>, <paramref name="formatProvider"/>, <paramref name="unitSpacing"/>, <paramref name="preferUnicode"/> and <paramref name="useFullName"/>.</para>
+      /// <para>Creates a SI quantity string for the <paramref name="prefix"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>
       /// </summary>
       /// <param name="prefix">The prefix to project.</param>
       /// <param name="format"></param>
       /// <param name="formatProvider"></param>
       /// <param name="unitSpacing"></param>
       /// <param name="preferUnicode"></param>
-      /// <param name="useFullName"></param>
       /// <returns></returns>
       string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferUnicode);
     }

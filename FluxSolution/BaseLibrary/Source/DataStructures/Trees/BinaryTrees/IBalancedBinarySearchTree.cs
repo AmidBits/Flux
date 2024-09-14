@@ -1,9 +1,8 @@
 namespace Flux.DataStructures
 {
   /// <summary>
-	/// <para>A binary search tree (BST), also called an ordered or sorted binary tree, is a rooted binary tree data structure with the key of each internal node being greater than all the keys in the respective node's left subtree and less than the ones in its right subtree.</para>
-  /// <para><see href="https://en.wikipedia.org/wiki/Binary_search_tree"/></para>
-  /// <para><seealso href="https://ericlippert.com/2008/01/18/immutability-in-c-part-eight-even-more-on-binary-trees/"/></para>
+	/// <para>A self-balancing binary search tree (BST) is any node-based binary search tree that automatically keeps its height (maximal number of levels below the root) small in the face of arbitrary item insertions and deletions.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree"/></para>
   /// </summary>
   /// <typeparam name="TKey">The type of key for the BST node. This is used to access the associated <typeparamref name="TValue"/>.</typeparam>
   /// <typeparam name="TValue">The type of value for the BST node.</typeparam>

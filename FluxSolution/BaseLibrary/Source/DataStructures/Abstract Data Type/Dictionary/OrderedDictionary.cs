@@ -14,6 +14,13 @@ namespace Flux
 
   namespace DataStructures
   {
+    /// <summary>
+    /// <para>This is an ordered dictionary implementing <see cref="IOrderedDictionary{TKey, TValue}"/>.</para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
+    /// <remarks>An ordered data structure maintains an indexed order, i.e. like a <see cref="System.Collections.Generic.List{TValue}"/> or a <typeparamref name="TValue"/>[].</remarks>
     public sealed class OrderedDictionary<TKey, TValue>
       : IOrderedDictionary<TKey, TValue>
     where TKey : notnull
@@ -105,7 +112,7 @@ namespace Flux
         }
       }
 
-      public System.Collections.Generic.ICollection<int> Indices => System.Linq.Enumerable.Range(0, Count).ToList();
+      public System.Collections.Generic.IEnumerable<int> Indices => System.Linq.Enumerable.Range(0, Count);
 
       public bool ContainsValue(TValue value) => m_listOfValues.Contains(value);
 

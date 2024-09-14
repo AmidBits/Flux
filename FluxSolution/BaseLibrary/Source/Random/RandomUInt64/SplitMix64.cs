@@ -5,8 +5,7 @@ namespace Flux.Random
   public sealed class SplitMix64
     : ARandomUInt64
   {
-    //public static System.Random Default
-    //  => new SplitMix64();
+    new public static System.Random Shared { get; } = new SplitMix64();
 
     private ulong m_state;
 
