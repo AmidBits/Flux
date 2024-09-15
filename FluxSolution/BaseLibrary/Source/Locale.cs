@@ -222,6 +222,6 @@ namespace Flux
     /// </summary>
     /// <returns></returns>
     public static System.Collections.Generic.IDictionary<string, object?> GetProperties()
-      => Fx.GetPropertyInfos(typeof(Locale)).ToOrderedDictionary(pi => pi.Name, pi => pi.GetValue(null));
+      => Fx.GetPropertyInfos(typeof(Locale)).ToOrderedDictionary((e, i) => e.Name, (e, i) => e.GetValue(null));
   }
 }

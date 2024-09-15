@@ -1,95 +1,70 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Em
   {
     /// <summary>
-    /// <para>Computes the number of nodes in the <paramref name="source"/> tree (including <paramref name="source"/>).</para>
+    /// <para>Computes the number of nodes in a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>
     /// </summary>
-    public static int GetTreeCount<TValue>(this DataStructures.IBinaryTree<TValue> source)
-      => source.IsEmpty ? 0 : GetTreeCount(source.Left) + 1 + GetTreeCount(source.Right);
+    public static int GetCount<TValue>(this DataStructures.IBinaryTree<TValue> source)
+      => source.IsEmpty
+      ? 0
+      : source.Left.GetCount() + 1 + source.Right.GetCount();
 
     /// <summary>
-    /// <para>The diameter (or width) of a tree is defined as the number of nodes on the longest path between two end nodes.</para>
+    /// <para>Computes the diameter (or width) of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/diameter-of-a-binary-tree/"/>
     /// </summary>
-    public static int GetTreeDiameter<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    /// <remarks>The diameter (or width) is defined as the number of nodes on the longest path between two end nodes.</remarks>
+    public static int GetDiameter<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
-      if (source.IsEmpty)
-        return 0;
+      var height = 0;
 
-      var lHeight = GetTreeHeight(source.Left);
-      var rHeight = GetTreeHeight(source.Right);
+      return GetDiameter(source, ref height);
 
-      var lDiameter = GetTreeDiameter(source.Left);
-      var rDiameter = GetTreeDiameter(source.Right);
+      static int GetDiameter(DataStructures.IBinaryTree<TValue> source, ref int height)
+      {
+        var leftHeight = 0; // Height of left subtree.
+        var rightHeight = 0; // Height of right subtree.
 
-      return System.Math.Max(lHeight + 1 + rHeight, System.Math.Max(lDiameter, rDiameter));
+        if (source.IsEmpty) return height = 0; // The diameter is also 0.
+
+        var leftDiameter = GetDiameter(source.Left, ref leftHeight); // Get the leftHeight and store the returned leftDiameter.
+        var rightDiameter = GetDiameter(source.Right, ref rightHeight); // Get the rightHeight and store the returned rightDiameter.
+
+        height = int.Max(leftHeight, rightHeight) + 1; // Height of current node is max of heights of left and right subtrees plus 1.
+
+        return int.Max(leftHeight + rightHeight + 1, int.Max(leftDiameter, rightDiameter));
+      }
     }
+    //=> source.IsEmpty
+    //  ? 0
+    //  : System.Math.Max(
+    //      source.Left.GetMaxDepth() + 1 + source.Right.GetMaxDepth(),
+    //      System.Math.Max(source.Left.GetDiameter(), source.Right.GetDiameter())
+    //    );
 
     /// <summary>
-    /// <para>Computes the "height" of the <paramref name="source"/> tree.</para>
+    /// <para>Computes the max-depth (or height) of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/find-the-maximum-depth-or-height-of-a-tree/"/>
     /// </summary>
-    public static int GetTreeHeight<TValue>(this DataStructures.IBinaryTree<TValue> source)
-      => source.IsEmpty ? 0 : System.Math.Max(GetTreeCount(source.Left), GetTreeCount(source.Right));
+    /// <remarks>The max-depth (or height) of the tree is the number of vertices in the tree from the root to the deepest node.</remarks>
+    public static int GetMaxDepth<TValue>(this DataStructures.IBinaryTree<TValue> source)
+      => source.IsEmpty
+      ? 0
+      : 1 + System.Math.Max(
+          source.Left.GetMaxDepth(),
+          source.Right.GetMaxDepth()
+        );
 
     /// <summary>
-    /// <para>Finds the level of the node containing the <paramref name="value"/>.</para>
-    /// <see href="https://www.geeksforgeeks.org/get-level-of-a-node-in-a-binary-tree/"/>
-    /// </summary>
-    public static int GetTreeLevel<TValue>(this DataStructures.IBinaryTree<TValue> node, TValue value, int level = 1)
-      where TValue : System.IEquatable<TValue>
-    {
-      if (node.IsEmpty)
-        return 0;
-
-      if (node.Value.Equals(value))
-        return level;
-
-      var sublevel = GetTreeLevel(node.Left, value, level + 1);
-
-      if (sublevel != 0)
-        return sublevel;
-
-      return GetTreeLevel(node.Right, value, level + 1);
-    }
-
-    /// <summary>
-    /// <para></para>
+    /// <para>Computes the tree-sum of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/check-if-a-given-binary-tree-is-sumtree/"/>
     /// </summary>
-    public static TValue GetTreeSum<TValue>(this DataStructures.IBinaryTree<TValue> source)
-      where TValue : System.Numerics.INumber<TValue>
-      => source.IsEmpty ? TValue.Zero : source.Left.GetTreeSum() + source.Value + source.Right.GetTreeSum();
+    public static TSummable GetTreeSum<TValue, TSummable>(this DataStructures.IBinaryTree<TValue> source, System.Func<TValue, TSummable> summableSelector)
+      where TSummable : System.Numerics.INumber<TSummable>
+      => source.IsEmpty ? TSummable.Zero : source.Left.GetTreeSum(summableSelector) + summableSelector(source.Value) + source.Right.GetTreeSum(summableSelector);
 
-    /// <summary>
-    /// <para>Returns whether the <paramref name="source"/> is a binary search tree. Returns false if the <paramref name="source"/> or any sub-nodes violates the BST property. The <paramref name="minValue"/> and <paramref name="maxValue"/> should be the minimum and maximum values possible.<</para>
-    /// </summary>
-    /// <param name="source">The tree to test.</param>
-    /// <param name="minValue">The minimum value of <typeparamref name="TValue"/>.</param>
-    /// <param name="maxValue">The maximum value of <typeparamref name="TValue"/>.</param>
-    /// <returns></returns>
-    public static bool IsBinarySearchTree<TValue>(this DataStructures.IBinaryTree<TValue> source)
-      where TValue : System.Numerics.IMinMaxValue<TValue>, System.Numerics.INumber<TValue>
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      if (source.IsEmpty)
-        return true;
-
-      if (!source.Left.IsEmpty && MaximumValue(source.Left) > source.Value)
-        return false;
-
-      if (!source.Right.IsEmpty && MinimumValue(source.Right) < source.Value)
-        return false;
-
-      if (!IsBinarySearchTree(source.Left) || !IsBinarySearchTree(source.Right))
-        return false;
-
-      return true;
-    }
-
-    /// <summary>Returns whether <paramref name="source"/> is a binary-search-tree considering only its <typeparamref name="TValue"/> property. Returns false if <paramref name="source"/> or any sub-nodes violates the BST property (considering only <typeparamref name="TValue"/>.</summary>
+    /// <summary>Indicates whether a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> is a binary-search-tree considering only its <typeparamref name="TValue"/> property. Returns false if <paramref name="source"/> or any sub-nodes violates the BST property (considering only <typeparamref name="TValue"/>).</summary>
     /// <param name="minValue">The minimum value for the type.</param>
     /// <param name="maxValue">The maximum value for the type.</param>
     /// <param name="valueDecrementor">Return the value decremented.</param>
@@ -108,34 +83,36 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para></para>
+    /// <para>Indicates whether a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> is a leaf.</para>
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static bool IsLeaf<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+
+      return source.IsEmpty || (source.Left.IsEmpty && source.Right.IsEmpty);
+    }
+
+    /// <summary>
+    /// <para>Indicates whether a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> is a sum-tree.</para>
     /// <see href="https://www.geeksforgeeks.org/check-if-a-given-binary-tree-is-sumtree/"/>
     /// </summary>
-    public static bool IsSumTree<TValue>(this DataStructures.IBinaryTree<TValue> source)
-      where TValue : System.Numerics.INumber<TValue>
-      => source.IsEmpty || (source.Left.IsEmpty && source.Right.IsEmpty) || ((source.Value == source.Left.GetTreeSum() + source.Right.GetTreeSum()) && source.Left.IsSumTree() && source.Right.IsSumTree());
-
-    public static TValue MaximumValue<TValue>(this DataStructures.IBinaryTree<TValue> source)
-      where TValue : System.Numerics.IMinMaxValue<TValue>, System.Numerics.INumberBase<TValue>
-    {
-      if (source.IsEmpty)
-        return TValue.MinValue;
-
-      return TValue.MaxMagnitudeNumber(source.Value, TValue.MaxMagnitudeNumber(MaximumValue(source.Left), MaximumValue(source.Right)));
-    }
-
-    public static TValue MinimumValue<TValue>(this DataStructures.IBinaryTree<TValue> source)
-      where TValue : System.Numerics.IMinMaxValue<TValue>, System.Numerics.INumberBase<TValue>
-    {
-      if (source.IsEmpty)
-        return TValue.MaxValue;
-
-      return TValue.MinMagnitudeNumber(source.Value, TValue.MinMagnitudeNumber(MinimumValue(source.Left), MinimumValue(source.Right)));
-    }
+    /// <remarks>A sum-tree is a binary tree where the value of a node is equal to the sum of the nodes present in its left subtree and right subtree. An empty tree is sum-tree and the sum of an empty tree can be considered as 0. A leaf node is also considered as sum-tree.</remarks>
+    public static bool IsSumTree<TValue, TNumber>(this DataStructures.IBinaryTree<TValue> source, System.Func<TValue, TNumber> numberSelector)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => source.IsLeaf()
+      || (
+        (numberSelector(source.Value) == source.Left.GetTreeSum(numberSelector) + source.Right.GetTreeSum(numberSelector))
+        && source.Left.IsSumTree(numberSelector)
+        && source.Right.IsSumTree(numberSelector)
+      );
 
     public static int Minimax<TValue>(this DataStructures.IBinaryTree<TValue> source, int depth, bool isMax, int maxHeight, System.Func<TValue, int> valueSelector)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+
       if (source.IsEmpty) throw new System.ArgumentException(source.GetType().Name);
 
       System.ArgumentNullException.ThrowIfNull(valueSelector);
@@ -148,16 +125,16 @@ namespace Flux
       if (isMax)
       {
         if (!source.Left.IsEmpty)
-          left = Minimax(source.Left, depth + 1, false, maxHeight, valueSelector);
+          left = source.Left.Minimax(depth + 1, false, maxHeight, valueSelector);
         if (!source.Right.IsEmpty)
-          right = Minimax(source.Right, depth + 1, false, maxHeight, valueSelector);
+          right = source.Right.Minimax(depth + 1, false, maxHeight, valueSelector);
       }
       else
       {
         if (!source.Left.IsEmpty)
-          left = Minimax(source.Left, depth + 1, true, maxHeight, valueSelector);
+          left = source.Left.Minimax(depth + 1, true, maxHeight, valueSelector);
         if (!source.Right.IsEmpty)
-          right = Minimax(source.Right, depth + 1, true, maxHeight, valueSelector);
+          right = source.Right.Minimax(depth + 1, true, maxHeight, valueSelector);
       }
 
       if (left.HasValue && right.HasValue)
@@ -211,181 +188,16 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Traverse all nodes in a boundary or perimeter pattern (counter-clockwise) starting at the <paramref name="source"/>.</para>
-    /// <see href="https://www.geeksforgeeks.org/boundary-traversal-of-binary-tree/"/>
+    /// <para>Breadth-first search (BFS), level order. Traversal yields the binary tree levels starting with the root, then its two possible children, then their children, and so on "in generations".</para>
+    /// <para>Contrasting with depth-first order is breadth-first order, which always attempts to visit the node closest to the root that it has not already visited. See breadth-first search for more information. Also called a level-order traversal.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Breadth-first_search"/></para>
     /// </summary>
-    /// // https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
-    public static System.Collections.Generic.List<DataStructures.IBinaryTree<TValue>> TraverseBoundary<TValue>(this DataStructures.IBinaryTree<TValue> source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      var ans = new List<DataStructures.IBinaryTree<TValue>>();
-
-      if (source.IsEmpty) return ans;
-
-      if (!isLeaf(source))
-        ans.Add(source); // if leaf then its done by addLeaves
-
-      addLeftBound(source, ans);
-      addLeaves(source, ans);
-      addRightBound(source, ans);
-
-      return ans;
-
-      static bool isLeaf(DataStructures.IBinaryTree<TValue> node)
-        => node.Left.IsEmpty && node.Right.IsEmpty;
-
-      static void addLeftBound(DataStructures.IBinaryTree<TValue> root, List<DataStructures.IBinaryTree<TValue>> ans)
-      {
-        // Go left left and no left then right but again check from left.
-        root = root.Left;
-
-        while (!root.IsEmpty)
-        {
-          if (!isLeaf(root))
-          {
-            ans.Add(root);
-          }
-
-          root = root.Left.IsEmpty ? root.Right : root.Left;
-        }
-      }
-
-      static void addRightBound(DataStructures.IBinaryTree<TValue> root, List<DataStructures.IBinaryTree<TValue>> ans)
-      {
-        // Go right right and no right then left but again check from right.
-        root = root.Right;
-
-        // As we need the reverse of this for Anticlockwise
-        var stk = new Stack<DataStructures.IBinaryTree<TValue>>();
-
-        while (!root.IsEmpty)
-        {
-          if (!isLeaf(root))
-          {
-            stk.Push(root);
-          }
-          root = root.Right.IsEmpty ? root.Left : root.Right;
-        }
-
-        while (stk.Count > 0)
-        {
-          ans.Add(stk.Peek());
-          stk.Pop();
-        }
-      }
-
-      // its kind of predorder
-      static void addLeaves(DataStructures.IBinaryTree<TValue> root, List<DataStructures.IBinaryTree<TValue>> ans)
-      {
-        if (root.IsEmpty) return;
-
-        if (isLeaf(root))
-        {
-          ans.Add(root); // just store leaf nodes
-
-          return;
-        }
-
-        addLeaves(root.Left, ans);
-        addLeaves(root.Right, ans);
-      }
-    }
-
-    /// <summary>
-    /// <para>Traverse all nodes diagonally (left to right and top to bottom) starting at <paramref name="source"/>.</para>
-    /// <see href="https://www.geeksforgeeks.org/diagonal-traversal-of-binary-tree/"/>
-    /// </summary>
-    public static System.Collections.Generic.List<DataStructures.IBinaryTree<TValue>> TraverseDiagonal<TValue>(this DataStructures.IBinaryTree<TValue> source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      var diagonals = new System.Collections.Generic.List<DataStructures.IBinaryTree<TValue>>();
-
-      var queue = new System.Collections.Generic.Queue<DataStructures.IBinaryTree<TValue>>(); // The leftQueue will be a queue which will store all left pointers while traversing the tree, and will be utilized when at any point right pointer is empty.
-
-      var node = source;
-
-      while (!node.IsEmpty)
-      {
-        diagonals.Add(node); // Add current node to output.
-
-        if (!node.Left.IsEmpty)
-          queue.Enqueue(node.Left); // If left child available, add it to queue.
-
-        if (!node.Right.IsEmpty)
-          node = node.Right; // If right child, transfer the node to right.
-        else // Right child is empty, so if queue (with lefties) is not empty, traverse it further, or else empty an it's done.
-          node = (queue.Count > 0) ? queue.Dequeue() : node.Right;
-      }
-
-      return diagonals;
-    }
-
-    /// <summary>Depth-first search (DFS), in-order (LNR). In a binary search tree, in-order traversal retrieves data in sorted order.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraverseInOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinaryTree<TValue>>();
-
-      var node = source;
-
-      while (stack.Count > 0 || !node.IsEmpty)
-      {
-        if (node.IsEmpty)
-        {
-          node = stack.Pop();
-
-          yield return node;
-
-          node = node.Right;
-        }
-        else
-        {
-          stack.Push(node);
-
-          node = node.Left;
-        }
-      }
-    }
-
-    /// <summary>Depth-first search (DFS), in-order reverse (RNL). In a binary search tree, in-order traversal retrieves data in sorted order. This is in-order reversed.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraverseInReverseOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinaryTree<TValue>>();
-
-      var node = source;
-
-      while (stack.Count > 0 || !node.IsEmpty)
-      {
-        if (node.IsEmpty)
-        {
-          node = stack.Pop();
-
-          yield return node;
-
-          node = node.Left;
-        }
-        else
-        {
-          stack.Push(node);
-
-          node = node.Right;
-        }
-      }
-    }
-
-    /// <summary>Breadth-first search (BFS), level order. Traversal yields the binary tree levels starting with the root, then its two possible children, then their children, and so on "in generations".</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
-    public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraverseLevelOrder<TValue>(this DataStructures.IBinaryTree<TValue> source, int maxDepth)
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="maxDepth"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseBfsLevelOrder<TValue>(this DataStructures.IBinaryTree<TValue> source, int maxDepth)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -402,7 +214,7 @@ namespace Flux
         {
           var node = level.Dequeue();
 
-          yield return node;
+          yield return node.Value;
 
           if (!node.Left.IsEmpty) nextLevel.Enqueue(node.Left);
           if (!node.Right.IsEmpty) nextLevel.Enqueue(node.Right);
@@ -412,10 +224,16 @@ namespace Flux
       }
     }
 
-    /// <summary>Breadth-first search (BFS), chunked level order. Traversal yields the binary tree levels, in chunks, starting with the root, then its two children, then their children, and so on "in generations".</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Breadth-first_search"/>
-    public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>[]> TraverseLevelOrderChunked<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    /// <summary>
+    /// <para>Breadth-first search (BFS), chunked level order. Traversal yields the binary tree levels, in chunks, starting with the root, then its two children, then their children, and so on "in generations".</para>
+    /// <para>Contrasting with depth-first order is breadth-first order, which always attempts to visit the node closest to the root that it has not already visited. See breadth-first search for more information. Also called a level-order traversal.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search_/_level_order"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Breadth-first_search"/></para>
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<TValue[]> TraverseBfsLevelOrderChunked<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -426,7 +244,7 @@ namespace Flux
 
       while (level.Count > 0)
       {
-        yield return level.ToArray();
+        yield return level.Select(bt => bt.Value).ToArray();
 
         for (var index = level.Count; index > 0; index--)
         {
@@ -438,10 +256,87 @@ namespace Flux
       }
     }
 
-    /// <summary>Depth-first search (DFS), post-order (LRN). The trace of a traversal is called a sequentialisation of the tree. The traversal trace is a list of each visited root.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Post-order"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraversePostOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    /// <summary>
+    /// <para>Depth-first search (DFS), in-order (LNR). For a binary-search-tree the in-order traversal retrieves data in sorted order.</para>
+    /// <para>In in-order, we always recursively traverse the current node's left subtree; next, we visit the current node, and lastly, we recursively traverse the current node's right subtree.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Depth-first_search"/></para>
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsInOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+
+      var stack = new System.Collections.Generic.Stack<DataStructures.IBinaryTree<TValue>>();
+
+      var node = source;
+
+      while (stack.Count > 0 || !node.IsEmpty)
+      {
+        if (node.IsEmpty)
+        {
+          node = stack.Pop();
+
+          yield return node.Value;
+
+          node = node.Right;
+        }
+        else
+        {
+          stack.Push(node);
+
+          node = node.Left;
+        }
+      }
+    }
+
+    /// <summary>
+    /// <para>Depth-first search (DFS), in-order reverse (RNL). In a binary search tree, in-order traversal retrieves data in sorted order. This is in-order reversed.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Tree_traversal#In-order"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Depth-first_search"/></para>
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsInReverseOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+
+      var stack = new System.Collections.Generic.Stack<DataStructures.IBinaryTree<TValue>>();
+
+      var node = source;
+
+      while (stack.Count > 0 || !node.IsEmpty)
+      {
+        if (node.IsEmpty)
+        {
+          node = stack.Pop();
+
+          yield return node.Value;
+
+          node = node.Left;
+        }
+        else
+        {
+          stack.Push(node);
+
+          node = node.Right;
+        }
+      }
+    }
+
+    /// <summary>
+    /// <para>Depth-first search (DFS), post-order (LRN). The trace of a traversal is called a sequentialisation of the tree. The traversal trace is a list of each visited root.</para>
+    /// <para>In post-order, we always recursively traverse the current node's left subtree; next, we recursively traverse the current node's right subtree and then visit the current node. Post-order traversal can be useful to get postfix expression of a binary expression tree.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Tree_traversal#Post-order"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Depth-first_search"/></para>
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsPostOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -465,7 +360,7 @@ namespace Flux
           }
           else
           {
-            yield return peekNode;
+            yield return peekNode.Value;
 
             lastNodeVisited = stack.Pop();
           }
@@ -479,10 +374,16 @@ namespace Flux
       }
     }
 
-    /// <summary>Depth-first search (DFS), pre-order (NLR). The pre-order traversal is a topologically sorted one, because a parent node is processed before any of its child nodes is done.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Depth-first_search"/>
-    public static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> TraversePreOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    /// <summary>
+    /// <para>Depth-first search (DFS), pre-order (NLR). The pre-order traversal is a topologically sorted one, because a parent node is processed before any of its child nodes is done.</para>
+    /// <para>In pre-order, we always visit the current node; next, we recursively traverse the current node's left subtree, and then we recursively traverse the current node's right subtree. The pre-order traversal is a topologically sorted one, because a parent node is processed before any of its child nodes is done.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Tree_traversal#Pre-order"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Depth-first_search"/></para>
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsPreOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -496,10 +397,174 @@ namespace Flux
       {
         var node = stack.Pop();
 
-        yield return node;
+        yield return node.Value;
 
         if (!node.Right.IsEmpty) stack.Push(node.Right);
         if (!node.Left.IsEmpty) stack.Push(node.Left);
+      }
+    }
+
+    /// <summary>
+    /// <para>Traverse all nodes diagonally (left to right and top to bottom) from a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>
+    /// <see href="https://www.geeksforgeeks.org/diagonal-traversal-of-binary-tree/"/>
+    /// </summary>
+    /// <remarks>The <paramref name="source"/> and <paramref name="source"/>.Right nodes are prioritized over <paramref name="source"/>.Left values.</remarks>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDiagonal<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+
+      var queue = new System.Collections.Generic.Queue<DataStructures.IBinaryTree<TValue>>(); // The leftQueue will be a queue which will store all left pointers while traversing the tree, and will be utilized when at any point right pointer is empty.
+
+      var node = source;
+
+      while (!node.IsEmpty)
+      {
+        yield return node.Value;
+
+        if (!node.Left.IsEmpty)
+          queue.Enqueue(node.Left); // If left child available, add it to queue.
+
+        if (!node.Right.IsEmpty)
+          node = node.Right; // If right child, transfer the node to right.
+        else // Right child is empty, so if queue (with lefties) is not empty, traverse it further, or else empty an it's done.
+          node = (queue.Count > 0) ? queue.Dequeue() : node.Right;
+      }
+    }
+
+    /// <summary>
+    /// <para>Traverse nodes around the boundary (or perimeter) pattern (counter-clockwise) from a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>
+    /// <see href="https://www.geeksforgeeks.org/boundary-traversal-of-binary-tree/"/>
+    /// </summary>
+    /// <remarks>This traversal does not necessarily return ALL nodes in the tree, only the boundary ones, or the ones along the perimeter of the tree.</remarks>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<TValue> TraversePerimeter<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+
+      if (source.IsEmpty) yield break;
+
+      if (!IsLeaf(source))
+        yield return source.Value; // if leaf then its done by addLeaves
+
+      foreach (var bt in AddLeftBound(source))
+        yield return bt.Value;
+
+      foreach (var bt in AddLeaves(source))
+        yield return bt.Value;
+
+      foreach (var bt in AddRightBound(source))
+        yield return bt.Value;
+
+      static bool IsLeaf(DataStructures.IBinaryTree<TValue> node)
+        => node.Left.IsEmpty && node.Right.IsEmpty;
+
+      // Go left left until no left. Don't include leaf nodes (it leads to duplication).
+      static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> AddLeftBound(DataStructures.IBinaryTree<TValue> root)
+      {
+        root = root.Left;
+
+        while (!root.IsEmpty)
+        {
+          if (!IsLeaf(root))
+            yield return root;
+
+          root = root.Left.IsEmpty ? root.Right : root.Left;
+        }
+      }
+
+      // Go right right until no right. Don't include leaf nodes (it leads to duplication).
+      static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> AddRightBound(DataStructures.IBinaryTree<TValue> root)
+      {
+        root = root.Right;
+
+        var stack = new Stack<DataStructures.IBinaryTree<TValue>>(); // As we need the reverse of this for counter-clockwise.
+
+        while (!root.IsEmpty)
+        {
+          if (!IsLeaf(root))
+            stack.Push(root);
+
+          root = root.Right.IsEmpty ? root.Left : root.Right;
+        }
+
+        while (stack.Count > 0)
+        {
+          yield return stack.Peek();
+
+          stack.Pop();
+        }
+      }
+
+      // Do inorder/preorder, if leaf node add to the list.
+      static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> AddLeaves(DataStructures.IBinaryTree<TValue> root)
+      {
+        if (root.IsEmpty)
+          yield break;
+
+        if (IsLeaf(root))
+        {
+          yield return root; // just store leaf nodes
+
+          yield break;
+        }
+
+        foreach (var bt in AddLeaves(root.Left))
+          yield return bt;
+
+        foreach (var bt in AddLeaves(root.Right))
+          yield return bt;
+      }
+    }
+
+    /// <summary>
+    /// <para>Traverse all nodes in the tree from top to bottom by level (left &lt;-> right), sort of like a snake.</para>
+    /// <para><see href="https://www.geeksforgeeks.org/zigzag-tree-traversal/"/></para>
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseZigZag<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+
+      if (source.IsEmpty) yield break;
+
+      var currentLevel = new Stack<DataStructures.IBinaryTree<TValue>>();
+      var nextLevel = new Stack<DataStructures.IBinaryTree<TValue>>();
+
+      currentLevel.Push(source);
+
+      bool leftToRight = true;
+
+      while (currentLevel.Count > 0)
+      {
+        var node = currentLevel.Pop();
+
+        yield return node.Value;
+
+        if (leftToRight)
+        {
+          if (!node.Left.IsEmpty) nextLevel.Push(node.Left);
+          if (!node.Right.IsEmpty) nextLevel.Push(node.Right);
+        }
+        else
+        {
+          if (!node.Right.IsEmpty) nextLevel.Push(node.Right);
+          if (!node.Left.IsEmpty) nextLevel.Push(node.Left);
+        }
+
+        if (currentLevel.Count == 0)
+        {
+          leftToRight = !leftToRight;
+          var temp = currentLevel;
+          currentLevel = nextLevel;
+          nextLevel = temp;
+        }
       }
     }
 

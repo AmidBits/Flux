@@ -62,7 +62,7 @@ namespace Flux.DataStructures.Immutable
         ? Left
         : Left.IsEmpty && !Right.IsEmpty
         ? Right
-        : this.GetSuccessorNode() is var successor && !successor.IsEmpty
+        : this.GetSuccessor() is var successor && !successor.IsEmpty
         ? new ImmutableAvlTree<TKey, TValue>(successor.Key, successor.Value, Left, Right.Remove(successor.Key)) : Empty
       );
     public IBinarySearchTree<TKey, TValue> Search(TKey key)
@@ -77,9 +77,9 @@ namespace Flux.DataStructures.Immutable
 
     #region IMap<TKey, TValue>
 
-    public System.Collections.Generic.IEnumerable<TKey> Keys => this.TraverseInOrder().Select(t => (IBinarySearchTree<TKey, TValue>)t).Select(t => t.Key);
-    public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs => this.TraverseInOrder().Select(t => (IBinarySearchTree<TKey, TValue>)t).Select(t => new System.Collections.Generic.KeyValuePair<TKey, TValue>(t.Key, t.Value));
-    public System.Collections.Generic.IEnumerable<TValue> Values => this.TraverseInOrder().Select(t => t.Value);
+    public System.Collections.Generic.IEnumerable<TKey> Keys => this.TraverseDfsInOrder().Select(t => t.Key);
+    public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs => this.TraverseDfsInOrder();
+    public System.Collections.Generic.IEnumerable<TValue> Values => this.TraverseDfsInOrder().Select(t => t.Value);
 
     IMap<TKey, TValue> IMap<TKey, TValue>.Add(TKey key, TValue value) => Add(key, value);
     public bool Contains(TKey key) => !Search(key).IsEmpty;

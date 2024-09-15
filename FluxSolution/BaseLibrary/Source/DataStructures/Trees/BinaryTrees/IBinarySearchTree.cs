@@ -20,11 +20,13 @@ namespace Flux.DataStructures
     /// <summary>
     /// <para>The left child of the <see cref="IBinarySearchTree{TKey, TValue}"/>.</para>
     /// </summary>
+    /// <remarks>These are child-nodes with a <typeparamref name="TKey"/> less-than-or-equal-to that of the parent the node.</remarks>
     new IBinarySearchTree<TKey, TValue> Left { get; }
 
     /// <summary>
     /// <para>The right child of the <see cref="IBinarySearchTree{TKey, TValue}"/>.</para>
     /// </summary>
+    /// <remarks>These are child-nodes with a <typeparamref name="TKey"/> greater-than that of the parent node.</remarks>
     new IBinarySearchTree<TKey, TValue> Right { get; }
 
     /// <summary>

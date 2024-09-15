@@ -41,61 +41,45 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var tr = new Flux.DataStructures.Trie<char, string>();
+      // creating a binary tree and entering the nodes
+      var tree = new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(1, new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(2, new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(4, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty), new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(5, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty)), new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(3, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty));
 
-      foreach (var d in System.IO.Directory.GetDirectories(@"C:\Users\Rob\OneDrive\", "*", System.IO.SearchOption.AllDirectories).Take(10))
-        System.Console.WriteLine($"{tr.Insert(d, null)}");
+      var treeD = tree.GetDiameter();
 
-      System.Console.WriteLine(tr.ToConsoleString());
+      var bst = Flux.DataStructures.Immutable.ImmutableAvlTree<int, string>.Empty;
 
-      var trie = new Flux.DataStructures.Trie<char, int>();
+      bst = bst.Add(1, 1.ToCardinalNumeralCompoundString());
+      bst = bst.Add(2, 2.ToCardinalNumeralCompoundString());
+      bst = bst.Add(3, 3.ToCardinalNumeralCompoundString());
+      bst = bst.Add(4, 4.ToCardinalNumeralCompoundString());
+      bst = bst.Add(5, 5.ToCardinalNumeralCompoundString());
+      bst = bst.Add(6, 6.ToCardinalNumeralCompoundString());
+      bst = bst.Add(7, 7.ToCardinalNumeralCompoundString());
+      bst = bst.Add(8, 8.ToCardinalNumeralCompoundString());
+      bst = bst.Add(9, 9.ToCardinalNumeralCompoundString());
+      bst = bst.Add(10, 10.ToCardinalNumeralCompoundString());
+      bst = bst.Add(11, 11.ToCardinalNumeralCompoundString());
+      bst = bst.Add(12, 12.ToCardinalNumeralCompoundString());
+      bst = bst.Add(13, 13.ToCardinalNumeralCompoundString());
+      bst = bst.Add(14, 14.ToCardinalNumeralCompoundString());
+      bst = bst.Add(15, 15.ToCardinalNumeralCompoundString());
+      bst = bst.Add(16, 16.ToCardinalNumeralCompoundString());
+      bst.TraverseZigZag();
+      System.Console.WriteLine(bst.ToConsoleBlock());
 
-      trie.Insert("abcd", 1);
-      trie.Insert("abc", 2);
-      trie.Insert("abgl", 3);
-      trie.Insert("cdf", 4);
-      trie.Insert("lmn", 5);
+      var ba = bst.TraversePerimeter().ToOrderedDictionary();
+      var zza = bst.TraverseZigZag().ToArray();
 
-      trie.Find("xyz", out var cdfVal);
+      var bmax = bst.GetMaximum();
+      var bmin = bst.GetMinimum();
 
-      trie.Delete("abc");
-      trie.Delete("abcd");
-      trie.Delete("abgl");
-      trie.Delete("cdf");
-      trie.Delete("lmn");
-      trie.Delete("xyz");
+      var tc = bst.GetCount();
+      var td = bst.GetDiameter();
+      var th = bst.GetMaxDepth();
+      var tl = bst.GetLevelOf(15);
 
-      System.Console.WriteLine(trie.ToConsoleString());
-
-      return;
-
-      var rng = Flux.Random.PakaRng.Shared;
-
-      var h = System.Linq.Enumerable.Range(0, 100000000).Select(i => Flux.Random.PakaRng.Shared.Next(6) + 1).ToHistogram(i => i, i => 1);
-      System.Console.WriteLine(h.ToConsoleString());
-      return;
-
-      for (var i = 0; i < 120; i++)
-      {
-        System.Console.WriteLine($"{i:D2} : {Flux.Random.PakaRng.Shared.Next(i + 1)}");
-      }
-
-      return;
-
-      var si = Flux.DataStructures.Immutable.ImmutableStack<int>.Empty;
-
-      si = si.Push(2);
-      si = si.Push(0);
-      si = si.Push(3);
-      si = si.Push(9);
-
-      foreach (var sii in si)
-        System.Console.WriteLine(sii);
-
-      for (var l = -23; l <= 23; l++)
-      {
-        System.Console.WriteLine($"{l:D2} = {l.RoundToPrimeMultiple(UniversalRounding.HalfTowardZero)} = {l.RoundToPrimeCandidate(UniversalRounding.HalfTowardZero)}");
-      }
+      var isbst = ((Flux.DataStructures.IBinarySearchTree<int, string>)bst).IsBst();
+      //var isbstbv = bst.IsBstByKey();
     }
 
     #region Eliza example

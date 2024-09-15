@@ -77,9 +77,9 @@ namespace Flux.DataStructures.Immutable
 
     #region IMap<TKey, TValue>
 
-    public System.Collections.Generic.IEnumerable<TKey> Keys => this.TraverseInOrder().Select(t => ((IBinarySearchTree<TKey, TValue>)t).Key);
-    public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs => this.TraverseInOrder().Select(t => new System.Collections.Generic.KeyValuePair<TKey, TValue>(((IBinarySearchTree<TKey, TValue>)t).Key, t.Value));
-    public System.Collections.Generic.IEnumerable<TValue> Values => this.TraverseInOrder().Select(t => t.Value);
+    public System.Collections.Generic.IEnumerable<TKey> Keys => this.TraverseDfsInOrder().Select(t => t.Key);
+    public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> Pairs => this.TraverseDfsInOrder();
+    public System.Collections.Generic.IEnumerable<TValue> Values => this.TraverseDfsInOrder().Select(t => t.Value);
     IMap<TKey, TValue> IMap<TKey, TValue>.Add(TKey key, TValue value) => Add(key, value);
     public bool Contains(TKey key) => !Search(key).IsEmpty;
     public TValue Lookup(TKey key)
