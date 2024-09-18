@@ -41,7 +41,7 @@ namespace Flux
     /// <para><seealso cref="https://en.wikipedia.org/wiki/DigitalInformation"/></para>
     /// </summary>
     public readonly record struct DigitalInformation
-    : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IValueQuantifiable<System.Numerics.BigInteger>
+    : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IUnitValueQuantifiable<System.Numerics.BigInteger, DigitalInformationUnit>
     {
       private readonly System.Numerics.BigInteger m_value;
 
@@ -95,7 +95,7 @@ namespace Flux
 
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueString(DigitalInformationUnit.Byte, format, formatProvider);
+        => ToUnitValueSymbolString(DigitalInformationUnit.Byte, format, formatProvider);
 
       // IQuantifiable<>
       /// <summary>
@@ -104,8 +104,11 @@ namespace Flux
       public System.Numerics.BigInteger Value => m_value;
 
       // IUnitQuantifiable<>
-      public string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode, bool useFullName)
-        => useFullName ? unit.ToString() : unit switch
+      public string GetUnitName(DigitalInformationUnit unit, bool preferPlural)
+        => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+
+      public string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode)
+        => unit switch
         {
           Quantities.DigitalInformationUnit.Byte => "B",
           Quantities.DigitalInformationUnit.kibiByte => "KiB",
@@ -134,14 +137,11 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public string ToUnitValueString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
-      {
-        var sb = new System.Text.StringBuilder();
-        sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-        sb.Append(unitSpacing.ToSpacingString());
-        sb.Append(GetUnitSymbol(unit, preferUnicode, useFullName));
-        return sb.ToString();
-      }
+      public string ToUnitValueNameString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+        => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+
+      public string ToUnitValueSymbolString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+        => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
       #endregion Implemented interfaces
 

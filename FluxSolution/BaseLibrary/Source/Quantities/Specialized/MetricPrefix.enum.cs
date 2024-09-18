@@ -13,6 +13,9 @@ namespace Flux
       where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
       => value * T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target));
 
+    public static decimal Convert(this Quantities.MetricPrefix source, decimal value, Quantities.MetricPrefix target)
+      => value * (decimal)double.Pow(10, (int)source - (int)target);
+
     /// <summary>
     /// <para>Find the infimum (the largest that is less than) and supremum (the smallest that is greater than) prefixes with adjusted value of the specified <paramref name="source"/> prefix and <paramref name="value"/>.</para>
     /// </summary>

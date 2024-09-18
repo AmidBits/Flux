@@ -93,8 +93,7 @@ namespace Flux.Quantities
     public int CompareTo(ThermaldynamicTemperature other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(ThermaldynamicTemperatureUnit.Kelvin, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(ThermaldynamicTemperatureUnit.Kelvin, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -103,8 +102,7 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitName(ThermaldynamicTemperatureUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    public string GetUnitName(ThermaldynamicTemperatureUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(ThermaldynamicTemperatureUnit unit, bool preferUnicode)
       => unit switch
@@ -127,10 +125,10 @@ namespace Flux.Quantities
         };
 
     public string ToUnitValueNameString(ThermaldynamicTemperatureUnit unit = ThermaldynamicTemperatureUnit.Kelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
     public string ToUnitValueSymbolString(ThermaldynamicTemperatureUnit unit = ThermaldynamicTemperatureUnit.Kelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion Implemented interfaces
 

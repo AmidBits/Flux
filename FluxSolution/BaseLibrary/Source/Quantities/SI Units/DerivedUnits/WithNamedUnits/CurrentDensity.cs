@@ -52,8 +52,7 @@ namespace Flux.Quantities
     public int CompareTo(CurrentDensity other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(CurrentDensityUnit.AmperePerSquareMeter, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(CurrentDensityUnit.AmperePerSquareMeter, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -80,10 +79,10 @@ namespace Flux.Quantities
       };
 
     public string ToUnitValueNameString(CurrentDensityUnit unit = CurrentDensityUnit.AmperePerSquareMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
     public string ToUnitValueSymbolString(CurrentDensityUnit unit = CurrentDensityUnit.AmperePerSquareMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion Implemented interfaces
 

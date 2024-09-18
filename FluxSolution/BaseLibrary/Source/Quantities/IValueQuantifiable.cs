@@ -7,7 +7,7 @@
     /// </summary>
     /// <typeparam name="TValue">The value type.</typeparam>
     /// <remarks>
-    /// <para>If use of <see cref="System.IConvertible"/> is desirable, use <see cref="Value"/> as a parameter for such functionality.</para>
+    /// <para>If use of <see cref="System.IConvertible"/> is desirable, use <see cref="Value"/> for such functionality.</para>
     /// </remarks>
     public interface IValueQuantifiable<TValue>
     : System.IFormattable

@@ -27,7 +27,7 @@
     /// <typeparam name="TValue">The type of value.</typeparam>
     /// <typeparam name="TUnit">The type of unit enum.</typeparam>
     /// <remarks>
-    /// <para>If use of <see cref="System.IConvertible"/> is desirable, use the return value from <see cref="GetUnitValue(TUnit)"/> as a parameter for such functionality.</para>
+    /// <para>If use of <see cref="System.IConvertible"/> is desirable, use the return value from <see cref="GetUnitValue(TUnit)"/> for such functionality.</para>
     /// </remarks>
     public interface IUnitValueQuantifiable<TValue, TUnit>
     : IValueQuantifiable<TValue>
@@ -57,6 +57,15 @@
       /// <returns>The value of the quantity based on the specified <paramref name="unit"/>.</returns>
       TValue GetUnitValue(TUnit unit);
 
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="unit"></param>
+      /// <param name="format"></param>
+      /// <param name="formatProvider"></param>
+      /// <param name="unitSpacing"></param>
+      /// <param name="preferPlural"></param>
+      /// <returns></returns>
       string ToUnitValueNameString(TUnit unit, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferPlural);
 
       /// <summary>

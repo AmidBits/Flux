@@ -588,8 +588,7 @@
       public int CompareTo(Angle other) => m_angle.CompareTo(other.m_angle);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueSymbolString(AngleUnit.Radian, format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(AngleUnit.Radian, format, formatProvider);
 
       // IQuantifiable<>
       /// <summary>
@@ -598,8 +597,7 @@
       public double Value => m_angle;
 
       // IUnitQuantifiable<>
-      public string GetUnitName(AngleUnit unit, bool preferPlural)
-        => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+      public string GetUnitName(AngleUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
       public string GetUnitSymbol(AngleUnit unit, bool preferUnicode)
         => unit switch
@@ -632,7 +630,7 @@
         };
 
       public string ToUnitValueNameString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
       public string ToUnitValueSymbolString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unit.HasUnitSpacing(preferUnicode) ? unitSpacing.ToSpacingString() : UnicodeSpacing.None.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));

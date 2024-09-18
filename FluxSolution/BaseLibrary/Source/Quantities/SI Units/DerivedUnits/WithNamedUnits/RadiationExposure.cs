@@ -52,8 +52,7 @@ namespace Flux.Quantities
     public int CompareTo(RadiationExposure other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(RadiationExposureUnit.CoulombPerKilogram, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(RadiationExposureUnit.CoulombPerKilogram, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
@@ -82,10 +81,10 @@ namespace Flux.Quantities
         };
 
     public string ToUnitValueNameString(RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
     public string ToUnitValueSymbolString(RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion Implemented interfaces
 

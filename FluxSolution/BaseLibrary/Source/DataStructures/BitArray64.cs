@@ -157,7 +157,7 @@
 
     public void Not()
     {
-      for (var index = 0; index < m_bitArray.Length; index++)
+      for (var index = m_bitArray.Length - 1; index >= 0; index--)
         m_bitArray[index] = ~m_bitArray[index];
 
       m_bitArray[^1] &= (1UL << (int)(m_bitLength % 64)) - 1; // Ensure most significant unused bits are set to 0.

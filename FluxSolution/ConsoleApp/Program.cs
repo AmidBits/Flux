@@ -41,6 +41,17 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var mv = new Flux.Quantities.Mass(2338.456);
+      var mvsipvss = mv.ToSiPrefixValueSymbolString(MetricPrefix.Kilo);
+      var mvuvns = mv.ToSiPrefixValueNameString(MetricPrefix.Hecto).ToLower();
+
+      var x = (-123.456).ToEnglishCardinalNumeralCompoundString().ToLower();
+      var y = (23380000000).ToEnglishCardinalNumeralCompoundString().ToLower();
+
+      System.Console.WriteLine(x);
+
+      var ros = (123).ToString().AsSpan();
+
       // creating a binary tree and entering the nodes
       var tree = new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(1, new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(2, new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(4, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty), new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(5, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty)), new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(3, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty));
 
@@ -48,22 +59,22 @@ namespace ConsoleApp
 
       var bst = Flux.DataStructures.Immutable.ImmutableAvlTree<int, string>.Empty;
 
-      bst = bst.Add(1, 1.ToCardinalNumeralCompoundString());
-      bst = bst.Add(2, 2.ToCardinalNumeralCompoundString());
-      bst = bst.Add(3, 3.ToCardinalNumeralCompoundString());
-      bst = bst.Add(4, 4.ToCardinalNumeralCompoundString());
-      bst = bst.Add(5, 5.ToCardinalNumeralCompoundString());
-      bst = bst.Add(6, 6.ToCardinalNumeralCompoundString());
-      bst = bst.Add(7, 7.ToCardinalNumeralCompoundString());
-      bst = bst.Add(8, 8.ToCardinalNumeralCompoundString());
-      bst = bst.Add(9, 9.ToCardinalNumeralCompoundString());
-      bst = bst.Add(10, 10.ToCardinalNumeralCompoundString());
-      bst = bst.Add(11, 11.ToCardinalNumeralCompoundString());
-      bst = bst.Add(12, 12.ToCardinalNumeralCompoundString());
-      bst = bst.Add(13, 13.ToCardinalNumeralCompoundString());
-      bst = bst.Add(14, 14.ToCardinalNumeralCompoundString());
-      bst = bst.Add(15, 15.ToCardinalNumeralCompoundString());
-      bst = bst.Add(16, 16.ToCardinalNumeralCompoundString());
+      bst = bst.Add(1, 1.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(2, 2.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(3, 3.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(4, 4.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(5, 5.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(6, 6.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(7, 7.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(8, 8.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(9, 9.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(10, 10.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(11, 11.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(12, 12.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(13, 13.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(14, 14.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(15, 15.ToEnglishCardinalNumeralCompoundString());
+      bst = bst.Add(16, 16.ToEnglishCardinalNumeralCompoundString());
       bst.TraverseZigZag();
       System.Console.WriteLine(bst.ToConsoleBlock());
 
@@ -78,7 +89,7 @@ namespace ConsoleApp
       var th = bst.GetMaxDepth();
       var tl = bst.GetLevelOf(15);
 
-      var isbst = ((Flux.DataStructures.IBinarySearchTree<int, string>)bst).IsBst();
+      var isbst = bst.IsBst();
       //var isbstbv = bst.IsBstByKey();
     }
 

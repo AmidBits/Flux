@@ -3,25 +3,25 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>This version of Zip runs over all elements in all sequences.</summary>
-    public static System.Collections.Generic.IEnumerable<TResult> ZipEx<T, TResult>(System.Func<T[], TResult> resultSelector, params System.Collections.Generic.IEnumerable<T>[] sequence)
+    public static System.Collections.Generic.IEnumerable<TResult> ZipEx<T, TResult>(System.Func<T[], TResult> resultSelector, params System.Collections.Generic.IEnumerable<T>[] sequences)
     {
       System.ArgumentNullException.ThrowIfNull(resultSelector);
 
-      var e = new System.Collections.Generic.IEnumerator<T>[sequence.Length];
+      var e = new System.Collections.Generic.IEnumerator<T>[sequences.Length];
 
-      for (var index = 0; index < sequence.Length; index++)
+      for (var index = 0; index < sequences.Length; index++)
         e[index] = null!;
 
       try
       {
-        for (var index = 0; index < sequence.Length; index++)
-          e[index] = sequence[index].GetEnumerator();
+        for (var index = 0; index < sequences.Length; index++)
+          e[index] = sequences[index].GetEnumerator();
 
-        var b = new bool[sequence.Length];
+        var b = new bool[sequences.Length];
 
         while (true)
         {
-          for (var index = 0; index < sequence.Length; index++)
+          for (var index = 0; index < sequences.Length; index++)
             b[index] = e[index]?.MoveNext() ?? false;
 
           if (b.Any(boolean => boolean))
@@ -32,7 +32,7 @@ namespace Flux
       }
       finally
       {
-        for (var index = 0; index < sequence.Length; index++)
+        for (var index = 0; index < sequences.Length; index++)
           e[index]?.Dispose();
       }
     }

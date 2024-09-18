@@ -29,31 +29,13 @@
     /// <typeparam name="TUnit"></typeparam>
     /// <remarks>
     /// <para>If use of <see cref="System.IConvertible"/> is desirable, use the return value from <see cref="GetSiPrefixValue(MetricPrefix)"/> as a parameter for such functionality.</para>
+    /// <para>No <see cref="ISiPrefixValueQuantifiable{TValue, TUnit}"/>.GetSiPrefixName() exists. There are only enum labels, no modifiers, e.g. plural, etc. Try <see cref="MetricPrefix"/>.GetUnitName() instead.</para>
     /// </remarks>
     public interface ISiPrefixValueQuantifiable<TValue, TUnit>
       : IUnitValueQuantifiable<TValue, TUnit>
       where TValue : System.Numerics.INumber<TValue>
       where TUnit : System.Enum
     {
-      ///// <summary>
-      ///// <para>The metric base unit for <typeparamref name="TUnit"/>.</para>
-      ///// <para>E.g. the base SI unit for mass is "kilogram", i.e. an unprefixed unit (gram) with a metric prefix (kilo). It is the only base SI unit to include an SI prefix.</para>
-      ///// </summary>
-      //TUnit BaseUnit { get; }
-
-      ///// <summary>
-      ///// <para>The metric unprefixed unit for <typeparamref name="TUnit"/>.</para>
-      ///// <para>E.g. the unprefixed unit for mass is "gram", i.e. the base SI unit without metric prefix.</para>
-      ///// </summary>
-      //TUnit UnprefixedUnit { get; }
-
-      /// <summary>
-      /// <para>Gets the <see cref="MetricPrefix"/> and <see cref="TUnit"/> for the <paramref name="prefix"/>.</para>
-      /// </summary>
-      /// <param name="prefix"></param>
-      /// <returns></returns>
-      (MetricPrefix Prefix, TUnit Unit) GetSiPrefixUnit(MetricPrefix prefix);
-
       /// <summary>
       /// <para>Gets the symbol of the <paramref name="prefix"/> and whether to <paramref name="preferUnicode"/>.</para>
       /// </summary>
@@ -63,11 +45,29 @@
       string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode);
 
       /// <summary>
+      /// <para>Gets the <see cref="MetricPrefix"/> and <see cref="TUnit"/> for the <paramref name="prefix"/>.</para>
+      /// </summary>
+      /// <param name="prefix"></param>
+      /// <returns></returns>
+      (MetricPrefix Prefix, TUnit Unit) GetSiPrefixUnit(MetricPrefix prefix);
+
+      /// <summary>
       /// <para>Gets the value of the quantity in the <see cref="MetricPrefix"/> multiplicable specified by <paramref name="prefix"/>.</para>
       /// </summary>
       /// <param name="prefix">The prefix to project.</param>
       /// <returns></returns>
       TValue GetSiPrefixValue(MetricPrefix prefix);
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="prefix"></param>
+      /// <param name="format"></param>
+      /// <param name="formatProvider"></param>
+      /// <param name="unitSpacing"></param>
+      /// <param name="preferPlural"></param>
+      /// <returns></returns>
+      string ToSiPrefixValueNameString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferPlural);
 
       /// <summary>
       /// <para>Creates a SI quantity string for the <paramref name="prefix"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>

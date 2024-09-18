@@ -60,8 +60,7 @@ namespace Flux.Quantities
     public int CompareTo(Force other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(ForceUnit.Newton, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(ForceUnit.Newton, format, formatProvider);
 
     // ISiUnitValueQuantifiable<>
     public (MetricPrefix Prefix, ForceUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, ForceUnit.Newton);
@@ -70,14 +69,11 @@ namespace Flux.Quantities
 
     public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + prefix.GetUnitName() + GetUnitName(GetSiPrefixUnit(prefix).Unit, preferPlural);
+
     public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    {
-      var sb = new System.Text.StringBuilder();
-      sb.Append(GetSiPrefixValue(prefix).ToString(format, formatProvider));
-      sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetSiPrefixSymbol(prefix, preferUnicode));
-      return sb.ToString();
-    }
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     // IQuantifiable<>
     /// <summary>
@@ -108,10 +104,10 @@ namespace Flux.Quantities
       };
 
     public string ToUnitValueNameString(ForceUnit unit = ForceUnit.Newton, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
     public string ToUnitValueSymbolString(ForceUnit unit = ForceUnit.Newton, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion Implemented interfaces
 

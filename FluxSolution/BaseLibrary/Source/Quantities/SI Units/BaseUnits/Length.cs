@@ -134,8 +134,7 @@ namespace Flux.Quantities
     public int CompareTo(Length other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(LengthUnit.Metre, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(LengthUnit.Metre, format, formatProvider);
 
     // ISiUnitValueQuantifiable<>
     public (MetricPrefix Prefix, LengthUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, LengthUnit.Metre);
@@ -144,14 +143,11 @@ namespace Flux.Quantities
 
     public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + prefix.GetUnitName() + GetUnitName(GetSiPrefixUnit(prefix).Unit, preferPlural);
+
     public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    {
-      var sb = new System.Text.StringBuilder();
-      sb.Append(GetSiPrefixValue(prefix).ToString(format, formatProvider));
-      sb.Append(unitSpacing.ToSpacingString());
-      sb.Append(GetSiPrefixSymbol(prefix, preferUnicode));
-      return sb.ToString();
-    }
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     // IQuantifiable<>
     /// <summary>
@@ -160,8 +156,7 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     // IUnitQuantifiable<>
-    public string GetUnitName(LengthUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    public string GetUnitName(LengthUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(LengthUnit unit, bool preferUnicode)
      => unit switch
@@ -211,10 +206,10 @@ namespace Flux.Quantities
         };
 
     public string ToUnitValueNameString(LengthUnit unit = LengthUnit.Metre, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitName(unit, preferPlural));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
     public string ToUnitValueSymbolString(LengthUnit unit = LengthUnit.Metre, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => string.Concat(GetUnitValue(unit).ToString(format, formatProvider), unitSpacing.ToSpacingString(), GetUnitSymbol(unit, preferUnicode));
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion Implemented interfaces
 
