@@ -43,7 +43,7 @@ namespace Flux.Quantities
     /// <param name="resistance"></param>
     public static ElectricCurrent From(Voltage voltage, ElectricalResistance resistance) => new(voltage.Value / resistance.Value);
 
-    #endregion Static methods
+    #endregion // Static methods
 
     #region Overloaded operators
 
@@ -77,36 +77,40 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(ElectricCurrentUnit.Ampere, format, formatProvider);
 
-    //IMetricMultiplicable<>
-    public (MetricPrefix Prefix, ElectricCurrentUnit Unit) GetSiPrefixUnit(MetricPrefix prefix)
-      => (prefix, ElectricCurrentUnit.Ampere);
+    #region IQuantifiable<>
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode)
-      => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode);
-
-    public double GetSiPrefixValue(MetricPrefix prefix)
-      => MetricPrefix.NoPrefix.Convert(m_value, prefix);
-
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + prefix.GetUnitName() + GetUnitName(GetSiPrefixUnit(prefix).Unit, preferPlural);
-
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
-
-    // IQuantifiable<>
     /// <summary>
     /// <para>The unit of the <see cref="ElectricCurrent.Value"/> property is in <see cref="ElectricCurrentUnit.Ampere"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region ISiPrefixValueQuantifiable<>
+
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(ElectricCurrentUnit.Ampere, preferPlural);
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(ElectricCurrentUnit.Ampere, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+
+    #endregion // ISiPrefixValueQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
     public string GetUnitName(ElectricCurrentUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(ElectricCurrentUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.ElectricCurrentUnit.Ampere => "A",
-        Quantities.ElectricCurrentUnit.Milliampere => preferUnicode ? "\u3383" : "mA",
+        ElectricCurrentUnit.Ampere => "A",
+        ElectricCurrentUnit.Milliampere => preferUnicode ? "\u3383" : "mA",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -121,11 +125,12 @@ namespace Flux.Quantities
     public string ToUnitValueNameString(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
-
     public string ToUnitValueSymbolString(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
-    #endregion Implemented interfaces
+    #endregion // IUnitQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

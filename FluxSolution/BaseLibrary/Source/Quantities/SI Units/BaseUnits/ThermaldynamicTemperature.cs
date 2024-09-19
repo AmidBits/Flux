@@ -32,7 +32,7 @@ namespace Flux.Quantities
 
     #region Static methods
 
-    #region Conversions
+    #region Conversion methods
 
     /// <summary>Convert the temperature specified in Celsius to Fahrenheit.</summary>
     public static double CelsiusToFahrenheit(double celsius) => celsius * 1.8 + 32;
@@ -59,7 +59,7 @@ namespace Flux.Quantities
     /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
     public static double RankineToFahrenheit(double rankine) => rankine - 491.67;
 
-    #endregion // Conversions
+    #endregion // Conversion methods
 
     #endregion Static methods
 
@@ -95,13 +95,17 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(ThermaldynamicTemperatureUnit.Kelvin, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="ThermaldynamicTemperature.Value"/> property is in <see cref="ThermaldynamicTemperatureUnit.Kelvin"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
     public string GetUnitName(ThermaldynamicTemperatureUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(ThermaldynamicTemperatureUnit unit, bool preferUnicode)
@@ -129,6 +133,8 @@ namespace Flux.Quantities
 
     public string ToUnitValueSymbolString(ThermaldynamicTemperatureUnit unit = ThermaldynamicTemperatureUnit.Kelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
+
+    #endregion // IUnitQuantifiable<>
 
     #endregion Implemented interfaces
 

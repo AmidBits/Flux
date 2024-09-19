@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Electrical conductance, unit of Siemens.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public readonly record struct ElectricalConductance
-    : System.IComparable, System.IComparable<ElectricalConductance>, System.IFormattable, IUnitValueQuantifiable<double, ElectricalConductanceUnit>
+    : System.IComparable, System.IComparable<ElectricalConductance>, System.IFormattable, ISiPrefixValueQuantifiable<double, ElectricalConductanceUnit>
   {
     private readonly double m_value;
 
@@ -62,6 +62,19 @@ namespace Flux.Quantities
     /// <para>The unit of the <see cref="ElectricalConductance.Value"/> property is in <see cref="ElectricalConductanceUnit.Siemens"/>.</para>
     /// </summary>
     public double Value => m_value;
+
+    // ISiPrefixValueQuantifiable<>
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(ElectricalConductanceUnit.Siemens, preferPlural);
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(ElectricalConductanceUnit.Siemens, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     // IUnitQuantifiable<>
     public string GetUnitName(ElectricalConductanceUnit unit, bool preferPlural)

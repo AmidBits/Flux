@@ -35,7 +35,7 @@
     where TUnit : System.Enum
     {
       /// <summary>
-      /// <para>Gets the name for the specified <paramref name="unit"/> and whether to <paramref name="preferPlural"/>.</para>
+      /// <para>Gets the name representing the specified <paramref name="unit"/> and whether to <paramref name="preferPlural"/>.</para>
       /// </summary>
       /// <param name="unit"></param>
       /// <param name="preferPlural">Whether to use plural of the name, if applicable.</param>
@@ -43,7 +43,7 @@
       string GetUnitName(TUnit unit, bool preferPlural);
 
       /// <summary>
-      /// <para>Gets the symbol for the specified <paramref name="unit"/> and whether to <paramref name="preferUnicode"/>.</para>
+      /// <para>Gets the symbol representing the specified <paramref name="unit"/> and whether to <paramref name="preferUnicode"/>.</para>
       /// </summary>
       /// <param name="unit">The unit to represent.</param>
       /// <param name="preferUnicode">Whether to prefer Unicode symbols, where and when available. This typically result in reduced length of the returning string, and also less support for some of those symbols, e.g. fonts.</param>
@@ -51,14 +51,14 @@
       string GetUnitSymbol(TUnit unit, bool preferUnicode);
 
       /// <summary>
-      /// <para>Gets the value of the quantity in the specified <paramref name="unit"/>.</para>
+      /// <para>Gets the value of the quantity for the specified <paramref name="unit"/>.</para>
       /// </summary>
       /// <param name="unit">The unit to represent.</param>
-      /// <returns>The value of the quantity based on the specified <paramref name="unit"/>.</returns>
+      /// <returns>The value of the quantity in the specified <paramref name="unit"/>.</returns>
       TValue GetUnitValue(TUnit unit);
 
       /// <summary>
-      /// <para></para>
+      /// <para>Creates a string with the name of the quantity for the <paramref name="unit"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferPlural"/>.</para>
       /// </summary>
       /// <param name="unit"></param>
       /// <param name="format"></param>
@@ -69,7 +69,7 @@
       string ToUnitValueNameString(TUnit unit, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferPlural);
 
       /// <summary>
-      /// <para>Creates an quantity string for the <paramref name="unit"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>
+      /// <para>Creates a string with the symbol of the quantity for the <paramref name="unit"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>
       /// </summary>
       /// <param name="unit">The unit to represent.</param>
       /// <param name="format">The format.</param>

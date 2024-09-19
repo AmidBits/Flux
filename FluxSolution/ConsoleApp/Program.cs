@@ -41,9 +41,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var mv = new Flux.Quantities.Mass(2338.456);
-      var mvsipvss = mv.ToSiPrefixValueSymbolString(MetricPrefix.Kilo);
-      var mvuvns = mv.ToSiPrefixValueNameString(MetricPrefix.Hecto).ToLower();
+      var mv = new Flux.Quantities.Mass(2.338456);
+      var mvsipvss = mv.ToSiPrefixValueSymbolString(MetricPrefix.Milli);
+      var mvuvns = mv.ToSiPrefixValueNameString(MetricPrefix.Milli).ToLower();
+
+      var all = mv.ToStringsOfMetricPrefixes();
 
       var x = (-123.456).ToEnglishCardinalNumeralCompoundString().ToLower();
       var y = (23380000000).ToEnglishCardinalNumeralCompoundString().ToLower();

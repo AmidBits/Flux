@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Electrical inductance unit of Henry.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Inductance"/>
   public readonly record struct Inductance
-    : System.IComparable, System.IComparable<Inductance>, System.IFormattable, IUnitValueQuantifiable<double, InductanceUnit>
+    : System.IComparable, System.IComparable<Inductance>, System.IFormattable, ISiPrefixValueQuantifiable<double, InductanceUnit>
   {
     private readonly double m_value;
 
@@ -39,7 +39,7 @@ namespace Flux.Quantities
     public static Inductance operator -(Inductance a, double b) => new(a.m_value - b);
     public static Inductance operator -(Inductance a, Inductance b) => a - b.m_value;
 
-    #endregion Overloaded operators
+    #endregion // Overloaded operators
 
     #region Implemented interfaces
 
@@ -52,15 +52,34 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(InductanceUnit.Henry, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="Inductance.Value"/> property is in <see cref="InductanceUnit.Henry"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
-    public string GetUnitName(InductanceUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    #endregion // IQuantifiable<>
+
+    #region ISiPrefixValueQuantifiable<>
+
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(InductanceUnit.Henry, preferPlural);
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(InductanceUnit.Henry, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+
+    #endregion // ISiPrefixValueQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public string GetUnitName(InductanceUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? GetUnitValue(unit).ToPluralString(us) : us;
 
     public string GetUnitSymbol(InductanceUnit unit, bool preferUnicode)
       => unit switch
@@ -82,7 +101,9 @@ namespace Flux.Quantities
     public string ToUnitValueSymbolString(InductanceUnit unit = InductanceUnit.Henry, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
-    #endregion Implemented interfaces
+    #endregion // IUnitQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

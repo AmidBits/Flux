@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Luminous flux unit of lumen.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Luminous_flux"/>
   public readonly record struct LuminousFlux
-    : System.IComparable, System.IComparable<LuminousFlux>, System.IFormattable, IUnitValueQuantifiable<double, LuminousFluxUnit>
+    : System.IComparable, System.IComparable<LuminousFlux>, System.IFormattable, ISiPrefixValueQuantifiable<double, LuminousFluxUnit>
   {
     private readonly double m_value;
 
@@ -57,6 +57,19 @@ namespace Flux.Quantities
     /// <para>The unit of the <see cref="LuminousFlux.Value"/> property is in <see cref="LuminousFluxUnit.Lumen"/>.</para>
     /// </summary>
     public double Value => m_value;
+
+    // ISiPrefixValueQuantifiable<>
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(LuminousFluxUnit.Lumen, preferPlural);
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(LuminousFluxUnit.Lumen, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     // IUnitQuantifiable<>
     public string GetUnitName(LuminousFluxUnit unit, bool preferPlural)

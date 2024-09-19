@@ -14,7 +14,7 @@ namespace Flux
     /// </summary>
     /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
     public readonly record struct JulianDayNumber
-      : System.IComparable, System.IComparable<JulianDayNumber>, System.IEquatable<JulianDayNumber>, System.IFormattable, IValueQuantifiable<int>
+      : System.IComparable, System.IComparable<JulianDayNumber>, System.IFormattable, IValueQuantifiable<int>
     {
       public readonly int m_value;
 

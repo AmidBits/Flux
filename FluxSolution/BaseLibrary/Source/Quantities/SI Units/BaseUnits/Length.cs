@@ -102,7 +102,7 @@ namespace Flux.Quantities
     /// <param name="angularVelocity"></param>
     public static Length From(Speed speed, AngularFrequency angularVelocity) => new(speed.Value / angularVelocity.Value);
 
-    #endregion Static methods
+    #endregion // Static methods
 
     #region Overloaded operators
 
@@ -136,47 +136,54 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(LengthUnit.Metre, format, formatProvider);
 
-    // ISiUnitValueQuantifiable<>
-    public (MetricPrefix Prefix, LengthUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, LengthUnit.Metre);
+    #region IQuantifiable<>
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode);
-
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
-
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + prefix.GetUnitName() + GetUnitName(GetSiPrefixUnit(prefix).Unit, preferPlural);
-
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
-
-    // IQuantifiable<>
     /// <summary>
     /// <para>The unit of the <see cref="Length.Value"/> property is in <see cref="LengthUnit.Metre"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(LengthUnit.Metre, preferPlural);
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(LengthUnit.Metre, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+
+    #endregion // ISiUnitValueQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
     public string GetUnitName(LengthUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(LengthUnit unit, bool preferUnicode)
      => unit switch
      {
-       Quantities.LengthUnit.Metre => "m",
-       Quantities.LengthUnit.Femtometre => preferUnicode ? "\u3399" : "fm",
-       Quantities.LengthUnit.Nanometre => preferUnicode ? "\u339A" : "nm",
-       Quantities.LengthUnit.Micrometre => preferUnicode ? "\u339B" : "µm",
-       Quantities.LengthUnit.Millimetre => preferUnicode ? "\u339C" : "mm",
-       Quantities.LengthUnit.Centimetre => preferUnicode ? "\u339D" : "cm",
-       Quantities.LengthUnit.Inch => preferUnicode ? "\u33CC" : "in",
-       Quantities.LengthUnit.Decimetre => preferUnicode ? "\u3377" : "dm",
-       Quantities.LengthUnit.Foot => "ft",
-       Quantities.LengthUnit.Yard => "yd",
-       Quantities.LengthUnit.Kilometre => preferUnicode ? "\u339E" : "km",
-       Quantities.LengthUnit.Mile => "mi",
-       Quantities.LengthUnit.NauticalMile => "NM", // There is no single internationally agreed symbol. Others used are "N", "NM", "nmi" and "nm".
-       Quantities.LengthUnit.AstronomicalUnit => preferUnicode ? "\u3373" : "au",
-       Quantities.LengthUnit.Parsec => preferUnicode ? "\u3376" : "pc",
-       Quantities.LengthUnit.Ångström => preferUnicode ? "\u212B" : "Å",
+       LengthUnit.Metre => "m",
+       LengthUnit.Femtometre => preferUnicode ? "\u3399" : "fm",
+       LengthUnit.Nanometre => preferUnicode ? "\u339A" : "nm",
+       LengthUnit.Micrometre => preferUnicode ? "\u339B" : "µm",
+       LengthUnit.Millimetre => preferUnicode ? "\u339C" : "mm",
+       LengthUnit.Centimetre => preferUnicode ? "\u339D" : "cm",
+       LengthUnit.Inch => preferUnicode ? "\u33CC" : "in",
+       LengthUnit.Decimetre => preferUnicode ? "\u3377" : "dm",
+       LengthUnit.Foot => "ft",
+       LengthUnit.Yard => "yd",
+       LengthUnit.Kilometre => preferUnicode ? "\u339E" : "km",
+       LengthUnit.Mile => "mi",
+       LengthUnit.NauticalMile => "NM", // There is no single internationally agreed symbol. Others used are "N", "NM", "nmi" and "nm".
+       LengthUnit.AstronomicalUnit => preferUnicode ? "\u3373" : "au",
+       LengthUnit.Parsec => preferUnicode ? "\u3376" : "pc",
+       LengthUnit.Ångström => preferUnicode ? "\u212B" : "Å",
        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
      };
 
@@ -211,7 +218,9 @@ namespace Flux.Quantities
     public string ToUnitValueSymbolString(LengthUnit unit = LengthUnit.Metre, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
-    #endregion Implemented interfaces
+    #endregion // IUnitQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

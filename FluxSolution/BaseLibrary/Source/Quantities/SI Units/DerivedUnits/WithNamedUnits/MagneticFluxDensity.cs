@@ -10,7 +10,7 @@ namespace Flux.Quantities
   /// <summary>Magnetic flux density (B), unit of tesla.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
   public readonly record struct MagneticFluxDensity
-    : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxDensityUnit>
+    : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IFormattable, ISiPrefixValueQuantifiable<double, MagneticFluxDensityUnit>
   {
     private readonly double m_value;
 
@@ -72,6 +72,19 @@ namespace Flux.Quantities
     /// <para>The unit of the <see cref="MagneticFluxDensity.Value"/> property is in <see cref="MagneticFluxDensityUnit.Tesla"/>.</para>
     /// </summary>
     public double Value => m_value;
+
+    // ISiPrefixValueQuantifiable<>
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(MagneticFluxDensityUnit.Tesla, preferPlural);
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(MagneticFluxDensityUnit.Tesla, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     //IUnitQuantifiable<>
     public string GetUnitName(MagneticFluxDensityUnit unit, bool preferPlural)

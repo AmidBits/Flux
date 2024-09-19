@@ -10,8 +10,8 @@
     /// <para>If use of <see cref="System.IConvertible"/> is desirable, use <see cref="Value"/> for such functionality.</para>
     /// </remarks>
     public interface IValueQuantifiable<TValue>
-    : System.IFormattable
-    where TValue : System.Numerics.INumber<TValue> // System.IEquatable<TValue>, System.IComparable<TValue>
+      : System.IFormattable
+    where TValue : System.Numerics.INumber<TValue>
     {
       /// <summary>
       /// <para>The value of the quantity.</para>

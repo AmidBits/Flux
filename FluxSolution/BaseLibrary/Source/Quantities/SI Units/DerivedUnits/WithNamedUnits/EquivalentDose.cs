@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Dose equivalent, unit of sievert.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Equivalent_dose"/>
   public readonly record struct EquivalentDose
-    : System.IComparable, System.IComparable<EquivalentDose>, System.IFormattable, IUnitValueQuantifiable<double, EquivalentDoseUnit>
+    : System.IComparable, System.IComparable<EquivalentDose>, System.IFormattable, ISiPrefixValueQuantifiable<double, EquivalentDoseUnit>
   {
     private readonly double m_value;
 
@@ -58,9 +58,21 @@ namespace Flux.Quantities
     /// </summary>
     public double Value => m_value;
 
+    // ISiPrefixValueQuantifiable<>
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(EquivalentDoseUnit.Sievert, preferPlural);
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(EquivalentDoseUnit.Sievert, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+
     // IUnitQuantifiable<>
-    public string GetUnitName(EquivalentDoseUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    public string GetUnitName(EquivalentDoseUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(EquivalentDoseUnit unit, bool preferUnicode)
       => unit switch

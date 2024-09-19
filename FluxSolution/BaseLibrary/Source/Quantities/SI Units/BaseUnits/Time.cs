@@ -83,7 +83,7 @@ namespace Flux.Quantities
 
     #region Static methods
 
-    #region Conversions
+    #region Conversion methods
 
     /// <summary>
     /// <para>Convert beats-per-minute to seconds.</para>
@@ -149,9 +149,9 @@ namespace Flux.Quantities
 
     public static double ConvertWeekToSecond(double weeks) => weeks * 604800;
 
-    #endregion // Conversions
+    #endregion // Conversion methods
 
-    #endregion Static methods
+    #endregion // Static methods
 
     #region Overloaded operators
 
@@ -185,43 +185,50 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(TimeUnit.Second, format, formatProvider);
 
-    // ISiUnitValueQuantifiable<>
-    public (MetricPrefix Prefix, TimeUnit Unit) GetSiPrefixUnit(MetricPrefix prefix) => (prefix, TimeUnit.Second);
+    #region IQuantifiable<>
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(GetSiPrefixUnit(prefix).Unit, preferUnicode);
-
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
-
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + prefix.GetUnitName() + GetUnitName(GetSiPrefixUnit(prefix).Unit, preferPlural);
-
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
-
-    // IQuantifiable<>
     /// <summary>
     /// <para>The unit of the <see cref="Time.Value"/> property is in <see cref="TimeUnit.Second"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(TimeUnit.Second, preferPlural);
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(TimeUnit.Second, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+
+    #endregion // ISiUnitValueQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
     public string GetUnitName(TimeUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(TimeUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.TimeUnit.Second => "s",
-        Quantities.TimeUnit.Picosecond => preferUnicode ? "\u33B0" : "ps",
-        Quantities.TimeUnit.Nanosecond => preferUnicode ? "\u33B1" : "ns",
-        Quantities.TimeUnit.Ticks => "tick" + GetUnitValue(unit).PluralStringSuffix(),
-        Quantities.TimeUnit.Microsecond => preferUnicode ? "\u33B2" : "\u00B5s",
-        Quantities.TimeUnit.Millisecond => preferUnicode ? "\u33B3" : "ms",
-        Quantities.TimeUnit.Minute => "min",
-        Quantities.TimeUnit.Hour => "h",
-        Quantities.TimeUnit.Day => "d",
-        Quantities.TimeUnit.Week => "week" + GetUnitValue(unit).PluralStringSuffix(),
-        Quantities.TimeUnit.Fortnight => "fortnight" + GetUnitValue(unit).PluralStringSuffix(),
-        Quantities.TimeUnit.BeatsPerMinute => "bpm",
+        TimeUnit.Second => "s",
+        TimeUnit.Picosecond => preferUnicode ? "\u33B0" : "ps",
+        TimeUnit.Nanosecond => preferUnicode ? "\u33B1" : "ns",
+        TimeUnit.Ticks => "tick" + GetUnitValue(unit).PluralStringSuffix(),
+        TimeUnit.Microsecond => preferUnicode ? "\u33B2" : "\u00B5s",
+        TimeUnit.Millisecond => preferUnicode ? "\u33B3" : "ms",
+        TimeUnit.Minute => "min",
+        TimeUnit.Hour => "h",
+        TimeUnit.Day => "d",
+        TimeUnit.Week => "week" + GetUnitValue(unit).PluralStringSuffix(),
+        TimeUnit.Fortnight => "fortnight" + GetUnitValue(unit).PluralStringSuffix(),
+        TimeUnit.BeatsPerMinute => "bpm",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -249,7 +256,9 @@ namespace Flux.Quantities
     public string ToUnitValueSymbolString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
-    #endregion Implemented interfaces
+    #endregion // IUnitQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

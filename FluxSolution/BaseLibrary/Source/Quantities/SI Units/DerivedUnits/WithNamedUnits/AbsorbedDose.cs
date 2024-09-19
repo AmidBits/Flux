@@ -11,7 +11,7 @@ namespace Flux.Quantities
   /// <para><see href="https://en.wikipedia.org/wiki/Absorbed_dose"/></para>
   /// </summary>
   public readonly record struct AbsorbedDose
-    : System.IComparable, System.IComparable<AbsorbedDose>, System.IFormattable, IUnitValueQuantifiable<double, AbsorbedDoseUnit>
+    : System.IComparable, System.IComparable<AbsorbedDose>, System.IFormattable, ISiPrefixValueQuantifiable<double, AbsorbedDoseUnit>
   {
     private readonly double m_value;
 
@@ -59,6 +59,19 @@ namespace Flux.Quantities
     /// <para>The unit of the <see cref="AbsorbedDose.Value"/> property is in <see cref="AbsorbedDoseUnit.Gray"/>.</para>
     /// </summary>
     public double Value => m_value;
+
+    // ISiPrefixValueQuantifiable<>
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(AbsorbedDoseUnit.Gray, preferPlural);
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(AbsorbedDoseUnit.Gray, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     // IUnitQuantifiable<>
     public string GetUnitName(AbsorbedDoseUnit unit, bool preferPlural)
