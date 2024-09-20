@@ -50,7 +50,7 @@ namespace Flux.DataStructures.Immutable
 
           for (var j = inStart; j < inEnd; j++)
           {
-            if (data.Equals(inOrder[j]))
+            if (data!.Equals(inOrder[j]))
             {
               startNode = new ImmutableBinaryTree<TValue>(data, ImmutableBinaryTree<TValue>.Empty, ImmutableBinaryTree<TValue>.Empty);
               index = j;

@@ -41,6 +41,17 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      System.Console.WriteLine(new Flux.Quantities.AmountOfSubstance(5500.5));
+      System.Console.WriteLine(new Flux.Quantities.ElectricCurrent(5500.5));
+      System.Console.WriteLine(new Flux.Quantities.Length(5500.5));
+      System.Console.WriteLine(new Flux.Quantities.LuminousIntensity(5500.5));
+      System.Console.WriteLine(new Flux.Quantities.Mass(5500.5));
+      System.Console.WriteLine(new Flux.Quantities.Temperature(5500.5));
+      System.Console.WriteLine(new Flux.Quantities.Time(5500.5));
+
+      System.Console.WriteLine(string.Join(Environment.NewLine, typeof(IValueQuantifiable<>).GetDerivedTypes().Where(t => !t.IsInterface).OrderBy(t => t.Name).Select((e, i) => $"{i:D2} {e.Name} = {e.CreateInstance()?.ToString()}")));
+      return;
+
       var mv = new Flux.Quantities.Mass(2.338456);
       var mvsipvss = mv.ToSiPrefixValueSymbolString(MetricPrefix.Milli);
       var mvuvns = mv.ToSiPrefixValueNameString(MetricPrefix.Milli).ToLower();

@@ -54,13 +54,17 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(CurrentDensityUnit.AmperePerSquareMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="CurrentDensity.Value"/> property is in <see cref="CurrentDensityUnit.AmperePerSquareMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    //IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
     public string GetUnitName(CurrentDensityUnit unit, bool preferPlural)
       => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
@@ -83,6 +87,8 @@ namespace Flux.Quantities
 
     public string ToUnitValueSymbolString(CurrentDensityUnit unit = CurrentDensityUnit.AmperePerSquareMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
+
+    #endregion // IUnitQuantifiable<>
 
     #endregion Implemented interfaces
 

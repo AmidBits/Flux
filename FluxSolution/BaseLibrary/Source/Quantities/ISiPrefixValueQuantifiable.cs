@@ -4,6 +4,17 @@
 
   public static partial class Em
   {
+    public static string ToSiFormattedString<TValue>(this TValue source, System.Globalization.CultureInfo? cultureInfo = null)
+      where TValue : System.Numerics.INumber<TValue>
+    {
+      cultureInfo ??= System.Globalization.CultureInfo.CurrentCulture;
+
+      var nfi = (System.Globalization.NumberFormatInfo)cultureInfo.NumberFormat.Clone();
+      nfi.NumberGroupSeparator = UnicodeSpacing.ThinSpace.ToSpacingString();
+
+      return source.ToString("#,0.#", nfi);
+    }
+
     public static System.Collections.Generic.Dictionary<(Quantities.MetricPrefix, TUnit), string> ToStringsOfMetricPrefixes<TValue, TUnit>(this Quantities.ISiPrefixValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       where TValue : struct, System.Numerics.INumber<TValue>
       where TUnit : System.Enum

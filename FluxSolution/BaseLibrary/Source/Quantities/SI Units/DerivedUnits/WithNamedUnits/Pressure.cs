@@ -63,9 +63,19 @@ namespace Flux.Quantities
     public int CompareTo(Pressure other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(PressureUnit.Pascal, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix, format, formatProvider);
 
-    // ISiUnitValueQuantifiable<>
+    #region IQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="Pressure.Value"/> property is in <see cref="PressureUnit.Pascal"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
     public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(PressureUnit.Pascal, preferPlural);
 
     public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(PressureUnit.Pascal, preferUnicode);
@@ -73,18 +83,15 @@ namespace Flux.Quantities
     public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
 
     public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
 
     public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetSiPrefixValue(prefix).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
-    // IQuantifiable<>
-    /// <summary>
-    /// <para>The unit of the <see cref="Pressure.Value"/> property is in <see cref="PressureUnit.Pascal"/>.</para>
-    /// </summary>
-    public double Value => m_value;
+    #endregion // ISiUnitValueQuantifiable<>
 
-    // IUnitQuantifiable<>
+    #region IUnitQuantifiable<>
+
     public string GetUnitName(PressureUnit unit, bool preferPlural)
       => unit.ToString() + unit switch
       {
@@ -121,6 +128,8 @@ namespace Flux.Quantities
 
     public string ToUnitValueSymbolString(PressureUnit unit = PressureUnit.Pascal, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
+
+    #endregion // IUnitQuantifiable<>
 
     #endregion Implemented interfaces
 

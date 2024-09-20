@@ -52,15 +52,18 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(PermeabilityUnit.HenryPerMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="Permeability.Value"/> property is in <see cref="PermeabilityUnit.HenryPerMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
-    public string GetUnitName(PermeabilityUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public string GetUnitName(PermeabilityUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(PermeabilityUnit unit, bool preferUnicode)
       => unit switch
@@ -81,6 +84,8 @@ namespace Flux.Quantities
 
     public string ToUnitValueSymbolString(PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
+
+    #endregion // IUnitQuantifiable<>
 
     #endregion Implemented interfaces
 

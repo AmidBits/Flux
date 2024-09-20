@@ -62,12 +62,12 @@ namespace Units
     [TestMethod]
     public void Temperature()
     {
-      var u = new Flux.Quantities.ThermaldynamicTemperature(1);
+      var u = new Flux.Quantities.Temperature(1);
 
-      Assert.AreEqual(-272.15, u.GetUnitValue(Flux.Quantities.ThermaldynamicTemperatureUnit.Celsius));
-      Assert.AreEqual(-457.87, u.GetUnitValue(Flux.Quantities.ThermaldynamicTemperatureUnit.Fahrenheit));
-      Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.ThermaldynamicTemperatureUnit.Kelvin));
-      Assert.AreEqual(1.8, u.GetUnitValue(Flux.Quantities.ThermaldynamicTemperatureUnit.Rankine));
+      Assert.AreEqual(-272.15, u.GetUnitValue(Flux.Quantities.TemperatureUnit.Celsius));
+      Assert.AreEqual(-457.87, u.GetUnitValue(Flux.Quantities.TemperatureUnit.Fahrenheit));
+      Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.TemperatureUnit.Kelvin));
+      Assert.AreEqual(1.8, u.GetUnitValue(Flux.Quantities.TemperatureUnit.Rankine));
     }
 
     [TestMethod]

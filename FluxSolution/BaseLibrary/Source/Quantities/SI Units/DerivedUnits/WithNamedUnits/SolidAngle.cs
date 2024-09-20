@@ -54,15 +54,18 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(SolidAngleUnit.Steradian, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="SolidAngle.Value"/> property is in <see cref="SolidAngleUnit.Steradian"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
-    public string GetUnitName(SolidAngleUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public string GetUnitName(SolidAngleUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
 
     public string GetUnitSymbol(SolidAngleUnit unit, bool preferUnicode)
       => unit switch
@@ -85,6 +88,8 @@ namespace Flux.Quantities
 
     public string ToUnitValueSymbolString(SolidAngleUnit unit = SolidAngleUnit.Steradian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
+
+    #endregion // IUnitQuantifiable<>
 
     #endregion Implemented interfaces
 
