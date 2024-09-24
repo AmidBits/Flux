@@ -4,7 +4,7 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Mass"/>.</summary>
     Kilogram,
-    //Milligram,
+    /// <summary>Even though gram is an unprefixed unit, it is not the base unit for mass.</summary>
     Gram,
     Ounce,
     Pound,
@@ -29,18 +29,7 @@ namespace Flux.Quantities
     /// <param name="value"></param>
     /// <param name="unit"></param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public Mass(double value, MassUnit unit = MassUnit.Kilogram)
-      => m_value = unit switch
-      {
-        MassUnit.Kilogram => value,
-
-        //MassUnit.Milligram => value / 1000000,
-        MassUnit.Gram => value / 1000,
-        MassUnit.Ounce => value / 35.27396195,
-        MassUnit.Pound => value * 0.45359237,
-        MassUnit.Tonne => value * 1000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Mass(double value, MassUnit unit = MassUnit.Kilogram) => m_value = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="MassUnit.Gram"/>, e.g. <see cref="MetricPrefix.Kilo"/> for kilogram.</para>
@@ -48,7 +37,7 @@ namespace Flux.Quantities
     /// <remarks>Mass is the only </remarks>
     /// <param name="grams"></param>
     /// <param name="prefix"></param>
-    public Mass(double grams, MetricPrefix prefix) => m_value = prefix.Convert(grams, MetricPrefix.Kilo);
+    public Mass(double grams, MetricPrefix prefix) => m_value = prefix.ConvertTo(grams, MetricPrefix.Kilo);
 
     #region Static methods
     #endregion // Static methods
@@ -83,7 +72,7 @@ namespace Flux.Quantities
     public int CompareTo(Mass other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.Kilo, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.Kilo);
 
     #region IQuantifiable<>
 
@@ -96,28 +85,54 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(MassUnit.Gram, preferPlural);
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(MassUnit.Gram, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(MassUnit.Gram, preferUnicode);
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(MassUnit.Gram, preferUnicode);
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Kilo.Convert(m_value, prefix);
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Kilo.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
 
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 
-    public string GetUnitName(MassUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    public static double ConvertFromUnit(MassUnit unit, double value)
+      => unit switch
+      {
+        MassUnit.Kilogram => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(MassUnit unit, double value)
+      => unit switch
+      {
+        MassUnit.Kilogram => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(MassUnit unit)
+      => unit switch
+      {
+        MassUnit.Gram => 0.001,
+        MassUnit.Ounce => 0.028349523125,
+        MassUnit.Pound => 0.45359237,
+        MassUnit.Tonne => 1000,
+
+        _ => throw new System.NotImplementedException()
+      };
+
+    public string GetUnitName(MassUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(MassUnit unit, bool preferUnicode)
       => unit switch
       {
-        //Units.MassUnit.Milligram => preferUnicode ? "\u338E" : "mg",
         MassUnit.Gram => "g",
         MassUnit.Ounce => "oz",
         MassUnit.Pound => "lb",
@@ -126,17 +141,7 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(MassUnit unit)
-      => unit switch
-      {
-        //MassUnit.Milligram => m_value * 1000000,
-        MassUnit.Gram => m_value * 1000,
-        MassUnit.Ounce => m_value * 35.27396195,
-        MassUnit.Pound => m_value / 0.45359237,
-        MassUnit.Kilogram => m_value,
-        MassUnit.Tonne => m_value / 1000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(MassUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitValueNameString(MassUnit unit = MassUnit.Kilogram, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
@@ -146,7 +151,7 @@ namespace Flux.Quantities
 
     #endregion // IUnitQuantifiable<>
 
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

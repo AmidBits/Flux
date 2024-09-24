@@ -94,7 +94,7 @@ namespace Flux
 
       return (
         System.Math.Sqrt(alpha * alpha + beta * beta),
-        Quantities.Angle.ConvertRadianToDegree(System.Math.Atan2(beta, alpha)).Wrap(0, 360)
+        double.RadiansToDegrees(System.Math.Atan2(beta, alpha)).Wrap(0, 360)
       );
     }
 

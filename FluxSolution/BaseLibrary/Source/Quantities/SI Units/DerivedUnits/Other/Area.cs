@@ -17,13 +17,13 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Area(double value, AreaUnit unit = AreaUnit.SquareMeter)
-      => m_value = unit switch
-      {
-        AreaUnit.SquareMeter => value,
-        AreaUnit.Hectare => ConvertHectareToSquareMeter(value),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Area(double value, AreaUnit unit = AreaUnit.SquareMeter) => m_value = ConvertFromUnit(unit, value);
+    //=> m_value = unit switch
+    //{
+    //  AreaUnit.SquareMeter => value,
+    //  AreaUnit.Hectare => ConvertHectareToSquareMeter(value),
+    //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+    //};
 
     #region Static methods
 
@@ -70,15 +70,61 @@ namespace Flux.Quantities
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => ToUnitValueSymbolString(AreaUnit.SquareMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="Area.Value"/> property is in <see cref="AreaUnit.SquareMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => GetUnitName(AreaUnit.SquareMeter, preferPlural).Insert(6, prefix.GetPrefixName());
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AreaUnit.SquareMeter, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 2);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+
+    #endregion // ISiUnitValueQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(AreaUnit unit, double value)
+      => unit switch
+      {
+        AreaUnit.SquareMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(AreaUnit unit, double value)
+      => unit switch
+      {
+        AreaUnit.SquareMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(AreaUnit unit)
+      => unit switch
+      {
+        AreaUnit.SquareMeter => 1,
+
+        AreaUnit.Hectare => 10000,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(AreaUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(AreaUnit unit, bool preferUnicode)
       => unit switch
@@ -88,21 +134,23 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(AreaUnit unit)
-      => unit switch
-      {
-        AreaUnit.SquareMeter => m_value,
-        AreaUnit.Hectare => ConvertSquareMeterToHectare(m_value),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(AreaUnit unit) => ConvertToUnit(unit, m_value);
+    //=> unit switch
+    //{
+    //  AreaUnit.SquareMeter => m_value,
+    //  AreaUnit.Hectare => ConvertSquareMeterToHectare(m_value),
+    //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+    //};
 
     public string ToUnitValueNameString(AreaUnit unit = AreaUnit.SquareMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => GetUnitValue(unit).ToString(format, formatProvider)+ unitSpacing.ToSpacingString()+ GetUnitName(unit, preferPlural);
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
     public string ToUnitValueSymbolString(AreaUnit unit = AreaUnit.SquareMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetUnitValue(unit).ToString(format, formatProvider)+ unitSpacing.ToSpacingString()+ GetUnitSymbol(unit, preferUnicode);
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
-    #endregion Implemented interfaces
+    #endregion // IUnitQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

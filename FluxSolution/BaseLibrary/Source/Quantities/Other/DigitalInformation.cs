@@ -105,7 +105,7 @@ namespace Flux
 
       // IUnitQuantifiable<>
       public string GetUnitName(DigitalInformationUnit unit, bool preferPlural)
-        => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+        => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
       public string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode)
         => unit switch

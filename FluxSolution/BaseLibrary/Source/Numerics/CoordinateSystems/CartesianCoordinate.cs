@@ -7,28 +7,28 @@ namespace Flux
     /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
     public static Coordinates.CartesianCoordinate ToCartesianCoordinate(this System.Numerics.Vector2 source, double z = 0, double w = 0)
       => new(
-        source.X, Quantities.LengthUnit.Metre,
-        source.Y, Quantities.LengthUnit.Metre,
-        z, Quantities.LengthUnit.Metre,
-        w, Quantities.LengthUnit.Metre
+        source.X, Quantities.LengthUnit.Meter,
+        source.Y, Quantities.LengthUnit.Meter,
+        z, Quantities.LengthUnit.Meter,
+        w, Quantities.LengthUnit.Meter
       );
 
     /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector3"/>.</summary>
     public static Coordinates.CartesianCoordinate ToCartesianCoordinate(this System.Numerics.Vector3 source, double w = 0)
       => new(
-        source.X, Quantities.LengthUnit.Metre,
-        source.Y, Quantities.LengthUnit.Metre,
-        source.Z, Quantities.LengthUnit.Metre,
-        w, Quantities.LengthUnit.Metre
+        source.X, Quantities.LengthUnit.Meter,
+        source.Y, Quantities.LengthUnit.Meter,
+        source.Z, Quantities.LengthUnit.Meter,
+        w, Quantities.LengthUnit.Meter
       );
 
     /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector4"/>.</summary>
     public static Coordinates.CartesianCoordinate ToCartesianCoordinate(this System.Numerics.Vector4 source)
       => new(
-        source.X, Quantities.LengthUnit.Metre,
-        source.Y, Quantities.LengthUnit.Metre,
-        source.Z, Quantities.LengthUnit.Metre,
-        source.W, Quantities.LengthUnit.Metre
+        source.X, Quantities.LengthUnit.Meter,
+        source.Y, Quantities.LengthUnit.Meter,
+        source.Z, Quantities.LengthUnit.Meter,
+        source.W, Quantities.LengthUnit.Meter
       );
 
     /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="System.Runtime.Intrinsics.Vector256{T}"/> (with all components).</summary>
@@ -97,7 +97,7 @@ namespace Flux
       /// <param name="zValue"></param>
       /// <param name="zUnit"></param>
       public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit, double yValue, Quantities.LengthUnit yUnit, double zValue, Quantities.LengthUnit zUnit)
-        : this(xValue, xUnit, yValue, yUnit, zValue, zUnit, 0, Quantities.LengthUnit.Metre) { }
+        : this(xValue, xUnit, yValue, yUnit, zValue, zUnit, 0, Quantities.LengthUnit.Meter) { }
 
       /// <summary>
       /// <para>Initialize as a 2D cartesian coordinate with the Z and W components = 0.</para>
@@ -107,7 +107,7 @@ namespace Flux
       /// <param name="yValue"></param>
       /// <param name="yUnit"></param>
       public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit, double yValue, Quantities.LengthUnit yUnit)
-        : this(xValue, xUnit, yValue, yUnit, 0, Quantities.LengthUnit.Metre, 0, Quantities.LengthUnit.Metre) { }
+        : this(xValue, xUnit, yValue, yUnit, 0, Quantities.LengthUnit.Meter, 0, Quantities.LengthUnit.Meter) { }
 
       /// <summary>
       /// <para>Initialize as a 1D cartesian coordinate with the Y, Z and W components = 0.</para>
@@ -117,15 +117,15 @@ namespace Flux
       /// <param name="yValue"></param>
       /// <param name="yUnit"></param>
       public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit)
-        : this(xValue, xUnit, 0, Quantities.LengthUnit.Metre, 0, Quantities.LengthUnit.Metre, 0, Quantities.LengthUnit.Metre) { }
+        : this(xValue, xUnit, 0, Quantities.LengthUnit.Meter, 0, Quantities.LengthUnit.Meter, 0, Quantities.LengthUnit.Meter) { }
 
-      public CartesianCoordinate(double x, double y, double z, double w) : this(x, Quantities.LengthUnit.Metre, y, Quantities.LengthUnit.Metre, z, Quantities.LengthUnit.Metre, w, Quantities.LengthUnit.Metre) { }
+      public CartesianCoordinate(double x, double y, double z, double w) : this(x, Quantities.LengthUnit.Meter, y, Quantities.LengthUnit.Meter, z, Quantities.LengthUnit.Meter, w, Quantities.LengthUnit.Meter) { }
 
-      public CartesianCoordinate(double x, double y, double z) : this(x, Quantities.LengthUnit.Metre, y, Quantities.LengthUnit.Metre, z, Quantities.LengthUnit.Metre) { }
+      public CartesianCoordinate(double x, double y, double z) : this(x, Quantities.LengthUnit.Meter, y, Quantities.LengthUnit.Meter, z, Quantities.LengthUnit.Meter) { }
 
-      public CartesianCoordinate(double x, double y) : this(x, Quantities.LengthUnit.Metre, y, Quantities.LengthUnit.Metre) { }
+      public CartesianCoordinate(double x, double y) : this(x, Quantities.LengthUnit.Meter, y, Quantities.LengthUnit.Meter) { }
 
-      public CartesianCoordinate(double x) : this(x, Quantities.LengthUnit.Metre) { }
+      public CartesianCoordinate(double x) : this(x, Quantities.LengthUnit.Meter) { }
 
       public void Deconstruct(out double x, out double y)
       {
@@ -174,9 +174,9 @@ namespace Flux
         var (x, y, z) = this;
 
         return new(
-              System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Metre,
+              System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
               (System.Math.Atan2(y, x) + System.Math.Tau) % System.Math.Tau, Quantities.AngleUnit.Radian,
-              z, Quantities.LengthUnit.Metre
+              z, Quantities.LengthUnit.Meter
             );
       }
 
@@ -186,7 +186,7 @@ namespace Flux
         var (x, y) = this;
 
         return new(
-              System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Metre,
+              System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
               System.Math.Atan2(y, x), Quantities.AngleUnit.Radian
             );
       }
@@ -199,7 +199,7 @@ namespace Flux
         var x2y2 = x * x + y * y;
 
         return new(
-          System.Math.Sqrt(x2y2 + z * z), Quantities.LengthUnit.Metre,
+          System.Math.Sqrt(x2y2 + z * z), Quantities.LengthUnit.Meter,
           System.Math.Atan2(System.Math.Sqrt(x2y2), z) /*+ System.Math.PI*/, Quantities.AngleUnit.Radian,
           System.Math.Atan2(y, x) /*+ System.Math.PI*/, Quantities.AngleUnit.Radian
         );

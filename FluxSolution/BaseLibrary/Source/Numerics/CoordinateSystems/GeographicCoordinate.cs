@@ -55,11 +55,11 @@ namespace Flux.Coordinates
     /// <param name="altitudeValue">The altitude length value.</param>
     /// <param name="altitudeUnit">The altitude length unit.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public GeographicCoordinate(double latitudeValue, Quantities.AngleUnit latitudeUnit, double longitudeValue, Quantities.AngleUnit longitudeUnit, double altitudeValue = 1, Quantities.LengthUnit altitudeUnit = Quantities.LengthUnit.Metre)
+    public GeographicCoordinate(double latitudeValue, Quantities.AngleUnit latitudeUnit, double longitudeValue, Quantities.AngleUnit longitudeUnit, double altitudeValue = 1, Quantities.LengthUnit altitudeUnit = Quantities.LengthUnit.Meter)
       : this(new Quantities.Angle(latitudeValue, latitudeUnit), new Quantities.Angle(longitudeValue, longitudeUnit), new Quantities.Length(altitudeValue, altitudeUnit))
     { }
 
-    public GeographicCoordinate(double latitudeRadian, double longitudeRadian, double altitudeMeter) : this(latitudeRadian, Quantities.AngleUnit.Radian, longitudeRadian, Quantities.AngleUnit.Radian, altitudeMeter, Quantities.LengthUnit.Metre) { }
+    public GeographicCoordinate(double latitudeRadian, double longitudeRadian, double altitudeMeter) : this(latitudeRadian, Quantities.AngleUnit.Radian, longitudeRadian, Quantities.AngleUnit.Radian, altitudeMeter, Quantities.LengthUnit.Meter) { }
 
     public void Deconstruct(out double latitudeRadian, out double longitudeRadian, out double altitudeMeter)
     {
@@ -92,7 +92,7 @@ namespace Flux.Coordinates
       var (lat, lon, alt) = this;
 
       return new(
-        alt, Quantities.LengthUnit.Metre,
+        alt, Quantities.LengthUnit.Meter,
         /*System.Math.PI -*/ (lat + (System.Math.PI / 2)), Quantities.AngleUnit.Radian,
         lon /*+ System.Math.PI*/, Quantities.AngleUnit.Radian
       );

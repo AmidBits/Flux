@@ -10,7 +10,7 @@ namespace Flux
       var y = source.Y;
 
       return new(
-        System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Metre,
+        System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
         System.Math.Atan2(y, x), Quantities.AngleUnit.Radian
       );
     }
@@ -44,7 +44,7 @@ namespace Flux
         : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(azimuthValue, azimuthUnit)) { }
 
       public PolarCoordinate(double radiusMeter, double azimuthRadian)
-        : this(radiusMeter, Quantities.LengthUnit.Metre, azimuthRadian, Quantities.AngleUnit.Radian) { }
+        : this(radiusMeter, Quantities.LengthUnit.Meter, azimuthRadian, Quantities.AngleUnit.Radian) { }
 
       public void Deconstruct(out double radiusMeter, out double azimuthRadian)
       {

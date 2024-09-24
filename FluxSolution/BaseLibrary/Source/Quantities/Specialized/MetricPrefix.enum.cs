@@ -3,15 +3,16 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>
-    /// <para>Convert <paramref name="value"/> from <paramref name="source"/> prefix to <paramref name="target"/> prefix.</para>
+    /// <para>Convert <paramref name="value"/> from <paramref name="source"/> prefix to <paramref name="target"/> prefix with a choice of <paramref name="dimensions"/> (1 is default, 2 for squares and 3 for cubes).</para>
     /// </summary>
     /// <param name="source"></param>
     /// <param name="value"></param>
     /// <param name="target"></param>
+    /// <param name="dimensions"></param>
     /// <returns></returns>
-    public static T Convert<T>(this Quantities.MetricPrefix source, T value, Quantities.MetricPrefix target)
+    public static T ConvertTo<T>(this Quantities.MetricPrefix source, T value, Quantities.MetricPrefix target, int dimensions = 1)
       where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
-      => value * T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target));
+      => value * T.Pow(T.Pow(T.CreateChecked(10), (T.CreateChecked((int)source) - T.CreateChecked((int)target))), T.CreateChecked(dimensions));
 
     public static decimal Convert(this Quantities.MetricPrefix source, decimal value, Quantities.MetricPrefix target)
       => value * (decimal)double.Pow(10, (int)source - (int)target);
@@ -27,23 +28,23 @@ namespace Flux
     {
       var metricPrefixes = System.Enum.GetValues<Quantities.MetricPrefix>();
 
-      var adjustedValue = source.Convert(value, Quantities.MetricPrefix.NoPrefix);
+      var adjustedValue = source.ConvertTo(value, Quantities.MetricPrefix.Unprefixed);
 
       var (InfimumIndex, InfimumItem, InfimumValue, SupremumIndex, SupremumItem, SupremumValue) = metricPrefixes.AsReadOnlySpan().GetInfimumAndSupremum(adjustedValue, e => T.CopySign(T.Pow(T.CreateChecked(10), T.Abs(T.CreateChecked((int)e))), T.CreateChecked((int)e)), proper);
 
-      var ltValue = Quantities.MetricPrefix.NoPrefix.Convert(value, InfimumItem);
-      var gtValue = Quantities.MetricPrefix.NoPrefix.Convert(value, SupremumItem);
+      var ltValue = Quantities.MetricPrefix.Unprefixed.ConvertTo(value, InfimumItem);
+      var gtValue = Quantities.MetricPrefix.Unprefixed.ConvertTo(value, SupremumItem);
 
       return (ltValue, InfimumItem, gtValue, SupremumItem);
     }
 
-    public static string GetUnitName(this Quantities.MetricPrefix source)
-      => source != Quantities.MetricPrefix.NoPrefix ? source.ToString() : string.Empty;
+    public static string GetPrefixName(this Quantities.MetricPrefix source)
+      => source != Quantities.MetricPrefix.Unprefixed ? source.ToString() : string.Empty;
 
-    public static string GetUnitSymbol(this Quantities.MetricPrefix source, bool preferUnicode)
+    public static string GetPrefixSymbol(this Quantities.MetricPrefix source, bool preferUnicode)
       => source switch
       {
-        Quantities.MetricPrefix.NoPrefix => string.Empty,
+        Quantities.MetricPrefix.Unprefixed => string.Empty,
         Quantities.MetricPrefix.Quetta => "Q",
         Quantities.MetricPrefix.Ronna => "R",
         Quantities.MetricPrefix.Yotta => "Y",
@@ -71,7 +72,7 @@ namespace Flux
         _ => string.Empty,
       };
 
-    public static double GetUnitValue(this Quantities.MetricPrefix source) => System.Math.Pow(10, (int)source);
+    public static double GetPrefixValue(this Quantities.MetricPrefix source) => System.Math.Pow(10, (int)source);
   }
 
   namespace Quantities
@@ -84,7 +85,7 @@ namespace Flux
     public enum MetricPrefix
     {
       /// <summary>Represents a value that is not a metric multiple. A.k.a. one.</summary>
-      NoPrefix = 0,
+      Unprefixed = 0,
       /// <summary></summary>
       Quetta = 30,
       /// <summary></summary>

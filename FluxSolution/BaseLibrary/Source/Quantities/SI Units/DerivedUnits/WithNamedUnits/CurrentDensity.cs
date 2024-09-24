@@ -13,14 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public CurrentDensity(double value, CurrentDensityUnit unit = CurrentDensityUnit.AmperePerSquareMeter)
-      => m_value = unit switch
-      {
-        CurrentDensityUnit.AmperePerSquareMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-    //public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(CurrentDensityUnit.AmperePerSquareMeter), MetricMultiplicativePrefix.One);
+    public CurrentDensity(double value, CurrentDensityUnit unit = CurrentDensityUnit.AmperePerSquareMeter) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -65,8 +58,32 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
+    public static double ConvertFromUnit(CurrentDensityUnit unit, double value)
+      => unit switch
+      {
+        CurrentDensityUnit.AmperePerSquareMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(CurrentDensityUnit unit, double value)
+      => unit switch
+      {
+        CurrentDensityUnit.AmperePerSquareMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(CurrentDensityUnit unit)
+      => unit switch
+      {
+        CurrentDensityUnit.AmperePerSquareMeter => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(CurrentDensityUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(CurrentDensityUnit unit, bool preferUnicode)
       => unit switch
@@ -75,12 +92,7 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(CurrentDensityUnit unit)
-      => unit switch
-      {
-        CurrentDensityUnit.AmperePerSquareMeter => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(CurrentDensityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitValueNameString(CurrentDensityUnit unit = CurrentDensityUnit.AmperePerSquareMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
@@ -90,7 +102,7 @@ namespace Flux.Quantities
 
     #endregion // IUnitQuantifiable<>
 
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

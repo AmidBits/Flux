@@ -13,13 +13,13 @@ namespace Flux.Quantities
     /// <summary>Per cent mille, abbreviated "pcm".</summary>
     PerCentMille = 5,
     /// <summary>Abbreviated "ppm".</summary>
-    PartsPerMillion = 6,
+    PartPerMillion = 6,
     /// <summary>Abbreviated "ppb".</summary>
-    PartsPerBillion = 9,
+    PartPerBillion = 9,
     /// <summary>Abbreviated "ppt".</summary>
-    PartsPerTrillion = 12,
+    PartPerTrillion = 12,
     /// <summary>Abbreviated "ppq".</summary>
-    PartsPerQuadrillion = 15,
+    PartPerQuadrillion = 15,
   }
 
   /// <summary>
@@ -45,10 +45,10 @@ namespace Flux.Quantities
         PartsPerNotationUnit.PerMille => parts / 1e3,
         PartsPerNotationUnit.PerMyriad => parts / 1e4,
         PartsPerNotationUnit.PerCentMille => parts / 1e5,
-        PartsPerNotationUnit.PartsPerMillion => parts / 1e6,
-        PartsPerNotationUnit.PartsPerBillion => parts / 1e9,
-        PartsPerNotationUnit.PartsPerTrillion => parts / 1e12,
-        PartsPerNotationUnit.PartsPerQuadrillion => parts / 1e15,
+        PartsPerNotationUnit.PartPerMillion => parts / 1e6,
+        PartsPerNotationUnit.PartPerBillion => parts / 1e9,
+        PartsPerNotationUnit.PartPerTrillion => parts / 1e12,
+        PartsPerNotationUnit.PartPerQuadrillion => parts / 1e15,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -99,15 +99,15 @@ namespace Flux.Quantities
 
     // IUnitQuantifiable<>
     public string GetUnitName(PartsPerNotationUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(PartsPerNotationUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.PartsPerNotationUnit.PartsPerQuadrillion => "ppq",
-        Quantities.PartsPerNotationUnit.PartsPerTrillion => "ppt",
-        Quantities.PartsPerNotationUnit.PartsPerBillion => "ppb",
-        Quantities.PartsPerNotationUnit.PartsPerMillion => preferUnicode ? "\u33D9" : "ppm",
+        Quantities.PartsPerNotationUnit.PartPerQuadrillion => "ppq",
+        Quantities.PartsPerNotationUnit.PartPerTrillion => "ppt",
+        Quantities.PartsPerNotationUnit.PartPerBillion => "ppb",
+        Quantities.PartsPerNotationUnit.PartPerMillion => preferUnicode ? "\u33D9" : "ppm",
         Quantities.PartsPerNotationUnit.PerCentMille => "pcm",
         Quantities.PartsPerNotationUnit.PerMyriad => "\u2031",
         Quantities.PartsPerNotationUnit.PerMille => "\u2030",
@@ -124,10 +124,10 @@ namespace Flux.Quantities
         PartsPerNotationUnit.PerMille => m_parts * 1e3,
         PartsPerNotationUnit.PerMyriad => m_parts * 1e4,
         PartsPerNotationUnit.PerCentMille => m_parts * 1e5,
-        PartsPerNotationUnit.PartsPerMillion => m_parts * 1e6,
-        PartsPerNotationUnit.PartsPerBillion => m_parts * 1e9,
-        PartsPerNotationUnit.PartsPerTrillion => m_parts * 1e12,
-        PartsPerNotationUnit.PartsPerQuadrillion => m_parts * 1e15,
+        PartsPerNotationUnit.PartPerMillion => m_parts * 1e6,
+        PartsPerNotationUnit.PartPerBillion => m_parts * 1e9,
+        PartsPerNotationUnit.PartPerTrillion => m_parts * 1e12,
+        PartsPerNotationUnit.PartPerQuadrillion => m_parts * 1e15,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

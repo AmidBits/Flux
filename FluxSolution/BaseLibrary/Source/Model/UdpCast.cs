@@ -110,8 +110,6 @@ namespace Flux.Net
 
       uc.DataReceived += Uc_DataReceived;
 
-      System.Console.WriteLine($"{string.Join(", ", System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().WhereOperational().WhereActive().WhereNoLoopbacksOrTunnels().WhereGateway().GetAllUnicastAddresses(true).First())}");
-
       while (System.Console.ReadLine() is string line && line.Length > 0)
         uc.SendData(System.Text.UnicodeEncoding.UTF32.GetBytes(line));
 

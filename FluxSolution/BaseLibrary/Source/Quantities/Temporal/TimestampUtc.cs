@@ -70,10 +70,10 @@ namespace Flux
       public System.DateOnly ToDateOnly() => new(m_year, m_month, m_day);
 
       /// <summary>Creates a new <see cref="System.DateTime"/> from all components in this instance.</summary>
-      public System.DateTime ToDateTime() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
+      public System.DateTime ToDateTime() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(MetricPrefix.Nano.ConvertTo((double)m_nanosecond, MetricPrefix.Milli)));
 
       /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the specified conversion calendar.</summary>
-      public JulianDate ToJulianDate(TemporalCalendar calendar) => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)), calendar);
+      public JulianDate ToJulianDate(TemporalCalendar calendar) => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(MetricPrefix.Nano.ConvertTo((double)m_nanosecond, MetricPrefix.Milli)), calendar);
 
       /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the default conversion calendar.</summary>
       public JulianDate ToJulianDate() => ToJulianDate(GetConversionCalendar());
@@ -85,13 +85,13 @@ namespace Flux
       public JulianDayNumber ToJulianDayNumber() => ToJulianDayNumber(GetConversionCalendar());
 
       /// <summary>Creates a new <see cref="JulianDate"/> from this instance. Uses the specified conversion calendar.</summary>
-      public MomentUtc ToMomentUtc() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
+      public MomentUtc ToMomentUtc() => new(m_year, m_month, m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(MetricPrefix.Nano.ConvertTo((double)m_nanosecond, MetricPrefix.Milli)));
 
       /// <summary>Creates a new <see cref="System.TimeOnly"/> from the time components in this instance.</summary>
-      public System.TimeOnly ToTimeOnly() => new(m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
+      public System.TimeOnly ToTimeOnly() => new(m_hour, m_minute, m_second, System.Convert.ToInt32(MetricPrefix.Nano.ConvertTo((double)m_nanosecond, MetricPrefix.Milli)));
 
       /// <summary>Creates a new <see cref="System.TimeSpan"/> from the day and all time components in this instance.</summary>
-      public System.TimeSpan ToTimeSpan() => new(m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(Quantities.Time.ConvertNanosecondToMillisecond(m_nanosecond)));
+      public System.TimeSpan ToTimeSpan() => new(m_day, m_hour, m_minute, m_second, System.Convert.ToInt32(MetricPrefix.Nano.ConvertTo((double)m_nanosecond, MetricPrefix.Milli)));
 
       #region Static methods
 

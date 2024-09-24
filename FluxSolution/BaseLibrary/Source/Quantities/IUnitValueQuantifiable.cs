@@ -30,10 +30,15 @@
     /// <para>If use of <see cref="System.IConvertible"/> is desirable, use the return value from <see cref="GetUnitValue(TUnit)"/> for such functionality.</para>
     /// </remarks>
     public interface IUnitValueQuantifiable<TValue, TUnit>
-    : IValueQuantifiable<TValue>
-    where TValue : System.Numerics.INumber<TValue> // System.IEquatable<TValue>, System.IComparable<TValue>
-    where TUnit : System.Enum
+      : IValueQuantifiable<TValue>
+      where TValue : System.Numerics.INumber<TValue> // System.IEquatable<TValue>, System.IComparable<TValue>
+      where TUnit : System.Enum
     {
+      //abstract static TValue ConvertFromUnit(TUnit unit, TValue value);
+      //abstract static TValue ConvertToUnit(TUnit unit, TValue value);
+
+      //abstract static TValue GetUnitFactor(TUnit unit);
+
       /// <summary>
       /// <para>Gets the name representing the specified <paramref name="unit"/> and whether to <paramref name="preferPlural"/>.</para>
       /// </summary>

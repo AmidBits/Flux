@@ -69,7 +69,7 @@ namespace Flux.Quantities
 
     // IUnitQuantifiable<>
     public string GetUnitName(TurbidityUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(TurbidityUnit unit, bool preferUnicode)
       => unit switch

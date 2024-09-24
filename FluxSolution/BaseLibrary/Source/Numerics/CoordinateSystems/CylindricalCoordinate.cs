@@ -12,9 +12,9 @@ namespace Flux
       var z = source.Z;
 
       return new(
-        System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Metre,
+        System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
         (System.Math.Atan2(y, x) + System.Math.Tau) % System.Math.Tau, Quantities.AngleUnit.Radian,
-        z, Quantities.LengthUnit.Metre
+        z, Quantities.LengthUnit.Meter
       );
     }
   }
@@ -54,7 +54,7 @@ namespace Flux
         : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(azimuthValue, azimuthUnit), new Quantities.Length(heightValue, heightUnit)) { }
 
       public CylindricalCoordinate(double radiusMeter, double azimuthRadian, double heightMeter)
-        : this(radiusMeter, Quantities.LengthUnit.Metre, azimuthRadian, Quantities.AngleUnit.Radian, heightMeter, Quantities.LengthUnit.Metre) { }
+        : this(radiusMeter, Quantities.LengthUnit.Meter, azimuthRadian, Quantities.AngleUnit.Radian, heightMeter, Quantities.LengthUnit.Meter) { }
 
       public void Deconstruct(out double radiusMeter, out double azimuthRadian, out double heightMeter)
       {
@@ -120,7 +120,7 @@ namespace Flux
         var h = m_height.Value;
 
         return new(
-          System.Math.Sqrt(r * r + h * h), Quantities.LengthUnit.Metre,
+          System.Math.Sqrt(r * r + h * h), Quantities.LengthUnit.Meter,
           (System.Math.PI / 2) - System.Math.Atan(h / r), Quantities.AngleUnit.Radian, // "System.Math.Atan(m_radius / m_height);", does NOT work for Takapau, New Zealand. Have to use elevation math instead of inclination, and investigate.
           m_azimuth.Value, Quantities.AngleUnit.Radian
         );

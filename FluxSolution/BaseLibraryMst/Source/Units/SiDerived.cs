@@ -21,26 +21,31 @@ namespace Units
       Assert.AreEqual(1, u.Value);
     }
 
-    //[TestMethod]
-    //public void Angle()
-    //{
-    //  var u = new Flux.Units.Angle(1);
+    [TestMethod]
+    public void Angle()
+    {
+      var u = new Flux.Quantities.Angle(180, Flux.Quantities.AngleUnit.Degree);
 
-    //  var expected = (X: 0.5403023058681398, Y: 0.8414709848078965);
-    //  var actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2(u.Value);
-    //  Assert.AreEqual(expected.X, actual.x, Flux.Maths.Epsilon1E15);
-    //  Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
+      //var expected = (X: 0.5403023058681398, Y: 0.8414709848078965);
+      //var actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2(u.Value);
+      //Assert.AreEqual(expected.X, actual.x, Flux.Maths.Epsilon1E15);
+      //Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 
-    //  expected = (0.8414709848078967, 0.5403023058681394);
-    //  actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2Ex(u.Value);
-    //  Assert.AreEqual(expected.X, actual.x);
-    //  Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
+      //expected = (0.8414709848078967, 0.5403023058681394);
+      //actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2Ex(u.Value);
+      //Assert.AreEqual(expected.X, actual.x);
+      //Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
 
-    //  Assert.AreEqual(57.29577951308232, u.GetUnitValue(Flux.Units.AngleUnit.Degree));
-    //  Assert.AreEqual(63.66197723675813, u.GetUnitValue(Flux.Units.AngleUnit.Gradian));
-    //  Assert.AreEqual(1, u.Value);
-    //  Assert.AreEqual(0.15915494309189535, u.GetUnitValue(Flux.Units.AngleUnit.Turn));
-    //}
+      Assert.AreEqual(10800, u.GetUnitValue(Flux.Quantities.AngleUnit.Arcminute));
+      Assert.AreEqual(648000, u.GetUnitValue(Flux.Quantities.AngleUnit.Arcsecond));
+      Assert.AreEqual(180, u.GetUnitValue(Flux.Quantities.AngleUnit.Degree));
+      Assert.AreEqual(200, u.GetUnitValue(Flux.Quantities.AngleUnit.Gradian));
+      Assert.AreEqual(0.0031415926535897933, u.GetUnitValue(Flux.Quantities.AngleUnit.Milliradian));
+      Assert.AreEqual(3200, u.GetUnitValue(Flux.Quantities.AngleUnit.NatoMil));
+      Assert.AreEqual(3.141592653589793, u.GetUnitValue(Flux.Quantities.AngleUnit.Radian));
+      Assert.AreEqual(0.5, u.GetUnitValue(Flux.Quantities.AngleUnit.Turn));
+      Assert.AreEqual(3000, u.GetUnitValue(Flux.Quantities.AngleUnit.WarsawPactMil));
+    }
 
     [TestMethod]
     public void AngularAcceleration()
@@ -251,6 +256,18 @@ namespace Units
     public void Volume()
     {
       var u = new Flux.Quantities.Volume(1);
+
+      Assert.AreEqual(35.31466672148859, u.GetUnitValue(Flux.Quantities.VolumeUnit.CubicFoot));
+      Assert.AreEqual(1000000000, u.GetUnitValue(Flux.Quantities.VolumeUnit.CubicKilometer));
+      Assert.AreEqual(2.3991275857892774E-10, u.GetUnitValue(Flux.Quantities.VolumeUnit.CubicMile));
+      Assert.AreEqual(1.3079506193143922, u.GetUnitValue(Flux.Quantities.VolumeUnit.CubicYard));
+      Assert.AreEqual(1000, u.GetUnitValue(Flux.Quantities.VolumeUnit.Liter));
+      Assert.AreEqual(219.96924829909, u.GetUnitValue(Flux.Quantities.VolumeUnit.UKGallon));
+      Assert.AreEqual(879.87699319635, u.GetUnitValue(Flux.Quantities.VolumeUnit.UKQuart));
+      Assert.AreEqual(227.02074456538, u.GetUnitValue(Flux.Quantities.VolumeUnit.USDryGallon));
+      Assert.AreEqual(264.17205124156, u.GetUnitValue(Flux.Quantities.VolumeUnit.USLiquidGallon));
+      Assert.AreEqual(908.0829782615377, u.GetUnitValue(Flux.Quantities.VolumeUnit.USDryQuart));
+      Assert.AreEqual(1056.6882049662338, u.GetUnitValue(Flux.Quantities.VolumeUnit.USLiquidQuart));
 
       Assert.AreEqual(1, u.Value);
     }

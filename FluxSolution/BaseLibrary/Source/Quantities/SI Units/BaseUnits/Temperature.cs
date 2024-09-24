@@ -20,44 +20,36 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin)
-      => m_value = unit switch
-      {
-        TemperatureUnit.Celsius => CelsiusToKelvin(value),
-        TemperatureUnit.Fahrenheit => FahrenheitToKelvin(value),
-        TemperatureUnit.Kelvin => value,
-        TemperatureUnit.Rankine => RankineToKelvin(value),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin) => m_value = ConvertFromUnit(unit, value);
 
     #region Static methods
 
     #region Conversion methods
 
     /// <summary>Convert the temperature specified in Celsius to Fahrenheit.</summary>
-    public static double CelsiusToFahrenheit(double celsius) => celsius * 1.8 + 32;
+    public static double ConvertCelsiusToFahrenheit(double celsius) => celsius * 1.8 + 32;
     /// <summary>Convert the temperature specified in Celsius to Kelvin.</summary>
-    public static double CelsiusToKelvin(double celsius) => celsius + 273.15;
+    public static double ConvertCelsiusToKelvin(double celsius) => celsius + 273.15;
     /// <summary>Convert the temperature specified in Celsius to Rankine.</summary>
-    public static double CelsiusToRankine(double celsius) => (celsius + 273.15) * 1.8;
+    public static double ConvertCelsiusToRankine(double celsius) => (celsius + 273.15) * 1.8;
     /// <summary>Convert the temperature specified in Fahrenheit to Celsius.</summary>
-    public static double FahrenheitToCelsius(double fahrenheit) => (fahrenheit - 32) / 1.8;
+    public static double ConvertFahrenheitToCelsius(double fahrenheit) => (fahrenheit - 32) / 1.8;
     /// <summary>Convert the temperature specified in Fahrenheit to Kelvin.</summary>
-    public static double FahrenheitToKelvin(double fahrenheit) => (fahrenheit + 459.67) / 1.8;
+    public static double ConvertFahrenheitToKelvin(double fahrenheit) => (fahrenheit + 459.67) / 1.8;
     /// <summary>Convert the temperature specified in Fahrenheit to Rankine.</summary>
-    public static double FahrenheitToRankine(double fahrenheit) => fahrenheit + 459.67;
+    public static double ConvertFahrenheitToRankine(double fahrenheit) => fahrenheit + 459.67;
     /// <summary>Convert the temperature specified in Kelvin to Celsius.</summary>
-    public static double KelvinToCelsius(double kelvin) => kelvin - 273.15;
+    public static double ConvertKelvinToCelsius(double kelvin) => kelvin - 273.15;
     /// <summary>Convert the temperature specified in Kelvin to Fahrenheit.</summary>
-    public static double KelvinToFahrenheit(double kelvin) => kelvin * 1.8 - 459.67;
+    public static double ConvertKelvinToFahrenheit(double kelvin) => kelvin * 1.8 - 459.67;
     /// <summary>Convert the temperature specified in Kelvin to Rankine.</summary>
-    public static double KelvinToRankine(double kelvin) => kelvin * 1.8;
+    public static double ConvertKelvinToRankine(double kelvin) => kelvin * 1.8;
     /// <summary>Convert the temperature specified in Rankine to Celsius.</summary>
-    public static double RankineToCelsius(double rankine) => (rankine - 491.67) / 1.8;
+    public static double ConvertRankineToCelsius(double rankine) => (rankine - 491.67) / 1.8;
     /// <summary>Convert the temperature specified in Rankine to Kelvin.</summary>
-    public static double RankineToKelvin(double rankine) => rankine / 1.8;
+    public static double ConvertRankineToKelvin(double rankine) => rankine / 1.8;
     /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
-    public static double RankineToFahrenheit(double rankine) => rankine - 491.67;
+    public static double ConvertRankineToFahrenheit(double rankine) => rankine - 491.67;
 
     #endregion // Conversion methods
 
@@ -95,7 +87,7 @@ namespace Flux.Quantities
     readonly System.Globalization.NumberFormatInfo m_nfi = new System.Globalization.NumberFormatInfo() { NumberDecimalSeparator = ",", NumberGroupSeparator = " " };
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.Unprefixed);
 
     #region IQuantifiable<>
 
@@ -108,23 +100,55 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(TemperatureUnit.Kelvin, preferPlural);
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(TemperatureUnit.Kelvin, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(TemperatureUnit.Kelvin, preferUnicode);
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(TemperatureUnit.Kelvin, preferUnicode);
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
 
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 
-    public string GetUnitName(TemperatureUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    public static double ConvertFromUnit(TemperatureUnit unit, double value)
+      => unit switch
+      {
+        TemperatureUnit.Kelvin => value,
+
+        TemperatureUnit.Celsius => ConvertCelsiusToKelvin(value),
+        TemperatureUnit.Fahrenheit => ConvertFahrenheitToKelvin(value),
+        TemperatureUnit.Rankine => ConvertRankineToKelvin(value),
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(TemperatureUnit unit, double value)
+      => unit switch
+      {
+        TemperatureUnit.Kelvin => value,
+
+        TemperatureUnit.Celsius => ConvertKelvinToCelsius(value),
+        TemperatureUnit.Fahrenheit => ConvertKelvinToFahrenheit(value),
+        TemperatureUnit.Rankine => ConvertKelvinToRankine(value),
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(TemperatureUnit unit)
+      => unit switch
+      {
+        TemperatureUnit.Kelvin => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
+    public string GetUnitName(TemperatureUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(TemperatureUnit unit, bool preferUnicode)
       => unit switch
@@ -136,15 +160,7 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(TemperatureUnit unit)
-        => unit switch
-        {
-          TemperatureUnit.Celsius => KelvinToCelsius(m_value),
-          TemperatureUnit.Fahrenheit => KelvinToFahrenheit(m_value),
-          TemperatureUnit.Kelvin => m_value,
-          TemperatureUnit.Rankine => KelvinToRankine(m_value),
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
+    public double GetUnitValue(TemperatureUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitValueNameString(TemperatureUnit unit = TemperatureUnit.Kelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
@@ -154,7 +170,7 @@ namespace Flux.Quantities
 
     #endregion // IUnitQuantifiable<>
 
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

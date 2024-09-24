@@ -41,13 +41,31 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var platformstr = System.Environment.OSVersion.Platform.ToString();
+
+      var q = new Flux.Quantities.Speed(2039);
+      System.Console.WriteLine($"{q} = {q.GetSiPrefixValue(MetricPrefix.Kilo)} {q.GetSiPrefixSymbol(MetricPrefix.Kilo, false)} ({q.GetSiPrefixName(MetricPrefix.Kilo, true)}) ");
+
+      return;
+
+      var vol = new Flux.Quantities.Area(1);
+      var volh = vol.ToUnitValueSymbolString(AreaUnit.Hectare);
+      var vol2 = vol.ToSiPrefixValueSymbolString(MetricPrefix.Milli);
+
+      var fortnights = 7;
+      var seconds = Flux.Quantities.Time.ConvertFromUnit(TimeUnit.Fortnight, fortnights);
+      var days = Flux.Quantities.Time.ConvertToUnit(TimeUnit.Day, seconds);
+
+      //var fid = Flux.Quantities.Time.Convert(7, TimeUnit.Fortnight, TimeUnit.Day);
+      //var kih = (5d).ConvertSiValue(MetricPrefix.Kilo, MetricPrefix.Unprefixed);
+
       System.Console.WriteLine(new Flux.Quantities.AmountOfSubstance(5500.5));
       System.Console.WriteLine(new Flux.Quantities.ElectricCurrent(5500.5));
       System.Console.WriteLine(new Flux.Quantities.Length(5500.5));
       System.Console.WriteLine(new Flux.Quantities.LuminousIntensity(5500.5));
       System.Console.WriteLine(new Flux.Quantities.Mass(5500.5));
       System.Console.WriteLine(new Flux.Quantities.Temperature(5500.5));
-      System.Console.WriteLine(new Flux.Quantities.Time(5500.5));
+      System.Console.WriteLine(new Flux.Quantities.Time(0.05, TimeUnit.BeatPerMinute));
 
       System.Console.WriteLine(string.Join(Environment.NewLine, typeof(IValueQuantifiable<>).GetDerivedTypes().Where(t => !t.IsInterface).OrderBy(t => t.Name).Select((e, i) => $"{i:D2} {e.Name} = {e.CreateInstance()?.ToString()}")));
       return;
@@ -56,7 +74,7 @@ namespace ConsoleApp
       var mvsipvss = mv.ToSiPrefixValueSymbolString(MetricPrefix.Milli);
       var mvuvns = mv.ToSiPrefixValueNameString(MetricPrefix.Milli).ToLower();
 
-      var all = mv.ToStringsOfMetricPrefixes();
+      var all = mv.ToStringsOfSiPrefixes();
 
       var x = (-123.456).ToEnglishCardinalNumeralCompoundString().ToLower();
       var y = (23380000000).ToEnglishCardinalNumeralCompoundString().ToLower();

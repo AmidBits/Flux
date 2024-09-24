@@ -27,16 +27,12 @@ namespace Units
     {
       var u = new Flux.Quantities.Length(1);
 
-      Assert.AreEqual(1000, u.GetUnitValue(Flux.Quantities.LengthUnit.Millimetre));
-      Assert.AreEqual(100, u.GetUnitValue(Flux.Quantities.LengthUnit.Centimetre));
       Assert.AreEqual(39.37007874015748, u.GetUnitValue(Flux.Quantities.LengthUnit.Inch));
-      Assert.AreEqual(10, u.GetUnitValue(Flux.Quantities.LengthUnit.Decimetre));
       Assert.AreEqual(3.280839895013123, u.GetUnitValue(Flux.Quantities.LengthUnit.Foot));
       Assert.AreEqual(1.0936132983377078, u.GetUnitValue(Flux.Quantities.LengthUnit.Yard));
-      Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.LengthUnit.Metre));
+      Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.LengthUnit.Meter));
       Assert.AreEqual(0.0005399568034557236, u.GetUnitValue(Flux.Quantities.LengthUnit.NauticalMile));
-      Assert.AreEqual(0.0006213711922373339, u.GetUnitValue(Flux.Quantities.LengthUnit.Mile));
-      Assert.AreEqual(0.001, u.GetUnitValue(Flux.Quantities.LengthUnit.Kilometre));
+      Assert.AreEqual(0.0006213711922373339, u.GetUnitValue(Flux.Quantities.LengthUnit.InternationalMile));
     }
 
     [TestMethod]
@@ -54,7 +50,7 @@ namespace Units
 
       //Assert.AreEqual(1000000, u.GetUnitValue(Flux.Units.MassUnit.Milligram));
       Assert.AreEqual(1000, u.GetUnitValue(Flux.Quantities.MassUnit.Gram));
-      Assert.AreEqual(35.27396195, u.GetUnitValue(Flux.Quantities.MassUnit.Ounce));
+      Assert.AreEqual(35.27396194958041, u.GetUnitValue(Flux.Quantities.MassUnit.Ounce));
       Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.MassUnit.Kilogram));
       Assert.AreEqual(2.2046226218487757, u.GetUnitValue(Flux.Quantities.MassUnit.Pound));
     }
@@ -75,9 +71,9 @@ namespace Units
     {
       var u = new Flux.Quantities.Time(1);
 
-      Assert.AreEqual(1000000000, u.GetUnitValue(Flux.Quantities.TimeUnit.Nanosecond));
-      Assert.AreEqual(1000000, u.GetUnitValue(Flux.Quantities.TimeUnit.Microsecond));
-      Assert.AreEqual(1000, u.GetUnitValue(Flux.Quantities.TimeUnit.Millisecond));
+      Assert.AreEqual(1000000000, u.GetSiPrefixValue(Flux.Quantities.MetricPrefix.Nano));
+      Assert.AreEqual(1000000, u.GetSiPrefixValue(Flux.Quantities.MetricPrefix.Micro));
+      Assert.AreEqual(1000, u.GetSiPrefixValue(Flux.Quantities.MetricPrefix.Milli));
       Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.TimeUnit.Second));
       Assert.AreEqual(0.016666666666666666, u.GetUnitValue(Flux.Quantities.TimeUnit.Minute));
       Assert.AreEqual(0.0002777777777777778, u.GetUnitValue(Flux.Quantities.TimeUnit.Hour));

@@ -3,21 +3,34 @@ namespace Flux.Quantities
   public enum LengthUnit
   {
     /// <summary>This is the default unit for <see cref="Length"/>.</summary>
-    Metre,
-    Femtometre,
-    Nanometre,
-    Micrometre,
-    Millimetre,
-    Centimetre,
-    Inch,
-    Decimetre,
-    Foot,
-    Yard,
-    Kilometre,
-    Mile,
-    NauticalMile,
+    Meter,
+    /// <summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Astronomical_unit"/>
+    /// </summary>
     AstronomicalUnit,
+    /// <summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Fathom"/>
+    /// </summary>
+    InternationalFathom,
+    Foot,
+    Inch,
+    InternationalMile,
+    /// <summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Nautical_mile"/>
+    /// </summary>
+    NauticalMile,
+    /// <summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Parsec"/>
+    /// </summary>
     Parsec,
+    /// <summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Twip"/>
+    /// </summary>
+    Twip,
+    Yard,
+    /// <summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Angstrom"/>
+    /// </summary>
     Ångström,
   }
 
@@ -33,37 +46,14 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public Length(double value, LengthUnit unit = LengthUnit.Metre)
-      => m_value = unit switch
-      {
-        LengthUnit.Metre => value,
-
-        LengthUnit.Inch => ConvertInchToMetre(value),
-        LengthUnit.Foot => ConvertFootToMetre(value),
-        LengthUnit.Yard => ConvertYardToMetre(value),
-        LengthUnit.Mile => ConvertMileToMetre(value),
-        LengthUnit.NauticalMile => ConvertNauticalMileToMetre(value),
-        LengthUnit.AstronomicalUnit => ConvertAstronomicalUnitToMetre(value),
-        LengthUnit.Parsec => ConvertParsecToMetre(value),
-        LengthUnit.Ångström => ConvertÅngströmToMetre(value),
-
-        LengthUnit.Femtometre => Flux.Quantities.MetricPrefix.Femto.Convert(value, Flux.Quantities.MetricPrefix.NoPrefix), // value * 1E-15,
-        LengthUnit.Nanometre => Flux.Quantities.MetricPrefix.Nano.Convert(value, Flux.Quantities.MetricPrefix.NoPrefix), // value * 1E-9,
-        LengthUnit.Micrometre => Flux.Quantities.MetricPrefix.Micro.Convert(value, Flux.Quantities.MetricPrefix.NoPrefix), // value * 1E-6,
-        LengthUnit.Millimetre => Flux.Quantities.MetricPrefix.Milli.Convert(value, Flux.Quantities.MetricPrefix.NoPrefix), // value * 1E-3,
-        LengthUnit.Centimetre => Flux.Quantities.MetricPrefix.Centi.Convert(value, Flux.Quantities.MetricPrefix.NoPrefix), // value * 1E-2,
-        LengthUnit.Decimetre => Flux.Quantities.MetricPrefix.Deci.Convert(value, Flux.Quantities.MetricPrefix.NoPrefix), // value * 1E-1,
-        LengthUnit.Kilometre => Flux.Quantities.MetricPrefix.Kilo.Convert(value, Flux.Quantities.MetricPrefix.NoPrefix), // value * 1E+3,
-
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Length(double value, LengthUnit unit = LengthUnit.Meter) => m_value = ConvertFromUnit(unit, value);
 
     /// <summary>
-    /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="TimeUnit.Meter"/>, e.g. <see cref="MetricPrefix.Centi"/> for centimeter.</para>
+    /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (i.e. metric multiple) of <see cref="TimeUnit.Meter"/>, e.g. <see cref="MetricPrefix.Milli"/> and <paramref name="meter"/> for millimeter.</para>
     /// </summary>
-    /// <param name="metres"></param>
+    /// <param name="meter"></param>
     /// <param name="prefix"></param>
-    public Length(double metres, MetricPrefix prefix) => m_value = prefix.Convert(metres, MetricPrefix.NoPrefix);
+    public Length(MetricPrefix prefix, double meter) => m_value = prefix.ConvertTo(meter, MetricPrefix.Unprefixed);
 
     /// <summary>
     /// <para>Computes the wavelength from the specified phase velocity and frequency. A wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per second) for the wavelength distance.</para>
@@ -76,26 +66,28 @@ namespace Flux.Quantities
 
     #region Static methods
 
-    #region Conversion methods
+    //#region Conversion methods
 
-    public static double ConvertAstronomicalUnitToMetre(double astronomicalUnit) => astronomicalUnit * 149597870700;
-    public static double ConvertFootToMetre(double foot) => foot * 0.3048;
-    public static double ConvertInchToMetre(double inch) => inch * 0.0254;
-    public static double ConvertMetreToAstronomicalUnit(double meter) => meter / 149597870700;
-    public static double ConvertMetreToFoot(double meter) => meter / 0.3048;
-    public static double ConvertMetreToInch(double meter) => meter / 0.0254;
-    public static double ConvertMetreToMile(double meter) => meter / 1609.344;
-    public static double ConvertMetreToNauticalMile(double meter) => meter / 1852;
-    public static double ConvertMetreToParsec(double meter) => meter / 30856775814913672;
-    public static double ConvertMetreToYard(double meter) => meter / 0.9144;
-    public static double ConvertMetreToÅngström(double meter) => meter * 10000000000;
-    public static double ConvertMileToMetre(double mile) => mile * 1609.344;
-    public static double ConvertNauticalMileToMetre(double nauticalMile) => nauticalMile * 1852;
-    public static double ConvertParsecToMetre(double parsec) => parsec * 30856775814913672;
-    public static double ConvertYardToMetre(double yard) => yard * 0.9144;
-    public static double ConvertÅngströmToMetre(double ångström) => ångström * 10000000000;
+    //public static double ConvertAstronomicalUnitToMeter(double astronomicalUnit) => astronomicalUnit * 149597870700;
+    //public static double ConvertFathomToMeter(double fathom) => fathom * 1.8288;
+    //public static double ConvertFootToMeter(double foot) => foot * 0.3048;
+    //public static double ConvertInchToMeter(double inch) => inch * 0.0254;
+    //public static double ConvertMeterToAstronomicalUnit(double meter) => meter / 149597870700;
+    //public static double ConvertMeterToFathom(double fathom) => fathom / 1.8288;
+    //public static double ConvertMeterToFoot(double meter) => meter / 0.3048;
+    //public static double ConvertMeterToInch(double meter) => meter / 0.0254;
+    //public static double ConvertMeterToMile(double meter) => meter / 1609.344;
+    //public static double ConvertMeterToNauticalMile(double meter) => meter / 1852;
+    //public static double ConvertMeterToParsec(double meter) => meter / 30856775814913672;
+    //public static double ConvertMeterToYard(double meter) => meter / 0.9144;
+    //public static double ConvertMeterToÅngström(double meter) => meter * 10000000000;
+    //public static double ConvertMileToMeter(double mile) => mile * 1609.344;
+    //public static double ConvertNauticalMileToMeter(double nauticalMile) => nauticalMile * 1852;
+    //public static double ConvertParsecToMeter(double parsec) => parsec * 30856775814913672;
+    //public static double ConvertYardToMeter(double yard) => yard * 0.9144;
+    //public static double ConvertÅngströmToMeter(double ångström) => ångström * 10000000000;
 
-    #endregion // Conversion methods
+    //#endregion // Conversion methods
 
     /// <summary>Creates a new <see cref="Length"/> instance from <see cref="Speed"/> and <see cref="AngularFrequency"/></summary>
     /// <param name="speed"></param>
@@ -134,12 +126,12 @@ namespace Flux.Quantities
     public int CompareTo(Length other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.Unprefixed);
 
     #region IQuantifiable<>
 
     /// <summary>
-    /// <para>The unit of the <see cref="Length.Value"/> property is in <see cref="LengthUnit.Metre"/>.</para>
+    /// <para>The unit of the <see cref="Length.Value"/> property is in <see cref="LengthUnit.Meter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
@@ -147,75 +139,82 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(LengthUnit.Metre, preferPlural);
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(LengthUnit.Meter, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(LengthUnit.Metre, preferUnicode);
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(LengthUnit.Meter, preferUnicode);
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
 
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 
-    public string GetUnitName(LengthUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    public static double ConvertFromUnit(LengthUnit unit, double value)
+      => unit switch
+      {
+        LengthUnit.Meter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(LengthUnit unit, double value)
+      => unit switch
+      {
+        LengthUnit.Meter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(LengthUnit unit)
+      => unit switch
+      {
+        LengthUnit.Meter => 1,
+
+        LengthUnit.AstronomicalUnit => 149597870700,
+        LengthUnit.Foot => 0.3048,
+        LengthUnit.Inch => 0.0254,
+        LengthUnit.InternationalFathom => 1.8288,
+        LengthUnit.InternationalMile => 1609.344,
+        LengthUnit.NauticalMile => 1852,
+        LengthUnit.Parsec => 30856775814913672,
+        LengthUnit.Twip => 1 / 1.7639E-5,
+        LengthUnit.Yard => 0.9144,
+        LengthUnit.Ångström => 1E-10,
+        _ => throw new System.NotImplementedException()
+      };
+
+    public string GetUnitName(LengthUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(LengthUnit unit, bool preferUnicode)
      => unit switch
      {
-       LengthUnit.Metre => "m",
-       LengthUnit.Femtometre => preferUnicode ? "\u3399" : "fm",
-       LengthUnit.Nanometre => preferUnicode ? "\u339A" : "nm",
-       LengthUnit.Micrometre => preferUnicode ? "\u339B" : "µm",
-       LengthUnit.Millimetre => preferUnicode ? "\u339C" : "mm",
-       LengthUnit.Centimetre => preferUnicode ? "\u339D" : "cm",
-       LengthUnit.Inch => preferUnicode ? "\u33CC" : "in",
-       LengthUnit.Decimetre => preferUnicode ? "\u3377" : "dm",
-       LengthUnit.Foot => "ft",
-       LengthUnit.Yard => "yd",
-       LengthUnit.Kilometre => preferUnicode ? "\u339E" : "km",
-       LengthUnit.Mile => "mi",
-       LengthUnit.NauticalMile => "NM", // There is no single internationally agreed symbol. Others used are "N", "NM", "nmi" and "nm".
+       LengthUnit.Meter => "m",
+
        LengthUnit.AstronomicalUnit => preferUnicode ? "\u3373" : "au",
+       LengthUnit.InternationalFathom => "ftm",
+       LengthUnit.Foot => "ft",
+       LengthUnit.Inch => preferUnicode ? "\u33CC" : "in",
+       LengthUnit.InternationalMile => "mi",
+       LengthUnit.NauticalMile => "nmi", // There is no single internationally agreed symbol. Others used are "N", "NM", "nmi" and "nm".
        LengthUnit.Parsec => preferUnicode ? "\u3376" : "pc",
+       LengthUnit.Yard => "yd",
        LengthUnit.Ångström => preferUnicode ? "\u212B" : "Å",
+
        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
      };
 
-    public double GetUnitValue(LengthUnit unit)
-        => unit switch
-        {
-          LengthUnit.Metre => m_value,
+    public double GetUnitValue(LengthUnit unit) => ConvertToUnit(unit, m_value);
 
-          LengthUnit.Inch => ConvertMetreToInch(m_value),
-          LengthUnit.Foot => ConvertMetreToFoot(m_value),
-          LengthUnit.Yard => ConvertMetreToYard(m_value),
-          LengthUnit.Mile => ConvertMetreToMile(m_value),
-          LengthUnit.NauticalMile => ConvertMetreToNauticalMile(m_value),
-          LengthUnit.AstronomicalUnit => ConvertMetreToAstronomicalUnit(m_value),
-          LengthUnit.Parsec => ConvertMetreToParsec(m_value),
-          LengthUnit.Ångström => m_value * 10000000000,
-
-          LengthUnit.Femtometre => m_value * 1E+15,
-          LengthUnit.Nanometre => m_value * 1E+9,
-          LengthUnit.Micrometre => m_value * 1E+6,
-          LengthUnit.Millimetre => m_value * 1E+3,
-          LengthUnit.Centimetre => m_value * 1E+2,
-          LengthUnit.Decimetre => m_value * 1E+1,
-          LengthUnit.Kilometre => m_value * 1E-3,
-
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
-
-    public string ToUnitValueNameString(LengthUnit unit = LengthUnit.Metre, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+    public string ToUnitValueNameString(LengthUnit unit = LengthUnit.Meter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
-    public string ToUnitValueSymbolString(LengthUnit unit = LengthUnit.Metre, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    public string ToUnitValueSymbolString(LengthUnit unit = LengthUnit.Meter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion // IUnitQuantifiable<>

@@ -20,7 +20,7 @@
         System.Math.Atan2(System.Math.Tan(project.X), System.Math.Cos(project.Y)),
         Quantities.AngleUnit.Radian,
         project.Z,
-        Quantities.LengthUnit.Metre
+        Quantities.LengthUnit.Meter
       );
   }
 }

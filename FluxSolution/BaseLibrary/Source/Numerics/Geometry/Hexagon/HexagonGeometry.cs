@@ -26,7 +26,7 @@ namespace Flux.Geometry
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
     public double SurfacePerimeter => PerimeterOfHexagon(m_sideLength);
 
-    public System.Numerics.Vector2[] FlatTopped => CircleGeometry.CreateVectors(6, (x, y) => new System.Numerics.Vector2((float)x, (float)y), m_sideLength, Quantities.Angle.ConvertDegreeToRadian(90)).ToArray();
+    public System.Numerics.Vector2[] FlatTopped => CircleGeometry.CreateVectors(6, (x, y) => new System.Numerics.Vector2((float)x, (float)y), m_sideLength, double.DegreesToRadians(90)).ToArray();
 
     public System.Numerics.Vector2[] PointyTopped => CircleGeometry.CreateVectors(6, (x, y) => new System.Numerics.Vector2((float)x, (float)y), m_sideLength).ToArray();
 

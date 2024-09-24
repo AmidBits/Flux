@@ -65,7 +65,7 @@
         lon,
         Quantities.AngleUnit.Radian,
         location.Z,
-        Quantities.LengthUnit.Metre
+        Quantities.LengthUnit.Meter
       );
     }
   }

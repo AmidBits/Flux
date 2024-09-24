@@ -4,10 +4,15 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Flow"/>.</summary>
     CubicMeterPerSecond,
+    /// <summary>
+    /// <see cref="https://en.wikipedia.org/wiki/Sverdrup"/>
+    /// </summary>
+    Sverdrup,
+    USGallonPerMinute,
   }
 
   /// <summary>Volumetric flow, unit of cubic meters per second, is the rate of change of volume with respect to time.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Flow"/>
+  /// <see href="https://en.wikipedia.org/wiki/Volumetric_flow_rate"/>
   public readonly record struct Flow
     : System.IComparable, System.IComparable<Flow>, System.IFormattable, IUnitValueQuantifiable<double, FlowUnit>
   {
@@ -17,6 +22,9 @@ namespace Flux.Quantities
       => m_value = unit switch
       {
         FlowUnit.CubicMeterPerSecond => value,
+        FlowUnit.Sverdrup => 1000000 * value,
+        FlowUnit.USGallonPerMinute => value / 15850.323074494,
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -67,12 +75,15 @@ namespace Flux.Quantities
 
     // IUnitQuantifiable<>
     public string GetUnitName(FlowUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(FlowUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.FlowUnit.CubicMeterPerSecond => "m³/s",
+        FlowUnit.CubicMeterPerSecond => "m³/s",
+        FlowUnit.USGallonPerMinute => "gpm (US)",
+        FlowUnit.Sverdrup => "Sv",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -80,14 +91,17 @@ namespace Flux.Quantities
       => unit switch
       {
         FlowUnit.CubicMeterPerSecond => m_value,
+        FlowUnit.USGallonPerMinute => m_value * 15850.323074494,
+        FlowUnit.Sverdrup => m_value / 1000000,
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public string ToUnitValueNameString(FlowUnit unit = FlowUnit.CubicMeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => GetUnitValue(unit).ToString(format, formatProvider)+ unitSpacing.ToSpacingString()+ GetUnitName(unit, preferPlural);
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
     public string ToUnitValueSymbolString(FlowUnit unit = FlowUnit.CubicMeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetUnitValue(unit).ToString(format, formatProvider)+ unitSpacing.ToSpacingString()+ GetUnitSymbol(unit, preferUnicode);
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion Implemented interfaces
 

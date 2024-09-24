@@ -4,10 +4,6 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Frequency"/>.</summary>
     Hertz,
-    KiloHertz,
-    MegaHertz,
-    GigaHertz,
-    TeraHertz,
   }
 
   /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
@@ -24,16 +20,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public Frequency(double value, FrequencyUnit unit = FrequencyUnit.Hertz)
-      => m_value = unit switch
-      {
-        FrequencyUnit.Hertz => value,
-        FrequencyUnit.KiloHertz => value * 1000,
-        FrequencyUnit.MegaHertz => value * 1000000,
-        FrequencyUnit.GigaHertz => value * 1000000000,
-        FrequencyUnit.TeraHertz => value * 1000000000000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Frequency(double value, FrequencyUnit unit = FrequencyUnit.Hertz) => m_value = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Constructs a frequency from sound-velocity and wavelength.</para>
@@ -130,7 +117,7 @@ namespace Flux.Quantities
     public int CompareTo(Frequency other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.Unprefixed);
 
     #region IQuantifiable<>
 
@@ -143,21 +130,53 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(FrequencyUnit.Hertz, preferPlural);
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(FrequencyUnit.Hertz, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(FrequencyUnit.Hertz, preferUnicode);
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode)
+      => prefix switch
+      {
+        MetricPrefix.Kilo => preferUnicode ? "\u3391" : "kHz",
+        MetricPrefix.Mega => preferUnicode ? "\u3392" : "MHz",
+        MetricPrefix.Giga => preferUnicode ? "\u3393" : "GHz",
+        MetricPrefix.Tera => preferUnicode ? "\u3394" : "THz",
+        _ => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(FrequencyUnit.Hertz, preferUnicode),
+      };
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
 
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(FrequencyUnit unit, double value)
+      => unit switch
+      {
+        FrequencyUnit.Hertz => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(FrequencyUnit unit, double value)
+      => unit switch
+      {
+        FrequencyUnit.Hertz => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(FrequencyUnit unit)
+      => unit switch
+      {
+        FrequencyUnit.Hertz => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
 
     public string GetUnitName(FrequencyUnit unit, bool preferPlural) => unit.ToString();
 
@@ -165,23 +184,10 @@ namespace Flux.Quantities
       => unit switch
       {
         Quantities.FrequencyUnit.Hertz => preferUnicode ? "\u3390" : "Hz",
-        Quantities.FrequencyUnit.KiloHertz => preferUnicode ? "\u3391" : "kHz",
-        Quantities.FrequencyUnit.MegaHertz => preferUnicode ? "\u3392" : "MHz",
-        Quantities.FrequencyUnit.GigaHertz => preferUnicode ? "\u3393" : "GHz",
-        Quantities.FrequencyUnit.TeraHertz => preferUnicode ? "\u3394" : "THz",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(FrequencyUnit unit)
-      => unit switch
-      {
-        FrequencyUnit.Hertz => m_value,
-        FrequencyUnit.KiloHertz => m_value / 1000,
-        FrequencyUnit.MegaHertz => m_value / 1000000,
-        FrequencyUnit.GigaHertz => m_value / 1000000000,
-        FrequencyUnit.TeraHertz => m_value / 1000000000000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(FrequencyUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitValueNameString(FrequencyUnit unit = FrequencyUnit.Hertz, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);

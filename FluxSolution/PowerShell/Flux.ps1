@@ -52,6 +52,8 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 "Flux.Locale.GetProperties(): (This dictionary is compiled from various sources within the system. They can also be accessed as properties of the Flux.Locale, using the same names as the keys in the dictionary.)"
 [Flux.Locale]::GetProperties() | Format-Table
 
+return;
+
 # "Prime numbers: $([Flux.NumberSequences.PrimeNumber]::GetAscendingPrimes[int](2) | Select-Object -First 25 | Join-String -Separator ',')$([System.Environment]::NewLine)"
 
 "LevenshteinDistanceMatrix(`"sitting`", `"kitten`")$([System.Environment]::NewLine)"

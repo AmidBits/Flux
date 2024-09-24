@@ -3,7 +3,7 @@ namespace Flux.Quantities
   public enum LuminousEfficacyUnit
   {
     /// <summary>This is the default unit for <see cref="LuminousEfficacy"/>.</summary>
-    LumensPerWatt,
+    LumenPerWatt,
   }
 
   /// <summary>Torque unit of newton meter.</summary>
@@ -15,10 +15,10 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public LuminousEfficacy(double value, LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumensPerWatt)
+    public LuminousEfficacy(double value, LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt)
       => m_value = unit switch
       {
-        LuminousEfficacyUnit.LumensPerWatt => value,
+        LuminousEfficacyUnit.LumenPerWatt => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -59,37 +59,37 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(LuminousEfficacyUnit.LumensPerWatt, format, formatProvider);
+      => ToUnitValueSymbolString(LuminousEfficacyUnit.LumenPerWatt, format, formatProvider);
 
     // IQuantifiable<>
     /// <summary>
-    /// <para>The unit of the <see cref="LuminousEfficacy.Value"/> property is in <see cref="LuminousEfficacyUnit.LumensPerWatt"/>.</para>
+    /// <para>The unit of the <see cref="LuminousEfficacy.Value"/> property is in <see cref="LuminousEfficacyUnit.LumenPerWatt"/>.</para>
     /// </summary>
     public double Value => m_value;
 
     // IUnitQuantifiable<>
     public string GetUnitName(LuminousEfficacyUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(LuminousEfficacyUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.LuminousEfficacyUnit.LumensPerWatt => "lm/W",
+        Quantities.LuminousEfficacyUnit.LumenPerWatt => "lm/W",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double GetUnitValue(LuminousEfficacyUnit unit)
       => unit switch
       {
-        LuminousEfficacyUnit.LumensPerWatt => m_value,
+        LuminousEfficacyUnit.LumenPerWatt => m_value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public string ToUnitValueNameString(LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumensPerWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => GetUnitValue(unit).ToString(format, formatProvider)+ unitSpacing.ToSpacingString()+ GetUnitName(unit, preferPlural);
+    public string ToUnitValueNameString(LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
-    public string ToUnitValueSymbolString(LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumensPerWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetUnitValue(unit).ToString(format, formatProvider)+ unitSpacing.ToSpacingString()+ GetUnitSymbol(unit, preferUnicode);
+    public string ToUnitValueSymbolString(LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion Implemented interfaces
 

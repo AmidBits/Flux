@@ -14,19 +14,14 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public LuminousIntensity(double value, LuminousIntensityUnit unit = LuminousIntensityUnit.Candela)
-      => m_value = unit switch
-      {
-        LuminousIntensityUnit.Candela => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public LuminousIntensity(double value, LuminousIntensityUnit unit = LuminousIntensityUnit.Candela) => m_value = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="AmountOfSubstanceUnit.Mole"/>, e.g. <see cref="MetricPrefix.Mega"/> for megacandelas.</para>
     /// </summary>
     /// <param name="candelas"></param>
     /// <param name="prefix"></param>
-    public LuminousIntensity(double candelas, MetricPrefix prefix) => m_value = prefix.Convert(candelas, MetricPrefix.NoPrefix);
+    public LuminousIntensity(double candelas, MetricPrefix prefix) => m_value = prefix.ConvertTo(candelas, MetricPrefix.Unprefixed);
 
     #region Static methods
     #endregion // Static methods
@@ -61,7 +56,7 @@ namespace Flux.Quantities
     public int CompareTo(LuminousIntensity other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.Unprefixed);
 
     #region IQuantifiable<>
 
@@ -74,23 +69,47 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(LuminousIntensityUnit.Candela, preferPlural);
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(LuminousIntensityUnit.Candela, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(LuminousIntensityUnit.Candela, preferUnicode);
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(LuminousIntensityUnit.Candela, preferUnicode);
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
 
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 
-    public string GetUnitName(LuminousIntensityUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    public static double ConvertFromUnit(LuminousIntensityUnit unit, double value)
+      => unit switch
+      {
+        LuminousIntensityUnit.Candela => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(LuminousIntensityUnit unit, double value)
+      => unit switch
+      {
+        LuminousIntensityUnit.Candela => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(LuminousIntensityUnit unit)
+      => unit switch
+      {
+        LuminousIntensityUnit.Candela => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
+    public string GetUnitName(LuminousIntensityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(LuminousIntensityUnit unit, bool preferUnicode)
       => unit switch
@@ -99,12 +118,7 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(LuminousIntensityUnit unit)
-      => unit switch
-      {
-        LuminousIntensityUnit.Candela => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(LuminousIntensityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitValueNameString(LuminousIntensityUnit unit = LuminousIntensityUnit.Candela, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);

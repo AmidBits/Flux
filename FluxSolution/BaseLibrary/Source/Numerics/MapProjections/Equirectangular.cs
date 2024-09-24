@@ -24,7 +24,7 @@ namespace Flux.MapProjections
         project.Y / project.Z + CenterOfMap.Latitude.Value,
         Quantities.AngleUnit.Radian,
         project.Z,
-        Quantities.LengthUnit.Metre
+        Quantities.LengthUnit.Meter
       );
   }
 

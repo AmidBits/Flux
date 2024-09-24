@@ -20,7 +20,7 @@ namespace Flux
       var x2y2 = x * x + y * y;
 
       return new(
-        System.Math.Sqrt(x2y2 + z * z), Quantities.LengthUnit.Metre,
+        System.Math.Sqrt(x2y2 + z * z), Quantities.LengthUnit.Meter,
         System.Math.Atan2(System.Math.Sqrt(x2y2), z) + System.Math.PI, Quantities.AngleUnit.Radian,
         System.Math.Atan2(y, x) + System.Math.PI, Quantities.AngleUnit.Radian
       );
@@ -56,7 +56,7 @@ namespace Flux
         : this(new Quantities.Length(radiusValue, radiusUnit), new Quantities.Angle(inclinationValue, inclinationUnit), new Quantities.Angle(azimuthValue, azimuthUnit)) { }
 
       public SphericalCoordinate(double radiusMeter, double inclinationRadian, double azimuthRadian)
-        : this(radiusMeter, Quantities.LengthUnit.Metre, inclinationRadian, Quantities.AngleUnit.Radian, azimuthRadian, Quantities.AngleUnit.Radian) { }
+        : this(radiusMeter, Quantities.LengthUnit.Meter, inclinationRadian, Quantities.AngleUnit.Radian, azimuthRadian, Quantities.AngleUnit.Radian) { }
 
       public void Deconstruct(out double radiusMeter, out double inclinationRadian, out double azimuthRadian)
       {
@@ -120,9 +120,9 @@ namespace Flux
         var r = m_radius.Value;
 
         return new(
-          r * si, Quantities.LengthUnit.Metre,
+          r * si, Quantities.LengthUnit.Meter,
           m_azimuth.Value, Quantities.AngleUnit.Radian,
-          r * ci, Quantities.LengthUnit.Metre
+          r * ci, Quantities.LengthUnit.Meter
         );
       }
 
@@ -133,7 +133,7 @@ namespace Flux
         => new(
           /*System.Math.PI -*/ m_inclination.Value - System.Math.PI / 2, Quantities.AngleUnit.Radian,
           m_azimuth.Value /*- System.Math.PI*/, Quantities.AngleUnit.Radian,
-          m_radius.Value, Quantities.LengthUnit.Metre
+          m_radius.Value, Quantities.LengthUnit.Meter
         );
 
       /// <summary>Creates a new <see cref="System.Numerics.Vector3"/> from the <see cref="SphericalCoordinate"/>.</summary>

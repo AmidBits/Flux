@@ -4,20 +4,24 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Volume"/>.</summary>
     CubicMeter,
-    //Microlitre,
-    Millilitre,
-    Centilitre,
-    Decilitre,
-    Litre,
+    //Microliter,
+    Milliliter,
+    Centiliter,
+    Deciliter,
+    Liter,
     /// <summary>British unit.</summary>
-    ImperialGallon,
+    UKGallon,
     /// <summary>British unit.</summary>
-    ImperialQuart,
+    UKQuart,
     /// <summary>US unit.</summary>
-    USGallon,
+    USLiquidGallon,
     /// <summary>US unit.</summary>
-    USQuart,
-    CubicFeet,
+    USDryGallon,
+    /// <summary>US unit.</summary>
+    USDryQuart,
+    /// <summary>US unit.</summary>
+    USLiquidQuart,
+    CubicFoot,
     CubicYard,
     CubicMile,
     CubicKilometer,
@@ -33,24 +37,26 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Volume(double value, VolumeUnit unit = VolumeUnit.CubicMeter)
-      => m_value = unit switch
-      {
-        VolumeUnit.Millilitre => value / 1000000,
-        VolumeUnit.Centilitre => value / 100000,
-        VolumeUnit.Decilitre => value / 10000,
-        VolumeUnit.Litre => value / 1000,
-        VolumeUnit.ImperialGallon => value * 0.004546,
-        VolumeUnit.ImperialQuart => value / 879.87699319635,
-        VolumeUnit.USGallon => value * 0.003785,
-        VolumeUnit.USQuart => value / 1056.68821,// Approximate.
-        VolumeUnit.CubicFeet => value / (1953125000.0 / 55306341.0),
-        VolumeUnit.CubicYard => value / (1953125000.0 / 1493271207.0),
-        VolumeUnit.CubicMeter => value,
-        VolumeUnit.CubicMile => value * (8140980127813632.0 / 1953125.0),// 
-        VolumeUnit.CubicKilometer => value * 1e9,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Volume(double value, VolumeUnit unit = VolumeUnit.CubicMeter) => m_value = ConvertFromUnit(unit, value);
+    //=> m_value = unit switch
+    //{
+    //  VolumeUnit.Milliliter => value / 1000000,
+    //  VolumeUnit.Centiliter => value / 100000,
+    //  VolumeUnit.Deciliter => value / 10000,
+    //  VolumeUnit.Liter => value / 1000,
+    //  VolumeUnit.UKGallon => value * 0.004546,
+    //  VolumeUnit.UKQuart => value / 879.87699319635,
+    //  VolumeUnit.USDryGallon => value * 0.0044,
+    //  VolumeUnit.USLiquidGallon => value * 0.003785,
+    //  VolumeUnit.USDryQuart => value / 0.00110122095, // Approximate.
+    //  VolumeUnit.USLiquidQuart => value / 0.00094635295, // Approximate.
+    //  VolumeUnit.CubicFoot => value / (1953125000.0 / 55306341.0),
+    //  VolumeUnit.CubicYard => value / (1953125000.0 / 1493271207.0),
+    //  VolumeUnit.CubicMeter => value,
+    //  VolumeUnit.CubicMile => value * (8140980127813632.0 / 1953125.0),// 
+    //  VolumeUnit.CubicKilometer => value * 1e9,
+    //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+    //};
 
     #region Static methods
 
@@ -104,29 +110,89 @@ namespace Flux.Quantities
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => ToUnitValueSymbolString(VolumeUnit.CubicMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     ///  <para>The unit of the <see cref="Volume.Value"/> property is in <see cref="VolumeUnit.CubicMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => GetUnitName(VolumeUnit.CubicMeter, preferPlural).Insert(5, prefix.GetPrefixName());
+
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(VolumeUnit.CubicMeter, preferUnicode);
+
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 3);
+
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+
+    #endregion // ISiUnitValueQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(VolumeUnit unit, double value)
+      => unit switch
+      {
+        VolumeUnit.CubicMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(VolumeUnit unit, double value)
+      => unit switch
+      {
+        VolumeUnit.CubicMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(VolumeUnit unit)
+      => unit switch
+      {
+        VolumeUnit.CubicMeter => 1,
+
+        VolumeUnit.Milliliter => throw new NotImplementedException(),
+        VolumeUnit.Centiliter => throw new NotImplementedException(),
+        VolumeUnit.Deciliter => throw new NotImplementedException(),
+        VolumeUnit.Liter => 1000,
+        VolumeUnit.UKGallon => 219.96924829909,
+        VolumeUnit.UKQuart => 879.87699319635,
+        VolumeUnit.USDryGallon => 227.02074456538,
+        VolumeUnit.USLiquidGallon => 264.17205124156,
+        VolumeUnit.USDryQuart => 1 / 0.00110122095,
+        VolumeUnit.USLiquidQuart => 1 / 0.00094635295,
+        VolumeUnit.CubicFoot => (1953125000.0 / 55306341.0),
+        VolumeUnit.CubicYard => (1953125000.0 / 1493271207.0),
+        VolumeUnit.CubicMile => 1 / (8140980127813632.0 / 1953125.0),
+        VolumeUnit.CubicKilometer => 1e9,
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(VolumeUnit unit, bool preferPlural)
-      => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(VolumeUnit unit, bool preferUnicode)
       => unit switch
       {
-        //Units.VolumeUnit.Microlitre => preferUnicode ? "\u3395" : "µl",
-        Quantities.VolumeUnit.Millilitre => preferUnicode ? "\u3396" : "ml",
-        Quantities.VolumeUnit.Centilitre => "cl",
-        Quantities.VolumeUnit.Decilitre => preferUnicode ? "\u3397" : "dl",
-        Quantities.VolumeUnit.Litre => "l",
-        Quantities.VolumeUnit.ImperialGallon => preferUnicode ? "\u33FF" : "gal (imp)",
-        Quantities.VolumeUnit.ImperialQuart => "qt (imp)",
-        Quantities.VolumeUnit.USGallon => preferUnicode ? "\u33FF" : "gal (US)",
-        Quantities.VolumeUnit.USQuart => "qt (US)",
-        Quantities.VolumeUnit.CubicFeet => "ft³",
+        //Units.VolumeUnit.Microliter => preferUnicode ? "\u3395" : "µl",
+        Quantities.VolumeUnit.Milliliter => preferUnicode ? "\u3396" : "ml",
+        Quantities.VolumeUnit.Centiliter => "cl",
+        Quantities.VolumeUnit.Deciliter => preferUnicode ? "\u3397" : "dl",
+        Quantities.VolumeUnit.Liter => "l",
+        Quantities.VolumeUnit.UKGallon => preferUnicode ? "\u33FF" : "gal (UK)",
+        Quantities.VolumeUnit.UKQuart => "qt (UK)",
+        Quantities.VolumeUnit.USDryGallon => preferUnicode ? "\u33FF" : "gal (US-dry)",
+        Quantities.VolumeUnit.USLiquidGallon => preferUnicode ? "\u33FF" : "gal (US-liquid)",
+        Quantities.VolumeUnit.USDryQuart => "qt (US-dry)",
+        Quantities.VolumeUnit.USLiquidQuart => "qt (US-liquid)",
+        Quantities.VolumeUnit.CubicFoot => "ft³",
         Quantities.VolumeUnit.CubicYard => "yd³",
         Quantities.VolumeUnit.CubicMeter => preferUnicode ? "\u33A5" : "m³",
         Quantities.VolumeUnit.CubicMile => "mi³",
@@ -134,32 +200,36 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(VolumeUnit unit)
-      => unit switch
-      {
-        VolumeUnit.Millilitre => m_value * 1000000,
-        VolumeUnit.Centilitre => m_value * 100000,
-        VolumeUnit.Decilitre => m_value * 10000,
-        VolumeUnit.Litre => m_value * 1000,
-        VolumeUnit.ImperialGallon => m_value / 0.004546,
-        VolumeUnit.ImperialQuart => m_value * 879.87699319635,
-        VolumeUnit.USGallon => m_value / 0.003785,
-        VolumeUnit.USQuart => m_value * 1056.68821,// Approximate.
-        VolumeUnit.CubicFeet => m_value * (1953125000.0 / 55306341.0),
-        VolumeUnit.CubicYard => m_value * (1953125000.0 / 1493271207.0),
-        VolumeUnit.CubicMeter => m_value,
-        VolumeUnit.CubicMile => m_value / (8140980127813632.0 / 1953125.0),
-        VolumeUnit.CubicKilometer => m_value / 1e9,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(VolumeUnit unit) => ConvertFromUnit(unit, m_value);
+    //=> unit switch
+    //{
+    //  VolumeUnit.Milliliter => m_value * 1000000,
+    //  VolumeUnit.Centiliter => m_value * 100000,
+    //  VolumeUnit.Deciliter => m_value * 10000,
+    //  VolumeUnit.Liter => m_value * 1000,
+    //  VolumeUnit.UKGallon => m_value / 0.004546,
+    //  VolumeUnit.UKQuart => m_value * 879.87699319635,
+    //  VolumeUnit.USDryGallon => m_value / 0.0044,
+    //  VolumeUnit.USLiquidGallon => m_value / 0.003785,
+    //  VolumeUnit.USDryQuart => m_value / 0.00110122095,// Approximate.
+    //  VolumeUnit.USLiquidQuart => m_value / 0.00094635295,// Approximate.
+    //  VolumeUnit.CubicFeet => m_value * (1953125000.0 / 55306341.0),
+    //  VolumeUnit.CubicYard => m_value * (1953125000.0 / 1493271207.0),
+    //  VolumeUnit.CubicMeter => m_value,
+    //  VolumeUnit.CubicMile => m_value / (8140980127813632.0 / 1953125.0),
+    //  VolumeUnit.CubicKilometer => m_value / 1e9,
+    //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+    //};
 
     public string ToUnitValueNameString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => GetUnitValue(unit).ToString(format, formatProvider)+ unitSpacing.ToSpacingString()+ GetUnitName(unit, preferPlural);
+        => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
 
     public string ToUnitValueSymbolString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetUnitValue(unit).ToString(format, formatProvider)+ unitSpacing.ToSpacingString()+ GetUnitSymbol(unit, preferUnicode);
+      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
-    #endregion Implemented interfaces
+    #endregion // IUnitQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

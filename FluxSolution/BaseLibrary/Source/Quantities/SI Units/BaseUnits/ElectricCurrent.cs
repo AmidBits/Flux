@@ -16,20 +16,14 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public ElectricCurrent(double value, ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere)
-      => m_value = unit switch
-      {
-        ElectricCurrentUnit.Ampere => value,
-        ElectricCurrentUnit.Milliampere => value / 1000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public ElectricCurrent(double value, ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere) => m_value = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="ElectricCurrentUnit.Ampere"/>, e.g. <see cref="MetricPrefix.Milli"/> for milliamperes.</para>
     /// </summary>
     /// <param name="amperes"></param>
     /// <param name="prefix"></param>
-    public ElectricCurrent(double amperes, MetricPrefix prefix) => m_value = prefix.Convert(amperes, MetricPrefix.NoPrefix);
+    public ElectricCurrent(double amperes, MetricPrefix prefix) => m_value = prefix.ConvertTo(amperes, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -75,7 +69,7 @@ namespace Flux.Quantities
     public int CompareTo(ElectricCurrent other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.NoPrefix, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixValueSymbolString(MetricPrefix.Unprefixed);
 
     #region IQuantifiable<>
 
@@ -88,23 +82,48 @@ namespace Flux.Quantities
 
     #region ISiPrefixValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetUnitName() + GetUnitName(ElectricCurrentUnit.Ampere, preferPlural);
+    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricCurrentUnit.Ampere, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetUnitSymbol(preferUnicode) + GetUnitSymbol(ElectricCurrentUnit.Ampere, preferUnicode);
+    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricCurrentUnit.Ampere, preferUnicode);
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.NoPrefix.Convert(m_value, prefix);
+    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
 
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
     #endregion // ISiPrefixValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 
-    public string GetUnitName(ElectricCurrentUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    public static double ConvertFromUnit(ElectricCurrentUnit unit, double value)
+      => unit switch
+      {
+        ElectricCurrentUnit.Ampere => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(ElectricCurrentUnit unit, double value)
+      => unit switch
+      {
+        ElectricCurrentUnit.Ampere => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(ElectricCurrentUnit unit)
+      => unit switch
+      {
+        ElectricCurrentUnit.Ampere => 1,
+        ElectricCurrentUnit.Milliampere => 0.001,
+
+        _ => throw new System.NotImplementedException()
+      };
+
+    public string GetUnitName(ElectricCurrentUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(ElectricCurrentUnit unit, bool preferUnicode)
       => unit switch
@@ -114,13 +133,7 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(ElectricCurrentUnit unit)
-      => unit switch
-      {
-        ElectricCurrentUnit.Milliampere => m_value * 1000,
-        ElectricCurrentUnit.Ampere => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(ElectricCurrentUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitValueNameString(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);

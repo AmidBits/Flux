@@ -65,7 +65,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public string GetUnitName(RadiationExposureUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? us + GetUnitValue(unit).PluralStringSuffix() : us;
+    public string GetUnitName(RadiationExposureUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(RadiationExposureUnit unit, bool preferUnicode)
       => unit switch
