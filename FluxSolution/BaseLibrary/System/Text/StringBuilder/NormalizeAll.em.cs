@@ -10,7 +10,7 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(predicate);
 
-      var normlizedIndex = 0;
+      var normalizedIndex = 0;
 
       var isPrevious = true;
 
@@ -22,18 +22,18 @@ namespace Flux
 
         if (!(isPrevious && isCurrent))
         {
-          source[normlizedIndex++] = isCurrent ? replacement : character;
+          source[normalizedIndex++] = isCurrent ? replacement : character;
 
           isPrevious = isCurrent;
         }
       }
 
-      if (isPrevious) normlizedIndex--;
+      if (isPrevious) normalizedIndex--;
 
-      return normlizedIndex == source.Length ? source : source.Remove(normlizedIndex, source.Length - normlizedIndex);
+      return normalizedIndex == source.Length ? source : source.Remove(normalizedIndex, source.Length - normalizedIndex);
     }
     /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing and replacing sequences of specified characters with a single specified character.</summary>
-    public static System.Text.StringBuilder NormalizeAll(this System.Text.StringBuilder source, char replacement, System.Collections.Generic.IEqualityComparer<char> equalityComparer, params char[] characters)
+    public static System.Text.StringBuilder NormalizeAll(this System.Text.StringBuilder source, char replacement, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params char[] characters)
       => source.NormalizeAll(replacement, t => characters.Contains(t, equalityComparer));
     /// <summary>Normalize all sequences of the specified characters throughout the string. Normalizing means removing leading/trailing and replacing sequences of specified characters with a single specified character.</summary>
     public static System.Text.StringBuilder NormalizeAll(this System.Text.StringBuilder source, char replacement, params char[] characters)

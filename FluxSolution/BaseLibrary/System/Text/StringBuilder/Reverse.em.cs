@@ -28,6 +28,7 @@ namespace Flux
 
       return source;
     }
+
     /// <summary>Reverse all characters sort of in-place. Handles surrogates.</summary>
     public static System.Text.StringBuilder Reverse(this System.Text.StringBuilder source)
       => Reverse(source, 0, source.Length - 1);

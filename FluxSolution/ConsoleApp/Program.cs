@@ -41,52 +41,18 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var platformstr = System.Environment.OSVersion.Platform.ToString();
+      var x = "HRob".ToStringBuilder().EndsWith("Rob");
 
-      var q = new Flux.Quantities.Speed(2039);
-      System.Console.WriteLine($"{q} = {q.GetSiPrefixValue(MetricPrefix.Kilo)} {q.GetSiPrefixSymbol(MetricPrefix.Kilo, false)} ({q.GetSiPrefixName(MetricPrefix.Kilo, true)}) ");
+      var sb1 = "            This       takes            the         trophy       ".ToStringBuilder();
+      //sb1.NormalizeAdjacent(3, " ");
+      sb1.NormalizeAdjacent(3, char.IsWhiteSpace);
 
-      return;
-
-      var vol = new Flux.Quantities.Area(1);
-      var volh = vol.ToUnitValueSymbolString(AreaUnit.Hectare);
-      var vol2 = vol.ToSiPrefixValueSymbolString(MetricPrefix.Milli);
-
-      var fortnights = 7;
-      var seconds = Flux.Quantities.Time.ConvertFromUnit(TimeUnit.Fortnight, fortnights);
-      var days = Flux.Quantities.Time.ConvertToUnit(TimeUnit.Day, seconds);
-
-      //var fid = Flux.Quantities.Time.Convert(7, TimeUnit.Fortnight, TimeUnit.Day);
-      //var kih = (5d).ConvertSiValue(MetricPrefix.Kilo, MetricPrefix.Unprefixed);
-
-      System.Console.WriteLine(new Flux.Quantities.AmountOfSubstance(5500.5));
-      System.Console.WriteLine(new Flux.Quantities.ElectricCurrent(5500.5));
-      System.Console.WriteLine(new Flux.Quantities.Length(5500.5));
-      System.Console.WriteLine(new Flux.Quantities.LuminousIntensity(5500.5));
-      System.Console.WriteLine(new Flux.Quantities.Mass(5500.5));
-      System.Console.WriteLine(new Flux.Quantities.Temperature(5500.5));
-      System.Console.WriteLine(new Flux.Quantities.Time(0.05, TimeUnit.BeatPerMinute));
-
-      System.Console.WriteLine(string.Join(Environment.NewLine, typeof(IValueQuantifiable<>).GetDerivedTypes().Where(t => !t.IsInterface).OrderBy(t => t.Name).Select((e, i) => $"{i:D2} {e.Name} = {e.CreateInstance()?.ToString()}")));
-      return;
-
-      var mv = new Flux.Quantities.Mass(2.338456);
-      var mvsipvss = mv.ToSiPrefixValueSymbolString(MetricPrefix.Milli);
-      var mvuvns = mv.ToSiPrefixValueNameString(MetricPrefix.Milli).ToLower();
-
-      var all = mv.ToStringsOfSiPrefixes();
-
-      var x = (-123.456).ToEnglishCardinalNumeralCompoundString().ToLower();
-      var y = (23380000000).ToEnglishCardinalNumeralCompoundString().ToLower();
-
-      System.Console.WriteLine(x);
-
-      var ros = (123).ToString().AsSpan();
-
-      // creating a binary tree and entering the nodes
-      var tree = new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(1, new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(2, new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(4, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty), new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(5, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty)), new Flux.DataStructures.Immutable.ImmutableBinaryTree<int>(3, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty, Flux.DataStructures.Immutable.ImmutableBinaryTree<int>.Empty));
-
-      var treeD = tree.GetDiameter();
+      var sb = "GregorianTTTCalendar".ToStringBuilder().Append(", ");
+      sb.SpaceCapWords();
+      var s2 = sb.ToStringByChunks();
+      sb.UncapitalizeWords();
+      sb.CapitalizeWords();
+      sb.UnspaceCapWords();
 
       var bst = Flux.DataStructures.Immutable.ImmutableAvlTree<int, string>.Empty;
 
@@ -121,7 +87,7 @@ namespace ConsoleApp
       var tl = bst.GetLevelOf(15);
 
       var isbst = bst.IsBst();
-      //var isbstbv = bst.IsBstByKey();
+
     }
 
     #region Eliza example

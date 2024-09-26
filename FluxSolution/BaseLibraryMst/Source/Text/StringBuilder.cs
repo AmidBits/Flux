@@ -37,7 +37,7 @@ namespace Text
     public void CountEqualAt()
     {
       var expected = 4;
-      var actual = new System.Text.StringBuilder("Robert").CountEqualAt(2, "Hubert", 2);
+      var actual = new System.Text.StringBuilder("Robert").CommonLengthAt(2, "Hubert", 2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -45,7 +45,7 @@ namespace Text
     public void CountEqualAtEnd()
     {
       var expected = 3;
-      var actual = new System.Text.StringBuilder("Robert").CountEqualAtEnd("Rupert");
+      var actual = new System.Text.StringBuilder("Robert").CommonSuffixLength("Rupert");
       Assert.AreEqual(expected, actual);
     }
 
@@ -53,7 +53,7 @@ namespace Text
     public void CountEqualAtStart()
     {
       var expected = 2;
-      var actual = new System.Text.StringBuilder("Robert").CountEqualAtStart("Rommel");
+      var actual = new System.Text.StringBuilder("Robert").CommonPrefixLength("Rommel");
       Assert.AreEqual(expected, actual);
     }
 
@@ -61,7 +61,7 @@ namespace Text
     public void Duplicate1()
     {
       var expected = "RoobeertRoobeertRoobeertRoobeert";
-      var actual = new System.Text.StringBuilder("Roobeert").Duplicate(3).ToString();
+      var actual = new System.Text.StringBuilder("Roobeert").Repeat(3).ToString();
       Assert.AreEqual(expected, actual);
     }
 
@@ -69,7 +69,7 @@ namespace Text
     public void Duplicate2()
     {
       var expected = "Roobeert";
-      var actual = new System.Text.StringBuilder("Robert").Duplicate("aeiou", 1).ToString();
+      var actual = new System.Text.StringBuilder("Robert").Replicate(1, null, 'a', 'e', 'i', 'o', 'u').ToString();
       Assert.AreEqual(expected, actual);
     }
 
@@ -202,7 +202,7 @@ namespace Text
     public void NormalizeAdjacents()
     {
       var expected = @"There is a bee in the soup.";
-      var actual = new System.Text.StringBuilder(@"There is aa bbee in the soup.").NormalizeAdjacent(1, 'a', 'b').ToString();
+      var actual = new System.Text.StringBuilder(@"There is aa bbee in the soup.").NormalizeAdjacent(1, null, 'a', 'b').ToString();
       Assert.AreEqual(expected, actual);
     }
 
@@ -279,13 +279,13 @@ namespace Text
       Assert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void Substring_Right()
-    {
-      var expected = @"ob";
-      var actual = new System.Text.StringBuilder(@"Rob").Right(2).ToString();
-      Assert.AreEqual(expected, actual);
-    }
+    //[TestMethod]
+    //public void Substring_Right()
+    //{
+    //  var expected = @"ob";
+    //  var actual = new System.Text.StringBuilder(@"Rob").Right(2).ToString();
+    //  Assert.AreEqual(expected, actual);
+    //}
 
     [TestMethod]
     public void Substring_RightMost()

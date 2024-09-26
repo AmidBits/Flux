@@ -1,16 +1,16 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Radix, unit of natural number, in the range [<see cref="Radix.MinRadix"/>, <see cref="Radix.MaxRadix"/>].</para>
-  /// <para><seealso cref="https://en.wikipedia.org/wiki/Radix"/></para>
+  /// <para>Radix, unit of natural number, in the closed interval [<see cref="Radix.MinRadix"/> = 2, <see cref="Radix.MaxRadix"/> = 256].</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Radix"/></para>
   /// </summary>
   public readonly record struct Radix
     : System.IComparable, System.IComparable<Radix>, System.IFormattable, IValueQuantifiable<int>
   {
     public const string Base64 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
 
-    public const int MinValue = 2;
     public const int MaxValue = 256;
+    public const int MinValue = 2;
 
     public static Radix Binary => new(2);
     public static Radix Octal => new(8);
@@ -92,13 +92,16 @@ namespace Flux.Quantities
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : ':' + format)}}}", m_value);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The <see cref="Radix.Value"/> property is a radix in the closed interval [<see cref="MinRadix"/>, <see cref="MaxRadix"/>].</para>
     /// </summary>
     public int Value => m_value;
 
-    #endregion Implemented interfaces
+    #endregion // IQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

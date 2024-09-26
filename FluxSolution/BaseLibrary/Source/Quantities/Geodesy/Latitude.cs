@@ -19,7 +19,7 @@ namespace Flux.Quantities
     public Latitude(double latitude, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(latitude, unit);
 
     /// <summary>The <see cref="Quantities.Angle"/> of the latitude.</summary>
-    public Angle Angle { get => m_angle; init => m_angle = new(FoldExtremum(value.GetUnitValue(AngleUnit.Degree)), AngleUnit.Degree); }
+    public Angle Angle { get => m_angle; init => m_angle = new(value.GetUnitValue(AngleUnit.Degree).Fold(MinValue, MaxValue), AngleUnit.Degree); }
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
@@ -32,15 +32,15 @@ namespace Flux.Quantities
 
     #region Static methods
 
-    /// <summary>A latitude is folded over the closed interval (<see cref="MinValue"/> = -90, <see cref="MaxValue"/> = +90).</summary>
-    /// <param name="latitude">The latitude in degrees.</param>
-    /// <remarks>Please note that latitude use a closed interval, so -90 (south pole) and +90 (north pole) are valid values.</remarks>
-    public static double FoldExtremum(double latitude) => latitude.Fold(MinValue, MaxValue);
-    //=> (latitude > MaxValue)
-    //? IsEvenInteger(TruncMod(latitude - MaxValue, MaxValue - MinValue, out var remHi)) ? MaxValue - remHi : MinValue + remHi
-    //: (latitude < MinValue)
-    //? IsEvenInteger(TruncMod(MinValue - latitude, MaxValue - MinValue, out var remLo)) ? MinValue + remLo : MaxValue - remLo
-    //: latitude;
+    ///// <summary>A latitude is folded over the closed interval (<see cref="MinValue"/> = -90, <see cref="MaxValue"/> = +90).</summary>
+    ///// <param name="latitude">The latitude in degrees.</param>
+    ///// <remarks>Please note that latitude use a closed interval, so -90 (south pole) and +90 (north pole) are valid values.</remarks>
+    //public static double FoldExtremum(double latitude) => latitude.Fold(MinValue, MaxValue);
+    ////=> (latitude > MaxValue)
+    ////? IsEvenInteger(TruncMod(latitude - MaxValue, MaxValue - MinValue, out var remHi)) ? MaxValue - remHi : MinValue + remHi
+    ////: (latitude < MinValue)
+    ////? IsEvenInteger(TruncMod(MinValue - latitude, MaxValue - MinValue, out var remLo)) ? MinValue + remLo : MaxValue - remLo
+    ////: latitude;
 
     //private static double TruncMod(double dividend, double divisor, out double remainder) => (dividend - (remainder = dividend % divisor)) / divisor;
     //private static bool IsEvenInteger(double value) => System.Convert.ToInt64(value) is var integer && ((integer & 1) == 0) && (integer == value);

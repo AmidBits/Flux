@@ -16,7 +16,7 @@ namespace Flux.Quantities
     public Longitude(double longitude, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(longitude, unit);
 
     /// <summary>The <see cref="Quantities.Angle"/> of the longitude.</summary>
-    public Angle Angle { get => m_angle; init => m_angle = new(WrapExtremum(value.GetUnitValue(AngleUnit.Degree)), AngleUnit.Degree); }
+    public Angle Angle { get => m_angle; init => m_angle = new(value.GetUnitValue(AngleUnit.Degree).Wrap(MinValue, MaxValue), AngleUnit.Degree); }
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
     public int TheoreticalTimezoneOffset
@@ -37,15 +37,15 @@ namespace Flux.Quantities
     /// <param name="longitude">The longitude in degrees.</param>
     public static int GetTheoreticalTimezoneOffset(double longitude) => System.Convert.ToInt32(System.Math.Truncate((longitude + System.Math.CopySign(7.5, longitude)) / 15));
 
-    /// <summary>A longitude is wrapped over within the closed interval (<see cref="MinValue"/> = -180, <see cref="MaxValue"/> = +180).</summary>
-    /// <param name="longitude">The longitude in degrees.</param>
-    /// <remarks>Please note that longitude use a closed interval, so -180 (south pole) and +180 (north pole) are valid values.</remarks>
-    public static double WrapExtremum(double longitude) => longitude.Wrap(MinValue, MaxValue);
-    //=> (longitude < MinValue
-    //? MaxValue - (MinValue - longitude) % (MaxValue - MinValue)
-    //: longitude > MaxValue
-    //? MinValue + (longitude - MinValue) % (MaxValue - MinValue)
-    //: longitude);
+    ///// <summary>A longitude is wrapped over within the closed interval (<see cref="MinValue"/> = -180, <see cref="MaxValue"/> = +180).</summary>
+    ///// <param name="longitude">The longitude in degrees.</param>
+    ///// <remarks>Please note that longitude use a closed interval, so -180 (south pole) and +180 (north pole) are valid values.</remarks>
+    //public static double WrapExtremum(double longitude) => longitude.Wrap(MinValue, MaxValue);
+    ////=> (longitude < MinValue
+    ////? MaxValue - (MinValue - longitude) % (MaxValue - MinValue)
+    ////: longitude > MaxValue
+    ////? MinValue + (longitude - MinValue) % (MaxValue - MinValue)
+    ////: longitude);
 
     #endregion Static methods
 

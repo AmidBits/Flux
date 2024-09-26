@@ -1,7 +1,7 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Unit interval, unit of rational number, with the interval 0.0 (<see cref="UnitInterval.MinValue"/>) and 1.0 (<see cref="UnitInterval.MaxValue"/>), constrained by the <see cref="IntervalNotation"/>.</para>
+  /// <para>Unit interval, unit of real number, with the interval <see cref="UnitInterval.MinValue"/> = 0.0 and <see cref="UnitInterval.MaxValue"/> = 1.0 constrained by the <see cref="IntervalNotation"/>.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Unit_interval"/></para>
   /// </summary>
   public readonly record struct UnitInterval
@@ -80,13 +80,16 @@ namespace Flux.Quantities
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The <see cref="UnitInterval.Value"/> property is a value of the unit interval, between <see cref="MinValue"/> and <see cref="MaxValue"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    #endregion Implemented interfaces
+    #endregion // IQuantifiable<>
+
+    #endregion //Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

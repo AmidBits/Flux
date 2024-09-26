@@ -3,14 +3,16 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Yields the number of values that the <paramref name="source"/> and the <paramref name="target"/> have in common from the specified <paramref name="sourceStartIndex"/> and <paramref name="targetStartIndex"/> respectively. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// <para>Yields the number of characters that the source and the target have in common from the specified respective indices. Uses the specified comparer.</para>
     /// </summary>
-    public static int CommonLengthAt<T>(this System.ReadOnlySpan<T> source, int sourceStartIndex, System.ReadOnlySpan<T> target, int targetStartIndex, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int CommonLengthAt(this System.Text.StringBuilder source, int sourceStartIndex, System.ReadOnlySpan<char> target, int targetStartIndex, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
+      System.ArgumentNullException.ThrowIfNull(source);
+
       if (sourceStartIndex < 0 || sourceStartIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(sourceStartIndex));
       if (targetStartIndex < 0 || targetStartIndex >= target.Length) throw new System.ArgumentOutOfRangeException(nameof(targetStartIndex));
 
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
       var minLength = System.Math.Min(source.Length - sourceStartIndex, target.Length - targetStartIndex);
 

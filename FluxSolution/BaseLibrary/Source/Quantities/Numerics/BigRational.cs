@@ -70,10 +70,11 @@ namespace Flux
     // Calculating the greatest common divisor of two n-digit numbers can be found in O(n(log n)^5 (log log n)) steps as n -> +infinity
 
     /// <summary>
-    /// <para>BigRational, unit of rational number, i.e. in the form of numerator and denominator.</para>
+    /// <para>BigRational, unit of rational number, is a ratio of two <see cref="System.Numerics.BigInteger"/>s, i.e. in the form of numerator and denominator, or commonly called a fraction.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Rational_number"/></para>
     /// <para><seealso href="https://github.com/kiprobinson/BigFraction"/></para>
     /// <para><seealso href="https://github.com/bazzilic/BigFraction"/></para>
+    /// <para></para>
     /// </summary>
     public readonly record struct BigRational
       : System.IComparable, System.IComparable<BigRational>
@@ -109,7 +110,7 @@ namespace Flux
       private readonly System.Numerics.BigInteger m_numerator; // Can be negative and zero.
       private readonly System.Numerics.BigInteger m_denominator; // Cannot be negative or zero.
 
-      /// <summary>Creates a new simple fraction from the specified numerator and denominator. Optionally the fraction can be reduced, if possible.</summary>
+      /// <summary>Creates a new <see cref="BigRational"/> from a simple fraction specified by <paramref name="numerator"/> and <paramref name="denominator"/>. Optionally reduce, if possible.</summary>
       /// <param name="numerator"></param>
       /// <param name="denominator"></param>
       /// <param name="reduceIfPossible">If true, reduce if possible, and if false, do not attempt to reduce.</param>
@@ -125,11 +126,25 @@ namespace Flux
         m_numerator = numerator;
         m_denominator = denominator;
       }
-      /// <summary>Creates a new simple fraction from the specified numerator and denominator. If the fraction can be reduced, it will be.</summary>
+
+      /// <summary>Creates a new <see cref="BigRational"/> from a simple fraction specified by <paramref name="numerator"/> and <paramref name="denominator"/>. If possible, the fraction is reduced.</summary>
       /// <param name="numerator"></param>
       /// <param name="denominator"></param>
       public BigRational(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator) : this(numerator, denominator, true) { }
-      public BigRational(System.Numerics.BigInteger whole) : this(whole, System.Numerics.BigInteger.One, false) { } // Create easy integers.
+
+      /// <summary>
+      /// <para>Creates a new <see cref="BigRational"/> from an <paramref name="integer"/>, i.e. the <paramref name="integer"/> represents a numerator and the denominator is 1. No need to reduce the fraction.</para>
+      /// <para>The resulting <see cref="BigRational"/> represents a natural number, or integer.</para>
+      /// </summary>
+      /// <param name="integer"></param>
+      public BigRational(System.Numerics.BigInteger integer) : this(integer, System.Numerics.BigInteger.One, false) { } // Create easy integers.
+
+      /// <summary>
+      /// <para>Creates a new <see cref="BigRational"/> from the parts <paramref name="whole"/> plus <paramref name="numerator"/> / <paramref name="denominator"/>. If possible, the fraction is reduced.</para>
+      /// </summary>
+      /// <param name="whole"></param>
+      /// <param name="numerator"></param>
+      /// <param name="denominator"></param>
       public BigRational(System.Numerics.BigInteger whole, System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator) : this(whole * denominator + numerator, denominator, true) { }
 
       public void Deconstruct(out System.Numerics.BigInteger numerator, out System.Numerics.BigInteger denominator) { numerator = m_numerator; denominator = m_denominator; }
@@ -533,6 +548,14 @@ namespace Flux
         }
       }
 
+      /// <summary>
+      /// <para>Euclid's algorithm is used to simplify a fraction.</para>
+      /// </summary>
+      /// <param name="numerator"></param>
+      /// <param name="denominator"></param>
+      /// <param name="reducedNumerator"></param>
+      /// <param name="reducedDenominator"></param>
+      /// <returns></returns>
       public static bool TryReduce(System.Numerics.BigInteger numerator, System.Numerics.BigInteger denominator, out System.Numerics.BigInteger reducedNumerator, out System.Numerics.BigInteger reducedDenominator)
       {
         if (IsReducible(numerator, denominator, out var greatestCommonDenominator))
@@ -810,29 +833,6 @@ namespace Flux
       // IComparable
       public int CompareTo(object? other) => other is BigRational o ? CompareTo(o) : -1;
 
-      //// IConvertible
-      //#region IConvertible
-
-      //public System.TypeCode GetTypeCode() => System.TypeCode.Object;
-      //public bool ToBoolean(System.IFormatProvider? provider) => Value != 0;
-      //public byte ToByte(System.IFormatProvider? provider) => System.Convert.ToByte(Value);
-      //public char ToChar(System.IFormatProvider? provider) => System.Convert.ToChar(Value);
-      //public System.DateTime ToDateTime(System.IFormatProvider? provider) => System.Convert.ToDateTime(Value);
-      //public decimal ToDecimal(System.IFormatProvider? provider) => System.Convert.ToDecimal(Value);
-      //public double ToDouble(System.IFormatProvider? provider) => System.Convert.ToDouble(Value);
-      //public short ToInt16(System.IFormatProvider? provider) => System.Convert.ToInt16(Value);
-      //public int ToInt32(System.IFormatProvider? provider) => System.Convert.ToInt32(Value);
-      //public long ToInt64(System.IFormatProvider? provider) => System.Convert.ToInt64(Value);
-      //[System.CLSCompliant(false)] public sbyte ToSByte(System.IFormatProvider? provider) => System.Convert.ToSByte(Value);
-      //public float ToSingle(System.IFormatProvider? provider) => System.Convert.ToSingle(Value);
-      //public string ToString(System.IFormatProvider? provider) => ToString(null, provider);
-      //public object ToType(System.Type conversionType, System.IFormatProvider? provider) => System.Convert.ChangeType(Value, conversionType, provider);
-      //[System.CLSCompliant(false)] public ushort ToUInt16(System.IFormatProvider? provider) => System.Convert.ToUInt16(Value);
-      //[System.CLSCompliant(false)] public uint ToUInt32(System.IFormatProvider? provider) => System.Convert.ToUInt32(Value);
-      //[System.CLSCompliant(false)] public ulong ToUInt64(System.IFormatProvider? provider) => System.Convert.ToUInt64(Value);
-
-      //#endregion IConvertible
-
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider)
         => IsProper
@@ -841,10 +841,13 @@ namespace Flux
         ? $"{wholeNumber} {RatioDisplay.AslashB.ToRatioString(properNumerator, properDenominator, format, formatProvider)}"
         : m_numerator.ToString(); // It is a whole number and we return a simple integer string.
 
-      // IQuantifiable<>
+      #region IQuantifiable<>
+
       public double Value => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);
 
-      #endregion Implemented interfaces
+      #endregion // IQuantifiable<>
+
+      #endregion // Implemented interfaces
 
       public override string ToString() => ToString(null, null);
     }

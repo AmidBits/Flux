@@ -9,14 +9,17 @@ namespace Flux
     /// <param name="source"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentNullException"></exception>
-    public static System.Collections.Generic.IEnumerable<int> GetAddressWords(this System.Net.IPAddress source)
+    public static short[] GetAddressWords(this System.Net.IPAddress source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       var bytes = source.GetAddressBytes();
+      var words = new short[bytes.Length / 2];
 
       for (var index = 0; index < bytes.Length; index += 2)
-        yield return bytes[index] << 8 | bytes[index + 1];
+        words[index / 2] = unchecked((short)(bytes[index] << 8 | bytes[index + 1]));
+
+      return words;
     }
 
     /// <summary>

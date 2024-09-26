@@ -3,12 +3,11 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>The magic packet is a broadcast frame containing anywhere within its payload 6 bytes of all 255 (FF FF FF FF FF FF in hexadecimal), followed by sixteen repetitions of the target computer's 48-bit MAC address, for a total of 102 bytes.</para>
-    /// <para>Certain NICs support a security feature called "SecureOn". It allows users to store within the NIC a hexadecimal password of 6 bytes. Clients have to append this password to the magic packet. Any network eavesdropping will expose the cleartext password.</para>
+    /// <para>The magic packet is a broadcast frame containing anywhere within its payload 6 bytes, each a value of 255, so [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF] in hexadecimal, followed by sixteen repeated copies of the target computer's 48-bit MAC address, for a total of 102 bytes.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Wake-on-LAN"/></para>
     /// </summary>
     /// <param name="source"></param>
-    /// <param name="secureOn"></param>
+    /// <param name="secureOn">Certain NICs support a security feature called "SecureOn". It allows users to store within the NIC a hexadecimal password of 6 bytes. Clients have to append this password to the magic packet. Any network eavesdropping will expose the cleartext password.</param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static System.ReadOnlySpan<byte> CreateMagicPacket(this System.Net.NetworkInformation.PhysicalAddress source, byte[]? secureOn = default)
@@ -53,7 +52,7 @@ namespace Flux
     /// </summary>
     /// <param name="source"></param>
     /// <param name="broadcastAddress"></param>
-    /// <param name="secureOn"></param>
+    /// <param name="secureOn">Certain NICs support a security feature called "SecureOn". It allows users to store within the NIC a hexadecimal password of 6 bytes. Clients have to append this password to the magic packet. Any network eavesdropping will expose the cleartext password.</param>
     public static void SendWakeOnLan(this System.Net.NetworkInformation.PhysicalAddress source, System.Net.IPEndPoint broadcastAddress, byte[]? secureOn = default)
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -71,7 +70,7 @@ namespace Flux
     /// <param name="ipAddress"></param>
     /// <param name="subnetMask"></param>
     /// <param name="port"></param>
-    /// <param name="secureOn"></param>
+    /// <param name="secureOn">Certain NICs support a security feature called "SecureOn". It allows users to store within the NIC a hexadecimal password of 6 bytes. Clients have to append this password to the magic packet. Any network eavesdropping will expose the cleartext password.</param>
     public static void SendWakeOnLanIPv4(this System.Net.NetworkInformation.PhysicalAddress macAddress, System.Net.IPAddress ipAddress, System.Net.IPAddress subnetMask, int port = 0, byte[]? secureOn = default)
       => SendWakeOnLan(macAddress, new System.Net.IPEndPoint(ipAddress.GetBroadcastAddressIPv4(subnetMask), port), secureOn);
 

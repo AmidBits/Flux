@@ -21,8 +21,8 @@ namespace Flux
         ) return name;
 
         if (name == "Foot") return "Feet";
-        else if (name.EndsWith("x")) return name + "es";
-        else if (name.EndsWith("y")) return name + "ies";
+        else if (name.EndsWith('x') || name == "Inch") return name + "es";
+        else if (name.EndsWith('y')) return name + "ies";
         else return name + "s";
       }
     }

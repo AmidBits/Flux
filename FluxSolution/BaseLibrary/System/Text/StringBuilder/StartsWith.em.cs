@@ -9,14 +9,13 @@ namespace Flux
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      var sourceLength = source.Length;
-      var targetLength = target.Length;
+      var targetIndex = target.Length;
 
-      if (sourceLength < targetLength)
+      if (source.Length < targetIndex)
         return false;
 
-      for (var index = targetLength - 1; index >= 0; index--)
-        if (!equalityComparer.Equals(source[index], target[index]))
+      while (--targetIndex >= 0)
+        if (!equalityComparer.Equals(source[targetIndex], target[targetIndex]))
           return false;
 
       return true;

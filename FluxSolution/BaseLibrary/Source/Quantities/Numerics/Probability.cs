@@ -1,7 +1,7 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Probability is a ratio, represented as a closed interval [0.0, 1.0], where 0.0 indicates impossibility of an event and 1.0 indicates certainty.</para>
+  /// <para>Probability, unit of real number, is a ratio, represented as a closed interval [<see cref="Probability.MinValue"/> = 0.0, <see cref="Probability.MaxValue"/> = 1.0], where 0.0 indicates impossibility of an event and 1.0 indicates certainty.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Probability"/></para>
   /// </summary>
   public readonly record struct Probability
@@ -275,13 +275,16 @@ namespace Flux.Quantities
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The <see cref="Probability.Value"/> property is a value of the closed interval of probability [<see cref="MinValue"/>, <see cref="MaxValue"/>].</para>
     /// </summary>
     public double Value => m_value;
 
-    #endregion Implemented interfaces
+    #endregion // IQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

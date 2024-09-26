@@ -25,7 +25,7 @@ namespace Flux
 
       /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
       public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, TemporalCalendar calendar)
-        : this(Quantities.JulianDayNumber.ConvertDatePartsToJulianDayNumber(year, month, day, calendar) + ConvertTimePartsToTimeOfDay(hour, minute, second, millisecond))
+        : this(JulianDayNumber.ConvertDatePartsToJulianDayNumber(year, month, day, calendar) + ConvertTimePartsToTimeOfDay(hour, minute, second, millisecond))
       { }
 
       public JulianDate AddWeeks(int weeks) => this + (weeks * 7);

@@ -12,5 +12,12 @@ namespace Flux
       : number > maxValue
       ? minValue + (number - minValue) % (maxValue - minValue)
       : number;
+
+    /// <summary>
+    /// <para>Wraps an out-of-bound <paramref name="number"/> around the half-open interval [<paramref name="minValue"/>, <paramref name="maxValue"/>), until the <paramref name="number"/> is within the half-open interval.</para>
+    /// </summary>
+    public static TNumber WrapOpenEnd<TNumber>(this TNumber number, TNumber minValue, TNumber maxValue)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => Wrap(number, minValue, maxValue) % maxValue;
   }
 }

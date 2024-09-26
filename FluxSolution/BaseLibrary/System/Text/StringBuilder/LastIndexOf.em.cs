@@ -29,9 +29,11 @@ namespace Flux
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      for (var index = source.Length - 1; index >= 0; index--)
-        if (equalityComparer.Equals(source[index], target))
-          return index;
+      var sourceIndex = source.Length;
+
+      while (--sourceIndex >= 0)
+        if (equalityComparer.Equals(source[sourceIndex], target))
+          return sourceIndex;
 
       return -1;
     }
@@ -43,9 +45,11 @@ namespace Flux
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      for (var index = source.Length - target.Length; index >= 0; index--)
-        if (EqualsAt(source, index, target, equalityComparer))
-          return index;
+      var sourceIndex = source.Length - target.Length + 1;
+
+      while (--sourceIndex >= 0)
+        if (EqualsAt(source, sourceIndex, target, equalityComparer))
+          return sourceIndex;
 
       return -1;
     }

@@ -2,42 +2,42 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the specfied comparer.</summary>
-    public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, System.ReadOnlySpan<char> characters, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
+    /// <summary>Normalize the specified (or all if none specified) consecutive <paramref name="predicate"/> to <paramref name="maxAdjacentLength"/> in the <paramref name="source"/>.</summary>
+    public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, System.Func<char, bool> predicate)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(predicate);
 
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      if (maxAdjacentLength < 1) throw new System.ArgumentOutOfRangeException(nameof(maxAdjacentLength));
 
-      if (maxAdjacentLength < 1) throw new System.ArgumentNullException(nameof(maxAdjacentLength));
-
-      var index = 0;
-      var previous = '\0';
+      var updatedIndex = 0;
+      var previousIsTarget = false;
       var adjacentLength = 1;
 
-      for (var indexOfSource = 0; indexOfSource < source.Length; indexOfSource++)
+      for (var index = 0; index < source.Length; index++)
       {
-        var current = source[indexOfSource];
+        var current = source[index];
 
-        var isEqual = characters.Length > 0 // Use list or just characters?
-          ? (characters.IndexOf(current, equalityComparer) > -1 && characters.IndexOf(previous, equalityComparer) > -1) // Is both current and previous in characters?
-          : equalityComparer.Equals(current, previous); // Is current and previous character equal?
+        var currentIsTarget = predicate(current);
 
-        if (!isEqual || adjacentLength < maxAdjacentLength)
+        var nonAdjacent = !(currentIsTarget && previousIsTarget);
+
+        if (nonAdjacent || adjacentLength < maxAdjacentLength)
         {
-          source[index++] = current;
+          source[updatedIndex++] = current;
 
-          previous = current;
+          previousIsTarget = currentIsTarget;
         }
 
-        adjacentLength = !isEqual ? 1 : adjacentLength + 1;
+        if (nonAdjacent) adjacentLength = 1;
+        else adjacentLength++;
       }
 
-      return source.Remove(index, source.Length - index);
+      return source.Remove(updatedIndex, source.Length - updatedIndex);
     }
 
-    /// <summary>Normalize the specified (or all if none specified) consecutive characters in the string. Uses the default comparer.</summary>
-    public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, params char[] characters)
-      => NormalizeAdjacent(source, maxAdjacentLength, characters.AsSpan());
+    /// <summary>Normalize the specified (or all if none specified) consecutive <paramref name="characters"/> to <paramref name="maxAdjacentLength"/> in the <paramref name="source"/>.</summary>
+    public static System.Text.StringBuilder NormalizeAdjacent(this System.Text.StringBuilder source, int maxAdjacentLength, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params char[] characters)
+      => NormalizeAdjacent(source, maxAdjacentLength, c => characters is null || characters.Length == 0 || characters.Contains(c, equalityComparer));
   }
 }

@@ -20,33 +20,29 @@ namespace Flux
       return -1;
     }
 
-    /// <summary>Reports the first index of the specified char in the string builder, or -1 if not found. Uses the specified comparer.</summary>
-    public static int IndexOf(this System.Text.StringBuilder source, char target, System.Collections.Generic.IEqualityComparer<char>? comparer = null)
+    /// <summary>Reports the first index of the specified char in the string builder, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>.</summary>
+    public static int IndexOf(this System.Text.StringBuilder source, char target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      comparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
+      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      var sourceLength = source.Length;
-
-      for (var index = 0; index < sourceLength; index++)
-        if (comparer.Equals(source[index], target))
+      for (var index = 0; index < source.Length; index++)
+        if (equalityComparer.Equals(source[index], target))
           return index;
 
       return -1;
     }
 
-    /// <summary>Returns the first index of the specified string in the string builder, or -1 if not found. Uses the specified comparer.</summary>
+    /// <summary>Returns the first index of the specified string in the string builder, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>.</summary>
     public static int IndexOf(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      var targetLength = target.Length;
-
-      for (int index = 0, lastIndex = source.Length - targetLength; index <= lastIndex; index++)
-        if (EqualsAt(source, index, target, 0, targetLength, equalityComparer))
+      for (int index = 0, lastIndex = source.Length - target.Length; index <= lastIndex; index++)
+        if (EqualsAt(source, index, target, 0, target.Length, equalityComparer))
           return index;
 
       return -1;
