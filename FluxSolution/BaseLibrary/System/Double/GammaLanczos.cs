@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>
     /// <para>Coefficients for Lanczos approximation when (g=7, n=9).</para>
     /// </summary>
-    private static double[] p = {
+    private static readonly double[] p = {
       0.99999999999980993,
       676.5203681218851,
       -1259.1392167224028,

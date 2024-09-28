@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Returns the string builder with the specified <paramref name="characters"/> replicated by the specified <paramref name="count"/> throughout. If no characters are specified, all characters are replicated. If the string builder is empty, nothing is replicated. Uses the specified comparer.</summary>
+    /// <summary>
+    /// <span>Returns the string builder with the specified <paramref name="characters"/> replicated <paramref name="count"/> times throughout. If no characters are specified, all characters are replicated. If the string builder is empty, nothing is replicated. Uses the specified comparer.</span>
+    /// </summary>
     public static System.Text.StringBuilder Replicate(this System.Text.StringBuilder source, int count, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, params char[] characters)
     {
       System.ArgumentNullException.ThrowIfNull(source);

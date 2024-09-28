@@ -13,7 +13,7 @@ namespace Flux
       /// <summary>
       /// <para><see href="https://ssd.jpl.nasa.gov/horizons/app.html#/"/></para>
       /// </summary>
-      public static readonly KeplerianElements Mars = new KeplerianElements(new Quantities.OrbitalEccentricity(9.327987858487280E-02), new Quantities.Length(Quantities.MetricPrefix.Kilo, 2.279325209790799E+08), new Quantities.Angle(1.847854452956304E+00, Quantities.AngleUnit.Degree), new Quantities.Angle(4.948935675287289E+01, Quantities.AngleUnit.Degree), new Quantities.Angle(2.866702002890120E+02, Quantities.AngleUnit.Degree), new Quantities.Angle(3.270334666858926E+02, Quantities.AngleUnit.Degree));
+      public static readonly KeplerianElements Mars = new(new Quantities.OrbitalEccentricity(9.327987858487280E-02), new Quantities.Length(Quantities.MetricPrefix.Kilo, 2.279325209790799E+08), new Quantities.Angle(1.847854452956304E+00, Quantities.AngleUnit.Degree), new Quantities.Angle(4.948935675287289E+01, Quantities.AngleUnit.Degree), new Quantities.Angle(2.866702002890120E+02, Quantities.AngleUnit.Degree), new Quantities.Angle(3.270334666858926E+02, Quantities.AngleUnit.Degree));
 
       public static readonly double TheObliquityOfTheEclipticInDegrees = 23.4;
 
@@ -125,7 +125,7 @@ namespace Flux
       #endregion Static methods
 
       public override string ToString()
-        => $"{GetType().Name} {{ Eccentricity = {m_eccentricity.Value} ({m_eccentricity.GetOrbitalEccentricityClass()}), SemiMajorAxis = {m_semiMajorAxis}, Inclination = {m_inclination.ToUnitValueSymbolString(Quantities.AngleUnit.Degree)}, LongitudeOfAscendingNode = {m_longitudeOfAscendingNode.ToUnitValueSymbolString(Quantities.AngleUnit.Degree)}, ArgumentOfPeriapsis = {m_argumentOfPeriapsis.ToUnitValueSymbolString(Quantities.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly.ToUnitValueSymbolString(Quantities.AngleUnit.Degree)} }}";
+        => $"{GetType().Name} {{ Eccentricity = {m_eccentricity.Value} ({m_eccentricity.GetOrbitalEccentricityClass()}), SemiMajorAxis = {m_semiMajorAxis}, Inclination = {m_inclination.ToUnitString(Quantities.AngleUnit.Degree)}, LongitudeOfAscendingNode = {m_longitudeOfAscendingNode.ToUnitString(Quantities.AngleUnit.Degree)}, ArgumentOfPeriapsis = {m_argumentOfPeriapsis.ToUnitString(Quantities.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly.ToUnitString(Quantities.AngleUnit.Degree)} }}";
     }
   }
 }

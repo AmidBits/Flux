@@ -27,6 +27,8 @@ namespace Flux.Quantities
     public double GetMercatorProjectedY()
       => System.Math.Clamp(System.Math.Log(System.Math.Tan(System.Math.PI / 4 + Angle.Value / 2)), -System.Math.PI, System.Math.PI);
 
+    public string ToDecimalString() => m_angle.ToUnitString(AngleUnit.Degree, "N6");
+
     public string ToSexagesimalDegreeString(AngleDmsNotation format = AngleDmsNotation.DegreesMinutesDecimalSeconds, UnicodeSpacing componentSpacing = UnicodeSpacing.None)
       => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CompassCardinalAxis.NorthSouth, -1, componentSpacing);
 
@@ -105,17 +107,11 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-    {
-      if (format is not null)
-      {
-        if (Angle.TryConvertFormatToDmsNotation(format, out var dmsNotation))
-          return ToSexagesimalDegreeString(dmsNotation);
-
-        return Angle.ToUnitValueSymbolString(AngleUnit.Degree, format, formatProvider, preferUnicode: true);
-      }
-
-      return ToSexagesimalDegreeString();
-    }
+      => format is not null
+      ? Angle.TryConvertFormatToDmsNotation(format, out var dmsNotation)
+        ? ToSexagesimalDegreeString(dmsNotation)
+        : m_angle.ToUnitString(AngleUnit.Degree, format, formatProvider)
+      : ToSexagesimalDegreeString();
 
     // IQuantifiable<>
     /// <summary>

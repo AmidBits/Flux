@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Given two sequences a and b, determine if they are isomorphic. Two sequences are isomorphic if the characters in a can be replaced to get b.</summary>
+    /// <summary>
+    /// <para>Indicates whether the <paramref name="source"/> and <paramref name="target"/> are isomorphic. Two sequences are isomorphic if the characters (equal characters must be replaced with the same replacements, in the same positions) in <paramref name="source"/> can be replaced to get <paramref name="target"/>.</para>
+    /// </summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
     public static bool AreIsomorphic(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
     {

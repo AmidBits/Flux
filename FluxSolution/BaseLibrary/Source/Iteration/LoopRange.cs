@@ -6,9 +6,9 @@ namespace Flux
   {
     private System.Numerics.BigInteger m_stepIndex;
 
-    private TSelf m_startAt;
-    private TSelf m_stepSize;
-    
+    private readonly TSelf m_startAt;
+    private readonly TSelf m_stepSize;
+
     public IterateRange(TSelf startAt, TSelf stepSize)
     {
       if (TSelf.IsZero(stepSize)) throw new System.ArgumentOutOfRangeException(nameof(stepSize));

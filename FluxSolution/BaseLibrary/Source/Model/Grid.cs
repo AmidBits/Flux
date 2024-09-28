@@ -73,7 +73,7 @@
         this[sourceRow, sourceColumn] = targetValue;
         this[targetRow, targetColumn] = sourceValue;
       }
-      else throw new System.ArgumentException();
+      else throw new System.ArgumentOutOfRangeException($"{sourceRow}, {sourceColumn}");
     }
     public void Swap(int sourceIndex, int targetIndex)
     {
@@ -82,7 +82,7 @@
         this[sourceIndex] = targetValue;
         this[targetIndex] = sourceValue;
       }
-      else throw new System.ArgumentException();
+      else throw new System.ArgumentOutOfRangeException($"{sourceIndex} or {targetIndex}");
     }
 
     public bool TryGetIndex(TValue value, out int index) => m_data.TryGetIndex(value, out index);

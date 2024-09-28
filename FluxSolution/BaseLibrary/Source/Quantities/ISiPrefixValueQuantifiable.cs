@@ -22,7 +22,7 @@
       var d = new System.Collections.Generic.Dictionary<(Quantities.MetricPrefix, TUnit), string>();
 
       foreach (Quantities.MetricPrefix mp in System.Enum.GetValues<Quantities.MetricPrefix>().OrderDescending())
-        d.Add((mp, default(TUnit)!), source.ToSiPrefixValueSymbolString(mp, unitSpacing, preferUnicode));
+        d.Add((mp, default(TUnit)!), source.ToSiPrefixString(mp, false));
 
       return d;
     }
@@ -71,28 +71,36 @@
       TValue GetSiPrefixValue(MetricPrefix prefix);
 
       /// <summary>
-      /// <para>Creates a new string with the name of the SI quantity for the <paramref name="prefix"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferPlural"/>.</para>
+      /// <para>Creates a new string of the SI quantity for the <paramref name="prefix"/> and whether to use symbols or <paramref name="fullName"/>.</para>
       /// </summary>
       /// <param name="prefix"></param>
-      /// <param name="format"></param>
-      /// <param name="formatProvider"></param>
-      /// <param name="unitSpacing"></param>
-      /// <param name="preferPlural"></param>
+      /// <param name="fullName"></param>
       /// <returns></returns>
-      string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing, bool preferPlural);
-      //=> GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+      string ToSiPrefixString(MetricPrefix prefix, bool fullName);
 
-      /// <summary>
-      /// <para>Creates a new string with the symbol of the SI quantity for the <paramref name="prefix"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>
-      /// </summary>
-      /// <param name="prefix">The prefix to project.</param>
-      /// <param name="format"></param>
-      /// <param name="formatProvider"></param>
-      /// <param name="unitSpacing"></param>
-      /// <param name="preferUnicode"></param>
-      /// <returns></returns>
-      string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing, bool preferUnicode);
-      //=> GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+      ///// <summary>
+      ///// <para>Creates a new string with the name of the SI quantity for the <paramref name="prefix"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferPlural"/>.</para>
+      ///// </summary>
+      ///// <param name="prefix"></param>
+      ///// <param name="format"></param>
+      ///// <param name="formatProvider"></param>
+      ///// <param name="unitSpacing"></param>
+      ///// <param name="preferPlural"></param>
+      ///// <returns></returns>
+      //string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing, bool preferPlural);
+      ////=> GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+      ///// <summary>
+      ///// <para>Creates a new string with the symbol of the SI quantity for the <paramref name="prefix"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>
+      ///// </summary>
+      ///// <param name="prefix">The prefix to project.</param>
+      ///// <param name="format"></param>
+      ///// <param name="formatProvider"></param>
+      ///// <param name="unitSpacing"></param>
+      ///// <param name="preferUnicode"></param>
+      ///// <returns></returns>
+      //string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing, bool preferUnicode);
+      ////=> GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
     }
   }
 }

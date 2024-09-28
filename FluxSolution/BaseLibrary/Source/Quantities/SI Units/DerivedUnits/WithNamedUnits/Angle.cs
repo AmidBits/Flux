@@ -483,11 +483,11 @@
         return dmsNotation switch
         {
           AngleDmsNotation.DecimalDegrees
-            => new Quantities.Angle(System.Math.Abs(decimalDegrees), Quantities.AngleUnit.Degree).ToUnitValueSymbolString(Quantities.AngleUnit.Degree, $"N{decimalPoints}", null, preferUnicode: true) + spacingString + directional, // Show as decimal degrees.
+            => new Quantities.Angle(System.Math.Abs(decimalDegrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, $"N{decimalPoints}", null) + spacingString + directional, // Show as decimal degrees.
           AngleDmsNotation.DegreesDecimalMinutes
-            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitValueSymbolString(Quantities.AngleUnit.Degree, "N0", null, preferUnicode: true) + spacingString + new Quantities.Angle(decimalMinutes, Quantities.AngleUnit.Arcminute).ToUnitValueSymbolString(Quantities.AngleUnit.Arcminute, $"N{decimalPoints}", null, preferUnicode: true) + spacingString + directional, // Show as degrees and decimal minutes.
+            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, "N0", null) + spacingString + new Quantities.Angle(decimalMinutes, Quantities.AngleUnit.Arcminute).ToUnitString(Quantities.AngleUnit.Arcminute, $"N{decimalPoints}", null) + spacingString + directional, // Show as degrees and decimal minutes.
           AngleDmsNotation.DegreesMinutesDecimalSeconds
-            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitValueSymbolString(Quantities.AngleUnit.Degree, "N0", null, preferUnicode: true) + spacingString + new Quantities.Angle(System.Math.Abs(minutes), Quantities.AngleUnit.Arcminute).ToUnitValueSymbolString(Quantities.AngleUnit.Arcminute, "N0", null, preferUnicode: true) + spacingString + new Quantities.Angle(decimalSeconds, Quantities.AngleUnit.Arcsecond).ToUnitValueSymbolString(Quantities.AngleUnit.Arcsecond, $"N{decimalPoints}", null, preferUnicode: true) + spacingString + directional, // Show as degrees, minutes and decimal seconds.
+            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, "N0", null) + spacingString + new Quantities.Angle(System.Math.Abs(minutes), Quantities.AngleUnit.Arcminute).ToUnitString(Quantities.AngleUnit.Arcminute, "N0", null) + spacingString + new Quantities.Angle(decimalSeconds, Quantities.AngleUnit.Arcsecond).ToUnitString(Quantities.AngleUnit.Arcsecond, $"N{decimalPoints}", null) + spacingString + directional, // Show as degrees, minutes and decimal seconds.
           _
             => throw new System.ArgumentOutOfRangeException(nameof(dmsNotation)),
         };
@@ -569,7 +569,7 @@
       public int CompareTo(Angle other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitValueSymbolString(AngleUnit.Radian, format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
 
       #region IQuantifiable<>
 
@@ -588,11 +588,14 @@
 
       public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-      public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-        => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+      public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
+        => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-      public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-        => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+      //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
+      //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+
+      //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
 
       #endregion // ISiUnitValueQuantifiable<>
 
@@ -671,18 +674,26 @@
       //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       //};
 
-      public string ToUnitValueNameString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-        => GetUnitValue(unit).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+      public string ToUnitString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+        => GetUnitValue(unit).ToString(format, formatProvider)
+        + (
+          fullName
+          ? UnicodeSpacing.Space.ToSpacingString() + GetUnitName(unit, true)
+          : (unit.HasUnitSpacing(true) ? UnicodeSpacing.Space : UnicodeSpacing.None).ToSpacingString() + GetUnitSymbol(unit, true)
+        );
 
-      public string ToUnitValueSymbolString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-        => GetUnitValue(unit).ToSiFormattedString() + (unit.HasUnitSpacing(preferUnicode) ? unitSpacing : UnicodeSpacing.None).ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
+      //public string ToUnitValueNameString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
+      //  => GetUnitValue(unit).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+
+      //public string ToUnitValueSymbolString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
+      //  => GetUnitValue(unit).ToSiFormattedString() + (unit.HasUnitSpacing(preferUnicode) ? unitSpacing : UnicodeSpacing.None).ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
       #endregion // IUnitQuantifiable<>
 
       #endregion // Implemented interfaces
 
-      public string ToVerboseString(string? format, System.IFormatProvider? formatProvider)
-        => Value.ToString(format, formatProvider) + " = " + ToUnitValueSymbolString(AngleUnit.Radian, format, formatProvider) + " = " + ToUnitValueSymbolString(AngleUnit.Degree, format, formatProvider);
+      //public string ToVerboseString(string? format, System.IFormatProvider? formatProvider)
+      //  => Value.ToString(format, formatProvider) + " = " + ToUnitValueSymbolString(AngleUnit.Radian, format, formatProvider) + " = " + ToUnitValueSymbolString(AngleUnit.Degree, format, formatProvider);
 
       public override string ToString() => ToString(null, null);
     }

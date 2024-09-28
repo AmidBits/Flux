@@ -128,10 +128,10 @@ namespace Text
     public void IsIsomorphic()
     {
       var expected = true;
-      var actual = new Flux.SpanBuilder<char>("egg").AsReadOnlySpan().IsIsomorphic("add");
+      var actual = new Flux.SpanBuilder<char>("egg").AsReadOnlySpan().AreIsomorphic("add");
       Assert.AreEqual(expected, actual);
       expected = false;
-      actual = new Flux.SpanBuilder<char>("foo").AsReadOnlySpan().IsIsomorphic("bar");
+      actual = new Flux.SpanBuilder<char>("foo").AsReadOnlySpan().AreIsomorphic("bar");
       Assert.AreEqual(expected, actual);
     }
 

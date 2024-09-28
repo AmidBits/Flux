@@ -143,6 +143,23 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
+    public string ToUnitString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    {
+      var sb = new System.Text.StringBuilder();
+      if (unit == SpeedUnit.Mach)
+      {
+        sb.Append(fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+        sb.Append(UnicodeSpacing.ThinSpace.ToSpacingString());
+      }
+      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
+      if (unit != SpeedUnit.Mach)
+      {
+        sb.Append(UnicodeSpacing.ThinSpace.ToSpacingString());
+        sb.Append(fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      }
+      return sb.ToString();
+    }
+
     public string ToUnitValueNameString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
     {
       var sb = new System.Text.StringBuilder();

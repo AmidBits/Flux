@@ -174,7 +174,7 @@ namespace Flux
       #region Implemented interfaces
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_inclination.ToUnitValueSymbolString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)} / {Elevation.ToUnitValueSymbolString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)}, {m_azimuth.ToUnitValueSymbolString(Quantities.AngleUnit.Degree, format ?? "N3", provider, UnicodeSpacing.Space, true)}>";
+        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_inclination.ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", provider)} / {Elevation.ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", provider)}, {m_azimuth.ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", provider)}>";
 
       #endregion // Implemented interfaces
 

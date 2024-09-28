@@ -26,7 +26,7 @@
   /// </summary>
   public sealed class Matrix
   {
-    private readonly ColumnObject m_head = new ColumnObject(-1);
+    private readonly ColumnObject m_head = new(-1);
     private readonly ColumnObject[] m_indexedColumns;
 
     public Matrix(int columns)

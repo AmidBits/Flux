@@ -28,6 +28,8 @@ namespace Flux.Quantities
     public double GetMercatorProjectedX()
       => Angle.GetUnitValue(AngleUnit.Radian);
 
+    public string ToDecimalString() => m_angle.ToUnitString(AngleUnit.Degree, "N6");
+
     public string ToSexagesimalDegreeString(AngleDmsNotation format = AngleDmsNotation.DegreesMinutesDecimalSeconds, UnicodeSpacing componentSpacing = UnicodeSpacing.None)
       => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CompassCardinalAxis.EastWest, -1, componentSpacing);
 
@@ -80,17 +82,11 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-    {
-      if (format is not null)
-      {
-        if (Angle.TryConvertFormatToDmsNotation(format, out var dmsFormat))
-          return ToSexagesimalDegreeString(dmsFormat);
-
-        return Angle.ToUnitValueSymbolString(AngleUnit.Degree, format, formatProvider);
-      }
-
-      return ToSexagesimalDegreeString();
-    }
+      => format is not null
+      ? Angle.TryConvertFormatToDmsNotation(format, out var dmsFormat)
+        ? ToSexagesimalDegreeString(dmsFormat)
+        : m_angle.ToUnitString(AngleUnit.Degree, format, formatProvider)
+      : ToSexagesimalDegreeString();
 
     // IQuantifiable<>
     /// <summary>

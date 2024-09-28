@@ -78,7 +78,7 @@ namespace Flux.Quantities
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"{m_value} semitone{(m_value == 1 ? string.Empty : 's'.ToString())}";
+      => $"{string.Format(formatProvider, $"{{0{(string.IsNullOrEmpty(format) ? string.Empty : $":{format}")}}}", m_value)} semitone{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
     // IQuantifiable<>
     /// <summary>

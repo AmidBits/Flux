@@ -158,7 +158,8 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is JulianDate o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => $"{JulianDayNumber.ToDateString(GetConversionCalendar())}, {ToTimeString()}";
+      public string ToString(string? format, System.IFormatProvider? formatProvider)
+        => $"{JulianDayNumber.ToDateString(GetConversionCalendar())}, {ToTimeString()} (JD = {m_value})";
 
       // IQuantifiable<>
       /// <summary>

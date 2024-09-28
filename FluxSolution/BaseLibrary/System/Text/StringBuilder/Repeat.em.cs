@@ -2,7 +2,9 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Duplicates this string builder a specified number of times.</summary>
+    /// <summary>
+    /// <span>Extends the content of the <paramref name="source"/> by repeating the content <paramref name="count"/> times.</span>
+    /// </summary>
     public static System.Text.StringBuilder Repeat(this System.Text.StringBuilder source, int count)
     {
       System.ArgumentNullException.ThrowIfNull(source);

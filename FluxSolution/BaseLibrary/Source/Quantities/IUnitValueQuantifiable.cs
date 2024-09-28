@@ -11,7 +11,7 @@
       var d = new System.Collections.Generic.Dictionary<TUnit, string>();
 
       foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
-        d.Add(unit, source.ToUnitValueSymbolString(unit, format, formatProvider, unitSpacing, preferUnicode));
+        d.Add(unit, source.ToUnitString(unit, format, formatProvider, false));
 
       return d;
     }
@@ -63,26 +63,36 @@
       TValue GetUnitValue(TUnit unit);
 
       /// <summary>
-      /// <para>Creates a string with the name of the quantity for the <paramref name="unit"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferPlural"/>.</para>
+      /// <para>Creates a string with the name of the quantity for the <paramref name="unit"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/> and whether to use symbols or <paramref name="fullName"/>.</para>
       /// </summary>
       /// <param name="unit"></param>
       /// <param name="format"></param>
       /// <param name="formatProvider"></param>
-      /// <param name="unitSpacing"></param>
-      /// <param name="preferPlural"></param>
+      /// <param name="fullName"></param>
       /// <returns></returns>
-      string ToUnitValueNameString(TUnit unit, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferPlural);
+      public string ToUnitString(TUnit unit, string? format, System.IFormatProvider? formatProvider, bool fullName);
 
-      /// <summary>
-      /// <para>Creates a string with the symbol of the quantity for the <paramref name="unit"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>
-      /// </summary>
-      /// <param name="unit">The unit to represent.</param>
-      /// <param name="format">The format.</param>
-      /// <param name="formatProvider">The format provider.</param>
-      /// <param name="unitSpacing">The Unicode spacing to apply.</param>
-      /// <param name="preferUnicode">Whether to prefer Unicode symbols, where and when available. This typically result in reduced length of the returning string, and also less support for some of those symbols, e.g. fonts.</param>
-      /// <returns>A string with the value and any symbols representing the quantity in the specified <typeparamref name="TUnit"/>.</returns>
-      string ToUnitValueSymbolString(TUnit unit, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferUnicode);
+      ///// <summary>
+      ///// <para>Creates a string with the name of the quantity for the <paramref name="unit"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferPlural"/>.</para>
+      ///// </summary>
+      ///// <param name="unit"></param>
+      ///// <param name="format"></param>
+      ///// <param name="formatProvider"></param>
+      ///// <param name="unitSpacing"></param>
+      ///// <param name="preferPlural"></param>
+      ///// <returns></returns>
+      //string ToUnitValueNameString(TUnit unit, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferPlural);
+
+      ///// <summary>
+      ///// <para>Creates a string with the symbol of the quantity for the <paramref name="unit"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>
+      ///// </summary>
+      ///// <param name="unit">The unit to represent.</param>
+      ///// <param name="format">The format.</param>
+      ///// <param name="formatProvider">The format provider.</param>
+      ///// <param name="unitSpacing">The Unicode spacing to apply.</param>
+      ///// <param name="preferUnicode">Whether to prefer Unicode symbols, where and when available. This typically result in reduced length of the returning string, and also less support for some of those symbols, e.g. fonts.</param>
+      ///// <returns>A string with the value and any symbols representing the quantity in the specified <typeparamref name="TUnit"/>.</returns>
+      //string ToUnitValueSymbolString(TUnit unit, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing unitSpacing, bool preferUnicode);
     }
   }
 }

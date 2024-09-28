@@ -11,8 +11,15 @@ namespace Flux.Quantities
     public const byte MaxValue = 127;
     public const byte MinValue = 0;
 
+    /// <summary>
+    /// <para>This is the (MIDI) note number of A4 which represents the audio frequency 440 Hz.</para>
+    /// </summary>
     public const byte ReferenceNoteNumberA4 = 69;
-    public const double ReferenceFrequencyHertz440 = 440;
+
+    /// <summary>
+    /// <para>This is the audio frequency (in hertz) of A4 which represents note number 69.</para>
+    /// </summary>
+    public const double ReferenceAudioFrequencyA4 = 440;
 
     private readonly byte m_number;
 
@@ -35,7 +42,7 @@ namespace Flux.Quantities
     /// <summary>Convert the specified frequency to the corresponding MIDI note.</summary>
 
     public static int ConvertFromFrequency(double frequency)
-      => ConvertFromFrequency(frequency, ReferenceFrequencyHertz440, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new System.ArgumentOutOfRangeException(nameof(frequency));
+      => ConvertFromFrequency(frequency, ReferenceAudioFrequencyA4, ReferenceNoteNumberA4) is var note && IsMidiNote(note) ? note : throw new System.ArgumentOutOfRangeException(nameof(frequency));
     /// <summary>Convert the specified note number to the corresponding frequency depending on the specified reference note number and frequency.</summary>
 
     public static double ConvertToFrequency(int noteNumber, int referenceNoteNumber, double referenceFrequency)
@@ -43,7 +50,7 @@ namespace Flux.Quantities
     /// <summary>Convert the specified MIDI note to the corresponding frequency.</summary>
 
     public static double ConvertToFrequency(int midiNoteNumber)
-      => IsMidiNote(midiNoteNumber) ? ConvertToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceFrequencyHertz440) : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
+      => IsMidiNote(midiNoteNumber) ? ConvertToFrequency(midiNoteNumber, ReferenceNoteNumberA4, ReferenceAudioFrequencyA4) : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
     /// <summary>Determines the MIDI note from the specified frequency. An exception is thrown if the frequency is out of range.</summary>
 

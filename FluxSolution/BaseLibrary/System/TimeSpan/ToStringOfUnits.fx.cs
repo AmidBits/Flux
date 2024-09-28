@@ -1,5 +1,3 @@
-using Flux.Quantities;
-
 namespace Flux
 {
   public static partial class Fx
@@ -11,7 +9,7 @@ namespace Flux
       if (source.Days > 0)
       {
         var td = new Quantities.Time(source.Days, Quantities.TimeUnit.Day);
-        sb.Append(td.ToUnitValueSymbolString(Quantities.TimeUnit.Day, preferUnicode: false));
+        sb.Append(td.ToUnitString(Quantities.TimeUnit.Day));
       }
 
       sb.Append(' ');
@@ -19,7 +17,7 @@ namespace Flux
       if (source.Hours > 0)
       {
         var th = new Quantities.Time(source.Hours, Quantities.TimeUnit.Hour);
-        sb.Append(th.ToUnitValueSymbolString(Quantities.TimeUnit.Hour, preferUnicode: false));
+        sb.Append(th.ToUnitString(Quantities.TimeUnit.Hour));
       }
 
       sb.Append(' ');
@@ -27,7 +25,7 @@ namespace Flux
       if (source.Minutes > 0)
       {
         var tm = new Quantities.Time(source.Minutes, Quantities.TimeUnit.Minute);
-        sb.Append(tm.ToUnitValueSymbolString(Quantities.TimeUnit.Minute, preferUnicode: false));
+        sb.Append(tm.ToUnitString(Quantities.TimeUnit.Minute));
       }
 
       sb.Append(' ');
@@ -35,7 +33,7 @@ namespace Flux
       if (source.Seconds > 0)
       {
         var ts = new Quantities.Time(source.Seconds, Quantities.TimeUnit.Second);
-        sb.Append(ts.ToUnitValueSymbolString(Quantities.TimeUnit.Second, preferUnicode: false));
+        sb.Append(ts.ToUnitString(Quantities.TimeUnit.Second));
       }
 
       return sb.ToString();
