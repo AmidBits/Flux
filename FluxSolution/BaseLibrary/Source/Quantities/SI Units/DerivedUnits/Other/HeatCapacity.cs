@@ -15,12 +15,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public HeatCapacity(double value, HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin)
-      => m_value = unit switch
-      {
-        HeatCapacityUnit.JoulePerKelvin => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public HeatCapacity(double value, HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin) => m_value = ConvertToUnit(unit, m_value);
 
     #region Static methods
 
@@ -56,15 +51,43 @@ namespace Flux.Quantities
     public int CompareTo(HeatCapacity other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)      => ToUnitString(HeatCapacityUnit.JoulePerKelvin, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(HeatCapacityUnit.JoulePerKelvin, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="HeatCapacity.Value"/> property is in <see cref="HeatCapacityUnit.JoulePerKelvin"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(HeatCapacityUnit unit, double value)
+      => unit switch
+      {
+        HeatCapacityUnit.JoulePerKelvin => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(HeatCapacityUnit unit, double value)
+      => unit switch
+      {
+        HeatCapacityUnit.JoulePerKelvin => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(HeatCapacityUnit unit)
+      => unit switch
+      {
+        HeatCapacityUnit.JoulePerKelvin => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(HeatCapacityUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -75,23 +98,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(HeatCapacityUnit unit)
-      => unit switch
-      {
-        HeatCapacityUnit.JoulePerKelvin => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(HeatCapacityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

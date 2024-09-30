@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Inserts a space in front of any single upper case character, except the first one in the string.</summary>
-    public static System.Text.StringBuilder SpaceCapWords(this System.Text.StringBuilder source)
+    public static System.Text.StringBuilder PrespaceCapWords(this System.Text.StringBuilder source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 

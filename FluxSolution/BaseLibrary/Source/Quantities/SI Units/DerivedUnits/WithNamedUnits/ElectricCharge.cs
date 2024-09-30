@@ -15,12 +15,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public ElectricCharge(double value, ElectricChargeUnit unit = ElectricChargeUnit.Coulomb)
-      => m_value = unit switch
-      {
-        ElectricChargeUnit.Coulomb => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public ElectricCharge(double value, ElectricChargeUnit unit = ElectricChargeUnit.Coulomb) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -54,7 +49,17 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
 
-    // ISiUnitValueQuantifiable<>
+    #region IQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="ElectricCharge.Value"/> property is in <see cref="ElectricChargeUnit.Ohm"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
     public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricChargeUnit.Coulomb, preferPlural);
 
     public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricChargeUnit.Coulomb, preferUnicode);
@@ -64,19 +69,34 @@ namespace Flux.Quantities
     public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-    //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+    #endregion // ISiUnitValueQuantifiable<>
 
-    //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+    #region IUnitQuantifiable<>
 
-    // IQuantifiable<>
-    /// <summary>
-    /// <para>The unit of the <see cref="ElectricCharge.Value"/> property is in <see cref="ElectricChargeUnit.Ohm"/>.</para>
-    /// </summary>
-    public double Value => m_value;
+    public static double ConvertFromUnit(ElectricChargeUnit unit, double value)
+      => unit switch
+      {
+        ElectricChargeUnit.Coulomb => value,
 
-    // IUnitQuantifiable<>
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(ElectricChargeUnit unit, double value)
+      => unit switch
+      {
+        ElectricChargeUnit.Coulomb => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(ElectricChargeUnit unit)
+      => unit switch
+      {
+        ElectricChargeUnit.Coulomb => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(ElectricChargeUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(ElectricChargeUnit unit, bool preferUnicode)
@@ -86,23 +106,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(ElectricChargeUnit unit)
-        => unit switch
-        {
-          ElectricChargeUnit.Coulomb => m_value,
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
+    public double GetUnitValue(ElectricChargeUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(ElectricChargeUnit unit = ElectricChargeUnit.Coulomb, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(ElectricChargeUnit unit = ElectricChargeUnit.Coulomb, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(ElectricChargeUnit unit = ElectricChargeUnit.Coulomb, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

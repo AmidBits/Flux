@@ -15,12 +15,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Irradiance(double value, IrradianceUnit unit = IrradianceUnit.WattPerSquareMeter)
-      => m_value = unit switch
-      {
-        IrradianceUnit.WattPerSquareMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Irradiance(double value, IrradianceUnit unit = IrradianceUnit.WattPerSquareMeter) => m_value = ConvertFromUnit(unit, value);
 
     public Irradiance(Power power, Area area) : this(power.Value / area.Value) { }
 
@@ -60,13 +55,41 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(IrradianceUnit.WattPerSquareMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="Irradiance.Value"/> property is in <see cref="IrradianceUnit.WattPerSquareMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(IrradianceUnit unit, double value)
+      => unit switch
+      {
+        IrradianceUnit.WattPerSquareMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(IrradianceUnit unit, double value)
+      => unit switch
+      {
+        IrradianceUnit.WattPerSquareMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(IrradianceUnit unit)
+      => unit switch
+      {
+        IrradianceUnit.WattPerSquareMeter => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(IrradianceUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -77,23 +100,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(IrradianceUnit unit)
-      => unit switch
-      {
-        IrradianceUnit.WattPerSquareMeter => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(IrradianceUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(IrradianceUnit unit = IrradianceUnit.WattPerSquareMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(IrradianceUnit unit = IrradianceUnit.WattPerSquareMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(IrradianceUnit unit = IrradianceUnit.WattPerSquareMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

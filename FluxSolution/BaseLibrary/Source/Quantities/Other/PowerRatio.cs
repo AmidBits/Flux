@@ -17,12 +17,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public PowerRatio(double value, PowerRatioUnit unit = PowerRatioUnit.DecibelWatt)
-      => m_value = unit switch
-      {
-        PowerRatioUnit.DecibelWatt => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public PowerRatio(double value, PowerRatioUnit unit = PowerRatioUnit.DecibelWatt) => m_value = ConvertFromUnit(unit, value);
 
     public AmplitudeRatio ToAmplitudeRatio() => new(System.Math.Sqrt(m_value));
 
@@ -65,16 +60,43 @@ namespace Flux.Quantities
     public int CompareTo(PowerRatio other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(PowerRatioUnit.DecibelWatt, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(PowerRatioUnit.DecibelWatt, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="PowerRatio.Value"/> property is in <see cref="PowerRatioUnit.DecibelWatt"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(PowerRatioUnit unit, double value)
+      => unit switch
+      {
+        PowerRatioUnit.DecibelWatt => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(PowerRatioUnit unit, double value)
+      => unit switch
+      {
+        PowerRatioUnit.DecibelWatt => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(PowerRatioUnit unit)
+      => unit switch
+      {
+        PowerRatioUnit.DecibelWatt => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(PowerRatioUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -85,23 +107,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(PowerRatioUnit unit)
-      => unit switch
-      {
-        PowerRatioUnit.DecibelWatt => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(PowerRatioUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    public string ToUnitValueNameString(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    public string ToUnitValueSymbolString(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

@@ -113,7 +113,7 @@ namespace Flux
       #region Static methods
 
       /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</summary>
-      public static bool CircleContainsPoint(double radius, double x, double y) => System.Math.Pow(x, 2) + System.Math.Pow(y, 2) <= System.Math.Pow(radius, 2);
+      public static bool CircleContainsPoint(double radius, double x, double y) => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(radius, 2);
 
       /// <summary>
       /// <para>Creates a circle consisting of <paramref name="count"/> vertices transformed with <paramref name="resultSelector"/> starting at <paramref name="arcOffset"/> and optional <paramref name="maxRandomness"/> (using <paramref name="rng"/>) unit interval (toward 0 = no random, toward 1 = total random).</para>
@@ -139,9 +139,9 @@ namespace Flux
       {
         rng ??= System.Random.Shared;
 
-        var list = new System.Collections.Generic.List<TResult>(System.Convert.ToInt32(System.Math.Ceiling(count)));
+        var list = new System.Collections.Generic.List<TResult>(System.Convert.ToInt32(double.Ceiling(count)));
 
-        var arcLength = System.Math.Tau / count;
+        var arcLength = double.Tau / count;
 
         for (var segment = 0; segment < count; segment++)
         {
@@ -160,7 +160,7 @@ namespace Flux
 
       /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</summary>
       public static bool EllipseContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
-        => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (a * a) + System.Math.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
+        => double.Cos(rotationAngle) is var cos && double.Sin(rotationAngle) is var sin && double.Pow(cos * x + sin * y, 2) / (a * a) + double.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
 
       #region Conversions
 
@@ -168,30 +168,30 @@ namespace Flux
       /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
       public static (double radius, double azimuth) ConvertCartesian2ToPolar(double x, double y)
         => new(
-          System.Math.Sqrt(x * x + y * y),
-          System.Math.Atan2(y, x)
+          double.Sqrt(x * x + y * y),
+          double.Atan2(y, x)
         );
 
       /// <summary>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
       public static (double radius, double azimuth) ConvertCartesian2ToPolarEx(double x, double y)
         => (
-          System.Math.Sqrt(x * x + y * y),
+          double.Sqrt(x * x + y * y),
           //System.Math.Tau - System.Math.Atan2(-x, y) is var atan2 && atan2 < 0 ? System.Math.Tau + atan2 : atan2
-          System.Math.Atan2(x, y) is var atan2 && atan2 < 0 ? System.Math.Tau + atan2 : atan2
+          double.Atan2(x, y) is var atan2 && atan2 < 0 ? double.Tau + atan2 : atan2
         );
 
       /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
       public static (double x, double y) ConvertPolarToCartesian2(double radius, double azimuth)
       {
-        var (sin, cos) = System.Math.SinCos(azimuth);
+        var (sin, cos) = double.SinCos(azimuth);
 
         return (radius * cos, radius * sin);
       }
 
       /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
       public static (double x, double y) ConvertPolarToCartesian2Ex(double radius, double azimuth)
-        => ConvertPolarToCartesian2(radius, (System.Math.Tau * 1.25) - (azimuth % System.Math.Tau) is var h && h > System.Math.Tau ? h - System.Math.Tau : h);
+        => ConvertPolarToCartesian2(radius, (double.Tau * 1.25) - (azimuth % double.Tau) is var h && h > double.Tau ? h - double.Tau : h);
       // Adjust azimuth.
       //{
       //  var adjustedAzimuth = (System.Math.Tau * 1.25) - (azimuth % System.Math.Tau) is var h && h > System.Math.Tau ? h - System.Math.Tau : h;
@@ -208,42 +208,42 @@ namespace Flux
       /// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
       /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
       /// </summary>
-      public static double PerimeterOfCircle(double radius) => 2 * System.Math.PI * radius;
+      public static double PerimeterOfCircle(double radius) => 2 * double.Pi * radius;
 
       /// <summary>Returns the approximate perimeter (circumference) of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
       public static double PerimeterOfEllipse(double a, double b)
       {
-        var circle = System.Math.PI * (a + b); // (2 * PI * radius)
+        var circle = double.Pi * (a + b); // (2 * PI * radius)
 
         if (a == b) // For a circle, use (PI * diameter);
           return circle;
 
-        var h3 = 3 * (System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2)); // H function.
+        var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function.
 
-        return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
+        return circle * (1 + h3 / (10 + double.Sqrt(4 - h3)));
       }
 
       /// <summary>
       /// <para>Computes the perimeter of a semicircle with the specified <paramref name="radius"/>.</para>
       /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
       /// </summary>
-      public static double PerimeterOfSemicircle(double radius) => (System.Math.PI + 2) * radius;
+      public static double PerimeterOfSemicircle(double radius) => (double.Pi + 2) * radius;
 
       /// <summary>
       /// <para>Computes the surface area of a circle with the specified <paramref name="radius"/>.</para>
       /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
       /// </summary>
-      public static double SurfaceAreaOfCircle(double radius) => System.Math.PI * radius * radius;
+      public static double SurfaceAreaOfCircle(double radius) => double.Pi * radius * radius;
 
       /// <summary>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</summary>
-      public static double SurfaceAreaOfEllipse(double a, double b) => System.Math.PI * a * b;
+      public static double SurfaceAreaOfEllipse(double a, double b) => double.Pi * a * b;
 
       #endregion // Static methods
 
       #region Implemented interfaces
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_azimuth.ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", provider)}>";
+        => $"<{m_radius.ToString(format ?? Format.UpTo3Decimals, provider)}, {m_azimuth.ToUnitString(Quantities.AngleUnit.Degree, format ?? Format.UpTo6Decimals, provider)}>";
 
       #endregion // Implemented interfaces
 

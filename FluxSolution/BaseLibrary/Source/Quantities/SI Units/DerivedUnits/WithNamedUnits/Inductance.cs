@@ -13,12 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry)
-      => m_value = unit switch
-      {
-        InductanceUnit.Henry => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -72,15 +67,33 @@ namespace Flux.Quantities
     public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-    //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
-
-    //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
-
     #endregion // ISiPrefixValueQuantifiable<>
 
     #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(InductanceUnit unit, double value)
+      => unit switch
+      {
+        InductanceUnit.Henry => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(InductanceUnit unit, double value)
+      => unit switch
+      {
+        InductanceUnit.Henry => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(InductanceUnit unit)
+      => unit switch
+      {
+        InductanceUnit.Henry => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
 
     public string GetUnitName(InductanceUnit unit, bool preferPlural) => unit.ToString() is var us && preferPlural ? GetUnitValue(unit).ToPluralString(us) : us;
 
@@ -91,21 +104,10 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(InductanceUnit unit)
-      => unit switch
-      {
-        InductanceUnit.Henry => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(InductanceUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(InductanceUnit unit = InductanceUnit.Henry, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
-
-    //public string ToUnitValueNameString(InductanceUnit unit = InductanceUnit.Henry, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-    //public string ToUnitValueSymbolString(InductanceUnit unit = InductanceUnit.Henry, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion // IUnitQuantifiable<>
 

@@ -174,8 +174,8 @@ namespace Flux
         var (x, y, z) = this;
 
         return new(
-              System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
-              (System.Math.Atan2(y, x) + System.Math.Tau) % System.Math.Tau, Quantities.AngleUnit.Radian,
+              double.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
+              double.Atan2(y, x) % double.Pi, Quantities.AngleUnit.Radian,
               z, Quantities.LengthUnit.Meter
             );
       }
@@ -186,8 +186,8 @@ namespace Flux
         var (x, y) = this;
 
         return new(
-              System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
-              System.Math.Atan2(y, x), Quantities.AngleUnit.Radian
+              double.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
+              double.Atan2(y, x), Quantities.AngleUnit.Radian
             );
       }
 
@@ -199,9 +199,9 @@ namespace Flux
         var x2y2 = x * x + y * y;
 
         return new(
-          System.Math.Sqrt(x2y2 + z * z), Quantities.LengthUnit.Meter,
-          System.Math.Atan2(System.Math.Sqrt(x2y2), z) /*+ System.Math.PI*/, Quantities.AngleUnit.Radian,
-          System.Math.Atan2(y, x) /*+ System.Math.PI*/, Quantities.AngleUnit.Radian
+          double.Sqrt(x2y2 + z * z), Quantities.LengthUnit.Meter,
+          double.Atan2(double.Sqrt(x2y2), z), Quantities.AngleUnit.Radian,
+          double.Atan2(y, x), Quantities.AngleUnit.Radian
         );
       }
 

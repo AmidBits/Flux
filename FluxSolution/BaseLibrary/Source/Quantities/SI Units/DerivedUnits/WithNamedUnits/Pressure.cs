@@ -18,17 +18,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Pressure(double value, PressureUnit unit = PressureUnit.Pascal)
-      => m_value = unit switch
-      {
-        PressureUnit.Millibar => value * 100,
-        PressureUnit.Bar => value / 100000,
-        PressureUnit.HectoPascal => value * 100,
-        PressureUnit.KiloPascal => value * 1000,
-        PressureUnit.Pascal => value,
-        PressureUnit.Psi => value * (8896443230521.0 / 1290320000.0),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Pressure(double value, PressureUnit unit = PressureUnit.Pascal) => m_value = ConvertFromUnit(unit, value);
 
     #region Static methods
     #endregion Static methods
@@ -85,15 +75,37 @@ namespace Flux.Quantities
     public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-    //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
-
-    //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
-
     #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(PressureUnit unit, double value)
+      => unit switch
+      {
+        PressureUnit.Pascal => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(PressureUnit unit, double value)
+      => unit switch
+      {
+        PressureUnit.Pascal => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(PressureUnit unit)
+      => unit switch
+      {
+        PressureUnit.Pascal => 1,
+
+        PressureUnit.Millibar => 100,
+        PressureUnit.Bar => 100000,
+        PressureUnit.Psi => 1 / (1290320000.0 / 8896443230521.0),
+
+        _ => throw new System.NotImplementedException()
+      };
 
     public string GetUnitName(PressureUnit unit, bool preferPlural)
       => unit.ToString() + unit switch
@@ -107,33 +119,17 @@ namespace Flux.Quantities
       {
         Quantities.PressureUnit.Millibar => "mbar",
         Quantities.PressureUnit.Bar => preferUnicode ? "\u3374" : "bar",
-        Quantities.PressureUnit.HectoPascal => preferUnicode ? "\u3371" : "hPa",
-        Quantities.PressureUnit.KiloPascal => preferUnicode ? "\u33AA" : "kPa",
+        //Quantities.PressureUnit.HectoPascal => preferUnicode ? "\u3371" : "hPa",
+        //Quantities.PressureUnit.KiloPascal => preferUnicode ? "\u33AA" : "kPa",
         Quantities.PressureUnit.Pascal => preferUnicode ? "\u33A9" : "Pa",
         Quantities.PressureUnit.Psi => "psi",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(PressureUnit unit)
-      => unit switch
-      {
-        PressureUnit.Millibar => m_value / 100,
-        PressureUnit.Bar => m_value / 100000,
-        PressureUnit.HectoPascal => m_value / 100,
-        PressureUnit.KiloPascal => m_value / 1000,
-        PressureUnit.Pascal => m_value,
-        PressureUnit.Psi => m_value * (1290320000.0 / 8896443230521.0),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(PressureUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(PressureUnit unit = PressureUnit.Pascal, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
-
-    //public string ToUnitValueNameString(PressureUnit unit = PressureUnit.Pascal, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-    //public string ToUnitValueSymbolString(PressureUnit unit = PressureUnit.Pascal, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion // IUnitQuantifiable<>
 

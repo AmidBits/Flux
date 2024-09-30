@@ -13,12 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public MagneticFlux(double value, MagneticFluxUnit unit = MagneticFluxUnit.Weber)
-      => m_value = unit switch
-      {
-        MagneticFluxUnit.Weber => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public MagneticFlux(double value, MagneticFluxUnit unit = MagneticFluxUnit.Weber) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -52,7 +47,17 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
 
-    // ISiUnitValueQuantifiable<>
+    #region IQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="MagneticFlux.Value"/> property is in <see cref="MagneticFluxUnit.Weber"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
     public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(MagneticFluxUnit.Weber, preferPlural);
 
     public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(MagneticFluxUnit.Weber, preferUnicode);
@@ -62,19 +67,34 @@ namespace Flux.Quantities
     public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-    //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+    #endregion // ISiUnitValueQuantifiable<>
 
-    //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+    #region IUnitQuantifiable<>
 
-    // IQuantifiable<>
-    /// <summary>
-    /// <para>The unit of the <see cref="MagneticFlux.Value"/> property is in <see cref="MagneticFluxUnit.Weber"/>.</para>
-    /// </summary>
-    public double Value => m_value;
+    public static double ConvertFromUnit(MagneticFluxUnit unit, double value)
+      => unit switch
+      {
+        MagneticFluxUnit.Weber => value,
 
-    // IUnitQuantifiable<>
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(MagneticFluxUnit unit, double value)
+      => unit switch
+      {
+        MagneticFluxUnit.Weber => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(MagneticFluxUnit unit)
+      => unit switch
+      {
+        MagneticFluxUnit.Weber => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(MagneticFluxUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -85,21 +105,12 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(MagneticFluxUnit unit)
-        => unit switch
-        {
-          MagneticFluxUnit.Weber => m_value,
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
+    public double GetUnitValue(MagneticFluxUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(MagneticFluxUnit unit = MagneticFluxUnit.Weber, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(MagneticFluxUnit unit = MagneticFluxUnit.Weber, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-    //public string ToUnitValueSymbolString(MagneticFluxUnit unit = MagneticFluxUnit.Weber, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
+    #endregion // IUnitQuantifiable<>
 
     #endregion Implemented interfaces
 

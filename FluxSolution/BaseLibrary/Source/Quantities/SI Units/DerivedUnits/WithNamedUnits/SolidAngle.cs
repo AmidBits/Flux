@@ -14,13 +14,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public SolidAngle(double value, SolidAngleUnit unit = SolidAngleUnit.Steradian)
-      => m_value = unit switch
-      {
-        SolidAngleUnit.Spat => value / (System.Math.Tau + System.Math.Tau),
-        SolidAngleUnit.Steradian => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public SolidAngle(double value, SolidAngleUnit unit = SolidAngleUnit.Steradian) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -65,6 +59,31 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
+    public static double ConvertFromUnit(SolidAngleUnit unit, double value)
+      => unit switch
+      {
+        SolidAngleUnit.Steradian => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(SolidAngleUnit unit, double value)
+      => unit switch
+      {
+        SolidAngleUnit.Steradian => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(SolidAngleUnit unit)
+      => unit switch
+      {
+        SolidAngleUnit.Steradian => 1,
+        SolidAngleUnit.Spat => System.Math.Tau + System.Math.Tau,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(SolidAngleUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(SolidAngleUnit unit, bool preferUnicode)
@@ -75,22 +94,10 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(SolidAngleUnit unit)
-      => unit switch
-      {
-        SolidAngleUnit.Spat => m_value * (System.Math.Tau + System.Math.Tau),
-        SolidAngleUnit.Steradian => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(SolidAngleUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(SolidAngleUnit unit = SolidAngleUnit.Steradian, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
-
-    //public string ToUnitValueNameString(SolidAngleUnit unit = SolidAngleUnit.Steradian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-    //public string ToUnitValueSymbolString(SolidAngleUnit unit = SolidAngleUnit.Steradian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion // IUnitQuantifiable<>
 

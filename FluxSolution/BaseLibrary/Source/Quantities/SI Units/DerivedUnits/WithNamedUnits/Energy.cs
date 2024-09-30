@@ -17,16 +17,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Energy(double value, EnergyUnit unit = EnergyUnit.Joule)
-      => m_value = unit switch
-      {
-        EnergyUnit.Joule => value,
-        EnergyUnit.ElectronVolt => value / 1.602176634e-19,
-        EnergyUnit.Calorie => value / 4.184,
-        EnergyUnit.WattHour => value / 3.6e3,
-        EnergyUnit.KilowattHour => value / 3.6e6,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Energy(double value, EnergyUnit unit = EnergyUnit.Joule) => m_value = ConvertFromUnit(unit, value);
 
     #region Static methods
 
@@ -74,19 +65,46 @@ namespace Flux.Quantities
     public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-    //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+    #region IQuantifiable<>
 
-    //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
-
-    // IQuantifiable<>
     /// <summary>
     /// <para>The unit of the <see cref="Energy.Value"/> property is in <see cref="EnergyUnit.Joule"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(EnergyUnit unit, double value)
+      => unit switch
+      {
+        EnergyUnit.Joule => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(EnergyUnit unit, double value)
+      => unit switch
+      {
+        EnergyUnit.Joule => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(EnergyUnit unit)
+      => unit switch
+      {
+        EnergyUnit.Joule => 1,
+
+        EnergyUnit.ElectronVolt => 1.602176634e-19,
+        EnergyUnit.Calorie => 4.184,
+        EnergyUnit.WattHour => 3.6e3,
+        EnergyUnit.KilowattHour => 3.6e6,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(EnergyUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(EnergyUnit unit, bool preferUnicode)
@@ -100,27 +118,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(EnergyUnit unit)
-      => unit switch
-      {
-        EnergyUnit.Joule => m_value,
-        EnergyUnit.ElectronVolt => m_value * 1.602176634e-19,
-        EnergyUnit.Calorie => m_value * 4.184,
-        EnergyUnit.WattHour => m_value * 3.6e3,
-        EnergyUnit.KilowattHour => m_value * 3.6e6,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(EnergyUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(EnergyUnit unit = EnergyUnit.Joule, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(EnergyUnit unit = EnergyUnit.Joule, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(EnergyUnit unit = EnergyUnit.Joule, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

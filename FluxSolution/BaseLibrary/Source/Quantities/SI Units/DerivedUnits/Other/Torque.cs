@@ -13,12 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Torque(double value, TorqueUnit unit = TorqueUnit.NewtonMeter)
-      => m_value = unit switch
-      {
-        TorqueUnit.NewtonMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Torque(double value, TorqueUnit unit = TorqueUnit.NewtonMeter) => m_value = ConvertFromUnit(unit, value);
 
     public Torque(Energy energy, Angle angle) : this(energy.Value / angle.Value) { }
 
@@ -58,13 +53,41 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(TorqueUnit.NewtonMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     ///  <para>The unit of the <see cref="Torque.Value"/> property is in <see cref="TorqueUnit.NewtonMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(TorqueUnit unit, double value)
+      => unit switch
+      {
+        TorqueUnit.NewtonMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(TorqueUnit unit, double value)
+      => unit switch
+      {
+        TorqueUnit.NewtonMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(TorqueUnit unit)
+      => unit switch
+      {
+        TorqueUnit.NewtonMeter => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(TorqueUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -75,23 +98,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(TorqueUnit unit)
-      => unit switch
-      {
-        TorqueUnit.NewtonMeter => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(TorqueUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(TorqueUnit unit = TorqueUnit.NewtonMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(TorqueUnit unit = TorqueUnit.NewtonMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(TorqueUnit unit = TorqueUnit.NewtonMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

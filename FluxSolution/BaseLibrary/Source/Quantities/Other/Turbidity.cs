@@ -15,12 +15,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Turbidity(double value, TurbidityUnit unit = TurbidityUnit.NephelometricTurbidityUnits)
-      => m_value = unit switch
-      {
-        TurbidityUnit.NephelometricTurbidityUnits => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Turbidity(double value, TurbidityUnit unit = TurbidityUnit.NephelometricTurbidityUnits) => m_value = ConvertFromUnit(unit, value);
 
     #region Static methods
 
@@ -58,16 +53,43 @@ namespace Flux.Quantities
     public int CompareTo(Turbidity other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(TurbidityUnit.NephelometricTurbidityUnits, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(TurbidityUnit.NephelometricTurbidityUnits, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="Turbidity.Value"/> property is in <see cref="TurbidityUnit.TurbidityUnit"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(TurbidityUnit unit, double value)
+      => unit switch
+      {
+        TurbidityUnit.NephelometricTurbidityUnits => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(TurbidityUnit unit, double value)
+      => unit switch
+      {
+        TurbidityUnit.NephelometricTurbidityUnits => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(TurbidityUnit unit)
+      => unit switch
+      {
+        TurbidityUnit.NephelometricTurbidityUnits => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(TurbidityUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -78,23 +100,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(TurbidityUnit unit)
-      => unit switch
-      {
-        TurbidityUnit.NephelometricTurbidityUnits => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(TurbidityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(TurbidityUnit unit = TurbidityUnit.NephelometricTurbidityUnits, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    public string ToUnitValueNameString(TurbidityUnit unit = TurbidityUnit.NephelometricTurbidityUnits, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    public string ToUnitValueSymbolString(TurbidityUnit unit = TurbidityUnit.NephelometricTurbidityUnits, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

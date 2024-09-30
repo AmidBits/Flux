@@ -45,20 +45,7 @@ namespace Flux
     {
       private readonly System.Numerics.BigInteger m_value;
 
-      public DigitalInformation(System.Numerics.BigInteger value, DigitalInformationUnit unit = DigitalInformationUnit.Byte)
-        => m_value = unit switch
-        {
-          DigitalInformationUnit.Byte => value,
-          DigitalInformationUnit.kibiByte => value * unit.GetUnitMultiple(),
-          DigitalInformationUnit.mebiByte => value * unit.GetUnitMultiple(),
-          DigitalInformationUnit.gibiByte => value * unit.GetUnitMultiple(),
-          DigitalInformationUnit.tebiByte => value * unit.GetUnitMultiple(),
-          DigitalInformationUnit.pebiByte => value * unit.GetUnitMultiple(),
-          DigitalInformationUnit.exbiByte => value * unit.GetUnitMultiple(),
-          DigitalInformationUnit.zebiByte => value * unit.GetUnitMultiple(),
-          DigitalInformationUnit.yobiByte => value * unit.GetUnitMultiple(),
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
+      public DigitalInformation(System.Numerics.BigInteger value, DigitalInformationUnit unit = DigitalInformationUnit.Byte) => m_value = ConvertFromUnit(unit, value);
 
       #region Static methods
 
@@ -94,16 +81,52 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is DigitalInformation o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => ToUnitValueSymbolString(DigitalInformationUnit.Byte, format, formatProvider);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(DigitalInformationUnit.Byte, format, formatProvider);
 
-      // IQuantifiable<>
+      #region IQuantifiable<>
+
       /// <summary>
       /// <para>The unit of the <see cref="DigitalInformationUnit.Value"/> property is in <see cref="DigitalInformationUnit.Byte"/>.</para>
       /// </summary>
       public System.Numerics.BigInteger Value => m_value;
 
-      // IUnitQuantifiable<>
+      #endregion // IQuantifiable<>
+
+      #region IUnitQuantifiable<>
+
+      public static System.Numerics.BigInteger ConvertFromUnit(DigitalInformationUnit unit, System.Numerics.BigInteger value)
+        => unit switch
+        {
+          DigitalInformationUnit.Byte => value,
+
+          _ => GetUnitFactor(unit) * value,
+        };
+
+      public static System.Numerics.BigInteger ConvertToUnit(DigitalInformationUnit unit, System.Numerics.BigInteger value)
+        => unit switch
+        {
+          DigitalInformationUnit.Byte => value,
+
+          _ => value / GetUnitFactor(unit),
+        };
+
+      public static System.Numerics.BigInteger GetUnitFactor(DigitalInformationUnit unit)
+        => unit switch
+        {
+          DigitalInformationUnit.Byte => 1,
+
+          DigitalInformationUnit.kibiByte => unit.GetUnitMultiple(),
+          DigitalInformationUnit.mebiByte => unit.GetUnitMultiple(),
+          DigitalInformationUnit.gibiByte => unit.GetUnitMultiple(),
+          DigitalInformationUnit.tebiByte => unit.GetUnitMultiple(),
+          DigitalInformationUnit.pebiByte => unit.GetUnitMultiple(),
+          DigitalInformationUnit.exbiByte => unit.GetUnitMultiple(),
+          DigitalInformationUnit.zebiByte => unit.GetUnitMultiple(),
+          DigitalInformationUnit.yobiByte => unit.GetUnitMultiple(),
+
+          _ => throw new System.NotImplementedException()
+        };
+
       public string GetUnitName(DigitalInformationUnit unit, bool preferPlural)
         => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -122,31 +145,14 @@ namespace Flux
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
-      public System.Numerics.BigInteger GetUnitValue(DigitalInformationUnit unit)
-        => unit switch
-        {
-          DigitalInformationUnit.Byte => m_value,
-          DigitalInformationUnit.kibiByte => m_value / unit.GetUnitMultiple(),
-          DigitalInformationUnit.mebiByte => m_value / unit.GetUnitMultiple(),
-          DigitalInformationUnit.gibiByte => m_value / unit.GetUnitMultiple(),
-          DigitalInformationUnit.tebiByte => m_value / unit.GetUnitMultiple(),
-          DigitalInformationUnit.pebiByte => m_value / unit.GetUnitMultiple(),
-          DigitalInformationUnit.exbiByte => m_value / unit.GetUnitMultiple(),
-          DigitalInformationUnit.zebiByte => m_value / unit.GetUnitMultiple(),
-          DigitalInformationUnit.yobiByte => m_value / unit.GetUnitMultiple(),
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
+      public System.Numerics.BigInteger GetUnitValue(DigitalInformationUnit unit) => ConvertToUnit(unit, m_value);
 
       public string ToUnitString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
         => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-      public string ToUnitValueNameString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-        => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+      #endregion // IUnitQuantifiable<>
 
-      public string ToUnitValueSymbolString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-        => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-      #endregion Implemented interfaces
+      #endregion // Implemented interfaces
 
       public override string ToString() => ToString(null, null);
     }

@@ -15,12 +15,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public RelativeHumidity(double value, RelativeHumidityUnit unit = RelativeHumidityUnit.Percent)
-      => m_value = unit switch
-      {
-        RelativeHumidityUnit.Percent => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public RelativeHumidity(double value, RelativeHumidityUnit unit = RelativeHumidityUnit.Percent) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -52,16 +47,43 @@ namespace Flux.Quantities
     public int CompareTo(RelativeHumidity other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(RelativeHumidityUnit.Percent, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(RelativeHumidityUnit.Percent, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="RelativeHumidity.Value"/> property is in <see cref="RelativeHumidityUnit.Percent"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(RelativeHumidityUnit unit, double value)
+      => unit switch
+      {
+        RelativeHumidityUnit.Percent => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(RelativeHumidityUnit unit, double value)
+      => unit switch
+      {
+        RelativeHumidityUnit.Percent => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(RelativeHumidityUnit unit)
+      => unit switch
+      {
+        RelativeHumidityUnit.Percent => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(RelativeHumidityUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -72,23 +94,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(RelativeHumidityUnit unit)
-      => unit switch
-      {
-        RelativeHumidityUnit.Percent => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(RelativeHumidityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    public string ToUnitValueNameString(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    public string ToUnitValueSymbolString(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

@@ -24,17 +24,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public Speed(double value, SpeedUnit unit = SpeedUnit.MeterPerSecond)
-      => m_value = unit switch
-      {
-        SpeedUnit.MeterPerSecond => value,
-        SpeedUnit.FootPerSecond => value * (381.0 / 1250.0),
-        SpeedUnit.KilometerPerHour => value * (5.0 / 18.0),
-        SpeedUnit.Knot => value * (1852.0 / 3600.0),
-        SpeedUnit.Mach => value * SpeedOfSound.Value,
-        SpeedUnit.MilePerHour => value * (1397.0 / 3125.0),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Speed(double value, SpeedUnit unit = SpeedUnit.MeterPerSecond) => m_value = ConvertFromUnit(unit, value);
 
     /// <summary>Create a new Speed instance representing phase velocity from the specified frequency and wavelength.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Phase_velocity"/>
@@ -106,15 +96,39 @@ namespace Flux.Quantities
 
     public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 1);
 
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
-
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
-
     #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(SpeedUnit unit, double value)
+      => unit switch
+      {
+        SpeedUnit.MeterPerSecond => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(SpeedUnit unit, double value)
+      => unit switch
+      {
+        SpeedUnit.MeterPerSecond => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(SpeedUnit unit)
+      => unit switch
+      {
+        SpeedUnit.MeterPerSecond => 1,
+
+        SpeedUnit.FootPerSecond => (381.0 / 1250.0),
+        SpeedUnit.KilometerPerHour => (5.0 / 18.0),
+        SpeedUnit.Knot => (1852.0 / 3600.0),
+        SpeedUnit.Mach => SpeedOfSound.Value,
+        SpeedUnit.MilePerHour => (1397.0 / 3125.0),
+
+        _ => throw new System.NotImplementedException()
+      };
 
     public string GetUnitName(SpeedUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
@@ -131,17 +145,7 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(SpeedUnit unit)
-      => unit switch
-      {
-        SpeedUnit.MeterPerSecond => m_value,
-        SpeedUnit.FootPerSecond => m_value * (1250.0 / 381.0),
-        SpeedUnit.KilometerPerHour => m_value * (18.0 / 5.0),
-        SpeedUnit.Knot => m_value * (3600.0 / 1852.0),
-        SpeedUnit.Mach => m_value / SpeedOfSound.Value,
-        SpeedUnit.MilePerHour => m_value * (3125.0 / 1397.0),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(SpeedUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

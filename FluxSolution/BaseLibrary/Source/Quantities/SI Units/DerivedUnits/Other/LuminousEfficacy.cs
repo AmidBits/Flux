@@ -15,12 +15,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public LuminousEfficacy(double value, LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt)
-      => m_value = unit switch
-      {
-        LuminousEfficacyUnit.LumenPerWatt => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public LuminousEfficacy(double value, LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt) => m_value = ConvertFromUnit(unit, value);
 
     public LuminousEfficacy(Energy energy, Angle angle) : this(energy.Value / angle.Value) { }
 
@@ -60,13 +55,41 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(LuminousEfficacyUnit.LumenPerWatt, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="LuminousEfficacy.Value"/> property is in <see cref="LuminousEfficacyUnit.LumenPerWatt"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(LuminousEfficacyUnit unit, double value)
+      => unit switch
+      {
+        LuminousEfficacyUnit.LumenPerWatt => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(LuminousEfficacyUnit unit, double value)
+      => unit switch
+      {
+        LuminousEfficacyUnit.LumenPerWatt => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(LuminousEfficacyUnit unit)
+      => unit switch
+      {
+        LuminousEfficacyUnit.LumenPerWatt => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(LuminousEfficacyUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -77,23 +100,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(LuminousEfficacyUnit unit)
-      => unit switch
-      {
-        LuminousEfficacyUnit.LumenPerWatt => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(LuminousEfficacyUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

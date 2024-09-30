@@ -4,7 +4,6 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="MagneticFluxDensity"/>.</summary>
     Tesla,
-    KilogramPerSquareSecond
   }
 
   /// <summary>Magnetic flux density (B), unit of tesla.</summary>
@@ -14,12 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla)
-      => m_value = unit switch
-      {
-        MagneticFluxDensityUnit.Tesla => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla) => m_value = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new magnetic flux density from the length (magnitude) of <paramref name="vector"/> and <paramref name="unit"/>.</para>
@@ -67,13 +61,17 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="MagneticFluxDensity.Value"/> property is in <see cref="MagneticFluxDensityUnit.Tesla"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // ISiPrefixValueQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region ISiPrefixValueQuantifiable<>
+
     public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(MagneticFluxDensityUnit.Tesla, preferPlural);
 
     public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(MagneticFluxDensityUnit.Tesla, preferUnicode);
@@ -83,13 +81,34 @@ namespace Flux.Quantities
     public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-    //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+    #endregion // ISiPrefixValueQuantifiable<>
 
-    //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+    #region IUnitQuantifiable<>
 
-    //IUnitQuantifiable<>
+    public static double ConvertFromUnit(MagneticFluxDensityUnit unit, double value)
+      => unit switch
+      {
+        MagneticFluxDensityUnit.Tesla => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(MagneticFluxDensityUnit unit, double value)
+      => unit switch
+      {
+        MagneticFluxDensityUnit.Tesla => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(MagneticFluxDensityUnit unit)
+      => unit switch
+      {
+        MagneticFluxDensityUnit.Tesla => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(MagneticFluxDensityUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -97,25 +116,16 @@ namespace Flux.Quantities
       => unit switch
       {
         Quantities.MagneticFluxDensityUnit.Tesla => "T",
-        Quantities.MagneticFluxDensityUnit.KilogramPerSquareSecond => "kg/s²",
+        //Quantities.MagneticFluxDensityUnit.KilogramPerSquareSecond => "kg/s²",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(MagneticFluxDensityUnit unit)
-      => unit switch
-      {
-        MagneticFluxDensityUnit.Tesla => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(MagneticFluxDensityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-    //public string ToUnitValueSymbolString(MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
+    #endregion // IUnitQuantifiable<>
 
     #endregion Implemented interfaces
 

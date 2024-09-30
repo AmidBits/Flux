@@ -16,10 +16,13 @@ namespace Flux.Quantities
     private readonly Angle m_angle;
 
     /// <summary>Creates a new Latitude from the specified number of degrees. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
-    public Latitude(double latitude, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(latitude, unit);
+    public Latitude(Angle angle) => m_angle = new(angle.InDegrees.Fold(MinValue, MaxValue), AngleUnit.Degree);
+
+    /// <summary>Creates a new Latitude from the specified <paramref name="angle"/> and <paramref name="unit"/>. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
+    public Latitude(double angle, AngleUnit unit = AngleUnit.Degree) : this(new Angle(angle, unit)) { }
 
     /// <summary>The <see cref="Quantities.Angle"/> of the latitude.</summary>
-    public Angle Angle { get => m_angle; init => m_angle = new(value.GetUnitValue(AngleUnit.Degree).Fold(MinValue, MaxValue), AngleUnit.Degree); }
+    public Angle Angle { get => m_angle; }
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
@@ -27,7 +30,7 @@ namespace Flux.Quantities
     public double GetMercatorProjectedY()
       => System.Math.Clamp(System.Math.Log(System.Math.Tan(System.Math.PI / 4 + Angle.Value / 2)), -System.Math.PI, System.Math.PI);
 
-    public string ToDecimalString() => m_angle.ToUnitString(AngleUnit.Degree, "N6");
+    public string ToDecimalString() => m_angle.GetUnitValue(AngleUnit.Degree).ToString(Format.UpTo6Decimals);
 
     public string ToSexagesimalDegreeString(AngleDmsNotation format = AngleDmsNotation.DegreesMinutesDecimalSeconds, UnicodeSpacing componentSpacing = UnicodeSpacing.None)
       => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CompassCardinalAxis.NorthSouth, -1, componentSpacing);

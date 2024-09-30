@@ -15,12 +15,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public Action(double value, ActionUnit unit = ActionUnit.JouleSecond)
-      => m_value = unit switch
-      {
-        ActionUnit.JouleSecond => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Action(double value, ActionUnit unit = ActionUnit.JouleSecond) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -54,13 +49,41 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(ActionUnit.JouleSecond, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="Action.Value"/> property is in <see cref="ActionUnit.JouleSecond"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(ActionUnit unit, double value)
+      => unit switch
+      {
+        ActionUnit.JouleSecond => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(ActionUnit unit, double value)
+      => unit switch
+      {
+        ActionUnit.JouleSecond => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(ActionUnit unit)
+      => unit switch
+      {
+        ActionUnit.JouleSecond => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(ActionUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -71,23 +94,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(ActionUnit unit)
-      => unit switch
-      {
-        ActionUnit.JouleSecond => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(ActionUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(ActionUnit unit = ActionUnit.JouleSecond, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(ActionUnit unit = ActionUnit.JouleSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(ActionUnit unit = ActionUnit.JouleSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

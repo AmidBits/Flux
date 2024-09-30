@@ -13,12 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public CatalyticActivity(double value, CatalyticActivityUnit unit = CatalyticActivityUnit.Katal)
-      => m_value = unit switch
-      {
-        CatalyticActivityUnit.Katal => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public CatalyticActivity(double value, CatalyticActivityUnit unit = CatalyticActivityUnit.Katal) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -52,7 +47,8 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
 
-    // ISiUnitValueQuantifiable<>
+    #region ISiUnitValueQuantifiable<>
+
     public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(CatalyticActivityUnit.Katal, preferPlural);
 
     public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(CatalyticActivityUnit.Katal, preferUnicode);
@@ -62,19 +58,43 @@ namespace Flux.Quantities
     public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-    //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+    #endregion // ISiUnitValueQuantifiable<>
 
-    //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+    #region IQuantifiable<>
 
-    // IQuantifiable<>
     /// <summary>
     /// <para>The unit of the <see cref="CatalyticActivity.Value"/> property is in <see cref="CatalyticActivityUnit.Katal"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(CatalyticActivityUnit unit, double value)
+      => unit switch
+      {
+        CatalyticActivityUnit.Katal => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(CatalyticActivityUnit unit, double value)
+      => unit switch
+      {
+        CatalyticActivityUnit.Katal => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(CatalyticActivityUnit unit)
+      => unit switch
+      {
+        CatalyticActivityUnit.Katal => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(CatalyticActivityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(CatalyticActivityUnit unit, bool preferUnicode)
@@ -84,23 +104,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(CatalyticActivityUnit unit)
-      => unit switch
-      {
-        CatalyticActivityUnit.Katal => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(CatalyticActivityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(CatalyticActivityUnit unit = CatalyticActivityUnit.Katal, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

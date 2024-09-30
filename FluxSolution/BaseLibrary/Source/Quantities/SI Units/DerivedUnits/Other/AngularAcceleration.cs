@@ -13,12 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public AngularAcceleration(double value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared)
-      => m_value = unit switch
-      {
-        AngularAccelerationUnit.RadianPerSecondSquared => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public AngularAcceleration(double value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared) => m_value = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new angular acceleration from the length (magnitude) of <paramref name="vector"/> and <paramref name="unit"/>.</para>
@@ -66,13 +61,41 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(AngularAccelerationUnit.RadianPerSecondSquared, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="AngularAcceleration.Value"/> property is in <see cref="AngularAccelerationUnit.RadianPerSecondSquared"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(AngularAccelerationUnit unit, double value)
+      => unit switch
+      {
+        AngularAccelerationUnit.RadianPerSecondSquared => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(AngularAccelerationUnit unit, double value)
+      => unit switch
+      {
+        AngularAccelerationUnit.RadianPerSecondSquared => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(AngularAccelerationUnit unit)
+      => unit switch
+      {
+        AngularAccelerationUnit.RadianPerSecondSquared => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(AngularAccelerationUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -83,23 +106,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(AngularAccelerationUnit unit)
-      => unit switch
-      {
-        AngularAccelerationUnit.RadianPerSecondSquared => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(AngularAccelerationUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

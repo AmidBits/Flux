@@ -14,13 +14,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public RadiationExposure(double value, RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram)
-      => m_value = unit switch
-      {
-        RadiationExposureUnit.CoulombPerKilogram => value,
-        RadiationExposureUnit.Röntgen => value / 3876,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public RadiationExposure(double value, RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -65,6 +59,31 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
+    public static double ConvertFromUnit(RadiationExposureUnit unit, double value)
+      => unit switch
+      {
+        RadiationExposureUnit.CoulombPerKilogram => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(RadiationExposureUnit unit, double value)
+      => unit switch
+      {
+        RadiationExposureUnit.CoulombPerKilogram => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(RadiationExposureUnit unit)
+      => unit switch
+      {
+        RadiationExposureUnit.CoulombPerKilogram => 1,
+        RadiationExposureUnit.Röntgen => 1.0 / 3876.0,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(RadiationExposureUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(RadiationExposureUnit unit, bool preferUnicode)
@@ -75,22 +94,10 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(RadiationExposureUnit unit)
-        => unit switch
-        {
-          RadiationExposureUnit.CoulombPerKilogram => m_value,
-          RadiationExposureUnit.Röntgen => m_value * 3876,
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
+    public double GetUnitValue(RadiationExposureUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
-
-    //public string ToUnitValueNameString(RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-    //public string ToUnitValueSymbolString(RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion IUnitQuantifiable<>
 

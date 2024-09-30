@@ -13,12 +13,19 @@ namespace Flux.Quantities
     /// <summary>MinValue is a closed (included) endpoint.</summary>
     public const double MinValue = 0;
 
-    private readonly Quantities.Angle m_angle;
+    private readonly Angle m_angle;
 
-    /// <summary>Creates a new Azimuth from the specified number of degrees. The value is wrapped within the degree range [0, +360).</summary>
-    public Azimuth(double angle, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(angle, unit);
+    /// <summary>Creates a new Azimuth from the specified <paramref name="angle"/>. The value is wrapped within the degree range [0, +360).</summary>
+    public Azimuth(Angle angle) => m_angle = new(angle.InDegrees.WrapOpenEnd(MinValue, MaxValue), AngleUnit.Degree);
 
-    public Angle Angle { get => m_angle; init => m_angle = new(value.GetUnitValue(AngleUnit.Degree).WrapOpenEnd(MinValue, MaxValue), AngleUnit.Degree); }
+    /// <summary>Creates a new Azimuth from the specified <paramref name="angle"/> and <paramref name="unit"/>. The value is wrapped within the degree range [0, +360).</summary>
+    public Azimuth(double angle, AngleUnit unit = AngleUnit.Degree) : this(new Angle(angle, unit)) { }
+
+    public Angle Angle { get => m_angle; }
+
+    public CompassRose32Wind CompassAbbreviation => CompassPoint(m_angle.InDegrees, PointsOfTheCompass.ThirtytwoWinds, MidpointRounding.ToZero, out double _);
+
+    public string CompassWords => string.Join(' ', CompassAbbreviation.ToWords());
 
     #region Static methods
 
@@ -29,16 +36,23 @@ namespace Flux.Quantities
     //  return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
     //}
 
-    /// <summary>Compass point (to given precision) for specified bearing.</summary>
+    /// <summary>
+    /// <para>Compass point (to given precision) for specified bearing.</para>
+    /// </summary>
     /// <remarks>Precision = max length of compass point, 1 = the four cardinal directions, 2 = ; it could be extended to 4 for quarter-winds (eg NEbN), but I think they are little used.</remarks>
     /// <param name="azimuth">The direction in degrees.</param>
     /// <param name="precision">The precision, or resolution to adhere to, 4 = the four cardinal directions, 8 = the four cardinals and four intercardinal together (a.k.a. the eight principal winds) form the 8-wind compass rose, 16 = the eight principal winds and the eight half-winds together form the 16-wind compass rose, 32 = the eight principal winds, eight half-winds and sixteen quarter-winds form the 32-wind compass rose.</param>
     /// <param name="notch">The integer notch that is closest to the <paramref name="azimuth"/> scaled by <paramref name="precision"/>.</param>
     /// <returns></returns>
-    public static CompassRose32Wind CompassPoint(double azimuth, PointsOfTheCompass precision, out double notch)
-      => (CompassRose32Wind)(int)((notch = LatchNeedle(azimuth, (int)precision)) * (32 / (int)precision));
+    public static CompassRose32Wind CompassPoint(double azimuth, PointsOfTheCompass precision, System.MidpointRounding roundingMethod, out double notch)
+      => (CompassRose32Wind)(int)((notch = LatchNeedle(azimuth, (int)precision, roundingMethod)) * (32 / (int)precision));
 
-    /// <summary>Finding the angle between two bearings.</summary>
+    /// <summary>
+    /// <para>Finding the angle between two bearings.</para>
+    /// </summary>
+    /// <param name="azimuth1"></param>
+    /// <param name="azimuth2"></param>
+    /// <returns></returns>
     public static double DeltaBearing(double azimuth1, double azimuth2)
       => new Angle(azimuth2 - azimuth1, AngleUnit.Degree).GetUnitValue(AngleUnit.Degree);
 
@@ -49,58 +63,30 @@ namespace Flux.Quantities
     {
       var wordsOfTheCompassPoints = System.Enum.GetNames<WordsOfTheCompass>();
 
-      var words = new System.Collections.Generic.List<string>();
+      var initials = new System.Collections.Generic.List<char>();
 
-      var sb = new System.Text.StringBuilder(compassPointInWords);
-
-      sb.Replace(" ", string.Empty);
+      var sb = new System.Text.StringBuilder(compassPointInWords).RemoveAll(char.IsWhiteSpace);
 
       while (sb.Length > 0)
       {
-        var index = 0;
-
-        for (; index < wordsOfTheCompassPoints.Length; index++)
+        if (System.Array.FindIndex(wordsOfTheCompassPoints, w => sb.StartsWith(w, Flux.StringComparerEx.CurrentCultureIgnoreCase)) is var index && index > -1)
         {
           var word = wordsOfTheCompassPoints[index];
 
-          if (StartsWith(sb, word, System.Collections.Generic.EqualityComparer<char>.Default))
-          {
-            words.Add(word);
+          initials.Add(word[0]);
 
-            sb.Remove(0, word.Length);
-
-            break;
-          }
+          sb.Remove(0, word.Length);
         }
-
-        if (index == wordsOfTheCompassPoints.Length)
+        else
           sb.Remove(0, 1);
       }
 
-      return FromAbbreviation(string.Concat(words.Select(s => s[0])));
-
-      static bool StartsWith(System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char> equalityComparer)
-      {
-        System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentNullException.ThrowIfNull(equalityComparer);
-
-        var sourceLength = source.Length;
-        var targetLength = target.Length;
-
-        if (sourceLength < targetLength)
-          return false;
-
-        for (var index = targetLength - 1; index >= 0; index--)
-          if (!equalityComparer.Equals(source[index], target[index]))
-            return false;
-
-        return true;
-      }
+      return FromAbbreviation(string.Concat(initials));
     }
 
     /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
-    public static int LatchNeedle(double azimuth, int positions)
-      => System.Convert.ToInt32(System.Math.Round(new Angle(azimuth, AngleUnit.Degree).GetUnitValue(AngleUnit.Degree) / (MaxValue / positions) % positions));
+    public static int LatchNeedle(double azimuth, int positions, System.MidpointRounding roundingMethod)
+      => System.Convert.ToInt32(double.Round(new Angle(azimuth, AngleUnit.Degree).GetUnitValue(AngleUnit.Degree) / (MaxValue / positions) % positions, roundingMethod));
 
     public static Azimuth Parse(string compassPointInWordsOrAbbreviation)
       => FromAbbreviation(compassPointInWordsOrAbbreviation) is Azimuth fromAbbreviation
@@ -180,6 +166,6 @@ namespace Flux.Quantities
 
     #endregion // Implemented interfaces
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString() => ToString(Format.UpTo3Decimals, null); // Up to three decimals.
   }
 }

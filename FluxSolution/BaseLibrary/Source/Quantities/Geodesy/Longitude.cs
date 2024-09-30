@@ -10,13 +10,16 @@ namespace Flux.Quantities
     public const double MaxValue = +180;
     public const double MinValue = -180;
 
-    private readonly Quantities.Angle m_angle;
+    private readonly Angle m_angle;
 
-    /// <summary>Creates a new Longitude from the specified number of degrees. The value is wrapped within the degree range [-180, +180].</summary>
-    public Longitude(double longitude, AngleUnit unit = AngleUnit.Degree) => Angle = new Angle(longitude, unit);
+    /// <summary>Creates a new Longitude from the specified <paramref name="angle"/>. The value is wrapped within the degree range [-180, +180].</summary>
+    public Longitude(Angle angle) => m_angle = new(angle.InDegrees.Wrap(MinValue, MaxValue), AngleUnit.Degree);
+
+    /// <summary>Creates a new Longitude from the specified <paramref name="angle"/> and <paramref name="unit"/>. The value is wrapped within the degree range [-180, +180].</summary>
+    public Longitude(double angle, AngleUnit unit = AngleUnit.Degree) : this(new Angle(angle, unit)) { }
 
     /// <summary>The <see cref="Quantities.Angle"/> of the longitude.</summary>
-    public Angle Angle { get => m_angle; init => m_angle = new(value.GetUnitValue(AngleUnit.Degree).Wrap(MinValue, MaxValue), AngleUnit.Degree); }
+    public Angle Angle { get => m_angle; }
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
     public int TheoreticalTimezoneOffset
@@ -28,7 +31,7 @@ namespace Flux.Quantities
     public double GetMercatorProjectedX()
       => Angle.GetUnitValue(AngleUnit.Radian);
 
-    public string ToDecimalString() => m_angle.ToUnitString(AngleUnit.Degree, "N6");
+    public string ToDecimalString() => m_angle.GetUnitValue(AngleUnit.Degree).ToString(Format.UpTo6Decimals);
 
     public string ToSexagesimalDegreeString(AngleDmsNotation format = AngleDmsNotation.DegreesMinutesDecimalSeconds, UnicodeSpacing componentSpacing = UnicodeSpacing.None)
       => Angle.ToDmsString(m_angle.GetUnitValue(AngleUnit.Degree), format, CompassCardinalAxis.EastWest, -1, componentSpacing);

@@ -15,14 +15,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Force(double value, ForceUnit unit = ForceUnit.Newton)
-      => m_value = unit switch
-      {
-        ForceUnit.Newton => value,
-        ForceUnit.KilogramForce => value / 0.101971621,
-        ForceUnit.PoundForce => value / 0.224808943,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Force(double value, ForceUnit unit = ForceUnit.Newton) => m_value = ConvertFromUnit(unit, value);
 
     public Force(Mass mass, Acceleration acceleration) : this(mass.Value * acceleration.Value) { }
 
@@ -62,7 +55,17 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
 
-    // ISiUnitValueQuantifiable<>
+    #region IQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="Force.Value"/> property is in <see cref="ForceUnit.Newton"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
     public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ForceUnit.Newton, preferPlural);
 
     public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(ForceUnit.Newton, preferUnicode);
@@ -72,19 +75,36 @@ namespace Flux.Quantities
     public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-    //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+    #endregion // ISiUnitValueQuantifiable<>
 
-    //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+    #region IUnitQuantifiable<>
 
-    // IQuantifiable<>
-    /// <summary>
-    /// <para>The unit of the <see cref="Force.Value"/> property is in <see cref="ForceUnit.Newton"/>.</para>
-    /// </summary>
-    public double Value => m_value;
+    public static double ConvertFromUnit(ForceUnit unit, double value)
+      => unit switch
+      {
+        ForceUnit.Newton => value,
 
-    // IUnitQuantifiable<>
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(ForceUnit unit, double value)
+      => unit switch
+      {
+        ForceUnit.Newton => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(ForceUnit unit)
+      => unit switch
+      {
+        ForceUnit.Newton => 1,
+        ForceUnit.KilogramForce => 0.101971621,
+        ForceUnit.PoundForce => 0.224808943,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(ForceUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -97,25 +117,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(ForceUnit unit)
-      => unit switch
-      {
-        ForceUnit.Newton => m_value,
-        ForceUnit.KilogramForce => m_value * 0.101971621,
-        ForceUnit.PoundForce => m_value * 0.224808943,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(ForceUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(ForceUnit unit = ForceUnit.Newton, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(ForceUnit unit = ForceUnit.Newton, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(ForceUnit unit = ForceUnit.Newton, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

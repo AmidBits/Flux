@@ -31,29 +31,11 @@ namespace Flux.Quantities
     : System.IComparable, System.IComparable<PartsPerNotation>, System.IFormattable, IUnitValueQuantifiable<double, PartsPerNotationUnit>
   {
     private readonly double m_parts;
-    //private readonly PartsPerNotationUnit m_unit;
 
     /// <summary>Creates a new instance of this type.</summary>
     /// <param name="parts">The parts in parts per notation.</param>
     /// <param name="unit">The notation in parts per notation.</param>
-    public PartsPerNotation(double parts, PartsPerNotationUnit unit = PartsPerNotationUnit.Percent)
-    {
-      m_parts = unit switch
-      {
-        PartsPerNotationUnit.One => parts,
-        PartsPerNotationUnit.Percent => parts / 1e2,
-        PartsPerNotationUnit.PerMille => parts / 1e3,
-        PartsPerNotationUnit.PerMyriad => parts / 1e4,
-        PartsPerNotationUnit.PerCentMille => parts / 1e5,
-        PartsPerNotationUnit.PartPerMillion => parts / 1e6,
-        PartsPerNotationUnit.PartPerBillion => parts / 1e9,
-        PartsPerNotationUnit.PartPerTrillion => parts / 1e12,
-        PartsPerNotationUnit.PartPerQuadrillion => parts / 1e15,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-
-      //m_unit = unit;
-    }
+    public PartsPerNotation(double parts, PartsPerNotationUnit unit = PartsPerNotationUnit.Percent) => m_parts = ConvertToUnit(unit, parts);
 
     #region Static methods
     #endregion Static methods
@@ -88,16 +70,52 @@ namespace Flux.Quantities
     public int CompareTo(PartsPerNotation other) => m_parts.CompareTo(other.m_parts);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(PartsPerNotationUnit.Percent, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(PartsPerNotationUnit.Percent, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="PartsPerNotation.Value"/> property is in <see cref="PartsPerNotationUnit.Percent"/>.</para>
     /// </summary>
     public double Value => m_parts;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(PartsPerNotationUnit unit, double value)
+      => unit switch
+      {
+        PartsPerNotationUnit.One => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(PartsPerNotationUnit unit, double value)
+      => unit switch
+      {
+        PartsPerNotationUnit.One => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(PartsPerNotationUnit unit)
+      => unit switch
+      {
+        PartsPerNotationUnit.One => 1,
+
+        PartsPerNotationUnit.Percent => 1e2,
+        PartsPerNotationUnit.PerMille => 1e3,
+        PartsPerNotationUnit.PerMyriad => 1e4,
+        PartsPerNotationUnit.PerCentMille => 1e5,
+        PartsPerNotationUnit.PartPerMillion => 1e6,
+        PartsPerNotationUnit.PartPerBillion => 1e9,
+        PartsPerNotationUnit.PartPerTrillion => 1e12,
+        PartsPerNotationUnit.PartPerQuadrillion => 1e15,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(PartsPerNotationUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -116,31 +134,14 @@ namespace Flux.Quantities
         _ => string.Empty,
       };
 
-    public double GetUnitValue(PartsPerNotationUnit unit)
-      => unit switch
-      {
-        PartsPerNotationUnit.One => m_parts,
-        PartsPerNotationUnit.Percent => m_parts * 1e2,
-        PartsPerNotationUnit.PerMille => m_parts * 1e3,
-        PartsPerNotationUnit.PerMyriad => m_parts * 1e4,
-        PartsPerNotationUnit.PerCentMille => m_parts * 1e5,
-        PartsPerNotationUnit.PartPerMillion => m_parts * 1e6,
-        PartsPerNotationUnit.PartPerBillion => m_parts * 1e9,
-        PartsPerNotationUnit.PartPerTrillion => m_parts * 1e12,
-        PartsPerNotationUnit.PartPerQuadrillion => m_parts * 1e15,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(PartsPerNotationUnit unit) => ConvertToUnit(unit, m_parts);
 
     public string ToUnitString(PartsPerNotationUnit unit = PartsPerNotationUnit.One, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    public string ToUnitValueNameString(PartsPerNotationUnit unit = PartsPerNotationUnit.One, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-        => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    public string ToUnitValueSymbolString(PartsPerNotationUnit unit = PartsPerNotationUnit.One, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-        => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

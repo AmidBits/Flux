@@ -60,7 +60,7 @@
       //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       //};
 
-      public double Degrees => double.RadiansToDegrees(m_value);
+      public double InDegrees => double.RadiansToDegrees(m_value);
 
       public AngleNames GetAngleNames()
       {
@@ -591,12 +591,6 @@
       public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
         => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-      //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-      //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
-
-      //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
-
       #endregion // ISiUnitValueQuantifiable<>
 
       #region IUnitQuantifiable<>
@@ -681,12 +675,6 @@
           ? UnicodeSpacing.Space.ToSpacingString() + GetUnitName(unit, true)
           : (unit.HasUnitSpacing(true) ? UnicodeSpacing.Space : UnicodeSpacing.None).ToSpacingString() + GetUnitSymbol(unit, true)
         );
-
-      //public string ToUnitValueNameString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      //  => GetUnitValue(unit).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-      //public string ToUnitValueSymbolString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      //  => GetUnitValue(unit).ToSiFormattedString() + (unit.HasUnitSpacing(preferUnicode) ? unitSpacing : UnicodeSpacing.None).ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
       #endregion // IUnitQuantifiable<>
 

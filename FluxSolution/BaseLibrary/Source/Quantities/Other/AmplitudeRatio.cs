@@ -17,12 +17,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public AmplitudeRatio(double value, AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt)
-      => m_value = unit switch
-      {
-        AmplitudeRatioUnit.DecibelVolt => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public AmplitudeRatio(double value, AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt) => m_value = ConvertFromUnit(unit, value);
 
     public PowerRatio ToPowerRatio() => new(System.Math.Pow(m_value, 2));
 
@@ -66,16 +61,43 @@ namespace Flux.Quantities
     public int CompareTo(AmplitudeRatio other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(AmplitudeRatioUnit.DecibelVolt, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(AmplitudeRatioUnit.DecibelVolt, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="AmplitudeRatio.Value"/> property is in <see cref="AmplitudeRatioUnit.DecibelVolt"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(AmplitudeRatioUnit unit, double value)
+      => unit switch
+      {
+        AmplitudeRatioUnit.DecibelVolt => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(AmplitudeRatioUnit unit, double value)
+      => unit switch
+      {
+        AmplitudeRatioUnit.DecibelVolt => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(AmplitudeRatioUnit unit)
+      => unit switch
+      {
+        AmplitudeRatioUnit.DecibelVolt => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(AmplitudeRatioUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -86,23 +108,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(AmplitudeRatioUnit unit)
-      => unit switch
-      {
-        AmplitudeRatioUnit.DecibelVolt => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(AmplitudeRatioUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    public string ToUnitValueNameString(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    public string ToUnitValueSymbolString(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

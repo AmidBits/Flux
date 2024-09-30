@@ -16,12 +16,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Density(double value, DensityUnit unit = DensityUnit.KilogramPerCubicMeter)
-      => m_value = unit switch
-      {
-        DensityUnit.KilogramPerCubicMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Density(double value, DensityUnit unit = DensityUnit.KilogramPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
     public Density(Mass mass, Volume volume) : this(mass.Value / volume.Value) { }
 
@@ -61,13 +56,41 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(DensityUnit.KilogramPerCubicMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="Density.Value"/> property is in <see cref="DensityUnit.KilogramPerCubicMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(DensityUnit unit, double value)
+      => unit switch
+      {
+        DensityUnit.KilogramPerCubicMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(DensityUnit unit, double value)
+      => unit switch
+      {
+        DensityUnit.KilogramPerCubicMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(DensityUnit unit)
+      => unit switch
+      {
+        DensityUnit.KilogramPerCubicMeter => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(DensityUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -78,23 +101,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(DensityUnit unit)
-        => unit switch
-        {
-          DensityUnit.KilogramPerCubicMeter => m_value,
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
+    public double GetUnitValue(DensityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(DensityUnit unit = DensityUnit.KilogramPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(DensityUnit unit = DensityUnit.KilogramPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(DensityUnit unit = DensityUnit.KilogramPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

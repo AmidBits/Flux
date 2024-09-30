@@ -17,14 +17,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public ElectricalResistance(double value, ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm)
-      => m_value = unit switch
-      {
-        ElectricalResistanceUnit.Ohm => value,
-        ElectricalResistanceUnit.KiloOhm => value * 1000,
-        ElectricalResistanceUnit.MegaOhm => value * 1000000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public ElectricalResistance(double value, ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm) => m_value = ConvertFromUnit(unit, value);
 
     public ElectricalConductance ToElectricalConductance() => new(1 / m_value);
 
@@ -86,7 +79,17 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
 
-    // ISiUnitValueQuantifiable<>
+    #region IQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="ElectricalResistance.Value"/> property is in <see cref="ElectricalResistanceUnit.Ohm"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
     public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricalResistanceUnit.Ohm, preferPlural);
 
     public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricalResistanceUnit.Ohm, preferUnicode);
@@ -96,49 +99,53 @@ namespace Flux.Quantities
     public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
       => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
 
-    //public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
+    #endregion // ISiUnitValueQuantifiable<>
 
-    //public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+    #region IUnitQuantifiable<>
 
-    // IQuantifiable<>
-    /// <summary>
-    /// <para>The unit of the <see cref="ElectricalResistance.Value"/> property is in <see cref="ElectricalResistanceUnit.Ohm"/>.</para>
-    /// </summary>
-    public double Value => m_value;
+    public static double ConvertFromUnit(ElectricalResistanceUnit unit, double value)
+      => unit switch
+      {
+        ElectricalResistanceUnit.Ohm => value,
 
-    // IUnitQuantifiable<>
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(ElectricalResistanceUnit unit, double value)
+      => unit switch
+      {
+        ElectricalResistanceUnit.Ohm => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(ElectricalResistanceUnit unit)
+      => unit switch
+      {
+        ElectricalResistanceUnit.Ohm => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(ElectricalResistanceUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(ElectricalResistanceUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.ElectricalResistanceUnit.Ohm => preferUnicode ? "\u2126" : "ohm",
-        Quantities.ElectricalResistanceUnit.KiloOhm => preferUnicode ? "\u33C0" : "kiloohm",
-        Quantities.ElectricalResistanceUnit.MegaOhm => preferUnicode ? "\u33C1" : "megaohm",
+        //Quantities.ElectricalResistanceUnit.KiloOhm => preferUnicode ? "\u33C0" : "kiloohm",
+        //Quantities.ElectricalResistanceUnit.MegaOhm => preferUnicode ? "\u33C1" : "megaohm",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(ElectricalResistanceUnit unit)
-      => unit switch
-      {
-        ElectricalResistanceUnit.Ohm => m_value,
-        ElectricalResistanceUnit.KiloOhm => m_value / 1000,
-        ElectricalResistanceUnit.MegaOhm => m_value / 1000000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(ElectricalResistanceUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

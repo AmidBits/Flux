@@ -205,6 +205,8 @@ namespace Units
       var u = new Flux.Quantities.Pressure(1);
 
       Assert.AreEqual(1, u.Value);
+      Assert.AreEqual(0.00001, u.GetUnitValue(Flux.Quantities.PressureUnit.Bar));
+      Assert.AreEqual(0.01, u.GetUnitValue(Flux.Quantities.PressureUnit.Millibar));
       Assert.AreEqual(0.0001450377377302092, u.GetUnitValue(Flux.Quantities.PressureUnit.Psi));
     }
 
@@ -229,8 +231,8 @@ namespace Units
     {
       var u = new Flux.Quantities.Speed(1);
 
-      Assert.AreEqual(3.2808398950131235, u.GetUnitValue(Flux.Quantities.SpeedUnit.FootPerSecond));
-      Assert.AreEqual(3.6, u.GetUnitValue(Flux.Quantities.SpeedUnit.KilometerPerHour));
+      Assert.AreEqual(3.280839895013123, u.GetUnitValue(Flux.Quantities.SpeedUnit.FootPerSecond));
+      Assert.AreEqual(3.5999999999999996, u.GetUnitValue(Flux.Quantities.SpeedUnit.KilometerPerHour));
       Assert.AreEqual(1.9438444924406046, u.GetUnitValue(Flux.Quantities.SpeedUnit.Knot));
       Assert.AreEqual(1, u.Value);
       Assert.AreEqual(2.2369362920544025, u.GetUnitValue(Flux.Quantities.SpeedUnit.MilePerHour));

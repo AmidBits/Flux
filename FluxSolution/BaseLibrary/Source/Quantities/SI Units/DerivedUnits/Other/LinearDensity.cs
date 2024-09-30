@@ -16,12 +16,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public LinearDensity(double value, LinearDensityUnit unit = LinearDensityUnit.KilogramPerMeter)
-      => m_value = unit switch
-      {
-        LinearDensityUnit.KilogramPerMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public LinearDensity(double value, LinearDensityUnit unit = LinearDensityUnit.KilogramPerMeter) => m_value = ConvertFromUnit(unit, value);
 
     public LinearDensity(Mass mass, Volume volume) : this(mass.Value / volume.Value) { }
 
@@ -61,13 +56,41 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(LinearDensityUnit.KilogramPerMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="LinearDensity.Value"/> property is in <see cref="LinearDensityUnit.KilogramPerCubicMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(LinearDensityUnit unit, double value)
+      => unit switch
+      {
+        LinearDensityUnit.KilogramPerMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(LinearDensityUnit unit, double value)
+      => unit switch
+      {
+        LinearDensityUnit.KilogramPerMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(LinearDensityUnit unit)
+      => unit switch
+      {
+        LinearDensityUnit.KilogramPerMeter => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(LinearDensityUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -78,23 +101,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(LinearDensityUnit unit)
-      => unit switch
-      {
-        LinearDensityUnit.KilogramPerMeter => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(LinearDensityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(LinearDensityUnit unit = LinearDensityUnit.KilogramPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(LinearDensityUnit unit = LinearDensityUnit.KilogramPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(LinearDensityUnit unit = LinearDensityUnit.KilogramPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

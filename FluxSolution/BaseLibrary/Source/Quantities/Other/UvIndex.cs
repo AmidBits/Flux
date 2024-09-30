@@ -86,13 +86,16 @@ namespace Flux
       public string ToString(string? format, System.IFormatProvider? formatProvider)
         => $"UV Index {m_value.ToString(format ?? "N1", formatProvider)}";
 
-      // IQuantifiable<>
+      #region IQuantifiable<>
+
       /// <summary>
       /// <para>The <see cref="UvIndex.Value"/> property is the ultraviolet index.</para>
       /// </summary>
       public double Value => m_value;
 
-      #endregion Implemented interfaces
+      #endregion // IQuantifiable<>
+
+      #endregion // Implemented interfaces
 
       public override string ToString() => ToString(null, null);
     }

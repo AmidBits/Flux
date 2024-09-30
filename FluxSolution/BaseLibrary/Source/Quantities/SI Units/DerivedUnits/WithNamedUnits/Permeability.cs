@@ -13,12 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Permeability(double value, PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter)
-      => m_value = unit switch
-      {
-        PermeabilityUnit.HenryPerMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Permeability(double value, PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter) => ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -63,6 +58,30 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
+    public static double ConvertFromUnit(PermeabilityUnit unit, double value)
+      => unit switch
+      {
+        PermeabilityUnit.HenryPerMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(PermeabilityUnit unit, double value)
+      => unit switch
+      {
+        PermeabilityUnit.HenryPerMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(PermeabilityUnit unit)
+      => unit switch
+      {
+        PermeabilityUnit.HenryPerMeter => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(PermeabilityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(PermeabilityUnit unit, bool preferUnicode)
@@ -72,21 +91,10 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(PermeabilityUnit unit)
-        => unit switch
-        {
-          PermeabilityUnit.HenryPerMeter => m_value,
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
+    public double GetUnitValue(PermeabilityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
-
-    //public string ToUnitValueNameString(PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-    //public string ToUnitValueSymbolString(PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion // IUnitQuantifiable<>
 

@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>This is an extension type to the already built-in System.StringComparer, with the addition of being System.Char compatible, since char lack in implementation (for obvious reasons).</summary>
-  /// <remarks>There is an obvious performance penalty in that the type char is compared using char.ToString() and so proxied as strings.</remarks>
+  /// <remarks>There is an obvious performance penalty in that the type char is compared using char.ToString() and so converted to strings.</remarks>
   public sealed class StringComparerEx
     : StringComparer // Inherited IComparer<string> and IEqualityComparer<string>.
     , System.Collections.Generic.IComparer<char>
@@ -30,32 +30,35 @@ namespace Flux
 
     private readonly StringComparer m_stringComparer;
 
-    public StringComparerEx(System.Globalization.CultureInfo cultureInfo, bool ignoreCase, bool ignoreNonSpace, bool ignoreSymbols, bool ignoreWidth)
-      => m_stringComparer = System.StringComparer.Create(cultureInfo, (ignoreCase ? System.Globalization.CompareOptions.IgnoreCase : 0) | (ignoreNonSpace ? System.Globalization.CompareOptions.IgnoreNonSpace : 0) | (ignoreSymbols ? System.Globalization.CompareOptions.IgnoreSymbols : 0) | (ignoreWidth ? System.Globalization.CompareOptions.IgnoreWidth : 0));
-    public StringComparerEx(System.Globalization.CultureInfo cultureInfo, bool ignoreCase)
-      => m_stringComparer = System.StringComparer.Create(cultureInfo, ignoreCase);
     public StringComparerEx(System.Globalization.CultureInfo cultureInfo, System.Globalization.CompareOptions compareOptions)
       => m_stringComparer = System.StringComparer.Create(cultureInfo, compareOptions);
     private StringComparerEx(StringComparer stringComparer)
       => m_stringComparer = stringComparer; // Public instances must specify settings on creation.
 
     #region Implemented interfaces
+
     // IComparer<string>
     public override int Compare(string? x, string? y) => m_stringComparer.Compare(x, y);
+
     // IComparer<char>
     public int Compare(char x, char y) => m_stringComparer.Compare(x.ToString(), y.ToString());
 
     // IEqualityComparer<string>
     public override bool Equals(string? x, string? y) => m_stringComparer.Equals(x, y);
+
     // IEqualityComparer<char>
     public bool Equals(char x, char y) => m_stringComparer.Equals(x.ToString(), y.ToString());
+
     #endregion Implemented interfaces
 
     #region Object overrides
+
     public override int GetHashCode(string s) => m_stringComparer.GetHashCode(s);
+
     public int GetHashCode(char c) => m_stringComparer.GetHashCode(c.ToString());
 
     public override string ToString() => $"{GetType().Name} {{ {m_stringComparer} }}";
+
     #endregion Object overrides
   }
 }

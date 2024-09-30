@@ -12,8 +12,8 @@ namespace Flux
       var z = source.Z;
 
       return new(
-        System.Math.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
-        (System.Math.Atan2(y, x) + System.Math.Tau) % System.Math.Tau, Quantities.AngleUnit.Radian,
+        double.Sqrt(x * x + y * y), Quantities.LengthUnit.Meter,
+        (double.Atan2(y, x) + double.Tau) % double.Tau, Quantities.AngleUnit.Radian,
         z, Quantities.LengthUnit.Meter
       );
     }
@@ -91,7 +91,7 @@ namespace Flux
       /// <remarks>All angles in radians.</remarks>
       public (double x, double y, double z) ToCartesianCoordinate3()
       {
-        var (sin, cos) = System.Math.SinCos(m_azimuth.Value);
+        var (sin, cos) = double.SinCos(m_azimuth.Value);
         var r = m_radius.Value;
 
         return (
@@ -120,8 +120,8 @@ namespace Flux
         var h = m_height.Value;
 
         return new(
-          System.Math.Sqrt(r * r + h * h), Quantities.LengthUnit.Meter,
-          (System.Math.PI / 2) - System.Math.Atan(h / r), Quantities.AngleUnit.Radian, // "System.Math.Atan(m_radius / m_height);", does NOT work for Takapau, New Zealand. Have to use elevation math instead of inclination, and investigate.
+          double.Sqrt(r * r + h * h), Quantities.LengthUnit.Meter,
+          (double.Pi / 2) - double.Atan(h / r), Quantities.AngleUnit.Radian, // "System.Math.Atan(m_radius / m_height);", does NOT work for Takapau, New Zealand. Have to use elevation math instead of inclination, and investigate.
           m_azimuth.Value, Quantities.AngleUnit.Radian
         );
       }
@@ -150,7 +150,7 @@ namespace Flux
       #region Implemented interfaces
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_azimuth.ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", provider)}, {m_height.Value.ToString(format ?? "N3", provider)}>";
+        => $"<{m_radius.ToString(format ?? Format.UpTo3Decimals, provider)}, {m_azimuth.ToUnitString(Quantities.AngleUnit.Degree, format ?? Format.UpTo6Decimals, provider)}, {m_height.ToString(format ?? Format.UpTo3Decimals, provider)}>";
 
       #endregion // Implemented interfaces
 

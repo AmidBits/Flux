@@ -6,63 +6,6 @@ namespace Flux.Quantities
     AmperePerMeter
   }
 
-  //public readonly record struct MagneticFluxStrengthEx
-  //  //: IUnitValueQuantifiable<double, MagneticFluxStrengthUnit>
-  //{
-  //  private readonly ElectricCurrent m_electricCurrent;
-  //  private readonly Length m_length;
-
-  //  public MagneticFluxStrengthEx(ElectricCurrent electricCurrent, Length length)
-  //  {
-  //    m_electricCurrent = electricCurrent;
-  //    m_length = length;
-  //  }
-
-  //  public MagneticFluxStrengthEx(double electricCurrentValue, ElectricCurrentUnit electricCurrentUnit, double lengthValue, LengthUnit lengthUnit)
-  //  {
-  //    m_electricCurrent = new(electricCurrentValue, electricCurrentUnit);
-  //    m_length = new Length(lengthValue, lengthUnit);
-  //  }
-
-  //  #region Implemented interfaces
-
-  //  //// IComparable
-  //  //public int CompareTo(object? other) => other is not null && other is MagneticFluxStrength o ? CompareTo(o) : -1;
-
-  //  //// IComparable<>
-  //  //public int CompareTo(MagneticFluxStrength other) => m_value.CompareTo(other.m_value);
-
-  //  //// IFormattable
-  //  //public string ToString(string? format, System.IFormatProvider? formatProvider)
-  //  //  => ToUnitValueString(MagneticFluxStrengthUnit.AmperePerMeter, format, formatProvider);
-
-  //  // IQuantifiable<>
-  //  /// <summary>
-  //  /// <para>The unit of the <see cref="MagneticFluxStrength.Value"/> property is in <see cref="MagneticFluxStrengthUnit.AmperePerMeter"/>.</para>
-  //  /// </summary>
-  //  public double Value => m_electricCurrent.Value / m_length.Value;
-
-  //  ////IUnitQuantifiable<>
-  //  //public double GetMetricValue(MagneticFluxStrengthUnit unit)
-  //  //  => unit switch
-  //  //  {
-  //  //    MagneticFluxStrengthUnit.AmperePerMeter => m_value,
-  //  //    _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-  //  //  };
-
-  //  //public string ToUnitValueString(MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
-  //  //{
-  //  //  var sb = new System.Text.StringBuilder();
-  //  //  sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
-  //  //  sb.Append(unitSpacing.ToSpacingString());
-  //  //  sb.Append(unit.GetUnitString(useFullName));
-  //  //  return sb.ToString();
-  //  //}
-
-  //  #endregion Implemented interfaces
-  //}
-
-
   /// <summary>Magnetic flux strength (H), unit of ampere per meter.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Magnetic_field"/>
   public readonly record struct MagneticFluxStrength
@@ -70,12 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public MagneticFluxStrength(double value, MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter)
-      => m_value = unit switch
-      {
-        MagneticFluxStrengthUnit.AmperePerMeter => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public MagneticFluxStrength(double value, MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter) => m_value = ConvertFromUnit(unit, value);
 
     //public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(MagneticFluxStrengthUnit.AmperePerMeter), MetricMultiplicativePrefix.One);
 
@@ -111,13 +49,41 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(MagneticFluxStrengthUnit.AmperePerMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="MagneticFluxStrength.Value"/> property is in <see cref="MagneticFluxStrengthUnit.AmperePerMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    //IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(MagneticFluxStrengthUnit unit, double value)
+      => unit switch
+      {
+        MagneticFluxStrengthUnit.AmperePerMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(MagneticFluxStrengthUnit unit, double value)
+      => unit switch
+      {
+        MagneticFluxStrengthUnit.AmperePerMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(MagneticFluxStrengthUnit unit)
+      => unit switch
+      {
+        MagneticFluxStrengthUnit.AmperePerMeter => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(MagneticFluxStrengthUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -128,23 +94,14 @@ namespace Flux.Quantities
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(MagneticFluxStrengthUnit unit)
-      => unit switch
-      {
-        MagneticFluxStrengthUnit.AmperePerMeter => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(MagneticFluxStrengthUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    //public string ToUnitValueNameString(MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
+    #endregion // IUnitQuantifiable<>
 
-    //public string ToUnitValueSymbolString(MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
-
-    #endregion Implemented interfaces
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

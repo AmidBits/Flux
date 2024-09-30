@@ -4,7 +4,6 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="AbsoluteHumidity"/>.</summary>
     GramsPerCubicMeter,
-    KilogramsPerCubicMeter,
   }
 
   /// <summary>
@@ -16,13 +15,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter)
-      => m_value = unit switch
-      {
-        AbsoluteHumidityUnit.GramsPerCubicMeter => value,
-        AbsoluteHumidityUnit.KilogramsPerCubicMeter => value / 1000.0,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
     #region Static methods
     public static AbsoluteHumidity From(double grams, Volume volume)
@@ -61,16 +54,43 @@ namespace Flux.Quantities
     public int CompareTo(AbsoluteHumidity other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => ToUnitValueSymbolString(AbsoluteHumidityUnit.GramsPerCubicMeter, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(AbsoluteHumidityUnit.GramsPerCubicMeter, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The unit of the <see cref="AbsoluteHumidity.Value"/> property is in <see cref="AbsoluteHumidityUnit.GramsPerCubicMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    // IUnitQuantifiable<>
+    #endregion // IQuantifiable<>
+
+    #region IUnitQuantifiable<>
+
+    public static double ConvertFromUnit(AbsoluteHumidityUnit unit, double value)
+      => unit switch
+      {
+        AbsoluteHumidityUnit.GramsPerCubicMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    public static double ConvertToUnit(AbsoluteHumidityUnit unit, double value)
+      => unit switch
+      {
+        AbsoluteHumidityUnit.GramsPerCubicMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double GetUnitFactor(AbsoluteHumidityUnit unit)
+      => unit switch
+      {
+        AbsoluteHumidityUnit.GramsPerCubicMeter => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
     public string GetUnitName(AbsoluteHumidityUnit unit, bool preferPlural)
       => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
@@ -78,26 +98,15 @@ namespace Flux.Quantities
       => unit switch
       {
         Quantities.AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
-        Quantities.AbsoluteHumidityUnit.KilogramsPerCubicMeter => "kg/m³",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(AbsoluteHumidityUnit unit)
-      => unit switch
-      {
-        AbsoluteHumidityUnit.GramsPerCubicMeter => m_value,
-        AbsoluteHumidityUnit.KilogramsPerCubicMeter => m_value * 1000.0,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(AbsoluteHumidityUnit unit) => ConvertFromUnit(unit, m_value);
 
     public string ToUnitString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    public string ToUnitValueNameString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-    public string ToUnitValueSymbolString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
+    #endregion // IUnitQuantifiable<>
 
     #endregion Implemented interfaces
 

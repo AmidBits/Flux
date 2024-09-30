@@ -101,8 +101,8 @@ namespace Flux
       /// <remarks>All angles in radians.</remarks>
       public (double x, double y, double z) ToCartesianCoordinate3()
       {
-        var (si, ci) = System.Math.SinCos(m_inclination.Value);
-        var (sa, ca) = System.Math.SinCos(m_azimuth.Value);
+        var (si, ci) = double.SinCos(m_inclination.Value);
+        var (sa, ca) = double.SinCos(m_azimuth.Value);
         var r = m_radius.Value;
 
         return (
@@ -116,7 +116,7 @@ namespace Flux
       /// <remarks>All angles in radians.</remarks>
       public CylindricalCoordinate ToCylindricalCoordinate()
       {
-        var (si, ci) = System.Math.SinCos(m_inclination.Value);
+        var (si, ci) = double.SinCos(m_inclination.Value);
         var r = m_radius.Value;
 
         return new(
@@ -131,8 +131,8 @@ namespace Flux
       public GeographicCoordinate ToGeographicCoordinate()
         // Translates the spherical coordinate to geographic coordinate transparently. I cannot recall the reason for the System.Math.PI involvement (see remarks).
         => new(
-          /*System.Math.PI -*/ m_inclination.Value - System.Math.PI / 2, Quantities.AngleUnit.Radian,
-          m_azimuth.Value /*- System.Math.PI*/, Quantities.AngleUnit.Radian,
+          m_inclination.Value - double.Pi / 2, Quantities.AngleUnit.Radian,
+          m_azimuth.Value, Quantities.AngleUnit.Radian,
           m_radius.Value, Quantities.LengthUnit.Meter
         );
 
@@ -148,33 +148,31 @@ namespace Flux
       #region Static methods
 
       /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
-      public static double ConvertInclinationToElevation(double inclination)
-        => System.Math.PI / 2 - inclination;
+      public static double ConvertInclinationToElevation(double inclination) => double.Pi / 2 - inclination;
 
       /// <summary>Converting from elevation to inclination is simply a quarter turn (PI / 2) minus the elevation.</summary>
-      public static double ConvertElevationToInclination(double elevation)
-        => System.Math.PI / 2 - elevation;
+      public static double ConvertElevationToInclination(double elevation) => double.Pi / 2 - elevation;
 
       /// <summary>
       /// <para>Computes the surface area of a hemisphere with the specified <paramref name="radius"/>.</para>
       /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
       /// </summary>
       /// <param name="radius">The radius of the hemisphere.</param>
-      public static double SurfaceAreaOfHemisphere(double radius) => 3 * System.Math.PI * radius * radius;
+      public static double SurfaceAreaOfHemisphere(double radius) => 3 * double.Pi * radius * radius;
 
       /// <summary>
       /// <para>Computes the surface area of a sphere with the specified <paramref name="radius"/>.</para>
       /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
       /// </summary>
       /// <param name="radius">The radius of the sphere.</param>
-      public static double SurfaceAreaOfSphere(double radius) => 4 * System.Math.PI * radius * radius;
+      public static double SurfaceAreaOfSphere(double radius) => 4 * double.Pi * radius * radius;
 
       #endregion // Static methods
 
       #region Implemented interfaces
 
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"<{m_radius.Value.ToString(format ?? "N3", provider)}, {m_inclination.ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", provider)} / {Elevation.ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", provider)}, {m_azimuth.ToUnitString(Quantities.AngleUnit.Degree, format ?? "N3", provider)}>";
+        => $"<{m_radius.ToString(format ?? Format.UpTo3Decimals, provider)}, {m_inclination.ToUnitString(Quantities.AngleUnit.Degree, format ?? Format.UpTo6Decimals, provider)} / {Elevation.ToUnitString(Quantities.AngleUnit.Degree, format ?? Format.UpTo6Decimals, provider)}, {m_azimuth.ToUnitString(Quantities.AngleUnit.Degree, format ?? Format.UpTo6Decimals, provider)}>";
 
       #endregion // Implemented interfaces
 

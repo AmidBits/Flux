@@ -200,34 +200,9 @@ namespace Flux.Quantities
       };
 
     public double GetUnitValue(VolumeUnit unit) => ConvertFromUnit(unit, m_value);
-    //=> unit switch
-    //{
-    //  VolumeUnit.Milliliter => m_value * 1000000,
-    //  VolumeUnit.Centiliter => m_value * 100000,
-    //  VolumeUnit.Deciliter => m_value * 10000,
-    //  VolumeUnit.Liter => m_value * 1000,
-    //  VolumeUnit.UKGallon => m_value / 0.004546,
-    //  VolumeUnit.UKQuart => m_value * 879.87699319635,
-    //  VolumeUnit.USDryGallon => m_value / 0.0044,
-    //  VolumeUnit.USLiquidGallon => m_value / 0.003785,
-    //  VolumeUnit.USDryQuart => m_value / 0.00110122095,// Approximate.
-    //  VolumeUnit.USLiquidQuart => m_value / 0.00094635295,// Approximate.
-    //  VolumeUnit.CubicFeet => m_value * (1953125000.0 / 55306341.0),
-    //  VolumeUnit.CubicYard => m_value * (1953125000.0 / 1493271207.0),
-    //  VolumeUnit.CubicMeter => m_value,
-    //  VolumeUnit.CubicMile => m_value / (8140980127813632.0 / 1953125.0),
-    //  VolumeUnit.CubicKilometer => m_value / 1e9,
-    //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-    //};
 
     public string ToUnitString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
-
-    //public string ToUnitValueNameString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)
-    //    => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitName(unit, preferPlural);
-
-    //public string ToUnitValueSymbolString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-    //  => GetUnitValue(unit).ToString(format, formatProvider) + unitSpacing.ToSpacingString() + GetUnitSymbol(unit, preferUnicode);
 
     #endregion // IUnitQuantifiable<>
 

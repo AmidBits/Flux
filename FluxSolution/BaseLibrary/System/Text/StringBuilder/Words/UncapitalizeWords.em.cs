@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Uncapitalize any upper-case character with a whitespace on the left, or at the beginning, and a lower case character on the right.</summary>
+    /// <summary>Uncapitalize any upper-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</summary>
     public static System.Text.StringBuilder UncapitalizeWords(this System.Text.StringBuilder source, System.Globalization.CultureInfo? culture = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
