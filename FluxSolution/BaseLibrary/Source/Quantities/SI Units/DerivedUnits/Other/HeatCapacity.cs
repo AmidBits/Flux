@@ -64,7 +64,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(HeatCapacityUnit unit, double value)
+    private static double ConvertFromUnit(HeatCapacityUnit unit, double value)
       => unit switch
       {
         HeatCapacityUnit.JoulePerKelvin => value,
@@ -72,13 +72,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(HeatCapacityUnit unit, double value)
+    private static double ConvertToUnit(HeatCapacityUnit unit, double value)
       => unit switch
       {
         HeatCapacityUnit.JoulePerKelvin => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, HeatCapacityUnit from, HeatCapacityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(HeatCapacityUnit unit)
       => unit switch

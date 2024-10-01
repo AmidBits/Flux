@@ -71,7 +71,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(CatalyticActivityUnit unit, double value)
+    private static double ConvertFromUnit(CatalyticActivityUnit unit, double value)
       => unit switch
       {
         CatalyticActivityUnit.Katal => value,
@@ -79,13 +79,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(CatalyticActivityUnit unit, double value)
+    private static double ConvertToUnit(CatalyticActivityUnit unit, double value)
       => unit switch
       {
         CatalyticActivityUnit.Katal => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, CatalyticActivityUnit from, CatalyticActivityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(CatalyticActivityUnit unit)
       => unit switch

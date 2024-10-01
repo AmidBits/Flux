@@ -78,7 +78,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(ActivityUnit unit, double value)
+    private static double ConvertFromUnit(ActivityUnit unit, double value)
       => unit switch
       {
         ActivityUnit.Becquerel => value,
@@ -86,13 +86,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(ActivityUnit unit, double value)
+    private static double ConvertToUnit(ActivityUnit unit, double value)
       => unit switch
       {
         ActivityUnit.Becquerel => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, ActivityUnit from, ActivityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(ActivityUnit unit)
       => unit switch

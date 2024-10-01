@@ -66,7 +66,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(TurbidityUnit unit, double value)
+    private static double ConvertFromUnit(TurbidityUnit unit, double value)
       => unit switch
       {
         TurbidityUnit.NephelometricTurbidityUnits => value,
@@ -74,13 +74,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(TurbidityUnit unit, double value)
+    private static double ConvertToUnit(TurbidityUnit unit, double value)
       => unit switch
       {
         TurbidityUnit.NephelometricTurbidityUnits => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, TurbidityUnit from, TurbidityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(TurbidityUnit unit)
       => unit switch

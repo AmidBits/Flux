@@ -595,7 +595,7 @@
 
       #region IUnitQuantifiable<>
 
-      public static double ConvertFromUnit(AngleUnit unit, double value)
+      private static double ConvertFromUnit(AngleUnit unit, double value)
         => unit switch
         {
           AngleUnit.Radian => value,
@@ -610,7 +610,7 @@
           _ => GetUnitFactor(unit) * value,
         };
 
-      public static double ConvertToUnit(AngleUnit unit, double value)
+      private static double ConvertToUnit(AngleUnit unit, double value)
         => unit switch
         {
           AngleUnit.Radian => value,
@@ -624,6 +624,8 @@
 
           _ => value / GetUnitFactor(unit),
         };
+
+      public static double ConvertUnit(double value, AngleUnit from, AngleUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
       public static double GetUnitFactor(AngleUnit unit)
         => unit switch

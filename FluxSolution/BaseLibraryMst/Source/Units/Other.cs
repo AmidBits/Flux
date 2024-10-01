@@ -36,7 +36,7 @@ namespace Units
       var cent = new Flux.Quantities.Cent(1);
 
       Assert.AreEqual(1, cent.Value);
-      Assert.AreEqual(Flux.Quantities.Cent.FrequencyRatio, cent.ToFrequencyRatio());
+      Assert.AreEqual(Flux.Quantities.Cent.FrequencyRatio, Flux.Quantities.Cent.ConvertCentToFrequencyRatio(cent.Value));
     }
 
     [TestMethod]
@@ -65,7 +65,7 @@ namespace Units
       var u = new Flux.Quantities.MidiNote(69);
 
       Assert.AreEqual(69, u.Value);
-      Assert.AreEqual(4, u.GetOctave());
+      Assert.AreEqual(4, u.Octave);
       Assert.AreEqual(440.0, u.ToFrequency().Value);
     }
 
@@ -100,7 +100,7 @@ namespace Units
 
       Assert.AreEqual(1, semitone.Value);
       Assert.AreEqual(100, semitone.ToCent().Value);
-      Assert.AreEqual(Flux.Quantities.Semitone.FrequencyRatio, semitone.ToFrequencyRatio());
+      Assert.AreEqual(Flux.Quantities.Semitone.FrequencyRatio, Flux.Quantities.Semitone.ConvertSemitoneToFrequencyRatio(semitone.Value));
     }
   }
 }

@@ -64,7 +64,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(DynamicViscosityUnit unit, double value)
+    private static double ConvertFromUnit(DynamicViscosityUnit unit, double value)
       => unit switch
       {
         DynamicViscosityUnit.PascalSecond => value,
@@ -72,13 +72,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(DynamicViscosityUnit unit, double value)
+    private static double ConvertToUnit(DynamicViscosityUnit unit, double value)
       => unit switch
       {
         DynamicViscosityUnit.PascalSecond => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, DynamicViscosityUnit from, DynamicViscosityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(DynamicViscosityUnit unit)
       => unit switch

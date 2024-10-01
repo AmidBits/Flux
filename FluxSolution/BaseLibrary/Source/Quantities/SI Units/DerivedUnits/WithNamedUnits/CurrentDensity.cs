@@ -58,7 +58,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(CurrentDensityUnit unit, double value)
+    private static double ConvertFromUnit(CurrentDensityUnit unit, double value)
       => unit switch
       {
         CurrentDensityUnit.AmperePerSquareMeter => value,
@@ -66,13 +66,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(CurrentDensityUnit unit, double value)
+    private static double ConvertToUnit(CurrentDensityUnit unit, double value)
       => unit switch
       {
         CurrentDensityUnit.AmperePerSquareMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, CurrentDensityUnit from, CurrentDensityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(CurrentDensityUnit unit)
       => unit switch

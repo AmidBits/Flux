@@ -71,7 +71,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(EquivalentDoseUnit unit, double value)
+    private static double ConvertFromUnit(EquivalentDoseUnit unit, double value)
       => unit switch
       {
         EquivalentDoseUnit.Sievert => value,
@@ -79,13 +79,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(EquivalentDoseUnit unit, double value)
+    private static double ConvertToUnit(EquivalentDoseUnit unit, double value)
       => unit switch
       {
         EquivalentDoseUnit.Sievert => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, EquivalentDoseUnit from, EquivalentDoseUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(EquivalentDoseUnit unit)
       => unit switch

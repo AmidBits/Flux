@@ -71,7 +71,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(InductanceUnit unit, double value)
+    private static double ConvertFromUnit(InductanceUnit unit, double value)
       => unit switch
       {
         InductanceUnit.Henry => value,
@@ -79,13 +79,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(InductanceUnit unit, double value)
+    private static double ConvertToUnit(InductanceUnit unit, double value)
       => unit switch
       {
         InductanceUnit.Henry => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, InductanceUnit from, InductanceUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(InductanceUnit unit)
       => unit switch

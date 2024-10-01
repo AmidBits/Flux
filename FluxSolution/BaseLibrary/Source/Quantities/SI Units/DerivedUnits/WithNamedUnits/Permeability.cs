@@ -58,7 +58,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(PermeabilityUnit unit, double value)
+    private static double ConvertFromUnit(PermeabilityUnit unit, double value)
       => unit switch
       {
         PermeabilityUnit.HenryPerMeter => value,
@@ -66,13 +66,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(PermeabilityUnit unit, double value)
+    private static double ConvertToUnit(PermeabilityUnit unit, double value)
       => unit switch
       {
         PermeabilityUnit.HenryPerMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, PermeabilityUnit from, PermeabilityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(PermeabilityUnit unit)
       => unit switch

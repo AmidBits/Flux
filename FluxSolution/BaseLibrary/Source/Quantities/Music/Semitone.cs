@@ -14,35 +14,32 @@ namespace Flux.Quantities
 
     public Semitone(int semitones) => m_value = semitones;
 
-    /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
-    public Quantities.Frequency ShiftPitch(Quantities.Frequency frequency) => new(PitchShift(frequency.Value, m_value));
-
     public Cent ToCent() => new(ConvertSemitoneToCent(m_value));
-
-    public double ToFrequencyRatio() => ConvertSemitoneToFrequencyRatio(m_value);
 
     #region Static methods
 
-    /// <summary>Convert a specified interval ratio to a number of semitones.</summary>
-    public static double ConvertFrequencyRatioToSemitone(double frequencyRatio) => System.Math.Log(frequencyRatio, 2) * 12;
+    #region Conversion methods
 
-    /// <summary>Convert a specified number of semitones to cents.</summary>
+    /// <summary>
+    /// <para>Convert a specified interval ratio to a number of semitones.</para>
+    /// </summary>
+    public static double ConvertFrequencyRatioToSemitone(double frequencyRatio) => double.Log(frequencyRatio, 2) * 12;
+
+    /// <summary>
+    /// <para>Convert a specified number of semitones to cents.</para>
+    /// </summary>
     public static int ConvertSemitoneToCent(int semitones) => semitones * 100;
 
-    /// <summary>Convert a specified number of semitones to an interval ratio.</summary>
-    public static double ConvertSemitoneToFrequencyRatio(int semitones) => System.Math.Pow(2, semitones / 12.0);
+    /// <summary>
+    /// <para>Convert a specified number of semitones to an interval ratio.</para>
+    /// </summary>
+    public static double ConvertSemitoneToFrequencyRatio(int semitones) => double.Pow(2, semitones / 12.0);
 
-    /// <summary>Creates a new Semitone instance from the specified frequency ratio.</summary>
-    /// <param name="frequencyRatio"></param>
-    public static Semitone FromFrequencyRatio(double frequencyRatio) => new((int)ConvertFrequencyRatioToSemitone(frequencyRatio));
+    #endregion // Conversion methods
 
-#if NET7_0_OR_GREATER
-    /// <summary>Creates a new Cent instance from the specified ratio.</summary>
-    /// <param name="ratio"></param>
-    public static Semitone FromRatio(Quantities.Ratio ratio) => FromFrequencyRatio(ratio.Value);
-#endif
-
-    /// <summary>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in semitones.</summary>
+    /// <summary>
+    /// <para>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in semitones.</para>
+    /// </summary>
     public static double PitchShift(double frequency, int semitones) => frequency * ConvertSemitoneToFrequencyRatio(semitones);
 
     #endregion Static methods
@@ -80,11 +77,14 @@ namespace Flux.Quantities
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"{string.Format(formatProvider, $"{{0{(string.IsNullOrEmpty(format) ? string.Empty : $":{format}")}}}", m_value)} semitone{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The <see cref="Semitone.Value"/> property is a musical interval in semitones.</para>
     /// </summary>
     public int Value => m_value;
+
+    #endregion // IQuantifiable<>
 
     #endregion Implemented interfaces
 

@@ -39,9 +39,12 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var fw = Flux.Quantities.Azimuth.FromWords("Northeast by north");
+
+
+
+      var success = Flux.Quantities.Azimuth.TryParse("W", out var fw);
       var fwf = fw.ToString();
 
       var sb1 = "            This       takes            the         trophy       ".ToStringBuilder();

@@ -91,7 +91,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(VoltageUnit unit, double value)
+    private static double ConvertFromUnit(VoltageUnit unit, double value)
       => unit switch
       {
         VoltageUnit.Volt => value,
@@ -99,13 +99,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(VoltageUnit unit, double value)
+    private static double ConvertToUnit(VoltageUnit unit, double value)
       => unit switch
       {
         VoltageUnit.Volt => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, VoltageUnit from, VoltageUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(VoltageUnit unit)
       => unit switch

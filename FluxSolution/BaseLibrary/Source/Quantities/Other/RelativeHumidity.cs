@@ -60,7 +60,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(RelativeHumidityUnit unit, double value)
+    private static double ConvertFromUnit(RelativeHumidityUnit unit, double value)
       => unit switch
       {
         RelativeHumidityUnit.Percent => value,
@@ -68,13 +68,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(RelativeHumidityUnit unit, double value)
+    private static double ConvertToUnit(RelativeHumidityUnit unit, double value)
       => unit switch
       {
         RelativeHumidityUnit.Percent => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, RelativeHumidityUnit from, RelativeHumidityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(RelativeHumidityUnit unit)
       => unit switch

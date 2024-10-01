@@ -77,30 +77,6 @@
       /// <param name="fullName"></param>
       /// <returns></returns>
       string ToSiPrefixString(MetricPrefix prefix, bool fullName);
-
-      ///// <summary>
-      ///// <para>Creates a new string with the name of the SI quantity for the <paramref name="prefix"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferPlural"/>.</para>
-      ///// </summary>
-      ///// <param name="prefix"></param>
-      ///// <param name="format"></param>
-      ///// <param name="formatProvider"></param>
-      ///// <param name="unitSpacing"></param>
-      ///// <param name="preferPlural"></param>
-      ///// <returns></returns>
-      //string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing, bool preferPlural);
-      ////=> GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
-
-      ///// <summary>
-      ///// <para>Creates a new string with the symbol of the SI quantity for the <paramref name="prefix"/>, in the <paramref name="format"/> using the <paramref name="formatProvider"/>, <paramref name="unitSpacing"/> and whether to <paramref name="preferUnicode"/>.</para>
-      ///// </summary>
-      ///// <param name="prefix">The prefix to project.</param>
-      ///// <param name="format"></param>
-      ///// <param name="formatProvider"></param>
-      ///// <param name="unitSpacing"></param>
-      ///// <param name="preferUnicode"></param>
-      ///// <returns></returns>
-      //string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing, bool preferUnicode);
-      ////=> GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
     }
   }
 }

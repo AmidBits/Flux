@@ -189,7 +189,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(TimeUnit unit, double value)
+    private static double ConvertFromUnit(TimeUnit unit, double value)
       => unit switch
       {
         TimeUnit.Second => value,
@@ -198,7 +198,7 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(TimeUnit unit, double value)
+    private static double ConvertToUnit(TimeUnit unit, double value)
       => unit switch
       {
         TimeUnit.Second => value,
@@ -206,6 +206,8 @@ namespace Flux.Quantities
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, TimeUnit from, TimeUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(TimeUnit unit)
       => unit switch

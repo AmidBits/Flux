@@ -136,7 +136,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(VolumeUnit unit, double value)
+    private static double ConvertFromUnit(VolumeUnit unit, double value)
       => unit switch
       {
         VolumeUnit.CubicMeter => value,
@@ -144,13 +144,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(VolumeUnit unit, double value)
+    private static double ConvertToUnit(VolumeUnit unit, double value)
       => unit switch
       {
         VolumeUnit.CubicMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, VolumeUnit from, VolumeUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(VolumeUnit unit)
       => unit switch

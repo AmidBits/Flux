@@ -79,7 +79,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(PressureUnit unit, double value)
+    private static double ConvertFromUnit(PressureUnit unit, double value)
       => unit switch
       {
         PressureUnit.Pascal => value,
@@ -87,13 +87,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(PressureUnit unit, double value)
+    private static double ConvertToUnit(PressureUnit unit, double value)
       => unit switch
       {
         PressureUnit.Pascal => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, PressureUnit from, PressureUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(PressureUnit unit)
       => unit switch

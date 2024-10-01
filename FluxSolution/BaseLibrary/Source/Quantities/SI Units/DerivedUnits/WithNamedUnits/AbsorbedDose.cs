@@ -73,7 +73,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(AbsorbedDoseUnit unit, double value)
+    private static double ConvertFromUnit(AbsorbedDoseUnit unit, double value)
       => unit switch
       {
         AbsorbedDoseUnit.Gray => value,
@@ -81,13 +81,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(AbsorbedDoseUnit unit, double value)
+    private static double ConvertToUnit(AbsorbedDoseUnit unit, double value)
       => unit switch
       {
         AbsorbedDoseUnit.Gray => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, AbsorbedDoseUnit from, AbsorbedDoseUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(AbsorbedDoseUnit unit)
       => unit switch

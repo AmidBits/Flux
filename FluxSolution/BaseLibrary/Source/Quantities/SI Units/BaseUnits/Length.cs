@@ -152,7 +152,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(LengthUnit unit, double value)
+    private static double ConvertFromUnit(LengthUnit unit, double value)
       => unit switch
       {
         LengthUnit.Meter => value,
@@ -160,13 +160,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(LengthUnit unit, double value)
+    private static double ConvertToUnit(LengthUnit unit, double value)
       => unit switch
       {
         LengthUnit.Meter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, LengthUnit from, LengthUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(LengthUnit unit)
       => unit switch

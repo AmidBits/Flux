@@ -1,160 +1,139 @@
-namespace Flux
+namespace Flux.Quantities
 {
-  public static partial class Em
+  public enum DigitalInformationUnit
   {
-    public static System.Numerics.BigInteger GetUnitMultiple(this Quantities.DigitalInformationUnit unit)
-    {
-      return unit switch
-      {
-        Quantities.DigitalInformationUnit.Byte => 1,
-        Quantities.DigitalInformationUnit.kibiByte => 1024,
-        Quantities.DigitalInformationUnit.mebiByte => System.Numerics.BigInteger.Pow(1024, 2),
-        Quantities.DigitalInformationUnit.gibiByte => System.Numerics.BigInteger.Pow(1024, 3),
-        Quantities.DigitalInformationUnit.tebiByte => System.Numerics.BigInteger.Pow(1024, 4),
-        Quantities.DigitalInformationUnit.pebiByte => System.Numerics.BigInteger.Pow(1024, 5),
-        Quantities.DigitalInformationUnit.exbiByte => System.Numerics.BigInteger.Pow(1024, 6),
-        Quantities.DigitalInformationUnit.zebiByte => System.Numerics.BigInteger.Pow(1024, 7),
-        Quantities.DigitalInformationUnit.yobiByte => System.Numerics.BigInteger.Pow(1024, 8),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
-    }
+    /// <summary>This is the default unit for <see cref="DigitalInformation"/>.</summary>
+    Byte,
+    kibiByte,
+    mebiByte,
+    gibiByte,
+    tebiByte,
+    pebiByte,
+    exbiByte,
+    zebiByte,
+    yobiByte,
   }
 
-  namespace Quantities
+  /// <summary>
+  /// <para>DigitalStorage, unit of natural number.</para>
+  /// <para><seealso cref="https://en.wikipedia.org/wiki/DigitalInformation"/></para>
+  /// </summary>
+  public readonly record struct DigitalInformation
+  : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IUnitValueQuantifiable<System.Numerics.BigInteger, DigitalInformationUnit>
   {
-    public enum DigitalInformationUnit
-    {
-      /// <summary>This is the default unit for <see cref="DigitalInformation"/>.</summary>
-      Byte,
-      kibiByte,
-      mebiByte,
-      gibiByte,
-      tebiByte,
-      pebiByte,
-      exbiByte,
-      zebiByte,
-      yobiByte,
-    }
+    private readonly System.Numerics.BigInteger m_value;
+
+    public DigitalInformation(System.Numerics.BigInteger value, DigitalInformationUnit unit = DigitalInformationUnit.Byte) => m_value = ConvertFromUnit(unit, value);
+
+    #region Static methods
+
+    #endregion Static methods
+
+    #region Overloaded operators
+
+    public static bool operator <(DigitalInformation a, DigitalInformation b) => a.CompareTo(b) < 0;
+    public static bool operator <=(DigitalInformation a, DigitalInformation b) => a.CompareTo(b) <= 0;
+    public static bool operator >(DigitalInformation a, DigitalInformation b) => a.CompareTo(b) > 0;
+    public static bool operator >=(DigitalInformation a, DigitalInformation b) => a.CompareTo(b) >= 0;
+
+    public static DigitalInformation operator -(DigitalInformation v) => new(-v.m_value);
+    public static DigitalInformation operator +(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value + b);
+    public static DigitalInformation operator +(DigitalInformation a, DigitalInformation b) => a + b.m_value;
+    public static DigitalInformation operator /(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value / b);
+    public static DigitalInformation operator /(DigitalInformation a, DigitalInformation b) => a / b.m_value;
+    public static DigitalInformation operator *(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value * b);
+    public static DigitalInformation operator *(DigitalInformation a, DigitalInformation b) => a * b.m_value;
+    public static DigitalInformation operator %(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value % b);
+    public static DigitalInformation operator %(DigitalInformation a, DigitalInformation b) => a % b.m_value;
+    public static DigitalInformation operator -(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value - b);
+    public static DigitalInformation operator -(DigitalInformation a, DigitalInformation b) => a - b.m_value;
+
+    #endregion Overloaded operators
+
+    #region Implemented interfaces
+
+    // IComparable<>
+    public int CompareTo(DigitalInformation other) => m_value.CompareTo(other.m_value);
+
+    // IComparable
+    public int CompareTo(object? other) => other is not null && other is DigitalInformation o ? CompareTo(o) : -1;
+
+    // IFormattable
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(DigitalInformationUnit.Byte, format, formatProvider);
+
+    #region IQuantifiable<>
 
     /// <summary>
-    /// <para>DigitalStorage, unit of natural number.</para>
-    /// <para><seealso cref="https://en.wikipedia.org/wiki/DigitalInformation"/></para>
+    /// <para>The unit of the <see cref="DigitalInformationUnit.Value"/> property is in <see cref="DigitalInformationUnit.Byte"/>.</para>
     /// </summary>
-    public readonly record struct DigitalInformation
-    : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IUnitValueQuantifiable<System.Numerics.BigInteger, DigitalInformationUnit>
-    {
-      private readonly System.Numerics.BigInteger m_value;
+    public System.Numerics.BigInteger Value => m_value;
 
-      public DigitalInformation(System.Numerics.BigInteger value, DigitalInformationUnit unit = DigitalInformationUnit.Byte) => m_value = ConvertFromUnit(unit, value);
+    #endregion // IQuantifiable<>
 
-      #region Static methods
+    #region IUnitQuantifiable<>
 
-      #endregion Static methods
+    public static System.Numerics.BigInteger ConvertFromUnit(DigitalInformationUnit unit, System.Numerics.BigInteger value)
+      => unit switch
+      {
+        DigitalInformationUnit.Byte => value,
 
-      #region Overloaded operators
+        _ => GetUnitFactor(unit) * value,
+      };
 
-      public static bool operator <(DigitalInformation a, DigitalInformation b) => a.CompareTo(b) < 0;
-      public static bool operator <=(DigitalInformation a, DigitalInformation b) => a.CompareTo(b) <= 0;
-      public static bool operator >(DigitalInformation a, DigitalInformation b) => a.CompareTo(b) > 0;
-      public static bool operator >=(DigitalInformation a, DigitalInformation b) => a.CompareTo(b) >= 0;
+    public static System.Numerics.BigInteger ConvertToUnit(DigitalInformationUnit unit, System.Numerics.BigInteger value)
+      => unit switch
+      {
+        DigitalInformationUnit.Byte => value,
 
-      public static DigitalInformation operator -(DigitalInformation v) => new(-v.m_value);
-      public static DigitalInformation operator +(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value + b);
-      public static DigitalInformation operator +(DigitalInformation a, DigitalInformation b) => a + b.m_value;
-      public static DigitalInformation operator /(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value / b);
-      public static DigitalInformation operator /(DigitalInformation a, DigitalInformation b) => a / b.m_value;
-      public static DigitalInformation operator *(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value * b);
-      public static DigitalInformation operator *(DigitalInformation a, DigitalInformation b) => a * b.m_value;
-      public static DigitalInformation operator %(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value % b);
-      public static DigitalInformation operator %(DigitalInformation a, DigitalInformation b) => a % b.m_value;
-      public static DigitalInformation operator -(DigitalInformation a, System.Numerics.BigInteger b) => new(a.m_value - b);
-      public static DigitalInformation operator -(DigitalInformation a, DigitalInformation b) => a - b.m_value;
+        _ => value / GetUnitFactor(unit),
+      };
 
-      #endregion Overloaded operators
+    public static System.Numerics.BigInteger ConvertUnit(System.Numerics.BigInteger value, DigitalInformationUnit from, DigitalInformationUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-      #region Implemented interfaces
+    public static System.Numerics.BigInteger GetUnitFactor(DigitalInformationUnit unit)
+      => unit switch
+      {
+        DigitalInformationUnit.Byte => 1,
 
-      // IComparable<>
-      public int CompareTo(DigitalInformation other) => m_value.CompareTo(other.m_value);
+        DigitalInformationUnit.kibiByte => 1024,
+        DigitalInformationUnit.mebiByte => System.Numerics.BigInteger.Pow(1024, 2),
+        DigitalInformationUnit.gibiByte => System.Numerics.BigInteger.Pow(1024, 3),
+        DigitalInformationUnit.tebiByte => System.Numerics.BigInteger.Pow(1024, 4),
+        DigitalInformationUnit.pebiByte => System.Numerics.BigInteger.Pow(1024, 5),
+        DigitalInformationUnit.exbiByte => System.Numerics.BigInteger.Pow(1024, 6),
+        DigitalInformationUnit.zebiByte => System.Numerics.BigInteger.Pow(1024, 7),
+        DigitalInformationUnit.yobiByte => System.Numerics.BigInteger.Pow(1024, 8),
 
-      // IComparable
-      public int CompareTo(object? other) => other is not null && other is DigitalInformation o ? CompareTo(o) : -1;
+        _ => throw new System.NotImplementedException()
+      };
 
-      // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(DigitalInformationUnit.Byte, format, formatProvider);
+    public string GetUnitName(DigitalInformationUnit unit, bool preferPlural)
+      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
-      #region IQuantifiable<>
+    public string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode)
+      => unit switch
+      {
+        Quantities.DigitalInformationUnit.Byte => "B",
+        Quantities.DigitalInformationUnit.kibiByte => "KiB",
+        Quantities.DigitalInformationUnit.mebiByte => "MiB",
+        Quantities.DigitalInformationUnit.gibiByte => "GiB",
+        Quantities.DigitalInformationUnit.tebiByte => "TiB",
+        Quantities.DigitalInformationUnit.pebiByte => "PiB",
+        Quantities.DigitalInformationUnit.exbiByte => "EiB",
+        Quantities.DigitalInformationUnit.zebiByte => "ZiB",
+        Quantities.DigitalInformationUnit.yobiByte => "YiB",
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
 
-      /// <summary>
-      /// <para>The unit of the <see cref="DigitalInformationUnit.Value"/> property is in <see cref="DigitalInformationUnit.Byte"/>.</para>
-      /// </summary>
-      public System.Numerics.BigInteger Value => m_value;
+    public System.Numerics.BigInteger GetUnitValue(DigitalInformationUnit unit) => ConvertToUnit(unit, m_value);
 
-      #endregion // IQuantifiable<>
+    public string ToUnitString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-      #region IUnitQuantifiable<>
+    #endregion // IUnitQuantifiable<>
 
-      public static System.Numerics.BigInteger ConvertFromUnit(DigitalInformationUnit unit, System.Numerics.BigInteger value)
-        => unit switch
-        {
-          DigitalInformationUnit.Byte => value,
+    #endregion // Implemented interfaces
 
-          _ => GetUnitFactor(unit) * value,
-        };
-
-      public static System.Numerics.BigInteger ConvertToUnit(DigitalInformationUnit unit, System.Numerics.BigInteger value)
-        => unit switch
-        {
-          DigitalInformationUnit.Byte => value,
-
-          _ => value / GetUnitFactor(unit),
-        };
-
-      public static System.Numerics.BigInteger GetUnitFactor(DigitalInformationUnit unit)
-        => unit switch
-        {
-          DigitalInformationUnit.Byte => 1,
-
-          DigitalInformationUnit.kibiByte => unit.GetUnitMultiple(),
-          DigitalInformationUnit.mebiByte => unit.GetUnitMultiple(),
-          DigitalInformationUnit.gibiByte => unit.GetUnitMultiple(),
-          DigitalInformationUnit.tebiByte => unit.GetUnitMultiple(),
-          DigitalInformationUnit.pebiByte => unit.GetUnitMultiple(),
-          DigitalInformationUnit.exbiByte => unit.GetUnitMultiple(),
-          DigitalInformationUnit.zebiByte => unit.GetUnitMultiple(),
-          DigitalInformationUnit.yobiByte => unit.GetUnitMultiple(),
-
-          _ => throw new System.NotImplementedException()
-        };
-
-      public string GetUnitName(DigitalInformationUnit unit, bool preferPlural)
-        => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
-
-      public string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode)
-        => unit switch
-        {
-          Quantities.DigitalInformationUnit.Byte => "B",
-          Quantities.DigitalInformationUnit.kibiByte => "KiB",
-          Quantities.DigitalInformationUnit.mebiByte => "MiB",
-          Quantities.DigitalInformationUnit.gibiByte => "GiB",
-          Quantities.DigitalInformationUnit.tebiByte => "TiB",
-          Quantities.DigitalInformationUnit.pebiByte => "PiB",
-          Quantities.DigitalInformationUnit.exbiByte => "EiB",
-          Quantities.DigitalInformationUnit.zebiByte => "ZiB",
-          Quantities.DigitalInformationUnit.yobiByte => "YiB",
-          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-        };
-
-      public System.Numerics.BigInteger GetUnitValue(DigitalInformationUnit unit) => ConvertToUnit(unit, m_value);
-
-      public string ToUnitString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-        => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
-
-      #endregion // IUnitQuantifiable<>
-
-      #endregion // Implemented interfaces
-
-      public override string ToString() => ToString(null, null);
-    }
+    public override string ToString() => ToString(null, null);
   }
 }

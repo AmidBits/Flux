@@ -67,7 +67,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(DensityUnit unit, double value)
+    private static double ConvertFromUnit(DensityUnit unit, double value)
       => unit switch
       {
         DensityUnit.KilogramPerCubicMeter => value,
@@ -75,13 +75,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(DensityUnit unit, double value)
+    private static double ConvertToUnit(DensityUnit unit, double value)
       => unit switch
       {
         DensityUnit.KilogramPerCubicMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, DensityUnit from, DensityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(DensityUnit unit)
       => unit switch

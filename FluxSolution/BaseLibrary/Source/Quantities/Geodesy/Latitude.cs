@@ -1,9 +1,12 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface. The unit here is defined in the range [-90, +90]. Arithmetic results are clamped within the range.</para>
+  /// <para>Latitude, unit of degree, is a geographic coordinate that specifies the north–south position of a point on the Earth's surface.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Latitude"/></para>
   /// </summary>
+  /// <remarks>
+  /// <para>The value is folded within the range [-90, +90].</para>
+  /// </remarks>
   public readonly record struct Latitude
     : System.IComparable, System.IComparable<Latitude>, System.IFormattable, IValueQuantifiable<double>
   {
@@ -15,10 +18,10 @@ namespace Flux.Quantities
 
     private readonly Angle m_angle;
 
-    /// <summary>Creates a new Latitude from the specified number of degrees. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
+    /// <summary>Creates a new <see cref="Latitude"/> from the specified <paramref name="angle"/>.</summary>
     public Latitude(Angle angle) => m_angle = new(angle.InDegrees.Fold(MinValue, MaxValue), AngleUnit.Degree);
 
-    /// <summary>Creates a new Latitude from the specified <paramref name="angle"/> and <paramref name="unit"/>. The value is folded within the degree range [-90, +90]. Folding means oscillating within the range. This means any corresponding Longitude needs to be adjusted by 180 degrees, if synchronization is required.</summary>
+    /// <summary>Creates a new <see cref="Latitude"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</summary>
     public Latitude(double angle, AngleUnit unit = AngleUnit.Degree) : this(new Angle(angle, unit)) { }
 
     /// <summary>The <see cref="Quantities.Angle"/> of the latitude.</summary>
@@ -116,13 +119,16 @@ namespace Flux.Quantities
         : m_angle.ToUnitString(AngleUnit.Degree, format, formatProvider)
       : ToSexagesimalDegreeString();
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     ///  <para>The unit of the <see cref="Latitude.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
     /// </summary>
-    public double Value => m_angle.GetUnitValue(AngleUnit.Degree);
+    public double Value => m_angle.InDegrees;
 
-    #endregion Implemented interfaces
+    #endregion // IQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

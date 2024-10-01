@@ -83,7 +83,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(PartsPerNotationUnit unit, double value)
+    private static double ConvertFromUnit(PartsPerNotationUnit unit, double value)
       => unit switch
       {
         PartsPerNotationUnit.One => value,
@@ -91,13 +91,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(PartsPerNotationUnit unit, double value)
+    private static double ConvertToUnit(PartsPerNotationUnit unit, double value)
       => unit switch
       {
         PartsPerNotationUnit.One => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, PartsPerNotationUnit from, PartsPerNotationUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(PartsPerNotationUnit unit)
       => unit switch

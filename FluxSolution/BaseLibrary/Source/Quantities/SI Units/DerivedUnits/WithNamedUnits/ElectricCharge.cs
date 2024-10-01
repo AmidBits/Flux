@@ -73,7 +73,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(ElectricChargeUnit unit, double value)
+    private static double ConvertFromUnit(ElectricChargeUnit unit, double value)
       => unit switch
       {
         ElectricChargeUnit.Coulomb => value,
@@ -81,13 +81,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(ElectricChargeUnit unit, double value)
+    private static double ConvertToUnit(ElectricChargeUnit unit, double value)
       => unit switch
       {
         ElectricChargeUnit.Coulomb => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, ElectricChargeUnit from, ElectricChargeUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(ElectricChargeUnit unit)
       => unit switch

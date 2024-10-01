@@ -64,7 +64,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(ImpulseUnit unit, double value)
+    private static double ConvertFromUnit(ImpulseUnit unit, double value)
       => unit switch
       {
         ImpulseUnit.NewtonSecond => value,
@@ -72,13 +72,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(ImpulseUnit unit, double value)
+    private static double ConvertToUnit(ImpulseUnit unit, double value)
       => unit switch
       {
         ImpulseUnit.NewtonSecond => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, ImpulseUnit from, ImpulseUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(ImpulseUnit unit)
       => unit switch

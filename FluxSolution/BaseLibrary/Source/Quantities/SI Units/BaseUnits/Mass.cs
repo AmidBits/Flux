@@ -98,7 +98,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(MassUnit unit, double value)
+    private static double ConvertFromUnit(MassUnit unit, double value)
       => unit switch
       {
         MassUnit.Kilogram => value,
@@ -106,13 +106,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(MassUnit unit, double value)
+    private static double ConvertToUnit(MassUnit unit, double value)
       => unit switch
       {
         MassUnit.Kilogram => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, MassUnit from, MassUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(MassUnit unit)
       => unit switch

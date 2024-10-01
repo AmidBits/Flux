@@ -66,7 +66,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(SurfaceTensionUnit unit, double value)
+    private static double ConvertFromUnit(SurfaceTensionUnit unit, double value)
       => unit switch
       {
         SurfaceTensionUnit.NewtonPerMeter => value,
@@ -74,13 +74,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(SurfaceTensionUnit unit, double value)
+    private static double ConvertToUnit(SurfaceTensionUnit unit, double value)
       => unit switch
       {
         SurfaceTensionUnit.NewtonPerMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, SurfaceTensionUnit from, SurfaceTensionUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(SurfaceTensionUnit unit)
       => unit switch

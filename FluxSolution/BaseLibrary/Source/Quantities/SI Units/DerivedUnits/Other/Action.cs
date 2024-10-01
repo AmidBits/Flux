@@ -60,7 +60,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(ActionUnit unit, double value)
+    private static double ConvertFromUnit(ActionUnit unit, double value)
       => unit switch
       {
         ActionUnit.JouleSecond => value,
@@ -68,13 +68,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(ActionUnit unit, double value)
+    private static double ConvertToUnit(ActionUnit unit, double value)
       => unit switch
       {
         ActionUnit.JouleSecond => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, ActionUnit from, ActionUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(ActionUnit unit)
       => unit switch

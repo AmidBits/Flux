@@ -13,31 +13,18 @@ namespace Flux.Coordinates
 
     public readonly static GeographicCoordinate GreenwichMeridian = new(51.477811, Quantities.AngleUnit.Degree, -0.001475, Quantities.AngleUnit.Degree);
 
-    /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    private readonly Quantities.Length m_altitude;
-
-    /// <summary>The latitude component of the geographic position in radians. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
     private readonly Quantities.Latitude m_latitude;
 
-    /// <summary>The longitude component of the geographic position in radians. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     private readonly Quantities.Longitude m_longitude;
 
-    /// <summary></summary>
-    /// <param name="latitude">The latitude in degrees.</param>
-    /// <param name="longitude">The longitude in degrees.</param>
-    /// <param name="altitude">The altitude in meters.</param>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    //public GeographicCoordinate(double latitude, double longitude, double altitude)
-    //{
-    //  m_latitude = latitude;
-    //  m_longitude = longitude;
-    //  m_altitude = altitude;// >= MinAltitudeInMeters && altitude <= MaxAltitudeInMeters ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
-    //}
+    private readonly Quantities.Length m_altitude;
 
-    /// <summary></summary>
-    /// <param name="latitude">The latitude angle.</param>
-    /// <param name="longitude">The longitude angle.</param>
-    /// <param name="altitude">The altitude length.</param>
+    /// <summary>
+    /// <para>Create a new <see cref="GeographicCoordinate"/> from the specified <paramref name="latitude"/>, <paramref name="longitude"/> and <paramref name="altitude"/>.</para>
+    /// </summary>
+    /// <param name="latitude">The <see cref="Quantities.Angle"/> of the latitude.</param>
+    /// <param name="longitude">The <see cref="Quantities.Angle"/> of the longitude.</param>
+    /// <param name="altitude">The <see cref="Quantities.Length"/> of the altitude.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public GeographicCoordinate(Quantities.Angle latitude, Quantities.Angle longitude, Quantities.Length altitude)
     {
@@ -46,29 +33,35 @@ namespace Flux.Coordinates
       m_altitude = altitude;// >= MinAltitudeInMeters && altitude <= MaxAltitudeInMeters ? altitude : throw new System.ArgumentOutOfRangeException(nameof(altitude));
     }
 
-    /// <summary></summary>
-    /// <param name="latitudeValue">The latitude angle value.</param>
-    /// <param name="latitudeUnit">The latitude angle unit.</param>
-    /// <param name="longitudeValue">The longitude angle value.</param>
-    /// <param name="latitudeUnit">The longitude angle unit.</param>
-    /// <param name="altitudeValue">The altitude length value.</param>
-    /// <param name="altitudeUnit">The altitude length unit.</param>
+    /// <summary>
+    /// <para>Create a new <see cref="GeographicCoordinate"/> from the specified <paramref name="latitudeValue"/>, <paramref name="latitudeUnit"/>, <paramref name="longitudeValue"/>, <paramref name="longitudeUnit"/>, <paramref name="altitudeValue"/> and <paramref name="altitudeUnit"/>.</para>
+    /// </summary>
+    /// <param name="latitudeValue">The angle of the latitude.</param>
+    /// <param name="latitudeUnit">The <see cref="Quantities.AngleUnit"/> of the latitude.</param>
+    /// <param name="longitudeValue">The angle of the longitude.</param>
+    /// <param name="latitudeUnit">The <see cref="Quantities.AngleUnit"/> of the longitude.</param>
+    /// <param name="altitudeValue">The length of the altitude.</param>
+    /// <param name="altitudeUnit">The <see cref="Quantities.Length"/> of the altitude.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public GeographicCoordinate(double latitudeValue, Quantities.AngleUnit latitudeUnit, double longitudeValue, Quantities.AngleUnit longitudeUnit, double altitudeValue = 1, Quantities.LengthUnit altitudeUnit = Quantities.LengthUnit.Meter)
       : this(new Quantities.Angle(latitudeValue, latitudeUnit), new Quantities.Angle(longitudeValue, longitudeUnit), new Quantities.Length(altitudeValue, altitudeUnit))
     { }
 
-    //public GeographicCoordinate(double latitudeRadian, double longitudeRadian, double altitudeMeter) : this(latitudeRadian, Quantities.AngleUnit.Radian, longitudeRadian, Quantities.AngleUnit.Radian, altitudeMeter, Quantities.LengthUnit.Meter) { }
-
-    public void Deconstruct(out double latitudeRadian, out double longitudeRadian, out double altitudeMeter)
+    /// <summary>
+    /// <para>Deconstructs the <see cref="GeographicCoordinate"/> to <paramref name="lat"/>itude (radians), <paramref name="lon"/>gitude (radians) and <paramref name="alt"/>itude (meters).</para>
+    /// </summary>
+    /// <param name="lat">The latitude in radians.</param>
+    /// <param name="lon">The longitude in radians.</param>
+    /// <param name="alt">The altitude in meters.</param>
+    public void Deconstruct(out double lat, out double lon, out double alt)
     {
-      latitudeRadian = m_latitude.Angle.Value;
-      longitudeRadian = m_longitude.Angle.Value;
-      altitudeMeter = m_altitude.Value;
+      lat = m_latitude.Angle.Value;
+      lon = m_longitude.Angle.Value;
+      alt = m_altitude.Value;
     }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public Quantities.Length Altitude { get => m_altitude; init => m_altitude = value; }
+    public Quantities.Length Altitude => m_altitude;
 
     /// <summary>The diametrical opposite of the <see cref="GeographicCoordinate"/>, i.e. the opposite side of Earth's surface. This is a plain mathematical antipode.</summary>
     public GeographicCoordinate Antipode

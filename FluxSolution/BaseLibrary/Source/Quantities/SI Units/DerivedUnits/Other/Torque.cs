@@ -64,7 +64,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(TorqueUnit unit, double value)
+    private static double ConvertFromUnit(TorqueUnit unit, double value)
       => unit switch
       {
         TorqueUnit.NewtonMeter => value,
@@ -72,13 +72,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(TorqueUnit unit, double value)
+    private static double ConvertToUnit(TorqueUnit unit, double value)
       => unit switch
       {
         TorqueUnit.NewtonMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, TorqueUnit from, TorqueUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(TorqueUnit unit)
       => unit switch

@@ -67,7 +67,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(AbsoluteHumidityUnit unit, double value)
+    private static double ConvertFromUnit(AbsoluteHumidityUnit unit, double value)
       => unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => value,
@@ -75,13 +75,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(AbsoluteHumidityUnit unit, double value)
+    private static double ConvertToUnit(AbsoluteHumidityUnit unit, double value)
       => unit switch
       {
         AbsoluteHumidityUnit.GramsPerCubicMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, AbsoluteHumidityUnit from, AbsoluteHumidityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(AbsoluteHumidityUnit unit)
       => unit switch

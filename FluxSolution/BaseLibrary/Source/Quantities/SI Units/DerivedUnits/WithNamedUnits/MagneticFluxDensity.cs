@@ -85,7 +85,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(MagneticFluxDensityUnit unit, double value)
+    private static double ConvertFromUnit(MagneticFluxDensityUnit unit, double value)
       => unit switch
       {
         MagneticFluxDensityUnit.Tesla => value,
@@ -93,13 +93,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(MagneticFluxDensityUnit unit, double value)
+    private static double ConvertToUnit(MagneticFluxDensityUnit unit, double value)
       => unit switch
       {
         MagneticFluxDensityUnit.Tesla => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, MagneticFluxDensityUnit from, MagneticFluxDensityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(MagneticFluxDensityUnit unit)
       => unit switch

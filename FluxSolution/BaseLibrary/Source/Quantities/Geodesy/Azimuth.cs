@@ -1,10 +1,12 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Azimuth, a.k.a. bearing, unit of degree. The internal unit here is defined in the range [0, +360). Values are always wrapped within that range.</para>
+  /// <para>Azimuth, a.k.a. bearing, unit of degree.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Azimuth"/></para>
   /// </summary>
-  /// <remarks>It may seem unreasonable to perform arithmetic with what could be perceived as a compass quantity, but this really is just another angle quantity hardcoded to degrees and a range of [0, +360).</remarks>
+  /// <remarks>
+  /// <para>Values are always wrapped within the range [0, +360).</para>
+  /// </remarks>
   public readonly record struct Azimuth
     : System.IComparable, System.IComparable<Azimuth>, System.IFormattable, IValueQuantifiable<double>
   {
@@ -15,12 +17,19 @@ namespace Flux.Quantities
 
     private readonly Angle m_angle;
 
-    /// <summary>Creates a new Azimuth from the specified <paramref name="angle"/>. The value is wrapped within the degree range [0, +360).</summary>
+    /// <summary>
+    /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/>.</para>
+    /// </summary>
     public Azimuth(Angle angle) => m_angle = new(angle.InDegrees.WrapOpenEnd(MinValue, MaxValue), AngleUnit.Degree);
 
-    /// <summary>Creates a new Azimuth from the specified <paramref name="angle"/> and <paramref name="unit"/>. The value is wrapped within the degree range [0, +360).</summary>
+    /// <summary>
+    /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</para>
+    /// </summary>
     public Azimuth(double angle, AngleUnit unit = AngleUnit.Degree) : this(new Angle(angle, unit)) { }
 
+    /// <summary>
+    /// <para>Gets the <see cref="Quantities.Angle"/> of the <see cref="Azimuth"/>.</para>
+    /// </summary>
     public Angle Angle { get => m_angle; }
 
     public CompassRose32Wind CompassAbbreviation => CompassPoint(m_angle.InDegrees, PointsOfTheCompass.ThirtytwoWinds, MidpointRounding.ToZero, out double _);
@@ -28,13 +37,6 @@ namespace Flux.Quantities
     public string CompassWords => string.Join(' ', CompassAbbreviation.ToWords());
 
     #region Static methods
-
-    //public ThirtytwoWindCompassRose ToCompassPoint(PointsOfTheCompass precision, out double notch)
-    //{
-    //  notch = System.Math.Round(m_degrees / (MaxValue / (int)precision) % (int)precision);
-
-    //  return (ThirtytwoWindCompassRose)(int)(notch * (32 / (int)precision));
-    //}
 
     /// <summary>
     /// <para>Compass point (to given precision) for specified bearing.</para>
@@ -56,10 +58,29 @@ namespace Flux.Quantities
     public static double DeltaBearing(double azimuth1, double azimuth2)
       => new Angle(azimuth2 - azimuth1, AngleUnit.Degree).GetUnitValue(AngleUnit.Degree);
 
-    public static Azimuth FromAbbreviation(string compassPointAbbreviated)
-      => System.Enum.TryParse<CompassRose32Wind>(compassPointAbbreviated, true, out var thirtytwoWindCompassRose) ? thirtytwoWindCompassRose.GetAzimuth() : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
+    /// <summary>
+    /// <para>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</para>
+    /// </summary>
+    public static int LatchNeedle(double azimuth, int positions, System.MidpointRounding roundingMethod)
+      => System.Convert.ToInt32(double.Round(new Angle(azimuth, AngleUnit.Degree).GetUnitValue(AngleUnit.Degree) / (MaxValue / positions) % positions, roundingMethod));
 
-    public static Azimuth FromWords(string compassPointInWords)
+    /// <summary>
+    /// <para>Create a new <see cref="Azimuth"/> by parsing <paramref name="compassPointAbbreviated"/>.</para>
+    /// </summary>
+    /// <param name="compassPointAbbreviated"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static Azimuth ParseAbbreviation(string compassPointAbbreviated)
+      => System.Enum.TryParse<CompassRose32Wind>(compassPointAbbreviated.Trim(), true, out var thirtytwoWindCompassRose)
+      ? thirtytwoWindCompassRose.GetAzimuth()
+      : throw new System.ArgumentOutOfRangeException(nameof(compassPointAbbreviated));
+
+    /// <summary>
+    /// <para>Create a new <see cref="Azimuth"/> by parsing <paramref name="compassPointInWords"/>.</para>
+    /// </summary>
+    /// <param name="compassPointInWords"></param>
+    /// <returns></returns>
+    public static Azimuth ParseWords(string compassPointInWords)
     {
       var wordsOfTheCompassPoints = System.Enum.GetNames<WordsOfTheCompass>();
 
@@ -81,32 +102,27 @@ namespace Flux.Quantities
           sb.Remove(0, 1);
       }
 
-      return FromAbbreviation(string.Concat(initials));
+      return ParseAbbreviation(string.Concat(initials));
     }
 
-    /// <summary>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</summary>
-    public static int LatchNeedle(double azimuth, int positions, System.MidpointRounding roundingMethod)
-      => System.Convert.ToInt32(double.Round(new Angle(azimuth, AngleUnit.Degree).GetUnitValue(AngleUnit.Degree) / (MaxValue / positions) % positions, roundingMethod));
-
-    public static Azimuth Parse(string compassPointInWordsOrAbbreviation)
-      => FromAbbreviation(compassPointInWordsOrAbbreviation) is Azimuth fromAbbreviation
-      ? fromAbbreviation
-      : FromWords(compassPointInWordsOrAbbreviation) is Azimuth fromWords
-      ? fromWords
-      : throw new System.ArgumentOutOfRangeException(nameof(compassPointInWordsOrAbbreviation));
-
+    /// <summary>
+    /// <para>Attempt to create a new <see cref="Azimuth"/> by parsing <paramref name="compassPointInWordsOrAbbreviation"/> into the out parameter <paramref name="result"/>.</para>
+    /// </summary>
+    /// <param name="compassPointInWordsOrAbbreviation"></param>
+    /// <param name="result"></param>
+    /// <returns>Whether the parsing succeeded.</returns>
     public static bool TryParse(string compassPointInWordsOrAbbreviation, out Azimuth result)
     {
       try
       {
-        result = FromAbbreviation(compassPointInWordsOrAbbreviation);
+        result = ParseAbbreviation(compassPointInWordsOrAbbreviation);
         return true;
       }
       catch { }
 
       try
       {
-        result = FromWords(compassPointInWordsOrAbbreviation);
+        result = ParseWords(compassPointInWordsOrAbbreviation);
         return true;
       }
       catch { }
@@ -158,11 +174,14 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => Angle.ToUnitString(AngleUnit.Degree, format, formatProvider);
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     ///  <para>The unit of the <see cref="Azimuth.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
     /// </summary>
-    public double Value => m_angle.GetUnitValue(AngleUnit.Degree);
+    public double Value => m_angle.InDegrees;
+
+    #endregion // IQuantifiable<>
 
     #endregion // Implemented interfaces
 

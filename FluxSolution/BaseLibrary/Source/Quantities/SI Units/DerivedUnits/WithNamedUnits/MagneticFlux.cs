@@ -71,7 +71,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(MagneticFluxUnit unit, double value)
+    private static double ConvertFromUnit(MagneticFluxUnit unit, double value)
       => unit switch
       {
         MagneticFluxUnit.Weber => value,
@@ -79,13 +79,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(MagneticFluxUnit unit, double value)
+    private static double ConvertToUnit(MagneticFluxUnit unit, double value)
       => unit switch
       {
         MagneticFluxUnit.Weber => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, MagneticFluxUnit from, MagneticFluxUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(MagneticFluxUnit unit)
       => unit switch

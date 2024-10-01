@@ -1,9 +1,10 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para></para>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body. The unit here is defined in the range [-180, +180] in relation to the prime meridian, by convention. Arithmetic results are wrapped around the range.</para>
+  /// <para>Longitude, unit of degree, is a geographic coordinate that specifies the east–west position of a point on the Earth's surface, or the surface of a celestial body.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Longitude"/></para>
   /// </summary>
+  /// <remarks>The value is wrapped within the range [-180, +180].</remarks>
   public readonly record struct Longitude
     : System.IComparable, System.IComparable<Longitude>, System.IFormattable, IValueQuantifiable<double>
   {
@@ -12,13 +13,13 @@ namespace Flux.Quantities
 
     private readonly Angle m_angle;
 
-    /// <summary>Creates a new Longitude from the specified <paramref name="angle"/>. The value is wrapped within the degree range [-180, +180].</summary>
+    /// <summary>Creates a new <see cref="Longitude"/> from the specified <paramref name="angle"/>.</summary>
     public Longitude(Angle angle) => m_angle = new(angle.InDegrees.Wrap(MinValue, MaxValue), AngleUnit.Degree);
 
-    /// <summary>Creates a new Longitude from the specified <paramref name="angle"/> and <paramref name="unit"/>. The value is wrapped within the degree range [-180, +180].</summary>
+    /// <summary>Creates a new <see cref="Longitude"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</summary>
     public Longitude(double angle, AngleUnit unit = AngleUnit.Degree) : this(new Angle(angle, unit)) { }
 
-    /// <summary>The <see cref="Quantities.Angle"/> of the longitude.</summary>
+    /// <summary>The <see cref="Quantities.Angle"/> of the <see cref="Longitude"/>.</summary>
     public Angle Angle { get => m_angle; }
 
     /// <summary>Computes the theoretical timezone offset, relative prime meridian. This can be used for a rough timezone estimate.</summary>
@@ -91,13 +92,16 @@ namespace Flux.Quantities
         : m_angle.ToUnitString(AngleUnit.Degree, format, formatProvider)
       : ToSexagesimalDegreeString();
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     ///  <para>The unit of the <see cref="Longitude.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
     /// </summary>
-    public double Value => m_angle.GetUnitValue(AngleUnit.Degree);
+    public double Value => m_angle.InDegrees;
 
-    #endregion Implemented interfaces
+    #endregion // IQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

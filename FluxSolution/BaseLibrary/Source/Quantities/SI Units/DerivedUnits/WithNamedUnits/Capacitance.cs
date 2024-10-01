@@ -82,7 +82,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(CapacitanceUnit unit, double value)
+    private static double ConvertFromUnit(CapacitanceUnit unit, double value)
       => unit switch
       {
         CapacitanceUnit.Farad => value,
@@ -90,13 +90,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(CapacitanceUnit unit, double value)
+    private static double ConvertToUnit(CapacitanceUnit unit, double value)
       => unit switch
       {
         CapacitanceUnit.Farad => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, CapacitanceUnit from, CapacitanceUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(CapacitanceUnit unit)
       => unit switch

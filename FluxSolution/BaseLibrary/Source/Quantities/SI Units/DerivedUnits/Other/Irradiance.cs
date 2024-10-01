@@ -66,7 +66,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(IrradianceUnit unit, double value)
+    private static double ConvertFromUnit(IrradianceUnit unit, double value)
       => unit switch
       {
         IrradianceUnit.WattPerSquareMeter => value,
@@ -74,13 +74,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(IrradianceUnit unit, double value)
+    private static double ConvertToUnit(IrradianceUnit unit, double value)
       => unit switch
       {
         IrradianceUnit.WattPerSquareMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, IrradianceUnit from, IrradianceUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(IrradianceUnit unit)
       => unit switch

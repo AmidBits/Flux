@@ -84,7 +84,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(AngularFrequencyUnit unit, double value)
+    private static double ConvertFromUnit(AngularFrequencyUnit unit, double value)
       => unit switch
       {
         AngularFrequencyUnit.RadianPerSecond => value,
@@ -92,13 +92,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(AngularFrequencyUnit unit, double value)
+    private static double ConvertToUnit(AngularFrequencyUnit unit, double value)
       => unit switch
       {
         AngularFrequencyUnit.RadianPerSecond => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, AngularFrequencyUnit from, AngularFrequencyUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(AngularFrequencyUnit unit)
       => unit switch

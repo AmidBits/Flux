@@ -76,7 +76,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(EnergyUnit unit, double value)
+    private static double ConvertFromUnit(EnergyUnit unit, double value)
       => unit switch
       {
         EnergyUnit.Joule => value,
@@ -84,13 +84,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(EnergyUnit unit, double value)
+    private static double ConvertToUnit(EnergyUnit unit, double value)
       => unit switch
       {
         EnergyUnit.Joule => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, EnergyUnit from, EnergyUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(EnergyUnit unit)
       => unit switch

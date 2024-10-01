@@ -111,7 +111,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(TemperatureUnit unit, double value)
+    private static double ConvertFromUnit(TemperatureUnit unit, double value)
       => unit switch
       {
         TemperatureUnit.Kelvin => value,
@@ -123,7 +123,7 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(TemperatureUnit unit, double value)
+    private static double ConvertToUnit(TemperatureUnit unit, double value)
       => unit switch
       {
         TemperatureUnit.Kelvin => value,
@@ -134,6 +134,8 @@ namespace Flux.Quantities
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, TemperatureUnit from, TemperatureUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(TemperatureUnit unit)
       => unit switch

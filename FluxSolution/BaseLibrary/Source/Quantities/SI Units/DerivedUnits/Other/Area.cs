@@ -96,7 +96,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(AreaUnit unit, double value)
+    private static double ConvertFromUnit(AreaUnit unit, double value)
       => unit switch
       {
         AreaUnit.SquareMeter => value,
@@ -104,13 +104,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(AreaUnit unit, double value)
+    private static double ConvertToUnit(AreaUnit unit, double value)
       => unit switch
       {
         AreaUnit.SquareMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, AreaUnit from, AreaUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(AreaUnit unit)
       => unit switch

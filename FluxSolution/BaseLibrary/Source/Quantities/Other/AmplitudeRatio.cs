@@ -74,7 +74,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(AmplitudeRatioUnit unit, double value)
+    private static double ConvertFromUnit(AmplitudeRatioUnit unit, double value)
       => unit switch
       {
         AmplitudeRatioUnit.DecibelVolt => value,
@@ -82,13 +82,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(AmplitudeRatioUnit unit, double value)
+    private static double ConvertToUnit(AmplitudeRatioUnit unit, double value)
       => unit switch
       {
         AmplitudeRatioUnit.DecibelVolt => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, AmplitudeRatioUnit from, AmplitudeRatioUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(AmplitudeRatioUnit unit)
       => unit switch

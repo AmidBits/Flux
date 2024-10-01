@@ -59,7 +59,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(RadiationExposureUnit unit, double value)
+    private static double ConvertFromUnit(RadiationExposureUnit unit, double value)
       => unit switch
       {
         RadiationExposureUnit.CoulombPerKilogram => value,
@@ -67,13 +67,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(RadiationExposureUnit unit, double value)
+    private static double ConvertToUnit(RadiationExposureUnit unit, double value)
       => unit switch
       {
         RadiationExposureUnit.CoulombPerKilogram => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, RadiationExposureUnit from, RadiationExposureUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(RadiationExposureUnit unit)
       => unit switch

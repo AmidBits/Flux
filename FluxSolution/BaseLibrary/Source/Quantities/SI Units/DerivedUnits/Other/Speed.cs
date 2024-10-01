@@ -100,7 +100,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(SpeedUnit unit, double value)
+    private static double ConvertFromUnit(SpeedUnit unit, double value)
       => unit switch
       {
         SpeedUnit.MeterPerSecond => value,
@@ -108,13 +108,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(SpeedUnit unit, double value)
+    private static double ConvertToUnit(SpeedUnit unit, double value)
       => unit switch
       {
         SpeedUnit.MeterPerSecond => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, SpeedUnit from, SpeedUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(SpeedUnit unit)
       => unit switch

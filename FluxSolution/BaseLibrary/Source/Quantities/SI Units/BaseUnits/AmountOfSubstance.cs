@@ -95,7 +95,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(AmountOfSubstanceUnit unit, double value)
+    private static double ConvertFromUnit(AmountOfSubstanceUnit unit, double value)
       => unit switch
       {
         AmountOfSubstanceUnit.Mole => value,
@@ -103,13 +103,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(AmountOfSubstanceUnit unit, double value)
+    private static double ConvertToUnit(AmountOfSubstanceUnit unit, double value)
       => unit switch
       {
         AmountOfSubstanceUnit.Mole => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, AmountOfSubstanceUnit from, AmountOfSubstanceUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(AmountOfSubstanceUnit unit)
       => unit switch

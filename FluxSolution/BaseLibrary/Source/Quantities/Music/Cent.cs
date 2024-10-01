@@ -14,29 +14,24 @@ namespace Flux.Quantities
 
     public Cent(int cents) => m_value = cents;
 
-    /// <summary>Shifts the pitch of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
-    public Quantities.Frequency ShiftPitch(Quantities.Frequency frequency) => new(PitchShift(frequency.Value, m_value));
-
-    public double ToFrequencyRatio() => ConvertCentToFrequencyRatio(m_value);
-
     #region Static methods
+
+    #region Conversion methods
 
     /// <summary>Convert a specified interval ratio to a number of cents.</summary>
     public static double ConvertFrequencyRatioToCent(double frequencyRatio) => System.Math.Log(frequencyRatio, 2) * 1200;
+
     /// <summary>Convert a specified number of cents to an interval ratio.</summary>
     public static double ConvertCentToFrequencyRatio(int cents) => System.Math.Pow(2, cents / 1200.0);
 
-    /// <summary>Creates a new Cent instance from the specified frequency ratio.</summary>
-    /// <param name="frequencyRatio"></param>
-    public static Cent FromFrequencyRatio(double frequencyRatio) => new((int)ConvertFrequencyRatioToCent(frequencyRatio));
+    #endregion // Conversion methods
 
-#if NET7_0_OR_GREATER
-    /// <summary>Creates a new Cent instance from the specified ratio.</summary>
-    /// <param name="ratio"></param>
-    public static Cent FromRatio(Quantities.Ratio ratio) => FromFrequencyRatio(ratio.Value);
-#endif
-
-    /// <summary>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in cents.</summary>
+    /// <summary>
+    /// <para>Applies pitch shifting of the specified frequency, up or down, using a pitch interval specified in cents.</para>
+    /// </summary>
+    /// <param name="frequency"></param>
+    /// <param name="cents"></param>
+    /// <returns></returns>
     public static double PitchShift(double frequency, int cents) => frequency * ConvertCentToFrequencyRatio(cents);
 
     #endregion Static methods
@@ -74,13 +69,16 @@ namespace Flux.Quantities
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => $"{string.Format(formatProvider, $"{{0{(string.IsNullOrEmpty(format) ? string.Empty : $":{format}")}}}", m_value)} cent{(m_value == 1 ? string.Empty : 's'.ToString())}";
 
-    // IQuantifiable<>
+    #region IQuantifiable<>
+
     /// <summary>
     /// <para>The <see cref="Cent.Value"/> property is a musical interval in cents.</para>
     /// </summary>
     public int Value => m_value;
 
-    #endregion Implemented interfaces
+    #endregion // IQuantifiable<>
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

@@ -60,7 +60,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(MagneticFluxStrengthUnit unit, double value)
+    private static double ConvertFromUnit(MagneticFluxStrengthUnit unit, double value)
       => unit switch
       {
         MagneticFluxStrengthUnit.AmperePerMeter => value,
@@ -68,13 +68,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(MagneticFluxStrengthUnit unit, double value)
+    private static double ConvertToUnit(MagneticFluxStrengthUnit unit, double value)
       => unit switch
       {
         MagneticFluxStrengthUnit.AmperePerMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, MagneticFluxStrengthUnit from, MagneticFluxStrengthUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(MagneticFluxStrengthUnit unit)
       => unit switch

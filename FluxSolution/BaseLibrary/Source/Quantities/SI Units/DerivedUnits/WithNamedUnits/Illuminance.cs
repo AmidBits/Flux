@@ -73,7 +73,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(IlluminanceUnit unit, double value)
+    private static double ConvertFromUnit(IlluminanceUnit unit, double value)
       => unit switch
       {
         IlluminanceUnit.Lux => value,
@@ -81,13 +81,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(IlluminanceUnit unit, double value)
+    private static double ConvertToUnit(IlluminanceUnit unit, double value)
       => unit switch
       {
         IlluminanceUnit.Lux => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, IlluminanceUnit from, IlluminanceUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(IlluminanceUnit unit)
       => unit switch

@@ -59,7 +59,7 @@ namespace Flux.Quantities
 
     #region IUnitQuantifiable<>
 
-    public static double ConvertFromUnit(SolidAngleUnit unit, double value)
+    private static double ConvertFromUnit(SolidAngleUnit unit, double value)
       => unit switch
       {
         SolidAngleUnit.Steradian => value,
@@ -67,13 +67,15 @@ namespace Flux.Quantities
         _ => GetUnitFactor(unit) * value,
       };
 
-    public static double ConvertToUnit(SolidAngleUnit unit, double value)
+    private static double ConvertToUnit(SolidAngleUnit unit, double value)
       => unit switch
       {
         SolidAngleUnit.Steradian => value,
 
         _ => value / GetUnitFactor(unit),
       };
+
+    public static double ConvertUnit(double value, SolidAngleUnit from, SolidAngleUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(SolidAngleUnit unit)
       => unit switch
