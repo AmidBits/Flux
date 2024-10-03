@@ -4,8 +4,14 @@ namespace Flux
   {
     /// <summary>
     /// <para>Sorts the content of the sequence using merge sort.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Merge_sort"/>
+    /// <para><see href="https://en.wikipedia.org/wiki/Merge_sort"/></para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="type"></param>
+    /// <param name="comparer"></param>
+    /// <returns></returns>
+    /// <exception cref="System.Exception"></exception>
     public static T[] MergeSort<T>(this System.Span<T> source, MergeSortType type, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;

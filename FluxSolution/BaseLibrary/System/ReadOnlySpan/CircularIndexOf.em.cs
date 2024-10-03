@@ -5,6 +5,11 @@ namespace Flux
     /// <summary>
     /// <para>Returns the index in <paramref name="source"/> where the rotation of the <paramref name="target"/> begins, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
     public static int CircularIndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       if (source.Length >= target.Length) // If source length is less than target length, target cannot be a rotation within source.

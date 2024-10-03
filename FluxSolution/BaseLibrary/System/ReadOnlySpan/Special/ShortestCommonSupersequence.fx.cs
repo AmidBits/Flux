@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux
 {
   public static partial class Fx
@@ -11,6 +9,12 @@ namespace Flux
     /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
     /// <remarks>This is the same routine as longest common subsequence (LCS).</remarks>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="matrix"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
     public static int ShortestCommonSupersequenceLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -27,6 +31,12 @@ namespace Flux
     /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
     /// <remarks>This is the same routine as longest common subsequence (LCS).</remarks>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="lengthScs"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
     public static int[,] ShortestCommonSupersequenceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int lengthScs, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -56,6 +66,12 @@ namespace Flux
     /// <para><seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/></para>
     /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="matrix"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
     public static System.Collections.Generic.List<T> ShortestCommonSupersequenceValues<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;

@@ -6,8 +6,9 @@ namespace Flux
     /// <para>Finds the shortest substring that can be replaced to achieve a balanced count of all <paramref name="vocabulary"/> elements in <paramref name="source"/> with no change in space requirements.</para>
     /// <see href="https://stackoverflow.com/questions/38877718/smallest-substring-that-can-be-replaced-to-make-the-string-have-the-same-number"/>
     /// </summary>
-    /// <param name="source">The sequence in which the shortest balancing substring should be found.</param>
-    /// <param name="vocabulary">The items which must be present and balanced in <paramref name="source"/>.</param>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="vocabulary"></param>
     /// <returns>A 2-tuple with (index, count) of elements in the shortest balancing substring, or (-1, 0) if not found.</returns>
     public static (int index, int count) ShortestBalancingSubstring<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> vocabulary)
       where T : notnull

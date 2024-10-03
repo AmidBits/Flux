@@ -2,9 +2,14 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a new sequence, a set of all subsets (as lists) of the source set, including the empty set and the source itself.</summary>
+    /// <summary>
+    /// <para>Creates a new sequence, a set of all subsets (as lists) of the source set, including the empty set and the source itself.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Power_set"/></para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
     /// <exception cref="System.ArgumentNullException"/>
-    /// <see href="https://en.wikipedia.org/wiki/Power_set"/>
     public static System.Collections.Generic.List<T[]> PowerSet<T>(this System.ReadOnlySpan<T> source)
     {
       var powerSet = new System.Collections.Generic.List<T[]>();

@@ -12,7 +12,7 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="referenceValue"></param>
     /// <param name="valueSelector"></param>
-    /// <param name="proper">When false (default) then "-or-equal", otherwise never equal.</param>
+    /// <param name="proper"></param>
     /// <param name="comparer"></param>
     /// <returns></returns>
     public static (int TowardZeroIndex, TSource? TowardZeroItem, TValue? TowardZeroValue, int AwayFromIndex, TSource? AwayFromItem, TValue? AwayFromValue) GetInfimumAndSupremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, TValue referenceValue, System.Func<TSource, TValue> valueSelector, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)

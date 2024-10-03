@@ -1,5 +1,3 @@
-using System.Net.NetworkInformation;
-
 namespace Flux
 {
   public static class Locale
@@ -58,18 +56,19 @@ namespace Flux
     public static System.Collections.Generic.IDictionary<string, string?> EnvironmentVariables
       => Environment.GetEnvironmentVariables().Cast<System.Collections.DictionaryEntry>().ToSortedDictionary((e, i) => (string)e.Key, (e, i) => (string?)e.Value);
 
-    private static UnicastIPAddressInformation[] LocalIPv4UnicastAdresses()
+    private static System.Net.NetworkInformation.UnicastIPAddressInformation[] LocalIPv4UnicastAdresses()
       => System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces()
       .Where(ni => ni.IsOperationallyUp())
       .Select(ni => ni.GetIPProperties())
       .Where(p => p.GatewayAddresses.Any(ga => ga.Address.IsIPv4()))
       .SelectMany(ipp => ipp.UnicastAddresses)
-      .Where(uai => uai.Address.IsIPv4() && !uai.Address.IsLoopback())
+      .Where(uai => uai.Address.IsIPv4() && !System.Net.IPAddress.IsLoopback(uai.Address))
       .ToArray();
 
     /// <summary>
     /// <para>The most likely local IPv4 address.</para>
     /// </summary>
+    /// <remarks>This functionality is supported on "windows" platforms.</remarks>
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public static System.Net.IPAddress LocalIPv4Address
     {
@@ -105,6 +104,7 @@ namespace Flux
     /// <summary>
     /// <para>An array of likely local IPv4 addresses.</para>
     /// </summary>
+    /// <remarks>This functionality is unsupported on "macOS" and "OSX" platforms.</remarks>
     [System.Runtime.Versioning.UnsupportedOSPlatform("macOS")]
     [System.Runtime.Versioning.UnsupportedOSPlatform("OSX")]
     public static System.Net.IPAddress[] LocalIPv4Addresses
@@ -132,7 +132,10 @@ namespace Flux
       }
     }
 
+    /// <summary>
     /// <para>Gets the new-line strings for operating systems.</para>
+    /// </summary>
+    /// <remarks>The "Macintosh" new-line is for older Apple operating systems.</remarks>
     public static (char Macintosh, char Unix, string Windows) NewLines { get; } = ('\r', '\n', "\r\n");
 
     /// <summary>
@@ -158,7 +161,7 @@ namespace Flux
     /// </summary>
     /// <remarks>
     /// <para>The information is derived from <see cref="System.Diagnostics.Process.ProcessorAffinity"/>.</para>
-    /// <para>This only works on the "linux" and "windows" platforms.</para>
+    /// <para>This functionality is supported on "linux" and "windows" platforms.</para>
     /// </remarks>
     [System.Runtime.Versioning.SupportedOSPlatform("linux")]
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
@@ -204,9 +207,9 @@ namespace Flux
 
         var i = s.LastIndexOf(' ');
 
-        var title = i > -1 ? s[..i].Trim() : s;
+        var title = i > -1 ? s[..i].TrimEnd() : s;
 
-        if (!(i > -1 && System.Version.TryParse(s[i..].Trim(), out var version))) version = new();
+        if (!(i > -1 && System.Version.TryParse(s[i..].TrimStart(), out var version))) version = new();
 
         return (architecture, title, version);
       }

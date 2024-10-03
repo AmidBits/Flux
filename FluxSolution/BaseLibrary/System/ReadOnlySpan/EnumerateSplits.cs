@@ -11,7 +11,13 @@ namespace Flux
       => new(source.AsSpan(), separators);
   }
 
-  // Must be a ref struct as it contains a ReadOnlySpan<char>
+  /// <summary>
+  /// <para></para>
+  /// </summary>
+  /// <remarks>
+  /// <para>Must be a <see langword="ref"/> <see langword="struct"/> as it contains a <see cref="System.ReadOnlySpan{T}"/>.</para>
+  /// </remarks>
+  /// <typeparam name="T"></typeparam>
   public ref struct SplitEnumerator<T>
   {
     private readonly System.ReadOnlySpan<T> m_separator;
@@ -54,6 +60,10 @@ namespace Flux
     }
   }
 
+  /// <summary>
+  /// <para></para>
+  /// </summary>
+  /// <typeparam name="T"></typeparam>
   public readonly ref struct SplitEntry<T>
   {
     public SplitEntry(System.ReadOnlySpan<T> subSpan, System.ReadOnlySpan<T> separator)

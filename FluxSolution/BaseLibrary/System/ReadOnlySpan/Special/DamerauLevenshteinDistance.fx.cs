@@ -103,17 +103,19 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Triangle_inequality"/></para>
     /// </summary>
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
-    public static int DamerauLevenshteinDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int DamerauLevenshteinDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       TrimCommonEnds(source, target, out source, out target, out var _, out var _, equalityComparer);
 
+      matrix = new int[0, 0];
+
       if (source.Length == 0) return target.Length;
       else if (target.Length == 0) return source.Length;
 
-      var matrix = DamerauLevenshteinDistanceMatrix(source, target, equalityComparer);
+      matrix = DamerauLevenshteinDistanceMatrix(source, target, equalityComparer);
 
       return matrix[source.Length + 1, target.Length + 1];
     }
@@ -210,6 +212,6 @@ namespace Flux
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
     public static double DamerauLevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
-      => (double)DamerauLevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+      => (double)DamerauLevenshteinDistanceMetric(source, target, out var _, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
   }
 }

@@ -13,7 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Permeability(double value, PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter) => ConvertFromUnit(unit, value);
+    public Permeability(double value, PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 

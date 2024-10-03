@@ -28,7 +28,7 @@ namespace SystemFx
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
       var expected = 3;
-      var actual = span.BoyerMooreHorspoolIndex(new int[] { 10, 20, 30 });
+      var actual = span.BoyerMooreHorspoolIndex(new int[] { 10, 20, 30 }, out var _);
 
       Assert.AreEqual(expected, actual);
     }
@@ -39,7 +39,7 @@ namespace SystemFx
       var text1 = "CA".AsSpan();
       var text2 = "ABC".AsSpan();
       var expected = 2;
-      var actual = text1.DamerauLevenshteinDistanceMetric(text2);
+      var actual = text1.DamerauLevenshteinDistanceMetric(text2, out var _);
       Assert.AreEqual(expected, actual);
     }
 
@@ -165,7 +165,7 @@ namespace SystemFx
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
 
       var expected = new int[] { 3, 11 };
-      var actual = span.KnuthMorrisPrattIndices(new int[] { 10, 20, 30 });
+      var actual = span.KnuthMorrisPrattIndices(new int[] { 10, 20, 30 }, out var _);
 
       Assert.AreEqual(expected.Length, actual.Count, "Element count is different.");
       CollectionAssert.AreEqual(expected, actual, "Values are different.");

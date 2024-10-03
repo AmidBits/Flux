@@ -5,6 +5,11 @@ namespace Flux
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> ends with <paramref name="count"/> elements that satisfy the <paramref name="predicate"/>.</para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="count"></param>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
     public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, int count, System.Func<T, int, bool> predicate)
     {
       System.ArgumentNullException.ThrowIfNull(predicate);
@@ -22,6 +27,11 @@ namespace Flux
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> ends with the <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
     public static bool EndsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;

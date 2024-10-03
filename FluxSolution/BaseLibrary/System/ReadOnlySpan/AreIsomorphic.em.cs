@@ -6,6 +6,11 @@ namespace Flux
     /// <para>Indicates whether the <paramref name="source"/> and <paramref name="target"/> are isomorphic. Two sequences are isomorphic if the elements (equal elements must be replaced with the same replacements, in the same positions) in <paramref name="source"/> can be replaced to get the same in <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
     /// <remarks>For example,"egg" and "add" are isomorphic, "foo" and "bar" are not.</remarks>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
     public static bool AreIsomorphic<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
     {

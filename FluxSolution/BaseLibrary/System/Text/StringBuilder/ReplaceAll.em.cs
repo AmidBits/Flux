@@ -2,49 +2,48 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Replace all characters using the specified replacement selector function. If the replacement selector returns null/default or empty, no replacement is made.</summary>
-    public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, System.Func<char, string> replacementSelector)
+    /// <summary>
+    /// <para>Replace all characters satisfying the <paramref name="predicate"/> using the <paramref name="replacementSelector"/>.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="predicate"></param>
+    /// <param name="replacementSelector"></param>
+    /// <returns></returns>
+    /// <remarks>In both the <paramref name="predicate"/>(e, i, bool) and the <paramref name="replacementSelector"/>(e, i, string): e = the character, i = the index of the character.</remarks>
+    public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, System.Func<char, int, bool> predicate, System.Func<char, int, string?> replacementSelector)
     {
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(replacementSelector);
 
       for (var index = source.Length - 1; index >= 0; index--)
-        if (replacementSelector(source[index]) is var replacement && !string.IsNullOrEmpty(replacement))
-          source.Remove(index, 1).Insert(index, replacement);
+      {
+        var c = source[index];
+
+        if (predicate(c, index) && replacementSelector(c, index) is var r && r is not null)
+          source.Remove(index, 1).Insert(index, r);
+      }
 
       return source;
     }
 
-    /// <summary>Replace all characters using the specified replacement selector function.</summary>
+    /// <summary>
+    /// <para>Replace all characters satisfying the <paramref name="predicate"/> using the <paramref name="replacementSelector"/>.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="predicate"></param>
+    /// <param name="replacementSelector"></param>
+    /// <returns></returns>
+    /// <remarks>In both the <paramref name="predicate"/>(e, bool) and the <paramref name="replacementSelector"/>(e, string): e = the character.</remarks>
+    public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, System.Func<char, bool> predicate, System.Func<char, string?> replacementSelector)
+      => source.ReplaceAll((c, i) => predicate(c), (c, i) => replacementSelector(c));
+
+    /// <summary>
+    /// <para>Replace all characters using the <paramref name="replacementSelector"/>.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="replacementSelector"></param>
+    /// <returns></returns>
     public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, System.Func<char, char> replacementSelector)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-      System.ArgumentNullException.ThrowIfNull(replacementSelector);
-
-      for (var index = source.Length - 1; index >= 0; index--)
-        source[index] = replacementSelector(source[index]);
-
-      return source;
-    }
-
-    /// <summary>Replace all characters satisfying the predicate with the specified character.</summary>
-    /// <example>"".ReplaceAll(replacement, char.IsWhiteSpace);</example>
-    public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, char replacement, System.Func<char, bool> predicate)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-      System.ArgumentNullException.ThrowIfNull(predicate);
-
-      for (var index = source.Length - 1; index >= 0; index--)
-        if (predicate(source[index]))
-          source[index] = replacement;
-
-      return source;
-    }
-    /// <summary>Replace all specified characters with the specified character.</summary>
-    public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, char replacement, [System.Diagnostics.CodeAnalysis.DisallowNull] System.Collections.Generic.IEqualityComparer<char> equalityComparer, params char[] replace)
-      => source.ReplaceAll(replacement, t => replace.Contains(t, equalityComparer));
-    /// <summary>Replace all specified characters with the specified character.</summary>
-    public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, char replacement, params char[] replace)
-      => source.ReplaceAll(replacement, replace.Contains);
+      => source.ReplaceAll(c => replacementSelector(c) != c, c => replacementSelector(c).ToString());
   }
 }

@@ -10,6 +10,10 @@
     /// <param name="length">The length of the longest alternating subsequence that was found.</param>
     /// <param name="comparer">Uses the specified comparer, default if null.</param>
     /// <returns>The matrix of the longest alternating subsequence that was found, using dynamic programming.</returns>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static int LongestAlternatingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
@@ -25,6 +29,10 @@
     /// <param name="length">The length of the longest alternating subsequence that was found.</param>
     /// <param name="comparer">Uses the specified comparer, default if null.</param>
     /// <returns>The matrix of the longest alternating subsequence that was found, using dynamic programming.</returns>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static int[,] LongestAlternatingSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
@@ -66,6 +74,10 @@
     /// <param name="matrix">The matrix of the longest alternating subsequence that was found, using dynamic programming.</param>
     /// <param name="comparer">Uses the specified comparer, default if null.</param>
     /// <returns>The longest alternating subsequence that was found.</returns>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static T[] LongestAlternatingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);

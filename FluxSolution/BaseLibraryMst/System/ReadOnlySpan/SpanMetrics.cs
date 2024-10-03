@@ -30,17 +30,17 @@ namespace SystemFx
     [TestMethod]
     public void DamerauLevenshteinDistance()
     {
-      Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistanceMetric(m_text1b, m_comparisonOrdinal));
-      Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistanceMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistanceMetric(m_text1b, out var _, m_comparisonOrdinal));
+      Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistanceMetric(m_text1b, out var _, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(0, m_text2a.AsSpan().DamerauLevenshteinDistanceMetric(m_text2b, m_comparableIgnoreNonSpace));
-      Assert.AreEqual(60, m_text2a.AsSpan().DamerauLevenshteinDistanceMetric(m_text2b, m_comparerDoNotIgnoreCase));
+      Assert.AreEqual(0, m_text2a.AsSpan().DamerauLevenshteinDistanceMetric(m_text2b, out var _, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().DamerauLevenshteinDistanceMetric(m_text2b, out var _, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(5, m_text3a.AsSpan().DamerauLevenshteinDistanceMetric(m_text3b, m_comparisonOrdinal));
-      Assert.AreEqual(3, m_text3a.AsSpan().DamerauLevenshteinDistanceMetric(m_text3b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(5, m_text3a.AsSpan().DamerauLevenshteinDistanceMetric(m_text3b, out var _, m_comparisonOrdinal));
+      Assert.AreEqual(3, m_text3a.AsSpan().DamerauLevenshteinDistanceMetric(m_text3b, out var _, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(1, m_text4a.AsSpan().DamerauLevenshteinDistanceMetric(m_text4b, m_comparisonOrdinal));
-      Assert.AreEqual(1, m_text4a.AsSpan().DamerauLevenshteinDistanceMetric(m_text4b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(1, m_text4a.AsSpan().DamerauLevenshteinDistanceMetric(m_text4b, out var _, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text4a.AsSpan().DamerauLevenshteinDistanceMetric(m_text4b, out var _, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]

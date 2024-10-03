@@ -7,6 +7,10 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/></para>
     /// <para><see href="https://cp-algorithms.com/string/prefix-function.html"/></para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
     public static int[] PrefixFunction<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;

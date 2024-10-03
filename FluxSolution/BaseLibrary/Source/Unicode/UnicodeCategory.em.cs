@@ -37,10 +37,10 @@ namespace Flux
       if (ucsb.EndsWith(ucms)) ucsb.Remove(ucsb.Length - ucms.Length, ucms.Length); // Either fix the unicode category that ends with its own category major.
       else if (ucsb.StartsWith(ucms)) ucsb.Remove(0, ucms.Length); // Or fix the unicode category that starts with its own category major.
 
-      ucsb.PrespaceCapWords();
+      ucsb.PrefixCapWords();
 
-      if (source == System.Globalization.UnicodeCategory.NonSpacingMark) ucsb.RemoveAll(e => e == ' '); // Fix "non spacing" to "nonspacing".
-      if (source == System.Globalization.UnicodeCategory.PrivateUse) ucsb.ReplaceAll(e => e == ' ' ? '-' : e); // Fix "private use" to "private-use".
+      if (source == System.Globalization.UnicodeCategory.NonSpacingMark) ucsb.RemoveAll(char.IsWhiteSpace); // Fix "non spacing" to "nonspacing".
+      if (source == System.Globalization.UnicodeCategory.PrivateUse) ucsb.Replace(' ', '-'); // Fix "private use" to "private-use".
 
       return ucsb.ToString();
     }

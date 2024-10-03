@@ -2,7 +2,15 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a new sequence of elements that are present either in the source set or in the specified target set, but not both. Uses the specified equality comparer.</summary>
+    /// <summary>
+    /// <para>Creates a new sequence of elements that are present either in the source set or in the specified target set, but not both. Uses the specified <paramref name="equalityComparer"/> (or default if null).</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="additionalCapacity"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.HashSet<T> SymmetricExcept<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int additionalCapacity = 0, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {

@@ -10,11 +10,12 @@ namespace Flux
     /// <para><seealso href="https://www.geeksforgeeks.org/jaro-and-jaro-winkler-similarity/"/></para>
     /// <remarks>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two sequences is, the more similar the sequences are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</remarks>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="target"></param>
-    /// <param name="boostThreshold">BoostThreshold is the minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
-    /// <param name="prefixSize">PrefixSize is the size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
     /// <param name="equalityComparer"></param>
+    /// <param name="boostThreshold"></param>
+    /// <param name="prefixSize"></param>
     /// <returns></returns>
     public static double JaroWinklerDistance<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, double boostThreshold = 0.1, int prefixSize = 4)
       => 1 - JaroWinklerSimilarity(source, target, equalityComparer, boostThreshold, prefixSize);
@@ -27,11 +28,12 @@ namespace Flux
     /// <para><seealso href="https://www.geeksforgeeks.org/jaro-and-jaro-winkler-similarity/"/></para>
     /// <remarks>The Jaro–Winkler distance is a string metric measuring an edit distance between two sequences. The lower the Jaro–Winkler distance for two sequences is, the more similar the sequences are. The score is normalized such that 0 means an exact match and 1 means there is no similarity. The Jaro–Winkler similarity is the inversion, (1 - Jaro–Winkler distance).</remarks>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="target"></param>
-    /// <param name="boostThreshold">BoostThreshold is the minimum score for a sequence that gets boosted. This value was set to 0.7 in Winkler's papers.</param>
-    /// <param name="prefixSize">PrefixSize is the size of the initial prefix considered. This value was set to 4 in Winkler's papers.</param>
     /// <param name="equalityComparer"></param>
+    /// <param name="boostThreshold"></param>
+    /// <param name="prefixSize"></param>
     /// <returns></returns>
     public static double JaroWinklerSimilarity<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, double boostThreshold = 0.1, int prefixSize = 4)
     {

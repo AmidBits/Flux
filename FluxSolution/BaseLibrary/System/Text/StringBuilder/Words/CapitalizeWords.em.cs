@@ -9,9 +9,20 @@ namespace Flux
 
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
-      for (var index = source.Length - 1; index >= 0; index--)
-        if (char.IsLower(source[index]) && (index == 0 || char.IsWhiteSpace(source[index - 1])) && char.IsLower(source[index + 1]))
-          source[index] = char.ToUpper(source[index], culture);
+      var maxIndex = source.Length - 1;
+
+      for (var index = maxIndex; index >= 0; index--)
+      {
+        var c = source[index]; // Avoid multiple indexers.
+
+        if (!char.IsLower(c)) continue; // If, c is not lower-case, advance.
+
+        if ((index > 0) && !char.IsWhiteSpace(source[index - 1])) continue; // If, (ensure previous) previous is not white-space, advance.
+
+        if ((index < maxIndex) && !char.IsLower(source[index + 1])) continue; // If, (ensure next) next is not lower-case, advance.
+
+        source[index] = char.ToUpper(c, culture);
+      }
 
       return source;
     }

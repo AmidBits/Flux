@@ -21,7 +21,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para></para>
+    /// <para>Creates a new sequence of permutations based on the <paramref name="numberOfIndices"/>.</para>
     /// </summary>
     /// <param name="numberOfIndices"></param>
     /// <returns></returns>
@@ -29,20 +29,21 @@ namespace Flux
       => GeneratePermutationIndices(System.Linq.Enumerable.Range(0, numberOfIndices).ToArray());
 
     /// <summary>
-    /// <para></para>
+    /// <para>Creates a new sequence of permutations based on the <paramref name="source"/> data.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
+    /// <remarks>The array is mutated each iteration to reflect the next permutation.</remarks>
     public static System.Collections.Generic.IEnumerable<T[]> GetPermutationsKnuthsAlgorithmL<T>(this System.Collections.Generic.IList<T> source)
     {
-      var sourceLength = source.Count;
+      var sourceCount = source.Count;
 
-      foreach (var pi in GeneratePermutationIndices(sourceLength))
+      var ps = new T[sourceCount];
+
+      foreach (var pi in GeneratePermutationIndices(sourceCount))
       {
-        var ps = new T[sourceLength];
-
-        for (var i = 0; i < sourceLength; i++)
+        for (var i = sourceCount - 1; i >= 0; i--)
           ps[i] = source[pi[i]];
 
         yield return ps;
@@ -50,7 +51,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Compute the next permutation of <paramref name="indices"/> using Knuth's "Algorithm L".</para>
+    /// <para>Compute the next permutation of <paramref name="indices"/>, based on it's current state, using Knuth's "Algorithm L".</para>
     /// </summary>
     /// <param name="indices"></param>
     /// <returns></returns>

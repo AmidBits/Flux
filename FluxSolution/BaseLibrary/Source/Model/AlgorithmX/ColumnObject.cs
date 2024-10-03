@@ -3,16 +3,17 @@
   internal sealed class ColumnObject
     : DataObject
   {
-    private readonly int _index;
+    private readonly int m_index;
 
-    public int Index { get { return _index; } }
+    public int Index => m_index;
     public int Size { get; set; }
 
     public ColumnObject(int index)
-      : base(null)
+      : base(null!)
     {
-      _index = index;
       Column = this;
+
+      m_index = index;
     }
   }
 }

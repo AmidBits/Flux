@@ -2,32 +2,49 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a sequence of substrings, as a split of the StringBuilder content based on the characters in an array. There is no change to the StringBuilder content.</summary>
-    public static System.Collections.Generic.List<string> Split(this System.Text.StringBuilder source, System.StringSplitOptions options, System.ReadOnlySpan<char> separators)
+    /// <summary>
+    /// <para>Splits a <see cref="System.Text.StringBuilder"/> into substrings based on the specified <paramref name="predicate"/> and <paramref name="options"/>.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="predicate"></param>
+    /// <param name="options"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.List<string> Split(this System.Text.StringBuilder source, System.Func<char, bool> predicate, System.StringSplitOptions options = StringSplitOptions.None)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(predicate);
+
+      var te = (options & StringSplitOptions.TrimEntries) != 0;
+      var ree = (options & StringSplitOptions.RemoveEmptyEntries) != 0;
 
       var list = new System.Collections.Generic.List<string>();
 
-      var startIndex = 0;
+      var atIndex = 0;
 
-      var sourceLength = source.Length;
+      var maxIndex = source.Length - 1;
 
-      for (var index = startIndex; index < sourceLength; index++)
+      for (var index = 0; index <= maxIndex; index++)
       {
-        if (separators.Contains(source[index]))
+        if ((predicate(source[index]) ? source.ToString(atIndex, index - atIndex) : (index == maxIndex) ? source.ToString(atIndex) : default) is var s && s is not null)
         {
-          if (index != startIndex || options != System.StringSplitOptions.RemoveEmptyEntries)
-            list.Add(source.ToString(startIndex, index - startIndex));
+          if (!(ree && (string.IsNullOrEmpty(s) || (te && string.IsNullOrWhiteSpace(s)))))
+            list.Add(te ? s.Trim() : s);
 
-          startIndex = index + 1;
+          atIndex = index + 1;
         }
       }
 
-      if (startIndex < sourceLength)
-        list.Add(source.ToString(startIndex, sourceLength - startIndex));
-
       return list;
     }
+
+    /// <summary>
+    /// <para>Splits a <see cref="System.Text.StringBuilder"/> into substrings based on the specified <paramref name="options"/> and <paramref name="separators"/>.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="options"></param>
+    /// <param name="separators"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.List<string> Split(this System.Text.StringBuilder source, System.StringSplitOptions options, params char[] separators)
+      => source.Split(c => separators.Contains(c), options);
   }
 }

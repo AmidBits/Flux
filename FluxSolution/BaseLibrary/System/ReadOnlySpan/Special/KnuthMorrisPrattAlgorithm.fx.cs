@@ -3,14 +3,14 @@
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Searches a text for all indices of a substring. Returns an empty list if not found. Uses the specified equality comparer.</para>
+    /// <para>Searches a <paramref name="source"/> text for all indices of a <paramref name="target"/> substring. Returns an empty list if not found. Uses the specified <paramref name="equalityComparer"/> (or default if null).</para>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
     /// </summary>
-    public static System.Collections.Generic.List<int> KnuthMorrisPrattIndices<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static System.Collections.Generic.List<int> KnuthMorrisPrattIndices<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out System.Collections.Generic.Dictionary<int, int> table, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var table = KnuthMorrisPrattTable(target, equalityComparer);
+      table = KnuthMorrisPrattTable(target, equalityComparer);
 
       var indices = new System.Collections.Generic.List<int>();
 
@@ -50,7 +50,7 @@
     }
 
     /// <summary>
-    /// <para>Creates a map of the amount of safely skippable elements in target (word).</para>
+    /// <para>Creates a map of the amount of safely skippable elements in <paramref name="source"/> (word). Uses the specified <paramref name="equalityComparer"/> (or default if null).</para>
     /// <see href="https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm"/>
     /// </summary>
     public static System.Collections.Generic.Dictionary<int, int> KnuthMorrisPrattTable<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)

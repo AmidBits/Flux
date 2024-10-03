@@ -37,60 +37,31 @@ namespace ConsoleApp
     #endregion // Presets
 
     private static void TimedMain(string[] _)
-    {
+    {//(218893066, 168496141)
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var bytes = new byte[10];
+      (0x0a0b0c0d).WriteBytes(bytes, 0, Endianess.LittleEndian);
+      (0x0a0b0c0d).WriteBytes(bytes, 4, Endianess.BigEndian);
 
+      var rv = 0x0a0b0c0d;
+      var rvh = rv.ToString("X8");
+      var vr = rv.ReverseBytes();
+      var vrh = vr.ToString("X8");
 
+      var bs = new byte[] { 0x0D, 0x0C, 0x0B, 0x0A };
+      var be = bs.ReadUInt32(0, Endianess.BigEndian);
+      var le = bs.ReadUInt32(0, Endianess.LittleEndian);
 
-      var success = Flux.Quantities.Azimuth.TryParse("W", out var fw);
-      var fwf = fw.ToString();
+      var s = "This        is             another   fearless    attempt     \rk!";
+      var o = StringSplitOptions.None;//| StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries;
+      var c = ' ';
 
-      var sb1 = "            This       takes            the         trophy       ".ToStringBuilder();
-      //sb1.NormalizeAdjacent(3, " ");
-      sb1.NormalizeAdjacent(3, char.IsWhiteSpace);
-
-      var sb = "GregorianTTTCalendar".ToStringBuilder().Append(", ");
-      sb.PrespaceCapWords();
-      var s2 = sb.ToStringByChunks();
-      sb.UncapitalizeWords();
-      sb.CapitalizeWords();
-      sb.UnprespaceCapWords();
-
-      var bst = Flux.DataStructures.Immutable.ImmutableAvlTree<int, string>.Empty;
-
-      bst = bst.Add(1, 1.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(2, 2.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(3, 3.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(4, 4.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(5, 5.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(6, 6.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(7, 7.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(8, 8.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(9, 9.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(10, 10.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(11, 11.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(12, 12.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(13, 13.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(14, 14.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(15, 15.ToEnglishCardinalNumeralCompoundString());
-      bst = bst.Add(16, 16.ToEnglishCardinalNumeralCompoundString());
-      bst.TraverseZigZag();
-      System.Console.WriteLine(bst.ToConsoleBlock());
-
-      var ba = bst.TraversePerimeter().ToOrderedDictionary();
-      var zza = bst.TraverseZigZag().ToArray();
-
-      var bmax = bst.GetMaximum();
-      var bmin = bst.GetMinimum();
-
-      var tc = bst.GetCount();
-      var td = bst.GetDiameter();
-      var th = bst.GetMaxDepth();
-      var tl = bst.GetLevelOf(15);
-
-      var isbst = bst.IsBst();
+      var ss = s.Split(c, o);
+      var sbs = s.ToStringBuilder().Split(e => e == c, o);
+      var sbs2 = s.ToStringBuilder().ReplaceAll(c => c == 's', c => "Rob");
+      s.ToStringBuilder();
 
     }
 

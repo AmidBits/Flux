@@ -19,7 +19,7 @@ namespace SystemFx
     public void DamerauLevenstein_Default()
     {
       var expected = 3;
-      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target);
+      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, out var _);
       Assert.AreEqual(expected, actual);
     }
 
@@ -27,7 +27,7 @@ namespace SystemFx
     public void DamerauLevenstein_IgnoreCase()
     {
       var expected = 1;
-      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, comparerIgnoreCase);
+      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, out var _, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -35,7 +35,7 @@ namespace SystemFx
     public void DamerauLevenstein_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, out var _, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -43,7 +43,7 @@ namespace SystemFx
     public void DamerauLevenstein_None()
     {
       var expected = 3;
-      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, comparerNone);
+      var actual = source.AsSpan().DamerauLevenshteinDistanceMetric(target, out var _, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 

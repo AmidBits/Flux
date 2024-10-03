@@ -35,7 +35,7 @@ namespace Flux.Resources.ProjectGutenberg
               var dictionary = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
               System.Array.ForEach(
-                System.Text.RegularExpressions.Regex.Split(lines.RemoveAll('.').ToLowerCase().ToString(), @".(?=>key:|syn:|ant:)", System.Text.RegularExpressions.RegexOptions.IgnoreCase),
+                System.Text.RegularExpressions.Regex.Split(lines.RemoveAll(null, '.').ToLowerCase().ToString(), @".(?=>key:|syn:|ant:)", System.Text.RegularExpressions.RegexOptions.IgnoreCase),
                 s =>
                 {
                   var array = s.Split(':');

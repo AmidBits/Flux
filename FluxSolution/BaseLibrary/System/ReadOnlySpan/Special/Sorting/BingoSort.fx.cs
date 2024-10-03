@@ -4,8 +4,11 @@ namespace Flux
   {
     /// <summary>
     /// <para>Sorts the content of the sequence using bingo sort which is a variant of selection sort.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Bingo_sort"/>
+    /// <para><see href="https://en.wikipedia.org/wiki/Bingo_sort"/></para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="comparer"></param>
     public static void BingoSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;

@@ -49,11 +49,13 @@ namespace Flux
 
     /// <summary>
     /// <para>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</para>
-    /// <para>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Edit_distance"/></para>
     /// </summary>
-    /// <remarks>Implemented based on the Wiki article.</remarks>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs three alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static double OptimalStringAlignmentCustomMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -148,7 +150,10 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Edit_distance"/></para>
     /// </summary>
-    /// <remarks>Implemented based on the Wiki article.</remarks>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs three alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static int OptimalStringAlignmentMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -198,7 +203,10 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Edit_distance"/></para>
     /// </summary>
-    /// <remarks>Implemented based on the Wiki article.</remarks>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs three alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static double OptimalStringAlignmentSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => 1d - OptimalStringAlignmentSmd(source, target, equalityComparer);
 
@@ -208,7 +216,10 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Edit_distance"/></para>
     /// </summary>
-    /// <remarks>Implemented based on the Wiki article.</remarks>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs three alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static double OptimalStringAlignmentSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => (double)OptimalStringAlignmentMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
   }

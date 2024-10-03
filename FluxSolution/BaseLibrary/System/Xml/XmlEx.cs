@@ -25,7 +25,7 @@ namespace Flux.Text
 
     /// <summary>Returns an XML escaped string (basically replacing all entity characters with their respective entity.</summary>
     public static string Escape(string source)
-      => new System.Text.StringBuilder(source).ReplaceAll(c => c switch
+      => new System.Text.StringBuilder(source).ReplaceAll(c => true, c => c switch
       {
         XmlEntityCharAmp => XmlEntityAmp,
         XmlEntityCharApos => XmlEntityApos,

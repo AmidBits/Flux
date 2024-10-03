@@ -6,8 +6,12 @@ namespace Flux
 
     /// <summary>
     /// <para>Sorts the content of the sequence using Marcin Ciura's gap sequence, with an inner insertion sort.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Shellsort"/>
+    /// <para><see href="https://en.wikipedia.org/wiki/Shellsort"/></para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="comparer"></param>
+    /// <param name="gapSequence"></param>
     public static void ShellSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T>? comparer = null, int[]? gapSequence = null)
     {
       gapSequence ??= ShellSortMarcinCiuraGapSequence;

@@ -6,7 +6,9 @@ namespace Flux
     /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
     /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// </summary>
-    /// <remarks>Implemented based on the Wiki article.</remarks>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// </remarks>
     public static double[,] LevenshteinDistanceCustomMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -35,7 +37,10 @@ namespace Flux
     /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
     /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// </summary>
-    /// <remarks>Implemented based on the Wiki article.</remarks>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static double LevenshteinDistanceCustomMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -72,7 +77,18 @@ namespace Flux
       return v0[target.Length];
     }
 
-    /// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
+    /// <summary>
+    /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// <para>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</para>
+    /// </remarks>
     public static int[,] LevenshteinDistanceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -120,6 +136,20 @@ namespace Flux
 
     //  return ldg;
     //}
+
+    /// <summary>
+    /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static int LevenshteinDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
@@ -216,7 +246,15 @@ namespace Flux
     /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
     /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// </summary>
-    /// <remarks>Implemented based on the Wiki article.</remarks>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static double LevenshteinDistanceSmc<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => 1d - LevenshteinDistanceSmd(source, target, equalityComparer);
 
@@ -224,7 +262,15 @@ namespace Flux
     /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
     /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
     /// </summary>
-    /// <remarks>Implemented based on the Wiki article.</remarks>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// <para>Implemented based on the Wiki article.</para>
+    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
+    /// </remarks>
     public static double LevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => (double)LevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
   }

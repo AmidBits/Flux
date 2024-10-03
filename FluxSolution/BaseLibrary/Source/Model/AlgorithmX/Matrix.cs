@@ -47,7 +47,7 @@
       {
         var lastElement = -1;
 
-        DataObject firstColumn = null;
+        DataObject? firstColumn = null;
 
         foreach (var columnIndex in orderedColumnsRow)
         {

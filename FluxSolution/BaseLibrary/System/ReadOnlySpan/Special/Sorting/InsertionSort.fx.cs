@@ -4,8 +4,11 @@ namespace Flux
   {
     /// <summary>
     /// <para>Sorts the content of the sequence using insertion sort.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Insertion_sort"/>
+    /// <para><see href="https://en.wikipedia.org/wiki/Insertion_sort"/></para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="comparer"></param>
     public static void InsertionSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;

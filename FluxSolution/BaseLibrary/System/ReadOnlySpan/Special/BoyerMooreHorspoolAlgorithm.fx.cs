@@ -6,12 +6,12 @@
     /// <para>Searches a text (source) for the index of a substring (target). Returns -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// <see href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore%E2%80%93Horspool_algorithm"/>
     /// </summary>
-    public static int BoyerMooreHorspoolIndex<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int BoyerMooreHorspoolIndex<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out System.Collections.Generic.Dictionary<T, int> table, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var skippable = BoyerMooreHorspoolTable(source, target, equalityComparer);
+      table = BoyerMooreHorspoolTable(source, target, equalityComparer); // Skippables.
 
       var skip = 0;
 
@@ -23,7 +23,7 @@
         if (IsSame(source[skip..], target, targetLength, equalityComparer))
           return skip;
 
-        skip += skippable[source[skip + targetLength - 1]];
+        skip += table[source[skip + targetLength - 1]];
       }
 
       return -1;

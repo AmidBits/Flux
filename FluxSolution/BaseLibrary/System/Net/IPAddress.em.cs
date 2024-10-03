@@ -122,7 +122,13 @@ namespace Flux
     /// <param name="max"></param>
     /// <returns></returns>
     public static bool IsBetweenIPv4(this System.Net.IPAddress source, System.Net.IPAddress min, System.Net.IPAddress max)
-      => source.ToBigInteger() is var bi && bi >= min.ToBigInteger() && bi <= max.ToBigInteger();
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(min);
+      System.ArgumentNullException.ThrowIfNull(max);
+
+      return source.ToBigInteger() is var bi && bi >= min.ToBigInteger() && bi <= max.ToBigInteger();
+    }
 
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> is an IPv4 address.</para>
@@ -137,23 +143,17 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Indicates whether the <paramref name="source"/> is a loopback IP address.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    public static bool IsLoopback(this System.Net.IPAddress source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      return System.Net.IPAddress.IsLoopback(source);
-    }
-
-    /// <summary>
     /// <para>Indicates whether two addresses are in the same subnet.</para>
     /// <para><see href="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/></para>
     /// </summary>
     public static bool InSameSubnet(this System.Net.IPAddress source, System.Net.IPAddress other, System.Net.IPAddress subnetMask)
-      => source.GetNetworkAddress(subnetMask).Equals(other.GetNetworkAddress(subnetMask));
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(other);
+      System.ArgumentNullException.ThrowIfNull(subnetMask);
+
+      return source.GetNetworkAddress(subnetMask).Equals(other.GetNetworkAddress(subnetMask));
+    }
 
     /// <summary>
     /// <para>Convert the IP address to a BigInteger. Works on both IPv4 and IPv6.</para>

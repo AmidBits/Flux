@@ -8,9 +8,10 @@ namespace Flux
     /// <para><seealso href="https://www.geeksforgeeks.org/subset-sum-problem-dp-25/"/></para>
     /// <para><remarks>The subset sum problem (SSP) is a decision problem in computer science. Given a set of non-negative integers, and a value sum, determine if there is a subset of the given set with sum equal to given sum.</remarks></para>
     /// </summary>
-    /// <param name="source">A set of non-negative integers.</param>
-    /// <param name="targetSum">A value sum.</param>
-    /// <returns>A dynamic programming boolean matrix.</returns>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="targetSum"></param>
+    /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static bool[,] SubsetSumMatrix<TSelf>(this System.ReadOnlySpan<TSelf> source, int targetSum)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
@@ -51,8 +52,9 @@ namespace Flux
     /// <para><seealso href="https://www.geeksforgeeks.org/subset-sum-problem-dp-25/"/></para>
     /// <para><remarks>The subset sum problem (SSP) is a decision problem in computer science. Given a set of non-negative integers, and a value sum, determine if there is a subset of the given set with sum equal to given sum.</remarks></para>
     /// </summary>
-    /// <param name="source">A set of non-negative integers.</param>
-    /// <param name="targetSum">A value sum.</param>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="targetSum"></param>
     /// <returns>Whether there is a subset of the given set with sum equal to given sum.</returns>
     public static bool IsSubsetSum<TSelf>(this System.ReadOnlySpan<TSelf> source, int targetSum)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>

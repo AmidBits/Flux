@@ -6,6 +6,11 @@
     /// <para>The longest increasing subsequence is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="matrix"></param>
+    /// <param name="comparer"></param>
+    /// <returns></returns>
     public static int LongestIncreasingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
@@ -17,6 +22,11 @@
     /// <para>The longest increasing subsequence is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="length"></param>
+    /// <param name="comparer"></param>
+    /// <returns></returns>
     public static int[,] LongestIncreasingSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
@@ -58,6 +68,11 @@
     /// <para>The longest increasing subsequence is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
     /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="matrix"></param>
+    /// <param name="comparer"></param>
+    /// <returns></returns>
     public static T[] LongestIncreasingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       matrix = LongestIncreasingSubsequenceMatrix(source, out var length, comparer);

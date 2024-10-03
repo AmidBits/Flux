@@ -4,9 +4,14 @@ namespace Flux
   {
     /// <summary>
     /// <para>The Hamming distance between two sequences of equal length is the number of positions at which the corresponding symbols are different.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Hamming_distance"/>
+    /// <para><see href="https://en.wikipedia.org/wiki/Hamming_distance"/></para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
     /// <returns>The minimum number of substitutions required to change the source to target, or the minimum number of errors that could have transformed source to target.</returns>
+    /// <exception cref="System.ArgumentException"></exception>
     public static int HammingDistanceMetric<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       if (source.Length != target.Length) throw new System.ArgumentException($"The source length ({source.Length}) and the target length ({target.Length}) must be equal.");

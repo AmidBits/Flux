@@ -8,9 +8,7 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Decimal_separator"/></para>
     /// </summary>
     /// <param name="number"></param>
-    /// <param name="integralPart">The integral part from the left side of the decimal separator.</param>
-    /// <param name="fractionalPart">The fractional part from the right side of the decimal separator.</param>
-    /// <returns>The fractional number as a whole number.</returns>
+    /// <returns>The parts of the decimal number (whole number or integer part, fractional part, fractional part as a whole number).</returns>
     /// <remarks>This operation is unique to decimal.</remarks>
     public static (decimal IntegralPart, decimal FractionalPart, decimal FractionalPartAsWholeNumber) GetParts(this decimal number)
     {

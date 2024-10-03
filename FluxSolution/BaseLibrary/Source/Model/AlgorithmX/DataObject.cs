@@ -28,7 +28,6 @@
       left.Right = o;
     }
 
-
     public void InsertUp(DataObject o)
     {
       var up = Up;

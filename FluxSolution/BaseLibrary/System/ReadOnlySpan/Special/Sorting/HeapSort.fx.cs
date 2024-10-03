@@ -4,8 +4,12 @@ namespace Flux
   {
     /// <summary>
     /// <para>Sorts the content of the sequence using a heap sort, which is more or less an improved selection sort.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Heap_sort"/>
+    /// <para><see href="https://en.wikipedia.org/wiki/Heap_sort"/></para>
     /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="type"></param>
+    /// <param name="comparer"></param>
     public static void HeapSort<T>(this System.Span<T> source, HeapSortType type, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
