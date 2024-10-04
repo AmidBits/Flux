@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux.MapProjections
+﻿namespace Flux.MapProjections
 {
   public interface IMapForwardProjectable
   {
@@ -7,4 +6,3 @@ namespace Flux.MapProjections
     public System.Numerics.Vector3 ProjectForward(Coordinates.GeographicCoordinate project);
   }
 }
-#endif

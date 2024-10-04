@@ -1,5 +1,8 @@
-﻿namespace Flux.AlgorithmX
+﻿namespace Flux.KnuthsAlgorithmX
 {
+  /// <summary>
+  /// <para></para>
+  /// </summary>
   internal class DataObject
   {
     public DataObject Left { get; set; }

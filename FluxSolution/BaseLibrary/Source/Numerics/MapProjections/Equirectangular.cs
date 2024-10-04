@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux.MapProjections
+﻿namespace Flux.MapProjections
 {
   // https://en.wikipedia.org/wiki/Equirectangular_projection
   public readonly record struct EquirectangularProjection
@@ -29,4 +28,3 @@ namespace Flux.MapProjections
   }
 
 }
-#endif

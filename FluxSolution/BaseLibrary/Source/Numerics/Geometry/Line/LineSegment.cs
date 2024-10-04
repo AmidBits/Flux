@@ -1,4 +1,3 @@
-////#if NET7_0_OR_GREATER
 //namespace Flux.Geometry
 //{
 //  //[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
@@ -225,4 +224,3 @@
 //    // https://keisan.casio.com/exec/system/1223508685
 //  }
 //}
-////#endif

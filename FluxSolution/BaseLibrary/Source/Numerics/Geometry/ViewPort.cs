@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Geometry
 {
   /// <summary></summary>
@@ -65,4 +64,3 @@ namespace Flux.Geometry
       => new(ndc.X * m_rasterWidth, (1 - ndc.Y) * m_rasterHeight); // pixel coordinate, with the Y coordinate inverted (Why is that?)
   }
 }
-#endif

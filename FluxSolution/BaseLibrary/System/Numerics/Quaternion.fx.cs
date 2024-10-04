@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-namespace Flux
+﻿namespace Flux
 {
   public static partial class Fx
   {
@@ -78,4 +77,3 @@ namespace Flux
     }
   }
 }
-#endif

@@ -6,8 +6,6 @@ namespace Flux.Statistics
   /// </summary>
   public interface IQuantileEstimatable
   {
-#if NET7_0_OR_GREATER
-
     /// <summary>Computes a real valued index (referred to as 'h' on Wikipedia) according to the implementation.</summary>
     TPercent EstimateQuantileRank<TCount, TPercent>(TCount count, TPercent p)
       where TCount : System.Numerics.IBinaryInteger<TCount>
@@ -18,16 +16,5 @@ namespace Flux.Statistics
     TPercent EstimateQuantileValue<TValue, TPercent>(System.Collections.Generic.IEnumerable<TValue> ordered, TPercent p)
       where TValue : System.Numerics.INumber<TValue>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>;
-
-#else
-
-    /// <summary>Computes a real valued index (referred to as 'h' on Wikipedia) according to the implementation.</summary>
-    double EstimateQuantileRank(double count, double p);
-
-    /// <summary>Estimates a quantile value of <paramref name="p"/> in the <paramref name="ordered"/> data according to the implementation.</summary>
-    /// <returns>The estimated quantile of the probability.</returns>
-    double EstimateQuantileValue(System.Collections.Generic.IEnumerable<double> ordered, double p);
-
-#endif
   }
 }

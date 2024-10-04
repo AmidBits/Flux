@@ -1,5 +1,3 @@
-using System.ComponentModel.Design;
-
 namespace Flux
 {
   public static partial class Fx

@@ -19,22 +19,12 @@ namespace Flux
     public static bool IsNumericInteger(object source)
       => IsNumericIntegerSigned(source) || IsNumericIntegerUnsigned(source);
 
-#if NET7_0_OR_GREATER
     /// <summary>Returns whether the source type is a primitive signed integer numeric data type (e.g. <see cref="System.Int32"/> or <see cref="System.Int64"/>) and whether to consider <see cref="System.Numerics.BigInteger"/>.</summary>
     public static bool IsNumericIntegerSigned(object source)
-      => source is System.Numerics.BigInteger || source is System.SByte || source is System.UInt16 || source is System.UInt32 || source is System.UInt64 || source is System.UInt128;
+      => source is System.Numerics.BigInteger || source is System.SByte || source is System.Int16 || source is System.Int32 || source is System.Int64 || source is System.Int128 || source is System.IntPtr;
 
     /// <summary>Returns whether the source type is a primitive unsigned integer numeric data type (e.g. <see cref="System.Int32"/> or <see cref="System.Int64"/>) and whether to consider <see cref="System.Numerics.BigInteger"/>.</summary>
     public static bool IsNumericIntegerUnsigned(object source)
-      => source is System.Byte || source is System.UInt16 || source is System.UInt32 || source is System.UInt64 || source is System.UInt128;
-#else
-    /// <summary>Returns whether the source type is a primitive signed integer numeric data type (e.g. <see cref="System.Int32"/> or <see cref="System.Int64"/>) and whether to consider <see cref="System.Numerics.BigInteger"/>.</summary>
-    public static bool IsNumericIntegerSigned(object source)
-      => source is System.Numerics.BigInteger || source is System.SByte || source is System.UInt16 || source is System.UInt32 || source is System.UInt64;
-
-    /// <summary>Returns whether the source type is a primitive unsigned integer numeric data type (e.g. <see cref="System.Int32"/> or <see cref="System.Int64"/>) and whether to consider <see cref="System.Numerics.BigInteger"/>.</summary>
-    public static bool IsNumericIntegerUnsigned(object source)
-      => source is System.Byte || source is System.UInt16 || source is System.UInt32 || source is System.UInt64;
-#endif
+      => source is System.Byte || source is System.UInt16 || source is System.UInt32 || source is System.UInt64 || source is System.UInt128 || source is System.UIntPtr;
   }
 }

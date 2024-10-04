@@ -7,8 +7,6 @@ namespace Flux.Statistics
   public record class PercentileVariant3
     : IPercentileComputable
   {
-#if NET7_0_OR_GREATER
-
     /// <summary>Excel '.EXC' percent rank. Primary variant recommended by NIST.</summary>
     public static TPercent PercentileRank<TCount, TPercent>(TCount count, TPercent percent)
       where TCount : System.Numerics.IBinaryInteger<TCount>
@@ -46,45 +44,5 @@ namespace Flux.Statistics
       where TScore : System.Numerics.INumber<TScore>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
       => PercentileScore(distribution, p);
-
-#else
-
-    /// <summary>Excel '.EXC' percent rank. Primary variant recommended by NIST.</summary>
-    public static double PercentileRank(double count, double percent)
-      => percent < 0 || percent > 1
-      ? throw new System.ArgumentOutOfRangeException(nameof(percent))
-      : count < 0
-      ? throw new System.ArgumentOutOfRangeException(nameof(count))
-      : percent * (double)(count + 1);
-
-    /// <summary>
-    /// <para>Inverse of empirical distribution function.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Percentile"/>
-    /// </summary>
-    public static double PercentileScore(System.Collections.Generic.IEnumerable<double> distribution, double p)
-    {
-      if (distribution is null) throw new System.ArgumentNullException(nameof(distribution));
-      if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
-
-      var sampleCount = distribution.Count();
-
-      var x = PercentileRank(sampleCount, p);
-      var m = x % 1;
-
-      var i = System.Convert.ToInt32(System.Math.Floor(x));
-
-      var v3 = distribution.ElementAt(System.Math.Clamp(i, 0, sampleCount - 1));
-      var v2 = distribution.ElementAt(System.Math.Clamp(i - 1, 0, sampleCount - 1));
-
-      return (double)v2 + m * (double)(v3 - v2);
-    }
-
-    public double ComputePercentileRank(double count, double p)
-      => PercentileRank(count, p);
-
-    public double ComputePercentileScore(System.Collections.Generic.IEnumerable<double> distribution, double p)
-      => PercentileScore(distribution, p);
-
-#endif
   }
 }

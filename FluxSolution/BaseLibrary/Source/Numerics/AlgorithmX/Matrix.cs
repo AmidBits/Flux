@@ -1,7 +1,7 @@
-﻿namespace Flux.AlgorithmX
+﻿namespace Flux.KnuthsAlgorithmX
 {
   /*
-      var m = new Flux.AlgorithmDlx.AlgorithmXMatrix(7);
+      var m = new Flux.KnuthsAlgorithmX.Matrix(7);
 
       m.AddRows(new[]
       {
@@ -17,13 +17,17 @@
 
       var solutions = m.GetAllExactCovers();
       var sols = solutions.Select(s => s.ToArray()).ToArray();
-      var str = Flux.AlgorithmDlx.AlgorithmXMatrix.StringifySolutions(sols);
+      var str = Flux.KnuthsAlgorithmX.Matrix.StringifySolutions(sols);
       var s0 = sols[0];
    */
 
   /// <summary>
+  /// <para>An algorithm for solving the exact cover problem. It is a straightforward recursive, nondeterministic, depth-first, backtracking algorithm used by Donald Knuth to demonstrate an efficient implementation called DLX, which uses the dancing links technique.</para>
+  /// <para>The exact cover problem is represented in Algorithm X by an incidence matrix A consisting of 0s and 1s. The goal is to select a subset of the rows such that the digit 1 appears in each column exactly once.</para>
+  /// <para><see cref="https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X"/></para>
   /// <para><see href="https://github.com/dimchansky/AlgorithmX/tree/master"/></para>
   /// </summary>
+  /// <remarks>Collections in C# are 0-based, but many tutorials and examples uses 1-based examples.</remarks>
   public sealed class Matrix
   {
     private readonly ColumnObject m_head = new(-1);
@@ -62,13 +66,9 @@
           column.Size += 1;
 
           if (firstColumn == null)
-          {
             firstColumn = dataObject;
-          }
           else
-          {
             firstColumn.InsertLeft(dataObject);
-          }
         }
       }
     }
@@ -82,10 +82,9 @@
     private System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<int>>> Search(System.Collections.Generic.Stack<DataObject> partialSolution)
     {
       var headRight = m_head.Right;
+
       if (headRight == m_head)
-      {
         yield return partialSolution.Select(o => o.GetOrderedColumnsRow().ToArray());
-      }
 
       var c = headRight.Column;
       var s = c.Size;
@@ -108,21 +107,15 @@
         partialSolution.Push(r);
 
         for (var j = r.Right; j != r; j = j.Right)
-        {
           CoverColumn(j.Column);
-        }
 
         foreach (var solution in Search(partialSolution))
-        {
           yield return solution;
-        }
 
         partialSolution.Pop();
 
         for (var j = r.Left; j != r; j = j.Left)
-        {
           UnCoverColumn(j.Column);
-        }
       }
 
       UnCoverColumn(c);

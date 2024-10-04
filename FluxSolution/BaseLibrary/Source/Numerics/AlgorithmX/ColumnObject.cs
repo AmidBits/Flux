@@ -1,5 +1,8 @@
-﻿namespace Flux.AlgorithmX
+﻿namespace Flux.KnuthsAlgorithmX
 {
+  /// <summary>
+  /// <para></para>
+  /// </summary>
   internal sealed class ColumnObject
     : DataObject
   {

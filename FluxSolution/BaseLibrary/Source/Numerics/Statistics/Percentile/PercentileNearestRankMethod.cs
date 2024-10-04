@@ -7,8 +7,6 @@ namespace Flux.Statistics
   public record class PercentileNearestRank
     : IPercentileComputable
   {
-#if NET7_0_OR_GREATER
-
     /// <summary>Computes the ordinal rank.</summary>
     public static TPercent PercentileRank<TCount, TPercent>(TCount count, TPercent percent)
       where TCount : System.Numerics.IBinaryInteger<TCount>
@@ -34,34 +32,5 @@ namespace Flux.Statistics
       where TScore : System.Numerics.INumber<TScore>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
       => PercentileScore(distribution, p);
-
-#else
-
-    /// <summary>Computes the ordinal rank.</summary>
-    public static double PercentileRank(double count, double percent)
-      => percent < 0 || percent > 1
-      ? throw new System.ArgumentOutOfRangeException(nameof(percent))
-      : count < 0
-      ? throw new System.ArgumentOutOfRangeException(nameof(count))
-      : percent * (double)count;
-
-    /// <summary>
-    /// <para>Inverse of empirical distribution function.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
-    /// </summary>
-    public static double PercentileScore(System.Collections.Generic.IEnumerable<double> distribution, double p)
-    {
-      if (p < 0 || p > 1) throw new System.ArgumentOutOfRangeException(nameof(p));
-
-      return (double)distribution.ElementAt(System.Convert.ToInt32(System.Math.Ceiling(PercentileRank(distribution.Count(), p))) - 1);
-    }
-
-    public double ComputePercentileRank(double count, double p)
-      => PercentileRank(count, p);
-
-    public double ComputePercentileScore(System.Collections.Generic.IEnumerable<double> distribution, double p)
-      => PercentileScore(distribution, p);
-
-#endif
   }
 }

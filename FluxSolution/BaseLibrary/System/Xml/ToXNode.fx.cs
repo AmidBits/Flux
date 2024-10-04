@@ -9,7 +9,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      using var reader = source.CreateNavigator()?.ReadSubtree() ?? throw new System.NullReferenceException(@"CreateNavigator");
+      using var reader = source.CreateNavigator()?.ReadSubtree() ?? throw new System.NullReferenceException(nameof(source.CreateNavigator));
 
       return System.Xml.Linq.XNode.ReadFrom(reader);
     }

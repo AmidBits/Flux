@@ -1,4 +1,3 @@
-#if NET7_0_OR_GREATER
 namespace Flux.Geometry
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
@@ -64,4 +63,3 @@ namespace Flux.Geometry
     }
   }
 }
-#endif

@@ -26,13 +26,11 @@ namespace Flux.Quantities
     ///// <returns>The proportional (to the arguments passed) lengths of width and height.</returns>
     //public Flux.Numerics.CartesianCoordinate2<double> ToSize(double diagonalLength) => (Numerics.CartesianCoordinate2<double>)ToSize(diagonalLength, m_numerator, m_denominator);
 
-#if NET7_0_OR_GREATER
     /// <summary>Convert the ratio to a fraction. If numerator and/or denominator are not integers, the fraction is approximated.</summary>
     public BigRational ToFraction()
       => double.IsInteger(m_numerator) && double.IsInteger(m_denominator)
       ? new(System.Numerics.BigInteger.CreateChecked(m_numerator), System.Numerics.BigInteger.CreateChecked(m_denominator))
       : BigRational.ApproximateRational(Value);
-#endif
 
     #region Static methods
 

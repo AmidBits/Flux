@@ -35,9 +35,7 @@
     [System.Runtime.InteropServices.FieldOffset(0)] private int m_int32;
     [System.Runtime.InteropServices.FieldOffset(0)] private long m_int64;
 
-#if NET7_0_OR_GREATER
     [System.Runtime.InteropServices.FieldOffset(0)] private Int128 m_int128;
-#endif
 
     [System.Runtime.InteropServices.FieldOffset(0)] private float m_single;
 
@@ -46,9 +44,8 @@
     [System.Runtime.InteropServices.FieldOffset(0)] private ushort m_uint16;
     [System.Runtime.InteropServices.FieldOffset(0)] private uint m_uint32;
     [System.Runtime.InteropServices.FieldOffset(0)] private ulong m_uint64;
-#if NET7_0_OR_GREATER
+
     [System.Runtime.InteropServices.FieldOffset(0)] private UInt128 m_uint128;
-#endif
 
     #endregion // Fields
 
@@ -135,9 +132,9 @@
     public short Int16 { readonly get => m_int16; set => m_int16 = value; }
     public int Int32 { readonly get => m_int32; set => m_int32 = value; }
     public long Int64 { readonly get => m_int64; set => m_int64 = value; }
-#if NET7_0_OR_GREATER
+
     public Int128 Int128 { readonly get => m_int128; set => m_int128 = value; }
-#endif
+
     public float Single { readonly get => m_single; set => m_single = value; }
 
     [CLSCompliant(false)] public sbyte SByte { readonly get => m_sbyte; set => m_sbyte = value; }
@@ -145,9 +142,8 @@
     [CLSCompliant(false)] public ushort UInt16 { readonly get => m_uint16; set => m_uint16 = value; }
     [CLSCompliant(false)] public uint UInt32 { readonly get => m_uint32; set => m_uint32 = value; }
     [CLSCompliant(false)] public ulong UInt64 { readonly get => m_uint64; set => m_uint64 = value; }
-#if NET7_0_OR_GREATER
+
     [CLSCompliant(false)] public UInt128 UInt128 { readonly get => m_uint128; set => m_uint128 = value; }
-#endif
 
     #endregion // Properties
   }

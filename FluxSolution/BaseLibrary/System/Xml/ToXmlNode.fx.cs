@@ -11,7 +11,7 @@ namespace Flux
 
       using var reader = source.CreateReader();
 
-      return new System.Xml.XmlDocument().ReadNode(reader) ?? throw new System.NullReferenceException(@"ReadNode");
+      return new System.Xml.XmlDocument().ReadNode(reader) ?? throw new System.NullReferenceException(nameof(System.Xml.XmlDocument.ReadNode));
     }
   }
 }

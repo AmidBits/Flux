@@ -37,7 +37,7 @@ namespace ConsoleApp
     #endregion // Presets
 
     private static void TimedMain(string[] _)
-    {//(218893066, 168496141)
+    {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
