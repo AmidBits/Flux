@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Torque unit of newton meter.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Torque"/>
   public readonly record struct LuminousEfficacy
-    : System.IComparable, System.IComparable<LuminousEfficacy>, System.IFormattable, IUnitValueQuantifiable<double, LuminousEfficacyUnit>
+    : System.IComparable, System.IComparable<LuminousEfficacy>, System.IFormattable, ISiUnitValueQuantifiable<double, LuminousEfficacyUnit>
   {
     public static readonly LuminousEfficacy LuminousEfficacyOf540THzRadiation = new(683);
 
@@ -63,6 +63,19 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(LuminousEfficacyUnit.LumenPerWatt, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(LuminousEfficacyUnit.LumenPerWatt, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 

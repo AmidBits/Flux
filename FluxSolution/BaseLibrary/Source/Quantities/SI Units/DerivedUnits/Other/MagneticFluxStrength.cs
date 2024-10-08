@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Magnetic flux strength (H), unit of ampere per meter.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Magnetic_field"/>
   public readonly record struct MagneticFluxStrength
-    : System.IComparable, System.IComparable<MagneticFluxStrength>, System.IFormattable, IUnitValueQuantifiable<double, MagneticFluxStrengthUnit>
+    : System.IComparable, System.IComparable<MagneticFluxStrength>, System.IFormattable, ISiUnitValueQuantifiable<double, MagneticFluxStrengthUnit>
   {
     private readonly double m_value;
 
@@ -57,6 +57,19 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(MagneticFluxStrengthUnit.AmperePerMeter, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(MagneticFluxStrengthUnit.AmperePerMeter, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 

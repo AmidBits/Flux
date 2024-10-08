@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Magnetic flux unit of weber.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux"/>
   public readonly record struct MagneticFlux
-    : System.IComparable, System.IComparable<MagneticFlux>, System.IFormattable, ISiPrefixValueQuantifiable<double, MagneticFluxUnit>
+    : System.IComparable, System.IComparable<MagneticFlux>, System.IFormattable, ISiUnitValueQuantifiable<double, MagneticFluxUnit>
   {
     private readonly double m_value;
 
@@ -45,7 +45,7 @@ namespace Flux.Quantities
     public int CompareTo(MagneticFlux other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region IQuantifiable<>
 
@@ -58,14 +58,14 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(MagneticFluxUnit.Weber, preferPlural);
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(MagneticFluxUnit.Weber, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(MagneticFluxUnit.Weber, preferUnicode);
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(MagneticFluxUnit.Weber, preferUnicode);
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 

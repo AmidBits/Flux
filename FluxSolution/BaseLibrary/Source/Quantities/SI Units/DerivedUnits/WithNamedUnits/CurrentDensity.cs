@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Current density, unit of ampere per square meter.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Current_density"/>
   public readonly record struct CurrentDensity
-    : System.IComparable, System.IComparable<CurrentDensity>, System.IFormattable, IUnitValueQuantifiable<double, CurrentDensityUnit>
+    : System.IComparable, System.IComparable<CurrentDensity>, System.IFormattable, ISiUnitValueQuantifiable<double, CurrentDensityUnit>
   {
     private readonly double m_value;
 
@@ -55,6 +55,19 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(CurrentDensityUnit.AmperePerSquareMeter, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(CurrentDensityUnit.AmperePerSquareMeter, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 

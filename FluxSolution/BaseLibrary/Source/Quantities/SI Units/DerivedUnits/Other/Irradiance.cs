@@ -11,7 +11,7 @@ namespace Flux.Quantities
   /// <see href="https://en.wikipedia.org/wiki/Irradiance"/>
   /// </summary>
   public readonly record struct Irradiance
-    : System.IComparable, System.IComparable<Irradiance>, System.IFormattable, IUnitValueQuantifiable<double, IrradianceUnit>
+    : System.IComparable, System.IComparable<Irradiance>, System.IFormattable, ISiUnitValueQuantifiable<double, IrradianceUnit>
   {
     private readonly double m_value;
 
@@ -64,6 +64,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(IrradianceUnit.WattPerSquareMeter, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(IrradianceUnit.WattPerSquareMeter, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(IrradianceUnit unit, double value)
@@ -98,7 +111,8 @@ namespace Flux.Quantities
     public string GetUnitSymbol(IrradianceUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.IrradianceUnit.WattPerSquareMeter => "W/m²",
+        IrradianceUnit.WattPerSquareMeter => "W/m²",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

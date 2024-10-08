@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Heat capacity, unit of Joule per Kelvin.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Heat_capacity"/>
   public readonly record struct HeatCapacity
-    : System.IComparable, System.IComparable<HeatCapacity>, System.IFormattable, IUnitValueQuantifiable<double, HeatCapacityUnit>
+    : System.IComparable, System.IComparable<HeatCapacity>, System.IFormattable, ISiUnitValueQuantifiable<double, HeatCapacityUnit>
   {
     public static readonly HeatCapacity BoltzmannConstant = new(1.380649e-23);
 
@@ -62,6 +62,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(HeatCapacityUnit.JoulePerKelvin, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(HeatCapacityUnit.JoulePerKelvin, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(HeatCapacityUnit unit, double value)
@@ -96,7 +109,8 @@ namespace Flux.Quantities
     public string GetUnitSymbol(HeatCapacityUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.HeatCapacityUnit.JoulePerKelvin => "J/K",
+        HeatCapacityUnit.JoulePerKelvin => "J/K",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

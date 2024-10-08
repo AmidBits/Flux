@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Surface tension, unit of Newton per meter.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Surface_tension"/>
   public readonly record struct SurfaceTension
-    : System.IComparable, System.IComparable<SurfaceTension>, System.IFormattable, IUnitValueQuantifiable<double, SurfaceTensionUnit>
+    : System.IComparable, System.IComparable<SurfaceTension>, System.IFormattable, ISiUnitValueQuantifiable<double, SurfaceTensionUnit>
   {
     private readonly double m_value;
 
@@ -63,6 +63,19 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(SurfaceTensionUnit.NewtonPerMeter, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(SurfaceTensionUnit.NewtonPerMeter, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 

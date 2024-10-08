@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Angular frequency (a.k.a. angular speed, angular rate), unit of radians per second. This is an SI derived quantity.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Angular_frequency"/>
   public readonly record struct AngularFrequency
-    : System.IComparable, System.IComparable<AngularFrequency>, System.IFormattable, IUnitValueQuantifiable<double, AngularFrequencyUnit>
+    : System.IComparable, System.IComparable<AngularFrequency>, System.IFormattable, ISiUnitValueQuantifiable<double, AngularFrequencyUnit>
   {
     private readonly double m_value;
 
@@ -82,6 +82,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(AngularFrequencyUnit.RadianPerSecond, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AngularFrequencyUnit.RadianPerSecond, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(AngularFrequencyUnit unit, double value)
@@ -116,7 +129,8 @@ namespace Flux.Quantities
     public string GetUnitSymbol(AngularFrequencyUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.AngularFrequencyUnit.RadianPerSecond => preferUnicode ? "\u33AE" : "rad/s",
+        AngularFrequencyUnit.RadianPerSecond => preferUnicode ? "\u33AE" : "rad/s",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

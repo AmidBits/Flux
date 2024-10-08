@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Force"/>
   public readonly record struct Permeability
-    : System.IComparable, System.IComparable<Permeability>, System.IFormattable, IUnitValueQuantifiable<double, PermeabilityUnit>
+    : System.IComparable, System.IComparable<Permeability>, System.IFormattable, ISiUnitValueQuantifiable<double, PermeabilityUnit>
   {
     private readonly double m_value;
 
@@ -55,6 +55,19 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(PermeabilityUnit.HenryPerMeter, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(PermeabilityUnit.HenryPerMeter, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 

@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Dynamic viscosity, unit of Pascal second.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Dynamic_viscosity"/>
   public readonly record struct DynamicViscosity
-    : System.IComparable, System.IComparable<DynamicViscosity>, System.IFormattable, IUnitValueQuantifiable<double, DynamicViscosityUnit>
+    : System.IComparable, System.IComparable<DynamicViscosity>, System.IFormattable, ISiUnitValueQuantifiable<double, DynamicViscosityUnit>
   {
     private readonly double m_value;
 
@@ -62,6 +62,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(DynamicViscosityUnit.PascalSecond, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(DynamicViscosityUnit.PascalSecond, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(DynamicViscosityUnit unit, double value)
@@ -97,6 +110,7 @@ namespace Flux.Quantities
       => unit switch
       {
         Quantities.DynamicViscosityUnit.PascalSecond => preferUnicode ? "Pa\u22C5s" : "Pa·s",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

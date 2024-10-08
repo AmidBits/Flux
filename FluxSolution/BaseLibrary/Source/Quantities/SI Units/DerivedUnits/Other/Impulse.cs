@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Impulse, unit of Newton second.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Impulse"/>
   public readonly record struct Impulse
-    : System.IComparable, System.IComparable<Impulse>, System.IFormattable, IUnitValueQuantifiable<double, ImpulseUnit>
+    : System.IComparable, System.IComparable<Impulse>, System.IFormattable, ISiUnitValueQuantifiable<double, ImpulseUnit>
   {
     private readonly double m_value;
 
@@ -62,6 +62,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ImpulseUnit.NewtonSecond, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(ImpulseUnit.NewtonSecond, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(ImpulseUnit unit, double value)
@@ -96,7 +109,8 @@ namespace Flux.Quantities
     public string GetUnitSymbol(ImpulseUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.ImpulseUnit.NewtonSecond => preferUnicode ? "N\u22C5s" : "N·s",
+        ImpulseUnit.NewtonSecond => preferUnicode ? "N\u22C5s" : "N·s",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

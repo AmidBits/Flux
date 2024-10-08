@@ -4,6 +4,7 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="AreaDensity"/>.</summary>
     KilogramPerSquareMeter,
+    GramPerSquareMeter,
   }
 
   /// <summary>
@@ -65,6 +66,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(AreaDensityUnit.GramPerSquareMeter, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AreaDensityUnit.GramPerSquareMeter, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(AreaDensityUnit unit, double value)
@@ -90,6 +104,8 @@ namespace Flux.Quantities
       {
         AreaDensityUnit.KilogramPerSquareMeter => 1,
 
+        AreaDensityUnit.GramPerSquareMeter => 1000,
+
         _ => throw new System.NotImplementedException()
       };
 
@@ -99,7 +115,10 @@ namespace Flux.Quantities
     public string GetUnitSymbol(AreaDensityUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.AreaDensityUnit.KilogramPerSquareMeter => "kg/m²",
+        AreaDensityUnit.KilogramPerSquareMeter => "kg/m²",
+
+        AreaDensityUnit.GramPerSquareMeter => "g/m²",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

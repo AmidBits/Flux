@@ -11,7 +11,7 @@ namespace Flux.Quantities
   /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Frequency"/>
   public readonly record struct Frequency
-    : System.IComparable, System.IComparable<Frequency>, System.IFormattable, ISiPrefixValueQuantifiable<double, FrequencyUnit>
+    : System.IComparable, System.IComparable<Frequency>, System.IFormattable, ISiUnitValueQuantifiable<double, FrequencyUnit>
   {
     /// <summary>
     /// <para>The musical pitch corresponding to an audio frequency of 440 Hz, serves as a tuning standard for the musical note of A above middle C, or A4 in scientific pitch notation.</para>
@@ -125,7 +125,7 @@ namespace Flux.Quantities
     public int CompareTo(Frequency other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region IQuantifiable<>
 
@@ -138,9 +138,9 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(FrequencyUnit.Hertz, preferPlural);
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(FrequencyUnit.Hertz, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode)
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode)
       => prefix switch
       {
         MetricPrefix.Kilo => preferUnicode ? "\u3391" : "kHz",
@@ -150,10 +150,10 @@ namespace Flux.Quantities
         _ => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(FrequencyUnit.Hertz, preferUnicode),
       };
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 

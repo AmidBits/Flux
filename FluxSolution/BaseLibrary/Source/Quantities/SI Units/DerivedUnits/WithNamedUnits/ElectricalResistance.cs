@@ -4,14 +4,14 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="ElectricalResistance"/>.</summary>
     Ohm,
-    KiloOhm,
-    MegaOhm,
+    //KiloOhm,
+    //MegaOhm,
   }
 
   /// <summary>Electric resistance, unit of Ohm.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
   public readonly record struct ElectricalResistance
-    : System.IComparable, System.IComparable<ElectricalResistance>, System.IFormattable, ISiPrefixValueQuantifiable<double, ElectricalResistanceUnit>
+    : System.IComparable, System.IComparable<ElectricalResistance>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricalResistanceUnit>
   {
     public static ElectricalResistance VonKlitzingConstant => new(25812.80745); // 25812.80745;
 
@@ -25,8 +25,7 @@ namespace Flux.Quantities
     /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>
     /// <param name="voltage"></param>
     /// <param name="current"></param>
-    public static ElectricalResistance From(Voltage voltage, ElectricCurrent current)
-      => new(voltage.Value / current.Value);
+    public static ElectricalResistance From(Voltage voltage, ElectricCurrent current) => new(voltage.Value / current.Value);
 
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static ElectricalResistance FromParallelResistors(params double[] resistors)
@@ -77,7 +76,7 @@ namespace Flux.Quantities
     public int CompareTo(ElectricalResistance other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region IQuantifiable<>
 
@@ -90,14 +89,14 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricalResistanceUnit.Ohm, preferPlural);
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricalResistanceUnit.Ohm, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricalResistanceUnit.Ohm, preferUnicode);
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricalResistanceUnit.Ohm, preferUnicode);
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 

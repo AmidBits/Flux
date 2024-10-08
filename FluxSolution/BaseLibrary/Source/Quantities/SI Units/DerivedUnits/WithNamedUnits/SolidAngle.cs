@@ -10,7 +10,7 @@ namespace Flux.Quantities
   /// <summary>Solid angle. Unit of steradian.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Solid_angle"/>
   public readonly record struct SolidAngle
-    : System.IComparable, System.IComparable<SolidAngle>, System.IFormattable, IUnitValueQuantifiable<double, SolidAngleUnit>
+    : System.IComparable, System.IComparable<SolidAngle>, System.IFormattable, ISiUnitValueQuantifiable<double, SolidAngleUnit>
   {
     private readonly double m_value;
 
@@ -56,6 +56,19 @@ namespace Flux.Quantities
     public double Value => m_value;
 
     #endregion // IQuantifiable<>
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(SolidAngleUnit.Steradian, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(SolidAngleUnit.Steradian, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
 
     #region IUnitQuantifiable<>
 

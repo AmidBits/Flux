@@ -627,7 +627,7 @@ namespace ConsoleApp
 
       Write(typeof(IValueQuantifiable<>));
       Write(typeof(IUnitValueQuantifiable<,>));
-      Write(typeof(ISiPrefixValueQuantifiable<,>));
+      Write(typeof(ISiUnitValueQuantifiable<,>));
 
       static void Write(System.Type type, params System.Type[] excludingTypes)
       {

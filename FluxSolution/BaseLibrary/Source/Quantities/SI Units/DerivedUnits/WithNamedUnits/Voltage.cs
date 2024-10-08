@@ -4,13 +4,13 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Voltage"/>.</summary>
     Volt,
-    KiloVolt,
+    //KiloVolt,
   }
 
   /// <summary>Voltage unit of volt.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Voltage"/>
   public readonly record struct Voltage
-    : System.IComparable, System.IComparable<Voltage>, System.IFormattable, ISiPrefixValueQuantifiable<double, VoltageUnit>
+    : System.IComparable, System.IComparable<Voltage>, System.IFormattable, ISiUnitValueQuantifiable<double, VoltageUnit>
   {
     private readonly double m_value;
 
@@ -60,7 +60,7 @@ namespace Flux.Quantities
     public int CompareTo(Voltage other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region IQuantifiable<>
 
@@ -73,19 +73,19 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(VoltageUnit.Volt, preferPlural);
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(VoltageUnit.Volt, preferPlural);
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix switch
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix switch
     {
       MetricPrefix.Kilo => preferUnicode ? "\u33B8" : "k" + GetUnitSymbol(VoltageUnit.Volt, preferUnicode),
 
       _ => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(VoltageUnit.Volt, preferUnicode),
     };
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -114,7 +114,7 @@ namespace Flux.Quantities
       {
         VoltageUnit.Volt => 1,
 
-        VoltageUnit.KiloVolt => 1000,
+        //VoltageUnit.KiloVolt => 1000,
 
         _ => throw new System.NotImplementedException()
       };
@@ -126,7 +126,9 @@ namespace Flux.Quantities
       => unit switch
       {
         Quantities.VoltageUnit.Volt => "V",
-        Quantities.VoltageUnit.KiloVolt => preferUnicode ? "\u33B8" : "kV",
+
+        //Quantities.VoltageUnit.KiloVolt => preferUnicode ? "\u33B8" : "kV",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

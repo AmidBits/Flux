@@ -33,7 +33,7 @@ namespace Flux.Quantities
   /// </summary>
   /// <remarks>Dimensional relationship: <see cref="Length"/>, <see cref="Area"/> and <see cref="Volume"/>.</remarks>
   public readonly record struct Volume
-    : System.IComparable, System.IComparable<Volume>, System.IFormattable, IUnitValueQuantifiable<double, VolumeUnit>
+    : System.IComparable, System.IComparable<Volume>, System.IFormattable, ISiUnitValueQuantifiable<double, VolumeUnit>
   {
     private readonly double m_value;
 
@@ -120,17 +120,14 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => GetUnitName(VolumeUnit.CubicMeter, preferPlural).Insert(5, prefix.GetPrefixName());
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => GetUnitName(VolumeUnit.CubicMeter, preferPlural).Insert(5, prefix.GetPrefixName());
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(VolumeUnit.CubicMeter, preferUnicode);
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(VolumeUnit.CubicMeter, preferUnicode);
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 3);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 3);
 
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
-
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -173,6 +170,7 @@ namespace Flux.Quantities
         VolumeUnit.CubicYard => (1953125000.0 / 1493271207.0),
         VolumeUnit.CubicMile => 1 / (8140980127813632.0 / 1953125.0),
         VolumeUnit.CubicKilometer => 1e9,
+
         _ => throw new System.NotImplementedException()
       };
 
@@ -182,22 +180,24 @@ namespace Flux.Quantities
     public string GetUnitSymbol(VolumeUnit unit, bool preferUnicode)
       => unit switch
       {
+        VolumeUnit.CubicMeter => preferUnicode ? "\u33A5" : "m³",
+
         //Units.VolumeUnit.Microliter => preferUnicode ? "\u3395" : "µl",
-        Quantities.VolumeUnit.Milliliter => preferUnicode ? "\u3396" : "ml",
-        Quantities.VolumeUnit.Centiliter => "cl",
-        Quantities.VolumeUnit.Deciliter => preferUnicode ? "\u3397" : "dl",
-        Quantities.VolumeUnit.Liter => "l",
-        Quantities.VolumeUnit.UKGallon => preferUnicode ? "\u33FF" : "gal (UK)",
-        Quantities.VolumeUnit.UKQuart => "qt (UK)",
-        Quantities.VolumeUnit.USDryGallon => preferUnicode ? "\u33FF" : "gal (US-dry)",
-        Quantities.VolumeUnit.USLiquidGallon => preferUnicode ? "\u33FF" : "gal (US-liquid)",
-        Quantities.VolumeUnit.USDryQuart => "qt (US-dry)",
-        Quantities.VolumeUnit.USLiquidQuart => "qt (US-liquid)",
-        Quantities.VolumeUnit.CubicFoot => "ft³",
-        Quantities.VolumeUnit.CubicYard => "yd³",
-        Quantities.VolumeUnit.CubicMeter => preferUnicode ? "\u33A5" : "m³",
-        Quantities.VolumeUnit.CubicMile => "mi³",
-        Quantities.VolumeUnit.CubicKilometer => preferUnicode ? "\u33A6" : "km³",
+        VolumeUnit.Milliliter => preferUnicode ? "\u3396" : "ml",
+        VolumeUnit.Centiliter => "cl",
+        VolumeUnit.Deciliter => preferUnicode ? "\u3397" : "dl",
+        VolumeUnit.Liter => "l",
+        VolumeUnit.UKGallon => preferUnicode ? "\u33FF" : "gal (UK)",
+        VolumeUnit.UKQuart => "qt (UK)",
+        VolumeUnit.USDryGallon => preferUnicode ? "\u33FF" : "gal (US-dry)",
+        VolumeUnit.USLiquidGallon => preferUnicode ? "\u33FF" : "gal (US-liquid)",
+        VolumeUnit.USDryQuart => "qt (US-dry)",
+        VolumeUnit.USLiquidQuart => "qt (US-liquid)",
+        VolumeUnit.CubicFoot => "ft³",
+        VolumeUnit.CubicYard => "yd³",
+        VolumeUnit.CubicMile => "mi³",
+        VolumeUnit.CubicKilometer => preferUnicode ? "\u33A6" : "km³",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

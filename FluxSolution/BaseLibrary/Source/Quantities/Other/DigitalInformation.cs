@@ -15,8 +15,9 @@ namespace Flux.Quantities
   }
 
   /// <summary>
-  /// <para>DigitalStorage, unit of natural number.</para>
-  /// <para><seealso cref="https://en.wikipedia.org/wiki/DigitalInformation"/></para>
+  /// <para>DigitalStorage, units in power-of-2.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Binary_prefix"/></para>
+  /// <para><seealso href="https://en.wikipedia.org/wiki/Binary_prefix#Definitions"/></para>
   /// </summary>
   public readonly record struct DigitalInformation
     : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IUnitValueQuantifiable<System.Numerics.BigInteger, DigitalInformationUnit>

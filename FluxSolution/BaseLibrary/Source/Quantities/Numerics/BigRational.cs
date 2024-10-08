@@ -522,10 +522,7 @@ namespace Flux
         : throw new System.ArgumentOutOfRangeException(nameof(exponent));
 
       /// <summary>Returns the reciprocal of <paramref name="value"/>.</summary>
-      public static BigRational Reciprocal(BigRational value)
-        => IsZero(value)
-        ? throw new System.DivideByZeroException(@"Reciprocal of zero.")
-        : new(value.m_denominator, value.m_numerator, true);
+      public static BigRational Reciprocal(BigRational value) => new(value.m_denominator, value.m_numerator, true);
 
       public static bool TryGetMixedParts(BigRational value, out System.Numerics.BigInteger wholeNumber, out System.Numerics.BigInteger properNumerator, out System.Numerics.BigInteger properDenominator)
       {
@@ -642,13 +639,11 @@ namespace Flux
 
       #endregion // Methods to read and write binary.
 
-      #endregion Static methods
+      #endregion // Static methods
 
       #region Overloaded operators
 
-
-
-      #endregion Overloaded operators
+      #endregion // Overloaded operators
 
       #region Implemented interfaces
 

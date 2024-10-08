@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Action_(physics)"/>
   public readonly record struct Action
-    : System.IComparable, System.IComparable<Action>, System.IFormattable, IUnitValueQuantifiable<double, ActionUnit>
+    : System.IComparable, System.IComparable<Action>, System.IFormattable, ISiUnitValueQuantifiable<double, ActionUnit>
   {
     public static readonly Action PlanckConstant = new(6.62607015e-34);
 
@@ -58,6 +58,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ActionUnit.JouleSecond, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(ActionUnit.JouleSecond, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(ActionUnit unit, double value)
@@ -93,6 +106,7 @@ namespace Flux.Quantities
       => unit switch
       {
         Quantities.ActionUnit.JouleSecond => preferUnicode ? "J\u22C5s" : "J·s",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

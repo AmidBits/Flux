@@ -13,17 +13,11 @@ namespace Flux.Quantities
   /// </summary>
   /// <remarks>Dimensional relationship: <see cref="Length"/>, <see cref="Area"/> and <see cref="Volume"/>.</remarks>
   public readonly record struct Area
-    : System.IComparable, System.IComparable<Area>, System.IFormattable, IUnitValueQuantifiable<double, AreaUnit>
+    : System.IComparable, System.IComparable<Area>, System.IFormattable, ISiUnitValueQuantifiable<double, AreaUnit>
   {
     private readonly double m_value;
 
     public Area(double value, AreaUnit unit = AreaUnit.SquareMeter) => m_value = ConvertFromUnit(unit, value);
-    //=> m_value = unit switch
-    //{
-    //  AreaUnit.SquareMeter => value,
-    //  AreaUnit.Hectare => ConvertHectareToSquareMeter(value),
-    //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-    //};
 
     #region Static methods
 
@@ -80,17 +74,14 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => GetUnitName(AreaUnit.SquareMeter, preferPlural).Insert(6, prefix.GetPrefixName());
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => GetUnitName(AreaUnit.SquareMeter, preferPlural).Insert(6, prefix.GetPrefixName());
 
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AreaUnit.SquareMeter, preferUnicode);
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AreaUnit.SquareMeter, preferUnicode);
 
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 2);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 2);
 
-    public string ToSiPrefixValueNameString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = true)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixName(prefix, preferPlural);
-
-    public string ToSiPrefixValueSymbolString(MetricPrefix prefix, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferUnicode = false)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + unitSpacing.ToSpacingString() + GetSiPrefixSymbol(prefix, preferUnicode);
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -130,8 +121,10 @@ namespace Flux.Quantities
     public string GetUnitSymbol(AreaUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.AreaUnit.SquareMeter => preferUnicode ? "\u33A1" : "m²",
-        Quantities.AreaUnit.Hectare => preferUnicode ? "\u33CA" : "ha",
+        AreaUnit.SquareMeter => preferUnicode ? "\u33A1" : "m²",
+
+        AreaUnit.Hectare => preferUnicode ? "\u33CA" : "ha",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

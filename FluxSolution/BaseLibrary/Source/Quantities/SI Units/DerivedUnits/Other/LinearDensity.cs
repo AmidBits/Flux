@@ -4,6 +4,7 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="LinearDensity"/>.</summary>
     KilogramPerMeter,
+    GramPerMeter,
   }
 
   /// <summary>
@@ -12,7 +13,7 @@ namespace Flux.Quantities
   /// </summary>
   /// <remarks>Dimensional relationship: <see cref="LinearDensity"/>, <see cref="AreaDensity"/> and <see cref="Density"/>.</remarks>
   public readonly record struct LinearDensity
-    : System.IComparable, System.IComparable<LinearDensity>, System.IFormattable, IUnitValueQuantifiable<double, LinearDensityUnit>
+    : System.IComparable, System.IComparable<LinearDensity>, System.IFormattable, ISiUnitValueQuantifiable<double, LinearDensityUnit>
   {
     private readonly double m_value;
 
@@ -65,6 +66,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(LinearDensityUnit.GramPerMeter, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(LinearDensityUnit.GramPerMeter, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(LinearDensityUnit unit, double value)
@@ -90,6 +104,8 @@ namespace Flux.Quantities
       {
         LinearDensityUnit.KilogramPerMeter => 1,
 
+        LinearDensityUnit.GramPerMeter => 1000,
+
         _ => throw new System.NotImplementedException()
       };
 
@@ -100,6 +116,9 @@ namespace Flux.Quantities
       => unit switch
       {
         Quantities.LinearDensityUnit.KilogramPerMeter => "kg/m",
+
+        Quantities.LinearDensityUnit.GramPerMeter => "g/m",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

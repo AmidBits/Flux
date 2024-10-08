@@ -7,6 +7,7 @@ namespace Flux.Quantities
     /// <summary>
     /// <see cref="https://en.wikipedia.org/wiki/Sverdrup"/>
     /// </summary>
+    /// <remarks>Not to be confused with <see cref="EquivalentDoseUnit.Sievert"/>, unit of <see cref="EquivalentDose"/>.</remarks>
     Sverdrup,
     USGallonPerMinute,
   }
@@ -14,7 +15,7 @@ namespace Flux.Quantities
   /// <summary>Volumetric flow, unit of cubic meters per second, is the rate of change of volume with respect to time.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Volumetric_flow_rate"/>
   public readonly record struct Flow
-    : System.IComparable, System.IComparable<Flow>, System.IFormattable, IUnitValueQuantifiable<double, FlowUnit>
+    : System.IComparable, System.IComparable<Flow>, System.IFormattable, ISiUnitValueQuantifiable<double, FlowUnit>
   {
     private readonly double m_value;
 
@@ -67,6 +68,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => GetUnitName(FlowUnit.CubicMeterPerSecond, preferPlural).Insert(5, prefix.GetPrefixName());
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(FlowUnit.CubicMeterPerSecond, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 3);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(FlowUnit unit, double value)
@@ -105,6 +119,7 @@ namespace Flux.Quantities
       => unit switch
       {
         FlowUnit.CubicMeterPerSecond => "m³/s",
+
         FlowUnit.USGallonPerMinute => "gpm (US)",
         FlowUnit.Sverdrup => "Sv",
 

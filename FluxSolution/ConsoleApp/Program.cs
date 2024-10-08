@@ -80,7 +80,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-
+      var flow = new Flux.Quantities.Flow(12345678987654321, FlowUnit.CubicMeterPerSecond);
+      var cmps = flow.ToSiUnitString(MetricPrefix.Unprefixed);
+      var cmmps = flow.ToSiUnitString(MetricPrefix.Kilo);
 
       var tc = Flux.Quantities.Time.ConvertSecondsToSubSecondParts(1234567899.876543);
       var mc = Flux.Quantities.Time.ConvertTotalSubSecondUnitToSubSecondParts(MetricPrefix.Micro, 1234567899876543);

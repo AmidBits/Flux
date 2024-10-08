@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Angular, acceleration unit of radians per second square. This is an SI derived quantity.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Angular_acceleration"/>
   public readonly record struct AngularAcceleration
-    : System.IComparable, System.IComparable<AngularAcceleration>, System.IFormattable, IUnitValueQuantifiable<double, AngularAccelerationUnit>
+    : System.IComparable, System.IComparable<AngularAcceleration>, System.IFormattable, ISiUnitValueQuantifiable<double, AngularAccelerationUnit>
   {
     private readonly double m_value;
 
@@ -70,6 +70,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(AngularAccelerationUnit.RadianPerSecondSquared, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AngularAccelerationUnit.RadianPerSecondSquared, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(AngularAccelerationUnit unit, double value)
@@ -104,7 +117,8 @@ namespace Flux.Quantities
     public string GetUnitSymbol(AngularAccelerationUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.AngularAccelerationUnit.RadianPerSecondSquared => preferUnicode ? "\u33AF" : "rad/s²",
+        AngularAccelerationUnit.RadianPerSecondSquared => preferUnicode ? "\u33AF" : "rad/s²",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

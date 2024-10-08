@@ -9,7 +9,7 @@ namespace Flux.Quantities
   /// <summary>Acceleration, a scalar quantity, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Acceleration"/>
   public readonly record struct Acceleration
-    : System.IComparable, System.IComparable<Acceleration>, System.IFormattable, IUnitValueQuantifiable<double, AccelerationUnit>
+    : System.IComparable, System.IComparable<Acceleration>, System.IFormattable, ISiUnitValueQuantifiable<double, AccelerationUnit>
   {
     /// <summary>
     /// <para>The approximate acceleration due to gravity on the surface of the Moon.</para>
@@ -80,6 +80,19 @@ namespace Flux.Quantities
 
     #endregion // IQuantifiable<>
 
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(AccelerationUnit.MeterPerSecondSquared, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AccelerationUnit.MeterPerSecondSquared, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
     #region IUnitQuantifiable<>
 
     private static double ConvertFromUnit(AccelerationUnit unit, double value)
@@ -114,7 +127,8 @@ namespace Flux.Quantities
     public string GetUnitSymbol(AccelerationUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.AccelerationUnit.MeterPerSecondSquared => preferUnicode ? "\u33A8" : "m/s²",
+        AccelerationUnit.MeterPerSecondSquared => preferUnicode ? "\u33A8" : "m/s²",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
