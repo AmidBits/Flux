@@ -23,12 +23,19 @@ namespace Flux.Quantities
 
     #region Static methods
 
-    /// <summary>Creates a new AmplitudeRatio instance from the difference of the specified voltages (numerator and denominator).</summary>
+    /// <summary>
+    /// <para>Creates a new AmplitudeRatio instance from the difference of the specified voltages (numerator and denominator).</para>
+    /// </summary>
     /// <param name="numerator"></param>
     /// <param name="denominator"></param>
+    /// <returns></returns>
     public static AmplitudeRatio From(Voltage numerator, Voltage denominator) => new(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
-    /// <summary>Creates a new AmplitudeRatio instance from the specified decibel change (i.e. a decibel interval).</summary>
+
+    /// <summary>
+    /// <para>Creates a new AmplitudeRatio instance from the specified decibel change (i.e. a decibel interval).</para>
+    /// </summary>
     /// <param name="decibelChange"></param>
+    /// <returns></returns>
     public static AmplitudeRatio FromDecibelChange(double decibelChange) => new(System.Math.Pow(10, decibelChange / ScalingFactor)); // Inverse of Log10.
 
     #endregion Static methods
@@ -100,13 +107,13 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(AmplitudeRatioUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public string GetUnitName(AmplitudeRatioUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(AmplitudeRatioUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.AmplitudeRatioUnit.DecibelVolt => "dBV",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

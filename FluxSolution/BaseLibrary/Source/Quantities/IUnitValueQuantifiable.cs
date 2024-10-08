@@ -64,6 +64,7 @@
       /// </summary>
       /// <param name="unit"></param>
       /// <returns></returns>
+      /// <remarks>Please note that some units do not have simple conversion factors, e.g. Celsius to Fahrenheit, but algorithms or formulas.</remarks>
       abstract static TValue GetUnitFactor(TUnit unit);
 
       /// <summary>

@@ -86,13 +86,13 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(RelativeHumidityUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public string GetUnitName(RelativeHumidityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(RelativeHumidityUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.RelativeHumidityUnit.Percent => preferUnicode ? "\u0025" : "\u0025",
+        Quantities.RelativeHumidityUnit.Percent => "%",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

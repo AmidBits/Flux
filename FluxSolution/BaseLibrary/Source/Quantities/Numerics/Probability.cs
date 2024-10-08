@@ -1,7 +1,7 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Probability, unit of real number, is a ratio, represented as a closed interval [<see cref="Probability.MinValue"/> = 0.0, <see cref="Probability.MaxValue"/> = 1.0], where 0.0 indicates impossibility of an event and 1.0 indicates certainty.</para>
+  /// <para>Probability is a ratio, represented as a closed interval [<see cref="Probability.MinValue"/> = 0.0, <see cref="Probability.MaxValue"/> = 1.0], where 0.0 indicates impossibility of an event and 1.0 indicates certainty.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Probability"/></para>
   /// </summary>
   public readonly record struct Probability
@@ -12,18 +12,21 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public Probability(double ratio)
-      => m_value = IntervalNotation.Closed.AssertValidMember(ratio, MinValue, MaxValue, nameof(ratio));
+    public Probability(double ratio) => m_value = IntervalNotation.Closed.AssertValidMember(ratio, MinValue, MaxValue, nameof(ratio));
 
     #region Static methods
 
-    /// <summary>Asserts that the value is a member of the probability (throws an exception if not).</summary>
+    /// <summary>
+    /// <para>Asserts that the value is a member of the probability (throws an exception if not).</para>
+    /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf AssertMember<TSelf>(TSelf probability, string? paramName = null)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       => IntervalNotation.Closed.AssertValidMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(probability));
 
-    /// <summary>Returns whether the value is a member of the probability.</summary>
+    /// <summary>
+    /// <para>Returns whether the value is a member of the probability.</para>
+    /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static bool VerifyMember<TSelf>(TSelf probability)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
@@ -33,9 +36,9 @@ namespace Flux.Quantities
 
     /// <summary>
     /// <para>In probability theory and statistics, the Bernoulli distribution, is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability q = 1 - p. Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question.</para>
-    /// <example>It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads (or vice versa where 1 would represent tails and p would be the probability of tails). In particular, unfair coins would have p != 1/2.</example>
     /// <para><see href="https://en.wikipedia.org/wiki/Bernoulli_distribution"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Probability_mass_function"/></para>
+    /// <example>It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads (or vice versa where 1 would represent tails and p would be the probability of tails). In particular, unfair coins would have p != 1/2.</example>
     /// </summary>
     /// <param name="p">The probability.</param>
     /// <param name="k">A value of 0 or 1.</param>
@@ -47,9 +50,9 @@ namespace Flux.Quantities
 
     /// <summary>
     /// <para>In probability theory and statistics, the Bernoulli distribution, is the discrete probability distribution of a random variable which takes the value 1 with probability p and the value 0 with probability q = 1 - p. Less formally, it can be thought of as a model for the set of possible outcomes of any single experiment that asks a yes–no question.</para>
-    /// <example>It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads (or vice versa where 1 would represent tails and p would be the probability of tails). In particular, unfair coins would have p != 1/2.</example>
     /// <para><see href="https://en.wikipedia.org/wiki/Bernoulli_distribution"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Probability_mass_function"/></para>
+    /// <example>It can be used to represent a (possibly biased) coin toss where 1 and 0 would represent "heads" and "tails", respectively, and p would be the probability of the coin landing on heads (or vice versa where 1 would represent tails and p would be the probability of tails). In particular, unfair coins would have p != 1/2.</example>
     /// </summary>
     /// <param name="p">The probability.</param>
     /// <param name="k">True (1) or false (0).</param>
@@ -174,29 +177,37 @@ namespace Flux.Quantities
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IExponentialFunctions<TSelf>
       => L / (TSelf.Exp(-(k * (x - x0))) + TSelf.One);
 
-    /// <summary>This nonlinear difference equation is intended to capture two effects.<list type="number"><item>Reproduction where the population will increase at a rate proportional to the current population when the population size is small.</item><item>Starvation (density-dependent mortality) where the growth rate will decrease at a rate proportional to the value obtained by taking the theoretical "carrying capacity" of the environment less the current population.</item></list></summary>
+    /// <summary>
+    /// <para>This nonlinear difference equation is intended to capture two effects.<list type="number"><item>Reproduction where the population will increase at a rate proportional to the current population when the population size is small.</item><item>Starvation (density-dependent mortality) where the growth rate will decrease at a rate proportional to the value obtained by taking the theoretical "carrying capacity" of the environment less the current population.</item></list></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Logistic_map"/></para>
+    /// <seealso cref="Statistics.PopulationModelRicker(double, double, double)"/>
+    /// </summary>
     /// <param name="Xn">The ratio of existing population to maximum possible population (Xn).</param>
     /// <param name="r">A value in the range [0, 4] (r).</param>
     /// <returns>The ratio of population to max possible population in the next generation (Xn + 1)</returns>
-    /// <see href="https://en.wikipedia.org/wiki/Logistic_map"/>
-    /// <seealso cref="RickerModel(double, double, double)"/>
     public static double LogisticMap(double Xn, double r) => r * Xn * (1 - Xn);
 
-    /// <summary>The logit function, which is the inverse of expit (or the logistic function), is the logarithm of the odds (p / (1 - p)) where p is the probability. Creates a map of probability values from [0, 1] to [-infinity, +infinity].</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Logit"/>
+    /// <summary>
+    /// <para>The logit function, which is the inverse of expit (or the logistic function), is the logarithm of the odds (p / (1 - p)) where p is the probability. Creates a map of probability values from [0, 1] to [-infinity, +infinity].</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Logit"/></para>
+    /// </summary>
     /// <param name="probability">The probability in the range [0, 1].</param>
     /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
     public static double Logit(double probability) => System.Math.Log(OddsRatio(probability));
 
-    /// <summary>Computes the odds (p / (1 - p)) of a probability p.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Logit"/>
+    /// <summary>
+    /// <para>Computes the odds (p / (1 - p)) of a probability p.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Logit"/></para>
+    /// </summary>
     /// <param name="probability">The probability in the range [0, 1].</param>
     /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
     public static double OddsRatio(double probability) => probability / (1 - probability);
 
-    /// <summary>Returns the probability that specified event count in a group of total event count are all different (or unique). This is the computation P(A').</summary>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
+    /// <summary>
+    /// <para>Returns the probability that specified event count in a group of total event count are all different (or unique). This is the computation P(A').</para>
+    /// <para><seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/></para>
+    /// <para><seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
+    /// </summary>
     /// <returns>The probability, which is in the range [0, 1].</returns>
     public static Probability OfNoDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount)
     {
@@ -206,15 +217,19 @@ namespace Flux.Quantities
       return new(accumulation);
     }
 
-    /// <summary>Returns the probability that at least 2 events are equal. This is computation P(A), which is the complement to P(A') computed in (<see cref="OfNoDuplicates(System.Numerics.BigInteger, System.Numerics.BigInteger)"/>).</summary>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/>
-    /// <seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/>
+    /// <summary>
+    /// <para>Returns the probability that at least 2 events are equal. This is computation P(A), which is the complement to P(A') computed in (<see cref="OfNoDuplicates(System.Numerics.BigInteger, System.Numerics.BigInteger)"/>).</para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Birthday_problem"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
+    /// </summary>
     /// <returns>The probability, which is in the range [0, 1].</returns>
     public static Probability OfDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount) => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_value);
 
     #region Poisson distribution
 
-    /// <summary>With the expectation of <paramref name="a"/> events in a given interval, the probability of <paramref name="k"/> events in the same interval is.</summary>
+    /// <summary>
+    /// <para>With the expectation of <paramref name="a"/> events in a given interval, the probability of <paramref name="k"/> events in the same interval is.</para>
+    /// </summary>
     /// <param name="a">The number of expected events [1, ..] in a given interval.</param>
     /// <param name="k">The number of events [1, ..] in the same interval.</param>
     public static TProbability PoissonDistributionPmf<TCount, TProbability>(TCount a, TCount k)
@@ -272,8 +287,7 @@ namespace Flux.Quantities
     public int CompareTo(Probability other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
     #region IQuantifiable<>
 

@@ -30,7 +30,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>UV index, unit of itself.</para>
+    /// <para>UV index.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Ultraviolet_index"/></para>
     /// </summary>
     public readonly record struct UvIndex
@@ -83,8 +83,7 @@ namespace Flux
       public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => $"UV Index {m_value.ToString(format ?? "N1", formatProvider)}";
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => $"UV Index {m_value.ToString(format ?? "N1", formatProvider)}";
 
       #region IQuantifiable<>
 

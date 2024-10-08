@@ -70,7 +70,7 @@ namespace Flux
     // Calculating the greatest common divisor of two n-digit numbers can be found in O(n(log n)^5 (log log n)) steps as n -> +infinity
 
     /// <summary>
-    /// <para>BigRational, unit of rational number, is a ratio of two <see cref="System.Numerics.BigInteger"/>s, i.e. in the form of numerator and denominator, or commonly called a fraction.</para>
+    /// <para>BigRational is a ratio of two <see cref="System.Numerics.BigInteger"/>s, i.e. in the form of numerator and denominator, or commonly called a fraction.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Rational_number"/></para>
     /// <para><seealso href="https://github.com/kiprobinson/BigFraction"/></para>
     /// <para><seealso href="https://github.com/bazzilic/BigFraction"/></para>

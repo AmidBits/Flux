@@ -19,7 +19,7 @@ namespace Flux.Quantities
   /// <para><seealso cref="https://en.wikipedia.org/wiki/DigitalInformation"/></para>
   /// </summary>
   public readonly record struct DigitalInformation
-  : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IUnitValueQuantifiable<System.Numerics.BigInteger, DigitalInformationUnit>
+    : System.IComparable, System.IComparable<DigitalInformation>, System.IFormattable, IUnitValueQuantifiable<System.Numerics.BigInteger, DigitalInformationUnit>
   {
     private readonly System.Numerics.BigInteger m_value;
 
@@ -107,13 +107,13 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(DigitalInformationUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public string GetUnitName(DigitalInformationUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.DigitalInformationUnit.Byte => "B",
+
         Quantities.DigitalInformationUnit.kibiByte => "KiB",
         Quantities.DigitalInformationUnit.mebiByte => "MiB",
         Quantities.DigitalInformationUnit.gibiByte => "GiB",
@@ -122,6 +122,7 @@ namespace Flux.Quantities
         Quantities.DigitalInformationUnit.exbiByte => "EiB",
         Quantities.DigitalInformationUnit.zebiByte => "ZiB",
         Quantities.DigitalInformationUnit.yobiByte => "YiB",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

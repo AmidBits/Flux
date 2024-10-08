@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Em
   {
     public static Quantities.JulianDate ToJulianDate(this System.DateTime source, Quantities.TemporalCalendar calendar = Quantities.TemporalCalendar.GregorianCalendar)
-      => new(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond, calendar);
+      => new(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond, source.Microsecond, source.Nanosecond, calendar);
   }
 
   namespace Quantities
@@ -17,78 +17,89 @@ namespace Flux
     public readonly record struct JulianDate
       : System.IComparable, System.IComparable<JulianDate>, System.IFormattable, IValueQuantifiable<double>
     {
+      public static readonly JulianDate GregorianCalendarEpoch = new(2299160.5); // 1582/10/15 (midnight)
+      public static readonly JulianDate JulianCalendarEpoch = new(1718501.5); // -0007/01/01 (midnight)
+
       private readonly double m_value;
 
       /// <summary>Create a Julian Date (JD) from the specified <paramref name="value"/> value.</summary>
-      public JulianDate(double value)
-        => m_value = value;
+      public JulianDate(double value) => m_value = value;
 
       /// <summary>Computes the Julian Date (JD) for the specified date/time components and calendar to use during conversion.</summary>
-      public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, TemporalCalendar calendar)
-        : this(JulianDayNumber.ConvertDatePartsToJulianDayNumber(year, month, day, calendar) + ConvertTimePartsToTimeOfDay(hour, minute, second, millisecond))
-      { }
+      public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, int microsecond, int nanosecond, TemporalCalendar calendar)
+        : this(JulianDayNumber.ConvertDatePartsToJulianDayNumber(year, month, day, calendar) + ConvertTimePartsToTimeOfDay(hour, minute, second, millisecond, microsecond, nanosecond)) { }
 
-      public JulianDate AddWeeks(int weeks) => this + (weeks * 7);
       public JulianDate AddDays(int days) => this + days;
       public JulianDate AddHours(int hours) => this + (hours / 24d);
       public JulianDate AddMinutes(int minutes) => this + (minutes / 1440d);
       public JulianDate AddSeconds(int seconds) => this + (seconds / 86400d);
       public JulianDate AddMilliseconds(int milliseconds) => this + (milliseconds / 1000d / 86400d);
+      public JulianDate AddMicroseconds(int microseconds) => this + (microseconds / 1000000d / 86400d);
+      public JulianDate AddNanoseconds(int nanoseconds) => this + (nanoseconds / 1000000000d / 86400d);
 
-      public TemporalCalendar GetConversionCalendar()
-        => IsGregorianCalendar(m_value)
-        ? TemporalCalendar.GregorianCalendar
-        : TemporalCalendar.JulianCalendar;
+      public TemporalCalendar GetConversionCalendar() => TemporalCalendar.GregorianCalendar.Contains(m_value) ? TemporalCalendar.GregorianCalendar : TemporalCalendar.JulianCalendar;
 
-      public void GetParts(TemporalCalendar calendar, out int year, out int month, out int day, out int hour, out int minute, out int second, out int millisecond)
+      public (int Year, int Month, int Day, int Hour, int Minute, int Second, int Millisecond, int Microsecond, int Nanosecond) GetParts(TemporalCalendar calendar)
       {
-        (year, month, day) = JulianDayNumber.GetDateParts(calendar);
+        var (year, month, day) = ToJulianDayNumber().GetParts(calendar);
+        var (hour, minute, second, millisecond, microsecond, nanosecond) = ConvertTimeOfDayToTimeParts(m_value);
 
-        (hour, minute, second, millisecond) = ConvertTimeOfDayToTimeParts(m_value);
+        return (year, month, day, hour, minute, second, millisecond, microsecond, nanosecond);
       }
 
-      public JulianDayNumber JulianDayNumber => new((int)(m_value + 0.5));
+      public JulianDayNumber ToJulianDayNumber() => new(ConvertJulianDateToJulianDayNumber(m_value));
 
-      public MomentUtc ToMomentUtc(TemporalCalendar calendar)
+      public Moment ToMomentUtc(TemporalCalendar calendar)
       {
-        var (year, month, day) = JulianDayNumber.GetDateParts(calendar);
-        var (hour, minute, second, millisecond) = ConvertTimeOfDayToTimeParts(m_value);
+        var (year, month, day, hour, minute, second, millisecond, microsecond, nanosecond) = GetParts(calendar);
 
-        return new(year, month, day, hour, minute, second, millisecond);
+        return new(year, month, day, hour, minute, second, millisecond, microsecond, nanosecond);
       }
 
       public string ToTimeString()
-        => System.TimeSpan.FromSeconds(System.Convert.ToDouble(43200 + GetTimeOfDay(m_value))).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
+        => System.TimeSpan.FromSeconds(ConvertTimeOfDayToTime(m_value).Value + 43200d).ToString(@"hh\:mm\:ss"); // Add 12 hours (in seconds) to the julian date time-of-day value for time strings, because of the 12 noon day cut-over convention in Julian Date values.
 
       #region Static methods
 
-      public static (int days, int hours, int minutes, double seconds) ConvertToJdf(double julianDateFraction)
-      {
-        var days = (int)julianDateFraction;
+      #region Conversion methods
 
-        julianDateFraction = (julianDateFraction - days) * 24;
+      /// <summary>Converts the julian-date time fraction to time-of-day in seconds. The fractional part represents the unit time, from the preceeding noon to the next, in Universal Time.</summary>
+      public static Quantities.Time ConvertTimeOfDayToTime(double julianDate) => new((julianDate - System.Math.Truncate(julianDate)) * 86400d);
 
-        var hours = (int)julianDateFraction;
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="julianDate"></param>
+      /// <returns></returns>
+      public static int ConvertJulianDateToJulianDayNumber(double julianDate) => (int)(julianDate + 0.5);
 
-        julianDateFraction = (julianDateFraction - hours) * 60;
+      //public static (int days, int hours, int minutes, double seconds) ConvertToJdf(double julianDateFraction)
+      //{
+      //  var days = (int)julianDateFraction;
 
-        var minutes = (int)julianDateFraction;
+      //  julianDateFraction = (julianDateFraction - days) * 24;
 
-        julianDateFraction = (julianDateFraction - minutes) * 60;
+      //  var hours = (int)julianDateFraction;
 
-        var seconds = julianDateFraction;
+      //  julianDateFraction = (julianDateFraction - hours) * 60;
 
-        return (days, hours, minutes, seconds);
-      }
+      //  var minutes = (int)julianDateFraction;
+
+      //  julianDateFraction = (julianDateFraction - minutes) * 60;
+
+      //  var seconds = julianDateFraction;
+
+      //  return (days, hours, minutes, seconds);
+      //}
 
       /// <summary>
       /// <para>Converts a Julian Date (JD) time-of-day fraction value to time components. This method is only concerned with the fractional time portion of the Julian Date (JD).</para>
       /// </summary>
-      public static (int hour, int minute, int second, int millisecond) ConvertTimeOfDayToTimeParts(double julianDate)
+      public static (int hour, int minute, int second, int millisecond, int microsecond, int nanosecond) ConvertTimeOfDayToTimeParts(double julianDate)
       {
-        var totalSeconds = GetTimeOfDay(julianDate);
+        var totalSeconds = ConvertTimeOfDayToTime(julianDate).Value;
 
-        if (totalSeconds <= 43200)
+        if (totalSeconds <= 43200) // Adjust for noon.
           totalSeconds = (totalSeconds + 43200d) % 86400d;
 
         var hour = (int)(totalSeconds / 3600d);
@@ -101,21 +112,23 @@ namespace Flux
         totalSeconds -= second;
 
         var millisecond = (int)(totalSeconds * 1000);
+        totalSeconds -= millisecond;
 
-        return (hour, minute, second, millisecond);
+        var microsecond = (int)(totalSeconds * 1000000);
+        totalSeconds -= microsecond;
+
+        var nanosecond = (int)(totalSeconds * 1000000000);
+
+        return (hour, minute, second, millisecond, microsecond, nanosecond);
       }
 
       /// <summary>
       /// <para>Converts time components to a Julian Date (JD) time-of-day fraction value. This is not the same as the number of seconds.</para>
       /// </summary>
-      public static double ConvertTimePartsToTimeOfDay(int hour, int minute, int second, int millisecond)
-        => (hour - 12) / 24d + minute / 1440d + (second + millisecond / 1000d) / 86400d;
+      public static double ConvertTimePartsToTimeOfDay(int hour, int minute, int second, int millisecond, int microsecond, int nanosecond)
+        => (hour - 12) / 24d + minute / 1440d + (second + millisecond / 1000d + microsecond / 1000000d + nanosecond / 1000000000d) / 86400d;
 
-      /// <summary>Compute the time-of-day, which is the fractional part of a julian date. The fractional part represents the time from the preceeding noon in Universal Time.</summary>
-      public static double GetTimeOfDay(double julianDate) => (julianDate - System.Math.Truncate(julianDate)) * 86400d;
-
-      /// <summary>Returns whether the Julian Date value (JD) is considered to be on the Gregorian Calendar.</summary>
-      public static bool IsGregorianCalendar(double julianDate) => julianDate >= 2299160.5;
+      #endregion // Conversion methods
 
       #endregion // Static methods
 
@@ -158,14 +171,16 @@ namespace Flux
       public int CompareTo(object? other) => other is not null && other is JulianDate o ? CompareTo(o) : -1;
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => $"{JulianDayNumber.ToDateString(GetConversionCalendar())}, {ToTimeString()} (JD = {m_value})";
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => $"{ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()} (JD = {m_value})";
 
-      // IQuantifiable<>
+      #region IQuantifiable<>
+
       /// <summary>
       /// <para>The <see cref="JulianDate.Value"/> property is the Julian date.</para>
       /// </summary>
       public double Value => m_value;
+
+      #endregion // IQuantifiable<>
 
       #endregion // Implemented interfaces
 

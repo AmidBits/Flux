@@ -1,254 +1,284 @@
-namespace Flux.Quantities
+namespace Flux
 {
-  public enum TimeUnit
+  public static partial class Em
   {
-    /// <summary>This is the default unit for <see cref="Time"/>.</summary>
-    Second,
-    /// <summary>
-    /// <para>The unit of .NET ticks.</para>
-    /// <para><see href=""/></para>
-    /// </summary>
-    Tick,
-    Minute,
-    Hour,
-    Day,
-    Week,
-    /// <summary>This represents two weeks.</summary>
-    Fortnight,
-    ///// <summary>Represents the musical BPM.</summary>
-    BeatPerMinute
+    public static System.DateTime AddTime(this System.DateTime source, Quantities.Time qtime) => source.AddSeconds(qtime.Value);
   }
 
-  /// <summary>
-  /// <para>Time. SI unit of second. This is a base quantity.</para>
-  /// <para><see href="https://en.wikipedia.org/wiki/Time"/></para>
-  /// </summary>
-  public readonly record struct Time
-    : System.IComparable, System.IComparable<Time>, System.IFormattable, ISiPrefixValueQuantifiable<double, TimeUnit>
+  namespace Quantities
   {
-    ///// <see href="https://en.wikipedia.org/wiki/Flick_(time)"></see>
-    //public static readonly Time Flick = new(1.0 / 705600000.0);
-    ///// <summary>Amount of time in one millisecond.</summary>
-    //public static readonly Time Millisecond = new(0.001);
-    ///// <summary>Amount of time in one second.</summary>
-    //public static readonly Time Second = new(1);
-    ///// <summary>Amount of time in one minute.</summary>
-    //public static readonly Time Minute = new(60);
-    ///// <summary>Amount of time in one hour.</summary>
-    //public static readonly Time Hour = new(3600);
-    ///// <summary>Amount of time in one day.</summary>
-    //public static readonly Time Day = new(86400);
-
-    private readonly double m_value;
-
-    /// <summary>
-    /// <para>Creates a new instance from the specified <paramref name="value"/> of <paramref name="unit"/>. The default <paramref name="unit"/> is <see cref="TimeUnit.Second"/></para>
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="unit"></param>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public Time(double value, TimeUnit unit = TimeUnit.Second) => m_value = ConvertFromUnit(unit, value);
+    public enum TimeUnit
+    {
+      /// <summary>This is the default unit for <see cref="Time"/>.</summary>
+      Second,
+      /// <summary>
+      /// <para>The unit of .NET ticks.</para>
+      /// </summary>
+      Tick,
+      Minute,
+      Hour,
+      Day,
+      Week,
+      /// <summary>This represents two weeks.</summary>
+      Fortnight,
+      /// <summary>Represents the musical BPM.</summary>
+      BeatPerMinute
+    }
 
     /// <summary>
-    /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="TimeUnit.Second"/>, e.g. <see cref="MetricPrefix.Milli"/> for milliseconds.</para>
+    /// <para>Time. SI unit of second. This is a base quantity.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Time"/></para>
     /// </summary>
-    /// <param name="seconds"></param>
-    /// <param name="prefix"></param>
-    public Time(MetricPrefix prefix, double seconds) => m_value = prefix.ConvertTo(seconds, MetricPrefix.Unprefixed);
+    public readonly record struct Time
+      : System.IComparable, System.IComparable<Time>, System.IFormattable, ISiPrefixValueQuantifiable<double, TimeUnit>
+    {
+      ///// <summary>Amount of time in one picosecond.</summary>
+      //public static readonly Time Picosecond = new(MetricPrefix.Pico, 1);
+      ///// <summary>Amount of time in one nanosecond.</summary>
+      //public static readonly Time Nanosecond = new(MetricPrefix.Nano, 1);
+      ///// <summary>Amount of time in one microsecond.</summary>
+      //public static readonly Time Microsecond = new(MetricPrefix.Micro, 1);
+      ///// <summary>Amount of time in one millisecond.</summary>
+      //public static readonly Time Millisecond = new(MetricPrefix.Milli, 1);
+      /// <summary>Amount of time in one second.</summary>
+      public static readonly Time Second = new(1);
+      /// <summary>Amount of time in one minute.</summary>
+      public static readonly Time Minute = new(1, TimeUnit.Minute);
+      /// <summary>Amount of time in one hour.</summary>
+      public static readonly Time Hour = new(1, TimeUnit.Hour);
+      /// <summary>Amount of time in one day.</summary>
+      public static readonly Time Day = new(1, TimeUnit.Day);
 
-    /// <summary>Creates a new instance from the specified <paramref name="timeSpan"/>.</summary>
-    public Time(System.TimeSpan timeSpan) : this(timeSpan.TotalSeconds, TimeUnit.Second) { }
+      private readonly double m_value;
 
-    public System.TimeSpan ToTimeSpan() => System.TimeSpan.FromSeconds(m_value);
+      /// <summary>
+      /// <para>Creates a new instance from the specified <paramref name="value"/> of <paramref name="unit"/>. The default <paramref name="unit"/> is <see cref="TimeUnit.Second"/></para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="unit"></param>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public Time(double value, TimeUnit unit = TimeUnit.Second) => m_value = ConvertFromUnit(unit, value);
 
-    #region Static methods
+      /// <summary>
+      /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="TimeUnit.Second"/>, e.g. <see cref="MetricPrefix.Milli"/> for milliseconds.</para>
+      /// </summary>
+      /// <param name="seconds"></param>
+      /// <param name="prefix"></param>
+      public Time(MetricPrefix prefix, double seconds) => m_value = prefix.ConvertTo(seconds, MetricPrefix.Unprefixed);
 
-    #region Conversion methods
+      /// <summary>Creates a new instance from the specified <paramref name="timeSpan"/>.</summary>
+      public Time(System.TimeSpan timeSpan) : this(timeSpan.TotalSeconds, TimeUnit.Second) { }
 
-    /// <summary>
-    /// <para>Convert beats-per-minute to seconds.</para>
-    /// </summary>
-    /// <param name="bpm"></param>
-    /// <returns></returns>
-   // public static double ConvertBpmToSecond(double bpm) => 60 / bpm;
+      public System.TimeSpan ToTimeSpan() => System.TimeSpan.FromSeconds(m_value);
 
-    //public static double ConvertDayToSecond(double days) => days * 86400;
+      #region Static methods
 
-    //public static double ConvertFortnightToSecond(double fortnights) => fortnights * 1209600;
+      #region Conversion methods
 
-    //public static double ConvertMicrosecondToSecond(double microseconds) => microseconds / 1000000;
-
-    //public static double ConvertMicrosecondToMillisecond(double microseconds) => microseconds / 1000;
-
-    //public static double ConvertMicrosecondToNanosecond(double microseconds) => microseconds * 1000;
-
-    //public static double ConvertMillisecondToMicrosecond(double milliseconds) => milliseconds * 1000;
-
-    //public static double ConvertMillisecondToNanosecond(double milliseconds) => milliseconds * 1000000;
-
-    //public static double ConvertMillisecondToSecond(double milliseconds) => milliseconds / 1000;
-
-    //public static double ConvertNanosecondToMicrosecond(double nanoseconds) => nanoseconds / 1000;
-
-    //public static double ConvertNanosecondToMillisecond(double nanoseconds) => nanoseconds / 1000000;
-
-    //public static double ConvertNanosecondToSecond(double nanoseconds) => nanoseconds / 1000000000;
-
-    /// <summary>
-    /// <para>Convert seconds to beats-per-minute.</para>
-    /// </summary>
-    /// <param name="seconds"></param>
-    /// <returns></returns>
-  //  public static double ConvertSecondToBpm(double seconds) => 60 / seconds;
-
-    //public static double ConvertSecondToDay(double seconds) => seconds / 86400;
-
-    //public static double ConvertSecondToFortnight(double seconds) => seconds / 1209600;
-
-    //public static double ConvertSecondToMicrosecond(double seconds) => seconds * 1000000;
-
-    //public static double ConvertSecondToMillisecond(double seconds) => seconds * 1000;
-
-    //public static double ConvertSecondToNanosecond(double seconds) => seconds * 1000000000;
-
-    /// <summary>
-    /// <para>Convert seconds to .NET ticks. There are 10,000,000 ticks per second.</para>
-    /// </summary>
-    /// <param name="seconds"></param>
-    /// <returns></returns>
-//    public static double ConvertSecondToTick(double seconds) => seconds * 10000000;
-
-    //public static double ConvertSecondToWeek(double seconds) => seconds / 604800;
-
-    /// <summary>
-    /// <para>Convert .NET ticks to seconds. There are 10,000,000 ticks per second.</para>
-    /// </summary>
-    /// <param name="ticks"></param>
-    /// <returns></returns>
-//    public static double ConvertTickToSecond(double ticks) => ticks / 10000000;
-
-    //public static double ConvertWeekToSecond(double weeks) => weeks * 604800;
-
-    #endregion // Conversion methods
-
-    #endregion // Static methods
-
-    #region Overloaded operators
-
-    public static bool operator <(Time a, Time b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Time a, Time b) => a.CompareTo(b) <= 0;
-    public static bool operator >(Time a, Time b) => a.CompareTo(b) > 0;
-    public static bool operator >=(Time a, Time b) => a.CompareTo(b) >= 0;
-
-    public static Time operator -(Time v) => new(-v.m_value, TimeUnit.Second);
-    public static Time operator +(Time a, double b) => new(a.m_value + b, TimeUnit.Second);
-    public static Time operator +(Time a, Time b) => a + b.m_value;
-    public static Time operator /(Time a, double b) => new(a.m_value / b, TimeUnit.Second);
-    public static Time operator /(Time a, Time b) => a / b.m_value;
-    public static Time operator *(Time a, double b) => new(a.m_value * b, TimeUnit.Second);
-    public static Time operator *(Time a, Time b) => a * b.m_value;
-    public static Time operator %(Time a, double b) => new(a.m_value % b, TimeUnit.Second);
-    public static Time operator %(Time a, Time b) => a % b.m_value;
-    public static Time operator -(Time a, double b) => new(a.m_value - b, TimeUnit.Second);
-    public static Time operator -(Time a, Time b) => a - b.m_value;
-
-    #endregion Overloaded operators
-
-    #region Implemented interfaces
-
-    // IComparable
-    public int CompareTo(object? other) => other is not null && other is Time o ? CompareTo(o) : -1;
-
-    // IComparable<T>
-    public int CompareTo(Time other) => m_value.CompareTo(other.m_value);
-
-    // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
-
-    #region IQuantifiable<>
-
-    /// <summary>
-    /// <para>The unit of the <see cref="Time.Value"/> property is in <see cref="TimeUnit.Second"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
-    #region ISiUnitValueQuantifiable<>
-
-    public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(TimeUnit.Second, preferPlural);
-
-    public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(TimeUnit.Second, preferUnicode);
-
-    public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
-
-    public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
-      => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
-
-    #endregion // ISiUnitValueQuantifiable<>
-
-    #region IUnitQuantifiable<>
-
-    private static double ConvertFromUnit(TimeUnit unit, double value)
-      => unit switch
+      /// <summary>
+      /// <para>Converts a second value to sub-second parts, plus early terminations (using double) for milli-seconds and micro-seconds for functionality with less resolution.</para>
+      /// </summary>
+      /// <param name="seconds"></param>
+      /// <returns></returns>
+      public static (long second, double seconds, int milliSecond, double milliSeconds, int microSecond, double microSeconds, int nanoSecond) ConvertSecondsToSubSecondParts(double seconds)
       {
-        TimeUnit.Second => value,
-        TimeUnit.BeatPerMinute => 60 / value,
+        var ts = System.TimeSpan.FromSeconds(seconds);
 
-        _ => GetUnitFactor(unit) * value,
-      };
+        return (
+          long.CreateChecked(double.Truncate(seconds)),
+          seconds,
+          ts.Milliseconds,
+          ts.Milliseconds + (ts.Microseconds * 1000L + ts.Nanoseconds) / 1000000.0,
+          ts.Microseconds,
+          ts.Microseconds + ts.Nanoseconds / 1000.0,
+          ts.Nanoseconds
+        );
+      }
 
-    private static double ConvertToUnit(TimeUnit unit, double value)
-      => unit switch
+      /// <summary>
+      /// <para>Converts a sub-second value into sub-second integer components, plus early terminations (using double) for milli-seconds, micro-seconds and nano-seconds for functionality with less resolution.</para>
+      /// </summary>
+      /// <param name="subSecondTotalValue"></param>
+      /// <returns></returns>
+      /// <remarks>
+      /// <para>Only handles sub-second parts and only down to <see cref="MetricPrefix.Nano"/>.</para>
+      /// <para>Second is the implied base here, so it would be pointless to allow anything greater-or-equal-to <see cref="MetricPrefix.Unprefixed"/>.</para>
+      /// </remarks>
+      public static (long second, double seconds, int milliSecond, double milliSeconds, int microSecond, double microSeconds, int nanoSecond, double nanoSeconds) ConvertTotalSubSecondUnitToSubSecondParts(MetricPrefix subSecondUnit, long subSecondTotalValue)
       {
-        TimeUnit.Second => value,
-        TimeUnit.BeatPerMinute => 60 / value,
+        if ((int)subSecondUnit >= (int)MetricPrefix.Unprefixed || (int)subSecondUnit < (int)MetricPrefix.Nano) throw new System.ArgumentOutOfRangeException(nameof(subSecondUnit)); // Only allow sub-second prefixes.
 
-        _ => value / GetUnitFactor(unit),
-      };
+        checked
+        {
+          var value = (double)subSecondTotalValue;
+          var unitValue = (long)System.Numerics.BigInteger.Pow(10, int.Abs((int)subSecondUnit));
 
-    public static double ConvertUnit(double value, TimeUnit from, TimeUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
+          var pvs = new double[4];
+          var svs = new long[4];
 
-    public static double GetUnitFactor(TimeUnit unit)
-      => unit switch
-      {
-        TimeUnit.Tick => 0.0000001,
-        TimeUnit.Second => 1,
-        TimeUnit.Minute => 60,
-        TimeUnit.Hour => 3600,
-        TimeUnit.Day => 86400,
-        TimeUnit.Week => 604800,
-        TimeUnit.Fortnight => 1209600,
+          for (var i = 0; i < 4; i++)
+          {
+            if (unitValue == 0) break;
 
-        _ => throw new System.NotImplementedException()
-      };
+            var pv = value / unitValue;
+            var sv = (long)double.Truncate(pv);
 
-    public string GetUnitName(TimeUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+            value -= (sv * unitValue);
+            unitValue /= 1000;
 
-    public string GetUnitSymbol(TimeUnit unit, bool preferUnicode)
-      => unit switch
-      {
-        TimeUnit.Second => "s",
-        TimeUnit.Tick => "tick" + GetUnitValue(unit).PluralStringSuffix(),
-        TimeUnit.Minute => "min",
-        TimeUnit.Hour => "h",
-        TimeUnit.Day => "d",
-        TimeUnit.Week => "week" + GetUnitValue(unit).PluralStringSuffix(),
-        TimeUnit.Fortnight => "fortnight" + GetUnitValue(unit).PluralStringSuffix(),
-        TimeUnit.BeatPerMinute => "bpm",
+            pvs[i] = pv;
+            svs[i] = sv;
+          }
 
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+          return (svs[0], pvs[0], (int)svs[1], pvs[1], (int)svs[2], pvs[2], (int)svs[3], pvs[3]);
+        }
+      }
 
-    public double GetUnitValue(TimeUnit unit) => ConvertToUnit(unit, m_value);
+      //public static (long second, double seconds, int milliSecond, double milliSeconds, int microSecond, double microSeconds, int nanoSecond, double nanoSeconds) ConvertSecondsToSubSecondParts(double seconds)
+      //{
+      //  checked
+      //  {
+      //    var second = (long)double.Truncate(seconds);
 
-    public string ToUnitString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      //    var milliSeconds = (seconds - second) * 1000L;
 
-    #endregion // IUnitQuantifiable<>
+      //    var milliSecond = (int)double.Truncate(milliSeconds);
 
-    #endregion // Implemented interfaces
+      //    var microSeconds = seconds * 1000000L - (milliSecond * 1000L + second * 1000000L);
 
-    public override string ToString() => ToString(null, null);
+      //    var microSecond = (int)double.Truncate(microSeconds);
+
+      //    var nanoSeconds = seconds * 1000000000L - (microSecond * 1000L + milliSecond * 1000000L + second * 1000000000L);
+
+      //    var nanoSecond = (int)double.Truncate(nanoSeconds);
+
+      //    return (second, seconds, milliSecond, milliSeconds, microSecond, microSeconds, nanoSecond, nanoSeconds);
+      //  }
+      //}
+
+      #endregion // Conversion methods
+
+      #endregion // Static methods
+
+      #region Overloaded operators
+
+      public static bool operator <(Time a, Time b) => a.CompareTo(b) < 0;
+      public static bool operator <=(Time a, Time b) => a.CompareTo(b) <= 0;
+      public static bool operator >(Time a, Time b) => a.CompareTo(b) > 0;
+      public static bool operator >=(Time a, Time b) => a.CompareTo(b) >= 0;
+
+      public static Time operator -(Time v) => new(-v.m_value, TimeUnit.Second);
+      public static Time operator +(Time a, double b) => new(a.m_value + b, TimeUnit.Second);
+      public static Time operator +(Time a, Time b) => a + b.m_value;
+      public static Time operator /(Time a, double b) => new(a.m_value / b, TimeUnit.Second);
+      public static Time operator /(Time a, Time b) => a / b.m_value;
+      public static Time operator *(Time a, double b) => new(a.m_value * b, TimeUnit.Second);
+      public static Time operator *(Time a, Time b) => a * b.m_value;
+      public static Time operator %(Time a, double b) => new(a.m_value % b, TimeUnit.Second);
+      public static Time operator %(Time a, Time b) => a % b.m_value;
+      public static Time operator -(Time a, double b) => new(a.m_value - b, TimeUnit.Second);
+      public static Time operator -(Time a, Time b) => a - b.m_value;
+
+      #endregion Overloaded operators
+
+      #region Implemented interfaces
+
+      // IComparable
+      public int CompareTo(object? other) => other is not null && other is Time o ? CompareTo(o) : -1;
+
+      // IComparable<T>
+      public int CompareTo(Time other) => m_value.CompareTo(other.m_value);
+
+      // IFormattable
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiPrefixString(MetricPrefix.Unprefixed);
+
+      #region IQuantifiable<>
+
+      /// <summary>
+      /// <para>The unit of the <see cref="Time.Value"/> property is in <see cref="TimeUnit.Second"/>.</para>
+      /// </summary>
+      public double Value => m_value;
+
+      #endregion // IQuantifiable<>
+
+      #region ISiUnitValueQuantifiable<>
+
+      public string GetSiPrefixName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(TimeUnit.Second, preferPlural);
+
+      public string GetSiPrefixSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(TimeUnit.Second, preferUnicode);
+
+      public double GetSiPrefixValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+      public string ToSiPrefixString(MetricPrefix prefix, bool fullName = false)
+        => GetSiPrefixValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiPrefixName(prefix, true) : GetSiPrefixSymbol(prefix, false));
+
+      #endregion // ISiUnitValueQuantifiable<>
+
+      #region IUnitQuantifiable<>
+
+      private static double ConvertFromUnit(TimeUnit unit, double value)
+        => unit switch
+        {
+          TimeUnit.Second => value,
+          TimeUnit.BeatPerMinute => 60 / value,
+
+          _ => GetUnitFactor(unit) * value,
+        };
+
+      private static double ConvertToUnit(TimeUnit unit, double value)
+        => unit switch
+        {
+          TimeUnit.Second => value,
+          TimeUnit.BeatPerMinute => 60 / value,
+
+          _ => value / GetUnitFactor(unit),
+        };
+
+      public static double ConvertUnit(double value, TimeUnit from, TimeUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
+
+      public static double GetUnitFactor(TimeUnit unit)
+        => unit switch
+        {
+          TimeUnit.Second => 1,
+
+          TimeUnit.Tick => 0.0000001,
+          TimeUnit.Minute => 60,
+          TimeUnit.Hour => 3600,
+          TimeUnit.Day => 86400,
+          TimeUnit.Week => 604800,
+          TimeUnit.Fortnight => 1209600,
+
+          _ => throw new System.NotImplementedException()
+        };
+
+      public string GetUnitName(TimeUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+
+      public string GetUnitSymbol(TimeUnit unit, bool preferUnicode)
+        => unit switch
+        {
+          TimeUnit.Second => "s",
+
+          TimeUnit.Tick => "tick" + GetUnitValue(unit).PluralStringSuffix(),
+          TimeUnit.Minute => "min",
+          TimeUnit.Hour => "h",
+          TimeUnit.Day => "d",
+          TimeUnit.Week => "week" + GetUnitValue(unit).PluralStringSuffix(),
+          TimeUnit.Fortnight => "fortnight" + GetUnitValue(unit).PluralStringSuffix(),
+          TimeUnit.BeatPerMinute => "bpm",
+
+          _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+        };
+
+      public double GetUnitValue(TimeUnit unit) => ConvertToUnit(unit, m_value);
+
+      public string ToUnitString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+        => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+
+      #endregion // IUnitQuantifiable<>
+
+      #endregion // Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
+    }
   }
 }

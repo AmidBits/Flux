@@ -19,8 +19,8 @@ namespace Flux.Quantities
 
     #region Static methods
 
-    public static Turbidity From(Force force, Time time)
-      => new(force.Value / time.Value);
+    public static Turbidity From(Force force, Time time) => new(force.Value / time.Value);
+
     #endregion Static methods
 
     #region Overloaded operators
@@ -92,13 +92,13 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(TurbidityUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public string GetUnitName(TurbidityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(TurbidityUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.TurbidityUnit.NephelometricTurbidityUnits => "NTU",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

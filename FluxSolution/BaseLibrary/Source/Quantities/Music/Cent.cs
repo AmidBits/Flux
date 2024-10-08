@@ -1,7 +1,7 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Cent, unit of itself. Musical interval equal to one hundredth of one semitone.</para>
+  /// <para>Cent is a musical interval equal to one hundredth of one semitone.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Cent_(music)"/></para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/Interval_(music)"/></para>
   /// </summary>
@@ -66,8 +66,7 @@ namespace Flux.Quantities
     public int CompareTo(object? other) => other is not null && other is Cent o ? CompareTo(o) : -1;
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"{string.Format(formatProvider, $"{{0{(string.IsNullOrEmpty(format) ? string.Empty : $":{format}")}}}", m_value)} cent{(m_value == 1 ? string.Empty : 's'.ToString())}";
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " cent".ConvertUnitNameToPlural(m_value != 1);
 
     #region IQuantifiable<>
 

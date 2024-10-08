@@ -1,7 +1,7 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Unit interval, unit of real number, with the interval <see cref="UnitInterval.MinValue"/> = 0.0 and <see cref="UnitInterval.MaxValue"/> = 1.0 constrained by the <see cref="IntervalNotation"/>.</para>
+  /// <para>Unit interval is in the range <see cref="UnitInterval.MinValue"/> = 0.0 and <see cref="UnitInterval.MaxValue"/> = 1.0 and is constrained by the <see cref="IntervalNotation"/>.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Unit_interval"/></para>
   /// </summary>
   public readonly record struct UnitInterval
@@ -77,8 +77,7 @@ namespace Flux.Quantities
     public int CompareTo(UnitInterval other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
     #region IQuantifiable<>
 

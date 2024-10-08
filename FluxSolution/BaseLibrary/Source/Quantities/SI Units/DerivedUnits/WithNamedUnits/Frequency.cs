@@ -4,6 +4,8 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Frequency"/>.</summary>
     Hertz,
+    /// <summary>Represents the musical BPM.</summary>
+    BeatsPerMinute
   }
 
   /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
@@ -162,6 +164,8 @@ namespace Flux.Quantities
       {
         FrequencyUnit.Hertz => value,
 
+        FrequencyUnit.BeatsPerMinute => value / 60,
+
         _ => GetUnitFactor(unit) * value,
       };
 
@@ -169,6 +173,8 @@ namespace Flux.Quantities
       => unit switch
       {
         FrequencyUnit.Hertz => value,
+
+        FrequencyUnit.BeatsPerMinute => value / 60,
 
         _ => value / GetUnitFactor(unit),
       };

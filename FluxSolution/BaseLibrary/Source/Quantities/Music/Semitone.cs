@@ -1,7 +1,7 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Semitone, unit of itself. A musical interval equal to one hundred cents.</para>
+  /// <para>Semitone is a musical interval equal to one hundred cents.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Semitone"/></para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/Interval_(music)"/></para>
   /// </summary>
@@ -74,8 +74,7 @@ namespace Flux.Quantities
     public int CompareTo(Semitone other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"{string.Format(formatProvider, $"{{0{(string.IsNullOrEmpty(format) ? string.Empty : $":{format}")}}}", m_value)} semitone{(m_value == 1 ? string.Empty : 's'.ToString())}";
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " semitone".ConvertUnitNameToPlural(m_value != 1);
 
     #region IQuantifiable<>
 

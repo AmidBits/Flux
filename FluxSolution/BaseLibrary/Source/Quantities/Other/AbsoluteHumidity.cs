@@ -18,10 +18,9 @@ namespace Flux.Quantities
     public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
     #region Static methods
-    public static AbsoluteHumidity From(double grams, Volume volume)
-      => new(grams / volume.Value);
-    public static AbsoluteHumidity From(Mass mass, Volume volume)
-      => From(mass.Value * 1000, volume);
+
+    public static AbsoluteHumidity From(Mass mass, Volume volume) => new(mass.GetUnitValue(MassUnit.Gram) / volume.Value);
+
     #endregion Static methods
 
     #region Overloaded operators
@@ -93,19 +92,19 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(AbsoluteHumidityUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public string GetUnitName(AbsoluteHumidityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
 
     public string GetUnitSymbol(AbsoluteHumidityUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double GetUnitValue(AbsoluteHumidityUnit unit) => ConvertFromUnit(unit, m_value);
 
-    public string ToUnitString(AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    public string ToUnitString(AbsoluteHumidityUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitQuantifiable<>

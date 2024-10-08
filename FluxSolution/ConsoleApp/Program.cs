@@ -18,6 +18,40 @@ using Flux.Text;
 // #r "System.Runtime.Numerics"
 // #r "C:\Users\Rob\source\repos\AmidBits\Flux\FluxSolution\BaseLibrary\bin\Debug\net6.0\BaseLibrary.dll"
 
+//public sealed record class DateTimePartSpan
+//{
+//  public int m_years;
+//  public int m_months;
+//  public int m_days;
+//  public int m_hours;
+//  public int m_minutes;
+//  public int m_seconds;
+
+//  public DateTimePartSpan(int years, int months, int days, int hours, int minutes, int seconds)
+//  {
+//    m_years = years;
+//    m_months = months;
+//    m_days = days;
+//    m_hours = hours;
+//    m_minutes = minutes;
+//    m_seconds = seconds;
+//  }
+//}
+
+//public sealed class TimerInterval
+//{
+//  public DateTimePartSpan m_every;
+
+//  public System.TimeSpan m_offset;
+
+//  public TimerInterval m_subInterval;
+
+//  public TimerInterval(Flux.DateTimePart interval)
+//  {
+//    m_interval = interval;
+//  }
+//}
+
 namespace ConsoleApp
 {
   public class Program
@@ -36,32 +70,31 @@ namespace ConsoleApp
 
     #endregion // Presets
 
+    public static double DoubleFromParts(int signBit, int exponentUnbiased, long significandPrecision)
+    {
+      return 0;
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var bytes = new byte[10];
-      (0x0a0b0c0d).WriteBytes(bytes, 0, Endianess.LittleEndian);
-      (0x0a0b0c0d).WriteBytes(bytes, 4, Endianess.BigEndian);
 
-      var rv = 0x0a0b0c0d;
-      var rvh = rv.ToString("X8");
-      var vr = rv.ReverseBytes();
-      var vrh = vr.ToString("X8");
 
-      var bs = new byte[] { 0x0D, 0x0C, 0x0B, 0x0A };
-      var be = bs.ReadUInt32(0, Endianess.BigEndian);
-      var le = bs.ReadUInt32(0, Endianess.LittleEndian);
+      var tc = Flux.Quantities.Time.ConvertSecondsToSubSecondParts(1234567899.876543);
+      var mc = Flux.Quantities.Time.ConvertTotalSubSecondUnitToSubSecondParts(MetricPrefix.Micro, 1234567899876543);
 
-      var s = "This        is             another   fearless    attempt     \rk!";
-      var o = StringSplitOptions.None;//| StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries;
-      var c = ' ';
+      var f = new Flux.Quantities.Frequency(120, FrequencyUnit.BeatsPerMinute);
+      var t = new Flux.Quantities.Time(120, TimeUnit.BeatPerMinute);
 
-      var ss = s.Split(c, o);
-      var sbs = s.ToStringBuilder().Split(e => e == c, o);
-      var sbs2 = s.ToStringBuilder().ReplaceAll(c => c == 's', c => "Rob");
-      s.ToStringBuilder();
+      var gregorianCalendarEpoch = JulianDate.GregorianCalendarEpoch;
+      var julianCalendarEpoch = JulianDate.JulianCalendarEpoch;
+
+      var jdx = new Flux.Quantities.JulianDate(-3113, 9, 6, 0, 0, 0, 0, 0, 0, TemporalCalendar.JulianCalendar);
+      var jdnx = new Flux.Quantities.JulianDayNumber(-3113, 9, 6, TemporalCalendar.JulianCalendar);
+      var jdnxdp = jdnx.GetParts(TemporalCalendar.GregorianCalendar);
+      var jdnxx = jdnx.ToJulianDate();
 
     }
 

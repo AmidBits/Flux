@@ -1,7 +1,7 @@
 namespace Flux.Quantities
 {
   /// <summary>
-  /// <para>Radix, unit of natural number, in the closed interval [<see cref="Radix.MinRadix"/> = 2, <see cref="Radix.MaxRadix"/> = 256].</para>
+  /// <para>Radix is in the range of the closed interval [<see cref="Radix.MinRadix"/> = 2, <see cref="Radix.MaxRadix"/> = 256].</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Radix"/></para>
   /// </summary>
   public readonly record struct Radix
@@ -89,8 +89,7 @@ namespace Flux.Quantities
     public int CompareTo(object? other) => other is not null && other is Radix o ? CompareTo(o) : -1;
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : ':' + format)}}}", m_value);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
     #region IQuantifiable<>
 
