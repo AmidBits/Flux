@@ -21,52 +21,27 @@ namespace Units
     }
 
     [TestMethod]
-    public void Azimuth()
+    public void Currency()
     {
-      var a = new Flux.Quantities.Angle(1, Flux.Quantities.AngleUnit.Degree);
+      var u = new Flux.Quantities.Currency(1);
 
-      var u = new Flux.Quantities.Azimuth(a);
-
-      Assert.AreEqual(a.GetUnitValue(Flux.Quantities.AngleUnit.Degree), u.Value);
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void Cent()
+    public void DigitalInformation()
     {
-      var cent = new Flux.Quantities.Cent(1);
+      var u = new Flux.Quantities.DigitalInformation(1);
 
-      Assert.AreEqual(1, cent.Value);
-      Assert.AreEqual(Flux.Quantities.Cent.FrequencyRatio, Flux.Quantities.Cent.ConvertCentToFrequencyRatio(cent.Value));
+      Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void Latitude()
+    public void PartsPerNotation()
     {
-      var a = new Flux.Quantities.Angle(1, Flux.Quantities.AngleUnit.Degree);
+      var u = new Flux.Quantities.PartsPerNotation(1);
 
-      var u = new Flux.Quantities.Latitude(a);
-
-      Assert.AreEqual(a.GetUnitValue(Flux.Quantities.AngleUnit.Degree), u.Value);
-    }
-
-    [TestMethod]
-    public void Longitude()
-    {
-      var a = new Flux.Quantities.Angle(1, Flux.Quantities.AngleUnit.Degree);
-
-      var u = new Flux.Quantities.Longitude(a);
-
-      Assert.AreEqual(a.GetUnitValue(Flux.Quantities.AngleUnit.Degree), u.Value);
-    }
-
-    [TestMethod]
-    public void MidiNote()
-    {
-      var u = new Flux.Quantities.MidiNote(69);
-
-      Assert.AreEqual(69, u.Value);
-      Assert.AreEqual(4, u.Octave);
-      Assert.AreEqual(440.0, u.ToFrequency().Value);
+      Assert.AreEqual(0.01, u.Value);
     }
 
     [TestMethod]
@@ -78,14 +53,6 @@ namespace Units
     }
 
     [TestMethod]
-    public void Probability()
-    {
-      var u = new Flux.Quantities.Probability(1);
-
-      Assert.AreEqual(1, u.Value);
-    }
-
-    [TestMethod]
     public void RelativeHumidity()
     {
       var u = new Flux.Quantities.RelativeHumidity(1);
@@ -94,13 +61,19 @@ namespace Units
     }
 
     [TestMethod]
-    public void Semitone()
+    public void Turbidity()
     {
-      var semitone = new Flux.Quantities.Semitone(1);
+      var u = new Flux.Quantities.Turbidity(1);
 
-      Assert.AreEqual(1, semitone.Value);
-      Assert.AreEqual(100, semitone.ToCent().Value);
-      Assert.AreEqual(Flux.Quantities.Semitone.FrequencyRatio, Flux.Quantities.Semitone.ConvertSemitoneToFrequencyRatio(semitone.Value));
+      Assert.AreEqual(1, u.Value);
+    }
+
+    [TestMethod]
+    public void UvIndex()
+    {
+      var u = new Flux.Quantities.UvIndex(1);
+
+      Assert.AreEqual(1, u.Value);
     }
   }
 }
