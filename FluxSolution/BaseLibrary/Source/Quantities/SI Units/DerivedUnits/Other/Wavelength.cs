@@ -13,7 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Wavelength(double value, WavelengthUnit unit = WavelengthUnit.MeterPerRadian) => m_value = ConvertToUnit(unit, m_value);
+    public Wavelength(double value, WavelengthUnit unit = WavelengthUnit.MeterPerRadian) => m_value = ConvertToUnit(unit, value);
 
     #region Static methods
 

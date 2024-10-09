@@ -3,7 +3,7 @@
 namespace Units
 {
   [TestClass]
-  public class SiDerived
+  public class SiDerivedOther
   {
     [TestMethod]
     public void Acceleration()
@@ -22,32 +22,6 @@ namespace Units
     }
 
     [TestMethod]
-    public void Angle()
-    {
-      var u = new Flux.Quantities.Angle(180, Flux.Quantities.AngleUnit.Degree);
-
-      //var expected = (X: 0.5403023058681398, Y: 0.8414709848078965);
-      //var actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2(u.Value);
-      //Assert.AreEqual(expected.X, actual.x, Flux.Maths.Epsilon1E15);
-      //Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
-
-      //expected = (0.8414709848078967, 0.5403023058681394);
-      //actual = Flux.Units.Angle.ConvertRotationAngleToCartesian2Ex(u.Value);
-      //Assert.AreEqual(expected.X, actual.x);
-      //Assert.AreEqual(expected.Y, actual.y, Flux.Maths.Epsilon1E15);
-
-      Assert.AreEqual(10800, u.GetUnitValue(Flux.Quantities.AngleUnit.Arcminute));
-      Assert.AreEqual(648000, u.GetUnitValue(Flux.Quantities.AngleUnit.Arcsecond));
-      Assert.AreEqual(180, u.GetUnitValue(Flux.Quantities.AngleUnit.Degree));
-      Assert.AreEqual(200, u.GetUnitValue(Flux.Quantities.AngleUnit.Gradian));
-      Assert.AreEqual(0.0031415926535897933, u.GetUnitValue(Flux.Quantities.AngleUnit.Milliradian));
-      Assert.AreEqual(3200, u.GetUnitValue(Flux.Quantities.AngleUnit.NatoMil));
-      Assert.AreEqual(3.141592653589793, u.GetUnitValue(Flux.Quantities.AngleUnit.Radian));
-      Assert.AreEqual(0.5, u.GetUnitValue(Flux.Quantities.AngleUnit.Turn));
-      Assert.AreEqual(3000, u.GetUnitValue(Flux.Quantities.AngleUnit.WarsawPactMil));
-    }
-
-    [TestMethod]
     public void AngularAcceleration()
     {
       var u = new Flux.Quantities.AngularAcceleration(1);
@@ -56,7 +30,7 @@ namespace Units
     }
 
     [TestMethod]
-    public void AngularVelocity()
+    public void AngularFrequency()
     {
       var u = new Flux.Quantities.AngularFrequency(1);
 
@@ -72,17 +46,17 @@ namespace Units
     }
 
     [TestMethod]
-    public void Capacitance()
+    public void AreaDensity()
     {
-      var u = new Flux.Quantities.Capacitance(1);
+      var u = new Flux.Quantities.AreaDensity(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void CatalyticActivity()
+    public void CurrentDensity()
     {
-      var u = new Flux.Quantities.CatalyticActivity(1);
+      var u = new Flux.Quantities.CurrentDensity(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -96,33 +70,25 @@ namespace Units
     }
 
     [TestMethod]
-    public void ElectricalConductance()
+    public void DynamicViscosity()
     {
-      var u = new Flux.Quantities.ElectricalConductance(1);
+      var u = new Flux.Quantities.DynamicViscosity(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void ElectricCharge()
+    public void ElectricChargeDensity()
     {
-      var u = new Flux.Quantities.ElectricCharge(1);
+      var u = new Flux.Quantities.ElectricChargeDensity(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void ElectricResistance()
+    public void EnergyDensity()
     {
-      var u = new Flux.Quantities.ElectricalResistance(1);
-
-      Assert.AreEqual(1, u.Value);
-    }
-
-    [TestMethod]
-    public void Energy()
-    {
-      var u = new Flux.Quantities.Energy(1);
+      var u = new Flux.Quantities.EnergyDensity(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -136,92 +102,81 @@ namespace Units
     }
 
     [TestMethod]
-    public void Force()
+    public void HeatCapacity()
     {
-      var u = new Flux.Quantities.Force(1);
+      var u = new Flux.Quantities.HeatCapacity(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void Frequency()
+    public void Impulse()
     {
-      var u = new Flux.Quantities.Frequency(1);
+      var u = new Flux.Quantities.Impulse(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void Illuminance()
+    public void Irradiance()
     {
-      var u = new Flux.Quantities.Illuminance(1);
+      var u = new Flux.Quantities.Irradiance(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void Inductance()
+    public void LinearChargeDensity()
     {
-      var u = new Flux.Quantities.Inductance(1);
+      var u = new Flux.Quantities.LinearChargeDensity(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void LuminousFlux()
+    public void LinearDensity()
     {
-      var u = new Flux.Quantities.LuminousFlux(1);
+      var u = new Flux.Quantities.LinearDensity(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void MagneticFlux()
+    public void LuminousEfficacy()
     {
-      var u = new Flux.Quantities.MagneticFlux(1);
+      var u = new Flux.Quantities.LuminousEfficacy(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void MagneticFluxDensity()
+    public void MagneticFluxStrength()
     {
-      var u = new Flux.Quantities.MagneticFluxDensity(1);
+      var u = new Flux.Quantities.MagneticFluxStrength(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void Power()
+    public void Molarity()
     {
-      var u = new Flux.Quantities.Power(1);
+      var u = new Flux.Quantities.Molarity(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void Pressure()
+    public void Permeability()
     {
-      var u = new Flux.Quantities.Pressure(1);
-
-      Assert.AreEqual(1, u.Value);
-      Assert.AreEqual(0.00001, u.GetUnitValue(Flux.Quantities.PressureUnit.Bar));
-      Assert.AreEqual(0.01, u.GetUnitValue(Flux.Quantities.PressureUnit.Millibar));
-      Assert.AreEqual(0.0001450377377302092, u.GetUnitValue(Flux.Quantities.PressureUnit.Psi));
-    }
-
-    [TestMethod]
-    public void Activity()
-    {
-      var u = new Flux.Quantities.Radioactivity(1);
+      var u = new Flux.Quantities.Permeability(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void SolidAngle()
+    public void RadiationExposure()
     {
-      var u = new Flux.Quantities.SolidAngle(1);
+      var u = new Flux.Quantities.RadiationExposure(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -239,17 +194,25 @@ namespace Units
     }
 
     [TestMethod]
-    public void Torque()
+    public void SurfaceChargeDensity()
     {
-      var u = new Flux.Quantities.Torque(1);
+      var u = new Flux.Quantities.SurfaceChargeDensity(1);
 
       Assert.AreEqual(1, u.Value);
     }
 
     [TestMethod]
-    public void Voltage()
+    public void SurfaceTension()
     {
-      var u = new Flux.Quantities.ElectricPotential(1);
+      var u = new Flux.Quantities.SurfaceTension(1);
+
+      Assert.AreEqual(1, u.Value);
+    }
+
+    [TestMethod]
+    public void Torque()
+    {
+      var u = new Flux.Quantities.Torque(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -270,6 +233,14 @@ namespace Units
       Assert.AreEqual(264.17205124156, u.GetUnitValue(Flux.Quantities.VolumeUnit.USLiquidGallon));
       Assert.AreEqual(908.0829782615377, u.GetUnitValue(Flux.Quantities.VolumeUnit.USDryQuart));
       Assert.AreEqual(1056.6882049662338, u.GetUnitValue(Flux.Quantities.VolumeUnit.USLiquidQuart));
+
+      Assert.AreEqual(1, u.Value);
+    }
+
+    [TestMethod]
+    public void Wavelength()
+    {
+      var u = new Flux.Quantities.Wavelength(1);
 
       Assert.AreEqual(1, u.Value);
     }

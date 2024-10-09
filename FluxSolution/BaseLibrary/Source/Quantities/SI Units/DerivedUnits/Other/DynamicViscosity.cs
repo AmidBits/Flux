@@ -13,7 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public DynamicViscosity(double value, DynamicViscosityUnit unit = DynamicViscosityUnit.PascalSecond) => m_value = ConvertToUnit(unit, m_value);
+    public DynamicViscosity(double value, DynamicViscosityUnit unit = DynamicViscosityUnit.PascalSecond) => m_value = ConvertToUnit(unit, value);
 
     public DynamicViscosity(Pressure pressure, Time time) : this(pressure.Value * time.Value) { }
 

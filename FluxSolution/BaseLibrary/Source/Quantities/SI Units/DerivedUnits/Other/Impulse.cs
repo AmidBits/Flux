@@ -13,7 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Impulse(double value, ImpulseUnit unit = ImpulseUnit.NewtonSecond) => m_value = ConvertToUnit(unit, m_value);
+    public Impulse(double value, ImpulseUnit unit = ImpulseUnit.NewtonSecond) => m_value = ConvertToUnit(unit, value);
 
     public Impulse(Force force, Time time) : this(force.Value / time.Value) { }
 

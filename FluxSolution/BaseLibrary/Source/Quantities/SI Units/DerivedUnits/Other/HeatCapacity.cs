@@ -15,7 +15,7 @@ namespace Flux.Quantities
 
     private readonly double m_value;
 
-    public HeatCapacity(double value, HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin) => m_value = ConvertToUnit(unit, m_value);
+    public HeatCapacity(double value, HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin) => m_value = ConvertToUnit(unit, value);
 
     #region Static methods
 

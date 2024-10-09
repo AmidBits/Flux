@@ -13,7 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public SurfaceTension(double value, SurfaceTensionUnit unit = SurfaceTensionUnit.NewtonPerMeter) => m_value = ConvertToUnit(unit, m_value);
+    public SurfaceTension(double value, SurfaceTensionUnit unit = SurfaceTensionUnit.NewtonPerMeter) => m_value = ConvertToUnit(unit, value);
 
     public SurfaceTension(Force force, Length length) : this(force.Value / length.Value) { }
 

@@ -6,20 +6,20 @@ namespace Units
   public class SiBase
   {
     [TestMethod]
+    public void AmountOfSubstance()
+    {
+      var u = new Flux.Quantities.AmountOfSubstance(1);
+
+      Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.AmountOfSubstanceUnit.Mole));
+    }
+
+    [TestMethod]
     public void ElectricCurrent()
     {
       var u = new Flux.Quantities.ElectricCurrent(1);
 
       Assert.AreEqual(1000, u.GetUnitValue(Flux.Quantities.ElectricCurrentUnit.Milliampere));
       Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.ElectricCurrentUnit.Ampere));
-    }
-
-    [TestMethod]
-    public void Enplethy()
-    {
-      var u = new Flux.Quantities.AmountOfSubstance(1);
-
-      Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.AmountOfSubstanceUnit.Mole));
     }
 
     [TestMethod]
