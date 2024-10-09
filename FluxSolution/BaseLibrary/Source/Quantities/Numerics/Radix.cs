@@ -91,14 +91,14 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The <see cref="Radix.Value"/> property is a radix in the closed interval [<see cref="MinRadix"/>, <see cref="MaxRadix"/>].</para>
     /// </summary>
     public int Value => m_value;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

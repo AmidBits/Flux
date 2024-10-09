@@ -629,12 +629,13 @@ namespace ConsoleApp
       Write(typeof(IUnitValueQuantifiable<,>));
       Write(typeof(ISiUnitValueQuantifiable<,>));
 
+
+
       static void Write(System.Type type, params System.Type[] excludingTypes)
       {
-        var types = typeof(Flux.Locale).Assembly.DefinedTypes;
-        var exclusions = excludingTypes.SelectMany(type => type.GetDerivedTypes(types).Select(t => t.IsGenericTypeDefinition ? t.GetGenericTypeDefinition() : t));
-        var implementations = type.GetDerivedTypes(types).OrderBy(t => t.Name).Where(t => !exclusions.Contains(t)).ToList();
-        System.Console.WriteLine($"{type.Name} ({implementations.Count}) : {string.Join(", ", implementations.Select(i => i.Name))}");
+        var ofTypes = typeof(Flux.Locale).Assembly.DefinedTypes.ToList();
+        var derivedTypes = type.GetDerivedTypes(ofTypes).OrderBy(t => t.IsInterface).ThenBy(t => t.Name).ToList();
+        System.Console.WriteLine($"{type.Name} ({derivedTypes.Count}) : {string.Join(", ", derivedTypes.Select(i => i.Name))}");
         System.Console.WriteLine();
       }
 

@@ -174,14 +174,14 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => Angle.ToUnitString(AngleUnit.Degree, format, formatProvider);
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     ///  <para>The unit of the <see cref="Azimuth.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
     /// </summary>
     public double Value => m_angle.InDegrees;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

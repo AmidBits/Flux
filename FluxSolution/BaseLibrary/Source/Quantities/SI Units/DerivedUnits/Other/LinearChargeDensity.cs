@@ -1,0 +1,129 @@
+namespace Flux.Quantities
+{
+  public enum LinearChargeDensityUnit
+  {
+    /// <summary>This is the default unit for <see cref="LinearChargeDensity"/>.</summary>
+    CoulombPerMeter,
+  }
+
+  /// <summary>
+  /// <para>Linear mass density, unit of kilograms per meter.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Charge_density"/>
+  /// </summary>
+  /// <remarks>Dimensional relationship: <see cref="LinearChargeDensity"/>, <see cref="AreaDensity"/> and <see cref="Density"/>.</remarks>
+  public readonly record struct LinearChargeDensity
+    : System.IComparable, System.IComparable<LinearChargeDensity>, System.IFormattable, ISiUnitValueQuantifiable<double, LinearChargeDensityUnit>
+  {
+    private readonly double m_value;
+
+    public LinearChargeDensity(double value, LinearChargeDensityUnit unit = LinearChargeDensityUnit.CoulombPerMeter) => m_value = ConvertFromUnit(unit, value);
+
+    #region Static methods
+
+    #endregion // Static methods
+
+    #region Overloaded operators
+
+    public static bool operator <(LinearChargeDensity a, LinearChargeDensity b) => a.CompareTo(b) < 0;
+    public static bool operator <=(LinearChargeDensity a, LinearChargeDensity b) => a.CompareTo(b) <= 0;
+    public static bool operator >(LinearChargeDensity a, LinearChargeDensity b) => a.CompareTo(b) > 0;
+    public static bool operator >=(LinearChargeDensity a, LinearChargeDensity b) => a.CompareTo(b) >= 0;
+
+    public static LinearChargeDensity operator -(LinearChargeDensity v) => new(-v.m_value);
+    public static LinearChargeDensity operator +(LinearChargeDensity a, double b) => new(a.m_value + b);
+    public static LinearChargeDensity operator +(LinearChargeDensity a, LinearChargeDensity b) => a + b.m_value;
+    public static LinearChargeDensity operator /(LinearChargeDensity a, double b) => new(a.m_value / b);
+    public static LinearChargeDensity operator /(LinearChargeDensity a, LinearChargeDensity b) => a / b.m_value;
+    public static LinearChargeDensity operator *(LinearChargeDensity a, double b) => new(a.m_value * b);
+    public static LinearChargeDensity operator *(LinearChargeDensity a, LinearChargeDensity b) => a * b.m_value;
+    public static LinearChargeDensity operator %(LinearChargeDensity a, double b) => new(a.m_value % b);
+    public static LinearChargeDensity operator %(LinearChargeDensity a, LinearChargeDensity b) => a % b.m_value;
+    public static LinearChargeDensity operator -(LinearChargeDensity a, double b) => new(a.m_value - b);
+    public static LinearChargeDensity operator -(LinearChargeDensity a, LinearChargeDensity b) => a - b.m_value;
+
+    #endregion Overloaded operators
+
+    #region Implemented interfaces
+
+    // IComparable
+    public int CompareTo(object? other) => other is not null && other is LinearChargeDensity o ? CompareTo(o) : -1;
+
+    // IComparable<>
+    public int CompareTo(LinearChargeDensity other) => m_value.CompareTo(other.m_value);
+
+    // IFormattable
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(LinearChargeDensityUnit.CoulombPerMeter, format, formatProvider);
+
+    #region ISiUnitValueQuantifiable<>
+
+    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(LinearChargeDensityUnit.CoulombPerMeter, preferPlural);
+
+    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(LinearChargeDensityUnit.CoulombPerMeter, preferUnicode);
+
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+
+    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+
+    #endregion // ISiUnitValueQuantifiable<>
+
+    #region IUnitValueQuantifiable<>
+
+    private static double ConvertFromUnit(LinearChargeDensityUnit unit, double value)
+      => unit switch
+      {
+        LinearChargeDensityUnit.CoulombPerMeter => value,
+
+        _ => GetUnitFactor(unit) * value,
+      };
+
+    private static double ConvertToUnit(LinearChargeDensityUnit unit, double value)
+      => unit switch
+      {
+        LinearChargeDensityUnit.CoulombPerMeter => value,
+
+        _ => value / GetUnitFactor(unit),
+      };
+
+    public static double ConvertUnit(double value, LinearChargeDensityUnit from, LinearChargeDensityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
+
+    public static double GetUnitFactor(LinearChargeDensityUnit unit)
+      => unit switch
+      {
+        LinearChargeDensityUnit.CoulombPerMeter => 1,
+
+        _ => throw new System.NotImplementedException()
+      };
+
+    public string GetUnitName(LinearChargeDensityUnit unit, bool preferPlural)
+      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+
+    public string GetUnitSymbol(LinearChargeDensityUnit unit, bool preferUnicode)
+      => unit switch
+      {
+        LinearChargeDensityUnit.CoulombPerMeter => "C/m",
+
+        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
+      };
+
+    public double GetUnitValue(LinearChargeDensityUnit unit) => ConvertToUnit(unit, m_value);
+
+    public string ToUnitString(LinearChargeDensityUnit unit = LinearChargeDensityUnit.CoulombPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="LinearChargeDensity.Value"/> property is in <see cref="LinearChargeDensityUnit.KilogramPerCubicMeter"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
+
+    #endregion // Implemented interfaces
+
+    public override string ToString() => ToString(null, null);
+  }
+}

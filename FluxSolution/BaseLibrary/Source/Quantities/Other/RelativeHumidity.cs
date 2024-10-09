@@ -49,16 +49,16 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(RelativeHumidityUnit.Percent, format, formatProvider);
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The unit of the <see cref="RelativeHumidity.Value"/> property is in <see cref="RelativeHumidityUnit.Percent"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(RelativeHumidityUnit unit, double value)
       => unit switch
@@ -101,7 +101,7 @@ namespace Flux.Quantities
     public string ToUnitString(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

@@ -4,6 +4,7 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="MagneticFlux"/>.</summary>
     Weber,
+    Maxwell
   }
 
   /// <summary>Magnetic flux unit of weber.</summary>
@@ -47,15 +48,6 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    /// <para>The unit of the <see cref="MagneticFlux.Value"/> property is in <see cref="MagneticFluxUnit.Weber"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
     #region ISiUnitValueQuantifiable<>
 
     public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(MagneticFluxUnit.Weber, preferPlural);
@@ -69,7 +61,7 @@ namespace Flux.Quantities
 
     #endregion // ISiUnitValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(MagneticFluxUnit unit, double value)
       => unit switch
@@ -94,6 +86,8 @@ namespace Flux.Quantities
       {
         MagneticFluxUnit.Weber => 1,
 
+        MagneticFluxUnit.Maxwell => 1e8,
+
         _ => throw new System.NotImplementedException()
       };
 
@@ -103,7 +97,10 @@ namespace Flux.Quantities
     public string GetUnitSymbol(MagneticFluxUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.MagneticFluxUnit.Weber => preferUnicode ? "\u33DD" : "Wb",
+        MagneticFluxUnit.Weber => preferUnicode ? "\u33DD" : "Wb",
+
+        MagneticFluxUnit.Maxwell => "Mx",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -112,7 +109,16 @@ namespace Flux.Quantities
     public string ToUnitString(MagneticFluxUnit unit = MagneticFluxUnit.Weber, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="MagneticFlux.Value"/> property is in <see cref="MagneticFluxUnit.Weber"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion Implemented interfaces
 

@@ -68,14 +68,14 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " cent".ConvertUnitNameToPlural(m_value != 1);
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The <see cref="Cent.Value"/> property is a musical interval in cents.</para>
     /// </summary>
     public int Value => m_value;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

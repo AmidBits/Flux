@@ -55,15 +55,6 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(SurfaceTensionUnit.NewtonPerMeter, format, formatProvider);
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    /// <para>The unit of the <see cref="SurfaceTension.Value"/> property is in <see cref="SurfaceTensionUnit.NewtonPerMeter"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
     #region ISiUnitValueQuantifiable<>
 
     public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(SurfaceTensionUnit.NewtonPerMeter, preferPlural);
@@ -77,7 +68,7 @@ namespace Flux.Quantities
 
     #endregion // ISiUnitValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(SurfaceTensionUnit unit, double value)
       => unit switch
@@ -120,7 +111,16 @@ namespace Flux.Quantities
     public string ToUnitString(SurfaceTensionUnit unit = SurfaceTensionUnit.NewtonPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="SurfaceTension.Value"/> property is in <see cref="SurfaceTensionUnit.NewtonPerMeter"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

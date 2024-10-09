@@ -6,14 +6,15 @@
   {
     public static string ToSiFormattedString<TValue>(this TValue source, System.Globalization.CultureInfo? cultureInfo = null)
       where TValue : System.Numerics.INumber<TValue>
-    {
-      cultureInfo ??= System.Globalization.CultureInfo.CurrentCulture;
+      => $"{source}";
+    //{
+    //  cultureInfo ??= System.Globalization.CultureInfo.CurrentCulture;
 
-      var nfi = (System.Globalization.NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-      nfi.NumberGroupSeparator = UnicodeSpacing.ThinSpace.ToSpacingString();
+    //  var nfi = (System.Globalization.NumberFormatInfo)cultureInfo.NumberFormat.Clone();
+    //  nfi.NumberGroupSeparator = UnicodeSpacing.ThinSpace.ToSpacingString();
 
-      return source.ToString();//.ToString("#,0.#", nfi);
-    }
+    //  return source.ToString("#,0.#", nfi);
+    //}
 
     public static System.Collections.Generic.Dictionary<(Quantities.MetricPrefix, TUnit), string> ToStringsOfSiPrefixes<TValue, TUnit>(this Quantities.ISiUnitValueQuantifiable<TValue, TUnit> source, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       where TValue : struct, System.Numerics.INumber<TValue>

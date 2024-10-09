@@ -192,15 +192,6 @@ namespace Flux
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
-      #region IQuantifiable<>
-
-      /// <summary>
-      /// <para>The unit of the <see cref="Time.Value"/> property is in <see cref="TimeUnit.Second"/>.</para>
-      /// </summary>
-      public double Value => m_value;
-
-      #endregion // IQuantifiable<>
-
       #region ISiUnitValueQuantifiable<>
 
       public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(TimeUnit.Second, preferPlural);
@@ -214,7 +205,7 @@ namespace Flux
 
       #endregion // ISiUnitValueQuantifiable<>
 
-      #region IUnitQuantifiable<>
+      #region IUnitValueQuantifiable<>
 
       private static double ConvertFromUnit(TimeUnit unit, double value)
         => unit switch
@@ -274,7 +265,16 @@ namespace Flux
       public string ToUnitString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
         => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-      #endregion // IUnitQuantifiable<>
+      #endregion // IUnitValueQuantifiable<>
+
+      #region IValueQuantifiable<>
+
+      /// <summary>
+      /// <para>The unit of the <see cref="Time.Value"/> property is in <see cref="TimeUnit.Second"/>.</para>
+      /// </summary>
+      public double Value => m_value;
+
+      #endregion // IValueQuantifiable<>
 
       #endregion // Implemented interfaces
 

@@ -25,7 +25,7 @@ namespace Flux.Quantities
     /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>
     /// <param name="voltage"></param>
     /// <param name="current"></param>
-    public static ElectricalResistance From(Voltage voltage, ElectricCurrent current) => new(voltage.Value / current.Value);
+    public static ElectricalResistance From(ElectricPotential voltage, ElectricCurrent current) => new(voltage.Value / current.Value);
 
     /// <summary>Converts resistor values as if in parallel configuration.</summary>
     public static ElectricalResistance FromParallelResistors(params double[] resistors)
@@ -78,15 +78,6 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    /// <para>The unit of the <see cref="ElectricalResistance.Value"/> property is in <see cref="ElectricalResistanceUnit.Ohm"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
     #region ISiUnitValueQuantifiable<>
 
     public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricalResistanceUnit.Ohm, preferPlural);
@@ -100,7 +91,7 @@ namespace Flux.Quantities
 
     #endregion // ISiUnitValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(ElectricalResistanceUnit unit, double value)
       => unit switch
@@ -144,7 +135,16 @@ namespace Flux.Quantities
     public string ToUnitString(ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="ElectricalResistance.Value"/> property is in <see cref="ElectricalResistanceUnit.Ohm"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

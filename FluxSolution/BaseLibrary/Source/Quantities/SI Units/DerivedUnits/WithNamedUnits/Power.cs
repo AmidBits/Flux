@@ -4,8 +4,8 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Power"/>.</summary>
     Watt,
-    KiloWatt,
-    MegaWatt,
+    //KiloWatt,
+    //MegaWatt,
   }
 
   /// <summary>Power unit of watt.</summary>
@@ -20,7 +20,7 @@ namespace Flux.Quantities
     /// <summary>Creates a new Power instance from the specified <paramref name="current"/> and <paramref name="voltage"/>.</summary>
     /// <param name="current"></param>
     /// <param name="voltage"></param>
-    public Power(ElectricCurrent current, Voltage voltage) : this(current.Value * voltage.Value) { }
+    public Power(ElectricCurrent current, ElectricPotential voltage) : this(current.Value * voltage.Value) { }
 
     #region Static methods
 
@@ -58,15 +58,6 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    /// <para>The unit of the <see cref="Power.Value"/> property is in <see cref="PowerUnit.Watt"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
     #region ISiUnitValueQuantifiable<>
 
     public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(PowerUnit.Watt, preferPlural);
@@ -80,7 +71,7 @@ namespace Flux.Quantities
 
     #endregion // ISiUnitValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(PowerUnit unit, double value)
       => unit switch
@@ -114,9 +105,11 @@ namespace Flux.Quantities
     public string GetUnitSymbol(PowerUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.PowerUnit.Watt => "W",
-        Quantities.PowerUnit.KiloWatt => preferUnicode ? "\u33BE" : "kW",
-        Quantities.PowerUnit.MegaWatt => preferUnicode ? "\u33BF" : "MW",
+        PowerUnit.Watt => "W",
+
+        //PowerUnit.KiloWatt => preferUnicode ? "\u33BE" : "kW",
+        //PowerUnit.MegaWatt => preferUnicode ? "\u33BF" : "MW",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -125,7 +118,16 @@ namespace Flux.Quantities
     public string ToUnitString(PowerUnit unit = PowerUnit.Watt, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="Power.Value"/> property is in <see cref="PowerUnit.Watt"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

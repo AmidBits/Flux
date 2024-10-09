@@ -17,7 +17,7 @@ namespace Units
     public void AmplitudeRatio()
     {
       Assert.AreEqual(1.1220184543019633, Flux.Quantities.AmplitudeRatio.FromDecibelChange(1).Value);
-      Assert.AreEqual(29.999237311923803, Flux.Quantities.AmplitudeRatio.From(new Flux.Quantities.Voltage(31.62), new Flux.Quantities.Voltage(1)).Value);
+      Assert.AreEqual(29.999237311923803, Flux.Quantities.AmplitudeRatio.From(new Flux.Quantities.ElectricPotential(31.62), new Flux.Quantities.ElectricPotential(1)).Value);
     }
 
     [TestMethod]

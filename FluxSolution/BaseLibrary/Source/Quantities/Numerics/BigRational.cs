@@ -836,11 +836,11 @@ namespace Flux
         ? $"{wholeNumber} {RatioDisplay.AslashB.ToRatioString(properNumerator, properDenominator, format, formatProvider)}"
         : m_numerator.ToString(); // It is a whole number and we return a simple integer string.
 
-      #region IQuantifiable<>
+      #region IValueQuantifiable<>
 
       public double Value => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);
 
-      #endregion // IQuantifiable<>
+      #endregion // IValueQuantifiable<>
 
       #endregion // Implemented interfaces
 

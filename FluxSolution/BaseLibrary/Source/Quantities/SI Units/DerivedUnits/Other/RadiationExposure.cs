@@ -48,15 +48,6 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(RadiationExposureUnit.CoulombPerKilogram, format, formatProvider);
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    /// <para>The unit of the <see cref="RadiationExposure.Value"/> property is in <see cref="RadiationExposureUnit.CoulombPerKilogram"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
     #region ISiUnitValueQuantifiable<>
 
     public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(RadiationExposureUnit.CoulombPerKilogram, preferPlural);
@@ -70,7 +61,7 @@ namespace Flux.Quantities
 
     #endregion // ISiUnitValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(RadiationExposureUnit unit, double value)
       => unit switch
@@ -114,7 +105,16 @@ namespace Flux.Quantities
     public string ToUnitString(RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion IUnitQuantifiable<>
+    #endregion IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="RadiationExposure.Value"/> property is in <see cref="RadiationExposureUnit.CoulombPerKilogram"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion Implemented interfaces
 

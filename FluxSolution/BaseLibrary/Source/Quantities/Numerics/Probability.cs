@@ -289,14 +289,14 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The <see cref="Probability.Value"/> property is a value of the closed interval of probability [<see cref="MinValue"/>, <see cref="MaxValue"/>].</para>
     /// </summary>
     public double Value => m_value;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

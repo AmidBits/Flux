@@ -55,16 +55,16 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(AbsoluteHumidityUnit.GramsPerCubicMeter, format, formatProvider);
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The unit of the <see cref="AbsoluteHumidity.Value"/> property is in <see cref="AbsoluteHumidityUnit.GramsPerCubicMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(AbsoluteHumidityUnit unit, double value)
       => unit switch
@@ -107,7 +107,7 @@ namespace Flux.Quantities
     public string ToUnitString(AbsoluteHumidityUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
 
     #endregion Implemented interfaces
 

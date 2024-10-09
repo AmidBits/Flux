@@ -4,7 +4,7 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Volume"/>.</summary>
     CubicMeter,
-    //Microliter,
+    Microliter,
     Milliliter,
     Centiliter,
     Deciliter,
@@ -38,25 +38,6 @@ namespace Flux.Quantities
     private readonly double m_value;
 
     public Volume(double value, VolumeUnit unit = VolumeUnit.CubicMeter) => m_value = ConvertFromUnit(unit, value);
-    //=> m_value = unit switch
-    //{
-    //  VolumeUnit.Milliliter => value / 1000000,
-    //  VolumeUnit.Centiliter => value / 100000,
-    //  VolumeUnit.Deciliter => value / 10000,
-    //  VolumeUnit.Liter => value / 1000,
-    //  VolumeUnit.UKGallon => value * 0.004546,
-    //  VolumeUnit.UKQuart => value / 879.87699319635,
-    //  VolumeUnit.USDryGallon => value * 0.0044,
-    //  VolumeUnit.USLiquidGallon => value * 0.003785,
-    //  VolumeUnit.USDryQuart => value / 0.00110122095, // Approximate.
-    //  VolumeUnit.USLiquidQuart => value / 0.00094635295, // Approximate.
-    //  VolumeUnit.CubicFoot => value / (1953125000.0 / 55306341.0),
-    //  VolumeUnit.CubicYard => value / (1953125000.0 / 1493271207.0),
-    //  VolumeUnit.CubicMeter => value,
-    //  VolumeUnit.CubicMile => value * (8140980127813632.0 / 1953125.0),// 
-    //  VolumeUnit.CubicKilometer => value * 1e9,
-    //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-    //};
 
     #region Static methods
 
@@ -109,15 +90,6 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(VolumeUnit.CubicMeter, format, formatProvider);
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    ///  <para>The unit of the <see cref="Volume.Value"/> property is in <see cref="VolumeUnit.CubicMeter"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
     #region ISiUnitValueQuantifiable<>
 
     public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => GetUnitName(VolumeUnit.CubicMeter, preferPlural).Insert(5, prefix.GetPrefixName());
@@ -131,7 +103,7 @@ namespace Flux.Quantities
 
     #endregion // ISiUnitValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(VolumeUnit unit, double value)
       => unit switch
@@ -156,9 +128,10 @@ namespace Flux.Quantities
       {
         VolumeUnit.CubicMeter => 1,
 
-        VolumeUnit.Milliliter => throw new NotImplementedException(),
-        VolumeUnit.Centiliter => throw new NotImplementedException(),
-        VolumeUnit.Deciliter => throw new NotImplementedException(),
+        VolumeUnit.Microliter => 1000000000,
+        VolumeUnit.Milliliter => 1000000,
+        VolumeUnit.Centiliter => 100000,
+        VolumeUnit.Deciliter => 10000,
         VolumeUnit.Liter => 1000,
         VolumeUnit.UKGallon => 219.96924829909,
         VolumeUnit.UKQuart => 879.87699319635,
@@ -182,7 +155,7 @@ namespace Flux.Quantities
       {
         VolumeUnit.CubicMeter => preferUnicode ? "\u33A5" : "m³",
 
-        //Units.VolumeUnit.Microliter => preferUnicode ? "\u3395" : "µl",
+        VolumeUnit.Microliter => preferUnicode ? "\u3395" : "µl",
         VolumeUnit.Milliliter => preferUnicode ? "\u3396" : "ml",
         VolumeUnit.Centiliter => "cl",
         VolumeUnit.Deciliter => preferUnicode ? "\u3397" : "dl",
@@ -206,7 +179,16 @@ namespace Flux.Quantities
     public string ToUnitString(VolumeUnit unit = VolumeUnit.CubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    ///  <para>The unit of the <see cref="Volume.Value"/> property is in <see cref="VolumeUnit.CubicMeter"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

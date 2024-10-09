@@ -69,14 +69,14 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => RatioDisplay.AcolonB.ToRatioString(m_numerator, m_denominator, format, formatProvider);
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The <see cref="Radio.Value"/> property is the ratio between <see cref="Numerator"/> and <see cref="Denominator"/>, i.e. <see cref="Numerator"/>/<see cref="Denominator"/>.</para>
     /// </summary>
     public double Value => m_numerator / m_denominator;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

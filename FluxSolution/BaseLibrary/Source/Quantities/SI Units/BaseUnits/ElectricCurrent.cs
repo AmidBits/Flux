@@ -30,12 +30,12 @@ namespace Flux.Quantities
     /// <summary>Creates a new ElectricCurrent instance from power and voltage.</summary>
     /// <param name="power"></param>
     /// <param name="voltage"></param>
-    public static ElectricCurrent From(Power power, Voltage voltage) => new(power.Value / voltage.Value);
+    public static ElectricCurrent From(Power power, ElectricPotential voltage) => new(power.Value / voltage.Value);
 
     /// <summary>Creates a new ElectricCurrent instance from voltage and resistance.</summary>
     /// <param name="voltage"></param>
     /// <param name="resistance"></param>
-    public static ElectricCurrent From(Voltage voltage, ElectricalResistance resistance) => new(voltage.Value / resistance.Value);
+    public static ElectricCurrent From(ElectricPotential voltage, ElectricalResistance resistance) => new(voltage.Value / resistance.Value);
 
     #endregion // Static methods
 
@@ -71,15 +71,6 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    /// <para>The unit of the <see cref="ElectricCurrent.Value"/> property is in <see cref="ElectricCurrentUnit.Ampere"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
     #region ISiPrefixValueQuantifiable<>
 
     public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricCurrentUnit.Ampere, preferPlural);
@@ -93,7 +84,7 @@ namespace Flux.Quantities
 
     #endregion // ISiPrefixValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(ElectricCurrentUnit unit, double value)
       => unit switch
@@ -137,7 +128,16 @@ namespace Flux.Quantities
     public string ToUnitString(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="ElectricCurrent.Value"/> property is in <see cref="ElectricCurrentUnit.Ampere"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

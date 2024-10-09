@@ -76,14 +76,14 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " semitone".ConvertUnitNameToPlural(m_value != 1);
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The <see cref="Semitone.Value"/> property is a musical interval in semitones.</para>
     /// </summary>
     public int Value => m_value;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
     #endregion Implemented interfaces
 

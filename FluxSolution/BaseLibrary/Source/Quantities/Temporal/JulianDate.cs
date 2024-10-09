@@ -112,10 +112,10 @@ namespace Flux
         totalSeconds -= second;
 
         var millisecond = (int)(totalSeconds * 1000);
-        totalSeconds -= millisecond;
+        totalSeconds -= millisecond / 1000d;
 
         var microsecond = (int)(totalSeconds * 1000000);
-        totalSeconds -= microsecond;
+        totalSeconds -= microsecond / 1000000d;
 
         var nanosecond = (int)(totalSeconds * 1000000000);
 
@@ -173,14 +173,14 @@ namespace Flux
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider) => $"{ToJulianDayNumber().ToDateString(GetConversionCalendar())}, {ToTimeString()} (JD = {m_value})";
 
-      #region IQuantifiable<>
+      #region IValueQuantifiable<>
 
       /// <summary>
       /// <para>The <see cref="JulianDate.Value"/> property is the Julian date.</para>
       /// </summary>
       public double Value => m_value;
 
-      #endregion // IQuantifiable<>
+      #endregion // IValueQuantifiable<>
 
       #endregion // Implemented interfaces
 

@@ -78,11 +78,22 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+
+      var mf = new Flux.Quantities.MagneticFlux(1, MagneticFluxUnit.Weber);
+      var mfv = mf.GetUnitValue(MagneticFluxUnit.Maxwell);
+
+
+      var str = "Robert Hugo";
+
+      var span = new Span<char>(str.ToCharArray());
+
+      var str2 = str.LetterAtToLowerInvariant(7);
 
       var flow = new Flux.Quantities.Flow(12345678987654321, FlowUnit.CubicMeterPerSecond);
-      var cmps = flow.ToSiUnitString(MetricPrefix.Unprefixed);
-      var cmmps = flow.ToSiUnitString(MetricPrefix.Kilo);
+      var cmps = flow.ToSiUnitString(MetricPrefix.Unprefixed, true);
+      var cmmps = flow.ToSiUnitString(MetricPrefix.Kilo, true);
 
       var tc = Flux.Quantities.Time.ConvertSecondsToSubSecondParts(1234567899.876543);
       var mc = Flux.Quantities.Time.ConvertTotalSubSecondUnitToSubSecondParts(MetricPrefix.Micro, 1234567899876543);

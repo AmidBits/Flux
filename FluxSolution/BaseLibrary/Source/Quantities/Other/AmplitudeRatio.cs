@@ -29,7 +29,7 @@ namespace Flux.Quantities
     /// <param name="numerator"></param>
     /// <param name="denominator"></param>
     /// <returns></returns>
-    public static AmplitudeRatio From(Voltage numerator, Voltage denominator) => new(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
+    public static AmplitudeRatio From(ElectricPotential numerator, ElectricPotential denominator) => new(ScalingFactor * System.Math.Log10(numerator.Value / denominator.Value));
 
     /// <summary>
     /// <para>Creates a new AmplitudeRatio instance from the specified decibel change (i.e. a decibel interval).</para>
@@ -70,16 +70,16 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(AmplitudeRatioUnit.DecibelVolt, format, formatProvider);
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The unit of the <see cref="AmplitudeRatio.Value"/> property is in <see cref="AmplitudeRatioUnit.DecibelVolt"/>.</para>
     /// </summary>
     public double Value => m_value;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(AmplitudeRatioUnit unit, double value)
       => unit switch
@@ -122,7 +122,7 @@ namespace Flux.Quantities
     public string ToUnitString(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

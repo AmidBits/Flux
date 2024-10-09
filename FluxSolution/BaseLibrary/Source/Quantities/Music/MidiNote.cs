@@ -191,7 +191,7 @@ namespace Flux.Quantities
     /// <see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/>
     public string ToString(string? format, System.IFormatProvider? formatProvider) => $"{ToScientificPitchNotationString(false)}{Octave}";
 
-    // IQuantifiable<>
+    // IValueQuantifiable<>
     /// <summary>
     /// <para>The <see cref="MidiNote.Value"/> property is a MIDI note number of the closed interval [<see cref="MinValue"/>, <see cref="MaxValue"/>].</para>
     /// </summary>

@@ -119,14 +119,14 @@ namespace Flux.Quantities
         : m_angle.ToUnitString(AngleUnit.Degree, format, formatProvider)
       : ToSexagesimalDegreeString();
 
-    #region IQuantifiable<>
+    #region IValueQuantifiable<>
 
     /// <summary>
     ///  <para>The unit of the <see cref="Latitude.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
     /// </summary>
     public double Value => m_angle.InDegrees;
 
-    #endregion // IQuantifiable<>
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

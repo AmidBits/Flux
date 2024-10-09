@@ -6,7 +6,7 @@ namespace Flux.Quantities
     AmperePerMeter
   }
 
-  /// <summary>Magnetic flux strength (H), unit of ampere per meter.</summary>
+  /// <summary>Magnetic flux strength (H), unit of ampere-per-meter.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Magnetic_field"/>
   public readonly record struct MagneticFluxStrength
     : System.IComparable, System.IComparable<MagneticFluxStrength>, System.IFormattable, ISiUnitValueQuantifiable<double, MagneticFluxStrengthUnit>
@@ -49,15 +49,6 @@ namespace Flux.Quantities
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(MagneticFluxStrengthUnit.AmperePerMeter, format, formatProvider);
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    /// <para>The unit of the <see cref="MagneticFluxStrength.Value"/> property is in <see cref="MagneticFluxStrengthUnit.AmperePerMeter"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
     #region ISiUnitValueQuantifiable<>
 
     public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(MagneticFluxStrengthUnit.AmperePerMeter, preferPlural);
@@ -71,7 +62,7 @@ namespace Flux.Quantities
 
     #endregion // ISiUnitValueQuantifiable<>
 
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(MagneticFluxStrengthUnit unit, double value)
       => unit switch
@@ -114,7 +105,16 @@ namespace Flux.Quantities
     public string ToUnitString(MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="MagneticFluxStrength.Value"/> property is in <see cref="MagneticFluxStrengthUnit.AmperePerMeter"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

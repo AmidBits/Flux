@@ -4,9 +4,6 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Capacitance"/>.</summary>
     Farad,
-    MicroFarad,
-    NanoFarad,
-    PicoFarad,
   }
 
   /// <summary>Electrical capacitance unit of Farad.</summary>
@@ -16,15 +13,7 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Capacitance(double value, CapacitanceUnit unit = CapacitanceUnit.Farad)
-      => m_value = unit switch
-      {
-        CapacitanceUnit.Farad => value,
-        CapacitanceUnit.MicroFarad => value * 1000000,
-        CapacitanceUnit.NanoFarad => value * 1000000000,
-        CapacitanceUnit.PicoFarad => value * 1000000000000,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Capacitance(double value, CapacitanceUnit unit = CapacitanceUnit.Farad) => m_value = ConvertFromUnit(unit, value);
 
     #region Overloaded operators
 
@@ -71,16 +60,7 @@ namespace Flux.Quantities
 
     #endregion // ISiUnitValueQuantifiable<>
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    /// <para>The unit of the <see cref="Capacitance.Value"/> property is in <see cref="CapacitanceUnit.Farad"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
-    #region IUnitQuantifiable<>
+    #region IUnitValueQuantifiable<>
 
     private static double ConvertFromUnit(CapacitanceUnit unit, double value)
       => unit switch
@@ -105,10 +85,6 @@ namespace Flux.Quantities
       {
         CapacitanceUnit.Farad => 1,
 
-        CapacitanceUnit.MicroFarad => 1000000,
-        CapacitanceUnit.NanoFarad => 1000000000,
-        CapacitanceUnit.PicoFarad => 1000000000000,
-
         _ => throw new System.NotImplementedException()
       };
 
@@ -118,9 +94,7 @@ namespace Flux.Quantities
       => unit switch
       {
         Quantities.CapacitanceUnit.Farad => "F",
-        Quantities.CapacitanceUnit.MicroFarad => preferUnicode ? "\u338C" : "\u00B5F",
-        Quantities.CapacitanceUnit.NanoFarad => preferUnicode ? "\u338B" : "nF",
-        Quantities.CapacitanceUnit.PicoFarad => preferUnicode ? "\u338A" : "pF",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -129,7 +103,16 @@ namespace Flux.Quantities
     public string ToUnitString(CapacitanceUnit unit = CapacitanceUnit.Farad, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    /// <para>The unit of the <see cref="Capacitance.Value"/> property is in <see cref="CapacitanceUnit.Farad"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

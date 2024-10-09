@@ -213,7 +213,7 @@ namespace Units
     [TestMethod]
     public void Activity()
     {
-      var u = new Flux.Quantities.Activity(1);
+      var u = new Flux.Quantities.Radioactivity(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -249,7 +249,7 @@ namespace Units
     [TestMethod]
     public void Voltage()
     {
-      var u = new Flux.Quantities.Voltage(1);
+      var u = new Flux.Quantities.ElectricPotential(1);
 
       Assert.AreEqual(1, u.Value);
     }

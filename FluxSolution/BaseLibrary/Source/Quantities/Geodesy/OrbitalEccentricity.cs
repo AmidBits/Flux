@@ -71,7 +71,7 @@ namespace Flux
       public string ToString(string? format, System.IFormatProvider? formatProvider)
         => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
 
-      // IQuantifiable<>
+      // IValueQuantifiable<>
       ///// <summary>
       ///// <para>The <see cref="Eccentricity.Value"/> property is dimensionless.</para>
       ///// </summary>

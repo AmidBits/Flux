@@ -46,14 +46,14 @@
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider) => GetType().Name + m_value.ToString(format ?? "N2", formatProvider);
 
-      #region IQuantifiable<>
+      #region IValueQuantifiable<>
 
       /// <summary>
       /// <para>The <see cref="Currency.Value"/> property is the ultraviolet index.</para>
       /// </summary>
       public decimal Value => m_value;
 
-      #endregion // IQuantifiable<>
+      #endregion // IValueQuantifiable<>
 
       #endregion // Implemented interfaces
 

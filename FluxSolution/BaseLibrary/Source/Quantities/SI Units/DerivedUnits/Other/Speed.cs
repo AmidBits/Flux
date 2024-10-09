@@ -79,15 +79,6 @@ namespace Flux.Quantities
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => ToUnitValueSymbolString(SpeedUnit.MeterPerSecond, format, formatProvider);
 
-    #region IQuantifiable<>
-
-    /// <summary>
-    ///  <para>The unit of the <see cref="Speed.Value"/> property is in <see cref="SpeedUnit.MeterPerSecond"/>.</para>
-    /// </summary>
-    public double Value => m_value;
-
-    #endregion // IQuantifiable<>
-
     #region ISiUnitValueQuantifiable<>
 
     public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(SpeedUnit.MeterPerSecond, preferPlural);
@@ -203,7 +194,16 @@ namespace Flux.Quantities
       return sb.ToString();
     }
 
-    #endregion // IUnitQuantifiable<>
+    #endregion // IUnitValueQuantifiable<>
+
+    #region IValueQuantifiable<>
+
+    /// <summary>
+    ///  <para>The unit of the <see cref="Speed.Value"/> property is in <see cref="SpeedUnit.MeterPerSecond"/>.</para>
+    /// </summary>
+    public double Value => m_value;
+
+    #endregion // IValueQuantifiable<>
 
     #endregion // Implemented interfaces
 

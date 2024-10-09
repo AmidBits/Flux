@@ -197,14 +197,14 @@ namespace Flux
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider) => ToDateString(GetConversionCalendar()) + $" (JDN = {m_value})";
 
-      #region IQuantifiable<>
+      #region IValueQuantifiable<>
 
       /// <summary>
       /// <para>The <see cref="JulianDayNumber.Value"/> property is the Julian day number.</para>
       /// </summary>
       public int Value => m_value;
 
-      #endregion // IQuantifiable<>
+      #endregion // IValueQuantifiable<>
 
       #endregion // Implemented interfaces
 

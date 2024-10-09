@@ -571,15 +571,6 @@
       // IFormattable
       public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
-      #region IQuantifiable<>
-
-      /// <summary>
-      /// <para>The unit of the <see cref="Angle.Value"/> property is in <see cref="AngleUnit.Radian"/>.</para>
-      /// </summary>
-      public double Value => m_value;
-
-      #endregion // IQuantifiable<>
-
       #region ISiUnitValueQuantifiable<>
 
       public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(AngleUnit.Radian, preferPlural);
@@ -593,7 +584,7 @@
 
       #endregion // ISiUnitValueQuantifiable<>
 
-      #region IUnitQuantifiable<>
+      #region IUnitValueQuantifiable<>
 
       private static double ConvertFromUnit(AngleUnit unit, double value)
         => unit switch
@@ -678,7 +669,16 @@
           : (unit.HasUnitSpacing(true) ? UnicodeSpacing.Space : UnicodeSpacing.None).ToSpacingString() + GetUnitSymbol(unit, true)
         );
 
-      #endregion // IUnitQuantifiable<>
+      #endregion // IUnitValueQuantifiable<>
+
+      #region IValueQuantifiable<>
+
+      /// <summary>
+      /// <para>The unit of the <see cref="Angle.Value"/> property is in <see cref="AngleUnit.Radian"/>.</para>
+      /// </summary>
+      public double Value => m_value;
+
+      #endregion // IValueQuantifiable<>
 
       #endregion // Implemented interfaces
 
