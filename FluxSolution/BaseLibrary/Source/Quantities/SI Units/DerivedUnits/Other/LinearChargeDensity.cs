@@ -18,6 +18,8 @@ namespace Flux.Quantities
 
     public LinearChargeDensity(double value, LinearChargeDensityUnit unit = LinearChargeDensityUnit.CoulombPerMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public LinearChargeDensity(MetricPrefix prefix, double coulombPerMeter) => m_value = prefix.ConvertTo(coulombPerMeter, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     #endregion // Static methods

@@ -45,7 +45,7 @@ namespace Text
     public void CountEqualAtEnd()
     {
       var expected = 3;
-      var actual = new System.Text.StringBuilder("Robert").CommonSuffixLength("Rupert");
+      var actual = new System.Text.StringBuilder("Robert").EndMatchLength("Rupert");
       Assert.AreEqual(expected, actual);
     }
 
@@ -53,7 +53,7 @@ namespace Text
     public void CountEqualAtStart()
     {
       var expected = 2;
-      var actual = new System.Text.StringBuilder("Robert").CommonPrefixLength("Rommel");
+      var actual = new System.Text.StringBuilder("Robert").StartMatchLength("Rommel");
       Assert.AreEqual(expected, actual);
     }
 
@@ -121,7 +121,7 @@ namespace Text
     public void IndexOfAny1()
     {
       var expected = 3;
-      var actual = new System.Text.StringBuilder("Robert Serious").IndexOfAny(new char[] { 'e', 'r' });
+      var actual = new System.Text.StringBuilder("Robert Serious").IndexOfAny(null, new char[] { 'e', 'r' });
       Assert.AreEqual(expected, actual);
     }
 
@@ -129,15 +129,15 @@ namespace Text
     public void IndexOfAny2()
     {
       var expected = 1;
-      var actual = new System.Text.StringBuilder("Robert Serious").IndexOfAny(new string[] { "er", "o" });
+      var actual = new System.Text.StringBuilder("Robert Serious").IndexOfAny(null, new string[] { "er", "o" });
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void IndicesOfAny()
     {
-      var expected = new System.Collections.Generic.Dictionary<char, int>() { { 'e', 3 }, { 't', 5 }, { 'r', 4 } };
-      var actual = new System.Text.StringBuilder("Robert Serious").IndicesOfAny(new char[] { 'e', 't', 'r' }).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+      var expected = new System.Collections.Generic.Dictionary<char, int>() { { 'e', 3 }, { 'r', 4 }, { 't', 5 } };
+      var actual = new System.Text.StringBuilder("Robert Serious").CreateIndexMap().Where(kvp => kvp.Key == 'e' || kvp.Key == 'r' || kvp.Key == 't').Select(kvp => new System.Collections.Generic.KeyValuePair<char, int>(kvp.Key, kvp.Value.First())).ToList();
       CollectionAssert.AreEquivalent(expected.OrderBy(kvp => kvp.Key).ToArray(), actual.OrderBy(kvp => kvp.Key).ToArray());
     }
 
@@ -152,7 +152,7 @@ namespace Text
     [TestMethod]
     public void IsPalindrome()
     {
-      var palindrome = new System.Text.StringBuilder(@"Poor Dan is in a droop").RemoveAll(char.IsWhiteSpace).ToLowerCase();
+      var palindrome = new System.Text.StringBuilder(@"Poor Dan is in a droop").RemoveAll(char.IsWhiteSpace).ToLower();
       var expected = true;
       var actual = palindrome.IsPalindrome();
       Assert.AreEqual(expected, actual);
@@ -170,7 +170,7 @@ namespace Text
     public void LastIndexOfAny1()
     {
       var expected = 9;
-      var actual = new System.Text.StringBuilder("Robert Serious").LastIndexOfAny(new char[] { 'e', 'r' });
+      var actual = new System.Text.StringBuilder("Robert Serious").LastIndexOfAny(null, new char[] { 'e', 'r' });
       Assert.AreEqual(expected, actual);
     }
 
@@ -178,15 +178,15 @@ namespace Text
     public void LastIndexOfAny2()
     {
       var expected = 11;
-      var actual = new System.Text.StringBuilder("Robert Serious").LastIndexOfAny(new string[] { "er", "o" });
+      var actual = new System.Text.StringBuilder("Robert Serious").LastIndexOfAny(null, new string[] { "er", "o" });
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void LastIndicesOfAny()
     {
-      var expected = new System.Collections.Generic.Dictionary<char, int>() { { 'e', 8 }, { 't', 5 }, { 'r', 9 } };
-      var actual = new System.Text.StringBuilder("Robert Serious").LastIndicesOfAny(new char[] { 'e', 't', 'r' }).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+      var expected = new System.Collections.Generic.Dictionary<char, int>() { { 'e', 8 }, { 'r', 9 }, { 't', 5 } };
+      var actual = new System.Text.StringBuilder("Robert Serious").CreateIndexMap().Where(kvp => kvp.Key == 'e' || kvp.Key == 'r' || kvp.Key == 't').Select(kvp => new System.Collections.Generic.KeyValuePair<char, int>(kvp.Key, kvp.Value.Last())).ToList();
       CollectionAssert.AreEquivalent(expected.OrderBy(kvp => kvp.Key).ToArray(), actual.OrderBy(kvp => kvp.Key).ToArray());
     }
 
@@ -309,7 +309,7 @@ namespace Text
     public void ToLowerCase()
     {
       var expected = @"robert hugo";
-      var actual = new System.Text.StringBuilder(@"Robert Hugo").ToLowerCase().ToString();
+      var actual = new System.Text.StringBuilder(@"Robert Hugo").ToLower().ToString();
       Assert.AreEqual(expected, actual);
     }
 
@@ -317,7 +317,7 @@ namespace Text
     public void ToUpperCase()
     {
       var expected = @"ROBERT HUGO";
-      var actual = new System.Text.StringBuilder(@"Robert Hugo").ToUpperCase().ToString();
+      var actual = new System.Text.StringBuilder(@"Robert Hugo").ToUpper().ToString();
       Assert.AreEqual(expected, actual);
     }
   }

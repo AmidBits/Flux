@@ -19,6 +19,8 @@ namespace Flux.Quantities
 
     public Density(double value, DensityUnit unit = DensityUnit.KilogramPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public Density(MetricPrefix prefix, double gramPerCubicMeter) => m_value = prefix.ConvertTo(gramPerCubicMeter, MetricPrefix.Unprefixed);
+
     public Density(Mass mass, Volume volume) : this(mass.Value / volume.Value) { }
 
     #region Static methods

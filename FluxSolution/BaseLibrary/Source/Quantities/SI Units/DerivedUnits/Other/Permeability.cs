@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public Permeability(double value, PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public Permeability(MetricPrefix prefix, double henryPerMeter) => m_value = prefix.ConvertTo(henryPerMeter, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(Permeability a, Permeability b) => a.CompareTo(b) < 0;

@@ -46,19 +46,8 @@
       private readonly double m_value;
 
       public Angle(double value, AngleUnit unit = AngleUnit.Radian) => m_value = ConvertFromUnit(unit, value);
-      //=> m_angle = unit switch
-      //{
-      //  AngleUnit.Arcminute => ConvertArcminuteToRadian(value),
-      //  AngleUnit.Arcsecond => ConvertArcsecondToRadian(value),
-      //  AngleUnit.Degree => ConvertDegreeToRadian(value),
-      //  AngleUnit.Gradian => ConvertGradianToRadian(value),
-      //  AngleUnit.NatoMil => ConvertNatoMilToRadian(value),
-      //  AngleUnit.Milliradian => ConvertMilliradianToRadian(value),
-      //  AngleUnit.Radian => value,
-      //  AngleUnit.Turn => ConvertTurnToRadian(value),
-      //  AngleUnit.WarsawPactMil => ConvertWarsawPactMilToRadian(value),
-      //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      //};
+
+      public Angle(MetricPrefix prefix, double radian) => m_value = prefix.ConvertTo(radian, MetricPrefix.Unprefixed);
 
       public double InDegrees => double.RadiansToDegrees(m_value);
 
@@ -623,7 +612,7 @@
         {
           AngleUnit.Radian => 1,
 
-          AngleUnit.Milliradian => 1000,
+          AngleUnit.Milliradian => 0.001,
           AngleUnit.Turn => double.Tau,
 
           _ => throw new System.NotImplementedException()

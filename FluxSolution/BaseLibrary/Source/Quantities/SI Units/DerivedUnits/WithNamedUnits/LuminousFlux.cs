@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public LuminousFlux(double value, LuminousFluxUnit unit = LuminousFluxUnit.Lumen) => m_value = ConvertFromUnit(unit, value);
 
+    public LuminousFlux(MetricPrefix prefix, double lumen) => m_value = prefix.ConvertTo(lumen, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(LuminousFlux a, LuminousFlux b) => a.CompareTo(b) < 0;

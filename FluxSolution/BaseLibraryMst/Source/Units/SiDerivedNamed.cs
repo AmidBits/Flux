@@ -32,7 +32,7 @@ namespace Units
       Assert.AreEqual(648000, u.GetUnitValue(Flux.Quantities.AngleUnit.Arcsecond));
       Assert.AreEqual(180, u.GetUnitValue(Flux.Quantities.AngleUnit.Degree));
       Assert.AreEqual(200, u.GetUnitValue(Flux.Quantities.AngleUnit.Gradian));
-      Assert.AreEqual(0.0031415926535897933, u.GetUnitValue(Flux.Quantities.AngleUnit.Milliradian));
+      Assert.AreEqual(3141.592653589793, u.GetUnitValue(Flux.Quantities.AngleUnit.Milliradian));
       Assert.AreEqual(3200, u.GetUnitValue(Flux.Quantities.AngleUnit.NatoMil));
       Assert.AreEqual(3.141592653589793, u.GetUnitValue(Flux.Quantities.AngleUnit.Radian));
       Assert.AreEqual(0.5, u.GetUnitValue(Flux.Quantities.AngleUnit.Turn));

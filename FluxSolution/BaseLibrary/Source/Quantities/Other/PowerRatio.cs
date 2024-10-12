@@ -19,6 +19,8 @@ namespace Flux.Quantities
 
     public PowerRatio(double value, PowerRatioUnit unit = PowerRatioUnit.DecibelWatt) => m_value = ConvertFromUnit(unit, value);
 
+    public PowerRatio(MetricPrefix prefix, double decibelWatt) => m_value = prefix.ConvertTo(decibelWatt, MetricPrefix.Unprefixed);
+
     public AmplitudeRatio ToAmplitudeRatio() => new(System.Math.Sqrt(m_value));
 
     #region Static methods

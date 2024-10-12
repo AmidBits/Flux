@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public SurfaceTension(double value, SurfaceTensionUnit unit = SurfaceTensionUnit.NewtonPerMeter) => m_value = ConvertToUnit(unit, value);
 
+    public SurfaceTension(MetricPrefix prefix, double newtonPerMeter) => m_value = prefix.ConvertTo(newtonPerMeter, MetricPrefix.Unprefixed);
+
     public SurfaceTension(Force force, Length length) : this(force.Value / length.Value) { }
 
     public SurfaceTension(Energy energy, Area area) : this(energy.Value / area.Value) { }

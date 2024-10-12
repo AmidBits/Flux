@@ -6,8 +6,8 @@ namespace Flux.Quantities
     Pascal,
     Millibar,
     Bar,
-    HectoPascal,
-    KiloPascal,
+    //HectoPascal,
+    //KiloPascal,
     Psi,
   }
 
@@ -19,6 +19,8 @@ namespace Flux.Quantities
     private readonly double m_value;
 
     public Pressure(double value, PressureUnit unit = PressureUnit.Pascal) => m_value = ConvertFromUnit(unit, value);
+
+    public Pressure(MetricPrefix prefix, double pascal) => m_value = prefix.ConvertTo(pascal, MetricPrefix.Unprefixed);
 
     #region Static methods
     #endregion Static methods

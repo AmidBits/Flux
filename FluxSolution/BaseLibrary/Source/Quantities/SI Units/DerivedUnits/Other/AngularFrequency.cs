@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public AngularFrequency(double value, AngularFrequencyUnit unit = AngularFrequencyUnit.RadianPerSecond) => m_value = ConvertFromUnit(unit, value);
 
+    public AngularFrequency(MetricPrefix prefix, double radianPerSecond) => m_value = prefix.ConvertTo(radianPerSecond, MetricPrefix.Unprefixed);
+
     /// <summary>Creates a new <see cref="AngularFrequency"/> instance from <see cref="Speed">tangential/linear speed</see> and <see cref="Length">radius</see></summary>
     public AngularFrequency(Speed tangentialSpeed, Length radius) : this(tangentialSpeed.Value / radius.Value) { }
 

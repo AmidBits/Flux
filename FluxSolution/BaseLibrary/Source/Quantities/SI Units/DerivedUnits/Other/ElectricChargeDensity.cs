@@ -18,6 +18,8 @@ namespace Flux.Quantities
 
     public ElectricChargeDensity(double value, ElectricChargeDensityUnit unit = ElectricChargeDensityUnit.CoulombPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public ElectricChargeDensity(MetricPrefix prefix, double coulombPerCubicMeter) => m_value = prefix.ConvertTo(coulombPerCubicMeter, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     #endregion // Static methods

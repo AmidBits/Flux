@@ -15,7 +15,7 @@ namespace Flux.Quantities
 
     public MagneticFluxStrength(double value, MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter) => m_value = ConvertFromUnit(unit, value);
 
-    //public MetricMultiplicative ToMetricMultiplicative() => new(GetUnitValue(MagneticFluxStrengthUnit.AmperePerMeter), MetricMultiplicativePrefix.One);
+    public MagneticFluxStrength(MetricPrefix prefix, double amperePerMeter) => m_value = prefix.ConvertTo(amperePerMeter, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 

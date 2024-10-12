@@ -22,6 +22,8 @@ namespace Flux.Quantities
 
     public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin) => m_value = ConvertFromUnit(unit, value);
 
+    public Temperature(MetricPrefix prefix, double kelvin) => m_value = prefix.ConvertTo(kelvin, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     #region Conversion methods

@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public Force(double value, ForceUnit unit = ForceUnit.Newton) => m_value = ConvertFromUnit(unit, value);
 
+    public Force(MetricPrefix prefix, double newton) => m_value = prefix.ConvertTo(newton, MetricPrefix.Unprefixed);
+
     public Force(Mass mass, Acceleration acceleration) : this(mass.Value * acceleration.Value) { }
 
     #region Static methods

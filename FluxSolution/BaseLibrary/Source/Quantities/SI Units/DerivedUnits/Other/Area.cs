@@ -5,6 +5,7 @@ namespace Flux.Quantities
     /// <summary>This is the default unit for <see cref="Area"/>.</summary>
     SquareMeter,
     Hectare,
+    Acre
   }
 
   /// <summary>
@@ -18,6 +19,8 @@ namespace Flux.Quantities
     private readonly double m_value;
 
     public Area(double value, AreaUnit unit = AreaUnit.SquareMeter) => m_value = ConvertFromUnit(unit, value);
+
+    public Area(MetricPrefix prefix, double squareMeter) => m_value = prefix.ConvertTo(squareMeter, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -102,6 +105,7 @@ namespace Flux.Quantities
         AreaUnit.SquareMeter => 1,
 
         AreaUnit.Hectare => 10000,
+        AreaUnit.Acre => 4046.85642,
 
         _ => throw new System.NotImplementedException()
       };
@@ -114,6 +118,7 @@ namespace Flux.Quantities
       {
         AreaUnit.SquareMeter => preferUnicode ? "\u33A1" : "m²",
 
+        AreaUnit.Acre => "ac",
         AreaUnit.Hectare => preferUnicode ? "\u33CA" : "ha",
 
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),

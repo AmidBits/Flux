@@ -19,6 +19,8 @@ namespace Flux.Quantities
 
     public ElectricalResistance(double value, ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm) => m_value = ConvertFromUnit(unit, value);
 
+    public ElectricalResistance(MetricPrefix prefix, double ohm) => m_value = prefix.ConvertTo(ohm, MetricPrefix.Unprefixed);
+
     public ElectricalConductance ToElectricalConductance() => new(1 / m_value);
 
     #region Static methods

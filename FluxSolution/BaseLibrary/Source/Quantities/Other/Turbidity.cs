@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public Turbidity(double value, TurbidityUnit unit = TurbidityUnit.NephelometricTurbidityUnits) => m_value = ConvertFromUnit(unit, value);
 
+    public Turbidity(MetricPrefix prefix, double nephelometricTurbidityUnits) => m_value = prefix.ConvertTo(nephelometricTurbidityUnits, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     public static Turbidity From(Force force, Time time) => new(force.Value / time.Value);

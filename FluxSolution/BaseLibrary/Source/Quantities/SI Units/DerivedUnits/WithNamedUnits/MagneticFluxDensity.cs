@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla) => m_value = ConvertFromUnit(unit, value);
 
+    public MagneticFluxDensity(MetricPrefix prefix, double tesla) => m_value = prefix.ConvertTo(tesla, MetricPrefix.Unprefixed);
+
     /// <summary>
     /// <para>Creates a new magnetic flux density from the length (magnitude) of <paramref name="vector"/> and <paramref name="unit"/>.</para>
     /// </summary>

@@ -3,7 +3,7 @@ namespace Flux.Quantities
   public enum AbsoluteHumidityUnit
   {
     /// <summary>This is the default unit for <see cref="AbsoluteHumidity"/>.</summary>
-    GramsPerCubicMeter,
+    GramPerCubicMeter,
   }
 
   /// <summary>
@@ -15,7 +15,9 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramsPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
+    public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
+
+    public AbsoluteHumidity(MetricPrefix prefix, double gramPerCubicMeter) => m_value = prefix.ConvertTo(gramPerCubicMeter, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -53,12 +55,12 @@ namespace Flux.Quantities
     public int CompareTo(AbsoluteHumidity other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(AbsoluteHumidityUnit.GramsPerCubicMeter, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(AbsoluteHumidityUnit.GramPerCubicMeter, format, formatProvider);
 
     #region IValueQuantifiable<>
 
     /// <summary>
-    /// <para>The unit of the <see cref="AbsoluteHumidity.Value"/> property is in <see cref="AbsoluteHumidityUnit.GramsPerCubicMeter"/>.</para>
+    /// <para>The unit of the <see cref="AbsoluteHumidity.Value"/> property is in <see cref="AbsoluteHumidityUnit.GramPerCubicMeter"/>.</para>
     /// </summary>
     public double Value => m_value;
 
@@ -69,7 +71,7 @@ namespace Flux.Quantities
     private static double ConvertFromUnit(AbsoluteHumidityUnit unit, double value)
       => unit switch
       {
-        AbsoluteHumidityUnit.GramsPerCubicMeter => value,
+        AbsoluteHumidityUnit.GramPerCubicMeter => value,
 
         _ => GetUnitFactor(unit) * value,
       };
@@ -77,7 +79,7 @@ namespace Flux.Quantities
     private static double ConvertToUnit(AbsoluteHumidityUnit unit, double value)
       => unit switch
       {
-        AbsoluteHumidityUnit.GramsPerCubicMeter => value,
+        AbsoluteHumidityUnit.GramPerCubicMeter => value,
 
         _ => value / GetUnitFactor(unit),
       };
@@ -87,7 +89,7 @@ namespace Flux.Quantities
     public static double GetUnitFactor(AbsoluteHumidityUnit unit)
       => unit switch
       {
-        AbsoluteHumidityUnit.GramsPerCubicMeter => 1,
+        AbsoluteHumidityUnit.GramPerCubicMeter => 1,
 
         _ => throw new System.NotImplementedException()
       };
@@ -97,7 +99,7 @@ namespace Flux.Quantities
     public string GetUnitSymbol(AbsoluteHumidityUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.AbsoluteHumidityUnit.GramsPerCubicMeter => "g/m³",
+        Quantities.AbsoluteHumidityUnit.GramPerCubicMeter => "g/m³",
 
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };

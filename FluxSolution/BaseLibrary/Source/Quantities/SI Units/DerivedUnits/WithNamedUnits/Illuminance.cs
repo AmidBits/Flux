@@ -15,7 +15,7 @@ namespace Flux.Quantities
 
     public Illuminance(double value, IlluminanceUnit unit = IlluminanceUnit.Lux) => m_value = ConvertFromUnit(unit, value);
 
-    //public MetricMultiplicative ToMetricMultiplicative() => new(m_value, MetricMultiplicativePrefix.One);
+    public Illuminance(MetricPrefix prefix, double lux) => m_value = prefix.ConvertTo(lux, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 

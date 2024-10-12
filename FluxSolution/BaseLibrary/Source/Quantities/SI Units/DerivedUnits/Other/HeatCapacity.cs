@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public HeatCapacity(double value, HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin) => m_value = ConvertToUnit(unit, value);
 
+    public HeatCapacity(MetricPrefix prefix, double joulePerKelvin) => m_value = prefix.ConvertTo(joulePerKelvin, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     #endregion // Static methods

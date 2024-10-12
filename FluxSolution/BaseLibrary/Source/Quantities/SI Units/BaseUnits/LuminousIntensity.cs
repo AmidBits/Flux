@@ -19,9 +19,9 @@ namespace Flux.Quantities
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="AmountOfSubstanceUnit.Mole"/>, e.g. <see cref="MetricPrefix.Mega"/> for megacandelas.</para>
     /// </summary>
-    /// <param name="candelas"></param>
+    /// <param name="candela"></param>
     /// <param name="prefix"></param>
-    public LuminousIntensity(double candelas, MetricPrefix prefix) => m_value = prefix.ConvertTo(candelas, MetricPrefix.Unprefixed);
+    public LuminousIntensity(MetricPrefix prefix, double candela) => m_value = prefix.ConvertTo(candela, MetricPrefix.Unprefixed);
 
     #region Static methods
     #endregion // Static methods

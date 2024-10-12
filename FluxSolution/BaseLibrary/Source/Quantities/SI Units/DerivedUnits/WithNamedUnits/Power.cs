@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public Power(double value, PowerUnit unit = PowerUnit.Watt) => m_value = ConvertFromUnit(unit, value);
 
+    public Power(MetricPrefix prefix, double watt) => m_value = prefix.ConvertTo(watt, MetricPrefix.Unprefixed);
+
     /// <summary>Creates a new Power instance from the specified <paramref name="current"/> and <paramref name="voltage"/>.</summary>
     /// <param name="current"></param>
     /// <param name="voltage"></param>

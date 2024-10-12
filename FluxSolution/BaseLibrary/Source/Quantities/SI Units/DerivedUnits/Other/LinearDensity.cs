@@ -19,6 +19,8 @@ namespace Flux.Quantities
 
     public LinearDensity(double value, LinearDensityUnit unit = LinearDensityUnit.KilogramPerMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public LinearDensity(MetricPrefix prefix, double gramPerMeter) => m_value = prefix.ConvertTo(gramPerMeter, MetricPrefix.Unprefixed);
+
     public LinearDensity(Mass mass, Volume volume) : this(mass.Value / volume.Value) { }
 
     #region Static methods

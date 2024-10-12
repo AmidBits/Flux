@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public Irradiance(double value, IrradianceUnit unit = IrradianceUnit.WattPerSquareMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public Irradiance(MetricPrefix prefix, double wattPerSquareMeter) => m_value = prefix.ConvertTo(wattPerSquareMeter, MetricPrefix.Unprefixed);
+
     public Irradiance(Power power, Area area) : this(power.Value / area.Value) { }
 
     #region Static methods

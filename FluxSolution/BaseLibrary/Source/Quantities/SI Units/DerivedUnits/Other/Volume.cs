@@ -39,6 +39,8 @@ namespace Flux.Quantities
 
     public Volume(double value, VolumeUnit unit = VolumeUnit.CubicMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public Volume(MetricPrefix prefix, double cubicMeter) => m_value = prefix.ConvertTo(cubicMeter, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     /// <summary>Creates a new <see cref="Volume"/> instance from the specified cuboid.</summary>
@@ -128,10 +130,10 @@ namespace Flux.Quantities
       {
         VolumeUnit.CubicMeter => 1,
 
-        VolumeUnit.Microliter => 1000000000,
-        VolumeUnit.Milliliter => 1000000,
-        VolumeUnit.Centiliter => 100000,
-        VolumeUnit.Deciliter => 10000,
+        VolumeUnit.Microliter => 0.000000001,
+        VolumeUnit.Milliliter => 0.000001,
+        VolumeUnit.Centiliter => 0.00001,
+        VolumeUnit.Deciliter => 0.0001,
         VolumeUnit.Liter => 1000,
         VolumeUnit.UKGallon => 219.96924829909,
         VolumeUnit.UKQuart => 879.87699319635,

@@ -30,9 +30,9 @@ namespace Flux.Quantities
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="AmountOfSubstanceUnit.Mole"/>, e.g. <see cref="MetricPrefix.Yocto"/> for yoctomoles.</para>
     /// </summary>
-    /// <param name="moles"></param>
+    /// <param name="mole"></param>
     /// <param name="prefix"></param>
-    public AmountOfSubstance(double moles, MetricPrefix prefix) => m_value = prefix.ConvertTo(moles, MetricPrefix.Unprefixed);
+    public AmountOfSubstance(MetricPrefix prefix, double mole) => m_value = prefix.ConvertTo(mole, MetricPrefix.Unprefixed);
 
     public double NumberOfParticles => m_value * AvogadroNumber;
 

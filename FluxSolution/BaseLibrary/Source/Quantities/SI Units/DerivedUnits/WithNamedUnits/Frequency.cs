@@ -30,6 +30,8 @@ namespace Flux.Quantities
 
     public Frequency(double value, FrequencyUnit unit = FrequencyUnit.Hertz) => m_value = ConvertFromUnit(unit, value);
 
+    public Frequency(MetricPrefix prefix, double hertz) => m_value = prefix.ConvertTo(hertz, MetricPrefix.Unprefixed);
+
     /// <summary>
     /// <para>Constructs a frequency from sound-velocity and wavelength.</para>
     /// </summary>
@@ -185,7 +187,10 @@ namespace Flux.Quantities
     public string GetUnitSymbol(FrequencyUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.FrequencyUnit.Hertz => preferUnicode ? "\u3390" : "Hz",
+        FrequencyUnit.Hertz => preferUnicode ? "\u3390" : "Hz",
+
+        FrequencyUnit.BeatsPerMinute => "BPM",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

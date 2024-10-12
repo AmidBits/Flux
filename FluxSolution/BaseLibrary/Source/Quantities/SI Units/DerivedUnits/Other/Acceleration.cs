@@ -25,6 +25,8 @@ namespace Flux.Quantities
 
     public Acceleration(double value, AccelerationUnit unit = AccelerationUnit.MeterPerSecondSquared) => m_value = ConvertFromUnit(unit, value);
 
+    public Acceleration(MetricPrefix prefix, double meterPerSecondSquare) => m_value = prefix.ConvertTo(meterPerSecondSquare, MetricPrefix.Unprefixed);
+
     /// <summary>
     /// <para>Creates a new acceleration from the length (magnitude) of <paramref name="vector"/> and <paramref name="unit"/>.</para>
     /// </summary>

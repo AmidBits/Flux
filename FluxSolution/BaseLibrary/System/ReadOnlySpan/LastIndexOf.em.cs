@@ -32,7 +32,11 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      return LastIndexOf(source, t => equalityComparer.Equals(t, value));
+      for (var index = source.Length - 1; index >= 0; index--)
+        if (equalityComparer.Equals(source[index], value))
+          return index;
+
+      return -1;
     }
 
     /// <summary>
@@ -48,7 +52,7 @@ namespace Flux
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       for (var index = source.Length - value.Length; index >= 0; index--)
-        if (EqualsAt(source, index, value, 0, value.Length, equalityComparer))
+        if (source.Slice(index).StartsWith(value, equalityComparer))
           return index;
 
       return -1;

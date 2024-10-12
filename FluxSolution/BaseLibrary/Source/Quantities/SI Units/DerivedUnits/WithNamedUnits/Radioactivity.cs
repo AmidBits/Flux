@@ -15,12 +15,9 @@ namespace Flux.Quantities
   {
     private readonly double m_value;
 
-    public Radioactivity(double value, RadioactivityUnit unit = RadioactivityUnit.Becquerel)
-      => m_value = unit switch
-      {
-        RadioactivityUnit.Becquerel => value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public Radioactivity(double value, RadioactivityUnit unit = RadioactivityUnit.Becquerel) => m_value = ConvertFromUnit(unit, value);
+
+    public Radioactivity(MetricPrefix prefix, double becquerel) => m_value = prefix.ConvertTo(becquerel, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -100,16 +97,12 @@ namespace Flux.Quantities
     public string GetUnitSymbol(RadioactivityUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.RadioactivityUnit.Becquerel => preferUnicode ? "\u33C3" : "Bq",
+        RadioactivityUnit.Becquerel => preferUnicode ? "\u33C3" : "Bq",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(RadioactivityUnit unit)
-      => unit switch
-      {
-        RadioactivityUnit.Becquerel => m_value,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      };
+    public double GetUnitValue(RadioactivityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(RadioactivityUnit unit = RadioactivityUnit.Becquerel, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));

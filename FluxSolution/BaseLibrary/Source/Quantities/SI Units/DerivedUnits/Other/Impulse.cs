@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public Impulse(double value, ImpulseUnit unit = ImpulseUnit.NewtonSecond) => m_value = ConvertToUnit(unit, value);
 
+    public Impulse(MetricPrefix prefix, double newtonSecond) => m_value = prefix.ConvertTo(newtonSecond, MetricPrefix.Unprefixed);
+
     public Impulse(Force force, Time time) : this(force.Value / time.Value) { }
 
     #region Static methods

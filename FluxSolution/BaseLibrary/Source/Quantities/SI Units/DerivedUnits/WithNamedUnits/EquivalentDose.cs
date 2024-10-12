@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public EquivalentDose(double value, EquivalentDoseUnit unit = EquivalentDoseUnit.Sievert) => m_value = ConvertFromUnit(unit, value);
 
+    public EquivalentDose(MetricPrefix prefix, double sievert) => m_value = prefix.ConvertTo(sievert, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) < 0;

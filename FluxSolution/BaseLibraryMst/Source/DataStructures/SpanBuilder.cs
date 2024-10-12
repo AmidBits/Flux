@@ -35,7 +35,7 @@ namespace Text
     public void CommonSuffixLength()
     {
       var expected = 3;
-      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().CommonSuffixLength("Rupert");
+      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().EndMatchLength("Rupert", null);
       Assert.AreEqual(expected, actual);
     }
 
@@ -138,7 +138,7 @@ namespace Text
     [TestMethod]
     public void IsPalindrome()
     {
-      var palindrome = (ReadOnlySpan<char>)new SpanBuilder<char>("Poor Dan is in a droop").RemoveAll(char.IsWhiteSpace).AsSpan().ToLowerCase();
+      var palindrome = (ReadOnlySpan<char>)new SpanBuilder<char>("Poor Dan is in a droop").RemoveAll(char.IsWhiteSpace).AsSpan().ToLower();
       var expected = true;
       var actual = palindrome.IsPalindrome();
       Assert.AreEqual(expected, actual);
@@ -326,7 +326,7 @@ namespace Text
     public void ToLowerCase()
     {
       var expected = @"robert hugo";
-      var actual = new Flux.SpanBuilder<char>(@"Robert Hugo").AsSpan().ToLowerCase();
+      var actual = new Flux.SpanBuilder<char>(@"Robert Hugo").AsSpan().ToLower();
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -334,7 +334,7 @@ namespace Text
     public void ToUpperCase()
     {
       var expected = @"ROBERT HUGO";
-      var actual = new Flux.SpanBuilder<char>(@"Robert Hugo").AsSpan().ToUpperCase();
+      var actual = new Flux.SpanBuilder<char>(@"Robert Hugo").AsSpan().ToUpper();
       Assert.AreEqual(expected, actual.ToString());
     }
   }

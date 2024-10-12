@@ -35,9 +35,9 @@ namespace Flux.Quantities
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="MassUnit.Gram"/>, e.g. <see cref="MetricPrefix.Kilo"/> for kilogram.</para>
     /// </summary>
     /// <remarks>Mass is the only </remarks>
-    /// <param name="grams"></param>
+    /// <param name="gram"></param>
     /// <param name="prefix"></param>
-    public Mass(double grams, MetricPrefix prefix) => m_value = prefix.ConvertTo(grams, MetricPrefix.Kilo);
+    public Mass(MetricPrefix prefix, double gram) => m_value = prefix.ConvertTo(gram, MetricPrefix.Kilo);
 
     #region Static methods
     #endregion // Static methods

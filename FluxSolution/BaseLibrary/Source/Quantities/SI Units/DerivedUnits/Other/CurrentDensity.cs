@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public CurrentDensity(double value, CurrentDensityUnit unit = CurrentDensityUnit.AmperePerSquareMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public CurrentDensity(MetricPrefix prefix, double amperePerSquareMeter) => m_value = prefix.ConvertTo(amperePerSquareMeter, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(CurrentDensity a, CurrentDensity b) => a.CompareTo(b) < 0;

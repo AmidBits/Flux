@@ -2,22 +2,13 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Reports the last index of the specified rune in the string builder, or -1 if not found. Uses the specified comparer.</summary>
-    public static int LastIndexOf(this System.Text.StringBuilder source, System.Text.Rune target, System.Collections.Generic.IEqualityComparer<System.Text.Rune>? equalityComparer = null)
+    public static int LastIndexOf(this System.Text.StringBuilder source, System.Func<char, bool> predicate)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<System.Text.Rune>.Default;
-
-      var index = source.Length;
-
-      foreach (var current in source.EnumerateRunesReverse())
-      {
-        index -= current.Utf16SequenceLength;
-
-        if (equalityComparer.Equals(current, target))
+      for (var index = source.Length - 1; index >= 0; index--)
+        if (predicate(source[index]))
           return index;
-      }
 
       return -1;
     }
@@ -29,11 +20,9 @@ namespace Flux
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      var sourceIndex = source.Length;
-
-      while (--sourceIndex >= 0)
-        if (equalityComparer.Equals(source[sourceIndex], target))
-          return sourceIndex;
+      for (var index = source.Length - 1; index >= 0; index--)
+        if (equalityComparer.Equals(source[index], target))
+          return index;
 
       return -1;
     }
@@ -45,11 +34,9 @@ namespace Flux
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      var sourceIndex = source.Length - target.Length + 1;
-
-      while (--sourceIndex >= 0)
-        if (EqualsAt(source, sourceIndex, target, equalityComparer))
-          return sourceIndex;
+      for (var index = source.Length - 1 - target.Length; index >= 0; index--)
+        if (EqualsAt(source, index, target, equalityComparer))
+          return index;
 
       return -1;
     }

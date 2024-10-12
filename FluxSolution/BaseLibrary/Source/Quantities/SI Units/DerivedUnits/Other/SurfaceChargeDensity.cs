@@ -18,6 +18,8 @@ namespace Flux.Quantities
 
     public SurfaceChargeDensity(double value, SurfaceChargeDensityUnit unit = SurfaceChargeDensityUnit.CoulombPerSquareMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public SurfaceChargeDensity(MetricPrefix prefix, double coulombPerSquareMeter) => m_value = prefix.ConvertTo(coulombPerSquareMeter, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     #endregion // Static methods

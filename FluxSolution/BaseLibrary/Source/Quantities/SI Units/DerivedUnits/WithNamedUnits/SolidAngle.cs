@@ -16,6 +16,8 @@ namespace Flux.Quantities
 
     public SolidAngle(double value, SolidAngleUnit unit = SolidAngleUnit.Steradian) => m_value = ConvertFromUnit(unit, value);
 
+    public SolidAngle(MetricPrefix prefix, double steradian) => m_value = prefix.ConvertTo(steradian, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(SolidAngle a, SolidAngle b) => a.CompareTo(b) < 0;

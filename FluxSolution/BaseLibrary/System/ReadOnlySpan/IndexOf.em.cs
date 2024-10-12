@@ -13,7 +13,9 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(predicate);
 
-      for (var index = 0; index < source.Length; index++)
+      var sourceLength = source.Length;
+
+      for (var index = 0; index < sourceLength; index++)
         if (predicate(source[index]))
           return index;
 
@@ -32,7 +34,13 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      return IndexOf(source, t => equalityComparer.Equals(t, value));
+      var sourceLength = source.Length;
+
+      for (var index = 0; index < sourceLength; index++)
+        if (equalityComparer.Equals(source[index], value))
+          return index;
+
+      return -1;
     }
 
     /// <summary>
@@ -49,8 +57,8 @@ namespace Flux
 
       var maxIndex = source.Length - value.Length;
 
-      for (var index = 0; index < maxIndex; index++)
-        if (EqualsAt(source, index, value, 0, value.Length, equalityComparer))
+      for (var index = 0; index <= maxIndex; index++)
+        if (source.Slice(index).StartsWith(value, equalityComparer))
           return index;
 
       return -1;

@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public AngularAcceleration(double value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared) => m_value = ConvertFromUnit(unit, value);
 
+    public AngularAcceleration(MetricPrefix prefix, double radianPerSecondSquared) => m_value = prefix.ConvertTo(radianPerSecondSquared, MetricPrefix.Unprefixed);
+
     /// <summary>
     /// <para>Creates a new angular acceleration from the length (magnitude) of <paramref name="vector"/> and <paramref name="unit"/>.</para>
     /// </summary>

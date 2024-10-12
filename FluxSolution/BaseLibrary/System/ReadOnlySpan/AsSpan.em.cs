@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Non-allocating casting from <see cref="System.ReadOnlySpan{T}"/> to <see cref="System.Span{T}"/>.</para>
+    /// <para>Creates a new (non-allocating) span over a read-only span.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>

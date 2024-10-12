@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public Action(double value, ActionUnit unit = ActionUnit.JouleSecond) => m_value = ConvertFromUnit(unit, value);
 
+    public Action(MetricPrefix prefix, double jouleSecond) => m_value = prefix.ConvertTo(jouleSecond, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(Action a, Action b) => a.CompareTo(b) < 0;

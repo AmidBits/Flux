@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public LuminousEfficacy(double value, LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt) => m_value = ConvertFromUnit(unit, value);
 
+    public LuminousEfficacy(MetricPrefix prefix, double lumenPerWatt) => m_value = prefix.ConvertTo(lumenPerWatt, MetricPrefix.Unprefixed);
+
     public LuminousEfficacy(Energy energy, Angle angle) : this(energy.Value / angle.Value) { }
 
     #region Static methods

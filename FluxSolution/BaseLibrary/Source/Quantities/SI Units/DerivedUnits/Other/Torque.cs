@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public Torque(double value, TorqueUnit unit = TorqueUnit.NewtonMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public Torque(MetricPrefix prefix, double newtonMeter) => m_value = prefix.ConvertTo(newtonMeter, MetricPrefix.Unprefixed);
+
     public Torque(Energy energy, Angle angle) : this(energy.Value / angle.Value) { }
 
     #region Static methods
@@ -100,7 +102,8 @@ namespace Flux.Quantities
     public string GetUnitSymbol(TorqueUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.TorqueUnit.NewtonMeter => preferUnicode ? "N\u22C5m" : "N·m",
+        TorqueUnit.NewtonMeter => preferUnicode ? "N\u22C5m" : "N·m",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

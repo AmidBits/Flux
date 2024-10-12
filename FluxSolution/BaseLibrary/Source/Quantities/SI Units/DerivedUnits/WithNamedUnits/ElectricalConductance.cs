@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public ElectricalConductance(double value, ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens) => m_value = ConvertFromUnit(unit, value);
 
+    public ElectricalConductance(MetricPrefix prefix, double siemens) => m_value = prefix.ConvertTo(siemens, MetricPrefix.Unprefixed);
+
     public ElectricalResistance ToElectricResistance() => new(1 / m_value);
 
     #region Static methods

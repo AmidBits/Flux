@@ -15,6 +15,9 @@ namespace Flux.Quantities
 
     public ElectricPotential(double value, ElectricPotentialUnit unit = ElectricPotentialUnit.Volt) => m_value = ConvertFromUnit(unit, value);
 
+    public ElectricPotential(MetricPrefix prefix, double volt) => m_value = prefix.ConvertTo(volt, MetricPrefix.Unprefixed);
+
+
     #region Static methods
 
     /// <summary>Creates a new Voltage instance from the specified current and resistance.</summary>

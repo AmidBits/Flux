@@ -9,12 +9,12 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public static int Count<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
+    public static int Count<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
     {
       var count = 0;
 
-      for (var index = 0; index < source.Length; index++)
-        if (predicate(source[index], index))
+      for (var index = source.Length - 1; index >= 0; index--)
+        if (predicate(source[index]))
           count++;
 
       return count;
@@ -32,7 +32,7 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      return Count(source, (e, i) => equalityComparer.Equals(e, target));
+      return Count(source, e => equalityComparer.Equals(e, target));
     }
   }
 }

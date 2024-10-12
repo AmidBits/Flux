@@ -10,19 +10,19 @@ namespace Flux
     /// <param name="count"></param>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, int count, System.Func<T, int, bool> predicate)
-    {
-      System.ArgumentNullException.ThrowIfNull(predicate);
+    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, int count, System.Func<T, bool> predicate)
+      => source.StartMatchLength(predicate) == count;
 
-      if (source.Length < count)
-        return false;
-
-      for (count--; count >= 0; count--)
-        if (!predicate(source[count], count))
-          return false;
-
-      return true;
-    }
+    /// <summary>
+    /// <para>Indicates whether the <paramref name="source"/> starts with <paramref name="count"/> occurences of the <paramref name="target"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, int count, T target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
+      => source.StartMatchLength(target, equalityComparer) == count;
 
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> starts with the <paramref name="target"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -33,19 +33,6 @@ namespace Flux
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
     public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
-    {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-      var targetIndex = target.Length;
-
-      if (source.Length < targetIndex)
-        return false;
-
-      while (--targetIndex >= 0)
-        if (!equalityComparer.Equals(source[targetIndex], target[targetIndex]))
-          return false;
-
-      return true;
-    }
+      => source.StartMatchLength(target, equalityComparer) == target.Length;
   }
 }

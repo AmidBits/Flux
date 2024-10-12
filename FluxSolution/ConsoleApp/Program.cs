@@ -6,6 +6,7 @@ using System.Net.WebSockets;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.Intrinsics;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using Flux;
@@ -78,18 +79,82 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
-      if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      var ivq = typeof(Flux.Quantities.ISiUnitValueQuantifiable<,>).GetDerivedTypes().Where(t => !t.IsInterface).OrderBy(t => t.Name)./*Where(t => t.Name.StartsWith('T')).*/ToList();
+
+      for (var index = 0; index < ivq.Count; index++)
+      {
+        var ivqf = ivq[index];
+
+        System.Console.WriteLine($"\r\n{ivqf}");
+
+        var ivqfc = ivqf.GetConstructors().Where(ci => ci.GetParameters().Count() == 2 && ci.GetParameters().First().ParameterType.IsPrimitive && ci.GetParameters().Last().ParameterType.IsEnum).First();
+
+        var pts = ivqfc.GetParameters();
+
+        var pts0 = pts[0].ParameterType;
+
+        var mi0 = pts0.GetMethods().Where(mi => mi.GetParameters().Count() == 1 && mi.Name == "Parse").Single();
+
+        var value = "1";
+
+        var p1 = mi0.Invoke(null, new object[] { value });
+        var p1b = mi0.Invoke(null, new object[] { "7" });
+
+        var pts1 = pts[1].ParameterType;
+
+        var p2 = pts1.CreateInstance();
+
+        var enums = System.Enum.GetValues(pts1);
+
+        var test = ivqf.CreateInstance(3, System.Enum.GetValues(pts1).GetValue(0));
+
+        var inst = ivqf.CreateInstance(p1, enums.GetValue(0));
+
+        //OutQuantity(inst, enums);
+
+        //if (enums.Length == 1) continue;
+
+        var array = new string[enums.Length][];
+
+        for (var ie = 0; ie < enums.Length; ie++)
+        {
+          var instance = ivqf.CreateInstance(2, enums.GetValue(ie));
+
+          array[ie] = OutQuantity(instance, enums);
+
+          var miToUnitString = instance.GetType().GetMethods().Where(mi => mi.Name == "ToUnitString").First();
+
+          //System.Console.WriteLine($"{value} {enums.GetValue(ie).ToString()} = {instance} : {miToUnitString.Invoke(instance, new object[] { enums.GetValue(ie), null, null, false })}");
+        }
+
+        System.Console.WriteLine(array.JaggedToConsoleString());
+
+      }
 
 
-      var mf = new Flux.Quantities.MagneticFlux(1, MagneticFluxUnit.Weber);
-      var mfv = mf.GetUnitValue(MagneticFluxUnit.Maxwell);
+
+      static string[] OutQuantity(object instance, System.Array enums)
+      {
+        var mi = instance.GetType().GetMethods().Where(mi => mi.Name == "ToUnitString").First();
+
+        return enums.Cast<object>().Select(e => (string)mi.Invoke(instance, new object[] { e, null, null, false })).ToArray();
+      }
+
+      //var ci = ivq.Select(t => t.CreateInstance(pts0.CreateInstance(), pts1.CreateInstance())).ToList();
 
 
-      var str = "Robert Hugo";
 
-      var span = new Span<char>(str.ToCharArray());
+      var s = "Robert Hugo   ".AsSpan();
 
-      var str2 = str.LetterAtToLowerInvariant(7);
+      var csl1 = s.EndMatchLength(char.IsWhiteSpace);
+      var csl2 = s.EndMatchLength(' ', null);
+      var csl3 = s.EndMatchLength("ugo   ", null);
+
+      //var span = new Span<char>(str.ToCharArray());
+
+      // var str2 = str.LetterAtToLowerInvariant(7);
 
       var flow = new Flux.Quantities.Flow(12345678987654321, FlowUnit.CubicMeterPerSecond);
       var cmps = flow.ToSiUnitString(MetricPrefix.Unprefixed, true);

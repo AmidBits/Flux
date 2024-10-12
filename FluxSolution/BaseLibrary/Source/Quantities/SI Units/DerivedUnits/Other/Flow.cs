@@ -21,6 +21,8 @@ namespace Flux.Quantities
 
     public Flow(double value, FlowUnit unit = FlowUnit.CubicMeterPerSecond) => m_value = ConvertFromUnit(unit, value);
 
+    public Flow(MetricPrefix prefix, double cubicMeterPerSecond) => m_value = prefix.ConvertTo(cubicMeterPerSecond, MetricPrefix.Unprefixed);
+
     public Flow(Volume volume, Time time) : this(volume.Value / time.Value) { }
 
     #region Static methods

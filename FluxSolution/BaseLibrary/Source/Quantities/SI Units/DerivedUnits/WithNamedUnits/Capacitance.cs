@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public Capacitance(double value, CapacitanceUnit unit = CapacitanceUnit.Farad) => m_value = ConvertFromUnit(unit, value);
 
+    public Capacitance(MetricPrefix prefix, double farad) => m_value = prefix.ConvertTo(farad, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(Capacitance a, Capacitance b) => a.CompareTo(b) < 0;

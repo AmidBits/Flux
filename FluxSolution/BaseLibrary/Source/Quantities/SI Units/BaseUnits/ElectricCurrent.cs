@@ -23,7 +23,7 @@ namespace Flux.Quantities
     /// </summary>
     /// <param name="amperes"></param>
     /// <param name="prefix"></param>
-    public ElectricCurrent(double amperes, MetricPrefix prefix) => m_value = prefix.ConvertTo(amperes, MetricPrefix.Unprefixed);
+    public ElectricCurrent(MetricPrefix prefix, double ampere) => m_value = prefix.ConvertTo(ampere, MetricPrefix.Unprefixed);
 
     #region Static methods
 

@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public AbsorbedDose(double value, AbsorbedDoseUnit unit = AbsorbedDoseUnit.Gray) => m_value = ConvertFromUnit(unit, value);
 
+    public AbsorbedDose(MetricPrefix prefix, double gray) => m_value = prefix.ConvertTo(gray, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(AbsorbedDose a, AbsorbedDose b) => a.CompareTo(b) < 0;

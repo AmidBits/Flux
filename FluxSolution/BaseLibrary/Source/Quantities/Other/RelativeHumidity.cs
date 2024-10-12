@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public RelativeHumidity(double value, RelativeHumidityUnit unit = RelativeHumidityUnit.Percent) => m_value = ConvertFromUnit(unit, value);
 
+    public RelativeHumidity(MetricPrefix prefix, double percent) => m_value = prefix.ConvertTo(percent, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(RelativeHumidity a, RelativeHumidity b) => a.CompareTo(b) < 0;

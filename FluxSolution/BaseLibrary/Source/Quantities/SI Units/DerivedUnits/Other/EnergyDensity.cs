@@ -18,6 +18,8 @@ namespace Flux.Quantities
 
     public EnergyDensity(double value, EnergyDensityUnit unit = EnergyDensityUnit.JoulePerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public EnergyDensity(MetricPrefix prefix, double joulePerCubicMeter) => m_value = prefix.ConvertTo(joulePerCubicMeter, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     #endregion // Static methods

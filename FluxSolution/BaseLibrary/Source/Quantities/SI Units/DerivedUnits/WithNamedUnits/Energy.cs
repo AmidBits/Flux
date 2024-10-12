@@ -7,7 +7,8 @@ namespace Flux.Quantities
     ElectronVolt,
     Calorie,
     WattHour,
-    KilowattHour
+    KilowattHour,
+    BritishThermalUnits
   }
 
   /// <summary>Energy unit of Joule.</summary>
@@ -18,6 +19,8 @@ namespace Flux.Quantities
     private readonly double m_value;
 
     public Energy(double value, EnergyUnit unit = EnergyUnit.Joule) => m_value = ConvertFromUnit(unit, value);
+
+    public Energy(MetricPrefix prefix, double joule) => m_value = prefix.ConvertTo(joule, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -97,6 +100,7 @@ namespace Flux.Quantities
         EnergyUnit.Calorie => 4.184,
         EnergyUnit.WattHour => 3.6e3,
         EnergyUnit.KilowattHour => 3.6e6,
+        EnergyUnit.BritishThermalUnits => 1055.05585262,
 
         _ => throw new System.NotImplementedException()
       };
@@ -106,11 +110,14 @@ namespace Flux.Quantities
     public string GetUnitSymbol(EnergyUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.EnergyUnit.Joule => "J",
-        Quantities.EnergyUnit.ElectronVolt => "eV",
-        Quantities.EnergyUnit.Calorie => preferUnicode ? "\u3388" : "cal",
-        Quantities.EnergyUnit.WattHour => "W\u22C5h",
-        Quantities.EnergyUnit.KilowattHour => "kW\u22C5h",
+        EnergyUnit.Joule => "J",
+
+        EnergyUnit.BritishThermalUnits => "BTU",
+        EnergyUnit.ElectronVolt => "eV",
+        EnergyUnit.Calorie => preferUnicode ? "\u3388" : "cal",
+        EnergyUnit.WattHour => "W\u22C5h",
+        EnergyUnit.KilowattHour => "kW\u22C5h",
+
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 

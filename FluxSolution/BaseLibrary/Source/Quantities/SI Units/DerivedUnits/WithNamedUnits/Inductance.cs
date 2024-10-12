@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry) => m_value = ConvertFromUnit(unit, value);
 
+    public Inductance(MetricPrefix prefix, double henry) => m_value = prefix.ConvertTo(henry, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(Inductance a, Inductance b) => a.CompareTo(b) < 0;

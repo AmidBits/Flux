@@ -17,6 +17,8 @@ namespace Flux.Quantities
 
     public ElectricCharge(double value, ElectricChargeUnit unit = ElectricChargeUnit.Coulomb) => m_value = ConvertFromUnit(unit, value);
 
+    public ElectricCharge(MetricPrefix prefix, double coulomb) => m_value = prefix.ConvertTo(coulomb, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(ElectricCharge a, ElectricCharge b) => a.CompareTo(b) < 0;

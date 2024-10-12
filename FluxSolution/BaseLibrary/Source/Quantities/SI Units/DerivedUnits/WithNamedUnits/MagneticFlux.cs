@@ -16,6 +16,8 @@ namespace Flux.Quantities
 
     public MagneticFlux(double value, MagneticFluxUnit unit = MagneticFluxUnit.Weber) => m_value = ConvertFromUnit(unit, value);
 
+    public MagneticFlux(MetricPrefix prefix, double weber) => m_value = prefix.ConvertTo(weber, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(MagneticFlux a, MagneticFlux b) => a.CompareTo(b) < 0;

@@ -26,6 +26,8 @@ namespace Flux.Quantities
 
     public Speed(double value, SpeedUnit unit = SpeedUnit.MeterPerSecond) => m_value = ConvertFromUnit(unit, value);
 
+    public Speed(MetricPrefix prefix, double meterPerSecond) => m_value = prefix.ConvertTo(meterPerSecond, MetricPrefix.Unprefixed);
+
     /// <summary>Create a new Speed instance representing phase velocity from the specified frequency and wavelength.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Phase_velocity"/>
     /// <param name="frequency"></param>

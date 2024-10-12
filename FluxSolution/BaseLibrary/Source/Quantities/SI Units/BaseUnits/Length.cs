@@ -193,6 +193,7 @@ namespace Flux.Quantities
        LengthUnit.InternationalMile => "mi",
        LengthUnit.NauticalMile => "nmi", // There is no single internationally agreed symbol. Others used are "N", "NM", "nmi" and "nm".
        LengthUnit.Parsec => preferUnicode ? "\u3376" : "pc",
+       LengthUnit.Twip => "twip",
        LengthUnit.Yard => "yd",
        LengthUnit.Ångström => preferUnicode ? "\u212B" : "Å",
 

@@ -16,6 +16,8 @@ namespace Flux.Quantities
 
     public RadiationExposure(double value, RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram) => m_value = ConvertFromUnit(unit, value);
 
+    public RadiationExposure(MetricPrefix prefix, double coulombPerKilogram) => m_value = prefix.ConvertTo(coulombPerKilogram, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(RadiationExposure a, RadiationExposure b) => a.CompareTo(b) < 0;

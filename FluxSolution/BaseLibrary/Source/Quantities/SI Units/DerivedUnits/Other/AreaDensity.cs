@@ -19,6 +19,8 @@ namespace Flux.Quantities
 
     public AreaDensity(double value, AreaDensityUnit unit = AreaDensityUnit.KilogramPerSquareMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public AreaDensity(MetricPrefix prefix, double gramPerSquareMeter) => m_value = prefix.ConvertTo(gramPerSquareMeter, MetricPrefix.Unprefixed);
+
     public AreaDensity(Mass mass, Area volume) : this(mass.Value / volume.Value) { }
 
     #region Static methods

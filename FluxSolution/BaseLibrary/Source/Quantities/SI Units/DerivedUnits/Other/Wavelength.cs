@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public Wavelength(double value, WavelengthUnit unit = WavelengthUnit.MeterPerRadian) => m_value = ConvertToUnit(unit, value);
 
+    public Wavelength(MetricPrefix prefix, double meterPerRadian) => m_value = prefix.ConvertTo(meterPerRadian, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     #endregion // Static methods

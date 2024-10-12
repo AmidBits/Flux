@@ -15,6 +15,8 @@ namespace Flux.Quantities
 
     public CatalyticActivity(double value, CatalyticActivityUnit unit = CatalyticActivityUnit.Katal) => m_value = ConvertFromUnit(unit, value);
 
+    public CatalyticActivity(MetricPrefix prefix, double katal) => m_value = prefix.ConvertTo(katal, MetricPrefix.Unprefixed);
+
     #region Overloaded operators
 
     public static bool operator <(CatalyticActivity a, CatalyticActivity b) => a.CompareTo(b) < 0;

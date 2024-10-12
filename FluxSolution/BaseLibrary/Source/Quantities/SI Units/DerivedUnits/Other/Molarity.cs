@@ -18,6 +18,8 @@ namespace Flux.Quantities
 
     public Molarity(double value, MolarityUnit unit = MolarityUnit.MolesPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
+    public Molarity(MetricPrefix prefix, double molesPerCubicMeter) => m_value = prefix.ConvertTo(molesPerCubicMeter, MetricPrefix.Unprefixed);
+
     #region Static methods
 
     #endregion // Static methods
