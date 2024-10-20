@@ -403,17 +403,17 @@ namespace SystemFx
     {
       var text = "aaaaa".AsSpan();
       var expected = new int[] { 0, 4, 3, 2, 1 };
-      var actual = text.ZFunction();
+      var actual = text.Zfunction();
       CollectionAssert.AreEqual(expected, actual, "ZFunction 1");
 
       text = "aaabaab".AsSpan();
       expected = new int[] { 0, 2, 1, 0, 2, 1, 0 };
-      actual = text.ZFunction();
+      actual = text.Zfunction();
       CollectionAssert.AreEqual(expected, actual, "ZFunction 2");
 
       text = "abacaba".AsSpan();
       expected = new int[] { 0, 0, 1, 0, 3, 0, 1 };
-      actual = text.ZFunction();
+      actual = text.Zfunction();
       CollectionAssert.AreEqual(expected, actual, "ZFunction 3");
     }
   }

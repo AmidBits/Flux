@@ -11,7 +11,7 @@ namespace Flux.Quantities
   public readonly record struct ElectricCharge
     : System.IComparable, System.IComparable<ElectricCharge>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricChargeUnit>
   {
-    public static ElectricCharge ElementaryCharge => new(1.602176634e-19);
+    public static ElectricCharge ElementaryCharge { get; } = new(1.602176634e-19);
 
     private readonly double m_value;
 

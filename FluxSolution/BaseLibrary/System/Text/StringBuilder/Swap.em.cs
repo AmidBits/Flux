@@ -2,31 +2,42 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Swap two elements by the specified indices.</summary>
-    internal static void SwapImpl(this System.Text.StringBuilder source, int indexA, int indexB)
+    /// <summary>
+    /// <para>Swap the two values specified by <paramref name="indexA"/> and <paramref name="indexB"/>.</para>
+    /// </summary>
+    internal static bool SwapImpl(this System.Text.StringBuilder source, int indexA, int indexB)
     {
-      if (indexA != indexB)
+      var isUnequal = indexA != indexB;
+
+      if (isUnequal)
         (source[indexB], source[indexA]) = (source[indexA], source[indexB]);
+
+      return isUnequal;
     }
-    /// <summary>Swap two elements by the specified indices.</summary>
-    public static void Swap(this System.Text.StringBuilder source, int indexA, int indexB)
+
+    /// <summary>
+    /// <para>Swap the two values specified by <paramref name="indexA"/> and <paramref name="indexB"/>.</para>
+    /// </summary>
+    public static bool Swap(this System.Text.StringBuilder source, int indexA, int indexB)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      if (source.Length == 0)
-        throw new System.ArgumentException(@"The sequence is empty.");
-      else if (indexA < 0 || indexA >= source.Length)
-        throw new System.ArgumentOutOfRangeException(nameof(indexA));
-      else if (indexB < 0 || indexB >= source.Length)
-        throw new System.ArgumentOutOfRangeException(nameof(indexB));
-      else
-        SwapImpl(source, indexA, indexB);
+      if (indexA < 0 || indexA >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(indexA));
+      if (indexB < 0 || indexB >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(indexB));
+
+      return SwapImpl(source, indexA, indexB);
     }
 
-    public static void SwapFirstWith(this System.Text.StringBuilder source, int index)
+    /// <summary>
+    /// <para>Swap the first value in the <paramref name="source"/> with the value at the specified <paramref name="index"/>.</para>
+    /// </summary>
+    public static bool SwapFirstWith(this System.Text.StringBuilder source, int index)
       => Swap(source, 0, index);
 
-    public static void SwapLastWith(this System.Text.StringBuilder source, int index)
+    /// <summary>
+    /// <para>Swap the last value in the <paramref name="source"/> with the value at the specified <paramref name="index"/>.</para>
+    /// </summary>
+    public static bool SwapLastWith(this System.Text.StringBuilder source, int index)
       => Swap(source, index, (source ?? throw new System.ArgumentNullException(nameof(source))).Length - 1);
   }
 }

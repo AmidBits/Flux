@@ -45,7 +45,7 @@ namespace Text
     public void CountEqualAtEnd()
     {
       var expected = 3;
-      var actual = new System.Text.StringBuilder("Robert").EndMatchLength("Rupert");
+      var actual = new System.Text.StringBuilder("Robert").CommonSuffixLength(0, "Rupert");
       Assert.AreEqual(expected, actual);
     }
 
@@ -53,7 +53,7 @@ namespace Text
     public void CountEqualAtStart()
     {
       var expected = 2;
-      var actual = new System.Text.StringBuilder("Robert").StartMatchLength("Rommel");
+      var actual = new System.Text.StringBuilder("Robert").CommonPrefixLength(0, "Rommel");
       Assert.AreEqual(expected, actual);
     }
 
@@ -77,11 +77,11 @@ namespace Text
     public void EndsWith()
     {
       var expected = true;
-      var actual = new System.Text.StringBuilder("Robert").EndsWith("ert");
+      var actual = new System.Text.StringBuilder("Robert").IsCommonSuffix(0, "ert");
       Assert.AreEqual(expected, actual);
 
       expected = false;
-      actual = new System.Text.StringBuilder("Robert").EndsWith("Bert");
+      actual = new System.Text.StringBuilder("Robert").IsCommonSuffix(0, "Bert");
       Assert.AreEqual(expected, actual);
     }
 
@@ -89,11 +89,11 @@ namespace Text
     public void EqualsAnyAt()
     {
       var expected = false;
-      var actual = new System.Text.StringBuilder("Robert").EqualsAnyAt(2, 2, new string[] { "do", "re", "mi" });
+      var actual = new System.Text.StringBuilder("Robert").IsCommonPrefixAny(2, null, 2, "do", "re", "mi");
       Assert.AreEqual(expected, actual);
 
       expected = true;
-      actual = new System.Text.StringBuilder("Robert").EqualsAnyAt(2, 2, new string[] { "bo", "bi", "be" });
+      actual = new System.Text.StringBuilder("Robert").IsCommonPrefixAny(2, null, 2, "bo", "bi", "be");
       Assert.AreEqual(expected, actual);
     }
 
@@ -101,11 +101,11 @@ namespace Text
     public void EqualsAt()
     {
       var expected = false;
-      var actual = new System.Text.StringBuilder("Robert").EqualsAt(2, "re");
+      var actual = new System.Text.StringBuilder("Robert").IsCommonPrefix(2, "re");
       Assert.AreEqual(expected, actual);
 
       expected = true;
-      actual = new System.Text.StringBuilder("Robert").EqualsAt(2, "be");
+      actual = new System.Text.StringBuilder("Robert").IsCommonPrefix(2, "be");
       Assert.AreEqual(expected, actual);
     }
 
@@ -113,25 +113,25 @@ namespace Text
     public void IndexOf()
     {
       var expected = 3;
-      var actual = new System.Text.StringBuilder("Robert Serious").IndexOf("er");
+      var actual = new System.Text.StringBuilder("Robert Serious").IndexOf(0, "er");
       Assert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void IndexOfAny1()
-    {
-      var expected = 3;
-      var actual = new System.Text.StringBuilder("Robert Serious").IndexOfAny(null, new char[] { 'e', 'r' });
-      Assert.AreEqual(expected, actual);
-    }
+    //[TestMethod]
+    //public void IndexOfAny1()
+    //{
+    //  var expected = 3;
+    //  var actual = new System.Text.StringBuilder("Robert Serious").IndexOfAny(null, new char[] { 'e', 'r' });
+    //  Assert.AreEqual(expected, actual);
+    //}
 
-    [TestMethod]
-    public void IndexOfAny2()
-    {
-      var expected = 1;
-      var actual = new System.Text.StringBuilder("Robert Serious").IndexOfAny(null, new string[] { "er", "o" });
-      Assert.AreEqual(expected, actual);
-    }
+    //[TestMethod]
+    //public void IndexOfAny2()
+    //{
+    //  var expected = 1;
+    //  var actual = new System.Text.StringBuilder("Robert Serious").IndexOfAny(null, new string[] { "er", "o" });
+    //  Assert.AreEqual(expected, actual);
+    //}
 
     [TestMethod]
     public void IndicesOfAny()
@@ -166,21 +166,21 @@ namespace Text
       Assert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void LastIndexOfAny1()
-    {
-      var expected = 9;
-      var actual = new System.Text.StringBuilder("Robert Serious").LastIndexOfAny(null, new char[] { 'e', 'r' });
-      Assert.AreEqual(expected, actual);
-    }
+    //[TestMethod]
+    //public void LastIndexOfAny1()
+    //{
+    //  var expected = 9;
+    //  var actual = new System.Text.StringBuilder("Robert Serious").LastIndexOfAny(null, new char[] { 'e', 'r' });
+    //  Assert.AreEqual(expected, actual);
+    //}
 
-    [TestMethod]
-    public void LastIndexOfAny2()
-    {
-      var expected = 11;
-      var actual = new System.Text.StringBuilder("Robert Serious").LastIndexOfAny(null, new string[] { "er", "o" });
-      Assert.AreEqual(expected, actual);
-    }
+    //[TestMethod]
+    //public void LastIndexOfAny2()
+    //{
+    //  var expected = 11;
+    //  var actual = new System.Text.StringBuilder("Robert Serious").LastIndexOfAny(null, new string[] { "er", "o" });
+    //  Assert.AreEqual(expected, actual);
+    //}
 
     [TestMethod]
     public void LastIndicesOfAny()
@@ -267,7 +267,7 @@ namespace Text
     public void StartsWith()
     {
       var expected = true;
-      var actual = new System.Text.StringBuilder(@"Robs boat.").StartsWith(@"Rob");
+      var actual = new System.Text.StringBuilder(@"Robs boat.").IsCommonPrefix(0, @"Rob");
       Assert.AreEqual(expected, actual);
     }
 

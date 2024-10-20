@@ -114,21 +114,21 @@ namespace Units
     [TestMethod]
     public void ToMomentUtcGC()
     {
-      var actual = new Flux.Quantities.JulianDate(2400000.5).ToMomentUtc(Flux.Quantities.TemporalCalendar.GregorianCalendar);
+      var actual = new Flux.Quantities.JulianDate(2400000.5).ToMoment(Flux.Quantities.TemporalCalendar.GregorianCalendar);
       var expected = new Flux.Quantities.Moment(1858, 11, 17, 0, 0, 0);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void ToMomentUtcProlepticGC()
     {
-      var actual = new Flux.Quantities.JulianDate(1566839.5).ToMomentUtc(Flux.Quantities.TemporalCalendar.GregorianCalendar);
+      var actual = new Flux.Quantities.JulianDate(1566839.5).ToMoment(Flux.Quantities.TemporalCalendar.GregorianCalendar);
       var expected = new Flux.Quantities.Moment(-423, 10, 5, 0, 0, 0);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void ToMomentUtcJC()
     {
-      var actual = new Flux.Quantities.JulianDate(1442454.5).ToMomentUtc(Flux.Quantities.TemporalCalendar.JulianCalendar);
+      var actual = new Flux.Quantities.JulianDate(1442454.5).ToMoment(Flux.Quantities.TemporalCalendar.JulianCalendar);
       var expected = new Flux.Quantities.Moment(-763, 3, 24, 0, 0, 0);
       Assert.AreEqual(expected, actual);
     }

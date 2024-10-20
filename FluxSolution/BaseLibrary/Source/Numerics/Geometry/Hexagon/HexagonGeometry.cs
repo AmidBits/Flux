@@ -8,6 +8,8 @@ namespace Flux.Geometry
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public record class HexagonGeometry
   {
+    public static HexagonGeometry Unit { get; } = new(1);
+
     private readonly double m_sideLength;
 
     public HexagonGeometry(double sideLength) => m_sideLength = sideLength;

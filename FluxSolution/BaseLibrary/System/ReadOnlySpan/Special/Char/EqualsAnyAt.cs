@@ -2,6 +2,38 @@ namespace Flux
 {
   public static partial class Fx
   {
+    /// <summary>
+    /// <para>Returns whether <paramref name="maxLength"/> (or the actual length if less) of any <paramref name="values"/> are found at the <paramref name="sourceIndex"/> in the <paramref name="source"/>.</para>
+    /// <para>Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="sourceIndex"></param>
+    /// <param name="maxLength"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    public static bool EqualsAnyAt(this System.ReadOnlySpan<char> source, int sourceIndex, int maxLength, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params string[] values)
+    {
+      for (var valuesIndex = 0; valuesIndex < values.Length; valuesIndex++)
+        if (values[valuesIndex] is var value && source.EqualsAt(sourceIndex, maxLength, value, equalityComparer))
+          return true;
+
+      return false;
+    }
+
+    /// <summary>
+    /// <para>Returns whether any <paramref name="values"/> are found at the <paramref name="sourceIndex"/> in the <paramref name="source"/>.</para>
+    /// <para>Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="sourceIndex"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    public static bool EqualsAnyAt(this System.ReadOnlySpan<char> source, int sourceIndex, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params string[] values)
+      => source.EqualsAnyAt(sourceIndex, int.MaxValue, equalityComparer, values);
+
+
     /// <summary>Determines whether this instance has the same value as any in the specified params array of strings when compared using the ordial comparison. The comparison starts at a specified character position.</summary>
     public static bool EqualsAnyAt(this System.ReadOnlySpan<char> source, int startAt, params string[] targets)
       => EqualsAnyAt(source, startAt, -1, System.StringComparison.Ordinal, targets.AsEnumerable());

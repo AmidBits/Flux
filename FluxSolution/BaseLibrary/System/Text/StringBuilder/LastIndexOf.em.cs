@@ -5,6 +5,7 @@ namespace Flux
     public static int LastIndexOf(this System.Text.StringBuilder source, System.Func<char, bool> predicate)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(predicate);
 
       for (var index = source.Length - 1; index >= 0; index--)
         if (predicate(source[index]))
@@ -35,7 +36,7 @@ namespace Flux
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
       for (var index = source.Length - 1 - target.Length; index >= 0; index--)
-        if (EqualsAt(source, index, target, equalityComparer))
+        if (source.IsCommonPrefix(index, target, equalityComparer))
           return index;
 
       return -1;

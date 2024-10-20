@@ -22,6 +22,8 @@ namespace Flux.Quantities
 
     public Energy(MetricPrefix prefix, double joule) => m_value = prefix.ConvertTo(joule, MetricPrefix.Unprefixed);
 
+    public Energy(Pressure pressure, Volume volumn) => m_value = pressure.Value * volumn.Value;
+
     #region Static methods
 
     #endregion // Static methods
@@ -96,7 +98,7 @@ namespace Flux.Quantities
       {
         EnergyUnit.Joule => 1,
 
-        EnergyUnit.ElectronVolt => 1.602176634e-19,
+        EnergyUnit.ElectronVolt => ElectricCharge.ElementaryCharge.Value,
         EnergyUnit.Calorie => 4.184,
         EnergyUnit.WattHour => 3.6e3,
         EnergyUnit.KilowattHour => 3.6e6,

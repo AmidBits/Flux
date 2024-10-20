@@ -3,14 +3,16 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>The Z-function for this sequence is an array of length n where the i-th element is equal to the greatest number of elements starting from the position i that coincide with the first elements of source. I.e., z[i] is the length of the longest common prefix between source and the suffix of source starting at i.</para>
+    /// <para>The Z-function for this span is an array of length n where the i-th element is equal to the greatest number of <typeparamref name="T"/>'s starting from the position i that coincide with the first <typeparamref name="T"/>'s of <paramref name="source"/>.</para>
+    /// <para>I.e. z[i] is the length of the longest sub-span that is, at the same time, a prefix of <paramref name="source"/> and a prefix of the suffix of <paramref name="source"/> starting at i.</para>
+    /// <para>Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// <para><see href="https://cp-algorithms.com/string/z-function.html"/></para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static int[] ZFunction<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int[] Zfunction<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

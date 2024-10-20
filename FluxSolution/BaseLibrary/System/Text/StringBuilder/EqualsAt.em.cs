@@ -1,26 +1,18 @@
-namespace Flux
-{
-  public static partial class Fx
-  {
-    /// <summary>Returns whether the specified part of the target is found at the specified index in the string, using the specified comparer.</summary>
-    public static bool EqualsAt(this System.Text.StringBuilder source, int sourceIndex, System.ReadOnlySpan<char> target, int targetIndex, int length, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
-
-      if (sourceIndex < 0 || targetIndex < 0 || length <= 0 || sourceIndex + length > source.Length || targetIndex + length > target.Length)
-        return false;
-
-      while (length-- > 0)
-        if (!equalityComparer.Equals(source[sourceIndex++], target[targetIndex++]))
-          return false;
-
-      return true;
-    }
-
-    /// <summary>Returns whether the specified target is found at the specified index in the string, using the specified comparer.</summary>
-    public static bool EqualsAt(this System.Text.StringBuilder source, int sourceIndex, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
-      => EqualsAt(source, sourceIndex, target, 0, target.Length, equalityComparer);
-  }
-}
+//namespace Flux
+//{
+//  public static partial class Fx
+//  {
+//    /// <summary>
+//    /// <para>Returns whether <paramref name="maxLength"/> (or the actual length if less) characters of <paramref name="value"/> are found at the <paramref name="sourceIndex"/> in the <paramref name="source"/>.</para>
+//    /// <para>Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+//    /// </summary>
+//    /// <param name="source"></param>
+//    /// <param name="sourceIndex"></param>
+//    /// <param name="maxLength"></param>
+//    /// <param name="value"></param>
+//    /// <param name="equalityComparer"></param>
+//    /// <returns></returns>
+//    public static bool EqualsAt(this System.Text.StringBuilder source, int sourceIndex, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
+//      => source.MatchLength(sourceIndex, value, equalityComparer) == value.Length;
+//  }
+//}

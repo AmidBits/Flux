@@ -32,7 +32,10 @@ namespace Flux
     {
       private readonly double m_value;
 
-      public OrbitalEccentricity(double value) => m_value = value;
+      public OrbitalEccentricity(double value)
+        => m_value = double.IsNegative(value)
+        ? throw new System.ArgumentOutOfRangeException(nameof(value)) // Orbital eccentricity cannot be negative.
+        : value;
 
       #region Static methods
 
@@ -68,8 +71,7 @@ namespace Flux
       public int CompareTo(OrbitalEccentricity other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider)
-        => string.Format(formatProvider, $"{{0{(format is null ? string.Empty : $":{format}")}}}", m_value);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider);
 
       // IValueQuantifiable<>
       ///// <summary>

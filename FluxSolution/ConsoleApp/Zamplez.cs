@@ -919,7 +919,7 @@ namespace ConsoleApp
       System.Console.WriteLine($"{jdgc.ToTimeString()}");
       var jdngc = jdgc.ToJulianDayNumber();
       System.Console.WriteLine($"{jdngc.ToDateString(Flux.Quantities.TemporalCalendar.GregorianCalendar)}");
-      var mugc = jdgc.ToMomentUtc(Flux.Quantities.TemporalCalendar.GregorianCalendar);
+      var mugc = jdgc.ToMoment(Flux.Quantities.TemporalCalendar.GregorianCalendar);
       //System.Console.WriteLine($"{mugc}, {mugc.ToDateOnly()}, {mugc.ToDateTime()}, {mugc.ToTimeOnly()}, {mugc.ToTimeSpan()}");
       System.Console.WriteLine($"{mugc}, {mugc.ToDateTime()}, {mugc.ToTimeSpan()}");
 
@@ -929,7 +929,7 @@ namespace ConsoleApp
       System.Console.WriteLine($"{jdjc.ToTimeString()}");
       var jdnjc = jdjc.ToJulianDayNumber();
       System.Console.WriteLine($"{jdnjc.ToDateString(Flux.Quantities.TemporalCalendar.JulianCalendar)}");
-      var mujc = jdjc.ToMomentUtc(Flux.Quantities.TemporalCalendar.JulianCalendar);
+      var mujc = jdjc.ToMoment(Flux.Quantities.TemporalCalendar.JulianCalendar);
       //System.Console.WriteLine($"{mujc}, {mujc.ToDateOnly()}, {mujc.ToDateTime()}, {mujc.ToTimeOnly()}, {mujc.ToTimeSpan()}");
       System.Console.WriteLine($"{mujc}, {mujc.ToDateTime()}, {mujc.ToTimeSpan()}");
 

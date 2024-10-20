@@ -11,7 +11,8 @@ namespace Flux.Quantities
   public readonly record struct Action
     : System.IComparable, System.IComparable<Action>, System.IFormattable, ISiUnitValueQuantifiable<double, ActionUnit>
   {
-    public static readonly Action PlanckConstant = new(6.62607015e-34);
+    public static Action PlanckConstant { get; } = new(6.62607015e-34);
+    public static Action ReducedPlanckConstant { get; } = new(PlanckConstant.Value / double.Tau);
 
     private readonly double m_value;
 

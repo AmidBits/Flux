@@ -14,12 +14,12 @@ namespace Flux.Quantities
     /// <summary>
     /// <para>The approximate acceleration due to gravity on the surface of the Moon.</para>
     /// </summary>
-    public static Acceleration MoonGravity => new(1.625);
+    public static Acceleration MoonGravity { get; } = new(1.625);
 
     /// <summary>
     /// <para>The nominal gravitational acceleration of an object in a vacuum near the surface of the Earth.</para>
     /// </summary>
-    public static Acceleration StandardGravity => new(9.80665);
+    public static Acceleration StandardGravity { get; } = new(9.80665);
 
     private readonly double m_value;
 

@@ -40,7 +40,7 @@ namespace Flux
         sb.AppendLine(string.Format(null, horizontalLineFormat, values));
       }
 
-      if (sb.EndsWith(System.Environment.NewLine)) // Remove CR + LF at the end of the string builder.
+      if (sb.IsCommonSuffix(0, System.Environment.NewLine)) // Remove CR + LF at the end of the string builder.
         sb.Remove(sb.Length - System.Environment.NewLine.Length, System.Environment.NewLine.Length);
 
       return sb;

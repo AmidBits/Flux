@@ -2,7 +2,13 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Reports the first index of any of the specified targets within the source, or -1 if none were found. Uses the specified comparer.</summary>
+    /// <summary>
+    /// <para>Reports the index of any of the <paramref name="values"/> in the <paramref name="source"/>, or -1 if none were found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
     public static int IndexOfAny(this System.ReadOnlySpan<char> source, System.Collections.Generic.IEqualityComparer<char> equalityComparer, params string[] values)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;

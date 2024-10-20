@@ -30,7 +30,7 @@ namespace Flux.Resources.ProjectGutenberg
         {
           if (line == @"=")
           {
-            if (lines.StartsWith(@"KEY:"))
+            if (lines.IsCommonPrefix(0, @"KEY:"))
             {
               var dictionary = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 

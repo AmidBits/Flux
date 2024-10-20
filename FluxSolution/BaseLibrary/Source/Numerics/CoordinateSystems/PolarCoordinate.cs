@@ -27,7 +27,7 @@ namespace Flux
     public readonly record struct PolarCoordinate
       : System.IFormattable
     {
-      public static readonly PolarCoordinate Zero;
+      public static PolarCoordinate Zero { get; }
 
       private readonly Quantities.Length m_radius;
       private readonly Quantities.Angle m_azimuth;

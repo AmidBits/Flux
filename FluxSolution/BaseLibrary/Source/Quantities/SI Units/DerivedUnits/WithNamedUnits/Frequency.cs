@@ -14,7 +14,7 @@ namespace Flux.Quantities
     : System.IComparable, System.IComparable<Frequency>, System.IFormattable, ISiUnitValueQuantifiable<double, FrequencyUnit>
   {
     /// <summary>
-    /// <para>The musical pitch corresponding to an audio frequency of 440 Hz, serves as a tuning standard for the musical note of A above middle C, or A4 in scientific pitch notation.</para>
+    /// <para>The musical pitch corresponding to an audio frequency of 440 Hz, serves as a tuning standard for the musical note of A above middle C, or A4 in scientific pitch notation, or MIDI note number 69.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/A440_(pitch_standard)"/></para>
     /// </summary>
     public static Frequency A440 { get; } = new(440);
@@ -24,7 +24,7 @@ namespace Flux.Quantities
     /// <para><see href="https://en.wikipedia.org/wiki/International_System_of_Units"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Caesium_standard"/></para>
     /// </summary>
-    public static Frequency HyperfineTransitionFrequencyOfCs { get; } = new(9192631770);
+    public static Frequency UnperturbedGroundStateHyperfineStructureTransitionFrequencyOfTheCaesium133Atom { get; } = new(9192631770);
 
     private readonly double m_value;
 

@@ -9,8 +9,8 @@ namespace Flux
   /// </summary>
   public record class EllipsoidReference
   {
-    public static EllipsoidReference Etrs89 => new(298.257222101, 6378137.000, 6356752.314140);
-    public static EllipsoidReference Wgs84 => new(298.257223563, 6378137.0, 6356752.314245);
+    public static EllipsoidReference Etrs89 { get; } = new(298.257222101, 6378137.000, 6356752.314140);
+    public static EllipsoidReference Wgs84 { get; } = new(298.257223563, 6378137.0, 6356752.314245);
 
     private readonly double m_inverseFlattening;
     private readonly double m_semiMajorAxis;

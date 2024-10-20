@@ -6,7 +6,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      if (EqualsAt(source, startAt, key, equalityComparer ?? System.Collections.Generic.EqualityComparer<char>.Default))
+      if (source.IsCommonPrefix(startAt, key, equalityComparer ?? System.Collections.Generic.EqualityComparer<char>.Default))
       {
         source.Remove(startAt, key.Length);
         source.Insert(startAt, value);

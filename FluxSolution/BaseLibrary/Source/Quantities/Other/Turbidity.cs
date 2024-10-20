@@ -4,6 +4,11 @@ namespace Flux.Quantities
   {
     /// <summary>This is the default unit for <see cref="Turbidity"/>.</summary>
     NephelometricTurbidityUnits,
+    FormazinAttenuationUnit,
+    FormazinNephelometricUnit,
+    FormazinTurbidityUnit,
+    AmericanSocietyOfBrewingChemists,
+    EuropeanBreweryConvention
   }
 
   /// <summary>
@@ -91,6 +96,12 @@ namespace Flux.Quantities
       {
         TurbidityUnit.NephelometricTurbidityUnits => 1,
 
+        TurbidityUnit.FormazinAttenuationUnit => 1,
+        TurbidityUnit.FormazinNephelometricUnit => 1,
+        TurbidityUnit.FormazinTurbidityUnit => 1,
+        TurbidityUnit.AmericanSocietyOfBrewingChemists => 1 / 17.5,
+        TurbidityUnit.EuropeanBreweryConvention => 1 / 0.25,
+
         _ => throw new System.NotImplementedException()
       };
 
@@ -99,7 +110,13 @@ namespace Flux.Quantities
     public string GetUnitSymbol(TurbidityUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.TurbidityUnit.NephelometricTurbidityUnits => "NTU",
+        TurbidityUnit.NephelometricTurbidityUnits => "NTU",
+
+        TurbidityUnit.FormazinAttenuationUnit => "FAU",
+        TurbidityUnit.FormazinNephelometricUnit => "FNU",
+        TurbidityUnit.FormazinTurbidityUnit => "FTU",
+        TurbidityUnit.AmericanSocietyOfBrewingChemists => "ASBC",
+        TurbidityUnit.EuropeanBreweryConvention => "EBC",
 
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };

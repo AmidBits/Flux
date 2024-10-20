@@ -56,12 +56,12 @@ namespace Flux
     public readonly record struct CartesianCoordinate
       : System.IFormattable
     {
-      public static readonly CartesianCoordinate Zero;
+      public static CartesianCoordinate Zero { get; }
 
-      public static readonly CartesianCoordinate UnitX = new(1d, 0d, 0d, 0d);
-      public static readonly CartesianCoordinate UnitY = new(0d, 1d, 0d, 0d);
-      public static readonly CartesianCoordinate UnitZ = new(0d, 0d, 1d, 0d);
-      public static readonly CartesianCoordinate UnitW = new(0d, 0d, 0d, 1d);
+      public static CartesianCoordinate UnitX { get; } = new(1d, 0d, 0d, 0d);
+      public static CartesianCoordinate UnitY { get; } = new(0d, 1d, 0d, 0d);
+      public static CartesianCoordinate UnitZ { get; } = new(0d, 0d, 1d, 0d);
+      public static CartesianCoordinate UnitW { get; } = new(0d, 0d, 0d, 1d);
 
       private readonly Quantities.Length m_x;
       private readonly Quantities.Length m_y;

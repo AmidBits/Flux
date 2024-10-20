@@ -7,6 +7,8 @@ namespace Flux.Geometry
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct CircleGeometry
   {
+    public static CircleGeometry Unit { get; } = new(1);
+
     private readonly double m_radius;
 
     public CircleGeometry(double radius) => m_radius = radius;

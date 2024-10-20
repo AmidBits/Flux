@@ -17,10 +17,10 @@ namespace Flux.Quantities
     : System.IComparable, System.IComparable<Speed>, System.IFormattable, ISiUnitValueQuantifiable<double, SpeedUnit>
   {
     /// <summary>The speed of light in vacuum (symbol c).</summary>
-    public static Speed SpeedOfLight => new(299792458);
+    public static Speed SpeedOfLight { get; } = new(299792458);
 
     /// <summary>The speed of sound in dry air at sea-level pressure and 20 °C.</summary>
-    public static Speed SpeedOfSound => new(343);
+    public static Speed SpeedOfSound { get; } = new(343);
 
     private readonly double m_value;
 
@@ -122,7 +122,7 @@ namespace Flux.Quantities
         SpeedUnit.FootPerSecond => (381.0 / 1250.0),
         SpeedUnit.KilometerPerHour => (5.0 / 18.0),
         SpeedUnit.Knot => (1852.0 / 3600.0),
-        SpeedUnit.Mach => SpeedOfSound.Value,
+        SpeedUnit.Mach => SpeedOfSound.m_value,
         SpeedUnit.MilePerHour => (1397.0 / 3125.0),
 
         _ => throw new System.NotImplementedException()

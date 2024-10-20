@@ -32,16 +32,18 @@ namespace Flux
 
       public TemporalCalendar GetConversionCalendar() => TemporalCalendar.GregorianCalendar.Contains(m_value) ? TemporalCalendar.GregorianCalendar : TemporalCalendar.JulianCalendar;
 
-      public (int Year, int Month, int Day) GetParts(TemporalCalendar calendar) => ConvertJulianDayNumberToDateParts(m_value, calendar);
+      public (int Year, int Month, int Day) GetParts(TemporalCalendar? calendar = null) => ConvertJulianDayNumberToDateParts(m_value, calendar ?? GetConversionCalendar());
 
       /// <summary>Creates a new string from this instance.</summary>
-      public string ToDateString(TemporalCalendar calendar, bool indicateOutOfRangeCalendar = true)
+      public string ToDateString(TemporalCalendar? calendar = null, bool indicateOutOfRangeCalendar = true)
       {
+        calendar ??= GetConversionCalendar();
+
         var sb = new System.Text.StringBuilder();
 
         if (indicateOutOfRangeCalendar)
         {
-          if (calendar.Contains(m_value) is var ic && !ic)
+          if (calendar.Value.Contains(m_value) is var ic && !ic)
             sb.Append("Proleptic ");
 
           if (!ic || calendar != GetConversionCalendar())
@@ -58,7 +60,7 @@ namespace Flux
         sb.Append(DayOfWeek);
         sb.Append(StringOps.CommaSpace);
 
-        var (year, month, day) = ConvertJulianDayNumberToDateParts(m_value, calendar); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
+        var (year, month, day) = GetParts(calendar); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
 
         sb.Append(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
         sb.Append(' ');
@@ -77,12 +79,12 @@ namespace Flux
       }
 
       /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>
-      public JulianDate ToJulianDate() => new(m_value);
+      public JulianDate ToJulianDate() => new(ConvertJulianDayNumberToJulianDate(m_value));
 
       /// <summary>Creates a new <see cref="Moment"/> from this instance.</summary>
-      public Moment ToMomentUtc(TemporalCalendar calendar)
+      public Moment ToMoment(TemporalCalendar? calendar = null)
       {
-        var (year, month, day) = ConvertJulianDayNumberToDateParts((int)(m_value + 0.5), calendar);
+        var (year, month, day) = GetParts(calendar);
 
         return new Moment(year, month, day);
       }
@@ -138,6 +140,14 @@ namespace Flux
         return (year, month, day);
       }
 
+      /// <summary>
+      /// <para>Converts a Julian Day Number (JDN) to a Julian Date (JD).</para>
+      /// <para>JDN is a JD without a time-of-day fraction, so a simple type conversion with no alteration to the number can be safely performed.</para>
+      /// </summary>
+      /// <param name="julianDayNumber"></param>
+      /// <returns></returns>
+      public static double ConvertJulianDayNumberToJulianDate(int julianDayNumber) => julianDayNumber;
+
       #endregion // Conversion methods
 
       /// <summary>
@@ -179,10 +189,12 @@ namespace Flux
       public static double operator -(JulianDayNumber a, JulianDayNumber b) => a.m_value - b.m_value;
 
       public static JulianDayNumber operator +(JulianDayNumber a, int b) => new(a.m_value + b);
+      public static int operator +(int a, JulianDayNumber b) => a + b.m_value;
       public static JulianDayNumber operator /(JulianDayNumber a, int b) => new(a.m_value / b);
       public static JulianDayNumber operator *(JulianDayNumber a, int b) => new(a.m_value * b);
       public static JulianDayNumber operator %(JulianDayNumber a, int b) => new(a.m_value % b);
       public static JulianDayNumber operator -(JulianDayNumber a, int b) => new(a.m_value - b);
+      public static int operator -(int a, JulianDayNumber b) => a - b.m_value;
 
       #endregion // Overloaded operators
 

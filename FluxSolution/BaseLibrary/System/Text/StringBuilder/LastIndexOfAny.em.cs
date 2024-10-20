@@ -2,62 +2,33 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static int LastIndexOfAny(this System.Text.StringBuilder source, params System.Func<char, bool>[] predicates)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      var predicatesLength = predicates.Length;
-
-      for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
-      {
-        var sourceChar = source[sourceIndex];
-
-        for (var predicatesIndex = 0; predicatesIndex < predicatesLength; predicatesIndex++) // Favor targets in order.
-          if (predicates[predicatesIndex](sourceChar))
-            return sourceIndex;
-      }
-
-      return -1;
-    }
-
-    /// <summary>Returns the last index of any of the specified characters. Or -1 if none were found.</summary>
+    /// <summary>
+    /// <para>Reports the index of any of the <paramref name="values"/> in the <paramref name="source"/>. or -1 if none is found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
     public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params char[] values)
     {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
-
-      var valuesLength = values.Length;
-
-      for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
-      {
-        var sourceChar = source[sourceIndex];
-
-        for (var valuesIndex = 0; valuesIndex < valuesLength; valuesIndex++) // Favor targets in order.
-          if (equalityComparer.Equals(values[valuesIndex], sourceChar))
-            return sourceIndex;
-      }
+      if (source.LastIndexOf(c => values.Contains(c, equalityComparer)) is var index && index > -1)
+        return index;
 
       return -1;
     }
 
-    /// <summary>Returns the last index of any of the specified values. or -1 if none is found.</summary>
+    /// <summary>
+    /// <para>Reports the index of any of the <paramref name="values"/> in the <paramref name="source"/>. or -1 if none is found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
     public static int LastIndexOfAny(this System.Text.StringBuilder source, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params string[] values)
     {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
-
-      var valuesLength = values.Length;
-
-      for (var sourceIndex = source.Length - 1; sourceIndex >= 0; sourceIndex--)
-        for (var valuesIndex = 0; valuesIndex < valuesLength; valuesIndex++) // Favor targets in sorder.
-        {
-          var value = values[valuesIndex];
-
-          if (source.EqualsAt(sourceIndex, value, 0, value.Length, equalityComparer))
-            return sourceIndex;
-        }
+      for (var valueIndex = 0; valueIndex < values.Length; valueIndex++)
+        if (source.LastIndexOf(values[valueIndex], equalityComparer) is var index && index > -1)
+          return index;
 
       return -1;
     }

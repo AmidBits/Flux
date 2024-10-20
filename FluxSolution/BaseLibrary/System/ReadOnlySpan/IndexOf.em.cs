@@ -58,7 +58,7 @@ namespace Flux
       var maxIndex = source.Length - value.Length;
 
       for (var index = 0; index <= maxIndex; index++)
-        if (source.Slice(index).StartsWith(value, equalityComparer))
+        if (source.IsCommonPrefix(index, value, equalityComparer))
           return index;
 
       return -1;

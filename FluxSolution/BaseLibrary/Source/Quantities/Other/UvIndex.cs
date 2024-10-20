@@ -83,7 +83,7 @@ namespace Flux
       public int CompareTo(UvIndex other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => $"UV Index {m_value.ToString(format ?? "N1", formatProvider)}";
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => "UV Index " + m_value.ToString(format ?? "N1", formatProvider);
 
       #region IValueQuantifiable<>
 

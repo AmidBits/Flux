@@ -10,8 +10,8 @@ namespace Flux
     /// <param name="count"></param>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, int count, System.Func<T, bool> predicate)
-      => source.StartMatchLength(predicate) == count;
+    public static bool IsCommonPrefix<T>(this System.ReadOnlySpan<T> source, int index, int count, System.Func<T, bool> predicate)
+      => source.CommonPrefixLength(index, predicate, count) == count;
 
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> starts with <paramref name="count"/> occurences of the <paramref name="target"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -21,8 +21,8 @@ namespace Flux
     /// <param name="target"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, int count, T target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
-      => source.StartMatchLength(target, equalityComparer) == count;
+    public static bool IsCommonPrefix<T>(this System.ReadOnlySpan<T> source, int index, int count, T target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
+      => source.CommonPrefixLength(index, target, equalityComparer, count) == count;
 
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> starts with the <paramref name="target"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -32,7 +32,7 @@ namespace Flux
     /// <param name="target"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static bool StartsWith<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
-      => source.StartMatchLength(target, equalityComparer) == target.Length;
+    public static bool IsCommonPrefix<T>(this System.ReadOnlySpan<T> source, int index, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
+      => source.CommonPrefixLength(index, target, equalityComparer) == target.Length;
   }
 }

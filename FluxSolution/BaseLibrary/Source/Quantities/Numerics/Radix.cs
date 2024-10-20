@@ -12,10 +12,10 @@ namespace Flux.Quantities
     public const int MaxValue = 256;
     public const int MinValue = 2;
 
-    public static Radix Binary => new(2);
-    public static Radix Octal => new(8);
-    public static Radix Decimal => new(10);
-    public static Radix Hexadecimal => new(16);
+    public static Radix Binary { get; } = new(2);
+    public static Radix Octal { get; } = new(8);
+    public static Radix Decimal { get; } = new(10);
+    public static Radix Hexadecimal { get; } = new(16);
 
     private readonly int m_value;
 

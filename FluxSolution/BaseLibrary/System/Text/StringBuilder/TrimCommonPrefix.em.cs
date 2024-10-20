@@ -9,8 +9,12 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public static System.Text.StringBuilder StartTrim(this System.Text.StringBuilder source, System.Func<char, bool> predicate)
-      => source.Remove(0, source.StartMatchLength(predicate));
+    public static System.Text.StringBuilder TrimCommonPrefix(this System.Text.StringBuilder source, int offset, System.Func<char, bool> predicate, int maxTrimLength = int.MaxValue)
+    {
+      var length = source.CommonPrefixLength(offset, predicate, maxTrimLength);
+
+      return source.Remove(offset, length);
+    }
 
     /// <summary>
     /// <para>Returns a new <see cref="System.ReadOnlySpan{T}"/> with all consecutive elements satisfying the <paramref name="predicate"/> removed at the start.</para>
@@ -19,8 +23,12 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public static System.Text.StringBuilder StartTrim(this System.Text.StringBuilder source, char target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer)
-      => source.Remove(0, source.StartMatchLength(target, equalityComparer));
+    public static System.Text.StringBuilder TrimCommonPrefix(this System.Text.StringBuilder source, int offset, char target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxTrimLength = int.MaxValue)
+    {
+      var length = source.CommonPrefixLength(offset, target, equalityComparer, maxTrimLength);
+
+      return source.Remove(offset, length);
+    }
 
     /// <summary>
     /// <para>Returns a new <see cref="System.ReadOnlySpan{T}"/> with all consecutive elements satisfying the <paramref name="predicate"/> removed at the start.</para>
@@ -29,7 +37,11 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public static System.Text.StringBuilder StartTrim(this System.Text.StringBuilder source, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer)
-      => source.Remove(0, source.StartMatchLength(target, equalityComparer));
+    public static System.Text.StringBuilder TrimCommonPrefix(this System.Text.StringBuilder source, int offset, System.ReadOnlySpan<char> target, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
+    {
+      var length = source.CommonPrefixLength(offset, target, equalityComparer);
+
+      return source.Remove(offset, length);
+    }
   }
 }

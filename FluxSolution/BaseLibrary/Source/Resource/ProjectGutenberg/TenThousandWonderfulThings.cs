@@ -29,7 +29,7 @@ namespace Flux.Resources.ProjectGutenberg
         if (e.Current.Equals(@"  PRINTED BY WILLIAM CLOWES AND SONS, LIMITED, LONDON AND DECCLES.", System.StringComparison.Ordinal)) // This is where we stop enumerating lines from the text.
           break;
 
-        if (entry.EndsWith("\r\n\r\n\r\n") && e.Current.EndsWith('.'))//&& reTitle.IsMatch(e.Current))
+        if (entry.IsCommonSuffix(0, "\r\n\r\n\r\n") && e.Current.EndsWith('.'))//&& reTitle.IsMatch(e.Current))
         {
           var text = entry.ToString().Trim();
 

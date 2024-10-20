@@ -31,7 +31,7 @@ namespace Flux
     public readonly record struct CylindricalCoordinate
       : System.IFormattable
     {
-      public static readonly CylindricalCoordinate Zero;
+      public static CylindricalCoordinate Zero { get; }
 
       private readonly Quantities.Length m_radius;
       private readonly Quantities.Angle m_azimuth;

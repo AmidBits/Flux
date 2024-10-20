@@ -8,15 +8,14 @@ namespace Flux.Geometry
 
     public Polygon(System.Collections.Generic.IEnumerable<System.Numerics.Vector3> vertices)
       => Vertices = new System.Collections.Generic.List<System.Numerics.Vector3>(vertices);
-    public Polygon(params System.Numerics.Vector3[] vertices)
-      : this(vertices.AsEnumerable())
-    {
-    }
+    public Polygon(params System.Numerics.Vector3[] vertices) : this(vertices.AsEnumerable()) { }
 
-    public static System.Collections.Generic.IEnumerable<string> GetOneHundredPolygonNames()
+    public static System.Collections.Generic.List<string> GetNinetyNinePolygonNames()
     {
-      string[] NameOfOnes = new string[] { string.Empty, @"hena", @"di", @"tri", @"tetra", @"penta", @"hexa", @"hepta", @"octa", @"ennea" };
-      string[] NameOfTens = new string[] { string.Empty, @"deca", @"icosi", @"triaconta", @"tetraconta", @"pentaconta", @"hexaconta", @"heptaconta", @"octaconta", @"enneaconta" };
+      var NameOfOnes = new string[] { string.Empty, @"hena", @"di", @"tri", @"tetra", @"penta", @"hexa", @"hepta", @"octa", @"ennea" };
+      var NameOfTens = new string[] { string.Empty, @"deca", @"icosi", @"triaconta", @"tetraconta", @"pentaconta", @"hexaconta", @"heptaconta", @"octaconta", @"enneaconta" };
+
+      var list = new System.Collections.Generic.List<string>();
 
       for (var index = 1; index < 100; index++)
       {
@@ -34,8 +33,10 @@ namespace Flux.Geometry
           _ => $"{NameOfTens[index / 10]}{NameOfOnes[index % 10]}",
         };
 
-        yield return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name + @"gon");
+        list.Add(System.Globalization.CultureInfo.InvariantCulture.TextInfo.ToTitleCase(name + @"gon"));
       }
+
+      return list;
     }
 
     /// <summary>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</summary>

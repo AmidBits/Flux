@@ -11,7 +11,7 @@ namespace Flux.Coordinates
     public const double MaxAltitudeInMeters = 1500000000;
     public const double MinAltitudeInMeters = -11000;
 
-    public readonly static GeographicCoordinate GreenwichMeridian = new(51.477811, Quantities.AngleUnit.Degree, -0.001475, Quantities.AngleUnit.Degree);
+    public static GeographicCoordinate GreenwichMeridian { get; } = new(51.477811, Quantities.AngleUnit.Degree, -0.001475, Quantities.AngleUnit.Degree);
 
     private readonly Quantities.Latitude m_latitude;
 

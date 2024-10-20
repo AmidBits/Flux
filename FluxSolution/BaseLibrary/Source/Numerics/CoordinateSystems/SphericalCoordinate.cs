@@ -39,7 +39,7 @@ namespace Flux
     public readonly record struct SphericalCoordinate
       : System.IFormattable
     {
-      public static readonly SphericalCoordinate Zero;
+      public static SphericalCoordinate Zero { get; }
 
       private readonly Quantities.Length m_radius;
       private readonly Quantities.Angle m_inclination;

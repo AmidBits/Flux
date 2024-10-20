@@ -13,8 +13,8 @@ namespace Flux.Quantities
     public const double MaxValue = +90;
     public const double MinValue = -90;
 
-    public static Latitude TropicOfCancer => new(23.43648);
-    public static Latitude TropicOfCapricorn => new(-23.43648);
+    public static Latitude TropicOfCancer { get; } = new(23.43648);
+    public static Latitude TropicOfCapricorn { get; } = new(-23.43648);
 
     private readonly Angle m_angle;
 

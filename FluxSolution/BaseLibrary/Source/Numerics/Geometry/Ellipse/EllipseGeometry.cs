@@ -7,6 +7,8 @@ namespace Flux.Geometry
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct EllipseGeometry
   {
+    public static EllipseGeometry Unit { get; } = new(1, 1);
+
     private readonly double m_a;
     private readonly double m_b;
 

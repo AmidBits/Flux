@@ -162,7 +162,7 @@ namespace Flux
       : System.IFormattable
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      public static readonly HexCoordinate<TSelf> Zero;
+      public static HexCoordinate<TSelf> Zero { get; }
 
       private readonly TSelf m_q;
       private readonly TSelf m_r;

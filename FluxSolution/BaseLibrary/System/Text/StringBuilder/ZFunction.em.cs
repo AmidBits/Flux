@@ -2,9 +2,17 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>The Z-function for this sequence is an array of length n where the i-th element is equal to the greatest number of elements starting from the position i that coincide with the first elements of source. I.e., z[i] is the length of the longest common prefix between source and the suffix of source starting at i.</summary>
-    // https://cp-algorithms.com/string/z-function.html
-    public static int[] ZFunction(this System.Text.StringBuilder source)
+    /// <summary>
+    /// <para>The Z-function for this string-builder is an array of length n where the i-th character is equal to the greatest number of characters starting from the position i that coincide with the first characters of <paramref name="source"/>.</para>
+    /// <para>I.e. z[i] is the length of the longest string that is, at the same time, a prefix of <paramref name="source"/> and a prefix of the suffix of <paramref name="source"/> starting at i.</para>
+    /// <para>Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// <para><see href="https://cp-algorithms.com/string/z-function.html"/></para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    public static int[] Zfunction(this System.Text.StringBuilder source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 

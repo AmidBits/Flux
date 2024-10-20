@@ -18,7 +18,7 @@ namespace Flux
       sourceSlice = source;
       targetSlice = target;
 
-      atStart = sourceSlice.StartMatchLength(targetSlice, equalityComparer);
+      atStart = sourceSlice.CommonPrefixLength(0, targetSlice, equalityComparer);
 
       if (atStart > 0) // If equality exist in the beginning, adjust.
       {
@@ -26,7 +26,7 @@ namespace Flux
         targetSlice = targetSlice[atStart..];
       }
 
-      atEnd = sourceSlice.EndMatchLength(targetSlice, equalityComparer);
+      atEnd = sourceSlice.CommonSuffixLength(0, targetSlice, equalityComparer);
 
       if (atEnd > 0) // If equality exist at the end, adjust.
       {

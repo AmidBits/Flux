@@ -820,9 +820,13 @@ namespace Flux
 
       // IComparable<>
       public int CompareTo(BigRational other)
-        => Sign(this) is var signt && Sign(other) is var signo && signt < signo ? -1
-        : signt > signo ? 1
-        : m_denominator.Equals(other.m_denominator) ? m_numerator.CompareTo(other.m_numerator)
+        => Sign(this) is var thisSign && Sign(other) is var otherSign
+        && thisSign < otherSign
+        ? -1
+        : thisSign > otherSign
+        ? 1
+        : m_denominator.Equals(other.m_denominator)
+        ? m_numerator.CompareTo(other.m_numerator)
         : (m_numerator * other.m_denominator).CompareTo(m_denominator * other.m_numerator);
 
       // IComparable

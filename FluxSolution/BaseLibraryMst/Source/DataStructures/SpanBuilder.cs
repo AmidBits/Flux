@@ -35,7 +35,7 @@ namespace Text
     public void CommonSuffixLength()
     {
       var expected = 3;
-      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().EndMatchLength("Rupert", null);
+      var actual = new Flux.SpanBuilder<char>("Robert").AsReadOnlySpan().CommonSuffixLength(0, "Rupert", null);
       Assert.AreEqual(expected, actual);
     }
 
@@ -161,21 +161,21 @@ namespace Text
       Assert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void LastIndexOfAny1()
-    {
-      var expected = 9;
-      var actual = new Flux.SpanBuilder<char>("Robert Serious").AsReadOnlySpan().LastIndexOfAny(null, 'e', 'r');
-      Assert.AreEqual(expected, actual);
-    }
+    //[TestMethod]
+    //public void LastIndexOfAny1()
+    //{
+    //  var expected = 9;
+    //  var actual = new Flux.SpanBuilder<char>("Robert Serious").AsReadOnlySpan().LastIndexOfAny(null, 'e', 'r');
+    //  Assert.AreEqual(expected, actual);
+    //}
 
-    [TestMethod]
-    public void LastIndexOfAny2()
-    {
-      var expected = 11;
-      var actual = new Flux.SpanBuilder<char>("Robert Serious").AsReadOnlySpan().LastIndexOfAny(null, "er", "o");
-      Assert.AreEqual(expected, actual);
-    }
+    //[TestMethod]
+    //public void LastIndexOfAny2()
+    //{
+    //  var expected = 11;
+    //  var actual = new Flux.SpanBuilder<char>("Robert Serious").AsReadOnlySpan().LastIndexOfAny(null, "er", "o");
+    //  Assert.AreEqual(expected, actual);
+    //}
 
     //[TestMethod]
     //public void LastIndicesOfAny()

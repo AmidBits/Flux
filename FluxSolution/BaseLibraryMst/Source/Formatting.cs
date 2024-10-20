@@ -14,7 +14,7 @@ namespace Formatting
     public void LatitudeFormatter()
     {
       var expected = $"40\u00B011\u203215\u2033N"; // Default is to use Unicode, so we test with Unicode.
-      var actual = Flux.Quantities.Angle.ToDmsString(40.1875, Flux.Quantities.AngleDmsNotation.DegreesMinutesDecimalSeconds, Flux.Quantities.CompassCardinalAxis.NorthSouth);
+      var actual = Flux.Quantities.Angle.ToDmsString(40.1875, Flux.Quantities.AngleDmsNotation.DegreesMinutesDecimalSeconds, Flux.CompassCardinalAxis.NorthSouth);
 
       var e = expected.ToCharArray(); // For comparing odd unicode choices.
       var a = actual.ToCharArray(); // For comparing odd unicode choices.
@@ -34,7 +34,7 @@ namespace Formatting
     public void LongitudeFormatter()
     {
       var expected = $"40\u00B011\u203215\u2033E"; // Default is to use Unicode, so we test with Unicode.
-      var actual = Flux.Quantities.Angle.ToDmsString(40.1875, Flux.Quantities.AngleDmsNotation.DegreesMinutesDecimalSeconds, Flux.Quantities.CompassCardinalAxis.EastWest);
+      var actual = Flux.Quantities.Angle.ToDmsString(40.1875, Flux.Quantities.AngleDmsNotation.DegreesMinutesDecimalSeconds, Flux.CompassCardinalAxis.EastWest);
 
       var e = expected.ToCharArray(); // For comparing odd unicode choices.
       var a = actual.ToCharArray(); // For comparing odd unicode choices.

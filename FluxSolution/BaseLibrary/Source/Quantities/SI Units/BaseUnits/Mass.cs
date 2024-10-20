@@ -19,7 +19,7 @@ namespace Flux.Quantities
   public readonly record struct Mass
     : System.IComparable, System.IComparable<Mass>, System.IFormattable, ISiUnitValueQuantifiable<double, MassUnit>
   {
-    public static Mass ElectronMass => new(9.109383701528e-31);
+    public static Mass ElectronMass { get; } = new(9.109383701528e-31);
 
     private readonly double m_value;
 

@@ -11,7 +11,7 @@ namespace Flux.Quantities
   public readonly record struct LuminousEfficacy
     : System.IComparable, System.IComparable<LuminousEfficacy>, System.IFormattable, ISiUnitValueQuantifiable<double, LuminousEfficacyUnit>
   {
-    public static readonly LuminousEfficacy LuminousEfficacyOf540THzRadiation = new(683);
+    public static LuminousEfficacy LuminousEfficacyOf540THzRadiation { get; } = new(683);
 
     private readonly double m_value;
 

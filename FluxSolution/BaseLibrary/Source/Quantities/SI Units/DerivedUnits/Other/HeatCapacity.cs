@@ -11,7 +11,7 @@ namespace Flux.Quantities
   public readonly record struct HeatCapacity
     : System.IComparable, System.IComparable<HeatCapacity>, System.IFormattable, ISiUnitValueQuantifiable<double, HeatCapacityUnit>
   {
-    public static readonly HeatCapacity BoltzmannConstant = new(1.380649e-23);
+    public static HeatCapacity BoltzmannConstant { get; } = new(1.380649e-23);
 
     private readonly double m_value;
 

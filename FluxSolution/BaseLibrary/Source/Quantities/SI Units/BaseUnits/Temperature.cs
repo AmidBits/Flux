@@ -16,7 +16,7 @@ namespace Flux.Quantities
   public readonly record struct Temperature
     : System.IComparable, System.IComparable<Temperature>, System.IFormattable, ISiUnitValueQuantifiable<double, TemperatureUnit>
   {
-    public static readonly Temperature AbsoluteZero;
+    public static Temperature AbsoluteZero { get; }
 
     private readonly double m_value;
 

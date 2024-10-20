@@ -8,7 +8,7 @@ namespace Flux
     public readonly record struct HecsCoordinate
       : System.IFormattable
     {
-      public static readonly HecsCoordinate Zero;
+      public static HecsCoordinate Zero { get; }
 
       public readonly int m_a;
       public readonly int m_r;

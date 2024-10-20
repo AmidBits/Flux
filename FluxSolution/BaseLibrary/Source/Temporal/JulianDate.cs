@@ -39,9 +39,9 @@ namespace Flux
 
       public TemporalCalendar GetConversionCalendar() => TemporalCalendar.GregorianCalendar.Contains(m_value) ? TemporalCalendar.GregorianCalendar : TemporalCalendar.JulianCalendar;
 
-      public (int Year, int Month, int Day, int Hour, int Minute, int Second, int Millisecond, int Microsecond, int Nanosecond) GetParts(TemporalCalendar calendar)
+      public (int Year, int Month, int Day, int Hour, int Minute, int Second, int Millisecond, int Microsecond, int Nanosecond) GetParts(TemporalCalendar? calendar = null)
       {
-        var (year, month, day) = ToJulianDayNumber().GetParts(calendar);
+        var (year, month, day) = ToJulianDayNumber().GetParts(calendar ?? GetConversionCalendar());
         var (hour, minute, second, millisecond, microsecond, nanosecond) = ConvertTimeOfDayToTimeParts(m_value);
 
         return (year, month, day, hour, minute, second, millisecond, microsecond, nanosecond);
@@ -49,7 +49,7 @@ namespace Flux
 
       public JulianDayNumber ToJulianDayNumber() => new(ConvertJulianDateToJulianDayNumber(m_value));
 
-      public Moment ToMomentUtc(TemporalCalendar calendar)
+      public Moment ToMoment(TemporalCalendar? calendar = null)
       {
         var (year, month, day, hour, minute, second, millisecond, microsecond, nanosecond) = GetParts(calendar);
 
@@ -67,7 +67,10 @@ namespace Flux
       public static Quantities.Time ConvertTimeOfDayToTime(double julianDate) => new((julianDate - System.Math.Truncate(julianDate)) * 86400d);
 
       /// <summary>
-      /// <para></para>
+      /// <para>Converts a Julian Date (JD) to a Julian Day Number (JDN).</para>
+      /// <para>JD is a JDN + time-of-day (TOD) from the preceeding noon, in other words, the range is noon-to-noon.</para>
+      /// <para>TOD is a fraction with essentially two ranges, range [0.0, 0.5] is time from the preceeding noon to midnight, and range [0.5, 1.0] is time from midnight to noon of the JDN.</para>
+      /// <para>To ensure the second range being overflowed into the "next day", adding 0.5 and truncating, the range becomes the familiar year/month/day, i.e. midnight-to-midnight.</para>
       /// </summary>
       /// <param name="julianDate"></param>
       /// <returns></returns>
@@ -134,6 +137,9 @@ namespace Flux
 
       #region Overloaded operators
 
+      public static explicit operator JulianDate(double v) => new(v);
+      public static explicit operator double(JulianDate v) => v.m_value;
+
       public static bool operator <(JulianDate a, JulianDate b) => a.CompareTo(b) < 0;
       public static bool operator <=(JulianDate a, JulianDate b) => a.CompareTo(b) <= 0;
       public static bool operator >(JulianDate a, JulianDate b) => a.CompareTo(b) > 0;
@@ -143,16 +149,12 @@ namespace Flux
       public static double operator -(JulianDate a, JulianDate b) => a.m_value - b.m_value;
 
       public static JulianDate operator +(JulianDate a, double b) => new(a.m_value + b);
+      public static double operator +(double a, JulianDate b) => a + b.m_value;
       public static JulianDate operator /(JulianDate a, double b) => new(a.m_value / b);
       public static JulianDate operator *(JulianDate a, double b) => new(a.m_value * b);
       public static JulianDate operator %(JulianDate a, double b) => new(a.m_value % b);
       public static JulianDate operator -(JulianDate a, double b) => new(a.m_value - b);
-
-      public static JulianDate operator +(JulianDate a, int b) => new(a.m_value + b);
-      public static JulianDate operator /(JulianDate a, int b) => new(a.m_value / b);
-      public static JulianDate operator *(JulianDate a, int b) => new(a.m_value * b);
-      public static JulianDate operator %(JulianDate a, int b) => new(a.m_value % b);
-      public static JulianDate operator -(JulianDate a, int b) => new(a.m_value - b);
+      public static double operator -(double a, JulianDate b) => a - b.m_value;
 
       public static JulianDate operator +(JulianDate a, Quantities.Time b) => a + (b.Value / 86400);
       public static JulianDate operator -(JulianDate a, Quantities.Time b) => a - (b.Value / 86400);

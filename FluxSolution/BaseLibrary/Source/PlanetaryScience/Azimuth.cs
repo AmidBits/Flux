@@ -90,7 +90,7 @@ namespace Flux.Quantities
 
       while (sb.Length > 0)
       {
-        if (System.Array.FindIndex(wordsOfTheCompassPoints, w => sb.StartsWith(w, Flux.StringComparerEx.CurrentCultureIgnoreCase)) is var index && index > -1)
+        if (System.Array.FindIndex(wordsOfTheCompassPoints, w => sb.IsCommonPrefix(0, w, Flux.StringComparerEx.CurrentCultureIgnoreCase)) is var index && index > -1)
         {
           var word = wordsOfTheCompassPoints[index];
 
