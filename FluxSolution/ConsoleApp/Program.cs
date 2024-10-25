@@ -19,40 +19,6 @@ using Flux.Text;
 // #r "System.Runtime.Numerics"
 // #r "C:\Users\Rob\source\repos\AmidBits\Flux\FluxSolution\BaseLibrary\bin\Debug\net6.0\BaseLibrary.dll"
 
-//public sealed record class DateTimePartSpan
-//{
-//  public int m_years;
-//  public int m_months;
-//  public int m_days;
-//  public int m_hours;
-//  public int m_minutes;
-//  public int m_seconds;
-
-//  public DateTimePartSpan(int years, int months, int days, int hours, int minutes, int seconds)
-//  {
-//    m_years = years;
-//    m_months = months;
-//    m_days = days;
-//    m_hours = hours;
-//    m_minutes = minutes;
-//    m_seconds = seconds;
-//  }
-//}
-
-//public sealed class TimerInterval
-//{
-//  public DateTimePartSpan m_every;
-
-//  public System.TimeSpan m_offset;
-
-//  public TimerInterval m_subInterval;
-
-//  public TimerInterval(Flux.DateTimePart interval)
-//  {
-//    m_interval = interval;
-//  }
-//}
-
 namespace ConsoleApp
 {
   public class Program
@@ -76,152 +42,19 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var list = Flux.Geometry.Polygon.GetNinetyNinePolygonNames();
-
-      var uvi = new Flux.Quantities.UvIndex(3.9);
-
-      var now = System.DateTime.Now.AddDays(20);
-      //now = new System.DateTime(2024, 1, 10, 0, 0, 0);
-      //now.AddDays(29);
-      //var nowjd = now.ToJulianDate();
-
-      var nownew = new Flux.Quantities.JulianDate(now.LunarTruePhase(LunarPhase.NewMoon.GetUnitPhase()));
-      var nowwxc = new Flux.Quantities.JulianDate(now.LunarTruePhase(LunarPhase.WaxingCrescent.GetUnitPhase()));
-      var nowfqr = new Flux.Quantities.JulianDate(now.LunarTruePhase(LunarPhase.FirstQuarter.GetUnitPhase()));
-      var nowwxg = new Flux.Quantities.JulianDate(now.LunarTruePhase(LunarPhase.WaxingGibbous.GetUnitPhase()));
-      var nowful = new Flux.Quantities.JulianDate(now.LunarTruePhase(LunarPhase.FullMoon.GetUnitPhase()));
-      var nowwng = new Flux.Quantities.JulianDate(now.LunarTruePhase(LunarPhase.WaningGibbous.GetUnitPhase()));
-      var nowlqr = new Flux.Quantities.JulianDate(now.LunarTruePhase(LunarPhase.LastQuarter.GetUnitPhase()));
-      var nowwnc = new Flux.Quantities.JulianDate(now.LunarTruePhase(LunarPhase.WaningCrescent.GetUnitPhase()));
-
-      var test = nowfqr - nownew;
-      test /= 2;
-      var mid = nownew + test;
-
-      var newmoon = now.LunarTruePhase(Flux.LunarPhase.NewMoon, out var jdnewmoon);
-      var wxcmoon = now.LunarTruePhase(Flux.LunarPhase.WaxingCrescent, out var jdwxcmoon);
-      var fqrmoon = now.LunarTruePhase(Flux.LunarPhase.FirstQuarter, out var jdfqrmoon);
-      var wxgmoon = now.LunarTruePhase(Flux.LunarPhase.WaxingGibbous, out var jdwxgmoon);
-      var fulmoon = now.LunarTruePhase(Flux.LunarPhase.FullMoon, out var jdfulmoon);
-      var wngmoon = now.LunarTruePhase(Flux.LunarPhase.WaningGibbous, out var jdwngmoon);
-      var lqrmoon = now.LunarTruePhase(Flux.LunarPhase.LastQuarter, out var jdlqrmoon);
-      var wncmoon = now.LunarTruePhase(Flux.LunarPhase.WaningCrescent, out var jdwncmoon);
-
-      var currentX = (new System.DateTime(2024, 10, 1)).GetLunarPhaseAndDate();
-
-      var current = now.GetLunarPhaseAndDate();
-
-      //var lp = new Flux.LunarPhase(now);
-      //var test = new System.DateTime(2024, 10, 19, 0, 0, 0);
-      //var lptest = new Flux.LunarPhase(test);
-      //var lpcp = lp.CurrentPhase(now);
-      //var lptestcp = lptest.CurrentPhase(test);
-
-
-
-      //var ivq = typeof(Flux.Quantities.ISiUnitValueQuantifiable<,>).GetDerivedTypes().Where(t => !t.IsInterface).OrderBy(t => t.Name)./*Where(t => t.Name.StartsWith('T')).*/ToList();
-
-      //for (var index = 0; index < ivq.Count; index++)
-      //{
-      //  var ivqf = ivq[index];
-
-      //  System.Console.WriteLine($"\r\n{ivqf}");
-
-      //  var ivqfc = ivqf.GetConstructors().Where(ci => ci.GetParameters().Count() == 2 && ci.GetParameters().First().ParameterType.IsPrimitive && ci.GetParameters().Last().ParameterType.IsEnum).First();
-
-      //  var pts = ivqfc.GetParameters();
-
-      //  var pts0 = pts[0].ParameterType;
-
-      //  var mi0 = pts0.GetMethods().Where(mi => mi.GetParameters().Count() == 1 && mi.Name == "Parse").Single();
-
-      //  var value = "1";
-
-      //  var p1 = mi0.Invoke(null, new object[] { value });
-      //  var p1b = mi0.Invoke(null, new object[] { "7" });
-
-      //  var pts1 = pts[1].ParameterType;
-
-      //  var p2 = pts1.CreateInstance();
-
-      //  var enums = System.Enum.GetValues(pts1);
-
-      //  var test = ivqf.CreateInstance(3, System.Enum.GetValues(pts1).GetValue(0));
-
-      //  var inst = ivqf.CreateInstance(p1, enums.GetValue(0));
-
-      //  //OutQuantity(inst, enums);
-
-      //  //if (enums.Length == 1) continue;
-
-      //  var array = new string[enums.Length][];
-
-      //  for (var ie = 0; ie < enums.Length; ie++)
-      //  {
-      //    var instance = ivqf.CreateInstance(2, enums.GetValue(ie));
-
-      //    array[ie] = OutQuantity(instance, enums);
-
-      //    var miToUnitString = instance.GetType().GetMethods().Where(mi => mi.Name == "ToUnitString").First();
-
-      //    //System.Console.WriteLine($"{value} {enums.GetValue(ie).ToString()} = {instance} : {miToUnitString.Invoke(instance, new object[] { enums.GetValue(ie), null, null, false })}");
-      //  }
-
-      //  System.Console.WriteLine(array.JaggedToConsoleString());
-
-      //}
-
-      //static string[] OutQuantity(object instance, System.Array enums)
-      //{
-      //  var mi = instance.GetType().GetMethods().Where(mi => mi.Name == "ToUnitString").First();
-
-      //  return enums.Cast<object>().Select(e => (string)mi.Invoke(instance, new object[] { e, null, null, false })).ToArray();
-      //}
-
-
-
-      var sb = "   Robert Hugo   ".ToStringBuilder();
-
-      sb.TrimCommonPrefix(0, ' ', null, 2);
-      sb.TrimCommonSuffix(0, ' ', null, 2);
-
-      var a = sb.IsCommonPrefix(3, "bert");
-      var b = sb.IsCommonSuffix(3, "Hu");
-
-      sb.TrimCommonPrefix(3, "bert");
-      sb.TrimCommonSuffix(3, "Hu");
-
-      var c = sb.IsCommonPrefix(1, 1, 'R');
-
-      var sbirm = sb.IsCommonSuffix(0, 3, char.IsWhiteSpace);
-
-      var csl1 = sb.CommonSuffixLength(0, char.IsWhiteSpace);
-      var csl2 = sb.CommonSuffixLength(0, ' ');
-      var csl3 = sb.CommonSuffixLength(0, "Ogo   ");
-      var csl4 = sb.TrimCommonSuffix(0, char.IsWhiteSpace);
-
-      //var span = new Span<char>(str.ToCharArray());
-
-      // var str2 = str.LetterAtToLowerInvariant(7);
-
-      var flow = new Flux.Quantities.Flow(12345678987654321, FlowUnit.CubicMeterPerSecond);
-      var cmps = flow.ToSiUnitString(MetricPrefix.Unprefixed, true);
-      var cmmps = flow.ToSiUnitString(MetricPrefix.Kilo, true);
-
-      var tc = Flux.Quantities.Time.ConvertSecondsToSubSecondParts(1234567899.876543);
-      var mc = Flux.Quantities.Time.ConvertTotalSubSecondUnitToSubSecondParts(MetricPrefix.Micro, 1234567899876543);
-
-      var f = new Flux.Quantities.Frequency(120, FrequencyUnit.BeatsPerMinute);
-      var t = new Flux.Quantities.Time(120, TimeUnit.BeatPerMinute);
-
-      var gregorianCalendarEpoch = JulianDate.GregorianCalendarEpoch;
-      var julianCalendarEpoch = JulianDate.JulianCalendarEpoch;
-
-      var jdx = new Flux.Quantities.JulianDate(-3113, 9, 6, 0, 0, 0, 0, 0, 0, TemporalCalendar.JulianCalendar);
-      var jdnx = new Flux.Quantities.JulianDayNumber(-3113, 9, 6, TemporalCalendar.JulianCalendar);
-      var jdnxdp = jdnx.GetParts(TemporalCalendar.GregorianCalendar);
-      var jdnxx = jdnx.ToJulianDate();
-
+      var v = System.Runtime.Intrinsics.Vector512.Create(1d, 2d, 3d, 4d, 5d, 6d, 7d, 8d);
+      var vha = v.HorizontalAdd();
+      var add1 = System.Runtime.Intrinsics.X86.Avx2.HorizontalAdd(v.GetLower(), v.GetUpper());
+      var add1b = System.Runtime.Intrinsics.X86.Avx2.Add(v.GetLower(), v.GetUpper());
+      var add1c = System.Runtime.Intrinsics.X86.Sse42.Add(add1b.GetLower(), add1b.GetUpper());
+      var add1d = System.Runtime.Intrinsics.X86.Sse42.HorizontalAdd(add1c, add1c);
+      var vlo = System.Runtime.Intrinsics.X86.Avx2.ExtractVector128(add1, 0);
+      var vhi = System.Runtime.Intrinsics.X86.Avx2.ExtractVector128(add1, 1);
+      var vlohi = System.Runtime.Intrinsics.X86.Sse42.Add(vlo, vhi);
+      //var add1b = System.Runtime.Intrinsics.X86.Avx512F.Add(v.GetLower(), v.GetUpper());
+      var add2 = System.Runtime.Intrinsics.X86.Avx2.HorizontalAdd(add1, add1);
+      var p4x64 = System.Runtime.Intrinsics.X86.Avx2.Permute4x64(add2, 0b11011000);
+      var add3 = System.Runtime.Intrinsics.X86.Avx2.HorizontalAdd(p4x64, p4x64);
     }
 
     #region Eliza example

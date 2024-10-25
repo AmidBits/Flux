@@ -8,6 +8,7 @@ namespace Flux
   public enum UniversalRounding
   {
     /// <summary>
+    /// <para>Do not call functions with <see cref="UniversalRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToEven"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round to the nearest even number, if possible.</para>
     /// </summary>
     /// <remarks>
@@ -17,6 +18,7 @@ namespace Flux
     HalfToEven = MidpointRounding.ToEven,
 
     /// <summary>
+    /// <para>Do not call functions with <see cref="UniversalRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.AwayFromZero"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round to the number that is further from zero.</para>
     /// </summary>
     /// <remarks>
@@ -26,6 +28,7 @@ namespace Flux
     HalfAwayFromZero = MidpointRounding.AwayFromZero,
 
     /// <summary>
+    /// <para>Do not call functions with <see cref="UniversalRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToZero"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round to the number that is closer to zero.</para>
     /// </summary>
     /// <remarks>
@@ -35,6 +38,7 @@ namespace Flux
     HalfTowardZero = MidpointRounding.ToZero,
 
     /// <summary>
+    /// <para>Do not call functions with <see cref="UniversalRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToNegativeInfinity"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round (down) to the number that is less than.</para>
     /// </summary>
     /// <remarks>
@@ -44,6 +48,7 @@ namespace Flux
     HalfToNegativeInfinity = MidpointRounding.ToNegativeInfinity,
 
     /// <summary>
+    /// <para>Do not call functions with <see cref="UniversalRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToPositiveInfinity"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round (up) to the number that is greater than.</para>
     /// </summary>
     /// <remarks>
@@ -53,13 +58,14 @@ namespace Flux
     HalfToPositiveInfinity = MidpointRounding.ToPositiveInfinity,
 
     /// <summary>
+    /// <para>This was only added for completeness and to even the odd <see cref="System.MidpointRounding.ToEven"/> method.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round to the nearest odd number, if possible.</para>
     /// </summary>
     /// <remarks>
     /// <para>E.g. rounding a fraction part of 0.5 to the nearest odd integer. For example, 1.5 rounds to 1.0, 2.5 rounds to 3.0, -1.5 rounds to -1.0, and -2.5 rounds to -3.0.</para>
     /// <para>Common rounding: round half, bias: odd.</para>
     /// </remarks>
-    HalfToOdd = 10,
+    HalfToOdd = 10, // There is no built-in round to nearest odd number.
 
     /// <summary>
     /// <para>Round to the number that is away-from-zero.</para>
@@ -68,7 +74,7 @@ namespace Flux
     /// <para>This mode is the opposite of truncating.</para>
     /// <para>Symmetric rounding: round up, bias: away from zero.</para>
     /// </remarks>
-    FullAwayFromZero = FullRounding.AwayFromZero,
+    WholeAwayFromZero = WholeRounding.AwayFromZero,
 
     /// <summary>
     /// <para>Round to the number that is towards-zero.</para>
@@ -77,7 +83,7 @@ namespace Flux
     /// <para>This is the same as Math.Truncate of the number.</para>
     /// <para>Symmetric rounding: round down, bias: towards zero.</para>
     /// </remarks>
-    FullTowardZero = FullRounding.TowardZero,
+    WholeTowardZero = WholeRounding.TowardZero,
 
     /// <summary>
     /// <para>Round down to the number less-than-or-equal to value.</para>
@@ -86,7 +92,7 @@ namespace Flux
     /// <para>This is the same as Math.Floor of the number.</para>
     /// <para>Common rounding: round down, bias: negative infinity.</para>
     /// </remarks>
-    FullToNegativeInfinity = FullRounding.ToNegativeInfinity,
+    WholeToNegativeInfinity = WholeRounding.ToNegativeInfinity,
 
     /// <summary>
     /// <para>Round up to the number greater-than-or-equal to value.</para>
@@ -95,6 +101,26 @@ namespace Flux
     /// <para>This is the same as Math.Ceiling of the number.</para>
     /// <para>Common rounding: round up, bias: positive infinity.</para>
     /// </remarks>
-    FullToPositiveInfinity = FullRounding.ToPositiveInfinity,
+    WholeToPositiveInfinity = WholeRounding.ToPositiveInfinity,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    WholeToPowOf2AwayFromZero = WholeRounding.ToPowOf2AwayFromZero,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    WholeToPowOf2TowardZero = WholeRounding.ToPowOf2TowardZero,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    WholeToPowOf10AwayFromZero = WholeRounding.ToPowOf10AwayFromZero,
+
+    /// <summary>
+    /// 
+    /// </summary>
+    WholeToPowOf10TowardZero = WholeRounding.ToPowOf10TowardZero,
   }
 }

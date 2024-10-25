@@ -562,14 +562,14 @@
 
       #region ISiUnitValueQuantifiable<>
 
-      public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(AngleUnit.Radian, preferPlural);
+      public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(AngleUnit.Radian, preferPlural);
 
-      public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AngleUnit.Radian, preferUnicode);
+      public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AngleUnit.Radian, preferUnicode);
 
       public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
       public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
-        => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+        => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
 
       #endregion // ISiUnitValueQuantifiable<>
 
@@ -580,8 +580,6 @@
         {
           AngleUnit.Radian => value,
 
-          AngleUnit.Arcminute => value / 3437.7467707849396,
-          AngleUnit.Arcsecond => value / 206264.80624709636,
           AngleUnit.Degree => double.DegreesToRadians(value),
           AngleUnit.Gradian => value * System.Math.PI / 200,
           AngleUnit.NatoMil => value * System.Math.PI / 3200,
@@ -595,8 +593,6 @@
         {
           AngleUnit.Radian => value,
 
-          AngleUnit.Arcminute => value * 3437.7467707849396,
-          AngleUnit.Arcsecond => value * 206264.80624709636,
           AngleUnit.Degree => double.RadiansToDegrees(value),
           AngleUnit.Gradian => value * 200 / System.Math.PI,
           AngleUnit.NatoMil => value * 3200 / System.Math.PI,
@@ -612,49 +608,38 @@
         {
           AngleUnit.Radian => 1,
 
+          AngleUnit.Arcminute => 1 / 3437.7467707849396,
+          AngleUnit.Arcsecond => 1 / 206264.80624709636,
           AngleUnit.Milliradian => 0.001,
           AngleUnit.Turn => double.Tau,
 
           _ => throw new System.NotImplementedException()
         };
 
-      public string GetUnitName(AngleUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+      public static string GetUnitName(AngleUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-      public string GetUnitSymbol(AngleUnit unit, bool preferUnicode)
+      public static string GetUnitSymbol(AngleUnit unit, bool preferUnicode)
         => unit switch
         {
           Quantities.AngleUnit.Arcminute => preferUnicode ? "\u2032" : "\u0027",
           Quantities.AngleUnit.Arcsecond => preferUnicode ? "\u2033" : "\u0022",
           Quantities.AngleUnit.Degree => preferUnicode ? "\u00B0" : "deg",
           Quantities.AngleUnit.Gradian => preferUnicode ? "\u1D4D" : "gon",
-          Quantities.AngleUnit.NatoMil => $"mil{GetUnitValue(unit).PluralStringSuffix()} (NATO)",
+          Quantities.AngleUnit.NatoMil => $"mils (NATO)",
           Quantities.AngleUnit.Milliradian => "mrad",
           Quantities.AngleUnit.Radian => preferUnicode ? "\u33AD" : "rad",
-          Quantities.AngleUnit.Turn => "turn" + GetUnitValue(unit).PluralStringSuffix(),
-          Quantities.AngleUnit.WarsawPactMil => $"mil{GetUnitValue(unit).PluralStringSuffix()} (Warsaw Pact)",
+          Quantities.AngleUnit.Turn => "turn",
+          Quantities.AngleUnit.WarsawPactMil => $"mils (Warsaw Pact)",
           _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
         };
 
       public double GetUnitValue(AngleUnit unit) => ConvertToUnit(unit, m_value);
-      //=> unit switch
-      //{
-      //  AngleUnit.Arcminute => ConvertRadianToArcminute(m_angle),
-      //  AngleUnit.Arcsecond => ConvertRadianToArcsecond(m_angle),
-      //  AngleUnit.Degree => ConvertRadianToDegree(m_angle),
-      //  AngleUnit.Gradian => ConvertRadianToGradian(m_angle),
-      //  AngleUnit.NatoMil => ConvertRadianToNatoMil(m_angle),
-      //  AngleUnit.Milliradian => ConvertRadianToMilliradian(m_angle),
-      //  AngleUnit.Radian => m_angle,
-      //  AngleUnit.Turn => ConvertRadianToTurn(m_angle),
-      //  AngleUnit.WarsawPactMil => ConvertRadianToWarsawPactMil(m_angle),
-      //  _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
-      //};
 
       public string ToUnitString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
         => GetUnitValue(unit).ToString(format, formatProvider)
         + (
           fullName
-          ? UnicodeSpacing.Space.ToSpacingString() + GetUnitName(unit, true)
+          ? UnicodeSpacing.Space.ToSpacingString() + GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural())
           : (unit.HasUnitSpacing(true) ? UnicodeSpacing.Space : UnicodeSpacing.None).ToSpacingString() + GetUnitSymbol(unit, true)
         );
 

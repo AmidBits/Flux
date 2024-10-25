@@ -22,17 +22,17 @@ namespace Maths
     [TestMethod]
     public void DetentZero()
     {
-      Assert.AreEqual(0, 4.DetentZero(5));
+      Assert.AreEqual(0, 4.DetentPosition(0, 5));
     }
 
     [TestMethod]
     public void Envelop()
     {
-      Assert.AreEqual(-1, (-0.5).RoundFullAwayFromZero());
-      Assert.AreEqual(1, (0.5).RoundFullAwayFromZero());
+      Assert.AreEqual(-1, (-0.5).Envelop());
+      Assert.AreEqual(1, (0.5).Envelop());
 
-      Assert.AreEqual(-13, (-12.5).RoundFullAwayFromZero());
-      Assert.AreEqual(13, (12.5).RoundFullAwayFromZero());
+      Assert.AreEqual(-13, (-12.5).Envelop());
+      Assert.AreEqual(13, (12.5).Envelop());
     }
 
     [TestMethod]

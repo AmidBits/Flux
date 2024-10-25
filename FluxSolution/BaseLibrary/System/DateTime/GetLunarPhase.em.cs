@@ -3,14 +3,14 @@
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Gets the <see cref="Quantities.JulianDate"/> for the <see cref="LunarPhase"/> <paramref name="lunarPhase"/> in the synodic month of the <see cref="System.DateTime"/> <paramref name="source"/>.</para>
+    /// <para>Gets the <see cref="Temporal.JulianDate"/> for the <see cref="LunarPhase"/> <paramref name="lunarPhase"/> in the synodic month of the <see cref="System.DateTime"/> <paramref name="source"/>.</para>
     /// <para><see href="http://www.fourmilab.ch/earthview/pacalc.html"/></para>
     /// <para><seealso href="https://stackoverflow.com/a/2531541/3178666"/></para>
     /// </summary>
     /// <param name="source"></param>
     /// <param name="lunarPhase"></param>
     /// <returns></returns>
-    public static System.DateTime LunarTruePhase(this System.DateTime source, LunarPhase lunarPhase, out Quantities.JulianDate julianDate)
+    public static System.DateTime LunarTruePhase(this System.DateTime source, LunarPhase lunarPhase, out Temporal.JulianDate julianDate)
       => new System.DateTime(1900, 1, 1, 6, 13, 26, DateTimeKind.Utc).AddDays((julianDate = new(source.LunarTruePhase(lunarPhase.GetUnitPhase()))).Value - 2415020.75933);
 
     /// <summary>
@@ -209,7 +209,7 @@
     /// </summary>
     /// <param name="source">UT DateTime</param>
     /// <returns></returns>
-    public static (LunarPhase LunarPhase, Quantities.JulianDate JulianDate, System.DateTime DateTime) GetLunarPhaseAndDate(this System.DateTime source)
+    public static (LunarPhase LunarPhase, Temporal.JulianDate JulianDate, System.DateTime DateTime) GetLunarPhaseAndDate(this System.DateTime source)
       => (source.LunarTruePhase(LunarPhase.NewMoon, out var jdNewMoon) is var dtNewMoon && source.CompareTo(dtNewMoon) < 0
       // Get the date from the previous waning-crescent, but only if source is before the new-moon phase of the current cycle.
       // Need to subtract enough (but not too much) time so that the time between source (which includes time) and the cutoff for the last phase of the previous cycle.

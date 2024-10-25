@@ -2,11 +2,11 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static Quantities.JulianDayNumber ToJulianDayNumber(this System.DateTime source, Quantities.TemporalCalendar calendar = Quantities.TemporalCalendar.GregorianCalendar)
+    public static Temporal.JulianDayNumber ToJulianDayNumber(this System.DateTime source, TemporalCalendar calendar = TemporalCalendar.GregorianCalendar)
       => new(source.Year, source.Month, source.Day, calendar);
   }
 
-  namespace Quantities
+  namespace Temporal
   {
     /// <summary>
     /// <para>Julian Day Number, unit of days.</para>

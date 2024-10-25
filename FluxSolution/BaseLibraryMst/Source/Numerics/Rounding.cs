@@ -10,15 +10,13 @@ namespace Maths
     [TestMethod]
     public void Round()
     {
-      Assert.AreEqual(6, (5.5).RoundFullAwayFromZero());
-      Assert.AreEqual(5, (5.5).RoundFullTowardZero());
-      Assert.AreEqual(5, (5.5).RoundFullToNegativeInfinity());
-      Assert.AreEqual(6, (5.5).RoundFullToPositiveInfinity());
+      Assert.AreEqual(6, (5.5).Envelop());
       Assert.AreEqual(6, (5.5).Round(UniversalRounding.HalfToEven));
       Assert.AreEqual(6, (5.5).Round(UniversalRounding.HalfAwayFromZero));
       Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfTowardZero));
       Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfToNegativeInfinity));
       Assert.AreEqual(6, (5.5).Round(UniversalRounding.HalfToPositiveInfinity));
+      Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfToOdd));
       Assert.AreEqual(5, (5.5).RoundHalfToOdd());
     }
 

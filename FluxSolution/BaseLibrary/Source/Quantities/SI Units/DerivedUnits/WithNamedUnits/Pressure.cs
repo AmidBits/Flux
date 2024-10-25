@@ -59,14 +59,14 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(PressureUnit.Pascal, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(PressureUnit.Pascal, preferPlural);
 
-    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(PressureUnit.Pascal, preferUnicode);
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(PressureUnit.Pascal, preferUnicode);
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
-      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -102,14 +102,14 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(PressureUnit unit, bool preferPlural)
-      => unit.ToString() + unit switch
+    public static string GetUnitName(PressureUnit unit, bool preferPlural)
+      => unit switch
       {
-        PressureUnit.Psi => string.Empty, // No plural for these "useFullName".
-        _ => GetUnitValue(unit).PluralStringSuffix()
+        PressureUnit.Psi => unit.ToString(), // No plural for these "useFullName".
+        _ => unit.ToString().ConvertUnitNameToPlural(preferPlural)
       };
 
-    public string GetUnitSymbol(PressureUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(PressureUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.PressureUnit.Millibar => "mbar",
@@ -124,7 +124,7 @@ namespace Flux.Quantities
     public double GetUnitValue(PressureUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(PressureUnit unit = PressureUnit.Pascal, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

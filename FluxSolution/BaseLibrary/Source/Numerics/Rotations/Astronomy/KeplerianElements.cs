@@ -1,3 +1,4 @@
+
 namespace Flux
 {
   namespace Rotations
@@ -9,11 +10,12 @@ namespace Flux
     /// </summary>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct KeplerianElements
+      : System.IFormattable
     {
       /// <summary>
       /// <para><see href="https://ssd.jpl.nasa.gov/horizons/app.html#/"/></para>
       /// </summary>
-      public static readonly KeplerianElements Mars = new(new Quantities.OrbitalEccentricity(9.327987858487280E-02), new Quantities.Length(Quantities.MetricPrefix.Kilo, 2.279325209790799E+08), new Quantities.Angle(1.847854452956304E+00, Quantities.AngleUnit.Degree), new Quantities.Angle(4.948935675287289E+01, Quantities.AngleUnit.Degree), new Quantities.Angle(2.866702002890120E+02, Quantities.AngleUnit.Degree), new Quantities.Angle(3.270334666858926E+02, Quantities.AngleUnit.Degree));
+      public static KeplerianElements Mars { get; } = new(new Quantities.OrbitalEccentricity(9.327987858487280E-02), new Quantities.Length(MetricPrefix.Kilo, 2.279325209790799E+08), new Quantities.Angle(1.847854452956304E+00, Quantities.AngleUnit.Degree), new Quantities.Angle(4.948935675287289E+01, Quantities.AngleUnit.Degree), new Quantities.Angle(2.866702002890120E+02, Quantities.AngleUnit.Degree), new Quantities.Angle(3.270334666858926E+02, Quantities.AngleUnit.Degree));
 
       public static readonly double TheObliquityOfTheEclipticInDegrees = 23.4;
 
@@ -39,26 +41,31 @@ namespace Flux
       /// <para><see href="https://en.wikipedia.org/wiki/Orbital_eccentricity"/></para>
       /// </summary>
       public Quantities.OrbitalEccentricity Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
+
       /// <summary>
       /// <para>The longest diameter of an ellipse.</para>
       /// <para><seealso href="https://en.wikipedia.org/wiki/Semi-major_and_semi-minor_axes"/></para>
       /// </summary>
       public Quantities.Length SemiMajorAxis { get => m_semiMajorAxis; init => m_semiMajorAxis = value; }
+
       /// <summary>
       /// <para>The angle between the orbital plane and the reference plane. Inclination is the angle between the orbital plane and the equatorial plane. By convention, inclination is in the range [0, 180] degrees, i.e. [0, PI] radians.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Orbital_inclination"/></para>
       /// </summary>
       public Quantities.Angle Inclination { get => m_inclination; init => m_inclination = value; }
+
       /// <summary>
       /// <para>The angle between the reference direction and the upward crossing of the orbit on the reference plane (the ascending node) By convention, this is a number in the range [0, 360] degrees, i.e. [0, 2PI] radians.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Longitude_of_the_ascending_node"/></para>
       /// </summary>
       public Quantities.Angle LongitudeOfAscendingNode { get => m_longitudeOfAscendingNode; init => m_longitudeOfAscendingNode = value; }
+
       /// <summary>
       /// <para>The angle between the ascending node and the periapsis. By convention, this is an angle in the range [0, 360] degrees, i.e. [0, 2PI].</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Argument_of_periapsis"/></para>
       /// </summary>
       public Quantities.Angle ArgumentOfPeriapsis { get => m_argumentOfPeriapsis; init => m_argumentOfPeriapsis = value; }
+
       /// <summary>
       /// <para>The position of the orbiting body along the trajectory, measured from periapsis. Several alternate values can be used instead of true anomaly, the most common being M the mean anomaly and T, the time since periapsis.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/True_anomaly"/></para>
@@ -122,10 +129,16 @@ namespace Flux
         inclination = System.Math.Atan2(z3, System.Math.Sqrt(z1 * z1 + z2 * z2));
         argumentOfPeriapsis = System.Math.Atan2(y3, x3);
       }
-      #endregion Static methods
+      #endregion // Static methods
 
-      public override string ToString()
-        => $"{GetType().Name} {{ Eccentricity = {m_eccentricity.Value} ({m_eccentricity.GetOrbitalEccentricityClass()}), SemiMajorAxis = {m_semiMajorAxis}, Inclination = {m_inclination.ToUnitString(Quantities.AngleUnit.Degree)}, LongitudeOfAscendingNode = {m_longitudeOfAscendingNode.ToUnitString(Quantities.AngleUnit.Degree)}, ArgumentOfPeriapsis = {m_argumentOfPeriapsis.ToUnitString(Quantities.AngleUnit.Degree)}, TrueAnomaly = {m_trueAnomaly.ToUnitString(Quantities.AngleUnit.Degree)} }}";
+      #region Interface implementations
+
+      public string ToString(string? format, IFormatProvider? formatProvider)
+        => $"{GetType().Name} {{ Eccentricity = {m_eccentricity.Value.ToString(format, formatProvider)} ({m_eccentricity.GetOrbitalEccentricityClass()}), SemiMajorAxis = {m_semiMajorAxis.ToString(format, formatProvider)}, Inclination = {m_inclination.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, LongitudeOfAscendingNode = {m_longitudeOfAscendingNode.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, ArgumentOfPeriapsis = {m_argumentOfPeriapsis.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, TrueAnomaly = {m_trueAnomaly.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)} }}";
+
+      #endregion // Interface implementations
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

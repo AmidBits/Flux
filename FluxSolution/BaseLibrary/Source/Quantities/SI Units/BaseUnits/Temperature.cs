@@ -91,14 +91,14 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(TemperatureUnit.Kelvin, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(TemperatureUnit.Kelvin, preferPlural);
 
-    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(TemperatureUnit.Kelvin, preferUnicode);
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(TemperatureUnit.Kelvin, preferUnicode);
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
-      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -138,22 +138,22 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(TemperatureUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(TemperatureUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(TemperatureUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(TemperatureUnit unit, bool preferUnicode)
       => unit switch
       {
-        Quantities.TemperatureUnit.Celsius => preferUnicode ? "\u2103" : "\u00B0C",
-        Quantities.TemperatureUnit.Fahrenheit => preferUnicode ? "\u2109" : "\u00B0F",
-        Quantities.TemperatureUnit.Kelvin => preferUnicode ? "\u212A" : "K",
-        Quantities.TemperatureUnit.Rankine => $"\u00B0Ra",
+        TemperatureUnit.Celsius => preferUnicode ? "\u2103" : "\u00B0C",
+        TemperatureUnit.Fahrenheit => preferUnicode ? "\u2109" : "\u00B0F",
+        TemperatureUnit.Kelvin => preferUnicode ? "\u212A" : "K",
+        TemperatureUnit.Rankine => $"\u00B0Ra",
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
     public double GetUnitValue(TemperatureUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(TemperatureUnit unit = TemperatureUnit.Kelvin, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

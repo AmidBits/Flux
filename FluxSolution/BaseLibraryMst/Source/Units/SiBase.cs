@@ -71,15 +71,14 @@ namespace Units
     {
       var u = new Flux.Quantities.Time(1);
 
-      Assert.AreEqual(1000000000, u.GetSiUnitValue(Flux.Quantities.MetricPrefix.Nano));
-      Assert.AreEqual(1000000, u.GetSiUnitValue(Flux.Quantities.MetricPrefix.Micro));
-      Assert.AreEqual(1000, u.GetSiUnitValue(Flux.Quantities.MetricPrefix.Milli));
+      Assert.AreEqual(1000000000, u.GetSiUnitValue(Flux.MetricPrefix.Nano));
+      Assert.AreEqual(1000000, u.GetSiUnitValue(Flux.MetricPrefix.Micro));
+      Assert.AreEqual(1000, u.GetSiUnitValue(Flux.MetricPrefix.Milli));
       Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.TimeUnit.Second));
       Assert.AreEqual(0.016666666666666666, u.GetUnitValue(Flux.Quantities.TimeUnit.Minute));
       Assert.AreEqual(0.0002777777777777778, u.GetUnitValue(Flux.Quantities.TimeUnit.Hour));
       Assert.AreEqual(1.1574074074074073E-05, u.GetUnitValue(Flux.Quantities.TimeUnit.Day));
       Assert.AreEqual(1.6534391534391535E-06, u.GetUnitValue(Flux.Quantities.TimeUnit.Week));
-      Assert.AreEqual(8.267195767195768E-07, u.GetUnitValue(Flux.Quantities.TimeUnit.Fortnight));
     }
   }
 }

@@ -109,9 +109,9 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(PowerRatioUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(PowerRatioUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(PowerRatioUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(PowerRatioUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.PowerRatioUnit.DecibelWatt => "dBW",
@@ -122,7 +122,7 @@ namespace Flux.Quantities
     public double GetUnitValue(PowerRatioUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(PowerRatioUnit unit = PowerRatioUnit.DecibelWatt, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

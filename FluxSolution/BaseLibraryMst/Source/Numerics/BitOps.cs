@@ -184,7 +184,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(true);
       var awayFromZero = value.Pow2AwayFromZero(true);
 
-      var actual = 88.RoundToBoundary(UniversalRounding.FullAwayFromZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToBoundary(UniversalRounding.WholeAwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -197,7 +197,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(false);
       var awayFromZero = value.Pow2AwayFromZero(false);
 
-      var actual = 88.RoundToBoundary(UniversalRounding.FullAwayFromZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToBoundary(UniversalRounding.WholeAwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(128.ToBigInteger(), actual);
     }
@@ -210,7 +210,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(true);
       var awayFromZero = value.Pow2AwayFromZero(true);
 
-      var actual = 88.RoundToBoundary(UniversalRounding.FullTowardZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToBoundary(UniversalRounding.WholeTowardZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }
@@ -223,7 +223,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(false);
       var awayFromZero = value.Pow2AwayFromZero(false);
 
-      var actual = 88.RoundToBoundary(UniversalRounding.FullTowardZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToBoundary(UniversalRounding.WholeTowardZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64.ToBigInteger(), actual);
     }

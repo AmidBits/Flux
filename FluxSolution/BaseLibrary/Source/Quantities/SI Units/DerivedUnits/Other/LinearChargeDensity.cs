@@ -58,14 +58,14 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(LinearChargeDensityUnit.CoulombPerMeter, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(LinearChargeDensityUnit.CoulombPerMeter, preferPlural);
 
-    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(LinearChargeDensityUnit.CoulombPerMeter, preferUnicode);
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(LinearChargeDensityUnit.CoulombPerMeter, preferUnicode);
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
-      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -97,10 +97,9 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(LinearChargeDensityUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(LinearChargeDensityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(LinearChargeDensityUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(LinearChargeDensityUnit unit, bool preferUnicode)
       => unit switch
       {
         LinearChargeDensityUnit.CoulombPerMeter => "C/m",
@@ -111,7 +110,7 @@ namespace Flux.Quantities
     public double GetUnitValue(LinearChargeDensityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(LinearChargeDensityUnit unit = LinearChargeDensityUnit.CoulombPerMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

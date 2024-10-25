@@ -108,9 +108,9 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(DigitalInformationUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(DigitalInformationUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(DigitalInformationUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.DigitalInformationUnit.Byte => "B",
@@ -130,7 +130,7 @@ namespace Flux.Quantities
     public System.Numerics.BigInteger GetUnitValue(DigitalInformationUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(DigitalInformationUnit unit = DigitalInformationUnit.Byte, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

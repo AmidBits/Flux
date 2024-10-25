@@ -5,7 +5,7 @@ namespace Flux
   /// <para><seealso href="http://www.jackleitch.net/2010/06/adventures-in-net-rounding-part-2-exotic-rounding-algorithms/"/></para>
   /// <para><seealso href="http://www.cplusplus.com/articles/1UCRko23/"/></para>
   /// </summary>
-  public enum FullRounding
+  public enum WholeRounding
   {
     /// <summary>
     /// <para>Round to the number away-from-zero.</para>
@@ -42,5 +42,25 @@ namespace Flux
     /// <para>Common rounding: round up, bias: positive infinity.</para>
     /// </remarks>
     ToPositiveInfinity = 14,
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    ToPowOf2AwayFromZero = 20,
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    ToPowOf2TowardZero = 21,
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    ToPowOf10AwayFromZero = 22,
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    ToPowOf10TowardZero = 23,
   }
 }

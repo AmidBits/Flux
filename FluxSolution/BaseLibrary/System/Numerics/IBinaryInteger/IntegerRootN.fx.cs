@@ -17,7 +17,7 @@
 
       if (nth <= TNth.One) throw new System.ArgumentOutOfRangeException(nameof(nth), "Must be an integer, greater than or equal to 2.");
 
-      if (TryFastIntegerNthRoot(value, nth, UniversalRounding.FullTowardZero, out TValue iRoot, out var _)) // Testing!
+      if (TryFastIntegerNthRoot(value, nth, UniversalRounding.WholeTowardZero, out TValue iRoot, out var _)) // Testing!
         return iRoot;
 
       var n = TValue.CreateChecked(nth);

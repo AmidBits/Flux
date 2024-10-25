@@ -2,11 +2,11 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static Quantities.JulianDate ToJulianDate(this System.DateTime source, Quantities.TemporalCalendar calendar = Quantities.TemporalCalendar.GregorianCalendar)
+    public static Temporal.JulianDate ToJulianDate(this System.DateTime source, TemporalCalendar calendar = TemporalCalendar.GregorianCalendar)
       => new(source.Year, source.Month, source.Day, source.Hour, source.Minute, source.Second, source.Millisecond, source.Microsecond, source.Nanosecond, calendar);
   }
 
-  namespace Quantities
+  namespace Temporal
   {
     /// <summary>
     /// <para>Julian Date, unit of days with time-of-day as the fraction. The time-of-day fraction is the time from the preceeding noon. This is why it is necessary to add 0.5 to a julian-date in order to obtain a correct julian-day-number based on midnight.</para>

@@ -6,7 +6,7 @@ namespace Flux.Quantities
     RadianPerSecond,
   }
 
-  /// <summary>Angular frequency (a.k.a. angular speed, angular rate), unit of radians per second. This is an SI derived quantity.</summary>
+  /// <summary>Angular frequency (a.k.a. angular speed, angular rate), unit of radians per second, is the magnitude of the pseudovector quantity angular velocity. This is an SI derived quantity.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Angular_frequency"/>
   public readonly record struct AngularFrequency
     : System.IComparable, System.IComparable<AngularFrequency>, System.IFormattable, ISiUnitValueQuantifiable<double, AngularFrequencyUnit>
@@ -77,14 +77,14 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(AngularFrequencyUnit.RadianPerSecond, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(AngularFrequencyUnit.RadianPerSecond, preferPlural);
 
-    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AngularFrequencyUnit.RadianPerSecond, preferUnicode);
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AngularFrequencyUnit.RadianPerSecond, preferUnicode);
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
-      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -116,10 +116,9 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(AngularFrequencyUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(AngularFrequencyUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(AngularFrequencyUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(AngularFrequencyUnit unit, bool preferUnicode)
       => unit switch
       {
         AngularFrequencyUnit.RadianPerSecond => preferUnicode ? "\u33AE" : "rad/s",
@@ -130,7 +129,7 @@ namespace Flux.Quantities
     public double GetUnitValue(AngularFrequencyUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(AngularFrequencyUnit unit = AngularFrequencyUnit.RadianPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

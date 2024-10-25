@@ -66,9 +66,9 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricPotentialUnit.Volt, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricPotentialUnit.Volt, preferPlural);
 
-    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix switch
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix switch
     {
       MetricPrefix.Kilo => preferUnicode ? "\u33B8" : "k" + GetUnitSymbol(ElectricPotentialUnit.Volt, preferUnicode),
 
@@ -78,7 +78,7 @@ namespace Flux.Quantities
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
-      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));
+      => GetSiUnitValue(prefix).ToSiFormattedString() + UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -110,10 +110,9 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(ElectricPotentialUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(ElectricPotentialUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(ElectricPotentialUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(ElectricPotentialUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.ElectricPotentialUnit.Volt => "V",
@@ -127,7 +126,7 @@ namespace Flux.Quantities
     public double GetUnitValue(ElectricPotentialUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(ElectricPotentialUnit unit = ElectricPotentialUnit.Volt, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

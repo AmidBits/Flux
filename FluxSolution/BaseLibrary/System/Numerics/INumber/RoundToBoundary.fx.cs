@@ -22,10 +22,10 @@
       => mode switch
       {
         // First we take care of the direct rounding cases.
-        UniversalRounding.FullAwayFromZero => boundaryAwayFromZero,
-        UniversalRounding.FullTowardZero => boundaryTowardsZero,
-        UniversalRounding.FullToNegativeInfinity => TNumber.IsNegative(number) ? boundaryAwayFromZero : boundaryTowardsZero,
-        UniversalRounding.FullToPositiveInfinity => TNumber.IsNegative(number) ? boundaryTowardsZero : boundaryAwayFromZero,
+        UniversalRounding.WholeAwayFromZero => boundaryAwayFromZero,
+        UniversalRounding.WholeTowardZero => boundaryTowardsZero,
+        UniversalRounding.WholeToNegativeInfinity => TNumber.IsNegative(number) ? boundaryAwayFromZero : boundaryTowardsZero,
+        UniversalRounding.WholeToPositiveInfinity => TNumber.IsNegative(number) ? boundaryTowardsZero : boundaryAwayFromZero,
         // If not applicable, and since we're comparing a value against two boundaries, if the distances from the value to the two boundaries are not equal, we can avoid halfway checks.
         _ => TNumber.Abs(number - TNumber.CreateChecked(boundaryTowardsZero)) is var distanceTowardsZero && TNumber.Abs(TNumber.CreateChecked(boundaryAwayFromZero) - number) is var distanceAwayFromZero
           && (distanceTowardsZero < distanceAwayFromZero) ? boundaryTowardsZero // A clear win for towards-zero.

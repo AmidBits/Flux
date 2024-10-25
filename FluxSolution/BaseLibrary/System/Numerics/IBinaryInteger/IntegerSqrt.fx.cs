@@ -14,7 +14,7 @@ namespace Flux
     {
       value.AssertNonNegativeRealNumber();
 
-      if (TryFastIntegerSqrt(value, UniversalRounding.FullTowardZero, out TValue integerSqrt, out var _)) // Testing!
+      if (TryFastIntegerSqrt(value, UniversalRounding.WholeTowardZero, out TValue integerSqrt, out var _)) // Testing!
         return integerSqrt;
 
       var x0 = TValue.One << (value.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square value.

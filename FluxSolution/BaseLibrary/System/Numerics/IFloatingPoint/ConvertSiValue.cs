@@ -1,17 +1,17 @@
-﻿namespace Flux
-{
-  public static partial class Fx
-  {
-    public static TValue ConvertSiValue<TValue>(this TValue value, Quantities.MetricPrefix fromPrefix, Quantities.MetricPrefix toPrefix)
-      where TValue : System.Numerics.IFloatingPoint<TValue>
-    {
-      if (fromPrefix != Quantities.MetricPrefix.Unprefixed)
-        value *= TValue.CreateChecked(fromPrefix.GetPrefixValue());
+﻿//namespace Flux
+//{
+//  public static partial class Fx
+//  {
+//    public static TValue ConvertSiValue<TValue>(this TValue value, MetricPrefix fromPrefix, MetricPrefix toPrefix)
+//      where TValue : System.Numerics.IFloatingPoint<TValue>
+//    {
+//      if (fromPrefix != MetricPrefix.Unprefixed)
+//        value *= TValue.CreateChecked(fromPrefix.GetPrefixValue());
 
-      if (toPrefix != Quantities.MetricPrefix.Unprefixed)
-        value /= TValue.CreateChecked(toPrefix.GetPrefixValue());
+//      if (toPrefix != MetricPrefix.Unprefixed)
+//        value /= TValue.CreateChecked(toPrefix.GetPrefixValue());
 
-      return value;
-    }
-  }
-}
+//      return value;
+//    }
+//  }
+//}

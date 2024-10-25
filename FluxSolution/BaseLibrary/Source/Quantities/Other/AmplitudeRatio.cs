@@ -109,9 +109,9 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(AmplitudeRatioUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(AmplitudeRatioUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(AmplitudeRatioUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(AmplitudeRatioUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.AmplitudeRatioUnit.DecibelVolt => "dBV",
@@ -122,7 +122,7 @@ namespace Flux.Quantities
     public double GetUnitValue(AmplitudeRatioUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

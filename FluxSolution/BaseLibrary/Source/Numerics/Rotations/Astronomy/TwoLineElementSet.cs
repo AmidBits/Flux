@@ -8,57 +8,77 @@ namespace Flux
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct TwoLineElementSet2
     {
-      private readonly double m_radInclination;
-      private readonly double m_radRightAscensionOfAscendingNode;
+      private readonly Quantities.Angle m_inclination;
+      private readonly Quantities.Angle m_rightAscensionOfAscendingNode;
       private readonly double m_eccentricity;
-      private readonly double m_radArgumentOfPerigee;
-      private readonly double m_radMeanAnomaly;
+      private readonly Quantities.Angle m_argumentOfPerigee;
+      private readonly Quantities.Angle m_meanAnomaly;
       private readonly double m_meanMotion;
       private readonly double m_revolutionNumberAtEpoch;
 
-      public TwoLineElementSet2(double radInclination, double radRightAscensionOfAscendingNode, double eccentricity, double radArgumentOfPerigee, double radMeanAnomaly, double meanMotion, double revolutionNumberAtEpoch)
+      public TwoLineElementSet2(Quantities.Angle inclination, Quantities.Angle rightAscensionOfAscendingNode, double eccentricity, Quantities.Angle argumentOfPerigee, Quantities.Angle meanAnomaly, double meanMotion, double revolutionNumberAtEpoch)
       {
-        m_radInclination = radInclination;
-        m_radRightAscensionOfAscendingNode = radRightAscensionOfAscendingNode;
+        m_inclination = inclination;
+        m_rightAscensionOfAscendingNode = rightAscensionOfAscendingNode;
         m_eccentricity = eccentricity;
-        m_radArgumentOfPerigee = radArgumentOfPerigee;
-        m_radMeanAnomaly = radMeanAnomaly;
+        m_argumentOfPerigee = argumentOfPerigee;
+        m_meanAnomaly = meanAnomaly;
         m_meanMotion = meanMotion;
         m_revolutionNumberAtEpoch = revolutionNumberAtEpoch;
       }
 
+      public TwoLineElementSet2(double inclinationValue, Quantities.AngleUnit inclinationUnit, double rightAscensionOfAscendingNodeValue, Quantities.AngleUnit rightAscensionOfAscendingNodeUnit, double eccentricity, double argumentOfPerigeeValue, Quantities.AngleUnit argumentOfPerigeeUnit, double meanAnomalyValue, Quantities.AngleUnit meanAnomalyUnit, double meanMotion, double revolutionNumberAtEpoch)
+        : this(
+            new(inclinationValue, inclinationUnit),
+            new(rightAscensionOfAscendingNodeValue, rightAscensionOfAscendingNodeUnit),
+            eccentricity,
+            new(argumentOfPerigeeValue, argumentOfPerigeeUnit),
+            new(meanAnomalyValue, meanAnomalyUnit),
+            meanMotion,
+            revolutionNumberAtEpoch
+          )
+      { }
+
       /// <summary>The angle between the equator and the orbit plane. The value provided is the TEME mean inclination. Degrees, in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
-      public double Inclination { get => double.RadiansToDegrees(m_radInclination); init => m_radInclination = double.DegreesToRadians(value); }
+      public Quantities.Angle Inclination => m_inclination;
+
       /// <summary>The angle between vernal equinox and the point where the orbit crosses the equatorial plane (going north). The value provided is the TEME mean right ascension of the ascending node. Degrees, in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
-      public double RightAscensionOfAscendingNode { get => double.RadiansToDegrees(m_radRightAscensionOfAscendingNode); init => m_radRightAscensionOfAscendingNode = double.DegreesToRadians(value); }
+      public Quantities.Angle RightAscensionOfAscendingNode => m_rightAscensionOfAscendingNode;
+
       /// <summary>A constant defining the shape of the orbit (0=circular, Less than 1=elliptical). The value provided is the mean eccentricity.</summary>
-      public double Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
+      public double Eccentricity => m_eccentricity;
+
       /// <summary>The angle between the ascending node and the orbit's point of closest approach to the earth (perigee). The value provided is the TEME mean argument of perigee. Degrees, in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
-      public double ArgumentOfPerigee { get => double.RadiansToDegrees(m_radArgumentOfPerigee); init => m_radArgumentOfPerigee = double.DegreesToRadians(value); }
+      public Quantities.Angle ArgumentOfPerigee => m_argumentOfPerigee;
+
       /// <summary>The angle, measured from perigee, of the satellite location in the orbit referenced to a circular orbit with radius equal to the semi-major axis. Degrees.</summary>
-      public double MeanAnomaly { get => double.RadiansToDegrees(m_radMeanAnomaly); init => m_radMeanAnomaly = double.DegreesToRadians(value); }
+      public Quantities.Angle MeanAnomaly => m_meanAnomaly;
+
       /// <summary> The value is the mean number of orbits per day the object completes. There are 8 digits after the decimal, leaving no trailing space(s) when the following element exceeds 9999. Revolutions per day.</summary>
-      public double MeanMotion { get => m_meanMotion; init => m_meanMotion = value; }
+      public double MeanMotion => m_meanMotion;
+
       /// <summary>The orbit number at Epoch Time. This time is chosen very near the time of true ascending node passage as a matter of routine. Revolutions.</summary>
-      public double RevolutionNumberAtEpoch { get => m_revolutionNumberAtEpoch; init => m_revolutionNumberAtEpoch = value; }
+      public double RevolutionNumberAtEpoch => m_revolutionNumberAtEpoch;
 
       public System.Numerics.Matrix4x4 ToMatrix4()
       {
-        var (so, co) = System.Math.SinCos(m_radRightAscensionOfAscendingNode);
-        var (si, ci) = System.Math.SinCos(m_radInclination);
-        var (sw, cw) = System.Math.SinCos(m_radArgumentOfPerigee);
+        KeplerianElements.ToRotationMatrix(m_rightAscensionOfAscendingNode.Value, m_inclination.Value, m_argumentOfPerigee.Value, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
 
-        var x1 = co * cw - so * ci * sw;
-        var x2 = so * cw + co * ci * sw;
-        var x3 = si * sw;
+        //var (so, co) = System.Math.SinCos(m_rightAscensionOfAscendingNode.Value);
+        //var (si, ci) = System.Math.SinCos(m_inclination.Value);
+        //var (sw, cw) = System.Math.SinCos(m_argumentOfPerigee.Value);
 
-        var y1 = -co * sw - so * ci * cw;
-        var y2 = -so * sw + co * ci * cw;
-        var y3 = si * cw;
+        //var x1 = co * cw - so * ci * sw;
+        //var x2 = so * cw + co * ci * sw;
+        //var x3 = si * sw;
 
-        var z1 = si * so;
-        var z2 = -si * co;
-        var z3 = ci;
+        //var y1 = -co * sw - so * ci * cw;
+        //var y2 = -so * sw + co * ci * cw;
+        //var y3 = si * cw;
+
+        //var z1 = si * so;
+        //var z2 = -si * co;
+        //var z3 = ci;
 
         return new(
           (float)x1, (float)x2, (float)x3, 0,
@@ -96,11 +116,14 @@ namespace Flux
       //}
       #endregion Static methods
 
-      #region Object overrides
+      #region Implemented interfaces
 
-      public override string ToString()
-        => $"{GetType().Name} {{ Inclination = {new Quantities.Angle(m_radInclination).ToUnitString(Quantities.AngleUnit.Degree)}, RightAscensionOfAscendingNode = {new Quantities.Angle(m_radRightAscensionOfAscendingNode).ToUnitString(Quantities.AngleUnit.Degree)}, Eccentricity = {m_eccentricity}, ArgumentOfPerigee = {new Quantities.Angle(m_radArgumentOfPerigee).ToUnitString(Quantities.AngleUnit.Degree)}, MeanAnomaly = {new Quantities.Angle(m_radMeanAnomaly).ToUnitString(Quantities.AngleUnit.Degree)}, MeanMotion = {m_meanMotion} }}";
-      #endregion Object overrides
+      public string ToString(string? format, IFormatProvider? formatProvider)
+        => $"{GetType().Name} {{ Inclination = {m_inclination.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, RightAscensionOfAscendingNode = {m_rightAscensionOfAscendingNode.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, Eccentricity = {m_eccentricity}, ArgumentOfPerigee = {m_argumentOfPerigee.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, MeanAnomaly = {m_meanAnomaly.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, MeanMotion = {m_meanMotion} }}";
+
+      #endregion // Implemented interfaces
+
+      public override string ToString() => ToString(null, null);
     }
   }
 }

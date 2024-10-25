@@ -94,9 +94,9 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(AbsoluteHumidityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(AbsoluteHumidityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(AbsoluteHumidityUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(AbsoluteHumidityUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.AbsoluteHumidityUnit.GramPerCubicMeter => "g/m³",
@@ -107,7 +107,7 @@ namespace Flux.Quantities
     public double GetUnitValue(AbsoluteHumidityUnit unit) => ConvertFromUnit(unit, m_value);
 
     public string ToUnitString(AbsoluteHumidityUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

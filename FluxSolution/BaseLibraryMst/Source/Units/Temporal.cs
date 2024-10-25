@@ -8,7 +8,7 @@ namespace Units
     [TestMethod]
     public void JulianDate()
     {
-      var u = new Flux.Quantities.JulianDate(1);
+      var u = new Flux.Temporal.JulianDate(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -16,7 +16,7 @@ namespace Units
     [TestMethod]
     public void JulianDayNumber()
     {
-      var u = new Flux.Quantities.JulianDayNumber(1);
+      var u = new Flux.Temporal.JulianDayNumber(1);
 
       Assert.AreEqual(1, u.Value);
     }

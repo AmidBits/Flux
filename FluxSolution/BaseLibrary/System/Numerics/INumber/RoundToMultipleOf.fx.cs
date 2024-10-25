@@ -19,5 +19,30 @@
 
       return number.RoundToBoundary(mode, multipleOfTowardsZero, multipleOfAwayFromZero);
     }
+
+    /// <summary>
+    /// <para>Round a <paramref name="number"/> to the nearest <paramref name="multiple"/> away-from-zero and whether to ensure it is <paramref name="unequal"/>.</para>
+    /// </summary>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <param name="number"></param>
+    /// <param name="multiple"></param>
+    /// <param name="unequal"></param>
+    /// <returns></returns>
+    public static TNumber RoundToMultipleOfAwayFromZero<TNumber>(this TNumber number, TNumber multiple, bool unequal = false)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => TNumber.CopySign(multiple, number) is var msv && number - (number % multiple) is var motz && (motz != number || (unequal || !TNumber.IsInteger(number))) ? motz + msv : motz;
+
+    /// <summary>
+    /// <para>Round a <paramref name="number"/> to the nearest <paramref name="multiple"/> toward-zero and whether to ensure it is <paramref name="unequal"/>.</para>
+    /// </summary>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <param name="number"></param>
+    /// <param name="multiple"></param>
+    /// <param name="unequal"></param>
+    /// <returns></returns>
+    public static TNumber RoundToMultipleOfTowardZero<TNumber>(this TNumber number, TNumber multiple, bool unequal = false)
+      where TNumber : System.Numerics.INumber<TNumber>
+      //=> MultipleOfTowardZero(value, multiple, unequal && TNumber.IsInteger(value)); // value - (value % multiple) is var motz && unequal && motz == value ? motz - TSelf.CopySign(multiple, value) : motz;
+      => number - (number % multiple) is var motz && (unequal && TNumber.IsInteger(number)) && motz == number ? motz - TNumber.CopySign(multiple, number) : motz;
   }
 }

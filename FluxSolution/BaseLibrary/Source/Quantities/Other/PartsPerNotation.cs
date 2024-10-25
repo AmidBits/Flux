@@ -120,9 +120,9 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(PartsPerNotationUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(PartsPerNotationUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(PartsPerNotationUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(PartsPerNotationUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.PartsPerNotationUnit.PartPerQuadrillion => "ppq",
@@ -140,7 +140,7 @@ namespace Flux.Quantities
     public double GetUnitValue(PartsPerNotationUnit unit) => ConvertToUnit(unit, m_parts);
 
     public string ToUnitString(PartsPerNotationUnit unit = PartsPerNotationUnit.One, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 

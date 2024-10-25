@@ -16,9 +16,9 @@
       var s = System.Math.Sqrt(1 - w * w); // Assuming quaternion normalized then w is less than 1, so term always positive.
 
       if (s < 0.001) // Test to avoid divide by zero. If s close to zero then direction of axis not important.
-        return new(1, 0, 0, angle); // If it is important that axis is normalised then replace with x=1; y=z=0;
+        return new(1, Quantities.LengthUnit.Meter, 0, Quantities.LengthUnit.Meter, 0, Quantities.LengthUnit.Meter, angle, Quantities.AngleUnit.Radian); // If it is important that axis is normalised then replace with x=1; y=z=0;
 
-      return new(n.X / s, n.Y / s, n.Z / s, angle);
+      return new(n.X / s, Quantities.LengthUnit.Meter, n.Y / s, Quantities.LengthUnit.Meter, n.Z / s, Quantities.LengthUnit.Meter, angle, Quantities.AngleUnit.Radian);
     }
 
     public static Rotations.EulerAngles ToEulerAngles(this System.Numerics.Quaternion source) // yaw (Z), pitch (Y), roll (X)
@@ -39,20 +39,20 @@
       if (test > 0.499 * unit) // Singularity at north pole when pitch approaches +90.
       {
         var xw = System.Math.Atan2(x, w);
-        return new(double.CreateChecked(xw + xw), System.Math.PI / 2, 0);
+        return new(double.CreateChecked(xw + xw), Quantities.AngleUnit.Radian, System.Math.PI / 2, Quantities.AngleUnit.Radian, 0, Quantities.AngleUnit.Radian);
       }
 
       if (test < -0.499 * unit) // Singularity at south pole when pitch approaches -90.
       {
         var xw = System.Math.Atan2(x, w);
-        return new(double.CreateChecked(-(xw + xw)), -System.Math.PI / 2, 0);
+        return new(double.CreateChecked(-(xw + xw)), Quantities.AngleUnit.Radian, -System.Math.PI / 2, Quantities.AngleUnit.Radian, 0, Quantities.AngleUnit.Radian);
       }
 
       var h = System.Math.Atan2((y + y) * w - (x + x) * z, sqx - sqy - sqz + sqw);
       var a = System.Math.Asin((test + test) / unit);
       var b = System.Math.Atan2((x + x) * w - (y + y) * z, -sqx + sqy - sqz + sqw);
 
-      return new(double.CreateChecked(h), double.CreateChecked(a), double.CreateChecked(b));
+      return new(double.CreateChecked(h), Quantities.AngleUnit.Radian, double.CreateChecked(a), Quantities.AngleUnit.Radian, double.CreateChecked(b), Quantities.AngleUnit.Radian);
     }
 
     public static System.Numerics.Matrix4x4 ToMatrix4<TSelf>(this System.Numerics.Quaternion source)

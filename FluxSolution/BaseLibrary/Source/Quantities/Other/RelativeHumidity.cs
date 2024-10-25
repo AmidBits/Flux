@@ -88,9 +88,9 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public string GetUnitName(RelativeHumidityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural && GetUnitValue(unit).IsConsideredPlural());
+    public static string GetUnitName(RelativeHumidityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
 
-    public string GetUnitSymbol(RelativeHumidityUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(RelativeHumidityUnit unit, bool preferUnicode)
       => unit switch
       {
         Quantities.RelativeHumidityUnit.Percent => "%",
@@ -101,7 +101,7 @@ namespace Flux.Quantities
     public double GetUnitValue(RelativeHumidityUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(RelativeHumidityUnit unit = RelativeHumidityUnit.Percent, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, true) : GetUnitSymbol(unit, false));
+      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
 
     #endregion // IUnitValueQuantifiable<>
 
