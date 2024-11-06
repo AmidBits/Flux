@@ -7,29 +7,49 @@ namespace Flux
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
+    /// <param name="offset"></param>
     /// <param name="predicate"></param>
+    /// <param name="maxTrimLength"></param>
     /// <returns></returns>
-    public static System.ReadOnlySpan<T> TrimCommonSuffix<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
-      => source[^(source.CommonSuffixLength(0, predicate))..];
+    public static System.ReadOnlySpan<T> TrimCommonSuffix<T>(this System.ReadOnlySpan<T> source, int offset, System.Func<T, bool> predicate, int maxTrimLength = int.MaxValue)
+    {
+      var length = source.CommonSuffixLength(offset, predicate, maxTrimLength);
+
+      return source[^length..];
+    }
 
     /// <summary>
-    /// <para>Creates a new read-only-span from <paramref name="source"/> with the matching suffix elements from <paramref name="target"/> removed.</para>
+    /// <para>Creates a new read-only-span from <paramref name="source"/> with the matching suffix elements from <paramref name="value"/> removed.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="target"></param>
+    /// <param name="offset"></param>
+    /// <param name="value"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="maxTrimLength"></param>
     /// <returns></returns>
-    public static System.ReadOnlySpan<T> TrimCommonSuffix<T>(this System.ReadOnlySpan<T> source, T target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
-      => source[^(source.CommonSuffixLength(0, target, equalityComparer))..];
+    public static System.ReadOnlySpan<T> TrimCommonSuffix<T>(this System.ReadOnlySpan<T> source, int offset, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int maxTrimLength = int.MaxValue)
+    {
+      var length = source.CommonSuffixLength(offset, value, equalityComparer, maxTrimLength);
+
+      return source[^length..];
+    }
 
     /// <summary>
-    /// <para>Creates a new read-only-span from <paramref name="source"/> with the matching suffix elements from <paramref name="target"/> removed.</para>
+    /// <para>Creates a new read-only-span from <paramref name="source"/> with the matching suffix elements from <paramref name="value"/> removed.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="target"></param>
+    /// <param name="offset"></param>
+    /// <param name="value"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="maxTrimLength"></param>
     /// <returns></returns>
-    public static System.ReadOnlySpan<T> TrimCommonSuffix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
-      => source[^(source.CommonSuffixLength(0, target, equalityComparer))..];
+    public static System.ReadOnlySpan<T> TrimCommonSuffix<T>(this System.ReadOnlySpan<T> source, int offset, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int maxTrimLength = int.MaxValue)
+    {
+      var length = source.CommonSuffixLength(offset, value, equalityComparer, maxTrimLength);
+
+      return source[^length..];
+    }
   }
 }

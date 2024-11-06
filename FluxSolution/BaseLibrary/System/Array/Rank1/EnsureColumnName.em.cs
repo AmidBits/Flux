@@ -13,9 +13,9 @@ namespace Flux
         ? throw new System.ArgumentNullException(nameof(source))
         : index < 0
         ? throw new System.IndexOutOfRangeException(nameof(index))
-        : index < source.Length && !string.IsNullOrWhiteSpace(source[index])
+        : index < source.Length && source[index] is var value && !string.IsNullOrWhiteSpace(value)
         ? source[index]
-        : $"Column_{index + 1}";
+        : index.ToColumnName();
     }
   }
 }

@@ -1,6 +1,8 @@
 namespace Flux.Mechanics
 {
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+  /// <summary>
+  /// <para>An uphill trajectory model.</para>
+  /// </summary>
   public readonly record struct UphillTrajectory2D
     : ITrajectory2D
   {
@@ -16,22 +18,24 @@ namespace Flux.Mechanics
       m_initialVelocity = initialVelocity;
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
-    public UphillTrajectory2D(double verticalDifference, double initialAngle, double initialVelocity) : this(verticalDifference, initialAngle, initialVelocity, 9.80665) { }
+    public UphillTrajectory2D(double verticalDifference, double initialAngle, double initialVelocity) : this(verticalDifference, initialAngle, initialVelocity, Quantities.Acceleration.StandardGravity) { }
 
-    public double GravitationalAcceleration { get => m_gravitationalAcceleration; init => m_gravitationalAcceleration = value; }
-    public double InitialAngle { get => m_initialAngle; init => m_initialAngle = value; }
-    public double InitialVelocity { get => m_initialVelocity; init => m_initialVelocity = value; }
-    /// <summary>The difference of vertical level in meters (M).</summary>
-    public double VerticalDifference { get => m_verticalDifference; init => m_verticalDifference = value; }
+    /// <summary>
+    /// <para>The difference of vertical level in meters (M).</para>
+    /// </summary>
+    public double VerticalDifference => m_verticalDifference;
+    public double InitialAngle => m_initialAngle;
+    public double InitialVelocity => m_initialVelocity;
+    public double GravitationalAcceleration => m_gravitationalAcceleration;
 
-    public double MaxHeight => System.Math.Pow(m_initialVelocity, 2) * System.Math.Pow(System.Math.Sin(m_initialAngle), 2) / (2 * m_gravitationalAcceleration);
-    public double MaxRange => m_initialVelocity * System.Math.Cos(m_initialAngle) * MaxTime;
-    public double MaxTime => m_initialVelocity * System.Math.Sin(m_initialAngle) / m_gravitationalAcceleration + System.Math.Sqrt(2 * (MaxHeight - m_verticalDifference) / m_gravitationalAcceleration);
+    public double MaxHeight => double.Pow(m_initialVelocity, 2) * double.Pow(double.Sin(m_initialAngle), 2) / (2 * m_gravitationalAcceleration);
+    public double MaxRange => m_initialVelocity * double.Cos(m_initialAngle) * MaxTime;
+    public double MaxTime => m_initialVelocity * double.Sin(m_initialAngle) / m_gravitationalAcceleration + double.Sqrt(2 * (MaxHeight - m_verticalDifference) / m_gravitationalAcceleration);
 
-    public double GetVelocity(double time) => m_initialVelocity * m_initialVelocity - 2 * m_gravitationalAcceleration * time * m_initialVelocity * System.Math.Sin(m_initialAngle) + System.Math.Pow(m_gravitationalAcceleration, 2) * time * time;
-    public double GetVelocityX(double time) => m_initialVelocity * System.Math.Cos(m_initialAngle) * time;
-    public double GetVelocityY(double time) => m_initialVelocity * System.Math.Sin(m_initialAngle) - m_gravitationalAcceleration * time;
-    public double GetX(double time) => m_initialVelocity * System.Math.Cos(m_initialAngle) * time;
-    public double GetY(double time) => m_initialVelocity * System.Math.Sin(m_initialAngle) * time - m_gravitationalAcceleration * time * time / 2;
+    public double GetVelocity(double time) => m_initialVelocity * m_initialVelocity - 2 * m_gravitationalAcceleration * time * m_initialVelocity * double.Sin(m_initialAngle) + double.Pow(m_gravitationalAcceleration, 2) * time * time;
+    public double GetVelocityX(double time) => m_initialVelocity * double.Cos(m_initialAngle) * time;
+    public double GetVelocityY(double time) => m_initialVelocity * double.Sin(m_initialAngle) - m_gravitationalAcceleration * time;
+    public double GetX(double time) => m_initialVelocity * double.Cos(m_initialAngle) * time;
+    public double GetY(double time) => m_initialVelocity * double.Sin(m_initialAngle) * time - m_gravitationalAcceleration * time * time / 2;
   }
 }

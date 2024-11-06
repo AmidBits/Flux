@@ -1,5 +1,4 @@
-﻿#if NET7_0_OR_GREATER
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Maths
 {
@@ -39,15 +38,15 @@ namespace Maths
     public void GivenTwoPointsOnEachLine()
     {
       var expected = (Flux.Geometry.LineIntersectTest.LinesIntersect, 17d / 11d, 14d / 11d);
-      var actual = Flux.Geometry.LineGeometries.GivenTwoPointsOnEachLine(1, 1, 3, 2, 1, 4, 2, -1);
+      var actual = Flux.Geometry.LineGeometry.GivenTwoPointsOnEach(1, 1, 3, 2, 1, 4, 2, -1);
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void GivenTwoPointsOnEachLineSegment()
     {
-      var expected = (Flux.Geometry.LineSegmentIntersectTest.IntersectWithinFirst, 17d / 11d, 14d / 11d);
-      var actual = Flux.Geometry.LineGeometries.GivenTwoPointsOnEachLineSegment(1, 1, 3, 2, 1, 4, 2, -1);
+      var expected = (Flux.Geometry.LineSegmentIntersectTest.IntersectWithinFirstLineSegment, 17d / 11d, 14d / 11d);
+      var actual = Flux.Geometry.LineSegmentGeometry.GivenTwoPointsOnEach(1, 1, 3, 2, 1, 4, 2, -1);
       Assert.AreEqual(expected, actual);
     }
 
@@ -101,4 +100,3 @@ namespace Maths
     //}
   }
 }
-#endif

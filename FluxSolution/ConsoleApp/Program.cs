@@ -37,24 +37,96 @@ namespace ConsoleApp
 
     #endregion // Presets
 
+    private static void Test()
+    {
+      var v512 = System.Runtime.Intrinsics.Vector512.Create(0d, -1d, 2d, -3d, 4d, -5d, 6d, -7d);
+      var v512abs = v512.Abs();
+      var v512max = v512.Max(Flux.Intrinsics.One512D);
+      var v512min = v512.Min(Flux.Intrinsics.One512D);
+      var v512sign = v512.Sign();
+      var v512rem125 = v512.Remainder(1.25);
+      var tmq = v512.TruncMod(System.Runtime.Intrinsics.Vector512.Create(1.25), out var tmr);
+
+      var v1 = System.Runtime.Intrinsics.Vector256.Create(1d, 2d, 3d, 4d);
+      var v2 = System.Runtime.Intrinsics.Vector256.Create(2d);
+
+      var d12 = System.Runtime.Intrinsics.X86.Avx.Divide(v1, v2);
+      var fd12 = System.Runtime.Intrinsics.X86.Avx.Floor(d12.Floor());
+      var r12 = System.Runtime.Intrinsics.X86.Avx.Subtract(d12, fd12);
+
+      var dot12 = v1.Dot(v2);
+      var dot11 = v1.Dot(v1);
+      var dot12a = v1.Dot(v2);
+      var dot11a = v1.Dot(v1);
+      var dot12b = v1.Dot(v2);
+      var dot11b = v1.Dot(v1);
+      var dot12c = v1.Dot(v2);
+      var dot11c = v1.Dot(v1);
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var v = System.Runtime.Intrinsics.Vector512.Create(1d, 2d, 3d, 4d, 5d, 6d, 7d, 8d);
-      var vha = v.HorizontalAdd();
-      var add1 = System.Runtime.Intrinsics.X86.Avx2.HorizontalAdd(v.GetLower(), v.GetUpper());
-      var add1b = System.Runtime.Intrinsics.X86.Avx2.Add(v.GetLower(), v.GetUpper());
-      var add1c = System.Runtime.Intrinsics.X86.Sse42.Add(add1b.GetLower(), add1b.GetUpper());
-      var add1d = System.Runtime.Intrinsics.X86.Sse42.HorizontalAdd(add1c, add1c);
-      var vlo = System.Runtime.Intrinsics.X86.Avx2.ExtractVector128(add1, 0);
-      var vhi = System.Runtime.Intrinsics.X86.Avx2.ExtractVector128(add1, 1);
-      var vlohi = System.Runtime.Intrinsics.X86.Sse42.Add(vlo, vhi);
-      //var add1b = System.Runtime.Intrinsics.X86.Avx512F.Add(v.GetLower(), v.GetUpper());
-      var add2 = System.Runtime.Intrinsics.X86.Avx2.HorizontalAdd(add1, add1);
-      var p4x64 = System.Runtime.Intrinsics.X86.Avx2.Permute4x64(add2, 0b11011000);
-      var add3 = System.Runtime.Intrinsics.X86.Avx2.HorizontalAdd(p4x64, p4x64);
+
+      var ipa = System.Globalization.CultureInfo.CurrentCulture.GetIpaDictionary();
+      var found = ipa.Select("[Column_1] LIKE 'ro??n'");
+      var rows = ipa.DefaultView.FindRows("%rob%");
+      //var kipa = ipa.Keys.Where(s => s.All(char.IsLetter)).ToHashSet();
+      //      var blexicon = System.Globalization.CultureInfo.CurrentCulture.TryGetLexicon(out var lexicon);
+
+      var fileName = "E:\\R8RIM03.wav";
+      //fileName = "E:\\square_to_sawtooth_mix1.wav";
+      //fileName = "E:\\Michael_Jackson_-_Beat_It.mid";
+      //fileName = "E:\\Pirates of the Caribbean - He's a Pirate (3).mid";
+
+      var sb = new System.Text.StringBuilder("There are 13 jars of 0.2 liters.");
+      sb.MakeNumbersFixedLength(4, 0, sb.Length / 2);
+
+      using var fs = System.IO.File.OpenRead(fileName);
+
+      var chunks = Flux.Riff.Chunk.GetChunks(fs).ToArray();
+      var str = chunks.Select(c => c.ToString()).ToArray();
+      return;
+
+      var hd = 400;
+      var vd = 200;
+      var a0 = 32;
+      var v0 = 50;
+      var g = 10;
+
+      var dht = new Flux.Mechanics.DownhillTrajectory2D(vd, a0, v0, g);
+      var dt = new Flux.Mechanics.DroppedTrajectory2D(vd, a0, v0, g);
+      var ft = new Flux.Mechanics.FlatTrajectory2D(a0, v0, g);
+      var uht = new Flux.Mechanics.UphillTrajectory2D(vd, a0, v0, g);
+
+      var (shallowAngle, steepAngle) = Flux.Mechanics.Trajectory.AngleRequiredToHitPoint(hd, vd, a0, g);
+      var md = Flux.Mechanics.Trajectory.RangeOfFlight(a0, v0, vd, g);
+      var tf = Flux.Mechanics.Trajectory.TimeOfFlight(a0, v0, g);
+
+      var ardshallow = double.RadiansToDegrees(shallowAngle);
+      var ardsteep = double.RadiansToDegrees(steepAngle);
+
+      var thd = Flux.Mechanics.Trajectory.MaximumDistance(200, 32, 50, 10);
+
+      System.Console.WriteLine(Flux.Services.Performance.Measure(() => Test()));
+
+      var sides = 3;
+      var radius = 1;
+
+      var c = new Flux.Geometry.CircleGeometry(radius);
+      var e = new Flux.Geometry.EllipseGeometry(radius, radius);
+      var h = new Flux.Geometry.HexagonGeometry(radius);
+
+      var pc = Flux.Geometry.CyclicPolygon.Create(sides, radius, 0, 0, 0, 0.5);
+      var rp = Flux.Geometry.RegularPolygon.Create(sides, radius);
+
+      var magnitude = System.Runtime.Intrinsics.Vector128.Create(pc.Vertices[0].EuclideanLength()).EuclideanLength();
+
+      //p = Flux.Geometry.CyclicPolygon.CreateCyclicPolygon(6, 10, 0, 0.5);
+
+
     }
 
     #region Eliza example

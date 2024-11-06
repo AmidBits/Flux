@@ -623,18 +623,17 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunReflection));
       System.Console.WriteLine();
 
-      Write(typeof(System.IConvertible));
+      Write(typeof(System.IConvertible), t => true);
 
-      Write(typeof(IValueQuantifiable<>));
-      Write(typeof(IUnitValueQuantifiable<,>));
-      Write(typeof(ISiUnitValueQuantifiable<,>));
+      Write(typeof(IValueQuantifiable<>), t => true);
+      Write(typeof(IUnitValueQuantifiable<,>), t => true);
+      Write(typeof(ISiUnitValueQuantifiable<,>), t => !t.Name.EndsWith('V')); // SI Units NOT using vectors.
+      Write(typeof(ISiUnitValueQuantifiable<,>), t => t.Name.EndsWith('V')); // SI Units using vectors.
 
-
-
-      static void Write(System.Type type, params System.Type[] excludingTypes)
+      static void Write(System.Type type, System.Predicate<System.Type> predicate)
       {
         var ofTypes = typeof(Flux.Locale).Assembly.DefinedTypes.ToList();
-        var derivedTypes = type.GetDerivedTypes(ofTypes).OrderBy(t => t.IsInterface).ThenBy(t => t.Name).ToList();
+        var derivedTypes = type.GetDerivedTypes(ofTypes).Where(t => predicate(t)).OrderBy(t => t.IsInterface).ThenBy(t => t.Name).ToList();
         System.Console.WriteLine($"{type.Name} ({derivedTypes.Count}) : {string.Join(", ", derivedTypes.Select(i => i.Name))}");
         System.Console.WriteLine();
       }

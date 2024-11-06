@@ -4,8 +4,8 @@ namespace Flux.Geometry
   /// <para></para>
   /// <see href="https://en.wikipedia.org/wiki/Circle"/>
   /// </summary>
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct CircleGeometry
+    : System.IFormattable
   {
     public static CircleGeometry Unit { get; } = new(1);
 
@@ -18,14 +18,16 @@ namespace Flux.Geometry
     /// </summary>
     public double Radius => m_radius;
 
+    /// <summary>Returns whether a point is inside the circle.</summary>
+    public bool Contains(double x, double y) => Contains(m_radius, x, y);
+
     /// <summary>Returns the area of circle.</summary>
-    public double Area => Coordinates.PolarCoordinate.SurfaceAreaOfCircle(m_radius);
+    public double GetArea() => AreaOf(m_radius);
 
     /// <summary>Returns the circumference of the circle.</summary>
-    public double Circumference => Coordinates.PolarCoordinate.PerimeterOfCircle(m_radius);
+    public double GetCircumference() => PerimeterOf(m_radius);
 
-    /// <summary>Returns whether a point is inside the circle.</summary>
-    public bool Contains(double x, double y) => ContainsPoint(m_radius, x, y);
+    #region Static methods
 
     /// <summary>
     /// <para>Creates a circle consisting of <paramref name="count"/> vertices transformed with <paramref name="resultSelector"/> starting at <paramref name="radOffset"/> and optional <paramref name="maxRandomness"/> (using <paramref name="rng"/>) unit interval (toward 0 = no random, toward 1 = total random).</para>
@@ -66,11 +68,34 @@ namespace Flux.Geometry
       }
     }
 
-    #region Static methods
+    ///// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</summary>
+    //public static bool ContainsPoint(double radius, double x, double y)
+    //  => System.Math.Pow(x, 2) + System.Math.Pow(y, 2) <= System.Math.Pow(radius, 2);
 
-    /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</summary>
-    public static bool ContainsPoint(double radius, double x, double y) => System.Math.Pow(x, 2) + System.Math.Pow(y, 2) <= System.Math.Pow(radius, 2);
+    /// <summary>
+    /// <para>Computes the surface area of a circle with the specified <paramref name="radius"/>.</para>
+    /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
+    /// </summary>
+    public static double AreaOf(double radius)
+      => double.Pi * radius * radius;
+
+    /// <summary>
+    /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</para>
+    /// </summary>
+    public static bool Contains(double radius, double x, double y)
+      => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(radius, 2);
+
+    /// <summary>
+    /// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
+    /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
+    /// </summary>
+    public static double PerimeterOf(double radius)
+      => 2 * double.Pi * radius;
 
     #endregion // Static methods
+
+    public string ToString(string? format, IFormatProvider? formatProvider) => GetType().Name;
+
+    public override string ToString() => ToString(null, null);
   }
 }

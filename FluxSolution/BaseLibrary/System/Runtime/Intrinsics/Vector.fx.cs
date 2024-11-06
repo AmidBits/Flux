@@ -1,5 +1,3 @@
-#if !EXCLUDE_INTRINSIC_OPS_FOR_NOW
-
 using System.Runtime.Intrinsics;
 
 namespace Flux
@@ -10,16 +8,18 @@ namespace Flux
     internal const byte ShuffleYZXW = (3 << 6) | (0 << 4) | (2 << 2) | 1;
     internal const byte ShuffleZXYW = (3 << 6) | (1 << 4) | (0 << 2) | 2;
 
-    public static Vector128<double> One128D => Vector128.Create(1L).AsDouble();
-    public static Vector256<double> One256D => Vector256.Create(1L).AsDouble();
-    public static Vector512<double> One512D => Vector512.Create(1L).AsDouble();
+    public static Vector128<double> One128D => Vector128.Create(1d);
+    public static Vector256<double> One256D => Vector256.Create(1d);
+    public static Vector512<double> One512D => Vector512.Create(1d);
 
-    public static Vector128<double> Two128D => Vector128.Create(2L).AsDouble();
-    public static Vector256<double> Two256D => Vector256.Create(2L).AsDouble();
-    public static Vector512<double> Two512D => Vector512.Create(2L).AsDouble();
+    public static Vector512<long> One512I64 => Vector512.Create(1L);
 
-    //public static Vector128<double> Zero128D => Vector128.Create(0L).AsDouble();
-    //public static Vector256<double> Zero256D => Vector256.Create(0L).AsDouble();
+    public static Vector128<double> Two128D => Vector128.Create(2d);
+    public static Vector256<double> Two256D => Vector256.Create(2d);
+    //    public static Vector512<double> Two512D => Vector512.Create(2L).AsDouble();
+
+    //    public static Vector128<double> Zero128D => Vector128.Create(0L).AsDouble();
+    public static Vector256<double> Zero256D => Vector256.Create(0L).AsDouble();
     //public static Vector512<double> Zero512D => Vector512.Create(0L).AsDouble();
 
     //public static Vector128<long> SignMask128Int64 => Vector128.Create(~long.MaxValue);
@@ -28,11 +28,11 @@ namespace Flux
 
     //public static Vector128<long> AbsMask128Int64 => Vector128.Create(long.MaxValue);
     //public static Vector256<long> AbsMask256Int64 => Vector256.Create(long.MaxValue);
-    //public static Vector512<long> AbsMask512Int64 => Vector512.Create(long.MaxValue);
+    public static Vector512<long> AbsMask512Int64 => Vector512.Create(long.MaxValue);
 
     public static Vector128<double> AbsMask128Double => Vector128.Create(long.MaxValue).AsDouble();
     public static Vector256<double> AbsMask256Double => Vector256.Create(long.MaxValue).AsDouble();
-    //public static Vector512<double> AbsMask512Double => Vector512.Create(long.MaxValue).AsDouble();
+    //    public static Vector512<double> AbsMask512Double => Vector512.Create(long.MaxValue).AsDouble();
 
     public static Vector128<double> SignMask128Double => Vector128.Create(~long.MaxValue).AsDouble();
     public static Vector256<double> SignMask256Double => Vector256.Create(~long.MaxValue).AsDouble();
@@ -40,6 +40,11 @@ namespace Flux
 
     public static Vector256<double> BitMask256DoubleX1Y1Z1W0 => Vector256.Create(-1, -1, -1, +0).AsDouble();
     public static Vector256<double> BitMask256DoubleX1Y1Z0W0 => Vector256.Create(-1, -1, +0, +0).AsDouble();
+
+    public static Vector256<double> UnitX256D => Vector256.Create(1d, 0d, 0d, 0d);
+    public static Vector256<double> UnitY256D => Vector256.Create(0d, 1d, 0d, 0d);
+    public static Vector256<double> UnitZ256D => Vector256.Create(0d, 0d, 1d, 0d);
+    public static Vector256<double> UnitW256D => Vector256.Create(0d, 0d, 0d, 1d);
 
     #region Abs
 
@@ -53,13 +58,18 @@ namespace Flux
     public static Vector256<double> Abs(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.And(source, AbsMask256Double)
-      : Vector256.Create(source.GetLower().Abs(), source.GetUpper().Abs());
+      : Vector256.Create(Abs(source.GetLower()), Abs(source.GetUpper()));
 
     /// <summary>Returns the vector with absolute element values.</summary>
     public static Vector512<double> Abs(this Vector512<double> source)
-      => Vector512.Create(source.GetLower().Abs(), source.GetUpper().Abs());
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx512F.And(source.AsInt64(), AbsMask512Int64).AsDouble()
+      : Vector512.Create(Abs(source.GetLower()), Abs(source.GetUpper()));
 
     #endregion // Abs
+
+    public static double AbsoluteSum(this Vector128<double> source) => HorizontalSum(Abs(source));
+    public static double AbsoluteSum(this Vector256<double> source) => HorizontalSum(Abs(source));
 
     #region Add
 
@@ -67,51 +77,81 @@ namespace Flux
     public static Vector128<double> Add(this Vector128<double> source, Vector128<double> target)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Add(source, target)
-      : source + target;
+      : Vector128.Create(source[0] + target[0], source[1] + target[1]);
 
-    /// <summary>Returns a new vector with the sum of the vector components and the scalar value.</summary>
+    /// <summary>Returns a new vector with the sum of each vector components and the scalar value.</summary>
     public static Vector128<double> Add(this Vector128<double> source, double scalar)
-      => source.Add(Vector128.Create(scalar));
+      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Add(source, Vector128.Create(scalar))
+      : Vector128.Create(source[0] + scalar, source[1] + scalar);
 
     /// <summary>Returns a new vector with the sum of the vector components.</summary>
     public static Vector256<double> Add(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Add(source, target)
-      : Vector256.Create(source.GetLower().Add(target.GetLower()), source.GetUpper().Add(target.GetUpper()));
+      : Vector256.Create(Add(source.GetLower(), target.GetLower()), Add(source.GetUpper(), target.GetUpper()));
 
-    /// <summary>Returns a new vector with the sum of the vector components and the scalar value.</summary>
+    /// <summary>Returns a new vector with the sum of each vector components and the scalar value.</summary>
     public static Vector256<double> Add(this Vector256<double> source, double scalar)
-      => source.Add(Vector256.Create(scalar));
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Add(source, Vector256.Create(scalar))
+      : Vector256.Create(Add(source.GetLower(), scalar), Add(source.GetUpper(), scalar));
 
     /// <summary>Returns a new vector with the sum of the vector components.</summary>
     public static Vector512<double> Add(this Vector512<double> source, Vector512<double> target)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx512F.Add(source, target)
-      : Vector512.Create(source.GetLower().Add(target.GetLower()), source.GetUpper().Add(target.GetUpper()));
+      : Vector512.Create(Add(source.GetLower(), target.GetLower()), Add(source.GetUpper(), target.GetUpper()));
 
-    /// <summary>Returns a new vector with the sum of the vector components and the scalar value.</summary>
+    /// <summary>Returns a new vector with the sum of each vector components and the scalar value.</summary>
     public static Vector512<double> Add(this Vector512<double> source, double scalar)
-      => source.Add(Vector512.Create(scalar));
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx512F.Add(source, Vector512.Create(scalar))
+      : Vector512.Create(Add(source.GetLower(), scalar), Add(source.GetUpper(), scalar));
 
     #endregion // Add
 
+    #region Angles
+
+    /// <summary>Returns the angle of the source to the other vectors.</summary>>
+    public static double AngleBetween(this Vector128<double> source, Vector128<double> before, Vector128<double> after) => AngleTo(Subtract(before, source), Subtract(after, source));
+
+    /// <summary>Returns the angle of the source to the other vectors.</summary>>
+    public static double AngleBetween(this Vector256<double> source, Vector256<double> before, Vector256<double> after) => AngleTo(Subtract(before, source), Subtract(after, source));
+
+    /// <summary>(3D) Calculate the angle between the source vector and the target vector.
+    /// When dot eq 0 then the vectors are perpendicular.
+    /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
+    /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
+    /// </summary>
+    public static double AngleTo(this Vector128<double> source, Vector128<double> target) => double.Acos(Dot(Normalize(source, out var _), Normalize(target, out var _)));
+
+    /// <summary>(3D) Calculate the angle (in radians) between the source vector and the target vector.
+    /// When dot eq 0 then the vectors are perpendicular.
+    /// When dot gt 0 then the angle is less than 90 degrees (dot=1 can be interpreted as the same direction).
+    /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
+    /// </summary>
+    public static double AngleTo(this Vector256<double> source, Vector256<double> target) => double.Acos(Dot(Normalize(source, out var _), Normalize(target, out var _)));
+
+    #endregion // Angles
+
     #region Ceiling
 
-    /// <summary>Returns a new vector with the smallest integral value that is greater than or equal to the source, for each component.</summary>
+    /// <summary>Returns a new vector with the smallest integer value that is greater than or equal to the source, for each component.</summary>
     public static Vector128<double> Ceiling(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.Ceiling(source)
       : Vector128.Create(double.Ceiling(source[0]), double.Ceiling(source[1]));
 
-    /// <summary>Returns a new vector with the smallest integral value that is greater than or equal to the source, for each component.</summary>
+    /// <summary>Returns a new vector with the smallest integer value that is greater than or equal to the source, for each component.</summary>
     public static Vector256<double> Ceiling(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Ceiling(source)
-      : Vector256.Create(source.GetLower().Ceiling(), source.GetUpper().Ceiling());
+      : Vector256.Create(Ceiling(source.GetLower()), Ceiling(source.GetUpper()));
 
-    /// <summary>Returns a new vector with the smallest integral value that is greater than or equal to the source, for each component.</summary>
+    /// <summary>Returns a new vector with the smallest integer value that is greater than or equal to the source, for each component.</summary>
     public static Vector512<double> Ceiling(this Vector512<double> source)
-      => Vector512.Create(source.GetLower().Ceiling(), source.GetUpper().Ceiling());
+      => Vector512.Create(Ceiling(source.GetLower()), Ceiling(source.GetUpper()));
 
     #endregion // Ceiling
 
@@ -119,37 +159,57 @@ namespace Flux
 
     /// <summary>Returns a new vector with the Chebyshev length (using the specified edgeLength) of the vector.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevLength(this Vector128<double> source, double edgeLength = 1) => source.Abs().Divide(edgeLength).HorizontalMax();
+    public static double ChebyshevLength(this Vector128<double> source, double edgeLength = 1) => HorizontalMax(Divide(Abs(source), edgeLength));
 
     /// <summary>Returns a new vector with the Chebyshev length (using the specified edgeLength) of the vector.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevLength(this Vector256<double> source, double edgeLength = 1) => source.Abs().Divide(edgeLength).HorizontalMax();
+    public static double ChebyshevLength(this Vector256<double> source, double edgeLength = 1) => HorizontalMax(Divide(Abs(source), edgeLength));
 
     /// <summary>Returns a new vector with the Chebyshev length (using the specified edgeLength) of the vector.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    public static double ChebyshevLength(this Vector512<double> source, double edgeLength = 1) => source.Abs().Divide(edgeLength).HorizontalMax();
+    public static double ChebyshevLength(this Vector512<double> source, double edgeLength = 1) => HorizontalMax(Divide(Abs(source), edgeLength));
 
     #endregion // ChebyshevLength
 
     #region Clamp
 
     /// <summary>Returns a new vector with its components clamped between the corresponding components in min and max.</summary>
-    public static Vector128<double> Clamp(this Vector128<double> source, Vector128<double> min, Vector128<double> max) => source.Min(max).Max(min);
+    public static Vector128<double> Clamp(this Vector128<double> source, Vector128<double> min, Vector128<double> max)
+      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Max(System.Runtime.Intrinsics.X86.Sse2.Min(source, max), min)
+      : Vector128.Create(double.Clamp(source[0], min[0], max[0]), double.Clamp(source[1], min[1], max[1]));
 
     /// <summary>Returns a new vector with its components clamped between the components min and max.</summary>
-    public static Vector128<double> Clamp(this Vector128<double> source, double min, double max) => Clamp(source, Vector128.Create(min), Vector128.Create(max));
+    public static Vector128<double> Clamp(this Vector128<double> source, double min, double max)
+      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Max(System.Runtime.Intrinsics.X86.Sse2.Min(source, Vector128.Create(max)), Vector128.Create(min))
+      : Vector128.Create(double.Clamp(source[0], min, max), double.Clamp(source[1], min, max));
 
     /// <summary>Returns a new vector with its components clamped between the corresponding components in min and max.</summary>
-    public static Vector256<double> Clamp(this Vector256<double> source, Vector256<double> min, Vector256<double> max) => source.Max(max).Min(min); // We must follow HLSL behavior in the case user specified min value is bigger than max value.
+    public static Vector256<double> Clamp(this Vector256<double> source, Vector256<double> min, Vector256<double> max)
+      // We must follow HLSL behavior in the case user specified min value is bigger than max value.
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Max(System.Runtime.Intrinsics.X86.Avx.Min(source, max), min)
+      : Vector256.Create(Clamp(source.GetLower(), min.GetLower(), max.GetLower()), Clamp(source.GetUpper(), min.GetUpper(), max.GetUpper()));
 
     /// <summary>Returns a new vector with its components clamped between the components min and max.</summary>
-    public static Vector256<double> Clamp(this Vector256<double> source, double min, double max) => Clamp(source, Vector256.Create(min), Vector256.Create(max));
+    public static Vector256<double> Clamp(this Vector256<double> source, double min, double max)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Max(System.Runtime.Intrinsics.X86.Avx.Min(source, Vector256.Create(max)), Vector256.Create(min))
+      : Vector256.Create(Clamp(source.GetLower(), min, max), Clamp(source.GetUpper(), min, max));
 
     /// <summary>Returns a new vector with its components clamped between the corresponding components in min and max.</summary>
-    public static Vector512<double> Clamp(this Vector512<double> source, Vector512<double> min, Vector512<double> max) => source.Min(max).Max(min);
+    public static Vector512<double> Clamp(this Vector512<double> source, Vector512<double> min, Vector512<double> max)
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx512F.Max(System.Runtime.Intrinsics.X86.Avx512F.Min(source, max), min)
+      : Vector512.Create(Clamp(source.GetLower(), min.GetLower(), max.GetLower()), Clamp(source.GetUpper(), min.GetUpper(), max.GetUpper()));
 
     /// <summary>Returns a new vector with its components clamped between the components min and max.</summary>
-    public static Vector512<double> Clamp(this Vector512<double> source, double min, double max) => Clamp(source, Vector512.Create(min), Vector512.Create(max));
+    public static Vector512<double> Clamp(this Vector512<double> source, double min, double max)
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx512F.Max(System.Runtime.Intrinsics.X86.Avx512F.Min(source, Vector512.Create(max)), Vector512.Create(min))
+      : Vector512.Create(Clamp(source.GetLower(), min, max), Clamp(source.GetUpper(), min, max));
+
 
     #endregion // Clamp
 
@@ -157,18 +217,18 @@ namespace Flux
 
     public static Vector128<double> CopySign(this Vector128<double> source, Vector128<double> sign)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse2.Or(source.Abs(), System.Runtime.Intrinsics.X86.Sse42.And(sign, SignMask128Double))
-      : source.Abs() | (sign & SignMask128Double);
+      ? System.Runtime.Intrinsics.X86.Sse2.Or(Abs(source), SignMasked(sign))
+      : Abs(source) | (sign & SignMask128Double);
 
     public static Vector256<double> CopySign(this Vector256<double> source, Vector256<double> sign)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.Or(source.Abs(), System.Runtime.Intrinsics.X86.Avx2.And(sign, SignMask256Double))
-      : Vector256.Create(source.GetLower().CopySign(sign.GetLower()), source.GetUpper().CopySign(sign.GetUpper()));
+      ? System.Runtime.Intrinsics.X86.Avx.Or(Abs(source), SignMasked(sign))
+      : Vector256.Create(CopySign(source.GetLower(), sign.GetLower()), CopySign(source.GetUpper(), sign.GetUpper()));
 
     public static Vector512<double> CopySign(this Vector512<double> source, Vector512<double> sign)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx512F.Or(source.Abs().AsInt64(), System.Runtime.Intrinsics.X86.Avx512F.And(sign.AsInt64(), SignMask512Int64)).AsDouble()
-      : Vector512.Create(source.GetLower().CopySign(sign.GetLower()), source.GetUpper().CopySign(sign.GetUpper()));
+      ? System.Runtime.Intrinsics.X86.Avx512F.Or(Abs(source).AsInt64(), SignMaskedInt64(sign)).AsDouble()
+      : Vector512.Create(CopySign(source.GetLower(), sign.GetLower()), CopySign(source.GetUpper(), sign.GetUpper()));
 
     #endregion // CopySign
 
@@ -202,84 +262,64 @@ namespace Flux
     #region Divide
 
     /// <summary>Returns a new vector with the quotient of the vector components.</summary>
-    public static Vector128<double> Divide(this Vector128<double> source, Vector128<double> denominator)
+    public static Vector128<double> Divide(this Vector128<double> source, Vector128<double> divisor)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse2.Divide(source, denominator)
-      : Vector128.Create(source[0] / denominator[0], source[1] / denominator[1]);
+      ? System.Runtime.Intrinsics.X86.Sse2.Divide(source, divisor)
+      : Vector128.Create(source[0] / divisor[0], source[1] / divisor[1]);
 
-    /// <summary>Returns a new vector with the quotient of the vector components and the scalar value.</summary>
-    public static Vector128<double> Divide(this Vector128<double> source, double denominator)
-      => source.Divide(Vector128.Create(denominator));
+    /// <summary>Returns a new vector with the quotient of each vector components and the scalar value.</summary>
+    public static Vector128<double> Divide(this Vector128<double> source, double divisor)
+      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Divide(source, Vector128.Create(divisor))
+      : Vector128.Create(source[0] / divisor, source[1] / divisor);
 
     /// <summary>Returns a new vector with the quotient of the vector components.</summary>
-    public static Vector256<double> Divide(this Vector256<double> source, Vector256<double> denominator)
+    public static Vector256<double> Divide(this Vector256<double> source, Vector256<double> divisor)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.Divide(source, denominator)
-      : Vector256.Create(source.GetLower().Divide(denominator.GetLower()), source.GetUpper().Divide(denominator.GetUpper()));
+      ? System.Runtime.Intrinsics.X86.Avx.Divide(source, divisor)
+      : Vector256.Create(Divide(source.GetLower(), divisor.GetLower()), Divide(source.GetUpper(), divisor.GetUpper()));
 
-    /// <summary>Returns a new vector with the quotient of the vector components and the scalar value.</summary>
-    public static Vector256<double> Divide(this Vector256<double> source, double denominator)
-      => source.Divide(Vector256.Create(denominator));
+    /// <summary>Returns a new vector with the quotient of each vector components and the scalar value.</summary>
+    public static Vector256<double> Divide(this Vector256<double> source, double divisor)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Divide(source, Vector256.Create(divisor))
+      : Vector256.Create(Divide(source.GetLower(), divisor), Divide(source.GetUpper(), divisor));
 
     /// <summary>Returns a new vector with the quotient of the vector components.</summary>
-    public static Vector512<double> Divide(this Vector512<double> source, Vector512<double> denominator)
+    public static Vector512<double> Divide(this Vector512<double> source, Vector512<double> divisor)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx512F.Divide(source, denominator)
-      : Vector512.Create(source.GetLower().Divide(denominator.GetLower()), source.GetUpper().Divide(denominator.GetUpper()));
+      ? System.Runtime.Intrinsics.X86.Avx512F.Divide(source, divisor)
+      : Vector512.Create(Divide(source.GetLower(), divisor.GetLower()), Divide(source.GetUpper(), divisor.GetUpper()));
 
-    /// <summary>Returns a new vector with the quotient of the vector components and the scalar value.</summary>
-    public static Vector512<double> Divide(this Vector512<double> source, double denominator)
-      => source.Divide(Vector512.Create(denominator));
+    /// <summary>Returns a new vector with the quotient of each vector components and the scalar value.</summary>
+    public static Vector512<double> Divide(this Vector512<double> source, double divisor)
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx512F.Divide(source, Vector512.Create(divisor))
+      : Vector512.Create(Divide(source.GetLower(), divisor), Divide(source.GetUpper(), divisor));
 
     #endregion // Divide
-
-    #region DivRem
-
-    /// <summary>Returns the quotient and remainder.</summary>
-    public static Vector128<double> DivRem(this Vector128<double> source, Vector128<double> denominator, out Vector128<double> remainder)
-    {
-      var quotient = source.Divide(denominator);
-      remainder = source.Subtract(quotient.Truncate().Multiply(denominator));
-      return quotient;
-    }
-
-    /// <summary>Returns the quotient and remainder.</summary>
-    public static Vector256<double> DivRem(this Vector256<double> source, Vector256<double> denominator, out Vector256<double> remainder)
-    {
-      var quotient = source.Divide(denominator);
-      remainder = source.Subtract(quotient.Truncate().Multiply(denominator));
-      return quotient;
-    }
-
-    /// <summary>Returns the quotient and remainder.</summary>
-    public static Vector512<double> DivRem(this Vector512<double> source, Vector512<double> denominator, out Vector512<double> remainder)
-    {
-      var quotient = source.Divide(denominator);
-      remainder = source.Subtract(quotient.Truncate().Multiply(denominator));
-      return quotient;
-    }
-
-    #endregion // DivRem
 
     #region Dot
 
     /// <summary>Returns the dot product of the two given vectors.</summary>
-    public static Vector128<double> Dot(this Vector128<double> source, Vector128<double> target)
+    public static double Dot(this Vector128<double> source, Vector128<double> target)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse41.DotProduct(source, target, 0b_0011_1111) // Multiply the first 2 elements of each and broadcasts it into each element of the returning vector.
-      : Vector128.Create(source[0] * target[0] + source[1] * target[1]);
+      ? System.Runtime.Intrinsics.X86.Sse41.DotProduct(source, target, 0b_0011_1111)[0] // Multiply the first 2 elements of each and broadcasts it into each element of the returning vector.
+      : source[0] * target[0] + source[1] * target[1];
 
     /// <summary>Returns the dot product of the vector.</summary>
-    public static Vector256<double> Dot(this Vector256<double> source, Vector256<double> target)
+    public static double Dot(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? Vector256.Create(System.Runtime.Intrinsics.X86.Avx.Multiply(source, target).HorizontalAdd())
-      : Vector256.Create(source[0] * target[0] + source[1] * target[1] + source[2] * target[2] + source[3] * target[3]);
+      ? System.Runtime.Intrinsics.X86.Avx.Multiply(source, target).HorizontalSum()
+      : Dot(source.GetLower(), target.GetLower()) + Dot(source.GetUpper(), target.GetUpper());
+    //: source[0] * target[0] + source[1] * target[1] + source[2] * target[2] + source[3] * target[3];
 
     /// <summary>Returns the dot product of the vector.</summary>
-    public static Vector512<double> Dot(this Vector512<double> source, Vector512<double> target)
+    public static double Dot(this Vector512<double> source, Vector512<double> target)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
-      ? Vector512.Create(System.Runtime.Intrinsics.X86.Avx512F.Multiply(source, target).HorizontalAdd()) // Normal multiply of the four components = (X, Y, Z, W).
-      : Vector512.Create(source[0] * target[0] + source[1] * target[1] + source[2] * target[2] + source[3] * target[3] + source[4] * target[4] + source[5] * target[5] + source[6] * target[6] + source[7] * target[7]);
+      ? System.Runtime.Intrinsics.X86.Avx512F.Multiply(source, target).HorizontalSum() // Normal multiply of the four components = (X, Y, Z, W).
+      : Dot(source.GetLower(), target.GetLower()) + Dot(source.GetUpper(), target.GetUpper());
+    //: source[0] * target[0] + source[1] * target[1] + source[2] * target[2] + source[3] * target[3] + source[4] * target[4] + source[5] * target[5] + source[6] * target[6] + source[7] * target[7];
 
     #endregion // Dot
 
@@ -289,73 +329,83 @@ namespace Flux
     /// <summary>Duplicate the two values in the V128 into four values in a V256.</summary>
     public static Vector512<double> DuplicateV256IntoV512(this Vector256<double> source) => Vector512.Create(source, source);
 
+    //#region Envelop
+
+    //public static Vector128<double> Envelop(this Vector128<double> source) => RoundAwayFromZero(source);
+
+    //public static Vector256<double> Envelop(this Vector256<double> source) => RoundAwayFromZero(source);
+
+    //public static Vector512<double> Envelop(this Vector512<double> source) => RoundAwayFromZero(source);
+
+    //#endregion // Envelop
+
     #region EuclideanLength
 
     /// <summary>Returns a new vector with the Euclidean length (magnitude) of the vector.</summary>
-    public static double EuclideanLength(this Vector128<double> source) => double.Sqrt(source.EuclideanLengthSquared());
+    public static double EuclideanLength(this Vector128<double> source) => double.Sqrt(EuclideanLengthSquared(source));
 
     /// <summary>Returns a new vector with the Euclidean length (magnitude) of the vector.</summary>
-    public static double EuclideanLength(this Vector256<double> source) => double.Sqrt(source.EuclideanLengthSquared());
+    public static double EuclideanLength(this Vector256<double> source) => double.Sqrt(EuclideanLengthSquared(source));
 
     /// <summary>Returns a new vector with the Euclidean length (magnitude) of the vector.</summary>
-    public static double EuclideanLength(this Vector512<double> source) => double.Sqrt(source.EuclideanLengthSquared());
+    public static double EuclideanLength(this Vector512<double> source) => double.Sqrt(EuclideanLengthSquared(source));
 
     #endregion // EuclideanLength
 
     #region EuclideanLengthSquared
 
     /// <summary>Returns a new vector with the squared Euclidean length (magnitude) of the vector.</summary>
-    public static double EuclideanLengthSquared(this Vector128<double> source) => source.Dot(source)[0];
+    public static double EuclideanLengthSquared(this Vector128<double> source) => Dot(source, source);
 
     /// <summary>Returns a new vector with the squared Euclidean length (magnitude) of the vector.</summary>
-    public static double EuclideanLengthSquared(this Vector256<double> source) => source.Multiply(source).HorizontalAdd();
+    public static double EuclideanLengthSquared(this Vector256<double> source) => Dot(source, source);
 
     /// <summary>Returns a new vector with the squared Euclidean length (magnitude) of the vector.</summary>
-    public static double EuclideanLengthSquared(this Vector512<double> source) => source.Multiply(source).HorizontalAdd();
+    public static double EuclideanLengthSquared(this Vector512<double> source) => Dot(source, source);
 
     #endregion // EuclideanLengthSquared
 
     #region Floor
 
-    /// <summary>Returns a new vector with the largest integral value that is less than or equal to the source, for each component.</summary>
+    /// <summary>Returns a new vector with the largest integer value that is less than or equal to the source, for each component.</summary>
     public static Vector128<double> Floor(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.Floor(source)
       : Vector128.Create(double.Floor(source[0]), double.Floor(source[1]));
 
-    /// <summary>Returns a new vector with the largest integral value that is less than or equal to the source, for each component.</summary>
+    /// <summary>Returns a new vector with the largest integer value that is less than or equal to the source, for each component.</summary>
     public static Vector256<double> Floor(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Floor(source)
-      : Vector256.Create(source.GetLower().Floor(), source.GetUpper().Floor());
+      : Vector256.Create(Floor(source.GetLower()), Floor(source.GetUpper()));
 
-    /// <summary>Returns a new vector with the largest integral value that is less than or equal to the source, for each component.</summary>
+    /// <summary>Returns a new vector with the largest integer value that is less than or equal to the source, for each component.</summary>
     public static Vector512<double> Floor(this Vector512<double> source)
-      => Vector512.Create(source.GetLower().Floor(), source.GetUpper().Floor());
+      => Vector512.Create(Floor(source.GetLower()), Floor(source.GetUpper()));
 
     #endregion // Floor
 
-    #region HorizontalAdd
+    #region HorizontalSum
 
     /// <summary>Creates a new value with all components added together.</summary>
-    public static double HorizontalAdd(this Vector128<double> source)
+    public static double HorizontalSum(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse3.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse3.HorizontalAdd(source, source)[0] // Add component pairs = (X + Y, X + Y).
       : source[0] + source[1];
 
     /// <summary>Creates a new value with all components added together.</summary>
-    public static double HorizontalAdd(this Vector256<double> source)
+    public static double HorizontalSum(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse2.Add(source.GetLower(), source.GetUpper()).HorizontalAdd()
-      : source.GetLower().HorizontalAdd() + source.GetUpper().HorizontalAdd();
+      ? System.Runtime.Intrinsics.X86.Sse2.Add(source.GetLower(), source.GetUpper()).HorizontalSum()
+      : HorizontalSum(source.GetLower()) + HorizontalSum(source.GetUpper());
 
     /// <summary>Creates a new value with all components added together.</summary>
-    public static double HorizontalAdd(this Vector512<double> source)
+    public static double HorizontalSum(this Vector512<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.Add(source.GetLower(), source.GetUpper()).HorizontalAdd()
-      : source.GetLower().HorizontalAdd() + source.GetUpper().HorizontalAdd();
+      ? System.Runtime.Intrinsics.X86.Avx.Add(source.GetLower(), source.GetUpper()).HorizontalSum()
+      : HorizontalSum(source.GetLower()) + HorizontalSum(source.GetUpper());
 
-    #endregion // HorizontalAdd
+    #endregion // HorizontalSum
 
     #region HorizontalMax
 
@@ -365,11 +415,11 @@ namespace Flux
 
     /// <summary>Returns a new vector filled with the maximum value of the components in specified vector.</summary>
     public static double HorizontalMax(this Vector256<double> source)
-      => double.Max(source.GetLower().HorizontalMax(), source.GetUpper().HorizontalMax());
+      => double.Max(HorizontalMax(source.GetLower()), HorizontalMax(source.GetUpper()));
 
     /// <summary>Returns a new vector filled with the maximum value of the components in specified vector.</summary>
     public static double HorizontalMax(this Vector512<double> source)
-      => double.Max(source.GetLower().HorizontalMax(), source.GetUpper().HorizontalMax());
+      => double.Max(HorizontalMax(source.GetLower()), HorizontalMax(source.GetUpper()));
 
     #endregion // HorizontalMax
 
@@ -381,46 +431,46 @@ namespace Flux
 
     /// <summary>Returns a new vector filled with the minimum value of the components in specified vector.</summary>
     public static double HorizontalMin(this Vector256<double> source)
-      => double.Min(source.GetLower().HorizontalMin(), source.GetUpper().HorizontalMin());
+      => double.Min(HorizontalMin(source.GetLower()), HorizontalMin(source.GetUpper()));
 
     /// <summary>Returns a new vector filled with the minimum value of the components in specified vector.</summary>
     public static double HorizontalMin(this Vector512<double> source)
-      => double.Min(source.GetLower().HorizontalMin(), source.GetUpper().HorizontalMin());
+      => double.Min(HorizontalMin(source.GetLower()), HorizontalMin(source.GetUpper()));
 
     #endregion // HorizontalMin
 
-    #region HorizontalSubtract
+    #region HorizontalDifference
 
-    public static double HorizontalSubtract(this Vector128<double> source)
+    public static double HorizontalDifference(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse3.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse3.HorizontalSubtract(source, source)[0] // Add component pairs = (X - Y, X - Y).
       : source[0] - source[1];
 
-    public static double HorizontalSubtract(this Vector256<double> source)
-      => source[0] - (source.HorizontalAdd() - source[0]);
+    public static double HorizontalDifference(this Vector256<double> source)
+      => source[0] - (HorizontalSum(source) - source[0]);
 
     /// <summary>Creates a new vector with all components added together.</summary>
-    public static double HorizontalSubtract(this Vector512<double> source)
-      => source[0] - (source.HorizontalAdd() - source[0]);
+    public static double HorizontalDifference(this Vector512<double> source)
+      => source[0] - (HorizontalSum(source) - source[0]);
 
-    #endregion // HorizontalSubtract
+    #endregion // HorizontalDifference
 
     #region Lerp
 
     /// <summary>Returns a new vector that is a linear interpolation of the two specified vectors. All components computed.</summary>
     /// <param name="mu">The weight factor [0, 1]. The resulting vector is, when mu = 0 = v1, mu = 1 = v2, mu = (0, 1) = between v1 and v2.</param>
     public static Vector128<double> Lerp(this Vector128<double> source, Vector128<double> target, double mu)
-      => source.Add(target.Subtract(source).Multiply(Vector128.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
+      => Add(source, Multiply(Subtract(target, source), Vector128.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
 
     /// <summary>Returns a new vector that is a linear interpolation of the two specified vectors. All components computed.</summary>
     /// <param name="mu">The weight factor [0, 1]. The resulting vector is, when mu = 0 = v1, mu = 1 = v2, mu = (0, 1) = between v1 and v2.</param>
     public static Vector256<double> Lerp(this Vector256<double> source, Vector256<double> target, double mu)
-      => source.Add(target.Subtract(source).Multiply(Vector256.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
+      => Add(source, Multiply(Subtract(target, source), Vector256.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
 
     /// <summary>Returns a new vector that is a linear interpolation of the two specified vectors. All components computed.</summary>
     /// <param name="mu">The weight factor [0, 1]. The resulting vector is, when mu = 0 = v1, mu = 1 = v2, mu = (0, 1) = between v1 and v2.</param>
     public static Vector512<double> Lerp(this Vector512<double> source, Vector512<double> target, double mu)
-      => source.Add(target.Subtract(source).Multiply(Vector512.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
+      => Add(source, Multiply(Subtract(target, source), Vector512.Create(mu))); // General formula of linear interpolation: (from + (to - from) * mu).
 
     #endregion // HorizontalSubtract
 
@@ -428,15 +478,15 @@ namespace Flux
 
     /// <summary>Compute the Manhattan length of the vector.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static double ManhattanLength(this Vector128<double> source, double edgeLength = 1) => source.Abs().Divide(Vector128.Create(edgeLength)).HorizontalAdd();
+    public static double ManhattanLength(this Vector128<double> source, double edgeLength = 1) => HorizontalSum(Divide(Abs(source), Vector128.Create(edgeLength)));
 
     /// <summary>Compute the Manhattan length of the vector.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static double ManhattanLength(this Vector256<double> source, double edgeLength = 1) => source.Abs().Divide(Vector256.Create(edgeLength)).HorizontalAdd();
+    public static double ManhattanLength(this Vector256<double> source, double edgeLength = 1) => HorizontalSum(Divide(Abs(source), Vector256.Create(edgeLength)));
 
     /// <summary>Compute the Manhattan length of the vector.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    public static double ManhattanLength(this Vector512<double> source, double edgeLength = 1) => source.Abs().Divide(Vector512.Create(edgeLength)).HorizontalAdd();
+    public static double ManhattanLength(this Vector512<double> source, double edgeLength = 1) => HorizontalSum(Divide(Abs(source), Vector512.Create(edgeLength)));
 
     #endregion // ManhattanLength
 
@@ -456,28 +506,28 @@ namespace Flux
 
     /// <summary>Returns a new vector with the maximum value for each component of the two specified vectors.</summary>
     public static Vector128<double> Max(this Vector128<double> source, Vector128<double> target)
-      => System.Runtime.Intrinsics.X86.Sse42.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse42.Max(source, target)
+      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Max(source, target)
       : Vector128.Create(double.Max(source[0], target[0]), double.Max(source[1], target[1]));
 
     /// <summary>Returns a new vector with the maximum value for each component of the two specified vectors.</summary>
     public static Vector256<double> Max(this Vector256<double> source, Vector256<double> target)
-      => System.Runtime.Intrinsics.X86.Avx2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx2.Max(source, target)
-      : Vector256.Create(source.GetLower().Max(target.GetLower()), source.GetUpper().Max(target.GetUpper()));
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Max(source, target)
+      : Vector256.Create(Max(source.GetLower(), target.GetLower()), Max(source.GetUpper(), target.GetUpper()));
 
     /// <summary>Returns a new vector with the maximum value for each component of the two specified vectors.</summary>
     public static Vector512<double> Max(this Vector512<double> source, Vector512<double> target)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx512F.Max(source, target)
-      : Vector512.Create(source.GetLower().Max(target.GetLower()), source.GetUpper().Max(target.GetUpper()));
+      : Vector512.Create(Max(source.GetLower(), target.GetLower()), Max(source.GetUpper(), target.GetUpper()));
 
     #endregion // Max
 
     #region Min
 
     /// <summary>Returns a new vector with the minimum value for each component of the two specified vectors.</summary>
-    public static Vector128<double> Min(this Vector128<double> source, in Vector128<double> target)
+    public static Vector128<double> Min(this Vector128<double> source, Vector128<double> target)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Min(source, target)
       : Vector128.Create(double.Min(source[0], target[0]), double.Min(source[1], target[1]));
@@ -486,13 +536,13 @@ namespace Flux
     public static Vector256<double> Min(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Min(source, target)
-      : Vector256.Create(source.GetLower().Min(target.GetLower()), source.GetUpper().Min(target.GetUpper()));
+      : Vector256.Create(Min(source.GetLower(), target.GetLower()), Min(source.GetUpper(), target.GetUpper()));
 
     /// <summary>Returns a new vector with the minimum value for each component of the two specified vectors.</summary>
     public static Vector512<double> Min(this Vector512<double> source, Vector512<double> target)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx512F.Min(source, target)
-      : Vector512.Create(source.GetLower().Min(target.GetLower()), source.GetUpper().Min(target.GetUpper()));
+      : Vector512.Create(Min(source.GetLower(), target.GetLower()), Min(source.GetUpper(), target.GetUpper()));
 
     #endregion // Min
 
@@ -501,17 +551,17 @@ namespace Flux
     /// <summary></summary>
     /// <param name="order">1 or greater.</param>
     /// <see href="https://en.wikipedia.org/wiki/Minkowski_distance"/>
-    public static double MinkowskiLength(this Vector128<double> source, int order = 1) => double.Pow(source.Abs().Pow(order).HorizontalAdd(), 1d / order);
+    public static double MinkowskiLength(this Vector128<double> source, int order = 1) => double.Pow(HorizontalSum(Pow(Abs(source), order)), 1d / order);
 
     /// <summary></summary>
     /// <param name="order">1 or greater.</param>
     /// <see href="https://en.wikipedia.org/wiki/Minkowski_distance"/>
-    public static double MinkowskiLength(this Vector256<double> source, int order = 1) => double.Pow(source.Abs().Pow(order).HorizontalAdd(), 1d / order);
+    public static double MinkowskiLength(this Vector256<double> source, int order = 1) => double.Pow(HorizontalSum(Pow(Abs(source), order)), 1d / order);
 
     /// <summary></summary>
     /// <param name="order">1 or greater.</param>
     /// <see href="https://en.wikipedia.org/wiki/Minkowski_distance"/>
-    public static double MinkowskiLength(this Vector512<double> source, int order = 1) => double.Pow(source.Abs().Pow(order).HorizontalAdd(), 1d / order);
+    public static double MinkowskiLength(this Vector512<double> source, int order = 1) => double.Pow(HorizontalSum(Pow(Abs(source), order)), 1d / order);
 
     #endregion // MinkowskiLength
 
@@ -522,27 +572,36 @@ namespace Flux
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Multiply(source, target)
       : Vector128.Create(source[0] * target[0], source[1] * target[1]);
-    /// <summary>Returns a new vector with the product of the vector components and the scalar value.</summary>
-    public static Vector128<double> Multiply(this Vector128<double> source, double scalar)
-      => source.Multiply(Vector128.Create(scalar));
+
+    /// <summary>Returns a new vector with the product of each vector components and the scalar value.</summary>
+    public static Vector128<double> Multiply(this Vector128<double> source, double factor)
+      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Multiply(source, Vector128.Create(factor))
+      : Vector128.Create(source[0] * factor, source[1] * factor);
 
     /// <summary>Returns a new vector with the product of the vector components.</summary>
     public static Vector256<double> Multiply(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Multiply(source, target)
-      : Vector256.Create(source.GetLower().Multiply(target.GetLower()), source.GetUpper().Multiply(target.GetUpper()));
-    /// <summary>Returns a new vector with the product of the vector components and the scalar value.</summary>
-    public static Vector256<double> Multiply(this Vector256<double> source, double scalar)
-      => source.Multiply(Vector256.Create(scalar));
+      : Vector256.Create(Multiply(source.GetLower(), target.GetLower()), Multiply(source.GetUpper(), target.GetUpper()));
+
+    /// <summary>Returns a new vector with the product of each vector components and the scalar value.</summary>
+    public static Vector256<double> Multiply(this Vector256<double> source, double factor)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Multiply(source, Vector256.Create(factor))
+      : Vector256.Create(Multiply(source.GetLower(), factor), Multiply(source.GetUpper(), factor));
 
     /// <summary>Returns a new vector with the product of the vector components.</summary>
     public static Vector512<double> Multiply(this Vector512<double> source, Vector512<double> target)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx512F.Multiply(source, target)
-      : Vector512.Create(source.GetLower().Multiply(target.GetLower()), source.GetUpper().Multiply(target.GetUpper()));
-    /// <summary>Returns a new vector with the product of the vector components and the scalar value.</summary>
-    public static Vector512<double> Multiply(this Vector512<double> source, double scalar)
-      => source.Multiply(Vector512.Create(scalar));
+      : Vector512.Create(Multiply(source.GetLower(), target.GetLower()), Multiply(source.GetUpper(), target.GetUpper()));
+
+    /// <summary>Returns a new vector with the product of each vector components and the scalar value.</summary>
+    public static Vector512<double> Multiply(this Vector512<double> source, double factor)
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx512F.Multiply(source, Vector512.Create(factor))
+      : Vector512.Create(Multiply(source.GetLower(), factor), Multiply(source.GetUpper(), factor));
 
     #endregion // Multiply
 
@@ -556,7 +615,7 @@ namespace Flux
     public static Vector128<double> MultiplyAdd(this Vector128<double> source, Vector128<double> multiply, Vector128<double> add)
       => System.Runtime.Intrinsics.X86.Fma.IsSupported
       ? System.Runtime.Intrinsics.X86.Fma.MultiplyAdd(source, multiply, add)
-      : source.Multiply(multiply).Add(add);
+      : Add(Multiply(source, multiply), add);
 
     /// <summary>Returns (x * y) + z on each element of a vector rounded as one ternary operation.</summary>
     /// <param name="source">The vector to be multiplied with <paramref name="multiply"/></param>
@@ -566,7 +625,7 @@ namespace Flux
     public static Vector256<double> MultiplyAdd(this Vector256<double> source, Vector256<double> multiply, Vector256<double> add)
       => System.Runtime.Intrinsics.X86.Fma.IsSupported
       ? System.Runtime.Intrinsics.X86.Fma.MultiplyAdd(source, multiply, add)
-      : source.Multiply(multiply).Add(add);
+      : Add(Multiply(source, multiply), add);
 
     /// <summary>Returns (x * y) + z on each element of a vector rounded as one ternary operation.</summary>
     /// <param name="source">The vector to be multiplied with <paramref name="multiply"/></param>
@@ -574,7 +633,7 @@ namespace Flux
     /// <param name="add">The vector to be added to to the infinite precision multiplication of <paramref name="source"/> and <paramref name="multiply"/></param>
     /// <returns>(x * y) + z on each element, rounded as one ternary operation</returns>
     public static Vector512<double> MultiplyAdd(this Vector512<double> source, Vector512<double> multiply, Vector512<double> add)
-      => source.Multiply(multiply).Add(add);
+      => Add(Multiply(source, multiply), add);
 
     #endregion // MultiplyAdd
 
@@ -588,7 +647,7 @@ namespace Flux
     public static Vector128<double> MultiplySubtract(this Vector128<double> source, Vector128<double> multiply, Vector128<double> subtract)
       => System.Runtime.Intrinsics.X86.Fma.IsSupported
       ? System.Runtime.Intrinsics.X86.Fma.MultiplySubtract(source, multiply, subtract)
-      : source.Multiply(multiply).Subtract(subtract);
+      : Subtract(Multiply(source, multiply), subtract);
 
     /// <summary>Returns (x * y) - z on each element of a vector rounded as one ternary operation.</summary>
     /// <param name="source">The vector to be multiplied with <paramref name="multiply"/></param>
@@ -598,7 +657,7 @@ namespace Flux
     public static Vector256<double> MultiplySubtract(this Vector256<double> source, Vector256<double> multiply, Vector256<double> subtract)
       => System.Runtime.Intrinsics.X86.Fma.IsSupported
       ? System.Runtime.Intrinsics.X86.Fma.MultiplySubtract(source, multiply, subtract)
-      : source.Multiply(multiply).Subtract(subtract);
+      : Subtract(Multiply(source, multiply), subtract);
 
     /// <summary>Returns (x * y) - z on each element of a vector rounded as one ternary operation.</summary>
     /// <param name="source">The vector to be multiplied with <paramref name="multiply"/></param>
@@ -606,7 +665,7 @@ namespace Flux
     /// <param name="subtract">The vector to be subtracted to to the infinite precision multiplication of <paramref name="source"/> and <paramref name="multiply"/></param>
     /// <returns>(x * y) - z on each element, rounded as one ternary operation</returns>
     public static Vector512<double> MultiplySubtract(this Vector512<double> source, Vector512<double> multiply, Vector512<double> subtract)
-      => source.Multiply(multiply).Subtract(subtract);
+      => Subtract(Multiply(source, multiply), subtract);
 
     #endregion // MultiplySubtract
 
@@ -622,26 +681,26 @@ namespace Flux
     public static Vector256<double> Negate(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Xor(source, SignMask256Double)
-      : Vector256.Create(source.GetLower().Negate(), source.GetUpper().Negate());
+      : Vector256.Create(Negate(source.GetLower()), Negate(source.GetUpper()));
 
     /// <summary>Returns a new vector with the components negated.</summary>
     public static Vector512<double> Negate(this Vector512<double> source)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx512F.Xor(source.AsInt64(), SignMask512Double.AsInt64()).AsDouble()
-      : Vector512.Create(source.GetLower().Negate(), source.GetUpper().Negate());
+      : Vector512.Create(Negate(source.GetLower()), Negate(source.GetUpper()));
 
     #endregion // Negate
 
     #region Normalize
 
     /// <summary>Scales the vector to unit length.</summary>
-    public static Vector128<double> Normalize(this Vector128<double> source, out double magnitude) => source.Divide(magnitude = source.EuclideanLength());
+    public static Vector128<double> Normalize(this Vector128<double> source, out double magnitude) => Divide(source, magnitude = EuclideanLength(source));
 
     /// <summary>Scales the vector to unit length.</summary>
-    public static Vector256<double> Normalize(this Vector256<double> source, out double magnitude) => source.Divide(magnitude = source.EuclideanLength());
+    public static Vector256<double> Normalize(this Vector256<double> source, out double magnitude) => Divide(source, magnitude = EuclideanLength(source));
 
     /// <summary>Scales the vector to unit length.</summary>
-    public static Vector512<double> Normalize(this Vector512<double> source, out double magnitude) => source.Divide(magnitude = source.EuclideanLength());
+    public static Vector512<double> Normalize(this Vector512<double> source, out double magnitude) => Divide(source, magnitude = EuclideanLength(source));
 
     #endregion // Normalize
 
@@ -739,32 +798,60 @@ namespace Flux
     #region Remainder
 
     /// <summary>Returns a new vector with the remainder of the vector components.</summary>
-    public static Vector128<double> Remainder(this Vector128<double> source, Vector128<double> denominator)
-      => source.Subtract(source.Divide(denominator).Truncate().Multiply(denominator));
+    public static Vector128<double> Remainder(this Vector128<double> source, Vector128<double> divisor)
+      => System.Runtime.Intrinsics.X86.Sse41.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Subtract(source, System.Runtime.Intrinsics.X86.Sse2.Multiply(System.Runtime.Intrinsics.X86.Sse41.RoundToZero(System.Runtime.Intrinsics.X86.Sse2.Divide(source, divisor)), divisor))
+      : Vector128.Create(source[0] % divisor[0], source[1] % divisor[1]);
+
     /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
-    public static Vector128<double> Remainder(this Vector128<double> source, double denominator) => source.Remainder(Vector128.Create(denominator));
+    public static Vector128<double> Remainder(this Vector128<double> source, double divisor)
+      => System.Runtime.Intrinsics.X86.Sse41.IsSupported && Vector128.Create(divisor) is var divisor128
+      ? System.Runtime.Intrinsics.X86.Sse2.Subtract(source, System.Runtime.Intrinsics.X86.Sse2.Multiply(System.Runtime.Intrinsics.X86.Sse41.RoundToZero(System.Runtime.Intrinsics.X86.Sse2.Divide(source, divisor128)), divisor128))
+      : Vector128.Create(source[0] % divisor, source[1] % divisor);
 
     /// <summary>Returns a new vector with the remainder of the vector components.</summary>
-    public static Vector256<double> Remainder(this Vector256<double> source, Vector256<double> denominator)
-      => source.Subtract(source.Divide(denominator).Truncate().Multiply(denominator));
+    public static Vector256<double> Remainder(this Vector256<double> source, Vector256<double> divisor)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Subtract(source, System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx.RoundToZero(System.Runtime.Intrinsics.X86.Avx.Divide(source, divisor)), divisor))
+      : Vector256.Create(Remainder(source.GetLower(), divisor.GetLower()), Remainder(source.GetUpper(), divisor.GetUpper()));
+
     /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
-    public static Vector256<double> Remainder(this Vector256<double> source, double denominator) => source.Remainder(Vector256.Create(denominator));
+    public static Vector256<double> Remainder(this Vector256<double> source, double divisor)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported && Vector256.Create(divisor) is var divisor128
+      ? System.Runtime.Intrinsics.X86.Avx.Subtract(source, System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx.RoundToZero(System.Runtime.Intrinsics.X86.Avx.Divide(source, divisor128)), divisor128))
+      : Vector256.Create(Remainder(source.GetLower(), divisor), Remainder(source.GetUpper(), divisor));
 
     /// <summary>Returns a new vector with the remainder of the vector components.</summary>
-    public static Vector512<double> Remainder(this Vector512<double> source, Vector512<double> denominator)
-      => source.Subtract(source.Divide(denominator).Truncate().Multiply(denominator));
+    public static Vector512<double> Remainder(this Vector512<double> source, Vector512<double> divisor)
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx512F.Subtract(source, System.Runtime.Intrinsics.X86.Avx512F.Multiply(System.Runtime.Intrinsics.X86.Avx512F.Divide(source, divisor).RoundTowardZero(), divisor))
+      : Vector512.Create(Remainder(source.GetLower(), divisor.GetLower()), Remainder(source.GetUpper(), divisor.GetUpper()));
+
     /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
-    public static Vector512<double> Remainder(this Vector512<double> source, double denominator) => source.Remainder(Vector512.Create(denominator));
+    public static Vector512<double> Remainder(this Vector512<double> source, double divisor)
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported && Vector512.Create(divisor) is var divisor512
+      ? System.Runtime.Intrinsics.X86.Avx512F.Subtract(source, System.Runtime.Intrinsics.X86.Avx512F.Multiply(System.Runtime.Intrinsics.X86.Avx512F.Divide(source, divisor512).RoundTowardZero(), divisor512))
+      : Vector512.Create(Remainder(source.GetLower(), divisor), Remainder(source.GetUpper(), divisor));
 
     #endregion // Remainder
 
     #region RoundAwayFromZero
 
-    public static Vector128<double> RoundAwayFromZero(this Vector128<double> source) => source.Abs().RoundToPositiveInfinity().CopySign(source);
+    /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are away from zero.</summary>
+    public static Vector128<double> RoundAwayFromZero(this Vector128<double> source)
+      => System.Runtime.Intrinsics.X86.Sse41.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Or(System.Runtime.Intrinsics.X86.Sse41.RoundToPositiveInfinity(System.Runtime.Intrinsics.X86.Sse2.And(source, AbsMask128Double)), System.Runtime.Intrinsics.X86.Avx.And(source, SignMask128Double))
+      : Vector128.Create(double.Round(source[0], MidpointRounding.AwayFromZero), double.Round(source[1], MidpointRounding.AwayFromZero));
 
-    public static Vector256<double> RoundAwayFromZero(this Vector256<double> source) => source.Abs().RoundToPositiveInfinity().CopySign(source);
+    /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are away from zero.</summary>
+    public static Vector256<double> RoundAwayFromZero(this Vector256<double> source)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Or(System.Runtime.Intrinsics.X86.Avx.RoundToPositiveInfinity(System.Runtime.Intrinsics.X86.Avx.And(source, AbsMask256Double)), System.Runtime.Intrinsics.X86.Avx.And(source, SignMask256Double))
+      : Vector256.Create(RoundAwayFromZero(source.GetLower()), RoundAwayFromZero(source.GetUpper()));
 
-    public static Vector512<double> RoundAwayFromZero(this Vector512<double> source) => source.Abs().RoundToPositiveInfinity().CopySign(source);
+    /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are away from zero.</summary>
+    public static Vector512<double> RoundAwayFromZero(this Vector512<double> source)
+      => Vector512.Create(RoundAwayFromZero(source.GetLower()), RoundAwayFromZero(source.GetUpper()));
 
     #endregion // RoundAwayFromZero
 
@@ -780,11 +867,11 @@ namespace Flux
     public static Vector256<double> RoundTowardZero(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.RoundToZero(source)
-      : Vector256.Create(source.GetLower().RoundTowardZero(), source.GetUpper().RoundTowardZero());
+      : Vector256.Create(RoundTowardZero(source.GetLower()), RoundTowardZero(source.GetUpper()));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards zero.</summary>
     public static Vector512<double> RoundTowardZero(this Vector512<double> source)
-      => Vector512.Create(source.GetLower().RoundTowardZero(), source.GetUpper().RoundTowardZero());
+      => Vector512.Create(RoundTowardZero(source.GetLower()), RoundTowardZero(source.GetUpper()));
 
     #endregion // RoundTowardZero
 
@@ -802,11 +889,11 @@ namespace Flux
       ? System.Runtime.Intrinsics.X86.Avx.RoundToNearestInteger(source)
       : System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(source.GetLower()).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse41.RoundToNearestInteger(source.GetUpper()))
-      : Vector256.Create(double.Round(source[0], System.MidpointRounding.ToEven), double.Round(source[1], System.MidpointRounding.ToEven), double.Round(source[2], System.MidpointRounding.ToEven), double.Round(source[3], System.MidpointRounding.ToEven));
+      : Vector256.Create(RoundToEven(source.GetLower()), RoundToEven(source.GetUpper()));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer (even, or banker's rounding) values.</summary>
     public static Vector512<double> RoundToEven(this Vector512<double> source)
-      => Vector512.Create(source.GetLower().RoundToEven(), source.GetUpper().RoundToEven());
+      => Vector512.Create(RoundToEven(source.GetLower()), RoundToEven(source.GetUpper()));
 
     #endregion // RoundToEven
 
@@ -822,11 +909,11 @@ namespace Flux
     public static Vector256<double> RoundToNegativeInfinity(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.RoundToNegativeInfinity(source)
-      : Vector256.Create(source.GetLower().RoundToNegativeInfinity(), source.GetUpper().RoundToNegativeInfinity());
+      : Vector256.Create(RoundToNegativeInfinity(source.GetLower()), RoundToNegativeInfinity(source.GetUpper()));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards negative infinity.</summary>
     public static Vector512<double> RoundToNegativeInfinity(this Vector512<double> source)
-      => Vector512.Create(source.GetLower().RoundToNegativeInfinity(), source.GetUpper().RoundToNegativeInfinity());
+      => Vector512.Create(RoundToNegativeInfinity(source.GetLower()), RoundToNegativeInfinity(source.GetUpper()));
 
     #endregion // RoundToNegativeInfinity
 
@@ -836,36 +923,41 @@ namespace Flux
     public static Vector128<double> RoundToPositiveInfinity(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToPositiveInfinity(source)
-      : Vector128.Create(System.Math.Round(source[0], System.MidpointRounding.ToPositiveInfinity), System.Math.Round(source[1], System.MidpointRounding.ToPositiveInfinity));
+      : Vector128.Create(double.Round(source[0], System.MidpointRounding.ToPositiveInfinity), double.Round(source[1], System.MidpointRounding.ToPositiveInfinity));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards positive infinity.</summary>
     public static Vector256<double> RoundToPositiveInfinity(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.RoundToPositiveInfinity(source)
-      : Vector256.Create(source.GetLower().RoundToPositiveInfinity(), source.GetUpper().RoundToPositiveInfinity());
+      : Vector256.Create(RoundToPositiveInfinity(source.GetLower()), RoundToPositiveInfinity(source.GetUpper()));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards positive infinity.</summary>
     public static Vector512<double> RoundToPositiveInfinity(this Vector512<double> source)
-      => Vector512.Create(source.GetLower().RoundToPositiveInfinity(), source.GetUpper().RoundToPositiveInfinity());
+      => Vector512.Create(RoundToPositiveInfinity(source.GetLower()), RoundToPositiveInfinity(source.GetUpper()));
 
     #endregion // RoundToPositiveInfinity
 
     /// <summary>Compute the scalar triple product, i.e. dot(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Triple_product#Scalar_triple_product"/>
-    public static Vector256<double> ScalarTripleProduct(this Vector256<double> source, Vector256<double> second, Vector256<double> third) => source.Dot(second.Cross(third));
+    public static double ScalarTripleProduct(this Vector256<double> source, Vector256<double> second, Vector256<double> third)
+      => Dot(source, Cross(second, third));
 
     #region Sign
 
     public static Vector128<double> Sign(this Vector128<double> source)
-      => Vector128.Create((double)double.Sign(source[0]), (double)double.Sign(source[1]));
+      => System.Runtime.Intrinsics.X86.Sse42.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Or(System.Runtime.Intrinsics.X86.Sse2.Min(System.Runtime.Intrinsics.X86.Sse2.And(source, AbsMask128Double), One128D), SignMasked(source))
+      : Vector128.Create((double)double.Sign(source[0]), (double)double.Sign(source[1]));
 
     public static Vector256<double> Sign(this Vector256<double> source)
-      => Vector256.Create(source.GetLower().Sign(), source.GetUpper().Sign());
-    //=> Vector256.Create((double)double.Sign(source[0]), (double)double.Sign(source[1]), (double)double.Sign(source[2]), (double)double.Sign(source[3]));
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Or(System.Runtime.Intrinsics.X86.Avx.Min(System.Runtime.Intrinsics.X86.Avx.And(source, AbsMask256Double), One256D), SignMasked(source))
+      : Vector256.Create(Sign(source.GetLower()), Sign(source.GetUpper()));
 
     public static Vector512<double> Sign(this Vector512<double> source)
-      => Vector512.Create(source.GetLower().Sign(), source.GetUpper().Sign());
-    //=> Vector512.Create((double)double.Sign(source[0]), (double) double.Sign(source[1]), (double) double.Sign(source[2]), (double) double.Sign(source[3]), (double) double.Sign(source[4]), (double) double.Sign(source[5]), (double) double.Sign(source[6]), (double) double.Sign(source[7]));
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx512F.Or(System.Runtime.Intrinsics.X86.Avx512F.Min(System.Runtime.Intrinsics.X86.Avx512F.And(source.AsInt64(), AbsMask512Int64), One512I64), SignMaskedInt64(source)).AsDouble()
+      : Vector512.Create(Sign(source.GetLower()), Sign(source.GetUpper()));
 
     #endregion // Sign
 
@@ -883,71 +975,71 @@ namespace Flux
     internal static Vector256<double> SignMasked(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.And(source, SignMask256Double)
-      : Vector256.Create(source.GetLower().SignMasked(), source.GetUpper().SignMasked());
+      : Vector256.Create(SignMasked(source.GetLower()), SignMasked(source.GetUpper()));
 
     /// <summary>Returns a new vector with the sign of the components.</summary>
     /// <remarks>This is unlike System.Math.Sign(), which is why it's currently marked internal.</remarks>
-    internal static Vector512<double> SignMasked(this Vector512<double> source)
+    internal static Vector512<long> SignMaskedInt64(this Vector512<double> source)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx512F.And(source.AsInt64(), SignMask512Int64).AsDouble()
-      : Vector512.Create(source.GetLower().SignMasked(), source.GetUpper().SignMasked());
+      ? System.Runtime.Intrinsics.X86.Avx512F.And(source.AsInt64(), SignMask512Int64)
+      : Vector512.Create(SignMasked(source.GetLower()), SignMasked(source.GetUpper())).AsInt64();
 
     #endregion // SignMasked
 
-    #region Slerp
+    //#region Slerp
 
-    /// <summary>Returns a new vector that is a spherical linear interpolation of the two specified vectors. This is the 2D version because slerp use other functionality that is 2D dependent.</summary>
-    public static Vector128<double> Slerp(this Vector128<double> source, Vector128<double> target, double mu)
-    {
-      var scale0 = 1 - mu;
-      var scale1 = mu;
+    ///// <summary>Returns a new vector that is a spherical linear interpolation of the two specified vectors. This is the 2D version because slerp use other functionality that is 2D dependent.</summary>
+    //public static Vector128<double> Slerp(this Vector128<double> source, Vector128<double> target, double mu)
+    //{
+    //  var scale0 = 1 - mu;
+    //  var scale1 = mu;
 
-      if (Dot(source, target) is var dot && dot[0] is var cosTheta && cosTheta != 0)
-      {
-        var theta = double.Acos(double.Clamp(cosTheta, -1, 1));
-        var sinTheta = double.Sin(theta);
-        scale0 = double.Sin(scale0 * theta) / sinTheta;
-        scale1 = double.Sin(scale1 * theta) / sinTheta;
-      }
+    //  if (Dot(source, target) is var dot && dot is var cosTheta && cosTheta != 0)
+    //  {
+    //    var theta = double.Acos(double.Clamp(cosTheta, -1, 1));
+    //    var sinTheta = double.Sin(theta);
+    //    scale0 = double.Sin(scale0 * theta) / sinTheta;
+    //    scale1 = double.Sin(scale1 * theta) / sinTheta;
+    //  }
 
-      return Add(Multiply(source, Vector128.Create(scale0)), Multiply(target, Vector128.Create(scale1)));
-    }
+    //  return Add(Multiply(source, Vector128.Create(scale0)), Multiply(target, Vector128.Create(scale1)));
+    //}
 
-    /// <summary>Returns a new vector that is a spherical linear interpolation of the two specified NORMALIZED vectors. This is a 3D version because slerp use other functionality that is 3D dependent.</summary>
-    public static Vector256<double> Slerp(this Vector256<double> source, Vector256<double> target, double mu)
-    {
-      var scale0 = 1 - mu;
-      var scale1 = mu;
+    ///// <summary>Returns a new vector that is a spherical linear interpolation of the two specified NORMALIZED vectors. This is a 3D version because slerp use other functionality that is 3D dependent.</summary>
+    //public static Vector256<double> Slerp(this Vector256<double> source, Vector256<double> target, double mu)
+    //{
+    //  var scale0 = 1 - mu;
+    //  var scale1 = mu;
 
-      if (Dot(source, target) is var dot && dot[0] is var cosTheta && cosTheta != 0)
-      {
-        var theta = double.Acos(double.Clamp(cosTheta, -1, 1));
-        var sinTheta = double.Sin(theta);
-        scale0 = double.Sin(scale0 * theta) / sinTheta;
-        scale1 = double.Sin(scale1 * theta) / sinTheta;
-      }
+    //  if (Dot(source, target) is var dot && dot is var cosTheta && cosTheta != 0)
+    //  {
+    //    var theta = double.Acos(double.Clamp(cosTheta, -1, 1));
+    //    var sinTheta = double.Sin(theta);
+    //    scale0 = double.Sin(scale0 * theta) / sinTheta;
+    //    scale1 = double.Sin(scale1 * theta) / sinTheta;
+    //  }
 
-      return Add(Multiply(source, Vector256.Create(scale0)), Multiply(target, Vector256.Create(scale1)));
-    }
+    //  return Add(Multiply(source, Vector256.Create(scale0)), Multiply(target, Vector256.Create(scale1)));
+    //}
 
-    /// <summary>Returns a new vector that is a spherical linear interpolation of the two specified NORMALIZED vectors. This is a 3D version because slerp use other functionality that is 3D dependent.</summary>
-    public static Vector512<double> Slerp(this Vector512<double> source, Vector512<double> target, double mu)
-    {
-      var scale0 = 1 - mu;
-      var scale1 = mu;
+    ///// <summary>Returns a new vector that is a spherical linear interpolation of the two specified NORMALIZED vectors. This is a 3D version because slerp use other functionality that is 3D dependent.</summary>
+    //public static Vector512<double> Slerp(this Vector512<double> source, Vector512<double> target, double mu)
+    //{
+    //  var scale0 = 1 - mu;
+    //  var scale1 = mu;
 
-      if (Dot(source, target) is var dot && dot[0] is var cosTheta && cosTheta != 0)
-      {
-        var theta = double.Acos(double.Clamp(cosTheta, -1, 1));
-        var sinTheta = double.Sin(theta);
-        scale0 = double.Sin(scale0 * theta) / sinTheta;
-        scale1 = double.Sin(scale1 * theta) / sinTheta;
-      }
+    //  if (Dot(source, target) is var dot && dot is var cosTheta && cosTheta != 0)
+    //  {
+    //    var theta = double.Acos(double.Clamp(cosTheta, -1, 1));
+    //    var sinTheta = double.Sin(theta);
+    //    scale0 = double.Sin(scale0 * theta) / sinTheta;
+    //    scale1 = double.Sin(scale1 * theta) / sinTheta;
+    //  }
 
-      return Add(Multiply(source, Vector512.Create(scale0)), Multiply(target, Vector512.Create(scale1)));
-    }
+    //  return Add(Multiply(source, Vector512.Create(scale0)), Multiply(target, Vector512.Create(scale1)));
+    //}
 
-    #endregion // Slerp
+    //#endregion // Slerp
 
     #region Sqrt
 
@@ -955,19 +1047,19 @@ namespace Flux
     public static Vector128<double> Sqrt(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Sqrt(source)
-      : Vector128.Create(System.Math.Sqrt(source[0]), System.Math.Sqrt(source[1]));
+      : Vector128.Create(double.Sqrt(source[0]), double.Sqrt(source[1]));
 
     /// <summary>Returns a new vector with the square root of each component.</summary>
     public static Vector256<double> Sqrt(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Sqrt(source)
-      : Vector256.Create(source.GetLower().Sqrt(), source.GetUpper().Sqrt());
+      : Vector256.Create(Sqrt(source.GetLower()), Sqrt(source.GetUpper()));
 
     /// <summary>Returns a new vector with the square root of each component.</summary>
     public static Vector512<double> Sqrt(this Vector512<double> source)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx512F.Sqrt(source)
-      : Vector512.Create(source.GetLower().Sqrt(), source.GetUpper().Sqrt());
+      : Vector512.Create(Sqrt(source.GetLower()), Sqrt(source.GetUpper()));
 
     #endregion // Sqrt
 
@@ -978,24 +1070,36 @@ namespace Flux
       => System.Runtime.Intrinsics.X86.Sse2.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse2.Subtract(source, target)
       : Vector128.Create(source[0] - target[0], source[1] - target[1]);
-    /// <summary>Returns a new vector with the difference of the vector components and the scalar value.</summary>
-    public static Vector128<double> Subtract(this Vector128<double> source, double scalar) => source.Subtract(Vector128.Create(scalar));
+
+    /// <summary>Returns a new vector with the difference of each vector components and the scalar value.</summary>
+    public static Vector128<double> Subtract(this Vector128<double> source, double scalar)
+      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
+      ? System.Runtime.Intrinsics.X86.Sse2.Subtract(source, Vector128.Create(scalar))
+      : Vector128.Create(source[0] - scalar, source[1] - scalar);
 
     /// <summary>Returns a new vector with the difference of the vector components.</summary>
     public static Vector256<double> Subtract(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Subtract(source, target)
-      : Vector256.Create(source.GetLower().Subtract(target.GetLower()), source.GetUpper().Subtract(target.GetUpper()));
-    /// <summary>Returns a new vector with the difference of the vector components and the scalar value.</summary>
-    public static Vector256<double> Subtract(this Vector256<double> source, double scalar) => source.Subtract(Vector256.Create(scalar));
+      : Vector256.Create(Subtract(source.GetLower(), target.GetLower()), Subtract(source.GetUpper(), target.GetUpper()));
+
+    /// <summary>Returns a new vector with the difference of each vector components and the scalar value.</summary>
+    public static Vector256<double> Subtract(this Vector256<double> source, double scalar)
+      => System.Runtime.Intrinsics.X86.Avx.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx.Subtract(source, Vector256.Create(scalar))
+      : Vector256.Create(Subtract(source.GetLower(), scalar), Subtract(source.GetUpper(), scalar));
 
     /// <summary>Returns a new vector with the difference of the vector components.</summary>
     public static Vector512<double> Subtract(this Vector512<double> source, Vector512<double> target)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx512F.Subtract(source, target)
-      : Vector512.Create(source.GetLower().Subtract(target.GetLower()), source.GetUpper().Subtract(target.GetUpper()));
-    /// <summary>Returns a new vector with the difference of the vector components and the scalar value.</summary>
-    public static Vector512<double> Subtract(this Vector512<double> source, double scalar) => source.Subtract(Vector512.Create(scalar));
+      : Vector512.Create(Subtract(source.GetLower(), target.GetLower()), Subtract(source.GetUpper(), target.GetUpper()));
+
+    /// <summary>Returns a new vector with the difference of each vector components and the scalar value.</summary>
+    public static Vector512<double> Subtract(this Vector512<double> source, double scalar)
+      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
+      ? System.Runtime.Intrinsics.X86.Avx512F.Subtract(source, Vector512.Create(scalar))
+      : Vector512.Create(Subtract(source.GetLower(), scalar), Subtract(source.GetUpper(), scalar));
 
     #endregion // Subtract
 
@@ -1011,19 +1115,84 @@ namespace Flux
     public static Vector256<double> Truncate(this Vector256<double> source)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.RoundToZero(source)
-      : System.Runtime.Intrinsics.X86.Sse41.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse41.RoundToZero(source.GetLower()).ToVector256Unsafe().WithUpper(System.Runtime.Intrinsics.X86.Sse42.RoundToZero(source.GetUpper()))
-      : Vector256.Create(double.Truncate(source[0]), double.Truncate(source[1]), double.Truncate(source[2]), double.Truncate(source[3]));
+      : Vector256.Create(Truncate(source.GetLower()), Truncate(source.GetUpper()));
 
     /// <summary>Returns a new vector with the vector components truncated.</summary>
     public static Vector512<double> Truncate(this Vector512<double> source)
-      => Vector512.Create(source.GetLower().Truncate(), source.GetUpper().Truncate());
+      => Vector512.Create(Truncate(source.GetLower()), Truncate(source.GetUpper()));
 
     #endregion // Truncate
 
+    #region TruncMod
+
+    public static Vector128<double> TruncMod(this Vector128<double> source, Vector128<double> divisor, out Vector128<double> remainder)
+    {
+      if (System.Runtime.Intrinsics.X86.Sse41.IsSupported)
+      {
+        var q = System.Runtime.Intrinsics.X86.Sse41.RoundToZero(System.Runtime.Intrinsics.X86.Sse2.Divide(source, divisor));
+        remainder = System.Runtime.Intrinsics.X86.Sse2.Subtract(source, System.Runtime.Intrinsics.X86.Sse2.Multiply(q, divisor));
+        return q;
+      }
+      else
+      {
+        var s0 = source[0];
+        var d0 = divisor[0];
+        var r0 = s0 % d0;
+
+        var s1 = source[1];
+        var d1 = divisor[1];
+        var r1 = s1 % d1;
+
+        remainder = Vector128.Create(r0, r1);
+
+        return Vector128.Create((s0 - r0) / d0, (s1 - r1) / d1);
+      }
+    }
+
+    public static Vector256<double> TruncMod(this Vector256<double> source, Vector256<double> divisor, out Vector256<double> remainder)
+    {
+      if (System.Runtime.Intrinsics.X86.Avx.IsSupported)
+      {
+        var q = System.Runtime.Intrinsics.X86.Avx.RoundToZero(System.Runtime.Intrinsics.X86.Avx.Divide(source, divisor));
+        remainder = System.Runtime.Intrinsics.X86.Avx.Subtract(source, System.Runtime.Intrinsics.X86.Avx.Multiply(q, divisor));
+        return q;
+      }
+      else
+      {
+        var lq = TruncMod(source.GetLower(), divisor.GetLower(), out var lr);
+        var uq = TruncMod(source.GetUpper(), divisor.GetUpper(), out var ur);
+
+        remainder = Vector256.Create(lr, ur);
+
+        return Vector256.Create(lq, uq);
+      }
+    }
+
+    public static Vector512<double> TruncMod(this Vector512<double> source, Vector512<double> divisor, out Vector512<double> remainder)
+    {
+      if (System.Runtime.Intrinsics.X86.Avx512F.IsSupported)
+      {
+        var q = System.Runtime.Intrinsics.X86.Avx512F.Divide(source, divisor).RoundTowardZero();
+        remainder = System.Runtime.Intrinsics.X86.Avx512F.Subtract(source, System.Runtime.Intrinsics.X86.Avx512F.Multiply(q, divisor));
+        return q;
+      }
+      else
+      {
+        var lq = TruncMod(source.GetLower(), divisor.GetLower(), out var lr);
+        var uq = TruncMod(source.GetUpper(), divisor.GetUpper(), out var ur);
+
+        remainder = Vector512.Create(lr, ur);
+
+        return Vector512.Create(lq, uq);
+      }
+    }
+
+    #endregion // TruncMod
+
     /// <summary>Create a new vector by computing the vector triple product, i.e. cross(a, cross(b, c)), of the vector (a) and the vectors b and c.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/>
-    public static Vector256<double> VectorTripleProduct(this Vector256<double> source, Vector256<double> second, Vector256<double> third) => source.Cross(second.Cross(third));
+    public static Vector256<double> VectorTripleProduct(this Vector256<double> source, Vector256<double> second, Vector256<double> third)
+      => Cross(source, Cross(second, third));
 
     /// <summary>Returns a new vector with...</summary>
     public static Vector128<double> WithinBounds(this Vector128<double> source, Vector128<double> bound)
@@ -1034,8 +1203,6 @@ namespace Flux
       => System.Runtime.Intrinsics.X86.Avx2.And(System.Runtime.Intrinsics.X86.Avx2.Compare(source, bound, System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedLessThanOrEqualSignaling), System.Runtime.Intrinsics.X86.Avx2.Compare(source, Negate(bound), System.Runtime.Intrinsics.X86.FloatComparisonMode.OrderedGreaterThanOrEqualSignaling));
   }
 }
-
-#endif
 
 //namespace Flux.Numerics
 //{

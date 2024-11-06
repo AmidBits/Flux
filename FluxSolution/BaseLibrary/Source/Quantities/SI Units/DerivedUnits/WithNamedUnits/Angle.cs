@@ -36,9 +36,9 @@
     public readonly partial record struct Angle
       : System.IComparable, System.IComparable<Angle>, System.IFormattable, ISiUnitValueQuantifiable<double, AngleUnit>
     {
-      public static readonly Angle FullTurn = new(System.Math.Tau);
-      public static readonly Angle HalfTurn = new(System.Math.PI);
-      public static readonly Angle QuarterTurn = new(System.Math.PI / 2);
+      public static readonly Angle FullTurn = new(double.Tau);
+      public static readonly Angle HalfTurn = new(double.Pi);
+      public static readonly Angle QuarterTurn = new(double.Pi / 2);
 
       public static readonly Angle Zero;
 
@@ -80,10 +80,10 @@
       /// <summary>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal unit subdivisions (degrees, decimalMinutes), e.g. (32, 13.3).</summary>
       public static (int degrees, double minutes) ConvertDecimalDegreesToDm(double decimalDegrees)
       {
-        var absDegrees = System.Math.Abs(decimalDegrees);
-        var floorAbsDegrees = System.Convert.ToInt32(System.Math.Floor(absDegrees));
+        var absDegrees = double.Abs(decimalDegrees);
+        var floorAbsDegrees = System.Convert.ToInt32(double.Floor(absDegrees));
 
-        var degrees = System.Math.Sign(decimalDegrees) * floorAbsDegrees;
+        var degrees = double.Sign(decimalDegrees) * floorAbsDegrees;
         var decimalMinutes = 60 * (absDegrees - floorAbsDegrees);
 
         return (degrees, decimalMinutes);
@@ -102,9 +102,9 @@
       /// <summary>Converts a <paramref name="decimalMinutes"/>, e.g. 13.3, to sexagesimal unit subdivisions (minutes, decimalSeconds), e.g. (13, 18).</summary>
       private static (int minutes, double seconds) ConvertDecimalMinutesToMs(double decimalMinutes)
       {
-        var absMinutes = System.Math.Abs(decimalMinutes);
+        var absMinutes = double.Abs(decimalMinutes);
 
-        var minutes = System.Convert.ToInt32(System.Math.Floor(absMinutes));
+        var minutes = System.Convert.ToInt32(double.Floor(absMinutes));
         var decimalSeconds = 60 * (absMinutes - minutes);
 
         return (minutes, decimalSeconds);
@@ -112,13 +112,13 @@
 
       //public static (double decimalDegrees, double degrees, double decimalMinutes, double minutes, double decimalSeconds) ConvertDecimalDegreeToSexagesimalDegree(double decimalDegrees)
       //{
-      //  var absDegrees = System.Math.Abs(decimalDegrees);
-      //  var floorAbsDegrees = System.Math.Floor(absDegrees);
+      //  var absDegrees = double.Abs(decimalDegrees);
+      //  var floorAbsDegrees = double.Floor(absDegrees);
       //  var fractionAbsDegrees = absDegrees - floorAbsDegrees;
 
-      //  var degrees = System.Math.Sign(decimalDegrees) * floorAbsDegrees;
+      //  var degrees = double.Sign(decimalDegrees) * floorAbsDegrees;
       //  var decimalMinutes = 60 * fractionAbsDegrees;
-      //  var minutes = System.Math.Floor(decimalMinutes);
+      //  var minutes = double.Floor(decimalMinutes);
       //  var decimalSeconds = 3600 * fractionAbsDegrees - 60 * minutes;
 
       //  return (decimalDegrees, System.Convert.ToInt32(degrees), decimalMinutes, System.Convert.ToInt32(minutes), decimalSeconds);
@@ -128,7 +128,7 @@
       //public static double ConvertDegreeToGradian(double degAngle) => degAngle * (10.0 / 9.0);
 
       ///// <summary>Convert the angle specified in degrees to radians.</summary>
-      //public static double ConvertDegreeToRadian(double degAngle) => degAngle * (System.Math.PI / 180);
+      //public static double ConvertDegreeToRadian(double degAngle) => degAngle * (double.Pi / 180);
 
       //public static double ConvertDegreeToTurn(double degAngle) => degAngle / 360;
 
@@ -136,13 +136,13 @@
       //public static double ConvertGradianToDegree(double gradAngle) => gradAngle * 0.9;
 
       ///// <summary>Convert the angle specified in gradians (grads) to radians.</summary>
-      //public static double ConvertGradianToRadian(double gradAngle) => gradAngle * (System.Math.PI / 200);
+      //public static double ConvertGradianToRadian(double gradAngle) => gradAngle * (double.Pi / 200);
 
       //public static double ConvertGradianToTurn(double gradAngle) => gradAngle / 400;
 
       //public static double ConvertMilliradianToRadian(double milliradAngle) => milliradAngle * 1000;
 
-      //public static double ConvertNatoMilToRadian(double milAngle) => milAngle * System.Math.PI / 3200;
+      //public static double ConvertNatoMilToRadian(double milAngle) => milAngle * double.Pi / 3200;
 
       ///// <summary>Convert the angle specified in radians to arcminutes.</summary>
       //public static double ConvertRadianToArcminute(double radAngle) => radAngle * 3437.7467707849396;
@@ -151,25 +151,25 @@
       //public static double ConvertRadianToArcsecond(double radAngle) => radAngle * 206264.80624709636;
 
       ///// <summary>Convert the angle specified in radians to degrees.</summary>
-      //public static double ConvertRadianToDegree(double radAngle) => radAngle * (180 / System.Math.PI);
+      //public static double ConvertRadianToDegree(double radAngle) => radAngle * (180 / double.Pi);
 
       ///// <summary>Convert the angle specified in radians to gradians (grads).</summary>
-      //public static double ConvertRadianToGradian(double radAngle) => radAngle * (200 / System.Math.PI);
+      //public static double ConvertRadianToGradian(double radAngle) => radAngle * (200 / double.Pi);
 
       //public static double ConvertRadianToMilliradian(double radAngle) => radAngle / 1000;
 
-      //public static double ConvertRadianToNatoMil(double radAngle) => radAngle * 3200 / System.Math.PI;
+      //public static double ConvertRadianToNatoMil(double radAngle) => radAngle * 3200 / double.Pi;
 
-      //public static double ConvertRadianToTurn(double radAngle) => radAngle / System.Math.Tau;
+      //public static double ConvertRadianToTurn(double radAngle) => radAngle / double.Tau;
 
-      //public static double ConvertRadianToWarsawPactMil(double radAngle) => radAngle * 3000 / System.Math.PI;
+      //public static double ConvertRadianToWarsawPactMil(double radAngle) => radAngle * 3000 / double.Pi;
 
       //public static double ConvertSexagesimalDegreeToDecimalDegree(double degrees, double minutes, double seconds)
       //  => degrees + minutes / 60 + seconds / 3600;
 
-      //public static double ConvertTurnToRadian(double revolutions) => revolutions * System.Math.Tau;
+      //public static double ConvertTurnToRadian(double revolutions) => revolutions * double.Tau;
 
-      //public static double ConvertWarsawPactMilToRadian(double milAngle) => milAngle * System.Math.PI / 3000;
+      //public static double ConvertWarsawPactMilToRadian(double milAngle) => milAngle * double.Pi / 3000;
 
       #endregion // Conversion methods
 
@@ -230,7 +230,7 @@
 
       /// <summary>Returns the Gudermannian of the specified value.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Gudermannian_function"/>
-      public static double Gd(double value) => System.Math.Atan(System.Math.Sinh(value));
+      public static double Gd(double value) => double.Atan(double.Sinh(value));
 
       // Inverse function:
 
@@ -238,7 +238,7 @@
       /// <see href="https://en.wikipedia.org/wiki/Gudermannian_function#Inverse"/>
       /// <remarks>The integral of the secant function defines the inverse of the Gudermannian function.</remarks>
       /// <remarks>The lambertian function (lam) is a notation for the inverse of the gudermannian which is encountered in the theory of map projections.</remarks>
-      public static double Agd(double value) => System.Math.Atanh(System.Math.Sin(value));
+      public static double Agd(double value) => double.Atanh(double.Sin(value));
 
       #endregion Gudermannian
 
@@ -284,29 +284,29 @@
 
       /// <summary>Returns the hyperbolic cosecant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
-      public static double Csch(double v) => 1 / System.Math.Sinh(v);
+      public static double Csch(double v) => 1 / double.Sinh(v);
 
       /// <summary>Returns the hyperbolic secant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
-      public static double Sech(double v) => 1 / System.Math.Cosh(v);
+      public static double Sech(double v) => 1 / double.Cosh(v);
 
       /// <summary>Returns the hyperbolic cotangent of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
-      public static double Coth(double v) => System.Math.Cosh(v) / System.Math.Sinh(v);
+      public static double Coth(double v) => double.Cosh(v) / double.Sinh(v);
 
       // Inverse hyperbolic reciprocals:
 
       /// <summary>Returns the inverse hyperbolic cosecant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
-      public static double Acsch(double v) => System.Math.Asinh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log(1 / x + System.Math.Sqrt(1 / x * x + 1));
+      public static double Acsch(double v) => double.Asinh(1 / v); // Cheaper versions than using Log and Sqrt functions: double.Log(1 / x + double.Sqrt(1 / x * x + 1));
 
       /// <summary>Returns the inverse hyperbolic secant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
-      public static double Asech(double v) => System.Math.Acosh(1 / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log((1 + System.Math.Sqrt(1 - x * x)) / x);
+      public static double Asech(double v) => double.Acosh(1 / v); // Cheaper versions than using Log and Sqrt functions: double.Log((1 + double.Sqrt(1 - x * x)) / x);
 
       /// <summary>Returns the inverse hyperbolic cotangent of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
-      public static double Acoth(double v) => System.Math.Atanh(1 / v); // Cheaper versions than using log functions: System.Math.Log((x + 1) / (x - 1)) / 2;
+      public static double Acoth(double v) => double.Atanh(1 / v); // Cheaper versions than using log functions: double.Log((x + 1) / (x - 1)) / 2;
 
       #endregion Hyperbolic Reciprocals/Inverse
 
@@ -316,28 +316,42 @@
 
       /// <summary>Returns the cosecant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
-      public static double Csc(double v) => 1 / System.Math.Sin(v);
+      public static double Csc(double v) => 1 / double.Sin(v);
       /// <summary>Returns the secant of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
-      public static double Sec(double v) => 1 / System.Math.Cos(v);
+      public static double Sec(double v) => 1 / double.Cos(v);
 
       /// <summary>Returns the cotangent of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
-      public static double Cot(double v) => 1 / System.Math.Tan(v);
+      public static double Cot(double v) => 1 / double.Tan(v);
 
       // Inverse reciprocals:
 
-      /// <summary>Returns the inverse cosecant of the specified angle.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
-      public static double Acsc(double v) => System.Math.Asin(1 / v);
+      /// <summary>
+      /// <para>Returns the inverse cosecant of the specified angle.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/></para>
+      /// </summary>
+      public static double Acsc(double v) => double.Asin(1 / v);
 
-      /// <summary>Returns the inverse secant of the specified angle.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
-      public static double Asec(double v) => System.Math.Acos(1 / v);
+      /// <summary>
+      /// <para>Returns the inverse secant of the specified angle.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/></para>
+      /// </summary>
+      public static double Asec(double v) => double.Acos(1 / v);
 
-      /// <summary>Returns the inverse cotangent of the specified angle.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
-      public static double Acot(double v) => System.Math.Atan(1 / v);
+      /// <summary>
+      /// <para>Returns the inverse cotangent of the specified angle, range [-PI/2, PI/2] (matches Atan(1/x)).</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/></para>
+      /// <para><seealso href="https://stackoverflow.com/a/15501536/3178666"/></para>
+      /// </summary>
+      public static double AcotSymmetrical(double v) => double.Atan2(1, v);
+
+      /// <summary>
+      /// <para>Returns the inverse cotangent of the specified angle, range [0, PI].</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/></para>
+      /// <para><seealso href="https://stackoverflow.com/a/15501536/3178666"/></para>
+      /// </summary>
+      public static double AcotAbsolute(double v) => double.Pi / 2 - double.Atan(v);
 
       #endregion Reciprocals/Inverse
 
@@ -345,11 +359,11 @@
 
       /// <summary>Returns the normalized sinc of the specified value.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Sinc_function"/>
-      public static double Sincn(double value) => Sincu(System.Math.PI * value);
+      public static double Sincn(double value) => Sincu(double.Pi * value);
 
       /// <summary>Returns the unnormalized sinc of the specified value.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Sinc_function"/>
-      public static double Sincu(double value) => value != 0 ? System.Math.Sin(value) / value : 1;
+      public static double Sincu(double value) => value != 0 ? double.Sin(value) / value : 1;
 
       #endregion Sinc
 
@@ -359,31 +373,31 @@
 
       /// <summary>Returns the versed sine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-      public static double Vsin(double value) => 1 - System.Math.Cos(value);
+      public static double Vsin(double value) => 1 - double.Cos(value);
       /// <summary>Returns the versed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-      public static double Vcos(double value) => 1 + System.Math.Cos(value);
+      public static double Vcos(double value) => 1 + double.Cos(value);
       /// <summary>Returns the coversed sine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-      public static double Cvsin(double value) => 1 - System.Math.Sin(value);
+      public static double Cvsin(double value) => 1 - double.Sin(value);
       /// <summary>Returns the coversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-      public static double Cvcos(double value) => 1 + System.Math.Sin(value);
+      public static double Cvcos(double value) => 1 + double.Sin(value);
 
       // Inverse versed functions:
 
       /// <summary>Returns the inverse of versed sine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      public static double Avsin(double y) => System.Math.Acos(1 - y);
+      public static double Avsin(double y) => double.Acos(1 - y);
       /// <summary>Returns the inverse of versed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      public static double Avcos(double y) => System.Math.Acos(y - 1);
+      public static double Avcos(double y) => double.Acos(y - 1);
       /// <summary>Returns the inverse of coversed sine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      public static double Acvsin(double y) => System.Math.Asin(1 - y);
+      public static double Acvsin(double y) => double.Asin(1 - y);
       /// <summary>Returns the inverse of coversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      public static double Acvcos(double y) => System.Math.Asin(y - 1);
+      public static double Acvcos(double y) => double.Asin(y - 1);
 
       #endregion Versed/Inverse
 
@@ -393,31 +407,31 @@
 
       /// <summary>Returns the haversed sine of the specified angle. This is the famous Haversin function.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-      public static double Hvsin(double value) => (1 - System.Math.Cos(value)) / 2;
+      public static double Hvsin(double value) => (1 - double.Cos(value)) / 2;
       /// <summary>Returns the haversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-      public static double Hvcos(double value) => (1 + System.Math.Cos(value)) / 2;
+      public static double Hvcos(double value) => (1 + double.Cos(value)) / 2;
       /// <summary>Returns the hacoversed sine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-      public static double Hcvsin(double value) => (1 - System.Math.Sin(value)) / 2;
+      public static double Hcvsin(double value) => (1 - double.Sin(value)) / 2;
       /// <summary>Returns the hacoversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-      public static double Hcvcos(double value) => (1 + System.Math.Sin(value)) / 2;
+      public static double Hcvcos(double value) => (1 + double.Sin(value)) / 2;
 
       // Inversed haversed functions:
 
       /// <summary>Returns the inverse of haversed sine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      public static double Ahvsin(double y) => System.Math.Acos(1 - 2 * y); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Asin(System.Math.Sqrt(y));
+      public static double Ahvsin(double y) => double.Acos(1 - 2 * y); // An extra subtraction saves a call to the Sqrt function: 2 * double.Asin(double.Sqrt(y));
       /// <summary>Returns the inverse of haversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      public static double Ahvcos(double y) => System.Math.Acos(2 * y - 1); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Acos(System.Math.Sqrt(y));
+      public static double Ahvcos(double y) => double.Acos(2 * y - 1); // An extra subtraction saves a call to the Sqrt function: 2 * double.Acos(double.Sqrt(y));
       /// <summary>Returns the inverse of cohaversed sine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      public static double Ahcvsin(double y) => System.Math.Asin(1 - 2 * y);
+      public static double Ahcvsin(double y) => double.Asin(1 - 2 * y);
       /// <summary>Returns the inverse of cohaversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      public static double Ahcvcos(double y) => System.Math.Asin(2 * y - 1);
+      public static double Ahcvcos(double y) => double.Asin(2 * y - 1);
 
       #endregion Versine/Haversine
 
@@ -472,11 +486,11 @@
         return dmsNotation switch
         {
           AngleDmsNotation.DecimalDegrees
-            => new Quantities.Angle(System.Math.Abs(decimalDegrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, $"N{decimalPoints}", null) + spacingString + directional, // Show as decimal degrees.
+            => new Quantities.Angle(double.Abs(decimalDegrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, $"N{decimalPoints}", null) + spacingString + directional, // Show as decimal degrees.
           AngleDmsNotation.DegreesDecimalMinutes
-            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, "N0", null) + spacingString + new Quantities.Angle(decimalMinutes, Quantities.AngleUnit.Arcminute).ToUnitString(Quantities.AngleUnit.Arcminute, $"N{decimalPoints}", null) + spacingString + directional, // Show as degrees and decimal minutes.
+            => new Quantities.Angle(double.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, "N0", null) + spacingString + new Quantities.Angle(decimalMinutes, Quantities.AngleUnit.Arcminute).ToUnitString(Quantities.AngleUnit.Arcminute, $"N{decimalPoints}", null) + spacingString + directional, // Show as degrees and decimal minutes.
           AngleDmsNotation.DegreesMinutesDecimalSeconds
-            => new Quantities.Angle(System.Math.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, "N0", null) + spacingString + new Quantities.Angle(System.Math.Abs(minutes), Quantities.AngleUnit.Arcminute).ToUnitString(Quantities.AngleUnit.Arcminute, "N0", null) + spacingString + new Quantities.Angle(decimalSeconds, Quantities.AngleUnit.Arcsecond).ToUnitString(Quantities.AngleUnit.Arcsecond, $"N{decimalPoints}", null) + spacingString + directional, // Show as degrees, minutes and decimal seconds.
+            => new Quantities.Angle(double.Abs(degrees), Quantities.AngleUnit.Degree).ToUnitString(Quantities.AngleUnit.Degree, "N0", null) + spacingString + new Quantities.Angle(double.Abs(minutes), Quantities.AngleUnit.Arcminute).ToUnitString(Quantities.AngleUnit.Arcminute, "N0", null) + spacingString + new Quantities.Angle(decimalSeconds, Quantities.AngleUnit.Arcsecond).ToUnitString(Quantities.AngleUnit.Arcsecond, $"N{decimalPoints}", null) + spacingString + directional, // Show as degrees, minutes and decimal seconds.
           _
             => throw new System.ArgumentOutOfRangeException(nameof(dmsNotation)),
         };
@@ -581,9 +595,9 @@
           AngleUnit.Radian => value,
 
           AngleUnit.Degree => double.DegreesToRadians(value),
-          AngleUnit.Gradian => value * System.Math.PI / 200,
-          AngleUnit.NatoMil => value * System.Math.PI / 3200,
-          AngleUnit.WarsawPactMil => value * System.Math.PI / 3000,
+          AngleUnit.Gradian => value * double.Pi / 200,
+          AngleUnit.NatoMil => value * double.Pi / 3200,
+          AngleUnit.WarsawPactMil => value * double.Pi / 3000,
 
           _ => GetUnitFactor(unit) * value,
         };
@@ -594,9 +608,9 @@
           AngleUnit.Radian => value,
 
           AngleUnit.Degree => double.RadiansToDegrees(value),
-          AngleUnit.Gradian => value * 200 / System.Math.PI,
-          AngleUnit.NatoMil => value * 3200 / System.Math.PI,
-          AngleUnit.WarsawPactMil => value * 3000 / System.Math.PI,
+          AngleUnit.Gradian => value * 200 / double.Pi,
+          AngleUnit.NatoMil => value * 3200 / double.Pi,
+          AngleUnit.WarsawPactMil => value * 3000 / double.Pi,
 
           _ => value / GetUnitFactor(unit),
         };

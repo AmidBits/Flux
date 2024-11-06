@@ -34,8 +34,6 @@ namespace Flux
     /// </summary>
     public static void InsertInPlace<T>(ref T[] source, int index, params T[] values)
     {
-      System.ArgumentNullException.ThrowIfNull(values);
-
       InsertInPlace(ref source, index, values.Length);
 
       System.Array.Copy(values, 0, source, index, values.Length);

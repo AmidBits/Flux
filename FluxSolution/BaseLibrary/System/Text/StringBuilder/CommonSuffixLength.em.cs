@@ -3,12 +3,21 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Yields the number of characters that the source and the target have in common at the end.</para>
+    /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and the <paramref name="predicate"/>, optionally skipping <paramref name="offset"/> elements.</para>
     /// </summary>
+    /// <param name="source"></param>
+    /// <param name="offset"></param>
+    /// <param name="predicate"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static int CommonSuffixLength(this System.Text.StringBuilder source, int offset, System.Func<char, bool> predicate, int maxLength = int.MaxValue)
     {
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(predicate);
+
+      if (source.Length == 0 || maxLength <= 0)
+        return 0;
 
       if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
 
@@ -19,11 +28,21 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Yields the number of characters that the source and the target have in common at the end.</para>
+    /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and <paramref name="value"/>, optionally skipping <paramref name="offset"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
+    /// <param name="source"></param>
+    /// <param name="offset"></param>
+    /// <param name="value"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static int CommonSuffixLength(this System.Text.StringBuilder source, int offset, char value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxLength = int.MaxValue)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+
+      if (source.Length == 0 || maxLength <= 0)
+        return 0;
 
       if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
 
@@ -36,17 +55,27 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Yields the number of characters that the source and the target have in common at the end.</para>
+    /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and <paramref name="value"/>, optionally skipping <paramref name="offset"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
-    public static int CommonSuffixLength(this System.Text.StringBuilder source, int index, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxLength = int.MaxValue)
+    /// <param name="source"></param>
+    /// <param name="offset"></param>
+    /// <param name="value"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static int CommonSuffixLength(this System.Text.StringBuilder source, int offset, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxLength = int.MaxValue)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      if (index < 0 || index >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
+      if (source.Length == 0 || value.Length == 0 || maxLength <= 0)
+        return 0;
+
+      if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      var si = source.Length - index;
+      var si = source.Length - offset;
       var ti = value.Length;
 
       var length = 0;

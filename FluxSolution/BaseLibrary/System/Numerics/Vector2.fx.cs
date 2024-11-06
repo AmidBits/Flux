@@ -394,17 +394,17 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(a);
       System.ArgumentNullException.ThrowIfNull(b);
 
-      if (Geometry.LineGeometries.GivenTwoPointsOnEachLine(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.LineIntersectTest.LinesIntersect)
+      if (Geometry.LineGeometry.GivenTwoPointsOnEach(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.LineIntersectTest.LinesIntersect)
         return true;
 
       for (int i = 1; i < a.Count; i++)
       {
-        if (Geometry.LineGeometries.GivenTwoPointsOnEachLine(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.LineIntersectTest.LinesIntersect)
+        if (Geometry.LineGeometry.GivenTwoPointsOnEach(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.LineIntersectTest.LinesIntersect)
           return true;
 
         for (int p = 1; p < b.Count; p++)
         {
-          if (Geometry.LineGeometries.GivenTwoPointsOnEachLine(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.LineIntersectTest.LinesIntersect)
+          if (Geometry.LineGeometry.GivenTwoPointsOnEach(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.LineIntersectTest.LinesIntersect)
             return true;
         }
       }

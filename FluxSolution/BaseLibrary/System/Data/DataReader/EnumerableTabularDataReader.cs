@@ -22,8 +22,8 @@ namespace Flux.Data
 
       if (fieldCount > 0) // If fieldCount is one or more, generate column names "Column_n..".
       {
-        for (var index = 1; index <= fieldCount; index++)
-          m_fieldNames.Add($"Column_{index}");
+        for (var index = 0; index < fieldCount; index++)
+          m_fieldNames.Add(index.ToColumnName());
       }
       else // Otherwise, try to move to the first element and use the field values for field names.
       {

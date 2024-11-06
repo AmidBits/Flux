@@ -2,11 +2,20 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static bool IsCommonSuffixAny(this System.Text.StringBuilder source, int offset, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, int maxLength, params char[] values)
-      => source.IsCommonSuffix(offset, maxLength, c => values.Contains(c, equalityComparer));
+    /// <summary>
+    /// <para>Returns whether <paramref name="count"/> of any <paramref name="values"/> that ends at <paramref name="source"/>[end - <paramref name="offset"/>]. Uses the <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="offset"></param>
+    /// <param name="count"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    public static bool IsCommonSuffixAny(this System.Text.StringBuilder source, int offset, int count, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params char[] values)
+      => source.IsCommonSuffix(offset, count, c => values.Contains(c, equalityComparer));
 
     /// <summary>
-    /// <para>Returns whether <paramref name="maxLength"/> (or the actual length if less) of any <paramref name="values"/> are found at the <paramref name="offset"/> in the <paramref name="source"/>.</para>
+    /// <para>Returns whether <paramref name="maxLength"/> (or the actual length if less) of any <paramref name="values"/> that ends at <paramref name="source"/>[end - <paramref name="offset"/>].</para>
     /// <para>Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
     public static bool IsCommonSuffixAny(this System.Text.StringBuilder source, int offset, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, int maxLength, params string[] values)
@@ -19,7 +28,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Returns whether any <paramref name="values"/> are found at the <paramref name="offset"/> in the <paramref name="source"/>.</para>
+    /// <para>Returns whether any <paramref name="values"/> that ends at <paramref name="source"/>[end - <paramref name="offset"/>].</para>
     /// <para>Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
     public static bool IsCommonSuffixAny(this System.Text.StringBuilder source, int offset, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params string[] values)

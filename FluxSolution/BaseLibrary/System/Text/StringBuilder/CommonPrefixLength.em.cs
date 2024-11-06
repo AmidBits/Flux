@@ -3,8 +3,14 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Yields the number of characters that the source and the target have in common from the start.</para>
+    /// <para>Finds the length of any common prefix shared between <paramref name="source"/> and the <paramref name="predicate"/>, optionally skipping <paramref name="offset"/> elements.</para>
     /// </summary>
+    /// <param name="source"></param>
+    /// <param name="offset"></param>
+    /// <param name="predicate"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static int CommonPrefixLength(this System.Text.StringBuilder source, int offset, System.Func<char, bool> predicate, int maxLength = int.MaxValue)
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -19,8 +25,15 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Yields the number of characters that the <paramref name="source"/> contains of <paramref name="value"/> the start.</para>
+    /// <para>Finds the length of any common prefix shared between <paramref name="source"/> and <paramref name="value"/>, optionally skipping <paramref name="offset"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
+    /// <param name="source"></param>
+    /// <param name="offset"></param>
+    /// <param name="value"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static int CommonPrefixLength(this System.Text.StringBuilder source, int offset, char value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxLength = int.MaxValue)
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -36,20 +49,27 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Yields the number of characters that the source and the target have in common from the start.</para>
+    /// <para>Finds the length of any common prefix shared between <paramref name="source"/> and <paramref name="value"/>, optionally skipping <paramref name="offset"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
-    public static int CommonPrefixLength(this System.Text.StringBuilder source, int index, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxLength = int.MaxValue)
+    /// <param name="source"></param>
+    /// <param name="offset"></param>
+    /// <param name="value"></param>
+    /// <param name="equalityComparer"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static int CommonPrefixLength(this System.Text.StringBuilder source, int offset, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxLength = int.MaxValue)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      if (index < 0 || index >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(index));
+      if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
       var minLength = System.Math.Min(source.Length, value.Length);
 
       var length = 0;
-      while (length < minLength && index < source.Length && length < maxLength && equalityComparer.Equals(source[index++], value[length]))
+      while (length < minLength && offset < source.Length && length < maxLength && equalityComparer.Equals(source[offset++], value[length]))
         length++;
       return length;
     }

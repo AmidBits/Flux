@@ -2,8 +2,11 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static bool IsCommonPrefixAny(this System.Text.StringBuilder source, int offset, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, int maxLength, params char[] values)
-      => source.IsCommonPrefix(offset, maxLength, c => values.Contains(c, equalityComparer));
+    /// <summary>
+    /// <para>Returns whether <paramref name="count"/> of any <paramref name="values"/> are found at <paramref name="offset"/> in the <paramref name="source"/>. Uses the <paramref name="equalityComparer"/>, or default if null.</para>
+    /// </summary>
+    public static bool IsCommonPrefixAny(this System.Text.StringBuilder source, int offset, int count, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params char[] values)
+      => source.IsCommonPrefix(offset, count, c => values.Contains(c, equalityComparer));
 
     /// <summary>
     /// <para>Returns whether <paramref name="maxLength"/> (or the actual length if less) of any <paramref name="values"/> are found at the <paramref name="offset"/> in the <paramref name="source"/>.</para>

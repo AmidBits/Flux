@@ -64,10 +64,6 @@ namespace Flux
       /// <remarks>The angle is defined to start at 0° from a reference direction, and to increase for rotations in either clockwise (cw) or counterclockwise (ccw) orientation.</remarks>
       public Quantities.Angle Azimuth { get => m_azimuth; init => m_azimuth = value; }
 
-      public double CirclePerimeter => PolarCoordinate.PerimeterOfCircle(m_radius.Value);
-
-      public double CircleSurfaceArea => PolarCoordinate.SurfaceAreaOfCircle(m_radius.Value);
-
       public CartesianCoordinate ToCartesianCoordinate()
       {
         var (x, y) = ConvertPolarToCartesian2(m_radius.Value, m_azimuth.Value);
@@ -112,55 +108,25 @@ namespace Flux
 
       #region Static methods
 
-      /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</summary>
-      public static bool CircleContainsPoint(double radius, double x, double y) => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(radius, 2);
+      ///// <summary>
+      ///// <para>Computes the surface area of a circle with the specified <paramref name="radius"/>.</para>
+      ///// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
+      ///// </summary>
+      //public static double CircleArea(double radius)
+      //  => double.Pi * radius * radius;
 
-      /// <summary>
-      /// <para>Creates a circle consisting of <paramref name="count"/> vertices transformed with <paramref name="resultSelector"/> starting at <paramref name="arcOffset"/> and optional <paramref name="maxRandomness"/> (using <paramref name="rng"/>) unit interval (toward 0 = no random, toward 1 = total random).</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, top pointy</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, double.Tau / 6); // triangle, bottom pointy</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, 0); // rectangle, horizontally and vertically pointy</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, double.Tau / 8); // rectangle, vertically and horizontally flat</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, 0); // pentagon, horizontally pointy</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, double.Tau / 10); // pentagon, vertically pointy</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, 0); // hexagon, vertically flat (or horizontally pointy)</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, double.Tau / 12); // hexagon, horizontally flat (or vertically pointy)</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, 0); // octagon, horizontally and vertically pointy</para>
-      /// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, double.Tau / 16); // octagon, vertically and horizontally flat</para>
-      /// </summary>
-      /// <typeparam name="TResult"></typeparam>
-      /// <param name="count"></param>
-      /// <param name="resultSelector">The selector that determines the result (<typeparamref name="TResult"/>) for each vector.</param>
-      /// <param name="arcOffset">The offset in radians to apply to each vector.</param>
-      /// <param name="maxRandomness">The maximum randomness to allow for each vector. Must be in the range [0, 0.5].</param>
-      /// <param name="rng">The random number generator to use, or default if null.</param>
-      /// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
-      public static System.Collections.Generic.List<TResult> CreateCircleVectors<TResult>(double count, System.Func<double, double, TResult> resultSelector, double radius = 1, double arcOffset = 0, double maxRandomness = 0, System.Random? rng = null)
-      {
-        rng ??= System.Random.Shared;
+      ///// <summary>
+      ///// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</para>
+      ///// </summary>
+      //public static bool CircleContains(double radius, double x, double y)
+      //  => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(radius, 2);
 
-        var list = new System.Collections.Generic.List<TResult>(System.Convert.ToInt32(double.Ceiling(count)));
-
-        var arcLength = double.Tau / count;
-
-        for (var segment = 0; segment < count; segment++)
-        {
-          var angle = arcOffset + segment * arcLength;
-
-          if (maxRandomness > 0)
-            angle += rng.NextDouble(0, arcLength * maxRandomness);
-
-          var (x, y) = ConvertPolarToCartesian2Ex(radius, angle);
-
-          list.Add(resultSelector(x, y));
-        }
-
-        return list;
-      }
-
-      /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</summary>
-      public static bool EllipseContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
-        => double.Cos(rotationAngle) is var cos && double.Sin(rotationAngle) is var sin && double.Pow(cos * x + sin * y, 2) / (a * a) + double.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
+      ///// <summary>
+      ///// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
+      ///// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
+      ///// </summary>
+      //public static double CirclePerimeter(double radius)
+      //  => 2 * double.Pi * radius;
 
       #region Conversions
 
@@ -204,39 +170,80 @@ namespace Flux
 
       #endregion // Conversions
 
-      /// <summary>
-      /// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
-      /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
-      /// </summary>
-      public static double PerimeterOfCircle(double radius) => 2 * double.Pi * radius;
+      ///// <summary>
+      ///// <para>Creates a circle consisting of <paramref name="count"/> vertices transformed with <paramref name="resultSelector"/> starting at <paramref name="arcOffset"/> and optional <paramref name="maxRandomness"/> (using <paramref name="rng"/>) unit interval (toward 0 = no random, toward 1 = total random).</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, top pointy</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, double.Tau / 6); // triangle, bottom pointy</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, 0); // rectangle, horizontally and vertically pointy</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, double.Tau / 8); // rectangle, vertically and horizontally flat</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, 0); // pentagon, horizontally pointy</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, double.Tau / 10); // pentagon, vertically pointy</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, 0); // hexagon, vertically flat (or horizontally pointy)</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, double.Tau / 12); // hexagon, horizontally flat (or vertically pointy)</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, 0); // octagon, horizontally and vertically pointy</para>
+      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, double.Tau / 16); // octagon, vertically and horizontally flat</para>
+      ///// </summary>
+      ///// <typeparam name="TResult"></typeparam>
+      ///// <param name="count"></param>
+      ///// <param name="resultSelector">The selector that determines the result (<typeparamref name="TResult"/>) for each vector.</param>
+      ///// <param name="arcOffset">The offset in radians to apply to each vector.</param>
+      ///// <param name="maxRandomness">The maximum randomness to allow for each vector. Must be in the range [0, 0.5].</param>
+      ///// <param name="rng">The random number generator to use, or default if null.</param>
+      ///// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
+      //public static System.Collections.Generic.List<TResult> CreateCircleVectors<TResult>(double count, System.Func<double, double, TResult> resultSelector, double radius = 1, double arcOffset = 0, double maxRandomness = 0, System.Random? rng = null)
+      //{
+      //  rng ??= System.Random.Shared;
 
-      /// <summary>Returns the approximate perimeter (circumference) of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-      public static double PerimeterOfEllipse(double a, double b)
-      {
-        var circle = double.Pi * (a + b); // (2 * PI * radius)
+      //  var list = new System.Collections.Generic.List<TResult>(System.Convert.ToInt32(double.Ceiling(count)));
 
-        if (a == b) // For a circle, use (PI * diameter);
-          return circle;
+      //  var arcLength = double.Tau / count;
 
-        var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function.
+      //  for (var segment = 0; segment < count; segment++)
+      //  {
+      //    var angle = arcOffset + segment * arcLength;
 
-        return circle * (1 + h3 / (10 + double.Sqrt(4 - h3)));
-      }
+      //    if (maxRandomness > 0)
+      //      angle += rng.NextDouble(0, arcLength * maxRandomness);
+
+      //    var (x, y) = ConvertPolarToCartesian2Ex(radius, angle);
+
+      //    list.Add(resultSelector(x, y));
+      //  }
+
+      //  return list;
+      //}
+
+      ///// <summary>
+      ///// <para>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</para>
+      ///// </summary>
+      //public static double EllipseArea(double a, double b) => double.Pi * a * b;
+
+      ///// <summary>
+      ///// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</para>
+      ///// </summary>
+      //public static bool EllipseContains(double a, double b, double x, double y, double rotationAngle = 0)
+      //  => double.Cos(rotationAngle) is var cos && double.Sin(rotationAngle) is var sin && double.Pow(cos * x + sin * y, 2) / (a * a) + double.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
+
+      ///// <summary>
+      ///// <para>Returns the approximate perimeter (circumference) of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</para>
+      ///// </summary>
+      //public static double EllipsePerimeter(double a, double b)
+      //{
+      //  var circle = double.Pi * (a + b); // (2 * PI * radius)
+
+      //  if (a == b) // For a circle, use (PI * diameter);
+      //    return circle;
+
+      //  var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function.
+
+      //  return circle * (1 + h3 / (10 + double.Sqrt(4 - h3)));
+      //}
 
       /// <summary>
       /// <para>Computes the perimeter of a semicircle with the specified <paramref name="radius"/>.</para>
       /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
       /// </summary>
       public static double PerimeterOfSemicircle(double radius) => (double.Pi + 2) * radius;
-
-      /// <summary>
-      /// <para>Computes the surface area of a circle with the specified <paramref name="radius"/>.</para>
-      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
-      /// </summary>
-      public static double SurfaceAreaOfCircle(double radius) => double.Pi * radius * radius;
-
-      /// <summary>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</summary>
-      public static double SurfaceAreaOfEllipse(double a, double b) => double.Pi * a * b;
 
       #endregion // Static methods
 

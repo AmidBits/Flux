@@ -39,8 +39,8 @@ namespace Flux
 
       return dt;
     }
-    public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, int columnCount, System.Func<TSource, int, object[]> valuesSelector)
-      => ToDataTable(source, tableName, (e, ia) => System.Linq.Enumerable.Range(1, columnCount).Select(i => $"Column_{i}").ToArray(), (e, ia) => System.Linq.Enumerable.Range(1, columnCount).Select(i => typeof(object)).ToArray(), valuesSelector);
 
+    public static System.Data.DataTable ToDataTable<TSource>(this System.Collections.Generic.IEnumerable<TSource> source, string tableName, int columnCount, System.Func<TSource, int, object[]> valuesSelector)
+      => ToDataTable(source, tableName, (e, ia) => System.Linq.Enumerable.Range(0, columnCount).Select(i => i.ToColumnName()).ToArray(), (e, ia) => System.Linq.Enumerable.Range(1, columnCount).Select(i => typeof(object)).ToArray(), valuesSelector);
   }
 }

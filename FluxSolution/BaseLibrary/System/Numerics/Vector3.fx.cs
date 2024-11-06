@@ -144,8 +144,8 @@ namespace Flux
 
     /// <summary>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative if clockwise and positive if counterclockwise. (2D/3D)</summary>
     public static double ComputeAreaSigned(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => source.PartitionTuple2(true, (e1, e2, i) => e1.X * e2.Y - e2.X * e1.Y).Sum() / 2;
-    //=> source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e1.X * e2.Y - e2.X * e1.Y), (a, i) => a / 2);
+    => source.AggregateTuple2(0d, true, (a, e1, e2, i) => a + (e1.X * e2.Y - e2.X * e1.Y), (a, i) => a / 2);
+    //   => source.PartitionTuple2(true, (e1, e2, i) => e1.X * e2.Y - e2.X * e1.Y).Sum() / 2;
 
     /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
     public static double ComputeArea(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)

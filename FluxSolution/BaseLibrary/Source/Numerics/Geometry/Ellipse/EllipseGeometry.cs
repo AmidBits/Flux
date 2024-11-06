@@ -4,8 +4,8 @@ namespace Flux.Geometry
   /// <para></para>
   /// <see href="https://en.wikipedia.org/wiki/Ellipse"/>
   /// </summary>
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct EllipseGeometry
+    : System.IFormattable
   {
     public static EllipseGeometry Unit { get; } = new(1, 1);
 
@@ -25,14 +25,8 @@ namespace Flux.Geometry
     /// <summary>The semi-minor or b-axis of the ellipse.</summary>
     public double B => m_b;
 
-    /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
-    public double Area => SurfaceAreaOfEllipse(m_a, m_b);
-
-    /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-    public double Perimeter => PerimeterOfEllipse(m_a, m_b);
-
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
-    public bool Contains(double x, double y, double rotationAngle = 0) => EllipseContainsPoint(m_a, m_b, x, y, rotationAngle);
+    public bool Contains(double x, double y, double rotationAngle = 0) => Contains(m_a, m_b, x, y, rotationAngle);
 
     /// <summary>
     /// <para>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).</para>
@@ -74,13 +68,19 @@ namespace Flux.Geometry
       }
     }
 
+    /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
+    public double GetArea() => AreaOf(m_a, m_b);
+
+    /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
+    public double GetPerimeter() => PerimeterOf(m_a, m_b);
+
     /// <summary>
     /// <para>The linear eccentricity of an ellipse or hyperbola, denoted c (or sometimes f or e), is the distance between its center and either of its two foci.</para>
     /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
     /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
     /// <remarks>In the case of ellipses and hyperbolas the linear eccentricity is sometimes called the half-focal separation.</remarks>
-    public double LinearEccentricity => System.Math.Sqrt(System.Math.Pow(m_a, 2) - System.Math.Pow(m_b, 2));
+    public double GetLinearEccentricity() => double.Sqrt(double.Pow(m_a, 2) - double.Pow(m_b, 2));
 
     /// <summary>
     /// <para>First eccentricity.</para>
@@ -88,29 +88,26 @@ namespace Flux.Geometry
     /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
     /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    public double FirstEccentricity => System.Math.Sqrt(1 - System.Math.Pow(m_b, 2) / System.Math.Pow(m_a, 2));
+    public double GetFirstEccentricity() => double.Sqrt(1 - double.Pow(m_b, 2) / double.Pow(m_a, 2));
 
     /// <summary>
     /// <para>Second eccentricity.</para>
     /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
     /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    public double SecondEccentricity => System.Math.Sqrt(System.Math.Pow(m_a, 2) / System.Math.Pow(m_b, 2) - 1);
+    public double GetSecondEccentricity() => double.Sqrt(double.Pow(m_a, 2) / double.Pow(m_b, 2) - 1);
 
     /// <summary>
     /// <para>Third eccentricity.</para>
     /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
     /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    public double ThirdEccentricity
+    public double GetThirdEccentricity()
     {
-      get
-      {
-        var a2 = System.Math.Pow(m_a, 2);
-        var b2 = System.Math.Pow(m_b, 2);
+      var a2 = double.Pow(m_a, 2);
+      var b2 = double.Pow(m_b, 2);
 
-        return System.Math.Sqrt(a2 - b2) / System.Math.Sqrt(a2 + b2);
-      }
+      return double.Sqrt(a2 - b2) / double.Sqrt(a2 + b2);
     }
 
     /// <summary>
@@ -118,27 +115,25 @@ namespace Flux.Geometry
     /// <see href="https://en.wikipedia.org/wiki/Flattening"/>
     /// <seealso href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    public double FirstFlattening => (m_a - m_b) / m_a;
+    public double GetFirstFlattening() => (m_a - m_b) / m_a;
 
     /// <summary>
     /// <para>Second flattening.</para>
     /// <see href="https://en.wikipedia.org/wiki/Flattening"/>
     /// <seealso href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    public double SecondFlattening => (m_a - m_b) / m_b;
+    public double GetSecondFlattening() => (m_a - m_b) / m_b;
 
     /// <summary>
     /// <para>Third flattening.</para>
     /// <see href="https://en.wikipedia.org/wiki/Flattening"/>
     /// <seealso href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    public double ThirdFlattening => (m_a - m_b) / (m_a + m_b);
+    public double GetThirdFlattening() => (m_a - m_b) / (m_a + m_b);
 
     #region Static methods
 
-    /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</summary>
-    public static bool EllipseContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
-      => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (a * a) + System.Math.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
+    #region Conversion methods
 
     /// <summary>Returns an ellipse geometry from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
     public static (double a, double b) ConvertCartesian2ToEllipse(double x, double y)
@@ -154,31 +149,69 @@ namespace Flux.Geometry
         System.Math.Sin(rotationAngle) * b
       );
 
-    /// <summary>
-    /// <para>This is a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses. The parameters <paramref name="a"/> and <paramref name="b"/> are the lengths of the semi-major and semi-minor axes, respectively.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Ellipse#Circumference"/></para>
-    /// </summary>
-    /// <param name="a">The semi-major axis.</param>
-    /// <param name="b">The semi-minor axis.</param>
-    /// <returns>pow(a - b, 2) / pow(a + b, 2)</returns>
-    public static double H(double a, double b) => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
+    #endregion // Conversion methods
 
-    /// <summary>Returns the approximate circumference of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-    public static double PerimeterOfEllipse(double a, double b)
+    ///// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</summary>
+    //public static bool EllipseContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
+    //  => System.Math.Cos(rotationAngle) is var cos && System.Math.Sin(rotationAngle) is var sin && System.Math.Pow(cos * x + sin * y, 2) / (a * a) + System.Math.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
+
+    ///// <summary>
+    ///// <para>This is a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses. The parameters <paramref name="a"/> and <paramref name="b"/> are the lengths of the semi-major and semi-minor axes, respectively.</para>
+    ///// <para><see href="https://en.wikipedia.org/wiki/Ellipse#Circumference"/></para>
+    ///// </summary>
+    ///// <param name="a">The semi-major axis.</param>
+    ///// <param name="b">The semi-minor axis.</param>
+    ///// <returns>pow(a - b, 2) / pow(a + b, 2)</returns>
+    //public static double H(double a, double b)
+    //  => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
+
+    ///// <summary>Returns the approximate circumference of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
+    //public static double EllipsePerimeter(double a, double b)
+    //{
+    //  var circle = System.Math.PI * (a + b); // (2 * PI * radius)
+
+    //  if (a == b) // For a circle, use (PI * diameter);
+    //    return circle;
+
+    //  var h3 = 3 * H(a, b);
+
+    //  return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
+    //}
+
+    ///// <summary>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</summary>
+    //public static double EllipseSurfaceArea(double a, double b)
+    //  => System.Math.PI * a * b;
+
+    /// <summary>
+    /// <para>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</para>
+    /// </summary>
+    public static double AreaOf(double a, double b) => double.Pi * a * b;
+
+    /// <summary>
+    /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</para>
+    /// </summary>
+    public static bool Contains(double a, double b, double x, double y, double rotationAngle = 0)
+      => double.Cos(rotationAngle) is var cos && double.Sin(rotationAngle) is var sin && double.Pow(cos * x + sin * y, 2) / (a * a) + double.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
+
+    /// <summary>
+    /// <para>Returns the approximate perimeter (circumference) of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</para>
+    /// </summary>
+    public static double PerimeterOf(double a, double b)
     {
-      var circle = System.Math.PI * (a + b); // (2 * PI * radius)
+      var circle = double.Pi * (a + b); // (2 * PI * radius)
 
       if (a == b) // For a circle, use (PI * diameter);
         return circle;
 
-      var h3 = 3 * H(a, b);
+      var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function.
 
-      return circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
+      return circle * (1 + h3 / (10 + double.Sqrt(4 - h3)));
     }
 
-    /// <summary>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</summary>
-    public static double SurfaceAreaOfEllipse(double a, double b) => System.Math.PI * a * b;
+    #endregion // Static methods
 
-    #endregion Static methods
+    public string ToString(string? format, IFormatProvider? formatProvider) => GetType().Name;
+
+    public override string ToString() => ToString(null, null);
   }
 }

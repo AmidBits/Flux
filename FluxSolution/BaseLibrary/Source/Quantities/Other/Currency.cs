@@ -44,7 +44,7 @@
       public int CompareTo(Currency other) => m_value.CompareTo(other.m_value);
 
       // IFormattable
-      public string ToString(string? format, System.IFormatProvider? formatProvider) => GetType().Name + m_value.ToString(format ?? "C", formatProvider ?? System.Globalization.CultureInfo.CurrentCulture);
+      public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format ?? "C", formatProvider ?? System.Globalization.CultureInfo.CurrentCulture);
 
       #region IValueQuantifiable<>
 

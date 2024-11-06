@@ -1,7 +1,10 @@
 namespace Flux.Mechanics
 {
-  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-  public readonly record struct DroppedTrajectory2D // Projectile dropped from a moving system.
+  /// <summary>
+  /// <para>A dropped trajectory model.</para>
+  /// <para>A projectile dropped from a moving system.</para>
+  /// </summary>
+  public readonly record struct DroppedTrajectory2D
     : ITrajectory2D
   {
     private readonly double m_droppedHeight;
@@ -16,20 +19,22 @@ namespace Flux.Mechanics
       m_initialVelocity = initialVelocity;
       m_gravitationalAcceleration = gravitationalAcceleration;
     }
-    public DroppedTrajectory2D(double droppedHeight, double initialAngle, double initialVelocity) : this(droppedHeight, initialAngle, initialVelocity, 9.80665) { }
+    public DroppedTrajectory2D(double droppedHeight, double initialAngle, double initialVelocity) : this(droppedHeight, initialAngle, initialVelocity, Quantities.Acceleration.StandardGravity) { }
 
-    // The height when dropped.
-    public double DroppedHeight { get => m_droppedHeight; init => m_droppedHeight = value; }
-    public double GravitationalAcceleration { get => m_gravitationalAcceleration; init => m_gravitationalAcceleration = value; }
-    public double InitialAngle { get => m_initialAngle; init => m_initialAngle = value; }
-    public double InitialVelocity { get => m_initialVelocity; init => m_initialVelocity = value; }
+    /// <summary>
+    /// <para>The height when dropped.</para>
+    /// </summary>
+    public double DroppedHeight => m_droppedHeight;
+    public double InitialAngle => m_initialAngle;
+    public double InitialVelocity => m_initialVelocity;
+    public double GravitationalAcceleration => m_gravitationalAcceleration;
 
     public double MaxHeight => m_droppedHeight;
     public double MaxRange => m_initialVelocity * MaxTime;
-    public double MaxTime => System.Math.Sqrt(2 * MaxHeight / m_gravitationalAcceleration);
+    public double MaxTime => double.Sqrt(2 * MaxHeight / m_gravitationalAcceleration);
 
-    public double GetHeight(double time) => m_gravitationalAcceleration * System.Math.Pow(time, 2) / 2;
-    public double GetVelocity(double time) => System.Math.Sqrt(System.Math.Pow(m_initialVelocity, 2) + System.Math.Pow(m_gravitationalAcceleration, 2) * time * time);
+    public double GetHeight(double time) => m_gravitationalAcceleration * double.Pow(time, 2) / 2;
+    public double GetVelocity(double time) => double.Sqrt(double.Pow(m_initialVelocity, 2) + double.Pow(m_gravitationalAcceleration, 2) * time * time);
     public double GetVelocityX(double time) => m_initialVelocity * time;
     public double GetVelocityY(double time) => -m_gravitationalAcceleration * time;
     public double GetX(double time) => m_initialVelocity * time;

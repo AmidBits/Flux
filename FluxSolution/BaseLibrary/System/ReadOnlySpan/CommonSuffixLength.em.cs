@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and <paramref name="value"/>, optionally skipping <paramref name="offset"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and the <paramref name="predicate"/>, optionally skipping <paramref name="offset"/> elements.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
@@ -14,6 +14,9 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, int offset, System.Func<T, bool> predicate, int maxLength = int.MaxValue)
     {
+      if (source.Length == 0 || maxLength <= 0)
+        return 0;
+
       System.ArgumentNullException.ThrowIfNull(predicate);
 
       if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
@@ -37,6 +40,9 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, int offset, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int maxLength = int.MaxValue)
     {
+      if (source.Length == 0 || maxLength <= 0)
+        return 0;
+
       if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;

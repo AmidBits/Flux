@@ -10,22 +10,17 @@ namespace Flux
     /// <exception cref="System.InvalidOperationException"></exception>
     public static System.Collections.Generic.IEnumerable<string[]> ReadUrgf(this System.IO.TextReader reader)
     {
-      const char unitSeparator = '\u001F';
-      const char recordSeparator = '\u001E';
-      //const char groupSeparator = '\u001D';
-      //const char fileSeparator = '\u001C';
-
       var record = new System.Collections.Generic.List<string>();
       var unit = new System.Text.StringBuilder();
 
       while (reader.Read() is var read && read != -1 && (char)read is var c)
       {
-        if (c == unitSeparator || c == recordSeparator)
+        if (read == (int)UnicodeDataSeparator.UnitSeparator || read == (int)UnicodeDataSeparator.RecordSeparator)
         {
           record.Add(unit.ToString());
           unit.Clear();
 
-          if (c == recordSeparator)
+          if (read == (int)UnicodeDataSeparator.RecordSeparator)
           {
             yield return record.ToArray();
             record.Clear();

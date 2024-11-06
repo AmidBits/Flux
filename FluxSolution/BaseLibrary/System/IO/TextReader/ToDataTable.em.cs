@@ -16,14 +16,14 @@ namespace Flux
       var dataTable = new System.Data.DataTable(tableName ?? $"Table");
 
       if (columnNames is not null && columnNames.Length > 0)
-        for (var i = 0; i <= columnNames.Length; i++)
+        for (var i = 0; i < columnNames.Length; i++)
           dataTable.Columns.Add(columnNames[i]);
 
       foreach (var array in source.ReadLines(predicate, resultSelector))
       {
         if (dataTable.Columns.Count < array.Length)
-          for (var i = dataTable.Columns.Count + 1; i <= array.Length; i++)
-            dataTable.Columns.Add($"Column_{i}");
+          for (var i = dataTable.Columns.Count; i < array.Length; i++)
+            dataTable.Columns.Add(i.ToColumnName());
 
         dataTable.Rows.Add(array);
       }

@@ -54,19 +54,19 @@ namespace Flux
     /// </summary>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
     public readonly record struct CartesianCoordinate
-      : System.IFormattable
+      : System.IFormattable, IValueQuantifiable<System.Runtime.Intrinsics.Vector256<double>>
     {
-      public static CartesianCoordinate Zero { get; }
-
       public static CartesianCoordinate UnitX { get; } = new(1d, 0d, 0d, 0d);
       public static CartesianCoordinate UnitY { get; } = new(0d, 1d, 0d, 0d);
       public static CartesianCoordinate UnitZ { get; } = new(0d, 0d, 1d, 0d);
       public static CartesianCoordinate UnitW { get; } = new(0d, 0d, 0d, 1d);
 
-      private readonly Quantities.Length m_x;
-      private readonly Quantities.Length m_y;
-      private readonly Quantities.Length m_z;
-      private readonly Quantities.Length m_w;
+      private readonly System.Runtime.Intrinsics.Vector256<double> m_v;
+
+      public CartesianCoordinate(double x, double y = 0, double z = 0, double w = 0) => m_v = System.Runtime.Intrinsics.Vector256.Create(x, y, z, w);
+
+      public CartesianCoordinate(Quantities.Length x, Quantities.Length y = default, Quantities.Length z = default, Quantities.Length w = default)
+        : this(x.Value, y.Value, z.Value, w.Value) { }
 
       /// <summary>
       /// <para>Initialize as a full 4D cartesian coordinate.</para>
@@ -79,94 +79,49 @@ namespace Flux
       /// <param name="zUnit"></param>
       /// <param name="wValue"></param>
       /// <param name="wUnit"></param>
-      public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit, double yValue, Quantities.LengthUnit yUnit, double zValue, Quantities.LengthUnit zUnit, double wValue, Quantities.LengthUnit wUnit)
-      {
-        m_x = new(xValue, xUnit);
-        m_y = new(yValue, yUnit);
-        m_z = new(zValue, zUnit);
-        m_w = new(wValue, wUnit);
-      }
-
-      /// <summary>
-      /// <para>Initialize as a 3D cartesian coordinate with the W component = 0.</para>
-      /// </summary>
-      /// <param name="xValue"></param>
-      /// <param name="xUnit"></param>
-      /// <param name="yValue"></param>
-      /// <param name="yUnit"></param>
-      /// <param name="zValue"></param>
-      /// <param name="zUnit"></param>
-      public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit, double yValue, Quantities.LengthUnit yUnit, double zValue, Quantities.LengthUnit zUnit)
-        : this(xValue, xUnit, yValue, yUnit, zValue, zUnit, 0, Quantities.LengthUnit.Meter) { }
-
-      /// <summary>
-      /// <para>Initialize as a 2D cartesian coordinate with the Z and W components = 0.</para>
-      /// </summary>
-      /// <param name="xValue"></param>
-      /// <param name="xUnit"></param>
-      /// <param name="yValue"></param>
-      /// <param name="yUnit"></param>
-      public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit, double yValue, Quantities.LengthUnit yUnit)
-        : this(xValue, xUnit, yValue, yUnit, 0, Quantities.LengthUnit.Meter, 0, Quantities.LengthUnit.Meter) { }
-
-      /// <summary>
-      /// <para>Initialize as a 1D cartesian coordinate with the Y, Z and W components = 0.</para>
-      /// </summary>
-      /// <param name="xValue"></param>
-      /// <param name="xUnit"></param>
-      /// <param name="yValue"></param>
-      /// <param name="yUnit"></param>
-      public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit)
-        : this(xValue, xUnit, 0, Quantities.LengthUnit.Meter, 0, Quantities.LengthUnit.Meter, 0, Quantities.LengthUnit.Meter) { }
-
-      public CartesianCoordinate(double x, double y, double z, double w) : this(x, Quantities.LengthUnit.Meter, y, Quantities.LengthUnit.Meter, z, Quantities.LengthUnit.Meter, w, Quantities.LengthUnit.Meter) { }
-
-      public CartesianCoordinate(double x, double y, double z) : this(x, Quantities.LengthUnit.Meter, y, Quantities.LengthUnit.Meter, z, Quantities.LengthUnit.Meter) { }
-
-      public CartesianCoordinate(double x, double y) : this(x, Quantities.LengthUnit.Meter, y, Quantities.LengthUnit.Meter) { }
-
-      public CartesianCoordinate(double x) : this(x, Quantities.LengthUnit.Meter) { }
+      public CartesianCoordinate(double xValue, Quantities.LengthUnit xUnit, double yValue = 0, Quantities.LengthUnit yUnit = Quantities.LengthUnit.Meter, double zValue = 0, Quantities.LengthUnit zUnit = Quantities.LengthUnit.Meter, double wValue = 0, Quantities.LengthUnit wUnit = Quantities.LengthUnit.Meter)
+        : this(new Quantities.Length(xValue, xUnit), new Quantities.Length(yValue, yUnit), new Quantities.Length(zValue, zUnit), new Quantities.Length(wValue, wUnit)) { }
 
       public void Deconstruct(out double x, out double y)
       {
-        x = m_x.Value;
-        y = m_y.Value;
+        x = m_v[0];
+        y = m_v[1];
       }
 
       public void Deconstruct(out double x, out double y, out double z)
       {
-        x = m_x.Value;
-        y = m_y.Value;
-        z = m_z.Value;
+        x = m_v[0];
+        y = m_v[0];
+        z = m_v[0];
       }
 
       public void Deconstruct(out double x, out double y, out double z, out double w)
       {
-        x = m_x.Value;
-        y = m_y.Value;
-        z = m_z.Value;
-        w = m_w.Value;
+        x = m_v[0];
+        y = m_v[0];
+        z = m_v[0];
+        w = m_v[0];
       }
 
       /// <summary>
       /// <para>X component.</para>
       /// </summary>
-      public Quantities.Length X { get => m_x; init => m_x = value; }
+      public Quantities.Length X => new(m_v[0]);
 
       /// <summary>
       /// <para>Y component.</para>
       /// </summary>
-      public Quantities.Length Y { get => m_y; init => m_y = value; }
+      public Quantities.Length Y => new(m_v[1]);
 
       /// <summary>
       /// <para>Z component.</para>
       /// </summary>
-      public Quantities.Length Z { get => m_z; init => m_z = value; }
+      public Quantities.Length Z => new(m_v[0]);
 
       /// <summary>
       /// <para>W component.</para>
       /// </summary>
-      public Quantities.Length W { get => m_w; init => m_w = value; }
+      public Quantities.Length W => new(m_v[0]);
 
       /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="Coordinates.CartesianCoordinate"/> and its (X, Y, Z) components.</summary>
       public Coordinates.CylindricalCoordinate ToCylindricalCoordinate()
@@ -241,35 +196,33 @@ namespace Flux
         );
       }
 
-      /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with all 4 components).</summary>
-      public System.Runtime.Intrinsics.Vector256<double> ToVector256() => System.Runtime.Intrinsics.Vector256.Create(m_x.Value, m_y.Value, m_z.Value, m_w.Value);
 
       /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with 1 (x) + 3 optional components).</summary>
-      public System.Runtime.Intrinsics.Vector256<double> ToVector256WithX(double y = 0, double z = 0, double w = 0) => System.Runtime.Intrinsics.Vector256.Create(m_x.Value, y, z, w);
+      public System.Runtime.Intrinsics.Vector256<double> ToVector128D2(double z = 0, double w = 0) => System.Runtime.Intrinsics.Vector256.Create(X.Value, Y.Value, z, w);
 
       /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with 2 (x, y) + 2 optional components).</summary>
-      public System.Runtime.Intrinsics.Vector256<double> ToVector256WithXY(double z = 0, double w = 0) => System.Runtime.Intrinsics.Vector256.Create(m_x.Value, m_y.Value, z, w);
+      public System.Runtime.Intrinsics.Vector256<double> ToVector256D2(double z = 0, double w = 0) => System.Runtime.Intrinsics.Vector256.Create(X.Value, Y.Value, z, w);
 
       /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with 3 (x, y, z) + 1 optional component).</summary>
-      public System.Runtime.Intrinsics.Vector256<double> ToVector256WithXYZ(double w = 0) => System.Runtime.Intrinsics.Vector256.Create(m_x.Value, m_y.Value, m_z.Value, w);
+      public System.Runtime.Intrinsics.Vector256<double> ToVector256D3(double w = 0) => System.Runtime.Intrinsics.Vector256.Create(X.Value, Y.Value, Z.Value, w);
 
       #region Static methods
 
-      /// <summary>
-      /// <para>Compute the Chebyshev length (using the specified edgeLength) of the cartesian coordinates.</para>
-      /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-      /// </summary>
-      public static TSelf ChebyshevLength<TSelf>(TSelf edgeLength, params TSelf[] cartesianCoordinates)
-        where TSelf : System.Numerics.INumber<TSelf>
-      {
-        var max = TSelf.Zero;
+      ///// <summary>
+      ///// <para>Compute the Chebyshev length (using the specified edgeLength) of the cartesian coordinates.</para>
+      ///// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
+      ///// </summary>
+      //public static TSelf ChebyshevLength<TSelf>(TSelf edgeLength, params TSelf[] cartesianCoordinates)
+      //  where TSelf : System.Numerics.INumber<TSelf>
+      //{
+      //  var max = TSelf.Zero;
 
-        for (var i = cartesianCoordinates.Length - 1; i >= 0; i--)
-          if (TSelf.Abs(cartesianCoordinates[i]) is var current && current > max)
-            max = current;
+      //  for (var i = cartesianCoordinates.Length - 1; i >= 0; i--)
+      //    if (TSelf.Abs(cartesianCoordinates[i]) is var current && current > max)
+      //      max = current;
 
-        return max / edgeLength;
-      }
+      //  return max / edgeLength;
+      //}
 
       /// <summary>
       /// <para>Converts cartesian 2D (<paramref name="x"/>, <paramref name="y"/>) coordinates to a linear index of a grid with the <paramref name="width"/> (the length of the x-axis).</para>
@@ -311,20 +264,20 @@ namespace Flux
         );
       }
 
-      /// <summary>
-      /// <para>Compute the Manhattan length (using the specified edgeLength) of the cartesian coordinates.</para>
-      /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-      /// </summary>
-      public static TSelf ManhattanLength<TSelf>(TSelf edgeLength, params TSelf[] cartesianCoordinates)
-        where TSelf : System.Numerics.INumber<TSelf>
-      {
-        var sum = TSelf.Zero;
+      ///// <summary>
+      ///// <para>Compute the Manhattan length (using the specified edgeLength) of the cartesian coordinates.</para>
+      ///// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
+      ///// </summary>
+      //public static TSelf ManhattanLength<TSelf>(TSelf edgeLength, params TSelf[] cartesianCoordinates)
+      //  where TSelf : System.Numerics.INumber<TSelf>
+      //{
+      //  var sum = TSelf.Zero;
 
-        for (var i = cartesianCoordinates.Length - 1; i >= 0; i--)
-          sum += TSelf.Abs(cartesianCoordinates[i]);
+      //  for (var i = cartesianCoordinates.Length - 1; i >= 0; i--)
+      //    sum += TSelf.Abs(cartesianCoordinates[i]);
 
-        return sum / edgeLength;
-      }
+      //  return sum / edgeLength;
+      //}
 
       /// <summary>
       /// <para>Computes the perimeter of a rectangle with the specified <paramref name="length"/> and <paramref name="width"/>.</para>
@@ -371,8 +324,14 @@ namespace Flux
 
       #region Implemented interfaces
 
+      #region IValueQuantifiable<>
+
+      public System.Runtime.Intrinsics.Vector256<double> Value => m_v;
+
+      #endregion // IValueQuantifiable<>
+
       public string ToString(string? format, System.IFormatProvider? provider)
-        => $"<{m_x.Value.ToString(format, provider)}, {m_y.Value.ToString(format, provider)}, {m_z.Value.ToString(format, provider)}, {m_w.Value.ToString(format, provider)}>";
+        => $"<{X.Value.ToString(format, provider)}, {Y.Value.ToString(format, provider)}, {Z.Value.ToString(format, provider)}, {W.Value.ToString(format, provider)}>";
 
       #endregion // Implemented interfaces
 

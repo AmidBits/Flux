@@ -31,7 +31,7 @@ namespace Flux
     /// </summary>
     public static T[] InsertToCopy<T>(this T[] source, int index, int count, T value)
     {
-      var target = InsertToCopy(source, index, count);
+      var target = source.InsertToCopy(index, count);
       System.Array.Fill(target, value, index, count);
       return target;
     }
@@ -42,7 +42,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(values);
 
-      var target = InsertToCopy(source, index, values.Length);
+      var target = source.InsertToCopy(index, values.Length);
       System.Array.Copy(values, 0, target, index, values.Length);
       return target;
     }

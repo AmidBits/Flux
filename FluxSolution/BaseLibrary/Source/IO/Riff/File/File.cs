@@ -19,7 +19,7 @@ namespace Flux.Riff
       using var fileStream = new System.IO.FileStream(fileName, System.IO.FileMode.Create);
 
       var rc = new RiffChunk(FormTypeChunk.WaveID);
-      var fc = new FormatChunk(1, (uint)oscillator.SampleRate, 16);
+      var fc = new FormatChunk(1, (int)oscillator.SampleRate, 16);
       var dc = new DataChunk((int)(fc.BytesPerSample * sampleCount));
 
       rc.ChunkSize = rc.ChunkSizeForFile + fc.ChunkSizeForFile + dc.ChunkSizeForFile;
@@ -44,7 +44,7 @@ namespace Flux.Riff
       using var fileStream = new System.IO.FileStream(fileName, System.IO.FileMode.Create);
 
       var rc = new RiffChunk(FormTypeChunk.WaveID);
-      var fc = new FormatChunk(2, (uint)oscillatorL.SampleRate, 16);
+      var fc = new FormatChunk(2, (int)oscillatorL.SampleRate, 16);
       var dc = new DataChunk((int)(fc.BytesPerSample * sampleCount));
 
       rc.ChunkSize = rc.ChunkSizeForFile + fc.ChunkSizeForFile + dc.ChunkSizeForFile;
