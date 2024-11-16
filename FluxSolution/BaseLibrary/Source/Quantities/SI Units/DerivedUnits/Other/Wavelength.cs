@@ -24,21 +24,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Wavelength a, Wavelength b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Wavelength a, Wavelength b) => a.CompareTo(b) <= 0;
     public static bool operator >(Wavelength a, Wavelength b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Wavelength a, Wavelength b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Wavelength a, Wavelength b) => a.CompareTo(b) >= 0;
 
     public static Wavelength operator -(Wavelength v) => new(-v.m_value);
-    public static Wavelength operator +(Wavelength a, double b) => new(a.m_value + b);
-    public static Wavelength operator +(Wavelength a, Wavelength b) => a + b.m_value;
-    public static Wavelength operator /(Wavelength a, double b) => new(a.m_value / b);
-    public static Wavelength operator /(Wavelength a, Wavelength b) => a / b.m_value;
+    public static Wavelength operator *(Wavelength a, Wavelength b) => new(a.m_value * b.m_value);
+    public static Wavelength operator /(Wavelength a, Wavelength b) => new(a.m_value / b.m_value);
+    public static Wavelength operator %(Wavelength a, Wavelength b) => new(a.m_value % b.m_value);
+    public static Wavelength operator +(Wavelength a, Wavelength b) => new(a.m_value + b.m_value);
+    public static Wavelength operator -(Wavelength a, Wavelength b) => new(a.m_value - b.m_value);
     public static Wavelength operator *(Wavelength a, double b) => new(a.m_value * b);
-    public static Wavelength operator *(Wavelength a, Wavelength b) => a * b.m_value;
+    public static Wavelength operator /(Wavelength a, double b) => new(a.m_value / b);
     public static Wavelength operator %(Wavelength a, double b) => new(a.m_value % b);
-    public static Wavelength operator %(Wavelength a, Wavelength b) => a % b.m_value;
+    public static Wavelength operator +(Wavelength a, double b) => new(a.m_value + b);
     public static Wavelength operator -(Wavelength a, double b) => new(a.m_value - b);
-    public static Wavelength operator -(Wavelength a, Wavelength b) => a - b.m_value;
 
     #endregion Overloaded operators
 

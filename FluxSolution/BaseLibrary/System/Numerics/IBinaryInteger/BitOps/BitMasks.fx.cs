@@ -10,43 +10,80 @@ namespace Flux
       => value &= ~bitMask;
 
     /// <summary>
-    /// <para>Create a bit-mask with <paramref name="length"/> number of least-significant-bits from <paramref name="mask"/> of <paramref name="maskLength"/> filled repeatedly from right-to-left over the <typeparamref name="TValue"/>.</para>
+    /// <para>Create a bit-mask with <paramref name="bitLength"/> most-significant-bits set to 1.</para>
     /// </summary>
-    public static TValue BitMaskFillLeft<TValue>(this TValue mask, int maskLength, int length)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    /// <typeparam name="TBitLength"></typeparam>
+    /// <param name="bitLength">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TBitLength"/>.</param>
+    /// <returns></returns>
+    /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitLength"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
+    public static TBitLength CreateBitMaskMsb<TBitLength>(this TBitLength bitLength)
+      where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
+      => CreateBitMaskLsb(bitLength) << (bitLength.GetBitCount() - int.CreateChecked(bitLength));
+
+    /// <summary>
+    /// <para>Create a bit-mask with <paramref name="bitLength"/> least-significant-bits set to 1, and the number of <paramref name="trailingZeroBitCount"/> (least-significant-bits set to zero).</para>
+    /// </summary>
+    /// <typeparam name="TBitLength"></typeparam>
+    /// <param name="bitLength">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TBitLength"/>.</param>
+    /// <param name="trailingZeroBitCount">The number of least-significant-bits set to zero after the most-significant-1-bits set by <paramref name="bitLength"/>.</param>
+    /// <returns></returns>
+    /// <remarks>This is a specialized version for <see cref="System.Numerics.BigInteger"/> which has a dynamic bit-storage.</remarks>
+    /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitLength"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
+    public static TBitLength CreateBitMaskLsb<TBitLength>(this TBitLength bitLength, int trailingZeroBitCount)
+      where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
+      => CreateBitMaskLsb(bitLength) << trailingZeroBitCount;
+
+    /// <summary>
+    /// <para>Create a bit-mask with <paramref name="bitLength"/> least-significant-bits set to 1.</para>
+    /// </summary>
+    /// <typeparam name="TBitLength"></typeparam>
+    /// <param name="bitLength">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TBitLength"/>.</param>
+    /// <returns></returns>
+    /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitLength"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
+    public static TBitLength CreateBitMaskLsb<TBitLength>(this TBitLength bitLength)
+      where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
+      => (((TBitLength.One << (int.CreateChecked(bitLength) - 1)) - TBitLength.One) << 1) | TBitLength.One;
+
+    /// <summary>
+    /// <para>Create a bit-mask with <paramref name="bitLength"/> number of least-significant-bits from <paramref name="bitMask"/> of <paramref name="bitMaskLength"/> filled repeatedly from least-to-most-significant-bits over the <typeparamref name="TBitMask"/>.</para>
+    /// </summary>
+    /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitMask"/> for extension method) IS THE BIT-MASK (to account for).</c></remarks>
+    public static TBitMask FillBitMaskToMsb<TBitMask>(this TBitMask bitMask, int bitMaskLength, int bitLength)
+      where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
     {
-      mask &= TValue.CreateChecked((1 << maskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
+      bitMask &= TBitMask.CreateChecked((1 << bitMaskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
 
-      var (q, r) = int.DivRem(length, maskLength);
+      var (q, r) = int.DivRem(bitLength, bitMaskLength);
 
-      var result = mask;
+      var result = bitMask;
 
       for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one, hence we skip equal-to zero in the condition) times.
-        result = mask | (result << maskLength); // Shift the mask count bits and | (or) in count most-significant-bits from bit-mask.
+        result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (or) in count most-significant-bits from bit-mask.
 
       if (r > 0)
-        result = (result << r) | (mask >>> (maskLength - r));
+        result = (result << r) | (bitMask >>> (bitMaskLength - r));
 
       return result;
     }
 
     /// <summary>
-    /// <para>Create a bit-mask with <paramref name="length"/> number of least-significant-bits from <paramref name="mask"/> of <paramref name="maskLength"/> filled repeatedly from left-to-right over the <typeparamref name="TValue"/>.</para>
+    /// <para>Create a bit-mask with <paramref name="bitLength"/> number of least-significant-bits from <paramref name="bitMask"/> of <paramref name="bitMaskLength"/> filled repeatedly from most-to-least-significant-bits over the <typeparamref name="TBitMask"/>.</para>
     /// </summary>
-    public static TValue BitMaskFillRight<TValue>(this TValue mask, int maskLength, int length)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitMask"/> for extension method) IS THE BIT-MASK (to account for).</c></remarks>
+    public static TBitMask FillBitMaskToLsb<TBitMask>(this TBitMask bitMask, int bitMaskLength, int bitLength)
+      where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
     {
-      mask &= TValue.CreateChecked((1 << maskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
+      bitMask &= TBitMask.CreateChecked((1 << bitMaskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
 
-      var (q, r) = int.DivRem(length, maskLength);
+      var (q, r) = int.DivRem(bitLength, bitMaskLength);
 
-      var result = mask;
+      var result = bitMask;
 
       for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one, hence we skip equal-to zero in the condition) times.
-        result = mask | (result << maskLength); // Shift the mask count bits and | (or) in count most-significant-bits from bit-mask.
+        result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (or) in count most-significant-bits from bit-mask.
 
       if (r > 0)
-        result |= (mask & TValue.CreateChecked((1 << r) - 1)) << (length - r);
+        result |= (bitMask & TBitMask.CreateChecked((1 << r) - 1)) << (bitLength - r);
 
       return result;
     }

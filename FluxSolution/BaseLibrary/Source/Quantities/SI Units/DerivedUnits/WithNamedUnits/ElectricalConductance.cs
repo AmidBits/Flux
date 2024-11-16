@@ -25,21 +25,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(ElectricalConductance a, ElectricalConductance b) => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricalConductance a, ElectricalConductance b) => a.CompareTo(b) <= 0;
     public static bool operator >(ElectricalConductance a, ElectricalConductance b) => a.CompareTo(b) > 0;
+    public static bool operator <=(ElectricalConductance a, ElectricalConductance b) => a.CompareTo(b) <= 0;
     public static bool operator >=(ElectricalConductance a, ElectricalConductance b) => a.CompareTo(b) >= 0;
 
     public static ElectricalConductance operator -(ElectricalConductance v) => new(-v.m_value);
-    public static ElectricalConductance operator +(ElectricalConductance a, double b) => new(a.m_value + b);
-    public static ElectricalConductance operator +(ElectricalConductance a, ElectricalConductance b) => a + b.m_value;
-    public static ElectricalConductance operator /(ElectricalConductance a, double b) => new(a.m_value / b);
-    public static ElectricalConductance operator /(ElectricalConductance a, ElectricalConductance b) => a / b.m_value;
+    public static ElectricalConductance operator *(ElectricalConductance a, ElectricalConductance b) => new(a.m_value * b.m_value);
+    public static ElectricalConductance operator /(ElectricalConductance a, ElectricalConductance b) => new(a.m_value / b.m_value);
+    public static ElectricalConductance operator %(ElectricalConductance a, ElectricalConductance b) => new(a.m_value % b.m_value);
+    public static ElectricalConductance operator +(ElectricalConductance a, ElectricalConductance b) => new(a.m_value + b.m_value);
+    public static ElectricalConductance operator -(ElectricalConductance a, ElectricalConductance b) => new(a.m_value - b.m_value);
     public static ElectricalConductance operator *(ElectricalConductance a, double b) => new(a.m_value * b);
-    public static ElectricalConductance operator *(ElectricalConductance a, ElectricalConductance b) => a * b.m_value;
+    public static ElectricalConductance operator /(ElectricalConductance a, double b) => new(a.m_value / b);
     public static ElectricalConductance operator %(ElectricalConductance a, double b) => new(a.m_value % b);
-    public static ElectricalConductance operator %(ElectricalConductance a, ElectricalConductance b) => a % b.m_value;
+    public static ElectricalConductance operator +(ElectricalConductance a, double b) => new(a.m_value + b);
     public static ElectricalConductance operator -(ElectricalConductance a, double b) => new(a.m_value - b);
-    public static ElectricalConductance operator -(ElectricalConductance a, ElectricalConductance b) => a - b.m_value;
 
     #endregion Overloaded operators
 

@@ -12,7 +12,7 @@ namespace Flux
     /// <param name="mode"></param>
     /// <param name="root"></param>
     /// <returns>The resulting integer-nth-root.</returns>
-    public static TNumber FastIntegerNthRoot<TNumber, TNth>(this TNumber number, TNth nth, UniversalRounding mode, out double root)
+    public static TNumber FastIntegerRootN<TNumber, TNth>(this TNumber number, TNth nth, UniversalRounding mode, out double root)
       where TNumber : System.Numerics.INumber<TNumber>
       where TNth : System.Numerics.IBinaryInteger<TNth>
     {
@@ -35,7 +35,7 @@ namespace Flux
     /// <param name="nth">Essentially the radix.</param>
     /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryFastIntegerNthRoot<TValue, TNth, TRoot>(TValue value, TNth nth, UniversalRounding mode, out TRoot integerRoot, out double root)
+    public static bool TryFastIntegerRootN<TValue, TNth, TRoot>(TValue value, TNth nth, UniversalRounding mode, out TRoot integerRoot, out double root)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TNth : System.Numerics.IBinaryInteger<TNth>
       where TRoot : System.Numerics.IBinaryInteger<TRoot>
@@ -44,7 +44,7 @@ namespace Flux
       {
         if (value.GetBitLengthEx() <= 53)
         {
-          integerRoot = TRoot.CreateChecked(value.FastIntegerNthRoot(nth, mode, out root));
+          integerRoot = TRoot.CreateChecked(value.FastIntegerRootN(nth, mode, out root));
 
           return true;
         }

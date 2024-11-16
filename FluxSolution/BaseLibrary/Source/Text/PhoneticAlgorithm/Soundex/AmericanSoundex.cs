@@ -4,7 +4,7 @@ namespace Flux.Text.PhoneticAlgorithm
   /// <see href="https://en.wikipedia.org/wiki/Soundex"/>
   /// <seealso cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/>
   public sealed class AmericanSoundex
-    : IPhoneticAlgorithmEncoder
+    : IPhoneticAlgorithmEncodable
   {
     public const string LetterCodeMap = @"01230120022455012623010202";
 

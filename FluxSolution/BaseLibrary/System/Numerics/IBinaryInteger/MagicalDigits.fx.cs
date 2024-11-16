@@ -12,7 +12,6 @@ namespace Flux
       var rdx = TValue.CreateChecked(Quantities.Radix.AssertMember(radix));
 
       var count = TValue.Zero;
-      var isPowOf = (value == TValue.One);
       var numberReversed = TValue.Zero;
       var placeValues = new System.Collections.Generic.List<TValue>();
       var reverseDigits = new System.Collections.Generic.List<TValue>();
@@ -33,17 +32,15 @@ namespace Flux
         power *= rdx;
 
         value /= rdx;
-
-        if (TValue.IsZero(rem)) isPowOf = (value == TValue.One);
       }
 
-      if (reverseDigits.Count == 0)
+      if (TValue.IsZero(count))
       {
         placeValues.Add(TValue.Zero);
         reverseDigits.Add(TValue.Zero);
       }
 
-      return (count, isPowOf, numberReversed, placeValues, reverseDigits, sum);
+      return (count, sum == TValue.One, numberReversed, placeValues, reverseDigits, sum);
     }
   }
 }

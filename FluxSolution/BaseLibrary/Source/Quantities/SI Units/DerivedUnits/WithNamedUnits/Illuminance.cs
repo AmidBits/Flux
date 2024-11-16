@@ -20,21 +20,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Illuminance a, Illuminance b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Illuminance a, Illuminance b) => a.CompareTo(b) <= 0;
     public static bool operator >(Illuminance a, Illuminance b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Illuminance a, Illuminance b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Illuminance a, Illuminance b) => a.CompareTo(b) >= 0;
 
     public static Illuminance operator -(Illuminance v) => new(-v.m_value);
-    public static Illuminance operator +(Illuminance a, double b) => new(a.m_value + b);
-    public static Illuminance operator +(Illuminance a, Illuminance b) => a + b.m_value;
-    public static Illuminance operator /(Illuminance a, double b) => new(a.m_value / b);
-    public static Illuminance operator /(Illuminance a, Illuminance b) => a / b.m_value;
+    public static Illuminance operator *(Illuminance a, Illuminance b) => new(a.m_value * b.m_value);
+    public static Illuminance operator /(Illuminance a, Illuminance b) => new(a.m_value / b.m_value);
+    public static Illuminance operator %(Illuminance a, Illuminance b) => new(a.m_value % b.m_value);
+    public static Illuminance operator +(Illuminance a, Illuminance b) => new(a.m_value + b.m_value);
+    public static Illuminance operator -(Illuminance a, Illuminance b) => new(a.m_value - b.m_value);
     public static Illuminance operator *(Illuminance a, double b) => new(a.m_value * b);
-    public static Illuminance operator *(Illuminance a, Illuminance b) => a * b.m_value;
+    public static Illuminance operator /(Illuminance a, double b) => new(a.m_value / b);
     public static Illuminance operator %(Illuminance a, double b) => new(a.m_value % b);
-    public static Illuminance operator %(Illuminance a, Illuminance b) => a % b.m_value;
+    public static Illuminance operator +(Illuminance a, double b) => new(a.m_value + b);
     public static Illuminance operator -(Illuminance a, double b) => new(a.m_value - b);
-    public static Illuminance operator -(Illuminance a, Illuminance b) => a - b.m_value;
 
     #endregion Overloaded operators
 

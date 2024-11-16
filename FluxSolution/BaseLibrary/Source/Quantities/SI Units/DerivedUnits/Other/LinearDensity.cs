@@ -30,21 +30,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(LinearDensity a, LinearDensity b) => a.CompareTo(b) < 0;
-    public static bool operator <=(LinearDensity a, LinearDensity b) => a.CompareTo(b) <= 0;
     public static bool operator >(LinearDensity a, LinearDensity b) => a.CompareTo(b) > 0;
+    public static bool operator <=(LinearDensity a, LinearDensity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(LinearDensity a, LinearDensity b) => a.CompareTo(b) >= 0;
 
     public static LinearDensity operator -(LinearDensity v) => new(-v.m_value);
-    public static LinearDensity operator +(LinearDensity a, double b) => new(a.m_value + b);
-    public static LinearDensity operator +(LinearDensity a, LinearDensity b) => a + b.m_value;
-    public static LinearDensity operator /(LinearDensity a, double b) => new(a.m_value / b);
-    public static LinearDensity operator /(LinearDensity a, LinearDensity b) => a / b.m_value;
+    public static LinearDensity operator *(LinearDensity a, LinearDensity b) => new(a.m_value * b.m_value);
+    public static LinearDensity operator /(LinearDensity a, LinearDensity b) => new(a.m_value / b.m_value);
+    public static LinearDensity operator %(LinearDensity a, LinearDensity b) => new(a.m_value % b.m_value);
+    public static LinearDensity operator +(LinearDensity a, LinearDensity b) => new(a.m_value + b.m_value);
+    public static LinearDensity operator -(LinearDensity a, LinearDensity b) => new(a.m_value - b.m_value);
     public static LinearDensity operator *(LinearDensity a, double b) => new(a.m_value * b);
-    public static LinearDensity operator *(LinearDensity a, LinearDensity b) => a * b.m_value;
+    public static LinearDensity operator /(LinearDensity a, double b) => new(a.m_value / b);
     public static LinearDensity operator %(LinearDensity a, double b) => new(a.m_value % b);
-    public static LinearDensity operator %(LinearDensity a, LinearDensity b) => a % b.m_value;
+    public static LinearDensity operator +(LinearDensity a, double b) => new(a.m_value + b);
     public static LinearDensity operator -(LinearDensity a, double b) => new(a.m_value - b);
-    public static LinearDensity operator -(LinearDensity a, LinearDensity b) => a - b.m_value;
 
     #endregion Overloaded operators
 

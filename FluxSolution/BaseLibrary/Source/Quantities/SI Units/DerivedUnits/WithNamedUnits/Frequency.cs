@@ -100,21 +100,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Frequency a, Frequency b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Frequency a, Frequency b) => a.CompareTo(b) <= 0;
     public static bool operator >(Frequency a, Frequency b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Frequency a, Frequency b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Frequency a, Frequency b) => a.CompareTo(b) >= 0;
 
     public static Frequency operator -(Frequency v) => new(-v.m_value);
-    public static Frequency operator +(Frequency a, double b) => new(a.m_value + b);
-    public static Frequency operator +(Frequency a, Frequency b) => a + b.m_value;
-    public static Frequency operator /(Frequency a, double b) => new(a.m_value / b);
-    public static Frequency operator /(Frequency a, Frequency b) => a / b.m_value;
+    public static Frequency operator *(Frequency a, Frequency b) => new(a.m_value * b.m_value);
+    public static Frequency operator /(Frequency a, Frequency b) => new(a.m_value / b.m_value);
+    public static Frequency operator %(Frequency a, Frequency b) => new(a.m_value % b.m_value);
+    public static Frequency operator +(Frequency a, Frequency b) => new(a.m_value + b.m_value);
+    public static Frequency operator -(Frequency a, Frequency b) => new(a.m_value - b.m_value);
     public static Frequency operator *(Frequency a, double b) => new(a.m_value * b);
-    public static Frequency operator *(Frequency a, Frequency b) => a * b.m_value;
+    public static Frequency operator /(Frequency a, double b) => new(a.m_value / b);
     public static Frequency operator %(Frequency a, double b) => new(a.m_value % b);
-    public static Frequency operator %(Frequency a, Frequency b) => a % b.m_value;
+    public static Frequency operator +(Frequency a, double b) => new(a.m_value + b);
     public static Frequency operator -(Frequency a, double b) => new(a.m_value - b);
-    public static Frequency operator -(Frequency a, Frequency b) => a - b.m_value;
 
     #endregion Overloaded operators
 

@@ -45,21 +45,20 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(AngularFrequency a, AngularFrequency b) => a.CompareTo(b) < 0;
-    public static bool operator <=(AngularFrequency a, AngularFrequency b) => a.CompareTo(b) <= 0;
     public static bool operator >(AngularFrequency a, AngularFrequency b) => a.CompareTo(b) > 0;
+    public static bool operator <=(AngularFrequency a, AngularFrequency b) => a.CompareTo(b) <= 0;
     public static bool operator >=(AngularFrequency a, AngularFrequency b) => a.CompareTo(b) >= 0;
 
     public static AngularFrequency operator -(AngularFrequency v) => new(-v.m_value);
-    public static AngularFrequency operator +(AngularFrequency a, AngularFrequency b) => new(a.m_value + b.m_value);
-    public static AngularFrequency operator /(AngularFrequency a, AngularFrequency b) => new(a.m_value / b.m_value);
     public static AngularFrequency operator *(AngularFrequency a, AngularFrequency b) => new(a.m_value * b.m_value);
+    public static AngularFrequency operator /(AngularFrequency a, AngularFrequency b) => new(a.m_value / b.m_value);
     public static AngularFrequency operator %(AngularFrequency a, AngularFrequency b) => new(a.m_value % b.m_value);
+    public static AngularFrequency operator +(AngularFrequency a, AngularFrequency b) => new(a.m_value + b.m_value);
     public static AngularFrequency operator -(AngularFrequency a, AngularFrequency b) => new(a.m_value - b.m_value);
-
-    public static AngularFrequency operator +(AngularFrequency a, double b) => new(a.m_value + b);
-    public static AngularFrequency operator /(AngularFrequency a, double b) => new(a.m_value / b);
     public static AngularFrequency operator *(AngularFrequency a, double b) => new(a.m_value * b);
+    public static AngularFrequency operator /(AngularFrequency a, double b) => new(a.m_value / b);
     public static AngularFrequency operator %(AngularFrequency a, double b) => new(a.m_value % b);
+    public static AngularFrequency operator +(AngularFrequency a, double b) => new(a.m_value + b);
     public static AngularFrequency operator -(AngularFrequency a, double b) => new(a.m_value - b);
 
     #endregion Overloaded operators

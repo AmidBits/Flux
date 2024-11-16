@@ -350,11 +350,11 @@ namespace ConsoleApp
       var birbyts = n.ReverseBytes();
       System.Console.WriteLine($"   Reverse Bytes = {birbyts.ToBinaryString()}");
 
-      var bfl = n.BitFoldLeft();
+      var bfl = n.BitFoldToMsb();
       System.Console.WriteLine($"   Bit-Fold Left = {bfl}");
       var bfls = bfl.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfls}");
-      var bfr = n.BitFoldRight();
+      var bfr = n.BitFoldToLsb();
       System.Console.WriteLine($"  Bit-Fold Right = {bfr}");
       var bfrs = bfr.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfrs}");
@@ -362,10 +362,10 @@ namespace ConsoleApp
       var bln = n.GetBitLengthEx();
       //var l2 = bi.IntegerLog2();
       var ms1b = n.MostSignificant1Bit();
-      var bmr = Flux.Numerics.GenericMath.BitMaskRight(n);
+      var bmr = n.CreateBitMaskLsb();
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = Flux.Numerics.GenericMath.BitMaskLeft(n);
+      var bml = n.CreateBitMaskMsb();
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }
@@ -602,7 +602,7 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunPhoneticAlgorithms));
       System.Console.WriteLine();
 
-      var ipaes = typeof(Flux.Text.IPhoneticAlgorithmEncoder).GetDerivedTypes().Select(t => (Flux.Text.IPhoneticAlgorithmEncoder)System.Activator.CreateInstance(t));
+      var ipaes = typeof(Flux.Text.IPhoneticAlgorithmEncodable).GetDerivedTypes().Select(t => (Flux.Text.IPhoneticAlgorithmEncodable)System.Activator.CreateInstance(t));
       var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley", "Ashcraft", "Ashcroft", "Asicroft", "Schmidt", "Schneider", "Lloyd", "Pfister" };
 
       foreach (var ipae in ipaes)

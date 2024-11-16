@@ -27,21 +27,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(LinearChargeDensity a, LinearChargeDensity b) => a.CompareTo(b) < 0;
-    public static bool operator <=(LinearChargeDensity a, LinearChargeDensity b) => a.CompareTo(b) <= 0;
     public static bool operator >(LinearChargeDensity a, LinearChargeDensity b) => a.CompareTo(b) > 0;
+    public static bool operator <=(LinearChargeDensity a, LinearChargeDensity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(LinearChargeDensity a, LinearChargeDensity b) => a.CompareTo(b) >= 0;
 
     public static LinearChargeDensity operator -(LinearChargeDensity v) => new(-v.m_value);
-    public static LinearChargeDensity operator +(LinearChargeDensity a, double b) => new(a.m_value + b);
-    public static LinearChargeDensity operator +(LinearChargeDensity a, LinearChargeDensity b) => a + b.m_value;
-    public static LinearChargeDensity operator /(LinearChargeDensity a, double b) => new(a.m_value / b);
-    public static LinearChargeDensity operator /(LinearChargeDensity a, LinearChargeDensity b) => a / b.m_value;
+    public static LinearChargeDensity operator *(LinearChargeDensity a, LinearChargeDensity b) => new(a.m_value * b.m_value);
+    public static LinearChargeDensity operator /(LinearChargeDensity a, LinearChargeDensity b) => new(a.m_value / b.m_value);
+    public static LinearChargeDensity operator %(LinearChargeDensity a, LinearChargeDensity b) => new(a.m_value % b.m_value);
+    public static LinearChargeDensity operator +(LinearChargeDensity a, LinearChargeDensity b) => new(a.m_value + b.m_value);
+    public static LinearChargeDensity operator -(LinearChargeDensity a, LinearChargeDensity b) => new(a.m_value - b.m_value);
     public static LinearChargeDensity operator *(LinearChargeDensity a, double b) => new(a.m_value * b);
-    public static LinearChargeDensity operator *(LinearChargeDensity a, LinearChargeDensity b) => a * b.m_value;
+    public static LinearChargeDensity operator /(LinearChargeDensity a, double b) => new(a.m_value / b);
     public static LinearChargeDensity operator %(LinearChargeDensity a, double b) => new(a.m_value % b);
-    public static LinearChargeDensity operator %(LinearChargeDensity a, LinearChargeDensity b) => a % b.m_value;
+    public static LinearChargeDensity operator +(LinearChargeDensity a, double b) => new(a.m_value + b);
     public static LinearChargeDensity operator -(LinearChargeDensity a, double b) => new(a.m_value - b);
-    public static LinearChargeDensity operator -(LinearChargeDensity a, LinearChargeDensity b) => a - b.m_value;
 
     #endregion Overloaded operators
 

@@ -10,13 +10,13 @@ namespace Numerics
     [TestMethod]
     public void BitFoldLeft()
     {
-      Assert.AreEqual(0xFFFFFFF8U, 0b00000000_10011000U.BitFoldLeft());
+      Assert.AreEqual(0xFFFFFFF8U, 0b00000000_10011000U.BitFoldToMsb());
     }
 
     [TestMethod]
     public void BitFoldRight()
     {
-      Assert.AreEqual(0x0000007FU, 0b00000000_01011000U.BitFoldRight());
+      Assert.AreEqual(0x0000007FU, 0b00000000_01011000U.BitFoldToLsb());
     }
 
     [TestMethod]
@@ -84,13 +84,13 @@ namespace Numerics
     [TestMethod]
     public void BitMaskLeft()
     {
-      Assert.AreEqual(-1, Flux.Numerics.GenericMath.BitMaskLeft(32));
+      Assert.AreEqual(-1, 32.CreateBitMaskMsb());
     }
 
     [TestMethod]
     public void BitMaskRight()
     {
-      Assert.AreEqual(127, Flux.Numerics.GenericMath.BitMaskRight(7));
+      Assert.AreEqual(127, 7.CreateBitMaskLsb());
     }
 
     [TestMethod]

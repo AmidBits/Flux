@@ -26,21 +26,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(HeatCapacity a, HeatCapacity b) => a.CompareTo(b) < 0;
-    public static bool operator <=(HeatCapacity a, HeatCapacity b) => a.CompareTo(b) <= 0;
     public static bool operator >(HeatCapacity a, HeatCapacity b) => a.CompareTo(b) > 0;
+    public static bool operator <=(HeatCapacity a, HeatCapacity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(HeatCapacity a, HeatCapacity b) => a.CompareTo(b) >= 0;
 
     public static HeatCapacity operator -(HeatCapacity v) => new(-v.m_value);
-    public static HeatCapacity operator +(HeatCapacity a, double b) => new(a.m_value + b);
-    public static HeatCapacity operator +(HeatCapacity a, HeatCapacity b) => a + b.m_value;
-    public static HeatCapacity operator /(HeatCapacity a, double b) => new(a.m_value / b);
-    public static HeatCapacity operator /(HeatCapacity a, HeatCapacity b) => a / b.m_value;
+    public static HeatCapacity operator *(HeatCapacity a, HeatCapacity b) => new(a.m_value * b.m_value);
+    public static HeatCapacity operator /(HeatCapacity a, HeatCapacity b) => new(a.m_value / b.m_value);
+    public static HeatCapacity operator %(HeatCapacity a, HeatCapacity b) => new(a.m_value % b.m_value);
+    public static HeatCapacity operator +(HeatCapacity a, HeatCapacity b) => new(a.m_value + b.m_value);
+    public static HeatCapacity operator -(HeatCapacity a, HeatCapacity b) => new(a.m_value - b.m_value);
     public static HeatCapacity operator *(HeatCapacity a, double b) => new(a.m_value * b);
-    public static HeatCapacity operator *(HeatCapacity a, HeatCapacity b) => a * b.m_value;
+    public static HeatCapacity operator /(HeatCapacity a, double b) => new(a.m_value / b);
     public static HeatCapacity operator %(HeatCapacity a, double b) => new(a.m_value % b);
-    public static HeatCapacity operator %(HeatCapacity a, HeatCapacity b) => a % b.m_value;
+    public static HeatCapacity operator +(HeatCapacity a, double b) => new(a.m_value + b);
     public static HeatCapacity operator -(HeatCapacity a, double b) => new(a.m_value - b);
-    public static HeatCapacity operator -(HeatCapacity a, HeatCapacity b) => a - b.m_value;
 
     #endregion Overloaded operators
 

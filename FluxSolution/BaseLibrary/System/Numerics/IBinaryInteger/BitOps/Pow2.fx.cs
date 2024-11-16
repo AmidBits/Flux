@@ -14,7 +14,7 @@ namespace Flux
 
     public static TValue NextLargestPow2<TValue>(this TValue value)
       where TValue : System.Numerics.IBinaryInteger<TValue>
-      => value.BitFoldRight() + TValue.One;
+      => value.BitFoldToLsb() + TValue.One;
 
     /// <summary>
     /// <para>Computes the closest power-of-2 in the direction away-from-zero.</para>

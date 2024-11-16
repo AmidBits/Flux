@@ -16,7 +16,7 @@ namespace Flux
 
       return epsilonNegative;
     }
-    
+
     /// <summary>Computed on the fly.</summary>
     public static TSelf ComputeMachineEpsilon<TSelf>()
       where TSelf : System.Numerics.IFloatingPoint<TSelf>

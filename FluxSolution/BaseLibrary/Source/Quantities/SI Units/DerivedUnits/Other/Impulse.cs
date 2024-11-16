@@ -26,21 +26,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Impulse a, Impulse b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Impulse a, Impulse b) => a.CompareTo(b) <= 0;
     public static bool operator >(Impulse a, Impulse b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Impulse a, Impulse b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Impulse a, Impulse b) => a.CompareTo(b) >= 0;
 
     public static Impulse operator -(Impulse v) => new(-v.m_value);
-    public static Impulse operator +(Impulse a, double b) => new(a.m_value + b);
-    public static Impulse operator +(Impulse a, Impulse b) => a + b.m_value;
-    public static Impulse operator /(Impulse a, double b) => new(a.m_value / b);
-    public static Impulse operator /(Impulse a, Impulse b) => a / b.m_value;
+    public static Impulse operator *(Impulse a, Impulse b) => new(a.m_value * b.m_value);
+    public static Impulse operator /(Impulse a, Impulse b) => new(a.m_value / b.m_value);
+    public static Impulse operator %(Impulse a, Impulse b) => new(a.m_value % b.m_value);
+    public static Impulse operator +(Impulse a, Impulse b) => new(a.m_value + b.m_value);
+    public static Impulse operator -(Impulse a, Impulse b) => new(a.m_value - b.m_value);
     public static Impulse operator *(Impulse a, double b) => new(a.m_value * b);
-    public static Impulse operator *(Impulse a, Impulse b) => a * b.m_value;
+    public static Impulse operator /(Impulse a, double b) => new(a.m_value / b);
     public static Impulse operator %(Impulse a, double b) => new(a.m_value % b);
-    public static Impulse operator %(Impulse a, Impulse b) => a % b.m_value;
+    public static Impulse operator +(Impulse a, double b) => new(a.m_value + b);
     public static Impulse operator -(Impulse a, double b) => new(a.m_value - b);
-    public static Impulse operator -(Impulse a, Impulse b) => a - b.m_value;
 
     #endregion Overloaded operators
 

@@ -26,21 +26,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(DynamicViscosity a, DynamicViscosity b) => a.CompareTo(b) < 0;
-    public static bool operator <=(DynamicViscosity a, DynamicViscosity b) => a.CompareTo(b) <= 0;
     public static bool operator >(DynamicViscosity a, DynamicViscosity b) => a.CompareTo(b) > 0;
+    public static bool operator <=(DynamicViscosity a, DynamicViscosity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(DynamicViscosity a, DynamicViscosity b) => a.CompareTo(b) >= 0;
 
     public static DynamicViscosity operator -(DynamicViscosity v) => new(-v.m_value);
-    public static DynamicViscosity operator +(DynamicViscosity a, double b) => new(a.m_value + b);
-    public static DynamicViscosity operator +(DynamicViscosity a, DynamicViscosity b) => a + b.m_value;
-    public static DynamicViscosity operator /(DynamicViscosity a, double b) => new(a.m_value / b);
-    public static DynamicViscosity operator /(DynamicViscosity a, DynamicViscosity b) => a / b.m_value;
+    public static DynamicViscosity operator *(DynamicViscosity a, DynamicViscosity b) => new(a.m_value * b.m_value);
+    public static DynamicViscosity operator /(DynamicViscosity a, DynamicViscosity b) => new(a.m_value / b.m_value);
+    public static DynamicViscosity operator %(DynamicViscosity a, DynamicViscosity b) => new(a.m_value % b.m_value);
+    public static DynamicViscosity operator +(DynamicViscosity a, DynamicViscosity b) => new(a.m_value + b.m_value);
+    public static DynamicViscosity operator -(DynamicViscosity a, DynamicViscosity b) => new(a.m_value - b.m_value);
     public static DynamicViscosity operator *(DynamicViscosity a, double b) => new(a.m_value * b);
-    public static DynamicViscosity operator *(DynamicViscosity a, DynamicViscosity b) => a * b.m_value;
+    public static DynamicViscosity operator /(DynamicViscosity a, double b) => new(a.m_value / b);
     public static DynamicViscosity operator %(DynamicViscosity a, double b) => new(a.m_value % b);
-    public static DynamicViscosity operator %(DynamicViscosity a, DynamicViscosity b) => a % b.m_value;
+    public static DynamicViscosity operator +(DynamicViscosity a, double b) => new(a.m_value + b);
     public static DynamicViscosity operator -(DynamicViscosity a, double b) => new(a.m_value - b);
-    public static DynamicViscosity operator -(DynamicViscosity a, DynamicViscosity b) => a - b.m_value;
 
     #endregion Overloaded operators
 

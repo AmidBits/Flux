@@ -19,7 +19,7 @@ namespace Flux
         dt.Columns.Add(
           (customColumnNames.Length > i1 ? customColumnNames[i1] : null) // First choice, use custom column name.
           ?? (sourceHasColumnNames ? source[0, i1]?.ToString() : null) // Second choice, if the parameter 'sourceHasColumnNames' is true, use source value.
-          ?? i1.ToColumnName() // Third choice, use generic name with index.
+          ?? i1.ToOrdinalName() // Third choice, use generic name with index.
         );
 
       for (var i0 = (sourceHasColumnNames ? 1 : 0); i0 < sourceLength0; i0++)

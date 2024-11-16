@@ -22,21 +22,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(ElectricCharge a, ElectricCharge b) => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricCharge a, ElectricCharge b) => a.CompareTo(b) <= 0;
     public static bool operator >(ElectricCharge a, ElectricCharge b) => a.CompareTo(b) > 0;
+    public static bool operator <=(ElectricCharge a, ElectricCharge b) => a.CompareTo(b) <= 0;
     public static bool operator >=(ElectricCharge a, ElectricCharge b) => a.CompareTo(b) >= 0;
 
     public static ElectricCharge operator -(ElectricCharge v) => new(-v.m_value);
-    public static ElectricCharge operator +(ElectricCharge a, double b) => new(a.m_value + b);
-    public static ElectricCharge operator +(ElectricCharge a, ElectricCharge b) => a + b.m_value;
-    public static ElectricCharge operator /(ElectricCharge a, double b) => new(a.m_value / b);
-    public static ElectricCharge operator /(ElectricCharge a, ElectricCharge b) => a / b.m_value;
+    public static ElectricCharge operator *(ElectricCharge a, ElectricCharge b) => new(a.m_value * b.m_value);
+    public static ElectricCharge operator /(ElectricCharge a, ElectricCharge b) => new(a.m_value / b.m_value);
+    public static ElectricCharge operator %(ElectricCharge a, ElectricCharge b) => new(a.m_value % b.m_value);
+    public static ElectricCharge operator +(ElectricCharge a, ElectricCharge b) => new(a.m_value + b.m_value);
+    public static ElectricCharge operator -(ElectricCharge a, ElectricCharge b) => new(a.m_value - b.m_value);
     public static ElectricCharge operator *(ElectricCharge a, double b) => new(a.m_value * b);
-    public static ElectricCharge operator *(ElectricCharge a, ElectricCharge b) => a * b.m_value;
+    public static ElectricCharge operator /(ElectricCharge a, double b) => new(a.m_value / b);
     public static ElectricCharge operator %(ElectricCharge a, double b) => new(a.m_value % b);
-    public static ElectricCharge operator %(ElectricCharge a, ElectricCharge b) => a % b.m_value;
+    public static ElectricCharge operator +(ElectricCharge a, double b) => new(a.m_value + b);
     public static ElectricCharge operator -(ElectricCharge a, double b) => new(a.m_value - b);
-    public static ElectricCharge operator -(ElectricCharge a, ElectricCharge b) => a - b.m_value;
 
     #endregion Overloaded operators
 

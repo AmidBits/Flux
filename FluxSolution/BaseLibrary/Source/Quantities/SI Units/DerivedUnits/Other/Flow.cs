@@ -32,21 +32,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Flow a, Flow b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Flow a, Flow b) => a.CompareTo(b) <= 0;
     public static bool operator >(Flow a, Flow b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Flow a, Flow b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Flow a, Flow b) => a.CompareTo(b) >= 0;
 
-    public static Flow operator -(Flow v) => new(-v.m_value);
-    public static Flow operator +(Flow a, double b) => new(a.m_value + b);
-    public static Flow operator +(Flow a, Flow b) => a + b.m_value;
-    public static Flow operator /(Flow a, double b) => new(a.m_value / b);
-    public static Flow operator /(Flow a, Flow b) => a / b.m_value;
+    public static Acceleration operator -(Flow v) => new(-v.m_value);
+    public static Flow operator *(Flow a, Flow b) => new(a.m_value * b.m_value);
+    public static Flow operator /(Flow a, Flow b) => new(a.m_value / b.m_value);
+    public static Flow operator %(Flow a, Flow b) => new(a.m_value % b.m_value);
+    public static Flow operator +(Flow a, Flow b) => new(a.m_value + b.m_value);
+    public static Flow operator -(Flow a, Flow b) => new(a.m_value - b.m_value);
     public static Flow operator *(Flow a, double b) => new(a.m_value * b);
-    public static Flow operator *(Flow a, Flow b) => a * b.m_value;
+    public static Flow operator /(Flow a, double b) => new(a.m_value / b);
     public static Flow operator %(Flow a, double b) => new(a.m_value % b);
-    public static Flow operator %(Flow a, Flow b) => a % b.m_value;
+    public static Flow operator +(Flow a, double b) => new(a.m_value + b);
     public static Flow operator -(Flow a, double b) => new(a.m_value - b);
-    public static Flow operator -(Flow a, Flow b) => a - b.m_value;
 
     #endregion Overloaded operators
 

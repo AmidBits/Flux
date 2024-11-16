@@ -4,7 +4,7 @@ namespace Flux.Text.PhoneticAlgorithm
   /// <returns>Returns a variable length refined soundex code.</returns>
   /// <see cref="http://ntz-develop.blogspot.com/2011/03/phonetic-algorithms.html"/> 
   public sealed class RefinedSoundex
-    : IPhoneticAlgorithmEncoder
+    : IPhoneticAlgorithmEncodable
   {
     public const string LetterCodeMap = @"01360240043788015936020505";
 

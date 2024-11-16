@@ -23,21 +23,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Action a, Action b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Action a, Action b) => a.CompareTo(b) <= 0;
     public static bool operator >(Action a, Action b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Action a, Action b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Action a, Action b) => a.CompareTo(b) >= 0;
 
     public static Action operator -(Action v) => new(-v.m_value);
-    public static Action operator +(Action a, double b) => new(a.m_value + b);
-    public static Action operator +(Action a, Action b) => a + b.m_value;
-    public static Action operator /(Action a, double b) => new(a.m_value / b);
-    public static Action operator /(Action a, Action b) => a / b.m_value;
+    public static Action operator *(Action a, Action b) => new(a.m_value * b.m_value);
+    public static Action operator /(Action a, Action b) => new(a.m_value / b.m_value);
+    public static Action operator %(Action a, Action b) => new(a.m_value % b.m_value);
+    public static Action operator +(Action a, Action b) => new(a.m_value + b.m_value);
+    public static Action operator -(Action a, Action b) => new(a.m_value - b.m_value);
     public static Action operator *(Action a, double b) => new(a.m_value * b);
-    public static Action operator *(Action a, Action b) => a * b.m_value;
+    public static Action operator /(Action a, double b) => new(a.m_value / b);
     public static Action operator %(Action a, double b) => new(a.m_value % b);
-    public static Action operator %(Action a, Action b) => a % b.m_value;
+    public static Action operator +(Action a, double b) => new(a.m_value + b);
     public static Action operator -(Action a, double b) => new(a.m_value - b);
-    public static Action operator -(Action a, Action b) => a - b.m_value;
 
     #endregion Overloaded operators
 

@@ -161,21 +161,21 @@ namespace Flux
       #region Overloaded operators
 
       public static bool operator <(Time a, Time b) => a.CompareTo(b) < 0;
-      public static bool operator <=(Time a, Time b) => a.CompareTo(b) <= 0;
       public static bool operator >(Time a, Time b) => a.CompareTo(b) > 0;
+      public static bool operator <=(Time a, Time b) => a.CompareTo(b) <= 0;
       public static bool operator >=(Time a, Time b) => a.CompareTo(b) >= 0;
 
-      public static Time operator -(Time v) => new(-v.m_value, TimeUnit.Second);
-      public static Time operator +(Time a, double b) => new(a.m_value + b, TimeUnit.Second);
-      public static Time operator +(Time a, Time b) => a + b.m_value;
-      public static Time operator /(Time a, double b) => new(a.m_value / b, TimeUnit.Second);
-      public static Time operator /(Time a, Time b) => a / b.m_value;
-      public static Time operator *(Time a, double b) => new(a.m_value * b, TimeUnit.Second);
-      public static Time operator *(Time a, Time b) => a * b.m_value;
-      public static Time operator %(Time a, double b) => new(a.m_value % b, TimeUnit.Second);
-      public static Time operator %(Time a, Time b) => a % b.m_value;
-      public static Time operator -(Time a, double b) => new(a.m_value - b, TimeUnit.Second);
-      public static Time operator -(Time a, Time b) => a - b.m_value;
+      public static Time operator -(Time v) => new(-v.m_value);
+      public static Time operator *(Time a, Time b) => new(a.m_value * b.m_value);
+      public static Time operator /(Time a, Time b) => new(a.m_value / b.m_value);
+      public static Time operator %(Time a, Time b) => new(a.m_value % b.m_value);
+      public static Time operator +(Time a, Time b) => new(a.m_value + b.m_value);
+      public static Time operator -(Time a, Time b) => new(a.m_value - b.m_value);
+      public static Time operator *(Time a, double b) => new(a.m_value * b);
+      public static Time operator /(Time a, double b) => new(a.m_value / b);
+      public static Time operator %(Time a, double b) => new(a.m_value % b);
+      public static Time operator +(Time a, double b) => new(a.m_value + b);
+      public static Time operator -(Time a, double b) => new(a.m_value - b);
 
       #endregion Overloaded operators
 

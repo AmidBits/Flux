@@ -27,21 +27,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(SurfaceChargeDensity a, SurfaceChargeDensity b) => a.CompareTo(b) < 0;
-    public static bool operator <=(SurfaceChargeDensity a, SurfaceChargeDensity b) => a.CompareTo(b) <= 0;
     public static bool operator >(SurfaceChargeDensity a, SurfaceChargeDensity b) => a.CompareTo(b) > 0;
+    public static bool operator <=(SurfaceChargeDensity a, SurfaceChargeDensity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(SurfaceChargeDensity a, SurfaceChargeDensity b) => a.CompareTo(b) >= 0;
 
     public static SurfaceChargeDensity operator -(SurfaceChargeDensity v) => new(-v.m_value);
-    public static SurfaceChargeDensity operator +(SurfaceChargeDensity a, double b) => new(a.m_value + b);
-    public static SurfaceChargeDensity operator +(SurfaceChargeDensity a, SurfaceChargeDensity b) => a + b.m_value;
-    public static SurfaceChargeDensity operator /(SurfaceChargeDensity a, double b) => new(a.m_value / b);
-    public static SurfaceChargeDensity operator /(SurfaceChargeDensity a, SurfaceChargeDensity b) => a / b.m_value;
+    public static SurfaceChargeDensity operator *(SurfaceChargeDensity a, SurfaceChargeDensity b) => new(a.m_value * b.m_value);
+    public static SurfaceChargeDensity operator /(SurfaceChargeDensity a, SurfaceChargeDensity b) => new(a.m_value / b.m_value);
+    public static SurfaceChargeDensity operator %(SurfaceChargeDensity a, SurfaceChargeDensity b) => new(a.m_value % b.m_value);
+    public static SurfaceChargeDensity operator +(SurfaceChargeDensity a, SurfaceChargeDensity b) => new(a.m_value + b.m_value);
+    public static SurfaceChargeDensity operator -(SurfaceChargeDensity a, SurfaceChargeDensity b) => new(a.m_value - b.m_value);
     public static SurfaceChargeDensity operator *(SurfaceChargeDensity a, double b) => new(a.m_value * b);
-    public static SurfaceChargeDensity operator *(SurfaceChargeDensity a, SurfaceChargeDensity b) => a * b.m_value;
+    public static SurfaceChargeDensity operator /(SurfaceChargeDensity a, double b) => new(a.m_value / b);
     public static SurfaceChargeDensity operator %(SurfaceChargeDensity a, double b) => new(a.m_value % b);
-    public static SurfaceChargeDensity operator %(SurfaceChargeDensity a, SurfaceChargeDensity b) => a % b.m_value;
+    public static SurfaceChargeDensity operator +(SurfaceChargeDensity a, double b) => new(a.m_value + b);
     public static SurfaceChargeDensity operator -(SurfaceChargeDensity a, double b) => new(a.m_value - b);
-    public static SurfaceChargeDensity operator -(SurfaceChargeDensity a, SurfaceChargeDensity b) => a - b.m_value;
 
     #endregion Overloaded operators
 

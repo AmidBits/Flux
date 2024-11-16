@@ -20,21 +20,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) < 0;
-    public static bool operator <=(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) <= 0;
     public static bool operator >(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) > 0;
+    public static bool operator <=(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) <= 0;
     public static bool operator >=(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) >= 0;
 
     public static EquivalentDose operator -(EquivalentDose v) => new(-v.m_value);
-    public static EquivalentDose operator +(EquivalentDose a, double b) => new(a.m_value + b);
-    public static EquivalentDose operator +(EquivalentDose a, EquivalentDose b) => a + b.m_value;
-    public static EquivalentDose operator /(EquivalentDose a, double b) => new(a.m_value / b);
-    public static EquivalentDose operator /(EquivalentDose a, EquivalentDose b) => a / b.m_value;
+    public static EquivalentDose operator *(EquivalentDose a, EquivalentDose b) => new(a.m_value * b.m_value);
+    public static EquivalentDose operator /(EquivalentDose a, EquivalentDose b) => new(a.m_value / b.m_value);
+    public static EquivalentDose operator %(EquivalentDose a, EquivalentDose b) => new(a.m_value % b.m_value);
+    public static EquivalentDose operator +(EquivalentDose a, EquivalentDose b) => new(a.m_value + b.m_value);
+    public static EquivalentDose operator -(EquivalentDose a, EquivalentDose b) => new(a.m_value - b.m_value);
     public static EquivalentDose operator *(EquivalentDose a, double b) => new(a.m_value * b);
-    public static EquivalentDose operator *(EquivalentDose a, EquivalentDose b) => a * b.m_value;
+    public static EquivalentDose operator /(EquivalentDose a, double b) => new(a.m_value / b);
     public static EquivalentDose operator %(EquivalentDose a, double b) => new(a.m_value % b);
-    public static EquivalentDose operator %(EquivalentDose a, EquivalentDose b) => a % b.m_value;
+    public static EquivalentDose operator +(EquivalentDose a, double b) => new(a.m_value + b);
     public static EquivalentDose operator -(EquivalentDose a, double b) => new(a.m_value - b);
-    public static EquivalentDose operator -(EquivalentDose a, EquivalentDose b) => a - b.m_value;
 
     #endregion Overloaded operators
 

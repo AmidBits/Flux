@@ -29,6 +29,9 @@ namespace Flux
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
+      if (value.TryFastIntegerLog(radix, UniversalRounding.WholeTowardZero, out TValue ilog, out var _)) // Testing!
+        return ilog;
+
       var rdx = TValue.CreateChecked(Quantities.Radix.AssertMember(radix));
 
       if (!TValue.IsZero(value)) // If not zero...

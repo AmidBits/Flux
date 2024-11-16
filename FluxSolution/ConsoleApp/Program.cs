@@ -64,53 +64,73 @@ namespace ConsoleApp
       var dot11c = v1.Dot(v1);
     }
 
+    private static void Test2()
+    {
+      for (var index = 0; index <= 1; index++)
+      {
+        var (count, isPowOf, numberReversed, placeValues, reverseDigits, sum) = index.MagicalDigits(10);
+
+        //System.Console.WriteLine($"{index:D3} : C = {count} : ISPOW = {isPowOf.ToString()[0]} : NR = {numberReversed.ToString().PadLeft(count, '0').PadRight(3, '0')} : PV = {string.Join(" ", placeValues)} : RD = {string.Join(" ", reverseDigits)} : Sum = {sum}");
+      }
+
+    }
+
+    private static void CreateUrgf(string fileName)
+    {
+      using var sw = System.IO.File.CreateText(fileName);
+
+      var data = new string[][] { new string[] { "A", "B" }, new string[] { "1", "2" } };
+
+      Flux.Fx.WriteUrgf(sw, data);
+
+      sw.Write((char)UnicodeInformationSeparator.FileSeparator);
+
+      data = new string[][] { new string[] { "C", "D" }, new string[] { "3", "4" } };
+
+      Flux.Fx.WriteUrgf(sw, data);
+
+      sw.Flush();
+      sw.Close();
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
-      var ipa = System.Globalization.CultureInfo.CurrentCulture.GetIpaDictionary();
-      var found = ipa.Select("[Column_1] LIKE 'ro??n'");
-      var rows = ipa.DefaultView.FindRows("%rob%");
-      //var kipa = ipa.Keys.Where(s => s.All(char.IsLetter)).ToHashSet();
-      //      var blexicon = System.Globalization.CultureInfo.CurrentCulture.TryGetLexicon(out var lexicon);
 
-      var fileName = "E:\\R8RIM03.wav";
-      //fileName = "E:\\square_to_sawtooth_mix1.wav";
-      //fileName = "E:\\Michael_Jackson_-_Beat_It.mid";
-      //fileName = "E:\\Pirates of the Caribbean - He's a Pirate (3).mid";
 
-      var sb = new System.Text.StringBuilder("There are 13 jars of 0.2 liters.");
-      sb.MakeNumbersFixedLength(4, 0, sb.Length / 2);
+      var vd = new Flux.Quantities.Length(0);
+      var a0 = new Flux.Quantities.Angle(32);
+      var v0 = new Flux.Quantities.Speed(10);
+      var g = new Flux.Quantities.Acceleration(Flux.Quantities.Acceleration.StandardGravity);
 
-      using var fs = System.IO.File.OpenRead(fileName);
+      //var dht = new Flux.Mechanics.DownhillTrajectory2D(vd.Value, a0.Value, v0.Value, g.Value);
+      //var dt = new Flux.Mechanics.DroppedTrajectory2D(vd.Value, a0.Value, v0.Value, g.Value);
+      //var ft = new Flux.Mechanics.FlatTrajectory2D(a0.Value, v0.Value, g.Value);
+      //var uht = new Flux.Mechanics.UphillTrajectory2D(vd.Value, a0.Value, v0.Value, g.Value);
 
-      var chunks = Flux.Riff.Chunk.GetChunks(fs).ToArray();
-      var str = chunks.Select(c => c.ToString()).ToArray();
-      return;
+      //var (shallowAngle, steepAngle) = Flux.Mechanics.Trajectory.AngleRequiredToHitPoint(vd.Value, a0.Value, v0.Value, g.Value);
 
-      var hd = 400;
-      var vd = 200;
-      var a0 = 32;
-      var v0 = 50;
-      var g = 10;
+      //var ardshallow = double.RadiansToDegrees(shallowAngle);
+      //var ardsteep = double.RadiansToDegrees(steepAngle);
 
-      var dht = new Flux.Mechanics.DownhillTrajectory2D(vd, a0, v0, g);
-      var dt = new Flux.Mechanics.DroppedTrajectory2D(vd, a0, v0, g);
-      var ft = new Flux.Mechanics.FlatTrajectory2D(a0, v0, g);
-      var uht = new Flux.Mechanics.UphillTrajectory2D(vd, a0, v0, g);
+      var gth = Flux.Mechanics.Trajectory.GetTrajectoryHeight(a0.Value, v0.Value, vd.Value, g.Value);
+      var gtr = Flux.Mechanics.Trajectory.GetTrajectoryRange(a0.Value, v0.Value, vd.Value, g.Value);
+      var gtt = Flux.Mechanics.Trajectory.GetTrajectoryTime(a0.Value, v0.Value, vd.Value, g.Value);
 
-      var (shallowAngle, steepAngle) = Flux.Mechanics.Trajectory.AngleRequiredToHitPoint(hd, vd, a0, g);
-      var md = Flux.Mechanics.Trajectory.RangeOfFlight(a0, v0, vd, g);
-      var tf = Flux.Mechanics.Trajectory.TimeOfFlight(a0, v0, g);
+      var th = Flux.Mechanics.Trajectory.TrajectoryHeight(a0.Value, v0.Value, vd.Value, g.Value);
+      var tr = Flux.Mechanics.Trajectory.TrajectoryRange(a0.Value, v0.Value, out var _, out var _, vd.Value, g.Value);
+      var tt = Flux.Mechanics.Trajectory.TrajectoryTime(a0.Value, v0.Value, out var _, vd.Value, g.Value);
 
-      var ardshallow = double.RadiansToDegrees(shallowAngle);
-      var ardsteep = double.RadiansToDegrees(steepAngle);
-
-      var thd = Flux.Mechanics.Trajectory.MaximumDistance(200, 32, 50, 10);
+      var pth = Flux.Mechanics.Trajectory.PlanetaryTrajectoryHeight(a0.Value, v0.Value, g.Value, Flux.EllipsoidReference.Wgs84.EquatorialRadius);
+      var ptr = Flux.Mechanics.Trajectory.PlanetaryTrajectoryRange(a0.Value, v0.Value, g.Value, Flux.EllipsoidReference.Wgs84.EquatorialRadius);
+      var ptt = Flux.Mechanics.Trajectory.PlanetaryTrajectoryTime(a0.Value, v0.Value, g.Value, Flux.EllipsoidReference.Wgs84.EquatorialRadius);
 
       System.Console.WriteLine(Flux.Services.Performance.Measure(() => Test()));
+
+
 
       var sides = 3;
       var radius = 1;
@@ -125,8 +145,6 @@ namespace ConsoleApp
       var magnitude = System.Runtime.Intrinsics.Vector128.Create(pc.Vertices[0].EuclideanLength()).EuclideanLength();
 
       //p = Flux.Geometry.CyclicPolygon.CreateCyclicPolygon(6, 10, 0, 0.5);
-
-
     }
 
     #region Eliza example

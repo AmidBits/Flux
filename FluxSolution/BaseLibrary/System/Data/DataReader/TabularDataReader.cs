@@ -31,7 +31,7 @@ namespace Flux.Data
     {
       if (index < 0 && index >= FieldCount) throw new System.ArgumentOutOfRangeException(nameof(index));
 
-      return index < m_fieldNames.Count ? m_fieldNames[index] : index.ToColumnName();
+      return index < m_fieldNames.Count ? m_fieldNames[index] : index.ToOrdinalName();
     }
     public override int GetOrdinal(string name)
     {

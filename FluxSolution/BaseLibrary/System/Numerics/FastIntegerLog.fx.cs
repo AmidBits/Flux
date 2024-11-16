@@ -23,7 +23,7 @@ namespace Flux
     {
       checked
       {
-        log = TNumber.IsZero(number) ? 0.0 : double.Log(double.CreateChecked(TNumber.Abs(number)), double.CreateChecked(radix));
+        log = TNumber.IsZero(number) ? 0.0 : double.Log(double.CreateChecked(TNumber.Abs(number)), double.CreateChecked(Quantities.Radix.AssertMember(radix)));
 
         return (log < 1.0) ? TNumber.Zero : TNumber.CopySign(TNumber.CreateChecked(log.Round(mode)), number);
       }

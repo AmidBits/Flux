@@ -20,21 +20,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Permeability a, Permeability b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Permeability a, Permeability b) => a.CompareTo(b) <= 0;
     public static bool operator >(Permeability a, Permeability b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Permeability a, Permeability b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Permeability a, Permeability b) => a.CompareTo(b) >= 0;
 
     public static Permeability operator -(Permeability v) => new(-v.m_value);
-    public static Permeability operator +(Permeability a, double b) => new(a.m_value + b);
-    public static Permeability operator +(Permeability a, Permeability b) => a + b.m_value;
-    public static Permeability operator /(Permeability a, double b) => new(a.m_value / b);
-    public static Permeability operator /(Permeability a, Permeability b) => a / b.m_value;
+    public static Permeability operator *(Permeability a, Permeability b) => new(a.m_value * b.m_value);
+    public static Permeability operator /(Permeability a, Permeability b) => new(a.m_value / b.m_value);
+    public static Permeability operator %(Permeability a, Permeability b) => new(a.m_value % b.m_value);
+    public static Permeability operator +(Permeability a, Permeability b) => new(a.m_value + b.m_value);
+    public static Permeability operator -(Permeability a, Permeability b) => new(a.m_value - b.m_value);
     public static Permeability operator *(Permeability a, double b) => new(a.m_value * b);
-    public static Permeability operator *(Permeability a, Permeability b) => a * b.m_value;
+    public static Permeability operator /(Permeability a, double b) => new(a.m_value / b);
     public static Permeability operator %(Permeability a, double b) => new(a.m_value % b);
-    public static Permeability operator %(Permeability a, Permeability b) => a % b.m_value;
+    public static Permeability operator +(Permeability a, double b) => new(a.m_value + b);
     public static Permeability operator -(Permeability a, double b) => new(a.m_value - b);
-    public static Permeability operator -(Permeability a, Permeability b) => a - b.m_value;
 
     #endregion Overloaded operators
 

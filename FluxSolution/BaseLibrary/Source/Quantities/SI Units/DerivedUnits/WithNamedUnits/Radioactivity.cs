@@ -22,21 +22,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Radioactivity a, Radioactivity b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Radioactivity a, Radioactivity b) => a.CompareTo(b) <= 0;
     public static bool operator >(Radioactivity a, Radioactivity b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Radioactivity a, Radioactivity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Radioactivity a, Radioactivity b) => a.CompareTo(b) >= 0;
 
     public static Radioactivity operator -(Radioactivity v) => new(-v.m_value);
-    public static Radioactivity operator +(Radioactivity a, double b) => new(a.m_value + b);
-    public static Radioactivity operator +(Radioactivity a, Radioactivity b) => a + b.m_value;
-    public static Radioactivity operator /(Radioactivity a, double b) => new(a.m_value / b);
-    public static Radioactivity operator /(Radioactivity a, Radioactivity b) => a / b.m_value;
+    public static Radioactivity operator *(Radioactivity a, Radioactivity b) => new(a.m_value * b.m_value);
+    public static Radioactivity operator /(Radioactivity a, Radioactivity b) => new(a.m_value / b.m_value);
+    public static Radioactivity operator %(Radioactivity a, Radioactivity b) => new(a.m_value % b.m_value);
+    public static Radioactivity operator +(Radioactivity a, Radioactivity b) => new(a.m_value + b.m_value);
+    public static Radioactivity operator -(Radioactivity a, Radioactivity b) => new(a.m_value - b.m_value);
     public static Radioactivity operator *(Radioactivity a, double b) => new(a.m_value * b);
-    public static Radioactivity operator *(Radioactivity a, Radioactivity b) => a * b.m_value;
+    public static Radioactivity operator /(Radioactivity a, double b) => new(a.m_value / b);
     public static Radioactivity operator %(Radioactivity a, double b) => new(a.m_value % b);
-    public static Radioactivity operator %(Radioactivity a, Radioactivity b) => a % b.m_value;
+    public static Radioactivity operator +(Radioactivity a, double b) => new(a.m_value + b);
     public static Radioactivity operator -(Radioactivity a, double b) => new(a.m_value - b);
-    public static Radioactivity operator -(Radioactivity a, Radioactivity b) => a - b.m_value;
 
     #endregion Overloaded operators
 

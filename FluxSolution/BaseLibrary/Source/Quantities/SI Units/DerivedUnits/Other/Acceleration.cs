@@ -17,7 +17,7 @@ namespace Flux.Quantities
     public static double MoonGravity = 1.625;
 
     /// <summary>
-    /// <para>The nominal gravitational acceleration of an object in a vacuum near the surface of the Earth.</para>
+    /// <para>The standard acceleration for gravity for Earth as defined per CODATA 2018 (exact value). I.e. a nominal gravitational acceleration of an object in a vacuum near the surface of the Earth.</para>
     /// </summary>
     public const double StandardGravity = 9.80665;
 
@@ -54,21 +54,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Acceleration a, Acceleration b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Acceleration a, Acceleration b) => a.CompareTo(b) <= 0;
     public static bool operator >(Acceleration a, Acceleration b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Acceleration a, Acceleration b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Acceleration a, Acceleration b) => a.CompareTo(b) >= 0;
 
     public static Acceleration operator -(Acceleration v) => new(-v.m_value);
-    public static Acceleration operator +(Acceleration a, double b) => new(a.m_value + b);
-    public static Acceleration operator +(Acceleration a, Acceleration b) => a + b.m_value;
-    public static Acceleration operator /(Acceleration a, double b) => new(a.m_value / b);
-    public static Acceleration operator /(Acceleration a, Acceleration b) => a / b.m_value;
+    public static Acceleration operator *(Acceleration a, Acceleration b) => new(a.m_value * b.m_value);
+    public static Acceleration operator /(Acceleration a, Acceleration b) => new(a.m_value / b.m_value);
+    public static Acceleration operator %(Acceleration a, Acceleration b) => new(a.m_value % b.m_value);
+    public static Acceleration operator +(Acceleration a, Acceleration b) => new(a.m_value + b.m_value);
+    public static Acceleration operator -(Acceleration a, Acceleration b) => new(a.m_value - b.m_value);
     public static Acceleration operator *(Acceleration a, double b) => new(a.m_value * b);
-    public static Acceleration operator *(Acceleration a, Acceleration b) => a * b.m_value;
+    public static Acceleration operator /(Acceleration a, double b) => new(a.m_value / b);
     public static Acceleration operator %(Acceleration a, double b) => new(a.m_value % b);
-    public static Acceleration operator %(Acceleration a, Acceleration b) => a % b.m_value;
+    public static Acceleration operator +(Acceleration a, double b) => new(a.m_value + b);
     public static Acceleration operator -(Acceleration a, double b) => new(a.m_value - b);
-    public static Acceleration operator -(Acceleration a, Acceleration b) => a - b.m_value;
 
     #endregion Overloaded operators
 

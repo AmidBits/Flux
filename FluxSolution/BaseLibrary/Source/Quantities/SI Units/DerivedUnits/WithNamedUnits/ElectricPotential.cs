@@ -35,21 +35,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(ElectricPotential a, ElectricPotential b) => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricPotential a, ElectricPotential b) => a.CompareTo(b) <= 0;
     public static bool operator >(ElectricPotential a, ElectricPotential b) => a.CompareTo(b) > 0;
+    public static bool operator <=(ElectricPotential a, ElectricPotential b) => a.CompareTo(b) <= 0;
     public static bool operator >=(ElectricPotential a, ElectricPotential b) => a.CompareTo(b) >= 0;
 
     public static ElectricPotential operator -(ElectricPotential v) => new(-v.m_value);
-    public static ElectricPotential operator +(ElectricPotential a, double b) => new(a.m_value + b);
-    public static ElectricPotential operator +(ElectricPotential a, ElectricPotential b) => a + b.m_value;
-    public static ElectricPotential operator /(ElectricPotential a, double b) => new(a.m_value / b);
-    public static ElectricPotential operator /(ElectricPotential a, ElectricPotential b) => a / b.m_value;
+    public static ElectricPotential operator *(ElectricPotential a, ElectricPotential b) => new(a.m_value * b.m_value);
+    public static ElectricPotential operator /(ElectricPotential a, ElectricPotential b) => new(a.m_value / b.m_value);
+    public static ElectricPotential operator %(ElectricPotential a, ElectricPotential b) => new(a.m_value % b.m_value);
+    public static ElectricPotential operator +(ElectricPotential a, ElectricPotential b) => new(a.m_value + b.m_value);
+    public static ElectricPotential operator -(ElectricPotential a, ElectricPotential b) => new(a.m_value - b.m_value);
     public static ElectricPotential operator *(ElectricPotential a, double b) => new(a.m_value * b);
-    public static ElectricPotential operator *(ElectricPotential a, ElectricPotential b) => a * b.m_value;
+    public static ElectricPotential operator /(ElectricPotential a, double b) => new(a.m_value / b);
     public static ElectricPotential operator %(ElectricPotential a, double b) => new(a.m_value % b);
-    public static ElectricPotential operator %(ElectricPotential a, ElectricPotential b) => a % b.m_value;
+    public static ElectricPotential operator +(ElectricPotential a, double b) => new(a.m_value + b);
     public static ElectricPotential operator -(ElectricPotential a, double b) => new(a.m_value - b);
-    public static ElectricPotential operator -(ElectricPotential a, ElectricPotential b) => a - b.m_value;
 
     #endregion Overloaded operators
 

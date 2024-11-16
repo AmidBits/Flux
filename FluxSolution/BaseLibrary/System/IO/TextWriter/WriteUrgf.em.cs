@@ -11,13 +11,13 @@ namespace Flux
     {
       for (var r = 0; r < data.Length; r++)
       {
-        if (r > 0) writer.Write((char)UnicodeDataSeparator.RecordSeparator);
+        if (r > 0) writer.Write((char)UnicodeInformationSeparator.RecordSeparator);
 
         var record = data[r];
 
         for (var u = 0; u < record.Length; u++)
         {
-          if (u > 0) writer.Write((char)UnicodeDataSeparator.UnitSeparator);
+          if (u > 0) writer.Write((char)UnicodeInformationSeparator.UnitSeparator);
 
           writer.Write(record[u]);
         }

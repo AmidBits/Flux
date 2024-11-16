@@ -28,21 +28,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(LuminousEfficacy a, LuminousEfficacy b) => a.CompareTo(b) < 0;
-    public static bool operator <=(LuminousEfficacy a, LuminousEfficacy b) => a.CompareTo(b) <= 0;
     public static bool operator >(LuminousEfficacy a, LuminousEfficacy b) => a.CompareTo(b) > 0;
+    public static bool operator <=(LuminousEfficacy a, LuminousEfficacy b) => a.CompareTo(b) <= 0;
     public static bool operator >=(LuminousEfficacy a, LuminousEfficacy b) => a.CompareTo(b) >= 0;
 
     public static LuminousEfficacy operator -(LuminousEfficacy v) => new(-v.m_value);
-    public static LuminousEfficacy operator +(LuminousEfficacy a, double b) => new(a.m_value + b);
-    public static LuminousEfficacy operator +(LuminousEfficacy a, LuminousEfficacy b) => a + b.m_value;
-    public static LuminousEfficacy operator /(LuminousEfficacy a, double b) => new(a.m_value / b);
-    public static LuminousEfficacy operator /(LuminousEfficacy a, LuminousEfficacy b) => a / b.m_value;
+    public static LuminousEfficacy operator *(LuminousEfficacy a, LuminousEfficacy b) => new(a.m_value * b.m_value);
+    public static LuminousEfficacy operator /(LuminousEfficacy a, LuminousEfficacy b) => new(a.m_value / b.m_value);
+    public static LuminousEfficacy operator %(LuminousEfficacy a, LuminousEfficacy b) => new(a.m_value % b.m_value);
+    public static LuminousEfficacy operator +(LuminousEfficacy a, LuminousEfficacy b) => new(a.m_value + b.m_value);
+    public static LuminousEfficacy operator -(LuminousEfficacy a, LuminousEfficacy b) => new(a.m_value - b.m_value);
     public static LuminousEfficacy operator *(LuminousEfficacy a, double b) => new(a.m_value * b);
-    public static LuminousEfficacy operator *(LuminousEfficacy a, LuminousEfficacy b) => a * b.m_value;
+    public static LuminousEfficacy operator /(LuminousEfficacy a, double b) => new(a.m_value / b);
     public static LuminousEfficacy operator %(LuminousEfficacy a, double b) => new(a.m_value % b);
-    public static LuminousEfficacy operator %(LuminousEfficacy a, LuminousEfficacy b) => a % b.m_value;
+    public static LuminousEfficacy operator +(LuminousEfficacy a, double b) => new(a.m_value + b);
     public static LuminousEfficacy operator -(LuminousEfficacy a, double b) => new(a.m_value - b);
-    public static LuminousEfficacy operator -(LuminousEfficacy a, LuminousEfficacy b) => a - b.m_value;
 
     #endregion Overloaded operators
 

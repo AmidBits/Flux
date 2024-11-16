@@ -5,7 +5,7 @@
     /// <summary>Implements the Caverphone 1.0 algorithm</summary>
     // https://en.wikipedia.org/wiki/Caverphone
     public sealed class Caverphone1
-      : IPhoneticAlgorithmEncoder
+      : IPhoneticAlgorithmEncodable
     {
       /// <summary>Encodes the given text using the Caverphone 2.0 algorithm.</summary>
       public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> word)

@@ -27,21 +27,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(ElectricChargeDensity a, ElectricChargeDensity b) => a.CompareTo(b) < 0;
-    public static bool operator <=(ElectricChargeDensity a, ElectricChargeDensity b) => a.CompareTo(b) <= 0;
     public static bool operator >(ElectricChargeDensity a, ElectricChargeDensity b) => a.CompareTo(b) > 0;
+    public static bool operator <=(ElectricChargeDensity a, ElectricChargeDensity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(ElectricChargeDensity a, ElectricChargeDensity b) => a.CompareTo(b) >= 0;
 
     public static ElectricChargeDensity operator -(ElectricChargeDensity v) => new(-v.m_value);
-    public static ElectricChargeDensity operator +(ElectricChargeDensity a, double b) => new(a.m_value + b);
-    public static ElectricChargeDensity operator +(ElectricChargeDensity a, ElectricChargeDensity b) => a + b.m_value;
-    public static ElectricChargeDensity operator /(ElectricChargeDensity a, double b) => new(a.m_value / b);
-    public static ElectricChargeDensity operator /(ElectricChargeDensity a, ElectricChargeDensity b) => a / b.m_value;
+    public static ElectricChargeDensity operator *(ElectricChargeDensity a, ElectricChargeDensity b) => new(a.m_value * b.m_value);
+    public static ElectricChargeDensity operator /(ElectricChargeDensity a, ElectricChargeDensity b) => new(a.m_value / b.m_value);
+    public static ElectricChargeDensity operator %(ElectricChargeDensity a, ElectricChargeDensity b) => new(a.m_value % b.m_value);
+    public static ElectricChargeDensity operator +(ElectricChargeDensity a, ElectricChargeDensity b) => new(a.m_value + b.m_value);
+    public static ElectricChargeDensity operator -(ElectricChargeDensity a, ElectricChargeDensity b) => new(a.m_value - b.m_value);
     public static ElectricChargeDensity operator *(ElectricChargeDensity a, double b) => new(a.m_value * b);
-    public static ElectricChargeDensity operator *(ElectricChargeDensity a, ElectricChargeDensity b) => a * b.m_value;
+    public static ElectricChargeDensity operator /(ElectricChargeDensity a, double b) => new(a.m_value / b);
     public static ElectricChargeDensity operator %(ElectricChargeDensity a, double b) => new(a.m_value % b);
-    public static ElectricChargeDensity operator %(ElectricChargeDensity a, ElectricChargeDensity b) => a % b.m_value;
+    public static ElectricChargeDensity operator +(ElectricChargeDensity a, double b) => new(a.m_value + b);
     public static ElectricChargeDensity operator -(ElectricChargeDensity a, double b) => new(a.m_value - b);
-    public static ElectricChargeDensity operator -(ElectricChargeDensity a, ElectricChargeDensity b) => a - b.m_value;
 
     #endregion Overloaded operators
 

@@ -60,21 +60,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Temperature a, Temperature b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Temperature a, Temperature b) => a.CompareTo(b) <= 0;
     public static bool operator >(Temperature a, Temperature b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Temperature a, Temperature b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Temperature a, Temperature b) => a.CompareTo(b) >= 0;
 
     public static Temperature operator -(Temperature v) => new(-v.m_value);
-    public static Temperature operator +(Temperature a, double b) => new(a.m_value + b);
-    public static Temperature operator +(Temperature a, Temperature b) => a + b.m_value;
-    public static Temperature operator /(Temperature a, double b) => new(a.m_value / b);
-    public static Temperature operator /(Temperature a, Temperature b) => a / b.m_value;
+    public static Temperature operator *(Temperature a, Temperature b) => new(a.m_value * b.m_value);
+    public static Temperature operator /(Temperature a, Temperature b) => new(a.m_value / b.m_value);
+    public static Temperature operator %(Temperature a, Temperature b) => new(a.m_value % b.m_value);
+    public static Temperature operator +(Temperature a, Temperature b) => new(a.m_value + b.m_value);
+    public static Temperature operator -(Temperature a, Temperature b) => new(a.m_value - b.m_value);
     public static Temperature operator *(Temperature a, double b) => new(a.m_value * b);
-    public static Temperature operator *(Temperature a, Temperature b) => a * b.m_value;
+    public static Temperature operator /(Temperature a, double b) => new(a.m_value / b);
     public static Temperature operator %(Temperature a, double b) => new(a.m_value % b);
-    public static Temperature operator %(Temperature a, Temperature b) => a % b.m_value;
+    public static Temperature operator +(Temperature a, double b) => new(a.m_value + b);
     public static Temperature operator -(Temperature a, double b) => new(a.m_value - b);
-    public static Temperature operator -(Temperature a, Temperature b) => a - b.m_value;
 
     #endregion Overloaded operators
 

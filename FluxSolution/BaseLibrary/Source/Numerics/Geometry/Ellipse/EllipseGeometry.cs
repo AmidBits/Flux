@@ -68,6 +68,25 @@ namespace Flux.Geometry
       }
     }
 
+    public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> CreateEllipse(double a, double b, double count, double arcOffset = 0, double maxRandomness = 0, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      var arc = System.Math.Tau / count;
+
+      for (var index = 0; index < count; index++)
+      {
+        var angle = arcOffset + index * arc;
+
+        if (maxRandomness > 0)
+          angle += rng.NextDouble(0, arc * maxRandomness);
+
+        var (x, y) = Coordinates.PolarCoordinate.ConvertPolarToCartesian2Ex(1, angle);
+
+        yield return System.Runtime.Intrinsics.Vector256.Create(x * a, y * b, 0, 0);
+      }
+    }
+
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
     public double GetArea() => AreaOf(m_a, m_b);
 

@@ -37,21 +37,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(Area a, Area b) => a.CompareTo(b) < 0;
-    public static bool operator <=(Area a, Area b) => a.CompareTo(b) <= 0;
     public static bool operator >(Area a, Area b) => a.CompareTo(b) > 0;
+    public static bool operator <=(Area a, Area b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Area a, Area b) => a.CompareTo(b) >= 0;
 
     public static Area operator -(Area v) => new(-v.m_value);
-    public static Area operator +(Area a, double b) => new(a.m_value + b);
-    public static Area operator +(Area a, Area b) => a + b.m_value;
-    public static Area operator /(Area a, double b) => new(a.m_value / b);
-    public static Area operator /(Area a, Area b) => a / b.m_value;
+    public static Area operator *(Area a, Area b) => new(a.m_value * b.m_value);
+    public static Area operator /(Area a, Area b) => new(a.m_value / b.m_value);
+    public static Area operator %(Area a, Area b) => new(a.m_value % b.m_value);
+    public static Area operator +(Area a, Area b) => new(a.m_value + b.m_value);
+    public static Area operator -(Area a, Area b) => new(a.m_value - b.m_value);
     public static Area operator *(Area a, double b) => new(a.m_value * b);
-    public static Area operator *(Area a, Area b) => a * b.m_value;
+    public static Area operator /(Area a, double b) => new(a.m_value / b);
     public static Area operator %(Area a, double b) => new(a.m_value % b);
-    public static Area operator %(Area a, Area b) => a % b.m_value;
+    public static Area operator +(Area a, double b) => new(a.m_value + b);
     public static Area operator -(Area a, double b) => new(a.m_value - b);
-    public static Area operator -(Area a, Area b) => a - b.m_value;
 
     #endregion Overloaded operators
 

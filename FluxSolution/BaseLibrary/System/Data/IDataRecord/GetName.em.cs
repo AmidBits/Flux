@@ -7,7 +7,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      return source.GetName(index) is var name && string.IsNullOrWhiteSpace(name) ? index.ToColumnName() : name;
+      return source.GetName(index) is var name && string.IsNullOrWhiteSpace(name) ? index.ToOrdinalName() : name;
     }
 
     /// <summary>Results in a string array of all column names.</summary>

@@ -20,21 +20,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(CatalyticActivity a, CatalyticActivity b) => a.CompareTo(b) < 0;
-    public static bool operator <=(CatalyticActivity a, CatalyticActivity b) => a.CompareTo(b) <= 0;
     public static bool operator >(CatalyticActivity a, CatalyticActivity b) => a.CompareTo(b) > 0;
+    public static bool operator <=(CatalyticActivity a, CatalyticActivity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(CatalyticActivity a, CatalyticActivity b) => a.CompareTo(b) >= 0;
 
     public static CatalyticActivity operator -(CatalyticActivity v) => new(-v.m_value);
-    public static CatalyticActivity operator +(CatalyticActivity a, double b) => new(a.m_value + b);
-    public static CatalyticActivity operator +(CatalyticActivity a, CatalyticActivity b) => a + b.m_value;
-    public static CatalyticActivity operator /(CatalyticActivity a, double b) => new(a.m_value / b);
-    public static CatalyticActivity operator /(CatalyticActivity a, CatalyticActivity b) => a / b.m_value;
+    public static CatalyticActivity operator *(CatalyticActivity a, CatalyticActivity b) => new(a.m_value * b.m_value);
+    public static CatalyticActivity operator /(CatalyticActivity a, CatalyticActivity b) => new(a.m_value / b.m_value);
+    public static CatalyticActivity operator %(CatalyticActivity a, CatalyticActivity b) => new(a.m_value % b.m_value);
+    public static CatalyticActivity operator +(CatalyticActivity a, CatalyticActivity b) => new(a.m_value + b.m_value);
+    public static CatalyticActivity operator -(CatalyticActivity a, CatalyticActivity b) => new(a.m_value - b.m_value);
     public static CatalyticActivity operator *(CatalyticActivity a, double b) => new(a.m_value * b);
-    public static CatalyticActivity operator *(CatalyticActivity a, CatalyticActivity b) => a * b.m_value;
+    public static CatalyticActivity operator /(CatalyticActivity a, double b) => new(a.m_value / b);
     public static CatalyticActivity operator %(CatalyticActivity a, double b) => new(a.m_value % b);
-    public static CatalyticActivity operator %(CatalyticActivity a, CatalyticActivity b) => a % b.m_value;
+    public static CatalyticActivity operator +(CatalyticActivity a, double b) => new(a.m_value + b);
     public static CatalyticActivity operator -(CatalyticActivity a, double b) => new(a.m_value - b);
-    public static CatalyticActivity operator -(CatalyticActivity a, CatalyticActivity b) => a - b.m_value;
 
     #endregion Overloaded operators
 

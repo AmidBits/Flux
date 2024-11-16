@@ -42,21 +42,21 @@ namespace Flux.Quantities
     #region Overloaded operators
 
     public static bool operator <(AmountOfSubstance a, AmountOfSubstance b) => a.CompareTo(b) < 0;
-    public static bool operator <=(AmountOfSubstance a, AmountOfSubstance b) => a.CompareTo(b) <= 0;
     public static bool operator >(AmountOfSubstance a, AmountOfSubstance b) => a.CompareTo(b) > 0;
+    public static bool operator <=(AmountOfSubstance a, AmountOfSubstance b) => a.CompareTo(b) <= 0;
     public static bool operator >=(AmountOfSubstance a, AmountOfSubstance b) => a.CompareTo(b) >= 0;
 
-    public static AmountOfSubstance operator -(AmountOfSubstance v) => new(-v.Value);
-    public static AmountOfSubstance operator +(AmountOfSubstance a, double b) => new(a.m_value + b);
-    public static AmountOfSubstance operator +(AmountOfSubstance a, AmountOfSubstance b) => a + b.m_value;
-    public static AmountOfSubstance operator /(AmountOfSubstance a, double b) => new(a.m_value / b);
-    public static AmountOfSubstance operator /(AmountOfSubstance a, AmountOfSubstance b) => a / b.m_value;
+    public static AmountOfSubstance operator -(AmountOfSubstance v) => new(-v.m_value);
+    public static AmountOfSubstance operator *(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value * b.m_value);
+    public static AmountOfSubstance operator /(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value / b.m_value);
+    public static AmountOfSubstance operator %(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value % b.m_value);
+    public static AmountOfSubstance operator +(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value + b.m_value);
+    public static AmountOfSubstance operator -(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value - b.m_value);
     public static AmountOfSubstance operator *(AmountOfSubstance a, double b) => new(a.m_value * b);
-    public static AmountOfSubstance operator *(AmountOfSubstance a, AmountOfSubstance b) => a * b.m_value;
+    public static AmountOfSubstance operator /(AmountOfSubstance a, double b) => new(a.m_value / b);
     public static AmountOfSubstance operator %(AmountOfSubstance a, double b) => new(a.m_value % b);
-    public static AmountOfSubstance operator %(AmountOfSubstance a, AmountOfSubstance b) => a % b.m_value;
+    public static AmountOfSubstance operator +(AmountOfSubstance a, double b) => new(a.m_value + b);
     public static AmountOfSubstance operator -(AmountOfSubstance a, double b) => new(a.m_value - b);
-    public static AmountOfSubstance operator -(AmountOfSubstance a, AmountOfSubstance b) => a - b.m_value;
 
     #endregion Overloaded operators
 

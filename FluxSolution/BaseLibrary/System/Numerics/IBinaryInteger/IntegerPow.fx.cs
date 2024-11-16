@@ -17,8 +17,8 @@ namespace Flux
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TExponent : System.Numerics.IBinaryInteger<TExponent>
     {
-      if (TryFastIntegerPow(radix, exponent, UniversalRounding.HalfTowardZero, out TRadix iPow, out var _)) // Testing!
-        return iPow;
+      if (TryFastIntegerPow(radix, exponent, UniversalRounding.WholeTowardZero, out TRadix ipow, out var _)) // Testing!
+        return ipow;
 
       if (TRadix.IsZero(radix) || TExponent.IsZero(exponent))
         return TRadix.One; // If either value or exponent is zero, one is customary.
