@@ -14,17 +14,19 @@ namespace Flux.Quantities
     : System.IComparable, System.IComparable<Frequency>, System.IFormattable, ISiUnitValueQuantifiable<double, FrequencyUnit>
   {
     /// <summary>
+    /// <para>The fixed numerical value of the caesium frequency (delta)Cs, the unperturbed ground-state hyperfine transition frequency of the caesium 133 atom.</para>
+    /// <para>The ground state hyperfine structure transition frequency of the caesium-133 atom is exactly 9192631770 hertz (Hz).</para>
+    /// <para>This is one of the fundamental physical constants of physics.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Caesium_standard"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/International_System_of_Units"/></para>
+    /// </summary>
+    public const double CaesiumStandard = 9192631770;
+
+    /// <summary>
     /// <para>The musical pitch corresponding to an audio frequency of 440 Hz, serves as a tuning standard for the musical note of A above middle C, or A4 in scientific pitch notation, or MIDI note number 69.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/A440_(pitch_standard)"/></para>
     /// </summary>
-    public static Frequency A440 { get; } = new(440);
-
-    /// <summary>
-    /// <para>The fixed numerical value of the caesium frequency (delta)Cs, the unperturbed ground-state hyperfine transition frequency of the caesium 133 atom.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/International_System_of_Units"/></para>
-    /// <para><seealso href="https://en.wikipedia.org/wiki/Caesium_standard"/></para>
-    /// </summary>
-    public static Frequency UnperturbedGroundStateHyperfineStructureTransitionFrequencyOfTheCaesium133Atom { get; } = new(9192631770);
+    public static Frequency A4 { get; } = new(440);
 
     private readonly double m_value;
 

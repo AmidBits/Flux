@@ -78,7 +78,7 @@ namespace Flux
       /// </summary>
       public Quantities.Length Height { get => m_height; init => m_height = value; }
 
-      public double CylinderSurfaceArea => CylindricalCoordinate.SurfaceAreaOfCylinder(m_radius.Value, m_height.Value);
+      public double CylinderSurfaceArea => CylindricalCoordinate.SurfaceAreaOfClosedCylinder(m_radius.Value, m_height.Value);
 
       public CartesianCoordinate ToCartesianCoordinate()
       {
@@ -138,12 +138,15 @@ namespace Flux
       #region Static methods
 
       /// <summary>
-      /// <para>Computes the area of a cylinder with the specified <paramref name="radius"/> and <paramref name="height"/>.</para>
+      /// <para>Computes the surface area of a closed cylinder with the specified <paramref name="radius"/> and <paramref name="height"/>.</para>
       /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
       /// </summary>
-      /// <param name="radius">The radius of a cylinder.</param>
-      /// <param name="height">The height of a cylinder.</param>
-      public static double SurfaceAreaOfCylinder(double radius, double height) => 2 * System.Math.PI * radius * (radius + height);
+      /// <param name="radius"></param>
+      /// <param name="height"></param>
+      /// <returns>The surface area of a closed cylinder.</returns>
+      public static double SurfaceAreaOfClosedCylinder(double radius, double height) => 2 * double.Pi * radius * (radius + height);
+
+      public static double SurfaceAreaOfCylindricalAnnulus(double externalRadius, double internalRadius, double height) => 2 * double.Pi * (externalRadius + internalRadius) * (externalRadius - internalRadius + height);
 
       #endregion // Static methods
 

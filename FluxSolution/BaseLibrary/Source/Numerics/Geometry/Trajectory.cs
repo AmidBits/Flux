@@ -9,47 +9,166 @@ namespace Flux.Mechanics
   public static partial class Trajectory
   {
     /// <summary>
-    /// <para>The "angle of reach" is the angle at which a projectile must be launched in order to go a <paramref name="d"/>, given the <paramref name="v0"/>.</para>
+    /// <para>Compute the angle at which the projectile lands.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Range_of_a_projectile#Angle_of_impact"/></para>
     /// </summary>
-    /// <param name="d"></param>
-    /// <param name="v0"></param>
-    /// <param name="g"></param>
+    /// <param name="initialAngle"></param>
+    /// <param name="initialVelocity"></param>
+    /// <param name="initialHeight"></param>
+    /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static (double shallowAngle, double steepAngle) AngleOfReach(double d, double v0, double g = Flux.Quantities.Acceleration.StandardGravity)
+    public static double AngleOfImpact(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
     {
-      var gd = g * d;
-      var v02 = v0 * v0;
+      var sin = double.Sin(initialAngle);
 
-      var shallowTrajectory = 0.5 * double.Asin(gd / v02);
-      var steepTrajectory = (double.Pi / 4) + 0.5 * double.Acos(gd / v02);
-
-      return (shallowTrajectory, steepTrajectory);
+      return double.Sqrt(initialVelocity * initialVelocity * sin * sin + 2 * gravitationalAcceleration * initialHeight) / (initialVelocity * double.Cos(initialAngle));
     }
 
     /// <summary>
-    /// <para>To hit a target at range x and altitude y when fired from (0,0) and with initial speed v the required angle(s) of launch if found with this.</para>
+    /// <para>What is launch angle that allows the lowest possible launch velocity.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Angle_%CE%B8_required_to_hit_coordinate_(x,_y)"/></para>
     /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <param name="distance"></param>
+    /// <param name="targetX"></param>
+    /// <param name="targetY"></param>
+    /// <returns></returns>
+    public static double AngleOfMinimalVelocity(double targetX, double targetY)
+      => double.Atan(targetY / targetX + double.Sqrt(targetY * targetY / targetX * targetX + 1));
+
+    /// <summary>
+    /// <para>The "angle of reach" are the (initial) angle(s) at which a projectile must be launched, when fired from [0, 0], in order to go a horizontal distance <paramref name="targetX"/> (<paramref name="targetY"/> = 0), given the <paramref name="initialVelocity"/>.</para>
+    /// <para>To hit a target at range (horizontal distance) <paramref name="targetX"/> and altitude (height) <paramref name="targetY"/> when fired from [0, 0] and with <paramref name="initialVelocity"/> the required initial angle(s) of launch if found with this.</para>
+    /// <para>There are two solutions: shallow and steep trajectory.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Angle_of_reach"/></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Angle_%CE%B8_required_to_hit_coordinate_(x,_y)"/></para>
+    /// </summary>
+    /// <param name="targetX"></param>
+    /// <param name="targetY"></param>
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static (double shallowAngle, double steepAngle) AngleRequiredToHitPoint(double x, double y, double initialVelocity, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
+    public static bool TryGetAngleOfReach(double targetX, double targetY, double initialVelocity, out double angleOfShallowTrajectory, out double angleOfSteepTrajectory, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
     {
-      var v2 = initialVelocity * initialVelocity;
+      if (targetY == 0)
+      {
+        var sin2aor = (gravitationalAcceleration * targetX) / (initialVelocity * initialVelocity); // Sin(2 * angle-of-reach)
 
-      var gx = gravitationalAcceleration * x;
+        angleOfShallowTrajectory = double.Asin(sin2aor) / 2;
+        angleOfSteepTrajectory = double.Pi / 4 + double.Acos(sin2aor) / 2;
+      }
+      else
+      {
+        var v2 = initialVelocity * initialVelocity;
 
-      var root = double.Sqrt(double.Abs(v2 * v2 - gravitationalAcceleration * (gx * x + 2 * y * v2)));
+        var gx = gravitationalAcceleration * targetX;
 
-      var shallowTrajectory = double.Atan((v2 - root) / gx);
-      var steepTrajectory = double.Atan((v2 + root) / gx);
+        var root = double.Sqrt(double.Abs(v2 * v2 - gravitationalAcceleration * (gx * targetX + 2 * targetY * v2)));
 
-      return (shallowTrajectory, steepTrajectory);
+        angleOfShallowTrajectory = double.Atan((v2 - root) / gx);
+        angleOfSteepTrajectory = double.Atan((v2 + root) / gx);
+      }
+
+      return angleOfShallowTrajectory > 0 || angleOfSteepTrajectory > 0;
     }
 
     /// <summary>
+    /// <para>The length of the parabolic arc traced by a projectile, given that the height of launch and landing is the same (air resistance ignored).</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Total_Path_Length_of_the_Trajectory"/></para>
+    /// </summary>
+    /// <param name="initialAngle"></param>
+    /// <param name="initialVelocity"></param>
+    /// <param name="gravitationalAcceleration"></param>
+    /// <returns></returns>
+    public static double LengthOfParabolicArc(double initialAngle, double initialVelocity, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
+    {
+      var sin = double.Sin(initialAngle);
+      var cos = double.Cos(initialAngle);
+
+      return (initialVelocity * initialVelocity / gravitationalAcceleration) * (sin + cos * cos * double.Atanh(sin));
+    }
+
+    /// <summary>
+    /// <para>The time to reach a target for the horizontal velocity.</para>
+    /// <para>The horizontal and vertical velocity of a projectile are independent of each other.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Time_of_flight_to_the_target's_position"/></para>
+    /// </summary>
+    /// <param name="targetX"></param>
+    /// <param name="initialAngle"></param>
+    /// <param name="initialVelocity"></param>
+    /// <returns></returns>
+    public static double TimeToTarget(double targetX, double initialAngle, double initialVelocity)
+      => targetX / (initialVelocity * double.Cos(initialAngle));
+
+    #region Planetary trajectories
+
+    /// <summary>
+    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Projectile_motion_on_a_planetary_scale"/></para>
+    /// </summary>
+    /// <param name="initialAngle"></param>
+    /// <param name="initialVelocity"></param>
+    /// <param name="gravitationalAcceleration"></param>
+    /// <param name="earthRadius"></param>
+    /// <returns></returns>
+    public static double PlanetaryTrajectoryHeight(double initialAngle, double initialVelocity, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity, double earthRadius = EllipsoidReference.EarthMeanRadius)
+    {
+      var (sin, cos) = double.SinCos(initialAngle);
+
+      var vr = initialVelocity / double.Sqrt(earthRadius * gravitationalAcceleration);
+
+      var vrpow2 = vr * vr;
+
+      return (initialVelocity * initialVelocity * sin * sin / gravitationalAcceleration) / (1 - vrpow2 + double.Sqrt(1 - (2 - vrpow2) * vrpow2 * cos * cos));
+    }
+
+    /// <summary>
+    /// <para></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Projectile_motion_on_a_planetary_scale"/></para>
+    /// </summary>
+    /// <param name="initialAngle"></param>
+    /// <param name="initialVelocity"></param>
+    /// <param name="gravitationalAcceleration"></param>
+    /// <param name="earthRadius"></param>
+    /// <returns></returns>
+    public static double PlanetaryTrajectoryRange(double initialAngle, double initialVelocity, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity, double earthRadius = EllipsoidReference.EarthMeanRadius)
+    {
+      var sin = double.Sin(initialAngle);
+
+      var vr = initialVelocity / double.Sqrt(earthRadius * gravitationalAcceleration);
+
+      var vrpow2 = vr * vr;
+
+      return initialVelocity * initialVelocity * double.Sin(2 * initialAngle) / gravitationalAcceleration / double.Sqrt(1 - (2 - vrpow2) * vrpow2 * sin * sin);
+    }
+
+    /// <summary>
+    /// <para>The total time for which the projectile remains in the air is called the time of flight.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Projectile_motion_on_a_planetary_scale"/></para>
+    /// </summary>
+    /// <param name="initialAngle"></param>
+    /// <param name="initialVelocity"></param>
+    /// <param name="gravitationalAcceleration"></param>
+    /// <param name="earthRadius"></param>
+    /// <returns></returns>
+    public static double PlanetaryTrajectoryTime(double initialAngle, double initialVelocity, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity, double earthRadius = EllipsoidReference.EarthMeanRadius)
+    {
+      var (sin, cos) = double.SinCos(initialAngle);
+
+      var vr = initialVelocity / double.Sqrt(earthRadius * gravitationalAcceleration);
+
+      var vrpow2 = vr * vr;
+
+      var s2vrpow2 = 2 - vrpow2;
+
+      var sqrts2vrpow2vrsin = double.Sqrt(s2vrpow2) * vr * sin;
+
+      return (2 * initialVelocity * sin / gravitationalAcceleration) * (1 / s2vrpow2) * (1 + 1 / sqrts2vrpow2vrsin * double.Asin(sqrts2vrpow2vrsin / double.Sqrt(1 - s2vrpow2 * vrpow2 * cos * cos)));
+    }
+
+    #endregion // Planetary trajectories
+
+    #region Trajectories
+
+    /// <summary>
+    /// <para>The greatest height that the object will reach is known as the peak of the object's motion.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Maximum_height_of_projectile"/></para>
     /// </summary>
     /// <param name="initialHeight"></param>
@@ -57,7 +176,7 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static double GetTrajectoryHeight(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
+    public static double TrajectoryHeight(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
     {
       var sin = double.Sin(initialAngle);
 
@@ -75,11 +194,11 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static double GetTrajectoryRange(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
+    public static double TrajectoryRange(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
     {
-      var (sin, cos) = double.SinCos(initialAngle);
+      var v0sin = initialVelocity * double.Sin(initialAngle);
 
-      return initialVelocity * cos / gravitationalAcceleration * ((initialVelocity * sin) + double.Sqrt(double.Pow(initialVelocity * sin, 2) + (2 * gravitationalAcceleration * initialHeight)));
+      return (initialVelocity * double.Cos(initialAngle) / gravitationalAcceleration) * (v0sin + double.Sqrt(v0sin * v0sin + (2 * gravitationalAcceleration * initialHeight)));
     }
 
     /// <summary>
@@ -90,126 +209,13 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static double GetTrajectoryTime(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
+    public static double TrajectoryTime(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
     {
-      var sin = double.Sin(initialAngle);
-
-      var v0sin = initialVelocity * sin;
+      var v0sin = initialVelocity * double.Sin(initialAngle);
 
       return (v0sin + double.Sqrt(v0sin * v0sin + 2 * gravitationalAcceleration * initialHeight)) / gravitationalAcceleration;
     }
 
-    /// <summary>
-    /// <para>Maximum height, unit of <see cref="Quantities.Length"/>.</para>
-    /// </summary>
-    /// <param name="initialHeight"></param>
-    /// <param name="initialAngle"></param>
-    /// <param name="initialVelocity"></param>
-    /// <param name="gravitationalAcceleration"></param>
-    /// <returns></returns>
-    public static double TrajectoryHeight(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
-    {
-      var maxHeight = initialVelocity * initialVelocity * double.Pow(double.Sin(initialAngle), 2) / (2 * double.Abs(gravitationalAcceleration));
-
-      if (double.IsPositive(initialHeight))
-        return initialHeight + maxHeight;
-
-      return maxHeight;
-    }
-
-    /// <summary>
-    /// <para>Maximum distance, unit of <see cref="Quantities.Length"/>.</para>
-    /// </summary>
-    /// <param name="initialHeight"></param>
-    /// <param name="initialAngle"></param>
-    /// <param name="initialVelocity"></param>
-    /// <param name="gravitationalAcceleration"></param>
-    /// <param name="trajectoryHeight"></param>
-    /// <param name="trajectoryTime"></param>
-    /// <returns></returns>
-    public static double TrajectoryRange(double initialAngle, double initialVelocity, out double trajectoryHeight, out double trajectoryTime, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
-    {
-      trajectoryTime = TrajectoryTime(initialAngle, initialVelocity, out trajectoryHeight, initialHeight, gravitationalAcceleration);
-
-      return initialVelocity * double.Cos(initialAngle) * trajectoryTime;
-    }
-
-    /// <summary>
-    /// <para>Maximum time, unit of <see cref="Quantities.Time"/>.</para>
-    /// </summary>
-    /// <param name="initialHeight"></param>
-    /// <param name="initialAngle"></param>
-    /// <param name="initialVelocity"></param>
-    /// <param name="gravitationalAcceleration"></param>
-    /// <param name="trajectoryHeight"></param>
-    /// <returns></returns>
-    public static double TrajectoryTime(double initialAngle, double initialVelocity, out double trajectoryHeight, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
-    {
-      trajectoryHeight = TrajectoryHeight(initialAngle, initialVelocity, initialHeight, gravitationalAcceleration);
-
-      if (double.IsNegative(initialHeight))
-        trajectoryHeight -= initialHeight;
-
-      var absg = double.Abs(gravitationalAcceleration);
-
-      return initialVelocity * double.Sin(initialAngle) / absg + double.Sqrt(2 * trajectoryHeight / absg);
-    }
-
-    public static double PlanetaryTrajectoryHeight(double initialVelocity, double initialAngle = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity, double earthRadius = EllipsoidReference.EarthMeanRadius)
-    {
-      var (sin, cos) = double.SinCos(initialAngle);
-
-      var vr = initialVelocity / double.Sqrt(earthRadius * gravitationalAcceleration);
-
-      var vrpow2 = vr * vr;
-
-      return (initialVelocity * initialVelocity * sin * sin / gravitationalAcceleration) / (1 - vrpow2 + double.Sqrt(1 - (2 - vrpow2) * vrpow2 * cos * cos));
-    }
-
-    public static double PlanetaryTrajectoryRange(double initialVelocity, double initialAngle = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity, double earthRadius = EllipsoidReference.EarthMeanRadius)
-    {
-      var vr = initialVelocity / double.Sqrt(earthRadius * gravitationalAcceleration);
-
-      var vrpow2 = vr * vr;
-
-      return double.Pow(initialVelocity, 2) * double.Sin(2 * initialAngle) / gravitationalAcceleration / double.Sqrt(1 - (2 - vrpow2) * vrpow2 * double.Pow(double.Sin(initialAngle), 2));
-    }
-
-    public static double PlanetaryTrajectoryTime(double initialVelocity, double initialAngle = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity, double earthRadius = EllipsoidReference.EarthMeanRadius)
-    {
-      var (sin, cos) = double.SinCos(initialAngle);
-
-      var vr = initialVelocity / double.Sqrt(earthRadius * gravitationalAcceleration);
-
-      var vrpow2 = vr * vr;
-
-      return (2 * initialVelocity * sin / gravitationalAcceleration) * (1 / (2 - vrpow2)) * (1 + 1 / (double.Sqrt(2 - vrpow2) * vr * sin) * double.Asin((double.Sqrt(2 - vrpow2) * vr * sin) / double.Sqrt(1 - (2 - vrpow2) * vrpow2 * cos * cos)));
-    }
+    #endregion // Trajectories
   }
 }
-
-//namespace Flux.Mechanics
-//{
-//  public interface ITrajectory2D
-//  {
-//    /// <summary>Gravitational acceleration.</summary>
-//    Units.Acceleration GravitationalAcceleration { get; init; }
-//    /// <summary>Initial angle.</summary>
-//    Units.Angle InitialAngle { get; init; }
-//    /// <summary>Initial velocity.</summary>
-//    Units.LinearVelocity InitialVelocity { get; init; }
-
-//    /// <summary>Yields the greatest parabolic height an object reaches within the trajectory</summary>
-//    Units.Length MaxHeight { get; }
-//    /// <summary>Yields the greatest distance the object travels along the x-axis.</summary>
-//    Units.Length MaxRange { get; }
-//    /// <summary>Yields the greatest time the object travels before impact.</summary>
-//    Units.Time MaxTime { get; }
-
-//    Units.LinearVelocity GetVelocity(Units.Time time);
-//    Units.LinearVelocity GetVelocityX(Units.Time time);
-//    Units.LinearVelocity GetVelocityY(Units.Time time);
-//    Units.Length GetX(Units.Time time);
-//    Units.Length GetY(Units.Time time);
-//  }
-//}

@@ -11,7 +11,12 @@ namespace Flux.Quantities
   public readonly record struct ElectricCharge
     : System.IComparable, System.IComparable<ElectricCharge>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricChargeUnit>
   {
-    public static ElectricCharge ElementaryCharge { get; } = new(1.602176634e-19);
+    /// <summary>
+    /// <para>The elementary charge, usually denoted by e, is a fundamental physical constant, defined as the electric charge carried by a single proton (+1 e) or, equivalently, the magnitude of the negative electric charge carried by a single electron, which has charge -1 e.</para>
+    /// <para>This is one of the fundamental physical constants of physics.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Elementary_charge"/></para>
+    /// </summary>
+    public const double ElementaryCharge = 1.602176634e-19;
 
     private readonly double m_value;
 

@@ -13,6 +13,13 @@ namespace Flux.Quantities
   public readonly record struct Force
     : System.IComparable, System.IComparable<Force>, System.IFormattable, ISiUnitValueQuantifiable<double, ForceUnit>
   {
+    /// <summary>
+    /// <para>The gravitational constant is an empirical physical constant involved in the calculation of gravitational effects in Sir Isaac Newton's law of universal gravitation and in Albert Einstein's theory of general relativity. It is also known as the universal gravitational constant, the Newtonian constant of gravitation, or the Cavendish gravitational constant, denoted by the capital letter G.</para>
+    /// <para>This is fundamental constant of nature. It is not an exact constant.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Gravitational_constant"/></para>
+    /// </summary>
+    public const double GravitationalConstant = 6.6743e-11;
+
     private readonly double m_value;
 
     public Force(double value, ForceUnit unit = ForceUnit.Newton) => m_value = ConvertFromUnit(unit, value);

@@ -8,27 +8,46 @@ namespace Flux.Geometry
   public readonly record struct HexagonGeometry
     : System.IFormattable
   {
+    public const double CircleFillRatio = 0.8269933431326881;
     public static HexagonGeometry Unit { get; } = new(1);
 
     private readonly double m_sideLength;
 
     public HexagonGeometry(double sideLength) => m_sideLength = sideLength;
 
+    /// <summary>
+    /// <para>The circumradius of the hexagon.</para>
+    /// </summary>
+    public double Circumradius => m_sideLength;
+
+    /// <summary>
+    /// <para>The inradius of the hexagon.</para>
+    /// </summary>
+    public double Inradius => ConvertCircumradiusToInradius(m_sideLength);
+
+    /// <summary>
+    /// <para>The perimeter of the hexagon.</para>
+    /// </summary>
+    public double Perimeter => PerimeterOfHexagon(m_sideLength);
+
+    /// <summary>
+    /// <para>The side-length of the hexagon, which is equal to the circumradius.</para>
+    /// </summary>
     public double SideLength => m_sideLength;
 
-    public bool Contains(double x, double y) => Contains(m_sideLength, x, y);
-
-    /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
+    /// <summary>
+    /// <para>The surface area of the hexagon.</para>
+    /// </summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public double GetArea() => AreaOf(m_sideLength);
+    public double SurfaceArea => AreaOfHexagon(m_sideLength);
 
-    public double GetCircumradius() => m_sideLength;
-
-    public double GetInradius() => m_sideLength * System.Math.Sqrt(3) / 2;
-
-    /// <summary>Calculates the surface perimeter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
-    /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public double GetPerimeter() => PerimeterOf(m_sideLength);
+    /// <summary>
+    /// <para>Verify whether the point (<paramref name="x"/>, <paramref name="y"/>) is inside the hexagon, assuming (0, 0) is the center of the hexagon.</para>
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public bool Contains(double x, double y) => PointInHexagon(m_sideLength, x, y);
 
     public RegularPolygon ToPolygonFlatTopped() => RegularPolygon.Create(6, m_sideLength, double.Pi / 2);
 
@@ -36,10 +55,33 @@ namespace Flux.Geometry
 
     #region Static methods
 
+    #region Conversion methods
+
+    /// <summary>
+    /// <para>Compute the hexagon circumradius from its <paramref name="inradius"/>.</para>
+    /// </summary>
+    /// <param name="inradius"></param>
+    /// <returns></returns>
+    /// <remarks>The inradius is also known as minimal radius.</remarks>
+    public static double ConvertInradiusToCircumradius(double inradius) => inradius * 2 / System.Math.Sqrt(3);
+
+    /// <summary>
+    /// <para>Compute the hexagon inradius from its <paramref name="circumradius"/>.</para>
+    /// </summary>
+    /// <param name="circumradius"></param>
+    /// <returns></returns>
+    /// <remarks>The circumradius, or maximal radius, is equal to the side-length of a hexagon.</remarks>
+    public static double ConvertCircumradiusToInradius(double circumradius) => circumradius * System.Math.Sqrt(3) / 2;
+
+    #endregion // Conversion methods
+
     /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double AreaOf(double sideLength)
-      => 3 * (double.Sqrt(3) / 2) * sideLength * sideLength;
+    public static double AreaOfHexagon(double sideLength)
+      => 3 * double.Sqrt(3) / 2 * (sideLength * sideLength);
+
+    public static RegularPolygon Create(double circumradius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
+      => RegularPolygon.Create(6, circumradius, arcOffset, translateX, translateY);
 
     /// <summary>
     /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the hexagon with the specified <paramref name="sideLength"/>.</para>
@@ -49,7 +91,7 @@ namespace Flux.Geometry
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
-    public static bool Contains(double sideLength, double x, double y)
+    public static bool PointInHexagon(double sideLength, double x, double y)
     {
       var q2x = System.Math.Abs(x);         // transform the test point locally and to quadrant 2
       var q2y = System.Math.Abs(y);         // transform the test point locally and to quadrant 2
@@ -72,24 +114,6 @@ namespace Flux.Geometry
       => index > 0 ? 3 * index * (index - 1) + 1 : throw new System.ArgumentOutOfRangeException(nameof(index));
 
     /// <summary>
-    /// <para>Compute the hexagon circumradius from the <paramref name="inradius"/>.</para>
-    /// </summary>
-    /// <param name="inradius"></param>
-    /// <returns></returns>
-    /// <remarks>The inradius is also known as minimal radius.</remarks>
-    public static double ComputeCircumradius(double inradius)
-      => inradius * 2 / System.Math.Sqrt(3);
-
-    /// <summary>
-    /// <para>Compute the hexagon inradius from the <paramref name="circumradius"/>.</para>
-    /// </summary>
-    /// <param name="circumradius"></param>
-    /// <returns></returns>
-    /// <remarks>The circumradius, or maximal radius, is equal to the side-length of a hexagon.</remarks>
-    public static double ComputeInradius(double circumradius)
-      => circumradius * System.Math.Sqrt(3) / 2;
-
-    /// <summary>
     /// <para>The inverse of the centered hexagonal number, i.e. find the index of the centered hexagonal number.</para>
     /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
     /// </summary>
@@ -108,8 +132,7 @@ namespace Flux.Geometry
 
     /// <summary>Calculates the surface perimeter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double PerimeterOf(double sideLength)
-      => sideLength * 6;
+    public static double PerimeterOfHexagon(double sideLength) => sideLength * 6;
 
     #endregion // Static methods
 
@@ -117,9 +140,9 @@ namespace Flux.Geometry
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-      format ??= "N4";
+      format ??= "N3";
 
-      return GetType().Name + $", SideLength = {SideLength.ToString(format, formatProvider)}, Area = {GetArea().ToString(format, formatProvider)}, Circumradius = {GetCircumradius().ToString(format, formatProvider)}, Inradius = {GetInradius().ToString(format, formatProvider)}, Perimeter = {GetPerimeter().ToString(format, formatProvider)}";
+      return $"{GetType().Name} {{ SideLength = {SideLength.ToString(format, formatProvider)}, Circumradius = {Circumradius.ToString(format, formatProvider)}, Inradius = {Inradius.ToString(format, formatProvider)}, Perimeter = {Perimeter.ToString(format, formatProvider)}, SurfaceArea = {SurfaceArea.ToString(format, formatProvider)} }}";
     }
 
     #endregion // Implemented interfaces

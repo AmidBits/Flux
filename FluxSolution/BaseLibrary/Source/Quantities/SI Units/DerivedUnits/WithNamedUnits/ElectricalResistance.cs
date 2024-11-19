@@ -13,7 +13,11 @@ namespace Flux.Quantities
   public readonly record struct ElectricalResistance
     : System.IComparable, System.IComparable<ElectricalResistance>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricalResistanceUnit>
   {
-    public static ElectricalResistance VonKlitzingConstant => new(25812.80745); // 25812.80745;
+    /// <summary>
+    /// <para>The Von Klitzing constant, in (base) unit of ohm.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Quantum_Hall_effect"/></para>
+    /// </summary>
+    public const double VonKlitzingConstant = 25812.80745;
 
     private readonly double m_value;
 

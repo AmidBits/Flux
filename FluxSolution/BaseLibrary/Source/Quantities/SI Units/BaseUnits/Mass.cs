@@ -1,3 +1,5 @@
+using System.Reflection.Metadata;
+
 namespace Flux.Quantities
 {
   public enum MassUnit
@@ -19,7 +21,18 @@ namespace Flux.Quantities
   public readonly record struct Mass
     : System.IComparable, System.IComparable<Mass>, System.IFormattable, ISiUnitValueQuantifiable<double, MassUnit>
   {
-    public static Mass ElectronMass { get; } = new(9.109383701528e-31);
+    /// <summary>
+    /// <para>In particle physics, the electron mass (symbol: me) is the mass of a stationary electron, also known as the invariant mass of the electron. It is one of the fundamental constants of physics.</para>
+    /// <para>This is one of the fundamental physical constants of physics.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Electron_mass"/></para>
+    /// </summary>
+    public const double ElectronMass = 9.109383701528e-31;
+
+    /// <summary>
+    /// <para></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Dalton_(unit)"/></para>
+    /// </summary>
+    public const double UnifiedAtomicMassUnit = 1.66053906892e-27;
 
     private readonly double m_value;
 
@@ -38,6 +51,8 @@ namespace Flux.Quantities
     /// <param name="gram"></param>
     /// <param name="prefix"></param>
     public Mass(MetricPrefix prefix, double gram) => m_value = prefix.ConvertTo(gram, MetricPrefix.Kilo);
+
+    public Mass(Force force, Acceleration acceleration) => m_value = force.Value / acceleration.Value;
 
     #region Static methods
     #endregion // Static methods

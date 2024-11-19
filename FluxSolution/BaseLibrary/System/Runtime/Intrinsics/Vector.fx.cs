@@ -18,7 +18,7 @@ namespace Flux
     public static Vector256<double> Two256D => Vector256.Create(2d);
     //    public static Vector512<double> Two512D => Vector512.Create(2L).AsDouble();
 
-    //    public static Vector128<double> Zero128D => Vector128.Create(0L).AsDouble();
+    public static Vector128<double> Zero128D => Vector128.Create(0L).AsDouble();
     public static Vector256<double> Zero256D => Vector256.Create(0L).AsDouble();
     //public static Vector512<double> Zero512D => Vector512.Create(0L).AsDouble();
 
@@ -79,23 +79,11 @@ namespace Flux
       ? System.Runtime.Intrinsics.X86.Sse2.Add(source, target)
       : Vector128.Create(source[0] + target[0], source[1] + target[1]);
 
-    /// <summary>Returns a new vector with the sum of each vector components and the scalar value.</summary>
-    public static Vector128<double> Add(this Vector128<double> source, double scalar)
-      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse2.Add(source, Vector128.Create(scalar))
-      : Vector128.Create(source[0] + scalar, source[1] + scalar);
-
     /// <summary>Returns a new vector with the sum of the vector components.</summary>
     public static Vector256<double> Add(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Add(source, target)
       : Vector256.Create(Add(source.GetLower(), target.GetLower()), Add(source.GetUpper(), target.GetUpper()));
-
-    /// <summary>Returns a new vector with the sum of each vector components and the scalar value.</summary>
-    public static Vector256<double> Add(this Vector256<double> source, double scalar)
-      => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.Add(source, Vector256.Create(scalar))
-      : Vector256.Create(Add(source.GetLower(), scalar), Add(source.GetUpper(), scalar));
 
     /// <summary>Returns a new vector with the sum of the vector components.</summary>
     public static Vector512<double> Add(this Vector512<double> source, Vector512<double> target)
@@ -104,10 +92,13 @@ namespace Flux
       : Vector512.Create(Add(source.GetLower(), target.GetLower()), Add(source.GetUpper(), target.GetUpper()));
 
     /// <summary>Returns a new vector with the sum of each vector components and the scalar value.</summary>
-    public static Vector512<double> Add(this Vector512<double> source, double scalar)
-      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx512F.Add(source, Vector512.Create(scalar))
-      : Vector512.Create(Add(source.GetLower(), scalar), Add(source.GetUpper(), scalar));
+    public static Vector128<double> Add(this Vector128<double> source, double scalar) => source.Add(Vector128.Create(scalar));
+
+    /// <summary>Returns a new vector with the sum of each vector components and the scalar value.</summary>
+    public static Vector256<double> Add(this Vector256<double> source, double scalar) => source.Add(Vector256.Create(scalar));
+
+    /// <summary>Returns a new vector with the sum of each vector components and the scalar value.</summary>
+    public static Vector512<double> Add(this Vector512<double> source, double scalar) => source.Add(Vector512.Create(scalar));
 
     #endregion // Add
 
@@ -179,24 +170,12 @@ namespace Flux
       ? System.Runtime.Intrinsics.X86.Sse2.Max(System.Runtime.Intrinsics.X86.Sse2.Min(source, max), min)
       : Vector128.Create(double.Clamp(source[0], min[0], max[0]), double.Clamp(source[1], min[1], max[1]));
 
-    /// <summary>Returns a new vector with its components clamped between the components min and max.</summary>
-    public static Vector128<double> Clamp(this Vector128<double> source, double min, double max)
-      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse2.Max(System.Runtime.Intrinsics.X86.Sse2.Min(source, Vector128.Create(max)), Vector128.Create(min))
-      : Vector128.Create(double.Clamp(source[0], min, max), double.Clamp(source[1], min, max));
-
     /// <summary>Returns a new vector with its components clamped between the corresponding components in min and max.</summary>
     public static Vector256<double> Clamp(this Vector256<double> source, Vector256<double> min, Vector256<double> max)
       // We must follow HLSL behavior in the case user specified min value is bigger than max value.
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Max(System.Runtime.Intrinsics.X86.Avx.Min(source, max), min)
       : Vector256.Create(Clamp(source.GetLower(), min.GetLower(), max.GetLower()), Clamp(source.GetUpper(), min.GetUpper(), max.GetUpper()));
-
-    /// <summary>Returns a new vector with its components clamped between the components min and max.</summary>
-    public static Vector256<double> Clamp(this Vector256<double> source, double min, double max)
-      => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.Max(System.Runtime.Intrinsics.X86.Avx.Min(source, Vector256.Create(max)), Vector256.Create(min))
-      : Vector256.Create(Clamp(source.GetLower(), min, max), Clamp(source.GetUpper(), min, max));
 
     /// <summary>Returns a new vector with its components clamped between the corresponding components in min and max.</summary>
     public static Vector512<double> Clamp(this Vector512<double> source, Vector512<double> min, Vector512<double> max)
@@ -205,10 +184,13 @@ namespace Flux
       : Vector512.Create(Clamp(source.GetLower(), min.GetLower(), max.GetLower()), Clamp(source.GetUpper(), min.GetUpper(), max.GetUpper()));
 
     /// <summary>Returns a new vector with its components clamped between the components min and max.</summary>
-    public static Vector512<double> Clamp(this Vector512<double> source, double min, double max)
-      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx512F.Max(System.Runtime.Intrinsics.X86.Avx512F.Min(source, Vector512.Create(max)), Vector512.Create(min))
-      : Vector512.Create(Clamp(source.GetLower(), min, max), Clamp(source.GetUpper(), min, max));
+    public static Vector128<double> Clamp(this Vector128<double> source, double min, double max) => source.Clamp(Vector128.Create(min), Vector128.Create(max));
+
+    /// <summary>Returns a new vector with its components clamped between the components min and max.</summary>
+    public static Vector256<double> Clamp(this Vector256<double> source, double min, double max) => source.Clamp(Vector256.Create(min), Vector256.Create(max));
+
+    /// <summary>Returns a new vector with its components clamped between the components min and max.</summary>
+    public static Vector512<double> Clamp(this Vector512<double> source, double min, double max) => source.Clamp(Vector512.Create(min), Vector512.Create(max));
 
 
     #endregion // Clamp
@@ -267,23 +249,11 @@ namespace Flux
       ? System.Runtime.Intrinsics.X86.Sse2.Divide(source, divisor)
       : Vector128.Create(source[0] / divisor[0], source[1] / divisor[1]);
 
-    /// <summary>Returns a new vector with the quotient of each vector components and the scalar value.</summary>
-    public static Vector128<double> Divide(this Vector128<double> source, double divisor)
-      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse2.Divide(source, Vector128.Create(divisor))
-      : Vector128.Create(source[0] / divisor, source[1] / divisor);
-
     /// <summary>Returns a new vector with the quotient of the vector components.</summary>
     public static Vector256<double> Divide(this Vector256<double> source, Vector256<double> divisor)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Divide(source, divisor)
       : Vector256.Create(Divide(source.GetLower(), divisor.GetLower()), Divide(source.GetUpper(), divisor.GetUpper()));
-
-    /// <summary>Returns a new vector with the quotient of each vector components and the scalar value.</summary>
-    public static Vector256<double> Divide(this Vector256<double> source, double divisor)
-      => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.Divide(source, Vector256.Create(divisor))
-      : Vector256.Create(Divide(source.GetLower(), divisor), Divide(source.GetUpper(), divisor));
 
     /// <summary>Returns a new vector with the quotient of the vector components.</summary>
     public static Vector512<double> Divide(this Vector512<double> source, Vector512<double> divisor)
@@ -292,10 +262,13 @@ namespace Flux
       : Vector512.Create(Divide(source.GetLower(), divisor.GetLower()), Divide(source.GetUpper(), divisor.GetUpper()));
 
     /// <summary>Returns a new vector with the quotient of each vector components and the scalar value.</summary>
-    public static Vector512<double> Divide(this Vector512<double> source, double divisor)
-      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx512F.Divide(source, Vector512.Create(divisor))
-      : Vector512.Create(Divide(source.GetLower(), divisor), Divide(source.GetUpper(), divisor));
+    public static Vector128<double> Divide(this Vector128<double> source, double divisor) => source.Divide(Vector128.Create(divisor));
+
+    /// <summary>Returns a new vector with the quotient of each vector components and the scalar value.</summary>
+    public static Vector256<double> Divide(this Vector256<double> source, double divisor) => source.Divide(Vector256.Create(divisor));
+
+    /// <summary>Returns a new vector with the quotient of each vector components and the scalar value.</summary>
+    public static Vector512<double> Divide(this Vector512<double> source, double divisor) => source.Divide(Vector512.Create(divisor));
 
     #endregion // Divide
 
@@ -312,14 +285,12 @@ namespace Flux
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Multiply(source, target).HorizontalSum()
       : Dot(source.GetLower(), target.GetLower()) + Dot(source.GetUpper(), target.GetUpper());
-    //: source[0] * target[0] + source[1] * target[1] + source[2] * target[2] + source[3] * target[3];
 
     /// <summary>Returns the dot product of the vector.</summary>
     public static double Dot(this Vector512<double> source, Vector512<double> target)
       => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx512F.Multiply(source, target).HorizontalSum() // Normal multiply of the four components = (X, Y, Z, W).
       : Dot(source.GetLower(), target.GetLower()) + Dot(source.GetUpper(), target.GetUpper());
-    //: source[0] * target[0] + source[1] * target[1] + source[2] * target[2] + source[3] * target[3] + source[4] * target[4] + source[5] * target[5] + source[6] * target[6] + source[7] * target[7];
 
     #endregion // Dot
 
@@ -573,23 +544,11 @@ namespace Flux
       ? System.Runtime.Intrinsics.X86.Sse2.Multiply(source, target)
       : Vector128.Create(source[0] * target[0], source[1] * target[1]);
 
-    /// <summary>Returns a new vector with the product of each vector components and the scalar value.</summary>
-    public static Vector128<double> Multiply(this Vector128<double> source, double factor)
-      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse2.Multiply(source, Vector128.Create(factor))
-      : Vector128.Create(source[0] * factor, source[1] * factor);
-
     /// <summary>Returns a new vector with the product of the vector components.</summary>
     public static Vector256<double> Multiply(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Multiply(source, target)
       : Vector256.Create(Multiply(source.GetLower(), target.GetLower()), Multiply(source.GetUpper(), target.GetUpper()));
-
-    /// <summary>Returns a new vector with the product of each vector components and the scalar value.</summary>
-    public static Vector256<double> Multiply(this Vector256<double> source, double factor)
-      => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.Multiply(source, Vector256.Create(factor))
-      : Vector256.Create(Multiply(source.GetLower(), factor), Multiply(source.GetUpper(), factor));
 
     /// <summary>Returns a new vector with the product of the vector components.</summary>
     public static Vector512<double> Multiply(this Vector512<double> source, Vector512<double> target)
@@ -598,10 +557,13 @@ namespace Flux
       : Vector512.Create(Multiply(source.GetLower(), target.GetLower()), Multiply(source.GetUpper(), target.GetUpper()));
 
     /// <summary>Returns a new vector with the product of each vector components and the scalar value.</summary>
-    public static Vector512<double> Multiply(this Vector512<double> source, double factor)
-      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx512F.Multiply(source, Vector512.Create(factor))
-      : Vector512.Create(Multiply(source.GetLower(), factor), Multiply(source.GetUpper(), factor));
+    public static Vector128<double> Multiply(this Vector128<double> source, double factor) => source.Multiply(Vector128.Create(factor));
+
+    /// <summary>Returns a new vector with the product of each vector components and the scalar value.</summary>
+    public static Vector256<double> Multiply(this Vector256<double> source, double factor) => source.Multiply(Vector256.Create(factor));
+
+    /// <summary>Returns a new vector with the product of each vector components and the scalar value.</summary>
+    public static Vector512<double> Multiply(this Vector512<double> source, double factor) => source.Multiply(Vector512.Create(factor));
 
     #endregion // Multiply
 
@@ -803,23 +765,11 @@ namespace Flux
       ? System.Runtime.Intrinsics.X86.Sse2.Subtract(source, System.Runtime.Intrinsics.X86.Sse2.Multiply(System.Runtime.Intrinsics.X86.Sse41.RoundToZero(System.Runtime.Intrinsics.X86.Sse2.Divide(source, divisor)), divisor))
       : Vector128.Create(source[0] % divisor[0], source[1] % divisor[1]);
 
-    /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
-    public static Vector128<double> Remainder(this Vector128<double> source, double divisor)
-      => System.Runtime.Intrinsics.X86.Sse41.IsSupported && Vector128.Create(divisor) is var divisor128
-      ? System.Runtime.Intrinsics.X86.Sse2.Subtract(source, System.Runtime.Intrinsics.X86.Sse2.Multiply(System.Runtime.Intrinsics.X86.Sse41.RoundToZero(System.Runtime.Intrinsics.X86.Sse2.Divide(source, divisor128)), divisor128))
-      : Vector128.Create(source[0] % divisor, source[1] % divisor);
-
     /// <summary>Returns a new vector with the remainder of the vector components.</summary>
     public static Vector256<double> Remainder(this Vector256<double> source, Vector256<double> divisor)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Subtract(source, System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx.RoundToZero(System.Runtime.Intrinsics.X86.Avx.Divide(source, divisor)), divisor))
       : Vector256.Create(Remainder(source.GetLower(), divisor.GetLower()), Remainder(source.GetUpper(), divisor.GetUpper()));
-
-    /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
-    public static Vector256<double> Remainder(this Vector256<double> source, double divisor)
-      => System.Runtime.Intrinsics.X86.Avx.IsSupported && Vector256.Create(divisor) is var divisor128
-      ? System.Runtime.Intrinsics.X86.Avx.Subtract(source, System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx.RoundToZero(System.Runtime.Intrinsics.X86.Avx.Divide(source, divisor128)), divisor128))
-      : Vector256.Create(Remainder(source.GetLower(), divisor), Remainder(source.GetUpper(), divisor));
 
     /// <summary>Returns a new vector with the remainder of the vector components.</summary>
     public static Vector512<double> Remainder(this Vector512<double> source, Vector512<double> divisor)
@@ -828,10 +778,13 @@ namespace Flux
       : Vector512.Create(Remainder(source.GetLower(), divisor.GetLower()), Remainder(source.GetUpper(), divisor.GetUpper()));
 
     /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
-    public static Vector512<double> Remainder(this Vector512<double> source, double divisor)
-      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported && Vector512.Create(divisor) is var divisor512
-      ? System.Runtime.Intrinsics.X86.Avx512F.Subtract(source, System.Runtime.Intrinsics.X86.Avx512F.Multiply(System.Runtime.Intrinsics.X86.Avx512F.Divide(source, divisor512).RoundTowardZero(), divisor512))
-      : Vector512.Create(Remainder(source.GetLower(), divisor), Remainder(source.GetUpper(), divisor));
+    public static Vector128<double> Remainder(this Vector128<double> source, double divisor) => source.Remainder(Vector128.Create(divisor));
+
+    /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
+    public static Vector256<double> Remainder(this Vector256<double> source, double divisor) => source.Remainder(Vector256.Create(divisor));
+
+    /// <summary>Returns a new vector with the remainder of the vector components and the scalar value.</summary>
+    public static Vector512<double> Remainder(this Vector512<double> source, double divisor) => source.Remainder(Vector512.Create(divisor));
 
     #endregion // Remainder
 
@@ -1071,23 +1024,11 @@ namespace Flux
       ? System.Runtime.Intrinsics.X86.Sse2.Subtract(source, target)
       : Vector128.Create(source[0] - target[0], source[1] - target[1]);
 
-    /// <summary>Returns a new vector with the difference of each vector components and the scalar value.</summary>
-    public static Vector128<double> Subtract(this Vector128<double> source, double scalar)
-      => System.Runtime.Intrinsics.X86.Sse2.IsSupported
-      ? System.Runtime.Intrinsics.X86.Sse2.Subtract(source, Vector128.Create(scalar))
-      : Vector128.Create(source[0] - scalar, source[1] - scalar);
-
     /// <summary>Returns a new vector with the difference of the vector components.</summary>
     public static Vector256<double> Subtract(this Vector256<double> source, Vector256<double> target)
       => System.Runtime.Intrinsics.X86.Avx.IsSupported
       ? System.Runtime.Intrinsics.X86.Avx.Subtract(source, target)
       : Vector256.Create(Subtract(source.GetLower(), target.GetLower()), Subtract(source.GetUpper(), target.GetUpper()));
-
-    /// <summary>Returns a new vector with the difference of each vector components and the scalar value.</summary>
-    public static Vector256<double> Subtract(this Vector256<double> source, double scalar)
-      => System.Runtime.Intrinsics.X86.Avx.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx.Subtract(source, Vector256.Create(scalar))
-      : Vector256.Create(Subtract(source.GetLower(), scalar), Subtract(source.GetUpper(), scalar));
 
     /// <summary>Returns a new vector with the difference of the vector components.</summary>
     public static Vector512<double> Subtract(this Vector512<double> source, Vector512<double> target)
@@ -1096,12 +1037,31 @@ namespace Flux
       : Vector512.Create(Subtract(source.GetLower(), target.GetLower()), Subtract(source.GetUpper(), target.GetUpper()));
 
     /// <summary>Returns a new vector with the difference of each vector components and the scalar value.</summary>
-    public static Vector512<double> Subtract(this Vector512<double> source, double scalar)
-      => System.Runtime.Intrinsics.X86.Avx512F.IsSupported
-      ? System.Runtime.Intrinsics.X86.Avx512F.Subtract(source, Vector512.Create(scalar))
-      : Vector512.Create(Subtract(source.GetLower(), scalar), Subtract(source.GetUpper(), scalar));
+    public static Vector128<double> Subtract(this Vector128<double> source, double scalar) => source.Subtract(Vector128.Create(scalar));
+
+    /// <summary>Returns a new vector with the difference of each vector components and the scalar value.</summary>
+    public static Vector256<double> Subtract(this Vector256<double> source, double scalar) => source.Subtract(Vector256.Create(scalar));
+
+    /// <summary>Returns a new vector with the difference of each vector components and the scalar value.</summary>
+    public static Vector512<double> Subtract(this Vector512<double> source, double scalar) => source.Subtract(Vector512.Create(scalar));
 
     #endregion // Subtract
+
+    #region ToString..
+
+    public static string ToStringXY(this Vector128<double> source, string? format, IFormatProvider? formatProvider)
+      => $"<{source[0].ToString(format, formatProvider)}, {source[1].ToString(format, formatProvider)}>";
+
+    public static string ToStringXY(this Vector256<double> source, string? format, IFormatProvider? formatProvider)
+      => $"<{source[0].ToString(format, formatProvider)}, {source[1].ToString(format, formatProvider)}>";
+
+    public static string ToStringXYZ(this Vector256<double> source, string? format, IFormatProvider? formatProvider)
+      => $"<{source[0].ToString(format, formatProvider)}, {source[1].ToString(format, formatProvider)}, {source[2].ToString(format, formatProvider)}>";
+
+    public static string ToStringXYZW(this Vector256<double> source, string? format, IFormatProvider? formatProvider)
+      => $"<{source[0].ToString(format, formatProvider)}, {source[1].ToString(format, formatProvider)}, {source[2].ToString(format, formatProvider)}, {source[3].ToString(format, formatProvider)}>";
+
+    #endregion // ToString..
 
     #region Truncate
 
@@ -1186,6 +1146,10 @@ namespace Flux
         return Vector512.Create(lq, uq);
       }
     }
+
+    public static Vector128<double> TruncMod(this Vector128<double> source, double divisor, out Vector128<double> remainder) => source.TruncMod(Vector128.Create(divisor), out remainder);
+    public static Vector256<double> TruncMod(this Vector256<double> source, double divisor, out Vector256<double> remainder) => source.TruncMod(Vector256.Create(divisor), out remainder);
+    public static Vector512<double> TruncMod(this Vector512<double> source, double divisor, out Vector512<double> remainder) => source.TruncMod(Vector512.Create(divisor), out remainder);
 
     #endregion // TruncMod
 

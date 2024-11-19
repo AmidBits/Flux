@@ -25,3 +25,24 @@ namespace Flux
     }
   }
 }
+
+#region Create sample file
+/*
+
+using var sw = System.IO.File.CreateText(fileName);
+
+var data = new string[][] { new string[] { "A", "B" }, new string[] { "1", "2" } };
+
+Flux.Fx.WriteUrgf(sw, data);
+
+sw.Write((char)UnicodeInformationSeparator.FileSeparator);
+
+data = new string[][] { new string[] { "C", "D" }, new string[] { "3", "4" } };
+
+Flux.Fx.WriteUrgf(sw, data);
+
+sw.Flush();
+sw.Close();
+
+*/
+#endregion // Create sample file

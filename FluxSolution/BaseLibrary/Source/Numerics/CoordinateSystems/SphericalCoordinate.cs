@@ -1,10 +1,3 @@
-
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics;
-
 namespace Flux
 {
   #region ExtensionMethods
@@ -147,11 +140,43 @@ namespace Flux
 
       #region Static methods
 
+      #region Conversion methods
+
+      /// <summary>Creates cartesian 3D coordinates from the inclination and azimuth of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public (double x, double y, double z) ConvertSphericalByInclinationToCartesianCoordinate3(double inclination, double azimuth, double radiusA, double radiusB, double radiusC)
+      {
+        var (sp, cp) = double.SinCos(inclination);
+        var (sa, ca) = double.SinCos(azimuth);
+
+        return (
+          radiusA * sp * ca,
+          radiusB * sp * sa,
+          radiusC * cp
+        );
+      }
+
+      /// <summary>Creates cartesian 3D coordinates from the latitude (elevation) and longitude (azimuth) of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public (double x, double y, double z) ConvertSphericalByElevationToCartesianCoordinate3(double lat, double lon, double radiusA, double radiusB, double radiusC)
+      {
+        var (sp, cp) = double.SinCos(lat);
+        var (sa, ca) = double.SinCos(lon);
+
+        return (
+          radiusA * cp * ca,
+          radiusB * cp * sa,
+          radiusC * sp
+        );
+      }
+
       /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
       public static double ConvertInclinationToElevation(double inclination) => double.Pi / 2 - inclination;
 
       /// <summary>Converting from elevation to inclination is simply a quarter turn (PI / 2) minus the elevation.</summary>
       public static double ConvertElevationToInclination(double elevation) => double.Pi / 2 - elevation;
+
+      #endregion // Conversion methods
 
       /// <summary>
       /// <para>Computes the surface area of a hemisphere with the specified <paramref name="radius"/>.</para>
@@ -161,11 +186,26 @@ namespace Flux
       public static double SurfaceAreaOfHemisphere(double radius) => 3 * double.Pi * radius * radius;
 
       /// <summary>
+      /// <para>Computes the surface area of a hemispherical shell with the specified <paramref name="externalRadius"/> and <paramref name="internalRadius"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
+      /// </summary>
+      /// <param name="radius">The radius of the hemispherical shell.</param>
+      public static double SurfaceAreaOfHemisphericalShell(double externalRadius, double internalRadius) => double.Pi * (3 * externalRadius * externalRadius + internalRadius * internalRadius);
+
+      /// <summary>
       /// <para>Computes the surface area of a sphere with the specified <paramref name="radius"/>.</para>
       /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
       /// </summary>
       /// <param name="radius">The radius of the sphere.</param>
       public static double SurfaceAreaOfSphere(double radius) => 4 * double.Pi * radius * radius;
+
+      /// <summary>
+      /// <para>Computes the surface area of a spherical lune with the specified <paramref name="radius"/> and <paramref name="dihedralAngle"/>.</para>
+      /// </summary>
+      /// <param name="radius"></param>
+      /// <param name="dihedralAngle"></param>
+      /// <returns>The surface area of a spherical lune.</returns>
+      public static double SurfaceAreaOfSphericalLune(double radius, double dihedralAngle) => 2 * double.Pi * double.Pi * dihedralAngle;
 
       #endregion // Static methods
 

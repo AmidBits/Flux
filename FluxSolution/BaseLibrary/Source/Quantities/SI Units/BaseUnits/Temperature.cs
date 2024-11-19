@@ -16,7 +16,13 @@ namespace Flux.Quantities
   public readonly record struct Temperature
     : System.IComparable, System.IComparable<Temperature>, System.IFormattable, ISiUnitValueQuantifiable<double, TemperatureUnit>
   {
-    public static Temperature AbsoluteZero { get; }
+    /// <summary>
+    /// <para>Absolute zero is 0 degree Kelvin, or -273.15 degree Celsius.</para>
+    /// </summary>
+    public static Temperature AbsoluteZero { get; } = new(0);
+
+    public static Temperature BoilingPointOfWater { get; } = new(373.15);
+    public static Temperature FreezingPointOfWater { get; } = new(273.15);
 
     private readonly double m_value;
 

@@ -108,46 +108,32 @@ namespace Flux
 
       #region Static methods
 
-      ///// <summary>
-      ///// <para>Computes the surface area of a circle with the specified <paramref name="radius"/>.</para>
-      ///// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
-      ///// </summary>
-      //public static double CircleArea(double radius)
-      //  => double.Pi * radius * radius;
+      #region Conversion methods
 
-      ///// <summary>
-      ///// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</para>
-      ///// </summary>
-      //public static bool CircleContains(double radius, double x, double y)
-      //  => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(radius, 2);
-
-      ///// <summary>
-      ///// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
-      ///// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
-      ///// </summary>
-      //public static double CirclePerimeter(double radius)
-      //  => 2 * double.Pi * radius;
-
-      #region Conversions
-
-      /// <summary>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      /// <summary>
+      /// <para>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
+      /// </summary>
       public static (double radius, double azimuth) ConvertCartesian2ToPolar(double x, double y)
         => new(
           double.Sqrt(x * x + y * y),
           double.Atan2(y, x)
         );
 
-      /// <summary>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/>
+      /// <summary>
+      /// <para>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
+      /// </summary>
       public static (double radius, double azimuth) ConvertCartesian2ToPolarEx(double x, double y)
         => (
           double.Sqrt(x * x + y * y),
-          //System.Math.Tau - System.Math.Atan2(-x, y) is var atan2 && atan2 < 0 ? System.Math.Tau + atan2 : atan2
           double.Atan2(x, y) is var atan2 && atan2 < 0 ? double.Tau + atan2 : atan2
         );
 
-      /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</summary>
+      /// <summary>
+      /// <para>Convert the polar coordinate [0, Tau(2*Pi)] (i.e. radians) where 'zero' azimuth is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
+      /// </summary>
       public static (double x, double y) ConvertPolarToCartesian2(double radius, double azimuth)
       {
         var (sin, cos) = double.SinCos(azimuth);
@@ -155,95 +141,122 @@ namespace Flux
         return (radius * cos, radius * sin);
       }
 
-      /// <summary>Convert the polar coordinate [0, PI*2] (i.e. radians) where 'zero' azimuth is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</summary>
+      /// <summary>
+      /// <para>Convert the polar coordinate [0, Tau(2*Pi)] (i.e. radians) where 'zero' azimuth is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
+      /// </summary>
       public static (double x, double y) ConvertPolarToCartesian2Ex(double radius, double azimuth)
         => ConvertPolarToCartesian2(radius, (double.Tau * 1.25) - (azimuth % double.Tau) is var h && h > double.Tau ? h - double.Tau : h);
-      // Adjust azimuth.
-      //{
-      //  var adjustedAzimuth = (System.Math.Tau * 1.25) - (azimuth % System.Math.Tau) is var h && h > System.Math.Tau ? h - System.Math.Tau : h;
-      //  //var adjustedAzimuth = System.Math.Tau - (azimuth % System.Math.Tau is var rad && rad < 0 ? rad + System.Math.Tau : rad) + System.Math.PI / 2;
 
-      //  var (sin, cos) = System.Math.SinCos(adjustedAzimuth);
+      #endregion // Conversion methods
 
-      //  return (radius * cos, radius * sin);
-      //}
+      /// <summary>
+      /// <para>Creates <paramref name="count"/> vertices along the circumference of the circle [<paramref name="radius"/>] with the <paramref name="arcOffset"/>, <paramref name="transposeX"/>, <paramref name="transposeY"/> and randomized by <paramref name="maxRandomness"/> using the <paramref name="rng"/>.</para>
+      /// </summary>
+      /// <param name="count"></param>
+      /// <param name="radius">When scaleRadius equals 1, the result follows the circumradius of the unit circle.</param>
+      /// <param name="arcOffset"></param>
+      /// <param name="transposeX"></param>
+      /// <param name="transposeY"></param>
+      /// <param name="maxRandomness"></param>
+      /// <param name="rng"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> CreateCircle(double count, double radius = 1, double arcOffset = 0, double transposeX = 0, double transposeY = 0, double maxRandomness = 0, System.Random? rng = null)
+        => CreateEllipse(count, radius, radius, arcOffset, transposeX, transposeY, maxRandomness, rng);
 
-      #endregion // Conversions
+      /// <summary>
+      /// <para>Creates <paramref name="count"/> vertices along the perimeter of the ellipse [<paramref name="a"/>, <paramref name="b"/>] with the <paramref name="arcOffset"/>, <paramref name="transposeX"/>, <paramref name="transposeY"/> and randomized by <paramref name="maxRandomness"/> using the <paramref name="rng"/>.</para>
+      /// </summary>
+      /// <param name="count"></param>
+      /// <param name="a">Correspond to the X-axis. If X and Y are both equal to 1, the result follows the circumradius of the unit circle.</param>
+      /// <param name="b">Correspond to the Y-axis.</param>
+      /// <param name="arcOffset"></param>
+      /// <param name="transposeX"></param>
+      /// <param name="transposeY"></param>
+      /// <param name="maxRandomness"></param>
+      /// <param name="rng"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> CreateEllipse(double count, double a = 1, double b = 1, double arcOffset = 0, double transposeX = 0, double transposeY = 0, double maxRandomness = 0, System.Random? rng = null)
+      {
+        rng ??= System.Random.Shared;
 
-      ///// <summary>
-      ///// <para>Creates a circle consisting of <paramref name="count"/> vertices transformed with <paramref name="resultSelector"/> starting at <paramref name="arcOffset"/> and optional <paramref name="maxRandomness"/> (using <paramref name="rng"/>) unit interval (toward 0 = no random, toward 1 = total random).</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, 0); // triangle, top pointy</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(3, 100, 100, double.Tau / 6); // triangle, bottom pointy</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, 0); // rectangle, horizontally and vertically pointy</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(4, 100, 100, double.Tau / 8); // rectangle, vertically and horizontally flat</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, 0); // pentagon, horizontally pointy</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(5, 100, 100, double.Tau / 10); // pentagon, vertically pointy</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, 0); // hexagon, vertically flat (or horizontally pointy)</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(6, 100, 100, double.Tau / 12); // hexagon, horizontally flat (or vertically pointy)</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, 0); // octagon, horizontally and vertically pointy</para>
-      ///// <para>Flux.Media.Geometry.Ellipse.CreatePoints(8, 100, 100, double.Tau / 16); // octagon, vertically and horizontally flat</para>
-      ///// </summary>
-      ///// <typeparam name="TResult"></typeparam>
-      ///// <param name="count"></param>
-      ///// <param name="resultSelector">The selector that determines the result (<typeparamref name="TResult"/>) for each vector.</param>
-      ///// <param name="arcOffset">The offset in radians to apply to each vector.</param>
-      ///// <param name="maxRandomness">The maximum randomness to allow for each vector. Must be in the range [0, 0.5].</param>
-      ///// <param name="rng">The random number generator to use, or default if null.</param>
-      ///// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
-      //public static System.Collections.Generic.List<TResult> CreateCircleVectors<TResult>(double count, System.Func<double, double, TResult> resultSelector, double radius = 1, double arcOffset = 0, double maxRandomness = 0, System.Random? rng = null)
-      //{
-      //  rng ??= System.Random.Shared;
+        var arc = System.Math.Tau / count;
 
-      //  var list = new System.Collections.Generic.List<TResult>(System.Convert.ToInt32(double.Ceiling(count)));
+        for (var index = 0; index < count; index++)
+        {
+          var angle = arcOffset + index * arc;
 
-      //  var arcLength = double.Tau / count;
+          if (maxRandomness > 0)
+            angle += rng.NextDouble(0, arc * maxRandomness);
 
-      //  for (var segment = 0; segment < count; segment++)
-      //  {
-      //    var angle = arcOffset + segment * arcLength;
+          var (x, y) = Coordinates.PolarCoordinate.ConvertPolarToCartesian2Ex(1, angle);
 
-      //    if (maxRandomness > 0)
-      //      angle += rng.NextDouble(0, arcLength * maxRandomness);
+          yield return System.Runtime.Intrinsics.Vector256.Create(x * a + transposeX, y * b + transposeY, 0, 0);
+        }
+      }
 
-      //    var (x, y) = ConvertPolarToCartesian2Ex(radius, angle);
+      /// <summary>
+      /// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
+      /// </summary>
+      public static double PerimeterOfCircle(double radius)
+        => 2 * double.Pi * radius;
 
-      //    list.Add(resultSelector(x, y));
-      //  }
+      /// <summary>
+      /// <para>Returns the approximate perimeter (circumference) of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</para>
+      /// </summary>
+      public static double PerimeterOfEllipse(double a, double b)
+      {
+        var circle = double.Pi * (a + b); // (2 * PI * radius)
 
-      //  return list;
-      //}
+        if (a == b) // For a circle, use (PI * diameter);
+          return circle;
 
-      ///// <summary>
-      ///// <para>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</para>
-      ///// </summary>
-      //public static double EllipseArea(double a, double b) => double.Pi * a * b;
+        var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function.
 
-      ///// <summary>
-      ///// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</para>
-      ///// </summary>
-      //public static bool EllipseContains(double a, double b, double x, double y, double rotationAngle = 0)
-      //  => double.Cos(rotationAngle) is var cos && double.Sin(rotationAngle) is var sin && double.Pow(cos * x + sin * y, 2) / (a * a) + double.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
-
-      ///// <summary>
-      ///// <para>Returns the approximate perimeter (circumference) of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</para>
-      ///// </summary>
-      //public static double EllipsePerimeter(double a, double b)
-      //{
-      //  var circle = double.Pi * (a + b); // (2 * PI * radius)
-
-      //  if (a == b) // For a circle, use (PI * diameter);
-      //    return circle;
-
-      //  var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function.
-
-      //  return circle * (1 + h3 / (10 + double.Sqrt(4 - h3)));
-      //}
+        return circle * (1 + h3 / (10 + double.Sqrt(4 - h3)));
+      }
 
       /// <summary>
       /// <para>Computes the perimeter of a semicircle with the specified <paramref name="radius"/>.</para>
       /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
       /// </summary>
-      public static double PerimeterOfSemicircle(double radius) => (double.Pi + 2) * radius;
+      public static double PerimeterOfSemicircle(double radius)
+        => (double.Pi + 2) * radius;
+
+      /// <summary>
+      /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</para>
+      /// </summary>
+      public static bool PointInCircle(double radius, double x, double y)
+        => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(radius, 2);
+
+      /// <summary>
+      /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</para>
+      /// </summary>
+      public static bool PointInEllipse(double a, double b, double x, double y, double rotationAngle = 0)
+        => double.Cos(rotationAngle) is var cos && double.Sin(rotationAngle) is var sin && double.Pow(cos * x + sin * y, 2) / (a * a) + double.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
+
+      /// <summary>
+      /// <para>Computes the surface area of a circle with the specified <paramref name="radius"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
+      /// </summary>
+      public static double SurfaceAreaOfCircle(double radius)
+        => double.Pi * radius * radius;
+
+      /// <summary>
+      /// <para>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</para>
+      /// </summary>
+      public static double SurfaceAreaOfEllipse(double a, double b)
+        => double.Pi * a * b;
+
+      /// <summary>
+      /// <para>Computes the surface area of a semicircle with the specified <paramref name="radius"/>.</para>
+      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
+      /// </summary>
+      /// <param name="radius"></param>
+      /// <returns></returns>
+      public static double SurfaceAreaOfSemicircle(double radius)
+        => SurfaceAreaOfCircle(radius) / 2;
 
       #endregion // Static methods
 

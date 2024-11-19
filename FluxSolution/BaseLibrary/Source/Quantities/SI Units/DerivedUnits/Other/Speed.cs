@@ -16,11 +16,17 @@ namespace Flux.Quantities
   public readonly record struct Speed
     : System.IComparable, System.IComparable<Speed>, System.IFormattable, ISiUnitValueQuantifiable<double, SpeedUnit>
   {
-    /// <summary>The speed of light in vacuum (symbol c).</summary>
-    public static Speed SpeedOfLight { get; } = new(299792458);
+    /// <summary>
+    /// <para>The speed of light in vacuum (symbol c), in (base) unit of meter per second.</para>
+    /// <para>This is one of the fundamental physical constants of physics.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Speed_of_light"/></para>
+    /// </summary>
+    public const double SpeedOfLight = 299792458;
 
-    /// <summary>The speed of sound in dry air at sea-level pressure and 20 °C.</summary>
-    public static Speed SpeedOfSound { get; } = new(343);
+    /// <summary>
+    /// <para>The speed of sound in dry air at sea-level pressure and 20 °C, in (base) unit of meter per second.</para>
+    /// </summary>
+    public const double SpeedOfSound = 343;
 
     private readonly double m_value;
 
@@ -122,7 +128,7 @@ namespace Flux.Quantities
         SpeedUnit.FootPerSecond => (381.0 / 1250.0),
         SpeedUnit.KilometerPerHour => (5.0 / 18.0),
         SpeedUnit.Knot => (1852.0 / 3600.0),
-        SpeedUnit.Mach => SpeedOfSound.m_value,
+        SpeedUnit.Mach => SpeedOfSound,
         SpeedUnit.MilePerHour => (1397.0 / 3125.0),
 
         _ => throw new System.NotImplementedException()

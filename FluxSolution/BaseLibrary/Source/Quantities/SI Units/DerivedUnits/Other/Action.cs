@@ -11,8 +11,12 @@ namespace Flux.Quantities
   public readonly record struct Action
     : System.IComparable, System.IComparable<Action>, System.IFormattable, ISiUnitValueQuantifiable<double, ActionUnit>
   {
-    public static Action PlanckConstant { get; } = new(6.62607015e-34);
-    public static Action ReducedPlanckConstant { get; } = new(PlanckConstant.Value / double.Tau);
+    /// <summary>
+    /// <para>The Planck constant, or Planck's constant, denoted by h, is a fundamental physical constant of foundational importance in quantum mechanics: a photon's energy is equal to its frequency multiplied by the Planck constant, and the wavelength of a matter wave equals the Planck constant divided by the associated particle momentum.</para>
+    /// <para>This is one of the fundamental physical constants of physics.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Planck_constant"/></para>
+    /// </summary>
+    public const double PlanckConstant = 6.62607015e-34;
 
     private readonly double m_value;
 

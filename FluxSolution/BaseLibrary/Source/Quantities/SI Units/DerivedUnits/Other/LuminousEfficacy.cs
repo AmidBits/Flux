@@ -11,7 +11,12 @@ namespace Flux.Quantities
   public readonly record struct LuminousEfficacy
     : System.IComparable, System.IComparable<LuminousEfficacy>, System.IFormattable, ISiUnitValueQuantifiable<double, LuminousEfficacyUnit>
   {
-    public static LuminousEfficacy LuminousEfficacyOf540THzRadiation { get; } = new(683);
+    /// <summary>
+    /// <para>The luminous efficacy of monochromatic radiation of frequency 5.40×1014 Hz (540 THz) - a frequency of green-colored light at approximately the peak sensitivity of the human eye - Kcd (where the subscript "cd" is the symbol for candela) is exactly 683 lumens per watt.</para>
+    /// <para>This is one of the fundamental physical constants of physics.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/2019_revision_of_the_SI#Defining_constants"/></para>
+    /// </summary>
+    public const double MonochromaticRadiationOf540THz = 683;
 
     private readonly double m_value;
 

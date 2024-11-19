@@ -37,62 +37,6 @@ namespace ConsoleApp
 
     #endregion // Presets
 
-    private static void Test()
-    {
-      var v512 = System.Runtime.Intrinsics.Vector512.Create(0d, -1d, 2d, -3d, 4d, -5d, 6d, -7d);
-      var v512abs = v512.Abs();
-      var v512max = v512.Max(Flux.Intrinsics.One512D);
-      var v512min = v512.Min(Flux.Intrinsics.One512D);
-      var v512sign = v512.Sign();
-      var v512rem125 = v512.Remainder(1.25);
-      var tmq = v512.TruncMod(System.Runtime.Intrinsics.Vector512.Create(1.25), out var tmr);
-
-      var v1 = System.Runtime.Intrinsics.Vector256.Create(1d, 2d, 3d, 4d);
-      var v2 = System.Runtime.Intrinsics.Vector256.Create(2d);
-
-      var d12 = System.Runtime.Intrinsics.X86.Avx.Divide(v1, v2);
-      var fd12 = System.Runtime.Intrinsics.X86.Avx.Floor(d12.Floor());
-      var r12 = System.Runtime.Intrinsics.X86.Avx.Subtract(d12, fd12);
-
-      var dot12 = v1.Dot(v2);
-      var dot11 = v1.Dot(v1);
-      var dot12a = v1.Dot(v2);
-      var dot11a = v1.Dot(v1);
-      var dot12b = v1.Dot(v2);
-      var dot11b = v1.Dot(v1);
-      var dot12c = v1.Dot(v2);
-      var dot11c = v1.Dot(v1);
-    }
-
-    private static void Test2()
-    {
-      for (var index = 0; index <= 1; index++)
-      {
-        var (count, isPowOf, numberReversed, placeValues, reverseDigits, sum) = index.MagicalDigits(10);
-
-        //System.Console.WriteLine($"{index:D3} : C = {count} : ISPOW = {isPowOf.ToString()[0]} : NR = {numberReversed.ToString().PadLeft(count, '0').PadRight(3, '0')} : PV = {string.Join(" ", placeValues)} : RD = {string.Join(" ", reverseDigits)} : Sum = {sum}");
-      }
-
-    }
-
-    private static void CreateUrgf(string fileName)
-    {
-      using var sw = System.IO.File.CreateText(fileName);
-
-      var data = new string[][] { new string[] { "A", "B" }, new string[] { "1", "2" } };
-
-      Flux.Fx.WriteUrgf(sw, data);
-
-      sw.Write((char)UnicodeInformationSeparator.FileSeparator);
-
-      data = new string[][] { new string[] { "C", "D" }, new string[] { "3", "4" } };
-
-      Flux.Fx.WriteUrgf(sw, data);
-
-      sw.Flush();
-      sw.Close();
-    }
-
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
@@ -100,40 +44,10 @@ namespace ConsoleApp
 
 
 
+      var molesGe = new Flux.Quantities.AmountOfSubstance(2.120335949332232e-4);
 
-      var vd = new Flux.Quantities.Length(0);
-      var a0 = new Flux.Quantities.Angle(32);
-      var v0 = new Flux.Quantities.Speed(10);
-      var g = new Flux.Quantities.Acceleration(Flux.Quantities.Acceleration.StandardGravity);
-
-      //var dht = new Flux.Mechanics.DownhillTrajectory2D(vd.Value, a0.Value, v0.Value, g.Value);
-      //var dt = new Flux.Mechanics.DroppedTrajectory2D(vd.Value, a0.Value, v0.Value, g.Value);
-      //var ft = new Flux.Mechanics.FlatTrajectory2D(a0.Value, v0.Value, g.Value);
-      //var uht = new Flux.Mechanics.UphillTrajectory2D(vd.Value, a0.Value, v0.Value, g.Value);
-
-      //var (shallowAngle, steepAngle) = Flux.Mechanics.Trajectory.AngleRequiredToHitPoint(vd.Value, a0.Value, v0.Value, g.Value);
-
-      //var ardshallow = double.RadiansToDegrees(shallowAngle);
-      //var ardsteep = double.RadiansToDegrees(steepAngle);
-
-      var gth = Flux.Mechanics.Trajectory.GetTrajectoryHeight(a0.Value, v0.Value, vd.Value, g.Value);
-      var gtr = Flux.Mechanics.Trajectory.GetTrajectoryRange(a0.Value, v0.Value, vd.Value, g.Value);
-      var gtt = Flux.Mechanics.Trajectory.GetTrajectoryTime(a0.Value, v0.Value, vd.Value, g.Value);
-
-      var th = Flux.Mechanics.Trajectory.TrajectoryHeight(a0.Value, v0.Value, vd.Value, g.Value);
-      var tr = Flux.Mechanics.Trajectory.TrajectoryRange(a0.Value, v0.Value, out var _, out var _, vd.Value, g.Value);
-      var tt = Flux.Mechanics.Trajectory.TrajectoryTime(a0.Value, v0.Value, out var _, vd.Value, g.Value);
-
-      var pth = Flux.Mechanics.Trajectory.PlanetaryTrajectoryHeight(a0.Value, v0.Value, g.Value, Flux.EllipsoidReference.Wgs84.EquatorialRadius);
-      var ptr = Flux.Mechanics.Trajectory.PlanetaryTrajectoryRange(a0.Value, v0.Value, g.Value, Flux.EllipsoidReference.Wgs84.EquatorialRadius);
-      var ptt = Flux.Mechanics.Trajectory.PlanetaryTrajectoryTime(a0.Value, v0.Value, g.Value, Flux.EllipsoidReference.Wgs84.EquatorialRadius);
-
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => Test()));
-
-
-
-      var sides = 3;
-      var radius = 1;
+      var sides = 6;
+      var radius = 2.924;
 
       var c = new Flux.Geometry.CircleGeometry(radius);
       var e = new Flux.Geometry.EllipseGeometry(radius, radius);

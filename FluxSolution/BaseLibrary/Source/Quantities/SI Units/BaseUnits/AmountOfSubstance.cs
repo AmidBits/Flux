@@ -12,11 +12,12 @@ namespace Flux.Quantities
   public readonly record struct AmountOfSubstance
     : System.IComparable, System.IComparable<AmountOfSubstance>, System.IFormattable, ISiUnitValueQuantifiable<double, AmountOfSubstanceUnit>
   {
-    /// <summary>The exact number of elementary entities in one mole.</summary>
-    public const double AvogadroNumber = 6.02214076e23;
-
-    /// <summary>The dimension of the Avagadro constant is the reciprocal of amount of substance.</summary>
-    public const double AvogadroConstant = 1 / AvogadroNumber;
+    /// <summary>
+    /// <para>The exact number of elementary entities in one mole.</para>
+    /// <para>The Avogadro number, sometimes denoted N0, is the numeric value of the Avogadro constant (i.e., without a unit), namely the dimensionless number 6.02214076e23; the value chosen based on the number of atoms in 12 grams of carbon-12 in alignment with the historical definition of a mole.</para>
+    ///// <para><see href="https://en.wikipedia.org/wiki/Avogadro_constant"/></para>
+    /// </summary>
+    public const double AvogadrosNumber = 6.02214076e23;
 
     private readonly double m_value;
 
@@ -34,7 +35,7 @@ namespace Flux.Quantities
     /// <param name="prefix"></param>
     public AmountOfSubstance(MetricPrefix prefix, double mole) => m_value = prefix.ConvertTo(mole, MetricPrefix.Unprefixed);
 
-    public double NumberOfParticles => m_value * AvogadroNumber;
+    public double NumberOfParticles => m_value * AvogadrosNumber;
 
     #region Static methods
     #endregion // Static methods

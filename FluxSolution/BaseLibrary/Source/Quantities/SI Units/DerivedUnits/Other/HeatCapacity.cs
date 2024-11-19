@@ -11,7 +11,12 @@ namespace Flux.Quantities
   public readonly record struct HeatCapacity
     : System.IComparable, System.IComparable<HeatCapacity>, System.IFormattable, ISiUnitValueQuantifiable<double, HeatCapacityUnit>
   {
-    public static HeatCapacity BoltzmannConstant { get; } = new(1.380649e-23);
+    /// <summary>
+    /// <para>The Boltzmann constant (kB or k) is the proportionality factor that relates the average relative thermal energy of particles in a gas with the thermodynamic temperature of the gas.</para>
+    /// <para>This is one of the fundamental physical constants of physics.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Boltzmann_constant"/></para>
+    /// </summary>
+    public const double BoltzmannConstant = 1.380649e-23;
 
     private readonly double m_value;
 

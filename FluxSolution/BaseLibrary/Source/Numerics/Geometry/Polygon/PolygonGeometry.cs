@@ -3,13 +3,13 @@ namespace Flux.Geometry
   public record class PolygonGeometry
     : System.IFormattable
   {
-    protected readonly System.Collections.Generic.List<System.Runtime.Intrinsics.Vector256<double>> m_vertices;
+    protected readonly System.Collections.Generic.List<System.Runtime.Intrinsics.Vector128<double>> m_vertices;
 
-    public PolygonGeometry(System.Collections.Generic.List<System.Runtime.Intrinsics.Vector256<double>> vertices) => m_vertices = vertices;
+    public PolygonGeometry(System.Collections.Generic.List<System.Runtime.Intrinsics.Vector128<double>> vertices) => m_vertices = vertices;
 
-    public PolygonGeometry(System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> vertices) : this(vertices.ToList()) { }
+    public PolygonGeometry(System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> vertices) : this(vertices.ToList()) { }
 
-    public System.Collections.Generic.IReadOnlyList<System.Runtime.Intrinsics.Vector256<double>> Vertices => m_vertices;
+    public System.Collections.Generic.IReadOnlyList<System.Runtime.Intrinsics.Vector128<double>> Vertices => m_vertices;
 
     //public static System.Collections.Generic.List<string> GetNinetyNinePolygonNames()
     //{
@@ -41,25 +41,15 @@ namespace Flux.Geometry
     //}
 
     /// <summary>
-    /// <para>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Polygon#Area"/></para>
-    /// </summary>
-    public double AreaSigned => m_vertices.PartitionTuple2(true, (e1, e2, i) => e1[0] * e2[1] - e2[0] * e1[1]).Sum() / 2;
-
-    /// <summary>
-    /// <para>The surface area of the polygon.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Polygon#Area"/></para>
-    /// </summary>
-    public double Area => double.Abs(AreaSigned);
-
-    /// <summary>
     /// <para>The centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (3D)</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Centroid"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Polygon#Centroid"/></para>
     /// </summary>
-    public System.Runtime.Intrinsics.Vector256<double> Centroid => m_vertices.Aggregate(Flux.Intrinsics.Zero256D, (a, e, index) => a + e, (a, count) => a / count);
+    public System.Runtime.Intrinsics.Vector128<double> Centroid => m_vertices.Aggregate(Flux.Intrinsics.Zero128D, (aggv, v, index) => aggv + v, (a, count) => a / count);
 
-    public double Circumradius => m_vertices.Max(v => v.EuclideanLength());
+    public virtual double Circumradius => m_vertices.Max(v => v.EuclideanLength());
+
+    public virtual double Inradius => m_vertices.Min(v => v.EuclideanLength());
 
     /// <summary>
     /// <para>Determines whether the polygon is convex. (2D/3D)</para>
@@ -82,17 +72,31 @@ namespace Flux.Geometry
       }
     }
 
-    /// <summary>
-    /// <para></para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Normal_(geometry)"/></para>
-    /// </summary>
-    public System.Runtime.Intrinsics.Vector256<double> Normal => (m_vertices[1] - m_vertices[0]).Cross(m_vertices[2] - m_vertices[0]);
+    ///// <summary>
+    ///// <para></para>
+    ///// <para><see href="https://en.wikipedia.org/wiki/Normal_(geometry)"/></para>
+    ///// </summary>
+    //public System.Runtime.Intrinsics.Vector128<double> Normal => (m_vertices[1] - m_vertices[0]).Cross(m_vertices[2] - m_vertices[0]);
 
     /// <summary>
     /// <para>Compute the perimeter length of the polygon.</para>
     /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
     /// </summary>
-    public double Perimeter => m_vertices.PartitionTuple2(true, (e1, e2, i) => (e2 - e1).EuclideanLength()).Sum();
+    public double Perimeter => m_vertices.PartitionTuple2(true, (v1, v2, i) => (v2 - v1).EuclideanLength()).Sum();
+
+    public double SemiPerimeter => Perimeter / 2;
+
+    /// <summary>
+    /// <para>The surface area of the polygon.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Polygon#Area"/></para>
+    /// </summary>
+    public double SurfaceArea => double.Abs(SurfaceAreaSigned);
+
+    /// <summary>
+    /// <para>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Polygon#Area"/></para>
+    /// </summary>
+    public double SurfaceAreaSigned => m_vertices.PartitionTuple2(true, (v1, v2, i) => v1[0] * v2[1] - v2[0] * v1[1]).Sum() / 2;
 
     #region Static methods
 
@@ -697,21 +701,23 @@ namespace Flux.Geometry
 
     public string ToString(string? format, IFormatProvider? formatProvider)
     {
-      format ??= "N4";
+      format ??= "N3";
 
       var sb = new System.Text.StringBuilder();
 
-      sb.Append($"{GetType().Name} {{ Vertices = {m_vertices.Count}");
+      sb.Append(GetType().Name);
 
-      sb.Append($", Area = {Area.ToString(format, formatProvider)}");
-      sb.Append($" ({AreaSigned.ToString(format, formatProvider)})");
-      //sb.Append($", Inradius = {Inradius.ToString(format, formatProvider)}");
-      //sb.Append($", Circumradius = {Circumradius.ToString(format, formatProvider)}");
+      sb.Append($" {{ Vertices = {m_vertices.Count}");
+
+      sb.Append($", Centroid = {Centroid.ToStringXY(format, formatProvider)}");
+      sb.Append($", Circumradius = {Circumradius.ToString(format, formatProvider)}");
+      sb.Append($", Inradius = {Circumradius.ToString(format, formatProvider)}");
+      sb.Append($", IsConvex = {IsConvex}");
       sb.Append($", Perimeter = {Perimeter.ToString(format, formatProvider)}");
+      sb.Append($", SemiPerimeter = {SemiPerimeter.ToString(format, formatProvider)}");
+      sb.Append($", SurfaceArea = {SurfaceArea.ToString(format, formatProvider)} ({SurfaceAreaSigned.ToString(format, formatProvider)})");
 
-      sb.Append(" [");
-      sb.Append(string.Join(@", ", m_vertices.Select(v => $"<{v[0].ToString(format, formatProvider)}, {v[1].ToString(format, formatProvider)}>")));
-      sb.Append("] }}");
+      sb.Append($" [{m_vertices.ToStringXY(format, formatProvider)}] }}");
 
       return sb.ToString();
     }

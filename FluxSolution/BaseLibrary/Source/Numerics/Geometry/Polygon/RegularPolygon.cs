@@ -3,49 +3,60 @@ namespace Flux.Geometry
   public sealed record class RegularPolygon
     : PolygonGeometry
   {
-    private RegularPolygon(System.Collections.Generic.List<System.Runtime.Intrinsics.Vector256<double>> vertices) : base(vertices) { }
+    private RegularPolygon(System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> vertices) : base(vertices) { }
 
-    new public double Circumradius => m_vertices[0].EuclideanLength();
+    public override double Circumradius => m_vertices[0].EuclideanLength();
 
-    public double Inradius => ConvertCircumradiusToInradius(Circumradius, m_vertices.Count);
+    public double ExteriorAngle => double.RadiansToDegrees(ExteriorAngleOfRegularPolygon(m_vertices.Count));
+
+    public override double Inradius => ConvertCircumradiusToInradius(Circumradius, m_vertices.Count);
+
+    public double InteriorAngle => double.RadiansToDegrees(InteriorAngleOfRegularPolygon(ExteriorAngle));
 
     #region Static methods
 
     /// <summary>
     /// <para></para>
     /// </summary>
-    /// <param name="vertexCount">The number of vertices to compute.</param>
+    /// <param name="count">The number of vertices to compute.</param>
     /// <param name="circumradius">The circumradius of the polygon.</param>
-    /// <param name="rotateRad">The rotational offset in radians.</param>
+    /// <param name="arcOffset">The rotational offset in radians.</param>
     /// <param name="translateX">The translation X offset.</param>
     /// <param name="translateY">The translation Y offset.</param>
     /// <returns></returns>
-    public static RegularPolygon Create(int vertexCount, double circumradius, double rotateRad = 0, double translateX = 0, double translateY = 0)
-    {
-      var arc = double.Tau / vertexCount;
+    public static RegularPolygon Create(int count, double circumradius, double arcOffset = 0, double translateX = 0, double translateY = 0)
+      => new(EllipseGeometry.Create(count, circumradius, circumradius, arcOffset, translateX, translateY));
 
-      var vertices = new System.Collections.Generic.List<System.Runtime.Intrinsics.Vector256<double>>();
+    #region Conversion methods
 
-      for (var segment = 0; segment < vertexCount; segment++)
-      {
-        var angle = rotateRad + segment * arc;
+    public static double ConvertCircumradiusToInradius(double circumradius, int numberOfVertices) => circumradius * double.Cos(double.Pi / numberOfVertices);
+    public static double ConvertInradiusToCircumradius(double inradius, int numberOfVertices) => inradius / double.Cos(double.Pi / numberOfVertices);
 
-        var (x, y) = Coordinates.PolarCoordinate.ConvertPolarToCartesian2Ex(circumradius, angle);
+    public static double ConvertSideLengthToCircumradius(double sideLength, int numberOfVertices) => sideLength / 2 * double.Sin(double.Pi / numberOfVertices);
+    public static double ConvertCircumradiusToSideLength(double circumradius, int numberOfVertices) => 2 * circumradius * double.Sin(double.Pi / numberOfVertices);
 
-        vertices.Add(System.Runtime.Intrinsics.Vector256.Create(x + translateX, y + translateY, 0, 0));
-      }
+    public static double ConvertSideLengthToInradius(int sideLength, int numberOfVertices) => 0.5 * sideLength * Quantities.Angle.Cot(double.Pi / numberOfVertices);
+    public static double ConvertInradiusToSideLength(double inradius, int numberOfVertices) => 2 * inradius * double.Tan(double.Pi / numberOfVertices);
 
-      return new(vertices);
-    }
+    #endregion // Conversion methods
 
-    public static double ConvertCircumradiusToInradius(double circumradius, int vertices) => circumradius * double.Cos(double.Pi / vertices);
-    public static double ConvertInradiusToCircumradius(double inradius, int vertices) => inradius / double.Cos(double.Pi / vertices);
+    public static double AreaOfRegularPolygon(double sideLength, int numberOfSides)
+      => numberOfSides * sideLength * sideLength * Quantities.Angle.Cot(double.Pi / numberOfSides) / 4;
 
-    public static double ConvertSideLengthToCircumradius(double sideLength, int vertices) => sideLength / 2 * double.Sin(double.Pi / vertices);
-    public static double ConvertCircumradiusToSideLength(double circumradius, int vertices) => 2 * circumradius * double.Sin(double.Pi / vertices);
+    public static double ExteriorAngleOfRegularPolygon(int numberOfSides)
+      => double.Tau / numberOfSides;
 
-    public static double ConvertSideLengthToInradius(int sideLength, int vertices) => 0.5 * sideLength * Quantities.Angle.Cot(double.Pi / vertices);
-    public static double ConvertInradiusToSideLength(double inradius, int vertices) => 2 * inradius * double.Tan(double.Pi / vertices);
+    public static double InradiusOfRegularPolygonByCircumradius(double circumradius, int numberOfSides)
+      => circumradius * double.Cos(double.Pi / numberOfSides);
+
+    public static double InradiusOfRegularPolygonBySideLength(double sideLength, int numberOfSides)
+      => sideLength / 2 * double.Tan(double.Pi / numberOfSides);
+
+    public static double InteriorAngleOfRegularPolygon(double numberOfSides)
+      => double.Pi - double.Tau / numberOfSides;
+
+    public static double PerimeterOfRegularPolygon(double sideLength, int numberOfSides)
+      => numberOfSides * sideLength;
 
     #endregion // Static methods
 
@@ -53,21 +64,22 @@ namespace Flux.Geometry
 
     new public string ToString(string? format, IFormatProvider? formatProvider)
     {
-      format ??= "N4";
+      format ??= "N3";
 
       var sb = new System.Text.StringBuilder();
 
-      sb.Append($"{GetType().Name} {{ Vertices = {m_vertices.Count}");
+      sb.Append(GetType().Name);
 
-      sb.Append($", Area = {Area.ToString(format, formatProvider)}");
-      sb.Append($" ({AreaSigned.ToString(format, formatProvider)})");
-      sb.Append($", Perimeter = {Perimeter.ToString(format, formatProvider)}");
+      sb.Append($" {{ Vertices = {m_vertices.Count}");
+
       sb.Append($", Circumradius = {Circumradius.ToString(format, formatProvider)}");
+      sb.Append($", ExteriorAngle = {ExteriorAngle.ToString(format, formatProvider)}");
       sb.Append($", Inradius = {Inradius.ToString(format, formatProvider)}");
+      sb.Append($", InteriorAngle = {InteriorAngle.ToString(format, formatProvider)}");
+      sb.Append($", Perimeter = {Perimeter.ToString(format, formatProvider)}");
+      sb.Append($", SurfaceArea = {SurfaceArea.ToString(format, formatProvider)} ({SurfaceAreaSigned.ToString(format, formatProvider)})");
 
-      sb.Append(" [");
-      sb.Append(string.Join(@", ", m_vertices.Select(v => $"<{v[0].ToString(format, formatProvider)}, {v[1].ToString(format, formatProvider)}>")));
-      sb.Append("] }}");
+      sb.Append($" [{m_vertices.ToStringXY(format, formatProvider)}] }}");
 
       return sb.ToString();
     }

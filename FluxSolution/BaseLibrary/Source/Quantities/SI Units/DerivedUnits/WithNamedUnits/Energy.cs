@@ -98,7 +98,7 @@ namespace Flux.Quantities
       {
         EnergyUnit.Joule => 1,
 
-        EnergyUnit.ElectronVolt => ElectricCharge.ElementaryCharge.Value,
+        EnergyUnit.ElectronVolt => ElectricCharge.ElementaryCharge,
         EnergyUnit.Calorie => 4.184,
         EnergyUnit.WattHour => 3.6e3,
         EnergyUnit.KilowattHour => 3.6e6,
