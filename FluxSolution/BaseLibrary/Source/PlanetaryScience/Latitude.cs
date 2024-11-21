@@ -13,6 +13,9 @@ namespace Flux.Quantities
     public const double MaxValue = +90;
     public const double MinValue = -90;
 
+    public static Latitude AntarcticCircle { get; } = new(-66.5);
+    public static Latitude ArcticCircle { get; } = new(66.5);
+    public static Latitude Equator { get; }
     public static Latitude TropicOfCancer { get; } = new(23.43648);
     public static Latitude TropicOfCapricorn { get; } = new(-23.43648);
 

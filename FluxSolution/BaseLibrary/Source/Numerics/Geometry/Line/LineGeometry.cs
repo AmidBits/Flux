@@ -1,8 +1,10 @@
+using Flux.Coordinates;
+
 namespace Flux
 {
   public static partial class Em
   {
-    public static (Geometry.LineIntersectTest Outcome, Geometry.Point Intersection) IntersectsWith(this Geometry.LineGeometry a, Geometry.LineGeometry b)
+    public static (Geometry.LineIntersectTest Outcome, CartesianCoordinate Intersection) IntersectsWith(this Geometry.LineGeometry a, Geometry.LineGeometry b)
     {
       var (Outcome, Intersection) = Geometry.LineGeometry.GivenTwoPointsOnEach(a.V1, a.V2, b.V1, b.V2);
 
@@ -43,7 +45,7 @@ namespace Flux
       public double X2 => m_v2[0];
       public double Y2 => m_v2[1];
 
-      public Point Lerp(double p) => new(m_v1.Lerp(m_v2, p));
+      public CartesianCoordinate Lerp(double p) => new(m_v1.Lerp(m_v2, p));
 
       public double SideTest(double x, double y) => SideTest(x, y, X1, Y1, X2, Y2);
 

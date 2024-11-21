@@ -21,7 +21,7 @@ namespace Flux.Geometry
     /// <param name="rng">The random-number-generator to use. Default if null.</param>
     /// <returns></returns>
     public static CyclicPolygon Create(int count, double circumradius, double arcOffset = 0, double translateX = 0, double translateY = 0, double maxRandomness = 0, System.Random? rng = null)
-      => new(EllipseGeometry.Create(count, circumradius, circumradius, arcOffset, translateX, translateY, maxRandomness, rng));
+      => new(EllipseGeometry.CreatePointsOfEllipse(count, circumradius, circumradius, arcOffset, translateX, translateY, maxRandomness, rng));
 
     #endregion // Static methods
 

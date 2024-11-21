@@ -82,7 +82,7 @@ namespace Flux.Geometry
     /// <para>Compute the perimeter length of the polygon.</para>
     /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
     /// </summary>
-    public double Perimeter => m_vertices.PartitionTuple2(true, (v1, v2, i) => (v2 - v1).EuclideanLength()).Sum();
+    public virtual double Perimeter => m_vertices.PartitionTuple2(true, (v1, v2, i) => (v2 - v1).EuclideanLength()).Sum();
 
     public double SemiPerimeter => Perimeter / 2;
 
@@ -90,7 +90,7 @@ namespace Flux.Geometry
     /// <para>The surface area of the polygon.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Polygon#Area"/></para>
     /// </summary>
-    public double SurfaceArea => double.Abs(SurfaceAreaSigned);
+    public virtual double SurfaceArea => double.Abs(SurfaceAreaSigned);
 
     /// <summary>
     /// <para>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</para>

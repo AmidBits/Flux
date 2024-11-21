@@ -16,7 +16,7 @@ namespace Flux.Geometry
     /// <summary>
     /// <para>The circumference (perimeter) of the circle.</para>
     /// </summary>
-    public double Circumference => Coordinates.PolarCoordinate.PerimeterOfCircle(m_radius);
+    public double Circumference => Quantities.Length.PerimeterOfCircle(m_radius);
 
     /// <summary>
     /// <para>The radius of the circle.</para>
@@ -24,10 +24,10 @@ namespace Flux.Geometry
     public double Radius => m_radius;
 
     /// <summary>The surface area of circle.</summary>
-    public double SurfaceArea => Coordinates.PolarCoordinate.SurfaceAreaOfCircle(m_radius);
+    public double SurfaceArea => Quantities.Area.OfCircle(m_radius);
 
     /// <summary>Returns whether a point is inside the circle.</summary>
-    public bool Contains(double x, double y) => Coordinates.PolarCoordinate.PointInCircle(m_radius, x, y);
+    public bool Contains(double x, double y) => PointInCircle(m_radius, x, y);
 
     #region Static methods
 
@@ -42,44 +42,14 @@ namespace Flux.Geometry
     /// <param name="maxRandomness"></param>
     /// <param name="rng"></param>
     /// <returns></returns>
-    public static RegularPolygon Create(int count, double radius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => RegularPolygon.Create(count, radius, arcOffset, translateX, translateY);
-
-    /// <summary>
-    /// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
-    /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
-    /// </summary>
-    public static double PerimeterOfCircle(double radius)
-      => 2 * double.Pi * radius;
-
-    /// <summary>
-    /// <para>Computes the perimeter of a semicircle with the specified <paramref name="radius"/>.</para>
-    /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
-    /// </summary>
-    public static double PerimeterOfSemicircle(double radius)
-      => (double.Pi + 2) * radius;
+    public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOfCircle(int count, double radius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
+      => EllipseGeometry.CreatePointsOfEllipse(count, radius, radius, arcOffset, translateX, translateY);
 
     /// <summary>
     /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</para>
     /// </summary>
     public static bool PointInCircle(double radius, double x, double y)
       => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(radius, 2);
-
-    /// <summary>
-    /// <para>Computes the surface area of a circle with the specified <paramref name="radius"/>.</para>
-    /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
-    /// </summary>
-    public static double SurfaceAreaOfCircle(double radius)
-      => double.Pi * radius * radius;
-
-    /// <summary>
-    /// <para>Computes the surface area of a semicircle with the specified <paramref name="radius"/>.</para>
-    /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
-    /// </summary>
-    /// <param name="radius"></param>
-    /// <returns></returns>
-    public static double SurfaceAreaOfSemicircle(double radius)
-      => SurfaceAreaOfCircle(radius) / 2;
 
     #endregion // Static methods
 

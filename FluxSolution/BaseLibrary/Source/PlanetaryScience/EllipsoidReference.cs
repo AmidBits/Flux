@@ -1,3 +1,5 @@
+using Flux.Geometry;
+
 namespace Flux
 {
   /// <summary>
@@ -43,7 +45,7 @@ namespace Flux
     public double Flattening => 1 / m_inverseFlattening;
 
     /// <summary>The polar circumference equals Cp=4mp, i.e. four times the quarter meridian.</summary>
-    public double PolarCircumference => Coordinates.PolarCoordinate.PerimeterOfEllipse(m_semiMajorAxis, m_semiMinorAxis);
+    public double PolarCircumference => Quantities.Length.PerimeterOfEllipse(m_semiMajorAxis, m_semiMinorAxis);
 
     /// <summary>Diameter of Earth's semi-minor axis.</summary>
     public double PolarDiameter => 2 * m_semiMinorAxis;

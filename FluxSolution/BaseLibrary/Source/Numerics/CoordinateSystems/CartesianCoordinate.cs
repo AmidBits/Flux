@@ -63,6 +63,10 @@ namespace Flux
 
       private readonly System.Runtime.Intrinsics.Vector256<double> m_v;
 
+      public CartesianCoordinate(System.Runtime.Intrinsics.Vector128<double> xy) => m_v = System.Runtime.Intrinsics.Vector256.Create(xy[0], xy[1], 0, 0);
+
+      public CartesianCoordinate(System.Runtime.Intrinsics.Vector256<double> xyzw) => m_v = xyzw;
+
       public CartesianCoordinate(double x, double y = 0, double z = 0, double w = 0) => m_v = System.Runtime.Intrinsics.Vector256.Create(x, y, z, w);
 
       public CartesianCoordinate(Quantities.Length x, Quantities.Length y = default, Quantities.Length z = default, Quantities.Length w = default)
@@ -134,6 +138,10 @@ namespace Flux
               z, Quantities.LengthUnit.Meter
             );
       }
+
+      public System.Drawing.Point ToPoint(UniversalRounding mode) => new(System.Convert.ToInt32(m_v[0].Round(mode)), System.Convert.ToInt32(m_v[1].Round(mode)));
+
+      public System.Drawing.PointF ToPointF() => new((float)m_v[0], (float)m_v[1]);
 
       /// <summary>Creates a new <see cref="Coordinates.PolarCoordinate"/> from a <see cref="Coordinates.CartesianCoordinate"/> and its (X, Y) components.</summary>
       public Coordinates.PolarCoordinate ToPolarCoordinate()
@@ -277,47 +285,6 @@ namespace Flux
 
       //  return sum / edgeLength;
       //}
-
-      /// <summary>
-      /// <para>Computes the perimeter of a rectangle with the specified <paramref name="length"/> and <paramref name="width"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Perimeter"/></para>
-      /// </summary>
-      /// <param name="length">The length of a rectangle.</param>
-      /// <param name="width">The width of a rectangle.</param>
-      public static double PerimeterOfRectangle(double length, double width) => 2 * length + 2 * width;
-
-      /// <summary>
-      /// <para>Computes the surface area of a cube with the specified <paramref name="sideLength"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Perimeter"/></para>
-      /// </summary>
-      /// <param name="sideLength"></param>
-      /// <returns></returns>
-      public static double SurfaceAreaOfCube(double sideLength) => 6 * sideLength * sideLength;
-
-      /// <summary>
-      /// <para>Computes the surface area of a cuboid with the specified <paramref name="length"/>, <paramref name="width"/> and <paramref name="height"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Surface_area"/></para>
-      /// </summary>
-      /// <param name="length">The length of a rectangle.</param>
-      /// <param name="width">The width of a rectangle.</param>
-      /// <param name="height">The width of a rectangle.</param>
-      public static double SurfaceAreaOfCuboid(double length, double width, double height) => 2 * length * width + 2 * length * height + 2 * width * height;
-
-      /// <summary>
-      /// <para>Computes the surface area of a rectangle with the specified <paramref name="length"/> and <paramref name="width"/>.</para>
-      /// </summary>
-      /// <param name="length">The length of a rectangle.</param>
-      /// <param name="width">The width of a rectangle.</param>
-      public static double SurfaceAreaOfRectangle(double length, double width) => length * width;
-
-      /// <summary>
-      /// <para>Computes the surface area of a square pyramid with the specified <paramref name="baseLength"/> and <paramref name="verticalHeight"/>.</para>
-      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
-      /// </summary>
-      /// <param name="baseLength"></param>
-      /// <param name="verticalHeight"></param>
-      /// <returns></returns>
-      public static double SurfaceAreaOfSquarePyramid(double baseLength, double verticalHeight) => (baseLength * baseLength) + (2 * baseLength) * double.Sqrt(double.Pow(baseLength / 2, 2) + (verticalHeight * verticalHeight));
 
       #endregion // Static methods
 

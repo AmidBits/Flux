@@ -26,13 +26,13 @@ namespace Flux.Geometry
     public double B => m_b;
 
     /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-    public double Perimeter => Coordinates.PolarCoordinate.PerimeterOfEllipse(m_a, m_b);
+    public double Perimeter => Quantities.Length.PerimeterOfEllipse(m_a, m_b);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
-    public double SurfaceArea => Coordinates.PolarCoordinate.SurfaceAreaOfEllipse(m_a, m_b);
+    public double SurfaceArea => Quantities.Area.OfEllipse(m_a, m_b);
 
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
-    public bool Contains(double x, double y, double rotationAngle = 0) => Coordinates.PolarCoordinate.PointInEllipse(m_a, m_b, x, y, rotationAngle);
+    public bool Contains(double x, double y, double rotationAngle = 0) => PointInEllipse(m_a, m_b, x, y, rotationAngle);
 
     /// <summary>
     /// <para>The linear eccentricity of an ellipse or hyperbola, denoted c (or sometimes f or e), is the distance between its center and either of its two foci.</para>
@@ -123,7 +123,7 @@ namespace Flux.Geometry
     /// <param name="maxRandomness"></param>
     /// <param name="rng"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> Create(int count, double a = 1, double b = 1, double arcOffset = 0, double translateX = 0, double translateY = 0, double maxRandomness = 0, System.Random? rng = null)
+    public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOfEllipse(int count, double a = 1, double b = 1, double arcOffset = 0, double translateX = 0, double translateY = 0, double maxRandomness = 0, System.Random? rng = null)
     {
       rng ??= System.Random.Shared;
 
@@ -142,48 +142,11 @@ namespace Flux.Geometry
       }
     }
 
-    ///// <summary>
-    ///// <para>This is a common recurring (unnamed, other than "H", AFAIK) formula in terms of ellipses. The parameters <paramref name="a"/> and <paramref name="b"/> are the lengths of the semi-major and semi-minor axes, respectively.</para>
-    ///// <para><see href="https://en.wikipedia.org/wiki/Ellipse#Circumference"/></para>
-    ///// </summary>
-    ///// <param name="a">The semi-major axis.</param>
-    ///// <param name="b">The semi-minor axis.</param>
-    ///// <returns>pow(a - b, 2) / pow(a + b, 2)</returns>
-    //public static double H(double a, double b)
-    //  => System.Math.Pow(a - b, 2) / System.Math.Pow(a + b, 2);
-
-    /// <summary>
-    /// <para>Returns the approximate perimeter (circumference) of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</para>
-    /// </summary>
-    public static double PerimeterOfEllipse(double a, double b)
-    {
-      var circle = double.Pi * (a + b); // (2 * PI * radius)
-
-      if (a == b) // For a circle, use (PI * diameter);
-        return circle;
-
-      var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function.
-
-      return circle * (1 + h3 / (10 + double.Sqrt(4 - h3)));
-    }
-
-    /// <summary>
-    /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</para>
-    /// </summary>
-    public static bool PointInCircle(double radius, double x, double y)
-      => double.Pow(x, 2) + double.Pow(y, 2) <= double.Pow(radius, 2);
-
     /// <summary>
     /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</para>
     /// </summary>
     public static bool PointInEllipse(double a, double b, double x, double y, double rotationAngle = 0)
       => double.Cos(rotationAngle) is var cos && double.Sin(rotationAngle) is var sin && double.Pow(cos * x + sin * y, 2) / (a * a) + double.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
-
-    /// <summary>
-    /// <para>Returns the area of an ellipse with the two specified semi-axes or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter).</para>
-    /// </summary>
-    public static double SurfaceAreaOfEllipse(double a, double b)
-      => double.Pi * a * b;
 
     #endregion // Static methods
 

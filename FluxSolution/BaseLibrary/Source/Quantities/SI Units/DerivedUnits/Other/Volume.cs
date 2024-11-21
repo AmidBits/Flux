@@ -43,20 +43,68 @@ namespace Flux.Quantities
 
     #region Static methods
 
-    /// <summary>Creates a new <see cref="Volume"/> instance from the specified cuboid.</summary>
+    #region Volume of geometric shapes
+
+    /// <summary>
+    /// <para>Computes the volume of the specified cone using <paramref name="radius"/> and <paramref name="height"/>.</para>
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <param name="height"></param>
+    /// <returns></returns>
+    public static double OfCone(double radius, double height)
+      => 1d / 3d * double.Pi * radius * radius * height;
+
+    /// <summary>
+    /// <para>Computes the volume of the specified cube using <paramref name="sideLength"/>.</para>
+    /// </summary>
+    /// <param name="sideLength"></param>
+    /// <returns></returns>
+    public static double OfCube(double sideLength)
+      => sideLength * sideLength * sideLength;
+
+    /// <summary>
+    /// <para>Computes the volume of the specified cuboid using <paramref name="a"/>, <paramref name="b"/> and <paramref name="c"/>.</para>
+    /// </summary>
     /// <param name="length">The length of a cuboid.</param>
     /// <param name="width">The width of a cuboid.</param>
     /// <param name="height">The height of a cuboid.</param>
-    public static Volume OfCuboid(Length length, Length width, Length height) => new(length.Value * width.Value * height.Value);
+    public static double OfCuboid(double a, double b, double c)
+      => a * b * c;
 
-    /// <summary>Creates a new <see cref="Volume"/> instance from the specified cylinder.</summary>
+    /// <summary>
+    /// <para>Computes the volume of the specified cylinder using <paramref name="radius"/> and <paramref name="height"/>.</para>
+    /// </summary>
     /// <param name="radius">The radius of a cylinder.</param>
     /// <param name="height">The height of a cylinder.</param>
-    public static Volume OfCylinder(Length radius, Length height) => new(System.Math.PI * System.Math.Pow(radius.Value, 2) * height.Value);
+    public static double OfCylinder(double radius, double height)
+      => double.Pi * radius * radius * height;
 
-    /// <summary>Creates a new <see cref="Volume"/> instance from the specified sphere.</summary>
+    /// <summary>
+    /// <para>Computes the volume of the specified ellipsoid using <paramref name="a"/>, <paramref name="b"/> and <paramref name="c"/>.</para>
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
+    /// <returns></returns>
+    public static double OfEllipsoid(double a, double b, double c)
+      => 4d / 3d * double.Pi * a * b * c;
+
+    /// <summary>
+    /// <para>Computes the volume of the specified sphere using <paramref name="radius"/>.</para>
+    /// </summary>
     /// <param name="radius">The radius of a sphere.</param>
-    public static Volume OfSphere(Length radius) => new(4d / 3d * System.Math.PI * System.Math.Pow(radius.Value, 3));
+    public static double OfSphere(double radius)
+      => 4d / 3d * double.Pi * radius * radius * radius;
+
+    /// <summary>
+    /// <para>Computes the volume of the specified tetrahedron (triangular pyramid) using <paramref name="sideLength"/>.</para>
+    /// </summary>
+    /// <param name="sideLength"></param>
+    /// <returns></returns>
+    public static double OfTetrahedron(double sideLength)
+      => double.Sqrt(2) / 12 * sideLength * sideLength * sideLength;
+
+    #endregion // Volume of geometric shapes
 
     #endregion Static methods
 

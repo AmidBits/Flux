@@ -34,18 +34,18 @@ namespace Flux.Quantities
 
     public Speed(MetricPrefix prefix, double meterPerSecond) => m_value = prefix.ConvertTo(meterPerSecond, MetricPrefix.Unprefixed);
 
-    /// <summary>Create a new Speed instance representing phase velocity from the specified frequency and wavelength.</summary>
+    /// <summary>Create a new instance representing phase velocity from the specified frequency and wavelength.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Phase_velocity"/>
     /// <param name="frequency"></param>
     /// <param name="wavelength"></param>
     public Speed(Frequency frequency, Length wavelength) : this(frequency.Value * wavelength.Value) { }
 
-    /// <summary>Creates a new Speed instance from the specified distance and time.</summary>
+    /// <summary>Creates a new instance from the specified distance and time.</summary>
     /// <param name="distance"></param>
     /// <param name="time"></param>
     public Speed(Length distance, Time time) : this(distance.Value / time.Value) { }
 
-    /// <summary>Creates a new <see cref="Speed">tangential/linear speed</see> instance from the specified <see cref="AngularFrequency"/> and <see cref="Length">Radius</see>.</summary>
+    /// <summary>Creates a new instance (tangential/linear speed) from the specified <see cref="AngularFrequency"/> and <see cref="Length">Radius</see>.</summary>
     /// <param name="angularVelocity"></param>
     /// <param name="radius"></param>
     public Speed(AngularFrequency angularVelocity, Length radius) : this(angularVelocity.Value * radius.Value) { }

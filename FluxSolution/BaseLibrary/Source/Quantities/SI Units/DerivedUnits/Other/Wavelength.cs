@@ -6,8 +6,8 @@ namespace Flux.Quantities
     MeterPerRadian,
   }
 
-  /// <summary>Surface tension, unit of Newton per meter.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Surface_tension"/>
+  /// <summary>Wavelength, unit of meter per radian.</summary>
+  /// <see href="https://en.wikipedia.org/wiki/Wavelength"/>
   public readonly record struct Wavelength
     : System.IComparable, System.IComparable<Wavelength>, System.IFormattable, ISiUnitValueQuantifiable<double, WavelengthUnit>
   {
@@ -16,6 +16,10 @@ namespace Flux.Quantities
     public Wavelength(double value, WavelengthUnit unit = WavelengthUnit.MeterPerRadian) => m_value = ConvertToUnit(unit, value);
 
     public Wavelength(MetricPrefix prefix, double meterPerRadian) => m_value = prefix.ConvertTo(meterPerRadian, MetricPrefix.Unprefixed);
+
+    public Wavelength(Speed phaseSpeed, Frequency frequency) : this(phaseSpeed.Value / frequency.Value) { }
+
+    public Wavelength(Speed phaseSpeed, AngularFrequency angularFrequency) : this(2 * double.Pi * phaseSpeed.Value / angularFrequency.Value) { }
 
     #region Static methods
 

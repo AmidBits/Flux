@@ -28,7 +28,7 @@ namespace Flux.Geometry
     /// <summary>
     /// <para>The perimeter of the hexagon.</para>
     /// </summary>
-    public double Perimeter => PerimeterOfHexagon(m_sideLength);
+    public double Perimeter => Quantities.Length.PerimeterOfHexagon(m_sideLength);
 
     /// <summary>
     /// <para>The side-length of the hexagon, which is equal to the circumradius.</para>
@@ -39,7 +39,7 @@ namespace Flux.Geometry
     /// <para>The surface area of the hexagon.</para>
     /// </summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public double SurfaceArea => AreaOfHexagon(m_sideLength);
+    public double SurfaceArea => Quantities.Area.OfHexagon(m_sideLength);
 
     /// <summary>
     /// <para>Verify whether the point (<paramref name="x"/>, <paramref name="y"/>) is inside the hexagon, assuming (0, 0) is the center of the hexagon.</para>
@@ -75,13 +75,34 @@ namespace Flux.Geometry
 
     #endregion // Conversion methods
 
-    /// <summary>Calculates the surface area for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
-    /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double AreaOfHexagon(double sideLength)
-      => 3 * double.Sqrt(3) / 2 * (sideLength * sideLength);
+    public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOfHexagon(double circumradius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
+      => EllipseGeometry.CreatePointsOfEllipse(6, circumradius, circumradius, arcOffset, translateX, translateY);
 
-    public static RegularPolygon Create(double circumradius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => RegularPolygon.Create(6, circumradius, arcOffset, translateX, translateY);
+    /// <summary>
+    /// <para>Find the centered hexagonal number by index. This is the number of hexagons in the "ring" represented by <paramref name="index"/>.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
+    /// </summary>
+    /// <returns>The centered hexagonal number corresponding to the <paramref name="index"/>.</returns>
+    /// <remarks>Indexing of the centered hexagonal number is 1-based. Index is also referred to as "ring".</remarks>
+    public static int CenteredHexagonalNumber(int index)
+      => index > 0 ? 3 * index * (index - 1) + 1 : throw new System.ArgumentOutOfRangeException(nameof(index));
+
+    /// <summary>
+    /// <para>The number of hexagons in the "<paramref name="ring"/>".</para>
+    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
+    /// </summary>
+    /// <returns>The number of hexagons in the "<paramref name="ring"/>".</returns>
+    /// <remarks>Ring is simply a 1-based index.</remarks>
+    public static int GetHexagonCountOfRing(int ring)
+      => ring == 1 ? 1 : ring > 1 ? ((ring - 1) * 6) : throw new System.ArgumentOutOfRangeException(nameof(ring));
+
+    /// <summary>
+    /// <para>The inverse of the centered hexagonal number, i.e. find the index of the centered hexagonal number.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
+    /// </summary>
+    /// <remarks>Indexing of the centered hexagonal number is 1-based. Index is also referred to as "ring".</remarks>
+    public static int IndexOfCenteredHexagonalNumber(int centeredHexagonalNumber)
+      => centeredHexagonalNumber > 0 ? (3 + (int)System.Math.Sqrt(12 * centeredHexagonalNumber - 3)) / 6 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
 
     /// <summary>
     /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the hexagon with the specified <paramref name="sideLength"/>.</para>
@@ -103,36 +124,6 @@ namespace Flux.Geometry
 
       return (2 * v * h) - (v * q2x) - (h * q2y) >= 0;   // finally the dot product can be reduced to this due to the hexagon symmetry
     }
-
-    /// <summary>
-    /// <para>Find the centered hexagonal number by index. This is the number of hexagons in the "ring" represented by <paramref name="index"/>.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
-    /// </summary>
-    /// <returns>The centered hexagonal number corresponding to the <paramref name="index"/>.</returns>
-    /// <remarks>Indexing of the centered hexagonal number is 1-based. Index is also referred to as "ring".</remarks>
-    public static int CenteredHexagonalNumber(int index)
-      => index > 0 ? 3 * index * (index - 1) + 1 : throw new System.ArgumentOutOfRangeException(nameof(index));
-
-    /// <summary>
-    /// <para>The inverse of the centered hexagonal number, i.e. find the index of the centered hexagonal number.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
-    /// </summary>
-    /// <remarks>Indexing of the centered hexagonal number is 1-based. Index is also referred to as "ring".</remarks>
-    public static int IndexOfCenteredHexagonalNumber(int centeredHexagonalNumber)
-      => centeredHexagonalNumber > 0 ? (3 + (int)System.Math.Sqrt(12 * centeredHexagonalNumber - 3)) / 6 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
-
-    /// <summary>
-    /// <para>The number of hexagons in the "<paramref name="ring"/>".</para>
-    /// <see href="https://en.wikipedia.org/wiki/Centered_hexagonal_number"/>
-    /// </summary>
-    /// <returns>The number of hexagons in the "<paramref name="ring"/>".</returns>
-    /// <remarks>Ring is simply a 1-based index.</remarks>
-    public static int GetHexagonCountOfRing(int ring)
-      => ring == 1 ? 1 : ring > 1 ? ((ring - 1) * 6) : throw new System.ArgumentOutOfRangeException(nameof(ring));
-
-    /// <summary>Calculates the surface perimeter for a hexagon with the specified length (which is the length of a side or the outer radius).</summary>
-    /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public static double PerimeterOfHexagon(double sideLength) => sideLength * 6;
 
     #endregion // Static methods
 

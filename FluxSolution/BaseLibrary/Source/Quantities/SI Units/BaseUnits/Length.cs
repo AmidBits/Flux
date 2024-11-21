@@ -64,6 +64,11 @@ namespace Flux.Quantities
     /// <see href="https://en.wikipedia.org/wiki/Wavelength"/>
     public Length(Speed phaseVelocity, Frequency frequency) : this(phaseVelocity.Value / frequency.Value) { }
 
+    /// <summary>Creates a new <see cref="Length"/> instance from <see cref="Speed"/> and <see cref="AngularFrequency"/></summary>
+    /// <param name="speed"></param>
+    /// <param name="angularVelocity"></param>
+    public Length(Speed speed, AngularFrequency angularVelocity) : this(speed.Value / angularVelocity.Value) { }
+
     #region Static methods
 
     //#region Conversion methods
@@ -89,10 +94,85 @@ namespace Flux.Quantities
 
     //#endregion // Conversion methods
 
-    /// <summary>Creates a new <see cref="Length"/> instance from <see cref="Speed"/> and <see cref="AngularFrequency"/></summary>
-    /// <param name="speed"></param>
-    /// <param name="angularVelocity"></param>
-    public static Length From(Speed speed, AngularFrequency angularVelocity) => new(speed.Value / angularVelocity.Value);
+    #region Perimeter of geometric shapes
+
+    /// <summary>
+    /// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
+    /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
+    /// </summary>
+    public static double PerimeterOfCircle(double radius)
+      => 2 * double.Pi * radius;
+
+    /// <summary>
+    /// <para>Computes the approximate perimeter (circumference) of an ellipse with the two semi-axis or radii <paramref name="a"/> and <paramref name="b"/> (the order of the arguments do not matter). Uses Ramanujans second approximation.</para>
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
+    public static double PerimeterOfEllipse(double a, double b)
+    {
+      var circle = double.Pi * (a + b); // (2 * PI * radius)
+
+      if (a == b) // For a circle, use (PI * diameter);
+        return circle;
+
+      var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function.
+
+      return circle * (1 + h3 / (10 + double.Sqrt(4 - h3)));
+    }
+
+    /// <summary>
+    /// <para>Computes the perimeter of a hexagon with the specified <paramref name="sideLength"/> (which is the length of a side and also the circumradius).</para>
+    /// </summary>
+    /// <param name="length">Length of the side (and also the circumradius, i.e. half outer diameter).</param>
+    public static double PerimeterOfHexagon(double sideLength)
+      => sideLength * 6;
+
+    /// <summary>
+    /// <para>Computes the perimeter of a rectangle with the specified <paramref name="length"/> and <paramref name="width"/>.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Perimeter"/></para>
+    /// </summary>
+    /// <param name="length">The length of a rectangle.</param>
+    /// <param name="width">The width of a rectangle.</param>
+    public static double PerimeterOfRectangle(double length, double width)
+      => 2 * length + 2 * width;
+
+    /// <summary>
+    /// <para>Computes the perimeter of a regular polygon with the specified <paramref name="circumradius"/> and <paramref name="numberOfSides"/>.</para>
+    /// </summary>
+    /// <param name="circumradius"></param>
+    /// <param name="numberOfSides"></param>
+    /// <returns></returns>
+    public static double PerimeterOfRegularPolygon(double circumradius, int numberOfSides)
+      => 2 * circumradius * numberOfSides * double.Sin(double.Pi / numberOfSides);
+
+    /// <summary>
+    /// <para>Computes the perimeter of a semicircle with the specified <paramref name="radius"/>.</para>
+    /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
+    /// </summary>
+    public static double PerimeterOfSemicircle(double radius)
+      => (double.Pi + 2) * radius;
+
+    /// <summary>
+    /// <para>Computes the perimeter of a square with the specified <paramref name="sideLength"/>.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Perimeter"/></para>
+    /// </summary>
+    /// <param name="sideLength">The sidelength of a rectangle.</param>
+    public static double PerimeterOfSquare(double sideLength)
+      => 4 * sideLength;
+
+    /// <summary>
+    /// <para>Computes the perimeter of a triangle with the specified <paramref name="a"/>, <paramref name="b"/> and <paramref name="c"/>.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Perimeter"/></para>
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <param name="c"></param>
+    /// <returns></returns>
+    public static double PerimeterOfTriangle(double a, double b, double c)
+      => a + b + c;
+
+    #endregion // Perimeter of geometric shapes
 
     #endregion // Static methods
 

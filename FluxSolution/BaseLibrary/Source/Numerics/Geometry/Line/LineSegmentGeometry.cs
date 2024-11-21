@@ -1,8 +1,10 @@
+using Flux.Coordinates;
+
 namespace Flux
 {
   public static partial class Em
   {
-    public static (Geometry.LineSegmentIntersectTest Outcome, Geometry.Point Intersection) IntersectsWith(this Geometry.LineSegmentGeometry a, Geometry.LineSegmentGeometry b)
+    public static (Geometry.LineSegmentIntersectTest Outcome, CartesianCoordinate Intersection) IntersectsWith(this Geometry.LineSegmentGeometry a, Geometry.LineSegmentGeometry b)
     {
       var (Outcome, Intersection) = Geometry.LineSegmentGeometry.GivenTwoPointsOnEach(a.V1, a.V2, b.V1, b.V2);
 
@@ -42,7 +44,7 @@ namespace Flux
 
       public double Length => m_v1.Subtract(m_v2).EuclideanLength();
 
-      public Point Lerp(double p) => new(p < 0 ? m_v1 : p > 1 ? m_v2 : m_v1.Lerp(m_v2, p));
+      public CartesianCoordinate Lerp(double p) => new(p < 0 ? m_v1 : p > 1 ? m_v2 : m_v1.Lerp(m_v2, p));
 
       public LineGeometry ToLineGeometry() => new(m_v1, m_v2);
 

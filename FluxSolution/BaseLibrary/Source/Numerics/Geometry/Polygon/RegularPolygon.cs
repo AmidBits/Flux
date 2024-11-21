@@ -13,6 +13,10 @@ namespace Flux.Geometry
 
     public double InteriorAngle => double.RadiansToDegrees(InteriorAngleOfRegularPolygon(ExteriorAngle));
 
+    public override double Perimeter => Quantities.Length.PerimeterOfRegularPolygon(Circumradius, m_vertices.Count);
+
+    public override double SurfaceArea => Quantities.Area.OfRegularPolygon(Circumradius, m_vertices.Count);
+
     #region Static methods
 
     /// <summary>
@@ -24,39 +28,27 @@ namespace Flux.Geometry
     /// <param name="translateX">The translation X offset.</param>
     /// <param name="translateY">The translation Y offset.</param>
     /// <returns></returns>
-    public static RegularPolygon Create(int count, double circumradius, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => new(EllipseGeometry.Create(count, circumradius, circumradius, arcOffset, translateX, translateY));
+    public static RegularPolygon Create(int count, double circumradius, double arcOffset = 0)
+      => new(EllipseGeometry.CreatePointsOfEllipse(count, circumradius, circumradius, arcOffset));
 
     #region Conversion methods
 
-    public static double ConvertCircumradiusToInradius(double circumradius, int numberOfVertices) => circumradius * double.Cos(double.Pi / numberOfVertices);
+    public static double ConvertCircumradiusToInradius(double circumradius, int numberOfVertices) => 2 * double.Pi * (circumradius * double.Cos(double.Pi / numberOfVertices));
     public static double ConvertInradiusToCircumradius(double inradius, int numberOfVertices) => inradius / double.Cos(double.Pi / numberOfVertices);
 
-    public static double ConvertSideLengthToCircumradius(double sideLength, int numberOfVertices) => sideLength / 2 * double.Sin(double.Pi / numberOfVertices);
+    public static double ConvertSideLengthToCircumradius(double sideLength, int numberOfVertices) => sideLength / (2 * double.Sin(double.Pi / numberOfVertices));
     public static double ConvertCircumradiusToSideLength(double circumradius, int numberOfVertices) => 2 * circumradius * double.Sin(double.Pi / numberOfVertices);
 
-    public static double ConvertSideLengthToInradius(int sideLength, int numberOfVertices) => 0.5 * sideLength * Quantities.Angle.Cot(double.Pi / numberOfVertices);
+    public static double ConvertSideLengthToInradius(int sideLength, int numberOfVertices) => sideLength / (2 * double.Tan(double.Pi / numberOfVertices)); //0.5 * sideLength * Quantities.Angle.Cot(double.Pi / numberOfVertices);
     public static double ConvertInradiusToSideLength(double inradius, int numberOfVertices) => 2 * inradius * double.Tan(double.Pi / numberOfVertices);
 
     #endregion // Conversion methods
 
-    public static double AreaOfRegularPolygon(double sideLength, int numberOfSides)
-      => numberOfSides * sideLength * sideLength * Quantities.Angle.Cot(double.Pi / numberOfSides) / 4;
-
     public static double ExteriorAngleOfRegularPolygon(int numberOfSides)
       => double.Tau / numberOfSides;
 
-    public static double InradiusOfRegularPolygonByCircumradius(double circumradius, int numberOfSides)
-      => circumradius * double.Cos(double.Pi / numberOfSides);
-
-    public static double InradiusOfRegularPolygonBySideLength(double sideLength, int numberOfSides)
-      => sideLength / 2 * double.Tan(double.Pi / numberOfSides);
-
     public static double InteriorAngleOfRegularPolygon(double numberOfSides)
       => double.Pi - double.Tau / numberOfSides;
-
-    public static double PerimeterOfRegularPolygon(double sideLength, int numberOfSides)
-      => numberOfSides * sideLength;
 
     #endregion // Static methods
 

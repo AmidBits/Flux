@@ -81,7 +81,7 @@ namespace Flux
       /// <remarks>The elevation angle is 90 degrees (PI/2 radians) minus the <see cref="Inclination"/> angle.</remarks>
       public Quantities.Angle Elevation { get => new(ConvertInclinationToElevation(m_inclination.Value)); init => m_inclination = new(ConvertElevationToInclination(value.Value)); }
 
-      public double SphereSurfaceArea => SphericalCoordinate.SurfaceAreaOfSphere(m_radius.Value);
+      public double SphereSurfaceArea => Quantities.Area.OfSphere(m_radius.Value);
 
       public CartesianCoordinate ToCartesianCoordinate()
       {
@@ -177,35 +177,6 @@ namespace Flux
       public static double ConvertElevationToInclination(double elevation) => double.Pi / 2 - elevation;
 
       #endregion // Conversion methods
-
-      /// <summary>
-      /// <para>Computes the surface area of a hemisphere with the specified <paramref name="radius"/>.</para>
-      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
-      /// </summary>
-      /// <param name="radius">The radius of the hemisphere.</param>
-      public static double SurfaceAreaOfHemisphere(double radius) => 3 * double.Pi * radius * radius;
-
-      /// <summary>
-      /// <para>Computes the surface area of a hemispherical shell with the specified <paramref name="externalRadius"/> and <paramref name="internalRadius"/>.</para>
-      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
-      /// </summary>
-      /// <param name="radius">The radius of the hemispherical shell.</param>
-      public static double SurfaceAreaOfHemisphericalShell(double externalRadius, double internalRadius) => double.Pi * (3 * externalRadius * externalRadius + internalRadius * internalRadius);
-
-      /// <summary>
-      /// <para>Computes the surface area of a sphere with the specified <paramref name="radius"/>.</para>
-      /// <para><see cref="https://en.wikipedia.org/wiki/Surface_area"/></para>
-      /// </summary>
-      /// <param name="radius">The radius of the sphere.</param>
-      public static double SurfaceAreaOfSphere(double radius) => 4 * double.Pi * radius * radius;
-
-      /// <summary>
-      /// <para>Computes the surface area of a spherical lune with the specified <paramref name="radius"/> and <paramref name="dihedralAngle"/>.</para>
-      /// </summary>
-      /// <param name="radius"></param>
-      /// <param name="dihedralAngle"></param>
-      /// <returns>The surface area of a spherical lune.</returns>
-      public static double SurfaceAreaOfSphericalLune(double radius, double dihedralAngle) => 2 * double.Pi * double.Pi * dihedralAngle;
 
       #endregion // Static methods
 
