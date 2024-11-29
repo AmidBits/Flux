@@ -52,9 +52,9 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(RadiationExposureUnit.CoulombPerKilogram, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetMetricPrefixName() + GetUnitName(RadiationExposureUnit.CoulombPerKilogram, preferPlural);
 
-    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(RadiationExposureUnit.CoulombPerKilogram, preferUnicode);
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(RadiationExposureUnit.CoulombPerKilogram, preferUnicode);
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 

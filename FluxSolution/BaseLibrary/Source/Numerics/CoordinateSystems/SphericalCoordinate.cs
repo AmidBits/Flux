@@ -32,7 +32,7 @@ namespace Flux
     public readonly record struct SphericalCoordinate
       : System.IFormattable
     {
-      public static SphericalCoordinate Zero { get; }
+      public static SphericalCoordinate Empty { get; }
 
       private readonly Quantities.Length m_radius;
       private readonly Quantities.Angle m_inclination;
@@ -65,7 +65,7 @@ namespace Flux
       public Quantities.Length Radius { get => m_radius; init => m_radius = value; }
 
       /// <summary>
-      /// <para>The inclination (or polar angle) is the signed angle from the zenith reference direction. (Elevation may be used as the polar angle instead of inclination). A.k.a. polar angle, colatitude, zenith angle, normal angle. This is equivalent to latitudinal or vertical angle in geographical coordinate systems.</para>
+      /// <para>The inclination (a.k.a. polar angle, colatitude, zenith angle, normal angle) is the signed angle from the zenith reference direction. (Elevation may be used as the polar angle instead of inclination). This is equivalent to latitudinal or vertical angle in geographical coordinate systems.</para>
       /// </summary>
       /// <remarks>If the inclination is zero or 180 degrees (PI radians), the azimuth is arbitrary.</remarks>
       public Quantities.Angle Inclination { get => m_inclination; init => m_inclination = value; }
@@ -83,15 +83,21 @@ namespace Flux
 
       public double SphereSurfaceArea => Quantities.Area.OfSphere(m_radius.Value);
 
+      /// <summary>Creates new <see cref="CartesianCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
       public CartesianCoordinate ToCartesianCoordinate()
       {
-        var (x, y, z) = ToCartesianCoordinate3();
+        var (si, ci) = double.SinCos(m_inclination.Value);
+        var (sa, ca) = double.SinCos(m_azimuth.Value);
+        var r = m_radius.Value;
 
-        return new(x, y, z);
+        return new(
+          r * si * ca,
+          r * si * sa,
+          r * ci
+        );
       }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="SphericalCoordinate"/>.</summary>
-      /// <remarks>All angles in radians.</remarks>
       public (double x, double y, double z) ToCartesianCoordinate3()
       {
         var (si, ci) = double.SinCos(m_inclination.Value);
@@ -106,7 +112,6 @@ namespace Flux
       }
 
       /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
-      /// <remarks>All angles in radians.</remarks>
       public CylindricalCoordinate ToCylindricalCoordinate()
       {
         var (si, ci) = double.SinCos(m_inclination.Value);
@@ -122,7 +127,6 @@ namespace Flux
       /// <summary>Creates a new <see cref="GeographicCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
       /// <remarks>All angles in radians.</remarks>
       public GeographicCoordinate ToGeographicCoordinate()
-        // Translates the spherical coordinate to geographic coordinate transparently. I cannot recall the reason for the System.Math.PI involvement (see remarks).
         => new(
           m_inclination.Value - double.Pi / 2, Quantities.AngleUnit.Radian,
           m_azimuth.Value, Quantities.AngleUnit.Radian,
@@ -144,7 +148,7 @@ namespace Flux
 
       /// <summary>Creates cartesian 3D coordinates from the inclination and azimuth of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</summary>
       /// <remarks>All angles in radians.</remarks>
-      public (double x, double y, double z) ConvertSphericalByInclinationToCartesianCoordinate3(double inclination, double azimuth, double radiusA, double radiusB, double radiusC)
+      public static (double x, double y, double z) ConvertSphericalByInclinationToCartesianCoordinate3(double inclination, double azimuth, double radiusA, double radiusB, double radiusC)
       {
         var (sp, cp) = double.SinCos(inclination);
         var (sa, ca) = double.SinCos(azimuth);
@@ -158,7 +162,7 @@ namespace Flux
 
       /// <summary>Creates cartesian 3D coordinates from the latitude (elevation) and longitude (azimuth) of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</summary>
       /// <remarks>All angles in radians.</remarks>
-      public (double x, double y, double z) ConvertSphericalByElevationToCartesianCoordinate3(double lat, double lon, double radiusA, double radiusB, double radiusC)
+      public static (double x, double y, double z) ConvertSphericalByElevationToCartesianCoordinate3(double lat, double lon, double radiusA, double radiusB, double radiusC)
       {
         var (sp, cp) = double.SinCos(lat);
         var (sa, ca) = double.SinCos(lon);

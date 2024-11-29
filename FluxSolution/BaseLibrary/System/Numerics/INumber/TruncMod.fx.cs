@@ -10,5 +10,13 @@ namespace Flux
 
       return (dividend - remainder) / divisor;
     }
+
+    public static TNumber TruncMod<TNumber>(this TNumber dividend, TNumber divisor, out TNumber remainder, out int remainderSign)
+      where TNumber : System.Numerics.INumber<TNumber>
+    {
+      remainderSign = TNumber.Sign(remainder = dividend % divisor);
+
+      return (dividend - remainder) / divisor;
+    }
   }
 }

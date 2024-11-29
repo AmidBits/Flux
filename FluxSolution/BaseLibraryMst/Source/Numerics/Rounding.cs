@@ -16,15 +16,18 @@ namespace Maths
       Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfTowardZero));
       Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfToNegativeInfinity));
       Assert.AreEqual(6, (5.5).Round(UniversalRounding.HalfToPositiveInfinity));
-      Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfToOdd));
+      Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfAlternating)); // First alternating state. This is also {value}.RoundHalfAlternating().
+      Assert.AreEqual(6, (5.5).Round(UniversalRounding.HalfAlternating)); // Second alternating state. This is also {value}.RoundHalfAlternating().
+      Assert.IsTrue((5.5).Round(UniversalRounding.HalfToRandom) is 5 or 6); // This is also {value}.RoundHalfToRandom().
+      Assert.AreEqual(5, (5.5).Round(UniversalRounding.HalfToOdd)); // This is also {value}.RoundHalfToOdd().
       Assert.AreEqual(5, (5.5).RoundHalfToOdd());
     }
 
     [TestMethod]
     public void RoundToBoundary()
     {
-      Assert.AreEqual(17, (12.ToBigInteger()).RoundToBoundary(UniversalRounding.HalfAwayFromZero, 7, 17), UniversalRounding.HalfAwayFromZero.ToString());
-      Assert.AreEqual(7, (12.ToBigInteger()).RoundToBoundary(UniversalRounding.HalfTowardZero, 7, 17), UniversalRounding.HalfTowardZero.ToString());
+      Assert.AreEqual(17, (12.ToBigInteger()).RoundToNearest(UniversalRounding.HalfAwayFromZero, 7, 17), UniversalRounding.HalfAwayFromZero.ToString());
+      Assert.AreEqual(7, (12.ToBigInteger()).RoundToNearest(UniversalRounding.HalfTowardZero, 7, 17), UniversalRounding.HalfTowardZero.ToString());
     }
 
     [TestMethod]
@@ -35,7 +38,7 @@ namespace Maths
 
       n.RoundToMultipleOf(m, false, UniversalRounding.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      Assert.AreEqual(1.8, n.RoundToBoundary(Flux.UniversalRounding.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(RoundToMultipleOf)} {Flux.UniversalRounding.HalfAwayFromZero}");
+      Assert.AreEqual(1.8, n.RoundToNearest(Flux.UniversalRounding.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(RoundToMultipleOf)} {Flux.UniversalRounding.HalfAwayFromZero}");
     }
 
     [TestMethod]

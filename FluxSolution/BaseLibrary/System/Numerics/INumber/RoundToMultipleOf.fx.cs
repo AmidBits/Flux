@@ -17,7 +17,7 @@
       multipleOfTowardsZero = number.RoundToMultipleOfTowardZero(multiple, unequal);
       multipleOfAwayFromZero = number.RoundToMultipleOfAwayFromZero(multiple, unequal);
 
-      return number.RoundToBoundary(mode, multipleOfTowardsZero, multipleOfAwayFromZero);
+      return number.RoundToNearest(mode, multipleOfTowardsZero, multipleOfAwayFromZero);
     }
 
     /// <summary>

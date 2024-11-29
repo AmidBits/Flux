@@ -66,13 +66,13 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(ElectricPotentialUnit.Volt, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetMetricPrefixName() + GetUnitName(ElectricPotentialUnit.Volt, preferPlural);
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix switch
     {
       MetricPrefix.Kilo => preferUnicode ? "\u33B8" : "k" + GetUnitSymbol(ElectricPotentialUnit.Volt, preferUnicode),
 
-      _ => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricPotentialUnit.Volt, preferUnicode),
+      _ => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricPotentialUnit.Volt, preferUnicode),
     };
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);

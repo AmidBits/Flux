@@ -192,9 +192,9 @@ namespace Flux
 
       #region ISiUnitValueQuantifiable<>
 
-      public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(TimeUnit.Second, preferPlural);
+      public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetMetricPrefixName() + GetUnitName(TimeUnit.Second, preferPlural);
 
-      public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(TimeUnit.Second, preferUnicode);
+      public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(TimeUnit.Second, preferUnicode);
 
       public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 

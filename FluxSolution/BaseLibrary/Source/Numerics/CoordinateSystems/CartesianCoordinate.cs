@@ -67,7 +67,7 @@ namespace Flux
 
       public CartesianCoordinate(System.Runtime.Intrinsics.Vector256<double> xyzw) => m_v = xyzw;
 
-      public CartesianCoordinate(double x, double y = 0, double z = 0, double w = 0) => m_v = System.Runtime.Intrinsics.Vector256.Create(x, y, z, w);
+      public CartesianCoordinate(double x, double y, double z = 0, double w = 0) => m_v = System.Runtime.Intrinsics.Vector256.Create(x, y, z, w);
 
       public CartesianCoordinate(Quantities.Length x, Quantities.Length y = default, Quantities.Length z = default, Quantities.Length w = default)
         : this(x.Value, y.Value, z.Value, w.Value) { }
@@ -95,16 +95,16 @@ namespace Flux
       public void Deconstruct(out double x, out double y, out double z)
       {
         x = m_v[0];
-        y = m_v[0];
-        z = m_v[0];
+        y = m_v[1];
+        z = m_v[2];
       }
 
       public void Deconstruct(out double x, out double y, out double z, out double w)
       {
         x = m_v[0];
-        y = m_v[0];
-        z = m_v[0];
-        w = m_v[0];
+        y = m_v[1];
+        z = m_v[2];
+        w = m_v[3];
       }
 
       /// <summary>
@@ -120,16 +120,19 @@ namespace Flux
       /// <summary>
       /// <para>Z component.</para>
       /// </summary>
-      public Quantities.Length Z => new(m_v[0]);
+      public Quantities.Length Z => new(m_v[2]);
 
       /// <summary>
       /// <para>W component.</para>
       /// </summary>
-      public Quantities.Length W => new(m_v[0]);
+      public Quantities.Length W => new(m_v[3]);
 
       /// <summary>Creates a new <see cref="Coordinates.CylindricalCoordinate"/> from a <see cref="Coordinates.CartesianCoordinate"/> and its (X, Y, Z) components.</summary>
-      public Coordinates.CylindricalCoordinate ToCylindricalCoordinate()
+      public CylindricalCoordinate ToCylindricalCoordinate()
       {
+        var v3 = ToVector3();
+        var cc = v3.ToCylindricalCoordinate();
+
         var (x, y, z) = this;
 
         return new(

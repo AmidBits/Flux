@@ -7,6 +7,8 @@ namespace Flux
   /// </summary>
   public enum WholeRounding
   {
+    ToEven = 100, // There is no built-in rounding of this kind.
+
     /// <summary>
     /// <para>Round to the number away-from-zero.</para>
     /// </summary>
@@ -14,7 +16,7 @@ namespace Flux
     /// <para>This mode is the opposite of truncating.</para>
     /// <para>Symmetric rounding: round up, bias: away from zero.</para>
     /// </remarks>
-    AwayFromZero = 11,
+    AwayFromZero = 101,
 
     /// <summary>
     /// <para>Round to the number towards-zero.</para>
@@ -23,7 +25,7 @@ namespace Flux
     /// <para>This is the same as Math.Truncate of the number.</para>
     /// <para>Symmetric rounding: round down, bias: towards zero.</para>
     /// </remarks>
-    TowardZero = 12,
+    TowardZero = 102,
 
     /// <summary>
     /// <para>Round down to the number less-than-or-equal to value.</para>
@@ -32,7 +34,7 @@ namespace Flux
     /// <para>This is the same as Math.Floor of the number.</para>
     /// <para>Common rounding: round down, bias: negative infinity.</para>
     /// </remarks>
-    ToNegativeInfinity = 13,
+    ToNegativeInfinity = 103,
 
     /// <summary>
     /// <para>Round up to the number greater-than-or-equal to value.</para>
@@ -41,26 +43,18 @@ namespace Flux
     /// <para>This is the same as Math.Ceiling of the number.</para>
     /// <para>Common rounding: round up, bias: positive infinity.</para>
     /// </remarks>
-    ToPositiveInfinity = 14,
+    ToPositiveInfinity = 104,
 
     /// <summary>
-    /// <para></para>
+    /// <para>Round to down or up randomly.</para>
     /// </summary>
-    ToPowOf2AwayFromZero = 20,
+    /// <remarks>
+    /// <para>Random rounding: down or up, bias: none (though the RNG might be).</para>
+    /// </remarks>
+    ToRandom = 108, // There is no built-in rounding of this kind.
 
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    ToPowOf2TowardZero = 21,
+    Alternating = 109, // There is no built-in rounding of this kind.
 
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    ToPowOf10AwayFromZero = 22,
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    ToPowOf10TowardZero = 23,
+    ToOdd = 110, // There is no built-in rounding of this kind.
   }
 }

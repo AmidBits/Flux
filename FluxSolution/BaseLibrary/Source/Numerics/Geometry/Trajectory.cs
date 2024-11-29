@@ -8,6 +8,8 @@ namespace Flux.Mechanics
   /// </summary>
   public static partial class Trajectory
   {
+    #region Trajectory utilities
+
     /// <summary>
     /// <para>Compute the angle at which the projectile lands.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Range_of_a_projectile#Angle_of_impact"/></para>
@@ -46,14 +48,16 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static bool TryGetAngleOfReach(double targetX, double targetY, double initialVelocity, out double angleOfShallowTrajectory, out double angleOfSteepTrajectory, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
+    public static (double angleOfShallowTrajectory, double angleOfSteepTrajectory) AngleOfReach(double targetX, double targetY, double initialVelocity, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
     {
       if (targetY == 0)
       {
         var sin2aor = (gravitationalAcceleration * targetX) / (initialVelocity * initialVelocity); // Sin(2 * angle-of-reach)
 
-        angleOfShallowTrajectory = double.Asin(sin2aor) / 2;
-        angleOfSteepTrajectory = double.Pi / 4 + double.Acos(sin2aor) / 2;
+        return (
+          double.Asin(sin2aor) / 2,
+          double.Pi / 4 + double.Acos(sin2aor) / 2
+        );
       }
       else
       {
@@ -63,12 +67,45 @@ namespace Flux.Mechanics
 
         var root = double.Sqrt(double.Abs(v2 * v2 - gravitationalAcceleration * (gx * targetX + 2 * targetY * v2)));
 
-        angleOfShallowTrajectory = double.Atan((v2 - root) / gx);
-        angleOfSteepTrajectory = double.Atan((v2 + root) / gx);
+        return (
+          double.Atan((v2 - root) / gx),
+          double.Atan((v2 + root) / gx)
+        );
       }
-
-      return angleOfShallowTrajectory > 0 || angleOfSteepTrajectory > 0;
     }
+
+    /// <summary>
+    /// <para>Yields, at any <paramref name="time"/>, the projectile's horizontal displacement.</para>
+    /// </summary>
+    /// <param name="time"></param>
+    /// <param name="initialAngle"></param>
+    /// <param name="initialVelocity"></param>
+    /// <returns></returns>
+    public static double DisplacementHorizontal(double time, double initialAngle, double initialVelocity)
+      => initialVelocity * time * double.Cos(initialAngle);
+
+    /// <summary>
+    /// <para>The time to reach a target for the horizontal velocity.</para>
+    /// <para>The horizontal and vertical velocity of a projectile are independent of each other.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Time_of_flight_to_the_target's_position"/></para>
+    /// </summary>
+    /// <param name="targetX"></param>
+    /// <param name="initialAngle"></param>
+    /// <param name="initialVelocity"></param>
+    /// <returns></returns>
+    public static double DisplacementHorizontalTime(double targetX, double initialAngle, double initialVelocity)
+      => targetX / (initialVelocity * double.Cos(initialAngle));
+
+    /// <summary>
+    /// <para>Yields, at any <paramref name="time"/>, the projectile's vertical displacement.</para>
+    /// </summary>
+    /// <param name="time"></param>
+    /// <param name="initialAngle"></param>
+    /// <param name="initialVelocity"></param>
+    /// <param name="gravitationalAcceleration"></param>
+    /// <returns></returns>
+    public static double DisplacementVertical(double time, double initialAngle, double initialVelocity, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
+      => initialVelocity * time * double.Sin(initialAngle) - 0.5 * gravitationalAcceleration * time * time;
 
     /// <summary>
     /// <para>The length of the parabolic arc traced by a projectile, given that the height of launch and landing is the same (air resistance ignored).</para>
@@ -86,17 +123,7 @@ namespace Flux.Mechanics
       return (initialVelocity * initialVelocity / gravitationalAcceleration) * (sin + cos * cos * double.Atanh(sin));
     }
 
-    /// <summary>
-    /// <para>The time to reach a target for the horizontal velocity.</para>
-    /// <para>The horizontal and vertical velocity of a projectile are independent of each other.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Projectile_motion#Time_of_flight_to_the_target's_position"/></para>
-    /// </summary>
-    /// <param name="targetX"></param>
-    /// <param name="initialAngle"></param>
-    /// <param name="initialVelocity"></param>
-    /// <returns></returns>
-    public static double TimeToTarget(double targetX, double initialAngle, double initialVelocity)
-      => targetX / (initialVelocity * double.Cos(initialAngle));
+    #endregion // Trajectory utilities
 
     #region Planetary trajectories
 

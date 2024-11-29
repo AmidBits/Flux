@@ -31,7 +31,7 @@ namespace Flux
     public readonly record struct CylindricalCoordinate
       : System.IFormattable
     {
-      public static CylindricalCoordinate Zero { get; }
+      public static CylindricalCoordinate Empty { get; }
 
       private readonly Quantities.Length m_radius;
       private readonly Quantities.Angle m_azimuth;
@@ -84,7 +84,7 @@ namespace Flux
       {
         var (x, y, z) = ToCartesianCoordinate3();
 
-        return new(x, y, z);
+        return new(x, y, z, 0);
       }
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>

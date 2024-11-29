@@ -31,7 +31,7 @@ namespace Flux
     {
       var (pctz, pcafz) = value.SurroundingPrimeCandidates(mode);
 
-      return value.RoundToBoundary(mode, pctz, pcafz);
+      return value.RoundToNearest(mode, pctz, pcafz);
     }
 
     public static (TValue PrimeMultipleTowardZero, TValue PrimeMultipleAwayFromZero) SurroundingPrimeMultiples<TValue>(this TValue value)
@@ -47,7 +47,7 @@ namespace Flux
     {
       var (pmtz, pmafz) = value.SurroundingPrimeMultiples();
 
-      return (pmtz == pmafz) ? value : TValue.CopySign(value.RoundToBoundary(mode, pmtz, pmafz), value);
+      return (pmtz == pmafz) ? value : TValue.CopySign(value.RoundToNearest(mode, pmtz, pmafz), value);
     }
 
     public static TValue PrimeCandidateAwayFromZero<TValue>(this TValue value, bool unequal)

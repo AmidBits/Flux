@@ -23,6 +23,9 @@ namespace Flux
     public readonly record struct LineGeometry
       : System.IFormattable
     {
+      public static LineGeometry UnitX { get; } = new(0, 0, 1, 0);
+      public static LineGeometry UnitY { get; } = new(0, 0, 0, 1);
+
       private readonly System.Runtime.Intrinsics.Vector128<double> m_v1;
       private readonly System.Runtime.Intrinsics.Vector128<double> m_v2;
 

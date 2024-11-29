@@ -133,7 +133,7 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetPrefixName() + GetUnitName(FrequencyUnit.Hertz, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetMetricPrefixName() + GetUnitName(FrequencyUnit.Hertz, preferPlural);
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode)
       => prefix switch
@@ -142,7 +142,7 @@ namespace Flux.Quantities
         MetricPrefix.Mega => preferUnicode ? "\u3392" : "MHz",
         MetricPrefix.Giga => preferUnicode ? "\u3393" : "GHz",
         MetricPrefix.Tera => preferUnicode ? "\u3394" : "THz",
-        _ => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(FrequencyUnit.Hertz, preferUnicode),
+        _ => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(FrequencyUnit.Hertz, preferUnicode),
       };
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);

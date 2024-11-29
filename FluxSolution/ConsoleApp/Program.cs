@@ -42,23 +42,40 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var a = 1.6d;
+      var b = 2.740000000000001d;
 
+      var a1 = a - double.Floor(a);
+      var a2 = double.Ceiling(a) - a;
 
-      var molesGe = new Flux.Quantities.AmountOfSubstance(2.120335949332232e-4);
+      var aih = a.CompareToFractionMidpoint();
+      var bih = b.CompareToFractionPercent(0.75);
 
-      var sides = 6;
-      var radius = 2.924;
+      //var ar = a.RoundHalfToRandom();
+      //var br = b.RoundHalfToRandom();
 
-      var c = new Flux.Geometry.CircleGeometry(radius);
-      var e = new Flux.Geometry.EllipseGeometry(radius, radius);
-      var h = new Flux.Geometry.HexagonGeometry(radius);
+      var value = (-.0010240012);
+      //value = (1024001200);
 
-      var pc = Flux.Geometry.CyclicPolygon.Create(sides, radius, 0, 0, 0, 0.5);
-      var rp = Flux.Geometry.RegularPolygon.Create(sides, radius);
+      var rt = (5.5).RoundToNearest(UniversalRounding.HalfAwayFromZero, -1, 12);
 
-      var magnitude = System.Runtime.Intrinsics.Vector128.Create(pc.Vertices[0].EuclideanLength()).EuclideanLength();
+      var en = value.ToEngineeringNotation("A");
 
-      //p = Flux.Geometry.CyclicPolygon.CreateCyclicPolygon(6, 10, 0, 0.5);
+      //var nwup = value.GetNumberWithUnitPrefix(1);
+
+      //var molesGe = new Flux.Quantities.AmountOfSubstance(2.120335949332232e-4);
+
+      //var sides = 6;
+      //var radius = 2.924;
+
+      //var c = new Flux.Geometry.CircleGeometry(radius);
+      //var e = new Flux.Geometry.EllipseGeometry(radius, radius);
+      //var h = new Flux.Geometry.HexagonGeometry(radius);
+
+      //var pc = Flux.Geometry.CyclicPolygon.Create(sides, radius, 0, 0, 0, 0.5);
+      //var rp = Flux.Geometry.RegularPolygon.Create(sides, radius);
+
+      //var magnitude = System.Runtime.Intrinsics.Vector128.Create(pc.Vertices[0].EuclideanLength()).EuclideanLength();
     }
 
     #region Eliza example

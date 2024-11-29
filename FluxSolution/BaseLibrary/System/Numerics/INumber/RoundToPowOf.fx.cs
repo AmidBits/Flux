@@ -20,7 +20,7 @@
       powOfTowardsZero = number.RoundToPowOfTowardZero(radix, unequal);
       powOfAwayFromZero = number.RoundToPowOfAwayFromZero(radix, unequal);
 
-      return number.RoundToBoundary(mode, powOfTowardsZero, powOfAwayFromZero);
+      return number.RoundToNearest(mode, powOfTowardsZero, powOfAwayFromZero);
     }
 
     /// <summary>

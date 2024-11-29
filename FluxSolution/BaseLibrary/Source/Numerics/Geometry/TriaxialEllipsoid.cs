@@ -1,3 +1,5 @@
+using Flux.Coordinates;
+
 namespace Flux.Geometry
 {
   public readonly record struct TriaxialEllipsoid
@@ -19,32 +21,32 @@ namespace Flux.Geometry
 
     public System.Numerics.Vector3 ToVector3() => new((float)m_a, (float)m_b, (float)m_c);
 
-    /// <summary>Creates cartesian 3D coordinates from the <see cref="SphericalCoordinate"/>.</summary>
+    /// <summary>
+    /// <para>Creates cartesian 3D coordinates from spherical coordinates using <paramref name="inclination"/> angle [ 0, +Pi ] from the zenith reference direction as latitude and <paramref name="azimuth"/> as longitude.</para>
+    /// </summary>
     /// <remarks>All angles in radians.</remarks>
-    public (double x, double y, double z) PolarToCartesianCoordinate3(double inclination, double azimuth)
+    /// <param name="inclination"></param>
+    /// <param name="azimuth"></param>
+    /// <returns></returns>
+    public Coordinates.CartesianCoordinate PolarToCartesianCoordinate3(double inclination, double azimuth)
     {
-      var (sp, cp) = double.SinCos(inclination);
-      var (sa, ca) = double.SinCos(azimuth);
+      var (x, y, z) = SphericalCoordinate.ConvertSphericalByInclinationToCartesianCoordinate3(inclination, azimuth, m_a, m_b, m_c);
 
-      return (
-        m_a * sp * ca,
-        m_b * sp * sa,
-        m_c * cp
-      );
+      return new(x, y, z, 0);
     }
 
-    /// <summary>Creates cartesian 3D coordinates from the <see cref="SphericalCoordinate"/>.</summary>
+    /// <summary>
+    /// <para>Creates cartesian 3D coordinates from spherical coordinates using elevation angle [ -Pi/2, +Pi/2 ] relative the equator (positive being upwards) as <paramref name="lat"/>itude and <paramref name="lon"/>gitude.</para>
+    /// </summary>
     /// <remarks>All angles in radians.</remarks>
-    public (double x, double y, double z) EquatorToCartesianCoordinate3(double lat, double lon)
+    /// <param name="lat"></param>
+    /// <param name="lon"></param>
+    /// <returns></returns>
+    public Coordinates.CartesianCoordinate EquatorToCartesianCoordinate3(double lat, double lon)
     {
-      var (sp, cp) = double.SinCos(lat);
-      var (sa, ca) = double.SinCos(lon);
+      var (x, y, z) = SphericalCoordinate.ConvertSphericalByElevationToCartesianCoordinate3(lat, lon, m_a, m_b, m_c);
 
-      return (
-        m_a * cp * ca,
-        m_b * cp * sa,
-        m_c * sp
-      );
+      return new(x, y, z, 0);
     }
   }
 }

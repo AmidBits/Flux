@@ -7,6 +7,8 @@ namespace Flux.Geometry
 
     public override double Circumradius => m_vertices[0].EuclideanLength();
 
+    public override bool IsConvex => true;
+
     #region Static methods
 
     /// <summary>
@@ -26,23 +28,6 @@ namespace Flux.Geometry
     #endregion // Static methods
 
     #region Implemented interfaces
-
-    //new public string ToString(string? format, IFormatProvider? formatProvider)
-    //{
-    //  format ??= "N3";
-
-    //  var sb = new System.Text.StringBuilder();
-
-    //  sb.Append($"{GetType().Name} {{ Vertices = {m_vertices.Count}");
-
-    //  sb.Append($", Circumradius = {Circumradius.ToString(format, formatProvider)}");
-    //  sb.Append($", Perimeter = {Perimeter.ToString(format, formatProvider)}");
-    //  sb.Append($", SurfaceArea = {SurfaceArea.ToString(format, formatProvider)} ({SurfaceAreaSigned.ToString(format, formatProvider)})");
-
-    //  sb.Append($" [{m_vertices.ToStringXY(format, formatProvider)}] }}");
-
-    //  return sb.ToString();
-    //}
 
     #endregion // Implemented interfaces
 

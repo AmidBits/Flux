@@ -208,6 +208,15 @@ namespace Flux
       return (min, max);
     }
 
+    ///// <summary>
+    ///// <para>Spreads a value in the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>] to the edge of the interval. i.e. the value returned is either <paramref name="minValue"/> or <paramref name="maxValue"/>.</para>
+    ///// </summary>
+    //public static TNumber Spread<TNumber>(this TNumber source, TNumber minValue, TNumber maxValue, MidpointRounding mode)
+    //  where TNumber : System.Numerics.INumber<TNumber>
+    //  => source <= minValue || source >= maxValue
+    //  ? source
+    //  : source.RoundToNearest((UniversalRounding)(int)mode, minValue, maxValue);
+
     public static bool TryGetMarginInterval<T>(this IntervalNotation source, T minValue, T maxValue, T minMargin, T maxMargin, out T minimum, out T maximum)
       where T : System.Numerics.INumber<T>
     {

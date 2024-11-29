@@ -209,9 +209,9 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => GetUnitName(AreaUnit.SquareMeter, preferPlural).Insert(6, prefix.GetPrefixName());
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => GetUnitName(AreaUnit.SquareMeter, preferPlural).Insert(6, prefix.GetMetricPrefixName());
 
-    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetPrefixSymbol(preferUnicode) + GetUnitSymbol(AreaUnit.SquareMeter, preferUnicode);
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(AreaUnit.SquareMeter, preferUnicode);
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 2);
 

@@ -27,7 +27,7 @@ namespace Flux
     public readonly record struct PolarCoordinate
       : System.IFormattable
     {
-      public static PolarCoordinate Zero { get; }
+      public static PolarCoordinate Empty { get; }
 
       private readonly Quantities.Length m_radius;
       private readonly Quantities.Angle m_azimuth;
@@ -68,7 +68,7 @@ namespace Flux
       {
         var (x, y) = ConvertPolarToCartesian2(m_radius.Value, m_azimuth.Value);
 
-        return new(x, y);
+        return new(x, y, 0, 0);
       }
 
       /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="PolarCoordinate"/> by adding the third component <paramref name="height"/>.</summary>

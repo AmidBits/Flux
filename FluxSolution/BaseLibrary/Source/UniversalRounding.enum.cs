@@ -15,7 +15,7 @@ namespace Flux
     /// <para>E.g. rounding a fraction part of 0.5 to the nearest even integer. For example, 1.5 and 2.5 both round to 2.0 and -1.5 and -2.5 both round to -2.0. A.k.a. Bankers Rounding.</para>
     /// <para>Common rounding: round half, bias: even.</para>
     /// </remarks>
-    HalfToEven = MidpointRounding.ToEven,
+    HalfToEven = HalfRounding.ToEven,
 
     /// <summary>
     /// <para>Do not call functions with <see cref="UniversalRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.AwayFromZero"/>) unless you need universal rounding access.</para>
@@ -25,7 +25,7 @@ namespace Flux
     /// <para>E.g. rounding a fraction part of 0.5 results in the nearest integer that is further from zero. For example, suppose we’re rounding 1.5. The nearest integers are 1.0 and 2.0, so the result would be 2.0 because it’s further from zero. Similarly, -1.5 would round to -2.0.</para>
     /// <para>Symmetric rounding: round half up, bias: away from zero.</para>
     /// </remarks>
-    HalfAwayFromZero = MidpointRounding.AwayFromZero,
+    HalfAwayFromZero = HalfRounding.AwayFromZero,
 
     /// <summary>
     /// <para>Do not call functions with <see cref="UniversalRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToZero"/>) unless you need universal rounding access.</para>
@@ -35,7 +35,7 @@ namespace Flux
     /// <para>E.g. rounding a fraction part of 0.5 to the nearest integer that is closer to zero. For example, 1.5 would round to 1.0 and -1.5 would round to -1.0.</para>
     /// <para>Symmetric rounding: round half down, bias: towards zero.</para>
     /// </remarks>
-    HalfTowardZero = MidpointRounding.ToZero,
+    HalfTowardZero = HalfRounding.TowardZero,
 
     /// <summary>
     /// <para>Do not call functions with <see cref="UniversalRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToNegativeInfinity"/>) unless you need universal rounding access.</para>
@@ -45,7 +45,7 @@ namespace Flux
     /// <para>E.g. rounding a fraction part of 0.5 to the nearest lower integer. For example, 1.5 rounds to 1.0 and -1.5 rounds to -2.0.</para>
     /// <para>Common rounding: round half down, bias: negative infinity.</para>
     /// </remarks>
-    HalfToNegativeInfinity = MidpointRounding.ToNegativeInfinity,
+    HalfToNegativeInfinity = HalfRounding.ToNegativeInfinity,
 
     /// <summary>
     /// <para>Do not call functions with <see cref="UniversalRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToPositiveInfinity"/>) unless you need universal rounding access.</para>
@@ -55,7 +55,11 @@ namespace Flux
     /// <para>E.g. rounding a fraction part of 0.5 to the nearest greater integer. For example, 1.5 would round to 2.0 and -1.5 would round to -1.0.</para>
     /// <para>Common rounding: round half up, bias: positive infinity.</para>
     /// </remarks>
-    HalfToPositiveInfinity = MidpointRounding.ToPositiveInfinity,
+    HalfToPositiveInfinity = HalfRounding.ToPositiveInfinity,
+
+    HalfToRandom = HalfRounding.ToRandom,
+
+    HalfAlternating = HalfRounding.Alternating,
 
     /// <summary>
     /// <para>This was only added for completeness and to even the odd <see cref="System.MidpointRounding.ToEven"/> method.</para>
@@ -65,7 +69,9 @@ namespace Flux
     /// <para>E.g. rounding a fraction part of 0.5 to the nearest odd integer. For example, 1.5 rounds to 1.0, 2.5 rounds to 3.0, -1.5 rounds to -1.0, and -2.5 rounds to -3.0.</para>
     /// <para>Common rounding: round half, bias: odd.</para>
     /// </remarks>
-    HalfToOdd = 10, // There is no built-in round to nearest odd number.
+    HalfToOdd = HalfRounding.ToOdd, // There is no built-in round to nearest odd number.
+
+    WholeToEven = WholeRounding.ToEven,
 
     /// <summary>
     /// <para>Round to the number that is away-from-zero.</para>
@@ -103,24 +109,10 @@ namespace Flux
     /// </remarks>
     WholeToPositiveInfinity = WholeRounding.ToPositiveInfinity,
 
-    /// <summary>
-    /// 
-    /// </summary>
-    WholeToPowOf2AwayFromZero = WholeRounding.ToPowOf2AwayFromZero,
+    WholeToRandom = WholeRounding.ToRandom,
 
-    /// <summary>
-    /// 
-    /// </summary>
-    WholeToPowOf2TowardZero = WholeRounding.ToPowOf2TowardZero,
+    WholeAlternating = WholeRounding.Alternating,
 
-    /// <summary>
-    /// 
-    /// </summary>
-    WholeToPowOf10AwayFromZero = WholeRounding.ToPowOf10AwayFromZero,
-
-    /// <summary>
-    /// 
-    /// </summary>
-    WholeToPowOf10TowardZero = WholeRounding.ToPowOf10TowardZero,
+    WholeToOdd = WholeRounding.ToOdd,
   }
 }

@@ -25,7 +25,8 @@ namespace Flux
       {
         log = TNumber.IsZero(number) ? 0.0 : double.Log(double.CreateChecked(TNumber.Abs(number)), double.CreateChecked(Quantities.Radix.AssertMember(radix)));
 
-        return (log < 1.0) ? TNumber.Zero : TNumber.CopySign(TNumber.CreateChecked(log.Round(mode)), number);
+        return double.IsNegative(log) ? TNumber.CreateChecked(log.Round(mode)) : (log < 1.0) ? TNumber.Zero : TNumber.CopySign(TNumber.CreateChecked(log.Round(mode)), number);
+        //return (log < 1.0) ? TNumber.Zero : TNumber.CopySign(TNumber.CreateChecked(log.Round(mode)), number);
       }
     }
 

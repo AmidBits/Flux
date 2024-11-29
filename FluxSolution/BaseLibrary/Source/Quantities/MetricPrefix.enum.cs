@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Flux
 {
   public static partial class Em
@@ -10,21 +12,43 @@ namespace Flux
     /// <param name="target"></param>
     /// <param name="dimensions"></param>
     /// <returns></returns>
-    public static T ConvertTo<T>(this MetricPrefix source, T value, MetricPrefix target, int dimensions = 1)
+    public static T ConvertTo<T>(this MetricPrefix source, T value, MetricPrefix target, int dimensions)
       where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
-      => value * T.Pow(T.Pow(T.CreateChecked(10), (T.CreateChecked((int)source) - T.CreateChecked((int)target))), T.CreateChecked(dimensions));
+      => value * T.Pow(T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target)), T.CreateChecked(dimensions));
 
-    public static decimal Convert(this MetricPrefix source, decimal value, MetricPrefix target)
-      => value * (decimal)double.Pow(10, (int)source - (int)target);
+    public static T ConvertTo<T>(this MetricPrefix source, T value, MetricPrefix target)
+      where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
+      => value * T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target));
 
-    public static System.Numerics.Vector2 ConvertTo(this MetricPrefix source, System.Numerics.Vector2 value, MetricPrefix target)
-      => new(source.ConvertTo(value.X, target), source.ConvertTo(value.Y, target));
-
-    public static System.Numerics.Vector3 ConvertTo(this MetricPrefix source, System.Numerics.Vector3 value, MetricPrefix target)
-      => new(source.ConvertTo(value.X, target), source.ConvertTo(value.Y, target), source.ConvertTo(value.Z, target));
+    public static System.Runtime.Intrinsics.Vector256<double> ConvertTo(this MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, MetricPrefix target, int dimensions)
+      => value * double.Pow(double.Pow(10, (int)source - (int)target), dimensions);
 
     public static System.Runtime.Intrinsics.Vector256<double> ConvertTo(this MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, MetricPrefix target)
-      => System.Runtime.Intrinsics.Vector256.Create(source.ConvertTo(value[0], target), source.ConvertTo(value[1], target), source.ConvertTo(value[2], target), source.ConvertTo(value[3], target));
+      => value * double.Pow(10, (int)source - (int)target);
+
+    /// <summary>
+    /// <para>Derives the appropriate prefix for engineering notation.</para>
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="forceTriples"></param>
+    /// <returns></returns>
+    public static MetricPrefix GetEngineeringNotationPrefix<TSource>(this TSource source, bool forceTriples = true)
+      where TSource : System.Numerics.INumber<TSource>
+    {
+      if (TSource.IsZero(source))
+        return MetricPrefix.Unprefixed;
+
+      var log = int.CreateChecked(TSource.Abs(source).FastIntegerLog(10, UniversalRounding.WholeToNegativeInfinity, out var _));
+
+      if (forceTriples && log > -3 && log < 3)
+        return (MetricPrefix)log.Spread(-3, 3, HalfRounding.ToRandom);
+
+      if (TSource.IsNegative(source) && log.TruncMod(3, out var r, out var rs) is var q)
+        return (MetricPrefix)((q + rs) * 3);
+
+      return (MetricPrefix)(log / 3 * 3);
+    }
 
     /// <summary>
     /// <para>Find the infimum (the largest that is less than) and supremum (the smallest that is greater than) prefixes with adjusted value of the specified <paramref name="source"/> prefix and <paramref name="value"/>.</para>
@@ -47,10 +71,10 @@ namespace Flux
       return (ltValue, InfimumItem, gtValue, SupremumItem);
     }
 
-    public static string GetPrefixName(this MetricPrefix source)
+    public static string GetMetricPrefixName(this MetricPrefix source)
       => source != MetricPrefix.Unprefixed ? source.ToString() : string.Empty;
 
-    public static string GetPrefixSymbol(this MetricPrefix source, bool preferUnicode)
+    public static string GetMetricPrefixSymbol(this MetricPrefix source, bool preferUnicode)
       => source switch
       {
         MetricPrefix.Unprefixed => string.Empty,
@@ -81,7 +105,63 @@ namespace Flux
         _ => string.Empty,
       };
 
-    //public static double GetPrefixValue(this MetricPrefix source) => System.Math.Pow(10, (int)source);
+    /// <summary>
+    /// <para>Creates a new string, representing the <paramref name="source"/> number in engineering notation, with options of <paramref name="spacing"/>, <paramref name="format"/> and <paramref name="formatProvider"/>.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Engineering_notation"/></para>
+    /// </summary>
+    /// <typeparam name="TSelf"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="spacing"></param>
+    /// <returns></returns>
+    public static string ToEngineeringNotation<TSelf>(this TSelf source, string? unit = null, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.NarrowNoBreakSpace)
+      where TSelf : System.Numerics.INumber<TSelf>
+    {
+      if (TSelf.IsZero(source)) return "0";
+
+      var number = double.CreateChecked(source);
+
+      if (number == 0) return "0";
+
+      var sb = new System.Text.StringBuilder();
+
+      var engineeringExponent = double.Floor(double.Log10(double.Abs(number)) / 3) * 3;
+
+      var numberScaled = number * double.Pow(10, -(int)engineeringExponent);
+
+      sb.Append(numberScaled.ToString(format, formatProvider));
+
+      var engineeringSymbol = ((MetricPrefix)engineeringExponent).GetMetricPrefixSymbol(false);
+
+      if (engineeringSymbol.Length > 0)
+      {
+        sb.Append(spacing.ToSpacingString());
+        sb.Append(engineeringSymbol);
+
+        if (unit is not null)
+          sb.Append(unit);
+      }
+
+      return sb.ToString();
+    }
+
+    //public static string GetNumberWithUnitPrefix(this double number, int power = 1)
+    //{
+    //  char[] incPrefixes = new[] { 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y' };
+    //  char[] decPrefixes = new[] { 'm', 'µ', 'n', 'p', 'f', 'a', 'z', 'y' };
+
+    //  var degree = (int)double.Floor(double.Log10(double.Abs(number)) / (3 * (double)power));
+    //  var scaled = number * double.Pow(1000, -(degree * power));
+
+    //  char? prefix = null;
+
+    //  switch (double.Sign(degree))
+    //  {
+    //    case 1: prefix = incPrefixes[degree - 1]; break;
+    //    case -1: prefix = decPrefixes[-degree - 1]; break;
+    //  }
+
+    //  return scaled.ToString() + ' ' + prefix;
+    //}
   }
 
   /// <summary>

@@ -303,7 +303,7 @@ namespace ConsoleApp
 
       var rtpTowardsZero = value.RoundToPowOfTowardZero(radix, true);
       var rtpAwayFromZero = value.RoundToPowOfAwayFromZero(radix, true);
-      var rtp = value.RoundToBoundary(Flux.UniversalRounding.WholeAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
+      var rtp = value.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
       var quotient = int.CreateChecked(value.AssertNonNegativeRealNumber().TruncMod(1, out var remainder));
@@ -340,9 +340,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)n.RoundToBoundary(Flux.UniversalRounding.WholeTowardZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
+      var np2TowardsZero = (int)n.RoundToNearest(Flux.UniversalRounding.WholeTowardZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)n.RoundToBoundary(Flux.UniversalRounding.WholeAwayFromZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
+      var np2AwayFromZero = (int)n.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = n.ReverseBits();

@@ -45,16 +45,16 @@ namespace Flux.Geometry
     /// <para><see href="https://en.wikipedia.org/wiki/Centroid"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Polygon#Centroid"/></para>
     /// </summary>
-    public System.Runtime.Intrinsics.Vector128<double> Centroid => m_vertices.Aggregate(Flux.Intrinsics.Zero128D, (aggv, v, index) => aggv + v, (a, count) => a / count);
+    public virtual System.Runtime.Intrinsics.Vector128<double> Centroid => m_vertices.Aggregate(Flux.Intrinsics.Zero128D, (aggv, v, index) => aggv + v, (a, count) => a / count);
 
     public virtual double Circumradius => m_vertices.Max(v => v.EuclideanLength());
 
-    public virtual double Inradius => m_vertices.Min(v => v.EuclideanLength());
+    public virtual double Inradius => m_vertices.PartitionTuple2(true, (l, r, i) => (l, r)).Select(pair => pair.l.Lerp(pair.r, 0.5)).Min(v => v.EuclideanLength());
 
     /// <summary>
     /// <para>Determines whether the polygon is convex. (2D/3D)</para>
     /// </summary>
-    public bool IsConvex
+    public virtual bool IsConvex
     {
       get
       {
@@ -84,7 +84,7 @@ namespace Flux.Geometry
     /// </summary>
     public virtual double Perimeter => m_vertices.PartitionTuple2(true, (v1, v2, i) => (v2 - v1).EuclideanLength()).Sum();
 
-    public double SemiPerimeter => Perimeter / 2;
+    public virtual double SemiPerimeter => Perimeter / 2;
 
     /// <summary>
     /// <para>The surface area of the polygon.</para>
@@ -96,7 +96,7 @@ namespace Flux.Geometry
     /// <para>The surface area of the polygon. The resulting area will be negative if clockwise and positive if counterclockwise.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Polygon#Area"/></para>
     /// </summary>
-    public double SurfaceAreaSigned => m_vertices.PartitionTuple2(true, (v1, v2, i) => v1[0] * v2[1] - v2[0] * v1[1]).Sum() / 2;
+    public virtual double SurfaceAreaSigned => m_vertices.PartitionTuple2(true, (v1, v2, i) => v1[0] * v2[1] - v2[0] * v1[1]).Sum() / 2;
 
     #region Static methods
 
@@ -709,13 +709,9 @@ namespace Flux.Geometry
 
       sb.Append($" {{ Vertices = {m_vertices.Count}");
 
-      sb.Append($", Centroid = {Centroid.ToStringXY(format, formatProvider)}");
-      sb.Append($", Circumradius = {Circumradius.ToString(format, formatProvider)}");
-      sb.Append($", Inradius = {Circumradius.ToString(format, formatProvider)}");
-      sb.Append($", IsConvex = {IsConvex}");
-      sb.Append($", Perimeter = {Perimeter.ToString(format, formatProvider)}");
-      sb.Append($", SemiPerimeter = {SemiPerimeter.ToString(format, formatProvider)}");
-      sb.Append($", SurfaceArea = {SurfaceArea.ToString(format, formatProvider)} ({SurfaceAreaSigned.ToString(format, formatProvider)})");
+      foreach (var pi in this.GetPropertyInfos().Where(pi => pi.PropertyType == typeof(double)).OrderBy(pi => pi.Name))
+        if (pi.GetValue(this) is double value)
+          sb.Append($", {pi.Name} = {value.ToString(format, formatProvider)}");
 
       sb.Append($" [{m_vertices.ToStringXY(format, formatProvider)}] }}");
 
