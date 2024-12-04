@@ -40,32 +40,32 @@ namespace Units
     [TestMethod]
     public void GetDigits()
     {
-      var expected = new System.Numerics.BigInteger[] { 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0 };
-      var actual = 670530.ToBigInteger().GetDigits(2).ToArray();
+      var expected = new int[] { 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0 };
+      var actual = 670530.GetDigits(2).ToArray();
       CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Fx.GetDigits) + ".Radix=2"));
 
-      expected = new System.Numerics.BigInteger[] { 6, 7, 0, 5, 3, 0 };
-      actual = 670530.ToBigInteger().GetDigits(10).ToArray();
+      expected = new int[] { 6, 7, 0, 5, 3, 0 };
+      actual = 670530.GetDigits(10).ToArray();
       CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Fx.GetDigits) + ".Radix=10"));
 
-      expected = new System.Numerics.BigInteger[] { 10, 3, 11, 4, 2 };
-      actual = 670530.ToBigInteger().GetDigits(16).ToArray();
+      expected = new int[] { 10, 3, 11, 4, 2 };
+      actual = 670530.GetDigits(16).ToArray();
       CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Fx.GetDigits) + ".Radix=16"));
     }
 
     [TestMethod]
     public void GetDigitsReversed()
     {
-      var expected = new System.Numerics.BigInteger[] { 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1 };
-      var actual = 670530.ToBigInteger().GetDigitsReversed(2).ToArray();
+      var expected = new int[] { 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1 };
+      var actual = 670530.GetDigitsReversed(2).ToArray();
       CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Fx.GetDigits) + ".Radix=2"));
 
-      expected = new System.Numerics.BigInteger[] { 0, 3, 5, 0, 7, 6 };
-      actual = 670530.ToBigInteger().GetDigitsReversed(10).ToArray();
+      expected = new int[] { 0, 3, 5, 0, 7, 6 };
+      actual = 670530.GetDigitsReversed(10).ToArray();
       CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Fx.GetDigits) + ".Radix=10"));
 
-      expected = new System.Numerics.BigInteger[] { 2, 4, 11, 3, 10 };
-      actual = 670530.ToBigInteger().GetDigitsReversed(16).ToArray();
+      expected = new int[] { 2, 4, 11, 3, 10 };
+      actual = 670530.GetDigitsReversed(16).ToArray();
       CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Fx.GetDigits) + ".Radix=16"));
     }
 
@@ -91,7 +91,7 @@ namespace Units
     [TestMethod]
     public void IntegerLogAwayFromZero()
     {
-      Assert.AreEqual(3, (512.ToBigInteger() - 1).IntegerLogAwayFromZero(10));
+      Assert.AreEqual(3, (512 - 1).IntegerLogAwayFromZero(10));
     }
 
     [TestMethod]
@@ -190,19 +190,19 @@ namespace Units
     [TestMethod]
     public void ToRadixString()
     {
-      Assert.AreEqual("1234567", 1234567.ToBigInteger().ToRadixString(10).ToString());
+      Assert.AreEqual("1234567", 1234567.ToRadixString(10).ToString());
     }
 
     [TestMethod]
     public void ToSubscriptString()
     {
-      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToBigInteger().ToSubscriptString(10).ToString());
+      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToSubscriptString(10).ToString());
     }
 
     [TestMethod]
     public void ToSuperscriptString()
     {
-      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToBigInteger().ToSuperscriptString(10).ToString());
+      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToSuperscriptString(10).ToString());
     }
   }
 }

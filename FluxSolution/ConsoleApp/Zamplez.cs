@@ -306,7 +306,7 @@ namespace ConsoleApp
       var rtp = value.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
-      var quotient = int.CreateChecked(value.AssertNonNegativeRealNumber().TruncMod(1, out var remainder));
+      var quotient = int.CreateChecked(value.AssertNonNegativeRealNumber().TruncRem(1, out var remainder));
 
       var p2TowardsZero = quotient.MostSignificant1Bit();
       var p2AwayFromZero = (p2TowardsZero < quotient || remainder > 0) ? (p2TowardsZero == 0 ? 1 : p2TowardsZero << 1) : p2TowardsZero;
@@ -556,7 +556,7 @@ namespace ConsoleApp
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
 
         if (!bst.Contains(r))
-          bst = bst.Add(r, r.ToBigInteger().ToEnglishCardinalNumeralCompoundString());
+          bst = bst.Add(r, r.ToEnglishCardinalNumeralCompoundString());
       }
 
       System.Console.WriteLine(bst.ToConsoleBlock());

@@ -8,9 +8,9 @@ namespace Flux
     public static TNumber Fold<TNumber>(this TNumber number, TNumber minValue, TNumber maxValue)
       where TNumber : System.Numerics.INumber<TNumber>
       => (number > maxValue)
-      ? TNumber.IsEvenInteger(TruncMod(number - maxValue, maxValue - minValue, out var remHi)) ? maxValue - remHi : minValue + remHi
+      ? TNumber.IsEvenInteger(TruncRem(number - maxValue, maxValue - minValue, out var remHi)) ? maxValue - remHi : minValue + remHi
       : (number < minValue)
-      ? TNumber.IsEvenInteger(TruncMod(minValue - number, maxValue - minValue, out var remLo)) ? minValue + remLo : maxValue - remLo
+      ? TNumber.IsEvenInteger(TruncRem(minValue - number, maxValue - minValue, out var remLo)) ? minValue + remLo : maxValue - remLo
       : number;
   }
 }

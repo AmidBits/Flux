@@ -42,6 +42,29 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      //System.Console.WriteLine(string.Join(", ", System.Linq.Enumerable.Range(2, 1050000000).AsParallel().GroupBy(i => i.FastDigitCount(10)).Select(g => (g.Key, g.Max())).Where(t => t.Item1 > 0)));
+
+      var bitCount = 9;
+      var radix = 16;
+
+      var mdcf = bitCount.GetMaxDigitCount(radix, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used, because it is an unsigned value).</code>
+      var mdct = bitCount.GetMaxDigitCount(radix, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).</code>
+
+      var mdc = bitCount.GetMaxDigitCount(radix);
+      var mdc1 = (2).GetMaxDigitCount(16);
+
+      var test1 = ulong.MaxValue.GetBitLengthEx().GetMaxDigitCount(10, false);
+      var test2 = ((ulong.MaxValue >> 1) + 1).GetBitLengthEx().GetMaxDigitCount(10, false);
+
+      var bftl = 129.Log2AwayFromZero();
+
+      for (var i = -10; i < 10; i++)
+      {
+        var tmq = i.TruncRem(9, out var tmr);
+        var rmq = i.RevRem(9, out var rmr);
+        System.Console.WriteLine($"{i:D4} : {rmr} : {rmq}");
+      }
+
       var a = 1.6d;
       var b = 2.740000000000001d;
 

@@ -15,7 +15,7 @@
       => value.CompareToFractionPercent(TValue.CreateChecked(0.5));
 
     /// <summary>
-    /// <para>Compares <paramref name="value"/> with <paramref name="percent"/> and returns the sign of the result (i.e. -1 = less than, 0 = equal to, or 1 = greater than).</para>
+    /// <para>Compares the fraction part of <paramref name="value"/> to the specified <paramref name="percent"/> and returns the sign of the result (i.e. -1 means less-than, 0 means equal-to, and 1 means greater-than).</para>
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="value">The value to be compared.</param>

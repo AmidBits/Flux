@@ -186,7 +186,7 @@ namespace Numerics
 
       var actual = 88.RoundToNearest(UniversalRounding.WholeAwayFromZero, towardsZero, awayFromZero);
 
-      Assert.AreEqual(128.ToBigInteger(), actual);
+      Assert.AreEqual(128, actual);
     }
 
     [TestMethod]
@@ -199,7 +199,7 @@ namespace Numerics
 
       var actual = 88.RoundToNearest(UniversalRounding.WholeAwayFromZero, towardsZero, awayFromZero);
 
-      Assert.AreEqual(128.ToBigInteger(), actual);
+      Assert.AreEqual(128, actual);
     }
 
     [TestMethod]
@@ -212,7 +212,7 @@ namespace Numerics
 
       var actual = 88.RoundToNearest(UniversalRounding.WholeTowardZero, towardsZero, awayFromZero);
 
-      Assert.AreEqual(64.ToBigInteger(), actual);
+      Assert.AreEqual(64, actual);
     }
 
     [TestMethod]
@@ -225,7 +225,7 @@ namespace Numerics
 
       var actual = 88.RoundToNearest(UniversalRounding.WholeTowardZero, towardsZero, awayFromZero);
 
-      Assert.AreEqual(64.ToBigInteger(), actual);
+      Assert.AreEqual(64, actual);
     }
 
     [TestMethod]
@@ -233,10 +233,10 @@ namespace Numerics
     {
       // Somehow BigInteger must differ between .NET version 6 and 7. 
 
-      Assert.AreEqual(0x00010000.ToBigInteger(), Flux.BitOps.ReverseBits(0x00008000.ToBigInteger())); // This works on .NET 7, but not on .NET 6.
-      Assert.AreEqual(0x10000000.ToBigInteger(), Flux.BitOps.ReverseBits(0x00000008.ToBigInteger())); // This works on .NET 6, but not on .NET 7.
+      Assert.AreEqual(0x00010000, Flux.BitOps.ReverseBits(0x00008000)); // This works on .NET 7, but not on .NET 6.
+      Assert.AreEqual(0x10000000, Flux.BitOps.ReverseBits(0x00000008)); // This works on .NET 6, but not on .NET 7.
 
-      Assert.AreEqual(unchecked((int)0xFFFFFFFE).ToBigInteger(), 0x7FFFFFFF.ToBigInteger().ReverseBits());
+      Assert.AreEqual(unchecked((int)0xFFFFFFFE), 0x7FFFFFFF.ReverseBits());
     }
 
     [TestMethod]
@@ -278,7 +278,7 @@ namespace Numerics
     [TestMethod]
     public void GetTrailingZeroCount()
     {
-      Assert.AreEqual(3, 88.ToBigInteger().GetTrailingZeroCount());
+      Assert.AreEqual(3, 88.GetTrailingZeroCount());
     }
   }
 }

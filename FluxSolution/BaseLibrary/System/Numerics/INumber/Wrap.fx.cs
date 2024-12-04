@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Wraps an out-of-bound <paramref name="number"/> around the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>], until the <paramref name="number"/> is within the closed interval.</para>
+    /// <para>Wraps an out-of-bound <paramref name="number"/> to the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>], until the <paramref name="number"/> is within the closed interval.</para>
     /// </summary>
     public static TNumber Wrap<TNumber>(this TNumber number, TNumber minValue, TNumber maxValue)
       where TNumber : System.Numerics.INumber<TNumber>
@@ -14,7 +14,7 @@ namespace Flux
       : number;
 
     /// <summary>
-    /// <para>Wraps an out-of-bound <paramref name="number"/> around the half-open interval [<paramref name="minValue"/>, <paramref name="maxValue"/>), until the <paramref name="number"/> is within the half-open interval.</para>
+    /// <para>Wraps an out-of-bound <paramref name="number"/> to the half-open interval [<paramref name="minValue"/>, <paramref name="maxValue"/>), until the <paramref name="number"/> is within the half-open interval.</para>
     /// </summary>
     public static TNumber WrapOpenEnd<TNumber>(this TNumber number, TNumber minValue, TNumber maxValue)
       where TNumber : System.Numerics.INumber<TNumber>

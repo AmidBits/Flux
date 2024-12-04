@@ -142,7 +142,7 @@ namespace Flux
             );
       }
 
-      public System.Drawing.Point ToPoint(UniversalRounding mode) => new(System.Convert.ToInt32(m_v[0].Round(mode)), System.Convert.ToInt32(m_v[1].Round(mode)));
+      public System.Drawing.Point ToPoint(UniversalRounding mode) => new(System.Convert.ToInt32(m_v[0].RoundUniversal(mode)), System.Convert.ToInt32(m_v[1].RoundUniversal(mode)));
 
       public System.Drawing.PointF ToPointF() => new((float)m_v[0], (float)m_v[1]);
 

@@ -42,9 +42,9 @@ namespace Flux
       var log = int.CreateChecked(TSource.Abs(source).FastIntegerLog(10, UniversalRounding.WholeToNegativeInfinity, out var _));
 
       if (forceTriples && log > -3 && log < 3)
-        return (MetricPrefix)log.Spread(-3, 3, HalfRounding.ToRandom);
+        return (MetricPrefix)log.Spread(-3, 3, HalfRounding.Random);
 
-      if (TSource.IsNegative(source) && log.TruncMod(3, out var r, out var rs) is var q)
+      if (TSource.IsNegative(source) && log.TruncRem(3, out var r, out var rs) is var q)
         return (MetricPrefix)((q + rs) * 3);
 
       return (MetricPrefix)(log / 3 * 3);

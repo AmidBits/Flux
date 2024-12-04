@@ -37,7 +37,7 @@ namespace Flux
     public static (TValue PrimeMultipleTowardZero, TValue PrimeMultipleAwayFromZero) SurroundingPrimeMultiples<TValue>(this TValue value)
       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      var rev = value.RevMod(TValue.CreateChecked(6), out var rem);
+      var rev = value.RevRem(TValue.CreateChecked(6), out var rem);
 
       return (value - rem, value + rev);
     }

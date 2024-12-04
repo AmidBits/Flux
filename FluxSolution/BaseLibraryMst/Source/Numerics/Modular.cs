@@ -29,7 +29,7 @@ namespace Maths
     [TestMethod]
     public void Mod()
     {
-      var remainder = (9.ToBigInteger()).Mod(6);
+      var remainder = 9.Mod(6);
 
       Assert.AreEqual(3, remainder);
     }
@@ -47,7 +47,7 @@ namespace Maths
     [TestMethod]
     public void TruncMod()
     {
-      var truncatedQuotient = (9.0).TruncMod(6, out var remainder);
+      var truncatedQuotient = (9.0).TruncRem(6, out var remainder);
 
       Assert.AreEqual(1, truncatedQuotient);
       Assert.AreEqual(3, remainder);

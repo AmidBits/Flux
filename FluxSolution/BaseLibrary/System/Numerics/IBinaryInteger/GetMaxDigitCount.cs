@@ -4,6 +4,7 @@
   {
     /// <summary>
     /// <para>Computes the max number of digits that can be represented by the specified <paramref name="bitLength"/> (number of bits) in <paramref name="radix"/> (number base) and whether to <paramref name="accountForSignBit"/>.</para>
+    /// <code>* * * NOTE THAT THE FIRST ARGUMENT (<paramref name="bitLength"/> for extension method) IS THE NUMBER-OF-BITS (to account for). * * *</code>
     /// <code>var mdcf = (10).GetMaxDigitCount(10, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used, because it is an unsigned value).</code>
     /// <code>var mdct = (10).GetMaxDigitCount(10, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).</code>
     /// </summary>
@@ -14,7 +15,6 @@
     /// <param name="accountForSignBit">Indicates whether <paramref name="bitLength"/> use one bit for the sign.</param>
     /// <returns></returns>
     /// <remarks>
-    /// <para><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitLength"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></para>
     /// <para>Uses <see cref="FastIntegerLog{TNumber, TNewBase}(TNumber, TNewBase, UniversalRounding, out double)"/>.</para>
     /// </remarks>
     public static int GetMaxDigitCount<TBitLength, TRadix>(this TBitLength bitLength, TRadix radix, bool accountForSignBit)
@@ -23,13 +23,34 @@
     {
       if (bitLength <= TBitLength.One) return 1;
 
-      var swar = int.CreateChecked(bitLength).CreateBitMaskLsb();
+      var swar = System.Numerics.BigInteger.CreateChecked(bitLength).CreateBitMaskLsb();
 
       if (accountForSignBit) swar >>>= 1; // If needed, shift the SWAR to properly represent the max of a signed type.
 
       var logc = swar.FastIntegerLog(radix, UniversalRounding.WholeAwayFromZero, out var _); // Integer log is way too slow for high bit-lengths.
 
-      return System.Convert.ToInt32(logc);
+      return int.CreateChecked(logc);
+    }
+
+    public static (int Signed, int Unsigned) GetMaxDigitCount<TBitLength, TRadix>(this TBitLength bitLength, TRadix radix)
+    where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
+    where TRadix : System.Numerics.IBinaryInteger<TRadix>
+    {
+      if (TBitLength.IsNegative(bitLength) || TBitLength.IsZero(bitLength))
+        return (0, 0);
+
+      if (bitLength.CreateBitMaskLsb() < TBitLength.CreateChecked(radix))
+        return (
+          bitLength > TBitLength.One ? 1 : 0,
+          1
+        );
+
+      var swar = System.Numerics.BigInteger.CreateChecked(bitLength).CreateBitMaskLsb();
+
+      return ( // Regular integer-log is just way too slow for high bit-lengths.
+        int.CreateChecked((swar >>> 1).FastIntegerLog(radix, UniversalRounding.WholeAwayFromZero, out var _)),
+        int.CreateChecked(swar.FastIntegerLog(radix, UniversalRounding.WholeAwayFromZero, out var _))
+      );
     }
   }
 }

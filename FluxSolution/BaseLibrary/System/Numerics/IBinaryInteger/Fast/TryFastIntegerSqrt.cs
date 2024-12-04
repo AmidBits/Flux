@@ -1,26 +1,7 @@
-namespace Flux
+﻿namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <param name="number"></param>
-    /// <param name="mode"></param>
-    /// <param name="sqrt"></param>
-    /// <returns>The resulting integer-sqrt.</returns>
-    public static TNumber FastIntegerSqrt<TNumber>(this TNumber number, UniversalRounding mode, out double sqrt)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      checked
-      {
-        sqrt = double.Sqrt(double.CreateChecked(TNumber.Abs(number)));
-
-        return TNumber.CopySign(TNumber.CreateChecked(sqrt.Round(mode)), number);
-      }
-    }
-
     /// <summary>
     /// <para>Attempts to compute the square-root of a <paramref name="value"/> and then rounded using the rounding <paramref name="mode"/>. The resulting <paramref name="sqrt"/> (double) and <paramref name="integerSqrt"/> are returned as out parameters.</para>
     /// <para>This is a faster method, but is limited to integer input less-than-or-equal to 53 bits in size.</para>

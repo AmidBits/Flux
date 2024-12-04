@@ -33,15 +33,22 @@ namespace Flux
     /// <summary>
     /// <para>Returns whether <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TInteger"></typeparam>
     /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
     /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
     /// <returns>Whether the <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
-    public static bool IsIntegerSqrt<TValue, TRoot>(this TValue value, TRoot root)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      where TRoot : System.Numerics.IBinaryInteger<TRoot>
-      => TValue.CreateChecked(root * root) <= value && value < TValue.CreateChecked((root + TRoot.One) * (root + TRoot.One));
-    // Does this work? => value / root >= root && value / (root + TValue.One) < (root + TValue.One);
+    //public static bool IsIntegerSqrt<TValue, TRoot>(this TValue value, TRoot root)
+    //  where TValue : System.Numerics.IBinaryInteger<TValue>
+    //  where TRoot : System.Numerics.IBinaryInteger<TRoot>
+    //  => TValue.CreateChecked(root * root) <= value && value < TValue.CreateChecked((root + TRoot.One) * (root + TRoot.One));
+    // // Does this work? -> value / root >= root && value / (root + TValue.One) < (root + TValue.One);
+    public static bool IsIntegerSqrt<TInteger>(this TInteger value, TInteger root)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => (root * root) is var square && square <= value  // GTE square of root.
+      && value < (square + root + root + TInteger.One); // LT next square up.
+
+    //=> root * root <= value
+    //&& value < (root + TInteger.One) * (root + TInteger.One);
 
     /// <summary>
     /// <para>Returns whether <paramref name="value"/> is a perfect square of <paramref name="root"/>.</para>
@@ -51,10 +58,15 @@ namespace Flux
     /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
     /// <returns>Whether the <paramref name="value"/> is a perfect square of <paramref name="root"/>.</returns>
     /// <remarks>Not using "y == (x * x)" because risk of overflow.</remarks>
-    public static bool IsPerfectIntegerSqrt<TValue, TRoot>(this TValue value, TRoot root)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      where TRoot : System.Numerics.IBinaryInteger<TRoot>
-      => TValue.CreateChecked(root) is var r && value / r == r // Is integer root?
-      && TValue.IsZero(value % r); // Is perfect integer root?
+    //public static bool IsPerfectIntegerSqrt<TValue, TRoot>(this TValue value, TRoot root)
+    //  where TValue : System.Numerics.IBinaryInteger<TValue>
+    //  where TRoot : System.Numerics.IBinaryInteger<TRoot>
+    //  => TValue.CreateChecked(root) is var r && value / r == r // Is integer root?
+    //  && TValue.IsZero(value % r); // Is perfect integer root?
+    public static bool IsPerfectIntegerSqrt<TInteger>(this TInteger value, TInteger root)
+       where TInteger : System.Numerics.IBinaryInteger<TInteger>
+       => TInteger.DivRem(value, root) is var qr // Get division and remainder in one go.
+      && qr.Quotient == root // Quotient equals the root.
+      && TInteger.IsZero(qr.Remainder); // Zero remainder.
   }
 }

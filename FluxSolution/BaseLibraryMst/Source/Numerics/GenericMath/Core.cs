@@ -47,13 +47,13 @@ namespace Maths
     [TestMethod]
     public void GreatestCommonDivisor()
     {
-      Assert.AreEqual(3, 21.ToBigInteger().GreatestCommonDivisor(6));
+      Assert.AreEqual(3, 21.GreatestCommonDivisor(6));
     }
 
     [TestMethod]
     public void IntegerSqrt()
     {
-      Assert.AreEqual(4, 21.ToBigInteger().IntegerSqrt());
+      Assert.AreEqual(4, 21.IntegerSqrt());
     }
 
     [TestMethod]
@@ -65,27 +65,27 @@ namespace Maths
     [TestMethod]
     public void IntegerPow()
     {
-      Assert.AreEqual(10000000000.ToBigInteger(), 10L.ToBigInteger().IntegerPow(10));
+      Assert.AreEqual(10000000000, 10L.IntegerPow(10));
     }
 
     [TestMethod]
     public void IntegerPowRec()
     {
-      Assert.AreEqual(10000000000, 10L.ToBigInteger().IntegerPowRec(10, out double reciprocal));
+      Assert.AreEqual(10000000000, 10L.IntegerPowRec(10, out double reciprocal));
       Assert.AreEqual(1E-10, reciprocal);
     }
 
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, 100.ToBigInteger().IsIntegerPowOf(10));
-      Assert.AreEqual(false, 101.ToBigInteger().IsIntegerPowOf(10));
+      Assert.AreEqual(true, 100.IsIntegerPowOf(10));
+      Assert.AreEqual(false, 101.IsIntegerPowOf(10));
     }
 
     [TestMethod]
     public void IsIntegerSqrt()
     {
-      var v = 15.ToBigInteger();
+      var v = 15;
 
       var iq = v.IntegerSqrt();
 
@@ -97,7 +97,7 @@ namespace Maths
     [TestMethod]
     public void IsPerfectIntegerSqrt()
     {
-      var v = 15.ToBigInteger();
+      var v = 15;
 
       var iq = v.IntegerSqrt();
 
@@ -109,14 +109,14 @@ namespace Maths
     [TestMethod]
     public void LeastCommonMultiple()
     {
-      Assert.AreEqual(42, 21.ToBigInteger().LeastCommonMultiple(6));
+      Assert.AreEqual(42, 21.LeastCommonMultiple(6));
     }
 
     [TestMethod]
     public void ModInv()
     {
-      Assert.AreEqual(2, 4.ToBigInteger().ModInv(7));
-      Assert.AreEqual(7, 8.ToBigInteger().ModInv(11));
+      Assert.AreEqual(2, 4.ModInv(7));
+      Assert.AreEqual(7, 8.ModInv(11));
     }
 
     [TestMethod]

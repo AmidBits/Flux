@@ -11,21 +11,21 @@ namespace Foundation.Randomization
     {
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.Random.NumberGenerators.Crypto.NextBigInteger(i);
+        var rv = Flux.Random.NumberGenerators.Crypto.NextBigInteger(System.Numerics.BigInteger.CreateChecked(i));
 
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.Random.NumberGenerators.Crypto.NextBigInteger(i.ToBigInteger());
+        var rv = Flux.Random.NumberGenerators.Crypto.NextBigInteger(System.Numerics.BigInteger.CreateChecked(i));
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
 
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = Flux.Random.NumberGenerators.Crypto.NextBigInteger(i, 0);
+        var rv = Flux.Random.NumberGenerators.Crypto.NextBigInteger(System.Numerics.BigInteger.CreateChecked(i), 0);
 
         Assert.IsTrue(rv >= i && rv < 0);
       }
@@ -221,7 +221,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToBigInteger());
+        var rv = cr.NextBigInteger(System.Numerics.BigInteger.CreateChecked(i));
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
@@ -306,7 +306,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToBigInteger());
+        var rv = cr.NextBigInteger(System.Numerics.BigInteger.CreateChecked(i));
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
@@ -391,7 +391,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToBigInteger());
+        var rv = cr.NextBigInteger(System.Numerics.BigInteger.CreateChecked(i));
 
         //var rv = cr.NextBigInteger(i.ToBigInteger());
         Assert.IsTrue(rv >= 0 && rv < i);
@@ -477,7 +477,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToBigInteger());
+        var rv = cr.NextBigInteger(System.Numerics.BigInteger.CreateChecked(i));
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
@@ -562,7 +562,7 @@ namespace Foundation.Randomization
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i.ToBigInteger());
+        var rv = cr.NextBigInteger(System.Numerics.BigInteger.CreateChecked(i));
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }

@@ -1,29 +1,7 @@
-namespace Flux
+﻿namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <typeparam name="TNth"></typeparam>
-    /// <param name="number"></param>
-    /// <param name="nth"></param>
-    /// <param name="mode"></param>
-    /// <param name="root"></param>
-    /// <returns>The resulting integer-nth-root.</returns>
-    public static TNumber FastIntegerRootN<TNumber, TNth>(this TNumber number, TNth nth, UniversalRounding mode, out double root)
-      where TNumber : System.Numerics.INumber<TNumber>
-      where TNth : System.Numerics.IBinaryInteger<TNth>
-    {
-      checked
-      {
-        root = double.RootN(double.CreateChecked(TNumber.Abs(number)), int.CreateChecked(nth));
-
-        return TNumber.CopySign(TNumber.CreateChecked(root.Round(mode)), number);
-      }
-    }
-
     /// <summary>
     /// <para>Attempts to compute the nth-root of a <paramref name="value"/> and then rounded using the rounding <paramref name="mode"/>. The resulting <paramref name="root"/> (double) and <paramref name="integerRoot"/> are returned as out parameters.</para>
     /// <para>This is a faster method, but is limited to integer input less-than-or-equal to 53 bits in size.</para>
