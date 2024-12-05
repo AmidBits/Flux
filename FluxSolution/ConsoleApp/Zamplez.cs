@@ -733,9 +733,9 @@ namespace ConsoleApp
         var user3 = new User(23, "John", "Canada");
 
         var rulesCompiled = rules.CompileRules<User>();
-        System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsoleString(new ConsoleStringOptions() { VerticalSeparator = ',' })}");
-        System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsoleString(new ConsoleStringOptions() { VerticalSeparator = ',' })}");
-        System.Console.WriteLine($"{user3}, {rulesCompiled.EvaluateRules(user3).ToConsoleString(new ConsoleStringOptions() { VerticalSeparator = ',' })}");
+        System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsole(k => k.ToString(), v => v.ToString(), new ConsoleStringOptions() { VerticalSeparator = ',' })}");
+        System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsole(k => k.ToString(), v => v.ToString(), new ConsoleStringOptions() { VerticalSeparator = ',' })}");
+        System.Console.WriteLine($"{user3}, {rulesCompiled.EvaluateRules(user3).ToConsole(k => k.ToString(), v => v.ToString(), new ConsoleStringOptions() { VerticalSeparator = ',' })}");
       }
     }
 

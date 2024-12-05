@@ -17,40 +17,22 @@
     /// <remarks>
     /// <para>Uses <see cref="FastIntegerLog{TNumber, TNewBase}(TNumber, TNewBase, UniversalRounding, out double)"/>.</para>
     /// </remarks>
-    public static int GetMaxDigitCount<TBitLength, TRadix>(this TBitLength bitLength, TRadix radix, bool accountForSignBit)
+    public static int MaxDigitCountOfBitLength<TBitLength, TRadix>(this TBitLength bitLength, TRadix radix, bool accountForSignBit)
     where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
     where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      if (bitLength <= TBitLength.One) return 1;
+      if (TBitLength.IsNegative(bitLength))
+        return 0;
+      else if (bitLength.CreateBitMaskLsb() < TBitLength.CreateChecked(radix))
+        return 1;
+      else // Need to compute for values higher than radix.
+      {
+        var swar = System.Numerics.BigInteger.CreateChecked(bitLength).CreateBitMaskLsb();
+        // If needed, shift the SWAR to properly represent the max of a signed type.
+        var logc = (accountForSignBit ? swar >>> 1 : swar).FastIntegerLog(radix, UniversalRounding.WholeAwayFromZero, out var _);
 
-      var swar = System.Numerics.BigInteger.CreateChecked(bitLength).CreateBitMaskLsb();
-
-      if (accountForSignBit) swar >>>= 1; // If needed, shift the SWAR to properly represent the max of a signed type.
-
-      var logc = swar.FastIntegerLog(radix, UniversalRounding.WholeAwayFromZero, out var _); // Integer log is way too slow for high bit-lengths.
-
-      return int.CreateChecked(logc);
-    }
-
-    public static (int Signed, int Unsigned) GetMaxDigitCount<TBitLength, TRadix>(this TBitLength bitLength, TRadix radix)
-    where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
-    where TRadix : System.Numerics.IBinaryInteger<TRadix>
-    {
-      if (TBitLength.IsNegative(bitLength) || TBitLength.IsZero(bitLength))
-        return (0, 0);
-
-      if (bitLength.CreateBitMaskLsb() < TBitLength.CreateChecked(radix))
-        return (
-          bitLength > TBitLength.One ? 1 : 0,
-          1
-        );
-
-      var swar = System.Numerics.BigInteger.CreateChecked(bitLength).CreateBitMaskLsb();
-
-      return ( // Regular integer-log is just way too slow for high bit-lengths.
-        int.CreateChecked((swar >>> 1).FastIntegerLog(radix, UniversalRounding.WholeAwayFromZero, out var _)),
-        int.CreateChecked(swar.FastIntegerLog(radix, UniversalRounding.WholeAwayFromZero, out var _))
-      );
+        return int.CreateChecked(logc);
+      }
     }
   }
 }

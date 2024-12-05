@@ -11,8 +11,6 @@ namespace Flux.Quantities
     public const byte MaxValue = 127;
     public const byte MinValue = 0;
 
-    public static MidiNote MiddleC { get; } = new(60);
-
     /// <summary>
     /// <para>This is the (MIDI) note number of A4 which represents the audio frequency 440 Hz.</para>
     /// </summary>
@@ -23,13 +21,18 @@ namespace Flux.Quantities
     /// </summary>
     public const double ReferenceAudioFrequencyA4 = 440;
 
+    public static string[] ScientificPitchNotations { get; } = new string[] { @"C", $"C{GetSymbolSharpString(false)}/D{GetSymbolFlatString(false)}", @"D", $"D{GetSymbolSharpString(false)}/E{GetSymbolFlatString(false)}", @"E", @"F", $"F{GetSymbolSharpString(false)}/G{GetSymbolFlatString(false)}", @"G", $"G{GetSymbolSharpString(false)}/A{GetSymbolFlatString(false)}", @"A", $"A{GetSymbolSharpString(false)}/B{GetSymbolFlatString(false)}", @"B" };
+    public static string[] ScientificPitchNotationsUnicode { get; } = new string[] { @"C", $"C{GetSymbolSharpString(true)}/D{GetSymbolFlatString(true)}", @"D", $"D{GetSymbolSharpString(true)}/E{GetSymbolFlatString(true)}", @"E", @"F", $"F{GetSymbolSharpString(true)}/G{GetSymbolFlatString(true)}", @"G", $"G{GetSymbolSharpString(true)}/A{GetSymbolFlatString(true)}", @"A", $"A{GetSymbolSharpString(true)}/B{GetSymbolFlatString(true)}", @"B" };
+
+    public static MidiNote MiddleC { get; } = new(60);
+
     private readonly byte m_value;
 
     public MidiNote(int midiNoteNumber)
-      => m_value = midiNoteNumber >= 0 && midiNoteNumber <= 127 ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
+      => m_value = midiNoteNumber is >= MinValue and <= MaxValue ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
     /// <summary>
-    /// <para></para>
+    /// <para>In music, integer notation is the translation of pitch classes or interval classes into whole numbers.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Pitch_class#Integer_notation"/></para>
     /// </summary>
     public int IntegerNotation => m_value % 12;
@@ -92,8 +95,7 @@ namespace Flux.Quantities
     /// <para>Creates an array of scientific pitch notation strings, using Unicode if preferable and available.</para>
     /// <param name="preferUnicode"></param>
     /// </summary>
-    public static string[] GetScientificPitchNotationStrings(bool preferUnicode = false)
-      => new string[] { @"C", $"C{GetSymbolSharpString(preferUnicode)}/D{GetSymbolFlatString(preferUnicode)}", @"D", $"D{GetSymbolSharpString(preferUnicode)}/E{GetSymbolFlatString(preferUnicode)}", @"E", @"F", $"F{GetSymbolSharpString(preferUnicode)}/G{GetSymbolFlatString(preferUnicode)}", @"G", $"G{GetSymbolSharpString(preferUnicode)}/A{GetSymbolFlatString(preferUnicode)}", @"A", $"A{GetSymbolSharpString(preferUnicode)}/B{GetSymbolFlatString(preferUnicode)}", @"B" };
+    public static string[] GetScientificPitchNotationStrings(bool preferUnicode = false) => preferUnicode ? ScientificPitchNotationsUnicode : ScientificPitchNotations;
 
     /// <summary>
     /// <para>Creates a string representing a flat (note), using Unicode if preferable and available.</para>
@@ -129,7 +131,7 @@ namespace Flux.Quantities
         var octave = int.Parse(gc[2].Value, System.Globalization.CultureInfo.CurrentCulture);
         var offset = System.Array.FindIndex(GetScientificPitchNotationStrings(), 0, n => n.StartsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase) || n.EndsWith(gc[1].Value, System.StringComparison.OrdinalIgnoreCase));
 
-        if (octave < -1 && octave > 9 && offset == -1)
+        if (octave is < -1 or > 9 && offset is -1)
           throw new System.ArgumentException($"Invalid note and octave '{scientificPitchNotation}' string.", nameof(scientificPitchNotation));
 
         return new((byte)((octave + 1) * 12 + offset));

@@ -363,7 +363,7 @@
           grid[i0 + 1, i1 + 1] = m_matrix[i0, i1];
       }
 
-      sb.Append(string.Join(System.Environment.NewLine, grid.Rank2ToConsoleString(new ConsoleStringOptions() { UniformWidth = true, CenterContent = true })));
+      sb.Append(string.Join(System.Environment.NewLine, grid.Rank2ToConsole(new ConsoleStringOptions() { UniformWidth = true, CenterContent = true })));
 
       return sb.ToString();
     }

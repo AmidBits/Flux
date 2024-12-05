@@ -26,12 +26,12 @@ namespace SystemFx
       };
 
       System.Console.WriteLine(nameof(inplaceMatrix));
-      System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(inplaceMatrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       inplaceMatrix.Fill(0, 1, 3, 4, 9);
       System.Console.WriteLine(nameof(Fx.Fill));
-      System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(inplaceMatrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, inplaceMatrix);
@@ -90,12 +90,12 @@ namespace SystemFx
       };
 
       System.Console.WriteLine(nameof(matrix));
-      System.Console.WriteLine(matrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(matrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       var actual0 = matrix.FlipToCopy(0);
       System.Console.WriteLine(nameof(Fx.FlipToCopy));
-      System.Console.WriteLine(actual0.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(actual0.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected0, actual0);
@@ -109,7 +109,7 @@ namespace SystemFx
 
       var actual1 = matrix.FlipToCopy(0);
       System.Console.WriteLine(nameof(Fx.FlipToCopy));
-      System.Console.WriteLine(actual1.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(actual1.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected0, actual1);
@@ -136,12 +136,12 @@ namespace SystemFx
       };
 
       System.Console.WriteLine(nameof(matrix));
-      System.Console.WriteLine(matrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(matrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       var actual = matrix.InsertToCopy(1, 1, 4, 0);
       System.Console.WriteLine(nameof(Fx.InsertToCopy));
-      System.Console.WriteLine(actual.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(actual.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, actual);
@@ -167,12 +167,12 @@ namespace SystemFx
       };
 
       System.Console.WriteLine(nameof(matrix));
-      System.Console.WriteLine(matrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(matrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       var actual = matrix.RemoveToCopy(1, 1);
       System.Console.WriteLine(nameof(Fx.RemoveToCopy));
-      System.Console.WriteLine(actual.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(actual.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, actual);
@@ -198,12 +198,12 @@ namespace SystemFx
       };
 
       System.Console.WriteLine(nameof(matrix));
-      System.Console.WriteLine(matrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(matrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       var actual = matrix.RotateToCopyCcw();
       System.Console.WriteLine(nameof(Fx.RotateToCopyCcw));
-      System.Console.WriteLine(actual.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(actual.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, actual);
@@ -229,12 +229,12 @@ namespace SystemFx
       };
 
       System.Console.WriteLine(nameof(matrix));
-      System.Console.WriteLine(matrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(matrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       var actual = matrix.RotateToCopyCw();
       System.Console.WriteLine(nameof(Fx.RotateToCopyCw));
-      System.Console.WriteLine(actual.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(actual.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, actual);
@@ -253,7 +253,7 @@ namespace SystemFx
       };
 
       System.Console.WriteLine(nameof(inplaceMatrix));
-      System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(inplaceMatrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       var expected = new int[,] {
@@ -265,7 +265,7 @@ namespace SystemFx
 
       inplaceMatrix.TransposeInPlace();
       System.Console.WriteLine(nameof(Fx.TransposeInPlace));
-      System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(inplaceMatrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, inplaceMatrix);
@@ -291,12 +291,12 @@ namespace SystemFx
       };
 
       System.Console.WriteLine(nameof(matrix));
-      System.Console.WriteLine(matrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(matrix.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       var actual = matrix.TransposeToCopy();
       System.Console.WriteLine(nameof(Fx.TransposeToCopy));
-      System.Console.WriteLine(actual.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(actual.Rank2ToConsole(cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, actual);

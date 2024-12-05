@@ -6,13 +6,15 @@ namespace Flux
     /// <para>Returns the two-dimensional array as a new sequence of grid-like formatted strings, that can be printed in the console.</para>
     /// </summary>
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
-    public static System.Text.StringBuilder Rank2ToConsoleString<T>(this T[,] source, ConsoleStringOptions? options = null)
+    public static System.Text.StringBuilder Rank2ToConsole<T>(this T[,] source, ConsoleStringOptions? options = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       options ??= new ConsoleStringOptions();
 
       var sb = new System.Text.StringBuilder();
+
+      #region MaxWidths
 
       var maxWidths = new int[source.GetLength(1)];
 
@@ -25,6 +27,8 @@ namespace Flux
       if (options.UniformWidth)
         for (var c = maxWidths.Length - 1; c >= 0; c--)
           maxWidths[c] = maxWidth;
+
+      #endregion // MaxWidths
 
       var verticalLine = options.VerticalSeparator == '\0' ? null : string.Join(options.HorizontalSeparator, System.Linq.Enumerable.Select(maxWidths, width => new string(options.VerticalSeparator, width)));
 

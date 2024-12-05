@@ -47,14 +47,14 @@ namespace ConsoleApp
       var bitCount = 9;
       var radix = 16;
 
-      var mdcf = bitCount.GetMaxDigitCount(radix, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used, because it is an unsigned value).</code>
-      var mdct = bitCount.GetMaxDigitCount(radix, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).</code>
+      var mdcf = bitCount.MaxDigitCountOfBitLength(radix, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used, because it is an unsigned value).</code>
+      var mdct = bitCount.MaxDigitCountOfBitLength(radix, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).</code>
 
-      var mdc = bitCount.GetMaxDigitCount(radix);
-      var mdc1 = (2).GetMaxDigitCount(16);
+      var mdc = bitCount.MaxDigitCountOfBitLength(radix, false);
+      var mdc1 = (2).MaxDigitCountOfBitLength(16, false);
 
-      var test1 = ulong.MaxValue.GetBitLengthEx().GetMaxDigitCount(10, false);
-      var test2 = ((ulong.MaxValue >> 1) + 1).GetBitLengthEx().GetMaxDigitCount(10, false);
+      var test1 = ulong.MaxValue.GetBitLengthEx().MaxDigitCountOfBitLength(10, false);
+      var test2 = ((ulong.MaxValue >> 1) + 1).GetBitLengthEx().MaxDigitCountOfBitLength(10, false);
 
       var bftl = 129.Log2AwayFromZero();
 
