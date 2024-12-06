@@ -25,7 +25,7 @@
       {
         integerPow = TPow.CreateChecked(radix.FastIntegerPow(exponent, mode, out pow));
 
-        if (integerPow.GetBitLengthEx() <= 53)
+        if (integerPow.GetBitLength() <= 53)
           return true;
       }
       catch { }

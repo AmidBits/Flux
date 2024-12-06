@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static string GetDefaultTsqlDefinition(this System.Data.IDataRecord source, int index)
+    public static string GetDefaultTsqlDefinition(this System.Data.IDataRecord source, int index, bool nullable = true)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -10,7 +10,7 @@ namespace Flux
       var dataTypeName = Data.TsqlDataType.NameFromType(source.GetFieldType(index));
       var magnitude = Data.TsqlDataType.GetDefaultArgument(dataTypeName, true);
 
-      return $"[{name}] [{dataTypeName}]{magnitude} NULL";
+      return $"[{name}] [{dataTypeName}]{magnitude} {(nullable ? "NULL" : "NOT NULL")}";
     }
   }
 }

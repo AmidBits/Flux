@@ -8,7 +8,7 @@ namespace Flux
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static T[][] ToJaggedArray<T>(this T[,] source, int dimension)
     {
-      source.AssertEqualRank(2);
+      source.AssertRank(2);
 
       var target = new T[source.GetLength(dimension)][];
 
@@ -41,5 +41,11 @@ namespace Flux
 
       return target;
     }
+
+    /// <summary>
+    /// <para>Create a new jagged array (a single-dimension array of one-dimensional arrays) with all elements from <paramref name="source"/> in <paramref name="dimension"/>-major order (by rows or by column).</para>
+    /// </summary>
+    /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
+    public static T[][] ToJaggedArray<T>(this T[,] source, ArrayDimension dimension) => source.ToJaggedArray((int)dimension);
   }
 }

@@ -5,7 +5,7 @@ namespace Flux
     //public static string AppendPluralStringSuffix(this string number, bool isPlural) => isPlural ? number + 's'.ToString() : number;
 
     /// <summary>
-    /// <para></para>
+    /// <para>Determines whether the <paramref name="number"/> is considered plural in terms of writing.</para>
     /// </summary>
     /// <typeparam name="TNumber"></typeparam>
     /// <param name="number"></param>

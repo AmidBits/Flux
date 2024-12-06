@@ -8,7 +8,7 @@ namespace Flux
     /// <remarks>An array is arbitrary in terms of rows and columns, we simply adopt the concept of considering dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static void FlipInPlace<T>(this T[,] source, int dimension)
     {
-      source.AssertEqualRank(2);
+      source.AssertRank(2);
 
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);

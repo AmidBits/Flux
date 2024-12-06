@@ -6,12 +6,10 @@ namespace Flux
     /// <para>Copies (<paramref name="count0"/> by <paramref name="count1"/>) elements from <paramref name="source"/> starting at [<paramref name="sourceIndex0"/>, <paramref name="sourceIndex1"/>] into <paramref name="target"/> starting at [<paramref name="targetIndex0"/>, <paramref name="targetIndex1"/>].</para>
     /// </summary>
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
-    public static void Copy<T>(this T[,] source, T[,] target, int sourceIndex0, int sourceIndex1, int targetIndex0, int targetIndex1, int count0, int count1)
+    public static void CopyTo<T>(this T[,] source, T[,] target, int sourceIndex0, int sourceIndex1, int targetIndex0, int targetIndex1, int count0, int count1)
     {
-      System.ArgumentNullException.ThrowIfNull(source);
-      System.ArgumentNullException.ThrowIfNull(target);
-
-      if (source.Rank != target.Rank) throw new System.ArgumentException($"Arrays of different rank ({source.Rank} vs {target.Rank}).", nameof(source));
+      source.AssertRank(2);
+      target.AssertRank(2);
 
       if (source.GetLength(0) is var sourceLength0 && sourceIndex0 < 0 || sourceIndex0 >= sourceLength0) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex0));
       if (source.GetLength(1) is var sourceLength1 && sourceIndex1 < 0 || sourceIndex1 >= sourceLength1) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex1));

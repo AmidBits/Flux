@@ -8,7 +8,7 @@ namespace Flux
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static T[,] RotateToCopyCw<T>(this T[,] source)
     {
-      source.AssertEqualRank(2);
+      source.AssertRank(2);
 
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);

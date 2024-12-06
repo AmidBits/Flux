@@ -30,7 +30,7 @@ namespace Flux
     /// <remarks>Note that for dynamic types, e.g. <see cref="System.Numerics.BigInteger"/>, the number of bits depends on the storage size used for the <paramref name="value"/>.</remarks>
     public static TValue MostSignificant1Bit<TValue>(this TValue value)
       where TValue : System.Numerics.IBinaryInteger<TValue>
-      => TValue.IsZero(value) ? value : TValue.One << (value.GetBitLengthEx() - 1);
+      => TValue.IsZero(value) ? value : TValue.One << (value.GetBitLength() - 1);
 
     /// <summary>
     /// <para>Clear <paramref name="value"/> of its least-significant-1-bit.</para>

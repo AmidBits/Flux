@@ -22,7 +22,7 @@
     {
       try
       {
-        if (value.GetBitLengthEx() <= 53)
+        if (value.GetBitLength() <= 53)
         {
           integerLog = TLog.CreateChecked(value.FastIntegerLog(radix, mode, out log));
 

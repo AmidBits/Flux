@@ -4,7 +4,7 @@ namespace Flux
   {
     public static void GraphAssertProperty<T>(this T[,] source, out int length)
     {
-      if (!source.TryGetDimensionallySymmetricalLength(out length) || !source.IsEqualRank(2))
+      if (!source.TryGetDimensionallySymmetricalLength(out length) || !source.IsRank(2))
       {
         System.ArgumentNullException.ThrowIfNull(source);
 

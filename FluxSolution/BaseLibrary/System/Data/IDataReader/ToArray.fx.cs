@@ -7,20 +7,20 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var count = 0;
+      var length = 0;
 
       var array = new object[2][];
 
       while (source.Read())
       {
-        if (count == array.Length)
+        if (length == array.Length)
           System.Array.Resize(ref array, array.Length * 2);
 
-        array[count++] = source.GetValues();
+        array[length++] = source.GetValues();
       }
 
-      if (count < array.Length)
-        System.Array.Resize(ref array, count);
+      if (length < array.Length)
+        System.Array.Resize(ref array, length);
 
       return array;
     }

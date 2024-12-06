@@ -22,12 +22,16 @@ namespace Flux
     };
 
     /// <summary>Results in a sequence of strings of all column values in the current row.</summary>
-    public static System.Collections.Generic.IEnumerable<string> GetStrings(this System.Data.IDataRecord source, string nullString)
+    public static string[] GetStrings(this System.Data.IDataRecord source, string nullString)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
+      var strings = new string[source.FieldCount];
+
       for (var index = 0; index < source.FieldCount; index++)
-        yield return GetString(source, index, nullString);
+        strings[index] = GetString(source, index, nullString);
+
+      return strings;
     }
   }
 }

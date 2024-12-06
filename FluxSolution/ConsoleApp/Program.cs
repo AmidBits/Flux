@@ -44,6 +44,18 @@ namespace ConsoleApp
 
       //System.Console.WriteLine(string.Join(", ", System.Linq.Enumerable.Range(2, 1050000000).AsParallel().GroupBy(i => i.FastDigitCount(10)).Select(g => (g.Key, g.Max())).Where(t => t.Item1 > 0)));
 
+
+      var x = new int[,] { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } };
+
+      System.Console.WriteLine(x.Rank2ToConsole());
+      x.RotateInPlaceCcw();
+      System.Console.WriteLine();
+      System.Console.WriteLine(x.Rank2ToConsole());
+
+      x.RotateInPlaceCw();
+      System.Console.WriteLine();
+      System.Console.WriteLine(x.Rank2ToConsole());
+
       var bitCount = 9;
       var radix = 16;
 
@@ -53,8 +65,8 @@ namespace ConsoleApp
       var mdc = bitCount.MaxDigitCountOfBitLength(radix, false);
       var mdc1 = (2).MaxDigitCountOfBitLength(16, false);
 
-      var test1 = ulong.MaxValue.GetBitLengthEx().MaxDigitCountOfBitLength(10, false);
-      var test2 = ((ulong.MaxValue >> 1) + 1).GetBitLengthEx().MaxDigitCountOfBitLength(10, false);
+      var test1 = ulong.MaxValue.GetBitLength().MaxDigitCountOfBitLength(10, false);
+      var test2 = ((ulong.MaxValue >> 1) + 1).GetBitLength().MaxDigitCountOfBitLength(10, false);
 
       var bftl = 129.Log2AwayFromZero();
 

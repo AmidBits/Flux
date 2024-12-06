@@ -11,8 +11,8 @@ namespace Flux
     /// </remarks>
     public static T[,] FlipToCopy<T>(this T[,] source, int dimension)
     {
-      source.AssertEqualRank(2);
-      
+      source.AssertRank(2);
+
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
 
@@ -46,5 +46,14 @@ namespace Flux
 
       return target;
     }
+
+    /// <summary>
+    /// <para>Create a new two-dimensional array from <paramref name="source"/> with the strands of the specified <paramref name="dimension"/> (rows or columns) flipped.</para>
+    /// </summary>
+    /// <remarks>
+    /// <para>An array is arbitrary in terms of e.g. rows and columns, so one can consider dimension 0 as the row dimension and dimension 1 as the column dimension, making it a row-major scenario.</para>
+    /// <para>If data appears as [column, row] (so to speak), use <see cref="TransposeInPlace{T}(T[,])"/> or <see cref="TransposeToCopy{T}(T[,])"/> to make them [row, column].</para>
+    /// </remarks>
+    public static void FlipToCopy<T>(this T[,] source, ArrayDimension dimension) => source.FlipToCopy((int)dimension);
   }
 }

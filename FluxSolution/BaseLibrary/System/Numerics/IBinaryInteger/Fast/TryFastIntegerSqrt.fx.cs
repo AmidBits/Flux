@@ -19,7 +19,7 @@
     {
       try
       {
-        if (value.GetBitLengthEx() <= 53)
+        if (value.GetBitLength() <= 53)
         {
           integerSqrt = TSqrt.CreateChecked(value.FastIntegerSqrt(mode, out sqrt));
 

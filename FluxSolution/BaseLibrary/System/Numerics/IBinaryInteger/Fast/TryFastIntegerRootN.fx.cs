@@ -20,7 +20,7 @@
     {
       try
       {
-        if (value.GetBitLengthEx() <= 53)
+        if (value.GetBitLength() <= 53)
         {
           integerRoot = TRoot.CreateChecked(value.FastIntegerRootN(nth, mode, out root));
 

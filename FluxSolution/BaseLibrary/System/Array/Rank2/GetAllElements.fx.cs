@@ -8,9 +8,7 @@ namespace Flux
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
     public static T[] GetAllElements<T>(this T[,] source, int dimension)
     {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      if (source.Rank != 2) throw new System.ArgumentException($"Invalid rank ({source.Rank}).", nameof(source));
+      source.AssertRank(2);
 
       var sourceLength0 = source.GetLength(0);
       var sourceLength1 = source.GetLength(1);
@@ -37,5 +35,11 @@ namespace Flux
 
       return target;
     }
+
+    /// <summary>
+    /// <para>Create a new sequence with all elements in <paramref name="source"/> with the specified 'major' <paramref name="dimension"/> order, i.e. by row or by column first (then the other).</para>
+    /// </summary>
+    /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
+    public static T[] GetAllElements<T>(this T[,] source, ArrayDimension dimension) => source.GetAllElements((int)dimension);
   }
 }

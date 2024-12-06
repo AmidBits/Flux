@@ -102,8 +102,8 @@ namespace Numerics
     [TestMethod]
     public void GetBitLengthEx()
     {
-      Assert.AreEqual(7, 88.GetBitLengthEx());
-      Assert.AreEqual(32, (-88).GetBitLengthEx());
+      Assert.AreEqual(7, 88.GetBitLength());
+      Assert.AreEqual(32, (-88).GetBitLength());
     }
 
     [TestMethod]
