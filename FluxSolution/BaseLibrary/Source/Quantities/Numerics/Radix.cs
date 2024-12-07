@@ -85,9 +85,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static TSelf AssertMember<TSelf>(TSelf radix, string? paramName = null)
         where TSelf : System.Numerics.INumber<TSelf>
-        => VerifyMember(radix)
-        ? radix
-        : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"The radix ({radix}) is out of range: {IntervalNotation.Closed.ToNotationString(TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue))}.");
+        => AssertMember(radix, TSelf.CreateChecked(MaxValue), paramName);
 
       /// <summary>
       /// <para>Determines whether the <paramref name="radix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <paramref name="alternativeMaxRadix"/>].</para>

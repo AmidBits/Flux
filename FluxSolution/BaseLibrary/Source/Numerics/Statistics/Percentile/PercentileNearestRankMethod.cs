@@ -12,7 +12,7 @@ namespace Flux.Statistics
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TPercent : System.Numerics.IFloatingPoint<TPercent>
       //=> IntervalNotation.Closed.AssertValidMember(percent, TPercent.Zero, TPercent.One, nameof(percent)) * TPercent.CreateChecked(count.AssertNonNegative());
-      => Quantities.UnitInterval.AssertMember(percent, IntervalNotation.Closed, nameof(percent)) * TPercent.CreateChecked(count.AssertNonNegativeRealNumber());
+      => Quantities.UnitInterval.AssertMember(percent, IntervalNotation.Closed, nameof(percent)) * TPercent.CreateChecked(count.AssertNonNegativeNumber());
 
     /// <summary>
     /// <para>Inverse of empirical distribution function.</para>

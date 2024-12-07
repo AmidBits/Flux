@@ -12,7 +12,7 @@ namespace Flux
     public static TValue IntegerSqrt<TValue>(this TValue value)
       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      value.AssertNonNegativeRealNumber();
+      value.AssertNonNegativeNumber();
 
       if (TryFastIntegerSqrt(value, UniversalRounding.WholeTowardZero, out TValue isqrt, out var _)) // Testing!
         return isqrt;

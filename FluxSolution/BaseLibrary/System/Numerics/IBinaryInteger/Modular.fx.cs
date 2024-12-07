@@ -63,9 +63,9 @@ namespace Flux
     public static TValue MulMod<TValue>(this TValue dividend, TValue divisor, TValue modulus)
       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      dividend.AssertNonNegativeRealNumber(nameof(dividend));
-      divisor.AssertNonNegativeRealNumber(nameof(divisor));
-      modulus.AssertNonNegativeRealNumber(nameof(modulus));
+      dividend.AssertNonNegativeNumber(nameof(dividend));
+      divisor.AssertNonNegativeNumber(nameof(divisor));
+      modulus.AssertNonNegativeNumber(nameof(modulus));
 
       if (dividend >= modulus) dividend %= modulus;
       if (divisor >= modulus) divisor %= modulus;
@@ -84,9 +84,9 @@ namespace Flux
     public static TValue PowMod<TValue>(this TValue dividend, TValue divisor, TValue modulus)
       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      dividend.AssertNonNegativeRealNumber(nameof(dividend));
-      divisor.AssertNonNegativeRealNumber(nameof(divisor));
-      modulus.AssertNonNegativeRealNumber(nameof(modulus));
+      dividend.AssertNonNegativeNumber(nameof(dividend));
+      divisor.AssertNonNegativeNumber(nameof(divisor));
+      modulus.AssertNonNegativeNumber(nameof(modulus));
 
       var r = modulus == TValue.One ? TValue.Zero : TValue.One;
 

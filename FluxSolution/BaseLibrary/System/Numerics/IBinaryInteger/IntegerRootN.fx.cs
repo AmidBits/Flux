@@ -13,7 +13,7 @@
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TNth : System.Numerics.IBinaryInteger<TNth>
     {
-      value.AssertNonNegativeRealNumber();
+      value.AssertNonNegativeNumber();
 
       if (nth <= TNth.One) throw new System.ArgumentOutOfRangeException(nameof(nth), "Must be an integer, greater than or equal to 2.");
 

@@ -11,7 +11,7 @@ namespace Flux
       if (e.MoveNext())
       {
         if (includeNames)
-          yield return e.Current.GetNames().ToArray();
+          yield return e.Current.GetNames();
 
         do
         {

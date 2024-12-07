@@ -23,7 +23,7 @@ namespace Flux
       if (TRadix.IsZero(radix) || TExponent.IsZero(exponent))
         return TRadix.One; // If either value or exponent is zero, one is customary.
 
-      exponent.AssertNonNegativeRealNumber(nameof(exponent));
+      exponent.AssertNonNegativeNumber(nameof(exponent));
 
       if (radix == TRadix.CreateChecked(2))
         return TRadix.One << int.CreateChecked(exponent);

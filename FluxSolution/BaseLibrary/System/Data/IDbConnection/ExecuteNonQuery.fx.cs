@@ -2,20 +2,35 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Executes the specified <paramref name="commandText"/> and returns the number of rows affected.</summary>
+    /// <summary>
+    /// <para>Executes the specified <paramref name="commandText"/> and returns the number of rows affected.</para>
+    /// <para><see cref="System.Data.IDbCommand.ExecuteNonQuery"/></para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="commandText"></param>
+    /// <param name="commandTimeout"></param>
     /// <returns>The number of rows affected.</returns>
-    /// <see cref="System.Data.IDbCommand.ExecuteNonQuery"/>
     public static int ExecuteNonQuery(this System.Data.IDbConnection source, string commandText, int commandTimeout)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      using var c = source.CreateCommand();
+      using var command = source.CreateCommand();
 
-      c.CommandText = commandText;
-      c.CommandTimeout = commandTimeout;
+      command.CommandText = commandText;
+      command.CommandTimeout = commandTimeout;
 
-      return c.ExecuteNonQuery();
+      return command.ExecuteNonQuery();
     }
+
+    /// <summary>
+    /// <para>Executes the specified <paramref name="commandText"/> and returns the number of rows affected.</para>
+    /// <para><see cref="System.Data.IDbCommand.ExecuteNonQuery"/></para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="commandText"></param>
+    /// <param name="commandTimeout"></param>
+    /// <param name="result"></param>
+    /// <returns>The number of rows affected.</returns>
     public static bool TryExecuteNonQuery(this System.Data.IDbConnection source, string commandText, int commandTimeout, out int result)
     {
       try

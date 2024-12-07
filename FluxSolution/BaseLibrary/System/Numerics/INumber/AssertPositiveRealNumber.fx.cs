@@ -6,7 +6,7 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TNumber AssertPositiveNumber<TNumber>(this TNumber number, string? paramName = null)
       where TNumber : System.Numerics.INumber<TNumber>
-      => number.IsPositiveNumber() ? number : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(number), "Value must be greater than zero.");
+      => number.IsPositiveNumber() ? number : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(number), "The number must be greater than zero.");
 
     /// <summary>Returns whether a <paramref name="number"/> is a positive number, i.e. greater-than zero.</summary>
     public static bool IsPositiveNumber<TNumber>(this TNumber number)

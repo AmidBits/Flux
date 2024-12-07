@@ -306,7 +306,7 @@ namespace ConsoleApp
       var rtp = value.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
-      var quotient = int.CreateChecked(value.AssertNonNegativeRealNumber().TruncRem(1, out var remainder));
+      var quotient = int.CreateChecked(value.AssertNonNegativeNumber().TruncRem(1, out var remainder));
 
       var p2TowardsZero = quotient.MostSignificant1Bit();
       var p2AwayFromZero = (p2TowardsZero < quotient || remainder > 0) ? (p2TowardsZero == 0 ? 1 : p2TowardsZero << 1) : p2TowardsZero;

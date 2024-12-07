@@ -52,7 +52,7 @@ namespace Flux
             if (fieldIndex > 0)
               yield return fieldSeparator;
 
-            yield return valueSelector(idr.GetValue(fieldIndex), fieldIndex) ?? idr.GetStringEx(fieldIndex, nullValue);
+            yield return valueSelector(idr.GetValue(fieldIndex), fieldIndex) ?? idr.GetString(fieldIndex, nullValue);
           }
         }
       }

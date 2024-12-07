@@ -13,7 +13,7 @@ namespace Flux
     /// <returns></returns>
     /// <exception cref="System.ArgumentException"></exception>
     public static System.Array AssertDimensionallySymmetrical(this System.Array source, out int symmetricalLength, string? paramName = null)
-      => source.IsDimensionallySymmetrical(out symmetricalLength) ? source : throw new System.ArgumentException("The array is not symmetrical.", paramName ?? nameof(source));
+      => source.IsDimensionallySymmetrical(out symmetricalLength) ? source : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(source), "All array dimensions must be equal in length.");
 
     /// <summary>
     /// <para>Determines whether the <paramref name="source"/> array has symmetrical dimensions, i.e. all dimensions are the same length.</para>

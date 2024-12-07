@@ -6,7 +6,7 @@ namespace Flux
     /// <para>Asserts that the <paramref name="source"/> rank is equal to <paramref name="rank"/> and throws an exception if not.</para>
     /// </summary>
     public static System.Array AssertRank(this System.Array source, int rank)
-      => source.IsRank(rank) ? source : throw new System.ArgumentException($"Invalid rank ({source.Rank} != {rank}).", nameof(source));
+      => source.IsRank(rank) ? source : throw new System.ArgumentOutOfRangeException(nameof(source), $"The array rank must be equal to {rank}.");
 
     /// <summary>
     /// <para>Indicates whether <paramref name="source"/> is not null and <paramref name="source"/>.Rank is equal to <paramref name="rank"/>.</para>

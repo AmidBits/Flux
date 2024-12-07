@@ -111,11 +111,11 @@ namespace Flux
 
       while (reader.Peek() != -1)
       {
-        var dataSet = new System.Data.DataSet(dataSets.Count.ToOrdinalName("Set"));
+        var dataSet = new System.Data.DataSet(dataSets.Count.ToOrdinalColumnName("Set"));
 
         do
         {
-          var dataTable = new System.Data.DataTable(dataSet.Tables.Count.ToOrdinalName("Table"));
+          var dataTable = new System.Data.DataTable(dataSet.Tables.Count.ToOrdinalColumnName("Table"));
 
           do
           {
@@ -133,7 +133,7 @@ namespace Flux
             while (read != -1 && read != (int)UnicodeInformationSeparator.RecordSeparator && read != (int)UnicodeInformationSeparator.GroupSeparator && read != (int)UnicodeInformationSeparator.FileSeparator);
 
             for (var index = dataTable.Columns.Count; index < list.Count; index++)
-              dataTable.Columns.Add(index.ToOrdinalName());
+              dataTable.Columns.Add(index.ToOrdinalColumnName());
 
             dataTable.Rows.Add(list);
           }
