@@ -7,10 +7,10 @@ namespace Flux
     /// <param name="y2">Target point.</param>
     /// <param name="mu">The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points, the mu range is [0, 1]. Values of mu outside the range result in extrapolation.</param>
     /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
-    public static TValue InterpolateCosine<TValue>(this TValue y1, TValue y2, TValue mu)
-      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
+    public static TNumber InterpolateCosine<TNumber>(this TNumber y1, TNumber y2, TNumber mu)
+      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
     {
-      var mu2 = (TValue.One - TValue.CosPi(mu)) / TValue.CreateChecked(2);
+      var mu2 = (TNumber.One - TNumber.CosPi(mu)) / TNumber.CreateChecked(2);
 
       return InterpolateLinear(y1, y2, mu2);
     }
@@ -25,8 +25,8 @@ namespace Flux
     /// <param name="y3"></param>
     /// <param name="mu"></param>
     /// <returns></returns>
-    public static TValue InterpolateCubic<TValue>(this TValue y0, TValue y1, TValue y2, TValue y3, TValue mu)
-      where TValue : System.Numerics.IFloatingPoint<TValue>
+    public static TNumber InterpolateCubic<TNumber>(this TNumber y0, TNumber y1, TNumber y2, TNumber y3, TNumber mu)
+      where TNumber : System.Numerics.IFloatingPoint<TNumber>
     {
       var mu2 = mu * mu;
 
@@ -48,11 +48,11 @@ namespace Flux
     /// <param name="y3"></param>
     /// <param name="mu"></param>
     /// <returns></returns>
-    public static TValue InterpolateCubicPb<TValue>(this TValue y0, TValue y1, TValue y2, TValue y3, TValue mu)
-      where TValue : System.Numerics.IFloatingPoint<TValue>
+    public static TNumber InterpolateCubicPb<TNumber>(this TNumber y0, TNumber y1, TNumber y2, TNumber y3, TNumber mu)
+      where TNumber : System.Numerics.IFloatingPoint<TNumber>
     {
-      var two = TValue.CreateChecked(2);
-      var half = TValue.One / two;
+      var two = TNumber.CreateChecked(2);
+      var half = TNumber.One / two;
       var oneAndHalf = two - half;
 
       var mu2 = mu * mu;
@@ -77,18 +77,18 @@ namespace Flux
     /// <param name="tension"></param>
     /// <param name="bias"></param>
     /// <returns></returns>
-    public static TValue InterpolateHermite<TValue>(this TValue y0, TValue y1, TValue y2, TValue y3, TValue mu, TValue tension, TValue bias)
-      where TValue : System.Numerics.IFloatingPoint<TValue>
+    public static TNumber InterpolateHermite<TNumber>(this TNumber y0, TNumber y1, TNumber y2, TNumber y3, TNumber mu, TNumber tension, TNumber bias)
+      where TNumber : System.Numerics.IFloatingPoint<TNumber>
     {
-      var one = TValue.One;
+      var one = TNumber.One;
       var two = one + one;
       var three = two + one;
 
       var mu2 = mu * mu;
       var mu3 = mu2 * mu;
 
-      var biasP = (TValue.One + bias) * (TValue.One - tension);
-      var biasN = (TValue.One - bias) * (TValue.One - tension);
+      var biasP = (TNumber.One + bias) * (TNumber.One - tension);
+      var biasN = (TNumber.One - bias) * (TNumber.One - tension);
 
       var m0 = (y1 - y0) * biasP / two + (y2 - y1) * biasN / two;
       var m1 = (y2 - y1) * biasP / two + (y3 - y2) * biasN / two;
@@ -103,8 +103,8 @@ namespace Flux
 
     /// <summary>Linear interpolation (a.k.a. lerp) is the simplest method of getting values at positions in between the data points. The points are simply joined by straight line segments. Each segment (bounded by two data points) can be interpolated independently. The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points mu ranges between 0 and 1. Values of mu outside the range result in extrapolation.</summary>
     /// <see cref="http://paulbourke.net/miscellaneous/interpolation/"/>
-    public static TValue InterpolateLinear<TValue>(this TValue y1, TValue y2, TValue mu)
-      where TValue : System.Numerics.IFloatingPoint<TValue>
-      => (TValue.One - mu) * y1 + mu * y2;
+    public static TNumber InterpolateLinear<TNumber>(this TNumber y1, TNumber y2, TNumber mu)
+      where TNumber : System.Numerics.IFloatingPoint<TNumber>
+      => (TNumber.One - mu) * y1 + mu * y2;
   }
 }

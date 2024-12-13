@@ -1,46 +1,50 @@
-namespace Flux
-{
-  public static partial class Fx
-  {
-    /// <summary>
-    /// <para>Gets the count of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</para>
-    /// </summary>
-    public static (TValue count, bool isPowOf, TValue numberReversed, System.Collections.Generic.List<TValue> placeValues, System.Collections.Generic.List<TValue> reverseDigits, TValue sum) MagicalDigits<TValue, TRadix>(this TValue value, TRadix radix)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      where TRadix : System.Numerics.INumber<TRadix>
-    {
-      var rdx = TValue.CreateChecked(Quantities.Radix.AssertMember(radix));
+//namespace Flux
+//{
+//  public static partial class Fx
+//  {
+//    /// <summary>
+//    /// <para>Gets the count of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</para>
+//    /// </summary>
+//    public static (TNumber DigitCount, TNumber DigitSum, bool IsJumbled, bool IsPowOf, TNumber NumberReversed, System.Collections.Generic.List<TNumber> PlaceValues, System.Collections.Generic.List<TNumber> ReverseDigits) MagicalDigits<TNumber, TRadix>(this TNumber value, TRadix radix)
+//      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+//      where TRadix : System.Numerics.INumber<TRadix>
+//    {
+//      var rdx = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
 
-      var count = TValue.Zero;
-      var numberReversed = TValue.Zero;
-      var placeValues = new System.Collections.Generic.List<TValue>();
-      var reverseDigits = new System.Collections.Generic.List<TValue>();
-      var sum = TValue.Zero;
+//      var count = TNumber.Zero;
+//      var isJumbled = true;
+//      var numberReversed = TNumber.Zero;
+//      var placeValues = new System.Collections.Generic.List<TNumber>();
+//      var reverseDigits = new System.Collections.Generic.List<TNumber>();
+//      var sum = TNumber.Zero;
 
-      var power = TValue.One;
+//      var power = TNumber.One;
 
-      while (!TValue.IsZero(value))
-      {
-        var rem = value % rdx;
+//      while (!TNumber.IsZero(value))
+//      {
+//        var rem = value % rdx;
 
-        count++;
-        numberReversed = (numberReversed * rdx) + rem;
-        placeValues.Add(rem * power);
-        reverseDigits.Add(rem);
-        sum += rem;
+//        count++;
+//        numberReversed = (numberReversed * rdx) + rem;
+//        placeValues.Add(rem * power);
+//        reverseDigits.Add(rem);
+//        sum += rem;
 
-        power *= rdx;
+//        power *= rdx;
 
-        value /= rdx;
-      }
+//        value /= rdx;
 
-      if (TValue.IsZero(count))
-      {
-        placeValues.Add(TValue.Zero);
-        reverseDigits.Add(TValue.Zero);
-      }
+//        if (isJumbled && (TNumber.Abs((value % rdx) - rem) > TNumber.One))
+//          isJumbled = false;
+//      }
 
-      return (count, sum == TValue.One, numberReversed, placeValues, reverseDigits, sum);
-    }
-  }
-}
+//      if (TNumber.IsZero(count))
+//      {
+//        placeValues.Add(TNumber.Zero);
+//        reverseDigits.Add(TNumber.Zero);
+//      }
+
+//      return (count, sum, isJumbled, sum == TNumber.One, numberReversed, placeValues, reverseDigits);
+//    }
+//  }
+//}

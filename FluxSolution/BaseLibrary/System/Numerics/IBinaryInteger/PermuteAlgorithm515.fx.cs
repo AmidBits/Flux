@@ -10,7 +10,7 @@ namespace Flux
     /// <para><seealso href="https://stackoverflow.com/questions/561/how-to-use-combinations-of-sets-as-test-data#794"/></para>
     /// <para><seealso href="https://people.math.sc.edu/Burkardt/f_src/toms515/toms515.html"/></para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="setSize">The size (N) of the entire set.</param>
     /// <param name="subsetSize">The subset size (K).</param>
     /// <param name="index">The 1-based index of the subset (or index array) to generate.</param>
@@ -19,25 +19,25 @@ namespace Flux
     /// <para>Note that <paramref name="index"/> is 1-based.</para>
     /// <para>The <paramref name="setSize"/> is the <see langword="this"/> argument for the extension method.</para>
     /// </remarks>
-    public static TValue[] PermuteAlgorithm515<TValue>(this TValue setSize, TValue subsetSize, TValue index)
-       where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static TNumber[] PermuteAlgorithm515<TNumber>(this TNumber setSize, TNumber subsetSize, TNumber index)
+       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       var p = int.CreateChecked(subsetSize);
 
-      var c = new TValue[p];
+      var c = new TNumber[p];
 
-      TValue r;
+      TNumber r;
 
-      var k = TValue.Zero;
+      var k = TNumber.Zero;
 
       for (var i = 0; i < p - 1; i++)
       {
-        c[i] = (i != 0) ? c[i - 1] : TValue.Zero;
+        c[i] = (i != 0) ? c[i - 1] : TNumber.Zero;
 
         do
         {
           c[i]++;
-          r = (setSize - c[i]).BinomialCoefficient(subsetSize - TValue.CreateChecked(i + 1));
+          r = (setSize - c[i]).BinomialCoefficient(subsetSize - TNumber.CreateChecked(i + 1));
           k = k + r;
         }
         while (k < index);

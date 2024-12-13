@@ -53,13 +53,13 @@
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static (long IntegerPart, double FractionalPart) GetParts(this double source)
+    public static (System.Numerics.BigInteger IntegerPart, double FractionalPart) GetParts(this double source)
     {
-      var integerPart = (long)double.Truncate(source);
+      var integerPart = double.Truncate(source);
 
       var fractionalPart = source - integerPart;
 
-      return (integerPart, fractionalPart);
+      return (System.Numerics.BigInteger.CreateChecked(integerPart), fractionalPart);
     }
   }
 }

@@ -21,7 +21,7 @@ namespace Flux
     /// </summary>
     public static bool BitIndexGet<TValue>(this TValue value, int index)
       where TValue : System.Numerics.IBinaryInteger<TValue>
-      => (value &= TValue.One << index) != TValue.Zero;
+      => !TValue.IsZero(value &= TValue.One << index);
 
     /// <summary>
     /// <para>Set a bit of <paramref name="value"/> based on the zero-based <paramref name="index"/>.</para>

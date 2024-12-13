@@ -3,15 +3,15 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Gets the count of all single digits in <paramref name="value"/> using base <paramref name="radix"/>.</summary>
-    public static TValue DigitCount<TValue, TRadix>(this TValue value, TRadix radix)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static TNumber DigitCount<TNumber, TRadix>(this TNumber value, TRadix radix)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TValue.CreateChecked(Quantities.Radix.AssertMember(radix));
+      var rdx = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
 
-      var count = TValue.Zero;
+      var count = TNumber.Zero;
 
-      while (!TValue.IsZero(value))
+      while (!TNumber.IsZero(value))
       {
         count++;
 

@@ -8,24 +8,24 @@ namespace Flux
     /// <para><seealso href="https://en.wikipedia.org/wiki/Binomial_coefficient#In_programming_languages"/></para>
     /// </summary>
     /// <remarks>Also known as "nCk", i.e. "<paramref name="n"/> choose <paramref name="k"/>", because there are nCk ways to choose an (unordered) subset of <paramref name="k"/> elements from a fixed set of <paramref name="n"/> elements.</remarks>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="n">Greater than or equal to <paramref name="k"/>.</param>
     /// <param name="k">Greater than or equal to 0.</param>
     /// <returns></returns>
-    public static TValue BinomialCoefficient<TValue>(this TValue n, TValue k)
-       where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static TNumber BinomialCoefficient<TNumber>(this TNumber n, TNumber k)
+       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      if (TValue.IsNegative(k) || k > n)
-        return TValue.Zero;
+      if (TNumber.IsNegative(k) || k > n)
+        return TNumber.Zero;
 
-      if (TValue.IsZero(k) || k == n)
-        return TValue.One;
+      if (TNumber.IsZero(k) || k == n)
+        return TNumber.One;
 
-      k = TValue.Min(k, n - k); // Optimize for the loop below.
+      k = TNumber.Min(k, n - k); // Optimize for the loop below.
 
-      var c = TValue.One;
+      var c = TNumber.One;
 
-      for (var d = TValue.One; d <= k; d++)
+      for (var d = TNumber.One; d <= k; d++)
       {
         c *= n--;
         c /= d;

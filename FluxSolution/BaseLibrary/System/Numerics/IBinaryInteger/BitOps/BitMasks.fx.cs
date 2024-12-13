@@ -5,9 +5,10 @@ namespace Flux
     /// <summary>
     /// <para>Clear the bits of <paramref name="value"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
     /// </summary>
-    public static TValue BitMaskClear<TValue>(this TValue value, TValue bitMask)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => value &= ~bitMask;
+    public static TNumber BitMaskClear<TNumber, TBitMask>(this TNumber value, TBitMask bitMask)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+      where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
+      => value &= ~TNumber.CreateChecked(bitMask);
 
     /// <summary>
     /// <para>Create a bit-mask with <paramref name="bitLength"/> most-significant-bits set to 1.</para>

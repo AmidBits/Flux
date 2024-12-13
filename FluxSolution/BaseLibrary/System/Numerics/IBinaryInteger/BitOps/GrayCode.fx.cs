@@ -6,8 +6,8 @@ namespace Flux
     /// <para>Converts a binary number to a reflected binary Gray code.</para>
     /// <see href="https://en.wikipedia.org/wiki/Gray_code"/>
     /// </summary>
-    public static TValue BinaryToGray<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static TNumber BinaryToGray<TNumber>(this TNumber value)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
       => value ^ (value >>> 1);
 
     /// <summary>
@@ -16,14 +16,14 @@ namespace Flux
     /// </summary>
     /// <remarks>Experimental adaption from wikipedia.</remarks>
     /// <exception cref="System.ArgumentNullException"></exception>
-    public static TValue[] BinaryToGrayCode<TValue>(this TValue value, TValue radix)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static TNumber[] BinaryToGrayCode<TNumber>(this TNumber value, TNumber radix)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      if (value < TValue.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
+      if (value < TNumber.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-      var gray = new TValue[int.CreateChecked(value.DigitCount(radix))];
+      var gray = new TNumber[int.CreateChecked(value.DigitCount(radix))];
 
-      var baseN = new TValue[gray.Length]; // Stores the ordinary base-N number, one digit per entry
+      var baseN = new TNumber[gray.Length]; // Stores the ordinary base-N number, one digit per entry
 
       for (var index = 0; index < gray.Length; index++) // Put the normal baseN number into the baseN array. For base 10, 109 would be stored as [9,0,1]
       {
@@ -32,7 +32,7 @@ namespace Flux
         value /= radix;
       }
 
-      var shift = TValue.Zero; // Convert the normal baseN number into the Gray code equivalent. Note that the loop starts at the most significant digit and goes down.
+      var shift = TNumber.Zero; // Convert the normal baseN number into the Gray code equivalent. Note that the loop starts at the most significant digit and goes down.
 
       for (var index = gray.Length - 1; index >= 0; index--) // The Gray digit gets shifted down by the sum of the higher digits.
       {
@@ -48,12 +48,12 @@ namespace Flux
     /// <para>Converts a reflected binary gray code to a binary number.</para>
     /// <see href="https://en.wikipedia.org/wiki/Gray_code"/>
     /// </summary>
-    public static TValue GrayToBinary<TValue>(this TValue value)
-        where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static TNumber GrayToBinary<TNumber>(this TNumber value)
+        where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       var mask = value;
 
-      while (!TValue.IsZero(mask))
+      while (!TNumber.IsZero(mask))
       {
         mask >>>= 1;
         value ^= mask;

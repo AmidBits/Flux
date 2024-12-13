@@ -4,8 +4,8 @@ namespace Flux
   {
     /// <summary>Returns whether <paramref name="a"/> and <paramref name="b"/> are co-prime.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Coprime_integers"/>
-    public static bool IsCoprime<TValue>(this TValue a, TValue b)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => GreatestCommonDivisor(a, b) == TValue.One;
+    public static bool IsCoprime<TNumber>(this TNumber a, TNumber b)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+      => GreatestCommonDivisor(a, b) == TNumber.One;
   }
 }

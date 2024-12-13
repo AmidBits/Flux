@@ -4,8 +4,8 @@ namespace Flux
   {
     /// <summary>Returns whether <paramref name="value"/> using base <paramref name="radix"/> is a self value. A self value, Colombian value or Devlali value, in a given value base (radix) is a natural value that cannot be written as the sum of any other natural value n and the individual digits of n.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Self_number"/>
-    public static bool IsSelfNumber<TValue, TRadix>(this TValue value, TRadix radix)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static bool IsSelfNumber<TNumber, TRadix>(this TNumber value, TRadix radix)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       for (var sn = SelfNumberLowBound(value, radix); sn < value; sn++)
@@ -16,16 +16,16 @@ namespace Flux
     }
 
     /// <summary>Returns the minimum possible value that can make <paramref name="value"/> a self value using base <paramref name="radix"/>.</summary>
-    public static TValue SelfNumberLowBound<TValue, TRadix>(this TValue value, TRadix radix)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static TNumber SelfNumberLowBound<TNumber, TRadix>(this TNumber value, TRadix radix)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      if (value <= TValue.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
+      if (value <= TNumber.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-      var logRadix = TValue.CreateChecked(IntegerLogTowardZero(value, radix));
-      var maxDistinct = (TValue.CreateChecked(9) * logRadix) + (value / TValue.CreateChecked(radix.IntegerPow(logRadix)));
+      var logRadix = TNumber.CreateChecked(IntegerLogTowardZero(value, radix));
+      var maxDistinct = (TNumber.CreateChecked(9) * logRadix) + (value / TNumber.CreateChecked(radix.IntegerPow(logRadix)));
 
-      return TValue.Max(value - maxDistinct, TValue.Zero);
+      return TNumber.Max(value - maxDistinct, TNumber.Zero);
     }
   }
 }

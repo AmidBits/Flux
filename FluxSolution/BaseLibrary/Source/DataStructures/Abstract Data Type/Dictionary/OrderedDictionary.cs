@@ -231,7 +231,7 @@ namespace Flux
           {
             m_dictionary[key] = value;
             m_listOfKeys.Add(key);
-            m_listOfValues[index] = value;
+            m_listOfValues.Add(value);
           }
         }
       }

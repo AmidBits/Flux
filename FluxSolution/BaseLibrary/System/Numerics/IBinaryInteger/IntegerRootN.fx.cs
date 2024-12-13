@@ -5,25 +5,25 @@
     /// <summary>
     /// <para>Returns the the largest integer less than or equal (i.e. floor) to the <paramref name="nth"/> (radix) root of <paramref name="value"/>.</para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="value">The value to find the root of.</param>
     /// <param name="nth">Essentially the radix.</param>
     /// <returns>The integer <paramref name="nth"/> root of <paramref name="value"/>.</returns>
-    public static TValue IntegerRootN<TValue, TNth>(this TValue value, TNth nth)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static TNumber IntegerRootN<TNumber, TNth>(this TNumber value, TNth nth)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TNth : System.Numerics.IBinaryInteger<TNth>
     {
       value.AssertNonNegativeNumber();
 
       if (nth <= TNth.One) throw new System.ArgumentOutOfRangeException(nameof(nth), "Must be an integer, greater than or equal to 2.");
 
-      if (TryFastIntegerRootN(value, nth, UniversalRounding.WholeTowardZero, out TValue irootn, out var _)) // Testing!
+      if (TryFastIntegerRootN(value, nth, UniversalRounding.WholeTowardZero, out TNumber irootn, out var _)) // Testing!
         return irootn;
 
-      var n = TValue.CreateChecked(nth);
+      var n = TNumber.CreateChecked(nth);
 
-      var nM1 = n - TValue.One;
-      var c = TValue.One;
+      var nM1 = n - TNumber.One;
+      var c = TNumber.One;
       var d = (nM1 + value) / n;
       var e = (nM1 * d + value / IntegerPow(d, nM1)) / n;
 
@@ -87,15 +87,15 @@
     /// <summary>
     /// <para>Returns whether <paramref name="root"/> is a perfect <paramref name="nth"/> (radix) root of <paramref name="value"/>.</para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="value">The value to </param>
     /// <param name="nth">Essentially the radix.</param>
     /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
     /// <returns></returns>
-    public static bool IsPerfectIntegerRootN<TValue, TNth, TRoot>(TValue value, TNth nth, TRoot root)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static bool IsPerfectIntegerRootN<TNumber, TNth, TRoot>(TNumber value, TNth nth, TRoot root)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TNth : System.Numerics.IBinaryInteger<TNth>
       where TRoot : System.Numerics.IBinaryInteger<TRoot>
-      => value == TValue.CreateChecked(IntegerPow(root, nth));
+      => value == TNumber.CreateChecked(IntegerPow(root, nth));
   }
 }

@@ -5,25 +5,25 @@ namespace Flux
     /// <summary>
     /// <para>Converts a <paramref name="value"/> to <paramref name="positionalNotationIndices"/> based on <paramref name="radix"/>.</para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <typeparam name="TRadix"></typeparam>
     /// <param name="value"></param>
     /// <param name="radix"></param>
     /// <param name="positionalNotationIndices"></param>
     /// <returns></returns>
-    public static bool TryConvertNumberToPositionalNotationIndices<TValue, TRadix>(this TValue value, TRadix radix, out System.Collections.Generic.List<int> positionalNotationIndices)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static bool TryConvertNumberToPositionalNotationIndices<TNumber, TRadix>(this TNumber value, TRadix radix, out System.Collections.Generic.List<int> positionalNotationIndices)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       positionalNotationIndices = new();
 
       try
       {
-        var rdx = TValue.CreateChecked(Quantities.Radix.AssertMember(radix));
+        var rdx = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
 
-        while (!TValue.IsZero(value))
+        while (!TNumber.IsZero(value))
         {
-          (value, var remainder) = TValue.DivRem(value, rdx);
+          (value, var remainder) = TNumber.DivRem(value, rdx);
 
           positionalNotationIndices.Insert(0, int.CreateChecked(remainder));
         }
@@ -39,26 +39,26 @@ namespace Flux
     /// <para>Converts <paramref name="positionalNotationIndices"/> to a <paramref name="value"/> based on <paramref name="radix"/>.</para>
     /// </summary>
     /// <typeparam name="TRadix"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="positionalNotationIndices"></param>
     /// <param name="radix"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static bool TryConvertPositionalNotationIndicesToNumber<TRadix, TValue>(this System.Collections.Generic.List<int> positionalNotationIndices, TRadix radix, out TValue value)
+    public static bool TryConvertPositionalNotationIndicesToNumber<TRadix, TNumber>(this System.Collections.Generic.List<int> positionalNotationIndices, TRadix radix, out TNumber value)
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      value = TValue.Zero;
+      value = TNumber.Zero;
 
       try
       {
-        var rdx = TValue.CreateChecked(Quantities.Radix.AssertMember(radix));
+        var rdx = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
 
         for (var index = 0; index < positionalNotationIndices.Count; index++)
         {
           value *= rdx;
 
-          value += TValue.CreateChecked(positionalNotationIndices[index]);
+          value += TNumber.CreateChecked(positionalNotationIndices[index]);
         }
 
         return true;

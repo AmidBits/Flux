@@ -56,12 +56,12 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
 
 "LevenshteinDistanceMatrix(`"sitting`", `"kitten`")$([System.Environment]::NewLine)"
 $m = [Flux.Fx]::LevenshteinDistanceMatrix[char]("sitting", "kitten")
-$s = [Flux.Fx]::Rank2ToConsoleString[int]($m)
+$s = [Flux.Fx]::Rank2ToConsole[int]($m)
 "$($s)$([System.Environment]::NewLine)"
 
 "LevenshteinDistanceMatrix(`"Sunday`", `"Saturday`")$([System.Environment]::NewLine)"
 $m = [Flux.Fx]::LevenshteinDistanceMatrix[char]("Sunday", "Saturday")
-$s = [Flux.Fx]::Rank2ToConsoleString[int]($m)
+$s = [Flux.Fx]::Rank2ToConsole[int]($m)
 "$($s)$([System.Environment]::NewLine)"
 
 "Excerpt from ProjectGutenberg's TenThousandWonderfulThings, searching for `"SCANDINAVIA`" in the title.$([System.Environment]::NewLine)"

@@ -7,21 +7,21 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Divisor"/></para>
     /// </summary>
     /// <remarks>This implementaion does not order the result.</remarks>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="value"></param>
     /// <param name="proper"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.List<TValue> Factors<TValue>(this TValue value, bool proper)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.List<TNumber> Factors<TNumber>(this TNumber value, bool proper)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      var list = new System.Collections.Generic.List<TValue>();
+      var list = new System.Collections.Generic.List<TNumber>();
 
-      if (value > TValue.Zero)
+      if (value > TNumber.Zero)
       {
         var sqrt = value.IntegerSqrt();
 
-        for (var counter = TValue.One; counter <= sqrt; counter++)
-          if (TValue.IsZero(value % counter))
+        for (var counter = TNumber.One; counter <= sqrt; counter++)
+          if (TNumber.IsZero(value % counter))
           {
             list.Add(counter);
 
@@ -42,51 +42,51 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Integer_factorization"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Divisor"/></para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="value"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.Collections.Generic.List<TValue> PrimeFactors<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.List<TNumber> PrimeFactors<TNumber>(this TNumber value)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      if (value <= TValue.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
+      if (value <= TNumber.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-      var list = new System.Collections.Generic.List<TValue>();
+      var list = new System.Collections.Generic.List<TNumber>();
 
-      var two = TValue.CreateChecked(2);
-      var three = TValue.CreateChecked(3);
-      var four = TValue.CreateChecked(4);
-      var five = TValue.CreateChecked(5);
-      var six = TValue.CreateChecked(6);
-      var seven = TValue.CreateChecked(7);
+      var two = TNumber.CreateChecked(2);
+      var three = TNumber.CreateChecked(3);
+      var four = TNumber.CreateChecked(4);
+      var five = TNumber.CreateChecked(5);
+      var six = TNumber.CreateChecked(6);
+      var seven = TNumber.CreateChecked(7);
 
-      var m_primeFactorWheelIncrements = new TValue[] { four, two, four, two, four, six, two, six };
+      var m_primeFactorWheelIncrements = new TNumber[] { four, two, four, two, four, six, two, six };
 
-      while (TValue.IsZero(value % two))
+      while (TNumber.IsZero(value % two))
       {
         list.Add(two);
         value /= two;
       }
 
-      while (TValue.IsZero(value % three))
+      while (TNumber.IsZero(value % three))
       {
         list.Add(three);
         value /= three;
       }
 
-      while (TValue.IsZero(value % five))
+      while (TNumber.IsZero(value % five))
       {
         list.Add(five);
         value /= five;
       }
 
-      TValue k = seven, k2 = k * k;
+      TNumber k = seven, k2 = k * k;
 
       var index = 0;
 
       while (k2 <= value)
       {
-        if (TValue.IsZero(value % k))
+        if (TNumber.IsZero(value % k))
         {
           list.Add(k);
           value /= k;
@@ -101,7 +101,7 @@ namespace Flux
         }
       }
 
-      if (value > TValue.One)
+      if (value > TNumber.One)
         list.Add(value);
 
       return list;

@@ -8,8 +8,8 @@ namespace Flux
     /// <remarks>
     /// <para>Note that some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies, making <see cref="GetByteCount{TValue}"/> dynamic also.</para>
     /// </remarks>
-    public static int GetByteCount<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => value.GetByteCount();
+    public static int GetByteCount<TNumber>(this TNumber source)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+      => source.GetByteCount();
   }
 }

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -311,7 +312,7 @@ namespace Foundation.Randomization
         Assert.IsTrue(rv >= 0 && rv < i);
       }
 
-      for (var i = short.MinValue; i < 0; i++)
+      for (var i = sbyte.MinValue; i < 0; i++)
       {
         var rv = cr.NextBigInteger(i, 0);
 

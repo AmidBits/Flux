@@ -3,45 +3,11 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>
-    /// <para>Gets the count of all single digits in <paramref name="integer"/> using base <paramref name="radix"/>.</para>
+    /// <para>Gets the count of all single digits in <paramref name="number"/> using base <paramref name="radix"/>.</para>
     /// </summary>
-    public static (TInteger DigitCount, TInteger DigitSum, bool IsPowOf, TInteger IntegerReversed, System.Collections.Generic.List<TInteger> PlaceValues, System.Collections.Generic.List<TInteger> ReverseDigits) MagicalDigits<TInteger>(this Quantities.Radix radix, TInteger integer)
+    public static (TInteger DigitCount, TInteger DigitSum, bool IsJumbled, bool IsPowOf, TInteger NumberReversed, System.Collections.Generic.List<TInteger> PlaceValues, System.Collections.Generic.List<TInteger> ReverseDigits) Digits<TInteger>(this Quantities.Radix radix, TInteger number)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
-    {
-      var rdx = TInteger.CreateChecked(radix.Value);
-
-      var count = TInteger.Zero;
-      var numberReversed = TInteger.Zero;
-      var placeValues = new System.Collections.Generic.List<TInteger>();
-      var reverseDigits = new System.Collections.Generic.List<TInteger>();
-      var sum = TInteger.Zero;
-
-      var power = TInteger.One;
-
-      while (!TInteger.IsZero(integer))
-      {
-        var rem = integer % rdx;
-
-        count++;
-        numberReversed = (numberReversed * rdx) + rem;
-        placeValues.Add(rem * power);
-        reverseDigits.Add(rem);
-        sum += rem;
-
-        power *= rdx;
-
-        integer /= rdx;
-      }
-
-      if (TInteger.IsZero(count))
-      {
-        placeValues.Add(TInteger.Zero);
-        reverseDigits.Add(TInteger.Zero);
-      }
-
-      return (count, sum, sum == TInteger.One, numberReversed, placeValues, reverseDigits);
-    }
-
+      => Quantities.Radix.Digits(number, radix.Value);
   }
 
   namespace Quantities
@@ -86,6 +52,51 @@ namespace Flux
       public static TSelf AssertMember<TSelf>(TSelf radix, string? paramName = null)
         where TSelf : System.Numerics.INumber<TSelf>
         => AssertMember(radix, TSelf.CreateChecked(MaxValue), paramName);
+
+      /// <summary>
+      /// <para>Gets the count, the sum, whether it is jumbled, is a power of, the number reversed, the place values, and the reverse digits, of <paramref name="value"/> using base <paramref name="radix"/>.</para>
+      /// </summary>
+      public static (TNumber DigitCount, TNumber DigitSum, bool IsJumbled, bool IsPowOf, TNumber NumberReversed, System.Collections.Generic.List<TNumber> PlaceValues, System.Collections.Generic.List<TNumber> ReverseDigits) Digits<TNumber, TRadix>(TNumber value, TRadix radix)
+        where TNumber : System.Numerics.IBinaryInteger<TNumber>
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        var rdx = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
+
+        var count = TNumber.Zero;
+        var isJumbled = true;
+        var numberReversed = TNumber.Zero;
+        var placeValues = new System.Collections.Generic.List<TNumber>();
+        var reverseDigits = new System.Collections.Generic.List<TNumber>();
+        var sum = TNumber.Zero;
+
+        var power = TNumber.One;
+
+        while (!TNumber.IsZero(value))
+        {
+          var rem = value % rdx;
+
+          count++;
+          numberReversed = (numberReversed * rdx) + rem;
+          placeValues.Add(rem * power);
+          reverseDigits.Add(rem);
+          sum += rem;
+
+          power *= rdx;
+
+          value /= rdx;
+
+          if (isJumbled && (TNumber.Abs((value % rdx) - rem) > TNumber.One))
+            isJumbled = false;
+        }
+
+        if (TNumber.IsZero(count))
+        {
+          placeValues.Add(TNumber.Zero);
+          reverseDigits.Add(TNumber.Zero);
+        }
+
+        return (count, sum, isJumbled, sum == TNumber.One, numberReversed, placeValues, reverseDigits);
+      }
 
       /// <summary>
       /// <para>Determines whether the <paramref name="radix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <paramref name="alternativeMaxRadix"/>].</para>

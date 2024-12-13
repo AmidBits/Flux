@@ -14,6 +14,13 @@ namespace Flux.Quantities
 
     public Probability(double ratio) => m_value = IntervalNotation.Closed.AssertValidMember(ratio, MinValue, MaxValue, nameof(ratio));
 
+    /// <summary>
+    /// <para>Computes the odds (p / (1 - p)) ratio of the probability.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Odds"/></para>
+    /// </summary>
+    /// <returns></returns>
+    public Ratio ToOdds() => new(m_value, 1 - m_value);
+
     #region Static methods
 
     /// <summary>
@@ -95,14 +102,16 @@ namespace Flux.Quantities
 
     #endregion // Binomial distribution
 
-    /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
-    /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
-    public static double Expit(double x) => 1 / (System.Math.Exp(-x) + 1);
-
     /// <summary>Create a random probability from the specified <see cref="System.Random"/>.</summary>
     /// <param name="rng"></param>
     /// <returns></returns>
-    public static Probability FromRandom(System.Random? rng = null) => new((rng ?? System.Random.Shared).Next() / (double)int.MaxValue);
+    public static Probability CreateRandom(System.Random? rng = null) => new((rng ?? System.Random.Shared).Next());
+
+    /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
+    /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
+    public static TSelf Expit<TSelf>(TSelf x)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IExponentialFunctions<TSelf>
+      => TSelf.One / (TSelf.Exp(-x) + TSelf.One);
 
     #region Geometric distribution
 
@@ -185,7 +194,9 @@ namespace Flux.Quantities
     /// <param name="Xn">The ratio of existing population to maximum possible population (Xn).</param>
     /// <param name="r">A value in the range [0, 4] (r).</param>
     /// <returns>The ratio of population to max possible population in the next generation (Xn + 1)</returns>
-    public static double LogisticMap(double Xn, double r) => r * Xn * (1 - Xn);
+    public static TSelf LogisticMap<TSelf>(TSelf Xn, TSelf r)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => r * Xn * (TSelf.One - Xn);
 
     /// <summary>
     /// <para>The logit function, which is the inverse of expit (or the logistic function), is the logarithm of the odds (p / (1 - p)) where p is the probability. Creates a map of probability values from [0, 1] to [-infinity, +infinity].</para>
@@ -193,7 +204,9 @@ namespace Flux.Quantities
     /// </summary>
     /// <param name="probability">The probability in the range [0, 1].</param>
     /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
-    public static double Logit(double probability) => System.Math.Log(OddsRatio(probability));
+    public static TSelf Logit<TSelf>(TSelf probability)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.ILogarithmicFunctions<TSelf>
+      => TSelf.Log(OddsRatio(probability));
 
     /// <summary>
     /// <para>Computes the odds (p / (1 - p)) of a probability p.</para>
@@ -201,7 +214,9 @@ namespace Flux.Quantities
     /// </summary>
     /// <param name="probability">The probability in the range [0, 1].</param>
     /// <returns>The odds of the specified probablility in the range [-infinity, +infinity].</returns>
-    public static double OddsRatio(double probability) => probability / (1 - probability);
+    public static TSelf OddsRatio<TSelf>(TSelf probability)
+      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+      => probability / (TSelf.One - probability);
 
     /// <summary>
     /// <para>Returns the probability that specified event count in a group of total event count are all different (or unique). This is the computation P(A').</para>
@@ -209,11 +224,12 @@ namespace Flux.Quantities
     /// <para><seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
     /// </summary>
     /// <returns>The probability, which is in the range [0, 1].</returns>
-    public static Probability OfNoDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount)
+    public static Probability OfNoDuplicates<TSelf>(TSelf whenCount, TSelf ofTotalCount)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       var accumulation = 1d;
-      for (var index = ofTotalCount - whenCount + 1; index < ofTotalCount; index++)
-        accumulation *= (double)index / (double)ofTotalCount;
+      for (var index = ofTotalCount - whenCount + TSelf.One; index < ofTotalCount; index++)
+        accumulation *= double.CreateChecked(index) / double.CreateChecked(ofTotalCount);
       return new(accumulation);
     }
 
@@ -223,7 +239,9 @@ namespace Flux.Quantities
     /// <para><seealso href="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
     /// </summary>
     /// <returns>The probability, which is in the range [0, 1].</returns>
-    public static Probability OfDuplicates(System.Numerics.BigInteger whenCount, System.Numerics.BigInteger ofTotalCount) => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_value);
+    public static Probability OfDuplicates<TSelf>(TSelf whenCount, TSelf ofTotalCount)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_value);
 
     #region Poisson distribution
 
@@ -250,10 +268,6 @@ namespace Flux.Quantities
     public static TSelf Sigmoid<TSelf>(TSelf x)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>, System.Numerics.IExponentialFunctions<TSelf>
       => Logistic(x, TSelf.One, TSelf.Zero, TSelf.One);
-
-    /// <summary>Computes the odds (p / (1 - p)) ratio of the probability.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Odds"/>
-    public Ratio ToOdds() => new(m_value, 1 - m_value);
 
     #endregion Static methods
 

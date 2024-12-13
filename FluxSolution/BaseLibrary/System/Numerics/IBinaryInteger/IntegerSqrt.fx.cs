@@ -9,17 +9,17 @@ namespace Flux
     /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
     /// <returns>Returns the integer (i.e. floor) square root of <paramref name="value"/>.</returns>
     /// <remarks>The ceiling square root is <see cref="IntegerSqrt"/> + 1.</remarks>
-    public static TValue IntegerSqrt<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static TNumber IntegerSqrt<TNumber>(this TNumber value)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       value.AssertNonNegativeNumber();
 
-      if (TryFastIntegerSqrt(value, UniversalRounding.WholeTowardZero, out TValue isqrt, out var _)) // Testing!
+      if (TryFastIntegerSqrt(value, UniversalRounding.WholeTowardZero, out TNumber isqrt, out var _)) // Testing!
         return isqrt;
 
-      var x0 = TValue.One << (value.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square value.
+      var x0 = TNumber.One << (value.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square value.
 
-      if (!TValue.IsZero(x0))
+      if (!TNumber.IsZero(x0))
       {
         while (((x0 + value / x0) >> 1) is var x1 && x1 < x0)
           x0 = x1;
@@ -33,7 +33,7 @@ namespace Flux
     /// <summary>
     /// <para>Returns whether <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</para>
     /// </summary>
-    /// <typeparam name="TInteger"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
     /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
     /// <returns>Whether the <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
@@ -42,10 +42,10 @@ namespace Flux
     //  where TRoot : System.Numerics.IBinaryInteger<TRoot>
     //  => TValue.CreateChecked(root * root) <= value && value < TValue.CreateChecked((root + TRoot.One) * (root + TRoot.One));
     // // Does this work? -> value / root >= root && value / (root + TValue.One) < (root + TValue.One);
-    public static bool IsIntegerSqrt<TInteger>(this TInteger value, TInteger root)
-      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    public static bool IsIntegerSqrt<TNumber>(this TNumber value, TNumber root)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
       => (root * root) is var square && square <= value  // GTE square of root.
-      && value < (square + root + root + TInteger.One); // LT next square up.
+      && value < (square + root + root + TNumber.One); // LT next square up.
 
     //=> root * root <= value
     //&& value < (root + TInteger.One) * (root + TInteger.One);
@@ -63,10 +63,10 @@ namespace Flux
     //  where TRoot : System.Numerics.IBinaryInteger<TRoot>
     //  => TValue.CreateChecked(root) is var r && value / r == r // Is integer root?
     //  && TValue.IsZero(value % r); // Is perfect integer root?
-    public static bool IsPerfectIntegerSqrt<TInteger>(this TInteger value, TInteger root)
-       where TInteger : System.Numerics.IBinaryInteger<TInteger>
-       => TInteger.DivRem(value, root) is var qr // Get division and remainder in one go.
+    public static bool IsPerfectIntegerSqrt<TNumber>(this TNumber value, TNumber root)
+       where TNumber : System.Numerics.IBinaryInteger<TNumber>
+       => TNumber.DivRem(value, root) is var qr // Get division and remainder in one go.
       && qr.Quotient == root // Quotient equals the root.
-      && TInteger.IsZero(qr.Remainder); // Zero remainder.
+      && TNumber.IsZero(qr.Remainder); // Zero remainder.
   }
 }

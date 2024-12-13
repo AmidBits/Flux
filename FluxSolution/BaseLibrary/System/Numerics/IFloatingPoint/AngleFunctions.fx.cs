@@ -9,14 +9,14 @@
 //    /// <para><seealso href="https://en.wikipedia.org/wiki/Atan2"/></para>
 //    /// </summary>
 //    // Rough first draft, needs examination.
-//    public static TValue Atan2<TValue>(TValue y, TValue x)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IFloatingPointConstants<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => x > TValue.Zero ? TValue.Atan(y / x)
-//      : x < TValue.Zero && y >= TValue.Zero ? TValue.Atan(y / x) + TValue.Pi
-//      : x < TValue.Zero && y < TValue.Zero ? TValue.Atan(y / x) - TValue.Pi
-//      : x == TValue.Zero && y > TValue.Zero ? +(TValue.Pi / (TValue.One + TValue.One))
-//      : x == TValue.Zero && y < TValue.Zero ? -(TValue.Pi / (TValue.One + TValue.One))
-//      : TValue.Zero; // Undefined
+//    public static TNumber Atan2<TNumber>(TNumber y, TNumber x)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IFloatingPointConstants<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => x > TNumber.Zero ? TNumber.Atan(y / x)
+//      : x < TNumber.Zero && y >= TNumber.Zero ? TNumber.Atan(y / x) + TNumber.Pi
+//      : x < TNumber.Zero && y < TNumber.Zero ? TNumber.Atan(y / x) - TNumber.Pi
+//      : x == TNumber.Zero && y > TNumber.Zero ? +(TNumber.Pi / (TNumber.One + TNumber.One))
+//      : x == TNumber.Zero && y < TNumber.Zero ? -(TNumber.Pi / (TNumber.One + TNumber.One))
+//      : TNumber.Zero; // Undefined
 
 //    /// <summary>
 //    /// <para>Convenience implementation that returns <see cref="double.Atan2(double, double)"/> as [0, +Tau) instead of [-Pi, +Pi], with 0 being 3 o'clock and rotating counter-clockwise.</para>
@@ -29,10 +29,10 @@
 //    /// <para>The method consists of one conditional branch which may incur an extra add operation.</para>
 //    /// <para>This uses <see cref="double.Atan2(double, double)"/> in the traditional sense, but without any negative return values.</para>
 //    /// </remarks>
-//    public static TValue Atan2Ccw<TValue>(TValue y, TValue x)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IFloatingPointConstants<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => Atan2(y, x) is var atan2 && atan2 < TValue.Zero // Call Atan2 as usual, which means 0 is at 3 o'clock and rotating counter-clockwise.
-//      ? (atan2 + TValue.Tau) % TValue.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
+//    public static TNumber Atan2Ccw<TNumber>(TNumber y, TNumber x)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IFloatingPointConstants<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => Atan2(y, x) is var atan2 && atan2 < TNumber.Zero // Call Atan2 as usual, which means 0 is at 3 o'clock and rotating counter-clockwise.
+//      ? (atan2 + TNumber.Tau) % TNumber.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
 //      : atan2; // The positive range is already 0..+Pi, so return it.
 
 //    /// <summary>
@@ -46,10 +46,10 @@
 //    /// <para>The method consists of one conditional branch which may incur an extra add operation.</para>
 //    /// <para>This the reverse rotation and 90 degree offset is done by passing (x, y) rather than (y, x) into <see cref="double.Atan2(double, double)"/>.</para>
 //    /// </remarks>
-//    public static TValue Atan2Cw<TValue>(TValue y, TValue x)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IFloatingPointConstants<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => Atan2(x, y) is var atan2s && atan2s < TValue.Zero // Call Atan2 with the arguments switched, which results in a transposition, where 0 is at noon and rotation is clockwise.
-//      ? (atan2s + TValue.Tau) % TValue.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
+//    public static TNumber Atan2Cw<TNumber>(TNumber y, TNumber x)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IFloatingPointConstants<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => Atan2(x, y) is var atan2s && atan2s < TNumber.Zero // Call Atan2 with the arguments switched, which results in a transposition, where 0 is at noon and rotation is clockwise.
+//      ? (atan2s + TNumber.Tau) % TNumber.Tau // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full turn (Tau).
 //      : atan2s; // The positive range is already 0..+Pi, so return it.
 
 //    #endregion // Atan2 functions
@@ -58,9 +58,9 @@
 
 //    /// <summary>Returns the Gudermannian of the specified value.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Gudermannian_function"/>
-//    public static TValue Gd<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IHyperbolicFunctions<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Atan(TValue.Sinh(value));
+//    public static TNumber Gd<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IHyperbolicFunctions<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Atan(TNumber.Sinh(value));
 
 //    // Inverse function:
 
@@ -68,9 +68,9 @@
 //    /// <see href="https://en.wikipedia.org/wiki/Gudermannian_function#Inverse"/>
 //    /// <remarks>The integral of the secant function defines the inverse of the Gudermannian function.</remarks>
 //    /// <remarks>The lambertian function (lam) is a notation for the inverse of the gudermannian which is encountered in the theory of map projections.</remarks>
-//    public static TValue Agd<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IHyperbolicFunctions<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Atanh(TValue.Sin(value));
+//    public static TNumber Agd<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IHyperbolicFunctions<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Atanh(TNumber.Sin(value));
 
 //    #endregion // Gudermannian functions
 
@@ -78,21 +78,21 @@
 
 //    /// <summary>Returns the cotangent of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
-//    public static TValue Cot<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.One / TValue.Tan(v);
+//    public static TNumber Cot<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.One / TNumber.Tan(v);
 
 //    /// <summary>Returns the secant of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
-//    public static TValue Sec<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.One / TValue.Cos(v);
+//    public static TNumber Sec<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.One / TNumber.Cos(v);
 
 //    /// <summary>Returns the cosecant of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Trigonometric_functions"/>
-//    public static TValue Csc<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.One / TValue.Sin(v);
+//    public static TNumber Csc<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.One / TNumber.Sin(v);
 
 //    #endregion // Reciprocal functions
 
@@ -100,21 +100,21 @@
 
 //    /// <summary>Returns the inverse cotangent of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
-//    public static TValue Acot<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Atan(TValue.One / v);
+//    public static TNumber Acot<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Atan(TNumber.One / v);
 
 //    /// <summary>Returns the inverse secant of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
-//    public static TValue Asec<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Acos(TValue.One / v);
+//    public static TNumber Asec<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Acos(TNumber.One / v);
 
 //    /// <summary>Returns the inverse cosecant of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Inverse_trigonometric_functions"/>
-//    public static TValue Acsc<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Asin(TValue.One / v);
+//    public static TNumber Acsc<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Asin(TNumber.One / v);
 
 //    #endregion // Inverse Reciprocal functions
 
@@ -122,21 +122,21 @@
 
 //    /// <summary>Returns the hyperbolic cotangent of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
-//    public static TValue Coth<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IHyperbolicFunctions<TValue>
-//      => TValue.Cosh(v) / TValue.Sinh(v);
+//    public static TNumber Coth<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IHyperbolicFunctions<TNumber>
+//      => TNumber.Cosh(v) / TNumber.Sinh(v);
 
 //    /// <summary>Returns the hyperbolic secant of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
-//    public static TValue Sech<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IHyperbolicFunctions<TValue>
-//      => TValue.One / TValue.Cosh(v);
+//    public static TNumber Sech<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IHyperbolicFunctions<TNumber>
+//      => TNumber.One / TNumber.Cosh(v);
 
 //    /// <summary>Returns the hyperbolic cosecant of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Hyperbolic_function"/>
-//    public static TValue Csch<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IHyperbolicFunctions<TValue>
-//      => TValue.One / TValue.Sinh(v);
+//    public static TNumber Csch<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IHyperbolicFunctions<TNumber>
+//      => TNumber.One / TNumber.Sinh(v);
 
 //    #endregion // Hyperbolic reciprocal functions
 
@@ -144,21 +144,21 @@
 
 //    /// <summary>Returns the inverse hyperbolic cosecant of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
-//    public static TValue Acsch<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IHyperbolicFunctions<TValue>
-//      => TValue.Asinh(TValue.One / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log(1 / x + System.Math.Sqrt(1 / x * x + 1));
+//    public static TNumber Acsch<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IHyperbolicFunctions<TNumber>
+//      => TNumber.Asinh(TNumber.One / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log(1 / x + System.Math.Sqrt(1 / x * x + 1));
 
 //    /// <summary>Returns the inverse hyperbolic secant of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
-//    public static TValue Asech<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IHyperbolicFunctions<TValue>
-//      => TValue.Acosh(TValue.One / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log((1 + System.Math.Sqrt(1 - x * x)) / x);
+//    public static TNumber Asech<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IHyperbolicFunctions<TNumber>
+//      => TNumber.Acosh(TNumber.One / v); // Cheaper versions than using Log and Sqrt functions: System.Math.Log((1 + System.Math.Sqrt(1 - x * x)) / x);
 
 //    /// <summary>Returns the inverse hyperbolic cotangent of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Inverse_hyperbolic_function"/>
-//    public static TValue Acoth<TValue>(this TValue v)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IHyperbolicFunctions<TValue>
-//      => TValue.Atanh(TValue.One / v); // Cheaper versions than using log functions: System.Math.Log((x + 1) / (x - 1)) / 2;
+//    public static TNumber Acoth<TNumber>(this TNumber v)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IHyperbolicFunctions<TNumber>
+//      => TNumber.Atanh(TNumber.One / v); // Cheaper versions than using log functions: System.Math.Log((x + 1) / (x - 1)) / 2;
 
 //    #endregion // Inverse hyperbolic reciprocal functions
 
@@ -166,27 +166,27 @@
 
 //    /// <summary>Returns the versed sine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-//    public static TValue Vsin<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.One - TValue.Cos(value);
+//    public static TNumber Vsin<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.One - TNumber.Cos(value);
 
 //    /// <summary>Returns the versed cosine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-//    public static TValue Vcos<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.One + TValue.Cos(value);
+//    public static TNumber Vcos<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.One + TNumber.Cos(value);
 
 //    /// <summary>Returns the coversed sine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-//    public static TValue Cvsin<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.One - TValue.Sin(value);
+//    public static TNumber Cvsin<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.One - TNumber.Sin(value);
 
 //    /// <summary>Returns the coversed cosine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-//    public static TValue Cvcos<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.One + TValue.Sin(value);
+//    public static TNumber Cvcos<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.One + TNumber.Sin(value);
 
 //    #endregion // Versed functions
 
@@ -194,27 +194,27 @@
 
 //    /// <summary>Returns the inverse of versed sine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-//    public static TValue Avsin<TValue>(this TValue y)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Acos(TValue.One - y);
+//    public static TNumber Avsin<TNumber>(this TNumber y)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Acos(TNumber.One - y);
 
 //    /// <summary>Returns the inverse of versed cosine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-//    public static TValue Avcos<TValue>(this TValue y)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Acos(y - TValue.One);
+//    public static TNumber Avcos<TNumber>(this TNumber y)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Acos(y - TNumber.One);
 
 //    /// <summary>Returns the inverse of coversed sine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-//    public static TValue Acvsin<TValue>(this TValue y)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Asin(TValue.One - y);
+//    public static TNumber Acvsin<TNumber>(this TNumber y)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Asin(TNumber.One - y);
 
 //    /// <summary>Returns the inverse of coversed cosine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-//    public static TValue Acvcos<TValue>(this TValue y)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Asin(y - TValue.One);
+//    public static TNumber Acvcos<TNumber>(this TNumber y)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Asin(y - TNumber.One);
 
 //    #endregion // Inverse versed functions
 
@@ -222,27 +222,27 @@
 
 //    /// <summary>Returns the haversed sine of the specified angle. This is the famous Haversin function.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-//    public static TValue Hvsin<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => (TValue.One - TValue.Cos(value)) / TValue.CreateChecked(2);
+//    public static TNumber Hvsin<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => (TNumber.One - TNumber.Cos(value)) / TNumber.CreateChecked(2);
 
 //    /// <summary>Returns the haversed cosine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-//    public static TValue Hvcos<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => (TValue.One + TValue.Cos(value)) / TValue.CreateChecked(2);
+//    public static TNumber Hvcos<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => (TNumber.One + TNumber.Cos(value)) / TNumber.CreateChecked(2);
 
 //    /// <summary>Returns the hacoversed sine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-//    public static TValue Hcvsin<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => (TValue.One - TValue.Sin(value)) / TValue.CreateChecked(2);
+//    public static TNumber Hcvsin<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => (TNumber.One - TNumber.Sin(value)) / TNumber.CreateChecked(2);
 
 //    /// <summary>Returns the hacoversed cosine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Definitions"/>
-//    public static TValue Hcvcos<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => (TValue.One + TValue.Sin(value)) / TValue.CreateChecked(2);
+//    public static TNumber Hcvcos<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => (TNumber.One + TNumber.Sin(value)) / TNumber.CreateChecked(2);
 
 //    #endregion // Haversed functions
 
@@ -250,27 +250,27 @@
 
 //    /// <summary>Returns the inverse of haversed sine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-//    public static TValue Ahvsin<TValue>(this TValue y)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Acos(TValue.One - TValue.CreateChecked(2) * y); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Asin(System.Math.Sqrt(y));
+//    public static TNumber Ahvsin<TNumber>(this TNumber y)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Acos(TNumber.One - TNumber.CreateChecked(2) * y); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Asin(System.Math.Sqrt(y));
 
 //    /// <summary>Returns the inverse of haversed cosine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-//    public static TValue Ahvcos<TValue>(this TValue y)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Acos(TValue.CreateChecked(2) * y - TValue.One); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Acos(System.Math.Sqrt(y));
+//    public static TNumber Ahvcos<TNumber>(this TNumber y)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Acos(TNumber.CreateChecked(2) * y - TNumber.One); // An extra subtraction saves a call to the Sqrt function: 2 * System.Math.Acos(System.Math.Sqrt(y));
 
 //    /// <summary>Returns the inverse of cohaversed sine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-//    public static TValue Ahcvsin<TValue>(this TValue y)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Asin(TValue.One - TValue.CreateChecked(2) * y);
+//    public static TNumber Ahcvsin<TNumber>(this TNumber y)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Asin(TNumber.One - TNumber.CreateChecked(2) * y);
 
 //    /// <summary>Returns the inverse of cohaversed cosine of the specified angle.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-//    public static TValue Ahcvcos<TValue>(this TValue y)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.Asin(TValue.CreateChecked(2) * y - TValue.One);
+//    public static TNumber Ahcvcos<TNumber>(this TNumber y)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.Asin(TNumber.CreateChecked(2) * y - TNumber.One);
 
 //    #endregion // Inverse haverse functions
 
@@ -278,15 +278,15 @@
 
 //    /// <summary>Returns the normalized sinc of the specified value.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Sinc_function"/>
-//    public static TValue Sincn<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.IFloatingPointConstants<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => Sincu(TValue.Pi * value);
+//    public static TNumber Sincn<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IFloatingPointConstants<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => Sincu(TNumber.Pi * value);
 
 //    /// <summary>Returns the unnormalized sinc of the specified value.</summary>
 //    /// <see href="https://en.wikipedia.org/wiki/Sinc_function"/>
-//    public static TValue Sincu<TValue>(this TValue value)
-//      where TValue : System.Numerics.IFloatingPoint<TValue>, System.Numerics.ITrigonometricFunctions<TValue>
-//      => TValue.IsZero(value) ? TValue.One : TValue.Sin(value) / value;
+//    public static TNumber Sincu<TNumber>(this TNumber value)
+//      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.ITrigonometricFunctions<TNumber>
+//      => TNumber.IsZero(value) ? TNumber.One : TNumber.Sin(value) / value;
 
 //    #endregion // Sinc functions
 //  }
