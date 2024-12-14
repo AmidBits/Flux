@@ -41,7 +41,7 @@ namespace Flux.DataStructures
       return insertCount;
     }
 
-    public string ToConsoleString()
+    public string ToConsole()
     {
       var sb = new System.Text.StringBuilder();
 

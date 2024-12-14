@@ -101,7 +101,7 @@
         matrix[5, index] = kf.Animal != EnumAnimal.Unkown ? kf.Animal.ToString() : string.Empty;
       }
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.Rank2ToConsole(new ConsoleStringOptions() { UniformWidth = true, CenterContent = true })));
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.Rank2ToConsole(ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true })));
     }
 
     public static void Example()

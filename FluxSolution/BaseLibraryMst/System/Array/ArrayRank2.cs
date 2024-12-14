@@ -9,7 +9,7 @@ namespace SystemFx
     [TestMethod]
     public void Fill()
     {
-      var cso = new ConsoleStringOptions() { UniformWidth = true };
+      var cso = ConsoleFormatOptions.Default with { UniformWidth = true };
 
       var inplaceMatrix = new int[,] {
         { 1, 0, 0, 0, 0, 2, 3, 4 },
@@ -73,7 +73,7 @@ namespace SystemFx
     [TestMethod]
     public void FlipToCopy()
     {
-      var cso = new ConsoleStringOptions() { UniformWidth = true };
+      var cso = ConsoleFormatOptions.Default with { UniformWidth = true };
 
       var matrix = new int[,] {
         { 1, 2, 3, 4 },
@@ -119,7 +119,7 @@ namespace SystemFx
     [TestMethod]
     public void InsertToCopy()
     {
-      var cso = new ConsoleStringOptions() { UniformWidth = true };
+      var cso = ConsoleFormatOptions.Default with { UniformWidth = true };
 
       var matrix = new int[,] {
         { 1, 2, 3, 4 },
@@ -150,7 +150,7 @@ namespace SystemFx
     [TestMethod]
     public void RemoveToCopy()
     {
-      var cso = new ConsoleStringOptions() { UniformWidth = true };
+      var cso = ConsoleFormatOptions.Default with { UniformWidth = true };
 
       var matrix = new int[,] {
         { 1, 2, 3, 4 },
@@ -181,7 +181,7 @@ namespace SystemFx
     [TestMethod]
     public void RotateToCopyCcw()
     {
-      var cso = new ConsoleStringOptions() { UniformWidth = true };
+      var cso = ConsoleFormatOptions.Default with { UniformWidth = true };
 
       var matrix = new int[,] {
         { 1, 2, 3, 4 },
@@ -212,7 +212,7 @@ namespace SystemFx
     [TestMethod]
     public void RotateToCopyCw()
     {
-      var cso = new ConsoleStringOptions() { UniformWidth = true };
+      var cso = ConsoleFormatOptions.Default with { UniformWidth = true };
 
       var matrix = new int[,] {
         { 1, 2, 3, 4 },
@@ -243,7 +243,7 @@ namespace SystemFx
     [TestMethod]
     public void TransposeInPlace()
     {
-      var cso = new ConsoleStringOptions() { UniformWidth = true };
+      var cso = ConsoleFormatOptions.Default with { UniformWidth = true };
 
       var inplaceMatrix = new int[,] {
         { 1, 2, 3, 4 },
@@ -274,7 +274,7 @@ namespace SystemFx
     [TestMethod]
     public void TransposeToCopy()
     {
-      var cso = new ConsoleStringOptions() { UniformWidth = true };
+      var cso = ConsoleFormatOptions.Default with { UniformWidth = true };
 
       var matrix = new int[,] {
         { 1, 2, 3, 4 },

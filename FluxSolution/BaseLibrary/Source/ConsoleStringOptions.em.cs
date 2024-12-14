@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public record class ConsoleStringOptions
+  public record class ConsoleFormatOptions
   {
     private readonly char m_horizontalSeparator = '|';
     private readonly char m_verticalSeparator = '-';
@@ -8,7 +8,7 @@ namespace Flux
     private readonly bool m_centerContent = false;
     private readonly bool m_includeColumnNames = true;
 
-    public static ConsoleStringOptions Default { get; } = new();
+    public static ConsoleFormatOptions Default { get; } = new();
 
     /// <summary>The horizontal separator character for the console string output, if applicable.</summary>
     public char HorizontalSeparator { get => m_horizontalSeparator; init => m_horizontalSeparator = value; }

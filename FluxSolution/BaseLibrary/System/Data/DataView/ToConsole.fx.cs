@@ -24,12 +24,12 @@ namespace Flux
     //}
 
     /// <summary>Returns the data table as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
-    public static System.Text.StringBuilder ToConsole(this System.Data.DataView source, ConsoleStringOptions? options = null)
+    public static System.Text.StringBuilder ToConsole(this System.Data.DataView source, ConsoleFormatOptions? options = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(source.Table);
 
-      options ??= new ConsoleStringOptions();
+      options ??= ConsoleFormatOptions.Default;
 
       if (source.Count == 0) throw new System.ArgumentOutOfRangeException(nameof(source), "The DataView is empty.");
 
