@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructure
 {
   public record class Trie<TKey, TValue>
     : ITrie<TKey, TValue>

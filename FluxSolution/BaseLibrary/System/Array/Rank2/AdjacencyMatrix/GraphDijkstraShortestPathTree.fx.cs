@@ -4,18 +4,20 @@ namespace Flux
   {
     /// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
     /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
-    public static System.Collections.Generic.IEnumerable<(int destination, double distance)> GraphDijkstraShortestPathTree<T>(this T[,] source, int origin, System.Func<object, double> distanceSelector)
+    public static System.Collections.Generic.IEnumerable<(int destination, double distance)> GraphDijkstraShortestPathTree<T>(this T[,] source, int origin, System.Func<object, double> distanceSelector, System.Func<int, int, T, bool>? isEdgePredicate = null)
       where T : System.IEquatable<T>
     {
       GraphAssertProperty(source, out var length);
 
       System.ArgumentNullException.ThrowIfNull(distanceSelector);
 
+      isEdgePredicate ??= (r, c, v) => !v.Equals(default);
+
       var vertices = System.Linq.Enumerable.ToList(GraphGetVertices(source));
 
       var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
 
-      var edges = System.Linq.Enumerable.ToList(GraphGetEdges(source)); // Cache edges, because we need it while there are available distances.
+      var edges = System.Linq.Enumerable.ToList(GraphGetEdges(source, isEdgePredicate)); // Cache edges, because we need it while there are available distances.
 
       while (distances.Count != 0) // As long as there are nodes available.
       {

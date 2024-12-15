@@ -1,4 +1,4 @@
-﻿namespace Flux.DataStructures
+﻿namespace Flux.DataStructure
 {
   /// <summary>
   /// <para>This interface represents the abstract data type stack.</para>

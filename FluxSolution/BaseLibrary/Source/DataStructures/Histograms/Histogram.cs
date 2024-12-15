@@ -6,13 +6,13 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     /// <see href="https://en.wikipedia.org/wiki/Histogram"/>
     /// <seealso href="http://www.greenteapress.com/thinkstats/thinkstats.pdf"/>
-    public static DataStructures.Histogram<TKey, TFrequency> ToHistogram<TSource, TKey, TFrequency>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TFrequency> frequencySelector)
+    public static DataStructure.Histogram<TKey, TFrequency> ToHistogram<TSource, TKey, TFrequency>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TFrequency> frequencySelector)
       where TKey : System.Numerics.INumber<TKey>
       where TFrequency : System.Numerics.IBinaryInteger<TFrequency>
-      => new DataStructures.Histogram<TKey, TFrequency>().AddRange(source, keySelector, frequencySelector);
+      => new DataStructure.Histogram<TKey, TFrequency>().AddRange(source, keySelector, frequencySelector);
   }
 
-  namespace DataStructures
+  namespace DataStructure
   {
     /// <summary>
     /// <para>A histogram dictionary based on <see cref="SortedDictionary{TKey, System.Numerics.BigInteger}"/>.</para>

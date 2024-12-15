@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructure
 {
   /// <summary>
   /// <para>This interface represents a double ended queue, a generalized version of a queue, that allows insert and delete at both ends.</para>

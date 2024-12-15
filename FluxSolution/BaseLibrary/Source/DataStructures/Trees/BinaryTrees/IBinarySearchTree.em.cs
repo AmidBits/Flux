@@ -6,12 +6,12 @@ namespace Flux
     /// <para>Finds the level of the node containing the <paramref name="key"/>.</para>
     /// <see href="https://www.geeksforgeeks.org/get-level-of-a-node-in-a-binary-tree/"/>
     /// </summary>
-    public static int GetLevelOf<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source, TKey key)
+    public static int GetLevelOf<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source, TKey key)
       where TKey : System.IComparable<TKey>
     {
       return GetLevelOfKey(source, key, 1);
 
-      int GetLevelOfKey(DataStructures.IBinarySearchTree<TKey, TValue> source, TKey key, int level = 1)
+      int GetLevelOfKey(DataStructure.IBinarySearchTree<TKey, TValue> source, TKey key, int level = 1)
       {
         if (source.IsEmpty) return 0;
 
@@ -27,7 +27,7 @@ namespace Flux
     }
 
     /// <summary>Gets the BST maximum node.</summary>
-    public static DataStructures.IBinarySearchTree<TKey, TValue> GetMaximum<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static DataStructure.IBinarySearchTree<TKey, TValue> GetMaximum<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -41,7 +41,7 @@ namespace Flux
     }
 
     /// <summary>Gets the BST minimum node.</summary>
-    public static DataStructures.IBinarySearchTree<TKey, TValue> GetMinimum<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static DataStructure.IBinarySearchTree<TKey, TValue> GetMinimum<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -55,7 +55,7 @@ namespace Flux
     }
 
     /// <summary>Gets the BST predecessor (or "previous") node.</summary>
-    public static DataStructures.IBinarySearchTree<TKey, TValue> GetPredecessor<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static DataStructure.IBinarySearchTree<TKey, TValue> GetPredecessor<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -64,7 +64,7 @@ namespace Flux
     }
 
     /// <summary>Gets the BST successor (or "next") node.</summary>
-    public static DataStructures.IBinarySearchTree<TKey, TValue> GetSuccessor<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static DataStructure.IBinarySearchTree<TKey, TValue> GetSuccessor<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -73,10 +73,10 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Computes the tree-sum of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
+    /// <para>Computes the tree-sum of a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/check-if-a-given-binary-tree-is-sumtree/"/>
     /// </summary>
-    public static TSummable GetTreeSum<TKey, TValue, TSummable>(this DataStructures.IBinarySearchTree<TKey, TValue> source, System.Func<TKey, TValue, TSummable> summableSelector)
+    public static TSummable GetTreeSum<TKey, TValue, TSummable>(this DataStructure.IBinarySearchTree<TKey, TValue> source, System.Func<TKey, TValue, TSummable> summableSelector)
       where TKey : System.IComparable<TKey>
       where TSummable : System.Numerics.INumber<TSummable>
       => source.IsEmpty ? TSummable.Zero : source.Left.GetTreeSum(summableSelector) + summableSelector(source.Key, source.Value) + source.Right.GetTreeSum(summableSelector);
@@ -88,7 +88,7 @@ namespace Flux
     /// <param name="minValue">The minimum value of <typeparamref name="TValue"/>.</param>
     /// <param name="maxValue">The maximum value of <typeparamref name="TValue"/>.</param>
     /// <returns></returns>
-    public static bool IsBst<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static bool IsBst<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -110,7 +110,7 @@ namespace Flux
     /// <param name="maxKey">The maximum key for <typeparamref name="TKey"/>.</param>
     /// <param name="keyDecrementor">Return the key decremented.</param>
     /// <param name="keyIncrementor">Return the key incremented.</param>
-    public static bool IsBstByKey<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source, TKey minKey, TKey maxKey, System.Func<TKey, TKey> keyDecrementor, System.Func<TKey, TKey> keyIncrementor)
+    public static bool IsBstByKey<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source, TKey minKey, TKey maxKey, System.Func<TKey, TKey> keyDecrementor, System.Func<TKey, TKey> keyIncrementor)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -123,7 +123,7 @@ namespace Flux
       return IsBstByKey(source.Left, minKey, keyDecrementor(source.Key), keyDecrementor, keyIncrementor) && IsBstByKey(source.Right, keyIncrementor(source.Key), maxKey, keyDecrementor, keyIncrementor);
     }
 
-    public static bool IsSumTree<TKey, TValue, TSummable>(this DataStructures.IBinarySearchTree<TKey, TValue> source, System.Func<TKey, TValue, TSummable> summableSelector)
+    public static bool IsSumTree<TKey, TValue, TSummable>(this DataStructure.IBinarySearchTree<TKey, TValue> source, System.Func<TKey, TValue, TSummable> summableSelector)
       where TKey : System.IComparable<TKey>
       where TSummable : System.Numerics.INumber<TSummable>
     {
@@ -150,7 +150,7 @@ namespace Flux
       return false;
     }
 
-    public static int Minimax<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source, int depth, bool isMax, int maxHeight, System.Func<TKey, TValue, int> valueSelector)
+    public static int Minimax<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source, int depth, bool isMax, int maxHeight, System.Func<TKey, TValue, int> valueSelector)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -199,19 +199,19 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="maxDepth"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseBfsLevelOrder<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source, int maxDepth)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseBfsLevelOrder<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source, int maxDepth)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var level = new System.Collections.Generic.Queue<DataStructures.IBinarySearchTree<TKey, TValue>>();
+      var level = new System.Collections.Generic.Queue<DataStructure.IBinarySearchTree<TKey, TValue>>();
       level.Enqueue(source);
 
       for (var depth = 0; level.Count > 0 && depth < maxDepth; depth++)
       {
-        var nextLevel = new System.Collections.Generic.Queue<DataStructures.IBinarySearchTree<TKey, TValue>>();
+        var nextLevel = new System.Collections.Generic.Queue<DataStructure.IBinarySearchTree<TKey, TValue>>();
 
         while (level.Count > 0)
         {
@@ -236,14 +236,14 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>[]> TraverseBfsLevelOrderChunked<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>[]> TraverseBfsLevelOrderChunked<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var level = new System.Collections.Generic.Queue<DataStructures.IBinarySearchTree<TKey, TValue>>();
+      var level = new System.Collections.Generic.Queue<DataStructure.IBinarySearchTree<TKey, TValue>>();
       level.Enqueue(source);
 
       while (level.Count > 0)
@@ -269,14 +269,14 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDfsInOrder<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDfsInOrder<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinarySearchTree<TKey, TValue>>();
+      var stack = new System.Collections.Generic.Stack<DataStructure.IBinarySearchTree<TKey, TValue>>();
 
       var node = source;
 
@@ -307,14 +307,14 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDfsInReverseOrder<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDfsInReverseOrder<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinarySearchTree<TKey, TValue>>();
+      var stack = new System.Collections.Generic.Stack<DataStructure.IBinarySearchTree<TKey, TValue>>();
 
       var node = source;
 
@@ -346,16 +346,16 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDfsPostOrder<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDfsPostOrder<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinarySearchTree<TKey, TValue>>();
+      var stack = new System.Collections.Generic.Stack<DataStructure.IBinarySearchTree<TKey, TValue>>();
 
-      var lastNodeVisited = default(DataStructures.IBinarySearchTree<TKey, TValue>);
+      var lastNodeVisited = default(DataStructure.IBinarySearchTree<TKey, TValue>);
 
       var node = source;
 
@@ -394,14 +394,14 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDfsPreOrder<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDfsPreOrder<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinarySearchTree<TKey, TValue>>();
+      var stack = new System.Collections.Generic.Stack<DataStructure.IBinarySearchTree<TKey, TValue>>();
 
       stack.Push(source);
 
@@ -417,19 +417,19 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Traverse all nodes diagonally (left to right and top to bottom) from a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>
+    /// <para>Traverse all nodes diagonally (left to right and top to bottom) from a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/>.</para>
     /// <see href="https://www.geeksforgeeks.org/diagonal-traversal-of-binary-tree/"/>
     /// </summary>
     /// <remarks>The <paramref name="source"/> and <paramref name="source"/>.Right nodes are prioritized over <paramref name="source"/>.Left values.</remarks>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDiagonal<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseDiagonal<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var queue = new System.Collections.Generic.Queue<DataStructures.IBinarySearchTree<TKey, TValue>>(); // The leftQueue will be a queue which will store all left pointers while traversing the tree, and will be utilized when at any point right pointer is empty.
+      var queue = new System.Collections.Generic.Queue<DataStructure.IBinarySearchTree<TKey, TValue>>(); // The leftQueue will be a queue which will store all left pointers while traversing the tree, and will be utilized when at any point right pointer is empty.
 
       var node = source;
 
@@ -448,14 +448,14 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Traverse nodes around the perimeter (counter-clockwise) from a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>
+    /// <para>Traverse nodes around the perimeter (counter-clockwise) from a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/>.</para>
     /// <see href="https://www.geeksforgeeks.org/boundary-traversal-of-binary-tree/"/>
     /// </summary>
     /// <remarks>This traversal does not necessarily return ALL nodes in the tree, only the ones along the perimeter of the tree outline.</remarks>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraversePerimeter<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraversePerimeter<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -474,11 +474,11 @@ namespace Flux
       foreach (var bst in AddRightBound(source))
         yield return new(bst.Key, bst.Value);
 
-      static bool IsLeaf(DataStructures.IBinaryTree<TValue> node)
+      static bool IsLeaf(DataStructure.IBinaryTree<TValue> node)
         => node.Left.IsEmpty && node.Right.IsEmpty;
 
       // Go left left until no left. Don't include leaf nodes (it leads to duplication).
-      static System.Collections.Generic.IEnumerable<DataStructures.IBinarySearchTree<TKey, TValue>> AddLeftBound(DataStructures.IBinarySearchTree<TKey, TValue> root)
+      static System.Collections.Generic.IEnumerable<DataStructure.IBinarySearchTree<TKey, TValue>> AddLeftBound(DataStructure.IBinarySearchTree<TKey, TValue> root)
       {
         root = root.Left;
 
@@ -492,11 +492,11 @@ namespace Flux
       }
 
       // Go right right until no right. Don't include leaf nodes (it leads to duplication).
-      static System.Collections.Generic.IEnumerable<DataStructures.IBinarySearchTree<TKey, TValue>> AddRightBound(DataStructures.IBinarySearchTree<TKey, TValue> root)
+      static System.Collections.Generic.IEnumerable<DataStructure.IBinarySearchTree<TKey, TValue>> AddRightBound(DataStructure.IBinarySearchTree<TKey, TValue> root)
       {
         root = root.Right;
 
-        var stack = new Stack<DataStructures.IBinarySearchTree<TKey, TValue>>(); // As we need the reverse of this for counter-clockwise.
+        var stack = new Stack<DataStructure.IBinarySearchTree<TKey, TValue>>(); // As we need the reverse of this for counter-clockwise.
 
         while (!root.IsEmpty)
         {
@@ -515,7 +515,7 @@ namespace Flux
       }
 
       // Do inorder/preorder, if leaf node add to the list.
-      static System.Collections.Generic.IEnumerable<DataStructures.IBinarySearchTree<TKey, TValue>> AddLeaves(DataStructures.IBinarySearchTree<TKey, TValue> root)
+      static System.Collections.Generic.IEnumerable<DataStructure.IBinarySearchTree<TKey, TValue>> AddLeaves(DataStructure.IBinarySearchTree<TKey, TValue> root)
       {
         if (root.IsEmpty)
           yield break;
@@ -542,15 +542,15 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseZigZag<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> TraverseZigZag<TKey, TValue>(this DataStructure.IBinarySearchTree<TKey, TValue> source)
       where TKey : System.IComparable<TKey>
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var currentLevel = new Stack<DataStructures.IBinarySearchTree<TKey, TValue>>();
-      var nextLevel = new Stack<DataStructures.IBinarySearchTree<TKey, TValue>>();
+      var currentLevel = new Stack<DataStructure.IBinarySearchTree<TKey, TValue>>();
+      var nextLevel = new Stack<DataStructure.IBinarySearchTree<TKey, TValue>>();
 
       currentLevel.Push(source);
 

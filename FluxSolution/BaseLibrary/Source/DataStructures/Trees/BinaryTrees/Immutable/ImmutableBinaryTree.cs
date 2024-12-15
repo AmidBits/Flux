@@ -1,4 +1,4 @@
-namespace Flux.DataStructures.Immutable
+namespace Flux.DataStructure.Immutable
 {
   /// <summary>
   /// <para>An immutable binary tree.</para>
@@ -24,16 +24,16 @@ namespace Flux.DataStructures.Immutable
     }
 
     /// <summary>
-    /// <para>Creates a new <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> based on the <paramref name="inOrder"/> and <paramref name="levelOrder"/> arrays.</para>
+    /// <para>Creates a new <see cref="Flux.DataStructure.IBinaryTree{TValue}"/> based on the <paramref name="inOrder"/> and <paramref name="levelOrder"/> arrays.</para>
     /// </summary>
     /// <param name="inOrder">The values from a binary-tree using in-order traversal.</param>
     /// <param name="levelOrder">The values from a binary-tree using level-order traversal.</param>
     /// <returns></returns>
-    public static Flux.DataStructures.IBinaryTree<TValue> Create(TValue[] inOrder, TValue[] levelOrder)
+    public static Flux.DataStructure.IBinaryTree<TValue> Create(TValue[] inOrder, TValue[] levelOrder)
     {
       return ConstructTree(ImmutableBinaryTree<TValue>.Empty, levelOrder, inOrder, 0, inOrder.Length - 1);
 
-      static Flux.DataStructures.IBinaryTree<TValue> ConstructTree(Flux.DataStructures.IBinaryTree<TValue> startNode, TValue[] levelOrder, TValue[] inOrder, int inStart, int inEnd)
+      static Flux.DataStructure.IBinaryTree<TValue> ConstructTree(Flux.DataStructure.IBinaryTree<TValue> startNode, TValue[] levelOrder, TValue[] inOrder, int inStart, int inEnd)
       {
         if (inStart > inEnd)
           return ImmutableBinaryTree<TValue>.Empty;

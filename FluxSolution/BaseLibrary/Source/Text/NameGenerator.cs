@@ -29,7 +29,7 @@ namespace Flux
 
         var maxLength = lengths.Keys.Max();
 
-        var cpl = new System.Collections.Generic.SortedDictionary<int, DataStructures.CumulativeDistributionFunction<char, double>>();
+        var cpl = new System.Collections.Generic.SortedDictionary<int, DataStructure.CumulativeDistributionFunction<char, double>>();
 
         foreach (var i in Iteration.LoopRange(0, 1, maxLength))
           cpl[(int)i + 1] = list.Where(n => i < n.Length).ToHistogram(k => k[(int)i], f => f[(int)i].IsVowelOf(System.Globalization.CultureInfo.CurrentCulture) ? 1 : 1).ToCumulativeDistributionFunction(1.0);

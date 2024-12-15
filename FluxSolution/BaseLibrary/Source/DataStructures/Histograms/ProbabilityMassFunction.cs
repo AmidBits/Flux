@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructure
 {
   /// <summary>
   /// <para>A probability mass function (PMF) dictionary based on <see cref="SortedDictionary{TKey, double}"/>.</para>

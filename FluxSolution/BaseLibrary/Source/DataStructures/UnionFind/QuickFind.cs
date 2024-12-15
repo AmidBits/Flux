@@ -1,4 +1,4 @@
-﻿namespace Flux.DataStructures.UnionFind
+﻿namespace Flux.DataStructure.UnionFind
 {
   public sealed class QuickFind<TKey>
     : IUnionFind<TKey>

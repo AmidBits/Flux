@@ -12,7 +12,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyMatrix1()
     {
-      var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, (int capacity, int cost)>();
+      var gam = new Flux.DataStructure.Graph.AdjacencyMatrix<int, (int capacity, int cost)>();
 
       gam.AddVertex(0);
       gam.AddVertex(1);
@@ -50,7 +50,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyMatrix2()
     {
-      var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, (int capacity, int cost)>();
+      var gam = new Flux.DataStructure.Graph.AdjacencyMatrix<int, (int capacity, int cost)>();
 
       gam.AddVertex(0);
       gam.AddVertex(1);
@@ -87,7 +87,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyMatrix3()
     {
-      var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix<char, int>();
+      var gam = new Flux.DataStructure.Graph.AdjacencyMatrix<char, int>();
 
       gam.AddVertex(0, 'a');
       gam.AddVertex(1, 'b');
@@ -157,7 +157,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyList1()
     {
-      var gal = new Flux.DataStructures.Graphs.AdjacencyList<int, (int unused, int distance)>();
+      var gal = new Flux.DataStructure.Graph.AdjacencyList<int, (int unused, int distance)>();
 
       gal.AddVertex(0);
       gal.AddVertex(1);
@@ -194,7 +194,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyList2()
     {
-      var gal = new Flux.DataStructures.Graphs.AdjacencyList<int, (int unused, int distance)>();
+      var gal = new Flux.DataStructure.Graph.AdjacencyList<int, (int unused, int distance)>();
 
       gal.AddVertex(0);
       gal.AddVertex(1);
@@ -230,7 +230,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyList3()
     {
-      var gal = new Flux.DataStructures.Graphs.AdjacencyList<int, (int unused, int distance)>();
+      var gal = new Flux.DataStructure.Graph.AdjacencyList<int, (int unused, int distance)>();
 
       gal.AddVertex(0);
       gal.AddVertex(1);

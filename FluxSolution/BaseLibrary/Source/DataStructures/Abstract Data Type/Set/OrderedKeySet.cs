@@ -2,17 +2,17 @@
 {
   public static partial class Fx
   {
-    public static DataStructures.OrderedKeySet<T> ToOrderedKeySet<T>(this System.Collections.Generic.IEnumerable<T> source)
+    public static DataStructure.OrderedKeySet<T> ToOrderedKeySet<T>(this System.Collections.Generic.IEnumerable<T> source)
       where T : notnull
     {
-      var ohs = new DataStructures.OrderedKeySet<T>();
+      var ohs = new DataStructure.OrderedKeySet<T>();
       foreach (var item in source)
         ohs.Add(item);
       return ohs;
     }
   }
 
-  namespace DataStructures
+  namespace DataStructure
   {
     /// <summary>
     /// <para>This is an ordered key set, based on the built-in <see cref="System.Collections.ObjectModel.KeyedCollection{TKey, TItem}"/>, and extended by the <see cref="IOrderedSet{T}"/>.</para>
@@ -114,7 +114,7 @@
 
       public void SymmetricExceptWith(System.Collections.Generic.IEnumerable<TValue> other)
       {
-        var adding = new DataStructures.OrderedSet<TValue>(Comparer);
+        var adding = new DataStructure.OrderedSet<TValue>(Comparer);
 
         foreach (var o in other)
           if (Contains(o))

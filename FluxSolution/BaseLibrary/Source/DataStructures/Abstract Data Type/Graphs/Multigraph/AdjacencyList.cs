@@ -1,4 +1,4 @@
-﻿namespace Flux.DataStructures.Graphs
+﻿namespace Flux.DataStructure.Graph
 {
   /// <summary>Represents a graph using an adjacency list. Unlimited edge combinations and types.</summary>
   /// https://docs.microsoft.com/en-us/previous-versions/ms379574(v=vs.80)

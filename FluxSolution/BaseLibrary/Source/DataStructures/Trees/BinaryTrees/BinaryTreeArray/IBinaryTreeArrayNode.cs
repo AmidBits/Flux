@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructure
 {
   public interface IBinaryTreeArrayNode<TKey, TValue>
     where TKey : System.IComparable<TKey>

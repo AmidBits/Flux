@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructure
 {
   /// <summary>
   /// <para>This interface represents an ordered dictionary.</para>

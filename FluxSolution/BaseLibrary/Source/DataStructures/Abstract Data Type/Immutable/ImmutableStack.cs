@@ -4,10 +4,10 @@
 
   public static partial class Em
   {
-    public static Flux.DataStructures.IStack<T> Reverse<T>(this Flux.DataStructures.IStack<T> source)
+    public static Flux.DataStructure.IStack<T> Reverse<T>(this Flux.DataStructure.IStack<T> source)
     {
-      Flux.DataStructures.IStack<T> reverse = Flux.DataStructures.Immutable.ImmutableStack<T>.Empty;
-      for (Flux.DataStructures.IStack<T> f = source; !f.IsEmpty; f = f.Pop())
+      Flux.DataStructure.IStack<T> reverse = Flux.DataStructure.Immutable.ImmutableStack<T>.Empty;
+      for (Flux.DataStructure.IStack<T> f = source; !f.IsEmpty; f = f.Pop())
         reverse = reverse.Push(f.Peek());
       return reverse;
     }
@@ -15,7 +15,7 @@
 
   #endregion // ExtensionMethods
 
-  namespace DataStructures.Immutable
+  namespace DataStructure.Immutable
   {
     /// <summary>
     /// <para>An immutable stack.</para>

@@ -475,7 +475,7 @@ namespace ConsoleApp
 
     public static void RunDataStructuresGraphAdjacencyList()
     {
-      var al = new Flux.DataStructures.Graphs.AdjacencyList<int, int>();
+      var al = new Flux.DataStructure.Graph.AdjacencyList<int, int>();
 
       al.AddVertex(0, 9);
       al.AddVertex(1, 8);
@@ -498,14 +498,14 @@ namespace ConsoleApp
 
       System.Console.WriteLine(al.ToConsoleString());
 
-      var amt = (Flux.DataStructures.Graphs.AdjacencyList<int, int>)al.TransposeToCopy();
+      var amt = (Flux.DataStructure.Graph.AdjacencyList<int, int>)al.TransposeToCopy();
 
       System.Console.WriteLine(amt.ToConsoleString());
     }
 
     public static void RunDataStructuresGraphAdjacencyMatrix()
     {
-      var am = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, int>();
+      var am = new Flux.DataStructure.Graph.AdjacencyMatrix<int, int>();
 
       am.AddVertex(0, 9);
       am.AddVertex(1, 8);
@@ -528,7 +528,7 @@ namespace ConsoleApp
 
       System.Console.WriteLine(am.ToConsoleString());
 
-      var amt = (Flux.DataStructures.Graphs.AdjacencyMatrix<int, int>)am.TransposeToCopy();
+      var amt = (Flux.DataStructure.Graph.AdjacencyMatrix<int, int>)am.TransposeToCopy();
 
       System.Console.WriteLine(amt.ToConsoleString());
     }
@@ -549,7 +549,7 @@ namespace ConsoleApp
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunAvlTree()
     {
-      var bst = Flux.DataStructures.Immutable.ImmutableAvlTree<int, string>.Empty;
+      var bst = Flux.DataStructure.Immutable.ImmutableAvlTree<int, string>.Empty;
 
       for (var index = 0; bst.GetCount() < 16; index++)
       {

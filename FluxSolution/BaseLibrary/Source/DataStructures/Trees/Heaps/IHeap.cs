@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructure
 {
   /// <summary></summary>
   /// <see href="https://en.wikipedia.org/wiki/Heap_(data_structure)"/>

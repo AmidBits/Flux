@@ -9,11 +9,11 @@ namespace Flux
     /// <returns></returns>
     /// <remarks>In .NET there is currently a maximum index limit for an array: 2,146,435,071 (0X7FEFFFFF). That number times 64 (137,371,844,544) is the practical limit of <paramref name="maxNumber"/>.</remarks>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static Flux.DataStructures.BitArray64 CreateSieveOfEratosthenes(long maxNumber)
+    public static Flux.DataStructure.BitArray64 CreateSieveOfEratosthenes(long maxNumber)
     {
       if (maxNumber < 1) throw new System.ArgumentOutOfRangeException(nameof(maxNumber));
 
-      var ba = new Flux.DataStructures.BitArray64(maxNumber + 1, unchecked((long)0xAAAAAAAAAAAAAAAAUL)); // Bits represents the number line, so we start with all odd numbers being set to 1 and all even numbers set to 0.
+      var ba = new Flux.DataStructure.BitArray64(maxNumber + 1, unchecked((long)0xAAAAAAAAAAAAAAAAUL)); // Bits represents the number line, so we start with all odd numbers being set to 1 and all even numbers set to 0.
 
       ba.Set(1, false); // One is not a prime so we set it to 0.
       ba.Set(2, true); // Two is the only even and the oddest prime so we set it to 1.

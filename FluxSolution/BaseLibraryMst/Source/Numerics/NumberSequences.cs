@@ -370,7 +370,7 @@ namespace Maths
     [TestMethod]
     public void SieveOfEratosthenes1()
     {
-      var data = new Flux.DataStructures.OrderedDictionary<int, int>()
+      var data = new Flux.DataStructure.OrderedDictionary<int, int>()
       {
         { 10, 4 },
         { 100, 25 },

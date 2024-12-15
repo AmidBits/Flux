@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructure
 {
   /// <summary>
   /// <para>This is a three part structure (index, key and value) comparable to the two part structure <see cref="System.Collections.Generic.KeyValuePair{TKey, TValue}"/>.</para>

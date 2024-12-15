@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  namespace DataStructures.Immutable
+  namespace DataStructure.Immutable
   {
     /// <summary>
     /// <para>An immutable queue. O(1) for all but one entry which is O(n).</para>

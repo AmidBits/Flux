@@ -1,15 +1,47 @@
-using System.Runtime.CompilerServices;
-
 namespace Flux
 {
   #region Extension methods
 
   public static partial class Fx
   {
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <typeparam name="TVertexValue"></typeparam>
+    /// <typeparam name="TEdgeValue"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="origin"></param>
+    /// <param name="weightSelector"></param>
+    /// <returns></returns>
+    public static (int[] Distance, int[] Predecessor) BellmanFordShortestPaths<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, int> weightSelector)
+    {
+      var vertices = source.GetVertices().Select(v => v.x).ToArray();
+      var edges = source.GetEdges().Select(edge => (edge.x, edge.y, weightSelector(edge.value))).ToArray();
+
+      return Flux.DataStructure.Graph.Algorithm.BellmanFordShortestPaths(vertices, edges, origin);
+    }
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <typeparam name="TVertexValue"></typeparam>
+    /// <typeparam name="TEdgeValue"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="origin"></param>
+    /// <param name="weightSelector"></param>
+    /// <returns></returns>
+    public static (int[] Distance, int[] Predecessor) DijkstraShortestPaths<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, int> weightSelector)
+    {
+      var vertices = source.GetVertices().Select(v => v.x).ToArray();
+      var edges = source.GetEdges().Select(edge => (edge.x, edge.y, weightSelector(edge.value))).ToArray();
+
+      return Flux.DataStructure.Graph.Algorithm.DijkstraShortestPaths(vertices, edges, origin);
+    }
+
     /// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
     /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
     /// <see href="https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/"/>
-    public static System.Collections.Generic.IEnumerable<(int destination, double distance)> GetDijkstraShortestPathTree<TVertexValue, TEdgeValue>(this DataStructures.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, double> distanceSelector)
+    public static System.Collections.Generic.IEnumerable<(int destination, double distance)> GetDijkstraShortestPathTree<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, double> distanceSelector)
     {
       var vertices = System.Linq.Enumerable.ToList(source.GetVertices().Select(vt => vt.x));
 
@@ -39,7 +71,7 @@ namespace Flux
       }
     }
 
-    public static string ToConsoleString<TVertexValue, TEdgeValue>(this DataStructures.IGraph<TVertexValue, TEdgeValue> source)
+    public static string ToConsoleString<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source)
     {
       var sb = new System.Text.StringBuilder();
 
@@ -60,7 +92,7 @@ namespace Flux
       return sb.ToString();
     }
 
-    public static DataStructures.IGraph<TVertexValue, TEdgeValue> TransposeToCopy<TVertexValue, TEdgeValue>(this DataStructures.IGraph<TVertexValue, TEdgeValue> source)
+    public static DataStructure.IGraph<TVertexValue, TEdgeValue> TransposeToCopy<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source)
     {
       var al = source.CloneEmpty();
 
@@ -76,7 +108,7 @@ namespace Flux
 
   #endregion // Extension methods
 
-  namespace DataStructures
+  namespace DataStructure
   {
     /// <summary>
     /// <para></para>

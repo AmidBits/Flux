@@ -1,4 +1,4 @@
-namespace Flux.DataStructures.Heaps
+namespace Flux.DataStructure.Heaps
 {
   /// <summary>
   /// <para></para>

@@ -3,25 +3,25 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>
-    /// <para>Computes the number of nodes in a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>
+    /// <para>Computes the number of nodes in a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/>.</para>
     /// </summary>
-    public static int GetCount<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static int GetCount<TValue>(this DataStructure.IBinaryTree<TValue> source)
       => source.IsEmpty
       ? 0
       : source.Left.GetCount() + 1 + source.Right.GetCount();
 
     /// <summary>
-    /// <para>Computes the diameter (or width) of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
+    /// <para>Computes the diameter (or width) of a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/diameter-of-a-binary-tree/"/>
     /// </summary>
     /// <remarks>The diameter (or width) is defined as the number of nodes on the longest path between two end nodes.</remarks>
-    public static int GetDiameter<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static int GetDiameter<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       var height = 0;
 
       return GetDiameter(source, ref height);
 
-      static int GetDiameter(DataStructures.IBinaryTree<TValue> source, ref int height)
+      static int GetDiameter(DataStructure.IBinaryTree<TValue> source, ref int height)
       {
         var leftHeight = 0; // Height of left subtree.
         var rightHeight = 0; // Height of right subtree.
@@ -44,11 +44,11 @@ namespace Flux
     //    );
 
     /// <summary>
-    /// <para>Computes the max-depth (or height) of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
+    /// <para>Computes the max-depth (or height) of a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/find-the-maximum-depth-or-height-of-a-tree/"/>
     /// </summary>
     /// <remarks>The max-depth (or height) of the tree is the number of vertices in the tree from the root to the deepest node.</remarks>
-    public static int GetMaxDepth<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static int GetMaxDepth<TValue>(this DataStructure.IBinaryTree<TValue> source)
       => source.IsEmpty
       ? 0
       : 1 + System.Math.Max(
@@ -57,19 +57,19 @@ namespace Flux
         );
 
     /// <summary>
-    /// <para>Computes the tree-sum of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
+    /// <para>Computes the tree-sum of a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/check-if-a-given-binary-tree-is-sumtree/"/>
     /// </summary>
-    public static TSummable GetTreeSum<TValue, TSummable>(this DataStructures.IBinaryTree<TValue> source, System.Func<TValue, TSummable> summableSelector)
+    public static TSummable GetTreeSum<TValue, TSummable>(this DataStructure.IBinaryTree<TValue> source, System.Func<TValue, TSummable> summableSelector)
       where TSummable : System.Numerics.INumber<TSummable>
       => source.IsEmpty ? TSummable.Zero : source.Left.GetTreeSum(summableSelector) + summableSelector(source.Value) + source.Right.GetTreeSum(summableSelector);
 
-    /// <summary>Indicates whether a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> is a binary-search-tree considering only its <typeparamref name="TValue"/> property. Returns false if <paramref name="source"/> or any sub-nodes violates the BST property (considering only <typeparamref name="TValue"/>).</summary>
+    /// <summary>Indicates whether a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/> is a binary-search-tree considering only its <typeparamref name="TValue"/> property. Returns false if <paramref name="source"/> or any sub-nodes violates the BST property (considering only <typeparamref name="TValue"/>).</summary>
     /// <param name="minValue">The minimum value for the type.</param>
     /// <param name="maxValue">The maximum value for the type.</param>
     /// <param name="valueDecrementor">Return the value decremented.</param>
     /// <param name="valueIncrementor">Return the value incremented.</param>
-    public static bool IsBstByValue<TValue>(this DataStructures.IBinaryTree<TValue> source, TValue minValue, TValue maxValue, System.Func<TValue, TValue> valueDecrementor, System.Func<TValue, TValue> valueIncrementor)
+    public static bool IsBstByValue<TValue>(this DataStructure.IBinaryTree<TValue> source, TValue minValue, TValue maxValue, System.Func<TValue, TValue> valueDecrementor, System.Func<TValue, TValue> valueIncrementor)
       where TValue : System.IComparable<TValue>
     {
       System.ArgumentNullException.ThrowIfNull(source);
@@ -83,12 +83,12 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Indicates whether a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> is a leaf.</para>
+    /// <para>Indicates whether a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/> is a leaf.</para>
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static bool IsLeaf<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static bool IsLeaf<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -96,11 +96,11 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Indicates whether a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> is a sum-tree.</para>
+    /// <para>Indicates whether a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/> is a sum-tree.</para>
     /// <see href="https://www.geeksforgeeks.org/check-if-a-given-binary-tree-is-sumtree/"/>
     /// </summary>
     /// <remarks>A sum-tree is a binary tree where the value of a node is equal to the sum of the nodes present in its left subtree and right subtree. An empty tree is sum-tree and the sum of an empty tree can be considered as 0. A leaf node is also considered as sum-tree.</remarks>
-    public static bool IsSumTree<TValue, TNumber>(this DataStructures.IBinaryTree<TValue> source, System.Func<TValue, TNumber> numberSelector)
+    public static bool IsSumTree<TValue, TNumber>(this DataStructure.IBinaryTree<TValue> source, System.Func<TValue, TNumber> numberSelector)
       where TNumber : System.Numerics.INumber<TNumber>
       => source.IsLeaf()
       || (
@@ -109,7 +109,7 @@ namespace Flux
         && source.Right.IsSumTree(numberSelector)
       );
 
-    public static int Minimax<TValue>(this DataStructures.IBinaryTree<TValue> source, int depth, bool isMax, int maxHeight, System.Func<TValue, int> valueSelector)
+    public static int Minimax<TValue>(this DataStructure.IBinaryTree<TValue> source, int depth, bool isMax, int maxHeight, System.Func<TValue, int> valueSelector)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -147,7 +147,7 @@ namespace Flux
         return valueSelector(source.Value);
     }
 
-    public static System.Text.StringBuilder ToConsoleBlock<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static System.Text.StringBuilder ToConsoleBlock<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       const string padUpRight = "\u2514\u2500\u2500";
       const string padVerticalRight = "\u251C\u2500\u2500";
@@ -158,7 +158,7 @@ namespace Flux
       TraversePreOrder(source, string.Empty, string.Empty);
       return sb;
 
-      void TraverseNodes(DataStructures.IBinaryTree<TValue> node, string padding, string pointer, bool hasRightSibling)
+      void TraverseNodes(DataStructure.IBinaryTree<TValue> node, string padding, string pointer, bool hasRightSibling)
       {
         if (node.IsEmpty)
           return;
@@ -174,7 +174,7 @@ namespace Flux
         TraverseNodes(node.Right, paddingForBoth, padUpRight, false);
       }
 
-      void TraversePreOrder(DataStructures.IBinaryTree<TValue> root, string padding, string pointer)
+      void TraversePreOrder(DataStructure.IBinaryTree<TValue> root, string padding, string pointer)
       {
         if (root.IsEmpty)
           return;
@@ -197,18 +197,18 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="maxDepth"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<TValue> TraverseBfsLevelOrder<TValue>(this DataStructures.IBinaryTree<TValue> source, int maxDepth)
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseBfsLevelOrder<TValue>(this DataStructure.IBinaryTree<TValue> source, int maxDepth)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var level = new System.Collections.Generic.Queue<DataStructures.IBinaryTree<TValue>>();
+      var level = new System.Collections.Generic.Queue<DataStructure.IBinaryTree<TValue>>();
       level.Enqueue(source);
 
       for (var depth = 0; level.Count > 0 && depth < maxDepth; depth++)
       {
-        var nextLevel = new System.Collections.Generic.Queue<DataStructures.IBinaryTree<TValue>>();
+        var nextLevel = new System.Collections.Generic.Queue<DataStructure.IBinaryTree<TValue>>();
 
         while (level.Count > 0)
         {
@@ -233,13 +233,13 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<TValue[]> TraverseBfsLevelOrderChunked<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static System.Collections.Generic.IEnumerable<TValue[]> TraverseBfsLevelOrderChunked<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var level = new System.Collections.Generic.Queue<DataStructures.IBinaryTree<TValue>>();
+      var level = new System.Collections.Generic.Queue<DataStructure.IBinaryTree<TValue>>();
       level.Enqueue(source);
 
       while (level.Count > 0)
@@ -265,11 +265,11 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsInOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsInOrder<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinaryTree<TValue>>();
+      var stack = new System.Collections.Generic.Stack<DataStructure.IBinaryTree<TValue>>();
 
       var node = source;
 
@@ -300,11 +300,11 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsInReverseOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsInReverseOrder<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinaryTree<TValue>>();
+      var stack = new System.Collections.Generic.Stack<DataStructure.IBinaryTree<TValue>>();
 
       var node = source;
 
@@ -336,15 +336,15 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsPostOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsPostOrder<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinaryTree<TValue>>();
+      var stack = new System.Collections.Generic.Stack<DataStructure.IBinaryTree<TValue>>();
 
-      var lastNodeVisited = default(DataStructures.IBinaryTree<TValue>);
+      var lastNodeVisited = default(DataStructure.IBinaryTree<TValue>);
 
       var node = source;
 
@@ -383,13 +383,13 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsPreOrder<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDfsPreOrder<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var stack = new System.Collections.Generic.Stack<DataStructures.IBinaryTree<TValue>>();
+      var stack = new System.Collections.Generic.Stack<DataStructure.IBinaryTree<TValue>>();
 
       stack.Push(source);
 
@@ -405,18 +405,18 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Traverse all nodes diagonally (left to right and top to bottom) from a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>
+    /// <para>Traverse all nodes diagonally (left to right and top to bottom) from a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/>.</para>
     /// <see href="https://www.geeksforgeeks.org/diagonal-traversal-of-binary-tree/"/>
     /// </summary>
     /// <remarks>The <paramref name="source"/> and <paramref name="source"/>.Right nodes are prioritized over <paramref name="source"/>.Left values.</remarks>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<TValue> TraverseDiagonal<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseDiagonal<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var queue = new System.Collections.Generic.Queue<DataStructures.IBinaryTree<TValue>>(); // The leftQueue will be a queue which will store all left pointers while traversing the tree, and will be utilized when at any point right pointer is empty.
+      var queue = new System.Collections.Generic.Queue<DataStructure.IBinaryTree<TValue>>(); // The leftQueue will be a queue which will store all left pointers while traversing the tree, and will be utilized when at any point right pointer is empty.
 
       var node = source;
 
@@ -435,14 +435,14 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Traverse nodes around the boundary (or perimeter) pattern (counter-clockwise) from a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>
+    /// <para>Traverse nodes around the boundary (or perimeter) pattern (counter-clockwise) from a <see cref="Flux.DataStructure.IBinaryTree{TValue}"/>.</para>
     /// <see href="https://www.geeksforgeeks.org/boundary-traversal-of-binary-tree/"/>
     /// </summary>
     /// <remarks>This traversal does not necessarily return ALL nodes in the tree, only the boundary ones, or the ones along the perimeter of the tree.</remarks>
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<TValue> TraversePerimeter<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static System.Collections.Generic.IEnumerable<TValue> TraversePerimeter<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
@@ -460,11 +460,11 @@ namespace Flux
       foreach (var bt in AddRightBound(source))
         yield return bt.Value;
 
-      static bool IsLeaf(DataStructures.IBinaryTree<TValue> node)
+      static bool IsLeaf(DataStructure.IBinaryTree<TValue> node)
         => node.Left.IsEmpty && node.Right.IsEmpty;
 
       // Go left left until no left. Don't include leaf nodes (it leads to duplication).
-      static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> AddLeftBound(DataStructures.IBinaryTree<TValue> root)
+      static System.Collections.Generic.IEnumerable<DataStructure.IBinaryTree<TValue>> AddLeftBound(DataStructure.IBinaryTree<TValue> root)
       {
         root = root.Left;
 
@@ -478,11 +478,11 @@ namespace Flux
       }
 
       // Go right right until no right. Don't include leaf nodes (it leads to duplication).
-      static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> AddRightBound(DataStructures.IBinaryTree<TValue> root)
+      static System.Collections.Generic.IEnumerable<DataStructure.IBinaryTree<TValue>> AddRightBound(DataStructure.IBinaryTree<TValue> root)
       {
         root = root.Right;
 
-        var stack = new Stack<DataStructures.IBinaryTree<TValue>>(); // As we need the reverse of this for counter-clockwise.
+        var stack = new Stack<DataStructure.IBinaryTree<TValue>>(); // As we need the reverse of this for counter-clockwise.
 
         while (!root.IsEmpty)
         {
@@ -501,7 +501,7 @@ namespace Flux
       }
 
       // Do inorder/preorder, if leaf node add to the list.
-      static System.Collections.Generic.IEnumerable<DataStructures.IBinaryTree<TValue>> AddLeaves(DataStructures.IBinaryTree<TValue> root)
+      static System.Collections.Generic.IEnumerable<DataStructure.IBinaryTree<TValue>> AddLeaves(DataStructure.IBinaryTree<TValue> root)
       {
         if (root.IsEmpty)
           yield break;
@@ -528,14 +528,14 @@ namespace Flux
     /// <typeparam name="TValue"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<TValue> TraverseZigZag<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static System.Collections.Generic.IEnumerable<TValue> TraverseZigZag<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
       if (source.IsEmpty) yield break;
 
-      var currentLevel = new Stack<DataStructures.IBinaryTree<TValue>>();
-      var nextLevel = new Stack<DataStructures.IBinaryTree<TValue>>();
+      var currentLevel = new Stack<DataStructure.IBinaryTree<TValue>>();
+      var nextLevel = new Stack<DataStructure.IBinaryTree<TValue>>();
 
       currentLevel.Push(source);
 

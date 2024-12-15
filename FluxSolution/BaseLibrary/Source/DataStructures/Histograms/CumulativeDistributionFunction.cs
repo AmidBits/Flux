@@ -1,4 +1,4 @@
-namespace Flux.DataStructures
+namespace Flux.DataStructure
 {
   /// <summary>
   /// <para>A cumulative distribution function (CDF) dictionary based on <see cref="SortedDictionary{TKey, double}"/>.</para>

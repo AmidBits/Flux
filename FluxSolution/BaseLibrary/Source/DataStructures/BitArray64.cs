@@ -1,4 +1,4 @@
-﻿namespace Flux.DataStructures
+﻿namespace Flux.DataStructure
 {
   /// <summary>
   /// <para>BitArray64 maintains the same functionality as <see cref="System.Collections.BitArray"/> with the exception of 64-bit bit-addressing.</para>
@@ -68,7 +68,7 @@
     /// </summary>
     /// <param name="other"></param>
     /// <returns></returns>
-    public Flux.DataStructures.BitArray64 And(Flux.DataStructures.BitArray64 other)
+    public Flux.DataStructure.BitArray64 And(Flux.DataStructure.BitArray64 other)
     {
       for (var i = System.Math.Min(m_bitArray.Length, other.m_bitArray.Length) - 1; i >= 0; i--)
         m_bitArray[i] &= other.m_bitArray[i];
@@ -148,7 +148,7 @@
       return false;
     }
 
-    public Flux.DataStructures.BitArray64 LeftShift(int count)
+    public Flux.DataStructure.BitArray64 LeftShift(int count)
     {
       throw new System.NotImplementedException();
 
@@ -168,7 +168,7 @@
     /// </summary>
     /// <param name="other"></param>
     /// <returns></returns>
-    public Flux.DataStructures.BitArray64 Or(Flux.DataStructures.BitArray64 other)
+    public Flux.DataStructure.BitArray64 Or(Flux.DataStructure.BitArray64 other)
     {
       for (var i = System.Math.Min(m_bitArray.Length, other.m_bitArray.Length) - 1; i >= 0; i--)
         m_bitArray[i] |= other.m_bitArray[i];
@@ -184,7 +184,7 @@
       return (long)count;
     }
 
-    public Flux.DataStructures.BitArray64 RightShift(int count)
+    public Flux.DataStructure.BitArray64 RightShift(int count)
     {
       throw new System.NotImplementedException();
 
@@ -236,7 +236,7 @@
     /// </summary>
     /// <param name="other"></param>
     /// <returns></returns>
-    public Flux.DataStructures.BitArray64 Xor(Flux.DataStructures.BitArray64 other)
+    public Flux.DataStructure.BitArray64 Xor(Flux.DataStructure.BitArray64 other)
     {
       for (var i = System.Math.Min(m_bitArray.Length, other.m_bitArray.Length) - 1; i >= 0; i--)
         m_bitArray[i] ^= other.m_bitArray[i];

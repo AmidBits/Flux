@@ -10,7 +10,7 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using Flux;
-using Flux.DataStructures.UnionFind;
+using Flux.DataStructure.UnionFind;
 using Flux.Quantities;
 using Flux.Text;
 
@@ -41,6 +41,16 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      var verticesBF = new int[] { 0, 1, 2, 3, 4 };
+      var edgesBF = new (int, int, int)[] { (0, 1, 6), (0, 3, 7), (1, 3, 8), (1, 4, -4), (1, 2, 5), (2, 1, -2), (3, 2, -3), (3, 4, 9), (4, 0, 2), (4, 2, 7) };
+
+      var (DistanceBF, PredecessorBF) = Flux.DataStructure.Graph.Algorithm.BellmanFordShortestPaths(verticesBF, edgesBF, 0);
+
+      var verticesD = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+      var edgesD = new (int, int, int)[] { (1, 2, 7), (1, 3, 9), (1, 6, 14), (2, 1, 7), (2, 3, 10), (2, 4, 15), (3, 1, 9), (3, 2, 10), (3, 4, 11), (3, 6, 2), (4, 2, 15), (4, 3, 11), (4, 5, 6), (5, 4, 6), (5, 6, 9), (6, 1, 14), (6, 3, 2), (6, 5, 9) };
+
+      var (DistanceD, PredecessorD) = Flux.DataStructure.Graph.Algorithm.DijkstraShortestPaths(verticesD, edgesD, 1);
 
     }
 

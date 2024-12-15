@@ -1,4 +1,4 @@
-namespace Flux.DataStructures.Immutable
+namespace Flux.DataStructure.Immutable
 {
   /// <summary>
   /// <para>An immutable AVL tree (named after inventors Adelson-Velsky and Landis) is a self-balancing binary search tree.</para>
