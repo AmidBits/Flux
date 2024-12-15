@@ -12,15 +12,15 @@
     /// <param name="source"></param>
     /// <returns></returns>
     /// <exception cref="System.InvalidOperationException"></exception>
-    public static (int[] Distance, int[] Predecessor) BellmanFordShortestPaths(System.ReadOnlySpan<int> vertices, System.ReadOnlySpan<(int x, int y, int w)> edges, int source)
+    public static (double[] Distance, int[] Predecessor) BellmanFordShortestPaths(System.ReadOnlySpan<int> vertices, System.ReadOnlySpan<(int x, int y, double w)> edges, int source)
     {
-      var distance = new int[vertices.Length];
+      var distance = new double[vertices.Length];
       var predecessor = new int[vertices.Length];
 
       // Step 1: initialize graph
       foreach (var v in vertices)
       {
-        distance[v] = int.MaxValue; // Initialize the distance to all vertices to infinity.
+        distance[v] = double.PositiveInfinity; // Initialize the distance to all vertices to infinity.
         predecessor[v] = -1; // And having a null predecessor.
       }
 
@@ -85,18 +85,19 @@
     /// <param name="edges"></param>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static (int[] Distance, int[] Predecessor) DijkstraShortestPaths(System.ReadOnlySpan<int> vertices, System.ReadOnlySpan<(int x, int y, int w)> edges, int source)
+    public static (double[] Distance, int[] Predecessor) DijkstraShortestPaths(System.ReadOnlySpan<int> vertices, System.ReadOnlySpan<(int x, int y, double w)> edges, int source)
     {
-      var dist = new int[vertices.Length];
+      var dist = new double[vertices.Length];
       var prev = new int[vertices.Length];
 
-      var q = new System.Collections.Generic.Dictionary<int, int>();
+      var q = new System.Collections.Generic.Dictionary<int, double>();
 
       // Initialize graph.
       foreach (var v in vertices)
       {
-        dist[v] = int.MaxValue;
+        dist[v] = double.PositiveInfinity;
         prev[v] = 0;
+
         q.Add(v, 0);
       }
 
@@ -107,7 +108,7 @@
         var u = q.OrderBy(kvp => dist[kvp.Key]).First().Key;
         q.Remove(u);
 
-        var neighbors = new System.Collections.Generic.List<(int v, int w)>();
+        var neighbors = new System.Collections.Generic.List<(int v, double w)>();
 
         for (var i = 0; i < edges.Length; i++)
         {
@@ -125,6 +126,7 @@
           {
             dist[v] = alt;
             prev[v] = u;
+
             q[v] = alt;
           }
         }

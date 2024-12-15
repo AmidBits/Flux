@@ -13,7 +13,7 @@ namespace Flux
     /// <param name="origin"></param>
     /// <param name="weightSelector"></param>
     /// <returns></returns>
-    public static (int[] Distance, int[] Predecessor) BellmanFordShortestPaths<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, int> weightSelector)
+    public static (double[] Distance, int[] Predecessor) BellmanFordShortestPaths<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, double> weightSelector)
     {
       var vertices = source.GetVertices().Select(v => v.x).ToArray();
       var edges = source.GetEdges().Select(edge => (edge.x, edge.y, weightSelector(edge.value))).ToArray();
@@ -30,7 +30,7 @@ namespace Flux
     /// <param name="origin"></param>
     /// <param name="weightSelector"></param>
     /// <returns></returns>
-    public static (int[] Distance, int[] Predecessor) DijkstraShortestPaths<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, int> weightSelector)
+    public static (double[] Distance, int[] Predecessor) DijkstraShortestPaths<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, double> weightSelector)
     {
       var vertices = source.GetVertices().Select(v => v.x).ToArray();
       var edges = source.GetEdges().Select(edge => (edge.x, edge.y, weightSelector(edge.value))).ToArray();
@@ -38,7 +38,9 @@ namespace Flux
       return Flux.DataStructure.Graph.Algorithm.DijkstraShortestPaths(vertices, edges, origin);
     }
 
-    /// <summary>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</summary>
+    /// <summary>
+    /// <para>Creates a new sequence with the shortest path tree, i.e. the shortest paths from the specified origin vertex to all reachable vertices.</para>
+    /// </summary>
     /// <param name="distanceSelector">Selects the length of the edge (i.e. the distance between the endpoints).</param>
     /// <see href="https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/"/>
     public static System.Collections.Generic.IEnumerable<(int destination, double distance)> GetDijkstraShortestPathTree<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, double> distanceSelector)

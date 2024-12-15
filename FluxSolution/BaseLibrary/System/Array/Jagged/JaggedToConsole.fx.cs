@@ -14,33 +14,42 @@ namespace Flux
 
       var sb = new System.Text.StringBuilder();
 
+      var length0 = source.GetLength(0);
+
       #region MaxWidths
 
-      var maxWidths = new int[source.Max(a => a.Length)]; // Create an array to hold the max widths of all elements in the largest sub-array.
+      var length1Max = source.Max(a => a.Length);
 
-      for (var r = source.Length - 1; r >= 0; r--)
+      var maxWidths = new int[length1Max]; // Create an array to hold the max widths of all elements in the largest sub-array.
+
+      for (var r = length0 - 1; r >= 0; r--)
         for (var c = source[r].Length - 1; c >= 0; c--)
           maxWidths[c] = System.Math.Max(maxWidths[c], $"{source[r][c]}".Length); // Find the max width for each column from all sub-arrays.
 
       var maxWidth = maxWidths.Max(); // Find the total max width.
 
       if (options.UniformWidth)
-        for (var c = maxWidths.Length - 1; c >= 0; c--)
+        for (var c = length1Max - 1; c >= 0; c--)
           maxWidths[c] = maxWidth;
 
       #endregion // MaxWidths
 
-      var verticalSeparatorString = options.VerticalSeparator == '\0' ? null : string.Join(options.HorizontalSeparator, maxWidths.Select(width => new string(options.VerticalSeparator, width)));
+      var verticalString = options.VerticalSeparator == '\0' ? null : string.Join(options.HorizontalSeparator, maxWidths.Select(width => new string(options.VerticalSeparator, width)));
 
-      for (var r = 0; r < source.Length; r++) // Consider row as dimension 0.
+      for (var r = 0; r < length0; r++) // Consider row as dimension 0.
       {
-        if (verticalSeparatorString is not null && r > 0)
-          sb.AppendLine(verticalSeparatorString);
+        if (r > 0)
+        {
+          sb.AppendLine();
 
-        var format = string.Join(options.HorizontalSeparator == '\0' ? null : options.HorizontalSeparator.ToString(), maxWidths.Take(source[r].Length).Select((width, index) => $"{{{index},-{width}}}"));
-        var values = source[r].Select((e, i) => $"{e}" is var s && options.CenterContent ? new System.Text.StringBuilder(s).PadEven(maxWidths[i], ' ', ' ').ToString() : s).ToArray();
+          if (verticalString is not null)
+            sb.AppendLine(verticalString);
+        }
 
-        sb.AppendLine(string.Format(null, format, values));
+        var horizontalFormat = string.Join(options.HorizontalSeparator == '\0' ? null : options.HorizontalSeparator.ToString(), maxWidths.Take(source[r].Length).Select((width, index) => $"{{{index},-{width}}}")); // Build format for each horizontal since each can be different.
+        var horizontalValues = source[r].Select((o, oi) => (new System.Text.StringBuilder($"{o}") is var sb && options.CenterContent ? sb.PadEven(maxWidths[oi], ' ', ' ') : sb).ToString()).ToArray();
+
+        sb.Append(string.Format(null, horizontalFormat, horizontalValues));
       }
 
       return sb;
